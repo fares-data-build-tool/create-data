@@ -65,6 +65,7 @@ import {
     isTicketPeriodAttributeWithInput,
     isPointToPointProductInfo,
     isPeriodExpiry,
+    isProductInfo,
 } from '../../../interfaces/typeGuards';
 
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
@@ -76,7 +77,6 @@ import { unescapeAndDecodeCookie, getUuidFromSession, getAndValidateNoc } from '
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
-import { isProductInfo } from '../../productDetails';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
@@ -90,7 +90,7 @@ const isProductData = (
 export const getProductsAndSalesOfferPackages = (
     salesOfferPackagesInfo: ProductWithSalesOfferPackages[],
     multipleProductAttribute: MultipleProductAttribute,
-    periodExpiryAttributeInfo: PeriodExpiry,
+    periodExpiryAttributeInfo: PeriodExpiry | undefined,
     isFlatFare: boolean,
 ): ProductDetails[] => {
     const productSOPList: ProductDetails[] = [];
@@ -112,8 +112,8 @@ export const getProductsAndSalesOfferPackages = (
                                 matchedProduct.productDuration === '1' ? '' : 's'
                             }`
                           : '',
-                      productValidity: periodExpiryAttributeInfo.productValidity,
-                      productEndTime: periodExpiryAttributeInfo.productEndTime,
+                      productValidity: periodExpiryAttributeInfo?.productValidity,
+                      productEndTime: periodExpiryAttributeInfo?.productEndTime,
                   }
                 : {}),
             carnetDetails: matchedProduct.carnetDetails,
@@ -458,7 +458,12 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
 
     const { selectedServices } = serviceListAttribute;
 
-    const productsAndSops = getProductsAndSalesOfferPackages(salesOfferPackages, multipleProductsAttribute, true);
+    const productsAndSops = getProductsAndSalesOfferPackages(
+        salesOfferPackages,
+        multipleProductsAttribute,
+        undefined,
+        true,
+    );
 
     return {
         ...baseTicketAttributes,
@@ -537,7 +542,12 @@ export const adjustSchemeOperatorJson = async (
             throw new Error('Could not create flat fare ticket json. Necessary cookies and session objects not found.');
         }
 
-        const productsAndSops = getProductsAndSalesOfferPackages(salesOfferPackages, multipleProductsAttribute, true);
+        const productsAndSops = getProductsAndSalesOfferPackages(
+            salesOfferPackages,
+            multipleProductsAttribute,
+            undefined,
+            true,
+        );
         const multipleOperatorsServices = getSessionAttribute(
             req,
             MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,

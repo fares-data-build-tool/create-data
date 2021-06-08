@@ -629,6 +629,10 @@ export interface MultiProduct {
     productNameId: string;
     productPrice: string;
     productPriceId: string;
+    productDuration?: string;
+    productDurationId?: string;
+    productDurationUnits?: ExpiryUnit;
+    productDurationUnitsId?: string;
     productValidity?: string;
     productValidityId?: string;
     productEndTime?: string;

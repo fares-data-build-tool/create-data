@@ -219,7 +219,7 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
 export const buildPeriodOrMultiOpTicketConfirmationElements = (
     ctx: NextPageContextWithSession,
 ): ConfirmationElement[] => {
-    let confirmationElements: ConfirmationElement[] = [];
+    const confirmationElements: ConfirmationElement[] = [];
 
     const ticketRepresentation = (getSessionAttribute(
         ctx.req,
@@ -228,7 +228,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const multiOpAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute;
     const multiOpServices = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) as MultiOperatorInfo[];
-    const numberOfProducts = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
+    const numberOfProducts = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) as number;
 
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
@@ -328,7 +328,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
 };
 
 export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
-    let confirmationElements: ConfirmationElement[] = [];
+    const confirmationElements: ConfirmationElement[] = [];
 
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const services = serviceInformation ? serviceInformation.selectedServices : [];
@@ -345,7 +345,7 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
     }
     const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
     const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
-
+    // TODO - Add carnet stuff
     confirmationElements.push(
         {
             name: 'Services',
@@ -360,7 +360,11 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
     );
 
     products.forEach(product => {
-        confirmationElements = addProduct(product, confirmationElements);
+        confirmationElements.push({
+            name: `${product.productName} - Price`,
+            content: `£${product.productPrice}`,
+            href: 'multipleProducts',
+        });
     });
 
     return confirmationElements;
