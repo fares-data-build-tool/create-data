@@ -142,10 +142,10 @@ describe('pages', () => {
                     productName: 'Weekly Ticket',
                     productPrice: '50',
                     productDuration: '5',
-                    productValidity: '24hr',
                     productDurationUnits: 'weeks',
                 },
             ];
+            const mockPeriodExpiry = { productValidity: '24hr', productEndTime: '' };
             const mockAdditionalOperators: Operator[] = [
                 { nocCode: 'BLAC', name: expect.any(String) },
                 { nocCode: 'MCT', name: expect.any(String) },
@@ -215,8 +215,8 @@ describe('pages', () => {
                         },
                     },
                 });
-                const numberOfElementsDueToProducts = ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length * 3;
-                const totalExpectedLength = 1 + numberOfElementsDueToProducts;
+                const numberOfElementsDueToProducts = ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length;
+                const totalExpectedLength = 2 + numberOfElementsDueToProducts;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
@@ -229,7 +229,8 @@ describe('pages', () => {
                         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
                             numberOfProductsInput: '1',
                         },
-                        [PERIOD_EXPIRY_ATTRIBUTE]: {
+                        [PERIOD_EXPIRY_ATTRIBUTE]: mockPeriodExpiry,
+                        [PRODUCT_DETAILS_ATTRIBUTE]: {
                             products: mockSingleProduct,
                         },
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: {
@@ -237,8 +238,8 @@ describe('pages', () => {
                         },
                     },
                 });
-                const numberOfElementsDueToProducts = mockSingleProduct.length * 3;
-                const totalExpectedLength = 2 + numberOfElementsDueToProducts;
+                const numberOfElementsDueToProducts = mockSingleProduct.length;
+                const totalExpectedLength = 3 + numberOfElementsDueToProducts;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
@@ -251,7 +252,8 @@ describe('pages', () => {
                         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
                             numberOfProductsInput: '1',
                         },
-                        [PERIOD_EXPIRY_ATTRIBUTE]: {
+                        [PERIOD_EXPIRY_ATTRIBUTE]: mockPeriodExpiry,
+                        [PRODUCT_DETAILS_ATTRIBUTE]: {
                             products: mockSingleProduct,
                         },
                         [TXC_SOURCE_ATTRIBUTE]: {
@@ -261,8 +263,8 @@ describe('pages', () => {
                         },
                     },
                 });
-                const numberOfElementsDueToProducts = mockSingleProduct.length * 3;
-                const totalExpectedLength = 2 + numberOfElementsDueToProducts;
+                const numberOfElementsDueToProducts = mockSingleProduct.length;
+                const totalExpectedLength = 3 + numberOfElementsDueToProducts;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
@@ -287,10 +289,10 @@ describe('pages', () => {
                         },
                     },
                 });
-                const numberOfElementsDueToProducts = ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length * 3;
+                const numberOfElementsDueToProducts = ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length;
                 const numberOfElementsDueToAdditionalOperators = mockAdditionalOperators.length;
                 const totalExpectedLength =
-                    3 + numberOfElementsDueToProducts + numberOfElementsDueToAdditionalOperators;
+                    4 + numberOfElementsDueToProducts + numberOfElementsDueToAdditionalOperators;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
