@@ -219,7 +219,6 @@ export const getServerSideProps = async (
     );
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
-    const singleProductAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
 
@@ -236,10 +235,8 @@ export const getServerSideProps = async (
         ) {
             const multiProducts: MultiProduct[] = multipleProductAttribute.products;
             productNames = multiProducts.map((product: ProductInfo) => product.productName);
-        } else if (singleProductAttribute) {
-            productNames = ['product'];
         } else {
-            throw new Error('No products were set for assigning the sales offer package');
+            productNames = ['product'];
         }
     }
 

@@ -491,9 +491,8 @@ export const uploadFile = (elementId: string, fileName: string): void => {
 export const completeSingleProduct = (): void => {
     getElementById('multiple-product-name-0').type('Cypress period product');
     getElementById('multiple-product-price-0').type('4.95');
-    continueButtonClick();
-    getElementById('validity').type('10');
-    selectRandomOptionFromDropDown('validity-units');
+    getElementById('product-details-period-duration-quantity-0').type('10');
+    selectRandomOptionFromDropDown('product-details-period-duration-unit-0');
     continueButtonClick();
     randomlyChooseSingleProductPeriodValidity();
     continueButtonClick();
