@@ -16,12 +16,12 @@ describe('the period faretype product journey', () => {
         isUuidStringValid();
     });
 
-    it('completes successfully for geozone and multiple products', () => {
+    it.only('completes successfully for geozone and multiple products', () => {
         const numberOfProducts = 5;
         const multiProductNamePrefix = 'Cypress product ';
         selectFareType('period', false);
         defineUserTypeAndTimeRestrictions();
-        completePeriodGeoZonePages(numberOfProducts, multiProductNamePrefix);
+        completePeriodGeoZonePages(numberOfProducts);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
         isUuidStringValid();
     });

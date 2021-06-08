@@ -15,7 +15,7 @@ import {
     getRandomNumber,
     assertElementNotVisibleById,
     completeSalesOfferPackagesForMultipleProducts,
-    completeSingleProduct,
+    completeProductPages,
     completeMultipleProducts,
     completeOperatorSearch,
     clickSomeCheckboxes,
@@ -178,17 +178,12 @@ export const completeSalesPages = (numberOfProducts?: number, multiProductNamePr
     continueButtonClick();
 };
 
-export const completePeriodGeoZonePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
+export const completePeriodGeoZonePages = (numberOfProducts: number): void => {
     clickElementById('geo-zone');
     continueButtonClick();
     uploadFile('csv-upload', 'fareZone.csv');
     submitButtonClick();
-
-    if (!numberOfProducts || !multiProductNamePrefix) {
-        completeSingleProduct();
-    } else {
-        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
-    }
+    completeProductPages(numberOfProducts);
 };
 
 export const completePeriodMultiServicePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
@@ -198,7 +193,7 @@ export const completePeriodMultiServicePages = (numberOfProducts?: number, multi
     continueButtonClick();
 
     if (!numberOfProducts || !multiProductNamePrefix) {
-        completeSingleProduct();
+        completeProductPages();
     } else {
         completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
     }
@@ -211,7 +206,7 @@ export const completeSchoolPeriodMultiServicePages = (
     randomlyChooseAndSelectServices();
     continueButtonClick();
     if (!numberOfProducts || !multiProductNamePrefix) {
-        completeSingleProduct();
+        completeProductPages();
     } else {
         completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
     }
@@ -233,7 +228,7 @@ export const completeMultiOpGeoZonePages = (
     completeOperatorSearch(false);
 
     if (!numberOfProducts || !multiProductNamePrefix) {
-        completeSingleProduct();
+        completeProductPages();
     } else {
         completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
     }
@@ -248,7 +243,7 @@ export const completeMultiOpMultiServicePages = (numberOfProducts?: number, mult
     completeOperatorSearch(true);
 
     if (!numberOfProducts || !multiProductNamePrefix) {
-        completeSingleProduct();
+        completeProductPages();
     } else {
         completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
     }
