@@ -4,7 +4,6 @@ import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
 import { INTERNAL_NOC } from '../constants';
 import {
-    CompanionInfo,
     FullTimeRestriction,
     GroupPassengerType,
     Operator,
@@ -15,7 +14,7 @@ import {
     SalesOfferPackage,
     ServiceType,
     Stop,
-} from '../interfaces/index';
+} from '../interfaces';
 import logger from '../utils/logger';
 
 interface ServiceQueryData {
@@ -631,11 +630,10 @@ export const insertSinglePassengerType = async (
 
 export const insertGroupPassengerType = async (
     nocCode: string,
-    passengerType: CompanionInfo[],
+    passengerType: GroupPassengerType,
     name: string,
-    maxGroupSize: string,
 ): Promise<void> => {
-    const contents = JSON.stringify({ maxGroupSize, passengerType });
+    const contents = JSON.stringify(passengerType);
 
     const insertQuery = `INSERT INTO passengerType (contents, isGroup, name, nocCode)
                          VALUES (?, ?, ?, ?)`;
@@ -733,14 +731,7 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
             nocCode,
             type === 'group',
         ]);
-        return queryResults.map(row =>
-            type === 'group'
-                ? {
-                      companions: JSON.parse(row.contents),
-                      name: row.name,
-                  }
-                : JSON.parse(row.contents),
-        );
+        return queryResults.map(row => JSON.parse(row.contents));
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
     }

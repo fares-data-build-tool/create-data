@@ -327,9 +327,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             userInput: trimmedName,
                         });
                     } else {
-                        await insertGroupPassengerType(noc, companions, trimmedName, groupSize.maxGroupSize);
+                        const passengerGroup = { companions, name: trimmedName, maxGroupSize: groupSize.maxGroupSize };
+                        await insertGroupPassengerType(noc, passengerGroup, trimmedName);
                         const savedGroups = getSessionAttribute(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE) ?? [];
-                        savedGroups.push({ companions, name: trimmedName, maxGroupSize: groupSize.maxGroupSize });
+                        savedGroups.push(passengerGroup);
                         updateSessionAttribute(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE, savedGroups);
                     }
                 }
