@@ -78,8 +78,9 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
+          # TODO - Vulnerability not yet patched in serverless-plugin-typescript
           command: |
-            npx audit-ci --moderate
+            npx audit-ci --moderate -a 1751
 
   test:
     parameters:

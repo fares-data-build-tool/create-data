@@ -549,9 +549,8 @@ describe('definePassengerType', () => {
         expect(getPassengerTypeSpy).toBeCalledWith('TEST', 'A Name', true);
         expect(insertGroupPassengerTypeSpy).toBeCalledWith(
             'TEST',
-            savedGroupInfo,
+            { companions: savedGroupInfo, name: 'A Name', maxGroupSize: groupSizeAttribute.maxGroupSize },
             'A Name',
-            groupSizeAttribute.maxGroupSize,
         );
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, savedGroupInfo);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE, [
