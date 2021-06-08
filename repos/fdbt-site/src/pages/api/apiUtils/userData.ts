@@ -111,7 +111,7 @@ export const getProductsAndSalesOfferPackages = (
                       matchedProduct.productDuration === '1' ? '' : 's'
                   }`
                 : '',
-            productValidity: periodExpiryAttributeInfo.productValidity || '',
+            productValidity: periodExpiryAttributeInfo.productValidity '',
             productEndTime: periodExpiryAttributeInfo.productEndTime,
             salesOfferPackages: sopInfo.salesOfferPackages,
         };
