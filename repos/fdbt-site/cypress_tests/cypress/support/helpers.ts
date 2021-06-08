@@ -489,8 +489,6 @@ export const uploadFile = (elementId: string, fileName: string): void => {
 };
 
 export const completeSingleProduct = (): void => {
-    getElementById('number-of-products').type('1');
-    continueButtonClick();
     getElementById('multiple-product-name-0').type('Cypress period product');
     getElementById('multiple-product-price-0').type('4.95');
     continueButtonClick();
@@ -503,9 +501,6 @@ export const completeSingleProduct = (): void => {
 };
 
 export const completeMultipleProducts = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
-    getElementById('number-of-products').type(numberOfProducts.toString());
-    continueButtonClick();
-
     for (let i = 0; i < numberOfProducts; i += 1) {
         getElementById(`multiple-product-name-${i}`).type(`${multiProductNamePrefix}${i + 1}`);
         getElementById(`multiple-product-price-${i}`).type(`1${i}`);

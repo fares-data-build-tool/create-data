@@ -43,11 +43,12 @@ const carnetRadioProps = [
         label: 'Period carnet',
         hint: 'A ticket bundle where each ticket is valid for a number of days, weeks, months or years',
     },
-    {
-        fareType: 'multiOperator',
-        label: 'Multi-operator carnet',
-        hint: 'A ticket bundle that covers more than one operator',
-    },
+    // TODO - readd this for multiOperator carnets
+    // {
+    //     fareType: 'multiOperator',
+    //     label: 'Multi-operator carnet',
+    //     hint: 'A ticket bundle that covers more than one operator',
+    // },
     {
         fareType: 'schoolService',
         label: 'School service carnet',

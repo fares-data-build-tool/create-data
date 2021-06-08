@@ -178,11 +178,6 @@ exports[`pages carnetFareType should render error messaging when errors are pass
                   "label": "Period carnet",
                 },
                 Object {
-                  "fareType": "multiOperator",
-                  "hint": "A ticket bundle that covers more than one operator",
-                  "label": "Multi-operator carnet",
-                },
-                Object {
                   "fareType": "schoolService",
                   "hint": "A ticket bundle available to pupils in full-time education",
                   "label": "School service carnet",

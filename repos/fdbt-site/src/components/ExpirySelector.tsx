@@ -53,11 +53,13 @@ const ExpirySelector = ({
                     id={unitId}
                     defaultValue={defaultUnit || ''}
                 >
-                    <option value="" disabled>
+                    <option value="" disabled key="select-one">
                         Select One
                     </option>
                     {Object.values(carnet ? CarnetExpiryUnit : ExpiryUnit).map(unit => (
-                        <option value={unit}>{`${upperFirst(unit)}${unit !== 'no expiry' ? 's' : ''}`}</option>
+                        <option value={unit} key={unit}>{`${upperFirst(unit)}${
+                            unit !== 'no expiry' ? 's' : ''
+                        }`}</option>
                     ))}
                 </select>
             </FormElementWrapper>
