@@ -27,6 +27,7 @@ import {
     MULTIPLE_OPERATOR_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
 } from '../../../../src/constants/attributes';
 import {
     defaultSalesOfferPackageOne,
@@ -60,7 +61,13 @@ import {
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
-import { Operator, MultipleProductAttribute, ExpiryUnit, CarnetExpiryUnit } from '../../../../src/interfaces';
+import {
+    Operator,
+    MultipleProductAttribute,
+    ExpiryUnit,
+    PeriodExpiry,
+    CarnetExpiryUnit,
+} from '../../../../src/interfaces';
 
 describe('userData', () => {
     describe('isTermTime', () => {
@@ -95,8 +102,6 @@ describe('userData', () => {
                         productDurationId: '',
                         productDurationUnits: ExpiryUnit.DAY,
                         productDurationUnitsId: '',
-                        productValidity: '24hr',
-                        productValidityId: '',
                     },
                     {
                         productName: 'Product Two',
@@ -107,8 +112,6 @@ describe('userData', () => {
                         productDurationId: '',
                         productDurationUnits: ExpiryUnit.DAY,
                         productDurationUnitsId: '',
-                        productValidity: '24hr',
-                        productValidityId: '',
                     },
                 ],
             };
@@ -122,7 +125,8 @@ describe('userData', () => {
                     salesOfferPackages: [defaultSalesOfferPackageTwo],
                 },
             ];
-            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute, false);
+            const validity: PeriodExpiry = { productValidity: '24hr', productEndTime: '' };
+            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute, validity, false);
             expect(result).toEqual(expectedProductDetailsArray);
         });
     });
@@ -377,7 +381,6 @@ describe('userData', () => {
                                 productPrice: '50',
                                 productDuration: '5',
                                 productDurationUnits: 'week',
-                                productValidity: '24hr',
                                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                                 carnetDetails: undefined,
                             },
@@ -386,7 +389,6 @@ describe('userData', () => {
                                 productPrice: '2.50',
                                 productDuration: '1',
                                 productDurationUnits: 'year',
-                                productValidity: '24hr',
                                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                                 carnetDetails: undefined,
                             },
@@ -395,11 +397,14 @@ describe('userData', () => {
                                 productPrice: '200',
                                 productDuration: '28',
                                 productDurationUnits: 'month',
-                                productValidity: 'endOfCalendarDay',
                                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                                 carnetDetails: undefined,
                             },
                         ],
+                    },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: {
+                        productValidity: '24hr',
+                        productEndTime: '',
                     },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
@@ -454,23 +459,24 @@ describe('userData', () => {
                                 productPrice: '50',
                                 productDuration: '5',
                                 productDurationUnits: 'week',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
                                 productDurationUnits: 'year',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
                                 productDurationUnits: 'month',
-                                productValidity: 'endOfCalendarDay',
                             },
                         ],
+                    },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: {
+                        productValidity: 'endOfCalendarDay',
+                        productEndTime: '',
                     },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
@@ -599,24 +605,22 @@ describe('userData', () => {
                                 productPrice: '50',
                                 productDuration: '5',
                                 productDurationUnits: 'week',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
                                 productDurationUnits: 'year',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
                                 productDurationUnits: 'month',
-                                productValidity: 'endOfCalendarDay',
                             },
                         ],
                     },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: { productValidity: 'endOfServiceDay', productEndTime: '1900' },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',
@@ -968,24 +972,22 @@ describe('userData', () => {
                                 productPrice: '50',
                                 productDuration: '5',
                                 productDurationUnits: 'week',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
                                 productDurationUnits: 'month',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
                                 productDurationUnits: 'year',
-                                productValidity: 'endOfCalendarDay',
                             },
                         ],
                     },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: { productValidity: 'endOfServiceDay', productEndTime: '1900' },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',

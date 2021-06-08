@@ -1188,6 +1188,7 @@ export const expectedProductDetailsArray: ProductDetails[] = [
         productName: 'Product',
         productPrice: '2.99',
         productDuration: '1 day',
+        productEndTime: '',
         productValidity: '24hr',
         salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
     },
@@ -1195,6 +1196,7 @@ export const expectedProductDetailsArray: ProductDetails[] = [
         productName: 'Product Two',
         productPrice: '7.99',
         productDuration: '7 days',
+        productEndTime: '',
         productValidity: '24hr',
         salesOfferPackages: [defaultSalesOfferPackageTwo],
     },
@@ -2004,6 +2006,7 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
             productPrice: '50',
             productDuration: '5 weeks',
             productValidity: '24hr',
+            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2012,6 +2015,7 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
             productPrice: '2.50',
             productDuration: '1 year',
             productValidity: '24hr',
+            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2019,7 +2023,8 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
             productName: 'Monthly Ticket',
             productPrice: '200',
             productDuration: '28 months',
-            productValidity: 'endOfCalendarDay',
+            productValidity: '24hr',
+            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2046,6 +2051,7 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
             productPrice: '50',
             productDuration: '5 weeks',
             productValidity: '24hr',
+            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2054,6 +2060,7 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
             productPrice: '2.50',
             productDuration: '1 year',
             productValidity: '24hr',
+            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2061,7 +2068,8 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
             productName: 'Monthly Ticket',
             productPrice: '200',
             productDuration: '28 months',
-            productValidity: 'endOfCalendarDay',
+            productValidity: '24hr',
+            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2087,7 +2095,8 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
             productName: 'Weekly Ticket',
             productPrice: '50',
             productDuration: '5 weeks',
-            productValidity: '24hr',
+            productValidity: 'endOfCalendarDay',
+            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2163,7 +2172,8 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Per
             productName: 'Day Ticket',
             productPrice: '2.50',
             productDuration: '1 year',
-            productValidity: '24hr',
+            productValidity: 'endOfCalendarDay',
+            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: {
                 quantity: '15',
@@ -2176,6 +2186,7 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Per
             productPrice: '200',
             productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
+            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: {
                 quantity: '30',
@@ -2227,7 +2238,8 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
             productName: 'Weekly Ticket',
             productPrice: '50',
             productDuration: '5 weeks',
-            productValidity: '24hr',
+            productValidity: 'endOfServiceDay',
+            productEndTime: '1900',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2235,7 +2247,8 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
             productName: 'Day Ticket',
             productPrice: '2.50',
             productDuration: '1 year',
-            productValidity: '24hr',
+            productValidity: 'endOfServiceDay',
+            productEndTime: '1900',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2243,7 +2256,8 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
             productName: 'Monthly Ticket',
             productPrice: '200',
             productDuration: '28 months',
-            productValidity: 'endOfCalendarDay',
+            productValidity: 'endOfServiceDay',
+            productEndTime: '1900',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2719,7 +2733,8 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorG
             productDuration: '5 weeks',
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productValidity: '24hr',
+            productValidity: 'endOfServiceDay',
+            productEndTime: '1900',
             salesOfferPackages: [
                 {
                     description: '',
@@ -2741,7 +2756,8 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorG
             productDuration: '1 month',
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productValidity: '24hr',
+            productValidity: 'endOfServiceDay',
+            productEndTime: '1900',
             salesOfferPackages: [
                 {
                     description: '',
@@ -2761,9 +2777,10 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorG
         },
         {
             productDuration: '28 years',
+            productEndTime: '1900',
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productValidity: 'endOfCalendarDay',
+            productValidity: 'endOfServiceDay',
             salesOfferPackages: [
                 {
                     description: '',
@@ -2794,8 +2811,6 @@ export const multipleProducts: MultiProduct[] = [
         productDurationId: 'product-duration-1',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
         productCarnetExpiryDuration: '7',
         productCarnetExpiryUnits: CarnetExpiryUnit.NO_EXPIRY,
     },
@@ -2808,8 +2823,6 @@ export const multipleProducts: MultiProduct[] = [
         productDurationId: 'product-duration-2',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'Super Duper ticket',
@@ -2820,8 +2833,6 @@ export const multipleProducts: MultiProduct[] = [
         productDurationId: 'product-duration-3',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-3',
-        productValidity: '',
-        productValidityId: '',
     },
 ];
 
@@ -2835,8 +2846,6 @@ export const multipleProductsWithErrors: MultiProductWithErrors[] = [
         productDurationId: 'multiple-product-duration-0',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'multiple-product-duration-units-0',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'Invalid Price',
@@ -2848,8 +2857,6 @@ export const multipleProductsWithErrors: MultiProductWithErrors[] = [
         productDurationId: 'multiple-product-duration-0',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'multiple-product-duration-units-0',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'Invalid Duration',
@@ -2861,8 +2868,6 @@ export const multipleProductsWithErrors: MultiProductWithErrors[] = [
         productDurationError: 'Product duration cannot be zero or a negative number',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'multiple-product-duration-units-0',
-        productValidity: '',
-        productValidityId: '',
     },
 ];
 
@@ -2876,8 +2881,6 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'zero duration',
@@ -2888,8 +2891,6 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'negative duration',
@@ -2900,8 +2901,6 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'empty duration',
@@ -2912,8 +2911,6 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'non-numeric duration',
@@ -2924,8 +2921,6 @@ export const invalidDurationProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
 ];
 
@@ -2939,8 +2934,6 @@ export const invalidDurationTypeProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'no duration type',
@@ -2951,8 +2944,6 @@ export const invalidDurationTypeProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: undefined,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'valid duration',
@@ -2963,8 +2954,6 @@ export const invalidDurationTypeProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
 ];
 
@@ -2978,8 +2967,6 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'empty price',
@@ -2990,8 +2977,6 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'negative price',
@@ -3002,8 +2987,6 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'non-numeric / invalid price',
@@ -3014,8 +2997,6 @@ export const invalidPriceProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
 ];
 
@@ -3029,8 +3010,6 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: '',
@@ -3041,8 +3020,6 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'S',
@@ -3053,8 +3030,6 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName:
@@ -3066,8 +3041,6 @@ export const invalidNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
 ];
 
@@ -3081,8 +3054,6 @@ export const duplicateNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'Super Saver Bus Ticket',
@@ -3093,8 +3064,6 @@ export const duplicateNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
     {
         productName: 'Super Saver Bus Ticket',
@@ -3105,8 +3074,6 @@ export const duplicateNameProducts: MultiProduct[] = [
         productDurationId: '.',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productValidity: '',
-        productValidityId: '',
     },
 ];
 

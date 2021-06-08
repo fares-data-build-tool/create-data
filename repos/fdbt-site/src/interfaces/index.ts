@@ -629,10 +629,6 @@ export interface MultiProduct {
     productNameId: string;
     productPrice: string;
     productPriceId: string;
-    productDuration?: string;
-    productDurationId?: string;
-    productDurationUnits?: ExpiryUnit;
-    productDurationUnitsId?: string;
     productValidity?: string;
     productValidityId?: string;
     productEndTime?: string;
@@ -757,17 +753,18 @@ export interface RawJourneyPattern {
 
 export interface ConfirmationElement {
     name: string;
-    content: string;
+    content: string | string[];
     href: string;
 }
 
-export interface FareTypeRadio {
-    fareType: string;
+export interface RadioOption {
+    value: string;
     label: string;
     hint: string;
 }
-export interface FareTypeRadioProps {
-    fares: FareTypeRadio[];
+export interface RadioButtonsProps {
+    options: RadioOption[];
+    inputName: string;
 }
 
 export interface RadioWithoutConditionals extends BaseReactElement {
@@ -823,4 +820,8 @@ export interface TxcSourceAttribute {
     source: 'tnds' | 'bods';
     hasTnds: boolean;
     hasBods: boolean;
+}
+export interface PeriodExpiry {
+    productValidity: string;
+    productEndTime: string;
 }

@@ -17,7 +17,7 @@ export const getHomePage = (isScheme: boolean): void => {
     cy.visit(`?disableAuth=${isScheme ? 'scheme' : 'BLAC'}`);
 };
 
-export const fareTypeToFareTypeIdMapper = (fareType: FareType): string => `fare-type-${fareType}`;
+export const fareTypeToFareTypeIdMapper = (fareType: FareType): string => `radio-option-${fareType}`;
 
 export const startPageLinkClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('faretype-link');
 
@@ -488,7 +488,7 @@ export const uploadFile = (elementId: string, fileName: string): void => {
     getElementById(elementId).attachFile(fileName);
 };
 
-export const completeSingleProduct = (): void => {
+export const completeProductPages = (): void => {
     getElementById('multiple-product-name-0').type('Cypress period product');
     getElementById('multiple-product-price-0').type('4.95');
     getElementById('product-details-period-duration-quantity-0').type('10');

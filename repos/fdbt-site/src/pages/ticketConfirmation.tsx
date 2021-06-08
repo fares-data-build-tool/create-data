@@ -34,15 +34,15 @@ import {
     PRODUCT_DETAILS_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
-    PERIOD_EXPIRY_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
 } from '../constants/attributes';
-import { isFareType, isPointToPointProductInfo } from '../interfaces/typeGuards';
+import { isFareType, isPeriodExpiry, isPointToPointProductInfo } from '../interfaces/typeGuards';
 import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfaces/matchingInterface';
 import { getCsrfToken, sentenceCaseString } from '../utils';
 
@@ -216,44 +216,6 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
     return confirmationElements;
 };
 
-const addProduct = (
-    product: Product | MultiProduct,
-    confirmationElements: ConfirmationElement[],
-): ConfirmationElement[] => {
-    confirmationElements.push({
-        name: `${product.productName} - Price`,
-        content: `£${product.productPrice}`,
-        href: 'multipleProducts',
-    });
-
-    if (product.productDuration) {
-        const productDurationText = `${
-            product.productDurationUnits
-                ? `${product.productDuration} ${product.productDurationUnits}${
-                      product.productDuration === '1' ? '' : 's'
-                  }`
-                : `${product.productDuration}`
-        }`;
-        confirmationElements.push({
-            name: `${product.productName} - Duration`,
-            content: productDurationText,
-            href: 'multipleProducts',
-        });
-    }
-
-    if (product.productValidity) {
-        confirmationElements.push({
-            name: `${product.productName} - Validity`,
-            content: `${sentenceCaseString(product.productValidity)}${
-                product.productEndTime ? ` - ${product.productEndTime}` : ''
-            }`,
-            href: 'periodValidity',
-        });
-    }
-
-    return confirmationElements;
-};
-
 export const buildPeriodOrMultiOpTicketConfirmationElements = (
     ctx: NextPageContextWithSession,
 ): ConfirmationElement[] => {
@@ -273,7 +235,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
 
     const products =
         !numberOfProducts || numberOfProducts === 1
-            ? (getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE) as ProductData).products[0]
+            ? (getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE) as ProductData).products[0]
             : (getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute).products;
 
     if (zone) {
@@ -321,13 +283,46 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         }
     }
 
+    const addProduct = (product: Product | MultiProduct): void => {
+        const productDurationText = `${
+            product.productDurationUnits
+                ? `${product.productDuration} ${product.productDurationUnits}${
+                      product.productDuration === '1' ? '' : 's'
+                  }`
+                : `${product.productDuration}`
+        }`;
+
+        if (!product.productDuration) {
+            throw new Error('User has no product duration and/or validity information.');
+        }
+        confirmationElements.push({
+            name: `${product.productName}`,
+            content: [`Price - £${product.productPrice}`, `Duration - ${productDurationText}`],
+            href: numberOfProducts > 1 ? 'multipleProducts' : 'productDetails',
+        });
+    };
+
+    const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
+
+    if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
+        throw new Error('Either periodExpiryAttribute is undefined or not type expected');
+    }
+
     if (isArray(products)) {
         products.forEach(product => {
-            confirmationElements = addProduct(product, confirmationElements);
+            addProduct(product);
         });
     } else if (!isArray(products)) {
-        confirmationElements = addProduct(products, confirmationElements);
+        addProduct(products);
     }
+
+    confirmationElements.push({
+        name: `Ticket day end`,
+        content: `${sentenceCaseString(periodExpiryAttribute.productValidity)}${
+            periodExpiryAttribute.productEndTime ? ` - ${periodExpiryAttribute.productEndTime}` : ''
+        }`,
+        href: 'periodValidity',
+    });
 
     return confirmationElements;
 };

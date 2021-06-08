@@ -11,14 +11,14 @@ exports[`FareTypeRadios should render a set of radio buttons the fares provided 
     >
       <input
         className="govuk-radios__input"
-        id="fare-type-single"
-        name="fareType"
+        id="radio-option-single"
+        name="helloANDhi"
         type="radio"
         value="single"
       />
       <label
         className="govuk-label govuk-radios__label"
-        htmlFor="fare-type-single"
+        htmlFor="radio-option-single"
       >
         <b>
           Single ticket
@@ -37,14 +37,14 @@ exports[`FareTypeRadios should render a set of radio buttons the fares provided 
     >
       <input
         className="govuk-radios__input"
-        id="fare-type-return"
-        name="fareType"
+        id="radio-option-return"
+        name="helloANDhi"
         type="radio"
         value="return"
       />
       <label
         className="govuk-label govuk-radios__label"
-        htmlFor="fare-type-return"
+        htmlFor="radio-option-return"
       >
         <b>
           Return ticket
@@ -63,14 +63,14 @@ exports[`FareTypeRadios should render a set of radio buttons the fares provided 
     >
       <input
         className="govuk-radios__input"
-        id="fare-type-flatFare"
-        name="fareType"
+        id="radio-option-flatFare"
+        name="helloANDhi"
         type="radio"
         value="flatFare"
       />
       <label
         className="govuk-label govuk-radios__label"
-        htmlFor="fare-type-flatFare"
+        htmlFor="radio-option-flatFare"
       >
         <b>
           Flat fare ticket
@@ -89,14 +89,14 @@ exports[`FareTypeRadios should render a set of radio buttons the fares provided 
     >
       <input
         className="govuk-radios__input"
-        id="fare-type-period"
-        name="fareType"
+        id="radio-option-period"
+        name="helloANDhi"
         type="radio"
         value="period"
       />
       <label
         className="govuk-label govuk-radios__label"
-        htmlFor="fare-type-period"
+        htmlFor="radio-option-period"
       >
         <b>
           Period ticket
@@ -115,14 +115,14 @@ exports[`FareTypeRadios should render a set of radio buttons the fares provided 
     >
       <input
         className="govuk-radios__input"
-        id="fare-type-carnet"
-        name="fareType"
+        id="radio-option-carnet"
+        name="helloANDhi"
         type="radio"
         value="carnet"
       />
       <label
         className="govuk-label govuk-radios__label"
-        htmlFor="fare-type-carnet"
+        htmlFor="radio-option-carnet"
       >
         <b>
           Carnet ticket
@@ -141,14 +141,14 @@ exports[`FareTypeRadios should render a set of radio buttons the fares provided 
     >
       <input
         className="govuk-radios__input"
-        id="fare-type-multiOperator"
-        name="fareType"
+        id="radio-option-multiOperator"
+        name="helloANDhi"
         type="radio"
         value="multiOperator"
       />
       <label
         className="govuk-label govuk-radios__label"
-        htmlFor="fare-type-multiOperator"
+        htmlFor="radio-option-multiOperator"
       >
         <b>
           Multi-operator
@@ -167,14 +167,14 @@ exports[`FareTypeRadios should render a set of radio buttons the fares provided 
     >
       <input
         className="govuk-radios__input"
-        id="fare-type-schoolService"
-        name="fareType"
+        id="radio-option-schoolService"
+        name="helloANDhi"
         type="radio"
         value="schoolService"
       />
       <label
         className="govuk-label govuk-radios__label"
-        htmlFor="fare-type-schoolService"
+        htmlFor="radio-option-schoolService"
       >
         <b>
           School service

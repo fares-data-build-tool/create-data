@@ -1,42 +1,42 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import FareTypeRadios from '../../src/components/FareTypeRadios';
+import RadioButtons from '../../src/components/RadioButtons';
 
 describe('FareTypeRadios', () => {
     const mockFareProps = {
         fares: [
             {
-                fareType: 'single',
+                value: 'single',
                 label: 'Single ticket',
                 hint: 'A ticket for a point to point journey',
             },
             {
-                fareType: 'return',
+                value: 'return',
                 label: 'Return ticket',
                 hint: 'An inbound and outbound ticket for the same service',
             },
             {
-                fareType: 'flatFare',
+                value: 'flatFare',
                 label: 'Flat fare ticket',
                 hint: 'A fixed fee ticket for a single journey',
             },
             {
-                fareType: 'period',
+                value: 'period',
                 label: 'Period ticket',
                 hint: 'A ticket valid for a number of days, weeks, months or years',
             },
             {
-                fareType: 'carnet',
+                value: 'carnet',
                 label: 'Carnet ticket',
                 hint: 'A bundle of pre-paid tickets',
             },
             {
-                fareType: 'multiOperator',
+                value: 'multiOperator',
                 label: 'Multi-operator',
                 hint: 'A ticket that covers more than one operator',
             },
             {
-                fareType: 'schoolService',
+                value: 'schoolService',
                 label: 'School service',
                 hint: 'A ticket available to pupils in full-time education',
             },
@@ -44,7 +44,7 @@ describe('FareTypeRadios', () => {
     };
 
     it('should render a set of radio buttons the fares provided', () => {
-        const wrapper = shallow(<FareTypeRadios fares={mockFareProps.fares} />);
+        const wrapper = shallow(<RadioButtons options={mockFareProps.fares} inputName="helloANDhi" />);
         expect(wrapper).toMatchSnapshot();
     });
 });
