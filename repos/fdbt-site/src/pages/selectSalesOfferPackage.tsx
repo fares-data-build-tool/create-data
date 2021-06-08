@@ -223,25 +223,23 @@ export const getServerSideProps = async (
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
 
-    let productNames: string[] = ['product'];
+    let productNames: string[] = [];
 
     if (isFareType(fareTypeAttribute)) {
         const fareType =
             fareTypeAttribute.fareType === 'schoolService' && schoolFareTypeAttribute
                 ? schoolFareTypeAttribute.schoolFareType
                 : fareTypeAttribute.fareType;
-        if ((fareType === 'period' || fareType === 'multiOperator') && multipleProductAttribute) {
+        if (
+            (fareType === 'period' || fareType === 'multiOperator' || fareType === 'flatFare') &&
+            multipleProductAttribute
+        ) {
             const multiProducts: MultiProduct[] = multipleProductAttribute.products;
             productNames = multiProducts.map((product: ProductInfo) => product.productName);
         } else if (singleProductAttribute) {
-            if (fareType === 'flatFare' && isProductData(singleProductAttribute)) {
-                productNames = [singleProductAttribute.products[0].productName];
-            } else if (
-                (fareType === 'period' || fareType === 'multiOperator') &&
-                isProductInfo(singleProductAttribute)
-            ) {
-                productNames = [singleProductAttribute.productName];
-            }
+            productNames = ['product'];
+        } else {
+            throw new Error('No products were set for assigning the sales offer package');
         }
     }
 
