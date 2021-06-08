@@ -84,7 +84,7 @@ describe('multipleProducts', () => {
                 multipleProductDurationInput1: '54',
                 multipleProductDurationUnitsInput1: 'week',
             },
-            { Location: '/productValidity' },
+            { Location: '/periodValidity' },
         ],
 
         [

@@ -1,24 +1,24 @@
 import { NextApiResponse } from 'next';
-import { isFareTypeAttributeWithErrors } from '../../interfaces/typeGuards';
-import { isValidInputDuration } from './chooseValidity';
 import {
-    MULTIPLE_PRODUCT_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
 } from '../../constants/attributes';
-import { redirectToError, redirectTo } from './apiUtils';
+import { ErrorInfo, MultiProduct, MultiProductWithErrors, NextApiRequestWithSession } from '../../interfaces';
+import { isFareTypeAttributeWithErrors } from '../../interfaces/typeGuards';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { redirectTo, redirectToError } from './apiUtils';
 
 import {
-    removeExcessWhiteSpace,
-    checkProductNameIsValid,
-    checkPriceIsValid,
     checkDurationIsValid,
     checkIntegerIsValid,
+    checkPriceIsValid,
+    checkProductNameIsValid,
+    removeExcessWhiteSpace,
 } from './apiUtils/validator';
-import { ErrorInfo, NextApiRequestWithSession, MultiProductWithErrors, MultiProduct } from '../../interfaces';
-import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
+import { isValidInputDuration } from './chooseValidity';
 
 export const getErrorsForSession = (validationResult: MultiProductWithErrors[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
@@ -187,8 +187,8 @@ export const checkCarnetQuantitiesAreValid = (products: MultiProduct[]): MultiPr
     return productsWithErrors;
 };
 
-export const checkCarnetExpiriesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
-    const productsWithErrors: MultiProduct[] = products.map(product => {
+export const checkCarnetExpiriesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] =>
+    products.map(product => {
         const { productCarnetExpiryDuration } = product;
         const trimmedQuantity = removeExcessWhiteSpace(productCarnetExpiryDuration);
         const expiryError = checkIntegerIsValid(trimmedQuantity, 'Carnet expiry amount', 1, 999);
@@ -203,11 +203,8 @@ export const checkCarnetExpiriesAreValid = (products: MultiProduct[]): MultiProd
         return product;
     });
 
-    return productsWithErrors;
-};
-
-export const checkCarnetExpiryUnitsAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
-    const productsWithErrors: MultiProduct[] = products.map(product => {
+export const checkCarnetExpiryUnitsAreValid = (products: MultiProduct[]): MultiProductWithErrors[] =>
+    products.map(product => {
         const { productCarnetExpiryUnits } = product;
         const productDurationUnitsError = !isValidInputDuration(productCarnetExpiryUnits as string, true)
             ? 'Choose an option from the dropdown'
@@ -221,9 +218,6 @@ export const checkCarnetExpiryUnitsAreValid = (products: MultiProduct[]): MultiP
 
         return product;
     });
-
-    return productsWithErrors;
-};
 
 export const checkAllValidation = (
     products: MultiProduct[],
@@ -319,7 +313,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
         updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, undefined);
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products: multipleProducts });
-        redirectTo(res, isFlatFare ? '/ticketConfirmation' : '/productValidity');
+        redirectTo(res, isFlatFare ? '/ticketConfirmation' : '/periodValidity');
     } catch (error) {
         const message = 'There was a problem inputting the product name, price and/or duration:';
         redirectToError(res, message, 'api.multipleProducts', error);
