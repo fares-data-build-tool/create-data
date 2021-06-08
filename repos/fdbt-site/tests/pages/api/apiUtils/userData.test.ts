@@ -56,6 +56,7 @@ import {
     expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
     expectedCarnetSingleTicket,
     expectedCarnetReturnTicket,
+    expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts,
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
@@ -378,6 +379,7 @@ describe('userData', () => {
                                 productDurationUnits: 'week',
                                 productValidity: '24hr',
                                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                                carnetDetails: undefined,
                             },
                             {
                                 productName: 'Day Ticket',
@@ -386,6 +388,7 @@ describe('userData', () => {
                                 productDurationUnits: 'year',
                                 productValidity: '24hr',
                                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                                carnetDetails: undefined,
                             },
                             {
                                 productName: 'Monthly Ticket',
@@ -394,6 +397,7 @@ describe('userData', () => {
                                 productDurationUnits: 'month',
                                 productValidity: 'endOfCalendarDay',
                                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                                carnetDetails: undefined,
                             },
                         ],
                     },
@@ -499,6 +503,86 @@ describe('userData', () => {
             });
             const result = getMultipleServicesTicketJson(req, res);
             expect(result).toStrictEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
+        });
+
+        it('should return a carnet PeriodMultipleServicesTicket object if the products are carnet', () => {
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {},
+                session: {
+                    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                    [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
+                    [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                        products: [
+                            {
+                                productName: 'Weekly Ticket',
+                                productPrice: '50',
+                                productDuration: '5',
+                                productDurationUnits: 'week',
+                                productValidity: '24hr',
+                                carnetDetails: {
+                                    quantity: '10',
+                                    expiryTime: '15',
+                                    expiryUnit: CarnetExpiryUnit.WEEK,
+                                },
+                            },
+                            {
+                                productName: 'Day Ticket',
+                                productPrice: '2.50',
+                                productDuration: '1',
+                                productDurationUnits: 'year',
+                                productValidity: '24hr',
+                                carnetDetails: {
+                                    quantity: '15',
+                                    expiryTime: '10',
+                                    expiryUnit: CarnetExpiryUnit.MONTH,
+                                },
+                            },
+                            {
+                                productName: 'Monthly Ticket',
+                                productPrice: '200',
+                                productDuration: '28',
+                                productDurationUnits: 'month',
+                                productValidity: 'endOfCalendarDay',
+                                carnetDetails: {
+                                    quantity: '30',
+                                    expiryTime: '10',
+                                    expiryUnit: CarnetExpiryUnit.YEAR,
+                                },
+                            },
+                        ],
+                    },
+                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+                        {
+                            productName: 'Weekly Ticket',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                        {
+                            productName: 'Day Ticket',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                        {
+                            productName: 'Monthly Ticket',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                    ],
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        startDate: '2020-12-17T09:30:46.0Z',
+                        endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
+                    },
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                },
+            });
+            const result = getMultipleServicesTicketJson(req, res);
+            expect(result).toStrictEqual(expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts);
         });
 
         it('should return a MultiOperatorMultipleServicesTicket object if the ticket is multipleOperators', () => {

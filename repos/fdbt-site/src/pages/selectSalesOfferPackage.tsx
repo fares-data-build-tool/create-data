@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { isSalesOfferPackageWithErrors, isFareType, isProductData, isProductInfo } from '../interfaces/typeGuards';
+import { isSalesOfferPackageWithErrors, isFareType } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';

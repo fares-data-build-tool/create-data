@@ -2005,6 +2005,7 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
             productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
         },
         {
             productName: 'Day Ticket',
@@ -2012,6 +2013,7 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
             productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
         },
         {
             productName: 'Monthly Ticket',
@@ -2019,6 +2021,7 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
             productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
         },
     ],
 };
@@ -2044,6 +2047,7 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
             productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
         },
         {
             productName: 'Day Ticket',
@@ -2051,6 +2055,7 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
             productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
         },
         {
             productName: 'Monthly Ticket',
@@ -2058,6 +2063,7 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
             productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
         },
     ],
     additionalNocs: ['MCTR', 'WBTR', 'BLAC'],
@@ -2083,6 +2089,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
             productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
         },
         {
             productName: 'Day Ticket',
@@ -2090,6 +2097,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
             productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
         },
         {
             productName: 'Monthly Ticket',
@@ -2097,6 +2105,83 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
             productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
+        },
+    ],
+    selectedServices: [
+        {
+            lineName: '12A',
+            lineId: '3h3vb32ik',
+            serviceCode: 'NW_05_BLAC_12A_1',
+            startDate: '13/05/2020',
+            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+        },
+        {
+            lineName: '6',
+            lineId: '3h3vb32ik',
+            serviceCode: 'NW_05_BLAC_6_1',
+            startDate: '08/05/2020',
+            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+        },
+        {
+            lineName: '101',
+            lineId: '3h3vb32ik',
+            serviceCode: 'NW_05_BLAC_101_1',
+            startDate: '06/05/2020',
+            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+        },
+    ],
+};
+
+export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: PeriodMultipleServicesTicket = {
+    operatorName: 'test',
+    type: 'period',
+    nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
+    passengerType: 'Adult',
+    termTime: false,
+    timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    products: [
+        {
+            productName: 'Weekly Ticket',
+            productPrice: '50',
+            productDuration: '5 weeks',
+            productValidity: '24hr',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: {
+                quantity: '10',
+                expiryTime: '15',
+                expiryUnit: CarnetExpiryUnit.WEEK,
+            },
+        },
+        {
+            productName: 'Day Ticket',
+            productPrice: '2.50',
+            productDuration: '1 year',
+            productValidity: '24hr',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: {
+                quantity: '15',
+                expiryTime: '10',
+                expiryUnit: CarnetExpiryUnit.MONTH,
+            },
+        },
+        {
+            productName: 'Monthly Ticket',
+            productPrice: '200',
+            productDuration: '28 months',
+            productValidity: 'endOfCalendarDay',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: {
+                quantity: '30',
+                expiryTime: '10',
+                expiryUnit: CarnetExpiryUnit.YEAR,
+            },
         },
     ],
     selectedServices: [
@@ -2144,6 +2229,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
             productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
         },
         {
             productName: 'Day Ticket',
@@ -2151,6 +2237,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
             productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
         },
         {
             productName: 'Monthly Ticket',
@@ -2158,6 +2245,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
             productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            carnetDetails: undefined,
         },
     ],
     selectedServices: [
@@ -2352,14 +2440,8 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: SchemeOperator
                     purchaseLocations: ['onBoard'],
                     ticketFormats: ['paperTicket'],
                 },
-                {
-                    description: '',
-                    name: 'Onboard (contactless)',
-                    paymentMethods: ['contactlessPaymentCard'],
-                    purchaseLocations: ['onBoard'],
-                    ticketFormats: ['paperTicket'],
-                },
             ],
+            carnetDetails: undefined,
         },
         {
             productName: 'product two',
@@ -2380,6 +2462,7 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: SchemeOperator
                     ticketFormats: ['smartCard'],
                 },
             ],
+            carnetDetails: undefined,
         },
     ],
     additionalOperators: [

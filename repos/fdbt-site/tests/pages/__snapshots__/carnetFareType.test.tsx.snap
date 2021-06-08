@@ -66,11 +66,6 @@ exports[`pages carnetFareType should render correctly 1`] = `
                   "label": "Period carnet",
                 },
                 Object {
-                  "fareType": "multiOperator",
-                  "hint": "A ticket bundle that covers more than one operator",
-                  "label": "Multi-operator carnet",
-                },
-                Object {
                   "fareType": "schoolService",
                   "hint": "A ticket bundle available to pupils in full-time education",
                   "label": "School service carnet",

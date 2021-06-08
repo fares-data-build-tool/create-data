@@ -116,6 +116,7 @@ export const getProductsAndSalesOfferPackages = (
                       productValidity: matchedProduct.productValidity || '',
                   }
                 : {}),
+            carnetDetails: matchedProduct.carnetDetails,
             salesOfferPackages: sopInfo.salesOfferPackages,
         };
         productSOPList.push(productDetailsItem);
@@ -227,8 +228,13 @@ export const getBasePeriodTicketAttributes = (
         productDetailsList = products.map(product => ({
             productName: product.productName,
             productPrice: product.productPrice,
-            productDuration: isPeriodProductDetails(product) ? product.productDuration : '',
+            productDuration: isPeriodProductDetails(product)
+                ? `${product.productDuration} ${product.productDurationUnits}${
+                      product.productDuration === '1' ? '' : 's'
+                  }`
+                : '',
             productValidity: isPeriodProductDetails(product) ? product.productValidity : '',
+            carnetDetails: product.carnetDetails,
             salesOfferPackages,
         }));
     } else {
