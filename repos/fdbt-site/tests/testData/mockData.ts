@@ -2096,7 +2096,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
             productPrice: '50',
             productDuration: '5 weeks',
             productValidity: 'endOfCalendarDay',
-            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2104,7 +2103,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
             productName: 'Day Ticket',
             productPrice: '2.50',
             productDuration: '1 year',
-            productValidity: '24hr',
+            productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2160,7 +2159,7 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Per
             productName: 'Weekly Ticket',
             productPrice: '50',
             productDuration: '5 weeks',
-            productValidity: '24hr',
+            productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: {
                 quantity: '10',
@@ -2173,7 +2172,6 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Per
             productPrice: '2.50',
             productDuration: '1 year',
             productValidity: 'endOfCalendarDay',
-            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: {
                 quantity: '15',
@@ -2186,7 +2184,6 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Per
             productPrice: '200',
             productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
-            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: {
                 quantity: '30',

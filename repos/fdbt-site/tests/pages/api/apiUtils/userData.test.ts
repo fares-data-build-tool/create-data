@@ -476,7 +476,6 @@ describe('userData', () => {
                     },
                     [PERIOD_EXPIRY_ATTRIBUTE]: {
                         productValidity: 'endOfCalendarDay',
-                        productEndTime: '',
                     },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
@@ -508,7 +507,7 @@ describe('userData', () => {
                 },
             });
             const result = getMultipleServicesTicketJson(req, res);
-            expect(result).toStrictEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
+            expect(result).toEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
         });
 
         it('should return a carnet PeriodMultipleServicesTicket object if the products are carnet', () => {
@@ -585,10 +584,13 @@ describe('userData', () => {
                         },
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [PERIOD_EXPIRY_ATTRIBUTE]: {
+                        productValidity: 'endOfCalendarDay',
+                    },
                 },
             });
             const result = getMultipleServicesTicketJson(req, res);
-            expect(result).toStrictEqual(expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts);
+            expect(result).toEqual(expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts);
         });
 
         it('should return a MultiOperatorMultipleServicesTicket object if the ticket is multipleOperators', () => {
