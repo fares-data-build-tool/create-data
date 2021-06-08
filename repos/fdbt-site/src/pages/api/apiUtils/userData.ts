@@ -78,7 +78,7 @@ import { unescapeAndDecodeCookie, getUuidFromSession, getAndValidateNoc } from '
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
-import { isProductInfo } from '../../../pages/productDetails';
+import { isProductInfo } from '../../productDetails';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
@@ -201,7 +201,7 @@ export const getBasePeriodTicketAttributes = (
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
-    
+
     if (!operatorAttribute?.name || isSalesOfferPackageWithErrors(salesOfferPackages) || !salesOfferPackages) {
         throw new Error(`Could not create ${ticketType} ticket json. BasePeriodTicket attributes could not be found.`);
     }

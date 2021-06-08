@@ -178,12 +178,12 @@ export const completeSalesPages = (numberOfProducts?: number, multiProductNamePr
     continueButtonClick();
 };
 
-export const completePeriodGeoZonePages = (numberOfProducts: number): void => {
+export const completePeriodGeoZonePages = (): void => {
     clickElementById('geo-zone');
     continueButtonClick();
     uploadFile('csv-upload', 'fareZone.csv');
     submitButtonClick();
-    completeProductPages(numberOfProducts);
+    completeProductPages();
 };
 
 export const completePeriodMultiServicePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {

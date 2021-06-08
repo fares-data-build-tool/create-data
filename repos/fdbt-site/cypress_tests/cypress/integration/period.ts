@@ -21,7 +21,7 @@ describe('the period faretype product journey', () => {
         const multiProductNamePrefix = 'Cypress product ';
         selectFareType('period', false);
         defineUserTypeAndTimeRestrictions();
-        completePeriodGeoZonePages(numberOfProducts);
+        completePeriodGeoZonePages();
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
         isUuidStringValid();
     });

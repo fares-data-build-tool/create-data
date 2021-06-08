@@ -488,7 +488,7 @@ export const uploadFile = (elementId: string, fileName: string): void => {
     getElementById(elementId).attachFile(fileName);
 };
 
-export const completeProductPages = (numberOfProducts: number): void => {
+export const completeProductPages = (): void => {
     getElementById('number-of-products').type('1');
     continueButtonClick();
     getElementById('product-details-name').type('Cypress period product');
