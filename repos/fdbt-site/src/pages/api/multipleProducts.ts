@@ -260,10 +260,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const productName = req.body[`multipleProductNameInput${i}`];
             const productPrice = req.body[`multipleProductPriceInput${i}`];
             const productDuration = req.body[`multipleProductDurationInput${i}`];
-            const productDurationUnits = req.body[`multipleProductDurationUnitsInput${i}`] || '';
+            const productDurationUnits = req.body[`multipleProductDurationUnitsInput${i}`];
             const quantity = req.body[`carnetQuantityInput${i}`];
             const expiryTime = req.body[`carnetExpiryDurationInput${i}`];
-            const expiryUnit = req.body[`carnetExpiryUnitInput${i}`] || '';
+            const expiryUnit = req.body[`carnetExpiryUnitInput${i}`];
             const productNameId = `multiple-product-name-${i}`;
             const productPriceId = `multiple-product-price-${i}`;
             const productDurationId = `product-details-period-duration-quantity-${i}`;
@@ -271,12 +271,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const productCarnetQuantityId = `product-details-carnet-quantity-${i}`;
             const productCarnetExpiryDurationId = `product-details-carnet-expiry-quantity-${i}`;
             const productCarnetExpiryUnitsId = `product-details-carnet-expiry-unit-${i}`;
-            let product: MultiProduct = {
+            const product: MultiProduct = {
                 productName,
                 productNameId,
                 productPrice,
                 productPriceId,
-                carnetDetails: {
+                carnetDetails: quantity && {
                     quantity,
                     expiryTime,
                     expiryUnit,

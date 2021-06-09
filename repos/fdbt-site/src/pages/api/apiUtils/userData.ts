@@ -211,9 +211,7 @@ export const getBasePeriodTicketAttributes = (
 
     const { name } = operatorAttribute;
 
-    let productDetailsList: ProductDetails[];
-
-    productDetailsList = getProductsAndSalesOfferPackages(
+    const productDetailsList: ProductDetails[] = getProductsAndSalesOfferPackages(
         salesOfferPackages,
         multipleProductAttribute,
         periodExpiryAttributeInfo,

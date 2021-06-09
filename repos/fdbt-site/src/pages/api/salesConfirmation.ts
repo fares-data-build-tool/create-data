@@ -26,7 +26,7 @@ import {
     getSchemeOperatorTicketJson,
     adjustSchemeOperatorJson,
 } from './apiUtils/userData';
-import { NextApiRequestWithSession, TicketPeriodWithInput } from '../../interfaces';
+import { NextApiRequestWithSession, ProductDetails, TicketPeriodWithInput } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -86,7 +86,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (userDataJson) {
-            console.log(userDataJson, fareType);
             const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
             const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
             const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
