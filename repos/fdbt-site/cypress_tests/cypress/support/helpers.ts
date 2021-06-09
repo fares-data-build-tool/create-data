@@ -503,8 +503,8 @@ export const completeMultipleProducts = (numberOfProducts?: number, multiProduct
     for (let i = 0; i < numberOfProducts; i += 1) {
         getElementById(`multiple-product-name-${i}`).type(`${multiProductNamePrefix}${i + 1}`);
         getElementById(`multiple-product-price-${i}`).type(`1${i}`);
-        getElementById(`multiple-product-duration-${i}`).type(`2${i}`);
-        selectRandomOptionFromDropDown(`multiple-product-duration-units-${i}`);
+        getElementById(`product-details-period-duration-quantity-${i}`).type(`2${i}`);
+        selectRandomOptionFromDropDown(`product-details-period-duration-unit-${i}`);
     }
 
     continueButtonClick();

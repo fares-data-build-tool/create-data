@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
 import { ErrorInfo, NextApiRequestWithSession, PointToPointProductInfo, CarnetExpiryUnit } from '../../interfaces';
-import { PRODUCT_DETAILS_ATTRIBUTE } from '../../constants/attributes';
+import { MULTIPLE_PRODUCT_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../../constants/attributes';
 import { removeExcessWhiteSpace, checkIntegerIsValid, checkProductNameIsValid } from './apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
 
@@ -79,6 +79,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, productDetails);
+        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, undefined);
 
         if (fareType === 'return') {
             redirectTo(res, '/returnValidity');
