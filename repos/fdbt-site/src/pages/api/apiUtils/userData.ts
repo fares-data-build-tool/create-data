@@ -12,9 +12,7 @@ import {
     GeoZoneTicket,
     PeriodMultipleServicesTicket,
     Product,
-    ProductData,
     ProductDetails,
-    ProductInfo,
     ReturnTicket,
     SingleTicket,
     Stop,
@@ -28,7 +26,6 @@ import {
     TicketPeriod,
     TicketPeriodWithInput,
     SchemeOperatorGeoZoneTicket,
-    PointToPointProductInfo,
     PointToPointProductInfoWithSOP,
     BaseProduct,
     PeriodExpiry,
@@ -68,6 +65,7 @@ import {
     isProductInfo,
 } from '../../../interfaces/typeGuards';
 
+import logger from '../../../utils/logger';
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
 import { getSessionAttribute } from '../../../utils/sessions';
@@ -83,39 +81,26 @@ export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     return !!termTimeAttribute && (termTimeAttribute as TermTimeAttribute).termTime;
 };
 
-const isProductData = (
-    productDetailsAttributeInfo: ProductData | ProductInfo | PointToPointProductInfo,
-): productDetailsAttributeInfo is ProductData => !!(productDetailsAttributeInfo as ProductData)?.products;
-
 export const getProductsAndSalesOfferPackages = (
     salesOfferPackagesInfo: ProductWithSalesOfferPackages[],
     multipleProductAttribute: MultipleProductAttribute,
     periodExpiryAttributeInfo: PeriodExpiry | undefined,
-    isFlatFare: boolean,
 ): ProductDetails[] => {
     const productSOPList: ProductDetails[] = [];
 
     salesOfferPackagesInfo.forEach(sopInfo => {
-        const matchedProduct: Product | undefined = multipleProductAttribute.products.find(
+        const matchedProduct = multipleProductAttribute.products.find(
             product => product.productName === sopInfo.productName,
         );
         if (!matchedProduct) {
             throw new Error('No products could be found that matched the sales offer packages');
         }
         const productDetailsItem: ProductDetails = {
-            productName: sopInfo.productName,
+            productName: matchedProduct.productName,
             productPrice: matchedProduct.productPrice,
-            ...(!isFlatFare
-                ? {
-                      productDuration: matchedProduct.productDuration
-                          ? `${matchedProduct.productDuration} ${matchedProduct.productDurationUnits}${
-                                matchedProduct.productDuration === '1' ? '' : 's'
-                            }`
-                          : '',
-                      productValidity: periodExpiryAttributeInfo?.productValidity,
-                      productEndTime: periodExpiryAttributeInfo?.productEndTime,
-                  }
-                : {}),
+            productDuration: matchedProduct.productDuration ? `${matchedProduct.productDuration} ${matchedProduct.productDurationUnits}${matchedProduct.productDuration === '1' ? '' : 's'}`: undefined,
+            productValidity: periodExpiryAttributeInfo?.productValidity,
+            productEndTime: periodExpiryAttributeInfo?.productEndTime,
             carnetDetails: matchedProduct.carnetDetails,
             salesOfferPackages: sopInfo.salesOfferPackages,
         };
@@ -206,56 +191,33 @@ export const getBasePeriodTicketAttributes = (
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
 
-    if (!operatorAttribute?.name || isSalesOfferPackageWithErrors(salesOfferPackages) || !salesOfferPackages) {
-        throw new Error(`Could not create ${ticketType} ticket json. BasePeriodTicket attributes could not be found.`);
+    if (
+        !operatorAttribute?.name ||
+        isSalesOfferPackages(salesOfferPackages) ||
+        isSalesOfferPackageWithErrors(salesOfferPackages) ||
+        !salesOfferPackages ||
+        !multipleProductAttribute ||
+        !periodExpiryAttributeInfo ||
+        !isPeriodExpiry(periodExpiryAttributeInfo)
+    ) {
+        logger.error('Attributes missing / incorrect', {
+            operatorAttribute,
+            salesOfferPackages,
+            multipleProductAttribute,
+            periodExpiryAttributeInfo,
+        });
+        throw new Error(`Could not create ${ticketType} ticket json. Necessary attributes could not be found.`);
     }
 
     const { name } = operatorAttribute;
 
     let productDetailsList: ProductDetails[];
 
-    if (!periodExpiryAttributeInfo || !isPeriodExpiry(periodExpiryAttributeInfo)) {
-        throw new Error('Could not create ticket json. Period expiry attribute data problem.');
-    }
-
-    if (!multipleProductAttribute) {
-        const productsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
-        if (!productsAttribute || (productsAttribute && !isProductData(productsAttribute))) {
-            throw new Error('productsAttribute was not product data');
-        }
-
-        const { products } = productsAttribute;
-
-        const { productValidity, productEndTime } = periodExpiryAttributeInfo;
-
-        if (isProductWithSalesOfferPackages(salesOfferPackages)) {
-            throw new Error('Could not create geo zone ticket json. Sales offer package info incorrect type.');
-        }
-
-        productDetailsList = products.map(product => ({
-            productName: product.productName,
-            productPrice: product.productPrice,
-            productDuration: isPeriodProductDetails(product)
-                ? `${product.productDuration} ${product.productDurationUnits}${
-                      product.productDuration === '1' ? '' : 's'
-                  }`
-                : undefined,
-            productValidity,
-            productEndTime,
-            carnetDetails: product.carnetDetails,
-            salesOfferPackages,
-        }));
-    } else {
-        if (isSalesOfferPackages(salesOfferPackages)) {
-            throw new Error('Could not create geo zone ticket json. Product Sales offer package info incorrect type.');
-        }
-        productDetailsList = getProductsAndSalesOfferPackages(
-            salesOfferPackages,
-            multipleProductAttribute,
-            periodExpiryAttributeInfo,
-            false,
-        );
-    }
+    productDetailsList = getProductsAndSalesOfferPackages(
+        salesOfferPackages,
+        multipleProductAttribute,
+        periodExpiryAttributeInfo,
+    );
 
     return {
         ...baseTicketAttributes,
@@ -462,7 +424,6 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         salesOfferPackages,
         multipleProductsAttribute,
         undefined,
-        true,
     );
 
     return {
@@ -546,7 +507,6 @@ export const adjustSchemeOperatorJson = async (
             salesOfferPackages,
             multipleProductsAttribute,
             undefined,
-            true,
         );
         const multipleOperatorsServices = getSessionAttribute(
             req,
@@ -608,7 +568,6 @@ export const adjustSchemeOperatorJson = async (
             salesOfferPackages,
             multipleProductAttribute,
             periodExpiryAttributeInfo,
-            false,
         );
     }
     const nocCode = getAndValidateNoc(req, res);

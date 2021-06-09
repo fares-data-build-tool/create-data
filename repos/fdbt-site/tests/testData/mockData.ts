@@ -2808,8 +2808,6 @@ export const multipleProducts: MultiProduct[] = [
         productDurationId: 'product-duration-1',
         productDurationUnits: ExpiryUnit.WEEK,
         productDurationUnitsId: 'product-duration-units-1',
-        productCarnetExpiryDuration: '7',
-        productCarnetExpiryUnits: CarnetExpiryUnit.NO_EXPIRY,
     },
     {
         productName: 'Super ticket',

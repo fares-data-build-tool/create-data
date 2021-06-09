@@ -130,7 +130,7 @@ export const renderTable = (
 
                             <ExpirySelector
                                 defaultDuration={userInput[index]?.productDuration ?? ''}
-                                defaultUnit={userInput[index]?.productCarnetExpiryUnits ?? undefined}
+                                defaultUnit={userInput[index]?.productDurationUnits ?? undefined}
                                 quantityName={`multipleProductDurationInput${index}`}
                                 quantityId={`product-details-period-duration-quantity-${index}`}
                                 hintId="product-period-duration-hint"
@@ -180,8 +180,8 @@ export const renderTable = (
                                         id={`product-details-carnet-quantity-${index}`}
                                         aria-describedby="product-quantity-hint"
                                         defaultValue={
-                                            userInput[index] && userInput[index].productCarnetQuantity
-                                                ? userInput[index].productCarnetQuantity
+                                            userInput[index] && userInput[index].carnetDetails?.quantity
+                                                ? userInput[index].carnetDetails?.quantity
                                                 : ''
                                         }
                                     />
@@ -210,8 +210,8 @@ export const renderTable = (
                                 )}
 
                                 <ExpirySelector
-                                    defaultDuration={userInput[index]?.productCarnetExpiryDuration ?? ''}
-                                    defaultUnit={userInput[index]?.productCarnetExpiryUnits ?? undefined}
+                                    defaultDuration={userInput[index]?.carnetDetails?.expiryTime ?? ''}
+                                    defaultUnit={userInput[index]?.carnetDetails?.expiryUnit ?? undefined}
                                     quantityName={`carnetExpiryDurationInput${index}`}
                                     quantityId={`product-details-carnet-expiry-quantity-${index}`}
                                     hintId="product-carnet-expiry-hint"

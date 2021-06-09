@@ -43,7 +43,7 @@ export interface CookiePolicy {
     usage: boolean;
 }
 
-interface CarnetDetails {
+export interface CarnetDetails {
     quantity: string;
     expiryTime: string;
     expiryUnit: CarnetExpiryUnit;
@@ -637,11 +637,9 @@ export interface MultiProduct {
     productValidityId?: string;
     productEndTime?: string;
     productEndTimeId?: string;
-    productCarnetQuantity?: string;
+    carnetDetails?: CarnetDetails;
     productCarnetQuantityId?: string;
-    productCarnetExpiryDuration?: string;
     productCarnetExpiryDurationId?: string;
-    productCarnetExpiryUnits?: CarnetExpiryUnit;
     productCarnetExpiryUnitsId?: string;
 }
 

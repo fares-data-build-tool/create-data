@@ -170,17 +170,18 @@ export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduc
 
 export const checkCarnetQuantitiesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
     const productsWithErrors: MultiProduct[] = products.map(product => {
-        const { productCarnetQuantity } = product;
-        const trimmedQuantity = removeExcessWhiteSpace(productCarnetQuantity);
-        const quantityError = checkIntegerIsValid(trimmedQuantity, 'Quantity in bundle', 2, 999);
+        if (product.carnetDetails) {
+            const { quantity } = product.carnetDetails;
+            const trimmedQuantity = removeExcessWhiteSpace(quantity);
+            const quantityError = checkIntegerIsValid(trimmedQuantity, 'Quantity in bundle', 2, 999);
 
-        if (quantityError) {
-            return {
-                ...product,
-                productCarnetQuantityError: quantityError,
-            };
+            if (quantityError) {
+                return {
+                    ...product,
+                    productCarnetQuantityError: quantityError,
+                };
+            }
         }
-
         return product;
     });
 
@@ -189,15 +190,17 @@ export const checkCarnetQuantitiesAreValid = (products: MultiProduct[]): MultiPr
 
 export const checkCarnetExpiriesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] =>
     products.map(product => {
-        const { productCarnetExpiryDuration } = product;
-        const trimmedQuantity = removeExcessWhiteSpace(productCarnetExpiryDuration);
-        const expiryError = checkIntegerIsValid(trimmedQuantity, 'Carnet expiry amount', 1, 999);
+        if (product.carnetDetails) {
+            const { expiryTime } = product.carnetDetails;
+            const trimmedQuantity = removeExcessWhiteSpace(expiryTime);
+            const expiryError = checkIntegerIsValid(trimmedQuantity, 'Carnet expiry amount', 1, 999);
 
-        if (expiryError) {
-            return {
-                ...product,
-                productCarnetExpiryDurationError: expiryError,
-            };
+            if (expiryError) {
+                return {
+                    ...product,
+                    productCarnetExpiryDurationError: expiryError,
+                };
+            }
         }
 
         return product;
@@ -205,17 +208,18 @@ export const checkCarnetExpiriesAreValid = (products: MultiProduct[]): MultiProd
 
 export const checkCarnetExpiryUnitsAreValid = (products: MultiProduct[]): MultiProductWithErrors[] =>
     products.map(product => {
-        const { productCarnetExpiryUnits } = product;
-        const productDurationUnitsError = !isValidInputDuration(productCarnetExpiryUnits as string, true)
-            ? 'Choose an option from the dropdown'
-            : '';
-        if (productDurationUnitsError) {
-            return {
-                ...product,
-                productCarnetExpiryUnitsError: productDurationUnitsError,
-            };
+        if (product.carnetDetails) {
+            const { expiryUnit } = product.carnetDetails;
+            const productDurationUnitsError = !isValidInputDuration(expiryUnit, true)
+                ? 'Choose an option from the dropdown'
+                : '';
+            if (productDurationUnitsError) {
+                return {
+                    ...product,
+                    productCarnetExpiryUnitsError: productDurationUnitsError,
+                };
+            }
         }
-
         return product;
     });
 
@@ -257,9 +261,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const productPrice = req.body[`multipleProductPriceInput${i}`];
             const productDuration = req.body[`multipleProductDurationInput${i}`];
             const productDurationUnits = req.body[`multipleProductDurationUnitsInput${i}`] || '';
-            const productCarnetQuantity = req.body[`carnetQuantityInput${i}`];
-            const productCarnetExpiryDuration = req.body[`carnetExpiryDurationInput${i}`];
-            const productCarnetExpiryUnits = req.body[`carnetExpiryUnitInput${i}`] || '';
+            const quantity = req.body[`carnetQuantityInput${i}`];
+            const expiryTime = req.body[`carnetExpiryDurationInput${i}`];
+            const expiryUnit = req.body[`carnetExpiryUnitInput${i}`] || '';
             const productNameId = `multiple-product-name-${i}`;
             const productPriceId = `multiple-product-price-${i}`;
             const productDurationId = `product-details-period-duration-quantity-${i}`;
@@ -272,29 +276,19 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 productNameId,
                 productPrice,
                 productPriceId,
+                carnetDetails: {
+                    quantity,
+                    expiryTime,
+                    expiryUnit,
+                },
+                productCarnetQuantityId,
+                productCarnetExpiryDurationId,
+                productCarnetExpiryUnitsId,
+                productDuration,
+                productDurationId,
+                productDurationUnits,
+                productDurationUnitsId,
             };
-
-            if (isCarnet) {
-                product = {
-                    ...product,
-                    productCarnetQuantity,
-                    productCarnetExpiryDuration,
-                    productCarnetExpiryUnits,
-                    productCarnetQuantityId,
-                    productCarnetExpiryDurationId,
-                    productCarnetExpiryUnitsId,
-                };
-            }
-
-            if (!isFlatFare) {
-                product = {
-                    ...product,
-                    productDuration,
-                    productDurationId,
-                    productDurationUnits,
-                    productDurationUnitsId,
-                };
-            }
             multipleProducts.push(product);
             i += 1;
         }

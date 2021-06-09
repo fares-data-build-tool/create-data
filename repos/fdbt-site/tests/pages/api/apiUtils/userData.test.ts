@@ -126,7 +126,7 @@ describe('userData', () => {
                 },
             ];
             const validity: PeriodExpiry = { productValidity: '24hr', productEndTime: '' };
-            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute, validity, false);
+            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute, validity);
             expect(result).toEqual(expectedProductDetailsArray);
         });
     });
