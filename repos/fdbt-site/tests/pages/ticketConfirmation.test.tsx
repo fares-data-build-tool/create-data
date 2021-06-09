@@ -311,7 +311,7 @@ describe('pages', () => {
                         },
                     },
                 });
-                const totalExpectedLength = 2;
+                const totalExpectedLength = 3;
                 const confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);

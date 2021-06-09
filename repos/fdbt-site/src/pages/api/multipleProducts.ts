@@ -5,6 +5,7 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { ErrorInfo, MultiProduct, MultiProductWithErrors, NextApiRequestWithSession } from '../../interfaces';
 import { isFareTypeAttributeWithErrors } from '../../interfaces/typeGuards';
@@ -253,7 +254,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!fareTypeAttribute || isFareTypeAttributeWithErrors(fareTypeAttribute)) {
             throw new Error('Faretype attribute not found, could not ascertain fareType.');
         }
-        const isFlatFare = fareTypeAttribute.fareType === 'flatFare';
+        const schoolFareType = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE);
+        const isFlatFare =
+            fareTypeAttribute.fareType === 'flatFare' ||
+            (fareTypeAttribute.fareType === 'schoolService' && schoolFareType?.schoolFareType === 'flatFare');
         const multipleProducts: MultiProduct[] = [];
         let i = 0;
         while (req.body[`multipleProductNameInput${i}`] !== undefined) {

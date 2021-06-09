@@ -71,7 +71,7 @@ export const buildMatchedFareStages = (matchingFareZones: MatchingFareZones): Ma
     return matchedFareStages;
 };
 
-const getCarnetDetailsContent = (carnetDetails?: CarnetDetails) => {
+const getCarnetDetailsContent = (carnetDetails?: CarnetDetails): string[] => {
     if (!carnetDetails) {
         return [];
     }
@@ -360,13 +360,11 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
     );
 
     products.forEach(product => {
-        if (product.carnetDetails) {
-            confirmationElements.push(
-                getCarnetDetailsElements(product.carnetDetails, product.productName, [
-                    `Price - £${product.productPrice}`,
-                ]),
-            );
-        }
+        confirmationElements.push({
+            name: `${product.productName}`,
+            content: [`Price - £${product.productPrice}`, ...getCarnetDetailsContent(product.carnetDetails)],
+            href: 'multipleProducts',
+        });
     });
 
     return confirmationElements;

@@ -98,7 +98,11 @@ export const getProductsAndSalesOfferPackages = (
         const productDetailsItem: ProductDetails = {
             productName: matchedProduct.productName,
             productPrice: matchedProduct.productPrice,
-            productDuration: matchedProduct.productDuration ? `${matchedProduct.productDuration} ${matchedProduct.productDurationUnits}${matchedProduct.productDuration === '1' ? '' : 's'}`: undefined,
+            productDuration: matchedProduct.productDuration
+                ? `${matchedProduct.productDuration} ${matchedProduct.productDurationUnits}${
+                      matchedProduct.productDuration === '1' ? '' : 's'
+                  }`
+                : undefined,
             productValidity: periodExpiryAttributeInfo?.productValidity,
             productEndTime: periodExpiryAttributeInfo?.productEndTime,
             carnetDetails: matchedProduct.carnetDetails,
@@ -418,11 +422,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
 
     const { selectedServices } = serviceListAttribute;
 
-    const productsAndSops = getProductsAndSalesOfferPackages(
-        salesOfferPackages,
-        multipleProductsAttribute,
-        undefined,
-    );
+    const productsAndSops = getProductsAndSalesOfferPackages(salesOfferPackages, multipleProductsAttribute, undefined);
 
     return {
         ...baseTicketAttributes,

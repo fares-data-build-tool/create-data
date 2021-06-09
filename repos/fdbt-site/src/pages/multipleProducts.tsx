@@ -5,6 +5,7 @@ import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
 import ProductRow from '../components/ProductRow';
 import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
@@ -108,7 +109,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     }
 
     const { fareType } = fareTypeAttribute;
-    const flatFare = fareType === 'flatFare';
+    const schoolFareType = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
+    const flatFare =
+        fareType === 'flatFare' || (fareType === 'schoolService' && schoolFareType?.schoolFareType === 'flatFare');
     const numberOfProductsToRender = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) || 1;
 
     return {

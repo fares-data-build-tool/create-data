@@ -179,7 +179,7 @@ export interface MultipleProductAttributeWithErrors extends MultipleProductAttri
 }
 
 export interface SchoolFareTypeAttribute {
-    schoolFareType: string;
+    schoolFareType: 'flatFare' | 'single' | 'period' | '';
 }
 
 export interface MultipleOperatorsAttribute {
@@ -610,7 +610,7 @@ export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDe
 }
 
 export interface FareType {
-    fareType: string;
+    fareType: 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
 }
 
 export interface FareTypeWithErrors {

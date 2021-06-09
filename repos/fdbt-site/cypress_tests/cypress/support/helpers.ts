@@ -250,16 +250,6 @@ export const selectOptionFromDropDownByIndex = (dropDownId: string, index: numbe
         .trigger('change');
 };
 
-export const randomlyChooseMultipleProductPeriodValidity = (numberOfProducts: number): void => {
-    for (let i = 0; i < numberOfProducts; i += 1) {
-        const randomSelector = getRandomNumber(1, 3);
-        selectOptionFromDropDownByIndex(`validity-option-${i}`, randomSelector);
-        if (randomSelector === 3) {
-            getElementById(`validity-end-time-${i}`).type('1900');
-        }
-    }
-};
-
 export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
     cy.get(`[id=${dropDownId}]`)
         .find('option')
@@ -501,6 +491,10 @@ export const completeProductPages = (): void => {
 
 export const completeMultipleProducts = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
     for (let i = 0; i < numberOfProducts; i += 1) {
+        if (i !== 0) {
+            clickElementById('add-another-button');
+        }
+
         getElementById(`multiple-product-name-${i}`).type(`${multiProductNamePrefix}${i + 1}`);
         getElementById(`multiple-product-price-${i}`).type(`1${i}`);
         getElementById(`product-details-period-duration-quantity-${i}`).type(`2${i}`);
@@ -508,7 +502,7 @@ export const completeMultipleProducts = (numberOfProducts?: number, multiProduct
     }
 
     continueButtonClick();
-    randomlyChooseMultipleProductPeriodValidity(numberOfProducts);
+    randomlyChooseSingleProductPeriodValidity();
     continueButtonClick();
     continueButtonClick();
 };
