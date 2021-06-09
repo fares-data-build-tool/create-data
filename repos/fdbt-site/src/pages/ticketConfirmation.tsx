@@ -196,7 +196,11 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
     const productInfo = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
     if (isPointToPointProductInfo(productInfo)) {
-        confirmationElements.push(getCarnetDetailsElements(productInfo.carnetDetails, productInfo.productName));
+        confirmationElements.push({
+            name: `${productInfo.productName}`,
+            href: 'carnetProductDetails',
+            content: getCarnetDetailsContent(productInfo.carnetDetails),
+        });
     }
 
     if (validity) {
