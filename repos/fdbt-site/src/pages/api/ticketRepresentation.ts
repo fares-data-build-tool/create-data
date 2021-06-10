@@ -1,3 +1,4 @@
+import { FARE_TYPE_ATTRIBUTE } from './../../constants/attributes';
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError } from './apiUtils';
 import { TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants/attributes';
@@ -17,6 +18,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                     return;
                 case 'multipleServices':
                     redirectTo(res, '/serviceList?selectAll=false');
+                    return;
+                case 'pointToPoint':
+                    updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, { fareType: 'pointToPointPeriod' });
+                    redirectTo(res, '/service');
                     return;
                 default:
                     throw new Error('Did not receive an expected ticket type.');

@@ -62,6 +62,20 @@ const TicketRepresentation = ({ fareType, errors = [], csrfToken }: TicketRepres
                                         A ticket for a set of services
                                     </label>
                                 </div>
+                                <div className="govuk-radios__item">
+                                    <input
+                                        className={`govuk-radios__input ${
+                                            errors.length > 0 ? 'govuk-input--error' : ''
+                                        } `}
+                                        id="point-to-point"
+                                        name="ticketType"
+                                        type="radio"
+                                        value="pointToPoint"
+                                    />
+                                    <label className="govuk-label govuk-radios__label" htmlFor="point-to-point">
+                                        Point to point
+                                    </label>
+                                </div>
                             </div>
                         </FormElementWrapper>
                     </fieldset>
