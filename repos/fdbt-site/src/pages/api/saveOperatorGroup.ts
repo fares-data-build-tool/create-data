@@ -68,7 +68,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         ) as TicketRepresentationAttribute).name;
         redirectTo(
             res,
-            ticketRepresentation === 'multipleServices' ? '/multipleOperatorsServiceList' : '/howManyProducts',
+            ticketRepresentation === 'multipleServices' ? '/multipleOperatorsServiceList' : '/multipleProducts',
         );
     } catch (error) {
         const message = 'There was a problem saving the operator group:';

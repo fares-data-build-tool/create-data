@@ -17,7 +17,11 @@ import {
     multipleProductsWithErrors,
 } from '../../testData/mockData';
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants/attributes';
+import {
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
+} from '../../../src/constants/attributes';
 
 describe('multipleProducts', () => {
     let writeHeadMock: jest.Mock;
@@ -124,6 +128,113 @@ describe('multipleProducts', () => {
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
 
+    const carnetCases: any[] = [
+        [
+            {
+                multipleProductNameInput0: 'Best Product',
+                multipleProductPriceInput0: '2.00',
+                multipleProductDurationInput0: '3',
+                multipleProductDurationUnitsInput0: 'day',
+                carnetQuantityInput0: '10',
+                carnetExpiryDurationInput0: '5',
+                carnetExpiryUnitInput0: 'year',
+                multipleProductNameInput1: 'Second Best Product',
+                multipleProductPriceInput1: '2.05',
+                multipleProductDurationInput1: '54',
+                multipleProductDurationUnitsInput1: 'week',
+                carnetQuantityInput1: '',
+                carnetExpiryDurationInput1: '',
+                carnetExpiryUnitInput1: '',
+            },
+            { Location: '/multipleProducts' },
+        ],
+
+        [
+            {
+                multipleProductNameInput0: 'Best Product',
+                multipleProductPriceInput0: '2.00',
+                multipleProductDurationInput0: '3',
+                multipleProductDurationUnitsInput0: 'day',
+                carnetQuantityInput0: '10',
+                carnetExpiryDurationInput0: '5',
+                carnetExpiryUnitInput0: 'year',
+                multipleProductNameInput1: 'Second Best Product',
+                multipleProductPriceInput1: '2.05',
+                multipleProductDurationInput1: '54',
+                multipleProductDurationUnitsInput1: 'week',
+                carnetQuantityInput1: '20.5',
+                carnetExpiryDurationInput1: '10',
+                carnetExpiryUnitInput1: 'week',
+            },
+            { Location: '/multipleProducts' },
+        ],
+
+        [
+            {
+                multipleProductNameInput0: 'Best Product',
+                multipleProductPriceInput0: '2.00',
+                multipleProductDurationInput0: '3',
+                multipleProductDurationUnitsInput0: 'day',
+                carnetQuantityInput0: '10',
+                carnetExpiryDurationInput0: '5',
+                carnetExpiryUnitInput0: 'year',
+                multipleProductNameInput1: 'Second Best Product',
+                multipleProductPriceInput1: '2.05',
+                multipleProductDurationInput1: '54',
+                multipleProductDurationUnitsInput1: 'week',
+                carnetQuantityInput1: '20',
+                carnetExpiryDurationInput1: '10',
+                carnetExpiryUnitInput1: 'week',
+            },
+            { Location: '/periodValidity' },
+        ],
+    ];
+
+    it.only.each(carnetCases)(
+        'given %p as request, redirects to %p for carnet products',
+        (testData, expectedLocation) => {
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: testData,
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+                session: {
+                    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
+                        numberOfProductsInput: '2',
+                    },
+                    [CARNET_FARE_TYPE_ATTRIBUTE]: true,
+                },
+            });
+
+            (setCookieOnResponseObject as {}) = jest.fn();
+            multipleProduct(req, res);
+            expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
+        },
+    );
+
+    it('redirects to ticket confirmation for a flat fare ticket', () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                multipleProductNameInput0: 'Best Product',
+                multipleProductPriceInput0: '2.00',
+                multipleProductNameInput1: 'Second Best Product',
+                multipleProductPriceInput1: '2.05',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: {
+                    fareType: 'flatFare',
+                },
+            },
+        });
+
+        (setCookieOnResponseObject as {}) = jest.fn();
+        multipleProduct(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/ticketConfirmation' });
+    });
+
     describe('getErrorsForSession', () => {
         it('returns an empty array if a product list has no errors', () => {
             const errors = getErrorsForSession(multipleProducts);
@@ -154,7 +265,7 @@ describe('multipleProducts', () => {
             expect(result[0].productDurationError).toBeUndefined();
             expect(result[1].productDurationError).toBe('Product duration cannot be zero or a negative number');
             expect(result[2].productDurationError).toBe('Product duration cannot be zero or a negative number');
-            expect(result[3].productDurationError).toBe('This field cannot be empty');
+            expect(result[3].productDurationError).toBe('Product duration cannot be empty');
             expect(result[4].productDurationError).toBe('Product duration must be a whole, positive number');
         });
     });
@@ -172,7 +283,7 @@ describe('multipleProducts', () => {
         it('adds price errors to a product with invalid prices', () => {
             const result = checkProductPricesAreValid(invalidPriceProducts);
             expect(result[0].productPriceError).toBeUndefined();
-            expect(result[1].productPriceError).toBe('This field cannot be empty');
+            expect(result[1].productPriceError).toBe('Product price cannot be empty');
             expect(result[2].productPriceError).toBe('This must be a positive number');
             expect(result[3].productPriceError).toBe('This must be a valid price in pounds and pence');
         });

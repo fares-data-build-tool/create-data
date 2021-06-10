@@ -48,6 +48,7 @@ exports[`Choose Validity Page should render correctly 1`] = `
           ]
         }
         errors={Array []}
+        hideErrorBar={false}
       >
         <label
           className="govuk-label"
@@ -77,6 +78,7 @@ exports[`Choose Validity Page should render correctly 1`] = `
           ]
         }
         errors={Array []}
+        hideErrorBar={false}
       >
         <label
           className="govuk-label"
@@ -189,6 +191,7 @@ exports[`Choose Validity Page should render correctly with defaults when provide
           ]
         }
         errors={Array []}
+        hideErrorBar={false}
       >
         <label
           className="govuk-label"
@@ -218,6 +221,7 @@ exports[`Choose Validity Page should render correctly with defaults when provide
           ]
         }
         errors={Array []}
+        hideErrorBar={false}
       >
         <label
           className="govuk-label"

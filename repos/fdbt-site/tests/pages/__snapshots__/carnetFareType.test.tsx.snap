@@ -67,11 +67,6 @@ exports[`pages carnetFareType should render correctly 1`] = `
                   "value": "period",
                 },
                 Object {
-                  "hint": "A ticket bundle that covers more than one operator",
-                  "label": "Multi-operator carnet",
-                  "value": "multiOperator",
-                },
-                Object {
                   "hint": "A ticket bundle available to pupils in full-time education",
                   "label": "School service carnet",
                   "value": "schoolService",
@@ -178,11 +173,6 @@ exports[`pages carnetFareType should render error messaging when errors are pass
                   "hint": "A ticket bundle where each ticket is valid for a number of days, weeks, months or years",
                   "label": "Period carnet",
                   "value": "period",
-                },
-                Object {
-                  "hint": "A ticket bundle that covers more than one operator",
-                  "label": "Multi-operator carnet",
-                  "value": "multiOperator",
                 },
                 Object {
                   "hint": "A ticket bundle available to pupils in full-time education",

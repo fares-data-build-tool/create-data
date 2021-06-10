@@ -77,7 +77,7 @@ describe('reuseOperatorGroup', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
             selectedOperators: testOperators,
         });
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/howManyProducts' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleProducts' });
     });
 
     it('should do nothing but redirect on to searchOperators if no is selected', async () => {

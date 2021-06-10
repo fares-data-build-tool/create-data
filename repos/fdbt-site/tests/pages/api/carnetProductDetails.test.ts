@@ -1,4 +1,4 @@
-import { ExpiryUnit, PointToPointProductInfo } from '../../../src/interfaces/index';
+import { CarnetExpiryUnit, PointToPointProductInfo } from '../../../src/interfaces/index';
 import carnetProductDetails from '../../../src/pages/api/carnetProductDetails';
 import { FARE_TYPE_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
@@ -68,7 +68,7 @@ describe('carnetProductDetails', () => {
                 productDetailsNameInput: 'Test Product',
                 productDetailsQuantityInput: '5',
                 productDetailsExpiryDurationInput: '5',
-                productDetailsExpiryUnitInput: ExpiryUnit.DAY,
+                productDetailsExpiryUnitInput: CarnetExpiryUnit.DAY,
             },
             session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' } },
         });
@@ -78,7 +78,7 @@ describe('carnetProductDetails', () => {
             carnetDetails: {
                 quantity: '5',
                 expiryTime: '5',
-                expiryUnit: ExpiryUnit.DAY,
+                expiryUnit: CarnetExpiryUnit.DAY,
             },
         };
 
@@ -98,7 +98,7 @@ describe('carnetProductDetails', () => {
                 productDetailsNameInput: 'Test Product',
                 productDetailsQuantityInput: '10',
                 productDetailsExpiryDurationInput: '10',
-                productDetailsExpiryUnitInput: ExpiryUnit.MONTH,
+                productDetailsExpiryUnitInput: CarnetExpiryUnit.MONTH,
             },
             session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' } },
         });
@@ -108,7 +108,7 @@ describe('carnetProductDetails', () => {
             carnetDetails: {
                 quantity: '10',
                 expiryTime: '10',
-                expiryUnit: ExpiryUnit.MONTH,
+                expiryUnit: CarnetExpiryUnit.MONTH,
             },
         };
 
@@ -126,7 +126,7 @@ describe('carnetProductDetails', () => {
                 productDetailsNameInput: '           Test Product  ',
                 productDetailsQuantityInput: '5   ',
                 productDetailsExpiryDurationInput: '  5',
-                productDetailsExpiryUnitInput: ExpiryUnit.DAY,
+                productDetailsExpiryUnitInput: CarnetExpiryUnit.DAY,
             },
             session: {
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
@@ -138,7 +138,7 @@ describe('carnetProductDetails', () => {
             carnetDetails: {
                 quantity: '5',
                 expiryTime: '5',
-                expiryUnit: ExpiryUnit.DAY,
+                expiryUnit: CarnetExpiryUnit.DAY,
             },
         };
 
@@ -153,7 +153,7 @@ describe('carnetProductDetails', () => {
                 productDetailsNameInput: 'Test Product',
                 productDetailsQuantityInput: '5',
                 productDetailsExpiryDurationInput: '',
-                productDetailsExpiryUnitInput: ExpiryUnit.NO_EXPIRY,
+                productDetailsCarnetExpiryUnitInput: CarnetExpiryUnit.NO_EXPIRY,
             },
             mockWriteHeadFn: writeHeadMock,
             session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' } },
@@ -162,7 +162,7 @@ describe('carnetProductDetails', () => {
         carnetProductDetails(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/ticketConfirmation',
+            Location: '/carnetProductDetails',
         });
     });
 });

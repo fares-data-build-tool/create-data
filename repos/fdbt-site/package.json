@@ -8,7 +8,7 @@
         "test:coverage": "jest --coverage --watchAll",
         "test:ci": "CI=true jest --silent -w 1 --forceExit",
         "test:updateSnapshots": "jest --updateSnapshot",
-        "dev": "export NODE_ENV='development' && ts-node --project tsconfig.server.json server/index.ts",
+        "dev": "export NODE_ENV='development' NODE_OPTIONS='--inspect' && ts-node --project tsconfig.server.json server/index.ts",
         "build:next": "next build",
         "build:server": "tsc --project tsconfig.server.json",
         "build": "npm run build:next && npm run build:server",

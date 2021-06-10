@@ -21,7 +21,7 @@ export type DocumentContextWithSession = DocumentContext & {
 
 export type IncomingMessageWithSession = IncomingMessage & Session;
 
-export enum ExpiryUnit {
+export enum CarnetExpiryUnit {
     HOUR = 'hour',
     DAY = 'day',
     WEEK = 'week',
@@ -30,15 +30,23 @@ export enum ExpiryUnit {
     NO_EXPIRY = 'no expiry',
 }
 
+export enum ExpiryUnit {
+    HOUR = 'hour',
+    DAY = 'day',
+    WEEK = 'week',
+    MONTH = 'month',
+    YEAR = 'year',
+}
+
 export interface CookiePolicy {
     essential: boolean;
     usage: boolean;
 }
 
-interface CarnetDetails {
+export interface CarnetDetails {
     quantity: string;
     expiryTime: string;
-    expiryUnit: ExpiryUnit;
+    expiryUnit: CarnetExpiryUnit;
 }
 
 export interface ProductInfo {
@@ -155,7 +163,7 @@ export interface GroupTicketAttributeWithErrors extends GroupTicketAttribute {
 }
 
 export interface NumberOfProductsAttribute {
-    numberOfProductsInput: string;
+    numberOfProducts: number;
 }
 
 export interface NumberOfProductsAttributeWithErrors {
@@ -171,7 +179,7 @@ export interface MultipleProductAttributeWithErrors extends MultipleProductAttri
 }
 
 export interface SchoolFareTypeAttribute {
-    schoolFareType: string;
+    schoolFareType: 'flatFare' | 'single' | 'period' | '';
 }
 
 export interface MultipleOperatorsAttribute {
@@ -358,6 +366,7 @@ export interface Product {
     productValidity?: string;
     productDurationUnits?: string;
     productEndTime?: string;
+    carnetDetails?: CarnetDetails;
 }
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
@@ -538,6 +547,7 @@ export interface ProductWithSalesOfferPackages extends BaseProduct {
 export interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
+    carnetDetails?: CarnetDetails;
 }
 
 export interface ProductData {
@@ -600,7 +610,7 @@ export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDe
 }
 
 export interface FareType {
-    fareType: string;
+    fareType: 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
 }
 
 export interface FareTypeWithErrors {
@@ -619,10 +629,18 @@ export interface MultiProduct {
     productNameId: string;
     productPrice: string;
     productPriceId: string;
-    productDuration: string;
-    productDurationId: string;
-    productDurationUnits: string;
-    productDurationUnitsId: string;
+    productDuration?: string;
+    productDurationId?: string;
+    productDurationUnits?: ExpiryUnit;
+    productDurationUnitsId?: string;
+    productValidity?: string;
+    productValidityId?: string;
+    productEndTime?: string;
+    productEndTimeId?: string;
+    carnetDetails?: CarnetDetails;
+    productCarnetQuantityId?: string;
+    productCarnetExpiryDurationId?: string;
+    productCarnetExpiryUnitsId?: string;
 }
 
 export interface MultiProductWithErrors extends MultiProduct {
@@ -630,6 +648,9 @@ export interface MultiProductWithErrors extends MultiProduct {
     productPriceError?: string;
     productDurationError?: string;
     productDurationUnitsError?: string;
+    productCarnetQuantityError?: string;
+    productCarnetExpiryDurationError?: string;
+    productCarnetExpiryUnitsError?: string;
 }
 
 export interface PassengerType {
