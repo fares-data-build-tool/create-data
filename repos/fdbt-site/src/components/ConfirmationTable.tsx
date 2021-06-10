@@ -17,7 +17,7 @@ const ConfirmationTable = ({ confirmationElements, header }: ConfirmationTablePr
                         <dt className="govuk-summary-list__key">{element.name}</dt>
                         <dd className="govuk-summary-list__value">
                             {content.map(item => (
-                                <div>{item}</div>
+                                <div key={item}>{item}</div>
                             ))}
                         </dd>
                         <dd className="govuk-summary-list__actions">

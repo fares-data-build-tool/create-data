@@ -1,91 +1,127 @@
-import React, { ReactElement } from 'react';
-import upperFirst from 'lodash/upperFirst';
+import React, { ReactElement, useState } from 'react';
 import { FullColumnLayout } from '../layout/Layout';
 import {
-    OPERATOR_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
 import ProductRow from '../components/ProductRow';
 import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
-import { isPassengerType, isWithErrors } from '../interfaces/typeGuards';
+import { isWithErrors, isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
-import { isNumberOfProductsAttribute } from './howManyProducts';
 import { getCsrfToken } from '../utils';
 
 const title = 'Multiple Product - Create Fares Data Service';
 const description = 'Multiple Product entry page of the Create Fares Data Service';
 
 interface MultipleProductProps {
-    numberOfProductsToDisplay: string;
-    operatorName: string;
-    passengerType: string;
     errors?: ErrorInfo[];
     userInput: MultiProduct[];
     csrfToken: string;
+    flatFare: boolean;
+    carnet: boolean;
+    numberOfProductsToRender: number;
 }
 
 const MultipleProducts = ({
-    numberOfProductsToDisplay,
-    operatorName,
-    passengerType,
     errors = [],
     userInput = [],
     csrfToken,
-}: MultipleProductProps): ReactElement => (
-    <FullColumnLayout title={title} description={description} errors={errors}>
-        <CsrfForm action="/api/multipleProducts" method="post" csrfToken={csrfToken}>
-            <>
-                <ErrorSummary errors={errors} />
-                <h1 className="govuk-heading-l" id="multiple-product-page-heading">
-                    Enter your product details
-                </h1>
-                <span className="govuk-hint" id="service-operator-hint">
-                    {operatorName} - {numberOfProductsToDisplay} Products - {upperFirst(passengerType)}
-                </span>
-                <div className="govuk-inset-text">For example, Super Saver ticket - 4.95 - 2 - Days</div>
-                <div className="govuk-grid-row">
-                    <ProductRow
-                        numberOfProductsToDisplay={numberOfProductsToDisplay}
-                        errors={errors}
-                        userInput={userInput}
-                    />
-                </div>
-            </>
-        </CsrfForm>
-    </FullColumnLayout>
-);
+    flatFare,
+    carnet,
+    numberOfProductsToRender,
+}: MultipleProductProps): ReactElement => {
+    const [numberOfProducts, setNumberOfProducts] = useState(numberOfProductsToRender);
+    const displayButton = (carnet || !flatFare) && typeof window !== 'undefined';
+    return (
+        <FullColumnLayout title={title} description={description} errors={errors}>
+            <CsrfForm action="/api/multipleProducts" method="post" csrfToken={csrfToken}>
+                <>
+                    <ErrorSummary errors={errors} />
+                    <h1 className="govuk-heading-l" id="multiple-product-page-heading">
+                        Enter your product details
+                    </h1>
+                    <div className="govuk-grid-row">
+                        <ProductRow
+                            numberOfProductsToDisplay={numberOfProducts}
+                            errors={errors}
+                            userInput={userInput}
+                            flatFare={flatFare}
+                            carnet={carnet}
+                        />
+                        {displayButton ? (
+                            <div className="flex-container">
+                                {numberOfProducts < 10 ? (
+                                    <button
+                                        id="add-another-button"
+                                        type="button"
+                                        className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
+                                        onClick={(): void => setNumberOfProducts(numberOfProducts + 1)}
+                                    >
+                                        Add another product
+                                    </button>
+                                ) : (
+                                    ''
+                                )}
+
+                                {numberOfProducts > 1 ? (
+                                    <button
+                                        type="button"
+                                        className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3"
+                                        onClick={(): void => setNumberOfProducts(numberOfProducts - 1)}
+                                    >
+                                        Remove last product
+                                    </button>
+                                ) : (
+                                    ''
+                                )}
+                            </div>
+                        ) : (
+                            ''
+                        )}
+
+                        <input
+                            type="submit"
+                            value="Continue"
+                            id="continue-button"
+                            className="govuk-button govuk-!-margin-left-3"
+                        />
+                    </div>
+                </>
+            </CsrfForm>
+        </FullColumnLayout>
+    );
+};
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const csrfToken = getCsrfToken(ctx);
+    const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
+    const carnetFareTypeAttribute = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
+    const carnet = carnetFareTypeAttribute === undefined ? false : carnetFareTypeAttribute;
 
-    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
-    const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
-    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
-
-    if (
-        !operatorAttribute?.name ||
-        !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
-        !isPassengerType(passengerTypeAttribute)
-    ) {
-        throw new Error('Necessary attributes not found to show multiple products page');
+    const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+    if (!fareTypeAttribute || isFareTypeAttributeWithErrors(fareTypeAttribute)) {
+        throw new Error('Faretype attribute not found, could not ascertain fareType.');
     }
 
-    const numberOfProductsToDisplay = numberOfProductsAttribute.numberOfProductsInput;
-
-    const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
+    const { fareType } = fareTypeAttribute;
+    const schoolFareType = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
+    const flatFare =
+        fareType === 'flatFare' || (fareType === 'schoolService' && schoolFareType?.schoolFareType === 'flatFare');
+    const numberOfProductsToRender = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) || 1;
 
     return {
         props: {
-            numberOfProductsToDisplay,
-            operatorName: operatorAttribute.name,
-            passengerType: passengerTypeAttribute.passengerType,
             errors: isWithErrors(multiProductAttribute) ? multiProductAttribute.errors : [],
             userInput: multiProductAttribute ? multiProductAttribute.products : [],
             csrfToken,
+            flatFare,
+            carnet,
+            numberOfProductsToRender,
         },
     };
 };

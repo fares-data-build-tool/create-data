@@ -1,26 +1,12 @@
-import * as React from 'react';
 import { shallow } from 'enzyme';
-import TicketConfirmation, {
-    buildFlatFareTicketConfirmationElements,
-    buildMatchedFareStages,
-    buildPeriodOrMultiOpTicketConfirmationElements,
-    buildReturnTicketConfirmationElements,
-    buildSchoolTicketConfirmationElements,
-    buildSingleTicketConfirmationElements,
-    buildTicketConfirmationElements,
-    getServerSideProps,
-    MatchedFareStages,
-    TicketConfirmationProps,
-} from '../../src/pages/ticketConfirmation';
-import * as ticketConfirmation from '../../src/pages/ticketConfirmation';
-import { getMockContext, mockMatchingFaresZones, service, userFareStages } from '../testData/mockData';
+import * as React from 'react';
 import {
     FARE_TYPE_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
     JOURNEY_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
-    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
@@ -32,6 +18,20 @@ import {
     TXC_SOURCE_ATTRIBUTE,
 } from '../../src/constants/attributes';
 import { ConfirmationElement, MultiOperatorInfo, Operator } from '../../src/interfaces';
+import TicketConfirmation, * as ticketConfirmation from '../../src/pages/ticketConfirmation';
+import {
+    buildFlatFareTicketConfirmationElements,
+    buildMatchedFareStages,
+    buildPeriodOrMultiOpTicketConfirmationElements,
+    buildReturnTicketConfirmationElements,
+    buildSchoolTicketConfirmationElements,
+    buildSingleTicketConfirmationElements,
+    buildTicketConfirmationElements,
+    getServerSideProps,
+    MatchedFareStages,
+    TicketConfirmationProps,
+} from '../../src/pages/ticketConfirmation';
+import { getMockContext, mockMatchingFaresZones, service, userFareStages } from '../testData/mockData';
 
 describe('pages', () => {
     const confirmationElementStructure: ConfirmationElement = {
@@ -226,9 +226,7 @@ describe('pages', () => {
                 const ctx = getMockContext({
                     session: {
                         [SERVICE_LIST_ATTRIBUTE]: undefined,
-                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
-                            numberOfProductsInput: '1',
-                        },
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: 1,
                         [PERIOD_EXPIRY_ATTRIBUTE]: mockPeriodExpiry,
                         [PRODUCT_DETAILS_ATTRIBUTE]: {
                             products: mockSingleProduct,
@@ -238,20 +236,16 @@ describe('pages', () => {
                         },
                     },
                 });
-                const numberOfElementsDueToProducts = mockSingleProduct.length;
-                const totalExpectedLength = 3 + numberOfElementsDueToProducts;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
-                expect(confirmationElements).toHaveLength(totalExpectedLength);
+                expect(confirmationElements).toHaveLength(6);
             });
 
             it('should build confirmation elements for a period multiService ticket with a single product', () => {
                 const ctx = getMockContext({
                     session: {
                         [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
-                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
-                            numberOfProductsInput: '1',
-                        },
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: 1,
                         [PERIOD_EXPIRY_ATTRIBUTE]: mockPeriodExpiry,
                         [PRODUCT_DETAILS_ATTRIBUTE]: {
                             products: mockSingleProduct,
@@ -263,11 +257,9 @@ describe('pages', () => {
                         },
                     },
                 });
-                const numberOfElementsDueToProducts = mockSingleProduct.length;
-                const totalExpectedLength = 3 + numberOfElementsDueToProducts;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
-                expect(confirmationElements).toHaveLength(totalExpectedLength);
+                expect(confirmationElements).toHaveLength(6);
             });
 
             it('should build confirmation elements for a multi operator multiService ticket with multiple products', () => {
@@ -303,7 +295,7 @@ describe('pages', () => {
             it('should build confirmation elements for a flat fare ticket', () => {
                 const ctx = getMockContext({
                     session: {
-                        [PRODUCT_DETAILS_ATTRIBUTE]: {
+                        [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                             products: [
                                 {
                                     productName: 'Some Product',

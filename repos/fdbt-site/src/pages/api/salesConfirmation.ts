@@ -1,33 +1,33 @@
 import moment from 'moment';
 import { NextApiResponse } from 'next';
-import { isPassengerType, isTicketRepresentation } from '../../interfaces/typeGuards';
 import {
+    GROUP_PASSENGER_INFO_ATTRIBUTE,
+    GROUP_SIZE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
-    GROUP_SIZE_ATTRIBUTE,
-    GROUP_PASSENGER_INFO_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
+import { NextApiRequestWithSession, TicketPeriodWithInput } from '../../interfaces';
+import { isPassengerType, isTicketRepresentation } from '../../interfaces/typeGuards';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 import {
-    redirectTo,
-    redirectToError,
+    getFareTypeFromFromAttributes,
     getUuidFromSession,
     isSchemeOperator,
-    getFareTypeFromFromAttributes,
+    redirectTo,
+    redirectToError,
 } from './apiUtils';
 import {
-    getSingleTicketJson,
-    getReturnTicketJson,
+    adjustSchemeOperatorJson,
+    getFlatFareTicketJson,
     getGeoZoneTicketJson,
     getMultipleServicesTicketJson,
-    getFlatFareTicketJson,
-    putUserDataInS3,
+    getReturnTicketJson,
     getSchemeOperatorTicketJson,
-    adjustSchemeOperatorJson,
+    getSingleTicketJson,
+    putUserDataInS3,
 } from './apiUtils/userData';
-import { NextApiRequestWithSession, TicketPeriodWithInput } from '../../interfaces';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {

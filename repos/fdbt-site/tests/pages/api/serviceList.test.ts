@@ -49,7 +49,7 @@ describe('serviceList', () => {
         });
     });
 
-    it('redirects to /howManyProducts if input is valid and the user is entering details for a period ticket', () => {
+    it('redirects to /multipleProducts if input is valid and the user is entering details for a period ticket', () => {
         const serviceInfo = {
             '237#11-237-_-y08-1#07/04/2020': 'Ashton Under Lyne - Glossop',
             '391#NW_01_MCT_391_1#23/04/2019': 'Macclesfield - Bollington - Poynton - Stockport',
@@ -70,7 +70,7 @@ describe('serviceList', () => {
         serviceList(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/howManyProducts',
+            Location: '/multipleProducts',
         });
     });
 
@@ -99,7 +99,7 @@ describe('serviceList', () => {
         });
     });
 
-    it('redirects to /productDetails if input is valid and the user is entering details for a flat fare ticket', () => {
+    it('redirects to /multipleProducts if input is valid and the user is entering details for a flat fare ticket', () => {
         const serviceInfo = {
             '64': 'Leeds-Bradford#12/02/12',
             '45': 'gggggg#02/03/91',
@@ -120,7 +120,7 @@ describe('serviceList', () => {
         serviceList(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/productDetails',
+            Location: '/multipleProducts',
         });
     });
 });

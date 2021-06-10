@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages multipleProduct should render correctly 1`] = `
+exports[`pages multipleProduct should render correctly for 5 products 1`] = `
 <Component
   description="Multiple Product entry page of the Create Fares Data Service"
   errors={Array []}
@@ -20,28 +20,240 @@ exports[`pages multipleProduct should render correctly 1`] = `
     >
       Enter your product details
     </h1>
-    <span
-      className="govuk-hint"
-      id="service-operator-hint"
-    >
-      Infinity Line
-       - 
-      2
-       Products - 
-      Adult
-    </span>
-    <div
-      className="govuk-inset-text"
-    >
-      For example, Super Saver ticket - 4.95 - 2 - Days
-    </div>
     <div
       className="govuk-grid-row"
     >
       <ProductRow
+        carnet={true}
         errors={Array []}
-        numberOfProductsToDisplay="2"
+        flatFare={true}
+        numberOfProductsToDisplay={5}
         userInput={Array []}
+      />
+      <div
+        className="flex-container"
+      >
+        <button
+          className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
+          id="add-another-button"
+          onClick={[Function]}
+          type="button"
+        >
+          Add another product
+        </button>
+        <button
+          className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3"
+          onClick={[Function]}
+          type="button"
+        >
+          Remove last product
+        </button>
+      </div>
+      <input
+        className="govuk-button govuk-!-margin-left-3"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages multipleProduct should render correctly for a flat fare carnet 1`] = `
+<Component
+  description="Multiple Product entry page of the Create Fares Data Service"
+  errors={Array []}
+  title="Multiple Product - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/multipleProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="multiple-product-page-heading"
+    >
+      Enter your product details
+    </h1>
+    <div
+      className="govuk-grid-row"
+    >
+      <ProductRow
+        carnet={true}
+        errors={Array []}
+        flatFare={true}
+        numberOfProductsToDisplay={1}
+        userInput={Array []}
+      />
+      <div
+        className="flex-container"
+      >
+        <button
+          className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
+          id="add-another-button"
+          onClick={[Function]}
+          type="button"
+        >
+          Add another product
+        </button>
+      </div>
+      <input
+        className="govuk-button govuk-!-margin-left-3"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages multipleProduct should render correctly for a flat fare non carnet 1`] = `
+<Component
+  description="Multiple Product entry page of the Create Fares Data Service"
+  errors={Array []}
+  title="Multiple Product - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/multipleProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="multiple-product-page-heading"
+    >
+      Enter your product details
+    </h1>
+    <div
+      className="govuk-grid-row"
+    >
+      <ProductRow
+        carnet={false}
+        errors={Array []}
+        flatFare={true}
+        numberOfProductsToDisplay={1}
+        userInput={Array []}
+      />
+      <input
+        className="govuk-button govuk-!-margin-left-3"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages multipleProduct should render correctly for a non flat fare non carnet 1`] = `
+<Component
+  description="Multiple Product entry page of the Create Fares Data Service"
+  errors={Array []}
+  title="Multiple Product - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/multipleProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="multiple-product-page-heading"
+    >
+      Enter your product details
+    </h1>
+    <div
+      className="govuk-grid-row"
+    >
+      <ProductRow
+        carnet={false}
+        errors={Array []}
+        flatFare={false}
+        numberOfProductsToDisplay={1}
+        userInput={Array []}
+      />
+      <div
+        className="flex-container"
+      >
+        <button
+          className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
+          id="add-another-button"
+          onClick={[Function]}
+          type="button"
+        >
+          Add another product
+        </button>
+      </div>
+      <input
+        className="govuk-button govuk-!-margin-left-3"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages multipleProduct should render correctly for a period carnet 1`] = `
+<Component
+  description="Multiple Product entry page of the Create Fares Data Service"
+  errors={Array []}
+  title="Multiple Product - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/multipleProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="multiple-product-page-heading"
+    >
+      Enter your product details
+    </h1>
+    <div
+      className="govuk-grid-row"
+    >
+      <ProductRow
+        carnet={true}
+        errors={Array []}
+        flatFare={false}
+        numberOfProductsToDisplay={1}
+        userInput={Array []}
+      />
+      <div
+        className="flex-container"
+      >
+        <button
+          className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
+          id="add-another-button"
+          onClick={[Function]}
+          type="button"
+        >
+          Add another product
+        </button>
+      </div>
+      <input
+        className="govuk-button govuk-!-margin-left-3"
+        id="continue-button"
+        type="submit"
+        value="Continue"
       />
     </div>
   </CsrfForm>
