@@ -34,6 +34,7 @@ import {
     PointToPointProductInfo,
     ProductInfo,
     ProductData,
+    PeriodExpiry,
 } from '.';
 import { validFareTypes } from '../constants';
 
@@ -196,3 +197,7 @@ export const isPointToPointProductInfo = (
 
 export const isWithErrors = <T>(value: T): value is WithErrors<T> =>
     !!value && (value as WithErrors<T>).errors !== undefined && (value as WithErrors<T>).errors.length > 0;
+
+export const isPeriodExpiry = (
+    periodExpiryAttribute: PeriodExpiry | ErrorInfo[] | undefined,
+): periodExpiryAttribute is PeriodExpiry => (periodExpiryAttribute as PeriodExpiry)?.productValidity !== undefined;

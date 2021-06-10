@@ -60,6 +60,7 @@ import {
     TxcSourceAttribute,
     PointToPointProductInfo,
     GroupPassengerType,
+    PeriodExpiry,
 } from '../interfaces';
 
 import {
@@ -121,7 +122,7 @@ interface SessionAttributeTypes {
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
     [MATCHING_ATTRIBUTE]: MatchingWithErrors | MatchingInfo;
     [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatchingInfo;
-    [PERIOD_EXPIRY_ATTRIBUTE]: ProductData | WithErrors<ProductData>;
+    [PERIOD_EXPIRY_ATTRIBUTE]: PeriodExpiry | ErrorInfo[];
     [PRODUCT_DETAILS_ATTRIBUTE]:
         | ProductInfo
         | PointToPointProductInfo

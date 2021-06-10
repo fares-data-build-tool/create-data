@@ -42,38 +42,39 @@ exports[`pages carnetFareType should render correctly 1`] = `
           errorId="fare-type-single"
           errors={Array []}
         >
-          <FareTypeRadios
-            fares={
+          <RadioButtons
+            inputName="fareType"
+            options={
               Array [
                 Object {
-                  "fareType": "single",
                   "hint": "A ticket bundle of various point to point journeys",
                   "label": "Single, point to point carnet",
+                  "value": "single",
                 },
                 Object {
-                  "fareType": "return",
                   "hint": "A ticket bundle of inbound and outbound journeys",
                   "label": "Return carnet",
+                  "value": "return",
                 },
                 Object {
-                  "fareType": "flatFare",
                   "hint": "A ticket bundle of flat fare journeys",
                   "label": "Flat fare carnet",
+                  "value": "flatFare",
                 },
                 Object {
-                  "fareType": "period",
                   "hint": "A ticket bundle where each ticket is valid for a number of days, weeks, months or years",
                   "label": "Period carnet",
+                  "value": "period",
                 },
                 Object {
-                  "fareType": "multiOperator",
                   "hint": "A ticket bundle that covers more than one operator",
                   "label": "Multi-operator carnet",
+                  "value": "multiOperator",
                 },
                 Object {
-                  "fareType": "schoolService",
                   "hint": "A ticket bundle available to pupils in full-time education",
                   "label": "School service carnet",
+                  "value": "schoolService",
                 },
               ]
             }
@@ -154,38 +155,39 @@ exports[`pages carnetFareType should render error messaging when errors are pass
             ]
           }
         >
-          <FareTypeRadios
-            fares={
+          <RadioButtons
+            inputName="fareType"
+            options={
               Array [
                 Object {
-                  "fareType": "single",
                   "hint": "A ticket bundle of various point to point journeys",
                   "label": "Single, point to point carnet",
+                  "value": "single",
                 },
                 Object {
-                  "fareType": "return",
                   "hint": "A ticket bundle of inbound and outbound journeys",
                   "label": "Return carnet",
+                  "value": "return",
                 },
                 Object {
-                  "fareType": "flatFare",
                   "hint": "A ticket bundle of flat fare journeys",
                   "label": "Flat fare carnet",
+                  "value": "flatFare",
                 },
                 Object {
-                  "fareType": "period",
                   "hint": "A ticket bundle where each ticket is valid for a number of days, weeks, months or years",
                   "label": "Period carnet",
+                  "value": "period",
                 },
                 Object {
-                  "fareType": "multiOperator",
                   "hint": "A ticket bundle that covers more than one operator",
                   "label": "Multi-operator carnet",
+                  "value": "multiOperator",
                 },
                 Object {
-                  "fareType": "schoolService",
                   "hint": "A ticket bundle available to pupils in full-time education",
                   "label": "School service carnet",
+                  "value": "schoolService",
                 },
               ]
             }

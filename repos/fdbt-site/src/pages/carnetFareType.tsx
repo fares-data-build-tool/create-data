@@ -4,7 +4,7 @@ import { ErrorInfo, NextPageContextWithSession, OperatorAttribute } from '../int
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import FareTypeRadios from '../components/FareTypeRadios';
+import RadioButtons from '../components/RadioButtons';
 import { getSessionAttribute } from '../utils/sessions';
 import { CARNET_FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
 import { redirectTo } from './api/apiUtils';
@@ -24,32 +24,32 @@ interface CarnetFareTypeProps {
 
 const carnetRadioProps = [
     {
-        fareType: 'single',
+        value: 'single',
         label: 'Single, point to point carnet',
         hint: 'A ticket bundle of various point to point journeys',
     },
     {
-        fareType: 'return',
+        value: 'return',
         label: 'Return carnet',
         hint: 'A ticket bundle of inbound and outbound journeys',
     },
     {
-        fareType: 'flatFare',
+        value: 'flatFare',
         label: 'Flat fare carnet',
         hint: 'A ticket bundle of flat fare journeys',
     },
     {
-        fareType: 'period',
+        value: 'period',
         label: 'Period carnet',
         hint: 'A ticket bundle where each ticket is valid for a number of days, weeks, months or years',
     },
     {
-        fareType: 'multiOperator',
+        value: 'multiOperator',
         label: 'Multi-operator carnet',
         hint: 'A ticket bundle that covers more than one operator',
     },
     {
-        fareType: 'schoolService',
+        value: 'schoolService',
         label: 'School service carnet',
         hint: 'A ticket bundle available to pupils in full-time education',
     },
@@ -72,7 +72,7 @@ const CarnetFareType = ({ operatorName, errors = [], csrfToken }: CarnetFareType
                                 {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <FareTypeRadios fares={carnetRadioProps} />
+                                <RadioButtons options={carnetRadioProps} inputName="fareType" />
                             </FormElementWrapper>
                         </fieldset>
                     </div>
