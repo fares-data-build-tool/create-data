@@ -81,7 +81,7 @@ describe('saveOperatorGroup', () => {
         expect(insertOperatorGroupSpy).toBeCalledTimes(0);
     });
 
-    it('should insert the users operator group name with the operator list stored in the session and redirect on to howManyProducts if geoZone', async () => {
+    it('should insert the users operator group name with the operator list stored in the session and redirect on to multipleProducts if geoZone', async () => {
         const getOperatorGroupsByNameAndNocSpy = jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc');
         getOperatorGroupsByNameAndNocSpy.mockImplementation().mockResolvedValue([]);
         const groupNameWithSpaces = '     Best test    group      ';
@@ -112,7 +112,7 @@ describe('saveOperatorGroup', () => {
             groupName,
         );
         expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, []);
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/howManyProducts' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleProducts' });
     });
 
     it('should insert the users operator group name with the operator list stored in the session and redirect on to multipleOperatorsServiceList if multipleServices', async () => {
@@ -152,7 +152,7 @@ describe('saveOperatorGroup', () => {
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleOperatorsServiceList' });
     });
 
-    it('should do nothing but redirect on to howManyProducts if no is selected if geoZone', async () => {
+    it('should do nothing but redirect on to multipleProducts if no is selected if geoZone', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: { saveGroup: 'no' },
             mockWriteHeadFn: writeHeadMock,
@@ -161,7 +161,7 @@ describe('saveOperatorGroup', () => {
 
         expect(insertOperatorGroupSpy).toBeCalledTimes(0);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, []);
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/howManyProducts' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleProducts' });
     });
 
     it('should do nothing but redirect on to multipleOperatorsServiceList if no is selected if multipleServices', async () => {

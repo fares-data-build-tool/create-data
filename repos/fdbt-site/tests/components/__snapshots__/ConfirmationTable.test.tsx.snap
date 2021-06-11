@@ -37,7 +37,11 @@ exports[`ConfirmationTable should render the table with options 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        Bob
+        <div
+          key="Bob"
+        >
+          Bob
+        </div>
       </dd>
       <dd
         className="govuk-summary-list__actions"
@@ -71,7 +75,11 @@ exports[`ConfirmationTable should render the table with options 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        Big
+        <div
+          key="Big"
+        >
+          Big
+        </div>
       </dd>
       <dd
         className="govuk-summary-list__actions"

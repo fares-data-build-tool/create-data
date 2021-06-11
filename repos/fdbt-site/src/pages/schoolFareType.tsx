@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { SCHOOL_FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
-import { ErrorInfo, NextPageContextWithSession, FareTypeRadioProps } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, RadioButtonsProps } from '../interfaces';
 import { isWithErrors } from '../interfaces/typeGuards';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import FareTypeRadios from '../components/FareTypeRadios';
+import RadioButtons from '../components/RadioButtons';
 import { getCsrfToken } from '../utils/index';
 import { getSessionAttribute } from '../utils/sessions';
 
@@ -21,20 +21,21 @@ interface SchoolFareTypeProps {
     csrfToken: string;
 }
 
-const radioProps: FareTypeRadioProps = {
-    fares: [
+const radioProps: RadioButtonsProps = {
+    inputName: 'fareType',
+    options: [
         {
-            fareType: 'single',
+            value: 'single',
             label: 'Single ticket',
             hint: 'A ticket for a point to point journey',
         },
         {
-            fareType: 'flatFare',
+            value: 'flatFare',
             label: 'Flat fare ticket',
             hint: 'A fixed fee ticket for a single journey',
         },
         {
-            fareType: 'period',
+            value: 'period',
             label: 'Period ticket',
             hint: 'A ticket valid for a number of days, weeks, months or years',
         },
@@ -58,7 +59,7 @@ const SchoolFareType = ({ operatorName, errors = [], csrfToken }: SchoolFareType
                                 {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <FareTypeRadios fares={radioProps.fares} />
+                                <RadioButtons options={radioProps.options} inputName="fareType" />
                             </FormElementWrapper>
                         </fieldset>
                     </div>

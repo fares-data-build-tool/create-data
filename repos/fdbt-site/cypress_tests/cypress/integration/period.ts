@@ -11,7 +11,7 @@ describe('the period faretype product journey', () => {
     it('completes successfully for geozone and a single product', () => {
         selectFareType('period', false);
         defineUserTypeAndTimeRestrictions();
-        completePeriodGeoZonePages();
+        completePeriodGeoZonePages(1);
         completeSalesPages();
         isUuidStringValid();
     });

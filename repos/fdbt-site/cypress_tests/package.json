@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "openCypress": "cypress open",
+        "openCypress": "cypress open --config watchForFileChanges=false",
         "runCypress": "cypress run -b $BROWSER",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint --fix . --ext .ts",

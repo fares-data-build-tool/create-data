@@ -15,7 +15,6 @@ import {
     getRandomNumber,
     assertElementNotVisibleById,
     completeSalesOfferPackagesForMultipleProducts,
-    completeSingleProduct,
     completeMultipleProducts,
     completeOperatorSearch,
     clickSomeCheckboxes,
@@ -71,8 +70,8 @@ export const completeFlatFarePages = (productName: string, isScheme: boolean): v
         randomlyChooseAndSelectServices();
         continueButtonClick();
     }
-    getElementById('product-details-name').type(productName);
-    getElementById('product-details-price').type('50.50');
+    getElementById('multiple-product-name-0').type(productName);
+    getElementById('multiple-product-price-0').type('50.50');
     continueButtonClick();
     continueButtonClick();
 };
@@ -178,17 +177,12 @@ export const completeSalesPages = (numberOfProducts?: number, multiProductNamePr
     continueButtonClick();
 };
 
-export const completePeriodGeoZonePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
+export const completePeriodGeoZonePages = (numberOfProducts: number, multiProductNamePrefix?: string): void => {
     clickElementById('geo-zone');
     continueButtonClick();
     uploadFile('csv-upload', 'fareZone.csv');
     submitButtonClick();
-
-    if (!numberOfProducts || !multiProductNamePrefix) {
-        completeSingleProduct();
-    } else {
-        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
-    }
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
 };
 
 export const completePeriodMultiServicePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
@@ -196,12 +190,7 @@ export const completePeriodMultiServicePages = (numberOfProducts?: number, multi
     continueButtonClick();
     randomlyChooseAndSelectServices();
     continueButtonClick();
-
-    if (!numberOfProducts || !multiProductNamePrefix) {
-        completeSingleProduct();
-    } else {
-        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
-    }
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
 };
 
 export const completeSchoolPeriodMultiServicePages = (
@@ -210,11 +199,7 @@ export const completeSchoolPeriodMultiServicePages = (
 ): void => {
     randomlyChooseAndSelectServices();
     continueButtonClick();
-    if (!numberOfProducts || !multiProductNamePrefix) {
-        completeSingleProduct();
-    } else {
-        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
-    }
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
 };
 
 export const completeMultiOpGeoZonePages = (
@@ -232,11 +217,7 @@ export const completeMultiOpGeoZonePages = (
 
     completeOperatorSearch(false);
 
-    if (!numberOfProducts || !multiProductNamePrefix) {
-        completeSingleProduct();
-    } else {
-        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
-    }
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
 };
 
 export const completeMultiOpMultiServicePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
@@ -247,9 +228,5 @@ export const completeMultiOpMultiServicePages = (numberOfProducts?: number, mult
 
     completeOperatorSearch(true);
 
-    if (!numberOfProducts || !multiProductNamePrefix) {
-        completeSingleProduct();
-    } else {
-        completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
-    }
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
 };

@@ -186,7 +186,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
-            redirectTo(res, '/howManyProducts');
+            redirectTo(res, '/multipleProducts');
             return;
         }
     } catch (error) {
