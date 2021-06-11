@@ -27,6 +27,7 @@ import {
     MULTIPLE_OPERATOR_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
 } from '../../../../src/constants/attributes';
 import {
     defaultSalesOfferPackageOne,
@@ -56,10 +57,17 @@ import {
     expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
     expectedCarnetSingleTicket,
     expectedCarnetReturnTicket,
+    expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts,
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
-import { Operator, MultipleProductAttribute, ExpiryUnit } from '../../../../src/interfaces';
+import {
+    Operator,
+    MultipleProductAttribute,
+    ExpiryUnit,
+    PeriodExpiry,
+    CarnetExpiryUnit,
+} from '../../../../src/interfaces';
 
 describe('userData', () => {
     describe('isTermTime', () => {
@@ -92,10 +100,8 @@ describe('userData', () => {
                         productPriceId: '',
                         productDuration: '1',
                         productDurationId: '',
-                        productDurationUnits: 'week',
+                        productDurationUnits: ExpiryUnit.DAY,
                         productDurationUnitsId: '',
-                        productValidity: '24hr',
-                        productValidityId: '',
                     },
                     {
                         productName: 'Product Two',
@@ -104,10 +110,8 @@ describe('userData', () => {
                         productPriceId: '',
                         productDuration: '7',
                         productDurationId: '',
-                        productDurationUnits: 'day',
+                        productDurationUnits: ExpiryUnit.DAY,
                         productDurationUnitsId: '',
-                        productValidity: '24hr',
-                        productValidityId: '',
                     },
                 ],
             };
@@ -121,7 +125,8 @@ describe('userData', () => {
                     salesOfferPackages: [defaultSalesOfferPackageTwo],
                 },
             ];
-            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute);
+            const validity: PeriodExpiry = { productValidity: '24hr', productEndTime: '' };
+            const result = getProductsAndSalesOfferPackages(productSops, multipleProductAttribute, validity);
             expect(result).toEqual(expectedProductDetailsArray);
         });
     });
@@ -320,7 +325,7 @@ describe('userData', () => {
                         carnetDetails: {
                             quantity: '10',
                             expiryTime: '',
-                            expiryUnit: ExpiryUnit.NO_EXPIRY,
+                            expiryUnit: CarnetExpiryUnit.NO_EXPIRY,
                         },
                     },
                 },
@@ -376,26 +381,30 @@ describe('userData', () => {
                                 productPrice: '50',
                                 productDuration: '5',
                                 productDurationUnits: 'week',
-                                productValidity: '24hr',
                                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                                carnetDetails: undefined,
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
                                 productDurationUnits: 'year',
-                                productValidity: '24hr',
                                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                                carnetDetails: undefined,
                             },
                             {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
                                 productDurationUnits: 'month',
-                                productValidity: 'endOfCalendarDay',
                                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                                carnetDetails: undefined,
                             },
                         ],
+                    },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: {
+                        productValidity: '24hr',
+                        productEndTime: '',
                     },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
@@ -450,23 +459,23 @@ describe('userData', () => {
                                 productPrice: '50',
                                 productDuration: '5',
                                 productDurationUnits: 'week',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
                                 productDurationUnits: 'year',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
                                 productDurationUnits: 'month',
-                                productValidity: 'endOfCalendarDay',
                             },
                         ],
+                    },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: {
+                        productValidity: 'endOfCalendarDay',
                     },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
@@ -498,7 +507,90 @@ describe('userData', () => {
                 },
             });
             const result = getMultipleServicesTicketJson(req, res);
-            expect(result).toStrictEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
+            expect(result).toEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
+        });
+
+        it('should return a carnet PeriodMultipleServicesTicket object if the products are carnet', () => {
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {},
+                session: {
+                    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                    [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
+                    [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                        products: [
+                            {
+                                productName: 'Weekly Ticket',
+                                productPrice: '50',
+                                productDuration: '5',
+                                productDurationUnits: 'week',
+                                productValidity: '24hr',
+                                carnetDetails: {
+                                    quantity: '10',
+                                    expiryTime: '15',
+                                    expiryUnit: CarnetExpiryUnit.WEEK,
+                                },
+                            },
+                            {
+                                productName: 'Day Ticket',
+                                productPrice: '2.50',
+                                productDuration: '1',
+                                productDurationUnits: 'year',
+                                productValidity: '24hr',
+                                carnetDetails: {
+                                    quantity: '15',
+                                    expiryTime: '10',
+                                    expiryUnit: CarnetExpiryUnit.MONTH,
+                                },
+                            },
+                            {
+                                productName: 'Monthly Ticket',
+                                productPrice: '200',
+                                productDuration: '28',
+                                productDurationUnits: 'month',
+                                productValidity: 'endOfCalendarDay',
+                                carnetDetails: {
+                                    quantity: '30',
+                                    expiryTime: '10',
+                                    expiryUnit: CarnetExpiryUnit.YEAR,
+                                },
+                            },
+                        ],
+                    },
+                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+                        {
+                            productName: 'Weekly Ticket',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                        {
+                            productName: 'Day Ticket',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                        {
+                            productName: 'Monthly Ticket',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                    ],
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        startDate: '2020-12-17T09:30:46.0Z',
+                        endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
+                    },
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [PERIOD_EXPIRY_ATTRIBUTE]: {
+                        productValidity: 'endOfCalendarDay',
+                    },
+                },
+            });
+            const result = getMultipleServicesTicketJson(req, res);
+            expect(result).toEqual(expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts);
         });
 
         it('should return a MultiOperatorMultipleServicesTicket object if the ticket is multipleOperators', () => {
@@ -515,24 +607,22 @@ describe('userData', () => {
                                 productPrice: '50',
                                 productDuration: '5',
                                 productDurationUnits: 'week',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
                                 productDurationUnits: 'year',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
                                 productDurationUnits: 'month',
-                                productValidity: 'endOfCalendarDay',
                             },
                         ],
                     },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: { productValidity: 'endOfServiceDay', productEndTime: '1900' },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',
@@ -651,7 +741,7 @@ describe('userData', () => {
         it('should return a FlatFareTicket object', () => {
             const { req, res } = getMockRequestAndResponse({
                 session: {
-                    [PRODUCT_DETAILS_ATTRIBUTE]: {
+                    [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                         products: [
                             {
                                 productName: 'Weekly Rider',
@@ -672,6 +762,12 @@ describe('userData', () => {
                             endDateYear: '2020',
                         },
                     },
+                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+                        {
+                            productName: 'Weekly Rider',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                        },
+                    ],
                 },
             });
             const result = getFlatFareTicketJson(req, res);
@@ -878,24 +974,22 @@ describe('userData', () => {
                                 productPrice: '50',
                                 productDuration: '5',
                                 productDurationUnits: 'week',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
                                 productDurationUnits: 'month',
-                                productValidity: '24hr',
                             },
                             {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
                                 productDurationUnits: 'year',
-                                productValidity: 'endOfCalendarDay',
                             },
                         ],
                     },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: { productValidity: 'endOfServiceDay', productEndTime: '1900' },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',
@@ -985,7 +1079,39 @@ describe('userData', () => {
                     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                     [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
                     [FARE_ZONE_ATTRIBUTE]: 'Green Lane Shops',
-                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+                        {
+                            productName: 'product one',
+                            salesOfferPackages: [
+                                {
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
+                        },
+                        {
+                            productName: 'product two',
+                            salesOfferPackages: [
+                                {
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    name: 'Online (smart card)',
+                                    description: '',
+                                    purchaseLocations: ['online'],
+                                    paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
+                                    ticketFormats: ['smartCard'],
+                                },
+                            ],
+                        },
+                    ],
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
@@ -1040,11 +1166,15 @@ describe('userData', () => {
                         ],
                         errors: [],
                     },
-                    [PRODUCT_DETAILS_ATTRIBUTE]: {
+                    [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                         products: [
                             {
-                                productName: 'Weekly Ticket',
+                                productName: 'product one',
                                 productPrice: '50',
+                            },
+                            {
+                                productName: 'product two',
+                                productPrice: '502',
                             },
                         ],
                     },

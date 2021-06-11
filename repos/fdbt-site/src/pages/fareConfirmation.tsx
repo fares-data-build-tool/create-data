@@ -139,7 +139,7 @@ export const buildFareConfirmationElements = (
         if (termTime !== '') {
             confirmationElements.push({
                 name: 'Only valid during term times',
-                content: termTime === 'true' ? 'yes' : 'no',
+                content: termTime === 'true' ? 'Yes' : 'No',
                 href: 'termTime',
             });
         }

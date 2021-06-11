@@ -78,7 +78,7 @@ describe('multipleOperatorsServiceList', () => {
         });
     });
 
-    it('redirects to /howManyProducts if input is valid with no errors, and deletes TXC multiOp session attribute', () => {
+    it('redirects to /multipleProducts if input is valid with no errors, and deletes TXC multiOp session attribute', () => {
         const serviceInfo = {
             'MCTR#237#dsdwgwe223#11-237-_-y08-1#07/04/2020': 'Ashton Under Lyne - Glossop',
             'MCTR#391#dsdwgwe223#NW_01_MCT_391_1#23/04/2019': 'Macclesfield - Bollington - Poynton - Stockport',
@@ -117,7 +117,7 @@ describe('multipleOperatorsServiceList', () => {
         multipleOperatorsServiceList(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/howManyProducts',
+            Location: '/multipleProducts',
         });
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, [
             {

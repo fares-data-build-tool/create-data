@@ -4,7 +4,6 @@ import {
     MULTI_OP_TXC_SOURCE_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { redirectTo, redirectToError } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
@@ -13,7 +12,6 @@ import {
     MultiOperatorInfo,
     MultipleOperatorsAttribute,
     SelectedService,
-    FareType,
 } from '../../interfaces';
 import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
 
@@ -106,13 +104,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/multipleOperatorsServiceList');
             return;
         }
-
-        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
-        if (fareType === 'flatFare') {
-            redirectTo(res, '/productDetails');
-            return;
-        }
-        redirectTo(res, '/howManyProducts');
+        redirectTo(res, '/multipleProducts');
         return;
     } catch (error) {
         const message =

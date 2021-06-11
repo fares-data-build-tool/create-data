@@ -1,19 +1,13 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants/attributes';
-import {
-    ErrorInfo,
-    NextPageContextWithSession,
-    ProductData,
-    WithErrors,
-    RadioConditionalInputFieldset,
-} from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, RadioConditionalInputFieldset } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken, getErrorsByIds } from '../utils';
 import RadioConditionalInput from '../components/RadioConditionalInput';
-import { isWithErrors } from '../interfaces/typeGuards';
+import { isPeriodExpiry } from '../interfaces/typeGuards';
 
 const title = 'Period Validity - Create Fares Data Service';
 const description = 'Period Validity selection page of the Create Fares Data Service';
@@ -24,10 +18,7 @@ interface PeriodValidityProps {
     csrfToken: string;
 }
 
-export const getFieldset = (
-    errors: ErrorInfo[],
-    periodExpiryAttribute?: ProductData | WithErrors<ProductData>,
-): RadioConditionalInputFieldset => {
+export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset => {
     const periodValidityFieldSet: RadioConditionalInputFieldset = {
         heading: {
             id: 'period-validity',
@@ -78,7 +69,7 @@ export const getFieldset = (
                         id: 'product-end-time',
                         name: 'productEndTime',
                         label: 'End time',
-                        defaultValue: periodExpiryAttribute?.products?.[0]?.productEndTime || '',
+                        defaultValue: errors.length > 0 && errors[0].userInput ? errors[0].userInput : '',
                     },
                 ],
                 inputErrors: getErrorsByIds(['product-end-time'], errors),
@@ -120,11 +111,11 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pe
     const csrfToken = getCsrfToken(ctx);
     const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
 
-    if (isWithErrors(periodExpiryAttribute)) {
-        errors = periodExpiryAttribute.errors;
+    if (periodExpiryAttribute && !isPeriodExpiry(periodExpiryAttribute)) {
+        errors = periodExpiryAttribute;
     }
 
-    const fieldset: RadioConditionalInputFieldset = getFieldset(errors, periodExpiryAttribute);
+    const fieldset: RadioConditionalInputFieldset = getFieldset(errors);
     return { props: { errors, fieldset, csrfToken } };
 };
 

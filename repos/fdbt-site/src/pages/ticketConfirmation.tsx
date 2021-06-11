@@ -1,51 +1,49 @@
-import React, { ReactElement } from 'react';
-import upperFirst from 'lodash/upperFirst';
 import isArray from 'lodash/isArray';
-import {
-    NextPageContextWithSession,
-    Journey,
-    ProductData,
-    ReturnPeriodValidity,
-    TicketRepresentationAttribute,
-    MultiOperatorInfo,
-    Product,
-    ConfirmationElement,
-    NumberOfProductsAttribute,
-    MultipleProductAttribute,
-    MultiProduct,
-    SchoolFareTypeAttribute,
-    MultipleOperatorsAttribute,
-    Service,
-    ServiceListAttribute,
-    TxcSourceAttribute,
-    ExpiryUnit,
-} from '../interfaces';
-import TwoThirdsLayout from '../layout/Layout';
-import CsrfForm from '../components/CsrfForm';
+import upperFirst from 'lodash/upperFirst';
+import React, { ReactElement } from 'react';
 import ConfirmationTable from '../components/ConfirmationTable';
-import { getSessionAttribute } from '../utils/sessions';
+import CsrfForm from '../components/CsrfForm';
 import {
     FARE_TYPE_ATTRIBUTE,
-    SERVICE_ATTRIBUTE,
+    INBOUND_MATCHING_ATTRIBUTE,
     JOURNEY_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
-    INBOUND_MATCHING_ATTRIBUTE,
-    SERVICE_LIST_ATTRIBUTE,
-    NUMBER_OF_PRODUCTS_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
-    MULTIPLE_PRODUCT_ATTRIBUTE,
-    RETURN_VALIDITY_ATTRIBUTE,
-    PERIOD_EXPIRY_ATTRIBUTE,
-    SCHOOL_FARE_TYPE_ATTRIBUTE,
-    TICKET_REPRESENTATION_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    RETURN_VALIDITY_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { isFareType, isPointToPointProductInfo } from '../interfaces/typeGuards';
-import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfaces/matchingInterface';
+import {
+    CarnetDetails,
+    CarnetExpiryUnit,
+    ConfirmationElement,
+    Journey,
+    MultiOperatorInfo,
+    MultipleOperatorsAttribute,
+    MultipleProductAttribute,
+    MultiProduct,
+    NextPageContextWithSession,
+    Product,
+    ReturnPeriodValidity,
+    SchoolFareTypeAttribute,
+    Service,
+    ServiceListAttribute,
+    TicketRepresentationAttribute,
+    TxcSourceAttribute,
+} from '../interfaces';
+import { InboundMatchingInfo, MatchingFareZones, MatchingInfo } from '../interfaces/matchingInterface';
+import { isFareType, isPeriodExpiry, isPointToPointProductInfo } from '../interfaces/typeGuards';
+import TwoThirdsLayout from '../layout/Layout';
 import { getCsrfToken, sentenceCaseString } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Ticket Confirmation - Create Fares Data Service';
 const description = 'Ticket Confirmation page of the Create Fares Data Service';
@@ -73,30 +71,17 @@ export const buildMatchedFareStages = (matchingFareZones: MatchingFareZones): Ma
     return matchedFareStages;
 };
 
-export const getPointToPointProductElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
-    const productInfo = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
-
-    if (isPointToPointProductInfo(productInfo)) {
-        return [
-            {
-                name: `${productInfo.productName} - Carnet Quantity`,
-                content: productInfo.carnetDetails.quantity,
-                href: 'carnetProductDetails',
-            },
-            {
-                name: `${productInfo.productName} - Carnet Expiry`,
-                content:
-                    productInfo.carnetDetails.expiryUnit === ExpiryUnit.NO_EXPIRY
-                        ? '-'
-                        : `${productInfo.carnetDetails.expiryTime} ${upperFirst(
-                              productInfo.carnetDetails.expiryUnit,
-                          )}s`,
-                href: 'carnetProductDetails',
-            },
-        ];
+const getCarnetDetailsContent = (carnetDetails?: CarnetDetails): string[] => {
+    if (!carnetDetails) {
+        return [];
     }
 
-    return [];
+    const carnetExpiry =
+        carnetDetails.expiryUnit === CarnetExpiryUnit.NO_EXPIRY
+            ? upperFirst(CarnetExpiryUnit.NO_EXPIRY)
+            : `${carnetDetails.expiryTime} ${upperFirst(carnetDetails.expiryUnit)}s`;
+
+    return [`Quantity in bundle - ${carnetDetails.quantity}`, `Bundle expiry - ${carnetExpiry}`];
 };
 
 export const buildSingleTicketConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
@@ -132,9 +117,15 @@ export const buildSingleTicketConfirmationElements = (ctx: NextPageContextWithSe
         });
     });
 
-    const productElements = getPointToPointProductElements(ctx);
+    const productInfo = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
-    productElements.forEach(el => confirmationElements.push(el));
+    if (isPointToPointProductInfo(productInfo)) {
+        confirmationElements.push({
+            name: `${productInfo.productName}`,
+            content: getCarnetDetailsContent(productInfo.carnetDetails),
+            href: 'carnetProductDetails',
+        });
+    }
 
     return confirmationElements;
 };
@@ -202,9 +193,15 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
         });
     }
 
-    const productElements = getPointToPointProductElements(ctx);
+    const productInfo = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
-    productElements.forEach(el => confirmationElements.push(el));
+    if (isPointToPointProductInfo(productInfo)) {
+        confirmationElements.push({
+            name: `${productInfo.productName}`,
+            href: 'carnetProductDetails',
+            content: getCarnetDetailsContent(productInfo.carnetDetails),
+        });
+    }
 
     if (validity) {
         confirmationElements.push({
@@ -229,17 +226,11 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const multiOpAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute;
     const multiOpServices = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) as MultiOperatorInfo[];
-    const numberOfProducts = Number(
-        (getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) as NumberOfProductsAttribute).numberOfProductsInput,
-    );
 
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
 
-    const products =
-        !numberOfProducts || numberOfProducts === 1
-            ? (getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE) as ProductData).products[0]
-            : (getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute).products;
+    const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
 
     if (zone) {
         confirmationElements.push({
@@ -295,29 +286,28 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
                 : `${product.productDuration}`
         }`;
 
-        if (!product.productDuration || !product.productValidity) {
+        if (!product.productDuration) {
             throw new Error('User has no product duration and/or validity information.');
         }
-        confirmationElements.push(
-            {
-                name: `${product.productName} - Price`,
-                content: `£${product.productPrice}`,
-                href: numberOfProducts > 1 ? 'multipleProducts' : 'productDetails',
-            },
-            {
-                name: `${product.productName} - Duration`,
-                content: productDurationText,
-                href: numberOfProducts > 1 ? 'multipleProducts' : 'chooseValidity',
-            },
-            {
-                name: `${product.productName} - Validity`,
-                content: `${sentenceCaseString(product.productValidity)}${
-                    product.productEndTime ? ` - ${product.productEndTime}` : ''
-                }`,
-                href: numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
-            },
-        );
+
+        const content = [
+            `Price - £${product.productPrice}`,
+            `Duration - ${productDurationText}`,
+            ...getCarnetDetailsContent(product.carnetDetails),
+        ];
+
+        confirmationElements.push({
+            name: `${product.productName}`,
+            content,
+            href: 'multipleProducts',
+        });
     };
+
+    const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
+
+    if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
+        throw new Error('Either periodExpiryAttribute is undefined or not type expected');
+    }
 
     if (isArray(products)) {
         products.forEach(product => {
@@ -326,6 +316,14 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     } else if (!isArray(products)) {
         addProduct(products);
     }
+
+    confirmationElements.push({
+        name: `Ticket day end`,
+        content: `${sentenceCaseString(periodExpiryAttribute.productValidity)}${
+            periodExpiryAttribute.productEndTime ? ` - ${periodExpiryAttribute.productEndTime}` : ''
+        }`,
+        href: 'periodValidity',
+    });
 
     return confirmationElements;
 };
@@ -346,10 +344,8 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
             });
         });
     }
-    const productInfo = (getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE) as ProductData).products;
-    const { productName, productPrice } = productInfo[0];
+    const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
     const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
-
     confirmationElements.push(
         {
             name: 'Services',
@@ -361,12 +357,15 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
             content: dataSource.toUpperCase(),
             href: 'serviceList',
         },
-        {
-            name: `Product - ${productName}`,
-            content: `Price - £${productPrice}`,
-            href: 'productDetails',
-        },
     );
+
+    products.forEach(product => {
+        confirmationElements.push({
+            name: `${product.productName}`,
+            content: [`Price - £${product.productPrice}`, ...getCarnetDetailsContent(product.carnetDetails)],
+            href: 'multipleProducts',
+        });
+    });
 
     return confirmationElements;
 };

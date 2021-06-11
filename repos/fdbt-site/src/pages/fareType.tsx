@@ -3,12 +3,12 @@ import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
 import { INTERNAL_NOC } from '../constants';
 import { FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../constants/attributes';
-import { ErrorInfo, NextPageContextWithSession, FareTypeRadio } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, RadioOption } from '../interfaces';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import FareTypeRadios from '../components/FareTypeRadios';
+import RadioButtons from '../components/RadioButtons';
 import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils/index';
 import logger from '../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
@@ -34,16 +34,16 @@ export const buildUuid = (noc: string): string => {
     return noc + uuid.substring(0, 8);
 };
 
-const buildRadioProps = (schemeOp: boolean, displayCarnet: boolean): FareTypeRadio[] => {
+const buildRadioProps = (schemeOp: boolean, displayCarnet: boolean): RadioOption[] => {
     if (schemeOp) {
         return [
             {
-                fareType: 'period',
+                value: 'period',
                 label: 'Period ticket',
                 hint: 'A zonal ticket valid for a number of days, weeks, months or years',
             },
             {
-                fareType: 'flatFare',
+                value: 'flatFare',
                 label: 'Flat fare ticket',
                 hint: 'A fixed fee ticket for a single journey',
             },
@@ -51,32 +51,32 @@ const buildRadioProps = (schemeOp: boolean, displayCarnet: boolean): FareTypeRad
     }
     const radios = [
         {
-            fareType: 'single',
+            value: 'single',
             label: 'Single ticket',
             hint: 'A ticket for a point to point journey',
         },
         {
-            fareType: 'return',
+            value: 'return',
             label: 'Return ticket',
             hint: 'An inbound and outbound ticket for the same service',
         },
         {
-            fareType: 'flatFare',
+            value: 'flatFare',
             label: 'Flat fare ticket',
             hint: 'A fixed fee ticket for a single journey',
         },
         {
-            fareType: 'period',
+            value: 'period',
             label: 'Period ticket',
             hint: 'A ticket valid for a number of days, weeks, months or years',
         },
         {
-            fareType: 'multiOperator',
+            value: 'multiOperator',
             label: 'Multi-operator',
             hint: 'A ticket that covers more than one operator',
         },
         {
-            fareType: 'schoolService',
+            value: 'schoolService',
             label: 'School service',
             hint: 'A ticket available to pupils in full-time education',
         },
@@ -84,7 +84,7 @@ const buildRadioProps = (schemeOp: boolean, displayCarnet: boolean): FareTypeRad
 
     if (displayCarnet) {
         radios.splice(4, 0, {
-            fareType: 'carnet',
+            value: 'carnet',
             label: 'Carnet ticket',
             hint: 'A bundle of pre-paid tickets',
         });
@@ -110,7 +110,7 @@ const FareType = ({ operatorName, schemeOp, displayCarnet, errors = [], csrfToke
                                 {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <FareTypeRadios fares={buildRadioProps(schemeOp, displayCarnet)} />
+                                <RadioButtons options={buildRadioProps(schemeOp, displayCarnet)} inputName="fareType" />
                             </FormElementWrapper>
                         </fieldset>
                     </div>

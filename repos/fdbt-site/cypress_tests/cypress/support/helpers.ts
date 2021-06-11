@@ -17,7 +17,7 @@ export const getHomePage = (isScheme: boolean): void => {
     cy.visit(`?disableAuth=${isScheme ? 'scheme' : 'BLAC'}`);
 };
 
-export const fareTypeToFareTypeIdMapper = (fareType: FareType): string => `fare-type-${fareType}`;
+export const fareTypeToFareTypeIdMapper = (fareType: FareType): string => `radio-option-${fareType}`;
 
 export const startPageLinkClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('faretype-link');
 
@@ -250,16 +250,6 @@ export const selectOptionFromDropDownByIndex = (dropDownId: string, index: numbe
         .trigger('change');
 };
 
-export const randomlyChooseMultipleProductPeriodValidity = (numberOfProducts: number): void => {
-    for (let i = 0; i < numberOfProducts; i += 1) {
-        const randomSelector = getRandomNumber(1, 3);
-        selectOptionFromDropDownByIndex(`validity-option-${i}`, randomSelector);
-        if (randomSelector === 3) {
-            getElementById(`validity-end-time-${i}`).type('1900');
-        }
-    }
-};
-
 export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
     cy.get(`[id=${dropDownId}]`)
         .find('option')
@@ -488,33 +478,20 @@ export const uploadFile = (elementId: string, fileName: string): void => {
     getElementById(elementId).attachFile(fileName);
 };
 
-export const completeSingleProduct = (): void => {
-    getElementById('number-of-products').type('1');
-    continueButtonClick();
-    getElementById('product-details-name').type('Cypress period product');
-    getElementById('product-details-price').type('4.95');
-    continueButtonClick();
-    getElementById('validity').type('10');
-    selectRandomOptionFromDropDown('validity-units');
-    continueButtonClick();
-    randomlyChooseSingleProductPeriodValidity();
-    continueButtonClick();
-    continueButtonClick();
-};
-
-export const completeMultipleProducts = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
-    getElementById('number-of-products').type(numberOfProducts.toString());
-    continueButtonClick();
-
+export const completeMultipleProducts = (numberOfProducts = 1, multiProductNamePrefix?: string): void => {
     for (let i = 0; i < numberOfProducts; i += 1) {
-        getElementById(`multiple-product-name-${i}`).type(`${multiProductNamePrefix}${i + 1}`);
+        if (i !== 0) {
+            clickElementById('add-another-button');
+        }
+
+        getElementById(`multiple-product-name-${i}`).type(`${multiProductNamePrefix ?? 'product '}${i + 1}`);
         getElementById(`multiple-product-price-${i}`).type(`1${i}`);
-        getElementById(`multiple-product-duration-${i}`).type(`2${i}`);
-        selectRandomOptionFromDropDown(`multiple-product-duration-units-${i}`);
+        getElementById(`product-details-period-duration-quantity-${i}`).type(`2${i}`);
+        selectRandomOptionFromDropDown(`product-details-period-duration-unit-${i}`);
     }
 
     continueButtonClick();
-    randomlyChooseMultipleProductPeriodValidity(numberOfProducts);
+    randomlyChooseSingleProductPeriodValidity();
     continueButtonClick();
     continueButtonClick();
 };

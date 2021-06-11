@@ -82,7 +82,7 @@ describe('csvZoneUpload', () => {
         },
     );
 
-    it('should return 302 redirect to /howManyProducts when valid a valid file is processed and put in S3', async () => {
+    it('should return 302 redirect to /multipleProducts when valid a valid file is processed and put in S3', async () => {
         const file = {
             'csv-upload': {
                 size: 999,
@@ -109,7 +109,7 @@ describe('csvZoneUpload', () => {
         await csvZoneUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/howManyProducts',
+            Location: '/multipleProducts',
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, 'Town Centre');
     });

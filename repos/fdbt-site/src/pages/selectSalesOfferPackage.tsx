@@ -6,7 +6,6 @@ import { FullColumnLayout } from '../layout/Layout';
 import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
@@ -22,7 +21,6 @@ import {
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { isProductInfo, isProductData } from './productDetails';
 import { removeAllWhiteSpace } from './api/apiUtils/validator';
 import DeleteSOPButton from '../components/DeleteSOPButton';
 
@@ -134,7 +132,11 @@ const createSalesOffer = (
 ): ReactElement[] =>
     productNames.map(productName => (
         <div className="sop-option">
-            <FormGroupWrapper errorIds={[`${[removeAllWhiteSpace(productName)]}-checkbox-0`]} errors={errors}>
+            <FormGroupWrapper
+                errorIds={[`${[removeAllWhiteSpace(productName)]}-checkbox-0`]}
+                errors={errors}
+                hideErrorBar={false}
+            >
                 <fieldset className="govuk-fieldset">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s govuk-!-margin-bottom-5">{`Select sales offer packages for ${productName}`}</legend>
                     <FormElementWrapper
@@ -216,29 +218,24 @@ export const getServerSideProps = async (
     );
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
-    const singleProductAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
 
-    let productNames: string[] = ['product'];
+    let productNames: string[] = [];
 
     if (isFareType(fareTypeAttribute)) {
         const fareType =
             fareTypeAttribute.fareType === 'schoolService' && schoolFareTypeAttribute
                 ? schoolFareTypeAttribute.schoolFareType
                 : fareTypeAttribute.fareType;
-        if ((fareType === 'period' || fareType === 'multiOperator') && multipleProductAttribute) {
+        if (
+            (fareType === 'period' || fareType === 'multiOperator' || fareType === 'flatFare') &&
+            multipleProductAttribute
+        ) {
             const multiProducts: MultiProduct[] = multipleProductAttribute.products;
             productNames = multiProducts.map((product: ProductInfo) => product.productName);
-        } else if (singleProductAttribute) {
-            if (fareType === 'flatFare' && isProductData(singleProductAttribute)) {
-                productNames = [singleProductAttribute.products[0].productName];
-            } else if (
-                (fareType === 'period' || fareType === 'multiOperator') &&
-                isProductInfo(singleProductAttribute)
-            ) {
-                productNames = [singleProductAttribute.productName];
-            }
+        } else {
+            productNames = ['product'];
         }
     }
 

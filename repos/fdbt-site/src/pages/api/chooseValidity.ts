@@ -27,8 +27,13 @@ export const isInvalidInput = (validityInput: string): boolean => {
     return false;
 };
 
-export const isValidInputDuration = (durationInput: string): boolean =>
-    ['day', 'week', 'month', 'year', 'hour'].includes(durationInput);
+export const isValidInputDuration = (durationInput: string, carnet: boolean): boolean => {
+    const allowedUnits = ['day', 'week', 'month', 'year', 'hour'];
+    if (carnet) {
+        allowedUnits.push('no expiry');
+    }
+    return allowedUnits.includes(durationInput);
+};
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -43,7 +48,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             });
         }
 
-        if (!duration || !isValidInputDuration(duration)) {
+        if (!duration || !isValidInputDuration(duration, false)) {
             errorInfo.push({
                 errorMessage: 'The type of duration is needed. Choose one of the options.',
                 id: 'validity-units',
