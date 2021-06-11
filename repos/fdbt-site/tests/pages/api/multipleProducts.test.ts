@@ -190,27 +190,24 @@ describe('multipleProducts', () => {
         ],
     ];
 
-    it.only.each(carnetCases)(
-        'given %p as request, redirects to %p for carnet products',
-        (testData, expectedLocation) => {
-            const { req, res } = getMockRequestAndResponse({
-                cookieValues: {},
-                body: testData,
-                uuid: {},
-                mockWriteHeadFn: writeHeadMock,
-                session: {
-                    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
-                        numberOfProductsInput: '2',
-                    },
-                    [CARNET_FARE_TYPE_ATTRIBUTE]: true,
+    it.each(carnetCases)('given %p as request, redirects to %p for carnet products', (testData, expectedLocation) => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: testData,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
+                    numberOfProductsInput: '2',
                 },
-            });
+                [CARNET_FARE_TYPE_ATTRIBUTE]: true,
+            },
+        });
 
-            (setCookieOnResponseObject as {}) = jest.fn();
-            multipleProduct(req, res);
-            expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
-        },
-    );
+        (setCookieOnResponseObject as {}) = jest.fn();
+        multipleProduct(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
+    });
 
     it('redirects to ticket confirmation for a flat fare ticket', () => {
         const { req, res } = getMockRequestAndResponse({
