@@ -24,6 +24,9 @@ module.exports = {
     },
     plugins: ['@typescript-eslint'],
     rules: {
+        'jest/no-disabled-tests': 'error',
+        'jest/no-identical-title': 'error',
+        'jest/valid-expect': 'error',
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': [
             'error',
