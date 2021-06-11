@@ -52,6 +52,12 @@ export interface PointToPointProductInfo {
     carnetDetails: CarnetDetails;
 }
 
+export interface PointToPointPeriodProduct {
+    productName: string;
+    periodValue: number;
+    periodUnits: string;
+}
+
 export interface PointToPointProductInfoWithSOP extends PointToPointProductInfo {
     salesOfferPackages: SalesOfferPackage[];
 }

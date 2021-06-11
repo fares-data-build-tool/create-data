@@ -46,7 +46,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         if (fareTypeInfo.fareType === 'pointToPointPeriod') {
-            redirectTo(res, '/product');
+            redirectTo(res, '/pointToPointPeriodProduct');
             return;
         }
 
