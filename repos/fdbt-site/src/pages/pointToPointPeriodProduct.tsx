@@ -9,22 +9,11 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
 } from '../constants/attributes';
-import {
-    ErrorInfo,
-    NextPageContextWithSession,
-    ProductData,
-    ProductInfo,
-    ProductInfoWithErrors,
-    MultiOperatorInfo,
-    PointToPointProductInfo,
-} from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, PointToPointPeriodProduct } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormErrorBlock, FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
-import { isPassengerType } from '../interfaces/typeGuards';
-import { isFareZoneAttributeWithErrors } from './csvZoneUpload';
-import { isServiceListAttributeWithErrors } from './serviceList';
 import { getCsrfToken } from '../utils';
 import ExpirySelector from 'src/components/ExpirySelector';
 
@@ -32,7 +21,7 @@ const title = 'Point to Point Period Product - Create Fares Data Service';
 const description = 'Point to point period product details entry page of the Create Fares Data Service';
 
 interface PointToPointPeriodProductProps {
-    product: PointToPointProductInfo | null;
+    product: PointToPointPeriodProduct | null;
     operator: string;
     passengerType: string;
     hintText?: string;
@@ -49,7 +38,8 @@ const ProductDetails = ({
     errors,
 }: PointToPointPeriodProductProps): ReactElement => {
     const { productName } = product || {};
-    const { expiryTime, expiryUnit } = product?.carnetDetails || {};
+    const periodValue = product?.periodValue || '';
+    const periodUnits = product?.periodUnits || undefined;
 
     return (
         <TwoThirdsLayout title={title} description={description}>
@@ -112,8 +102,8 @@ const ProductDetails = ({
                                     />
 
                                     <ExpirySelector
-                                        defaultDuration={expiryTime}
-                                        defaultUnit={expiryUnit}
+                                        defaultDuration={periodValue}
+                                        defaultUnit={periodUnits}
                                         quantityName="periodQuantity"
                                         quantityId="product-details-expiry-quantity"
                                         hintId="product-expiry-hint"
@@ -151,30 +141,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Po
         throw new Error('Failed to retrieve the necessary session objects.');
     }
 
-    if (!isPassengerType(passengerTypeAttribute)) {
-        throw new Error('Failed to retrieve passenger type attribute for product details page.');
-    }
-
-    if (fareZoneAttribute && !isFareZoneAttributeWithErrors(fareZoneAttribute)) {
-        hintText = fareZoneAttribute;
-    } else if (serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)) {
-        const { selectedServices } = serviceListAttribute;
-        hintText = selectedServices.length > 1 ? 'Multiple services' : selectedServices[0].lineName;
-    } else if (multipleOperatorsServicesAttribute) {
-        hintText = `Multiple services across ${
-            (multipleOperatorsServicesAttribute as MultiOperatorInfo[]).length
-        } operators`;
-    }
-
     return {
         props: {
-            product: productDetailsAttribute && isProductInfo(productDetailsAttribute) ? productDetailsAttribute : null,
+            product: null,
             operator: operatorAttribute.name,
-            passengerType: passengerTypeAttribute.passengerType,
-            errors:
-                productDetailsAttribute && isProductInfoWithErrors(productDetailsAttribute)
-                    ? productDetailsAttribute.errors
-                    : [],
+            passengerType: 'adult',
+            errors: [],
             hintText,
             csrfToken,
         },
