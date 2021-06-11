@@ -128,6 +128,7 @@ const CarnetProductDetails = ({ product, hintText, csrfToken, errors }: CarnetPr
                                         unitName="productDetailsExpiryUnitInput"
                                         unitId="product-details-carnet-expiry-unit"
                                         errors={errors}
+                                        carnet
                                     />
                                 </>
                             </FormGroupWrapper>
