@@ -36,7 +36,12 @@ export const paymentMethodsList = {
 // FulfilmentMethodType
 export const ticketFormatsList = {
     id: 'checkbox-0-paper-ticket',
-    ticketFormats: ['paperTicket', 'mobileApp', 'smartCard'],
+    ticketFormats: [
+        { value: 'paperTicket', display: 'Paper ticket' },
+        { value: 'mobileApp', display: 'Mobile app' },
+        { value: 'smartCard', display: 'Smart card' },
+        { value: 'electronic_document', display: 'Digital' },
+    ],
 };
 
 export interface SalesOfferPackagesProps {
@@ -174,7 +179,7 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                     >
                                         <>
                                             {ticketFormatsList.ticketFormats.map((ticketFormat, index) => {
-                                                const ticketFormatId = kebabCase(ticketFormat);
+                                                const ticketFormatId = kebabCase(ticketFormat.value);
                                                 return (
                                                     <div
                                                         className="govuk-checkboxes__item"
@@ -185,16 +190,16 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                                             id={`checkbox-${index}-${ticketFormatId}`}
                                                             name="ticketFormats"
                                                             type="checkbox"
-                                                            value={ticketFormat}
+                                                            value={ticketFormat.value}
                                                             defaultChecked={salesOfferPackage.ticketFormats.includes(
-                                                                ticketFormat,
+                                                                ticketFormat.value,
                                                             )}
                                                         />
                                                         <label
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${ticketFormatId}`}
                                                         >
-                                                            {sentenceCaseString(ticketFormat)}
+                                                            {ticketFormat.display}
                                                         </label>
                                                     </div>
                                                 );

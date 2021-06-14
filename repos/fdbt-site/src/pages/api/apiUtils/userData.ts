@@ -1,80 +1,80 @@
 import Cookies from 'cookies';
-import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
+import { NextApiResponse } from 'next';
+import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from '.';
 import {
-    SchemeOperatorFlatFareTicket,
-    SchemeOperatorTicket,
-    TermTimeAttribute,
-    ProductWithSalesOfferPackages,
-    CognitoIdToken,
-    FlatFareTicket,
-    NextApiRequestWithSession,
-    GeoZoneTicket,
-    PeriodMultipleServicesTicket,
-    Product,
-    ProductDetails,
-    ReturnTicket,
-    SingleTicket,
-    Stop,
-    BaseTicket,
-    BasePeriodTicket,
-    MultiOperatorMultipleServicesTicket,
-    MultiOperatorInfo,
-    Ticket,
-    isSchemeOperatorTicket,
-    MultipleProductAttribute,
-    TicketPeriod,
-    TicketPeriodWithInput,
-    SchemeOperatorGeoZoneTicket,
-    PointToPointProductInfoWithSOP,
-    BaseProduct,
-    PeriodExpiry,
-} from '../../../interfaces/index';
-
-import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants/index';
-import {
-    TERM_TIME_ATTRIBUTE,
-    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
-    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
+    FARE_ZONE_ATTRIBUTE,
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
-    FARE_ZONE_ATTRIBUTE,
-    SERVICE_LIST_ATTRIBUTE,
-    MULTIPLE_PRODUCT_ATTRIBUTE,
-    SALES_OFFER_PACKAGES_ATTRIBUTE,
-    RETURN_VALIDITY_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
-    MULTIPLE_OPERATOR_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    RETURN_VALIDITY_ATTRIBUTE,
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    TERM_TIME_ATTRIBUTE,
 } from '../../../constants/attributes';
 
+import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants';
+import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
+import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
 import {
-    isProductWithSalesOfferPackages,
-    isSalesOfferPackageWithErrors,
-    isSalesOfferPackages,
+    BasePeriodTicket,
+    BaseProduct,
+    BaseTicket,
+    CognitoIdToken,
+    FlatFareTicket,
+    GeoZoneTicket,
+    isSchemeOperatorTicket,
+    MultiOperatorInfo,
+    MultiOperatorMultipleServicesTicket,
+    MultipleProductAttribute,
+    NextApiRequestWithSession,
+    PeriodExpiry,
+    PeriodMultipleServicesTicket,
+    PointToPointProductInfoWithSOP,
+    Product,
+    ProductDetails,
+    ProductWithSalesOfferPackages,
+    ReturnTicket,
+    SchemeOperatorFlatFareTicket,
+    SchemeOperatorGeoZoneTicket,
+    SchemeOperatorTicket,
+    SingleTicket,
+    Stop,
+    TermTimeAttribute,
+    Ticket,
+    TicketPeriod,
+    TicketPeriodWithInput,
+} from '../../../interfaces';
+import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
+
+import {
     isFareType,
     isPassengerType,
-    isTicketPeriodAttributeWithInput,
-    isPointToPointProductInfo,
     isPeriodExpiry,
+    isPointToPointProductInfo,
     isProductInfo,
+    isProductWithSalesOfferPackages,
+    isSalesOfferPackages,
+    isSalesOfferPackageWithErrors,
+    isTicketPeriodAttributeWithInput,
 } from '../../../interfaces/typeGuards';
 
 import logger from '../../../utils/logger';
-import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
-import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
 import { getSessionAttribute } from '../../../utils/sessions';
-import { getFareZones } from './matching';
-import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
-import { unescapeAndDecodeCookie, getUuidFromSession, getAndValidateNoc } from '.';
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
-import { isServiceListAttributeWithErrors } from '../../serviceList';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
+import { isServiceListAttributeWithErrors } from '../../serviceList';
+import { getFareZones } from './matching';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
