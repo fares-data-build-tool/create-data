@@ -17,7 +17,7 @@ import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
+    CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
@@ -181,7 +181,7 @@ describe('userData', () => {
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
                     [TERM_TIME_ATTRIBUTE]: { termTime: true },
-                    [PRODUCT_DETAILS_ATTRIBUTE]: undefined,
+                    [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
                 },
             });
             const result = getSingleTicketJson(req, res);
@@ -212,7 +212,7 @@ describe('userData', () => {
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
                     [TERM_TIME_ATTRIBUTE]: { termTime: true },
-                    [PRODUCT_DETAILS_ATTRIBUTE]: {
+                    [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: {
                         productName: 'Test Product',
                         carnetDetails: {
                             quantity: '5',
@@ -255,7 +255,7 @@ describe('userData', () => {
                         },
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
-                    [PRODUCT_DETAILS_ATTRIBUTE]: undefined,
+                    [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
                 },
             });
             const result = getReturnTicketJson(req, res);
@@ -286,7 +286,7 @@ describe('userData', () => {
                         },
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
-                    [PRODUCT_DETAILS_ATTRIBUTE]: undefined,
+                    [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
                 },
             });
             const result = getReturnTicketJson(req, res);
@@ -320,7 +320,7 @@ describe('userData', () => {
                         },
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
-                    [PRODUCT_DETAILS_ATTRIBUTE]: {
+                    [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: {
                         productName: 'Test Return Product',
                         carnetDetails: {
                             quantity: '10',

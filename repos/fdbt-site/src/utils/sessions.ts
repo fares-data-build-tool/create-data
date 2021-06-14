@@ -27,7 +27,7 @@ import {
     PERIOD_EXPIRY_ATTRIBUTE,
     PRICE_ENTRY_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
+    CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     REUSE_OPERATOR_GROUP_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
@@ -80,9 +80,7 @@ import {
     PassengerType,
     PassengerTypeWithErrors,
     PeriodExpiry,
-    PointToPointProductInfo,
-    ProductData,
-    ProductInfo,
+    CarnetProductInfo,
     ProductWithSalesOfferPackages,
     ReturnPeriodValidity,
     ReturnPeriodValidityWithErrors,
@@ -119,12 +117,7 @@ interface SessionAttributeTypes {
     [MATCHING_ATTRIBUTE]: MatchingWithErrors | MatchingInfo;
     [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatchingInfo;
     [PERIOD_EXPIRY_ATTRIBUTE]: PeriodExpiry | ErrorInfo[];
-    [PRODUCT_DETAILS_ATTRIBUTE]:
-        | ProductInfo
-        | PointToPointProductInfo
-        | ProductData
-        | WithErrors<ProductInfo>
-        | WithErrors<PointToPointProductInfo>;
+    [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: CarnetProductInfo | WithErrors<CarnetProductInfo>;
     [PRICE_ENTRY_ATTRIBUTE]: FaresInformation;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]:
         | SelectSalesOfferPackageWithError

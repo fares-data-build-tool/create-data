@@ -4,23 +4,23 @@ import TwoThirdsLayout from '../layout/Layout';
 import {
     OPERATOR_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
+    CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
-import { ErrorInfo, NextPageContextWithSession, PointToPointProductInfo } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, CarnetProductInfo } from '../interfaces';
 import ExpirySelector from '../components/ExpirySelector';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormErrorBlock, FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
-import { isFareType, isPassengerType, isPointToPointProductInfo, isWithErrors } from '../interfaces/typeGuards';
+import { isFareType, isPassengerType, isWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details entry page of the Create Fares Data Service';
 
 interface CarnetProductDetailsProps {
-    product: PointToPointProductInfo | null;
+    product: CarnetProductInfo | null;
     hintText: string;
     errors: ErrorInfo[];
     csrfToken: string;
@@ -146,7 +146,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ca
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
-    const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
+    const productDetailsAttribute = getSessionAttribute(ctx.req, CARNET_PRODUCT_DETAILS_ATTRIBUTE);
 
     if (!operatorAttribute?.name || !isFareType(fareTypeAttribute)) {
         throw new Error('Failed to retrieve the necessary session objects');
@@ -158,10 +158,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ca
 
     return {
         props: {
-            product:
-                productDetailsAttribute && isPointToPointProductInfo(productDetailsAttribute)
-                    ? productDetailsAttribute
-                    : null,
+            product: productDetailsAttribute || null,
             errors:
                 productDetailsAttribute && isWithErrors(productDetailsAttribute) ? productDetailsAttribute.errors : [],
             hintText: `${operatorAttribute.name} - ${upperFirst(

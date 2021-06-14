@@ -1,6 +1,6 @@
-import { CarnetExpiryUnit, PointToPointProductInfo } from '../../../src/interfaces/index';
+import { CarnetExpiryUnit, CarnetProductInfo } from '../../../src/interfaces/index';
 import carnetProductDetails from '../../../src/pages/api/carnetProductDetails';
-import { FARE_TYPE_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants/attributes';
+import { FARE_TYPE_ATTRIBUTE, CARNET_PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
@@ -54,7 +54,7 @@ describe('carnetProductDetails', () => {
 
         carnetProductDetails(req, res);
 
-        expect(updateAttributeSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, expectedProductDetails);
+        expect(updateAttributeSpy).toHaveBeenCalledWith(req, CARNET_PRODUCT_DETAILS_ATTRIBUTE, expectedProductDetails);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/carnetProductDetails',
         });
@@ -73,7 +73,7 @@ describe('carnetProductDetails', () => {
             session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' } },
         });
 
-        const expectedProductDetails: PointToPointProductInfo = {
+        const expectedProductDetails: CarnetProductInfo = {
             productName: 'Test Product',
             carnetDetails: {
                 quantity: '5',
@@ -84,7 +84,11 @@ describe('carnetProductDetails', () => {
 
         carnetProductDetails(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, expectedProductDetails);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
+            req,
+            CARNET_PRODUCT_DETAILS_ATTRIBUTE,
+            expectedProductDetails,
+        );
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/ticketConfirmation',
         });
@@ -103,7 +107,7 @@ describe('carnetProductDetails', () => {
             session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' } },
         });
 
-        const expectedProductDetails: PointToPointProductInfo = {
+        const expectedProductDetails: CarnetProductInfo = {
             productName: 'Test Product',
             carnetDetails: {
                 quantity: '10',
@@ -114,7 +118,11 @@ describe('carnetProductDetails', () => {
 
         carnetProductDetails(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, expectedProductDetails);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
+            req,
+            CARNET_PRODUCT_DETAILS_ATTRIBUTE,
+            expectedProductDetails,
+        );
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/returnValidity',
         });
@@ -133,7 +141,7 @@ describe('carnetProductDetails', () => {
             },
         });
 
-        const expectedProductDetails: PointToPointProductInfo = {
+        const expectedProductDetails: CarnetProductInfo = {
             productName: 'Test Product',
             carnetDetails: {
                 quantity: '5',
@@ -144,7 +152,7 @@ describe('carnetProductDetails', () => {
 
         carnetProductDetails(req, res);
 
-        expect(updateAttributeSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, expectedProductDetails);
+        expect(updateAttributeSpy).toHaveBeenCalledWith(req, CARNET_PRODUCT_DETAILS_ATTRIBUTE, expectedProductDetails);
     });
 
     it('should allow duration to be empty when expiry unit is NO_EXPIRY', () => {

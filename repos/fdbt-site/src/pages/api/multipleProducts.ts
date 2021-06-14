@@ -4,7 +4,6 @@ import {
     FARE_TYPE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { ErrorInfo, MultiProduct, MultiProductWithErrors, NextApiRequestWithSession } from '../../interfaces';
@@ -19,7 +18,14 @@ import {
     checkProductNameIsValid,
     removeExcessWhiteSpace,
 } from './apiUtils/validator';
-import { isValidInputDuration } from './chooseValidity';
+
+export const isValidInputDuration = (durationInput: string, carnet: boolean): boolean => {
+    const allowedUnits = ['day', 'week', 'month', 'year', 'hour'];
+    if (carnet) {
+        allowedUnits.push('no expiry');
+    }
+    return allowedUnits.includes(durationInput);
+};
 
 export const getErrorsForSession = (validationResult: MultiProductWithErrors[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
@@ -304,7 +310,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/multipleProducts');
             return;
         }
-        updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, undefined);
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products: multipleProducts });
         redirectTo(res, isFlatFare ? '/ticketConfirmation' : '/periodValidity');
     } catch (error) {

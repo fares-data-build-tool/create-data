@@ -1,80 +1,76 @@
 import Cookies from 'cookies';
-import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
+import { NextApiResponse } from 'next';
+import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from '.';
 import {
-    SchemeOperatorFlatFareTicket,
-    SchemeOperatorTicket,
-    TermTimeAttribute,
-    ProductWithSalesOfferPackages,
-    CognitoIdToken,
-    FlatFareTicket,
-    NextApiRequestWithSession,
-    GeoZoneTicket,
-    PeriodMultipleServicesTicket,
-    Product,
-    ProductDetails,
-    ReturnTicket,
-    SingleTicket,
-    Stop,
-    BaseTicket,
-    BasePeriodTicket,
-    MultiOperatorMultipleServicesTicket,
-    MultiOperatorInfo,
-    Ticket,
-    isSchemeOperatorTicket,
-    MultipleProductAttribute,
-    TicketPeriod,
-    TicketPeriodWithInput,
-    SchemeOperatorGeoZoneTicket,
-    PointToPointProductInfoWithSOP,
-    BaseProduct,
-    PeriodExpiry,
-} from '../../../interfaces/index';
-
-import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants/index';
-import {
-    TERM_TIME_ATTRIBUTE,
-    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
-    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
+    FARE_ZONE_ATTRIBUTE,
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
-    FARE_ZONE_ATTRIBUTE,
-    SERVICE_LIST_ATTRIBUTE,
-    MULTIPLE_PRODUCT_ATTRIBUTE,
-    SALES_OFFER_PACKAGES_ATTRIBUTE,
-    RETURN_VALIDITY_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
-    MULTIPLE_OPERATOR_ATTRIBUTE,
+    RETURN_VALIDITY_ATTRIBUTE,
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    TERM_TIME_ATTRIBUTE,
 } from '../../../constants/attributes';
 
+import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants/index';
+import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
+import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
 import {
-    isProductWithSalesOfferPackages,
-    isSalesOfferPackageWithErrors,
-    isSalesOfferPackages,
+    BasePeriodTicket,
+    BaseProduct,
+    BaseTicket,
+    CognitoIdToken,
+    FlatFareTicket,
+    GeoZoneTicket,
+    isSchemeOperatorTicket,
+    MultiOperatorInfo,
+    MultiOperatorMultipleServicesTicket,
+    MultipleProductAttribute,
+    NextApiRequestWithSession,
+    PeriodExpiry,
+    PeriodMultipleServicesTicket,
+    PointToPointProductInfoWithSOP,
+    ProductDetails,
+    ProductWithSalesOfferPackages,
+    ReturnTicket,
+    SchemeOperatorFlatFareTicket,
+    SchemeOperatorGeoZoneTicket,
+    SchemeOperatorTicket,
+    SingleTicket,
+    Stop,
+    TermTimeAttribute,
+    Ticket,
+    TicketPeriod,
+    TicketPeriodWithInput,
+} from '../../../interfaces/index';
+import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
+
+import {
     isFareType,
     isPassengerType,
-    isTicketPeriodAttributeWithInput,
-    isPointToPointProductInfo,
     isPeriodExpiry,
-    isProductInfo,
+    isSalesOfferPackages,
+    isSalesOfferPackageWithErrors,
+    isTicketPeriodAttributeWithInput,
 } from '../../../interfaces/typeGuards';
 
 import logger from '../../../utils/logger';
-import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
-import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
 import { getSessionAttribute } from '../../../utils/sessions';
-import { getFareZones } from './matching';
-import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
-import { unescapeAndDecodeCookie, getUuidFromSession, getAndValidateNoc } from '.';
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
-import { isServiceListAttributeWithErrors } from '../../serviceList';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
+import { isServiceListAttributeWithErrors } from '../../serviceList';
+import { getFareZones } from './matching';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
@@ -178,10 +174,6 @@ export const getBaseTicketAttributes = (
     };
 };
 
-const isPeriodProductDetails = (product: Product): product is ProductDetails =>
-    (product as ProductDetails)?.productDuration !== undefined &&
-    (product as ProductDetails)?.productValidity !== undefined;
-
 export const getBasePeriodTicketAttributes = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
@@ -229,28 +221,16 @@ export const getBasePeriodTicketAttributes = (
 };
 
 const getPointToPointProducts = (req: NextApiRequestWithSession): PointToPointProductInfoWithSOP[] | BaseProduct[] => {
-    const productDetail = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+    const carnetProductDetail = getSessionAttribute(req, CARNET_PRODUCT_DETAILS_ATTRIBUTE);
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
 
     if (!isSalesOfferPackages(salesOfferPackages)) {
         throw new Error('No Sales Offer Packages data found');
     }
 
-    if (productDetail && !isPointToPointProductInfo(productDetail)) {
-        throw new Error('Invalid product detail found for point to point ticket');
-    }
-
-    if (isPointToPointProductInfo(productDetail)) {
-        return [
-            {
-                ...productDetail,
-                salesOfferPackages,
-            },
-        ];
-    }
-
     return [
         {
+            ...carnetProductDetail,
             salesOfferPackages,
         },
     ];
@@ -526,7 +506,6 @@ export const adjustSchemeOperatorJson = async (
             additionalOperators: additionalOperatorsInfo.additionalOperators,
         };
     }
-    let productDetailsList: ProductDetails[];
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
@@ -538,40 +517,21 @@ export const adjustSchemeOperatorJson = async (
         );
     }
 
-    if (!isPeriodExpiry(periodExpiryAttributeInfo)) {
-        throw new Error('Could not create ticket json. Period expiry not set.');
+    if (
+        !isPeriodExpiry(periodExpiryAttributeInfo) ||
+        isSalesOfferPackages(salesOfferPackages) ||
+        !multipleProductAttribute
+    ) {
+        logger.error('invalid values', { periodExpiryAttributeInfo, salesOfferPackages, multipleProductAttribute });
+        throw new Error('Could not create ticket json. Required values not found.');
     }
 
-    if (!multipleProductAttribute) {
-        const product = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
-        if (!isProductInfo(product)) {
-            throw new Error('Could not create geo zone ticket json. Period expiry attribute data problem.');
-        }
+    const productDetailsList = getProductsAndSalesOfferPackages(
+        salesOfferPackages,
+        multipleProductAttribute,
+        periodExpiryAttributeInfo,
+    );
 
-        if (isProductWithSalesOfferPackages(salesOfferPackages)) {
-            throw new Error('Could not create geo zone ticket json. Sales offer package info incorrect type.');
-        }
-
-        productDetailsList = [
-            {
-                productName: product.productName,
-                productPrice: product.productPrice,
-                productDuration: isPeriodProductDetails(product) ? product.productDuration : '',
-                productValidity: periodExpiryAttributeInfo.productValidity,
-                productEndTime: periodExpiryAttributeInfo.productEndTime,
-                salesOfferPackages,
-            },
-        ];
-    } else {
-        if (isSalesOfferPackages(salesOfferPackages)) {
-            throw new Error('Could not create geo zone ticket json. Product Sales offer package info incorrect type.');
-        }
-        productDetailsList = getProductsAndSalesOfferPackages(
-            salesOfferPackages,
-            multipleProductAttribute,
-            periodExpiryAttributeInfo,
-        );
-    }
     const nocCode = getAndValidateNoc(req, res);
     const atcoCodes: string[] = await getCsvZoneUploadData(`fare-zone/${nocCode}/${matchingJson.uuid}.json`);
     const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
