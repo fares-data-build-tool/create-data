@@ -616,7 +616,7 @@ export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDe
 }
 
 export interface FareType {
-    fareType: 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
+    fareType: 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return' | 'pointToPointPeriod';
 }
 
 export interface FareTypeWithErrors {
@@ -633,8 +633,8 @@ export interface GroupPassengerTypesCollectionWithErrors {
 export interface MultiProduct {
     productName: string;
     productNameId: string;
-    productPrice: string;
-    productPriceId: string;
+    productPrice?: string;
+    productPriceId?: string;
     productDuration?: string;
     productDurationId?: string;
     productDurationUnits?: ExpiryUnit;

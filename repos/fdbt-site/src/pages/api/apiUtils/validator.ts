@@ -65,6 +65,17 @@ export const checkDurationIsValid = (inputtedDuration: string): string => {
     return '';
 };
 
+export const checkDurationUnitsIsValid = (inpttedUnits: string): string => {
+    let durationUnitsError;
+    if (!inpttedUnits) {
+        durationUnitsError = `Product duration units cannot be null`;
+    }
+    if (durationUnitsError) {
+        return durationUnitsError;
+    }
+    return '';
+};
+
 export const checkIntegerIsValid = (input: string, inputName: string, min: number, max: number): string => {
     if (input === '') {
         return `${inputName} cannot be empty`;

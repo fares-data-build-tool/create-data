@@ -40,7 +40,7 @@ export const getErrorsForSession = (validationResult: MultiProductWithErrors[]):
         if (product.productPriceError) {
             errors.push({
                 errorMessage: product.productPriceError,
-                id: product.productPriceId,
+                id: product.productPriceId!,
             });
         }
 

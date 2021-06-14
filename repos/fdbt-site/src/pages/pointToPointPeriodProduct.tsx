@@ -1,14 +1,7 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import {
-    OPERATOR_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
-    FARE_ZONE_ATTRIBUTE,
-    SERVICE_LIST_ATTRIBUTE,
-    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
-} from '../constants/attributes';
+import { MULTIPLE_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, PointToPointPeriodProduct } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormErrorBlock, FormGroupWrapper } from '../components/FormElementWrapper';
@@ -104,10 +97,10 @@ const ProductDetails = ({
                                     <ExpirySelector
                                         defaultDuration={periodValue}
                                         defaultUnit={periodUnits}
-                                        quantityName="periodQuantity"
+                                        quantityName="productDuration"
                                         quantityId="product-details-expiry-quantity"
                                         hintId="product-expiry-hint"
-                                        unitName="periodUnitt"
+                                        unitName="durationUnits"
                                         unitId="product-details-expiry-unit"
                                         errors={errors}
                                     />
@@ -124,20 +117,11 @@ const ProductDetails = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PointToPointPeriodProductProps } => {
     const csrfToken = getCsrfToken(ctx);
-
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
-    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
-    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
-    const multipleOperatorsServicesAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
-    const fareZoneAttribute = getSessionAttribute(ctx.req, FARE_ZONE_ATTRIBUTE);
-    const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
-
+    const products = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     let hintText = '';
 
-    if (
-        !operatorAttribute?.name ||
-        (!fareZoneAttribute && !serviceListAttribute && !multipleOperatorsServicesAttribute)
-    ) {
+    if (!operatorAttribute?.name) {
         throw new Error('Failed to retrieve the necessary session objects.');
     }
 
@@ -146,7 +130,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Po
             product: null,
             operator: operatorAttribute.name,
             passengerType: 'adult',
-            errors: [],
+            errors: products && 'errors' in products ? products.errors : [],
             hintText,
             csrfToken,
         },
