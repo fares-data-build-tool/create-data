@@ -2,6 +2,8 @@ import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import { NextApiResponse } from 'next';
 import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from '.';
+
+import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -22,8 +24,6 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
 } from '../../../constants/attributes';
-
-import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants/index';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
 import {
@@ -53,7 +53,7 @@ import {
     Ticket,
     TicketPeriod,
     TicketPeriodWithInput,
-} from '../../../interfaces/index';
+} from '../../../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
 
 import {
