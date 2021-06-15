@@ -1,4 +1,3 @@
-import { MULTIPLE_PRODUCT_ATTRIBUTE } from './../../../src/constants/attributes';
 import multipleProduct, {
     checkProductPricesAreValid,
     checkProductDurationsAreValid,
@@ -22,6 +21,7 @@ import {
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 
@@ -130,7 +130,7 @@ describe('multipleProducts', () => {
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
 
-    const carnetCases: any[] = [
+    const carnetCases = [
         [
             {
                 multipleProductNameInput0: 'Best Product',
