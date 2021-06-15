@@ -18,7 +18,7 @@ export const STAGE_NAMES_ATTRIBUTE = 'fdbt-stage-names';
 
 export const DURATION_VALID_ATTRIBUTE = 'fdbt-duration-valid';
 
-export const PRODUCT_DETAILS_ATTRIBUTE = 'fdbt-product-details';
+export const CARNET_PRODUCT_DETAILS_ATTRIBUTE = 'fdbt-carnet-product-details';
 
 export const TICKET_REPRESENTATION_ATTRIBUTE = 'fdbt-ticket-representation';
 

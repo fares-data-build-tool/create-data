@@ -439,6 +439,25 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   Smart card
                 </label>
               </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-electronic-document"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-3-electronic-document"
+                  name="ticketFormats"
+                  type="checkbox"
+                  value="electronic_document"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-3-electronic-document"
+                >
+                  Digital
+                </label>
+              </div>
             </FormElementWrapper>
           </fieldset>
         </Component>
@@ -849,6 +868,25 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   Smart card
                 </label>
               </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-electronic-document"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-3-electronic-document"
+                  name="ticketFormats"
+                  type="checkbox"
+                  value="electronic_document"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-3-electronic-document"
+                >
+                  Digital
+                </label>
+              </div>
             </FormElementWrapper>
           </fieldset>
         </Component>
@@ -1257,6 +1295,25 @@ exports[`pages salesOfferPackage should render mapped values correctly 1`] = `
                   htmlFor="checkbox-2-smart-card"
                 >
                   Smart card
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-electronic-document"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-3-electronic-document"
+                  name="ticketFormats"
+                  type="checkbox"
+                  value="electronic_document"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-3-electronic-document"
+                >
+                  Digital
                 </label>
               </div>
             </FormElementWrapper>

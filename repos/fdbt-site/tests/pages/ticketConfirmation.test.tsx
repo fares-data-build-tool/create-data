@@ -10,7 +10,7 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
+    CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
@@ -228,7 +228,7 @@ describe('pages', () => {
                         [SERVICE_LIST_ATTRIBUTE]: undefined,
                         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: 1,
                         [PERIOD_EXPIRY_ATTRIBUTE]: mockPeriodExpiry,
-                        [PRODUCT_DETAILS_ATTRIBUTE]: {
+                        [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: {
                             products: mockSingleProduct,
                         },
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: {
@@ -247,7 +247,7 @@ describe('pages', () => {
                         [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
                         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: 1,
                         [PERIOD_EXPIRY_ATTRIBUTE]: mockPeriodExpiry,
-                        [PRODUCT_DETAILS_ATTRIBUTE]: {
+                        [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: {
                             products: mockSingleProduct,
                         },
                         [TXC_SOURCE_ATTRIBUTE]: {

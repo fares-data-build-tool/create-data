@@ -139,6 +139,7 @@ exports[`pages carnetProductDetails should render correctly 1`] = `
             errors={Array []}
           />
           <ExpirySelector
+            carnet={true}
             defaultDuration="2"
             defaultUnit="day"
             errors={Array []}

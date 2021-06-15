@@ -22,8 +22,11 @@ module.exports = {
         sourceType: 'module',
         project: './tsconfig.json',
     },
-    plugins: ['@typescript-eslint'],
+    plugins: ['@typescript-eslint', 'jest'],
     rules: {
+        'jest/no-disabled-tests': 'error',
+        'jest/no-identical-title': 'error',
+        'jest/valid-expect': 'error',
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': [
             'error',

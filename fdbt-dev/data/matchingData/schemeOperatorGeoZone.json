@@ -2,7 +2,7 @@
   "schemeOperatorName": "IW Buses",
   "schemeOperatorRegionCode": "Y",
   "additionalNocs": ["WBTR", "DCCL", "HCTY"],
-  "type": "multiOperator",
+  "type": "period",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
   "timeRestriction": [
