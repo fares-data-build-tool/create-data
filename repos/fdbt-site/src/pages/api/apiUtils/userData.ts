@@ -2,7 +2,10 @@ import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import { NextApiResponse } from 'next';
 import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from '.';
+
+import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants';
 import {
+    CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
@@ -15,15 +18,12 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
 } from '../../../constants/attributes';
-
-import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
 import {
@@ -41,7 +41,6 @@ import {
     PeriodExpiry,
     PeriodMultipleServicesTicket,
     PointToPointProductInfoWithSOP,
-    Product,
     ProductDetails,
     ProductWithSalesOfferPackages,
     ReturnTicket,
@@ -61,9 +60,6 @@ import {
     isFareType,
     isPassengerType,
     isPeriodExpiry,
-    isPointToPointProductInfo,
-    isProductInfo,
-    isProductWithSalesOfferPackages,
     isSalesOfferPackages,
     isSalesOfferPackageWithErrors,
     isTicketPeriodAttributeWithInput,
@@ -178,10 +174,6 @@ export const getBaseTicketAttributes = (
     };
 };
 
-const isPeriodProductDetails = (product: Product): product is ProductDetails =>
-    (product as ProductDetails)?.productDuration !== undefined &&
-    (product as ProductDetails)?.productValidity !== undefined;
-
 export const getBasePeriodTicketAttributes = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
@@ -229,28 +221,16 @@ export const getBasePeriodTicketAttributes = (
 };
 
 const getPointToPointProducts = (req: NextApiRequestWithSession): PointToPointProductInfoWithSOP[] | BaseProduct[] => {
-    const productDetail = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+    const carnetProductDetail = getSessionAttribute(req, CARNET_PRODUCT_DETAILS_ATTRIBUTE);
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
 
     if (!isSalesOfferPackages(salesOfferPackages)) {
         throw new Error('No Sales Offer Packages data found');
     }
 
-    if (productDetail && !isPointToPointProductInfo(productDetail)) {
-        throw new Error('Invalid product detail found for point to point ticket');
-    }
-
-    if (isPointToPointProductInfo(productDetail)) {
-        return [
-            {
-                ...productDetail,
-                salesOfferPackages,
-            },
-        ];
-    }
-
     return [
         {
+            ...carnetProductDetail,
             salesOfferPackages,
         },
     ];
@@ -526,7 +506,6 @@ export const adjustSchemeOperatorJson = async (
             additionalOperators: additionalOperatorsInfo.additionalOperators,
         };
     }
-    let productDetailsList: ProductDetails[];
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
@@ -538,40 +517,21 @@ export const adjustSchemeOperatorJson = async (
         );
     }
 
-    if (!isPeriodExpiry(periodExpiryAttributeInfo)) {
-        throw new Error('Could not create ticket json. Period expiry not set.');
+    if (
+        !isPeriodExpiry(periodExpiryAttributeInfo) ||
+        isSalesOfferPackages(salesOfferPackages) ||
+        !multipleProductAttribute
+    ) {
+        logger.error('invalid values', { periodExpiryAttributeInfo, salesOfferPackages, multipleProductAttribute });
+        throw new Error('Could not create ticket json. Required values not found.');
     }
 
-    if (!multipleProductAttribute) {
-        const product = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
-        if (!isProductInfo(product)) {
-            throw new Error('Could not create geo zone ticket json. Period expiry attribute data problem.');
-        }
+    const productDetailsList = getProductsAndSalesOfferPackages(
+        salesOfferPackages,
+        multipleProductAttribute,
+        periodExpiryAttributeInfo,
+    );
 
-        if (isProductWithSalesOfferPackages(salesOfferPackages)) {
-            throw new Error('Could not create geo zone ticket json. Sales offer package info incorrect type.');
-        }
-
-        productDetailsList = [
-            {
-                productName: product.productName,
-                productPrice: product.productPrice,
-                productDuration: isPeriodProductDetails(product) ? product.productDuration : '',
-                productValidity: periodExpiryAttributeInfo.productValidity,
-                productEndTime: periodExpiryAttributeInfo.productEndTime,
-                salesOfferPackages,
-            },
-        ];
-    } else {
-        if (isSalesOfferPackages(salesOfferPackages)) {
-            throw new Error('Could not create geo zone ticket json. Product Sales offer package info incorrect type.');
-        }
-        productDetailsList = getProductsAndSalesOfferPackages(
-            salesOfferPackages,
-            multipleProductAttribute,
-            periodExpiryAttributeInfo,
-        );
-    }
     const nocCode = getAndValidateNoc(req, res);
     const atcoCodes: string[] = await getCsvZoneUploadData(`fare-zone/${nocCode}/${matchingJson.uuid}.json`);
     const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);

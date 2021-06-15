@@ -1,41 +1,39 @@
 import {
-    PeriodTicket,
-    PointToPointTicket,
-    PeriodMultipleServicesTicket,
-    FlatFareTicket,
-    GeoZoneTicket,
-    InputMethodInfo,
+    CarnetProductInfo,
     ErrorInfo,
-    Journey,
-    JourneyWithErrors,
-    TicketRepresentationAttribute,
-    TicketRepresentationAttributeWithErrors,
-    SalesOfferPackage,
-    ProductWithSalesOfferPackages,
-    TicketPeriodWithInput,
-    TicketPeriodWithErrors,
-    MultiOperatorInfo,
-    MultiOperatorInfoWithErrors,
-    TermTimeAttribute,
-    WithErrors,
-    InputCheck,
     FareStagesAttribute,
     FareStagesAttributeWithErrors,
     FareType,
     FareTypeWithErrors,
-    PassengerType,
-    PassengerTypeWithErrors,
-    SchoolFareTypeAttribute,
+    FlatFareTicket,
+    GeoZoneTicket,
+    InputCheck,
+    InputMethodInfo,
+    Journey,
+    JourneyWithErrors,
+    MultiOperatorInfo,
+    MultiOperatorInfoWithErrors,
     MultipleOperatorsAttribute,
     MultipleOperatorsAttributeWithErrors,
+    PassengerType,
+    PassengerTypeWithErrors,
+    PeriodExpiry,
+    PeriodMultipleServicesTicket,
+    PeriodTicket,
+    PointToPointTicket,
+    ProductData,
+    ProductInfo,
+    ProductInfoWithErrors,
+    ProductWithSalesOfferPackages,
+    SalesOfferPackage,
     SelectSalesOfferPackageWithError,
     Service,
     ServiceWithErrors,
-    PointToPointProductInfo,
-    ProductInfo,
-    ProductData,
-    ProductInfoWithErrors,
-    PeriodExpiry,
+    TicketPeriodWithErrors,
+    TicketPeriodWithInput,
+    TicketRepresentationAttribute,
+    TicketRepresentationAttributeWithErrors,
+    WithErrors,
 } from '.';
 import { validFareTypes } from '../constants';
 
@@ -64,11 +62,6 @@ export const isFareType = (fareType: FareType | FareTypeWithErrors | undefined):
     (fareType as FareType).fareType !== undefined &&
     validFareTypes.includes((fareType as FareType).fareType);
 
-export const isSchoolFareType = (
-    schoolFareType: SchoolFareTypeAttribute | WithErrors<SchoolFareTypeAttribute> | undefined,
-): schoolFareType is SchoolFareTypeAttribute =>
-    schoolFareType !== undefined && (schoolFareType as SchoolFareTypeAttribute).schoolFareType !== undefined;
-
 export const inputMethodErrorsExist = (
     inputMethodAttribute: InputMethodInfo | ErrorInfo | undefined,
 ): inputMethodAttribute is ErrorInfo => (inputMethodAttribute as ErrorInfo)?.errorMessage !== undefined;
@@ -90,10 +83,6 @@ export const isServiceAttributeWithErrors = (
 export const isService = (service: Service | ServiceWithErrors | undefined): service is Service => {
     return service !== undefined && (service as Service).service !== undefined;
 };
-
-export const isJourneyAttributeWithErrors = (
-    journeyAttribute: Journey | JourneyWithErrors,
-): journeyAttribute is JourneyWithErrors => (journeyAttribute as JourneyWithErrors).errors !== undefined;
 
 export const isJourney = (journey: Journey | JourneyWithErrors | undefined): journey is Journey => {
     return (
@@ -180,27 +169,11 @@ export const isMultiOperatorInfoWithErrors = (
 ): multiOperatorInfo is MultiOperatorInfoWithErrors =>
     multiOperatorInfo !== undefined && (multiOperatorInfo as MultiOperatorInfoWithErrors).errors !== undefined;
 
-export const isTermTimeAttributeWithErrors = (
-    termTime: undefined | TermTimeAttribute | WithErrors<TermTimeAttribute>,
-): termTime is WithErrors<TermTimeAttribute> =>
-    !!termTime && (termTime as WithErrors<TermTimeAttribute>).errors !== undefined;
-
-export const isPointToPointProductInfo = (
-    productDetailsAttribute:
-        | PointToPointProductInfo
-        | ProductInfo
-        | ProductData
-        | WithErrors<ProductInfo>
-        | WithErrors<PointToPointProductInfo>
-        | undefined,
-): productDetailsAttribute is PointToPointProductInfo =>
-    !!productDetailsAttribute && (productDetailsAttribute as PointToPointProductInfo).carnetDetails !== undefined;
-
 export const isWithErrors = <T>(value: T): value is WithErrors<T> =>
     !!value && (value as WithErrors<T>).errors !== undefined && (value as WithErrors<T>).errors.length > 0;
 
 export const isProductInfo = (
-    productDetailsAttribute: ProductInfo | ProductData | PointToPointProductInfo | ProductInfoWithErrors | undefined,
+    productDetailsAttribute: ProductInfo | ProductData | CarnetProductInfo | ProductInfoWithErrors | undefined,
 ): productDetailsAttribute is ProductInfo => !!productDetailsAttribute && 'productName' in productDetailsAttribute;
 
 export const isPeriodExpiry = (

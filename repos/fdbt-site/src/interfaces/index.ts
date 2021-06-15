@@ -55,12 +55,12 @@ export interface ProductInfo {
     carnetDetails?: CarnetDetails;
 }
 
-export interface PointToPointProductInfo {
+export interface CarnetProductInfo {
     productName: string;
     carnetDetails: CarnetDetails;
 }
 
-export interface PointToPointProductInfoWithSOP extends PointToPointProductInfo {
+export interface PointToPointProductInfoWithSOP extends CarnetProductInfo {
     salesOfferPackages: SalesOfferPackage[];
 }
 
@@ -333,7 +333,7 @@ export interface BasePointToPointTicket extends BaseTicket {
     lineName: string;
     lineId: string;
     serviceDescription: string;
-    products: (BaseProduct | PointToPointProductInfo)[];
+    products: (BaseProduct | CarnetProductInfo)[];
 }
 
 export interface SingleTicket extends BasePointToPointTicket {
