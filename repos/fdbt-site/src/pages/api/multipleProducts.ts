@@ -200,7 +200,7 @@ export const checkCarnetExpiriesAreValid = (products: MultiProduct[]): MultiProd
         const trimmedQuantity = removeExcessWhiteSpace(expiryTime);
         const expiryError = checkIntegerIsValid(trimmedQuantity, 'Carnet expiry amount', 1, 999);
 
-        if (expiryError) {
+        if (expiryError && product.carnetDetails?.expiryUnit !== 'no expiry') {
             return {
                 ...product,
                 productCarnetExpiryDurationError: expiryError,
@@ -283,7 +283,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 productPriceId,
                 carnetDetails: quantity && {
                     quantity,
-                    expiryTime,
+                    expiryTime: expiryUnit === 'no expiry' ? '' : expiryTime,
                     expiryUnit,
                 },
                 productCarnetQuantityId,
