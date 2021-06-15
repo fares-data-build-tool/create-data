@@ -1,5 +1,6 @@
 import * as attributes from '../constants/attributes';
 import {
+    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
     CSV_UPLOAD_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
@@ -80,6 +81,7 @@ import {
     PassengerType,
     PassengerTypeWithErrors,
     PeriodExpiry,
+    PointToPointPeriodProduct,
     PointToPointProductInfo,
     ProductData,
     ProductInfo,
@@ -164,6 +166,7 @@ interface SessionAttributeTypes {
     [SAVE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
     [CARNET_FARE_TYPE_ATTRIBUTE]: boolean;
     [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: GroupPassengerType[];
+    [POINT_TO_POINT_PRODUCT_ATTRIBUTE]: PointToPointPeriodProduct | WithErrors<PointToPointPeriodProduct>;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

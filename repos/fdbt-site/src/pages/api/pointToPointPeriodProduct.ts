@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
-import { MULTIPLE_PRODUCT_ATTRIBUTE } from 'src/constants/attributes';
+import { POINT_TO_POINT_PRODUCT_ATTRIBUTE } from 'src/constants/attributes';
 import { updateSessionAttribute } from 'src/utils/sessions';
-import { ErrorInfo, MultiProduct, NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession, PointToPointPeriodProduct } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
 import { checkDurationIsValid, checkDurationUnitsIsValid, checkProductNameIsValid } from './apiUtils/validator';
 
@@ -10,16 +10,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         console.log(req.body);
 
         const { productNameInput, productDuration, durationUnits } = req.body;
-        const multipleProducts: MultiProduct[] = [
-            {
-                productName: productNameInput,
-                productNameId: 'point-to-point-period-product-name',
-                productDuration: productDuration,
-                productDurationId: '',
-                productDurationUnits: durationUnits,
-                productDurationUnitsId: 'periodUnit',
-            },
-        ];
+        const pointToPointPeriodProduct: PointToPointPeriodProduct = {
+            productName: productNameInput,
+            periodValue: productDuration,
+            periodUnits: durationUnits,
+        };
 
         const nameCheckError = checkProductNameIsValid(productNameInput);
         const durationCheckError = checkDurationIsValid(productDuration);
@@ -45,10 +40,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                     id: 'product-details-expiry-unit',
                 });
             }
-            updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { errors, products: multipleProducts });
+            updateSessionAttribute(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE, {
+                errors,
+                ...pointToPointPeriodProduct,
+            });
             redirectTo(res, '/pointToPointPeriodProduct');
         }
-        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products: multipleProducts });
+        updateSessionAttribute(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE, pointToPointPeriodProduct);
         redirectTo(res, '/periodValidity');
     } catch (error) {
         const message = 'There was a problem processing the product details.';

@@ -633,8 +633,8 @@ export interface GroupPassengerTypesCollectionWithErrors {
 export interface MultiProduct {
     productName: string;
     productNameId: string;
-    productPrice?: string;
-    productPriceId?: string;
+    productPrice: string;
+    productPriceId: string;
     productDuration?: string;
     productDurationId?: string;
     productDurationUnits?: ExpiryUnit;
