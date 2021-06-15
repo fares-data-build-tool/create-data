@@ -1,3 +1,4 @@
+import { MULTIPLE_PRODUCT_ATTRIBUTE } from './../../../src/constants/attributes';
 import multipleProduct, {
     checkProductPricesAreValid,
     checkProductDurationsAreValid,
@@ -22,6 +23,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
+import * as sessions from '../../../src/utils/sessions';
 
 describe('multipleProducts', () => {
     let writeHeadMock: jest.Mock;
@@ -207,6 +209,70 @@ describe('multipleProducts', () => {
         (setCookieOnResponseObject as {}) = jest.fn();
         multipleProduct(req, res);
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
+    });
+
+    it('does not store the expiry time units if no expiry is chosen from the dropdown', () => {
+        const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                multipleProductNameInput0: 'Best Product',
+                multipleProductPriceInput0: '2.00',
+                multipleProductDurationInput0: '3',
+                multipleProductDurationUnitsInput0: 'day',
+                carnetQuantityInput0: '10',
+                carnetExpiryDurationInput0: '5',
+                carnetExpiryUnitInput0: 'no expiry',
+                multipleProductNameInput1: 'Second Best Product',
+                multipleProductPriceInput1: '2.05',
+                multipleProductDurationInput1: '54',
+                multipleProductDurationUnitsInput1: 'week',
+                carnetQuantityInput1: '20',
+                carnetExpiryDurationInput1: '90',
+                carnetExpiryUnitInput1: 'no expiry',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [CARNET_FARE_TYPE_ATTRIBUTE]: true,
+            },
+        });
+
+        (setCookieOnResponseObject as {}) = jest.fn();
+        multipleProduct(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/periodValidity' });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
+            products: [
+                {
+                    carnetDetails: { expiryTime: '', expiryUnit: 'no expiry', quantity: '10' },
+                    productCarnetExpiryDurationId: 'product-details-carnet-expiry-quantity-0',
+                    productCarnetExpiryUnitsId: 'product-details-carnet-expiry-unit-0',
+                    productCarnetQuantityId: 'product-details-carnet-quantity-0',
+                    productDuration: '3',
+                    productDurationId: 'product-details-period-duration-quantity-0',
+                    productDurationUnits: 'day',
+                    productDurationUnitsId: 'product-details-period-duration-unit-0',
+                    productName: 'Best Product',
+                    productNameId: 'multiple-product-name-0',
+                    productPrice: '2.00',
+                    productPriceId: 'multiple-product-price-0',
+                },
+                {
+                    carnetDetails: { expiryTime: '', expiryUnit: 'no expiry', quantity: '20' },
+                    productCarnetExpiryDurationId: 'product-details-carnet-expiry-quantity-1',
+                    productCarnetExpiryUnitsId: 'product-details-carnet-expiry-unit-1',
+                    productCarnetQuantityId: 'product-details-carnet-quantity-1',
+                    productDuration: '54',
+                    productDurationId: 'product-details-period-duration-quantity-1',
+                    productDurationUnits: 'week',
+                    productDurationUnitsId: 'product-details-period-duration-unit-1',
+                    productName: 'Second Best Product',
+                    productNameId: 'multiple-product-name-1',
+                    productPrice: '2.05',
+                    productPriceId: 'multiple-product-price-1',
+                },
+            ],
+        });
     });
 
     it('redirects to ticket confirmation for a flat fare ticket', () => {
