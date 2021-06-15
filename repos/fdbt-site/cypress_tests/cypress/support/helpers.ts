@@ -6,9 +6,9 @@ export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
 };
 
-export const getElementById = (id: string): Cypress.Chainable<JQuery<HTMLElement>> => cy.get(`[id=${id}]`);
+export const getElementById = (id: string): Cypress.Chainable<JQuery> => cy.get(`[id=${id}]`);
 
-export const clickElementById = (id: string): Cypress.Chainable<JQuery<HTMLElement>> => getElementById(id).click();
+export const clickElementById = (id: string): Cypress.Chainable<JQuery> => getElementById(id).click();
 
 export const getRandomNumber = (min: number, max: number): number => Cypress._.random(min, max);
 
@@ -19,13 +19,13 @@ export const getHomePage = (isScheme: boolean): void => {
 
 export const fareTypeToFareTypeIdMapper = (fareType: FareType): string => `radio-option-${fareType}`;
 
-export const startPageLinkClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('faretype-link');
+export const startPageLinkClick = (): Cypress.Chainable<JQuery> => clickElementById('faretype-link');
 
-export const continueButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('continue-button');
+export const continueButtonClick = (): Cypress.Chainable<JQuery> => clickElementById('continue-button');
 
-export const submitButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('submit-button');
+export const submitButtonClick = (): Cypress.Chainable<JQuery> => clickElementById('submit-button');
 
-export const assertElementNotVisibleById = (id: string): Cypress.Chainable<JQuery<HTMLElement>> =>
+export const assertElementNotVisibleById = (id: string): Cypress.Chainable<JQuery> =>
     getElementById(id).should('not.be.visible');
 
 export const completeGroupSizePage = (): string => {
@@ -240,16 +240,6 @@ export const randomlyChooseSingleProductPeriodValidity = (): void => {
     }
 };
 
-export const selectOptionFromDropDownByIndex = (dropDownId: string, index: number): void => {
-    cy.get(`[id=${dropDownId}]`)
-        .find('option')
-        .then($elm => {
-            $elm.get(index).setAttribute('selected', 'selected');
-        })
-        .parent()
-        .trigger('change');
-};
-
 export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
     cy.get(`[id=${dropDownId}]`)
         .find('option')
@@ -375,12 +365,12 @@ export const completeSalesOfferPackagesForMultipleProducts = (
 ): void => {
     for (let i = 0; i < numberOfProducts; i += 1) {
         const randomSalesOfferPackageIndex = getRandomNumber(0, 3);
-        getElementById(
-            `${multiProductNamePrefix.replace(' ', '').trim()}${i + 1}-checkbox-${randomSalesOfferPackageIndex}`,
-        ).click();
+        const idPrefix = `${multiProductNamePrefix.replace(/ /g, '').trim()}${i + 1}-checkbox-`;
+
+        getElementById(`${idPrefix}${randomSalesOfferPackageIndex}`).click();
         if (getRandomNumber(0, 1) === 1) {
             getElementById(
-                `${multiProductNamePrefix.replace(' ', '').trim()}${i + 1}-checkbox-${
+                `${idPrefix}${
                     randomSalesOfferPackageIndex === 3
                         ? randomSalesOfferPackageIndex - 1
                         : randomSalesOfferPackageIndex + 1
@@ -478,7 +468,11 @@ export const uploadFile = (elementId: string, fileName: string): void => {
     getElementById(elementId).attachFile(fileName);
 };
 
-export const completeMultipleProducts = (numberOfProducts = 1, multiProductNamePrefix?: string): void => {
+export const completeMultipleProducts = (
+    numberOfProducts = 1,
+    multiProductNamePrefix?: string,
+    carnet?: boolean,
+): void => {
     for (let i = 0; i < numberOfProducts; i += 1) {
         if (i !== 0) {
             clickElementById('add-another-button');
@@ -488,6 +482,11 @@ export const completeMultipleProducts = (numberOfProducts = 1, multiProductNameP
         getElementById(`multiple-product-price-${i}`).type(`1${i}`);
         getElementById(`product-details-period-duration-quantity-${i}`).type(`2${i}`);
         selectRandomOptionFromDropDown(`product-details-period-duration-unit-${i}`);
+        if (carnet) {
+            getElementById(`product-details-carnet-quantity-${i}`).type((2 + i).toString());
+            getElementById(`product-details-carnet-expiry-quantity-${i}`).type('1');
+            selectRandomOptionFromDropDown(`product-details-carnet-expiry-unit-${i}`);
+        }
     }
 
     continueButtonClick();
@@ -498,7 +497,7 @@ export const completeMultipleProducts = (numberOfProducts = 1, multiProductNameP
 
 export const completeOperatorSearch = (isMultiService: boolean): void => {
     cy.url()
-        .should('match', /\/[searchOperators|reuseOperatorGroup]/) // This is bassicly a wait to ensure we're on the correct page
+        .should('match', /\/(searchOperators|reuseOperatorGroup)$/) // This is bassicly a wait to ensure we're on the correct page
         .then((url: string) => {
             if (url.includes('reuseOperatorGroup')) {
                 clickElementById('reuse-operator-group-no');
