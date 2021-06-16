@@ -1,5 +1,4 @@
-/* eslint-disable */
-
+import 'jsdom-global/register';
 import 'react';
 import { configure } from 'enzyme';
 

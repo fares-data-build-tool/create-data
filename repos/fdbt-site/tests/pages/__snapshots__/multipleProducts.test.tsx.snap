@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages multipleProduct should render correctly for 5 products 1`] = `
-<Component
+<FullColumnLayout
   description="Multiple Product entry page of the Create Fares Data Service"
   errors={Array []}
   title="Multiple Product - Create Fares Data Service"
@@ -58,11 +58,11 @@ exports[`pages multipleProduct should render correctly for 5 products 1`] = `
       />
     </div>
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;
 
 exports[`pages multipleProduct should render correctly for a flat fare carnet 1`] = `
-<Component
+<FullColumnLayout
   description="Multiple Product entry page of the Create Fares Data Service"
   errors={Array []}
   title="Multiple Product - Create Fares Data Service"
@@ -111,11 +111,11 @@ exports[`pages multipleProduct should render correctly for a flat fare carnet 1`
       />
     </div>
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;
 
 exports[`pages multipleProduct should render correctly for a flat fare non carnet 1`] = `
-<Component
+<FullColumnLayout
   description="Multiple Product entry page of the Create Fares Data Service"
   errors={Array []}
   title="Multiple Product - Create Fares Data Service"
@@ -152,11 +152,11 @@ exports[`pages multipleProduct should render correctly for a flat fare non carne
       />
     </div>
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;
 
 exports[`pages multipleProduct should render correctly for a non flat fare non carnet 1`] = `
-<Component
+<FullColumnLayout
   description="Multiple Product entry page of the Create Fares Data Service"
   errors={Array []}
   title="Multiple Product - Create Fares Data Service"
@@ -205,11 +205,11 @@ exports[`pages multipleProduct should render correctly for a non flat fare non c
       />
     </div>
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;
 
 exports[`pages multipleProduct should render correctly for a period carnet 1`] = `
-<Component
+<FullColumnLayout
   description="Multiple Product entry page of the Create Fares Data Service"
   errors={Array []}
   title="Multiple Product - Create Fares Data Service"
@@ -258,5 +258,5 @@ exports[`pages multipleProduct should render correctly for a period carnet 1`] =
       />
     </div>
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;

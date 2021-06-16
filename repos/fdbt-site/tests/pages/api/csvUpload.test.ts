@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as csvUpload from '../../../src/pages/api/csvUpload';
 import * as fileUpload from '../../../src/pages/api/apiUtils/fileUpload';
+import * as virusCheck from '../../../src/pages/api/apiUtils/virusScan';
 import * as csvData from '../../testData/csvFareTriangleData';
 import * as s3 from '../../../src/data/s3';
 import * as sessions from '../../../src/utils/sessions';
@@ -10,7 +11,7 @@ import { containsDuplicateFareStages } from '../../../src/pages/api/csvUpload';
 import { ErrorInfo } from '../../../src/interfaces';
 import { CSV_UPLOAD_ATTRIBUTE, JOURNEY_ATTRIBUTE } from '../../../src/constants/attributes';
 
-jest.spyOn(s3, 'putStringInS3');
+jest.spyOn(s3, 'putDataInS3');
 
 describe('csvUpload', () => {
     const loggerSpy = jest.spyOn(logger, 'warn');
@@ -48,7 +49,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -90,7 +91,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -135,7 +136,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -185,7 +186,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -231,25 +232,15 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
-        expect(s3.putStringInS3).toBeCalledWith(
-            'fdbt-raw-user-data-dev',
-            expect.any(String),
-            JSON.stringify(csvData.unprocessedObject.Body),
-            'text/csv; charset=utf-8',
-        );
+        expect(s3.putDataInS3).toBeCalledWith(csvData.unprocessedObject.Body, expect.any(String), false);
 
-        expect(s3.putStringInS3).toBeCalledWith(
-            'fdbt-user-data-dev',
-            expect.any(String),
-            JSON.stringify(csvData.processedObject.Body),
-            'application/json; charset=utf-8',
-        );
+        expect(s3.putDataInS3).toBeCalledWith(csvData.processedObject.Body, expect.any(String), true);
     });
 
     it('should correctly generate data with empty cells and spaces and upload it to S3', async () => {
@@ -278,25 +269,15 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
-        expect(s3.putStringInS3).toBeCalledWith(
-            'fdbt-raw-user-data-dev',
-            expect.any(String),
-            JSON.stringify(csvData.unprocessedObjectWithEmptyCells.Body),
-            'text/csv; charset=utf-8',
-        );
+        expect(s3.putDataInS3).toBeCalledWith(csvData.unprocessedObjectWithEmptyCells.Body, expect.any(String), false);
 
-        expect(s3.putStringInS3).toBeCalledWith(
-            'fdbt-user-data-dev',
-            expect.any(String),
-            JSON.stringify(csvData.processedObjectWithEmptyCells.Body),
-            'application/json; charset=utf-8',
-        );
+        expect(s3.putDataInS3).toBeCalledWith(csvData.processedObjectWithEmptyCells.Body, expect.any(String), true);
     });
 
     it('should correctly generate data with decimal prices when pounds is selected', async () => {
@@ -325,25 +306,19 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
-        expect(s3.putStringInS3).toBeCalledWith(
-            'fdbt-raw-user-data-dev',
+        expect(s3.putDataInS3).toBeCalledWith(
+            csvData.unprocessedObjectWithDecimalPrices.Body,
             expect.any(String),
-            JSON.stringify(csvData.unprocessedObjectWithDecimalPrices.Body),
-            'text/csv; charset=utf-8',
+            false,
         );
 
-        expect(s3.putStringInS3).toBeCalledWith(
-            'fdbt-user-data-dev',
-            expect.any(String),
-            JSON.stringify(csvData.processedObject.Body),
-            'application/json; charset=utf-8',
-        );
+        expect(s3.putDataInS3).toBeCalledWith(csvData.processedObject.Body, expect.any(String), true);
     });
 
     it('should return 302 redirect to /outboundMatching when the happy path is used (ticketer format)', async () => {
@@ -377,7 +352,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -420,7 +395,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -461,7 +436,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -508,7 +483,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -549,7 +524,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -595,7 +570,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -642,7 +617,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -683,7 +658,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -723,7 +698,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(true);
 

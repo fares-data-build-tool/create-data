@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages reuseOperatorGroup should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Reuse Operator Group page of the Create Fares Data Service"
   errors={Array []}
   title="Reuse Operator Group - Create Fares Data Service"
@@ -78,11 +78,11 @@ exports[`pages reuseOperatorGroup should render correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages reuseOperatorGroup should render errors when user does not provide a group name 1`] = `
-<Component
+<TwoThirdsLayout
   description="Reuse Operator Group page of the Create Fares Data Service"
   errors={
     Array [
@@ -178,11 +178,11 @@ exports[`pages reuseOperatorGroup should render errors when user does not provid
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages reuseOperatorGroup should render errors when user does not select a radio button 1`] = `
-<Component
+<TwoThirdsLayout
   description="Reuse Operator Group page of the Create Fares Data Service"
   errors={
     Array [
@@ -278,5 +278,5 @@ exports[`pages reuseOperatorGroup should render errors when user does not select
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

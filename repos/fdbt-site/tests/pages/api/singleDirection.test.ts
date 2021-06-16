@@ -1,4 +1,4 @@
-import { setCookieOnResponseObject, getUuidFromSession } from '../../../src/pages/api/apiUtils/index';
+import * as apiUtils from '../../../src/pages/api/apiUtils/index';
 import direction from '../../../src/pages/api/singleDirection';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
@@ -15,7 +15,7 @@ describe('direction', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
-        (setCookieOnResponseObject as {}) = jest.fn();
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         direction(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/singleDirection',
@@ -23,13 +23,13 @@ describe('direction', () => {
     });
 
     it('should return 302 redirect to /inputMethod when request body is present and fareType is single', () => {
-        (getUuidFromSession as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
+        jest.spyOn(apiUtils, 'getUuidFromSession').mockReturnValue('testUuid');
         const { req, res } = getMockRequestAndResponse({
             body: { directionJourneyPattern: 'test_journey' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
-        (setCookieOnResponseObject as {}) = jest.fn();
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         direction(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/inputMethod',

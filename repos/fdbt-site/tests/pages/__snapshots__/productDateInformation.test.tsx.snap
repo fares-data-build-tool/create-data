@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages productDateInformation it should render errors correctly when radio errors are passed to the page 1`] = `
-<Component
+<TwoThirdsLayout
   description="Product Date Information page of the Create Fares Data Service"
   title="Product Date Information - Create Fares Data Service"
 >
@@ -96,11 +96,11 @@ exports[`pages productDateInformation it should render errors correctly when rad
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages productDateInformation it should render the product date information page 1`] = `
-<Component
+<TwoThirdsLayout
   description="Product Date Information page of the Create Fares Data Service"
   title="Product Date Information - Create Fares Data Service"
 >
@@ -188,5 +188,5 @@ exports[`pages productDateInformation it should render the product date informat
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

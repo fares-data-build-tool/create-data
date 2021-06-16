@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages confirmRegistration should render correctly with no tndsless nocs 1`] = `
-<Component
+<TwoThirdsLayout
   description="Confirm Registration page for the Create Fares Data Service"
   title="Registration Successful - Create Fares Data Service"
 >
@@ -25,11 +25,11 @@ exports[`pages confirmRegistration should render correctly with no tndsless nocs
   >
     Continue
   </a>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages confirmRegistration should render correctly with tndsless nocs 1`] = `
-<Component
+<TwoThirdsLayout
   description="Confirm Registration page for the Create Fares Data Service"
   title="Registration Successful - Create Fares Data Service"
 >
@@ -80,5 +80,5 @@ exports[`pages confirmRegistration should render correctly with tndsless nocs 1`
   >
     Continue
   </a>
-</Component>
+</TwoThirdsLayout>
 `;

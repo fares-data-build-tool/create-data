@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages privacy should render privacy page correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Privacy policy page for the Create Fares Data Service"
   title="Privacy - Create Fares Data Service"
 >
@@ -303,5 +303,5 @@ exports[`pages privacy should render privacy page correctly 1`] = `
   >
     If you have a complaint, you can also contact the Information Commissioner's Office (ICO). The ICO is an independent regulator set up to uphold information rights.
   </p>
-</Component>
+</TwoThirdsLayout>
 `;

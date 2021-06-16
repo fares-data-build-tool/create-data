@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages confirmation should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Sales Confirmation page of the Create Fares Data Service"
   errors={Array []}
   title="Sales Confirmation - Create Fares Data Service"
@@ -55,5 +55,5 @@ exports[`pages confirmation should render correctly 1`] = `
       value="Submit"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

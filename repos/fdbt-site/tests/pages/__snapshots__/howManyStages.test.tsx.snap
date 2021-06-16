@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages howManyStages should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="How Many Stages selection page of the Create Fares Data Service"
   errors={Array []}
   title="How Many Stages - Create Fares Data Service"
@@ -90,11 +90,11 @@ exports[`pages howManyStages should render correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages howManyStages should render errors correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="How Many Stages selection page of the Create Fares Data Service"
   errors={
     Array [
@@ -204,5 +204,5 @@ exports[`pages howManyStages should render errors correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

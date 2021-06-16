@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages groupPassengerTypes should render correctly with GroupPassengerTypes and errors (GroupPassengerTypesWithErrors) 1`] = `
-<Component
+<TwoThirdsLayout
   description="Group Passengers selection page of the Create Fares Data Service"
   errors={
     Array [
@@ -206,11 +206,11 @@ exports[`pages groupPassengerTypes should render correctly with GroupPassengerTy
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages groupPassengerTypes should render correctly with group info and no errors 1`] = `
-<Component
+<TwoThirdsLayout
   description="Group Passengers selection page of the Create Fares Data Service"
   errors={Array []}
   title="Define Group Passengers - Create Fares Data Service"
@@ -394,11 +394,11 @@ exports[`pages groupPassengerTypes should render correctly with group info and n
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages groupPassengerTypes should render correctly with no GroupPassengerTypes 1`] = `
-<Component
+<TwoThirdsLayout
   description="Group Passengers selection page of the Create Fares Data Service"
   errors={Array []}
   title="Define Group Passengers - Create Fares Data Service"
@@ -582,5 +582,5 @@ exports[`pages groupPassengerTypes should render correctly with no GroupPassenge
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages account should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Account Details page of the Create Fares Data Service"
   title="Account Details - Create Fares Data Service"
 >
@@ -112,5 +112,5 @@ exports[`pages account should render correctly 1`] = `
   >
     Home
   </a>
-</Component>
+</TwoThirdsLayout>
 `;
