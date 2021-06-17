@@ -13,6 +13,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
             switch (ticketType) {
                 case 'geoZone':
+                case 'hybrid':
                     redirectTo(res, '/csvZoneUpload');
                     return;
                 case 'multipleServices':

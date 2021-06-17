@@ -229,16 +229,19 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
 
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
+    const hybrid = ticketRepresentation === 'hybrid';
 
     const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
 
-    if (zone) {
+    if (zone || hybrid) {
         confirmationElements.push({
             name: 'Zone',
             content: 'You uploaded a fare zone CSV file',
             href: 'csvZoneUpload',
         });
-    } else if (!zone) {
+    }
+
+    if (!zone || hybrid) {
         const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
         const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
         const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
