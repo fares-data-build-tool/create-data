@@ -12,8 +12,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const { productNameInput, productDuration, durationUnits } = req.body;
         const pointToPointPeriodProduct: PointToPointPeriodProduct = {
             productName: productNameInput,
-            periodValue: productDuration,
-            periodUnits: durationUnits,
+            productDuration: productDuration,
+            productDurationUnits: durationUnits,
         };
 
         const nameCheckError = checkProductNameIsValid(productNameInput);

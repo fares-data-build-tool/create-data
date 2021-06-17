@@ -62,8 +62,8 @@ export interface PointToPointProductInfo {
 
 export interface PointToPointPeriodProduct {
     productName: string;
-    periodValue: string;
-    periodUnits: ExpiryUnit;
+    productDuration: string;
+    productDurationUnits: ExpiryUnit;
 }
 
 export interface PointToPointProductInfoWithSOP extends PointToPointProductInfo {

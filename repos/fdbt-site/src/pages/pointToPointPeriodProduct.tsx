@@ -31,8 +31,8 @@ const ProductDetails = ({
     errors,
 }: PointToPointPeriodProductProps): ReactElement => {
     const { productName } = product || {};
-    const periodValue = product?.periodValue || '';
-    const periodUnits = product?.periodUnits || undefined;
+    const periodValue = product?.productDuration || '';
+    const periodUnits = product?.productDurationUnits || undefined;
 
     return (
         <TwoThirdsLayout title={title} description={description}>
