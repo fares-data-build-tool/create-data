@@ -48,11 +48,11 @@ const TicketRepresentation = ({ fareType, errors = [], csrfToken }: TicketRepres
                                             label: 'A ticket for a set of services',
                                             hint: 'Unlimited travel on specific service or set of services',
                                         },
-                                        {
-                                            value: 'pointToPoint',
-                                            label: 'Point to Point',
-                                            hint: 'Unlimited travel between two fixed points in both directions',
-                                        },
+                                        // {
+                                        //     value: 'pointToPoint',
+                                        //     label: 'Point to Point',
+                                        //     hint: 'Unlimited travel between two fixed points in both directions',
+                                        // },
                                         {
                                             value: 'hybrid',
                                             label: 'Hybrid Period ticket',
