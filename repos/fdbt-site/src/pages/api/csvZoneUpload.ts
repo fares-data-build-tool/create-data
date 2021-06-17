@@ -32,7 +32,7 @@ export const setFareZoneAttributeAndRedirect = (
 export const csvParser = (stringifiedCsvData: string): UserFareZone[] => {
     const parsedFileContent: UserFareZone[] = csvParse(stringifiedCsvData, {
         columns: true,
-        skip_empty_lines: false, // eslint-disable-line @typescript-eslint/camelcase
+        skip_empty_lines: false,
         delimiter: ',',
     });
     return parsedFileContent;

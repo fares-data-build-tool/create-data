@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages csvUpload should render correctly 1`] = `
-<Component
+<BaseLayout
   description="CSV Upload page of the Create Fares Data Service"
   errors={Array []}
   title="CSV Upload - Create Fares Data Service"
@@ -40,5 +40,5 @@ exports[`pages csvUpload should render correctly 1`] = `
     guidanceDocSize=""
     showPriceOption={true}
   />
-</Component>
+</BaseLayout>
 `;

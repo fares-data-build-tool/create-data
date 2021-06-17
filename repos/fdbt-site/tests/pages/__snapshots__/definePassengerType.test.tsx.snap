@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages definePassengerType should render correctly when on the group ticket user journey 1`] = `
-<Component
+<TwoThirdsLayout
   description="Define Passenger Type page of the Create Fares Data Service"
   errors={Array []}
   title="Define Passenger Type - Create Fares Data Service"
@@ -205,11 +205,11 @@ exports[`pages definePassengerType should render correctly when on the group tic
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages definePassengerType should render correctly when on the non-group ticket user journey 1`] = `
-<Component
+<TwoThirdsLayout
   description="Define Passenger Type page of the Create Fares Data Service"
   errors={Array []}
   title="Define Passenger Type - Create Fares Data Service"
@@ -350,11 +350,11 @@ exports[`pages definePassengerType should render correctly when on the non-group
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages definePassengerType should render errors correctly when input errors are passed to the page 1`] = `
-<Component
+<TwoThirdsLayout
   description="Define Passenger Type page of the Create Fares Data Service"
   errors={
     Array [
@@ -539,11 +539,11 @@ exports[`pages definePassengerType should render errors correctly when input err
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages definePassengerType should render errors correctly when radio errors are passed to the page 1`] = `
-<Component
+<TwoThirdsLayout
   description="Define Passenger Type page of the Create Fares Data Service"
   errors={
     Array [
@@ -716,5 +716,5 @@ exports[`pages definePassengerType should render errors correctly when radio err
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

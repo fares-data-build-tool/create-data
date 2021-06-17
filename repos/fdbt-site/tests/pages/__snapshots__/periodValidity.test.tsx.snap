@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages periodValidity should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Period Validity selection page of the Create Fares Data Service"
   errors={Array []}
   title="Period Validity - Create Fares Data Service"
@@ -107,11 +107,11 @@ exports[`pages periodValidity should render correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages periodValidity should render error messaging when errors are passed 1`] = `
-<Component
+<TwoThirdsLayout
   description="Period Validity selection page of the Create Fares Data Service"
   errors={
     Array [
@@ -231,5 +231,5 @@ exports[`pages periodValidity should render error messaging when errors are pass
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

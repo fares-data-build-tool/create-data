@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages multipleOperators should render correctly with multiple operator NOC pairs 1`] = `
-<Component
+<TwoThirdsLayout
   description="Multiple Operators page of the Create Fares Data Service"
   errors={Array []}
   title="Multiple Operators - Create Fares Data Service"
@@ -87,11 +87,11 @@ exports[`pages multipleOperators should render correctly with multiple operator 
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages multipleOperators should render correctly with one operator NOC pair 1`] = `
-<Component
+<TwoThirdsLayout
   description="Multiple Operators page of the Create Fares Data Service"
   errors={Array []}
   title="Multiple Operators - Create Fares Data Service"
@@ -159,11 +159,11 @@ exports[`pages multipleOperators should render correctly with one operator NOC p
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages multipleOperators should render errors correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Multiple Operators page of the Create Fares Data Service"
   errors={
     Array [
@@ -270,5 +270,5 @@ exports[`pages multipleOperators should render errors correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

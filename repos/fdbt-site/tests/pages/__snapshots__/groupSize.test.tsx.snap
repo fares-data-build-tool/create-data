@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages groupSize should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Group Size entry page of the Create Fares Data Service"
   title="Group Size - Create Fares Data Service"
 >
@@ -59,11 +59,11 @@ exports[`pages groupSize should render correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages groupSize should render error messaging when errors are passed 1`] = `
-<Component
+<TwoThirdsLayout
   description="Group Size entry page of the Create Fares Data Service"
   title="Group Size - Create Fares Data Service"
 >
@@ -137,5 +137,5 @@ exports[`pages groupSize should render error messaging when errors are passed 1`
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

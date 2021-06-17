@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Layout should render correctly 1`] = `
-<Component
+<BaseLayout
   description="description"
   errors={Array []}
   hideCookieBanner={false}
@@ -15,5 +15,5 @@ exports[`Layout should render correctly 1`] = `
       className="govuk-grid-column-two-thirds"
     />
   </div>
-</Component>
+</BaseLayout>
 `;

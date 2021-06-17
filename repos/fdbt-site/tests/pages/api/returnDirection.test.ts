@@ -1,4 +1,4 @@
-import { getUuidFromSession, setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
+import * as apiUtils from '../../../src/pages/api/apiUtils/index';
 import returnDirection from '../../../src/pages/api/returnDirection';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
@@ -17,7 +17,7 @@ describe('returnDirection', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
-        (setCookieOnResponseObject as {}) = jest.fn();
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         returnDirection(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/returnDirection',
@@ -25,7 +25,7 @@ describe('returnDirection', () => {
     });
 
     it('should return 302 redirect to /inputMethod when request body is present with inbound and outbound journeys selected', () => {
-        (getUuidFromSession as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
+        jest.spyOn(apiUtils, 'getUuidFromSession').mockReturnValue('testUuid');
         const mockFareTypeCookie = {
             'fdbt-journey': '{errorMessages: [], inboundJourney: "abc", outboundJourney: "def"}',
         };
@@ -35,7 +35,7 @@ describe('returnDirection', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
-        (setCookieOnResponseObject as {}) = jest.fn();
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         returnDirection(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/inputMethod',
@@ -43,7 +43,7 @@ describe('returnDirection', () => {
     });
 
     it('should return 302 redirect to /returnDirection when request body is not present', () => {
-        (getUuidFromSession as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
+        jest.spyOn(apiUtils, 'getUuidFromSession').mockReturnValue('testUuid');
         const mockFareTypeCookie = { 'fdbt-fareType': '{"fareType": "returnSingle"}' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: mockFareTypeCookie,
@@ -51,7 +51,7 @@ describe('returnDirection', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
-        (setCookieOnResponseObject as {}) = jest.fn();
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         returnDirection(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/returnDirection',

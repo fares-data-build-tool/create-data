@@ -300,9 +300,6 @@ export const isGeoZoneTicket = (ticket: Ticket): ticket is GeoZoneTicket =>
 export const isMultiServiceTicket = (ticket: Ticket): ticket is PeriodMultipleServicesTicket =>
     (ticket as PeriodMultipleServicesTicket).selectedServices !== undefined;
 
-export const isPeriodGeoZoneTicket = (ticket: Ticket): ticket is PeriodGeoZoneTicket =>
-    ticket.type === 'period' && (ticket as PeriodGeoZoneTicket).zoneName !== undefined;
-
 export const isPeriodMultipleServicesTicket = (ticket: Ticket): ticket is PeriodMultipleServicesTicket =>
     ticket.type === 'period' && (ticket as PeriodMultipleServicesTicket).selectedServices !== undefined;
 
@@ -326,6 +323,9 @@ export const isMultiOperatorMultipleServicesTicket = (
 export const isSchemeOperatorTicket = (data: Ticket): data is SchemeOperatorTicket =>
     (data as SchemeOperatorTicket).schemeOperatorName !== undefined &&
     (data as SchemeOperatorTicket).schemeOperatorRegionCode !== undefined;
+
+export const isPeriodGeoZoneTicket = (ticket: Ticket): ticket is PeriodGeoZoneTicket =>
+    !isSchemeOperatorTicket(ticket) && ticket.type === 'period' && 'zoneName' in ticket;
 
 export const isSchemeOperatorGeoZoneTicket = (data: Ticket): data is SchemeOperatorGeoZoneTicket =>
     isSchemeOperatorTicket(data) && (data as SchemeOperatorGeoZoneTicket).zoneName !== undefined;

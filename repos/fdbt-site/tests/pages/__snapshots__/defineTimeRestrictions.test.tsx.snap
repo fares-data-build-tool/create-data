@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages defineTimeRestrictions should render correctly when no errors are passed 1`] = `
-<Component
+<TwoThirdsLayout
   description="Define Time Restrictions page of the Create Fares Data Service"
   errors={Array []}
   title="Define Time Restrictions - Create Fares Data Service"
@@ -140,11 +140,11 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages defineTimeRestrictions should render errors correctly when both radio and input errors are passed to the page 1`] = `
-<Component
+<TwoThirdsLayout
   description="Define Time Restrictions page of the Create Fares Data Service"
   errors={
     Array [
@@ -297,11 +297,11 @@ exports[`pages defineTimeRestrictions should render errors correctly when both r
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages defineTimeRestrictions should render errors correctly when input errors are passed to the page 1`] = `
-<Component
+<TwoThirdsLayout
   description="Define Time Restrictions page of the Create Fares Data Service"
   errors={
     Array [
@@ -454,11 +454,11 @@ exports[`pages defineTimeRestrictions should render errors correctly when input 
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages defineTimeRestrictions should render errors correctly when radio errors are passed to the page 1`] = `
-<Component
+<TwoThirdsLayout
   description="Define Time Restrictions page of the Create Fares Data Service"
   errors={
     Array [
@@ -595,5 +595,5 @@ exports[`pages defineTimeRestrictions should render errors correctly when radio 
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

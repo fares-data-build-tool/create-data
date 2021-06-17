@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages login should render correctly 1`] = `
-<Component
+<BaseLayout
   description="Login page of the Create Fares Data Service"
   errors={Array []}
   title="Login - Create Fares Data Service"
@@ -135,11 +135,11 @@ exports[`pages login should render correctly 1`] = `
       </div>
     </div>
   </div>
-</Component>
+</BaseLayout>
 `;
 
 exports[`pages login should render error messaging when errors are passed 1`] = `
-<Component
+<BaseLayout
   description="Login page of the Create Fares Data Service"
   errors={
     Array [
@@ -301,5 +301,5 @@ exports[`pages login should render error messaging when errors are passed 1`] = 
       </div>
     </div>
   </div>
-</Component>
+</BaseLayout>
 `;

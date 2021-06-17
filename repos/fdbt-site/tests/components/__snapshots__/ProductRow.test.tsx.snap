@@ -17,7 +17,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-name-0",
@@ -65,12 +65,12 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-price-0",
@@ -130,7 +130,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
               </FormElementWrapper>
             </div>
           </div>
-        </Component>
+        </FormGroupWrapper>
       </div>
     </div>
   </fieldset>
@@ -149,7 +149,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-name-1",
@@ -175,12 +175,12 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-price-1",
@@ -219,7 +219,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
               </FormElementWrapper>
             </div>
           </div>
-        </Component>
+        </FormGroupWrapper>
       </div>
     </div>
   </fieldset>
@@ -238,7 +238,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-name-2",
@@ -264,12 +264,12 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-price-2",
@@ -308,7 +308,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
               </FormElementWrapper>
             </div>
           </div>
-        </Component>
+        </FormGroupWrapper>
       </div>
     </div>
   </fieldset>
@@ -332,7 +332,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-name-0",
@@ -380,12 +380,12 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-price-0",
@@ -445,12 +445,12 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
               </FormElementWrapper>
             </div>
           </div>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-carnet-quantity",
@@ -492,12 +492,12 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-carnet-expiry-quantity",
@@ -530,7 +530,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
             unitId="product-details-carnet-expiry-unit-0"
             unitName="carnetExpiryUnitInput0"
           />
-        </Component>
+        </FormGroupWrapper>
       </div>
     </div>
   </fieldset>
@@ -549,7 +549,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-name-1",
@@ -575,12 +575,12 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-price-1",
@@ -619,12 +619,12 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
               </FormElementWrapper>
             </div>
           </div>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-carnet-quantity",
@@ -650,12 +650,12 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-carnet-expiry-quantity",
@@ -676,7 +676,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
             unitId="product-details-carnet-expiry-unit-1"
             unitName="carnetExpiryUnitInput1"
           />
-        </Component>
+        </FormGroupWrapper>
       </div>
     </div>
   </fieldset>
@@ -700,7 +700,7 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-name-0",
@@ -748,12 +748,12 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-price-0",
@@ -813,12 +813,12 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
               </FormElementWrapper>
             </div>
           </div>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-period-duration-quantity-0",
@@ -851,12 +851,12 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
             unitId="product-details-period-duration-unit-0"
             unitName="multipleProductDurationUnitsInput0"
           />
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-carnet-quantity",
@@ -898,12 +898,12 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-carnet-expiry-quantity",
@@ -936,7 +936,7 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
             unitId="product-details-carnet-expiry-unit-0"
             unitName="carnetExpiryUnitInput0"
           />
-        </Component>
+        </FormGroupWrapper>
       </div>
     </div>
   </fieldset>
@@ -960,7 +960,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-name-0",
@@ -1008,12 +1008,12 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-price-0",
@@ -1073,12 +1073,12 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
               </FormElementWrapper>
             </div>
           </div>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-period-duration-quantity-0",
@@ -1111,7 +1111,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             unitId="product-details-period-duration-unit-0"
             unitName="multipleProductDurationUnitsInput0"
           />
-        </Component>
+        </FormGroupWrapper>
       </div>
     </div>
   </fieldset>
@@ -1130,7 +1130,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-name-1",
@@ -1156,12 +1156,12 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-price-1",
@@ -1200,12 +1200,12 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
               </FormElementWrapper>
             </div>
           </div>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-period-duration-quantity-1",
@@ -1226,7 +1226,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             unitId="product-details-period-duration-unit-1"
             unitName="multipleProductDurationUnitsInput1"
           />
-        </Component>
+        </FormGroupWrapper>
       </div>
     </div>
   </fieldset>
@@ -1245,7 +1245,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-name-2",
@@ -1271,12 +1271,12 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-price-2",
@@ -1315,12 +1315,12 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
               </FormElementWrapper>
             </div>
           </div>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-period-duration-quantity-2",
@@ -1341,7 +1341,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             unitId="product-details-period-duration-unit-2"
             unitName="multipleProductDurationUnitsInput2"
           />
-        </Component>
+        </FormGroupWrapper>
       </div>
     </div>
   </fieldset>
@@ -1360,7 +1360,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-name-3",
@@ -1386,12 +1386,12 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
               type="text"
             />
           </FormElementWrapper>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "multiple-product-price-3",
@@ -1430,12 +1430,12 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
               </FormElementWrapper>
             </div>
           </div>
-        </Component>
+        </FormGroupWrapper>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
       >
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-period-duration-quantity-3",
@@ -1456,7 +1456,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             unitId="product-details-period-duration-unit-3"
             unitName="multipleProductDurationUnitsInput3"
           />
-        </Component>
+        </FormGroupWrapper>
       </div>
     </div>
   </fieldset>

@@ -1,11 +1,11 @@
 import { NextApiResponse } from 'next';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
-import { ErrorInfo, NextApiRequestWithSession, PointToPointProductInfo, CarnetExpiryUnit } from '../../interfaces';
-import { MULTIPLE_PRODUCT_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../../constants/attributes';
+import { ErrorInfo, NextApiRequestWithSession, CarnetProductInfo, CarnetExpiryUnit } from '../../interfaces';
+import { MULTIPLE_PRODUCT_ATTRIBUTE, CARNET_PRODUCT_DETAILS_ATTRIBUTE } from '../../constants/attributes';
 import { removeExcessWhiteSpace, checkIntegerIsValid, checkProductNameIsValid } from './apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-const getProductDetails = (req: NextApiRequestWithSession): PointToPointProductInfo => {
+const getProductDetails = (req: NextApiRequestWithSession): CarnetProductInfo => {
     const productDetails = { ...req.body };
 
     Object.keys(req.body).forEach(k => {
@@ -73,12 +73,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (errors.length) {
             const invalidInputs = { ...productDetails, errors };
-            updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, invalidInputs);
+            updateSessionAttribute(req, CARNET_PRODUCT_DETAILS_ATTRIBUTE, invalidInputs);
             redirectTo(res, '/carnetProductDetails');
             return;
         }
 
-        updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, productDetails);
+        updateSessionAttribute(req, CARNET_PRODUCT_DETAILS_ATTRIBUTE, productDetails);
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, undefined);
 
         if (fareType === 'return') {

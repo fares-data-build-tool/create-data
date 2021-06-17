@@ -72,6 +72,26 @@ export const completeFlatFarePages = (productName: string, isScheme: boolean): v
     }
     getElementById('multiple-product-name-0').type(productName);
     getElementById('multiple-product-price-0').type('50.50');
+
+    continueButtonClick();
+    continueButtonClick();
+};
+
+export const completeFlatFareCarnet = () => {
+    randomlyChooseAndSelectServices();
+    continueButtonClick();
+
+    for (let i = 0; i < 3; i += 1) {
+        getElementById(`multiple-product-name-${i}`).type(`Flat fare carnet ${i}`);
+        getElementById(`multiple-product-price-${i}`).type((9.5 + i).toString());
+        getElementById(`product-details-carnet-quantity-${i}`).type((2 + i).toString());
+        getElementById(`product-details-carnet-expiry-quantity-${i}`).type('7');
+        selectRandomOptionFromDropDown(`product-details-carnet-expiry-unit-${i}`);
+        clickElementById('add-another-button');
+    }
+
+    clickElementById('remove-button');
+
     continueButtonClick();
     continueButtonClick();
 };
@@ -185,21 +205,26 @@ export const completePeriodGeoZonePages = (numberOfProducts: number, multiProduc
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
 };
 
-export const completePeriodMultiServicePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
+export const completePeriodMultiServicePages = (
+    numberOfProducts?: number,
+    multiProductNamePrefix?: string,
+    isCarnet?: boolean,
+): void => {
     clickElementById('set-of-services');
     continueButtonClick();
     randomlyChooseAndSelectServices();
     continueButtonClick();
-    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
 };
 
 export const completeSchoolPeriodMultiServicePages = (
     numberOfProducts?: number,
     multiProductNamePrefix?: string,
+    isCarnet?: boolean,
 ): void => {
     randomlyChooseAndSelectServices();
     continueButtonClick();
-    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
 };
 
 export const completeMultiOpGeoZonePages = (

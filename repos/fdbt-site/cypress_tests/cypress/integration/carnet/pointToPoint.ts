@@ -1,11 +1,11 @@
-import { isUuidStringValid } from '../support/helpers';
+import { isUuidStringValid } from '../../support/helpers';
 import {
     completeReturnPages,
     completeSalesPages,
     completeSinglePages,
     defineUserTypeAndTimeRestrictions,
     selectCarnetFareType,
-} from '../support/steps';
+} from '../../support/steps';
 
 describe('The carnet faretype product journey', () => {
     it('completes successfully for single faretype', () => {

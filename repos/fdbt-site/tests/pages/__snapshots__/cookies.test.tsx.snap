@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages cookies should display a confirmation box when the user saves their preferences 1`] = `
-<Component
+<TwoThirdsLayout
   description="Cookies Preferences page of the Create Fares Data Service"
   hideCookieBanner={true}
   title="Cookies - Create Fares Data Service"
@@ -187,11 +187,11 @@ exports[`pages cookies should display a confirmation box when the user saves the
       />
     </CsrfForm>
   </div>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages cookies should render correctly with the tracking cookie selection radio defaulted to 'off' 1`] = `
-<Component
+<TwoThirdsLayout
   description="Cookies Preferences page of the Create Fares Data Service"
   hideCookieBanner={true}
   title="Cookies - Create Fares Data Service"
@@ -354,11 +354,11 @@ exports[`pages cookies should render correctly with the tracking cookie selectio
       />
     </CsrfForm>
   </div>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages cookies should set the tracking cookie selection radio to 'on' when the user has just saved this as their preference 1`] = `
-<Component
+<TwoThirdsLayout
   description="Cookies Preferences page of the Create Fares Data Service"
   hideCookieBanner={true}
   title="Cookies - Create Fares Data Service"
@@ -544,5 +544,5 @@ exports[`pages cookies should set the tracking cookie selection radio to 'on' wh
       />
     </CsrfForm>
   </div>
-</Component>
+</TwoThirdsLayout>
 `;
