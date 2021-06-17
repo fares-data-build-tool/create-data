@@ -17,9 +17,15 @@ interface TicketRepresentationProps {
     fareType: string;
     errors: ErrorInfo[];
     csrfToken: string;
+    showHybrid: boolean;
 }
 
-const TicketRepresentation = ({ fareType, errors = [], csrfToken }: TicketRepresentationProps): ReactElement => {
+const TicketRepresentation = ({
+    fareType,
+    errors = [],
+    csrfToken,
+    showHybrid,
+}: TicketRepresentationProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/ticketRepresentation" method="post" csrfToken={csrfToken}>
@@ -53,12 +59,16 @@ const TicketRepresentation = ({ fareType, errors = [], csrfToken }: TicketRepres
                                         //     label: 'Point to Point',
                                         //     hint: 'Unlimited travel between two fixed points in both directions',
                                         // },
-                                        {
-                                            value: 'hybrid',
-                                            label: 'Hybrid Period ticket',
-                                            hint:
-                                                'Unlimited travel within a geographic zone and certain additional services outside that zone',
-                                        },
+                                        ...(showHybrid
+                                            ? [
+                                                  {
+                                                      value: 'hybrid',
+                                                      label: 'Hybrid Period ticket',
+                                                      hint:
+                                                          'Unlimited travel within a geographic zone and certain additional services outside that zone',
+                                                  },
+                                              ]
+                                            : []),
                                     ]}
                                 />
                             </FormElementWrapper>
@@ -81,6 +91,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             fareType,
             errors: ticketType && isTicketRepresentationWithErrors(ticketType) ? ticketType.errors : [],
             csrfToken,
+            showHybrid: process.env.STAGE !== 'prod',
         },
     };
 };
