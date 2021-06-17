@@ -13,6 +13,14 @@ export const isCurrency = (periodPriceInput: string): boolean => {
     return regex.test(periodPriceInput);
 };
 
+export const isValidInputDuration = (durationInput: string, carnet: boolean): boolean => {
+    const allowedUnits = ['day', 'week', 'month', 'year', 'hour'];
+    if (carnet) {
+        allowedUnits.push('no expiry');
+    }
+    return allowedUnits.includes(durationInput);
+};
+
 export const checkProductNameIsValid = (inputtedProductName: string): string => {
     let productNameError;
 
@@ -62,17 +70,6 @@ export const checkDurationIsValid = (inputtedDuration: string): string => {
         return productDurationError;
     }
 
-    return '';
-};
-
-export const checkDurationUnitsIsValid = (inpttedUnits: string): string => {
-    let durationUnitsError;
-    if (!inpttedUnits) {
-        durationUnitsError = `Product duration units cannot be null`;
-    }
-    if (durationUnitsError) {
-        return durationUnitsError;
-    }
     return '';
 };
 

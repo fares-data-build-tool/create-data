@@ -3,6 +3,7 @@ import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { DURATION_VALID_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from './apiUtils';
+import { isValidInputDuration } from './apiUtils/validator';
 
 export const isInvalidValidityNumber = (validityInput: number): boolean => {
     if (Number.isNaN(validityInput)) {
@@ -25,14 +26,6 @@ export const isInvalidInput = (validityInput: string): boolean => {
         return true;
     }
     return false;
-};
-
-export const isValidInputDuration = (durationInput: string, carnet: boolean): boolean => {
-    const allowedUnits = ['day', 'week', 'month', 'year', 'hour'];
-    if (carnet) {
-        allowedUnits.push('no expiry');
-    }
-    return allowedUnits.includes(durationInput);
 };
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {

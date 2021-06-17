@@ -20,6 +20,7 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
+    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CarnetDetails,
@@ -31,6 +32,7 @@ import {
     MultipleProductAttribute,
     MultiProduct,
     NextPageContextWithSession,
+    PointToPointPeriodProduct,
     Product,
     ReturnPeriodValidity,
     SchoolFareTypeAttribute,
@@ -214,6 +216,36 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
     return confirmationElements;
 };
 
+export const buildPointToPointPeriodConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
+    const confirmationElements = buildReturnTicketConfirmationElements(ctx);
+    confirmationElements.push(...addProductDetails(ctx));
+    return confirmationElements;
+};
+
+const addProductDetails = (product: Product | MultiProduct, confirmationElements: ConfirmationElement[]): void => {
+    const productDurationText = `${
+        product.productDurationUnits
+            ? `${product.productDuration} ${product.productDurationUnits}${product.productDuration === '1' ? '' : 's'}`
+            : `${product.productDuration}`
+    }`;
+
+    if (!product.productDuration) {
+        throw new Error('User has no product duration and/or validity information.');
+    }
+
+    const content = [
+        `Price - £${product.productPrice}`,
+        `Duration - ${productDurationText}`,
+        ...getCarnetDetailsContent(product.carnetDetails),
+    ];
+
+    confirmationElements.push({
+        name: `${product.productName}`,
+        content,
+        href: 'multipleProducts',
+    });
+};
+
 export const buildPeriodOrMultiOpTicketConfirmationElements = (
     ctx: NextPageContextWithSession,
 ): ConfirmationElement[] => {
@@ -230,7 +262,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
 
-    const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
+    const { productName } = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE) as PointToPointPeriodProduct;
 
     if (zone) {
         confirmationElements.push({
@@ -238,7 +270,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             content: 'You uploaded a fare zone CSV file',
             href: 'csvZoneUpload',
         });
-    } else if (!zone) {
+    } else {
         const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
         const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
         const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
@@ -277,44 +309,18 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         }
     }
 
-    const addProduct = (product: Product | MultiProduct): void => {
-        const productDurationText = `${
-            product.productDurationUnits
-                ? `${product.productDuration} ${product.productDurationUnits}${
-                      product.productDuration === '1' ? '' : 's'
-                  }`
-                : `${product.productDuration}`
-        }`;
-
-        if (!product.productDuration) {
-            throw new Error('User has no product duration and/or validity information.');
-        }
-
-        const content = [
-            `Price - £${product.productPrice}`,
-            `Duration - ${productDurationText}`,
-            ...getCarnetDetailsContent(product.carnetDetails),
-        ];
-
-        confirmationElements.push({
-            name: `${product.productName}`,
-            content,
-            href: 'multipleProducts',
-        });
-    };
-
     const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
 
     if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
         throw new Error('Either periodExpiryAttribute is undefined or not type expected');
     }
 
-    if (isArray(products)) {
-        products.forEach(product => {
-            addProduct(product);
+    if (isArray(productName)) {
+        productName.forEach(product => {
+            addProductDetails(product, confirmationElements);
         });
-    } else if (!isArray(products)) {
-        addProduct(products);
+    } else if (!isArray(productName)) {
+        addProductDetails(productName, confirmationElements);
     }
 
     confirmationElements.push({
@@ -398,7 +404,7 @@ export const buildTicketConfirmationElements = (
     ctx: NextPageContextWithSession,
 ): ConfirmationElement[] => {
     let confirmationElements: ConfirmationElement[];
-
+    console.log(fareType);
     switch (fareType) {
         case 'single':
             confirmationElements = buildSingleTicketConfirmationElements(ctx);
@@ -417,6 +423,9 @@ export const buildTicketConfirmationElements = (
             break;
         case 'schoolService':
             confirmationElements = buildSchoolTicketConfirmationElements(ctx);
+            break;
+        case 'pointToPointPeriod':
+            confirmationElements = buildPointToPointPeriodConfirmationElements(ctx);
             break;
         default:
             throw new Error('Did not receive an expected fareType.');

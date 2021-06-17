@@ -3,7 +3,7 @@ import { POINT_TO_POINT_PRODUCT_ATTRIBUTE } from 'src/constants/attributes';
 import { updateSessionAttribute } from 'src/utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession, PointToPointPeriodProduct } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
-import { checkDurationIsValid, checkDurationUnitsIsValid, checkProductNameIsValid } from './apiUtils/validator';
+import { checkDurationIsValid, checkProductNameIsValid, isValidInputDuration } from './apiUtils/validator';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -17,8 +17,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         };
 
         const nameCheckError = checkProductNameIsValid(productNameInput);
-        const durationCheckError = checkDurationIsValid(productDuration);
-        const productDurationUnitsCheckError = checkDurationUnitsIsValid(durationUnits);
+        const productDurationUnitsCheckError = !isValidInputDuration(durationUnits, true)
+            ? 'Select a valid expiry unit'
+            : '';
+        let durationCheckError = '';
+        if (durationUnits !== 'no expiry') {
+            durationCheckError = checkDurationIsValid(productDuration);
+        }
+
         const errors: ErrorInfo[] = [];
 
         if (nameCheckError || durationCheckError || productDurationUnitsCheckError) {

@@ -17,9 +17,9 @@ import {
     checkIntegerIsValid,
     checkPriceIsValid,
     checkProductNameIsValid,
+    isValidInputDuration,
     removeExcessWhiteSpace,
 } from './apiUtils/validator';
-import { isValidInputDuration } from './chooseValidity';
 
 export const getErrorsForSession = (validationResult: MultiProductWithErrors[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
