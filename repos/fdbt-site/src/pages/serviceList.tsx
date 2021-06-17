@@ -3,7 +3,12 @@ import SwitchDataSource from '../components/SwitchDataSource';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../constants/attributes';
+import {
+    SERVICE_LIST_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+} from '../constants/attributes';
 import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import {
     ErrorInfo,
@@ -29,6 +34,7 @@ interface ServiceListProps {
     multiOperator: boolean;
     dataSourceAttribute: TxcSourceAttribute;
     csrfToken: string;
+    additional: boolean;
 }
 
 const ServiceList = ({
@@ -38,6 +44,7 @@ const ServiceList = ({
     errors,
     multiOperator,
     dataSourceAttribute,
+    additional,
 }: ServiceListProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
         <SwitchDataSource
@@ -52,7 +59,8 @@ const ServiceList = ({
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
                         <h1 className="govuk-heading-l" id="service-list-page-heading">
-                            Which {multiOperator ? 'of your ' : ''}services is the ticket valid for?
+                            Which {additional ? 'additional ' : multiOperator ? 'of your ' : ''}services is the ticket
+                            valid for?
                         </h1>
                     </legend>
 
@@ -177,6 +185,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
     const multiOperator = fareType === 'multiOperator';
 
+    const ticket = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
+    const additional = !!ticket && 'name' in ticket && ticket.name === 'hybrid';
+
     return {
         props: {
             serviceList,
@@ -188,6 +199,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             multiOperator,
             dataSourceAttribute,
             csrfToken,
+            additional,
         },
     };
 };

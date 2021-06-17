@@ -222,7 +222,7 @@ export const completeHybridPages = (
     multiProductNamePrefix?: string,
     isCarnet?: boolean,
 ): void => {
-    clickElementById('hybrid');
+    clickElementById('radio-option-hybrid');
     continueButtonClick();
     uploadFile('csv-upload', 'fareZone.csv');
     submitButtonClick();

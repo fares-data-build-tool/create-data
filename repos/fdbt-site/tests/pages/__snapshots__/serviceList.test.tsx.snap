@@ -453,6 +453,7 @@ exports[`pages serviceList should render correctly with tnds data source 1`] = `
           id="service-list-page-heading"
         >
           Which 
+          additional 
           services is the ticket valid for?
         </h1>
       </legend>
