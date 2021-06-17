@@ -338,15 +338,6 @@ export const getGeoZoneTicketJson = async (
     };
 };
 
-export const getHybridTicketJson = async (
-    req: NextApiRequestWithSession,
-    res: NextApiResponse,
-): Promise<PeriodHybridTicket> => {
-    const geoZone = await getGeoZoneTicketJson(req, res);
-    const multipleServices = getMultipleServicesTicketJson(req, res);
-    return { ...geoZone, ...multipleServices };
-};
-
 export const getMultipleServicesTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
@@ -387,6 +378,15 @@ export const getMultipleServicesTicketJson = (
         selectedServices,
         termTime: isTermTime(req),
     };
+};
+
+export const getHybridTicketJson = async (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): Promise<PeriodHybridTicket> => {
+    const geoZone = await getGeoZoneTicketJson(req, res);
+    const multipleServices = getMultipleServicesTicketJson(req, res);
+    return { ...geoZone, ...multipleServices };
 };
 
 export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): FlatFareTicket => {

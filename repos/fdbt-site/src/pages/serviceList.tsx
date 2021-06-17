@@ -45,101 +45,101 @@ const ServiceList = ({
     multiOperator,
     dataSourceAttribute,
     additional,
-}: ServiceListProps): ReactElement => (
-    <FullColumnLayout title={pageTitle} description={pageDescription}>
-        <SwitchDataSource
-            dataSourceAttribute={dataSourceAttribute}
-            pageUrl="/serviceList"
-            attributeVersion="baseOperator"
-            csrfToken={csrfToken}
-        />
-        <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
-            <>
-                <ErrorSummary errors={errors} />
-                <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-                        <h1 className="govuk-heading-l" id="service-list-page-heading">
-                            Which {additional ? 'additional ' : multiOperator ? 'of your ' : ''}services is the ticket
-                            valid for?
-                        </h1>
-                    </legend>
+}: ServiceListProps): ReactElement => {
+    const multiOperatorText = multiOperator ? 'of your ' : '';
+    return (
+        <FullColumnLayout title={pageTitle} description={pageDescription}>
+            <SwitchDataSource
+                dataSourceAttribute={dataSourceAttribute}
+                pageUrl="/serviceList"
+                attributeVersion="baseOperator"
+                csrfToken={csrfToken}
+            />
+            <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
+                <>
+                    <ErrorSummary errors={errors} />
+                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
+                            <h1 className="govuk-heading-l" id="service-list-page-heading">
+                                Which {additional ? 'additional ' : multiOperatorText}services is the ticket valid for?
+                            </h1>
+                        </legend>
 
-                    <span className="govuk-heading-s">
-                        Select all {multiOperator ? 'of your ' : ''}services that apply
-                    </span>
-                    <fieldset className="govuk-fieldset">
-                        <input
-                            type="submit"
-                            name="selectAll"
-                            value={buttonText}
-                            id="select-all-button"
-                            className="govuk-button govuk-button--secondary"
-                        />
-                        <span className="govuk-hint" id="txc-hint">
-                            This data is taken from the{' '}
-                            <b>
-                                {dataSourceAttribute.source === 'tnds'
-                                    ? 'Traveline National Dataset (TNDS)'
-                                    : 'Bus Open Data Service (BODS)'}
-                            </b>
-                            . If the service you are looking for is not listed, contact the BODS help desk for advice{' '}
-                            <a href="/contact">here</a>.
-                        </span>
-                        <FormElementWrapper
-                            errors={errors}
-                            errorId="checkbox-0"
-                            errorClass=""
-                            addFormGroupError={false}
-                        >
-                            <div className="govuk-checkboxes">
-                                {serviceList.map((service, index) => {
-                                    const {
-                                        lineName,
-                                        lineId,
-                                        startDate,
-                                        serviceCode,
-                                        description,
-                                        checked,
-                                        origin,
-                                        destination,
-                                    } = service;
+                        <span className="govuk-heading-s">Select all {multiOperatorText}services that apply</span>
+                        <fieldset className="govuk-fieldset">
+                            <input
+                                type="submit"
+                                name="selectAll"
+                                value={buttonText}
+                                id="select-all-button"
+                                className="govuk-button govuk-button--secondary"
+                            />
+                            <span className="govuk-hint" id="txc-hint">
+                                This data is taken from the{' '}
+                                <b>
+                                    {dataSourceAttribute.source === 'tnds'
+                                        ? 'Traveline National Dataset (TNDS)'
+                                        : 'Bus Open Data Service (BODS)'}
+                                </b>
+                                . If the service you are looking for is not listed, contact the BODS help desk for
+                                advice <a href="/contact">here</a>.
+                            </span>
+                            <FormElementWrapper
+                                errors={errors}
+                                errorId="checkbox-0"
+                                errorClass=""
+                                addFormGroupError={false}
+                            >
+                                <div className="govuk-checkboxes">
+                                    {serviceList.map((service, index) => {
+                                        const {
+                                            lineName,
+                                            lineId,
+                                            startDate,
+                                            serviceCode,
+                                            description,
+                                            checked,
+                                            origin,
+                                            destination,
+                                        } = service;
 
-                                    const checkboxTitles =
-                                        dataSourceAttribute.source === 'tnds'
-                                            ? `${lineName} - ${description} (Start Date ${startDate})`
-                                            : `${lineName} ${origin || 'N/A'} - ${destination ||
-                                                  'N/A'} (Start date ${startDate})`;
+                                        const checkboxTitles =
+                                            dataSourceAttribute.source === 'tnds'
+                                                ? `${lineName} - ${description} (Start Date ${startDate})`
+                                                : `${lineName} ${origin || 'N/A'} - ${destination ||
+                                                      'N/A'} (Start date ${startDate})`;
 
-                                    const checkBoxValues = `${description}`;
+                                        const checkBoxValues = `${description}`;
 
-                                    return (
-                                        <div className="govuk-checkboxes__item" key={`checkbox-item-${lineName}`}>
-                                            <input
-                                                className="govuk-checkboxes__input"
-                                                id={`checkbox-${index}`}
-                                                name={`${lineName}#${lineId}#${serviceCode}#${startDate}`}
-                                                type="checkbox"
-                                                value={checkBoxValues}
-                                                defaultChecked={checked}
-                                            />
-                                            <label
-                                                className="govuk-label govuk-checkboxes__label"
-                                                htmlFor={`checkbox-${index}`}
-                                            >
-                                                {checkboxTitles}
-                                            </label>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </FormElementWrapper>
-                    </fieldset>
-                </div>
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-            </>
-        </CsrfForm>
-    </FullColumnLayout>
-);
+                                        return (
+                                            <div className="govuk-checkboxes__item" key={`checkbox-item-${lineName}`}>
+                                                <input
+                                                    className="govuk-checkboxes__input"
+                                                    id={`checkbox-${index}`}
+                                                    name={`${lineName}#${lineId}#${serviceCode}#${startDate}`}
+                                                    type="checkbox"
+                                                    value={checkBoxValues}
+                                                    defaultChecked={checked}
+                                                />
+                                                <label
+                                                    className="govuk-label govuk-checkboxes__label"
+                                                    htmlFor={`checkbox-${index}`}
+                                                >
+                                                    {checkboxTitles}
+                                                </label>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </FormElementWrapper>
+                        </fieldset>
+                    </div>
+                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                </>
+            </CsrfForm>
+        </FullColumnLayout>
+    );
+};
 
 export const isServiceListAttributeWithErrors = (
     serviceListAttribute: ServiceListAttribute | ServiceListAttributeWithErrors,
