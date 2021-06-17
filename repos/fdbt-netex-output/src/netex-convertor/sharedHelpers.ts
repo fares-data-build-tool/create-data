@@ -20,9 +20,28 @@ import {
     SchemeOperatorTicket,
     isGroupTicket,
     Ticket,
+    ProductDetails,
+    FlatFareProductDetails,
+    isGeoZoneTicket,
+    isMultiServiceTicket,
+    isSchemeOperatorFlatFareTicket,
+    isProductDetails,
 } from '../types/index';
 
-import { getBaseSchemeOperatorInfo } from './period-tickets/periodTicketNetexHelpers';
+import {
+    getBaseSchemeOperatorInfo,
+    getDurationElement,
+    getLineRefList,
+    getPeriodAvailabilityElement,
+    getPeriodConditionsElement,
+    getPeriodEligibilityElement,
+} from './period-tickets/periodTicketNetexHelpers';
+import {
+    getPointToPointConditionsElement,
+    getEligibilityElement,
+    getLinesElement,
+    getPointToPointAvailabilityElement,
+} from './point-to-point-tickets/pointToPointTicketNetexHelpers';
 
 export interface NetexObject {
     [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -253,6 +272,7 @@ export const getCoreData = (
             lineName: ticket.lineName,
             operatorName: ticket.operatorShortName,
             ticketType: ticket.type,
+            isCarnet: 'carnetDetails' in ticket.products[0],
         };
     }
     const baseOperatorInfo = isSchemeOperatorTicket(ticket)
@@ -287,6 +307,7 @@ export const getCoreData = (
         lineName: '',
         operatorName: isSchemeOperatorTicket(ticket) ? ticket.schemeOperatorName : ticket.operatorName,
         ticketType: ticket.type,
+        isCarnet: !!ticket.products[0].carnetDetails,
     };
 };
 
@@ -304,3 +325,79 @@ export const getDistributionChannel = (purchaseLocation: string): string => {
 };
 
 export const isFlatFareType = (ticket: Ticket): boolean => ticket.type === 'flatFare';
+
+export const getFareStructuresElements = (
+    ticket:
+        | PointToPointTicket
+        | PeriodTicket
+        | FlatFareTicket
+        | SchemeOperatorGeoZoneTicket
+        | SchemeOperatorFlatFareTicket,
+    coreData: CoreData,
+): NetexObject[] => {
+    let fareStructureElements: NetexObject[] = [];
+
+    // if (coreData.isCarnet) {
+    //     fareStructureElements.push(getCarnetElement(ticket));
+    // }
+
+    if (isGroupTicket(ticket)) {
+        fareStructureElements.push(getGroupElement(ticket));
+    }
+
+    if (isPointToPointTicket(ticket)) {
+        fareStructureElements.push(getLinesElement(ticket, coreData.lineName));
+        fareStructureElements.push(getEligibilityElement(ticket));
+        fareStructureElements.push(getPointToPointConditionsElement(ticket));
+
+        if (ticket.timeRestriction.length > 0) {
+            fareStructureElements.push(
+                getPointToPointAvailabilityElement(ticket),
+            );
+        }
+
+        return fareStructureElements;
+    }
+
+    const productFareStructureElements = ticket.products.flatMap((product: ProductDetails | FlatFareProductDetails) => {
+        let availabilityElementId = '';
+        let validityParametersObject = {};
+        const hasTimeRestriction = !!ticket.timeRestriction && ticket.timeRestriction.length > 0;
+
+        if (isGeoZoneTicket(ticket)) {
+            availabilityElementId = `Tariff@${product.productName}@access_zones`;
+            validityParametersObject = {
+                FareZoneRef: {
+                    version: '1.0',
+                    ref: `op:${coreData.placeholderGroupOfProductsName}@${ticket.zoneName}`,
+                },
+            };
+        } else if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket)) {
+            availabilityElementId = `Tariff@${product.productName}@access_lines`;
+            validityParametersObject = { LineRef: getLineRefList(ticket) };
+        }
+
+        if (isProductDetails(product) && (isGeoZoneTicket(ticket) || isMultiServiceTicket(ticket))) {
+            return [
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
+                getDurationElement(ticket, product),
+                getPeriodConditionsElement(ticket, product),
+            ];
+        }
+
+        return [
+            getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
+            getPeriodConditionsElement(ticket, product),
+        ];
+    });
+
+    fareStructureElements.push(...productFareStructureElements);
+
+    fareStructureElements.push(...getPeriodEligibilityElement(ticket));
+
+    if (isGroupTicket(ticket)) {
+        fareStructureElements.push(getGroupElement(ticket));
+    }
+
+    return fareStructureElements;
+};

@@ -37,7 +37,6 @@ import {
     getNetexMode,
     NetexObject,
     getUserProfile,
-    getGroupElement,
     getProfileRef,
     getCleanWebsite,
     replaceIWBusCoNocCode,
@@ -684,7 +683,7 @@ export const getTimeIntervals = (userPeriodTicket: PeriodTicket | SchemeOperator
     return timeIntervals.flatMap(item => item);
 };
 
-const getAvailabilityElement = (
+export const getPeriodAvailabilityElement = (
     id: string,
     validityParametersObject: object,
     hasTimeRestriction: boolean,
@@ -717,7 +716,7 @@ const getAvailabilityElement = (
     },
 });
 
-const getDurationElement = (
+export const getDurationElement = (
     userPeriodTicket: PeriodTicket | SchemeOperatorTicket,
     product: ProductDetails,
 ): NetexObject => ({
@@ -738,7 +737,7 @@ const getDurationElement = (
     },
 });
 
-const getEligibilityElement = (
+export const getPeriodEligibilityElement = (
     userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket,
 ): NetexObject[] => {
     const users = isGroupTicket(userPeriodTicket)
@@ -776,7 +775,7 @@ const getEligibilityElement = (
     }));
 };
 
-const getConditionsElement = (
+export const getPeriodConditionsElement = (
     userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket,
     product: ProductDetails | FlatFareProductDetails,
 ): NetexObject => {
@@ -822,57 +821,6 @@ const getConditionsElement = (
             },
         },
     };
-};
-
-export const getFareStructuresElements = (
-    userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket,
-    placeHolderGroupOfProductsName: string,
-): NetexObject[] => {
-    const fareStructureElements = userPeriodTicket.products.flatMap(
-        (product: ProductDetails | FlatFareProductDetails) => {
-            let availabilityElementId = '';
-            let validityParametersObject = {};
-            const hasTimeRestriction =
-                !!userPeriodTicket.timeRestriction && userPeriodTicket.timeRestriction.length > 0;
-
-            if (isGeoZoneTicket(userPeriodTicket)) {
-                availabilityElementId = `Tariff@${product.productName}@access_zones`;
-                validityParametersObject = {
-                    FareZoneRef: {
-                        version: '1.0',
-                        ref: `op:${placeHolderGroupOfProductsName}@${userPeriodTicket.zoneName}`,
-                    },
-                };
-            } else if (isMultiServiceTicket(userPeriodTicket) || isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
-                availabilityElementId = `Tariff@${product.productName}@access_lines`;
-                validityParametersObject = { LineRef: getLineRefList(userPeriodTicket) };
-            }
-
-            if (
-                isProductDetails(product) &&
-                (isGeoZoneTicket(userPeriodTicket) || isMultiServiceTicket(userPeriodTicket))
-            ) {
-                return [
-                    getAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
-                    getDurationElement(userPeriodTicket, product),
-                    getConditionsElement(userPeriodTicket, product),
-                ];
-            }
-
-            return [
-                getAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
-                getConditionsElement(userPeriodTicket, product),
-            ];
-        },
-    );
-
-    fareStructureElements.push(...getEligibilityElement(userPeriodTicket));
-
-    if (isGroupTicket(userPeriodTicket)) {
-        fareStructureElements.push(getGroupElement(userPeriodTicket));
-    }
-
-    return fareStructureElements;
 };
 
 export const getOrganisations = (

@@ -18,6 +18,7 @@ export interface CoreData {
     lineIdName: string;
     lineName: string;
     operatorName: string;
+    isCarnet: boolean;
 }
 
 // Reference Data (from NOC, TNDS, NaPTAN datasets)
@@ -135,7 +136,7 @@ export interface BasePointToPointTicket extends BaseTicket {
     lineName: string;
     lineId: string;
     serviceDescription: string;
-    products: BaseProduct[];
+    products: (BaseProduct | PointToPointCarnetProductDetails)[];
 }
 
 export interface SingleTicket extends BasePointToPointTicket {
@@ -218,9 +219,15 @@ export interface BaseProduct {
     salesOfferPackages: SalesOfferPackage[];
 }
 
+export interface PointToPointCarnetProductDetails extends BaseProduct {
+    productName: string;
+    carnetDetails: CarnetDetails;
+}
+
 export interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
+    carnetDetails?: CarnetDetails;
 }
 
 export interface ProductDetails extends BaseProduct {
@@ -228,6 +235,7 @@ export interface ProductDetails extends BaseProduct {
     productPrice: string;
     productDuration: string;
     productValidity: string;
+    carnetDetails?: CarnetDetails;
 }
 
 export interface SchemeOperatorTicket {
@@ -259,6 +267,21 @@ export interface SchemeOperatorFlatFareTicket extends SchemeOperatorTicket {
         nocCode: string;
         selectedServices: SelectedService[];
     }[];
+}
+
+export enum CarnetExpiryUnit {
+    HOUR = 'hour',
+    DAY = 'day',
+    WEEK = 'week',
+    MONTH = 'month',
+    YEAR = 'year',
+    NO_EXPIRY = 'no expiry',
+}
+
+export interface CarnetDetails {
+    quantity: string;
+    expiryTime: string;
+    expiryUnit: CarnetExpiryUnit;
 }
 
 export const isPointToPointTicket = (ticketData: Ticket): ticketData is PointToPointTicket =>
@@ -317,7 +340,7 @@ export const isGroupTicket = (
     ticket: PeriodTicket | PointToPointTicket | FlatFareTicket | SchemeOperatorTicket,
 ): ticket is GroupTicket => (ticket as GroupTicket).groupDefinition !== undefined;
 
-export const isProductDetails = (product: ProductDetails | FlatFareProductDetails): product is ProductDetails =>
+export const isProductDetails = (product: ProductDetails | FlatFareProductDetails | PointToPointCarnetProductDetails): product is ProductDetails =>
     (product as ProductDetails).productDuration !== undefined;
 
 export const isBaseSchemeOperatorInfo = (operatorInfo: Operator | SchemeOperator): operatorInfo is SchemeOperator =>
