@@ -1,4 +1,4 @@
-import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
+import * as apiUtils from '../../../src/pages/api/apiUtils/index';
 import chooseStages, { isInvalidFareStageNumber } from '../../../src/pages/api/chooseStages';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { FARE_STAGES_ATTRIBUTE } from '../../../src/constants/attributes';
@@ -38,7 +38,7 @@ describe('chooseStages', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        (setCookieOnResponseObject as {}) = jest.fn();
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         chooseStages(req, res);
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });

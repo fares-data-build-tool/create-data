@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages thankyou should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Thank you page for the Create Fares Data Service"
   title="Thank You - Create Fares Data Service"
 >
@@ -92,5 +92,5 @@ exports[`pages thankyou should render correctly 1`] = `
   >
     Continue to BODS
   </a>
-</Component>
+</TwoThirdsLayout>
 `;

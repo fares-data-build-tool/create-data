@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages error page should render 404 page correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Error page of the Create Fares Data Service"
   title="Error - Create Fares Data Service"
 >
@@ -47,11 +47,11 @@ exports[`pages error page should render 404 page correctly 1`] = `
   >
     Start again
   </a>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages error page should render error page correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Error page of the Create Fares Data Service"
   title="Error - Create Fares Data Service"
 >
@@ -96,5 +96,5 @@ exports[`pages error page should render error page correctly 1`] = `
   >
     Start again
   </a>
-</Component>
+</TwoThirdsLayout>
 `;

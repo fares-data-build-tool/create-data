@@ -59,7 +59,7 @@ exports[`_document should render correctly 1`] = `
     <div
       className="no-js-cookie-banner"
     >
-      <Component />
+      <CookieBannerMessage />
     </div>
     <Header
       csrfToken=""

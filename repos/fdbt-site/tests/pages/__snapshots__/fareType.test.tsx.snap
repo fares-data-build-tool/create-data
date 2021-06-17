@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages fareType should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Fare Type selection page of the Create Fares Data Service"
   errors={Array []}
   title="Fare Type - Create Fares Data Service "
@@ -94,11 +94,11 @@ exports[`pages fareType should render correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages fareType should render correctly for a scheme operator 1`] = `
-<Component
+<TwoThirdsLayout
   description="Fare Type selection page of the Create Fares Data Service"
   errors={Array []}
   title="Fare Type - Create Fares Data Service "
@@ -166,11 +166,11 @@ exports[`pages fareType should render correctly for a scheme operator 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages fareType should render correctly when displayCarnet is false 1`] = `
-<Component
+<TwoThirdsLayout
   description="Fare Type selection page of the Create Fares Data Service"
   errors={Array []}
   title="Fare Type - Create Fares Data Service "
@@ -258,11 +258,11 @@ exports[`pages fareType should render correctly when displayCarnet is false 1`] 
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages fareType should render error messaging when errors are passed to the page 1`] = `
-<Component
+<TwoThirdsLayout
   description="Fare Type selection page of the Create Fares Data Service"
   errors={
     Array [
@@ -376,5 +376,5 @@ exports[`pages fareType should render error messaging when errors are passed to 
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

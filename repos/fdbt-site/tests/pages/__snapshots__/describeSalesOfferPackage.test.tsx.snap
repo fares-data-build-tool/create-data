@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`describeSalesOfferPackage should be able to handle being passed undefined props 1`] = `
-<Component
+<BaseLayout
   description="Sales Offer Package Description page of the Create Fares Data Service"
   errors={Array []}
   title="Sales Offer Package Description - Create Fares Data Service"
@@ -103,14 +103,14 @@ exports[`describeSalesOfferPackage should be able to handle being passed undefin
     <div
       className="govuk-grid-column-one-third"
     >
-      <Component />
+      <SalesOfferPackageExplanation />
     </div>
   </div>
-</Component>
+</BaseLayout>
 `;
 
 exports[`describeSalesOfferPackage should render the page with errors when errors are present 1`] = `
-<Component
+<BaseLayout
   description="Sales Offer Package Description page of the Create Fares Data Service"
   errors={
     Array [
@@ -240,14 +240,14 @@ exports[`describeSalesOfferPackage should render the page with errors when error
     <div
       className="govuk-grid-column-one-third"
     >
-      <Component />
+      <SalesOfferPackageExplanation />
     </div>
   </div>
-</Component>
+</BaseLayout>
 `;
 
 exports[`describeSalesOfferPackage should render the page with no errors when no errors are present 1`] = `
-<Component
+<BaseLayout
   description="Sales Offer Package Description page of the Create Fares Data Service"
   errors={Array []}
   title="Sales Offer Package Description - Create Fares Data Service"
@@ -349,8 +349,8 @@ exports[`describeSalesOfferPackage should render the page with no errors when no
     <div
       className="govuk-grid-column-one-third"
     >
-      <Component />
+      <SalesOfferPackageExplanation />
     </div>
   </div>
-</Component>
+</BaseLayout>
 `;

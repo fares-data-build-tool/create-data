@@ -204,7 +204,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const formData = await getFormData(req);
         const { fields } = formData;
 
-        if (!fields?.['poundsOrPence']) {
+        if (!fields?.poundsOrPence) {
             const errors: ErrorInfo[] = [
                 { id: 'pounds', errorMessage: 'You must select whether the prices are in pounds or pence' },
             ];
