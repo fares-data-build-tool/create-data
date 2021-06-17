@@ -379,7 +379,7 @@ export const getLinesElement = (ticket: PointToPointTicket, lineName: string): N
 
     return {
         version: '1.0',
-        id: `op:Tariff@${typeOfPointToPoint}@lines`,
+        id: `Tariff@${typeOfPointToPoint}@lines`,
         Name: { $t: `O/D pairs for ${lineName}` },
         distanceMatrixElements: {
             DistanceMatrixElement: getDistanceMatrixElements(
@@ -420,7 +420,7 @@ export const getEligibilityElement = (ticket: PointToPointTicket): NetexObject =
 
     return {
         version: '1.0',
-        id: `op:Tariff@${typeOfPointToPoint}@eligibility`,
+        id: `Tariff@${typeOfPointToPoint}@eligibility`,
         Name: { $t: `eligible user types` },
         GenericParameterAssignment: {
             version: '1.0',
@@ -473,7 +473,7 @@ export const getPointToPointConditionsElement = (ticket: PointToPointTicket): Ne
 
     return {
         version: '1.0',
-        id: `op:Tariff@${typeOfPointToPoint}@conditions_of_travel`,
+        id: `Tariff@${typeOfPointToPoint}@conditions_of_travel`,
         Name: { $t: 'Conditions of travel' },
         GenericParameterAssignment: {
             version: '1.0',

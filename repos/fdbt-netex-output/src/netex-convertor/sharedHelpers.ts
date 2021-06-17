@@ -395,9 +395,5 @@ export const getFareStructuresElements = (
 
     fareStructureElements.push(...getPeriodEligibilityElement(ticket));
 
-    if (isGroupTicket(ticket)) {
-        fareStructureElements.push(getGroupElement(ticket));
-    }
-
     return fareStructureElements;
 };
