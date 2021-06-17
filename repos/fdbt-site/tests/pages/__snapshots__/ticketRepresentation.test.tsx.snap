@@ -36,44 +36,33 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
           errorId="geo-zone"
           errors={Array []}
         >
-          <div
-            className="govuk-radios"
-          >
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input  "
-                id="geo-zone"
-                name="ticketType"
-                type="radio"
-                value="geoZone"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="geo-zone"
-              >
-                A ticket within a geographical zone
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input  "
-                id="set-of-services"
-                name="ticketType"
-                type="radio"
-                value="multipleServices"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="set-of-services"
-              >
-                A ticket for a set of services
-              </label>
-            </div>
-          </div>
+          <RadioButtons
+            inputName="ticketType"
+            options={
+              Array [
+                Object {
+                  "hint": "Unlimited travel within a geographical zone",
+                  "label": "A ticket within a geographical zone",
+                  "value": "geoZone",
+                },
+                Object {
+                  "hint": "Unlimited travel on specific service or set of services",
+                  "label": "A ticket for a set of services",
+                  "value": "multipleServices",
+                },
+                Object {
+                  "hint": "Unlimited travel between two fixed points in both directions",
+                  "label": "Point to Point",
+                  "value": "pointToPoint",
+                },
+                Object {
+                  "hint": "Unlimited travel within a geographic zone and certain additional services outside that zone",
+                  "label": "Hybrid Period ticket",
+                  "value": "hybrid",
+                },
+              ]
+            }
+          />
         </FormElementWrapper>
       </fieldset>
     </div>
@@ -123,44 +112,33 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
           errorId="geo-zone"
           errors={Array []}
         >
-          <div
-            className="govuk-radios"
-          >
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input  "
-                id="geo-zone"
-                name="ticketType"
-                type="radio"
-                value="geoZone"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="geo-zone"
-              >
-                A ticket within a geographical zone
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input  "
-                id="set-of-services"
-                name="ticketType"
-                type="radio"
-                value="multipleServices"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="set-of-services"
-              >
-                A ticket for a set of services
-              </label>
-            </div>
-          </div>
+          <RadioButtons
+            inputName="ticketType"
+            options={
+              Array [
+                Object {
+                  "hint": "Unlimited travel within a geographical zone",
+                  "label": "A ticket within a geographical zone",
+                  "value": "geoZone",
+                },
+                Object {
+                  "hint": "Unlimited travel on specific service or set of services",
+                  "label": "A ticket for a set of services",
+                  "value": "multipleServices",
+                },
+                Object {
+                  "hint": "Unlimited travel between two fixed points in both directions",
+                  "label": "Point to Point",
+                  "value": "pointToPoint",
+                },
+                Object {
+                  "hint": "Unlimited travel within a geographic zone and certain additional services outside that zone",
+                  "label": "Hybrid Period ticket",
+                  "value": "hybrid",
+                },
+              ]
+            }
+          />
         </FormElementWrapper>
       </fieldset>
     </div>
@@ -231,44 +209,33 @@ exports[`pages ticketRepresentation should render error messaging when errors ar
             ]
           }
         >
-          <div
-            className="govuk-radios"
-          >
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input govuk-input--error "
-                id="geo-zone"
-                name="ticketType"
-                type="radio"
-                value="geoZone"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="geo-zone"
-              >
-                A ticket within a geographical zone
-              </label>
-            </div>
-            <div
-              className="govuk-radios__item"
-            >
-              <input
-                className="govuk-radios__input govuk-input--error "
-                id="set-of-services"
-                name="ticketType"
-                type="radio"
-                value="multipleServices"
-              />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor="set-of-services"
-              >
-                A ticket for a set of services
-              </label>
-            </div>
-          </div>
+          <RadioButtons
+            inputName="ticketType"
+            options={
+              Array [
+                Object {
+                  "hint": "Unlimited travel within a geographical zone",
+                  "label": "A ticket within a geographical zone",
+                  "value": "geoZone",
+                },
+                Object {
+                  "hint": "Unlimited travel on specific service or set of services",
+                  "label": "A ticket for a set of services",
+                  "value": "multipleServices",
+                },
+                Object {
+                  "hint": "Unlimited travel between two fixed points in both directions",
+                  "label": "Point to Point",
+                  "value": "pointToPoint",
+                },
+                Object {
+                  "hint": "Unlimited travel within a geographic zone and certain additional services outside that zone",
+                  "label": "Hybrid Period ticket",
+                  "value": "hybrid",
+                },
+              ]
+            }
+          />
         </FormElementWrapper>
       </fieldset>
     </div>

@@ -39,6 +39,7 @@ import {
     MultipleProductAttribute,
     NextApiRequestWithSession,
     PeriodExpiry,
+    PeriodHybridTicket,
     PeriodMultipleServicesTicket,
     PointToPointProductInfoWithSOP,
     ProductDetails,
@@ -117,6 +118,8 @@ export const putUserDataInS3 = async (data: Ticket, uuid: string): Promise<void>
     if (isSchemeOperatorTicket(s3Data)) {
         delete s3Data.nocCode;
     }
+
+    console.log(JSON.stringify(s3Data));
 
     await putStringInS3(MATCHING_DATA_BUCKET_NAME, filePath, JSON.stringify(s3Data), 'application/json; charset=utf-8');
 };
@@ -335,6 +338,15 @@ export const getGeoZoneTicketJson = async (
         stops: zoneStops,
         ...(additionalNocs && { additionalNocs }),
     };
+};
+
+export const getHybridTicketJson = async (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): Promise<PeriodHybridTicket> => {
+    const geoZone = await getGeoZoneTicketJson(req, res);
+    const multipleServices = getMultipleServicesTicketJson(req, res);
+    return { ...geoZone, ...multipleServices };
 };
 
 export const getMultipleServicesTicketJson = (

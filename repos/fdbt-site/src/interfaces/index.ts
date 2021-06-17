@@ -89,7 +89,7 @@ export interface JourneyWithErrors {
 }
 
 export interface TicketRepresentationAttribute {
-    name: string;
+    name: 'geoZone' | 'multipleServices' | 'hybrid';
 }
 
 export interface TicketRepresentationAttributeWithErrors {
@@ -308,6 +308,7 @@ export type Ticket =
     | PointToPointTicket
     | GeoZoneTicket
     | PeriodMultipleServicesTicket
+    | PeriodHybridTicket
     | FlatFareTicket
     | SchemeOperatorTicket;
 
@@ -379,6 +380,8 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
     termTime: boolean;
 }
+
+export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
 
 export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
     additionalOperators: {

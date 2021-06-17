@@ -198,7 +198,7 @@ export const completeSalesPages = (numberOfProducts?: number, multiProductNamePr
 };
 
 export const completePeriodGeoZonePages = (numberOfProducts: number, multiProductNamePrefix?: string): void => {
-    clickElementById('geo-zone');
+    clickElementById('radio-option-geoZone');
     continueButtonClick();
     uploadFile('csv-upload', 'fareZone.csv');
     submitButtonClick();
@@ -210,8 +210,22 @@ export const completePeriodMultiServicePages = (
     multiProductNamePrefix?: string,
     isCarnet?: boolean,
 ): void => {
-    clickElementById('set-of-services');
+    clickElementById('radio-option-multipleServices');
     continueButtonClick();
+    randomlyChooseAndSelectServices();
+    continueButtonClick();
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
+};
+
+export const completeHybridPages = (
+    numberOfProducts?: number,
+    multiProductNamePrefix?: string,
+    isCarnet?: boolean,
+): void => {
+    clickElementById('hybrid');
+    continueButtonClick();
+    uploadFile('csv-upload', 'fareZone.csv');
+    submitButtonClick();
     randomlyChooseAndSelectServices();
     continueButtonClick();
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
@@ -233,7 +247,7 @@ export const completeMultiOpGeoZonePages = (
     multiProductNamePrefix?: string,
 ): void => {
     if (!isScheme) {
-        clickElementById('geo-zone');
+        clickElementById('radio-option-geoZone');
         continueButtonClick();
     }
 
@@ -246,7 +260,7 @@ export const completeMultiOpGeoZonePages = (
 };
 
 export const completeMultiOpMultiServicePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
-    clickElementById('set-of-services');
+    clickElementById('radio-option-multipleServices');
     continueButtonClick();
     randomlyChooseAndSelectServices();
     continueButtonClick();
