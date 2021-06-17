@@ -119,8 +119,6 @@ export const putUserDataInS3 = async (data: Ticket, uuid: string): Promise<void>
         delete s3Data.nocCode;
     }
 
-    console.log(JSON.stringify(s3Data));
-
     await putStringInS3(MATCHING_DATA_BUCKET_NAME, filePath, JSON.stringify(s3Data), 'application/json; charset=utf-8');
 };
 
