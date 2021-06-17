@@ -58,9 +58,9 @@
     {
       "productName": "Product 1",
       "carnetDetails": {
-        "quantity": "2",
-        "expiryTime": "2",
-        "expiryUnit": "week"
+        "quantity": "10",
+        "expiryTime": "5",
+        "expiryUnit": "day"
       },
       "salesOfferPackages": [
         {
