@@ -20,7 +20,6 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
-    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CarnetDetails,
@@ -32,7 +31,6 @@ import {
     MultipleProductAttribute,
     MultiProduct,
     NextPageContextWithSession,
-    PointToPointPeriodProduct,
     Product,
     ReturnPeriodValidity,
     SchoolFareTypeAttribute,
@@ -222,7 +220,7 @@ export const buildPointToPointPeriodConfirmationElements = (ctx: NextPageContext
     return confirmationElements;
 };
 
-const addProductDetails = (product: Product | MultiProduct, confirmationElements: ConfirmationElement[]): void => {
+const addProductDetails = (product: Product | MultiProduct | PointToPointPeriodProduct , confirmationElements: ConfirmationElement[]): void => {
     const productDurationText = `${
         product.productDurationUnits
             ? `${product.productDuration} ${product.productDurationUnits}${product.productDuration === '1' ? '' : 's'}`
@@ -262,7 +260,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
 
-    const { productName } = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE) as PointToPointPeriodProduct;
+    const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
 
     if (zone) {
         confirmationElements.push({
@@ -315,12 +313,12 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         throw new Error('Either periodExpiryAttribute is undefined or not type expected');
     }
 
-    if (isArray(productName)) {
-        productName.forEach(product => {
+    if (isArray(products)) {
+        products.forEach(product => {
             addProductDetails(product, confirmationElements);
         });
-    } else if (!isArray(productName)) {
-        addProductDetails(productName, confirmationElements);
+    } else if (!isArray(products)) {
+        addProductDetails(products, confirmationElements);
     }
 
     confirmationElements.push({
