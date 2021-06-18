@@ -95,7 +95,7 @@ export interface JourneyWithErrors {
 }
 
 export interface TicketRepresentationAttribute {
-    name: 'geoZone' | 'multipleServices' | 'hybrid';
+    name: 'geoZone' | 'multipleServices' | 'hybrid' | 'pointToPointPeriod';
 }
 
 export interface TicketRepresentationAttributeWithErrors {
@@ -619,7 +619,7 @@ export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDe
 }
 
 export interface FareType {
-    fareType: 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return' | 'pointToPointPeriod';
+    fareType: 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
 }
 
 export interface FareTypeWithErrors {

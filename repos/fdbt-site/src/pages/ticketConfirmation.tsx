@@ -32,7 +32,6 @@ import {
     MultipleProductAttribute,
     MultiProduct,
     NextPageContextWithSession,
-    PeriodExpiry,
     PointToPointPeriodProduct,
     Product,
     ReturnPeriodValidity,
@@ -228,7 +227,7 @@ export const buildPointToPointPeriodConfirmationElements = (ctx: NextPageContext
     if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
         throw new Error('Period expiry is not present or contains errors');
     }
-    addProductDetails(product, confirmationElements, periodExpiryAttribute);
+    addProductDetails(product, confirmationElements);
 
     return confirmationElements;
 };
@@ -236,7 +235,6 @@ export const buildPointToPointPeriodConfirmationElements = (ctx: NextPageContext
 const addProductDetails = (
     product: Product | MultiProduct | PointToPointPeriodProduct,
     confirmationElements: ConfirmationElement[],
-    periodExpiryAttribute: PeriodExpiry,
 ): void => {
     const productDurationText = `${
         product.productDurationUnits
@@ -264,18 +262,6 @@ const addProductDetails = (
         content,
         href: 'multipleProducts',
     });
-
-    if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
-        throw new Error('Either periodExpiryAttribute is undefined or not type expected');
-    }
-
-    confirmationElements.push({
-        name: `Ticket day end`,
-        content: `${sentenceCaseString(periodExpiryAttribute.productValidity)}${
-            periodExpiryAttribute.productEndTime ? ` - ${periodExpiryAttribute.productEndTime}` : ''
-        }`,
-        href: 'periodValidity',
-    });
 };
 
 export const buildPeriodOrMultiOpTicketConfirmationElements = (
@@ -294,8 +280,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
     const hybrid = ticketRepresentation === 'hybrid';
-
-    const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
+    const pointToPointPeriod = ticketRepresentation === 'pointToPointPeriod';
 
     if (zone || hybrid) {
         confirmationElements.push({
@@ -305,7 +290,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         });
     }
 
-    if (!zone || hybrid) {
+    if (!pointToPointPeriod && (!zone || hybrid)) {
         const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
         const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
         const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
@@ -350,12 +335,22 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         throw new Error('Either periodExpiryAttribute is undefined or not type expected');
     }
 
-    if (isArray(products)) {
-        products.forEach(product => {
-            addProductDetails(product, confirmationElements, periodExpiryAttribute);
-        });
-    } else if (!isArray(products)) {
-        addProductDetails(products, confirmationElements, periodExpiryAttribute);
+    if (!pointToPointPeriod) {
+        const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
+
+        if (isArray(products)) {
+            products.forEach(product => {
+                addProductDetails(product, confirmationElements);
+            });
+        } else if (!isArray(products)) {
+            addProductDetails(products, confirmationElements);
+        }
+    } else {
+        const product = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
+        if (!product || isWithErrors(product)) {
+            throw new Error('Product information for P2P period product could not be found.');
+        }
+        addProductDetails(product, confirmationElements);
     }
 
     confirmationElements.push({
@@ -439,32 +434,37 @@ export const buildTicketConfirmationElements = (
     ctx: NextPageContextWithSession,
 ): ConfirmationElement[] => {
     let confirmationElements: ConfirmationElement[];
-    switch (fareType) {
-        case 'single':
-            confirmationElements = buildSingleTicketConfirmationElements(ctx);
-            break;
-        case 'return':
-            confirmationElements = buildReturnTicketConfirmationElements(ctx);
-            break;
-        case 'period':
-            confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
-            break;
-        case 'flatFare':
-            confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
-            break;
-        case 'multiOperator':
-            confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
-            break;
-        case 'schoolService':
-            confirmationElements = buildSchoolTicketConfirmationElements(ctx);
-            break;
-        case 'pointToPointPeriod':
+    if (fareType === 'period') {
+        const ticketRepresentationAttribute = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
+        if (!ticketRepresentationAttribute || isWithErrors(ticketRepresentationAttribute)) {
+            throw new Error('Could not find ticket representation for period ticket');
+        }
+        if (ticketRepresentationAttribute.name === 'pointToPointPeriod') {
             confirmationElements = buildPointToPointPeriodConfirmationElements(ctx);
-            break;
-        default:
-            throw new Error('Did not receive an expected fareType.');
+        } else {
+            confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+        }
+    } else {
+        switch (fareType) {
+            case 'single':
+                confirmationElements = buildSingleTicketConfirmationElements(ctx);
+                break;
+            case 'return':
+                confirmationElements = buildReturnTicketConfirmationElements(ctx);
+                break;
+            case 'flatFare':
+                confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
+                break;
+            case 'multiOperator':
+                confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+                break;
+            case 'schoolService':
+                confirmationElements = buildSchoolTicketConfirmationElements(ctx);
+                break;
+            default:
+                throw new Error('Did not receive an expected fareType.');
+        }
     }
-
     return confirmationElements;
 };
 

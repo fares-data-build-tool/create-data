@@ -54,11 +54,16 @@ const TicketRepresentation = ({
                                             label: 'A ticket for a set of services',
                                             hint: 'Unlimited travel on specific service or set of services',
                                         },
-                                        // {
-                                        //     value: 'pointToPoint',
-                                        //     label: 'Point to Point',
-                                        //     hint: 'Unlimited travel between two fixed points in both directions',
-                                        // },
+                                        ...(showHybrid
+                                            ? [
+                                                  {
+                                                      value: 'pointToPointPeriod',
+                                                      label: 'Point to Point',
+                                                      hint:
+                                                          'Unlimited travel between two fixed points in both directions',
+                                                  },
+                                              ]
+                                            : []),
                                         ...(showHybrid
                                             ? [
                                                   {

@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError } from './apiUtils';
-import { TICKET_REPRESENTATION_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
+import { TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants/attributes';
 import { NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
@@ -19,8 +19,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 case 'multipleServices':
                     redirectTo(res, '/serviceList?selectAll=false');
                     return;
-                case 'pointToPoint':
-                    updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, { fareType: 'pointToPointPeriod' });
+                case 'pointToPointPeriod':
                     redirectTo(res, '/service');
                     return;
                 default:

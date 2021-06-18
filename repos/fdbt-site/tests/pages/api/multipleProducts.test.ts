@@ -49,8 +49,7 @@ describe('multipleProducts', () => {
                 multipleProductDurationUnitsInput1: 'month',
             },
             { Location: '/multipleProducts' },
-            false,
-            {},
+            'period',
         ],
 
         [
@@ -65,6 +64,7 @@ describe('multipleProducts', () => {
                 multipleProductDurationUnitsInput1: 'week',
             },
             { Location: '/multipleProducts' },
+            'period',
         ],
 
         [
@@ -79,6 +79,7 @@ describe('multipleProducts', () => {
                 multipleProductDurationInput1: '54',
             },
             { Location: '/multipleProducts' },
+            'period',
         ],
 
         [
@@ -93,6 +94,7 @@ describe('multipleProducts', () => {
                 multipleProductDurationUnitsInput1: 'week',
             },
             { Location: '/periodValidity' },
+            'period',
         ],
 
         [
@@ -111,6 +113,16 @@ describe('multipleProducts', () => {
                 multipleProductDurationInput4: '',
             },
             { Location: '/multipleProducts' },
+            'period',
+        ],
+        [
+            {
+                multipleProductNameInput0: 'test name',
+                multipleProductPriceInput0: '100',
+            },
+            { Location: '/multipleProducts' },
+            'ticketConfirmation',
+            'flatFare',
         ],
     ];
 

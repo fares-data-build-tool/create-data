@@ -79,12 +79,4 @@ export const INTERNAL_NOC = 'IWBusCo';
 
 export const CREATED_FILES_NUM_PER_PAGE = 10;
 
-export const validFareTypes = [
-    'single',
-    'period',
-    'return',
-    'flatFare',
-    'multiOperator',
-    'schoolService',
-    'pointToPointPeriod',
-];
+export const validFareTypes = ['single', 'period', 'return', 'flatFare', 'multiOperator', 'schoolService'];

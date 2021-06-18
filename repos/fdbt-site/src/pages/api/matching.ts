@@ -45,11 +45,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        if (fareTypeInfo.fareType === 'pointToPointPeriod') {
-            redirectTo(res, '/pointToPointPeriodProduct');
-            return;
-        }
-
         if (carnetFareType !== undefined && carnetFareType) {
             redirectTo(res, '/carnetProductDetails');
             return;

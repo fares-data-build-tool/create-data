@@ -27,8 +27,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
         if (
-            isFareType(fareTypeAttribute) &&
-            (fareTypeAttribute.fareType === 'return' || fareTypeAttribute.fareType === 'pointToPointPeriod')
+            (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'return') ||
+            (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period')
         ) {
             redirectTo(res, '/returnDirection');
             return;

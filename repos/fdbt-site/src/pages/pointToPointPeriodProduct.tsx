@@ -44,7 +44,7 @@ const ProductDetails = ({
                         >
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 className="govuk-fieldset__heading" id="point-to-point-period-product-page-heading">
-                                    Enter your product details
+                                    Enter your period product details
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="service-operator-hint">
@@ -81,10 +81,10 @@ const ProductDetails = ({
                             >
                                 <>
                                     <label className="govuk-label" htmlFor="product-details-expiry">
-                                        Period
+                                        Period duration
                                     </label>
                                     <span className="govuk-hint" id="product-expiry-hint">
-                                        For example, 2 months
+                                        How long does the ticket last for. For example, 2 months
                                     </span>
 
                                     <FormErrorBlock
@@ -117,7 +117,7 @@ const ProductDetails = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PointToPointPeriodProductProps } => {
     const csrfToken = getCsrfToken(ctx);
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
-    const products = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
+    const product = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
 
     if (!operatorAttribute?.name) {
         throw new Error('Failed to retrieve the necessary session objects.');
@@ -125,10 +125,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Po
 
     return {
         props: {
-            product: null,
+            product: product || null,
             operator: operatorAttribute.name,
             passengerType: 'adult',
-            errors: products && 'errors' in products ? products.errors : [],
+            errors: product && 'errors' in product ? product.errors : [],
             csrfToken,
         },
     };

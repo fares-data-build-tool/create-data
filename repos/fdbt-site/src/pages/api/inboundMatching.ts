@@ -4,11 +4,12 @@ import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { MatchingWithErrors, InboundMatchingInfo } from '../../interfaces/matchingInterface';
+import { isFareType } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -36,18 +37,19 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const carnetFareType = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
 
-        const pointToPointFareType = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-
         if (carnetFareType) {
             redirectTo(res, '/carnetProductDetails');
             return;
         }
 
-        if (pointToPointFareType) {
+        const fareTypeInfo = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+
+        if (isFareType(fareTypeInfo) && fareTypeInfo.fareType === 'period') {
             redirectTo(res, '/pointToPointPeriodProduct');
+            return;
         }
 
-        redirectTo(res, '/ticketConfirmation');
+        redirectTo(res, '/returnValidity');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON.';
         redirectToError(res, message, 'api.inboundMatching', error);
