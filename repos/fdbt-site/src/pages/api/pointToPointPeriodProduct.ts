@@ -1,14 +1,12 @@
 import { NextApiResponse } from 'next';
-import { POINT_TO_POINT_PRODUCT_ATTRIBUTE } from 'src/constants/attributes';
-import { updateSessionAttribute } from 'src/utils/sessions';
+import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession, PointToPointPeriodProduct } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
 import { checkDurationIsValid, checkDurationUnitsIsValid, checkProductNameIsValid } from './apiUtils/validator';
+import { POINT_TO_POINT_PRODUCT_ATTRIBUTE } from '../../constants/attributes';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        console.log(req.body);
-
         const { productNameInput, productDuration, durationUnits } = req.body;
         const pointToPointPeriodProduct: PointToPointPeriodProduct = {
             productName: productNameInput,

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages carnetProductDetails should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Product Details entry page of the Create Fares Data Service"
   title="Product Details - Create Fares Data Service"
 >
@@ -36,7 +36,7 @@ exports[`pages carnetProductDetails should render correctly 1`] = `
         >
           Test Hint
         </span>
-        <Component
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-name",
@@ -71,8 +71,8 @@ exports[`pages carnetProductDetails should render correctly 1`] = `
               type="text"
             />
           </FormElementWrapper>
-        </Component>
-        <Component
+        </FormGroupWrapper>
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-carnet-quantity",
@@ -107,8 +107,8 @@ exports[`pages carnetProductDetails should render correctly 1`] = `
               type="text"
             />
           </FormElementWrapper>
-        </Component>
-        <Component
+        </FormGroupWrapper>
+        <FormGroupWrapper
           errorIds={
             Array [
               "product-details-carnet-expiry-quantity",
@@ -129,7 +129,7 @@ exports[`pages carnetProductDetails should render correctly 1`] = `
           >
             For example, 2 months
           </span>
-          <Component
+          <FormErrorBlock
             errorIds={
               Array [
                 "product-details-carnet-expiry-quantity",
@@ -139,6 +139,7 @@ exports[`pages carnetProductDetails should render correctly 1`] = `
             errors={Array []}
           />
           <ExpirySelector
+            carnet={true}
             defaultDuration="2"
             defaultUnit="day"
             errors={Array []}
@@ -148,7 +149,7 @@ exports[`pages carnetProductDetails should render correctly 1`] = `
             unitId="product-details-carnet-expiry-unit"
             unitName="productDetailsExpiryUnitInput"
           />
-        </Component>
+        </FormGroupWrapper>
       </fieldset>
     </div>
     <input
@@ -158,5 +159,5 @@ exports[`pages carnetProductDetails should render correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages carnetFareType should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Carnet Fare Type selection page of the Create Fares Data Service"
   errors={Array []}
   title="Carnet Fare Type - Create Fares Data Service "
@@ -84,11 +84,11 @@ exports[`pages carnetFareType should render correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages carnetFareType should render error messaging when errors are passed to the page 1`] = `
-<Component
+<TwoThirdsLayout
   description="Carnet Fare Type selection page of the Create Fares Data Service"
   errors={
     Array [
@@ -192,5 +192,5 @@ exports[`pages carnetFareType should render error messaging when errors are pass
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

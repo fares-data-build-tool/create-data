@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages feedback should render correctly after feedback has been successfully submitted 1`] = `
-<Component
+<TwoThirdsLayout
   description="Feedback page of the Create Fares Data Service"
   errors={Array []}
   title="Feedback - Create Fares Data Service"
@@ -200,11 +200,11 @@ exports[`pages feedback should render correctly after feedback has been successf
       value="Submit"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages feedback should render correctly after the user tries to submit no feedback 1`] = `
-<Component
+<TwoThirdsLayout
   description="Feedback page of the Create Fares Data Service"
   errors={Array []}
   title="Feedback - Create Fares Data Service"
@@ -403,11 +403,11 @@ exports[`pages feedback should render correctly after the user tries to submit n
       value="Submit"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages feedback should render correctly when the page is first visited 1`] = `
-<Component
+<TwoThirdsLayout
   description="Feedback page of the Create Fares Data Service"
   errors={Array []}
   title="Feedback - Create Fares Data Service"
@@ -582,5 +582,5 @@ exports[`pages feedback should render correctly when the page is first visited 1
       value="Submit"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

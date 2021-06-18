@@ -55,7 +55,7 @@ export interface ProductInfo {
     carnetDetails?: CarnetDetails;
 }
 
-export interface PointToPointProductInfo {
+export interface CarnetProductInfo {
     productName: string;
     carnetDetails: CarnetDetails;
 }
@@ -66,7 +66,7 @@ export interface PointToPointPeriodProduct {
     periodUnits: ExpiryUnit;
 }
 
-export interface PointToPointProductInfoWithSOP extends PointToPointProductInfo {
+export interface PointToPointProductInfoWithSOP extends CarnetProductInfo {
     salesOfferPackages: SalesOfferPackage[];
 }
 
@@ -95,7 +95,7 @@ export interface JourneyWithErrors {
 }
 
 export interface TicketRepresentationAttribute {
-    name: string;
+    name: 'geoZone' | 'multipleServices' | 'hybrid';
 }
 
 export interface TicketRepresentationAttributeWithErrors {
@@ -314,6 +314,7 @@ export type Ticket =
     | PointToPointTicket
     | GeoZoneTicket
     | PeriodMultipleServicesTicket
+    | PeriodHybridTicket
     | FlatFareTicket
     | SchemeOperatorTicket;
 
@@ -339,7 +340,7 @@ export interface BasePointToPointTicket extends BaseTicket {
     lineName: string;
     lineId: string;
     serviceDescription: string;
-    products: (BaseProduct | PointToPointProductInfo)[];
+    products: (BaseProduct | CarnetProductInfo)[];
 }
 
 export interface SingleTicket extends BasePointToPointTicket {
@@ -385,6 +386,8 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
     termTime: boolean;
 }
+
+export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
 
 export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
     additionalOperators: {

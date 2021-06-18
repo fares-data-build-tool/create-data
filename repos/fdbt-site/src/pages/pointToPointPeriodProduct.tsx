@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
+import ExpirySelector from '../components/ExpirySelector';
 import TwoThirdsLayout from '../layout/Layout';
 import { MULTIPLE_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, PointToPointPeriodProduct } from '../interfaces';
@@ -8,7 +9,6 @@ import FormElementWrapper, { FormErrorBlock, FormGroupWrapper } from '../compone
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
-import ExpirySelector from 'src/components/ExpirySelector';
 
 const title = 'Point to Point Period Product - Create Fares Data Service';
 const description = 'Point to point period product details entry page of the Create Fares Data Service';
@@ -17,7 +17,6 @@ interface PointToPointPeriodProductProps {
     product: PointToPointPeriodProduct | null;
     operator: string;
     passengerType: string;
-    hintText?: string;
     errors: ErrorInfo[];
     csrfToken: string;
 }
@@ -26,7 +25,6 @@ const ProductDetails = ({
     product,
     operator,
     passengerType,
-    hintText,
     csrfToken,
     errors,
 }: PointToPointPeriodProductProps): ReactElement => {
@@ -50,7 +48,7 @@ const ProductDetails = ({
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="service-operator-hint">
-                                {operator} - {hintText} - {upperFirst(passengerType)}
+                                {operator} - {upperFirst(passengerType)}
                             </span>
                             <FormGroupWrapper errors={errors} errorIds={['point-to-point-period-product-name']}>
                                 <>
@@ -119,7 +117,6 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Po
     const csrfToken = getCsrfToken(ctx);
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const products = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
-    let hintText = '';
 
     if (!operatorAttribute?.name) {
         throw new Error('Failed to retrieve the necessary session objects.');
@@ -131,7 +128,6 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Po
             operator: operatorAttribute.name,
             passengerType: 'adult',
             errors: products && 'errors' in products ? products.errors : [],
-            hintText,
             csrfToken,
         },
     };

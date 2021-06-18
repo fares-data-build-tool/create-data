@@ -46,7 +46,6 @@ describe('resetPassword', () => {
 
     describe('getServerSideProps', () => {
         const writeHeadMock = jest.fn();
-        // eslint-disable-next-line @typescript-eslint/camelcase
         const mockQueryParams = { key: 'thisisarandomkey', user_name: 'user@email.com', expiry: expiryDate.toString() };
 
         it('should return default props when the page is first visited with a valid link', () => {

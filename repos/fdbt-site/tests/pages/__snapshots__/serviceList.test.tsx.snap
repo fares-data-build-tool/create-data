@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages serviceList should render an error when the error flag is set to true 1`] = `
-<Component
+<FullColumnLayout
   description="Service List selection page of the Create Fares Data Service"
   title="Service List - Create Fares Data Service"
 >
@@ -71,8 +71,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
           <b>
             Bus Open Data Service (BODS)
           </b>
-          . If the service you are looking for is not listed, contact the BODS help desk for advice
-           
+          . If the service you are looking for is not listed, contact the BODS help desk for advice 
           <a
             href="/contact"
           >
@@ -106,11 +105,11 @@ exports[`pages serviceList should render an error when the error flag is set to 
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;
 
 exports[`pages serviceList should render correctly for multiOperator 1`] = `
-<Component
+<FullColumnLayout
   description="Service List selection page of the Create Fares Data Service"
   title="Service List - Create Fares Data Service"
 >
@@ -175,8 +174,7 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
           <b>
             Traveline National Dataset (TNDS)
           </b>
-          . If the service you are looking for is not listed, contact the BODS help desk for advice
-           
+          . If the service you are looking for is not listed, contact the BODS help desk for advice 
           <a
             href="/contact"
           >
@@ -261,11 +259,11 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;
 
 exports[`pages serviceList should render correctly with bods data source 1`] = `
-<Component
+<FullColumnLayout
   description="Service List selection page of the Create Fares Data Service"
   title="Service List - Create Fares Data Service"
 >
@@ -328,8 +326,7 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
           <b>
             Bus Open Data Service (BODS)
           </b>
-          . If the service you are looking for is not listed, contact the BODS help desk for advice
-           
+          . If the service you are looking for is not listed, contact the BODS help desk for advice 
           <a
             href="/contact"
           >
@@ -414,11 +411,11 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;
 
 exports[`pages serviceList should render correctly with tnds data source 1`] = `
-<Component
+<FullColumnLayout
   description="Service List selection page of the Create Fares Data Service"
   title="Service List - Create Fares Data Service"
 >
@@ -453,6 +450,7 @@ exports[`pages serviceList should render correctly with tnds data source 1`] = `
           id="service-list-page-heading"
         >
           Which 
+          additional 
           services is the ticket valid for?
         </h1>
       </legend>
@@ -481,8 +479,7 @@ exports[`pages serviceList should render correctly with tnds data source 1`] = `
           <b>
             Traveline National Dataset (TNDS)
           </b>
-          . If the service you are looking for is not listed, contact the BODS help desk for advice
-           
+          . If the service you are looking for is not listed, contact the BODS help desk for advice 
           <a
             href="/contact"
           >
@@ -567,5 +564,5 @@ exports[`pages serviceList should render correctly with tnds data source 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;

@@ -70,6 +70,7 @@ const MultipleProducts = ({
 
                                 {numberOfProducts > 1 ? (
                                     <button
+                                        id="remove-button"
                                         type="button"
                                         className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3"
                                         onClick={(): void => setNumberOfProducts(numberOfProducts - 1)}

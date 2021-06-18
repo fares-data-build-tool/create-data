@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages stageNames should render correctly when a user first visits the page 1`] = `
-<Component
+<TwoThirdsLayout
   description="Stage Names entry page of the Create Fares Data Service"
   title="Stage Names - Create Fares Data Service"
 >
@@ -184,11 +184,11 @@ exports[`pages stageNames should render correctly when a user first visits the p
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages stageNames should render correctly when a user is redirected to the page from itself when incorrect data is entered 1`] = `
-<Component
+<TwoThirdsLayout
   description="Stage Names entry page of the Create Fares Data Service"
   title="Stage Names - Create Fares Data Service"
 >
@@ -352,11 +352,11 @@ exports[`pages stageNames should render correctly when a user is redirected to t
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages stageNames should render correctly when a user is redirected to the page from itself when no data is entered 1`] = `
-<Component
+<TwoThirdsLayout
   description="Stage Names entry page of the Create Fares Data Service"
   title="Stage Names - Create Fares Data Service"
 >
@@ -495,5 +495,5 @@ exports[`pages stageNames should render correctly when a user is redirected to t
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages selectSalesOfferPackage should not render the 'Create New Sales Offer Package' button for a scheme operator user 1`] = `
-<Component
+<FullColumnLayout
   description="Sales Offer Package selection page of the Create Fares Data Service"
   title="Select Sales Offer Package - Create Fares Data Service"
 >
@@ -65,11 +65,11 @@ exports[`pages selectSalesOfferPackage should not render the 'Create New Sales O
       Create New Sales Offer Package
     </a>
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;
 
 exports[`pages selectSalesOfferPackage should render an error when an error message is passed through to props 1`] = `
-<Component
+<FullColumnLayout
   description="Sales Offer Package selection page of the Create Fares Data Service"
   title="Select Sales Offer Package - Create Fares Data Service"
 >
@@ -140,11 +140,11 @@ exports[`pages selectSalesOfferPackage should render an error when an error mess
       Create New Sales Offer Package
     </a>
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;
 
 exports[`pages selectSalesOfferPackage should render correctly 1`] = `
-<Component
+<FullColumnLayout
   description="Sales Offer Package selection page of the Create Fares Data Service"
   title="Select Sales Offer Package - Create Fares Data Service"
 >
@@ -208,5 +208,5 @@ exports[`pages selectSalesOfferPackage should render correctly 1`] = `
       Create New Sales Offer Package
     </a>
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;

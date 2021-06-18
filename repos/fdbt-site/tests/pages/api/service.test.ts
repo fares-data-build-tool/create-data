@@ -1,6 +1,6 @@
 import service from '../../../src/pages/api/service';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { getUuidFromSession } from '../../../src/pages/api/apiUtils';
+import * as apiUtils from '../../../src/pages/api/apiUtils';
 
 afterEach(() => {
     jest.resetAllMocks();
@@ -22,7 +22,7 @@ describe('service', () => {
     });
 
     it('should return 302 redirect to /singleDirection when there is a service selected', () => {
-        (getUuidFromSession as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
+        jest.spyOn(apiUtils, 'getUuidFromSession').mockReturnValue('testUuid');
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({
             body: { service: 'test' },

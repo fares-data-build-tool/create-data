@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages fareType should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Reset Email Confirmation page of the Create Fares Data Service"
   title="Reset Email Confirmation - Create Fares Data Service"
 >
@@ -39,5 +39,5 @@ exports[`pages fareType should render correctly 1`] = `
   >
     Home
   </a>
-</Component>
+</TwoThirdsLayout>
 `;

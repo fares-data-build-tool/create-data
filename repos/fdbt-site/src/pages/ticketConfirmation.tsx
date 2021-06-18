@@ -13,7 +13,7 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
+    CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
@@ -40,7 +40,7 @@ import {
     TxcSourceAttribute,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingFareZones, MatchingInfo } from '../interfaces/matchingInterface';
-import { isFareType, isPeriodExpiry, isPointToPointProductInfo } from '../interfaces/typeGuards';
+import { isFareType, isPeriodExpiry } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
 import { getCsrfToken, sentenceCaseString } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
@@ -117,12 +117,12 @@ export const buildSingleTicketConfirmationElements = (ctx: NextPageContextWithSe
         });
     });
 
-    const productInfo = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
+    const carnetProductInfo = getSessionAttribute(ctx.req, CARNET_PRODUCT_DETAILS_ATTRIBUTE);
 
-    if (isPointToPointProductInfo(productInfo)) {
+    if (carnetProductInfo) {
         confirmationElements.push({
-            name: `${productInfo.productName}`,
-            content: getCarnetDetailsContent(productInfo.carnetDetails),
+            name: `${carnetProductInfo.productName}`,
+            content: getCarnetDetailsContent(carnetProductInfo.carnetDetails),
             href: 'carnetProductDetails',
         });
     }
@@ -193,13 +193,13 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
         });
     }
 
-    const productInfo = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
+    const carnetProductInfo = getSessionAttribute(ctx.req, CARNET_PRODUCT_DETAILS_ATTRIBUTE);
 
-    if (isPointToPointProductInfo(productInfo)) {
+    if (carnetProductInfo) {
         confirmationElements.push({
-            name: `${productInfo.productName}`,
+            name: `${carnetProductInfo.productName}`,
             href: 'carnetProductDetails',
-            content: getCarnetDetailsContent(productInfo.carnetDetails),
+            content: getCarnetDetailsContent(carnetProductInfo.carnetDetails),
         });
     }
 
@@ -229,16 +229,19 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
 
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
+    const hybrid = ticketRepresentation === 'hybrid';
 
     const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
 
-    if (zone) {
+    if (zone || hybrid) {
         confirmationElements.push({
             name: 'Zone',
             content: 'You uploaded a fare zone CSV file',
             href: 'csvZoneUpload',
         });
-    } else if (!zone) {
+    }
+
+    if (!zone || hybrid) {
         const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
         const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
         const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;

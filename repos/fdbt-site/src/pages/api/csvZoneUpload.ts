@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
-import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE } from '../../constants/attributes';
+import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { getUuidFromSession, redirectToError, redirectTo, getAndValidateNoc, isSchemeOperator } from './apiUtils';
 import { putDataInS3 } from '../../data/s3';
@@ -32,7 +32,7 @@ export const setFareZoneAttributeAndRedirect = (
 export const csvParser = (stringifiedCsvData: string): UserFareZone[] => {
     const parsedFileContent: UserFareZone[] = csvParse(stringifiedCsvData, {
         columns: true,
-        skip_empty_lines: false, // eslint-disable-line @typescript-eslint/camelcase
+        skip_empty_lines: false,
         delimiter: ',',
     });
     return parsedFileContent;
@@ -184,6 +184,17 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (fareType === 'multiOperator' || isSchemeOperator(req, res)) {
                 redirectTo(res, '/reuseOperatorGroup');
                 return;
+            }
+
+            if (fareType === 'period') {
+                const ticketType = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
+                if (!ticketType || !('name' in ticketType)) {
+                    throw new Error('No ticket type set for period ticket');
+                }
+
+                if (ticketType.name === 'hybrid') {
+                    redirectTo(res, '/serviceList?selectAll=false');
+                }
             }
 
             redirectTo(res, '/multipleProducts');

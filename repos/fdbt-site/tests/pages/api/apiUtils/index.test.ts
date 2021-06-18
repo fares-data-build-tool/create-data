@@ -12,7 +12,6 @@ import {
     redirectOnSchoolFareType,
     getFareTypeFromFromAttributes,
 } from '../../../../src/pages/api/apiUtils';
-import * as apiUtils from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse, mockSchemOpIdToken } from '../../../testData/mockData';
 import {
@@ -198,7 +197,6 @@ describe('apiUtils', () => {
         });
 
         it('should call redirectOnSchoolFareType when the schoolService ticket option is selected', () => {
-            const redirectOnSchoolFareTypeSpy = jest.spyOn(apiUtils, 'redirectOnSchoolFareType');
             const { req, res } = getMockRequestAndResponse({
                 mockWriteHeadFn: writeHeadMock,
                 session: {
@@ -207,7 +205,7 @@ describe('apiUtils', () => {
                 },
             });
             redirectOnFareType(req, res);
-            expect(redirectOnSchoolFareTypeSpy).toBeCalledWith(req, res);
+            expect(writeHeadMock).toBeCalledWith(302, { Location: '/service' });
         });
 
         it('should throw error if unexpected fare type is selected', () => {

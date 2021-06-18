@@ -1,7 +1,6 @@
-import { FARE_TYPE_ATTRIBUTE } from './../../constants/attributes';
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError } from './apiUtils';
-import { TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants/attributes';
+import { TICKET_REPRESENTATION_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
 import { NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
@@ -14,6 +13,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
             switch (ticketType) {
                 case 'geoZone':
+                case 'hybrid':
                     redirectTo(res, '/csvZoneUpload');
                     return;
                 case 'multipleServices':

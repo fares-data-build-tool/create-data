@@ -1,13 +1,14 @@
 import React, { ReactElement } from 'react';
-import TwoThirdsLayout from '../layout/Layout';
-import { FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants/attributes';
-import { ErrorInfo, NextPageContextWithSession, FareType } from '../interfaces';
+import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import CsrfForm from '../components/CsrfForm';
-import { getSessionAttribute } from '../utils/sessions';
+import RadioButtons from '../components/RadioButtons';
+import { FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants/attributes';
+import { ErrorInfo, FareType, NextPageContextWithSession } from '../interfaces';
 import { isTicketRepresentationWithErrors } from '../interfaces/typeGuards';
+import TwoThirdsLayout from '../layout/Layout';
 import { getCsrfToken } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Ticket Representation - Create Fares Data Service';
 const description = 'Ticket Representation selection page of the Create Fares Data Service';
@@ -16,75 +17,69 @@ interface TicketRepresentationProps {
     fareType: string;
     errors: ErrorInfo[];
     csrfToken: string;
+    showHybrid: boolean;
 }
 
-const TicketRepresentation = ({ fareType, errors = [], csrfToken }: TicketRepresentationProps): ReactElement => (
-    <TwoThirdsLayout title={title} description={description} errors={errors}>
-        <CsrfForm action="/api/ticketRepresentation" method="post" csrfToken={csrfToken}>
-            <>
-                <ErrorSummary errors={errors} />
-                <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="ticket-representation-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="ticket-representation-page-heading">
-                                {`Select a type of ${
-                                    fareType === 'multiOperator' ? 'multi-operator' : 'period'
-                                } ticket`}
-                            </h1>
-                        </legend>
-                        <FormElementWrapper errors={errors} errorId="geo-zone" errorClass="govuk-radios--errors">
-                            <div className="govuk-radios">
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="geo-zone"
-                                        name="ticketType"
-                                        type="radio"
-                                        value="geoZone"
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="geo-zone">
-                                        A ticket within a geographical zone
-                                    </label>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="set-of-services"
-                                        name="ticketType"
-                                        type="radio"
-                                        value="multipleServices"
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="set-of-services">
-                                        A ticket for a set of services
-                                    </label>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="point-to-point"
-                                        name="ticketType"
-                                        type="radio"
-                                        value="pointToPoint"
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="point-to-point">
-                                        Point to point
-                                    </label>
-                                </div>
-                            </div>
-                        </FormElementWrapper>
-                    </fieldset>
-                </div>
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-            </>
-        </CsrfForm>
-    </TwoThirdsLayout>
-);
+const TicketRepresentation = ({
+    fareType,
+    errors = [],
+    csrfToken,
+    showHybrid,
+}: TicketRepresentationProps): ReactElement => {
+    return (
+        <TwoThirdsLayout title={title} description={description} errors={errors}>
+            <CsrfForm action="/api/ticketRepresentation" method="post" csrfToken={csrfToken}>
+                <>
+                    <ErrorSummary errors={errors} />
+                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                        <fieldset className="govuk-fieldset" aria-describedby="ticket-representation-page-heading">
+                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h1 className="govuk-fieldset__heading" id="ticket-representation-page-heading">
+                                    {`Select a type of ${
+                                        fareType === 'multiOperator' ? 'multi-operator' : 'period'
+                                    } ticket`}
+                                </h1>
+                            </legend>
+                            <FormElementWrapper errors={errors} errorId="geo-zone" errorClass="govuk-radios--errors">
+                                <RadioButtons
+                                    inputName="ticketType"
+                                    options={[
+                                        {
+                                            value: 'geoZone',
+                                            label: 'A ticket within a geographical zone',
+                                            hint: 'Unlimited travel within a geographical zone',
+                                        },
+                                        {
+                                            value: 'multipleServices',
+                                            label: 'A ticket for a set of services',
+                                            hint: 'Unlimited travel on specific service or set of services',
+                                        },
+                                        // {
+                                        //     value: 'pointToPoint',
+                                        //     label: 'Point to Point',
+                                        //     hint: 'Unlimited travel between two fixed points in both directions',
+                                        // },
+                                        ...(showHybrid
+                                            ? [
+                                                  {
+                                                      value: 'hybrid',
+                                                      label: 'Hybrid Period ticket',
+                                                      hint:
+                                                          'Unlimited travel within a geographic zone and certain additional services outside that zone',
+                                                  },
+                                              ]
+                                            : []),
+                                    ]}
+                                />
+                            </FormElementWrapper>
+                        </fieldset>
+                    </div>
+                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                </>
+            </CsrfForm>
+        </TwoThirdsLayout>
+    );
+};
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: TicketRepresentationProps } => {
     const csrfToken = getCsrfToken(ctx);
@@ -96,6 +91,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             fareType,
             errors: ticketType && isTicketRepresentationWithErrors(ticketType) ? ticketType.errors : [],
             csrfToken,
+            showHybrid: process.env.STAGE !== 'prod',
         },
     };
 };

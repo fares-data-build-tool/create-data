@@ -72,6 +72,26 @@ export const completeFlatFarePages = (productName: string, isScheme: boolean): v
     }
     getElementById('multiple-product-name-0').type(productName);
     getElementById('multiple-product-price-0').type('50.50');
+
+    continueButtonClick();
+    continueButtonClick();
+};
+
+export const completeFlatFareCarnet = () => {
+    randomlyChooseAndSelectServices();
+    continueButtonClick();
+
+    for (let i = 0; i < 3; i += 1) {
+        getElementById(`multiple-product-name-${i}`).type(`Flat fare carnet ${i}`);
+        getElementById(`multiple-product-price-${i}`).type((9.5 + i).toString());
+        getElementById(`product-details-carnet-quantity-${i}`).type((2 + i).toString());
+        getElementById(`product-details-carnet-expiry-quantity-${i}`).type('7');
+        selectRandomOptionFromDropDown(`product-details-carnet-expiry-unit-${i}`);
+        clickElementById('add-another-button');
+    }
+
+    clickElementById('remove-button');
+
     continueButtonClick();
     continueButtonClick();
 };
@@ -178,28 +198,47 @@ export const completeSalesPages = (numberOfProducts?: number, multiProductNamePr
 };
 
 export const completePeriodGeoZonePages = (numberOfProducts: number, multiProductNamePrefix?: string): void => {
-    clickElementById('geo-zone');
+    clickElementById('radio-option-geoZone');
     continueButtonClick();
     uploadFile('csv-upload', 'fareZone.csv');
     submitButtonClick();
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
 };
 
-export const completePeriodMultiServicePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
-    clickElementById('set-of-services');
+export const completePeriodMultiServicePages = (
+    numberOfProducts?: number,
+    multiProductNamePrefix?: string,
+    isCarnet?: boolean,
+): void => {
+    clickElementById('radio-option-multipleServices');
     continueButtonClick();
     randomlyChooseAndSelectServices();
     continueButtonClick();
-    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
+};
+
+export const completeHybridPages = (
+    numberOfProducts?: number,
+    multiProductNamePrefix?: string,
+    isCarnet?: boolean,
+): void => {
+    clickElementById('radio-option-hybrid');
+    continueButtonClick();
+    uploadFile('csv-upload', 'fareZone.csv');
+    submitButtonClick();
+    randomlyChooseAndSelectServices();
+    continueButtonClick();
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
 };
 
 export const completeSchoolPeriodMultiServicePages = (
     numberOfProducts?: number,
     multiProductNamePrefix?: string,
+    isCarnet?: boolean,
 ): void => {
     randomlyChooseAndSelectServices();
     continueButtonClick();
-    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
 };
 
 export const completeMultiOpGeoZonePages = (
@@ -208,7 +247,7 @@ export const completeMultiOpGeoZonePages = (
     multiProductNamePrefix?: string,
 ): void => {
     if (!isScheme) {
-        clickElementById('geo-zone');
+        clickElementById('radio-option-geoZone');
         continueButtonClick();
     }
 
@@ -221,7 +260,7 @@ export const completeMultiOpGeoZonePages = (
 };
 
 export const completeMultiOpMultiServicePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
-    clickElementById('set-of-services');
+    clickElementById('radio-option-multipleServices');
     continueButtonClick();
     randomlyChooseAndSelectServices();
     continueButtonClick();

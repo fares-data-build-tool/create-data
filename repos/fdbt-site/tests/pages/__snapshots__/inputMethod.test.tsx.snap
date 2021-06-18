@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages inputMethod should render correctly 1`] = `
-<Component
+<BaseLayout
   description="Input Method selection page of the Create Fares Data Service"
   errors={Array []}
   title="Input Method - Create Fares Data Service"
@@ -139,5 +139,5 @@ exports[`pages inputMethod should render correctly 1`] = `
       </p>
     </div>
   </div>
-</Component>
+</BaseLayout>
 `;

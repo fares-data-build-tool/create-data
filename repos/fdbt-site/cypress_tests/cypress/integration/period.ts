@@ -1,5 +1,6 @@
 import { isUuidStringValid } from '../support/helpers';
 import {
+    completeHybridPages,
     completePeriodGeoZonePages,
     completePeriodMultiServicePages,
     completeSalesPages,
@@ -40,6 +41,16 @@ describe('the period faretype product journey', () => {
         selectFareType('period', false);
         defineUserTypeAndTimeRestrictions();
         completePeriodMultiServicePages(numberOfProducts, multiProductNamePrefix);
+        completeSalesPages(numberOfProducts, multiProductNamePrefix);
+        isUuidStringValid();
+    });
+
+    it('completes successfully for hybrid and multiple products', () => {
+        const numberOfProducts = 3;
+        const multiProductNamePrefix = 'Hybrid product ';
+        selectFareType('period', false);
+        defineUserTypeAndTimeRestrictions();
+        completeHybridPages(numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
         isUuidStringValid();
     });
