@@ -333,7 +333,8 @@ export const getFareStructuresElements = (
         | FlatFareTicket
         | SchemeOperatorGeoZoneTicket
         | SchemeOperatorFlatFareTicket,
-    coreData: CoreData,
+    lineName: string,
+    placeholderGroupOfProductsName: string,
 ): NetexObject[] => {
     let fareStructureElements: NetexObject[] = [];
 
@@ -346,7 +347,7 @@ export const getFareStructuresElements = (
     }
 
     if (isPointToPointTicket(ticket)) {
-        fareStructureElements.push(getLinesElement(ticket, coreData.lineName));
+        fareStructureElements.push(getLinesElement(ticket, lineName));
         fareStructureElements.push(getEligibilityElement(ticket));
         fareStructureElements.push(getPointToPointConditionsElement(ticket));
 
@@ -369,7 +370,7 @@ export const getFareStructuresElements = (
             validityParametersObject = {
                 FareZoneRef: {
                     version: '1.0',
-                    ref: `op:${coreData.placeholderGroupOfProductsName}@${ticket.zoneName}`,
+                    ref: `op:${placeholderGroupOfProductsName}@${ticket.zoneName}`,
                 },
             };
         } else if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket)) {

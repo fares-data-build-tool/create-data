@@ -10,7 +10,7 @@ import { NetexObject, getUserProfile } from '../sharedHelpers';
 import {
     buildSalesOfferPackage,
     buildSalesOfferPackages,
-    getConditionsOfTravelFareStructureElement,
+    getPointToPointConditionsElement,
 } from './pointToPointTicketNetexHelpers';
 
 describe('Netex Helpers', () => {
@@ -543,7 +543,7 @@ describe('Netex Helpers', () => {
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         it('creates conditions of travel fare frame with usage validity period if user provides a return validity', () => {
             const matchingDataWithReturnValidity = returnNonCircularTicketWithReturnValidity;
-            const result = getConditionsOfTravelFareStructureElement(matchingDataWithReturnValidity);
+            const result = getPointToPointConditionsElement(matchingDataWithReturnValidity);
             expect(result.GenericParameterAssignment.limitations.UsageValidityPeriod).toStrictEqual({
                 version: '1.0',
                 id: `op:Trip@back@frequency`,
@@ -560,7 +560,7 @@ describe('Netex Helpers', () => {
 
         it('does not create conditions of travel fare frame with usage validity period if user does not provide a return validity', () => {
             const matchingDataWithoutReturnValidity = returnNonCircularTicket;
-            const result = getConditionsOfTravelFareStructureElement(matchingDataWithoutReturnValidity);
+            const result = getPointToPointConditionsElement(matchingDataWithoutReturnValidity);
             expect(result.GenericParameterAssignment.limitations.UsageValidityPeriod).toBeUndefined();
         });
         /* eslint-enable @typescript-eslint/no-non-null-assertion */
