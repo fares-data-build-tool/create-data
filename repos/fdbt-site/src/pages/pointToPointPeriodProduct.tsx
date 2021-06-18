@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
 import ExpirySelector from '../components/ExpirySelector';
 import TwoThirdsLayout from '../layout/Layout';
-import { MULTIPLE_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
+import { POINT_TO_POINT_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, PointToPointPeriodProduct } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormErrorBlock, FormGroupWrapper } from '../components/FormElementWrapper';
@@ -29,8 +29,8 @@ const ProductDetails = ({
     errors,
 }: PointToPointPeriodProductProps): ReactElement => {
     const { productName } = product || {};
-    const periodValue = product?.periodValue || '';
-    const periodUnits = product?.periodUnits || undefined;
+    const periodValue = product?.productDuration || '';
+    const periodUnits = product?.productDurationUnits || undefined;
 
     return (
         <TwoThirdsLayout title={title} description={description}>
@@ -101,6 +101,7 @@ const ProductDetails = ({
                                         unitName="durationUnits"
                                         unitId="product-details-expiry-unit"
                                         errors={errors}
+                                        carnet
                                     />
                                 </>
                             </FormGroupWrapper>
@@ -116,7 +117,7 @@ const ProductDetails = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PointToPointPeriodProductProps } => {
     const csrfToken = getCsrfToken(ctx);
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
-    const products = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
+    const products = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
 
     if (!operatorAttribute?.name) {
         throw new Error('Failed to retrieve the necessary session objects.');

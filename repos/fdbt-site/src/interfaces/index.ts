@@ -62,8 +62,8 @@ export interface CarnetProductInfo {
 
 export interface PointToPointPeriodProduct {
     productName: string;
-    periodValue: string;
-    periodUnits: ExpiryUnit;
+    productDuration: string;
+    productDurationUnits: ExpiryUnit;
 }
 
 export interface PointToPointProductInfoWithSOP extends CarnetProductInfo {

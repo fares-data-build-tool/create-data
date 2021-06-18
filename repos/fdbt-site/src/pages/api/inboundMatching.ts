@@ -2,7 +2,11 @@ import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
-import { CARNET_FARE_TYPE_ATTRIBUTE, INBOUND_MATCHING_ATTRIBUTE } from '../../constants/attributes';
+import {
+    CARNET_FARE_TYPE_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    INBOUND_MATCHING_ATTRIBUTE,
+} from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { MatchingWithErrors, InboundMatchingInfo } from '../../interfaces/matchingInterface';
 
@@ -32,12 +36,18 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const carnetFareType = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
 
+        const pointToPointFareType = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+
         if (carnetFareType) {
             redirectTo(res, '/carnetProductDetails');
             return;
         }
 
-        redirectTo(res, '/returnValidity');
+        if (pointToPointFareType) {
+            redirectTo(res, '/pointToPointPeriodProduct');
+        }
+
+        redirectTo(res, '/ticketConfirmation');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON.';
         redirectToError(res, message, 'api.inboundMatching', error);

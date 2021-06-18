@@ -20,6 +20,7 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
+    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CarnetDetails,
@@ -31,6 +32,8 @@ import {
     MultipleProductAttribute,
     MultiProduct,
     NextPageContextWithSession,
+    PeriodExpiry,
+    PointToPointPeriodProduct,
     Product,
     ReturnPeriodValidity,
     SchoolFareTypeAttribute,
@@ -40,7 +43,7 @@ import {
     TxcSourceAttribute,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingFareZones, MatchingInfo } from '../interfaces/matchingInterface';
-import { isFareType, isPeriodExpiry } from '../interfaces/typeGuards';
+import { isFareType, isPeriodExpiry, isWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
 import { getCsrfToken, sentenceCaseString } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
@@ -214,6 +217,67 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
     return confirmationElements;
 };
 
+export const buildPointToPointPeriodConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
+    const confirmationElements = buildReturnTicketConfirmationElements(ctx);
+    const product = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
+    if (!product || isWithErrors(product)) {
+        throw new Error('Product is not present or contains errors');
+    }
+
+    const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
+    if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
+        throw new Error('Period expiry is not present or contains errors');
+    }
+    addProductDetails(product, confirmationElements, periodExpiryAttribute);
+
+    return confirmationElements;
+};
+
+const addProductDetails = (
+    product: Product | MultiProduct | PointToPointPeriodProduct,
+    confirmationElements: ConfirmationElement[],
+    periodExpiryAttribute: PeriodExpiry,
+): void => {
+    const productDurationText = `${
+        product.productDurationUnits
+            ? `${product.productDuration} ${product.productDurationUnits}${product.productDuration === '1' ? '' : 's'}`
+            : `${product.productDuration}`
+    }`;
+
+    if (!product.productDuration) {
+        throw new Error('User has no product duration and/or validity information.');
+    }
+
+    const content = [];
+    if ('productPrice' in product) {
+        content.push(`Price - £${product.productPrice}`);
+    }
+
+    content.push(`Duration - ${productDurationText}`);
+
+    if ('carnetDetails' in product) {
+        content.push(...getCarnetDetailsContent(product.carnetDetails));
+    }
+
+    confirmationElements.push({
+        name: `${product.productName}`,
+        content,
+        href: 'multipleProducts',
+    });
+
+    if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
+        throw new Error('Either periodExpiryAttribute is undefined or not type expected');
+    }
+
+    confirmationElements.push({
+        name: `Ticket day end`,
+        content: `${sentenceCaseString(periodExpiryAttribute.productValidity)}${
+            periodExpiryAttribute.productEndTime ? ` - ${periodExpiryAttribute.productEndTime}` : ''
+        }`,
+        href: 'periodValidity',
+    });
+};
+
 export const buildPeriodOrMultiOpTicketConfirmationElements = (
     ctx: NextPageContextWithSession,
 ): ConfirmationElement[] => {
@@ -280,32 +344,6 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         }
     }
 
-    const addProduct = (product: Product | MultiProduct): void => {
-        const productDurationText = `${
-            product.productDurationUnits
-                ? `${product.productDuration} ${product.productDurationUnits}${
-                      product.productDuration === '1' ? '' : 's'
-                  }`
-                : `${product.productDuration}`
-        }`;
-
-        if (!product.productDuration) {
-            throw new Error('User has no product duration and/or validity information.');
-        }
-
-        const content = [
-            `Price - £${product.productPrice}`,
-            `Duration - ${productDurationText}`,
-            ...getCarnetDetailsContent(product.carnetDetails),
-        ];
-
-        confirmationElements.push({
-            name: `${product.productName}`,
-            content,
-            href: 'multipleProducts',
-        });
-    };
-
     const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
 
     if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
@@ -314,10 +352,10 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
 
     if (isArray(products)) {
         products.forEach(product => {
-            addProduct(product);
+            addProductDetails(product, confirmationElements, periodExpiryAttribute);
         });
     } else if (!isArray(products)) {
-        addProduct(products);
+        addProductDetails(products, confirmationElements, periodExpiryAttribute);
     }
 
     confirmationElements.push({
@@ -401,7 +439,6 @@ export const buildTicketConfirmationElements = (
     ctx: NextPageContextWithSession,
 ): ConfirmationElement[] => {
     let confirmationElements: ConfirmationElement[];
-
     switch (fareType) {
         case 'single':
             confirmationElements = buildSingleTicketConfirmationElements(ctx);
@@ -420,6 +457,9 @@ export const buildTicketConfirmationElements = (
             break;
         case 'schoolService':
             confirmationElements = buildSchoolTicketConfirmationElements(ctx);
+            break;
+        case 'pointToPointPeriod':
+            confirmationElements = buildPointToPointPeriodConfirmationElements(ctx);
             break;
         default:
             throw new Error('Did not receive an expected fareType.');

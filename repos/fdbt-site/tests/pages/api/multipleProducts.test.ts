@@ -49,6 +49,8 @@ describe('multipleProducts', () => {
                 multipleProductDurationUnitsInput1: 'month',
             },
             { Location: '/multipleProducts' },
+            false,
+            {},
         ],
 
         [
@@ -112,16 +114,15 @@ describe('multipleProducts', () => {
         ],
     ];
 
-    test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
+    test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation, fareType) => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: testData,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             session: {
-                [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
-                    numberOfProductsInput: '2',
-                },
+                [FARE_TYPE_ATTRIBUTE]: { fareType },
+                [CARNET_FARE_TYPE_ATTRIBUTE]: false,
             },
         });
 

@@ -90,6 +90,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson = getFlatFareTicketJson(req, res);
         }
 
+        // Need new if statment and a new Get Ticket function for pointToPointPeriod
+
         if (userDataJson) {
             const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
             const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
