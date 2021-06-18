@@ -1,6 +1,15 @@
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import { NextApiResponse } from 'next';
+import {
+    isWithErrors,
+    isFareType,
+    isPassengerType,
+    isPeriodExpiry,
+    isSalesOfferPackages,
+    isSalesOfferPackageWithErrors,
+    isTicketPeriodAttributeWithInput,
+} from '../../../interfaces/typeGuards';
 import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from '.';
 
 import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants';
@@ -23,6 +32,7 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
+    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
 } from '../../../constants/attributes';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
@@ -54,17 +64,9 @@ import {
     Ticket,
     TicketPeriod,
     TicketPeriodWithInput,
+    PointToPointPeriodTicket,
 } from '../../../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
-
-import {
-    isFareType,
-    isPassengerType,
-    isPeriodExpiry,
-    isSalesOfferPackages,
-    isSalesOfferPackageWithErrors,
-    isTicketPeriodAttributeWithInput,
-} from '../../../interfaces/typeGuards';
 
 import logger from '../../../utils/logger';
 import { getSessionAttribute } from '../../../utils/sessions';
@@ -424,6 +426,29 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         products: productsAndSops,
         selectedServices,
         termTime: isTermTime(req),
+    };
+};
+
+export const getPointToPointPeriodJson = (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): PointToPointPeriodTicket => {
+    const userDataJson = getReturnTicketJson(req, res);
+    const pointToPointProduct = getSessionAttribute(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
+    if (!pointToPointProduct || isWithErrors(pointToPointProduct)) {
+        throw new Error('Point to point period product could not be retrieved from session');
+    }
+    const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
+    if (!isPeriodExpiry(periodExpiryAttributeInfo)) {
+        throw new Error('Period expiry could not be retrieved from session');
+    }
+    return {
+        ...userDataJson,
+        pointToPointProduct,
+        periodExpiry: {
+            productValidity: periodExpiryAttributeInfo.productValidity,
+            productEndTime: periodExpiryAttributeInfo.productEndTime,
+        },
     };
 };
 

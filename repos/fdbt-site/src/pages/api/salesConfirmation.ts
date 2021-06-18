@@ -25,6 +25,7 @@ import {
     getHybridTicketJson,
     getMultipleServicesTicketJson,
     getReturnTicketJson,
+    getPointToPointPeriodJson,
     getSchemeOperatorTicketJson,
     getSingleTicketJson,
     putUserDataInS3,
@@ -81,6 +82,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 case 'hybrid':
                     userDataJson = await getHybridTicketJson(req, res);
                     break;
+                case 'pointToPointPeriod':
+                    userDataJson = getPointToPointPeriodJson(req, res);
+                    break;
                 default:
                     throw new Error(
                         `Fare type of '${fareType}' and Ticket type of '${ticketType} not compatible. User data json cannot be created.`,
@@ -89,8 +93,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } else if (fareType === 'flatFare') {
             userDataJson = getFlatFareTicketJson(req, res);
         }
-
-        // Need new if statment and a new Get Ticket function for pointToPointPeriod
 
         if (userDataJson) {
             const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);

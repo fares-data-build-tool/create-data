@@ -3,24 +3,31 @@ import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession, PointToPointPeriodProduct } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
 import { POINT_TO_POINT_PRODUCT_ATTRIBUTE } from '../../constants/attributes';
-import { checkDurationIsValid, checkProductNameIsValid, isValidInputDuration } from './apiUtils/validator';
+import {
+    checkDurationIsValid,
+    checkProductNameIsValid,
+    isValidInputDuration,
+    removeExcessWhiteSpace,
+} from './apiUtils/validator';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const { productNameInput, productDuration, durationUnits } = req.body;
+        const whiteSpaceCleansedNameInput = removeExcessWhiteSpace(productNameInput);
+        const whiteSpaceCleansedDurationInput = removeExcessWhiteSpace(productDuration);
         const pointToPointPeriodProduct: PointToPointPeriodProduct = {
-            productName: productNameInput,
-            productDuration,
+            productName: whiteSpaceCleansedNameInput,
+            productDuration: whiteSpaceCleansedDurationInput,
             productDurationUnits: durationUnits,
         };
 
-        const nameCheckError = checkProductNameIsValid(productNameInput);
+        const nameCheckError = checkProductNameIsValid(whiteSpaceCleansedNameInput);
         const productDurationUnitsCheckError = !isValidInputDuration(durationUnits, true)
             ? 'Select a valid expiry unit'
             : '';
         let durationCheckError = '';
         if (durationUnits !== 'no expiry') {
-            durationCheckError = checkDurationIsValid(productDuration);
+            durationCheckError = checkDurationIsValid(whiteSpaceCleansedDurationInput);
         }
 
         const errors: ErrorInfo[] = [];

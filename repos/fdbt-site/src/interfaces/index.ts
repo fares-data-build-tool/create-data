@@ -389,6 +389,11 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
 
 export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
 
+export interface PointToPointPeriodTicket extends ReturnTicket {
+    pointToPointProduct: PointToPointPeriodProduct;
+    periodExpiry: PeriodExpiry;
+}
+
 export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
     additionalOperators: {
         nocCode: string;
