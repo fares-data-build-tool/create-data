@@ -50,6 +50,11 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
                   "label": "A ticket for a set of services",
                   "value": "multipleServices",
                 },
+                Object {
+                  "hint": "Unlimited travel between two fixed points in both directions",
+                  "label": "Point to Point",
+                  "value": "pointToPointPeriod",
+                },
               ]
             }
           />
