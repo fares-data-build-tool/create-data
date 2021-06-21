@@ -1,5 +1,5 @@
-import * as priceEntryApi from '../../../src/pages/api/priceEntry';
-import priceEntry from '../../../src/pages/api/priceEntry';
+import * as s3 from '../../../src/data/s3';
+import priceEntry, { inputsValidityCheck } from '../../../src/pages/api/priceEntry';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { JOURNEY_ATTRIBUTE } from '../../../src/constants/attributes';
 
@@ -26,7 +26,7 @@ describe('priceEntry', () => {
                     'Cranfield-Crawley': '',
                 },
             });
-            const result = priceEntryApi.inputsValidityCheck(req);
+            const result = inputsValidityCheck(req);
             expect(result.errorInformation.length).toBe(0);
         });
 
@@ -51,14 +51,14 @@ describe('priceEntry', () => {
                     'Cranfield-Crawley': '120',
                 },
             });
-            const result = priceEntryApi.inputsValidityCheck(req);
+            const result = inputsValidityCheck(req);
             expect(result.errorInformation.length).toBe(2);
         });
     });
 
     describe('API validation of format of price inputs', () => {
         const writeHeadMock = jest.fn();
-        const putDataInS3Spy = jest.spyOn(priceEntryApi, 'putDataInS3');
+        const putDataInS3Spy = jest.spyOn(s3, 'putStringInS3');
         putDataInS3Spy.mockImplementation(() => Promise.resolve());
 
         afterEach(() => {

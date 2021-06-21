@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages termTime should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Term Time selection page of the Create Fares Data Service"
   errors={Array []}
   title="Term Time - Create Fares Data Service"
@@ -90,11 +90,11 @@ exports[`pages termTime should render correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages termTime should render errors correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Term Time selection page of the Create Fares Data Service"
   errors={
     Array [
@@ -204,5 +204,5 @@ exports[`pages termTime should render errors correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

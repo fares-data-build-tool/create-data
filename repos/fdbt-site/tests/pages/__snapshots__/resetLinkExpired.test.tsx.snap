@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`passwordUpdated should render correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Reset Password Link Expired page for the Create Fares Data Service"
   title="Reset Password Link Expired - Create Fares Data Service"
 >
@@ -25,5 +25,5 @@ exports[`passwordUpdated should render correctly 1`] = `
   >
     Reset your password
   </a>
-</Component>
+</TwoThirdsLayout>
 `;

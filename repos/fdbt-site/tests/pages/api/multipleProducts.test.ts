@@ -16,7 +16,7 @@ import {
     invalidDurationTypeProducts,
     multipleProductsWithErrors,
 } from '../../testData/mockData';
-import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils';
+import * as apiUtils from '../../../src/pages/api/apiUtils';
 import {
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -125,7 +125,7 @@ describe('multipleProducts', () => {
             },
         });
 
-        (setCookieOnResponseObject as {}) = jest.fn();
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         multipleProduct(req, res);
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
@@ -206,7 +206,7 @@ describe('multipleProducts', () => {
             },
         });
 
-        (setCookieOnResponseObject as {}) = jest.fn();
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         multipleProduct(req, res);
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
@@ -238,7 +238,7 @@ describe('multipleProducts', () => {
             },
         });
 
-        (setCookieOnResponseObject as {}) = jest.fn();
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         multipleProduct(req, res);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/periodValidity' });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
@@ -293,7 +293,7 @@ describe('multipleProducts', () => {
             },
         });
 
-        (setCookieOnResponseObject as {}) = jest.fn();
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         multipleProduct(req, res);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/ticketConfirmation' });
     });

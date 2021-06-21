@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages returnValidity should render the page correctly 1`] = `
-<Component
+<TwoThirdsLayout
   description="Return Validity page of the Create Fares Data Service"
   errors={Array []}
   title="Return Validity - Create Fares Data Service"
@@ -91,11 +91,11 @@ exports[`pages returnValidity should render the page correctly 1`] = `
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages returnValidity should render the page with errors when both text and dropdown input errors are present 1`] = `
-<Component
+<TwoThirdsLayout
   description="Return Validity page of the Create Fares Data Service"
   errors={
     Array [
@@ -216,11 +216,11 @@ exports[`pages returnValidity should render the page with errors when both text 
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages returnValidity should render the page with errors when only dropdown input errors are present 1`] = `
-<Component
+<TwoThirdsLayout
   description="Return Validity page of the Create Fares Data Service"
   errors={
     Array [
@@ -329,11 +329,11 @@ exports[`pages returnValidity should render the page with errors when only dropd
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages returnValidity should render the page with errors when only text input errors are present 1`] = `
-<Component
+<TwoThirdsLayout
   description="Return Validity page of the Create Fares Data Service"
   errors={
     Array [
@@ -442,11 +442,11 @@ exports[`pages returnValidity should render the page with errors when only text 
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages returnValidity should render the page with errors when radio errors are present 1`] = `
-<Component
+<TwoThirdsLayout
   description="Return Validity page of the Create Fares Data Service"
   errors={
     Array [
@@ -555,5 +555,5 @@ exports[`pages returnValidity should render the page with errors when radio erro
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

@@ -97,6 +97,7 @@ describe('pages', () => {
                         hasTnds: true,
                         hasBods: false,
                     }}
+                    additional
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -115,6 +116,7 @@ describe('pages', () => {
                         hasTnds: true,
                         hasBods: true,
                     }}
+                    additional={false}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -133,6 +135,7 @@ describe('pages', () => {
                         hasTnds: true,
                         hasBods: false,
                     }}
+                    additional={false}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -151,6 +154,7 @@ describe('pages', () => {
                         hasTnds: true,
                         hasBods: true,
                     }}
+                    additional={false}
                 />,
             );
             expect(tree).toMatchSnapshot();

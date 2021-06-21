@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages multipleOperatorsServiceList should render correctly with bods data source 1`] = `
-<Component
+<FullColumnLayout
   description="Multiple Operators Service List selection page of the Create Fares Data Service"
   title="Multiple Operators Service List - Create Fares Data Service"
 >
@@ -150,11 +150,11 @@ exports[`pages multipleOperatorsServiceList should render correctly with bods da
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;
 
 exports[`pages multipleOperatorsServiceList should render correctly with errors 1`] = `
-<Component
+<FullColumnLayout
   description="Multiple Operators Service List selection page of the Create Fares Data Service"
   title="Multiple Operators Service List - Create Fares Data Service"
 >
@@ -317,11 +317,11 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;
 
 exports[`pages multipleOperatorsServiceList should render correctly with tnds data source 1`] = `
-<Component
+<FullColumnLayout
   description="Multiple Operators Service List selection page of the Create Fares Data Service"
   title="Multiple Operators Service List - Create Fares Data Service"
 >
@@ -470,5 +470,5 @@ exports[`pages multipleOperatorsServiceList should render correctly with tnds da
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</FullColumnLayout>
 `;

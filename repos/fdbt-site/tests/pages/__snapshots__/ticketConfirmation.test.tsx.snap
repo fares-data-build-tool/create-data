@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages ticketConfirmation should render correctly for flat fare tickets 1`] = `
-<Component
+<TwoThirdsLayout
   description="Ticket Confirmation page of the Create Fares Data Service"
   errors={Array []}
   title="Ticket Confirmation - Create Fares Data Service"
@@ -40,11 +40,11 @@ exports[`pages ticketConfirmation should render correctly for flat fare tickets 
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages ticketConfirmation should render correctly for period and multiOperator tickets 1`] = `
-<Component
+<TwoThirdsLayout
   description="Ticket Confirmation page of the Create Fares Data Service"
   errors={Array []}
   title="Ticket Confirmation - Create Fares Data Service"
@@ -93,11 +93,11 @@ exports[`pages ticketConfirmation should render correctly for period and multiOp
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages ticketConfirmation should render correctly for return tickets 1`] = `
-<Component
+<TwoThirdsLayout
   description="Ticket Confirmation page of the Create Fares Data Service"
   errors={Array []}
   title="Ticket Confirmation - Create Fares Data Service"
@@ -146,11 +146,11 @@ exports[`pages ticketConfirmation should render correctly for return tickets 1`]
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;
 
 exports[`pages ticketConfirmation should render correctly for single tickets 1`] = `
-<Component
+<TwoThirdsLayout
   description="Ticket Confirmation page of the Create Fares Data Service"
   errors={Array []}
   title="Ticket Confirmation - Create Fares Data Service"
@@ -194,5 +194,5 @@ exports[`pages ticketConfirmation should render correctly for single tickets 1`]
       value="Continue"
     />
   </CsrfForm>
-</Component>
+</TwoThirdsLayout>
 `;

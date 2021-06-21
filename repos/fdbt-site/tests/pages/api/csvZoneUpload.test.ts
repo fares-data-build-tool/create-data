@@ -2,13 +2,14 @@ import Cookies from 'cookies';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as csvZoneUpload from '../../../src/pages/api/csvZoneUpload';
 import * as fileUpload from '../../../src/pages/api/apiUtils/fileUpload';
+import * as virusCheck from '../../../src/pages/api/apiUtils/virusScan';
 import * as csvData from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
 import * as sessions from '../../../src/utils/sessions';
 import * as dynamo from '../../../src/data/auroradb';
 import { FARE_ZONE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
 
-const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
+const putDataInS3Spy = jest.spyOn(s3, 'putDataInS3');
 jest.mock('../../../src/data/auroradb');
 
 describe('csvZoneUpload', () => {
@@ -55,7 +56,7 @@ describe('csvZoneUpload', () => {
                     fileContents: csv,
                 });
 
-            jest.spyOn(fileUpload, 'containsViruses')
+            jest.spyOn(virusCheck, 'containsViruses')
                 .mockImplementation()
                 .mockResolvedValue(false);
 
@@ -65,19 +66,9 @@ describe('csvZoneUpload', () => {
 
             await csvZoneUpload.default(req, res);
 
-            expect(putStringInS3Spy.mock.calls).toEqual([
-                [
-                    'fdbt-raw-user-data-dev',
-                    expect.any(String),
-                    JSON.stringify(expectedUnprocessed),
-                    'text/csv; charset=utf-8',
-                ],
-                [
-                    'fdbt-user-data-dev',
-                    expect.any(String),
-                    JSON.stringify(expectedProcessed),
-                    'application/json; charset=utf-8',
-                ],
+            expect(putDataInS3Spy.mock.calls).toEqual([
+                [expectedUnprocessed, expect.any(String), false],
+                [expectedProcessed, expect.any(String), true],
             ]);
         },
     );
@@ -102,7 +93,7 @@ describe('csvZoneUpload', () => {
                 fileContents: csvData.testCsv,
             });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -144,7 +135,7 @@ describe('csvZoneUpload', () => {
                 fileContents: csvData.testCsv,
             });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -177,7 +168,7 @@ describe('csvZoneUpload', () => {
                 fileContents: csvData.testCsvWithEmptyCells,
             });
 
-        jest.spyOn(fileUpload, 'containsViruses')
+        jest.spyOn(virusCheck, 'containsViruses')
             .mockImplementation()
             .mockResolvedValue(false);
 
@@ -213,7 +204,7 @@ describe('csvZoneUpload', () => {
                     fileContents: '',
                 });
 
-            jest.spyOn(fileUpload, 'containsViruses')
+            jest.spyOn(virusCheck, 'containsViruses')
                 .mockImplementation()
                 .mockResolvedValue(false);
 
@@ -253,7 +244,7 @@ describe('csvZoneUpload', () => {
                     fileContents: csvData.testCsv,
                 });
 
-            jest.spyOn(fileUpload, 'containsViruses')
+            jest.spyOn(virusCheck, 'containsViruses')
                 .mockImplementation()
                 .mockResolvedValue(false);
 
@@ -293,7 +284,7 @@ describe('csvZoneUpload', () => {
                     fileContents: csvData.testCsv,
                 });
 
-            jest.spyOn(fileUpload, 'containsViruses')
+            jest.spyOn(virusCheck, 'containsViruses')
                 .mockImplementation()
                 .mockResolvedValue(false);
 
@@ -335,7 +326,7 @@ describe('csvZoneUpload', () => {
                     fileContents: 'i am a virus',
                 });
 
-            jest.spyOn(fileUpload, 'containsViruses')
+            jest.spyOn(virusCheck, 'containsViruses')
                 .mockImplementation()
                 .mockResolvedValue(true);
 

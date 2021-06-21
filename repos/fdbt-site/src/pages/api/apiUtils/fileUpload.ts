@@ -1,12 +1,11 @@
 /* eslint-disable camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
 import formidable from 'formidable';
-import { NextApiRequest } from 'next';
 import fs from 'fs';
-import NodeClam from 'clamscan';
+import { NextApiRequest } from 'next';
 import XLSX from 'xlsx';
-import { ALLOWED_XLSX_FILE_TYPES, ALLOWED_CSV_FILE_TYPES } from '../../../constants/index';
+import { ALLOWED_CSV_FILE_TYPES, ALLOWED_XLSX_FILE_TYPES } from '../../../constants/index';
 import logger from '../../../utils/logger';
+import { containsViruses } from './virusScan';
 
 interface FileData {
     files: formidable.Files;
@@ -95,33 +94,6 @@ export const validateFile = (fileData: formidable.File, fileContents: string): s
     }
 
     return '';
-};
-
-export const containsViruses = async (pathToFileToScan: string): Promise<boolean> => {
-    const ClamScan = new NodeClam().init({
-        remove_infected: false,
-        quarantine_infected: false,
-        scan_log: null,
-        debug_mode: true,
-        file_list: null,
-        scan_recursively: true,
-        clamdscan: {
-            timeout: 60000,
-            local_fallback: false,
-            path: process.env.NODE_ENV === 'development' ? '/usr/local/bin/clamdscan' : '/usr/bin/clamdscan',
-            multiscan: true,
-            reload_db: false,
-            active: true,
-            bypass_test: false,
-        },
-        preference: 'clamdscan',
-    });
-
-    const clamscan = await ClamScan;
-
-    const { is_infected } = await clamscan.is_infected(pathToFileToScan);
-
-    return is_infected;
 };
 
 export const processFileUpload = async (formData: FileData, inputName: string): Promise<FileUploadResponse> => {

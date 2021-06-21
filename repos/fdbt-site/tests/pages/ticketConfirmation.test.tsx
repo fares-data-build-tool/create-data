@@ -18,8 +18,7 @@ import {
     TXC_SOURCE_ATTRIBUTE,
 } from '../../src/constants/attributes';
 import { ConfirmationElement, MultiOperatorInfo, Operator } from '../../src/interfaces';
-import TicketConfirmation, * as ticketConfirmation from '../../src/pages/ticketConfirmation';
-import {
+import TicketConfirmation, {
     buildFlatFareTicketConfirmationElements,
     buildMatchedFareStages,
     buildPeriodOrMultiOpTicketConfirmationElements,
@@ -29,8 +28,8 @@ import {
     buildTicketConfirmationElements,
     getServerSideProps,
     MatchedFareStages,
-    TicketConfirmationProps,
 } from '../../src/pages/ticketConfirmation';
+
 import { getMockContext, mockMatchingFaresZones, service, userFareStages } from '../testData/mockData';
 
 describe('pages', () => {
@@ -262,6 +261,27 @@ describe('pages', () => {
                 expect(confirmationElements).toHaveLength(6);
             });
 
+            it('should build confirmation elements for a period hybrid ticket with a single product', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'hybrid' },
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: 1,
+                        [PERIOD_EXPIRY_ATTRIBUTE]: mockPeriodExpiry,
+                        [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: {
+                            products: mockSingleProduct,
+                        },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
+                const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+                expect(confirmationElements).toContainEqual(confirmationElementStructure);
+                expect(confirmationElements).toHaveLength(7);
+            });
+
             it('should build confirmation elements for a multi operator multiService ticket with multiple products', () => {
                 const ctx = getMockContext({
                     session: {
@@ -322,45 +342,6 @@ describe('pages', () => {
                 jest.resetAllMocks();
             });
 
-            it('should call the correct method for a school service single ticket', () => {
-                const singleTicketSpy = jest.spyOn(ticketConfirmation, 'buildSingleTicketConfirmationElements');
-                const ctx = getMockContext({
-                    session: {
-                        [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'single' },
-                    },
-                });
-                singleTicketSpy.mockReturnValue([]);
-                buildSchoolTicketConfirmationElements(ctx);
-                expect(singleTicketSpy).toBeCalled();
-            });
-
-            it('should call the correct method for a school service period ticket', () => {
-                const periodTicketSpy = jest.spyOn(
-                    ticketConfirmation,
-                    'buildPeriodOrMultiOpTicketConfirmationElements',
-                );
-                const ctx = getMockContext({
-                    session: {
-                        [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'period' },
-                    },
-                });
-                periodTicketSpy.mockReturnValue([]);
-                buildSchoolTicketConfirmationElements(ctx);
-                expect(periodTicketSpy).toBeCalled();
-            });
-
-            it('should call the correct method for a school service flat fare ticket', () => {
-                const flatFareTicketSpy = jest.spyOn(ticketConfirmation, 'buildFlatFareTicketConfirmationElements');
-                const ctx = getMockContext({
-                    session: {
-                        [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'flatFare' },
-                    },
-                });
-                flatFareTicketSpy.mockReturnValue([]);
-                buildSchoolTicketConfirmationElements(ctx);
-                expect(flatFareTicketSpy).toBeCalled();
-            });
-
             it('should throw an error when the fare type is not an expected type', () => {
                 const ctx = getMockContext({
                     session: {
@@ -378,22 +359,6 @@ describe('pages', () => {
                 jest.resetAllMocks();
             });
 
-            it.each([
-                ['single', 'buildSingleTicketConfirmationElements'],
-                ['return', 'buildReturnTicketConfirmationElements'],
-                ['period', 'buildPeriodOrMultiOpTicketConfirmationElements'],
-                ['flatFare', 'buildFlatFareTicketConfirmationElements'],
-                ['multiOperator', 'buildPeriodOrMultiOpTicketConfirmationElements'],
-                ['schoolService', 'buildSchoolTicketConfirmationElements'],
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ])('should call the correct method for a %s ticket', (fareType, methodName: any) => {
-                const spy = jest.spyOn(ticketConfirmation, methodName);
-                const ctx = getMockContext();
-                spy.mockReturnValue([]);
-                buildTicketConfirmationElements(fareType, ctx);
-                expect(spy).toBeCalledWith(ctx);
-            });
-
             it('should throw an error when the fare type is not an expected type', () => {
                 const ctx = getMockContext();
                 expect(() => buildTicketConfirmationElements('not a real fare type', ctx)).toThrowError(
@@ -403,24 +368,7 @@ describe('pages', () => {
         });
 
         describe('getServerSideProps', () => {
-            it('should call the buildTicketConfirmationElements method and return valid props', () => {
-                const buildConfirmationElementsSpy = jest.spyOn(ticketConfirmation, 'buildTicketConfirmationElements');
-                buildConfirmationElementsSpy.mockReturnValue([]);
-                const ctx = getMockContext();
-                const mockProps: { props: TicketConfirmationProps } = {
-                    props: {
-                        confirmationElements: expect.any(Array),
-                        csrfToken: expect.any(String),
-                    },
-                };
-                const props = getServerSideProps(ctx);
-                expect(buildConfirmationElementsSpy).toBeCalled();
-                expect(props).toEqual(mockProps);
-            });
-
             it('should throw an error if the fare type is not an expected type', () => {
-                const buildConfirmationElementsSpy = jest.spyOn(ticketConfirmation, 'buildTicketConfirmationElements');
-                buildConfirmationElementsSpy.mockReturnValue([]);
                 const ctx = getMockContext({
                     session: {
                         [FARE_TYPE_ATTRIBUTE]: { fareType: 'not a real fare type' },

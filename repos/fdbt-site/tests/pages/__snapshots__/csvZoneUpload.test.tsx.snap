@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages csvzoneupload should render correctly 1`] = `
-<Component
+<BaseLayout
   description="CSV Zone Upload page of the Create Fares Data Service"
   errors={Array []}
   title="CSV Zone Upload - Create Fares Data Service"
@@ -36,5 +36,5 @@ exports[`pages csvzoneupload should render correctly 1`] = `
     guidanceDocDisplayName=""
     guidanceDocSize=""
   />
-</Component>
+</BaseLayout>
 `;

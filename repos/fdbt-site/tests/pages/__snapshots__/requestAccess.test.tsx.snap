@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages requestAccess should render correctly 1`] = `
-<Component
+<BaseLayout
   description="Request Access page of the Create Fares Data Service"
   errors={Array []}
   title="Request Access - Create Fares Data Service"
@@ -57,5 +57,5 @@ exports[`pages requestAccess should render correctly 1`] = `
       </div>
     </div>
   </div>
-</Component>
+</BaseLayout>
 `;
