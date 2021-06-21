@@ -261,6 +261,27 @@ describe('pages', () => {
                 expect(confirmationElements).toHaveLength(6);
             });
 
+            it('should build confirmation elements for a period hybrid ticket with a single product', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'hybrid' },
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: 1,
+                        [PERIOD_EXPIRY_ATTRIBUTE]: mockPeriodExpiry,
+                        [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: {
+                            products: mockSingleProduct,
+                        },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
+                const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+                expect(confirmationElements).toContainEqual(confirmationElementStructure);
+                expect(confirmationElements).toHaveLength(7);
+            });
+
             it('should build confirmation elements for a multi operator multiService ticket with multiple products', () => {
                 const ctx = getMockContext({
                     session: {
