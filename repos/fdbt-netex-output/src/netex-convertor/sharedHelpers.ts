@@ -375,7 +375,7 @@ export const getFareStructuresElements = (
     lineName: string,
     placeholderGroupOfProductsName: string,
 ): NetexObject[] => {
-    let fareStructureElements: NetexObject[] = [];
+    const fareStructureElements: NetexObject[] = [];
 
     if (isCarnet) {
         fareStructureElements.push(getCarnetElement(ticket));
@@ -439,7 +439,7 @@ export const getFareStructuresElements = (
 export const getCarnetQualityStructureFactorRef = (
     product: ProductDetails | BaseProduct | PointToPointCarnetProductDetails | FlatFareProductDetails,
 ): NetexObject =>
-    ('carnetDetails' in product)
+    'carnetDetails' in product
         ? {
               QualityStructureFactorRef: {
                   version: '1.0',

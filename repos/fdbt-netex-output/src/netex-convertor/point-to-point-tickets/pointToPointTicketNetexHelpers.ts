@@ -14,7 +14,13 @@ import {
     isGroupTicket,
     User,
 } from '../../types';
-import { NetexObject, getProfileRef, getDistributionChannel, getUserProfile, getCarnetQualityStructureFactorRef } from '../sharedHelpers';
+import {
+    NetexObject,
+    getProfileRef,
+    getDistributionChannel,
+    getUserProfile,
+    getCarnetQualityStructureFactorRef,
+} from '../sharedHelpers';
 
 export const getStops = (fareZones: FareZone[]): Stop[] => fareZones.flatMap(zone => zone.stops);
 
