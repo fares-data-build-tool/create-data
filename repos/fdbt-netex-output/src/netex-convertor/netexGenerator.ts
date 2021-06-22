@@ -320,6 +320,7 @@ const netexGenerator = (
         // Fare structure elements
         priceFareFrameToUpdate.tariffs.Tariff.fareStructureElements.FareStructureElement = getFareStructuresElements(
             ticket,
+            coreData.isCarnet,
             coreData.lineName,
             coreData.placeholderGroupOfProductsName,
         );

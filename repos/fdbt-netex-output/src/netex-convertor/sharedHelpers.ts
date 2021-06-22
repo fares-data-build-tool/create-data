@@ -26,6 +26,8 @@ import {
     isMultiServiceTicket,
     isSchemeOperatorFlatFareTicket,
     isProductDetails,
+    BaseProduct,
+    PointToPointCarnetProductDetails,
 } from '../types/index';
 
 import {
@@ -326,6 +328,42 @@ export const getDistributionChannel = (purchaseLocation: string): string => {
 
 export const isFlatFareType = (ticket: Ticket): boolean => ticket.type === 'flatFare';
 
+export const getCarnetElement = (
+    ticket:
+        | PointToPointTicket
+        | PeriodTicket
+        | FlatFareTicket
+        | SchemeOperatorGeoZoneTicket
+        | SchemeOperatorFlatFareTicket,
+): NetexObject => {
+    const uniqueCarnetDenominations = new Set();
+    ticket.products.forEach(product => {
+        if ('carnetDetails' in product) {
+            uniqueCarnetDenominations.add(product.carnetDetails.quantity);
+        }
+    });
+
+    const qualityStructureFactors = [...uniqueCarnetDenominations].map(uniqueCarnetDenomination => ({
+        version: '1.0',
+        id: `mb:Tariff@multitrip@${uniqueCarnetDenomination}`,
+        Value: { $t: uniqueCarnetDenomination },
+    }));
+
+    return {
+        version: '1.0',
+        id: 'mb:Tariff@multitrip@units',
+        Name: { $t: 'Carnet denominations' },
+        Description: { $t: `Number of ${ticket.type} units in bundle.` },
+        TypeOfFareStructureElementRef: {
+            version: 'fxc:v1.0',
+            ref: 'fxc:carnet_units',
+        },
+        qualityStructureFactors: {
+            QualityStructureFactor: qualityStructureFactors,
+        },
+    };
+};
+
 export const getFareStructuresElements = (
     ticket:
         | PointToPointTicket
@@ -333,14 +371,15 @@ export const getFareStructuresElements = (
         | FlatFareTicket
         | SchemeOperatorGeoZoneTicket
         | SchemeOperatorFlatFareTicket,
+    isCarnet: boolean,
     lineName: string,
     placeholderGroupOfProductsName: string,
 ): NetexObject[] => {
     let fareStructureElements: NetexObject[] = [];
 
-    // if (coreData.isCarnet) {
-    //     fareStructureElements.push(getCarnetElement(ticket));
-    // }
+    if (isCarnet) {
+        fareStructureElements.push(getCarnetElement(ticket));
+    }
 
     if (isGroupTicket(ticket)) {
         fareStructureElements.push(getGroupElement(ticket));
@@ -352,9 +391,7 @@ export const getFareStructuresElements = (
         fareStructureElements.push(getPointToPointConditionsElement(ticket));
 
         if (ticket.timeRestriction.length > 0) {
-            fareStructureElements.push(
-                getPointToPointAvailabilityElement(ticket),
-            );
+            fareStructureElements.push(getPointToPointAvailabilityElement(ticket));
         }
 
         return fareStructureElements;
@@ -398,3 +435,15 @@ export const getFareStructuresElements = (
 
     return fareStructureElements;
 };
+
+export const getCarnetQualityStructureFactorRef = (
+    product: ProductDetails | BaseProduct | PointToPointCarnetProductDetails | FlatFareProductDetails,
+): NetexObject =>
+    ('carnetDetails' in product)
+        ? {
+              QualityStructureFactorRef: {
+                  version: '1.0',
+                  ref: `mb:Tariff@multitrip@${product.carnetDetails?.quantity}`,
+              },
+          }
+        : {};

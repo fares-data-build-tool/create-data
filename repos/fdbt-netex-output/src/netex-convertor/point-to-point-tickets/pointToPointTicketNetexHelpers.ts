@@ -14,7 +14,7 @@ import {
     isGroupTicket,
     User,
 } from '../../types';
-import { NetexObject, getProfileRef, getDistributionChannel, getUserProfile } from '../sharedHelpers';
+import { NetexObject, getProfileRef, getDistributionChannel, getUserProfile, getCarnetQualityStructureFactorRef } from '../sharedHelpers';
 
 export const getStops = (fareZones: FareZone[]): Stop[] => fareZones.flatMap(zone => zone.stops);
 
@@ -312,6 +312,7 @@ export const buildSalesOfferPackages = (product: BaseProduct, ticketUserConcat: 
 export const getFareTables = (matchingData: PointToPointTicket, lineIdName: string): NetexObject[] => {
     const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
     const ticketUserConcat = `${matchingData.type}_${matchingData.passengerType}`;
+    const carnetQualityStructureFactorRef = getCarnetQualityStructureFactorRef(matchingData.products[0]);
 
     return matchingData.products[0].salesOfferPackages.map(salesOfferPackage => {
         return {
@@ -331,6 +332,7 @@ export const getFareTables = (matchingData: PointToPointTicket, lineIdName: stri
                     ref: `Trip@${ticketUserConcat}-SOP@${salesOfferPackage.name}`,
                 },
                 ...getProfileRef(matchingData),
+                ...carnetQualityStructureFactorRef,
             },
             usedIn: {
                 TariffRef: { version: '1.0', ref: `Tariff@${matchingData.type}@${lineIdName}` },

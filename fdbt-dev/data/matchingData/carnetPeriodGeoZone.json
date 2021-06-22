@@ -317,7 +317,7 @@
       "productDuration": "28 weeks",
       "productValidity": "24hr",
       "carnetDetails": {
-        "quantity": "25",
+        "quantity": "5",
         "expiryTime": "1",
         "expiryUnit": "year"
       },

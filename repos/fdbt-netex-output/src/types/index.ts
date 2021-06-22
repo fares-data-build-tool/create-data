@@ -340,8 +340,9 @@ export const isGroupTicket = (
     ticket: PeriodTicket | PointToPointTicket | FlatFareTicket | SchemeOperatorTicket,
 ): ticket is GroupTicket => (ticket as GroupTicket).groupDefinition !== undefined;
 
-export const isProductDetails = (product: ProductDetails | FlatFareProductDetails | PointToPointCarnetProductDetails): product is ProductDetails =>
-    (product as ProductDetails).productDuration !== undefined;
+export const isProductDetails = (
+    product: ProductDetails | FlatFareProductDetails | PointToPointCarnetProductDetails,
+): product is ProductDetails => (product as ProductDetails).productDuration !== undefined;
 
 export const isBaseSchemeOperatorInfo = (operatorInfo: Operator | SchemeOperator): operatorInfo is SchemeOperator =>
     (operatorInfo as SchemeOperator).schemeOperatorName !== undefined &&
