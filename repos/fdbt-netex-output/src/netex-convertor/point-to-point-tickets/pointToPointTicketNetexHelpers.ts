@@ -318,7 +318,6 @@ export const buildSalesOfferPackages = (product: BaseProduct, ticketUserConcat: 
 export const getFareTables = (matchingData: PointToPointTicket, lineIdName: string): NetexObject[] => {
     const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
     const ticketUserConcat = `${matchingData.type}_${matchingData.passengerType}`;
-    const carnetQualityStructureFactorRef = getCarnetQualityStructureFactorRef(matchingData.products[0]);
 
     return matchingData.products[0].salesOfferPackages.map(salesOfferPackage => {
         return {
@@ -338,7 +337,7 @@ export const getFareTables = (matchingData: PointToPointTicket, lineIdName: stri
                     ref: `Trip@${ticketUserConcat}-SOP@${salesOfferPackage.name}`,
                 },
                 ...getProfileRef(matchingData),
-                ...carnetQualityStructureFactorRef,
+                ...getCarnetQualityStructureFactorRef(matchingData.products[0]),
             },
             usedIn: {
                 TariffRef: { version: '1.0', ref: `Tariff@${matchingData.type}@${lineIdName}` },

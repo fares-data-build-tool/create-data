@@ -309,7 +309,7 @@ export const getCoreData = (
         lineName: '',
         operatorName: isSchemeOperatorTicket(ticket) ? ticket.schemeOperatorName : ticket.operatorName,
         ticketType: ticket.type,
-        isCarnet: !!ticket.products[0].carnetDetails,
+        isCarnet: 'carnetDetails' in ticket.products[0],
     };
 };
 
