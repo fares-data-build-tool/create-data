@@ -112,8 +112,8 @@ export interface TicketPeriod {
 
 export interface User {
     passengerType: string;
-    ageRangeMin?: number;
-    ageRangeMax?: number;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
     proofDocuments?: string[];
 }
 

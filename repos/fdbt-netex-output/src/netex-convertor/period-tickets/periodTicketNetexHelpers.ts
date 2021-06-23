@@ -752,7 +752,7 @@ export const getPeriodEligibilityElement = (
                   ageRangeMax: userPeriodTicket.ageRangeMax,
                   passengerType: userPeriodTicket.passengerType,
                   proofDocuments: userPeriodTicket.proofDocuments,
-              } as User,
+              },
           ];
 
     return users.map((user: GroupCompanion | User) => ({

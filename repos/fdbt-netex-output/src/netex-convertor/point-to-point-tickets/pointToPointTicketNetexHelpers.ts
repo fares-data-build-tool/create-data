@@ -12,7 +12,6 @@ import {
     NetexSalesOfferPackage,
     isReturnTicket,
     isGroupTicket,
-    User,
 } from '../../types';
 import {
     NetexObject,
@@ -422,7 +421,7 @@ export const getEligibilityElement = (ticket: PointToPointTicket): NetexObject =
                   ageRangeMax: ticket.ageRangeMax,
                   passengerType: ticket.passengerType,
                   proofDocuments: ticket.proofDocuments,
-              } as User,
+              },
           ];
 
     return {
