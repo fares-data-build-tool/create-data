@@ -36,7 +36,7 @@ export const buildUuid = (noc: string): string => {
 
 const buildRadioProps = (schemeOp: boolean, displayCarnet: boolean): RadioOption[] => {
     if (schemeOp) {
-        return [
+        const radios = [
             {
                 value: 'period',
                 label: 'Period ticket',
@@ -48,6 +48,21 @@ const buildRadioProps = (schemeOp: boolean, displayCarnet: boolean): RadioOption
                 hint: 'A fixed fee ticket for a single journey',
             },
         ];
+
+        if (displayCarnet) {
+            radios.splice(1, 0, {
+                value: 'carnetPeriod',
+                label: 'Carnet period ticket',
+                hint: 'A bundle of zonal tickets, each valid for a number of days, weeks, months or years',
+            });
+            radios.splice(3, 0, {
+                value: 'carnetFlatFare',
+                label: 'Carnet flat fare ticket',
+                hint: 'A bundle of fixed fee tickets, each for a single journey',
+            });
+        }
+
+        return radios;
     }
     const radios = [
         {

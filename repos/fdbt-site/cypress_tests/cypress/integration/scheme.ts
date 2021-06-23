@@ -21,7 +21,7 @@ describe('the scheme journey', () => {
         const multiProductNamePrefix = 'Scheme product ';
         selectFareType('period', true);
         defineUserTypeAndTimeRestrictions();
-        completeMultiOpGeoZonePages(true, numberOfProducts, multiProductNamePrefix);
+        completeMultiOpGeoZonePages(true, false, numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
         isUuidStringValid(true);
     });

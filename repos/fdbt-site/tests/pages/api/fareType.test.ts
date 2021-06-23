@@ -76,4 +76,30 @@ describe('fareType', () => {
             Location: '/carnetFareType',
         });
     });
+
+    it('should return 302 redirect to /passengerType when carnetPeriod is selected, set carnet to true, and set the fareType attribute to period', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: { fareType: 'carnetPeriod' },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        fareType(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, { fareType: 'period' });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/passengerType',
+        });
+    });
+
+    it('should return 302 redirect to /passengerType when carnet is selected, set carnet to true, and set the fareType attribute to flatFare', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: { fareType: 'carnetFlatFare' },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        fareType(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, { fareType: 'flatFare' });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/passengerType',
+        });
+    });
 });

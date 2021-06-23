@@ -1,3 +1,4 @@
+import camelCase from 'lodash/camelCase';
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectTo } from './apiUtils/index';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -8,10 +9,19 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const { fareType } = req.body;
         if (fareType) {
-            if (fareType === 'carnet') {
+            if (
+                typeof fareType === 'string' &&
+                (fareType === 'carnet' || fareType === 'carnetPeriod' || fareType === 'carnetFlatFare')
+            ) {
                 updateSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
-                updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, undefined);
-                redirectTo(res, '/carnetFareType');
+                if (fareType === 'carnet') {
+                    updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, undefined);
+                    redirectTo(res, '/carnetFareType');
+                    return;
+                }
+                const reformedFareType = camelCase(fareType.split('carnet')[1]) as 'flatFare' | 'period';
+                updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, { fareType: reformedFareType });
+                redirectTo(res, '/passengerType');
                 return;
             }
             updateSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE, false);
