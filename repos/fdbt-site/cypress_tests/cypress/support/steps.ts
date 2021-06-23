@@ -29,7 +29,16 @@ export const defineUserTypeAndTimeRestrictions = (): void => {
     continueButtonClick();
 };
 
-export type FareType = 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService' | 'carnet';
+export type FareType =
+    | 'single'
+    | 'period'
+    | 'return'
+    | 'flatFare'
+    | 'multiOperator'
+    | 'schoolService'
+    | 'carnet'
+    | 'carnetFlatFare'
+    | 'carnetPeriod';
 
 export const defineSchoolUserAndTimeRestrictions = (): void => {
     randomlyChooseSchoolAgeLimits();
@@ -63,7 +72,7 @@ export const startSchemeJourney = (): void => {
     startPageLinkClick();
 };
 
-export const completeFlatFarePages = (productName: string, isScheme: boolean): void => {
+export const completeFlatFarePages = (productName: string, isScheme: boolean, isCarnet = false): void => {
     if (isScheme) {
         completeOperatorSearch(true);
     } else {
@@ -72,6 +81,12 @@ export const completeFlatFarePages = (productName: string, isScheme: boolean): v
     }
     getElementById('multiple-product-name-0').type(productName);
     getElementById('multiple-product-price-0').type('50.50');
+
+    if (isCarnet) {
+        getElementById('product-details-carnet-quantity-0').type('20');
+        getElementById('product-details-carnet-expiry-quantity-0').type('6');
+        selectRandomOptionFromDropDown('product-details-carnet-expiry-unit-0');
+    }
 
     continueButtonClick();
     continueButtonClick();
@@ -243,6 +258,7 @@ export const completeSchoolPeriodMultiServicePages = (
 
 export const completeMultiOpGeoZonePages = (
     isScheme: boolean,
+    isCarnet = false,
     numberOfProducts?: number,
     multiProductNamePrefix?: string,
 ): void => {
@@ -256,7 +272,7 @@ export const completeMultiOpGeoZonePages = (
 
     completeOperatorSearch(false);
 
-    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
 };
 
 export const completeMultiOpMultiServicePages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {

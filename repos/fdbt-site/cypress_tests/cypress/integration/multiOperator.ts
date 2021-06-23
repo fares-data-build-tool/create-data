@@ -21,7 +21,7 @@ describe('the multi-operator faretype product journey', () => {
         const multiProductNamePrefix = 'Cypress product ';
         selectFareType('multiOperator', false);
         defineUserTypeAndTimeRestrictions();
-        completeMultiOpGeoZonePages(false, numberOfProducts, multiProductNamePrefix);
+        completeMultiOpGeoZonePages(false, false, numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
         isUuidStringValid();
     });
