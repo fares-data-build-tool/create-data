@@ -32,31 +32,35 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const errors: ErrorInfo[] = [];
 
-        if (nameCheckError || durationCheckError || productDurationUnitsCheckError) {
-            if (nameCheckError) {
-                errors.push({
-                    errorMessage: nameCheckError,
-                    id: 'point-to-point-period-product-name',
-                });
-            }
-            if (durationCheckError) {
-                errors.push({
-                    errorMessage: durationCheckError,
-                    id: 'product-details-expiry-quantity',
-                });
-            }
-            if (productDurationUnitsCheckError) {
-                errors.push({
-                    errorMessage: productDurationUnitsCheckError,
-                    id: 'product-details-expiry-unit',
-                });
-            }
+        if (nameCheckError) {
+            errors.push({
+                errorMessage: nameCheckError,
+                id: 'point-to-point-period-product-name',
+            });
+        }
+
+        if (durationCheckError) {
+            errors.push({
+                errorMessage: durationCheckError,
+                id: 'product-details-expiry-quantity',
+            });
+        }
+
+        if (productDurationUnitsCheckError) {
+            errors.push({
+                errorMessage: productDurationUnitsCheckError,
+                id: 'product-details-expiry-unit',
+            });
+        }
+
+        if (errors.length > 0) {
             updateSessionAttribute(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE, {
                 errors,
                 ...pointToPointPeriodProduct,
             });
             redirectTo(res, '/pointToPointPeriodProduct');
         }
+
         updateSessionAttribute(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE, pointToPointPeriodProduct);
         redirectTo(res, '/periodValidity');
     } catch (error) {
