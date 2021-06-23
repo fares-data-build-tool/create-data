@@ -1,6 +1,6 @@
 import { isUuidStringValid } from '../support/helpers';
 import {
-    compleatePointToPointPeriodPages,
+    completePointToPointPeriodPages,
     completeHybridPages,
     completePeriodGeoZonePages,
     completePeriodMultiServicePages,
@@ -49,7 +49,7 @@ describe('the period faretype product journey', () => {
     it('completes successfully for point to point period products', () => {
         selectFareType('period', false);
         defineUserTypeAndTimeRestrictions();
-        compleatePointToPointPeriodPages();
+        completePointToPointPeriodPages();
         completeSalesPages();
         isUuidStringValid();
     });

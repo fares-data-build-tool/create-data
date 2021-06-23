@@ -337,7 +337,9 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
 
     if (!pointToPointPeriod) {
         const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
-
+        if (!products || isWithErrors(products)) {
+            throw new Error('Multiple produect arrribute contains errors');
+        }
         if (isArray(products)) {
             products.forEach(product => {
                 addProductDetails(product, confirmationElements);
@@ -408,19 +410,15 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
 
 export const buildSchoolTicketConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
     const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
-    let confirmationElements: ConfirmationElement[];
 
     if (schoolFareTypeAttribute) {
         switch (schoolFareTypeAttribute.schoolFareType) {
             case 'single':
                 return buildSingleTicketConfirmationElements(ctx);
-                confirmationElements;
             case 'period':
                 return buildPeriodOrMultiOpTicketConfirmationElements(ctx);
-                confirmationElements;
             case 'flatFare':
                 return buildFlatFareTicketConfirmationElements(ctx);
-                confirmationElements;
             default:
                 throw new Error('Did not receive an expected schoolFareType.');
         }
