@@ -28,9 +28,9 @@ const ProductDetails = ({
     csrfToken,
     errors,
 }: PointToPointPeriodProductProps): ReactElement => {
-    const { productName } = product || {};
+    const productName = product?.productName;
     const periodValue = product?.productDuration || '';
-    const periodUnits = product?.productDurationUnits || undefined;
+    const periodUnits = product?.productDurationUnits;
 
     return (
         <TwoThirdsLayout title={title} description={description}>
@@ -120,6 +120,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Po
     const product = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
 
     if (!operatorAttribute?.name) {
+        console.log(operatorAttribute);
         throw new Error('Failed to retrieve the necessary session objects.');
     }
 

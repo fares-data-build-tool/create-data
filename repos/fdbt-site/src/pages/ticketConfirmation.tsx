@@ -413,14 +413,14 @@ export const buildSchoolTicketConfirmationElements = (ctx: NextPageContextWithSe
     if (schoolFareTypeAttribute) {
         switch (schoolFareTypeAttribute.schoolFareType) {
             case 'single':
-                confirmationElements = buildSingleTicketConfirmationElements(ctx);
-                return confirmationElements;
+                return buildSingleTicketConfirmationElements(ctx);
+                confirmationElements;
             case 'period':
-                confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
-                return confirmationElements;
+                return buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+                confirmationElements;
             case 'flatFare':
-                confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
-                return confirmationElements;
+                return buildFlatFareTicketConfirmationElements(ctx);
+                confirmationElements;
             default:
                 throw new Error('Did not receive an expected schoolFareType.');
         }
@@ -429,45 +429,52 @@ export const buildSchoolTicketConfirmationElements = (ctx: NextPageContextWithSe
     }
 };
 
+export const buildPointToPointConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
+    const ticketRepresentationAttribute = getSessionAttribute(
+        ctx.req,
+        TICKET_REPRESENTATION_ATTRIBUTE,
+    ) as TicketRepresentationAttribute;
+
+    if (!ticketRepresentationAttribute || isWithErrors(ticketRepresentationAttribute)) {
+        throw new Error('Could not find ticket representation for period ticket');
+    }
+    if (ticketRepresentationAttribute.name === 'pointToPointPeriod') {
+        return buildPointToPointPeriodConfirmationElements(ctx);
+    } else {
+        return buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+    }
+};
+
 export const buildTicketConfirmationElements = (
     fareType: string,
     ctx: NextPageContextWithSession,
 ): ConfirmationElement[] => {
     let confirmationElements: ConfirmationElement[];
-    if (fareType === 'period') {
-        const ticketRepresentationAttribute = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
-        if (!ticketRepresentationAttribute || isWithErrors(ticketRepresentationAttribute)) {
-            throw new Error('Could not find ticket representation for period ticket');
-        }
-        if (ticketRepresentationAttribute.name === 'pointToPointPeriod') {
-            confirmationElements = buildPointToPointPeriodConfirmationElements(ctx);
-        } else {
+    switch (fareType) {
+        case 'single':
+            confirmationElements = buildSingleTicketConfirmationElements(ctx);
+            break;
+        case 'return':
+            confirmationElements = buildReturnTicketConfirmationElements(ctx);
+            break;
+        case 'flatFare':
+            confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
+            break;
+        case 'multiOperator':
             confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
-        }
-    } else {
-        switch (fareType) {
-            case 'single':
-                confirmationElements = buildSingleTicketConfirmationElements(ctx);
-                break;
-            case 'return':
-                confirmationElements = buildReturnTicketConfirmationElements(ctx);
-                break;
-            case 'flatFare':
-                confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
-                break;
-            case 'multiOperator':
-                confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
-                break;
-            case 'schoolService':
-                confirmationElements = buildSchoolTicketConfirmationElements(ctx);
-                break;
-            default:
-                throw new Error('Did not receive an expected fareType.');
-        }
+            break;
+        case 'schoolService':
+            confirmationElements = buildSchoolTicketConfirmationElements(ctx);
+            break;
+        case 'period':
+            confirmationElements = buildPointToPointConfirmationElements(ctx);
+            break;
+
+        default:
+            throw new Error('Did not receive an expected fareType.');
     }
     return confirmationElements;
 };
-
 const TicketConfirmation = ({ csrfToken, confirmationElements }: TicketConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/ticketConfirmation" method="post" csrfToken={csrfToken}>

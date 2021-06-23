@@ -5,27 +5,27 @@ import { DURATION_VALID_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isValidInputDuration } from './apiUtils/validator';
 
-export const isInvalidValidityNumber = (validityInput: number): boolean => {
-    if (Number.isNaN(validityInput)) {
-        return true;
+export const isValidNumber = (input: number): boolean => {
+    if (Number.isNaN(input)) {
+        return false;
     }
 
-    if (!Number.isInteger(Number(validityInput))) {
-        return true;
+    if (!Number.isInteger(Number(input))) {
+        return false;
     }
 
-    if (validityInput > 1000 || validityInput < 1) {
-        return true;
+    if (input > 1000 || input < 1) {
+        return false;
     }
 
-    return false;
+    return true;
 };
 
-export const isInvalidInput = (validityInput: string): boolean => {
-    if (!validityInput || validityInput === '0' || isInvalidValidityNumber(Number(validityInput))) {
-        return true;
+export const isValidInput = (validityInput: string): boolean => {
+    if (!validityInput || validityInput === '0' || !isValidNumber(Number(validityInput))) {
+        return false;
     }
-    return false;
+    return true;
 };
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
@@ -33,7 +33,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const { validityInput, duration } = req.body;
         const errorInfo: ErrorInfo[] = [];
 
-        if (isInvalidInput(validityInput)) {
+        if (!isValidInput(validityInput)) {
             errorInfo.push({
                 errorMessage:
                     'The amount of time your product is valid for has to be a whole number between 1 and 1000.',
