@@ -438,9 +438,8 @@ export const buildPointToPointConfirmationElements = (ctx: NextPageContextWithSe
     }
     if (ticketRepresentationAttribute.name === 'pointToPointPeriod') {
         return buildPointToPointPeriodConfirmationElements(ctx);
-    } else {
-        return buildPeriodOrMultiOpTicketConfirmationElements(ctx);
     }
+    return buildPeriodOrMultiOpTicketConfirmationElements(ctx);
 };
 
 export const buildTicketConfirmationElements = (

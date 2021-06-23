@@ -120,8 +120,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Po
     const product = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
 
     if (!operatorAttribute?.name) {
-        console.log(operatorAttribute);
-        throw new Error('Failed to retrieve the necessary session objects.');
+        throw new Error('The Operator Attribute name was not set');
     }
 
     return {
