@@ -1,5 +1,7 @@
-import { FullTimeRestriction } from '../types';
+import { FullTimeRestriction, GeoZoneTicket, PeriodTicket } from '../types';
 import { getTimeRestrictions, getEarliestTime } from './sharedHelpers';
+import * as sharedHelpers from './sharedHelpers';
+import { periodGeoZoneTicket, periodMultipleServicesTicket, flatFareTicket } from '../test-data/matchingData';
 
 describe('Shared Helpers', () => {
     describe('getTimeRestrictions', () => {
@@ -262,6 +264,218 @@ describe('Shared Helpers', () => {
             };
             const result = getEarliestTime(times);
             expect(result).toBe('0100');
+        });
+    });
+
+    describe('getFareStructureElements', () => {
+        const geoUserPeriodTicket: GeoZoneTicket = periodGeoZoneTicket;
+        const placeHolderText = `${geoUserPeriodTicket.nocCode}_products`;
+
+        it('returns 3 fareSructureElements for each product in the products array for multiService; Access Zones, Eligibility and Conditions of Travel', () => {
+            const expectedLength = flatFareTicket.products.length * 3;
+            const result = sharedHelpers.getFareStructuresElements(
+                flatFareTicket as PeriodTicket,
+                false,
+                '',
+                placeHolderText,
+            );
+            const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
+                return element.Name.$t;
+            });
+
+            namesOfTypesOfFareStructureElements.forEach(name => {
+                expect(
+                    name === 'Available lines and/or zones' ||
+                        name === 'Eligible user types' ||
+                        name === 'Conditions of travel',
+                ).toBeTruthy();
+            });
+
+            expect(result.length).toBe(expectedLength);
+        });
+
+        it('returns 3 fareSructureElements for each product in the products array for multiService; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
+            const expectedLength = periodMultipleServicesTicket.products.length * 3 + 1;
+            const result = sharedHelpers.getFareStructuresElements(
+                periodMultipleServicesTicket,
+                false,
+                '',
+                placeHolderText,
+            );
+            const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
+                return element.Name.$t;
+            });
+
+            namesOfTypesOfFareStructureElements.forEach(name => {
+                expect(
+                    name === 'Available lines and/or zones' ||
+                        name.includes('Available duration combination') ||
+                        name === 'Eligible user types' ||
+                        name === 'Conditions of travel',
+                ).toBeTruthy();
+            });
+            expect(result.length).toBe(expectedLength);
+        });
+
+        it('returns 3 fareStructureElements for each product in the products array for geoZone; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
+            const expectedLength = geoUserPeriodTicket.products.length * 3 + 1;
+            const result = sharedHelpers.getFareStructuresElements(geoUserPeriodTicket, false, '', placeHolderText);
+            const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
+                return element.Name.$t;
+            });
+
+            namesOfTypesOfFareStructureElements.forEach(name => {
+                expect(
+                    name === 'Available lines and/or zones' ||
+                        name.includes('Available duration combination') ||
+                        name === 'Eligible user types' ||
+                        name === 'Conditions of travel',
+                ).toBeTruthy();
+            });
+            expect(result.length).toBe(expectedLength);
+        });
+
+        it('returns the fareStructureElements in the format we expect', () => {
+            const geoResult = sharedHelpers.getFareStructuresElements(geoUserPeriodTicket, false, '', placeHolderText);
+
+            const expectedAccessZonesFareStructureElement = {
+                version: '1.0',
+                id: expect.stringContaining('op:Tariff@'),
+                Name: expect.objectContaining({ $t: expect.any(String) }),
+                TypeOfFareStructureElementRef: expect.objectContaining({
+                    version: expect.any(String),
+                    ref: expect.any(String),
+                }),
+                GenericParameterAssignment: expect.any(Object),
+                qualityStructureFactors: null,
+            };
+
+            const expectedDurationsFareStructureElement = {
+                version: '1.0',
+                id: expect.stringContaining('op:Tariff@'),
+                Name: expect.objectContaining({ $t: expect.any(String) }),
+                TypeOfFareStructureElementRef: expect.objectContaining({
+                    version: expect.any(String),
+                    ref: expect.any(String),
+                }),
+                timeIntervals: expect.objectContaining({ TimeIntervalRef: expect.anything() }),
+            };
+
+            const expectedCarnetFareStructureElement = {
+                version: '1.0',
+                id: 'mb:Tariff@multitrip@units',
+                Name: { $t: 'Carnet denominations' },
+                Description: { $t: `Number of period units in bundle.` },
+                TypeOfFareStructureElementRef: {
+                    version: 'fxc:v1.0',
+                    ref: 'fxc:carnet_units',
+                },
+                qualityStructureFactors: {
+                    QualityStructureFactor: [
+                        {
+                            version: '1.0',
+                            id: `mb:Tariff@multitrip@5`,
+                            Value: { $t: '5' },
+                        },
+                        {
+                            version: '1.0',
+                            id: `mb:Tariff@multitrip@5`,
+                            Value: { $t: '10' },
+                        },
+                        {
+                            version: '1.0',
+                            id: `mb:Tariff@multitrip@5`,
+                            Value: { $t: '15' },
+                        },
+                    ],
+                },
+            };
+
+            const expectedEligibilityFareStructureElement = {
+                version: '1.0',
+                id: expect.stringContaining('op:Tariff@'),
+                Name: expect.objectContaining({ $t: expect.any(String) }),
+                TypeOfFareStructureElementRef: expect.objectContaining({
+                    version: expect.any(String),
+                    ref: expect.any(String),
+                }),
+                GenericParameterAssignment: expect.any(Object),
+            };
+
+            const expectedConditionsOfTravelFareStructureElement = {
+                version: '1.0',
+                id: expect.stringContaining('op:Tariff@'),
+                Name: expect.objectContaining({ $t: expect.any(String) }),
+                GenericParameterAssignment: expect.any(Object),
+            };
+
+            geoResult.forEach(fareStructureElement => {
+                if (fareStructureElement.timeIntervals) {
+                    expect(fareStructureElement).toEqual(expectedDurationsFareStructureElement);
+                } else if (fareStructureElement.qualityStructureFactors === null) {
+                    expect(fareStructureElement).toEqual(expectedAccessZonesFareStructureElement);
+                } else if (fareStructureElement.qualityStructureFactors) {
+                    expect(fareStructureElement).toEqual(expectedCarnetFareStructureElement);
+                } else if (fareStructureElement.TypeOfFareStructureElementRef) {
+                    expect(fareStructureElement).toEqual(expectedEligibilityFareStructureElement);
+                } else {
+                    expect(fareStructureElement).toEqual(expectedConditionsOfTravelFareStructureElement);
+                }
+            });
+        });
+    });
+
+    describe('getCarnetQualityStructureFactorRef', () => {
+        it('returns a carnetQualityStructureFactorRef when carnetDetails present', () => {
+            const productDetails = {
+                productName: 'Product 1',
+                carnetDetails: {
+                    quantity: '10',
+                    expiryTime: '5',
+                    expiryUnit: 'day',
+                },
+                salesOfferPackages: [
+                    {
+                        name: 'Onboard (cash)',
+                        description: 'Purchasable on board the bus, with cash, as a paper ticket.',
+                        purchaseLocations: ['onBoard'],
+                        paymentMethods: ['cash'],
+                        ticketFormats: ['paperTicket'],
+                    },
+                ],
+            };
+
+            const expectedCarnetQualityStructureFactorRef = {
+                QualityStructureFactorRef: {
+                    version: '1.0',
+                    ref: `mb:Tariff@multitrip@10`,
+                },
+            };
+
+            expect(sharedHelpers.getCarnetQualityStructureFactorRef(productDetails)).toEqual(
+                expectedCarnetQualityStructureFactorRef,
+            );
+        });
+
+        it('returns an empty object when carnetDetails not present', () => {
+            const productDetails = {
+                productName: 'Product 1',
+                salesOfferPackages: [
+                    {
+                        name: 'Onboard (cash)',
+                        description: 'Purchasable on board the bus, with cash, as a paper ticket.',
+                        purchaseLocations: ['onBoard'],
+                        paymentMethods: ['cash'],
+                        ticketFormats: ['paperTicket'],
+                    },
+                ],
+            };
+
+            const expectedCarnetQualityStructureFactorRef = {};
+
+            expect(sharedHelpers.getCarnetQualityStructureFactorRef(productDetails)).toEqual(
+                expectedCarnetQualityStructureFactorRef,
+            );
         });
     });
 });

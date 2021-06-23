@@ -94,6 +94,31 @@ generate-scheme-operator-flat-fare:
 
 generate-validate-scheme-operator-flat-fare: generate-scheme-operator-flat-fare validate-latest-file
 
+generate-carnet-single:
+	./scripts/trigger_netex_convertor.sh carnetSingle
+
+generate-validate-carnet-single: generate-carnet-single validate-latest-file
+
+generate-carnet-return:
+	./scripts/trigger_netex_convertor.sh carnetReturn
+
+generate-validate-carnet-return: generate-carnet-return validate-latest-file
+
+generate-carnet-period-geo-zone:
+	./scripts/trigger_netex_convertor.sh carnetPeriodGeoZone
+
+generate-validate-carnet-period-geo-zone: generate-carnet-period-geo-zone validate-latest-file
+
+generate-carnet-period-multi-service:
+	./scripts/trigger_netex_convertor.sh carnetPeriodMultiService
+
+generate-validate-carnet-period-multi-service: generate-carnet-period-multi-service validate-latest-file
+
+generate-carnet-flat-fare:
+	./scripts/trigger_netex_convertor.sh carnetFlatFare
+
+generate-validate-carnet-flat-fare: generate-carnet-flat-fare validate-latest-file
+
 validate-netex:
 	./scripts/trigger_netex_validator.sh $(file)
 

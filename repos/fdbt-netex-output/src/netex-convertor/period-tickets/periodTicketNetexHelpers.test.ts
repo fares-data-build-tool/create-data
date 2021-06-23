@@ -7,7 +7,13 @@ import {
 } from '../../types/index';
 
 import * as netexHelpers from './periodTicketNetexHelpers';
-import { periodGeoZoneTicket, periodMultipleServicesTicket, flatFareTicket } from '../../test-data/matchingData';
+import {
+    periodGeoZoneTicket,
+    periodMultipleServicesTicket,
+    flatFareTicket,
+    carnetPeriodGeoZoneTicket,
+    carnetPeriodMultipleServicesTicket,
+} from '../../test-data/matchingData';
 import { operatorData, multiOperatorList } from '../test-data/operatorData';
 import { getGroupOfOperators, getOrganisations } from './periodTicketNetexHelpers';
 import * as db from '../../data/auroradb';
@@ -15,10 +21,12 @@ import * as db from '../../data/auroradb';
 describe('periodTicketNetexHelpers', () => {
     const { stops } = periodGeoZoneTicket;
     const geoUserPeriodTicket: GeoZoneTicket = periodGeoZoneTicket;
+    const carnetGeoUserPeriodTicket: GeoZoneTicket = carnetPeriodGeoZoneTicket;
     const opData = operatorData;
     const placeHolderText = `${geoUserPeriodTicket.nocCode}_products`;
     const opString = expect.stringContaining('op:');
     const tripString = expect.stringContaining('Trip');
+    const carnetString = expect.stringContaining('multitrip');
 
     const getExpectedFareTableColumn = (representingObject: {} | null): jest.Expect =>
         expect.objectContaining({
@@ -96,6 +104,12 @@ describe('periodTicketNetexHelpers', () => {
                 },
                 pricesFor: {
                     SalesOfferPackageRef: { ref: tripString, version: '1.0' },
+                    QualityStructureFactorRef: matchingData.products[0].carnetDetails
+                        ? {
+                              version: '1.0',
+                              ref: carnetString,
+                          }
+                        : undefined,
                 },
                 specifics: {
                     TypeOfTravelDocumentRef: { ref: opString, version: '1.0' },
@@ -187,30 +201,39 @@ describe('periodTicketNetexHelpers', () => {
     });
 
     describe('getGeoZoneFareTable', () => {
-        it('returns a list of geoFareZoneTable objects for the products defined in periodGeoZoneTicket matching data', () => {
-            const representingObjectTypeOfTravelDoc = {
-                TypeOfTravelDocumentRef: expect.objectContaining({ ref: opString, version: '1.0' }),
-                UserProfileRef: expect.objectContaining({ ref: opString, version: '1.0' }),
-            };
-            const representingObjectTimeIntervalDoc = {
-                TimeIntervalRef: expect.objectContaining({ ref: opString, version: '1.0' }),
-            };
-            const geoZoneFareTableSchema = getFareTableSchema(
-                geoUserPeriodTicket,
-                representingObjectTypeOfTravelDoc,
-                representingObjectTimeIntervalDoc,
-            );
-            const expectedLength = geoUserPeriodTicket.products.length;
-            const geoZoneFareTables = netexHelpers.getGeoZoneFareTable(geoUserPeriodTicket, placeHolderText, 'test');
-            expect(geoZoneFareTables).toHaveLength(expectedLength);
-            geoZoneFareTables.forEach(fareTable => {
-                expect(fareTable).toEqual(geoZoneFareTableSchema);
-            });
-        });
+        it.each([
+            ['periodGeoZoneTicket', geoUserPeriodTicket],
+            ['carnetPeriodGeoZoneTicket', carnetGeoUserPeriodTicket],
+        ])(
+            'returns a list of geoFareZoneTable objects for the products defined in %s matching data',
+            (_ticketType, matchingData) => {
+                const representingObjectTypeOfTravelDoc = {
+                    TypeOfTravelDocumentRef: expect.objectContaining({ ref: opString, version: '1.0' }),
+                    UserProfileRef: expect.objectContaining({ ref: opString, version: '1.0' }),
+                };
+                const representingObjectTimeIntervalDoc = {
+                    TimeIntervalRef: expect.objectContaining({ ref: opString, version: '1.0' }),
+                };
+                const geoZoneFareTableSchema = getFareTableSchema(
+                    matchingData,
+                    representingObjectTypeOfTravelDoc,
+                    representingObjectTimeIntervalDoc,
+                );
+                const expectedLength = matchingData.products.length;
+                const geoZoneFareTables = netexHelpers.getGeoZoneFareTable(matchingData, placeHolderText, 'test');
+                expect(geoZoneFareTables).toHaveLength(expectedLength);
+                geoZoneFareTables.forEach(fareTable => {
+                    expect(fareTable).toEqual(geoZoneFareTableSchema);
+                });
+            },
+        );
     });
 
     describe('getMultiServiceFareTable', () => {
-        it('returns a list of fare table objects when given periodMultipleServicesTicket matching data', () => {
+        it.each([
+            ['periodMultipleServicesTicket', periodMultipleServicesTicket],
+            ['carnetPeriodMultipleServicesTicket', carnetPeriodMultipleServicesTicket],
+        ])('returns a list of fare table objects when given %s matching data', (_ticketType, matchingData) => {
             const representingObjectTypeOfTravelDoc = {
                 TypeOfTravelDocumentRef: expect.objectContaining({ ref: opString, version: '1.0' }),
                 UserProfileRef: expect.objectContaining({ ref: opString, version: '1.0' }),
@@ -219,12 +242,12 @@ describe('periodTicketNetexHelpers', () => {
                 TimeIntervalRef: expect.objectContaining({ ref: opString, version: '1.0' }),
             };
             const multiServiceFareTableSchema = getFareTableSchema(
-                periodMultipleServicesTicket,
+                matchingData,
                 representingObjectTypeOfTravelDoc,
                 representingObjectTimeIntervalDoc,
             );
             const expectedLength = periodMultipleServicesTicket.products.length;
-            const multiServiceFareTables = netexHelpers.getMultiServiceFareTable(periodMultipleServicesTicket, 'test');
+            const multiServiceFareTables = netexHelpers.getMultiServiceFareTable(matchingData, 'test');
             expect(multiServiceFareTables).toHaveLength(expectedLength);
             multiServiceFareTables.forEach(fareTable => {
                 expect(fareTable).toEqual(multiServiceFareTableSchema);
@@ -420,119 +443,6 @@ describe('periodTicketNetexHelpers', () => {
                 Description: { $t: 'P49D' },
             });
             expect(result.length).toBe(expectedLength);
-        });
-    });
-
-    describe('getFareStructureElements', () => {
-        it('returns 3 fareSructureElements for each product in the products array for multiService; Access Zones, Eligibility and Conditions of Travel', () => {
-            const expectedLength = flatFareTicket.products.length * 3;
-            const result = netexHelpers.getFareStructuresElements(flatFareTicket as PeriodTicket, placeHolderText);
-            const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
-                return element.Name.$t;
-            });
-
-            namesOfTypesOfFareStructureElements.forEach(name => {
-                expect(
-                    name === 'Available lines and/or zones' ||
-                        name === 'Eligible user types' ||
-                        name === 'Conditions of travel',
-                ).toBeTruthy();
-            });
-
-            expect(result.length).toBe(expectedLength);
-        });
-
-        it('returns 3 fareSructureElements for each product in the products array for multiService; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
-            const expectedLength = periodMultipleServicesTicket.products.length * 3 + 1;
-            const result = netexHelpers.getFareStructuresElements(periodMultipleServicesTicket, placeHolderText);
-            const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
-                return element.Name.$t;
-            });
-
-            namesOfTypesOfFareStructureElements.forEach(name => {
-                expect(
-                    name === 'Available lines and/or zones' ||
-                        name.includes('Available duration combination') ||
-                        name === 'Eligible user types' ||
-                        name === 'Conditions of travel',
-                ).toBeTruthy();
-            });
-            expect(result.length).toBe(expectedLength);
-        });
-
-        it('returns 3 fareStructureElements for each product in the products array for geoZone; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
-            const expectedLength = geoUserPeriodTicket.products.length * 3 + 1;
-            const result = netexHelpers.getFareStructuresElements(geoUserPeriodTicket, placeHolderText);
-            const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
-                return element.Name.$t;
-            });
-
-            namesOfTypesOfFareStructureElements.forEach(name => {
-                expect(
-                    name === 'Available lines and/or zones' ||
-                        name.includes('Available duration combination') ||
-                        name === 'Eligible user types' ||
-                        name === 'Conditions of travel',
-                ).toBeTruthy();
-            });
-            expect(result.length).toBe(expectedLength);
-        });
-
-        it('returns the fareStructureElements in the format we expect', () => {
-            const geoResult = netexHelpers.getFareStructuresElements(geoUserPeriodTicket, placeHolderText);
-
-            const expectedAccessZonesFareStructureElement = {
-                version: '1.0',
-                id: expect.stringContaining('op:Tariff@'),
-                Name: expect.objectContaining({ $t: expect.any(String) }),
-                TypeOfFareStructureElementRef: expect.objectContaining({
-                    version: expect.any(String),
-                    ref: expect.any(String),
-                }),
-                GenericParameterAssignment: expect.any(Object),
-                qualityStructureFactors: null,
-            };
-
-            const expectedDurationsFareStructureElement = {
-                version: '1.0',
-                id: expect.stringContaining('op:Tariff@'),
-                Name: expect.objectContaining({ $t: expect.any(String) }),
-                TypeOfFareStructureElementRef: expect.objectContaining({
-                    version: expect.any(String),
-                    ref: expect.any(String),
-                }),
-                timeIntervals: expect.objectContaining({ TimeIntervalRef: expect.anything() }),
-            };
-
-            const expectedEligibilityFareStructureElement = {
-                version: '1.0',
-                id: expect.stringContaining('op:Tariff@'),
-                Name: expect.objectContaining({ $t: expect.any(String) }),
-                TypeOfFareStructureElementRef: expect.objectContaining({
-                    version: expect.any(String),
-                    ref: expect.any(String),
-                }),
-                GenericParameterAssignment: expect.any(Object),
-            };
-
-            const expectedConditionsOfTravelFareStructureElement = {
-                version: '1.0',
-                id: expect.stringContaining('op:Tariff@'),
-                Name: expect.objectContaining({ $t: expect.any(String) }),
-                GenericParameterAssignment: expect.any(Object),
-            };
-
-            geoResult.forEach(fareStructureElement => {
-                if (fareStructureElement.timeIntervals) {
-                    expect(fareStructureElement).toEqual(expectedDurationsFareStructureElement);
-                } else if (fareStructureElement.qualityStructureFactors === null) {
-                    expect(fareStructureElement).toEqual(expectedAccessZonesFareStructureElement);
-                } else if (fareStructureElement.TypeOfFareStructureElementRef) {
-                    expect(fareStructureElement).toEqual(expectedEligibilityFareStructureElement);
-                } else {
-                    expect(fareStructureElement).toEqual(expectedConditionsOfTravelFareStructureElement);
-                }
-            });
         });
     });
 
