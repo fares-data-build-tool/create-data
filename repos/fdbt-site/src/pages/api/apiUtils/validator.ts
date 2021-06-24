@@ -95,4 +95,27 @@ export const checkIntegerIsValid = (input: string, inputName: string, min: numbe
     return '';
 };
 
+export const isValidNumber = (input: number): boolean => {
+    if (Number.isNaN(input)) {
+        return false;
+    }
+
+    if (!Number.isInteger(Number(input))) {
+        return false;
+    }
+
+    if (input > 1000 || input < 1) {
+        return false;
+    }
+
+    return true;
+};
+
+export const isValidInput = (validityInput: string): boolean => {
+    if (!validityInput || validityInput === '0' || !isValidNumber(Number(validityInput))) {
+        return false;
+    }
+    return true;
+};
+
 export const isValid24hrTimeFormat = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);

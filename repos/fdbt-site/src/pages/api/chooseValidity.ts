@@ -3,30 +3,7 @@ import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { DURATION_VALID_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from './apiUtils';
-import { isValidInputDuration } from './apiUtils/validator';
-
-export const isValidNumber = (input: number): boolean => {
-    if (Number.isNaN(input)) {
-        return false;
-    }
-
-    if (!Number.isInteger(Number(input))) {
-        return false;
-    }
-
-    if (input > 1000 || input < 1) {
-        return false;
-    }
-
-    return true;
-};
-
-export const isValidInput = (validityInput: string): boolean => {
-    if (!validityInput || validityInput === '0' || !isValidNumber(Number(validityInput))) {
-        return false;
-    }
-    return true;
-};
+import { isValidInput, isValidInputDuration } from './apiUtils/validator';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
