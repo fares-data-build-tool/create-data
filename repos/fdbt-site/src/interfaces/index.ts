@@ -281,6 +281,7 @@ export interface S3NetexFile {
     date: string;
     signedUrl: string;
     fileSize: number;
+    carnet: boolean;
 }
 
 /* eslint-disable camelcase */

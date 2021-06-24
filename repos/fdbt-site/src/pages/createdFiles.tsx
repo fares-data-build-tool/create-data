@@ -24,10 +24,10 @@ interface CreateFilesProps {
     numberPerPage: number;
 }
 
-export const buildName = (file: PointToPointTicket | PeriodTicket): string => {
-    let name = `${file.nocCode ? `${file.nocCode} - ` : ''}${sentenceCaseString(file.type)} - ${sentenceCaseString(
-        file.passengerType,
-    )}`;
+export const buildName = (file: PointToPointTicket | PeriodTicket, isCarnet: boolean): string => {
+    let name = `${file.nocCode ? `${file.nocCode} - ` : ''}${sentenceCaseString(file.type)}${
+        isCarnet ? ' (carnet)' : ''
+    } - ${sentenceCaseString(file.passengerType)}`;
 
     if (isPointToPointTicket(file)) {
         name += ` - Line ${file.lineName}`;
@@ -76,9 +76,10 @@ const enrichNetexFileData = async (
             }
 
             const matchingData: PointToPointTicket | PeriodTicket = JSON.parse(item.matchingData.Body.toString());
+            const carnet = 'carnetDetails' in matchingData.products[0];
 
             return {
-                name: buildName(matchingData),
+                name: buildName(matchingData, carnet),
                 noc: matchingData.nocCode,
                 reference: matchingData.uuid,
                 fareType: matchingData.type,
@@ -99,6 +100,7 @@ const enrichNetexFileData = async (
                     : '',
                 signedUrl: item.signedUrl,
                 fileSize: item.fileSize || 0,
+                carnet,
             };
         })
         .filter(isNotEmpty);
@@ -170,6 +172,7 @@ const CreatedFiles = ({ files, numberOfResults, currentPage, numberPerPage }: Cr
                                 )}
                                 <span className="govuk-body govuk-!-font-weight-bold">Fare Type: </span>{' '}
                                 {sentenceCaseString(file.fareType)}
+                                {file.carnet ? ' (carnet)' : ''}
                                 <br />
                                 <span className="govuk-body govuk-!-font-weight-bold">Passenger Type: </span>{' '}
                                 {sentenceCaseString(file.passengerType)}
