@@ -188,7 +188,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const errors: ErrorInfo[] =
         fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
-    return { props: { operatorName, schemeOp, isProd: process.env.STAGE !== 'prod', errors, csrfToken } };
+    return { props: { operatorName, schemeOp, isProd: process.env.STAGE === 'prod', errors, csrfToken } };
 };
 
 export default FareType;

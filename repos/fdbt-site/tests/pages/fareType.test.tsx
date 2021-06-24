@@ -73,7 +73,7 @@ describe('pages', () => {
                     props: {
                         operatorName: expect.any(String),
                         schemeOp: false,
-                        isProd: true,
+                        isProd: false,
                         errors: [],
                         csrfToken: '',
                     },
