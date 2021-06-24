@@ -2,9 +2,14 @@ import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
-import { CARNET_FARE_TYPE_ATTRIBUTE, INBOUND_MATCHING_ATTRIBUTE } from '../../constants/attributes';
+import {
+    CARNET_FARE_TYPE_ATTRIBUTE,
+    INBOUND_MATCHING_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+} from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { MatchingWithErrors, InboundMatchingInfo } from '../../interfaces/matchingInterface';
+import { isFareType } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -34,6 +39,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (carnetFareType) {
             redirectTo(res, '/carnetProductDetails');
+            return;
+        }
+
+        const fareTypeInfo = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+
+        if (isFareType(fareTypeInfo) && fareTypeInfo.fareType === 'period') {
+            redirectTo(res, '/pointToPointPeriodProduct');
             return;
         }
 

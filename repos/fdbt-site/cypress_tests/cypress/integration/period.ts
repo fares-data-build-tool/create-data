@@ -1,5 +1,6 @@
 import { isUuidStringValid } from '../support/helpers';
 import {
+    completePointToPointPeriodPages,
     completeHybridPages,
     completePeriodGeoZonePages,
     completePeriodMultiServicePages,
@@ -42,6 +43,14 @@ describe('the period faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completePeriodMultiServicePages(numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
+        isUuidStringValid();
+    });
+
+    it('completes successfully for point to point period products', () => {
+        selectFareType('period', false);
+        defineUserTypeAndTimeRestrictions();
+        completePointToPointPeriodPages();
+        completeSalesPages();
         isUuidStringValid();
     });
 

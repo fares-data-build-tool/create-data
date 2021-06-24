@@ -21,6 +21,7 @@ import {
     randomlyChooseASchoolProof,
     randomlyDecideTermRestrictions,
     randomlyChooseSchoolAgeLimits,
+    randomlyChooseProductPeriodValidity,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -157,8 +158,15 @@ const completePointToPointProductDetail = (): void => {
     getElementById('product-details-carnet-quantity').type('5');
     getElementById('product-details-carnet-expiry-quantity').type('10');
     getElementById('product-details-carnet-expiry-unit').select('Days');
-
     continueButtonClick();
+};
+
+const completePointToPointPeriodProductDetail = (): void => {
+    getElementById('point-to-point-period-product-name').type('Product Test');
+    getElementById('product-details-expiry-quantity').type('5');
+    getElementById('product-details-expiry-unit').select('Days');
+    continueButtonClick();
+    randomlyChooseProductPeriodValidity();
 };
 
 export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void => {
@@ -175,7 +183,17 @@ export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void
     continueButtonClick();
 };
 
-export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean): void => {
+export const completePointToPointPeriodReturnPages = (csvUpload: boolean): void => {
+    completeServicePage();
+    selectRandomOptionFromDropDown('outbound-journey');
+    selectRandomOptionFromDropDown('inbound-journey');
+    continueButtonClick();
+    completeFareTrianglePages(csvUpload);
+    completeMatchingPage();
+    completeMatchingPage();
+};
+
+export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPeriod: boolean): void => {
     completeServicePage();
     selectRandomOptionFromDropDown('outbound-journey');
     selectRandomOptionFromDropDown('inbound-journey');
@@ -188,13 +206,17 @@ export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean): void
         completePointToPointProductDetail();
     }
 
-    assertElementNotVisibleById('return-validity-defined-conditional');
-    if (getRandomNumber(0, 1) === 0) {
-        clickElementById('return-validity-not-defined');
+    if (isPeriod) {
+        completePointToPointPeriodProductDetail();
     } else {
-        clickElementById('return-validity-defined');
-        getElementById('return-validity-amount').type(getRandomNumber(1, 100).toString());
-        selectRandomOptionFromDropDown('return-validity-units');
+        assertElementNotVisibleById('return-validity-defined-conditional');
+        if (getRandomNumber(0, 1) === 0) {
+            clickElementById('return-validity-not-defined');
+        } else {
+            clickElementById('return-validity-defined');
+            getElementById('return-validity-amount').type(getRandomNumber(1, 100).toString());
+            selectRandomOptionFromDropDown('return-validity-units');
+        }
     }
 
     continueButtonClick();
@@ -244,6 +266,13 @@ export const completeHybridPages = (
     randomlyChooseAndSelectServices();
     continueButtonClick();
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
+};
+
+export const completePointToPointPeriodPages = (): void => {
+    clickElementById('radio-option-pointToPointPeriod');
+    continueButtonClick();
+    completeReturnPages(false, false, true);
+    continueButtonClick();
 };
 
 export const completeSchoolPeriodMultiServicePages = (

@@ -20,6 +20,7 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
+    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CarnetDetails,
@@ -31,6 +32,7 @@ import {
     MultipleProductAttribute,
     MultiProduct,
     NextPageContextWithSession,
+    PointToPointPeriodProduct,
     Product,
     ReturnPeriodValidity,
     SchoolFareTypeAttribute,
@@ -40,7 +42,7 @@ import {
     TxcSourceAttribute,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingFareZones, MatchingInfo } from '../interfaces/matchingInterface';
-import { isFareType, isPeriodExpiry } from '../interfaces/typeGuards';
+import { isFareType, isPeriodExpiry, isWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
 import { getCsrfToken, sentenceCaseString } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
@@ -214,6 +216,54 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
     return confirmationElements;
 };
 
+export const buildPointToPointPeriodConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
+    const confirmationElements = buildReturnTicketConfirmationElements(ctx);
+    const product = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
+    if (!product || isWithErrors(product)) {
+        throw new Error('Product is not present or contains errors');
+    }
+
+    const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
+    if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
+        throw new Error('Period expiry is not present or contains errors');
+    }
+    addProductDetails(product, confirmationElements);
+
+    return confirmationElements;
+};
+
+const addProductDetails = (
+    product: Product | MultiProduct | PointToPointPeriodProduct,
+    confirmationElements: ConfirmationElement[],
+): void => {
+    const productDurationText = `${
+        product.productDurationUnits
+            ? `${product.productDuration} ${product.productDurationUnits}${product.productDuration === '1' ? '' : 's'}`
+            : `${product.productDuration}`
+    }`;
+
+    if (!product.productDuration) {
+        throw new Error('User has no product duration and/or validity information.');
+    }
+
+    const content = [];
+    if ('productPrice' in product) {
+        content.push(`Price - £${product.productPrice}`);
+    }
+
+    content.push(`Duration - ${productDurationText}`);
+
+    if ('carnetDetails' in product) {
+        content.push(...getCarnetDetailsContent(product.carnetDetails));
+    }
+
+    confirmationElements.push({
+        name: `${product.productName}`,
+        content,
+        href: 'multipleProducts',
+    });
+};
+
 export const buildPeriodOrMultiOpTicketConfirmationElements = (
     ctx: NextPageContextWithSession,
 ): ConfirmationElement[] => {
@@ -230,8 +280,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
     const hybrid = ticketRepresentation === 'hybrid';
-
-    const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
+    const pointToPointPeriod = ticketRepresentation === 'pointToPointPeriod';
 
     if (zone || hybrid) {
         confirmationElements.push({
@@ -241,7 +290,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         });
     }
 
-    if (!zone || hybrid) {
+    if (!pointToPointPeriod && (!zone || hybrid)) {
         const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
         const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
         const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
@@ -280,44 +329,30 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         }
     }
 
-    const addProduct = (product: Product | MultiProduct): void => {
-        const productDurationText = `${
-            product.productDurationUnits
-                ? `${product.productDuration} ${product.productDurationUnits}${
-                      product.productDuration === '1' ? '' : 's'
-                  }`
-                : `${product.productDuration}`
-        }`;
-
-        if (!product.productDuration) {
-            throw new Error('User has no product duration and/or validity information.');
-        }
-
-        const content = [
-            `Price - £${product.productPrice}`,
-            `Duration - ${productDurationText}`,
-            ...getCarnetDetailsContent(product.carnetDetails),
-        ];
-
-        confirmationElements.push({
-            name: `${product.productName}`,
-            content,
-            href: 'multipleProducts',
-        });
-    };
-
     const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
 
     if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
         throw new Error('Either periodExpiryAttribute is undefined or not type expected');
     }
 
-    if (isArray(products)) {
-        products.forEach(product => {
-            addProduct(product);
-        });
-    } else if (!isArray(products)) {
-        addProduct(products);
+    if (!pointToPointPeriod) {
+        const { products } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE) as MultipleProductAttribute;
+        if (!products || isWithErrors(products)) {
+            throw new Error('Multiple produect arrribute contains errors');
+        }
+        if (isArray(products)) {
+            products.forEach(product => {
+                addProductDetails(product, confirmationElements);
+            });
+        } else if (!isArray(products)) {
+            addProductDetails(products, confirmationElements);
+        }
+    } else {
+        const product = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
+        if (!product || isWithErrors(product)) {
+            throw new Error('Product information for P2P period product could not be found.');
+        }
+        addProductDetails(product, confirmationElements);
     }
 
     confirmationElements.push({
@@ -375,19 +410,15 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
 
 export const buildSchoolTicketConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
     const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
-    let confirmationElements: ConfirmationElement[];
 
     if (schoolFareTypeAttribute) {
         switch (schoolFareTypeAttribute.schoolFareType) {
             case 'single':
-                confirmationElements = buildSingleTicketConfirmationElements(ctx);
-                return confirmationElements;
+                return buildSingleTicketConfirmationElements(ctx);
             case 'period':
-                confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
-                return confirmationElements;
+                return buildPeriodOrMultiOpTicketConfirmationElements(ctx);
             case 'flatFare':
-                confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
-                return confirmationElements;
+                return buildFlatFareTicketConfirmationElements(ctx);
             default:
                 throw new Error('Did not receive an expected schoolFareType.');
         }
@@ -396,21 +427,32 @@ export const buildSchoolTicketConfirmationElements = (ctx: NextPageContextWithSe
     }
 };
 
+export const buildPointToPointConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
+    const ticketRepresentationAttribute = getSessionAttribute(
+        ctx.req,
+        TICKET_REPRESENTATION_ATTRIBUTE,
+    ) as TicketRepresentationAttribute;
+
+    if (!ticketRepresentationAttribute || isWithErrors(ticketRepresentationAttribute)) {
+        throw new Error('Could not find ticket representation for period ticket');
+    }
+    if (ticketRepresentationAttribute.name === 'pointToPointPeriod') {
+        return buildPointToPointPeriodConfirmationElements(ctx);
+    }
+    return buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+};
+
 export const buildTicketConfirmationElements = (
     fareType: string,
     ctx: NextPageContextWithSession,
 ): ConfirmationElement[] => {
     let confirmationElements: ConfirmationElement[];
-
     switch (fareType) {
         case 'single':
             confirmationElements = buildSingleTicketConfirmationElements(ctx);
             break;
         case 'return':
             confirmationElements = buildReturnTicketConfirmationElements(ctx);
-            break;
-        case 'period':
-            confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
             break;
         case 'flatFare':
             confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
@@ -421,13 +463,15 @@ export const buildTicketConfirmationElements = (
         case 'schoolService':
             confirmationElements = buildSchoolTicketConfirmationElements(ctx);
             break;
+        case 'period':
+            confirmationElements = buildPointToPointConfirmationElements(ctx);
+            break;
+
         default:
             throw new Error('Did not receive an expected fareType.');
     }
-
     return confirmationElements;
 };
-
 const TicketConfirmation = ({ csrfToken, confirmationElements }: TicketConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/ticketConfirmation" method="post" csrfToken={csrfToken}>

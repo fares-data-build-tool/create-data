@@ -25,6 +25,7 @@ import {
     getHybridTicketJson,
     getMultipleServicesTicketJson,
     getReturnTicketJson,
+    getPointToPointPeriodJson,
     getSchemeOperatorTicketJson,
     getSingleTicketJson,
     putUserDataInS3,
@@ -80,6 +81,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     break;
                 case 'hybrid':
                     userDataJson = await getHybridTicketJson(req, res);
+                    break;
+                case 'pointToPointPeriod':
+                    userDataJson = getPointToPointPeriodJson(req, res);
                     break;
                 default:
                     throw new Error(
