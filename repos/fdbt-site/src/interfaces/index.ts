@@ -60,6 +60,12 @@ export interface CarnetProductInfo {
     carnetDetails: CarnetDetails;
 }
 
+export interface PointToPointPeriodProduct {
+    productName: string;
+    productDuration: string;
+    productDurationUnits: ExpiryUnit;
+}
+
 export interface PointToPointProductInfoWithSOP extends CarnetProductInfo {
     salesOfferPackages: SalesOfferPackage[];
 }
@@ -89,7 +95,7 @@ export interface JourneyWithErrors {
 }
 
 export interface TicketRepresentationAttribute {
-    name: 'geoZone' | 'multipleServices' | 'hybrid';
+    name: 'geoZone' | 'multipleServices' | 'hybrid' | 'pointToPointPeriod';
 }
 
 export interface TicketRepresentationAttributeWithErrors {
@@ -382,6 +388,11 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
 }
 
 export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
+
+export interface PointToPointPeriodTicket extends ReturnTicket {
+    pointToPointProduct: PointToPointPeriodProduct;
+    periodExpiry: PeriodExpiry;
+}
 
 export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
     additionalOperators: {

@@ -217,7 +217,7 @@ export const completeDefineGroupPassengersPages = (groupSize: string): void => {
     });
 };
 
-export const randomlyChooseSingleProductPeriodValidity = (): void => {
+export const randomlyChooseProductPeriodValidity = (): void => {
     assertElementNotVisibleById('period-validity-end-of-service-required-conditional');
 
     const randomSelector = getRandomNumber(1, 3);
@@ -490,7 +490,7 @@ export const completeMultipleProducts = (
     }
 
     continueButtonClick();
-    randomlyChooseSingleProductPeriodValidity();
+    randomlyChooseProductPeriodValidity();
     continueButtonClick();
     continueButtonClick();
 };

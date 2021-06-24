@@ -2,7 +2,12 @@ import { NextApiResponse } from 'next';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
 import { ErrorInfo, NextApiRequestWithSession, CarnetProductInfo, CarnetExpiryUnit } from '../../interfaces';
 import { MULTIPLE_PRODUCT_ATTRIBUTE, CARNET_PRODUCT_DETAILS_ATTRIBUTE } from '../../constants/attributes';
-import { removeExcessWhiteSpace, checkIntegerIsValid, checkProductNameIsValid } from './apiUtils/validator';
+import {
+    removeExcessWhiteSpace,
+    checkIntegerIsValid,
+    checkProductNameIsValid,
+    isValidInputDuration,
+} from './apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
 
 const getProductDetails = (req: NextApiRequestWithSession): CarnetProductInfo => {
@@ -60,7 +65,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             }
         }
 
-        const expiryUnitError = !Object.values(CarnetExpiryUnit).includes(productDetails.carnetDetails.expiryUnit)
+        const expiryUnitError = !isValidInputDuration(productDetails.carnetDetails.expiryUnit, true)
             ? 'Select a valid expiry unit'
             : '';
 

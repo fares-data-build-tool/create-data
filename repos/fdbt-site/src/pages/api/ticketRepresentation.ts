@@ -19,6 +19,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 case 'multipleServices':
                     redirectTo(res, '/serviceList?selectAll=false');
                     return;
+                case 'pointToPointPeriod':
+                    redirectTo(res, '/service');
+                    return;
                 default:
                     throw new Error('Did not receive an expected ticket type.');
             }
