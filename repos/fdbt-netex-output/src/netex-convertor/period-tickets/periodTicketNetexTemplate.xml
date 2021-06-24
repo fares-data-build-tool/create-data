@@ -381,15 +381,15 @@
 							<values>
 								<!-- === PAYLOAD  ==== -->
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_COMMON:FXCP">
-									<Name>UK Bus Profile fare common paramaters</Name>
+									<Name>UK Bus Profile Fare Common Parameters</Name>
 									<FrameClassRef nameOfClass="FareFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP">
-									<Name>UK Bus Profile fare network</Name>
+									<Name>UK Bus Profile Fare Network</Name>
 									<FrameClassRef nameOfClass="ServiceFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP">
-									<Name>UK FXCP Fare Porducts Frame</Name>
+									<Name>UK FXCP Fare Products Frame</Name>
 									<FrameClassRef nameOfClass="FareFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP">

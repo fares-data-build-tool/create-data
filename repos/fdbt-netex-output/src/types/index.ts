@@ -168,7 +168,7 @@ export interface FareZonePrices {
     fareZones: string[];
 }
 
-export type PeriodTicket = GeoZoneTicket | MultipleServicesTicket;
+export type PeriodTicket = GeoZoneTicket | MultipleServicesTicket | HybridPeriodTicket;
 
 export interface BasePeriodTicket extends BaseTicket {
     operatorName: string;
@@ -268,6 +268,8 @@ export interface SchemeOperatorFlatFareTicket extends SchemeOperatorTicket {
         selectedServices: SelectedService[];
     }[];
 }
+
+export interface HybridPeriodTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
 
 export enum CarnetExpiryUnit {
     HOUR = 'hour',
