@@ -45,7 +45,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        if (carnetFareType !== undefined && carnetFareType) {
+        if (carnetFareType) {
             redirectTo(res, '/carnetProductDetails');
             return;
         }
