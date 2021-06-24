@@ -10,7 +10,7 @@ describe('The return faretype product journey', () => {
     it('completes successfully for csv upload', () => {
         selectFareType('return', false);
         defineUserTypeAndTimeRestrictions();
-        completeReturnPages(true, false);
+        completeReturnPages(true, false, false);
         completeSalesPages();
         isUuidStringValid();
     });
@@ -18,7 +18,7 @@ describe('The return faretype product journey', () => {
     it('completes successfully for manual upload', () => {
         selectFareType('return', false);
         defineUserTypeAndTimeRestrictions();
-        completeReturnPages(false, false);
+        completeReturnPages(false, false, false);
         completeSalesPages();
         isUuidStringValid();
     });

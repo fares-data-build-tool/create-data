@@ -23,7 +23,7 @@ const errorId = 'fare-type-single';
 interface FareTypeProps {
     operatorName: string;
     schemeOp: boolean;
-    displayCarnet: boolean;
+    isProd: boolean;
     errors: ErrorInfo[];
     csrfToken: string;
 }
@@ -34,9 +34,9 @@ export const buildUuid = (noc: string): string => {
     return noc + uuid.substring(0, 8);
 };
 
-const buildRadioProps = (schemeOp: boolean, displayCarnet: boolean): RadioOption[] => {
+const buildRadioProps = (schemeOp: boolean, isProd: boolean): RadioOption[] => {
     if (schemeOp) {
-        return [
+        const radios = [
             {
                 value: 'period',
                 label: 'Period ticket',
@@ -48,6 +48,21 @@ const buildRadioProps = (schemeOp: boolean, displayCarnet: boolean): RadioOption
                 hint: 'A fixed fee ticket for a single journey',
             },
         ];
+
+        if (!isProd) {
+            radios.splice(1, 0, {
+                value: 'carnetPeriod',
+                label: 'Carnet period ticket',
+                hint: 'A bundle of zonal tickets, each valid for a number of days, weeks, months or years',
+            });
+            radios.splice(3, 0, {
+                value: 'carnetFlatFare',
+                label: 'Carnet flat fare ticket',
+                hint: 'A bundle of fixed fee tickets, each for a single journey',
+            });
+        }
+
+        return radios;
     }
     const radios = [
         {
@@ -71,6 +86,11 @@ const buildRadioProps = (schemeOp: boolean, displayCarnet: boolean): RadioOption
             hint: 'A ticket valid for a number of days, weeks, months or years',
         },
         {
+            value: 'carnet',
+            label: 'Carnet ticket',
+            hint: 'A bundle of pre-paid tickets',
+        },
+        {
             value: 'multiOperator',
             label: 'Multi-operator',
             hint: 'A ticket that covers more than one operator',
@@ -82,18 +102,10 @@ const buildRadioProps = (schemeOp: boolean, displayCarnet: boolean): RadioOption
         },
     ];
 
-    if (displayCarnet) {
-        radios.splice(4, 0, {
-            value: 'carnet',
-            label: 'Carnet ticket',
-            hint: 'A bundle of pre-paid tickets',
-        });
-    }
-
     return radios;
 };
 
-const FareType = ({ operatorName, schemeOp, displayCarnet, errors = [], csrfToken }: FareTypeProps): ReactElement => {
+const FareType = ({ operatorName, schemeOp, isProd, errors = [], csrfToken }: FareTypeProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/fareType" method="post" csrfToken={csrfToken}>
@@ -110,7 +122,7 @@ const FareType = ({ operatorName, schemeOp, displayCarnet, errors = [], csrfToke
                                 {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <RadioButtons options={buildRadioProps(schemeOp, displayCarnet)} inputName="fareType" />
+                                <RadioButtons options={buildRadioProps(schemeOp, isProd)} inputName="fareType" />
                             </FormElementWrapper>
                         </fieldset>
                     </div>
@@ -176,9 +188,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const errors: ErrorInfo[] =
         fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
-    const displayCarnet = process.env.STAGE !== 'prod';
-
-    return { props: { operatorName, schemeOp, displayCarnet, errors, csrfToken } };
+    return { props: { operatorName, schemeOp, isProd: process.env.STAGE === 'prod', errors, csrfToken } };
 };
 
 export default FareType;

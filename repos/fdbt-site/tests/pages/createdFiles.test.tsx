@@ -19,6 +19,7 @@ const classicOperatorNetexFiles: S3NetexFile[] = [
         sopNames: 'Test SOP Name, Test SOP Name 2',
         lineName: 'X01',
         fileSize: 123,
+        carnet: false,
     },
     {
         name: 'Test Name 2',
@@ -32,6 +33,37 @@ const classicOperatorNetexFiles: S3NetexFile[] = [
         serviceNames: '1, 56, X02',
         productNames: 'Product 1, Product 2',
         fileSize: 456,
+        carnet: false,
+    },
+];
+
+const classicCarnetOperatorNetexFiles: S3NetexFile[] = [
+    {
+        name: 'Test Name',
+        fareType: 'single',
+        noc: 'TEST',
+        passengerType: 'adult',
+        reference: 'TEST12345',
+        date: 'Tue, 01 Sep 2020 14:46:58 GMT',
+        signedUrl: 'https://test.example.com/dscsdcd',
+        sopNames: 'Test SOP Name, Test SOP Name 2',
+        lineName: 'X01',
+        fileSize: 123,
+        carnet: false,
+    },
+    {
+        name: 'Test Name 2',
+        fareType: 'flatFare',
+        noc: 'TEST2',
+        passengerType: 'child',
+        reference: 'TEST54321',
+        date: 'Wed, 02 Sep 2020 14:46:58 GMT',
+        signedUrl: 'https://test.example.com/gfnhgddd',
+        sopNames: 'Test SOP Name 2',
+        serviceNames: '1, 56, X02',
+        productNames: 'Product 1, Product 2',
+        fileSize: 456,
+        carnet: false,
     },
 ];
 
@@ -47,6 +79,7 @@ const schemeOperatorNetexFiles: S3NetexFile[] = [
         sopNames: 'Test SOP Name, Test SOP Name 2',
         lineName: 'X01',
         fileSize: 123,
+        carnet: false,
     },
     {
         name: 'Test Name 2',
@@ -60,6 +93,7 @@ const schemeOperatorNetexFiles: S3NetexFile[] = [
         serviceNames: '1, 56, X02',
         productNames: 'Product 1, Product 2',
         fileSize: 456,
+        carnet: false,
     },
 ];
 
@@ -107,6 +141,18 @@ describe('pages', () => {
             const tree = shallow(
                 <CreatedFiles
                     files={classicOperatorNetexFiles}
+                    numberOfResults={10}
+                    currentPage={1}
+                    numberPerPage={5}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for a classic carnet operator', () => {
+            const tree = shallow(
+                <CreatedFiles
+                    files={classicCarnetOperatorNetexFiles}
                     numberOfResults={10}
                     currentPage={1}
                     numberPerPage={5}
@@ -177,7 +223,7 @@ describe('pages', () => {
                     zoneName: 'The Test Zone',
                     stops: [],
                 };
-                expect(buildName(file)).toBe('NOC - Single - Child - The Test Zone');
+                expect(buildName(file, false)).toBe('NOC - Single - Child - The Test Zone');
             });
             it('does not include the NOC if its not there', () => {
                 const file = {
@@ -204,7 +250,7 @@ describe('pages', () => {
                     zoneName: 'The Test Zone',
                     stops: [],
                 };
-                expect(buildName(file)).toBe('Single - Child - The Test Zone');
+                expect(buildName(file, false)).toBe('Single - Child - The Test Zone');
             });
         });
 
@@ -259,6 +305,7 @@ describe('pages', () => {
                                 sopNames: 'Onboard (cash),Onboard (contactless)',
                                 zoneName: '',
                                 fileSize: 1234,
+                                carnet: false,
                             },
                             {
                                 date: '',
@@ -274,6 +321,7 @@ describe('pages', () => {
                                 sopNames: 'Onboard (cash),Onboard (contactless)',
                                 zoneName: '',
                                 fileSize: 1234032,
+                                carnet: false,
                             },
                         ],
                         numberOfResults: 2,

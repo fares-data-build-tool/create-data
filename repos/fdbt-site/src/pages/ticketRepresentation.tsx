@@ -18,6 +18,7 @@ interface TicketRepresentationProps {
     errors: ErrorInfo[];
     csrfToken: string;
     showHybrid: boolean;
+    showPointToPoint: boolean;
 }
 
 const TicketRepresentation = ({
@@ -25,6 +26,7 @@ const TicketRepresentation = ({
     errors = [],
     csrfToken,
     showHybrid,
+    showPointToPoint,
 }: TicketRepresentationProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -54,11 +56,16 @@ const TicketRepresentation = ({
                                             label: 'A ticket for a set of services',
                                             hint: 'Unlimited travel on specific service or set of services',
                                         },
-                                        // {
-                                        //     value: 'pointToPoint',
-                                        //     label: 'Point to Point',
-                                        //     hint: 'Unlimited travel between two fixed points in both directions',
-                                        // },
+                                        ...(showPointToPoint
+                                            ? [
+                                                  {
+                                                      value: 'pointToPointPeriod',
+                                                      label: 'Point to Point',
+                                                      hint:
+                                                          'Unlimited travel between two fixed points in both directions',
+                                                  },
+                                              ]
+                                            : []),
                                         ...(showHybrid
                                             ? [
                                                   {
@@ -91,7 +98,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             fareType,
             errors: ticketType && isTicketRepresentationWithErrors(ticketType) ? ticketType.errors : [],
             csrfToken,
-            showHybrid: process.env.STAGE !== 'prod',
+            showHybrid: process.env.STAGE !== 'prod' && fareType !== 'multiOperator',
+            showPointToPoint: process.env.STAGE !== 'prod' && fareType !== 'multiOperator',
         },
     };
 };

@@ -19,14 +19,14 @@ describe('pages', () => {
     describe('fareType', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <FareType operatorName="Blackpool Transport" schemeOp={false} displayCarnet errors={[]} csrfToken="" />,
+                <FareType operatorName="Blackpool Transport" schemeOp={false} isProd errors={[]} csrfToken="" />,
             );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly for a scheme operator', () => {
             const tree = shallow(
-                <FareType operatorName="Blackpool Transport" schemeOp displayCarnet errors={[]} csrfToken="" />,
+                <FareType operatorName="Blackpool Transport" schemeOp isProd errors={[]} csrfToken="" />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -36,21 +36,8 @@ describe('pages', () => {
                 <FareType
                     operatorName="Blackpool Transport"
                     schemeOp={false}
-                    displayCarnet
                     errors={mockErrors}
-                    csrfToken=""
-                />,
-            );
-            expect(tree).toMatchSnapshot();
-        });
-
-        it('should render correctly when displayCarnet is false', () => {
-            const tree = shallow(
-                <FareType
-                    operatorName="Blackpool Transport"
-                    schemeOp={false}
-                    displayCarnet={false}
-                    errors={[]}
+                    isProd
                     csrfToken=""
                 />,
             );
@@ -86,7 +73,7 @@ describe('pages', () => {
                     props: {
                         operatorName: expect.any(String),
                         schemeOp: false,
-                        displayCarnet: true,
+                        isProd: false,
                         errors: [],
                         csrfToken: '',
                     },

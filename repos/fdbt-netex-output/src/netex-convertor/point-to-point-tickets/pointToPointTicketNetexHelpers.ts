@@ -1,20 +1,25 @@
+import startCase from 'lodash/startCase';
 import {
     FareZone,
     FareZoneList,
     ScheduledStopPoints,
     Stop,
     PointToPointTicket,
-    ReturnTicket,
     DistributionAssignment,
     SalesOfferPackageElement,
     SalesOfferPackage,
     BaseProduct,
     NetexSalesOfferPackage,
-    FareStructureElement,
     isReturnTicket,
     isGroupTicket,
 } from '../../types';
-import { NetexObject, getProfileRef, getDistributionChannel } from '../sharedHelpers';
+import {
+    NetexObject,
+    getProfileRef,
+    getDistributionChannel,
+    getUserProfile,
+    getCarnetQualityStructureFactorRef,
+} from '../sharedHelpers';
 
 export const getStops = (fareZones: FareZone[]): Stop[] => fareZones.flatMap(zone => zone.stops);
 
@@ -168,9 +173,9 @@ export const getInnerFareTables = (
         };
     });
 
-export const getAvailabilityElement = (id: string): NetexObject => ({
+export const getPointToPointAvailabilityElement = (ticket: PointToPointTicket): NetexObject => ({
     version: '1.0',
-    id,
+    id: `Tariff@${isReturnTicket(ticket) ? 'return' : 'single'}@availability`,
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
         ref: 'fxc:access',
@@ -331,6 +336,7 @@ export const getFareTables = (matchingData: PointToPointTicket, lineIdName: stri
                     ref: `Trip@${ticketUserConcat}-SOP@${salesOfferPackage.name}`,
                 },
                 ...getProfileRef(matchingData),
+                ...getCarnetQualityStructureFactorRef(matchingData.products[0]),
             },
             usedIn: {
                 TariffRef: { version: '1.0', ref: `Tariff@${matchingData.type}@${lineIdName}` },
@@ -374,24 +380,85 @@ export const getFareTables = (matchingData: PointToPointTicket, lineIdName: stri
     });
 };
 
-export const getConditionsOfTravelFareStructureElement = (matchingData: ReturnTicket): FareStructureElement => {
+export const getLinesElement = (ticket: PointToPointTicket, lineName: string): NetexObject => {
+    const typeOfPointToPoint = isReturnTicket(ticket) ? 'return' : 'single';
+
+    return {
+        version: '1.0',
+        id: `Tariff@${typeOfPointToPoint}@lines`,
+        Name: { $t: `O/D pairs for ${lineName}` },
+        distanceMatrixElements: {
+            DistanceMatrixElement: getDistanceMatrixElements(
+                isReturnTicket(ticket) ? ticket.outboundFareZones : ticket.fareZones,
+            ),
+        },
+        GenericParameterAssignment: {
+            version: '1.0',
+            order: '01',
+            id: `Tariff@${typeOfPointToPoint}@lines`,
+            TypeOfAccessRightAssignmentRef: {
+                version: 'fxc:v1.0',
+                ref: 'fxc:can_access',
+            },
+            ValidityParameterAssignmentType: { $t: 'EQ' },
+            validityParameters: {
+                LineRef: {
+                    version: '1.0',
+                    ref: lineName,
+                },
+            },
+        },
+    };
+};
+
+export const getEligibilityElement = (ticket: PointToPointTicket): NetexObject => {
+    const typeOfPointToPoint = isReturnTicket(ticket) ? 'return' : 'single';
+    const users = isGroupTicket(ticket)
+        ? ticket.groupDefinition.companions
+        : [
+              {
+                  ageRangeMin: ticket.ageRangeMin,
+                  ageRangeMax: ticket.ageRangeMax,
+                  passengerType: ticket.passengerType,
+                  proofDocuments: ticket.proofDocuments,
+              },
+          ];
+
+    return {
+        version: '1.0',
+        id: `Tariff@${typeOfPointToPoint}@eligibility`,
+        Name: { $t: `eligible user types` },
+        GenericParameterAssignment: {
+            version: '1.0',
+            order: '1',
+            id: `Tariff@${typeOfPointToPoint}@eligibility`,
+            TypeOfAccessRightAssignmentRef: {
+                version: 'fxc:v1.0',
+                ref: 'fxc:eligible',
+            },
+            LimitationGroupingType: { $t: 'XOR' },
+            limitations: {
+                UserProfile: users.map(getUserProfile),
+            },
+        },
+    };
+};
+
+export const getPointToPointConditionsElement = (ticket: PointToPointTicket): NetexObject => {
+    const typeOfPointToPoint = isReturnTicket(ticket) ? 'return' : 'single';
     let usagePeriodValidity = {};
 
-    if (matchingData.returnPeriodValidity) {
+    if (isReturnTicket(ticket) && ticket.returnPeriodValidity) {
         const years =
-            matchingData.returnPeriodValidity.typeOfDuration === 'year'
-                ? `${matchingData.returnPeriodValidity.amount}`
-                : '0';
+            ticket.returnPeriodValidity.typeOfDuration === 'year' ? `${ticket.returnPeriodValidity.amount}` : '0';
         const months =
-            matchingData.returnPeriodValidity.typeOfDuration === 'month'
-                ? `${matchingData.returnPeriodValidity.amount}`
-                : '0';
+            ticket.returnPeriodValidity.typeOfDuration === 'month' ? `${ticket.returnPeriodValidity.amount}` : '0';
         let days = '0';
 
-        if (matchingData.returnPeriodValidity.typeOfDuration === 'week') {
-            days = String(Number(matchingData.returnPeriodValidity.amount) * 7);
-        } else if (matchingData.returnPeriodValidity.typeOfDuration === 'day') {
-            days = matchingData.returnPeriodValidity.amount;
+        if (ticket.returnPeriodValidity.typeOfDuration === 'week') {
+            days = String(Number(ticket.returnPeriodValidity.amount) * 7);
+        } else if (ticket.returnPeriodValidity.typeOfDuration === 'day') {
+            days = ticket.returnPeriodValidity.amount;
         }
 
         usagePeriodValidity = {
@@ -409,14 +476,15 @@ export const getConditionsOfTravelFareStructureElement = (matchingData: ReturnTi
             },
         };
     }
+
     return {
-        id: 'Tariff@return@conditions_of_travel',
         version: '1.0',
+        id: `Tariff@${typeOfPointToPoint}@conditions_of_travel`,
         Name: { $t: 'Conditions of travel' },
         GenericParameterAssignment: {
             version: '1.0',
             order: '1',
-            id: 'Tariff@return@conditions_of_travel',
+            id: `Tariff@${typeOfPointToPoint}@conditions_of_travel`,
             TypeOfAccessRightAssignmentRef: {
                 version: 'fxc:v1.0',
                 ref: 'fxc:condition_of_use',
@@ -425,14 +493,16 @@ export const getConditionsOfTravelFareStructureElement = (matchingData: ReturnTi
             limitations: {
                 RoundTrip: {
                     version: '1.0',
-                    id: 'Tariff@return@condition@direction',
-                    Name: { $t: 'return Trip' },
-                    TripType: { $t: 'return' },
+                    id: `Tariff@${typeOfPointToPoint}@condition@direction`,
+                    Name: { $t: `${startCase(typeOfPointToPoint)} Trip` },
+                    TripType: { $t: `${typeOfPointToPoint}` },
                 },
                 FrequencyOfUse: {
                     version: '1.0',
-                    id: 'Tariff@return@oneTrip',
+                    id: `Tariff@${typeOfPointToPoint}@oneTrip`,
                     Name: { $t: 'One trip no transfers' },
+                    FrequencyOfUseType: { $t: 'none' },
+                    MaximalFrequency: { $t: '1' },
                 },
                 ...usagePeriodValidity,
             },

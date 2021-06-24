@@ -8,6 +8,7 @@ import {
     MultiOperatorMultipleServicesTicket,
     SchemeOperatorGeoZoneTicket,
     SchemeOperatorFlatFareTicket,
+    CarnetExpiryUnit,
 } from '../types';
 
 export const singleTicket: SingleTicket = {
@@ -1331,6 +1332,190 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
     timeRestriction: [],
 };
 
+export const carnetPeriodGeoZoneTicket: PeriodGeoZoneTicket = {
+    operatorName: 'Test Buses',
+    type: 'period',
+    nocCode: 'BLAC',
+    email: 'test@example.com',
+    uuid: 'BLACadge12d',
+    products: [
+        {
+            carnetDetails: {
+                quantity: '5',
+                expiryTime: '1',
+                expiryUnit: CarnetExpiryUnit.WEEK,
+            },
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Selenium Test Product',
+            productPrice: '10.50',
+            productDuration: '1 year',
+            productValidity: '24hr',
+        },
+        {
+            carnetDetails: {
+                quantity: '10',
+                expiryTime: '2',
+                expiryUnit: CarnetExpiryUnit.MONTH,
+            },
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Selenium Test Product 2',
+            productPrice: '150',
+            productDuration: '2 months',
+            productValidity: 'Calendar',
+        },
+        {
+            carnetDetails: {
+                quantity: '10',
+                expiryTime: '1',
+                expiryUnit: CarnetExpiryUnit.YEAR,
+            },
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Selenium Test Product 3',
+            productPrice: '170',
+            productDuration: '3 days',
+            productValidity: '24hr',
+        },
+        {
+            carnetDetails: {
+                quantity: '15',
+                expiryTime: '2',
+                expiryUnit: CarnetExpiryUnit.YEAR,
+            },
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Selenium Test Product 4',
+            productPrice: '15',
+            productDuration: '4 days',
+            productValidity: '24hr',
+        },
+    ],
+    passengerType: 'student',
+    ageRange: 'Yes',
+    ageRangeMax: '30',
+    proof: 'No',
+    zoneName: 'Test Town Centre',
+    stops: [
+        {
+            stopName: 'The Towers',
+            naptanCode: 'CHEPJWM',
+            atcoCode: '0600MA6001',
+            localityCode: 'N0076467',
+            localityName: 'Macclesfield',
+            parentLocalityName: '',
+            indicator: 'opp',
+            street: 'Park Street',
+        },
+        {
+            stopName: 'Dog & Partridge',
+            naptanCode: 'wrgdpma',
+            atcoCode: '069000012480',
+            localityCode: 'E0043040',
+            localityName: 'Paddington',
+            parentLocalityName: 'Warrington',
+            indicator: 'o/s',
+            street: 'New Manchester Road',
+        },
+        {
+            stopName: 'Manchester Rd',
+            naptanCode: 'MANATDWT',
+            atcoCode: '1800ED24711',
+            localityCode: 'E0028839',
+            localityName: 'Hollinwood',
+            parentLocalityName: '',
+            indicator: 'Stop A',
+            street: 'MANCHESTER RD',
+        },
+    ],
+    ticketPeriod: {
+        startDate: '2010-12-17T09:30:46.0Z',
+        endDate: '2030-12-17T09:30:46.0Z',
+    },
+    timeRestriction: [],
+};
+
 export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
     operatorName: 'Test Buses',
     type: 'period',
@@ -1614,6 +1799,134 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
             serviceCode: 'NW_05_BLAC_576_1',
             startDate: '03/09/2008',
             serviceDescription: 'FRIARGATE - CORPUS CHRISTI RCHS  ',
+        },
+    ],
+    ticketPeriod: {
+        startDate: '2015-12-17T09:30:46.0Z',
+        endDate: '2025-12-17T09:30:46.0Z',
+    },
+    timeRestriction: [
+        {
+            day: 'monday',
+            timeBands: [{ startTime: '', endTime: '' }],
+        },
+        {
+            day: 'tuesday',
+            timeBands: [{ startTime: '0900', endTime: '1700' }],
+        },
+        {
+            day: 'wednesday',
+            timeBands: [{ startTime: '', endTime: '1950' }],
+        },
+        {
+            day: 'thursday',
+            timeBands: [{ startTime: '0000', endTime: '2359' }],
+        },
+    ],
+};
+
+export const carnetPeriodMultipleServicesTicket: PeriodMultipleServicesTicket = {
+    operatorName: 'Test Buses',
+    type: 'period',
+    email: 'test@example.com',
+    uuid: 'BLACadge12d',
+    nocCode: 'PBLT',
+    termTime: false,
+    products: [
+        {
+            carnetDetails: {
+                quantity: '5',
+                expiryTime: '2',
+                expiryUnit: CarnetExpiryUnit.WEEK,
+            },
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Day Rider',
+            productPrice: '12',
+            productDuration: '1 day',
+            productValidity: '24hr',
+        },
+        {
+            carnetDetails: {
+                quantity: '10',
+                expiryTime: '20',
+                expiryUnit: CarnetExpiryUnit.WEEK,
+            },
+            salesOfferPackages: [
+                {
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Weekly Rider',
+            productPrice: '30',
+            productDuration: '7 weeks',
+            productValidity: '24hr',
+        },
+    ],
+    passengerType: 'adult',
+    ageRange: 'Yes',
+    ageRangeMin: '12',
+    ageRangeMax: '25',
+    proof: 'Yes',
+    proofDocuments: ['membershipCard', 'studentCard', 'identityDocument'],
+    selectedServices: [
+        {
+            lineName: '35',
+            lineId: '2WER3RWASD_EASTBOUND_SERVICE_3F3RGEFF',
+            serviceCode: 'NW_05_BLAC_35_1',
+            startDate: '30/03/2020',
+            serviceDescription: 'PRESTON - PRESTON via Fylde Road, Lane Ends',
+        },
+        {
+            lineName: '401',
+            lineId: '233EREDSDD_EASTBOUND_SERVICE_3FFFSDFWF3W',
+            serviceCode: 'NW_05_BLAC_401_1',
+            startDate: '03/09/2018',
+            serviceDescription: 'MYERSCOUGH COLLEGE - BARTON GRANGE CENTRE - MYERSCOUGH COLLEGE',
+        },
+        {
+            lineName: '35',
+            lineId: '2DEFAW_EASTBOUND_SERVICE_3DSAFFAFFF',
+            serviceCode: 'NW_05_BLAC_35_1',
+            startDate: '09/01/2017',
+            serviceDescription: 'BROADGATE - LEA - ASHTON - ARCHBISHOP TEMPLE HS',
         },
     ],
     ticketPeriod: {

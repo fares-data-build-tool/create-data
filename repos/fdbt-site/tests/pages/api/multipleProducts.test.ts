@@ -49,6 +49,7 @@ describe('multipleProducts', () => {
                 multipleProductDurationUnitsInput1: 'month',
             },
             { Location: '/multipleProducts' },
+            'period',
         ],
 
         [
@@ -63,6 +64,7 @@ describe('multipleProducts', () => {
                 multipleProductDurationUnitsInput1: 'week',
             },
             { Location: '/multipleProducts' },
+            'period',
         ],
 
         [
@@ -77,6 +79,7 @@ describe('multipleProducts', () => {
                 multipleProductDurationInput1: '54',
             },
             { Location: '/multipleProducts' },
+            'period',
         ],
 
         [
@@ -91,6 +94,7 @@ describe('multipleProducts', () => {
                 multipleProductDurationUnitsInput1: 'week',
             },
             { Location: '/periodValidity' },
+            'period',
         ],
 
         [
@@ -109,19 +113,28 @@ describe('multipleProducts', () => {
                 multipleProductDurationInput4: '',
             },
             { Location: '/multipleProducts' },
+            'period',
+        ],
+        [
+            {
+                multipleProductNameInput0: 'test name',
+                multipleProductPriceInput0: '100',
+            },
+            { Location: '/multipleProducts' },
+            'ticketConfirmation',
+            'flatFare',
         ],
     ];
 
-    test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
+    test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation, fareType) => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: testData,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             session: {
-                [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
-                    numberOfProductsInput: '2',
-                },
+                [FARE_TYPE_ATTRIBUTE]: { fareType },
+                [CARNET_FARE_TYPE_ATTRIBUTE]: false,
             },
         });
 

@@ -7,6 +7,7 @@ import {
     getFlatFareTicketJson,
     getProductsAndSalesOfferPackages,
     getSchemeOperatorTicketJson,
+    getPointToPointPeriodJson,
     getBaseTicketAttributes,
     adjustSchemeOperatorJson,
 } from '../../../../src/pages/api/apiUtils/userData';
@@ -28,6 +29,7 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
+    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
 } from '../../../../src/constants/attributes';
 import {
     defaultSalesOfferPackageOne,
@@ -36,6 +38,7 @@ import {
 import {
     getMockRequestAndResponse,
     expectedSingleTicket,
+    expectedPointToPointPeriodTicket,
     userFareStages,
     service,
     mockMatchingFaresZones,
@@ -332,6 +335,55 @@ describe('userData', () => {
             });
             const result = getReturnTicketJson(req, res);
             expect(result).toStrictEqual(expectedCarnetReturnTicket);
+        });
+    });
+
+    describe('getPointToPointPeriodJson', () => {
+        afterEach(() => {
+            jest.resetAllMocks();
+        });
+
+        it('creates appropriate matching JSON for a point to point period ticket', () => {
+            const { req, res } = getMockRequestAndResponse({
+                session: {
+                    [MATCHING_ATTRIBUTE]: {
+                        service,
+                        userFareStages,
+                        matchingFareZones: mockOutboundMatchingFaresZones,
+                    },
+                    [INBOUND_MATCHING_ATTRIBUTE]: {
+                        inboundUserFareStages: userFareStages,
+                        inboundMatchingFareZones: mockMatchingFaresZones,
+                    },
+                    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        startDate: '2020-12-17T09:30:46.0Z',
+                        endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
+                    },
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
+                    [POINT_TO_POINT_PRODUCT_ATTRIBUTE]: {
+                        productName: 'My product',
+                        productDuration: '7',
+                        productDurationUnits: 'week',
+                    },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: {
+                        productValidity: '24hr',
+                        productEndTime: '',
+                    },
+                },
+            });
+            const result = getPointToPointPeriodJson(req, res);
+            expect(result).toStrictEqual(expectedPointToPointPeriodTicket);
         });
     });
 
