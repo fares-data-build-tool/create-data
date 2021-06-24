@@ -246,6 +246,11 @@ exports[`pages fareType should render correctly when displayCarnet is false 1`] 
                   "value": "period",
                 },
                 Object {
+                  "hint": "A bundle of pre-paid tickets",
+                  "label": "Carnet ticket",
+                  "value": "carnet",
+                },
+                Object {
                   "hint": "A ticket that covers more than one operator",
                   "label": "Multi-operator",
                   "value": "multiOperator",
