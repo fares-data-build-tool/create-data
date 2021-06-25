@@ -1,0 +1,54 @@
+{
+  "schemeOperatorName": "Test Scheme Op",
+  "schemeOperatorRegionCode": "SE",
+  "type": "flatFare",
+  "passengerType": "adult",
+  "ageRange": "No",
+  "email": "test@example.com",
+  "uuid": "TESTSE93ff5ff4",
+  "timeRestriction": [],
+  "ticketPeriod": {
+    "startDate": "2021-06-25T09:09:38.083Z",
+    "endDate": "2121-06-25T09:09:38.083Z"
+  },
+  "products": [
+    {
+      "productName": "test",
+      "productPrice": "2.99",
+      "carnetDetails": {
+        "quantity": "5",
+        "expiryTime": "88",
+        "expiryUnit": "hour"
+      },
+      "salesOfferPackages": [
+        {
+          "name": "Onboard (cash)",
+          "description": "",
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "cash"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
+        }
+      ]
+    }
+  ],
+  "additionalOperators": [
+    {
+      "nocCode": "HCTY",
+      "selectedServices": [
+        {
+          "lineName": "X64",
+          "lineId": "ZgvsrC",
+          "serviceCode": "YWAX064",
+          "startDate": "30/10/2017",
+          "serviceDescription": "Aberford Old Cafe - Garforth Academy"
+        }
+      ]
+    }
+  ]
+}
