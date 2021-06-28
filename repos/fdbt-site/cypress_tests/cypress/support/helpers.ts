@@ -359,13 +359,18 @@ export const clickFirstCheckboxIfMultiple = (): void => {
     });
 };
 
+const defaultSops = ['Onboard (cash)', 'Onboard (contactless)', 'Online (smart card)', 'Mobile App'];
+
+const removeWhitespace = (str: string): string => str.replace(/ /g, '').trim();
+
 export const completeSalesOfferPackagesForMultipleProducts = (
     numberOfProducts: number,
     multiProductNamePrefix: string,
 ): void => {
     for (let i = 0; i < numberOfProducts; i += 1) {
         const randomSalesOfferPackageIndex = getRandomNumber(0, 3);
-        const idPrefix = `${multiProductNamePrefix.replace(/ /g, '').trim()}${i + 1}-checkbox-`;
+        const productName = `${removeWhitespace(multiProductNamePrefix)}${i}`;
+        const idPrefix = `product-${productName}-checkbox-`;
 
         getElementById(`${idPrefix}${randomSalesOfferPackageIndex}`).click();
         if (getRandomNumber(0, 1) === 1) {
@@ -377,6 +382,9 @@ export const completeSalesOfferPackagesForMultipleProducts = (
                 }`,
             ).click();
         }
+
+        const salesOfferPackage = defaultSops[randomSalesOfferPackageIndex];
+        getElementById(`price-${productName}-${removeWhitespace(salesOfferPackage)}`).type('9.99');
     }
 };
 

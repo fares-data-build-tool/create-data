@@ -119,6 +119,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 await putUserDataInS3(userDataJson, uuid);
             }
 
+            console.log(JSON.stringify(userDataJson, null, 0));
+
             redirectTo(res, '/thankyou');
         }
         return;

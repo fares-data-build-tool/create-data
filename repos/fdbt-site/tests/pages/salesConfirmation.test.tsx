@@ -201,5 +201,99 @@ describe('pages', () => {
                 },
             ]);
         });
+
+        it('builds confirmation elements for multi product fares', () => {
+            const now = moment();
+            const result = buildSalesConfirmationElements(
+                [
+                    {
+                        productName: 'product one',
+                        salesOfferPackages: [
+                            {
+                                name: 'A sales offer package',
+                                description: 'my way of selling tickets',
+                                purchaseLocations: ['at stop', 'website'],
+                                paymentMethods: ['cash'],
+                                ticketFormats: ['paper'],
+                            },
+                        ],
+                    },
+                    {
+                        productName: 'another one',
+                        salesOfferPackages: [
+                            {
+                                name: 'A sales offer package',
+                                description: 'my way of selling tickets',
+                                purchaseLocations: ['at stop', 'website'],
+                                paymentMethods: ['cash'],
+                                ticketFormats: ['paper'],
+                                price: '1.99',
+                            },
+                            {
+                                name: 'Another sales offer package',
+                                description: 'another way of selling tickets',
+                                purchaseLocations: ['in station', 'phone'],
+                                paymentMethods: ['mobileDevice'],
+                                ticketFormats: ['phone'],
+                                price: '2.49',
+                            },
+                        ],
+                    },
+                ],
+                {
+                    productDates: {
+                        startDate: now.toISOString(),
+                        endDate: now.add(100, 'years').toISOString(),
+                        dateInput: {
+                            startDateDay: '',
+                            startDateMonth: '',
+                            startDateYear: '',
+                            endDateDay: '',
+                            endDateMonth: '',
+                            endDateYear: '',
+                        },
+                    },
+                    endDefault: true,
+                    startDefault: true,
+                },
+            );
+            expect(result).toStrictEqual([
+                {
+                    content: 'Product one',
+                    href: 'selectSalesOfferPackage',
+                    name: 'Product',
+                },
+                {
+                    content: ['Name: A sales offer package'],
+                    href: 'selectSalesOfferPackage',
+                    name: 'Sales offer package',
+                },
+                {
+                    content: 'Another one',
+                    href: 'selectSalesOfferPackage',
+                    name: 'Product',
+                },
+                {
+                    content: ['Name: A sales offer package', 'Price: £1.99'],
+                    href: 'selectSalesOfferPackage',
+                    name: 'Sales offer package',
+                },
+                {
+                    content: ['Name: Another sales offer package', 'Price: £2.49'],
+                    href: 'selectSalesOfferPackage',
+                    name: 'Sales offer package',
+                },
+                {
+                    content: '28-06-2021',
+                    href: 'productDateInformation',
+                    name: 'Ticket start date (default)',
+                },
+                {
+                    content: '28-06-2121',
+                    href: 'productDateInformation',
+                    name: 'Ticket end date (default)',
+                },
+            ]);
+        });
     });
 });

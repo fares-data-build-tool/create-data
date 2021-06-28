@@ -93,7 +93,7 @@ export const completeFlatFarePages = (productName: string, isScheme: boolean, is
     continueButtonClick();
 };
 
-export const completeFlatFareCarnet = () => {
+export const completeFlatFareCarnet = (): void => {
     randomlyChooseAndSelectServices();
     continueButtonClick();
 

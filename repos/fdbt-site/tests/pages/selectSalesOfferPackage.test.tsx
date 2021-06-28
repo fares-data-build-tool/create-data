@@ -24,12 +24,12 @@ describe('pages', () => {
             defaultSalesOfferPackageFour,
         ],
         errors: [],
-        productNamesList: [],
+        products: [],
         csrfToken: '',
     };
 
     const selectSalesOfferPackagePropsInfoWithError: SelectSalesOfferPackageProps = {
-        productNamesList: [],
+        products: [],
         salesOfferPackagesList: [
             defaultSalesOfferPackageOne,
             defaultSalesOfferPackageTwo,
@@ -45,7 +45,7 @@ describe('pages', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoNoError.salesOfferPackagesList}
-                    productNamesList={[]}
+                    products={[]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
                 />,
@@ -57,7 +57,7 @@ describe('pages', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoWithError.salesOfferPackagesList}
-                    productNamesList={[]}
+                    products={[]}
                     errors={selectSalesOfferPackagePropsInfoWithError.errors}
                     csrfToken=""
                 />,
@@ -69,7 +69,7 @@ describe('pages', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoNoError.salesOfferPackagesList}
-                    productNamesList={[]}
+                    products={[]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
                 />,
@@ -132,7 +132,7 @@ describe('pages', () => {
                         ? 1
                         : ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length;
                     expect(result.props.errors.length).toBe(0);
-                    expect(result.props.productNamesList.length).toBe(expectedProductNamesLength);
+                    expect(result.props.products.length).toBe(expectedProductNamesLength);
                     expect(result.props.salesOfferPackagesList).toEqual(expectedSalesOfferPackageList);
                 },
             );
