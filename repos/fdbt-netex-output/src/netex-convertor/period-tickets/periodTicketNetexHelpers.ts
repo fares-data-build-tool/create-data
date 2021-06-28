@@ -316,13 +316,13 @@ const getMultiServiceList = (
     return userPeriodTicket.products.flatMap(product => {
         return product.salesOfferPackages.map(salesOfferPackage => ({
             version: '1.0',
-            id: `op:${product.productName}@${name}`,
+            id: `op:${product.productName}@${name}@${salesOfferPackage.name}`,
             Name: { $t: name },
             specifics: null,
             columns: {
                 FareTableColumn: {
                     version: '1.0',
-                    id: `op:${product.productName}@${name}@p-ticket`,
+                    id: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket`,
                     Name: { $t: name },
                     representing: null,
                 },
@@ -330,7 +330,7 @@ const getMultiServiceList = (
             includes: {
                 FareTable: {
                     version: '1.0',
-                    id: `op:${product.productName}@${name}@all_media`,
+                    id: `op:${product.productName}@${name}@${salesOfferPackage.name}@all_media`,
                     Name: { $t: `${product.productName}` },
                     pricesFor: {
                         SalesOfferPackageRef: {
@@ -348,7 +348,7 @@ const getMultiServiceList = (
                     columns: {
                         FareTableColumn: {
                             version: '1.0',
-                            id: `op:${product.productName}@${name}@all_media@paper`,
+                            id: `op:${product.productName}@${name}@${salesOfferPackage.name}@all_media@paper`,
                             Name: { $t: `${product.productName}` },
                             representing: {
                                 TypeOfTravelDocumentRef: {
@@ -362,7 +362,7 @@ const getMultiServiceList = (
                     includes: {
                         FareTable: {
                             version: '1.0',
-                            id: `op:${product.productName}@${name}@p-ticket@${userPeriodTicket.passengerType}`,
+                            id: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket@${userPeriodTicket.passengerType}`,
                             Name: { $t: `${product.productName} - ${userPeriodTicket.passengerType}` },
                             limitations: {
                                 ...profileRef,
@@ -370,7 +370,7 @@ const getMultiServiceList = (
                             columns: {
                                 FareTableColumn: {
                                     version: '1.0',
-                                    id: `op:${product.productName}@${name}@p-ticket@${userPeriodTicket.passengerType}`,
+                                    id: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket@${userPeriodTicket.passengerType}`,
                                     Name: { $t: userPeriodTicket.passengerType },
                                     representing: {
                                         TypeOfTravelDocumentRef: {
@@ -384,10 +384,9 @@ const getMultiServiceList = (
                             rows: {
                                 FareTableRow: {
                                     version: '1.0',
-                                    id: `op:${product.productName}@${name}@p-ticket@${product.productDuration.replace(
-                                        ' ',
-                                        '-',
-                                    )}`,
+                                    id: `op:${product.productName}@${name}@${
+                                        salesOfferPackage.name
+                                    }@p-ticket@${product.productDuration.replace(' ', '-')}`,
                                     Name: { $t: product.productDuration },
                                     representing: {
                                         TimeIntervalRef: {
@@ -403,13 +402,13 @@ const getMultiServiceList = (
                             cells: {
                                 Cell: {
                                     version: '1.0',
-                                    id: `op:${product.productName}@${name}@p-ticket@${
+                                    id: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket@${
                                         userPeriodTicket.passengerType
                                     }@${product.productDuration.replace(' ', '-')}`,
                                     order: '1',
                                     TimeIntervalPrice: {
                                         version: '1.0',
-                                        id: `op:${product.productName}@${name}@p-ticket@${
+                                        id: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket@${
                                             userPeriodTicket.passengerType
                                         }@${product.productDuration.replace(' ', '-')}`,
                                         Amount: { $t: `${product.productPrice}` },
@@ -423,13 +422,13 @@ const getMultiServiceList = (
                                     },
                                     ColumnRef: {
                                         version: '1.0',
-                                        ref: `op:${product.productName}@${name}@p-ticket@${userPeriodTicket.passengerType}`,
+                                        ref: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket@${userPeriodTicket.passengerType}`,
                                     },
                                     RowRef: {
                                         version: '1.0',
-                                        ref: `op:${
-                                            product.productName
-                                        }@${name}@p-ticket@${product.productDuration.replace(' ', '-')}`,
+                                        ref: `op:${product.productName}@${name}@${
+                                            salesOfferPackage.name
+                                        }@p-ticket@${product.productDuration.replace(' ', '-')}`,
                                     },
                                 },
                             },
