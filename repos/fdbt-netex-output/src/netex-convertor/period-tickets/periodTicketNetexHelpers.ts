@@ -449,7 +449,7 @@ const getFlatFareList = (
         return product.salesOfferPackages.map(salesOfferPackage => {
             return {
                 version: '1.0',
-                id: `op:${product.productName}`,
+                id: `op:${product.productName}@${salesOfferPackage.name}`,
                 Name: { $t: `${product.productName}` },
                 includes: {
                     FareTable: {
