@@ -173,7 +173,7 @@ export const getGeoZoneFareTable = (
         return product.salesOfferPackages.map(salesOfferPackage => {
             return {
                 version: '1.0',
-                id: `op:${product.productName}@${userPeriodTicket.zoneName}`,
+                id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}`,
                 Name: { $t: `${userPeriodTicket.zoneName}` },
                 specifics: {
                     TariffZoneRef: {
@@ -184,7 +184,7 @@ export const getGeoZoneFareTable = (
                 columns: {
                     FareTableColumn: {
                         version: '1.0',
-                        id: `op:${product.productName}@${userPeriodTicket.zoneName}`,
+                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}`,
                         Name: { $t: `${userPeriodTicket.zoneName}` },
                         representing: {
                             TariffZoneRef: {
@@ -197,7 +197,7 @@ export const getGeoZoneFareTable = (
                 includes: {
                     FareTable: {
                         version: '1.0',
-                        id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket`,
+                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}@p-ticket`,
                         Name: { $t: `${product.productName}` },
                         pricesFor: {
                             SalesOfferPackageRef: {
@@ -215,7 +215,7 @@ export const getGeoZoneFareTable = (
                         columns: {
                             FareTableColumn: {
                                 version: '1.0',
-                                id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket`,
+                                id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}@p-ticket`,
                                 Name: { $t: `${product.productName}` },
                                 representing: {
                                     TypeOfTravelDocumentRef: {
@@ -229,7 +229,7 @@ export const getGeoZoneFareTable = (
                         includes: {
                             FareTable: {
                                 version: '1.0',
-                                id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
+                                id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
                                 Name: { $t: `${product.productName} - ${userPeriodTicket.passengerType}` },
                                 limitations: {
                                     ...profileRef,
@@ -237,7 +237,7 @@ export const getGeoZoneFareTable = (
                                 columns: {
                                     FareTableColumn: {
                                         version: '1.0',
-                                        id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
+                                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
                                         Name: { $t: userPeriodTicket.passengerType },
                                         representing: {
                                             TypeOfTravelDocumentRef: {
@@ -251,9 +251,9 @@ export const getGeoZoneFareTable = (
                                 rows: {
                                     FareTableRow: {
                                         version: '1.0',
-                                        id: `op:${
-                                            product.productName
-                                        }@${name}@p-ticket@${product.productDuration.replace(' ', '-')}`,
+                                        id: `op:${product.productName}@${name}@${
+                                            salesOfferPackage.name
+                                        }@p-ticket@${product.productDuration.replace(' ', '-')}`,
                                         Name: { $t: product.productDuration },
                                         representing: {
                                             TimeIntervalRef: {
@@ -268,13 +268,18 @@ export const getGeoZoneFareTable = (
                                 cells: {
                                     Cell: {
                                         version: '1.0',
-                                        id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${
-                                            userPeriodTicket.passengerType
-                                        }@${product.productDuration.replace(' ', '-')}`,
+                                        id: `op:${product.productName}@${salesOfferPackage.name}@${
+                                            userPeriodTicket.zoneName
+                                        }@p-ticket@${userPeriodTicket.passengerType}@${product.productDuration.replace(
+                                            ' ',
+                                            '-',
+                                        )}`,
                                         order: '1',
                                         TimeIntervalPrice: {
                                             version: '1.0',
-                                            id: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${
+                                            id: `op:${product.productName}@${salesOfferPackage.name}@${
+                                                userPeriodTicket.zoneName
+                                            }@p-ticket@${
                                                 userPeriodTicket.passengerType
                                             }@${product.productDuration.replace(' ', '-')}`,
                                             Amount: { $t: `${product.productPrice}` },
@@ -287,13 +292,13 @@ export const getGeoZoneFareTable = (
                                         },
                                         ColumnRef: {
                                             version: '1.0',
-                                            ref: `op:${product.productName}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
+                                            ref: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
                                         },
                                         RowRef: {
                                             version: '1.0',
-                                            ref: `op:${
-                                                product.productName
-                                            }@${name}@p-ticket@${product.productDuration.replace(' ', '-')}`,
+                                            ref: `op:${product.productName}@${name}@${
+                                                salesOfferPackage.name
+                                            }@p-ticket@${product.productDuration.replace(' ', '-')}`,
                                         },
                                     },
                                 },
@@ -453,7 +458,7 @@ const getFlatFareList = (
                 includes: {
                     FareTable: {
                         version: '1.0',
-                        id: `op:${product.productName}@p-ticket@${userPeriodTicket.passengerType}`,
+                        id: `op:${product.productName}@${salesOfferPackage.name}@p-ticket@${userPeriodTicket.passengerType}`,
                         Name: { $t: `${product.productName}` },
                         pricesFor: {
                             SalesOfferPackageRef: {
@@ -468,7 +473,7 @@ const getFlatFareList = (
                         prices: {
                             DistanceMatrixElementPrice: {
                                 version: '1.0',
-                                id: `op:${product.productName}@p-ticket@${userPeriodTicket.passengerType}`,
+                                id: `op:${product.productName}@${salesOfferPackage.name}@p-ticket@${userPeriodTicket.passengerType}`,
                                 Amount: { $t: `${product.productPrice}` },
                             },
                         },
