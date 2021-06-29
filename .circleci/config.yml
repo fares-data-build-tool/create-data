@@ -582,6 +582,9 @@ workflows:
               ignore: /.*/
       - slack-notify:
           context: Slack
+          requires:
+            - test
+            - lint
 
   fdbt-site:
     when: << pipeline.parameters.fdbt-site >>
