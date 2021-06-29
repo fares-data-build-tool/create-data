@@ -1,3 +1,4 @@
+import AWS, { SNS } from 'aws-sdk';
 import { S3Event } from 'aws-lambda';
 import libxslt from 'libxslt';
 import {
@@ -75,23 +76,23 @@ export const buildNocList = (ticket: Ticket): string[] => {
         // has only additional nocs
         isSchemeOperatorGeoZoneTicket(ticket)
     ) {
-        ticket.additionalNocs.forEach(additionalNoc => nocs.push(additionalNoc));
+        ticket.additionalNocs.forEach((additionalNoc) => nocs.push(additionalNoc));
     } else if (
         // has only additional operators
         isSchemeOperatorFlatFareTicket(ticket)
     ) {
-        ticket.additionalOperators.forEach(additionalOperator => nocs.push(additionalOperator.nocCode));
+        ticket.additionalOperators.forEach((additionalOperator) => nocs.push(additionalOperator.nocCode));
     } else if (
         // has user noc and additional nocs
         isMultiOperatorGeoZoneTicket(ticket)
     ) {
-        ticket.additionalNocs.forEach(additionalNoc => nocs.push(additionalNoc));
+        ticket.additionalNocs.forEach((additionalNoc) => nocs.push(additionalNoc));
         nocs.push(ticket.nocCode);
     } else if (
         // has user noc and additional operators
         isMultiOperatorMultipleServicesTicket(ticket)
     ) {
-        ticket.additionalOperators.forEach(additionalOperator => nocs.push(additionalOperator.nocCode));
+        ticket.additionalOperators.forEach((additionalOperator) => nocs.push(additionalOperator.nocCode));
         nocs.push(ticket.nocCode);
     }
 
@@ -99,6 +100,7 @@ export const buildNocList = (ticket: Ticket): string[] => {
 };
 
 export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
+    const SNS_ALERTS_ARN = process.env.SNS_ALERTS_ARN;
     try {
         const ticket = await s3.fetchDataFromS3<
             PointToPointTicket | PeriodTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket
@@ -120,8 +122,22 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             console.info(`NeTEx generation complete for type ${type}`);
         }
     } catch (error) {
-        console.error(error.stack);
-        throw new Error(error);
+        let sns: SNS = new AWS.SNS();
+
+        let messageParams = {
+            Message: 'There was an error when converting the NeTEx',
+            TopicArn: SNS_ALERTS_ARN,
+            MessageAttributes: {
+                NewStateValue: {
+                    DataType: 'String',
+                    StringValue: 'ALARM',
+                },
+            },
+        };
+
+        await sns.publish(messageParams).promise();
+
+        throw error;
     }
 };
 
