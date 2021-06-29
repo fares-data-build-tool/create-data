@@ -4,6 +4,7 @@ orbs:
   aws-cli: circleci/aws-cli@2.0.0
   aws-ecr: circleci/aws-ecr@6.15.3
   aws-ecs: circleci/aws-ecs@2.1.0
+  slack: circleci/slack@4.4.2
 
 parameters:
   # This parameter is used to trigger the main workflow
@@ -45,7 +46,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - '*'
+            - "*"
 
   build:
     parameters:
@@ -65,7 +66,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - './repos/<< parameters.package_name >>/node_modules'
+            - "./repos/<< parameters.package_name >>/node_modules"
 
   audit:
     parameters:
@@ -271,7 +272,7 @@ jobs:
             export SLS_DEBUG="*" && sls deploy --stage=prod
             echo "Finished deploy"
 
-# fdbt-reference-data-service
+  # fdbt-reference-data-service
 
   audit-reference-data-uploaders:
     docker:
@@ -434,7 +435,6 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-
 
   # Workflows defined for each package.
 
@@ -616,8 +616,8 @@ workflows:
             - audit
             - test
             - lint
-          repo: '${SITE_ECR_REPO}'
-          tag: '${CIRCLE_SHA1},latest'
+          repo: "${SITE_ECR_REPO}"
+          tag: "${CIRCLE_SHA1},latest"
           context: tfn-fdbt-core
           path: ~/project/repos/fdbt-site
           filters:
@@ -632,9 +632,9 @@ workflows:
           requires:
             - aws-ecr/build-and-push-image
           name: deploy-site-to-test
-          family: '${SITE_ECS_FAMILY}'
-          cluster-name: '${SITE_ECS_CLUSTER}'
-          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+          family: "${SITE_ECS_FAMILY}"
+          cluster-name: "${SITE_ECS_CLUSTER}"
+          container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
           context: tfn-fdbt-test
           verify-revision-is-deployed: true
           filters:
@@ -653,10 +653,10 @@ workflows:
       - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build-and-push-image
-          family: '${SITE_ECS_FAMILY}'
+          family: "${SITE_ECS_FAMILY}"
           name: deploy-site-to-preprod
-          cluster-name: '${SITE_ECS_CLUSTER}'
-          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+          cluster-name: "${SITE_ECS_CLUSTER}"
+          container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
           context: tfn-fdbt-preprod
           verify-revision-is-deployed: true
           filters:
@@ -676,10 +676,10 @@ workflows:
       - aws-ecs/deploy-service-update:
           requires:
             - hold-prod-deployment
-          family: '${SITE_ECS_FAMILY}'
+          family: "${SITE_ECS_FAMILY}"
           name: deploy-site-to-prod
-          cluster-name: '${SITE_ECS_CLUSTER}'
-          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+          cluster-name: "${SITE_ECS_CLUSTER}"
+          container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
           context: tfn-fdbt-prod
           verify-revision-is-deployed: true
           filters:
