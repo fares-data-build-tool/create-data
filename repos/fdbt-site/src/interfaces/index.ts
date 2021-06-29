@@ -526,6 +526,7 @@ export interface SalesOfferPackageInfo {
     purchaseLocations: string[];
     paymentMethods: string[];
     ticketFormats: string[];
+    price?: string;
 }
 
 export interface SalesOfferPackageInfoWithErrors extends SalesOfferPackageInfo {
@@ -707,7 +708,7 @@ export interface ProductDateInformation {
 
 export interface SelectSalesOfferPackageWithError {
     errors: ErrorInfo[];
-    selected: { [key: string]: string[] };
+    selected?: { [key: string]: SalesOfferPackage[] };
 }
 
 export interface Service {

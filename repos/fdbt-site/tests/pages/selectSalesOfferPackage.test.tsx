@@ -24,12 +24,13 @@ describe('pages', () => {
             defaultSalesOfferPackageFour,
         ],
         errors: [],
-        productNamesList: [],
+        products: [],
         csrfToken: '',
+        customPriceEnabled: true,
     };
 
     const selectSalesOfferPackagePropsInfoWithError: SelectSalesOfferPackageProps = {
-        productNamesList: [],
+        products: [],
         salesOfferPackagesList: [
             defaultSalesOfferPackageOne,
             defaultSalesOfferPackageTwo,
@@ -38,6 +39,7 @@ describe('pages', () => {
         ],
         errors: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
         csrfToken: '',
+        customPriceEnabled: true,
     };
 
     describe('selectSalesOfferPackage', () => {
@@ -45,9 +47,10 @@ describe('pages', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoNoError.salesOfferPackagesList}
-                    productNamesList={[]}
+                    products={[]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
+                    customPriceEnabled
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -57,9 +60,10 @@ describe('pages', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoWithError.salesOfferPackagesList}
-                    productNamesList={[]}
+                    products={[]}
                     errors={selectSalesOfferPackagePropsInfoWithError.errors}
                     csrfToken=""
+                    customPriceEnabled={false}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -69,9 +73,10 @@ describe('pages', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoNoError.salesOfferPackagesList}
-                    productNamesList={[]}
+                    products={[]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
+                    customPriceEnabled
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -132,7 +137,7 @@ describe('pages', () => {
                         ? 1
                         : ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length;
                     expect(result.props.errors.length).toBe(0);
-                    expect(result.props.productNamesList.length).toBe(expectedProductNamesLength);
+                    expect(result.props.products.length).toBe(expectedProductNamesLength);
                     expect(result.props.salesOfferPackagesList).toEqual(expectedSalesOfferPackageList);
                 },
             );
