@@ -29,6 +29,16 @@ executors:
       - image: circleci/node
 
 jobs:
+  slack-notify:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: basic_success_1
   trigger-workflows:
     executor: node
     steps:
@@ -570,6 +580,8 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+      - slack-notify:
+          context: Slack
 
   fdbt-site:
     when: << pipeline.parameters.fdbt-site >>
@@ -788,9 +800,3 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: basic_success_1
