@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ChangeEventHandler, ReactElement, useState } from 'react';
 import CsrfForm from '../components/CsrfForm';
 import DeleteSOPButton from '../components/DeleteSOPButton';
 import ErrorSummary from '../components/ErrorSummary';
@@ -105,10 +105,10 @@ const generateCheckbox = (
                 const selectedOffer =
                     selected && selected[productName]?.find(selectedEntry => selectedEntry.name === offer.name);
 
-                const updateSelected = () => {
+                const updateSelected: ChangeEventHandler = () => {
                     const newSelected: { [key: string]: SalesOfferPackage[] } = { ...selected } || {};
                     const sops = newSelected[productName] || [];
-                    newSelected[productName] = sops.includes(offer)
+                    newSelected[productName] = sops.find(sop => sop.name === offer.name)
                         ? sops.filter(it => it.name !== offer.name)
                         : [...sops, offer];
                     setSelected(newSelected);
