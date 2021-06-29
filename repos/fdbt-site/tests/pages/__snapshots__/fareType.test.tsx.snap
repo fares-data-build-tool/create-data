@@ -149,9 +149,19 @@ exports[`pages fareType should render correctly for a scheme operator 1`] = `
                   "value": "period",
                 },
                 Object {
+                  "hint": "A bundle of zonal tickets, each valid for a number of days, weeks, months or years",
+                  "label": "Carnet period ticket",
+                  "value": "carnetPeriod",
+                },
+                Object {
                   "hint": "A fixed fee ticket for a single journey",
                   "label": "Flat fare ticket",
                   "value": "flatFare",
+                },
+                Object {
+                  "hint": "A bundle of fixed fee tickets, each for a single journey",
+                  "label": "Carnet flat fare ticket",
+                  "value": "carnetFlatFare",
                 },
               ]
             }
