@@ -1,6 +1,9 @@
 PROJECT_NAME=fdbt
 UNVALIDATED_NETEX_BUCKET=fdbt-unvalidated-netex-data-dev
 
+help:
+	echo && echo "\tTry running \"make run\" in the top level directory:" && echo && echo "\tcd .. && make run"
+
 dev: docker-up wait-for-mysql data-reset wait-for-s3-and-sns create-local-buckets create-local-dynamodb-table create-sns-topics add-data-to-buckets print-help start-site
 
 
@@ -107,6 +110,9 @@ generate-validate-carnet-return: generate-carnet-return validate-latest-file
 generate-carnet-period-geo-zone:
 	./scripts/trigger_netex_convertor.sh carnetPeriodGeoZone
 
+generate-scheme-carnet-period-geo-zone:
+	./scripts/trigger_netex_convertor.sh schemeCarnetPeriod
+
 generate-validate-carnet-period-geo-zone: generate-carnet-period-geo-zone validate-latest-file
 
 generate-carnet-period-multi-service:
@@ -116,6 +122,9 @@ generate-validate-carnet-period-multi-service: generate-carnet-period-multi-serv
 
 generate-carnet-flat-fare:
 	./scripts/trigger_netex_convertor.sh carnetFlatFare
+
+generate-scheme-carnet-flat-fare:
+	./scripts/trigger_netex_convertor.sh schemeCarnetFlatFare
 
 generate-validate-carnet-flat-fare: generate-carnet-flat-fare validate-latest-file
 
