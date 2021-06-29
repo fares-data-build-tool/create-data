@@ -361,7 +361,11 @@ export const clickFirstCheckboxIfMultiple = (): void => {
 
 const defaultSops = ['Onboard (cash)', 'Onboard (contactless)', 'Online (smart card)', 'Mobile App'];
 
-const removeWhitespace = (str: string): string => str.replace(/ /g, '').trim();
+const encodeId = (str: string): string =>
+    str
+        .replace(/ /g, '')
+        .replace(/([()])/g, '\\$1')
+        .trim();
 
 export const completeSalesOfferPackagesForMultipleProducts = (
     numberOfProducts: number,
@@ -369,7 +373,7 @@ export const completeSalesOfferPackagesForMultipleProducts = (
 ): void => {
     for (let i = 0; i < numberOfProducts; i += 1) {
         const randomSalesOfferPackageIndex = getRandomNumber(0, 3);
-        const productName = `${removeWhitespace(multiProductNamePrefix)}${i}`;
+        const productName = `${encodeId(multiProductNamePrefix)}${i + 1}`;
         const idPrefix = `product-${productName}-checkbox-`;
 
         getElementById(`${idPrefix}${randomSalesOfferPackageIndex}`).click();
@@ -384,7 +388,9 @@ export const completeSalesOfferPackagesForMultipleProducts = (
         }
 
         const salesOfferPackage = defaultSops[randomSalesOfferPackageIndex];
-        getElementById(`price-${productName}-${removeWhitespace(salesOfferPackage)}`).type('9.99');
+        getElementById(`price-${productName}-${encodeId(salesOfferPackage)}`)
+            .clear()
+            .type('9.99');
     }
 };
 

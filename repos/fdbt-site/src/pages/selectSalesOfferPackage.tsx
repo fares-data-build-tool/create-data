@@ -72,6 +72,7 @@ export interface SelectSalesOfferPackageProps {
     salesOfferPackagesList: SalesOfferPackage[];
     errors: ErrorInfo[];
     csrfToken: string;
+    customPriceEnabled: boolean;
 }
 
 const formatSOPArray = (stringArray: string[]): string =>
@@ -83,6 +84,7 @@ const generateCheckbox = (
     csrfToken: string,
     selectedDefault: { [key: string]: SalesOfferPackage[] } | undefined,
     defaultPrice: string,
+    customPriceEnabled: boolean,
 ): ReactElement[] => {
     const fullList = [...salesOfferPackagesList];
     const pairs = [];
@@ -107,7 +109,7 @@ const generateCheckbox = (
                     const newSelected: { [key: string]: SalesOfferPackage[] } = { ...selected } || {};
                     const sops = newSelected[productName] || [];
                     newSelected[productName] = sops.includes(offer)
-                        ? sops.filter(it => it !== offer)
+                        ? sops.filter(it => it.name !== offer.name)
                         : [...sops, offer];
                     setSelected(newSelected);
                 };
@@ -142,7 +144,7 @@ const generateCheckbox = (
                         <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
                             Ticket formats: {formatSOPArray(ticketFormats)}
                         </span>
-                        {!!selectedOffer && defaultPrice && (
+                        {!!selectedOffer && defaultPrice && customPriceEnabled && (
                             <div className="govuk-currency-input">
                                 <div className="govuk-currency-input__inner">
                                     <span
@@ -182,8 +184,9 @@ const createSalesOffer = (
     salesOfferPackagesList: SalesOfferPackage[],
     products: ProductInfo[],
     csrfToken: string,
-    selected?: { [key: string]: SalesOfferPackage[] },
-    errors: ErrorInfo[] = [],
+    selected: { [key: string]: SalesOfferPackage[] } | undefined,
+    errors: ErrorInfo[],
+    customPriceEnabled: boolean,
 ): ReactElement[] =>
     products.map(({ productName, productPrice }) => (
         <div className="sop-option">
@@ -200,7 +203,14 @@ const createSalesOffer = (
                         errorClass=""
                     >
                         <div className="govuk-checkboxes">
-                            {generateCheckbox(salesOfferPackagesList, productName, csrfToken, selected, productPrice)}
+                            {generateCheckbox(
+                                salesOfferPackagesList,
+                                productName,
+                                csrfToken,
+                                selected,
+                                productPrice,
+                                customPriceEnabled,
+                            )}
                             <input type="hidden" name={`product-${productName}`} />
                         </div>
                     </FormElementWrapper>
@@ -215,6 +225,7 @@ const SelectSalesOfferPackage = ({
     salesOfferPackagesList,
     csrfToken,
     errors,
+    customPriceEnabled,
 }: SelectSalesOfferPackageProps): ReactElement => {
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
@@ -236,7 +247,14 @@ const SelectSalesOfferPackage = ({
                             choose from one you have already setup or create a new one for these products.
                         </p>
                     </div>
-                    {createSalesOffer(salesOfferPackagesList, products, csrfToken, selected, errors)}
+                    {createSalesOffer(
+                        salesOfferPackagesList,
+                        products,
+                        csrfToken,
+                        selected,
+                        errors,
+                        customPriceEnabled,
+                    )}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                     <a
                         href="/salesOfferPackages"
@@ -311,6 +329,7 @@ export const getServerSideProps = async (
             salesOfferPackagesList,
             errors,
             csrfToken,
+            customPriceEnabled: process.env.STAGE !== 'prod',
         },
     };
 };

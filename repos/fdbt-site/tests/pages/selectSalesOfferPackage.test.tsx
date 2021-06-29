@@ -26,6 +26,7 @@ describe('pages', () => {
         errors: [],
         products: [],
         csrfToken: '',
+        customPriceEnabled: true,
     };
 
     const selectSalesOfferPackagePropsInfoWithError: SelectSalesOfferPackageProps = {
@@ -38,6 +39,7 @@ describe('pages', () => {
         ],
         errors: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
         csrfToken: '',
+        customPriceEnabled: true,
     };
 
     describe('selectSalesOfferPackage', () => {
@@ -48,6 +50,7 @@ describe('pages', () => {
                     products={[]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
+                    customPriceEnabled
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -60,6 +63,7 @@ describe('pages', () => {
                     products={[]}
                     errors={selectSalesOfferPackagePropsInfoWithError.errors}
                     csrfToken=""
+                    customPriceEnabled={false}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -72,6 +76,7 @@ describe('pages', () => {
                     products={[]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
+                    customPriceEnabled
                 />,
             );
             expect(tree).toMatchSnapshot();

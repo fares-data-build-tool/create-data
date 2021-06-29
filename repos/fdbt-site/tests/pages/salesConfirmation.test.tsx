@@ -203,7 +203,7 @@ describe('pages', () => {
         });
 
         it('builds confirmation elements for multi product fares', () => {
-            const now = moment();
+            const now = moment('2021-06-20');
             const result = buildSalesConfirmationElements(
                 [
                     {
@@ -284,12 +284,12 @@ describe('pages', () => {
                     name: 'Sales offer package',
                 },
                 {
-                    content: '28-06-2021',
+                    content: '20-06-2021',
                     href: 'productDateInformation',
                     name: 'Ticket start date (default)',
                 },
                 {
-                    content: '28-06-2121',
+                    content: '20-06-2121',
                     href: 'productDateInformation',
                     name: 'Ticket end date (default)',
                 },
