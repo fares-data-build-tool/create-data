@@ -106,7 +106,7 @@ def lambda_handler(event, context):
 
             sns_client.publish(
                 TopicArn=SNS_ALERTS_ARN,
-                Subject="NeTEx Convertor",
+                Subject="NeTEx Validator",
                 Message=f'NeTEx file: {key} has been successfully validated and uploaded',
                 MessageAttributes={
                     'NewStateValue': {
