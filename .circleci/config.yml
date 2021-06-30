@@ -562,9 +562,8 @@ workflows:
             branches:
               only: master
 
-      - slack/on-hold:
+      - hold-prod-deployment-netex-output:
           <<: *slack-fail-post-step
-          name: hold-prod-deployment-netex-output
           requires:
             - test
             - lint
@@ -573,6 +572,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+          type: approval
 
       - deploy-netex-output-resources-to-prod:
           <<: *slack-fail-post-step
@@ -591,6 +591,9 @@ workflows:
           requires:
             - deploy-netex-output-resources-to-prod
             - deploy-netex-validator-to-prod
+          filters:
+            tags:
+              only: /^v.*/
       - slack-notify:
           <<: *slack-fail-post-step
           name: netex output deployed to preprod
@@ -707,7 +710,6 @@ workflows:
 
       - slack/on-hold:
           <<: *slack-fail-post-step
-          name: hold-prod-deployment-site
           requires:
             - aws-ecr/build-and-push-image
           filters:
@@ -715,6 +717,17 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+
+      - hold-prod-deployment-site:
+          <<: *slack-fail-post-step
+          requires:
+            - slack/on-hold
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+          type: approval
 
       - aws-ecs/deploy-service-update:
           <<: *slack-fail-post-step
@@ -736,6 +749,9 @@ workflows:
           name: site deployed to prod
           requires:
             - deploy-site-to-prod
+          filters:
+            tags:
+              only: /^v.*/
       - slack-notify:
           <<: *slack-fail-post-step
           name: site deployed to preprod
@@ -838,9 +854,8 @@ workflows:
             branches:
               only: master
 
-      - slack/on-hold:
+      - hold-reference-data-uploaders-prod-deployment:
           <<: *slack-fail-post-step
-          name: hold-reference-data-uploaders-prod-deployment
           requires:
             - test-reference-data-uploaders
           filters:
@@ -848,6 +863,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+          type: approval
 
       - deploy-reference-data-uploaders-to-prod:
           <<: *slack-fail-post-step
@@ -859,18 +875,27 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+
       - slack-notify:
           <<: *slack-fail-post-step
           name: reference data uploaders deployed to prod
           requires:
             - deploy-reference-data-uploaders-to-prod
+            - deploy-reference-data-retrievers-to-prod
+          filters:
+            tags:
+              only: /^v.*/
+
       - slack-notify:
           <<: *slack-fail-post-step
           name: reference data uploaders deployed to preprod
           requires:
             - deploy-reference-data-uploaders-to-preprod
+            - deploy-reference-data-retrievers-to-preprod
+
       - slack-notify:
           <<: *slack-fail-post-step
           name: reference data uploaders deployed to test
           requires:
             - deploy-reference-data-uploaders-to-test
+            - deploy-reference-data-retrievers-to-test
