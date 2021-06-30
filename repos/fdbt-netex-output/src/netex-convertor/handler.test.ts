@@ -288,7 +288,7 @@ describe('netexConvertorHandler', () => {
             await netexConvertorHandler(event);
         } catch {
             const expectedObject = {
-                Message: 'There was an error when converting the NeTEx',
+                Message: 'There was an error when converting the NeTEx file: ',
                 MessageAttributes: {
                     NewStateValue: {
                         DataType: 'String',
@@ -296,6 +296,7 @@ describe('netexConvertorHandler', () => {
                     },
                 },
                 TopicArn: 'test arn',
+                Subject: 'NeTEx Convertor',
             };
 
             expect(mockSnsInstance.publish).toBeCalledWith(expectedObject);
