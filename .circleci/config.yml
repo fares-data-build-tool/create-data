@@ -602,16 +602,19 @@ workflows:
               ignore: /.*/
       - slack-notify:
           <<: *slack-fail-post-step
+          name: netex output deployed to prod
           requires:
             - deploy-netex-output-resources-to-prod
             - deploy-netex-validator-to-prod
       - slack-notify:
           <<: *slack-fail-post-step
+          name: netex output deployed to preprod
           requires:
             - deploy-netex-output-resources-to-preprod
             - deploy-netex-validator-to-preprod
       - slack-notify:
           <<: *slack-fail-post-step
+          name: netex output deployed to test
           requires:
             - deploy-netex-output-resources-to-test
             - deploy-netex-validator-to-test
@@ -745,14 +748,17 @@ workflows:
               ignore: /.*/
       - slack-notify:
           <<: *slack-fail-post-step
-          requires:
-            - deploy-site-to-prod
+          name: site deployed to prod
+          # requires:
+          #   - deploy-site-to-prod
       - slack-notify:
           <<: *slack-fail-post-step
+          name: site deployed to preprod
           requires:
             - deploy-site-to-preprod
       - slack-notify:
           <<: *slack-fail-post-step
+          name: site deployed and tested
           requires:
             - run-ui-tests
 
@@ -870,13 +876,16 @@ workflows:
               ignore: /.*/
       - slack-notify:
           <<: *slack-fail-post-step
+          name:
           requires:
             - deploy-reference-data-uploaders-to-prod
       - slack-notify:
           <<: *slack-fail-post-step
+          name:
           requires:
             - deploy-reference-data-uploaders-to-preprod
       - slack-notify:
           <<: *slack-fail-post-step
+          name:
           requires:
             - deploy-reference-data-uploaders-to-test
