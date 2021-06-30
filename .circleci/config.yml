@@ -871,6 +871,6 @@ workflows:
             - deploy-reference-data-uploaders-to-preprod
       - slack-notify:
           <<: *slack-fail-post-step
-          name: reference data uploaders deployed to
+          name: reference data uploaders deployed to test
           requires:
             - deploy-reference-data-uploaders-to-test
