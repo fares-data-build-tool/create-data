@@ -30,6 +30,12 @@ provider:
             - ses:SendRawEmail
           Resource:
             - '*'
+        - Effect: 'Allow'
+          Action:
+            - 'sns:Publish'
+          Resource:
+            - Fn::ImportValue: ${self:provider.stage}:SlackAlertsTopicArn
+
   s3:
     matchingDataBucket:
       name: fdbt-matching-data-${self:provider.stage}
