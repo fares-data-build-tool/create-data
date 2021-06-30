@@ -5,6 +5,7 @@ slack-fail-post-step: &slack-fail-post-step
     - slack/notify:
         event: fail
         template: basic_fail_1
+        context: Slack
 
 orbs:
   aws-cli: circleci/aws-cli@2.0.0
