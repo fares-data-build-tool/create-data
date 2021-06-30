@@ -702,6 +702,11 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+      - slack-notify:
+          context: Slack
+          requires:
+            - test
+            - lint
 
   fdbt-reference-data-service:
     when: << pipeline.parameters.fdbt-reference-data-service >>
@@ -803,3 +808,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+      - slack-notify:
+          context: Slack
+          requires:
+            - test-reference-data-uploaders
