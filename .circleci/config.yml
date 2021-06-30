@@ -500,23 +500,11 @@ workflows:
               only:
                 - master
 
-      - hold-netex-validator-prod-deployment:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          type: approval
-          requires:
-            - audit-netex-validator
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
       - deploy-netex-validator-to-prod:
           <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
-            - hold-netex-validator-prod-deployment
+            - hold-prod-deployment-netex-output
           context: tfn-fdbt-prod
           filters:
             tags:
@@ -574,9 +562,9 @@ workflows:
             branches:
               only: master
 
-      - hold-prod-deployment:
+      - slack/on-hold:
           <<: *slack-fail-post-step
-          type: approval
+          name: hold-prod-deployment-netex-output
           requires:
             - test
             - lint
@@ -590,7 +578,7 @@ workflows:
           <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
-            - hold-prod-deployment
+            - hold-prod-deployment-netex-output
           context: tfn-fdbt-prod
           filters:
             tags:
@@ -717,9 +705,9 @@ workflows:
             branches:
               only: master
 
-      - hold-prod-deployment:
+      - slack/on-hold:
           <<: *slack-fail-post-step
-          type: approval
+          name: hold-prod-deployment-site
           requires:
             - aws-ecr/build-and-push-image
           filters:
@@ -731,7 +719,7 @@ workflows:
       - aws-ecs/deploy-service-update:
           <<: *slack-fail-post-step
           requires:
-            - hold-prod-deployment
+            - hold-prod-deployment-site
           family: "${SITE_ECS_FAMILY}"
           name: deploy-site-to-prod
           cluster-name: "${SITE_ECS_CLUSTER}"
@@ -794,9 +782,9 @@ workflows:
             branches:
               only: master
 
-      - hold-reference-data-retrievers-prod-deployment:
+      - slack/on-hold:
           <<: *slack-fail-post-step
-          type: approval
+          name: hold-reference-data-retrievers-prod-deployment
           requires:
             - audit-reference-data-retrievers
           filters:
@@ -850,9 +838,9 @@ workflows:
             branches:
               only: master
 
-      - hold-reference-data-uploaders-prod-deployment:
+      - slack/on-hold:
           <<: *slack-fail-post-step
-          type: approval
+          name: hold-reference-data-uploaders-prod-deployment
           requires:
             - test-reference-data-uploaders
           filters:
