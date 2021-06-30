@@ -458,11 +458,13 @@ workflows:
     when: << pipeline.parameters.fdbt-netex-output >>
     jobs:
       - checkout-repo:
+          <<: *slack-fail-post-step
           filters:
             tags:
               only: /^v.*/
 
       - audit:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - checkout-repo
@@ -471,6 +473,7 @@ workflows:
               only: /^v.*/
 
       - audit-netex-validator:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - checkout-repo
@@ -479,6 +482,7 @@ workflows:
               only: /^v.*/
 
       - deploy-netex-validator-to-test:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - audit-netex-validator
@@ -489,6 +493,7 @@ workflows:
                 - develop
 
       - deploy-netex-validator-to-preprod:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - audit-netex-validator
@@ -499,6 +504,7 @@ workflows:
                 - master
 
       - hold-netex-validator-prod-deployment:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           type: approval
           requires:
@@ -510,6 +516,7 @@ workflows:
               ignore: /.*/
 
       - deploy-netex-validator-to-prod:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - hold-netex-validator-prod-deployment
@@ -530,6 +537,7 @@ workflows:
               only: /^v.*/
 
       - test:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - build
@@ -538,6 +546,7 @@ workflows:
               only: /^v.*/
 
       - lint:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - build
@@ -546,6 +555,7 @@ workflows:
               only: /^v.*/
 
       - deploy-netex-output-resources-to-test:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - test
@@ -557,6 +567,7 @@ workflows:
                 - develop
 
       - deploy-netex-output-resources-to-preprod:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - test
@@ -567,6 +578,7 @@ workflows:
               only: master
 
       - hold-prod-deployment:
+          <<: *slack-fail-post-step
           type: approval
           requires:
             - test
@@ -578,6 +590,7 @@ workflows:
               ignore: /.*/
 
       - deploy-netex-output-resources-to-prod:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - hold-prod-deployment
@@ -588,19 +601,29 @@ workflows:
             branches:
               ignore: /.*/
       - slack-notify:
+          <<: *slack-fail-post-step
           requires:
-            - test
-            - lint
+            - deploy-netex-output-resources-to-prod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          requires:
+            - deploy-netex-output-resources-to-preprod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          requires:
+            - deploy-netex-output-resources-to-test
 
   fdbt-site:
     when: << pipeline.parameters.fdbt-site >>
     jobs:
       - checkout-repo:
+          <<: *slack-fail-post-step
           filters:
             tags:
               only: /^v.*/
 
       - audit:
+          <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:
             - checkout-repo
@@ -609,6 +632,7 @@ workflows:
               only: /^v.*/
 
       - build:
+          <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:
             - checkout-repo
@@ -617,6 +641,7 @@ workflows:
               only: /^v.*/
 
       - test:
+          <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:
             - build
@@ -625,6 +650,7 @@ workflows:
               only: /^v.*/
 
       - lint:
+          <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:
             - build
@@ -633,6 +659,7 @@ workflows:
               only: /^v.*/
 
       - aws-ecr/build-and-push-image:
+          <<: *slack-fail-post-step
           requires:
             - audit
             - test
@@ -650,6 +677,7 @@ workflows:
                 - master
 
       - aws-ecs/deploy-service-update:
+          <<: *slack-fail-post-step
           requires:
             - aws-ecr/build-and-push-image
           name: deploy-site-to-test
@@ -663,6 +691,7 @@ workflows:
               only: develop
 
       - run-ui-tests:
+          <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:
             - deploy-site-to-test
@@ -672,6 +701,7 @@ workflows:
               only: develop
 
       - aws-ecs/deploy-service-update:
+          <<: *slack-fail-post-step
           requires:
             - aws-ecr/build-and-push-image
           family: "${SITE_ECS_FAMILY}"
@@ -685,6 +715,7 @@ workflows:
               only: master
 
       - hold-prod-deployment:
+          <<: *slack-fail-post-step
           type: approval
           requires:
             - aws-ecr/build-and-push-image
@@ -695,6 +726,7 @@ workflows:
               ignore: /.*/
 
       - aws-ecs/deploy-service-update:
+          <<: *slack-fail-post-step
           requires:
             - hold-prod-deployment
           family: "${SITE_ECS_FAMILY}"
@@ -709,19 +741,29 @@ workflows:
             branches:
               ignore: /.*/
       - slack-notify:
+          <<: *slack-fail-post-step
           requires:
-            - test
-            - lint
+            - deploy-site-to-prod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          requires:
+            - deploy-site-to-preprod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          requires:
+            - run-ui-tests
 
   fdbt-reference-data-service:
     when: << pipeline.parameters.fdbt-reference-data-service >>
     jobs:
       - checkout-repo:
+          <<: *slack-fail-post-step
           filters:
             tags:
               only: /^v.*/
 
       - audit-reference-data-retrievers:
+          <<: *slack-fail-post-step
           requires:
             - checkout-repo
           filters:
@@ -729,6 +771,7 @@ workflows:
               only: /^v.*/
 
       - deploy-reference-data-retrievers-to-test:
+          <<: *slack-fail-post-step
           requires:
             - audit-reference-data-retrievers
           context: tfn-fdbt-test
@@ -737,6 +780,7 @@ workflows:
               only: develop
 
       - deploy-reference-data-retrievers-to-preprod:
+          <<: *slack-fail-post-step
           requires:
             - audit-reference-data-retrievers
           context: tfn-fdbt-preprod
@@ -745,6 +789,7 @@ workflows:
               only: master
 
       - hold-reference-data-retrievers-prod-deployment:
+          <<: *slack-fail-post-step
           type: approval
           requires:
             - audit-reference-data-retrievers
@@ -755,6 +800,7 @@ workflows:
               ignore: /.*/
 
       - deploy-reference-data-retrievers-to-prod:
+          <<: *slack-fail-post-step
           requires:
             - hold-reference-data-retrievers-prod-deployment
           context: tfn-fdbt-prod
@@ -765,6 +811,7 @@ workflows:
               ignore: /.*/
 
       - audit-reference-data-uploaders:
+          <<: *slack-fail-post-step
           requires:
             - checkout-repo
           filters:
@@ -772,6 +819,7 @@ workflows:
               only: /^v.*/
 
       - test-reference-data-uploaders:
+          <<: *slack-fail-post-step
           requires:
             - audit-reference-data-uploaders
           filters:
@@ -779,6 +827,7 @@ workflows:
               only: /^v.*/
 
       - deploy-reference-data-uploaders-to-test:
+          <<: *slack-fail-post-step
           requires:
             - test-reference-data-uploaders
           context: tfn-fdbt-test
@@ -787,6 +836,7 @@ workflows:
               only: develop
 
       - deploy-reference-data-uploaders-to-preprod:
+          <<: *slack-fail-post-step
           requires:
             - test-reference-data-uploaders
           context: tfn-fdbt-preprod
@@ -795,6 +845,7 @@ workflows:
               only: master
 
       - hold-reference-data-uploaders-prod-deployment:
+          <<: *slack-fail-post-step
           type: approval
           requires:
             - test-reference-data-uploaders
@@ -805,6 +856,7 @@ workflows:
               ignore: /.*/
 
       - deploy-reference-data-uploaders-to-prod:
+          <<: *slack-fail-post-step
           requires:
             - hold-reference-data-uploaders-prod-deployment
           context: tfn-fdbt-prod
@@ -814,5 +866,14 @@ workflows:
             branches:
               ignore: /.*/
       - slack-notify:
+          <<: *slack-fail-post-step
           requires:
-            - test-reference-data-uploaders
+            - deploy-reference-data-uploaders-to-prod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          requires:
+            - deploy-reference-data-uploaders-to-preprod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          requires:
+            - deploy-reference-data-uploaders-to-test
