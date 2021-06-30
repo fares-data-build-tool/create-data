@@ -1,5 +1,10 @@
 version: 2.1
 
+slack-fail-post-step: &slack-fail-post-step
+  post-steps:
+    - slack/status:
+        fail_only: true
+
 orbs:
   aws-cli: circleci/aws-cli@2.0.0
   aws-ecr: circleci/aws-ecr@6.15.3
@@ -514,7 +519,7 @@ workflows:
             branches:
               ignore: /.*/
 
-      - build:
+      - build: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - audit
