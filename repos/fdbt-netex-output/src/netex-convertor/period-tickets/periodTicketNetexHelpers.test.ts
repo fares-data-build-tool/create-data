@@ -219,7 +219,9 @@ describe('periodTicketNetexHelpers', () => {
                     representingObjectTypeOfTravelDoc,
                     representingObjectTimeIntervalDoc,
                 );
-                const expectedLength = matchingData.products.length;
+                const expectedLength = matchingData.products
+                    .map(product => product.salesOfferPackages.length)
+                    .reduce((a, b) => a + b);
                 const geoZoneFareTables = netexHelpers.getGeoZoneFareTable(matchingData, placeHolderText, 'test');
                 expect(geoZoneFareTables).toHaveLength(expectedLength);
                 geoZoneFareTables.forEach(fareTable => {
@@ -246,7 +248,9 @@ describe('periodTicketNetexHelpers', () => {
                 representingObjectTypeOfTravelDoc,
                 representingObjectTimeIntervalDoc,
             );
-            const expectedLength = periodMultipleServicesTicket.products.length;
+            const expectedLength = periodMultipleServicesTicket.products
+                .map(product => product.salesOfferPackages.length)
+                .reduce((a, b) => a + b);
             const multiServiceFareTables = netexHelpers.getMultiServiceFareTable(matchingData, 'test');
             expect(multiServiceFareTables).toHaveLength(expectedLength);
             multiServiceFareTables.forEach(fareTable => {
@@ -276,7 +280,9 @@ describe('periodTicketNetexHelpers', () => {
                     },
                 },
             };
-            const expectedLength = flatFareTicket.products.length;
+            const expectedLength = flatFareTicket.products
+                .map(product => product.salesOfferPackages.length)
+                .reduce((a, b) => a + b);
             const flatFareFareTables = netexHelpers.getMultiServiceFareTable(
                 flatFareTicket as PeriodMultipleServicesTicket,
                 'test',

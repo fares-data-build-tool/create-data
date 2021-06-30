@@ -1,19 +1,19 @@
 import React, { ReactElement } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import TwoThirdsLayout from '../layout/Layout';
-import { INTERNAL_NOC } from '../constants';
-import { FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../constants/attributes';
-import { ErrorInfo, NextPageContextWithSession, RadioOption } from '../interfaces';
-import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import RadioButtons from '../components/RadioButtons';
+import { INTERNAL_NOC } from '../constants';
+import { FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../constants/attributes';
+import { getAllServicesByNocCode } from '../data/auroradb';
+import { ErrorInfo, NextPageContextWithSession, RadioOption } from '../interfaces';
+import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
+import TwoThirdsLayout from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils/index';
 import logger from '../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { redirectTo } from './api/apiUtils';
-import { getAllServicesByNocCode } from '../data/auroradb';
 
 const title = 'Fare Type - Create Fares Data Service ';
 const description = 'Fare Type selection page of the Create Fares Data Service';
@@ -23,7 +23,6 @@ const errorId = 'fare-type-single';
 interface FareTypeProps {
     operatorName: string;
     schemeOp: boolean;
-    isProd: boolean;
     errors: ErrorInfo[];
     csrfToken: string;
 }
@@ -34,37 +33,32 @@ export const buildUuid = (noc: string): string => {
     return noc + uuid.substring(0, 8);
 };
 
-const buildRadioProps = (schemeOp: boolean, isProd: boolean): RadioOption[] => {
+const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
     if (schemeOp) {
-        const radios = [
+        return [
             {
                 value: 'period',
                 label: 'Period ticket',
                 hint: 'A zonal ticket valid for a number of days, weeks, months or years',
             },
             {
+                value: 'carnetPeriod',
+                label: 'Carnet period ticket',
+                hint: 'A bundle of zonal tickets, each valid for a number of days, weeks, months or years',
+            },
+            {
                 value: 'flatFare',
                 label: 'Flat fare ticket',
                 hint: 'A fixed fee ticket for a single journey',
             },
-        ];
-
-        if (!isProd) {
-            radios.splice(1, 0, {
-                value: 'carnetPeriod',
-                label: 'Carnet period ticket',
-                hint: 'A bundle of zonal tickets, each valid for a number of days, weeks, months or years',
-            });
-            radios.splice(3, 0, {
+            {
                 value: 'carnetFlatFare',
                 label: 'Carnet flat fare ticket',
                 hint: 'A bundle of fixed fee tickets, each for a single journey',
-            });
-        }
-
-        return radios;
+            },
+        ];
     }
-    const radios = [
+    return [
         {
             value: 'single',
             label: 'Single ticket',
@@ -101,11 +95,9 @@ const buildRadioProps = (schemeOp: boolean, isProd: boolean): RadioOption[] => {
             hint: 'A ticket available to pupils in full-time education',
         },
     ];
-
-    return radios;
 };
 
-const FareType = ({ operatorName, schemeOp, isProd, errors = [], csrfToken }: FareTypeProps): ReactElement => {
+const FareType = ({ operatorName, schemeOp, errors = [], csrfToken }: FareTypeProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/fareType" method="post" csrfToken={csrfToken}>
@@ -122,7 +114,7 @@ const FareType = ({ operatorName, schemeOp, isProd, errors = [], csrfToken }: Fa
                                 {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <RadioButtons options={buildRadioProps(schemeOp, isProd)} inputName="fareType" />
+                                <RadioButtons options={buildRadioProps(schemeOp)} inputName="fareType" />
                             </FormElementWrapper>
                         </fieldset>
                     </div>
@@ -188,7 +180,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const errors: ErrorInfo[] =
         fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
-    return { props: { operatorName, schemeOp, isProd: process.env.STAGE === 'prod', errors, csrfToken } };
+    return { props: { operatorName, schemeOp, errors, csrfToken } };
 };
 
 export default FareType;

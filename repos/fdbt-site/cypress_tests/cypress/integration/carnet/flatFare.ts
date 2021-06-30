@@ -11,7 +11,7 @@ describe('The flat fare carnet product journey', () => {
         selectCarnetFareType('flatFare');
         defineUserTypeAndTimeRestrictions();
         completeFlatFareCarnet();
-        completeSalesPages();
+        completeSalesPages(3, 'Flat fare carnet ');
         isUuidStringValid();
     });
 });
