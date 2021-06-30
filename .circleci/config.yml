@@ -604,14 +604,17 @@ workflows:
           <<: *slack-fail-post-step
           requires:
             - deploy-netex-output-resources-to-prod
+            - deploy-netex-validator-to-prod
       - slack-notify:
           <<: *slack-fail-post-step
           requires:
             - deploy-netex-output-resources-to-preprod
+            - deploy-netex-validator-to-preprod
       - slack-notify:
           <<: *slack-fail-post-step
           requires:
             - deploy-netex-output-resources-to-test
+            - deploy-netex-validator-to-test
 
   fdbt-site:
     when: << pipeline.parameters.fdbt-site >>
