@@ -749,8 +749,8 @@ workflows:
       - slack-notify:
           <<: *slack-fail-post-step
           name: site deployed to prod
-          # requires:
-          #   - deploy-site-to-prod
+          requires:
+            - deploy-site-to-prod
       - slack-notify:
           <<: *slack-fail-post-step
           name: site deployed to preprod
@@ -876,16 +876,16 @@ workflows:
               ignore: /.*/
       - slack-notify:
           <<: *slack-fail-post-step
-          name:
+          name: reference data uploaders deployed to prod
           requires:
             - deploy-reference-data-uploaders-to-prod
       - slack-notify:
           <<: *slack-fail-post-step
-          name:
+          name: reference data uploaders deployed to preprod
           requires:
             - deploy-reference-data-uploaders-to-preprod
       - slack-notify:
           <<: *slack-fail-post-step
-          name:
+          name: reference data uploaders deployed to
           requires:
             - deploy-reference-data-uploaders-to-test
