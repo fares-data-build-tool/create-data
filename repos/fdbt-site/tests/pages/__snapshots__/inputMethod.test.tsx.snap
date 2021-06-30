@@ -80,25 +80,6 @@ exports[`pages inputMethod should render correctly 1`] = `
                     Manual fares triangle input
                   </label>
                 </div>
-                <div
-                  className="govuk-radios__item"
-                >
-                  <input
-                    aria-disabled="true"
-                    className="govuk-radios__input  "
-                    disabled={true}
-                    id="interactive-map"
-                    name="inputMethod"
-                    type="radio"
-                    value="interactiveMap"
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label"
-                    htmlFor="interactive-map"
-                  >
-                    Interactive Map (not yet available)
-                  </label>
-                </div>
               </div>
             </FormElementWrapper>
           </fieldset>
