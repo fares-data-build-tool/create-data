@@ -1,9 +1,16 @@
 version: 2.1
 
+slack-fail-post-step: &slack-fail-post-step
+  post-steps:
+    - slack/notify:
+        event: fail
+        template: basic_fail_1
+
 orbs:
   aws-cli: circleci/aws-cli@2.0.0
   aws-ecr: circleci/aws-ecr@6.15.3
   aws-ecs: circleci/aws-ecs@2.1.0
+  slack: circleci/slack@4.4.2
 
 parameters:
   # This parameter is used to trigger the main workflow
@@ -28,6 +35,13 @@ executors:
       - image: circleci/node
 
 jobs:
+  slack-notify:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - slack/notify:
+          event: pass
+          template: basic_success_1
   trigger-workflows:
     executor: node
     steps:
@@ -45,7 +59,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - '*'
+            - "*"
 
   build:
     parameters:
@@ -65,7 +79,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - './repos/<< parameters.package_name >>/node_modules'
+            - "./repos/<< parameters.package_name >>/node_modules"
 
   audit:
     parameters:
@@ -271,7 +285,7 @@ jobs:
             export SLS_DEBUG="*" && sls deploy --stage=prod
             echo "Finished deploy"
 
-# fdbt-reference-data-service
+  # fdbt-reference-data-service
 
   audit-reference-data-uploaders:
     docker:
@@ -435,18 +449,19 @@ workflows:
             tags:
               only: /^v.*/
 
-
   # Workflows defined for each package.
 
   fdbt-netex-output:
     when: << pipeline.parameters.fdbt-netex-output >>
     jobs:
       - checkout-repo:
+          <<: *slack-fail-post-step
           filters:
             tags:
               only: /^v.*/
 
       - audit:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - checkout-repo
@@ -455,6 +470,7 @@ workflows:
               only: /^v.*/
 
       - audit-netex-validator:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - checkout-repo
@@ -463,6 +479,7 @@ workflows:
               only: /^v.*/
 
       - deploy-netex-validator-to-test:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - audit-netex-validator
@@ -473,6 +490,7 @@ workflows:
                 - develop
 
       - deploy-netex-validator-to-preprod:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - audit-netex-validator
@@ -482,21 +500,11 @@ workflows:
               only:
                 - master
 
-      - hold-netex-validator-prod-deployment:
-          package_name: fdbt-netex-output
-          type: approval
-          requires:
-            - audit-netex-validator
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
       - deploy-netex-validator-to-prod:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
-            - hold-netex-validator-prod-deployment
+            - hold-prod-deployment-netex-output
           context: tfn-fdbt-prod
           filters:
             tags:
@@ -505,6 +513,7 @@ workflows:
               ignore: /.*/
 
       - build:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - audit
@@ -513,6 +522,7 @@ workflows:
               only: /^v.*/
 
       - test:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - build
@@ -521,6 +531,7 @@ workflows:
               only: /^v.*/
 
       - lint:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - build
@@ -529,6 +540,7 @@ workflows:
               only: /^v.*/
 
       - deploy-netex-output-resources-to-test:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - test
@@ -540,6 +552,7 @@ workflows:
                 - develop
 
       - deploy-netex-output-resources-to-preprod:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - test
@@ -549,8 +562,9 @@ workflows:
             branches:
               only: master
 
-      - hold-prod-deployment:
-          type: approval
+      - slack/on-hold:
+          <<: *slack-fail-post-step
+          name: hold-prod-deployment-netex-output
           requires:
             - test
             - lint
@@ -561,25 +575,46 @@ workflows:
               ignore: /.*/
 
       - deploy-netex-output-resources-to-prod:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
-            - hold-prod-deployment
+            - hold-prod-deployment-netex-output
           context: tfn-fdbt-prod
           filters:
             tags:
               only: /^v.*/
             branches:
               ignore: /.*/
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: netex output deployed to prod
+          requires:
+            - deploy-netex-output-resources-to-prod
+            - deploy-netex-validator-to-prod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: netex output deployed to preprod
+          requires:
+            - deploy-netex-output-resources-to-preprod
+            - deploy-netex-validator-to-preprod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: netex output deployed to test
+          requires:
+            - deploy-netex-output-resources-to-test
+            - deploy-netex-validator-to-test
 
   fdbt-site:
     when: << pipeline.parameters.fdbt-site >>
     jobs:
       - checkout-repo:
+          <<: *slack-fail-post-step
           filters:
             tags:
               only: /^v.*/
 
       - audit:
+          <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:
             - checkout-repo
@@ -588,6 +623,7 @@ workflows:
               only: /^v.*/
 
       - build:
+          <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:
             - checkout-repo
@@ -596,6 +632,7 @@ workflows:
               only: /^v.*/
 
       - test:
+          <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:
             - build
@@ -604,6 +641,7 @@ workflows:
               only: /^v.*/
 
       - lint:
+          <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:
             - build
@@ -612,12 +650,13 @@ workflows:
               only: /^v.*/
 
       - aws-ecr/build-and-push-image:
+          <<: *slack-fail-post-step
           requires:
             - audit
             - test
             - lint
-          repo: '${SITE_ECR_REPO}'
-          tag: '${CIRCLE_SHA1},latest'
+          repo: "${SITE_ECR_REPO}"
+          tag: "${CIRCLE_SHA1},latest"
           context: tfn-fdbt-core
           path: ~/project/repos/fdbt-site
           filters:
@@ -629,12 +668,13 @@ workflows:
                 - master
 
       - aws-ecs/deploy-service-update:
+          <<: *slack-fail-post-step
           requires:
             - aws-ecr/build-and-push-image
           name: deploy-site-to-test
-          family: '${SITE_ECS_FAMILY}'
-          cluster-name: '${SITE_ECS_CLUSTER}'
-          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+          family: "${SITE_ECS_FAMILY}"
+          cluster-name: "${SITE_ECS_CLUSTER}"
+          container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
           context: tfn-fdbt-test
           verify-revision-is-deployed: true
           filters:
@@ -642,6 +682,7 @@ workflows:
               only: develop
 
       - run-ui-tests:
+          <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:
             - deploy-site-to-test
@@ -651,20 +692,22 @@ workflows:
               only: develop
 
       - aws-ecs/deploy-service-update:
+          <<: *slack-fail-post-step
           requires:
             - aws-ecr/build-and-push-image
-          family: '${SITE_ECS_FAMILY}'
+          family: "${SITE_ECS_FAMILY}"
           name: deploy-site-to-preprod
-          cluster-name: '${SITE_ECS_CLUSTER}'
-          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+          cluster-name: "${SITE_ECS_CLUSTER}"
+          container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
           context: tfn-fdbt-preprod
           verify-revision-is-deployed: true
           filters:
             branches:
               only: master
 
-      - hold-prod-deployment:
-          type: approval
+      - slack/on-hold:
+          <<: *slack-fail-post-step
+          name: hold-prod-deployment-site
           requires:
             - aws-ecr/build-and-push-image
           filters:
@@ -674,12 +717,13 @@ workflows:
               ignore: /.*/
 
       - aws-ecs/deploy-service-update:
+          <<: *slack-fail-post-step
           requires:
-            - hold-prod-deployment
-          family: '${SITE_ECS_FAMILY}'
+            - hold-prod-deployment-site
+          family: "${SITE_ECS_FAMILY}"
           name: deploy-site-to-prod
-          cluster-name: '${SITE_ECS_CLUSTER}'
-          container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
+          cluster-name: "${SITE_ECS_CLUSTER}"
+          container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
           context: tfn-fdbt-prod
           verify-revision-is-deployed: true
           filters:
@@ -687,16 +731,33 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: site deployed to prod
+          requires:
+            - deploy-site-to-prod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: site deployed to preprod
+          requires:
+            - deploy-site-to-preprod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: site deployed and tested
+          requires:
+            - run-ui-tests
 
   fdbt-reference-data-service:
     when: << pipeline.parameters.fdbt-reference-data-service >>
     jobs:
       - checkout-repo:
+          <<: *slack-fail-post-step
           filters:
             tags:
               only: /^v.*/
 
       - audit-reference-data-retrievers:
+          <<: *slack-fail-post-step
           requires:
             - checkout-repo
           filters:
@@ -704,6 +765,7 @@ workflows:
               only: /^v.*/
 
       - deploy-reference-data-retrievers-to-test:
+          <<: *slack-fail-post-step
           requires:
             - audit-reference-data-retrievers
           context: tfn-fdbt-test
@@ -712,6 +774,7 @@ workflows:
               only: develop
 
       - deploy-reference-data-retrievers-to-preprod:
+          <<: *slack-fail-post-step
           requires:
             - audit-reference-data-retrievers
           context: tfn-fdbt-preprod
@@ -719,8 +782,9 @@ workflows:
             branches:
               only: master
 
-      - hold-reference-data-retrievers-prod-deployment:
-          type: approval
+      - slack/on-hold:
+          <<: *slack-fail-post-step
+          name: hold-reference-data-retrievers-prod-deployment
           requires:
             - audit-reference-data-retrievers
           filters:
@@ -730,6 +794,7 @@ workflows:
               ignore: /.*/
 
       - deploy-reference-data-retrievers-to-prod:
+          <<: *slack-fail-post-step
           requires:
             - hold-reference-data-retrievers-prod-deployment
           context: tfn-fdbt-prod
@@ -740,6 +805,7 @@ workflows:
               ignore: /.*/
 
       - audit-reference-data-uploaders:
+          <<: *slack-fail-post-step
           requires:
             - checkout-repo
           filters:
@@ -747,6 +813,7 @@ workflows:
               only: /^v.*/
 
       - test-reference-data-uploaders:
+          <<: *slack-fail-post-step
           requires:
             - audit-reference-data-uploaders
           filters:
@@ -754,6 +821,7 @@ workflows:
               only: /^v.*/
 
       - deploy-reference-data-uploaders-to-test:
+          <<: *slack-fail-post-step
           requires:
             - test-reference-data-uploaders
           context: tfn-fdbt-test
@@ -762,6 +830,7 @@ workflows:
               only: develop
 
       - deploy-reference-data-uploaders-to-preprod:
+          <<: *slack-fail-post-step
           requires:
             - test-reference-data-uploaders
           context: tfn-fdbt-preprod
@@ -769,8 +838,9 @@ workflows:
             branches:
               only: master
 
-      - hold-reference-data-uploaders-prod-deployment:
-          type: approval
+      - slack/on-hold:
+          <<: *slack-fail-post-step
+          name: hold-reference-data-uploaders-prod-deployment
           requires:
             - test-reference-data-uploaders
           filters:
@@ -780,6 +850,7 @@ workflows:
               ignore: /.*/
 
       - deploy-reference-data-uploaders-to-prod:
+          <<: *slack-fail-post-step
           requires:
             - hold-reference-data-uploaders-prod-deployment
           context: tfn-fdbt-prod
@@ -788,3 +859,18 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: reference data uploaders deployed to prod
+          requires:
+            - deploy-reference-data-uploaders-to-prod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: reference data uploaders deployed to preprod
+          requires:
+            - deploy-reference-data-uploaders-to-preprod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: reference data uploaders deployed to test
+          requires:
+            - deploy-reference-data-uploaders-to-test
