@@ -519,7 +519,8 @@ workflows:
             branches:
               ignore: /.*/
 
-      - build: *slack-fail-post-step
+      - build:
+          <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
             - audit
