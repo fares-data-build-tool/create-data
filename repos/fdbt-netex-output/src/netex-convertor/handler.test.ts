@@ -287,7 +287,7 @@ describe('netexConvertorHandler', () => {
         try {
             await netexConvertorHandler(event);
         } catch {
-            let expectedObject = {
+            const expectedObject = {
                 Message: 'There was an error when converting the NeTEx',
                 MessageAttributes: {
                     NewStateValue: {
