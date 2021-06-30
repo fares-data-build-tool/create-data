@@ -23,6 +23,13 @@ jest.spyOn(s3, 'uploadNetexToS3').mockImplementation(() => Promise.resolve());
 const event: S3Event = mockS3Event('BucketThing', 'TheBigBucketName');
 const mockFetchDataFromS3Spy = jest.spyOn(s3, 'fetchDataFromS3');
 const mockUploadNetexToS3Spy = jest.spyOn(s3, 'uploadNetexToS3');
+const mockSnsInstance = {
+    publish: jest.fn().mockReturnValue({ promise: jest.fn() }),
+};
+
+jest.mock('aws-sdk', () => {
+    return { SNS: jest.fn(() => mockSnsInstance), S3: jest.fn() };
+});
 
 mockUploadNetexToS3Spy.mockImplementation(() => Promise.resolve());
 
@@ -49,7 +56,7 @@ describe('netexConvertorHandler', () => {
     });
 
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.clearAllMocks();
     });
 
     it('should call the pointToPointTicketNetexGenerator when a user uploads info for a single ticket', async () => {
@@ -101,6 +108,7 @@ describe('netexConvertorHandler', () => {
     });
 
     it('should throw an error if the user data uploaded to the fdbt-matching-data bucket does not contain a "type" attribute', async () => {
+        netexGeneratorSpy.mockRestore();
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(periodGeoZoneTicketWithNoType));
         await expect(netexConvertorHandler(event)).rejects.toThrow();
     });
@@ -249,6 +257,49 @@ describe('netexConvertorHandler', () => {
         jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
         const fileName = generateFileName(`DCCL/single/abcdef123_${mockDate}.json`);
         expect(fileName).toEqual(`DCCL/single/abcdef123_${mockDate}.xml`);
+    });
+
+    it('should send a slack notification when an exception is thrown', async () => {
+        process.env.SNS_ALERTS_ARN = 'test arn';
+
+        netexGeneratorSpy.mockRestore();
+
+        dbSpy.mockImplementation(() =>
+            Promise.resolve([
+                {
+                    nocCode: 'MCTR',
+                    website: 'www.unittest.com',
+                    ttrteEnq: 'aaaaaa',
+                    operatorPublicName: 'Test Buses',
+                    opId: '7Z',
+                    vosaPsvLicenseName: 'CCD',
+                    fareEnq: 'SSSS',
+                    complEnq: '334',
+                    mode: 'test',
+                },
+            ]),
+        );
+
+        mockFetchDataFromS3Spy.mockImplementation(() => {
+            throw new Error();
+        });
+
+        try {
+            await netexConvertorHandler(event);
+        } catch {
+            const expectedObject = {
+                Message: 'There was an error when converting the NeTEx',
+                MessageAttributes: {
+                    NewStateValue: {
+                        DataType: 'String',
+                        StringValue: 'ALARM',
+                    },
+                },
+                TopicArn: 'test arn',
+            };
+
+            expect(mockSnsInstance.publish).toBeCalledWith(expectedObject);
+        }
     });
 });
 

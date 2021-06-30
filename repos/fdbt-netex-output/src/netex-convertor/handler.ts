@@ -1,3 +1,4 @@
+import AWS, { SNS } from 'aws-sdk';
 import { S3Event } from 'aws-lambda';
 import libxslt from 'libxslt';
 import {
@@ -99,6 +100,7 @@ export const buildNocList = (ticket: Ticket): string[] => {
 };
 
 export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
+    const { SNS_ALERTS_ARN } = process.env;
     try {
         const ticket = await s3.fetchDataFromS3<
             PointToPointTicket | PeriodTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket
@@ -120,8 +122,22 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             console.info(`NeTEx generation complete for type ${type}`);
         }
     } catch (error) {
-        console.error(error.stack);
-        throw new Error(error);
+        const sns: SNS = new AWS.SNS();
+
+        const messageParams = {
+            Message: 'There was an error when converting the NeTEx',
+            TopicArn: SNS_ALERTS_ARN,
+            MessageAttributes: {
+                NewStateValue: {
+                    DataType: 'String',
+                    StringValue: 'ALARM',
+                },
+            },
+        };
+
+        await sns.publish(messageParams).promise();
+
+        throw error;
     }
 };
 

@@ -78,6 +78,8 @@ functions:
       UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
       RDS_HOST:
         Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
+      SNS_ALERTS_ARN:
+        Fn::ImportValue: ${self:provider.stage}:SlackAlertsTopicArn
 
   NetexEmailer:
     handler: src/netex-emailer/handler.netexEmailerHandler
