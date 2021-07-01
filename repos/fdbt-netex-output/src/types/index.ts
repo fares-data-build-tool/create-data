@@ -318,7 +318,6 @@ export const isMultiOperatorTicket = (
     ticketData.type === 'multiOperator';
 
 export const isMultiOperatorGeoZoneTicket = (ticket: Ticket): ticket is MultiOperatorGeoZoneTicket =>
-    ticket.type === 'period' &&
     'zoneName' in ticket &&
     !!(ticket as MultiOperatorGeoZoneTicket).nocCode &&
     (ticket as MultiOperatorGeoZoneTicket).additionalNocs &&
@@ -328,7 +327,6 @@ export const isMultiOperatorMultipleServicesTicket = (ticket: Ticket): ticket is
     !!(ticket as MultiOperatorGeoZoneTicket).nocCode &&
     (ticket as MultiOperatorMultipleServicesTicket).additionalOperators &&
     (ticket as MultiOperatorMultipleServicesTicket).additionalOperators.length > 0 &&
-    ticket.type === 'period' &&
     'selectedServices' in ticket;
 
 export const isSchemeOperatorTicket = (
