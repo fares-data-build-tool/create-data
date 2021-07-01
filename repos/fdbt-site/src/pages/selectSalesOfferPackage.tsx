@@ -145,7 +145,7 @@ const generateCheckbox = (
                             Ticket formats: {formatSOPArray(ticketFormats)}
                         </span>
                         {!!selectedOffer && defaultPrice && customPriceEnabled && (
-                            <div className="govuk-currency-input">
+                            <div className="govuk-currency-input govuk-!-margin-left-3">
                                 <div className="govuk-currency-input__inner">
                                     <span
                                         className="govuk-currency-input__inner__unit"
@@ -196,7 +196,9 @@ const createSalesOffer = (
                 hideErrorBar={false}
             >
                 <fieldset className="govuk-fieldset">
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s govuk-!-margin-bottom-5">{`Select sales offer packages for ${productName}`}</legend>
+                    <h1 className="govuk-heading-m govuk-!-font-weight-regular govuk-!-padding-top-6 govuk-!-padding-bottom-2">
+                        How is <span className="govuk-!-font-weight-bold">{productName}</span> sold?
+                    </h1>
                     <FormElementWrapper
                         errors={errors}
                         errorId={`${removeAllWhiteSpace(productName)}-checkbox-0`}
@@ -233,18 +235,21 @@ const SelectSalesOfferPackage = ({
                 <>
                     <ErrorSummary errors={errors} />
                     <h1 className="govuk-heading-l" id="select-sales-offer-package-page-heading">
-                        How are the tickets sold?
+                        How are your tickets sold?
                     </h1>
                     <div>
-                        <p className="govuk-body">To create NeTEx for your fare it needs to contain the following:</p>
+                        <p className="govuk-body">We need to know the following information:</p>
                         <ol className="govuk-list govuk-list--number">
                             <li>Where a ticket can be bought</li>
                             <li>What payment method it can be bought with</li>
                             <li>What format the ticket is provided to the passenger in</li>
                         </ol>
                         <p className="govuk-body">
-                            This combination of information is called a <strong>sales offer package</strong>. You can
-                            choose from one you have already setup or create a new one for these products.
+                            You can choose from the options below or{' '}
+                            <a href="/salesOfferPackages" className="govuk-link">
+                                create a new one
+                            </a>{' '}
+                            for these products.
                         </p>
                     </div>
                     {createSalesOffer(
@@ -264,7 +269,7 @@ const SelectSalesOfferPackage = ({
                         data-module="govuk-button"
                         id="create-new-button"
                     >
-                        Create New Sales Offer Package
+                        Create new
                     </a>
                 </>
             </CsrfForm>
