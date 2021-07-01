@@ -5,7 +5,7 @@ import { SERVICE_EMAIL_ADDRESS, STAGE } from '../../../constants/index';
 import { Feedback } from '../../../interfaces';
 
 export const buildFeedbackContent = (feedbackQuestions: Feedback[]): string => {
-    const questionsAndAnswers = feedbackQuestions.map(question => {
+    const questionsAndAnswers = feedbackQuestions.map((question) => {
         return `Question: ${question.question}\nAnswer: ${question.answer}`;
     });
 

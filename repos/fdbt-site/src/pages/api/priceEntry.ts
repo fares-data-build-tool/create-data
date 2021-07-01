@@ -29,16 +29,16 @@ interface ManualFareTriangleData {
 export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
     const errors: PriceEntryError[] = [];
     const priceEntries = Object.entries(req.body);
-    const allEmpty = !priceEntries.find(priceEntry => priceEntry[1] !== '');
+    const allEmpty = !priceEntries.find((priceEntry) => priceEntry[1] !== '');
     if (allEmpty) {
-        priceEntries.forEach(priceEntry => {
+        priceEntries.forEach((priceEntry) => {
             errors.push({
                 input: 'There must be at least one price entered',
                 locator: removeAllWhiteSpace(priceEntry[0]),
             });
         });
     }
-    const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
+    const sortedInputs: FaresInput[] = priceEntries.map((priceEntry) => {
         if (priceEntry[1] !== '0' || Number(priceEntry[1]) !== 0) {
             if (Number.isNaN(Number(priceEntry[1])) || Number(priceEntry[1]) % 1 !== 0) {
                 errors.push({
@@ -90,7 +90,7 @@ export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => 
 
     const originStages = Object.entries(fareTriangle);
     const mappedFareTriangle: UserFareStages = {
-        fareStages: originStages.map(kv => {
+        fareStages: originStages.map((kv) => {
             const pricesToDestinationStages = Object.values(kv[1]);
             return {
                 stageName: kv[0],

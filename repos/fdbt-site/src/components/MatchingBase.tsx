@@ -40,7 +40,7 @@ export const getDefaultStopItems = (
     const items = new Set(
         stops.map((stop, index) => {
             let dropdownValue = '';
-            selectedFareStages.forEach(selectedObject => {
+            selectedFareStages.forEach((selectedObject) => {
                 if (selectedObject[0].toString() !== '' && selectedObject[1] === JSON.stringify(stop)) {
                     dropdownValue = selectedObject[0].toString();
                 }
@@ -106,7 +106,7 @@ const MatchingBase = ({
 
     const handleDropdownSelection = (dropdownIndex: number, dropdownValue: string): void => {
         const updatedItems = new Set(
-            [...stopItems].map(item => {
+            [...stopItems].map((item) => {
                 if (item.index === dropdownIndex) {
                     const updatedItem = { ...item, dropdownValue };
 
@@ -124,7 +124,7 @@ const MatchingBase = ({
 
     const handleResetButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         event.preventDefault();
-        const updatedItems = new Set([...stopItems].map(item => ({ ...item, dropdownValue: '' })));
+        const updatedItems = new Set([...stopItems].map((item) => ({ ...item, dropdownValue: '' })));
         updateStopItems(updatedItems);
         updateSelections([]);
     };
@@ -136,7 +136,7 @@ const MatchingBase = ({
         if (numberOfSelections === 1) {
             const selection = selections[0];
             const updatedItems = new Set(
-                [...stopItems].map(item => {
+                [...stopItems].map((item) => {
                     if (item.index >= selection.index && item.dropdownValue === '') {
                         return {
                             ...item,
@@ -232,7 +232,7 @@ const MatchingBase = ({
                                         </tr>
                                     </thead>
                                     <tbody className="govuk-table__body">
-                                        {[...stopItems].map(item => (
+                                        {[...stopItems].map((item) => (
                                             <tr key={item.atcoCode} className="govuk-table__row">
                                                 <td className="govuk-table__cell stop-cell" id={`stop-${item.index}`}>
                                                     {item.stopName}
@@ -257,7 +257,7 @@ const MatchingBase = ({
                                                         <option value="" disabled>
                                                             Select a Fare Stage
                                                         </option>
-                                                        {item.dropdownOptions.map(option => {
+                                                        {item.dropdownOptions.map((option) => {
                                                             return (
                                                                 <option key={option} value={option}>
                                                                     {option}

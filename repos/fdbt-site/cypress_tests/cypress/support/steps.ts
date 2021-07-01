@@ -144,7 +144,7 @@ const completeMatchingPage = (): void => {
     for (let i = 0; i < 4; i += 1) {
         cy.get(`[id=option-${i}]`)
             .find('option')
-            .then($elm => {
+            .then(($elm) => {
                 $elm.get(i + 1).setAttribute('selected', 'selected');
             })
             .parent()

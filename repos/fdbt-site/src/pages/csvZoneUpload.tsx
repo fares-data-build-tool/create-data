@@ -11,11 +11,12 @@ import { getCsrfToken } from '../utils';
 const title = 'CSV Zone Upload - Create Fares Data Service';
 const description = 'CSV Zone Upload page of the Create Fares Data Service';
 
-const CsvZoneUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
-    <BaseLayout title={title} description={description} errors={uploadProps.errors}>
+const CsvZoneUpload = ({ errors, ...uploadProps }: UserDataUploadsProps): ReactElement => (
+    <BaseLayout title={title} description={description} errors={errors}>
         <UserDataUploadComponent
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...uploadProps}
+            errors={errors}
             detailBody={
                 <>
                     <p>Some common issues with fare zone uploads include:</p>

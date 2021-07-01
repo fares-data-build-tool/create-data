@@ -40,11 +40,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
             startDate: productDating && productDating.startDate ? productDating.startDate : moment().toISOString(),
             endDate:
-                productDating && productDating.endDate
-                    ? productDating.endDate
-                    : moment()
-                          .add(100, 'y')
-                          .toISOString(),
+                productDating && productDating.endDate ? productDating.endDate : moment().add(100, 'y').toISOString(),
             dateInput: productDating
                 ? productDating.dateInput
                 : {

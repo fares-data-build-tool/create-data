@@ -1,11 +1,33 @@
+/* eslint-disable camelcase,max-classes-per-file,import/no-duplicates */
 // / <reference types="next" />
 // / <reference types="next/types/global" />
 // / <reference types="next-images" />
 
 declare module 'set-cookie';
-declare module 'mock-req';
-declare module 'mock-res';
-declare module 'clamscan';
+
+declare module 'mock-req' {
+    import { IncomingMessage } from 'http';
+
+    export default class MockReq extends IncomingMessage {
+        constructor(config: object);
+    }
+}
+
+declare module 'mock-res' {
+    import { ServerResponse } from 'http';
+
+    export default class MockRes extends ServerResponse {
+        constructor();
+    }
+}
+
+declare module 'clamscan' {
+    export default class NodeClam {
+        constructor();
+
+        init: (config: object) => Promise<{ is_infected: (path: string) => { is_infected: boolean } }>;
+    }
+}
 
 declare module '*.jpeg' {
     const value: string;

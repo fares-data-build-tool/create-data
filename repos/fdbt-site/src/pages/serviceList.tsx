@@ -106,8 +106,9 @@ const ServiceList = ({
                                         const checkboxTitles =
                                             dataSourceAttribute.source === 'tnds'
                                                 ? `${lineName} - ${description} (Start Date ${startDate})`
-                                                : `${lineName} ${origin || 'N/A'} - ${destination ||
-                                                      'N/A'} (Start date ${startDate})`;
+                                                : `${lineName} ${origin || 'N/A'} - ${
+                                                      destination || 'N/A'
+                                                  } (Start date ${startDate})`;
 
                                         const checkBoxValues = `${description}`;
 
@@ -161,8 +162,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 throw new Error(`No services found for NOC Code: ${nocCode}`);
             }
         }
-        const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
-        const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
+        const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
+        const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
         updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
             source: hasBodsServices && !hasTndsServices ? 'bods' : 'tnds',
             hasBods: hasBodsServices,
@@ -175,7 +176,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
-    const serviceList: ServicesInfo[] = chosenDataSourceServices.map(service => {
+    const serviceList: ServicesInfo[] = chosenDataSourceServices.map((service) => {
         return {
             ...service,
             checked: !selectAll || (selectAll !== 'true' && selectAll !== 'false') ? false : selectAll !== 'false',

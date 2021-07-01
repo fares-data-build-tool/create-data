@@ -104,8 +104,9 @@ const MultipleOperatorsServiceList = ({
                                     const checkboxTitles =
                                         dataSourceAttribute.source === 'tnds'
                                             ? `${lineName} - ${description} (Start Date ${startDate})`
-                                            : `${lineName} ${origin || 'N/A'} - ${destination ||
-                                                  'N/A'} (Start date ${startDate})`;
+                                            : `${lineName} ${origin || 'N/A'} - ${
+                                                  destination || 'N/A'
+                                              } (Start date ${startDate})`;
                                     const checkBoxValues = `${description}`;
 
                                     return (
@@ -156,14 +157,14 @@ export const getServerSideProps = async (
 
     let [operatorToUse] = searchedOperators;
     if (doneOperators.length > 0) {
-        const searchedOperatorsNocs = searchedOperators.map(operator => operator.nocCode);
-        const doneOperatorsNocs = doneOperators.map(operator => operator.nocCode);
-        const result = searchedOperatorsNocs.find(searchedNoc => !doneOperatorsNocs.includes(searchedNoc));
+        const searchedOperatorsNocs = searchedOperators.map((operator) => operator.nocCode);
+        const doneOperatorsNocs = doneOperators.map((operator) => operator.nocCode);
+        const result = searchedOperatorsNocs.find((searchedNoc) => !doneOperatorsNocs.includes(searchedNoc));
 
         if (!result) {
             updateSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, undefined);
         }
-        const foundOperator = searchedOperators.find(operator => operator.nocCode === result);
+        const foundOperator = searchedOperators.find((operator) => operator.nocCode === result);
         if (!foundOperator) {
             updateSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, undefined);
         } else {
@@ -186,8 +187,8 @@ export const getServerSideProps = async (
                 throw new Error(`No services found for NOC Code: ${operatorToUse.nocCode}`);
             }
         }
-        const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
-        const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
+        const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
+        const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
         updateSessionAttribute(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, {
             source: hasBodsServices && !hasTndsServices ? 'bods' : 'tnds',
             hasBods: hasBodsServices,
@@ -207,7 +208,7 @@ export const getServerSideProps = async (
 
     const { selectAll } = ctx.query;
 
-    const serviceList: ServicesInfo[] = chosenDataSourceServices.map(service => {
+    const serviceList: ServicesInfo[] = chosenDataSourceServices.map((service) => {
         return {
             ...service,
             checked: !selectAll || (selectAll !== 'true' && selectAll !== 'false') ? false : selectAll !== 'false',

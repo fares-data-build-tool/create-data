@@ -8,29 +8,27 @@ export const enrichJourneyPatternsWithNaptanInfo = async (
     journeyPatterns: RawJourneyPattern[],
 ): Promise<JourneyPattern[]> =>
     Promise.all(
-        journeyPatterns.map(
-            async (item: RawJourneyPattern): Promise<JourneyPattern> => {
-                const stopList = item.orderedStopPoints.flatMap((stopPoint: StopPoint) => stopPoint.stopPointRef);
+        journeyPatterns.map(async (item: RawJourneyPattern): Promise<JourneyPattern> => {
+            const stopList = item.orderedStopPoints.flatMap((stopPoint: StopPoint) => stopPoint.stopPointRef);
 
-                const startPoint: StopPoint = item.orderedStopPoints[0];
-                const [startPointStop] = await batchGetStopsByAtcoCode([startPoint.stopPointRef]);
+            const startPoint: StopPoint = item.orderedStopPoints[0];
+            const [startPointStop] = await batchGetStopsByAtcoCode([startPoint.stopPointRef]);
 
-                const endPoint: StopPoint = item.orderedStopPoints.slice(-1)[0];
-                const [endPointStop] = await batchGetStopsByAtcoCode([endPoint.stopPointRef]);
+            const endPoint: StopPoint = item.orderedStopPoints.slice(-1)[0];
+            const [endPointStop] = await batchGetStopsByAtcoCode([endPoint.stopPointRef]);
 
-                return {
-                    startPoint: {
-                        Display: formatStopPoint(startPointStop, startPoint),
-                        Id: startPoint.stopPointRef,
-                    },
-                    endPoint: {
-                        Display: formatStopPoint(endPointStop, endPoint),
-                        Id: endPoint.stopPointRef,
-                    },
-                    stopList,
-                };
-            },
-        ),
+            return {
+                startPoint: {
+                    Display: formatStopPoint(startPointStop, startPoint),
+                    Id: startPoint.stopPointRef,
+                },
+                endPoint: {
+                    Display: formatStopPoint(endPointStop, endPoint),
+                    Id: endPoint.stopPointRef,
+                },
+                stopList,
+            };
+        }),
     );
 
 // Gets a list of journey pattern sections with a given start and end point
@@ -40,7 +38,7 @@ export const getJourneysByStartAndEndPoint = (
     selectedEndPoint: string,
 ): RawJourneyPattern[] =>
     service.journeyPatterns.filter(
-        item =>
+        (item) =>
             item.orderedStopPoints[0].stopPointRef === selectedStartPoint &&
             item.orderedStopPoints.slice(-1)[0].stopPointRef === selectedEndPoint,
     );
@@ -51,5 +49,7 @@ export const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => {
         return b.orderedStopPoints.length - a.orderedStopPoints.length;
     });
 
-    return [...new Set(sortedJourneys.flatMap(journey => journey.orderedStopPoints.map(item => item.stopPointRef)))];
+    return [
+        ...new Set(sortedJourneys.flatMap((journey) => journey.orderedStopPoints.map((item) => item.stopPointRef))),
+    ];
 };

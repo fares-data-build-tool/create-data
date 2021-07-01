@@ -32,7 +32,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             inputChecks.push(passwordValidityError);
         }
 
-        if (inputChecks.some(el => el.errorMessage !== '')) {
+        if (inputChecks.some((el) => el.errorMessage !== '')) {
             setErrorsAttribute(inputChecks, regKey, username, expiry);
             return;
         }

@@ -164,7 +164,7 @@ describe('pages', () => {
             it('should return expected props to the page when the page is first visited by the user', async () => {
                 const ctx = getMockContext({ session: { [SERVICE_LIST_ATTRIBUTE]: null } });
                 const result = await getServerSideProps(ctx);
-                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map(mockService => ({
+                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
                     ...mockService,
                     checked: false,
                 }));
@@ -182,7 +182,7 @@ describe('pages', () => {
                     },
                 });
                 const result = await getServerSideProps(ctx);
-                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map(mockService => ({
+                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
                     ...mockService,
                     checked: false,
                 }));

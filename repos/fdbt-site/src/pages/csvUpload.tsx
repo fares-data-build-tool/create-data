@@ -11,11 +11,12 @@ import { getCsrfToken } from '../utils';
 const title = 'CSV Upload - Create Fares Data Service';
 const description = 'CSV Upload page of the Create Fares Data Service';
 
-const CsvUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
-    <BaseLayout title={title} description={description} errors={uploadProps.errors}>
+const CsvUpload = ({ errors, ...props }: UserDataUploadsProps): ReactElement => (
+    <BaseLayout title={title} description={description} errors={errors}>
         <UserDataUploadComponent
             // eslint-disable-next-line react/jsx-props-no-spreading
-            {...uploadProps}
+            {...props}
+            errors={errors}
             detailBody={
                 <>
                     <p>Some common issues with fares triangle uploads include:</p>

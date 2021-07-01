@@ -160,9 +160,7 @@ describe('pages', () => {
                 {
                     productDates: {
                         startDate: moment().toISOString(),
-                        endDate: moment()
-                            .add(100, 'years')
-                            .toISOString(),
+                        endDate: moment().add(100, 'years').toISOString(),
                         dateInput: {
                             startDateDay: '',
                             startDateMonth: '',
@@ -193,9 +191,7 @@ describe('pages', () => {
                     name: 'Ticket start date (default)',
                 },
                 {
-                    content: moment()
-                        .add(100, 'years')
-                        .format('DD-MM-YYYY'),
+                    content: moment().add(100, 'years').format('DD-MM-YYYY'),
                     href: 'productDateInformation',
                     name: 'Ticket end date (default)',
                 },

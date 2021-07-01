@@ -8,8 +8,8 @@ export const getFareZones = (
     matchingFareZones: MatchingFareZones,
 ): MatchingFareZonesData[] => {
     return userFareStages.fareStages
-        .filter(userStage => matchingFareZones[userStage.stageName])
-        .map(userStage => {
+        .filter((userStage) => matchingFareZones[userStage.stageName])
+        .map((userStage) => {
             const matchedZone = matchingFareZones[userStage.stageName];
 
             return {
@@ -48,4 +48,4 @@ export const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZ
 };
 
 export const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
-    userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
+    userFareStages.fareStages.some((stage) => !matchingFareZones[stage.stageName]);

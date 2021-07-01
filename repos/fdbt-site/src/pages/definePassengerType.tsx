@@ -193,11 +193,11 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                         {fieldset.heading.content}
                     </h2>
                 </legend>
-                {fieldset.inputs.map(input => {
+                {fieldset.inputs.map((input) => {
                     const errorId = createErrorId(input, fieldset.inputErrors);
                     const defaultValue =
-                        fieldset.inputErrors.find(inputError => inputError.id === input.id)?.userInput ||
-                        fieldset.inputs.find(userInput => userInput.id === input.id)?.defaultValue ||
+                        fieldset.inputErrors.find((inputError) => inputError.id === input.id)?.userInput ||
+                        fieldset.inputs.find((userInput) => userInput.id === input.id)?.defaultValue ||
                         '';
                     return (
                         <div
@@ -259,7 +259,7 @@ const DefinePassengerType = ({
                     {group === true && numberOfPassengerTypeFieldset
                         ? numberOfPassengerTypeQuestion(numberOfPassengerTypeFieldset)
                         : ''}
-                    {fieldsets.map(fieldset => {
+                    {fieldsets.map((fieldset) => {
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
                     {isLast && (
@@ -337,7 +337,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType, passengerInfo);
     } else if (group) {
         if (!isWithErrors(passengerTypeErrorsAttribute) && groupPassengerInfo) {
-            passengerInfo = groupPassengerInfo.find(info => info.passengerType === passengerType);
+            passengerInfo = groupPassengerInfo.find((info) => info.passengerType === passengerType);
         }
         numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType, passengerInfo);
     } else if (!group && passengerTypeAttribute && !isWithErrors(passengerTypeAttribute)) {

@@ -26,11 +26,11 @@ const TimeRestrictionsTable = ({
 }: TimeRestrictionsTableProps): ReactElement => {
     const defaultState: { [key: string]: number } = {};
 
-    chosenDays.forEach(day => {
+    chosenDays.forEach((day) => {
         defaultState[day] = 1;
     });
 
-    dayCounters.forEach(dayCounter => {
+    dayCounters.forEach((dayCounter) => {
         defaultState[dayCounter.day] = dayCounter.counter;
     });
 
@@ -46,7 +46,7 @@ const TimeRestrictionsTable = ({
 
     const getInputsForDay = (inputs: TimeInput[], day: string): TimeInput[] => {
         const inputsForDay: TimeInput[] = [];
-        inputs.forEach(input => {
+        inputs.forEach((input) => {
             if (input.day === day) {
                 inputsForDay.push(input);
             }
@@ -118,7 +118,7 @@ const TimeRestrictionsTable = ({
 
     return (
         <>
-            {chosenDays.map(chosenDay => (
+            {chosenDays.map((chosenDay) => (
                 <Fragment key={chosenDay}>
                     <fieldset className="govuk-fieldset flex-container time-restrictions-table">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--m day-label">

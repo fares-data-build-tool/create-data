@@ -53,7 +53,7 @@ const enrichNetexFileData = async (
     const start = (pageNumber - 1) * numberPerPage;
     const slicedFiles = files.slice(start, start + numberPerPage);
 
-    const requestPromises = slicedFiles.map(async file => {
+    const requestPromises = slicedFiles.map(async (file) => {
         if (!file.Key) {
             return null;
         }
@@ -70,7 +70,7 @@ const enrichNetexFileData = async (
     const response = await Promise.all(requestPromises);
 
     return response
-        .map(item => {
+        .map((item) => {
             if (!item?.matchingData?.Body) {
                 return null;
             }
@@ -86,16 +86,16 @@ const enrichNetexFileData = async (
                 passengerType: matchingData.passengerType,
                 date: item.matchingData.LastModified?.toUTCString() ?? '',
                 productNames: isPeriodTicket(matchingData)
-                    ? matchingData.products.map(product => product.productName).join(', ')
+                    ? matchingData.products.map((product) => product.productName).join(', ')
                     : '',
                 serviceNames: isMultipleServicesTicket(matchingData)
-                    ? matchingData.selectedServices.map(service => service.lineName).join(', ')
+                    ? matchingData.selectedServices.map((service) => service.lineName).join(', ')
                     : '',
                 lineName: isPointToPointTicket(matchingData) ? matchingData.lineName : '',
                 zoneName: isGeoZoneTicket(matchingData) ? matchingData.zoneName : '',
                 sopNames: matchingData.products
                     ? (matchingData.products as BaseProduct[])
-                          .map(product => product.salesOfferPackages?.map(sop => sop.name) ?? null)
+                          .map((product) => product.salesOfferPackages?.map((sop) => sop.name) ?? null)
                           .join(', ')
                     : '',
                 signedUrl: item.signedUrl,
@@ -253,7 +253,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
 
     const files = await retrieveNetexForNocs(nocList);
     const filesToEnrich = files
-        .filter(file => {
+        .filter((file) => {
             const diff = file.LastModified ? dateDiffInDays(file.LastModified, currentDate) : 100;
 
             return diff < 60;
