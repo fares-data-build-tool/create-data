@@ -23,7 +23,7 @@ const ErrorSummary = ({ errors }: ErrorSummary): null | ReactElement => {
             </h2>
             <div className="govuk-error-summary__body">
                 <ul className="govuk-list govuk-error-summary__list">
-                    {errors.map(error => (
+                    {errors.map((error) => (
                         <li key={error.id}>
                             <a href={`#${error.id}`}>{error.errorMessage}</a>
                         </li>

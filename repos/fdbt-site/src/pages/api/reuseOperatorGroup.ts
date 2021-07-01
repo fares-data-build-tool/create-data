@@ -46,10 +46,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/multipleOperatorsServiceList');
             return;
         }
-        const ticketRepresentation = (getSessionAttribute(
-            req,
-            TICKET_REPRESENTATION_ATTRIBUTE,
-        ) as TicketRepresentationAttribute).name;
+        const ticketRepresentation = (
+            getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE) as TicketRepresentationAttribute
+        ).name;
         redirectTo(
             res,
             ticketRepresentation === 'multipleServices' ? '/multipleOperatorsServiceList' : '/multipleProducts',

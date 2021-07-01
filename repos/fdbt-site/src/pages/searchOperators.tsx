@@ -29,7 +29,7 @@ export interface SearchOperatorProps {
 
 export const showSelectedOperators = (selectedOperators: Operator[], errors: ErrorInfo[]): ReactElement => {
     const removeOperatorsErrors: ErrorInfo[] = [];
-    errors.forEach(err => {
+    errors.forEach((err) => {
         if (err.id === removeOperatorsErrorId) {
             removeOperatorsErrors.push(err);
         }
@@ -100,7 +100,7 @@ export const renderSearchBox = (operatorsAdded: boolean, errors: ErrorInfo[]): R
         },
     };
     const searchInputErrors: ErrorInfo[] = [];
-    errors.forEach(err => {
+    errors.forEach((err) => {
         if (err.id === searchInputId) {
             searchInputErrors.push(err);
         }
@@ -144,7 +144,7 @@ export const renderSearchBox = (operatorsAdded: boolean, errors: ErrorInfo[]): R
 
 export const showSearchResults = (searchText: string, searchResults: Operator[], errors: ErrorInfo[]): ReactElement => {
     const addOperatorsErrors: ErrorInfo[] = [];
-    errors.forEach(err => {
+    errors.forEach((err) => {
         if (err.id === addOperatorsErrorId) {
             addOperatorsErrors.push(err);
         }
@@ -217,7 +217,7 @@ const SearchOperators = ({
     csrfToken,
 }: SearchOperatorProps): ReactElement => {
     const selectedOperatorsToDisplay = selectedOperators.length > 0;
-    const searchResultsToDisplay = searchResults.length > 0 || errors.find(err => err.id === addOperatorsErrorId);
+    const searchResultsToDisplay = searchResults.length > 0 || errors.find((err) => err.id === addOperatorsErrorId);
     return (
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">

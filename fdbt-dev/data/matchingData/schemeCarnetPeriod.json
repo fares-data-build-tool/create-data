@@ -26,15 +26,9 @@
         {
           "name": "Onboard (cash)",
           "description": "",
-          "purchaseLocations": [
-            "onBoard"
-          ],
-          "paymentMethods": [
-            "cash"
-          ],
-          "ticketFormats": [
-            "paperTicket"
-          ]
+          "purchaseLocations": ["onBoard"],
+          "paymentMethods": ["cash"],
+          "ticketFormats": ["paperTicket"]
         }
       ]
     }
@@ -212,7 +206,5 @@
       "street": "Midgley Road"
     }
   ],
-  "additionalNocs": [
-    "HCTY"
-  ]
+  "additionalNocs": ["HCTY"]
 }

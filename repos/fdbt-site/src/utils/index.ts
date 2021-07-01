@@ -73,7 +73,7 @@ export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
         EXPRESS_SESSION_COOKIE,
     ];
 
-    Object.keys(cookies).forEach(cookie => {
+    Object.keys(cookies).forEach((cookie) => {
         if (!cookieWhitelist.includes(cookie)) {
             destroyCookie(ctx, cookie);
         }
@@ -190,7 +190,7 @@ export const isSchemeOperator = (ctx: NextPageContextWithSession): boolean => !!
 
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
     const compactErrors: ErrorInfo[] = [];
-    errors.forEach(error => {
+    errors.forEach((error) => {
         if (ids.includes(error.id)) {
             compactErrors.push(error);
         }

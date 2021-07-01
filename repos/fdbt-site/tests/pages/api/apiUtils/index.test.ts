@@ -45,13 +45,13 @@ describe('apiUtils', () => {
             ['t est@email.com'],
             ['test@email.com   '],
             ['test@email .com'],
-        ])('should validate that %s returns false', input => {
+        ])('should validate that %s returns false', (input) => {
             expect(checkEmailValid(input)).toBeFalsy();
         });
     });
 
     describe('checkEmailValid', () => {
-        it.each([['test@email.com'], ['TEST@EMAIL.COM']])('should validate that %s returns true', input => {
+        it.each([['test@email.com'], ['TEST@EMAIL.COM']])('should validate that %s returns true', (input) => {
             expect(checkEmailValid(input)).toBeTruthy();
         });
     });

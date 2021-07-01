@@ -85,7 +85,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const naptanInfo = await batchGetStopsByAtcoCode(masterStopList);
     const orderedStops = masterStopList
-        .map(atco => naptanInfo.find(s => s.atcoCode === atco))
+        .map((atco) => naptanInfo.find((s) => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
     const matchingAttribute = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);

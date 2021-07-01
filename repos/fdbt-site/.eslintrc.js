@@ -9,7 +9,6 @@ module.exports = {
         'plugin:react/recommended',
         'airbnb',
         'plugin:prettier/recommended',
-        'prettier/react',
         'plugin:jsx-a11y/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'eslint-config-prettier',
@@ -66,9 +65,7 @@ module.exports = {
         // TODO - review these new rules when bumping lint versions
         'no-unused-expressions': 'off',
         'no-shadow': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/no-unsafe-assignment': 'off',
-        '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-member-access': 'off',
         '@typescript-eslint/no-unsafe-return': 'off',
         '@typescript-eslint/restrict-template-expressions': 'off',
@@ -80,6 +77,7 @@ module.exports = {
         '@typescript-eslint/no-unused-expressions': ['error'],
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
         'react/jsx-indent': [2, 4],
+        'react/require-default-props': 'off',
         'import/extensions': [
             'error',
             'ignorePackages',

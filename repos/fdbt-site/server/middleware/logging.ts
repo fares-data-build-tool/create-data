@@ -9,7 +9,7 @@ export default (server: Express): void => {
             format: process.env.NODE_ENV === 'production' ? format.json() : format.simple(),
             colorize: false,
             metaField: 'null',
-            ignoreRoute: req => req.originalUrl.startsWith('/_next') || req.originalUrl.startsWith('/assets'),
+            ignoreRoute: (req) => req.originalUrl.startsWith('/_next') || req.originalUrl.startsWith('/assets'),
             requestWhitelist: ['url', 'method', 'httpVersion'],
         }),
     );

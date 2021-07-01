@@ -154,7 +154,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
     const logoutAndRedirect = (username: string | null = null): void => {
         signOutUser(username, req, res)
             .then(() => res.redirect('/login'))
-            .catch(error => {
+            .catch((error) => {
                 logger.error(error, {
                     context: 'server.middleware.authentication',
                     message: 'failed to sign out user',
@@ -181,7 +181,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
         return;
     }
 
-    verify(idToken, getKey, verifyOptions, err => {
+    verify(idToken, getKey, verifyOptions, (err) => {
         if (err) {
             const decodedToken = decode(idToken) as CognitoIdToken;
             const username = decodedToken?.['cognito:username'] ?? null;
@@ -196,7 +196,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                     });
 
                     initiateRefreshAuth(username, refreshToken)
-                        .then(data => {
+                        .then((data) => {
                             if (data.AuthenticationResult?.IdToken) {
                                 setCookieOnResponseObject(ID_TOKEN_COOKIE, data.AuthenticationResult.IdToken, req, res);
                                 logger.info('', {
@@ -211,7 +211,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
 
                             logoutAndRedirect(username);
                         })
-                        .catch(error => {
+                        .catch((error) => {
                             logger.warn(error, {
                                 context: 'server.middleware.authentication',
                                 message: 'failed to refresh ID token',

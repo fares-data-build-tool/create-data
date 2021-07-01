@@ -44,8 +44,8 @@ export const getAtcoCodesForStops = async (
 ): Promise<UserFareZone[]> => {
     try {
         const atcoItems = await getAtcoCodesByNaptanCodes(naptanCodesToQuery);
-        const userFareZones = rawUserFareZones.map(rawUserFareZone => {
-            const atcoItem = atcoItems.find(item => rawUserFareZone.NaptanCodes === item.naptanCode);
+        const userFareZones = rawUserFareZones.map((rawUserFareZone) => {
+            const atcoItem = atcoItems.find((item) => rawUserFareZone.NaptanCodes === item.naptanCode);
             if (atcoItem) {
                 return {
                     ...rawUserFareZone,
@@ -83,7 +83,7 @@ export const processCsv = async (
     try {
         let csvValid = true;
         const rawUserFareZones = parsedFileContent
-            .map(parsedItem => {
+            .map((parsedItem) => {
                 const item = {
                     FareZoneName: parsedFileContent?.[0]?.FareZoneName,
                     NaptanCodes: parsedItem.NaptanCodes,
@@ -101,7 +101,7 @@ export const processCsv = async (
 
                 return item;
             })
-            .filter(parsedItem => parsedItem.NaptanCodes !== '' || parsedItem.AtcoCodes !== '');
+            .filter((parsedItem) => parsedItem.NaptanCodes !== '' || parsedItem.AtcoCodes !== '');
 
         if (rawUserFareZones.length === 0) {
             logger.warn('', {
@@ -118,8 +118,8 @@ export const processCsv = async (
 
         let userFareZones = rawUserFareZones;
         const naptanCodesToQuery = rawUserFareZones
-            .filter(rawUserFareZone => rawUserFareZone.AtcoCodes === '')
-            .map(rawUserFareZone => rawUserFareZone.NaptanCodes);
+            .filter((rawUserFareZone) => rawUserFareZone.AtcoCodes === '')
+            .map((rawUserFareZone) => rawUserFareZone.NaptanCodes);
 
         if (naptanCodesToQuery.length !== 0) {
             userFareZones = await getAtcoCodesForStops(rawUserFareZones, naptanCodesToQuery);
@@ -155,7 +155,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
-            const atcoCodes: string[] = userFareZones.map(fareZone => fareZone.AtcoCodes);
+            const atcoCodes: string[] = userFareZones.map((fareZone) => fareZone.AtcoCodes);
 
             try {
                 await batchGetStopsByAtcoCode(atcoCodes);

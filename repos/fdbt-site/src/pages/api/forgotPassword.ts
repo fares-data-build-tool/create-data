@@ -9,7 +9,7 @@ const errorId = 'email';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const { email } = req.body;
+        const { email }: { email: string } = req.body;
 
         if (!email || !email.trim().length) {
             updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, {

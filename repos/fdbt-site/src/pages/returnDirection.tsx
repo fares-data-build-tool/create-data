@@ -120,7 +120,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     service.journeyPatterns = service.journeyPatterns.filter(
         (pattern, index, self) =>
             self.findIndex(
-                item => item.endPoint.Id === pattern.endPoint.Id && item.startPoint.Id === pattern.startPoint.Id,
+                (item) => item.endPoint.Id === pattern.endPoint.Id && item.startPoint.Id === pattern.startPoint.Id,
             ) === index,
     );
 

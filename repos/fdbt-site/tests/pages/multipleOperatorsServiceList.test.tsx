@@ -163,7 +163,7 @@ describe('pages', () => {
                     },
                 });
                 const result = await getServerSideProps(ctx);
-                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map(mockService => ({
+                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
                     ...mockService,
                     checked: false,
                 }));
@@ -193,7 +193,7 @@ describe('pages', () => {
                     },
                 });
                 const result = await getServerSideProps(ctx);
-                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map(mockService => ({
+                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
                     ...mockService,
                     checked: false,
                 }));
@@ -227,7 +227,7 @@ describe('pages', () => {
                     },
                 });
                 const result = await getServerSideProps(ctx);
-                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map(mockService => ({
+                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
                     ...mockService,
                     checked: false,
                 }));
@@ -265,7 +265,7 @@ describe('pages', () => {
                     },
                 });
                 const result = await getServerSideProps(ctx);
-                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map(mockService => ({
+                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
                     ...mockService,
                     checked: false,
                 }));

@@ -5,7 +5,7 @@ const RadioButtons = ({ options, inputName }: RadioButtonsProps): ReactElement =
     return (
         <>
             <div className="govuk-radios">
-                {options.map(option => (
+                {options.map((option) => (
                     <div className="govuk-radios__item" key={option.value}>
                         <input
                             className="govuk-radios__input"

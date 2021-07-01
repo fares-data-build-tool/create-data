@@ -25,12 +25,7 @@ describe('Pagination', () => {
             <Pagination currentPage={1} link="https://test.example.com" numberOfResults={10} numberPerPage={2} />,
         );
 
-        expect(
-            wrapper
-                .find('li')
-                .first()
-                .text(),
-        ).not.toBe('« Previous');
+        expect(wrapper.find('li').first().text()).not.toBe('« Previous');
     });
 
     it('should show previous button if current page is not 1', () => {
@@ -38,12 +33,7 @@ describe('Pagination', () => {
             <Pagination currentPage={2} link="https://test.example.com" numberOfResults={10} numberPerPage={2} />,
         );
 
-        expect(
-            wrapper
-                .find('li')
-                .first()
-                .text(),
-        ).toBe('« Previous');
+        expect(wrapper.find('li').first().text()).toBe('« Previous');
     });
 
     it('should show correct previous link', () => {
@@ -51,12 +41,7 @@ describe('Pagination', () => {
             <Pagination currentPage={3} link="https://test.example.com" numberOfResults={10} numberPerPage={2} />,
         );
 
-        expect(
-            wrapper
-                .find('a')
-                .first()
-                .props().href,
-        ).toBe('https://test.example.com?page=2');
+        expect(wrapper.find('a').first().props().href).toBe('https://test.example.com?page=2');
     });
 
     it('should not show next button if current page is last page', () => {
@@ -64,12 +49,7 @@ describe('Pagination', () => {
             <Pagination currentPage={5} link="https://test.example.com" numberOfResults={10} numberPerPage={2} />,
         );
 
-        expect(
-            wrapper
-                .find('li')
-                .last()
-                .text(),
-        ).not.toBe('Next »');
+        expect(wrapper.find('li').last().text()).not.toBe('Next »');
     });
 
     it('should show next button if current page is not last page', () => {
@@ -77,12 +57,7 @@ describe('Pagination', () => {
             <Pagination currentPage={1} link="https://test.example.com" numberOfResults={10} numberPerPage={2} />,
         );
 
-        expect(
-            wrapper
-                .find('li')
-                .last()
-                .text(),
-        ).toBe('Next »');
+        expect(wrapper.find('li').last().text()).toBe('Next »');
     });
 
     it('should show correct next link', () => {
@@ -90,12 +65,7 @@ describe('Pagination', () => {
             <Pagination currentPage={3} link="https://test.example.com" numberOfResults={10} numberPerPage={2} />,
         );
 
-        expect(
-            wrapper
-                .find('a')
-                .last()
-                .props().href,
-        ).toBe('https://test.example.com?page=4');
+        expect(wrapper.find('a').last().props().href).toBe('https://test.example.com?page=4');
     });
 
     it('should mark current page as current', () => {
@@ -103,11 +73,6 @@ describe('Pagination', () => {
             <Pagination currentPage={5} link="https://test.example.com" numberOfResults={10} numberPerPage={2} />,
         );
 
-        expect(
-            wrapper
-                .find('.current')
-                .last()
-                .text(),
-        ).toBe('5');
+        expect(wrapper.find('.current').last().text()).toBe('5');
     });
 });

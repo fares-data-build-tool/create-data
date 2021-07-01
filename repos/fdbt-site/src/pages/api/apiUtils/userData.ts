@@ -87,9 +87,9 @@ export const getProductsAndSalesOfferPackages = (
 ): ProductDetails[] => {
     const productSOPList: ProductDetails[] = [];
 
-    salesOfferPackagesInfo.forEach(sopInfo => {
+    salesOfferPackagesInfo.forEach((sopInfo) => {
         const matchedProduct = multipleProductAttribute.products.find(
-            product => product.productName === sopInfo.productName,
+            (product) => product.productName === sopInfo.productName,
         );
         if (!matchedProduct) {
             throw new Error('No products could be found that matched the sales offer packages');
@@ -325,7 +325,7 @@ export const getGeoZoneTicketJson = async (
 
     const additionalNocs =
         basePeriodTicketAttributes.type === 'multiOperator' && multiOpAttribute
-            ? multiOpAttribute.selectedOperators.map(operator => operator.nocCode)
+            ? multiOpAttribute.selectedOperators.map((operator) => operator.nocCode)
             : undefined;
 
     if (zoneStops.length === 0) {
@@ -362,7 +362,7 @@ export const getMultipleServicesTicketJson = (
             MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
         ) as MultiOperatorInfo[];
         const additionalOperatorsInfo = {
-            additionalOperators: multipleOperatorsServices.map(operator => ({
+            additionalOperators: multipleOperatorsServices.map((operator) => ({
                 nocCode: operator.nocCode,
                 selectedServices: operator.services,
             })),
@@ -530,7 +530,7 @@ export const adjustSchemeOperatorJson = async (
             MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
         ) as MultiOperatorInfo[];
         const additionalOperatorsInfo = {
-            additionalOperators: multipleOperatorsServices.map(operator => ({
+            additionalOperators: multipleOperatorsServices.map((operator) => ({
                 nocCode: operator.nocCode,
                 selectedServices: operator.services,
             })),
@@ -570,7 +570,7 @@ export const adjustSchemeOperatorJson = async (
     const nocCode = getAndValidateNoc(req, res);
     const atcoCodes: string[] = await getCsvZoneUploadData(`fare-zone/${nocCode}/${matchingJson.uuid}.json`);
     const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
-    const additionalNocs = multiOpAttribute.selectedOperators.map(operator => operator.nocCode);
+    const additionalNocs = multiOpAttribute.selectedOperators.map((operator) => operator.nocCode);
 
     if (zoneStops.length === 0) {
         throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);

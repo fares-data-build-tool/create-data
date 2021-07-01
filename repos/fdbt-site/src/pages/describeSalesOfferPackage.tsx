@@ -30,11 +30,11 @@ export const isSalesOfferPackageWithErrors = (
 const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSopProps): ReactElement => {
     const sopNameError =
         sopInfo && isSalesOfferPackageWithErrors(sopInfo)
-            ? sopInfo.errors.find(error => error.id === 'sop-name')
+            ? sopInfo.errors.find((error) => error.id === 'sop-name')
             : undefined;
     const sopDescriptionError =
         sopInfo && isSalesOfferPackageWithErrors(sopInfo)
-            ? sopInfo.errors.find(error => error.id === 'sop-description')
+            ? sopInfo.errors.find((error) => error.id === 'sop-description')
             : undefined;
     const errors = sopInfo && isSalesOfferPackageWithErrors(sopInfo) ? sopInfo.errors : [];
     return (

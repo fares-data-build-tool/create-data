@@ -29,7 +29,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const formatMatchingFareZones = getFareZones(userFareStages, matchingFareZones);
 
         const matchedFareZones: MatchingFareZones = {};
-        formatMatchingFareZones.forEach(fareStage => {
+        formatMatchingFareZones.forEach((fareStage) => {
             matchedFareZones[fareStage.name] = fareStage;
         });
 

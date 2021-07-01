@@ -105,12 +105,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ch
 
     if (fullTimeRestrictionsAttribute) {
         if (fullTimeRestrictionsAttribute.errors.length > 0) {
-            fullTimeRestrictionsAttribute.errors.forEach(error => errors.push(error));
+            fullTimeRestrictionsAttribute.errors.forEach((error) => errors.push(error));
         }
 
         if (fullTimeRestrictionsAttribute.fullTimeRestrictions.length > 0) {
-            fullTimeRestrictionsAttribute.fullTimeRestrictions.forEach(fullTimeRestriction => {
-                fullTimeRestriction.timeBands.forEach(timeBand => {
+            fullTimeRestrictionsAttribute.fullTimeRestrictions.forEach((fullTimeRestriction) => {
+                fullTimeRestriction.timeBands.forEach((timeBand) => {
                     startTimeInputs.push({ timeInput: timeBand.startTime, day: fullTimeRestriction.day });
                     endTimeInputs.push({ timeInput: timeBand.endTime, day: fullTimeRestriction.day });
                 });

@@ -45,7 +45,7 @@ export const containsDuplicateFareStages = (fareStageNames: string[]): boolean =
 
 export const isNotTicketerFormat = (fareStageLines: string[][]): boolean => {
     const items = fareStageLines[0];
-    const trimmedItems = items.map(item => item.trim());
+    const trimmedItems = items.map((item) => item.trim());
 
     return !trimmedItems[0] || trimmedItems[0] === '';
 };
@@ -93,7 +93,7 @@ export const faresTriangleDataMapper = (
 
     for (let rowNum = 0; rowNum < fareStageLines.length; rowNum += 1) {
         const items = fareStageLines[rowNum] || [];
-        const trimmedItems = items.map(item => item.trim().replace(/^"(.*)"$/, '$1'));
+        const trimmedItems = items.map((item) => item.trim().replace(/^"(.*)"$/, '$1'));
         const stageName = notTicketerFormat ? trimmedItems[rowNum + 1] : trimmedItems[rowNum];
 
         if (!stageName) {
@@ -107,7 +107,7 @@ export const faresTriangleDataMapper = (
             return null;
         }
 
-        if (trimmedItems.every(item => item === '' || item === null)) {
+        if (trimmedItems.every((item) => item === '' || item === null)) {
             break;
         }
 
@@ -178,13 +178,13 @@ export const faresTriangleDataMapper = (
     }
 
     const mappedFareTriangle: UserFareStages = {
-        fareStages: fareTriangle.fareStages.map(item => ({
+        fareStages: fareTriangle.fareStages.map((item) => ({
             ...item,
             prices: Object.values(item.prices),
         })),
     };
 
-    const fareStageNames: string[] = mappedFareTriangle.fareStages.map(fareStage => fareStage.stageName);
+    const fareStageNames: string[] = mappedFareTriangle.fareStages.map((fareStage) => fareStage.stageName);
 
     if (containsDuplicateFareStages(fareStageNames)) {
         logger.warn('', {

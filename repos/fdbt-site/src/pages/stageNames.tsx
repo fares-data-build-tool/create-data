@@ -120,7 +120,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: St
 
     if (inputChecks.length > 0) {
         const errors: ErrorInfo[] = [];
-        inputChecks.forEach(inputCheck => {
+        inputChecks.forEach((inputCheck) => {
             if (inputCheck.error !== '') {
                 errors.push({ errorMessage: inputCheck.error, id: inputCheck.id });
             }
