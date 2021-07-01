@@ -65,12 +65,18 @@ export interface Stop {
 
 // Matching Data (created by the user on the site)
 
-export type Ticket =
+export type SpecificTicket =
     | PointToPointTicket
     | GeoZoneTicket
     | PeriodMultipleServicesTicket
     | FlatFareTicket
     | SchemeOperatorTicket;
+
+export type Ticket = SpecificTicket &
+    Partial<{
+        groupDefinition: { maxPeople?: string; companions?: GroupCompanion[] };
+        carnet: boolean;
+    }>;
 
 export interface SalesOfferPackage {
     name: string;
