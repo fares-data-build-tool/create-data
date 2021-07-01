@@ -169,7 +169,7 @@ export type SessionAttribute<T extends string> = T extends keyof SessionAttribut
 export const getSessionAttribute = <T extends keyof SessionAttributeTypes>(
     req: IncomingMessageWithSession,
     attributeName: T,
-): SessionAttributeTypes[T] | undefined => req?.session?.[attributeName];
+): SessionAttributeTypes[T] | undefined => req?.session?.[attributeName] as SessionAttributeTypes[T];
 
 export const updateSessionAttribute = <T extends string>(
     req: IncomingMessageWithSession,

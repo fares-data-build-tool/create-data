@@ -95,7 +95,7 @@ const generateCheckbox = (
     const [selected, setSelected] = useState(selectedDefault);
 
     return pairs.map((pair, pairIndex) => (
-        <div className="govuk-grid-row">
+        <div className="govuk-grid-row" key={pairIndex}>
             {pair.map((offer, innerIndex) => {
                 const index = 2 * pairIndex + innerIndex;
                 const { name, description, purchaseLocations, paymentMethods, ticketFormats } = offer;
@@ -189,7 +189,7 @@ const createSalesOffer = (
     customPriceEnabled: boolean,
 ): ReactElement[] =>
     products.map(({ productName, productPrice }) => (
-        <div className="sop-option">
+        <div className="sop-option" key={productName}>
             <FormGroupWrapper
                 errorIds={[`product-${[removeAllWhiteSpace(productName)]}-checkbox-0`]}
                 errors={errors}
