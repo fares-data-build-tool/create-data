@@ -61,6 +61,18 @@ export const buildNocList = (ticket: Ticket): string[] => {
     const nocs: string[] = [];
 
     if (
+        // has user noc and additional nocs
+        isMultiOperatorGeoZoneTicket(ticket)
+    ) {
+        ticket.additionalNocs.forEach(additionalNoc => nocs.push(additionalNoc));
+        nocs.push(ticket.nocCode);
+    } else if (
+        // has user noc and additional operators
+        isMultiOperatorMultipleServicesTicket(ticket)
+    ) {
+        ticket.additionalOperators.forEach(additionalOperator => nocs.push(additionalOperator.nocCode));
+        nocs.push(ticket.nocCode);
+    } else if (
         // has only user noc
         isPointToPointTicket(ticket) ||
         isFlatFareTicket(ticket) ||
@@ -78,18 +90,6 @@ export const buildNocList = (ticket: Ticket): string[] => {
         isSchemeOperatorFlatFareTicket(ticket)
     ) {
         ticket.additionalOperators.forEach(additionalOperator => nocs.push(additionalOperator.nocCode));
-    } else if (
-        // has user noc and additional nocs
-        isMultiOperatorGeoZoneTicket(ticket)
-    ) {
-        ticket.additionalNocs.forEach(additionalNoc => nocs.push(additionalNoc));
-        nocs.push(ticket.nocCode);
-    } else if (
-        // has user noc and additional operators
-        isMultiOperatorMultipleServicesTicket(ticket)
-    ) {
-        ticket.additionalOperators.forEach(additionalOperator => nocs.push(additionalOperator.nocCode));
-        nocs.push(ticket.nocCode);
     }
 
     return nocs;

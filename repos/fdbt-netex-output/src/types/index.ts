@@ -70,7 +70,9 @@ export type SpecificTicket =
     | GeoZoneTicket
     | PeriodMultipleServicesTicket
     | FlatFareTicket
-    | SchemeOperatorTicket;
+    | SchemeOperatorGeoZoneTicket
+    | SchemeOperatorFlatFareTicket
+    | MultiOperatorGeoZoneTicket;
 
 export type Ticket = SpecificTicket &
     Partial<{
@@ -258,6 +260,7 @@ export interface SchemeOperatorTicket {
     uuid: string;
     timeRestriction?: FullTimeRestriction[];
     ticketPeriod: TicketPeriod;
+    products: (ProductDetails | FlatFareProductDetails)[];
 }
 
 export interface SchemeOperatorGeoZoneTicket extends SchemeOperatorTicket {
@@ -314,19 +317,23 @@ export const isMultiOperatorTicket = (
 ): ticketData is MultiOperatorGeoZoneTicket | MultiOperatorMultipleServicesTicket | SchemeOperatorGeoZoneTicket =>
     ticketData.type === 'multiOperator';
 
-export const isMultiOperatorGeoZoneTicket = (ticketData: Ticket): ticketData is MultiOperatorGeoZoneTicket =>
-    !!(ticketData as MultiOperatorGeoZoneTicket).nocCode &&
-    (ticketData as MultiOperatorGeoZoneTicket).additionalNocs &&
-    (ticketData as MultiOperatorGeoZoneTicket).additionalNocs.length > 0;
+export const isMultiOperatorGeoZoneTicket = (ticket: Ticket): ticket is MultiOperatorGeoZoneTicket =>
+    ticket.type === 'period' &&
+    'zoneName' in ticket &&
+    !!(ticket as MultiOperatorGeoZoneTicket).nocCode &&
+    (ticket as MultiOperatorGeoZoneTicket).additionalNocs &&
+    (ticket as MultiOperatorGeoZoneTicket).additionalNocs.length > 0;
 
-export const isMultiOperatorMultipleServicesTicket = (
-    ticketData: Ticket,
-): ticketData is MultiOperatorMultipleServicesTicket =>
-    !!(ticketData as MultiOperatorGeoZoneTicket).nocCode &&
-    (ticketData as MultiOperatorMultipleServicesTicket).additionalOperators &&
-    (ticketData as MultiOperatorMultipleServicesTicket).additionalOperators.length > 0;
+export const isMultiOperatorMultipleServicesTicket = (ticket: Ticket): ticket is MultiOperatorMultipleServicesTicket =>
+    !!(ticket as MultiOperatorGeoZoneTicket).nocCode &&
+    (ticket as MultiOperatorMultipleServicesTicket).additionalOperators &&
+    (ticket as MultiOperatorMultipleServicesTicket).additionalOperators.length > 0 &&
+    ticket.type === 'period' &&
+    'selectedServices' in ticket;
 
-export const isSchemeOperatorTicket = (data: Ticket): data is SchemeOperatorTicket =>
+export const isSchemeOperatorTicket = (
+    data: Ticket,
+): data is SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket =>
     (data as SchemeOperatorTicket).schemeOperatorName !== undefined &&
     (data as SchemeOperatorTicket).schemeOperatorRegionCode !== undefined;
 
