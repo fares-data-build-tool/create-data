@@ -63,25 +63,6 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps): ReactElement
                                                 Manual fares triangle input
                                             </label>
                                         </div>
-                                        <div className="govuk-radios__item">
-                                            <input
-                                                className={`govuk-radios__input ${
-                                                    errors.length > 0 ? 'govuk-input--error' : ''
-                                                } `}
-                                                id="interactive-map"
-                                                name="inputMethod"
-                                                type="radio"
-                                                value="interactiveMap"
-                                                disabled
-                                                aria-disabled="true"
-                                            />
-                                            <label
-                                                className="govuk-label govuk-radios__label"
-                                                htmlFor="interactive-map"
-                                            >
-                                                Interactive Map (not yet available)
-                                            </label>
-                                        </div>
                                     </div>
                                 </FormElementWrapper>
                             </fieldset>

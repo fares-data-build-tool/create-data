@@ -1,3 +1,4 @@
+import AWS, { SNS } from 'aws-sdk';
 import { S3Event } from 'aws-lambda';
 import libxslt from 'libxslt';
 import {
@@ -99,11 +100,13 @@ export const buildNocList = (ticket: Ticket): string[] => {
 };
 
 export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
+    const { SNS_ALERTS_ARN } = process.env;
+    let s3FileName = '';
     try {
         const ticket = await s3.fetchDataFromS3<
             PointToPointTicket | PeriodTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket
         >(event);
-        const s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
+        s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
         const { type } = ticket;
 
         console.info(`NeTEx generation starting for type ${type}...`);
@@ -120,8 +123,23 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             console.info(`NeTEx generation complete for type ${type}`);
         }
     } catch (error) {
-        console.error(error.stack);
-        throw new Error(error);
+        const sns: SNS = new AWS.SNS();
+
+        const messageParams = {
+            Subject: 'NeTEx Convertor',
+            Message: `There was an error when converting the NeTEx file: ${s3FileName}`,
+            TopicArn: SNS_ALERTS_ARN,
+            MessageAttributes: {
+                NewStateValue: {
+                    DataType: 'String',
+                    StringValue: 'ALARM',
+                },
+            },
+        };
+
+        await sns.publish(messageParams).promise();
+
+        throw error;
     }
 };
 

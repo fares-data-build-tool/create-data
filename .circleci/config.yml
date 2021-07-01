@@ -798,21 +798,10 @@ workflows:
             branches:
               only: master
 
-      - slack/on-hold:
-          <<: *slack-fail-post-step
-          name: hold-reference-data-retrievers-prod-deployment
-          requires:
-            - audit-reference-data-retrievers
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
       - deploy-reference-data-retrievers-to-prod:
           <<: *slack-fail-post-step
           requires:
-            - hold-reference-data-retrievers-prod-deployment
+            - hold-reference-data-prod-deployment
           context: tfn-fdbt-prod
           filters:
             tags:
@@ -854,7 +843,7 @@ workflows:
             branches:
               only: master
 
-      - hold-reference-data-uploaders-prod-deployment:
+      - hold-reference-data-prod-deployment:
           <<: *slack-fail-post-step
           requires:
             - test-reference-data-uploaders
@@ -868,7 +857,7 @@ workflows:
       - deploy-reference-data-uploaders-to-prod:
           <<: *slack-fail-post-step
           requires:
-            - hold-reference-data-uploaders-prod-deployment
+            - hold-reference-data-prod-deployment
           context: tfn-fdbt-prod
           filters:
             tags:
