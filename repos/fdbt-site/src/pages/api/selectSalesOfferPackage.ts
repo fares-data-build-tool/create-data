@@ -28,7 +28,9 @@ export const sanitiseReqBody = (req: NextApiRequestWithSession): SanitisedBodyAn
 
         if (key.startsWith(productPrefix)) {
             if (value && Array.isArray(value)) {
-                sanitisedBody[key.substring(productPrefix.length)] = value.filter((a) => a).map((it) => JSON.parse(it));
+                sanitisedBody[key.substring(productPrefix.length)] = value
+                    .filter((a) => a)
+                    .map((it) => JSON.parse(it) as SalesOfferPackage);
             } else {
                 errors.push({
                     errorMessage: 'Choose at least one sales offer package from the options',

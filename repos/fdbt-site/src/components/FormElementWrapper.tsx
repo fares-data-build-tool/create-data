@@ -33,7 +33,7 @@ export const FormErrorBlock = ({ errors, errorIds }: FormErrorBlockProps): React
         {errors
             .filter((error) => errorIds.includes(error.id))
             .map((error) => (
-                <span className="govuk-error-message">
+                <span className="govuk-error-message" key={error.errorMessage}>
                     <span className="govuk-visually-hidden">Error: </span>
                     {error.errorMessage}
                 </span>

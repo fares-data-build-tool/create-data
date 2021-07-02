@@ -45,7 +45,7 @@ export const getUserFareStages = async (uuid: string): Promise<UserFareStages> =
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
-        return JSON.parse(dataAsString);
+        return JSON.parse(dataAsString) as UserFareStages;
     } catch (error) {
         throw new Error(`Could not retrieve fare stages from S3: ${error.stack}`);
     }
@@ -94,7 +94,7 @@ export const getOutboundMatchingFareStages = async (uuid: string): Promise<Match
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
-        return JSON.parse(dataAsString);
+        return JSON.parse(dataAsString) as MatchingFareZones;
     } catch (error) {
         throw new Error(`Could not retrieve outbound matching fare zones from S3: ${error.stack}`);
     }

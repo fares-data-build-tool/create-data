@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any,react/display-name */
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import React from 'react';

@@ -13,7 +13,7 @@ import {
     COOKIE_PREFERENCES_COOKIE,
     CSRF_COOKIE,
     EXPRESS_SESSION_COOKIE,
-} from '../constants/index';
+} from '../constants';
 import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { getSessionAttribute } from './sessions';
 import {
@@ -32,7 +32,7 @@ export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribu
         if (jsonAttribute) {
             const parsedCookie = JSON.parse(cookies[cookie]);
 
-            return parsedCookie[jsonAttribute];
+            return parsedCookie[jsonAttribute] as string;
         }
 
         return cookies[cookie];

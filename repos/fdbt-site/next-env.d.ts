@@ -1,4 +1,4 @@
-/* eslint-disable camelcase,max-classes-per-file,import/no-duplicates */
+/* eslint-disable camelcase,max-classes-per-file */
 // / <reference types="next" />
 // / <reference types="next/types/global" />
 // / <reference types="next-images" />
