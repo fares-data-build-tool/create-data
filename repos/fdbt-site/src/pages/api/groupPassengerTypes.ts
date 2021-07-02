@@ -28,7 +28,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             if (!isArray(chosenPassengerTypes)) {
                 passengerTypes.push(chosenPassengerTypes);
             } else {
-                chosenPassengerTypes.forEach(passenger => {
+                chosenPassengerTypes.forEach((passenger) => {
                     passengerTypes.push(passenger);
                 });
             }

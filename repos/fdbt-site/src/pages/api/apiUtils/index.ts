@@ -222,7 +222,7 @@ export const getSelectedStages = (req: NextApiRequest): string[][] => {
 
     const selectObjectsArray: string[][] = [];
 
-    Object.keys(requestBody).map(e => {
+    Object.keys(requestBody).map((e) => {
         if (requestBody[e] !== '') {
             selectObjectsArray.push(requestBody[e]);
         }

@@ -61,8 +61,7 @@ const TicketRepresentation = ({
                                                   {
                                                       value: 'pointToPointPeriod',
                                                       label: 'Point to Point',
-                                                      hint:
-                                                          'Unlimited travel between two fixed points in both directions',
+                                                      hint: 'Unlimited travel between two fixed points in both directions',
                                                   },
                                               ]
                                             : []),
@@ -71,8 +70,7 @@ const TicketRepresentation = ({
                                                   {
                                                       value: 'hybrid',
                                                       label: 'Hybrid period ticket',
-                                                      hint:
-                                                          'Unlimited travel within a geographic zone and certain additional services outside that zone',
+                                                      hint: 'Unlimited travel within a geographic zone and certain additional services outside that zone',
                                                   },
                                               ]
                                             : []),

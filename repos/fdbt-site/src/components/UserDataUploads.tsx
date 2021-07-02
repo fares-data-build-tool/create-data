@@ -90,8 +90,9 @@ const UserDataUploadComponent = ({
                             <fieldset className="govuk-fieldset">
                                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                                     <h2
-                                        className={`govuk-fieldset__heading ${!showPriceOption &&
-                                            'govuk-visually-hidden'}`}
+                                        className={`govuk-fieldset__heading ${
+                                            !showPriceOption && 'govuk-visually-hidden'
+                                        }`}
                                         id="passenger-type-page-heading"
                                     >
                                         Upload file

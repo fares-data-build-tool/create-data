@@ -11,8 +11,8 @@ export const removeOperatorsFromPreviouslySelectedOperators = (
     rawList: string[],
     selectedOperators: Operator[],
 ): Operator[] => {
-    const listToRemove = new Set(rawList.map(item => item.split('#')[0]));
-    const updatedList = selectedOperators.filter(operator => !listToRemove.has(operator.nocCode));
+    const listToRemove = new Set(rawList.map((item) => item.split('#')[0]));
+    const updatedList = selectedOperators.filter((operator) => !listToRemove.has(operator.nocCode));
     return updatedList;
 };
 
@@ -20,7 +20,7 @@ export const addOperatorsToPreviouslySelectedOperators = (
     rawList: string[],
     selectedOperators: Operator[],
 ): Operator[] => {
-    const formattedRawList = rawList.map(item => ({
+    const formattedRawList = rawList.map((item) => ({
         nocCode: item.split('#')[0],
         name: item.split('#')[1],
     }));

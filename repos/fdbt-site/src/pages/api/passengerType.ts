@@ -15,7 +15,7 @@ import { getPassengerTypeRedirectLocation } from './definePassengerType';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const passengerTypeValues = PASSENGER_TYPES_WITH_GROUP.map(type => type.passengerTypeValue);
+        const passengerTypeValues = PASSENGER_TYPES_WITH_GROUP.map((type) => type.passengerTypeValue);
 
         if (req.body.passengerType && passengerTypeValues.includes(req.body.passengerType)) {
             const { passengerType } = req.body;
@@ -27,7 +27,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
 
                 const { reuseGroup } = req.body;
-                const reusedGroup = savedGroups.find(group => group.name === reuseGroup);
+                const reusedGroup = savedGroups.find((group) => group.name === reuseGroup);
                 if (!reusedGroup || !reuseGroup) {
                     const errors = [
                         { errorMessage: 'Select a group to reuse', id: `passenger-type-${GROUP_PASSENGER_TYPE}` },
@@ -39,7 +39,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     return;
                 }
 
-                const passengerTypes = reusedGroup.companions.map(companion => companion.passengerType);
+                const passengerTypes = reusedGroup.companions.map((companion) => companion.passengerType);
 
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType: GROUP_PASSENGER_TYPE });
                 updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, reusedGroup.companions);

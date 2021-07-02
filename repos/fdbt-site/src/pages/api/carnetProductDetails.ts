@@ -13,7 +13,7 @@ import { updateSessionAttribute } from '../../utils/sessions';
 const getProductDetails = (req: NextApiRequestWithSession): CarnetProductInfo => {
     const productDetails = { ...req.body };
 
-    Object.keys(req.body).forEach(k => {
+    Object.keys(req.body).forEach((k) => {
         productDetails[k] = removeExcessWhiteSpace(productDetails[k]);
     });
 

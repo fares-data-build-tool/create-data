@@ -182,7 +182,7 @@ export const updateSessionAttribute = <T extends string>(
 export const regenerateSession = (req: IncomingMessageWithSession): void => {
     const attributesList = Object.values(attributes) as string[];
 
-    Object.keys(req.session).forEach(attribute => {
+    Object.keys(req.session).forEach((attribute) => {
         if (attributesList.includes(attribute) && attribute !== OPERATOR_ATTRIBUTE) {
             updateSessionAttribute(req, attribute, undefined);
         }

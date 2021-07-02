@@ -49,9 +49,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -91,9 +89,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -136,9 +132,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -186,9 +180,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -232,9 +224,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -269,9 +259,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -306,9 +294,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -352,9 +338,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -395,9 +379,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -436,9 +418,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -483,9 +463,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -524,9 +502,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -570,9 +546,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -617,9 +591,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -658,9 +630,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -698,9 +668,7 @@ describe('csvUpload', () => {
             },
         });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(true);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(true);
 
         await csvUpload.default(req, res);
 

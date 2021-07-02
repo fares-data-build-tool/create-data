@@ -17,15 +17,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     try {
         let errors: ErrorInfo[] = [];
 
-        const {
-            startDateDay,
-            startDateMonth,
-            startDateYear,
-            endDateDay,
-            endDateMonth,
-            endDateYear,
-            productDates,
-        } = req.body;
+        const { startDateDay, startDateMonth, startDateYear, endDateDay, endDateMonth, endDateYear, productDates } =
+            req.body;
 
         const dateInput: ProductDateInformation = {
             startDateDay,
@@ -101,7 +94,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     await combinedDateSchema.validate({ startDate, endDate }, { abortEarly: false });
                 } catch (validationErrors) {
                     const validityErrors: yup.ValidationError = validationErrors;
-                    errors = validityErrors.inner.map(error => ({
+                    errors = validityErrors.inner.map((error) => ({
                         id: 'end-date-day',
                         errorMessage: error.message,
                     }));

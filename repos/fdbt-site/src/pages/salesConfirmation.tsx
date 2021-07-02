@@ -38,13 +38,13 @@ export const buildSalesConfirmationElements = (
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
-        salesOfferPackages.forEach(product => {
+        salesOfferPackages.forEach((product) => {
             confirmationElements.push({
                 name: 'Product',
                 content: upperFirst(product.productName),
                 href: 'selectSalesOfferPackage',
             });
-            product.salesOfferPackages.forEach(sop => {
+            product.salesOfferPackages.forEach((sop) => {
                 confirmationElements.push({
                     name: `Sales offer package`,
                     content: [`Name: ${sop.name}`, ...(sop.price ? [`Price: £${sop.price}`] : [])],
@@ -131,12 +131,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
     let endDefault = false;
 
     if (!ticketDatingInfo) {
-        startDate = moment()
-            .add(1, 'hours')
-            .toISOString();
-        endDate = moment()
-            .add(100, 'y')
-            .toISOString();
+        startDate = moment().add(1, 'hours').toISOString();
+        endDate = moment().add(100, 'y').toISOString();
         startDefault = true;
         endDefault = true;
     } else {
@@ -144,17 +140,13 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
             startDate = ticketDatingInfo.startDate;
         } else {
             startDefault = true;
-            startDate = moment()
-                .add(1, 'hours')
-                .toISOString();
+            startDate = moment().add(1, 'hours').toISOString();
         }
         if (ticketDatingInfo.endDate) {
             endDate = ticketDatingInfo.endDate;
         } else {
             endDefault = true;
-            endDate = moment()
-                .add(100, 'y')
-                .toISOString();
+            endDate = moment().add(100, 'y').toISOString();
         }
         dateInput = ticketDatingInfo.dateInput;
     }

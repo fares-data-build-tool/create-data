@@ -151,7 +151,7 @@ const DefineTimeRestrictions = ({ errors = [], fieldsets, csrfToken }: DefineTim
                         your ticket(s) can only be used on a certain day or during a certain time period. If you have a
                         premade time restriction, you can select it here.
                     </span>
-                    {fieldsets.map(fieldset => {
+                    {fieldsets.map((fieldset) => {
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
                 </div>
@@ -173,7 +173,7 @@ export const getServerSideProps = async (
     if (timeRestrictionsDefinition && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsDefinition)) {
         errors = timeRestrictionsDefinition.errors;
     }
-    const timeRestrictionNames = timeRestrictions.map(timeRestriction => timeRestriction.name);
+    const timeRestrictionNames = timeRestrictions.map((timeRestriction) => timeRestriction.name);
     const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(
         errors,
         timeRestrictionNames,

@@ -19,7 +19,7 @@ export const nocsWithNoServices = async (nocs: string[]): Promise<string[]> => {
             }
             return '';
         })
-        .filter(noc => noc);
+        .filter((noc) => noc);
 
     return nocsWithNoTnds;
 };
@@ -57,7 +57,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             inputChecks.push({ userInput: '', ...passwordValidityError });
         }
 
-        if (inputChecks.some(el => el.errorMessage !== '')) {
+        if (inputChecks.some((el) => el.errorMessage !== '')) {
             setErrorsAttributeAndRedirect(inputChecks, regKey);
             return;
         }

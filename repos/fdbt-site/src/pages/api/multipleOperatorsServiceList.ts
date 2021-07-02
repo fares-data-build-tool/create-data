@@ -22,7 +22,7 @@ export const getSelectedServicesAndNocCodeFromRequest = (requestBody: {
 }): { selectedServices: SelectedService[]; nocCode: string } => {
     let nocCode = '';
     const selectedServices: SelectedService[] = [];
-    Object.entries(requestBody).forEach(entry => {
+    Object.entries(requestBody).forEach((entry) => {
         const nocCodeLineNameLineIdServiceCodeStartDate = entry[0];
         const description = entry[1];
         let serviceDescription: string;
@@ -94,7 +94,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             services: selectedServices,
         };
         newListOfMultiOperatorsData.push(multiOperatorData);
-        multiOpDataToReAddToSession.forEach(operatorData => newListOfMultiOperatorsData.push(operatorData));
+        multiOpDataToReAddToSession.forEach((operatorData) => newListOfMultiOperatorsData.push(operatorData));
         updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, newListOfMultiOperatorsData);
         const numberOfOperators = (getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute)
             .selectedOperators.length;

@@ -70,7 +70,7 @@ export const getCsvZoneUploadData = async (key: string): Promise<string[]> => {
 
         const parsedData: UserFareZone[] = JSON.parse(dataAsString);
 
-        const atcoCodes: string[] = parsedData.map(data => data.AtcoCodes);
+        const atcoCodes: string[] = parsedData.map((data) => data.AtcoCodes);
 
         return atcoCodes;
     } catch (error) {
@@ -179,7 +179,7 @@ export const getMatchingDataObject = async (
 
 export const retrieveNetexForNocs = async (nocList: string[]): Promise<AWS.S3.Object[]> => {
     try {
-        const requestPromises = nocList.map(noc => {
+        const requestPromises = nocList.map((noc) => {
             const request: AWS.S3.ListObjectsV2Request = {
                 Bucket: NETEX_BUCKET_NAME,
                 Prefix: noc,
@@ -190,7 +190,7 @@ export const retrieveNetexForNocs = async (nocList: string[]): Promise<AWS.S3.Ob
 
         const response = await Promise.all(requestPromises);
 
-        return response.flatMap(item => item.Contents || []);
+        return response.flatMap((item) => item.Contents || []);
     } catch (error) {
         throw new Error(`Failed to retrieve NeTEx from NOCs, ${error.stack}`);
     }

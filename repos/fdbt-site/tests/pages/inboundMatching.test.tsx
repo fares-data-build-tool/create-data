@@ -69,12 +69,7 @@ describe('Inbound Matching Page', () => {
                 csrfToken=""
             />,
         );
-        expect(
-            mountedWrapper
-                .find('.farestage-select')
-                .first()
-                .find('option'),
-        ).toHaveLength(10);
+        expect(mountedWrapper.find('.farestage-select').first().find('option')).toHaveLength(10);
     });
 
     describe('getServerSideProps', () => {
