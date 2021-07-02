@@ -1,70 +1,58 @@
 import { startCase } from 'lodash';
 import {
-    getPointToPointScheduledStopPointsList,
-    getFareZoneList,
-    getPreassignedFareProduct,
-    buildSalesOfferPackages,
-    getPriceGroups,
-    getFareTables,
-} from './point-to-point-tickets/pointToPointTicketNetexHelpers';
-import {
-    getCoreData,
-    NetexObject,
-    getNetexTemplateAsJson,
-    convertJsonToXml,
-    getTimeRestrictions,
-    getNetexMode,
-    isFlatFareType,
-    getFareStructuresElements,
-} from './sharedHelpers';
-import {
-    Operator,
-    PeriodTicket,
-    PointToPointTicket,
-    isSchemeOperatorTicket,
+    FareZoneList,
+    FlatFareProductDetails,
+    isBaseSchemeOperatorInfo,
+    isGeoZoneTicket,
     isMultiOperatorGeoZoneTicket,
     isMultiOperatorMultipleServicesTicket,
-    isPointToPointTicket,
     isMultiOperatorTicket,
-    ScheduledStopPoints,
-    FareZoneList,
-    isSingleTicket,
-    isReturnTicket,
-    SchemeOperatorFlatFareTicket,
-    SchemeOperatorGeoZoneTicket,
-    ProductDetails,
-    FlatFareProductDetails,
-    isSchemeOperatorGeoZoneTicket,
-    isSchemeOperatorFlatFareTicket,
-    FlatFareTicket,
-    isGeoZoneTicket,
-    isBaseSchemeOperatorInfo,
     isMultiServiceTicket,
+    isPointToPointTicket,
     isProductDetails,
+    isReturnTicket,
+    isSchemeOperatorFlatFareTicket,
+    isSchemeOperatorGeoZoneTicket,
+    isSchemeOperatorTicket,
+    isSingleTicket,
+    Operator,
+    ProductDetails,
+    ScheduledStopPoints,
+    Ticket,
 } from '../types/index';
 
 import {
-    getScheduledStopPointsList,
-    getTopographicProjectionRefList,
-    getLinesList,
     getGeoZoneFareTable,
+    getGroupOfOperators,
+    getLinesList,
     getMultiServiceFareTable,
+    getOrganisations,
     getPreassignedFareProducts,
     getSalesOfferPackageList,
+    getScheduledStopPointsList,
     getTimeIntervals,
-    getOrganisations,
-    getGroupOfOperators,
+    getTopographicProjectionRefList,
 } from './period-tickets/periodTicketNetexHelpers';
+import {
+    buildSalesOfferPackages,
+    getFareTables,
+    getFareZoneList,
+    getPointToPointScheduledStopPointsList,
+    getPreassignedFareProduct,
+    getPriceGroups,
+} from './point-to-point-tickets/pointToPointTicketNetexHelpers';
+import {
+    convertJsonToXml,
+    getCoreData,
+    getFareStructuresElements,
+    getNetexMode,
+    getNetexTemplateAsJson,
+    getTimeRestrictions,
+    isFlatFareType,
+    NetexObject,
+} from './sharedHelpers';
 
-const netexGenerator = (
-    ticket:
-        | PointToPointTicket
-        | PeriodTicket
-        | FlatFareTicket
-        | SchemeOperatorGeoZoneTicket
-        | SchemeOperatorFlatFareTicket,
-    operatorData: Operator[],
-): { generate: Function } => {
+const netexGenerator = (ticket: Ticket, operatorData: Operator[]): { generate: Function } => {
     const coreData = getCoreData(operatorData, ticket);
     const baseOperatorInfo = coreData.baseOperatorInfo[0];
     const ticketIdentifier: string = isPointToPointTicket(ticket)

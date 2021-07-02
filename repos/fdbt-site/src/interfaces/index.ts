@@ -311,13 +311,19 @@ export interface CognitoIdToken {
 
 // Ticket Types
 
-export type Ticket =
+export type SpecificTicket =
     | PointToPointTicket
     | GeoZoneTicket
     | PeriodMultipleServicesTicket
     | PeriodHybridTicket
     | FlatFareTicket
     | SchemeOperatorTicket;
+
+export type Ticket = SpecificTicket &
+    Partial<{
+        groupDefinition: { maxPeople?: string; companions?: CompanionInfo[] };
+        carnet: boolean;
+    }>;
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;
 
