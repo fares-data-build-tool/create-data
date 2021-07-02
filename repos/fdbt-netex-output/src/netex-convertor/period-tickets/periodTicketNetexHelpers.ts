@@ -1,5 +1,6 @@
-import { isHybridTicket, HybridPeriodTicket } from './../../types/index';
 import {
+    isHybridTicket,
+    HybridPeriodTicket,
     FlatFareTicket,
     MultiOperatorMultipleServicesTicket,
     isMultiOperatorMultipleServicesTicket,
@@ -147,18 +148,14 @@ export const getLinesList = (
     return linesList;
 };
 
-export const getGroupOfLinesList = (
-    operatorIdentifier: string,
-    userPeriodTicket: PeriodMultipleServicesTicket | MultiOperatorMultipleServicesTicket | SchemeOperatorFlatFareTicket,
-    lines: Line[],
-): GroupOfLines[] => {
+export const getGroupOfLinesList = (operatorIdentifier: string, isHybrid: boolean, lines: Line[]): GroupOfLines[] => {
     const lineReferences = lines.map(line => line.id);
     return [
         {
             version: '1.0',
             id: `${operatorIdentifier}@groupOfLines@1`,
             Name: {
-                $t: `A group of available ${isHybridTicket(userPeriodTicket) ? 'additional' : ''} services.`,
+                $t: `A group of available${isHybrid ? ' additional' : ''} services.`,
             },
             members: {
                 LineRef: lineReferences.map(lineRef => ({
@@ -383,9 +380,10 @@ export const getHybridFareTable = (
     placeHolderGroupOfProductsName: string,
     ticketUserConcat: string,
 ): NetexObject[] => {
-    let fareTables = getGeoZoneFareTable(userPeriodTicket, placeHolderGroupOfProductsName, ticketUserConcat);
-    fareTables = fareTables.concat(getMultiServiceFareTable(userPeriodTicket, ticketUserConcat));
-    return fareTables;
+    return [
+        ...getGeoZoneFareTable(userPeriodTicket, placeHolderGroupOfProductsName, ticketUserConcat),
+        ...getMultiServiceFareTable(userPeriodTicket, ticketUserConcat),
+    ];
 };
 
 export const getSalesOfferPackageList = (
@@ -487,7 +485,7 @@ export const getPreassignedFareProducts = (
 ): NetexObject[] => {
     const { passengerType } = userPeriodTicket;
     return userPeriodTicket.products.map((product: ProductDetails | FlatFareProductDetails) => {
-        let elementZeroRef: string = '';
+        let elementZeroRef = '';
         let fareStructureElementRefs: NetexObject;
 
         if (isGeoZoneTicket(userPeriodTicket) || isHybridTicket(userPeriodTicket)) {
@@ -498,7 +496,8 @@ export const getPreassignedFareProducts = (
 
         if (
             isGeoZoneTicket(userPeriodTicket) ||
-            (isMultiServiceTicket(userPeriodTicket) && isProductDetails(userPeriodTicket.products[0])) || isHybridTicket(userPeriodTicket)
+            (isMultiServiceTicket(userPeriodTicket) && isProductDetails(userPeriodTicket.products[0])) ||
+            isHybridTicket(userPeriodTicket)
         ) {
             fareStructureElementRefs = getPeriodTicketFareStructureElementRefs(elementZeroRef, product, passengerType);
         } else {

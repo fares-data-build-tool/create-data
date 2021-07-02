@@ -423,8 +423,8 @@ export const getFareStructuresElements = (
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
-        } else if (isHybridTicket(ticket) && isProductDetails(product)) {
-
+        }
+        if (isHybridTicket(ticket) && isProductDetails(product)) {
             const zonalAvailabilityElementId = `Tariff@${product.productName}@access_zones`;
             const zonalValidityParametersObject = {
                 FareZoneRef: {
@@ -434,7 +434,13 @@ export const getFareStructuresElements = (
             };
 
             return [
-                getPeriodAvailabilityElement(zonalAvailabilityElementId, zonalValidityParametersObject, hasTimeRestriction, product.productName, groupOfLinesRef),
+                getPeriodAvailabilityElement(
+                    zonalAvailabilityElementId,
+                    zonalValidityParametersObject,
+                    hasTimeRestriction,
+                    product.productName,
+                    groupOfLinesRef,
+                ),
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];

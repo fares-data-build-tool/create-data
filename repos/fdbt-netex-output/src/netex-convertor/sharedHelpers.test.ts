@@ -278,6 +278,7 @@ describe('Shared Helpers', () => {
                 false,
                 '',
                 placeHolderText,
+                'groupOfLinesRef',
             );
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
@@ -301,6 +302,7 @@ describe('Shared Helpers', () => {
                 false,
                 '',
                 placeHolderText,
+                'groupOfLinesRef',
             );
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
@@ -319,7 +321,13 @@ describe('Shared Helpers', () => {
 
         it('returns 3 fareStructureElements for each product in the products array for geoZone; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
             const expectedLength = geoUserPeriodTicket.products.length * 3 + 1;
-            const result = sharedHelpers.getFareStructuresElements(geoUserPeriodTicket, false, '', placeHolderText);
+            const result = sharedHelpers.getFareStructuresElements(
+                geoUserPeriodTicket,
+                false,
+                '',
+                placeHolderText,
+                'groupOfLinesRef',
+            );
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
             });
@@ -336,7 +344,13 @@ describe('Shared Helpers', () => {
         });
 
         it('returns the fareStructureElements in the format we expect', () => {
-            const geoResult = sharedHelpers.getFareStructuresElements(geoUserPeriodTicket, false, '', placeHolderText);
+            const geoResult = sharedHelpers.getFareStructuresElements(
+                geoUserPeriodTicket,
+                false,
+                '',
+                placeHolderText,
+                'groupOfLinesRef',
+            );
 
             const expectedAccessZonesFareStructureElement = {
                 version: '1.0',
