@@ -243,7 +243,7 @@
 					<fareTables></fareTables>
 				</FareFrame>
 				<ServiceFrame version="1.0" id="operator@Network@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
-					<Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
+					<Description>This frame contains the stop and line definitions for the service.</Description>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0" />
 					<!--==== LINEs ==== -->
 					<lines>
@@ -256,6 +256,14 @@
 							<LineType>local</LineType>
 						</Line>
 					</lines>
+					<groupsOfLines>
+						<GroupOfLines id="" version="1.0">
+							<Name></Name>
+							<members>
+								<LineRef version="" ref="" />
+							</members>
+						</GroupOfLines>
+					</groupsOfLines>
 				</ServiceFrame>
 			</frames>
 		</CompositeFrame>
@@ -287,7 +295,7 @@
 			<frames>
 				<!-- === Profile Frame Types ===  -->
 				<ResourceFrame id="fxc:UK:DFT:ResourceFrame_UK_PI_METADATA_FRAMES:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
-					<Name>UK FXCP  Fare profile Frame types and codepaces</Name>
+					<Name>UK FXCP Fare profile Frame types and codespaces</Name>
 					<codespaces>
 						<Codespace id="fxc_metadata">
 							<Xmlns>fxc</Xmlns>
@@ -297,7 +305,7 @@
 						<Codespace id="epd_data">
 							<Xmlns>epd</Xmlns>
 							<XmlnsUrl>http://fnetex-cen.eu/epd</XmlnsUrl>
-							<Description>European Passenger Information profile data -use for UK frame names</Description>
+							<Description>European Passenger Information profile data - use for UK frame names</Description>
 						</Codespace>
 					</codespaces>
 					<dataSources>
@@ -414,10 +422,14 @@
 									<Name>UK FXCP   composite container NETWORK OFFER</Name>
 									<FrameClassRef nameOfClass="CompositeFrame" />
 								</TypeOfFrame>
+								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_HYBRID_FARE_OFFER:FXCP">
+									<Name>UK FXCP   composite container HYBRID OFFER</Name>
+									<FrameClassRef nameOfClass="CompositeFrame" />
+								</TypeOfFrame>
 							</values>
 						</ValueSet>
 						<ValueSet version="fxc:v1.0" id="fxc:Types_of_Transaction_Frame" classOfValues="TypeOfFrame">
-							<Name>Types of UK Trasnaction  Frame</Name>
+							<Name>Types of UK Transaction Frame</Name>
 							<values>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_TRANSACTIONS:FXCP">
 									<Name>UK Bus Profile Operator sample transactions</Name>
