@@ -1,28 +1,28 @@
-import React, { ReactElement } from 'react';
-import { isSalesOfferPackageWithErrors, isFareType } from '../interfaces/typeGuards';
+import React, { ChangeEventHandler, ReactElement, useState } from 'react';
+import CsrfForm from '../components/CsrfForm';
+import DeleteSOPButton from '../components/DeleteSOPButton';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
-import { FullColumnLayout } from '../layout/Layout';
 import {
+    FARE_TYPE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import {
-    SalesOfferPackage,
     ErrorInfo,
     NextPageContextWithSession,
     ProductInfo,
-    MultiProduct,
+    ProductWithSalesOfferPackages,
+    SalesOfferPackage,
     SchoolFareTypeAttribute,
 } from '../interfaces';
+import { isFareType } from '../interfaces/typeGuards';
+import { FullColumnLayout } from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
-import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { removeAllWhiteSpace } from './api/apiUtils/validator';
-import DeleteSOPButton from '../components/DeleteSOPButton';
 
 const pageTitle = 'Select Sales Offer Package - Create Fares Data Service';
 const pageDescription = 'Sales Offer Package selection page of the Create Fares Data Service';
@@ -59,12 +59,20 @@ export const defaultSalesOfferPackageFour: SalesOfferPackage = {
     ticketFormats: ['mobileApp'],
 };
 
+export const defaultSalesOfferPackages = [
+    defaultSalesOfferPackageOne,
+    defaultSalesOfferPackageTwo,
+    defaultSalesOfferPackageThree,
+    defaultSalesOfferPackageFour,
+];
+
 export interface SelectSalesOfferPackageProps {
-    selected?: { [key: string]: string[] };
-    productNamesList: string[];
+    selected?: { [key: string]: SalesOfferPackage[] };
+    products: ProductInfo[];
     salesOfferPackagesList: SalesOfferPackage[];
     errors: ErrorInfo[];
     csrfToken: string;
+    customPriceEnabled: boolean;
 }
 
 const formatSOPArray = (stringArray: string[]): string =>
@@ -74,79 +82,138 @@ const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],
     productName: string,
     csrfToken: string,
-    selected?: { [key: string]: string[] },
+    selectedDefault: { [key: string]: SalesOfferPackage[] } | undefined,
+    defaultPrice: string,
+    customPriceEnabled: boolean,
 ): ReactElement[] => {
-    return salesOfferPackagesList.map((offer, index) => {
-        const { name, description, purchaseLocations, paymentMethods, ticketFormats } = offer;
+    const fullList = [...salesOfferPackagesList];
+    const pairs = [];
+    while (fullList.length > 0) {
+        pairs.push(fullList.splice(0, 2));
+    }
 
-        const productNameIds = removeAllWhiteSpace(productName);
+    const [selected, setSelected] = useState(selectedDefault);
 
-        let isSelectedOffer = false;
+    return pairs.map((pair, pairIndex) => (
+        <div className="govuk-grid-row" key={pairIndex}>
+            {pair.map((offer, innerIndex) => {
+                const index = 2 * pairIndex + innerIndex;
+                const { name, description, purchaseLocations, paymentMethods, ticketFormats } = offer;
 
-        if (selected) {
-            Object.entries(selected).forEach(entry => {
-                if (entry[0] === productName) {
-                    entry[1].forEach(selectedEntry => {
-                        if (selectedEntry === JSON.stringify(offer)) {
-                            isSelectedOffer = true;
-                        }
-                    });
-                }
-            });
-        }
+                const productNameIds = removeAllWhiteSpace(productName);
 
-        return (
-            <div className="govuk-checkboxes__item govuk-!-margin-bottom-6" key={`checkbox-item-${name}`}>
-                <input
-                    className="govuk-checkboxes__input"
-                    id={`${productNameIds}-checkbox-${index}`}
-                    name={productName}
-                    type="checkbox"
-                    value={JSON.stringify(offer)}
-                    defaultChecked={isSelectedOffer}
-                />
-                <label className="govuk-label govuk-checkboxes__label" htmlFor={`${productNameIds}-checkbox-${index}`}>
-                    <b>{name}</b> {description.length > 0 ? '-' : ''} {description}
-                </label>
-                <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
-                    Purchase locations: {formatSOPArray(purchaseLocations)}
-                </span>
-                <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
-                    Payment methods: {formatSOPArray(paymentMethods)}
-                </span>
-                <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
-                    Ticket formats: {formatSOPArray(ticketFormats)}
-                </span>
-                {offer.id ? <DeleteSOPButton sopId={offer.id} csrfToken={csrfToken} /> : ''}
-            </div>
-        );
-    });
+                const selectedOffer =
+                    selected && selected[productName]?.find(selectedEntry => selectedEntry.name === offer.name);
+
+                const updateSelected: ChangeEventHandler = () => {
+                    const newSelected: { [key: string]: SalesOfferPackage[] } = { ...selected } || {};
+                    const sops = newSelected[productName] || [];
+                    newSelected[productName] = sops.find(sop => sop.name === offer.name)
+                        ? sops.filter(it => it.name !== offer.name)
+                        : [...sops, offer];
+                    setSelected(newSelected);
+                };
+
+                return (
+                    <div
+                        className="govuk-checkboxes__item govuk-!-margin-bottom-6 govuk-grid-column-one-half"
+                        style={{ clear: 'none' }}
+                        key={`checkbox-item-${name}`}
+                    >
+                        <input
+                            className="govuk-checkboxes__input"
+                            id={`product-${productNameIds}-checkbox-${index}`}
+                            name={`product-${productName}`}
+                            type="checkbox"
+                            value={JSON.stringify(offer)}
+                            defaultChecked={!!selectedOffer}
+                            onChange={updateSelected}
+                        />
+                        <label
+                            className="govuk-label govuk-checkboxes__label"
+                            htmlFor={`product-${productNameIds}-checkbox-${index}`}
+                        >
+                            <b>{name}</b> {description.length > 0 ? '-' : ''} {description}
+                        </label>
+                        <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
+                            Purchase locations: {formatSOPArray(purchaseLocations)}
+                        </span>
+                        <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
+                            Payment methods: {formatSOPArray(paymentMethods)}
+                        </span>
+                        <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
+                            Ticket formats: {formatSOPArray(ticketFormats)}
+                        </span>
+                        {!!selectedOffer && defaultPrice && customPriceEnabled && (
+                            <div className="govuk-currency-input govuk-!-margin-left-3">
+                                <div className="govuk-currency-input__inner">
+                                    <span
+                                        className="govuk-currency-input__inner__unit"
+                                        style={{ lineHeight: 'normal' }}
+                                    >
+                                        £
+                                    </span>
+                                    <FormElementWrapper
+                                        errors={[]}
+                                        errorId={`multiple-product-price-${index}`}
+                                        errorClass="govuk-input--error"
+                                        hideText
+                                        addFormGroupError={false}
+                                    >
+                                        <input
+                                            className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
+                                            name={`price-${productName}-${offer.name}`}
+                                            data-non-numeric
+                                            type="text"
+                                            id={`price-${productNameIds}-${removeAllWhiteSpace(offer.name)}`}
+                                            defaultValue={selectedOffer?.price || defaultPrice}
+                                        />
+                                    </FormElementWrapper>
+                                </div>
+                            </div>
+                        )}
+                        {offer.id ? <DeleteSOPButton sopId={offer.id} csrfToken={csrfToken} /> : ''}
+                    </div>
+                );
+            })}
+        </div>
+    ));
 };
 
 const createSalesOffer = (
     salesOfferPackagesList: SalesOfferPackage[],
-    productNames: string[],
+    products: ProductInfo[],
     csrfToken: string,
-    selected?: { [key: string]: string[] },
-    errors: ErrorInfo[] = [],
+    selected: { [key: string]: SalesOfferPackage[] } | undefined,
+    errors: ErrorInfo[],
+    customPriceEnabled: boolean,
 ): ReactElement[] =>
-    productNames.map(productName => (
-        <div className="sop-option">
+    products.map(({ productName, productPrice }) => (
+        <div className="sop-option" key={productName}>
             <FormGroupWrapper
-                errorIds={[`${[removeAllWhiteSpace(productName)]}-checkbox-0`]}
+                errorIds={[`product-${[removeAllWhiteSpace(productName)]}-checkbox-0`]}
                 errors={errors}
                 hideErrorBar={false}
             >
                 <fieldset className="govuk-fieldset">
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s govuk-!-margin-bottom-5">{`Select sales offer packages for ${productName}`}</legend>
+                    <h1 className="govuk-heading-m govuk-!-font-weight-regular govuk-!-padding-top-6 govuk-!-padding-bottom-2">
+                        How is <span className="govuk-!-font-weight-bold">{productName}</span> sold?
+                    </h1>
                     <FormElementWrapper
                         errors={errors}
                         errorId={`${removeAllWhiteSpace(productName)}-checkbox-0`}
                         errorClass=""
                     >
                         <div className="govuk-checkboxes">
-                            {generateCheckbox(salesOfferPackagesList, productName, csrfToken, selected)}
-                            <input type="hidden" name={productName} />
+                            {generateCheckbox(
+                                salesOfferPackagesList,
+                                productName,
+                                csrfToken,
+                                selected,
+                                productPrice,
+                                customPriceEnabled,
+                            )}
+                            <input type="hidden" name={`product-${productName}`} />
                         </div>
                     </FormElementWrapper>
                 </fieldset>
@@ -156,10 +223,11 @@ const createSalesOffer = (
 
 const SelectSalesOfferPackage = ({
     selected,
-    productNamesList,
+    products,
     salesOfferPackagesList,
     csrfToken,
     errors,
+    customPriceEnabled,
 }: SelectSalesOfferPackageProps): ReactElement => {
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
@@ -167,21 +235,31 @@ const SelectSalesOfferPackage = ({
                 <>
                     <ErrorSummary errors={errors} />
                     <h1 className="govuk-heading-l" id="select-sales-offer-package-page-heading">
-                        How are the tickets sold?
+                        How are your tickets sold?
                     </h1>
                     <div>
-                        <p className="govuk-body">To create NeTEx for your fare it needs to contain the following:</p>
+                        <p className="govuk-body">We need to know the following information:</p>
                         <ol className="govuk-list govuk-list--number">
                             <li>Where a ticket can be bought</li>
                             <li>What payment method it can be bought with</li>
                             <li>What format the ticket is provided to the passenger in</li>
                         </ol>
                         <p className="govuk-body">
-                            This combination of information is called a <strong>sales offer package</strong>. You can
-                            choose from one you have already setup or create a new one for these products.
+                            You can choose from the options below or{' '}
+                            <a href="/salesOfferPackages" className="govuk-link">
+                                create a new one
+                            </a>{' '}
+                            for these products.
                         </p>
                     </div>
-                    {createSalesOffer(salesOfferPackagesList, productNamesList, csrfToken, selected, errors)}
+                    {createSalesOffer(
+                        salesOfferPackagesList,
+                        products,
+                        csrfToken,
+                        selected,
+                        errors,
+                        customPriceEnabled,
+                    )}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                     <a
                         href="/salesOfferPackages"
@@ -191,7 +269,7 @@ const SelectSalesOfferPackage = ({
                         data-module="govuk-button"
                         id="create-new-button"
                     >
-                        Create New Sales Offer Package
+                        Create new
                     </a>
                 </>
             </CsrfForm>
@@ -210,59 +288,53 @@ export const getServerSideProps = async (
     }
 
     const salesOfferPackagesList = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
-    salesOfferPackagesList.unshift(
-        defaultSalesOfferPackageOne,
-        defaultSalesOfferPackageTwo,
-        defaultSalesOfferPackageThree,
-        defaultSalesOfferPackageFour,
-    );
+    salesOfferPackagesList.unshift(...defaultSalesOfferPackages);
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
 
-    let productNames: string[] = [];
-
-    if (isFareType(fareTypeAttribute)) {
-        const fareType =
-            fareTypeAttribute.fareType === 'schoolService' && schoolFareTypeAttribute
-                ? schoolFareTypeAttribute.schoolFareType
-                : fareTypeAttribute.fareType;
-        if (
-            (fareType === 'period' || fareType === 'multiOperator' || fareType === 'flatFare') &&
-            multipleProductAttribute
-        ) {
-            const multiProducts: MultiProduct[] = multipleProductAttribute.products;
-            productNames = multiProducts.map((product: ProductInfo) => product.productName);
-        } else {
-            productNames = ['product'];
-        }
+    if (!isFareType(fareTypeAttribute)) {
+        throw new Error(`Invalid fare type: ${fareTypeAttribute}`);
     }
 
-    const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
+    const fareType =
+        fareTypeAttribute.fareType === 'schoolService' && schoolFareTypeAttribute
+            ? schoolFareTypeAttribute.schoolFareType
+            : fareTypeAttribute.fareType;
 
-    if (
-        salesOfferPackageAttribute &&
-        isSalesOfferPackageWithErrors(salesOfferPackageAttribute) &&
-        salesOfferPackageAttribute.errors
-    ) {
-        return {
-            props: {
-                selected: salesOfferPackageAttribute.selected || '',
-                productNamesList: productNames,
-                salesOfferPackagesList,
-                errors: salesOfferPackageAttribute.errors,
-                csrfToken,
-            },
-        };
-    }
+    const products =
+        ['period', 'multiOperator', 'flatFare'].includes(fareType) && multipleProductAttribute
+            ? multipleProductAttribute.products
+            : [{ productName: 'product', productPrice: '' }];
+
+    const sopAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
+
+    const errors = (sopAttribute && 'errors' in sopAttribute && sopAttribute.errors) || [];
+
+    const selected: { [key: string]: SalesOfferPackage[] } | undefined =
+        sopAttribute &&
+        ('errors' in sopAttribute
+            ? sopAttribute.selected
+            : sopAttribute
+                  .map((product: SalesOfferPackage | ProductWithSalesOfferPackages): [
+                      string,
+                      SalesOfferPackage[] | ProductWithSalesOfferPackages[],
+                  ] =>
+                      'salesOfferPackages' in product
+                          ? [product.productName, product.salesOfferPackages]
+                          : ['product', sopAttribute],
+                  )
+                  .reduce((result, item) => ({ ...result, [item[0]]: item[1] }), {}));
 
     return {
         props: {
-            productNamesList: productNames,
+            ...(selected && { selected }),
+            products,
             salesOfferPackagesList,
-            errors: [],
+            errors,
             csrfToken,
+            customPriceEnabled: process.env.STAGE !== 'prod',
         },
     };
 };

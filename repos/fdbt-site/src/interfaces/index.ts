@@ -311,13 +311,19 @@ export interface CognitoIdToken {
 
 // Ticket Types
 
-export type Ticket =
+export type SpecificTicket =
     | PointToPointTicket
     | GeoZoneTicket
     | PeriodMultipleServicesTicket
     | PeriodHybridTicket
     | FlatFareTicket
     | SchemeOperatorTicket;
+
+export type Ticket = SpecificTicket &
+    Partial<{
+        groupDefinition: { maxPeople?: string; companions?: CompanionInfo[] };
+        carnet: boolean;
+    }>;
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;
 
@@ -526,6 +532,7 @@ export interface SalesOfferPackageInfo {
     purchaseLocations: string[];
     paymentMethods: string[];
     ticketFormats: string[];
+    price?: string;
 }
 
 export interface SalesOfferPackageInfoWithErrors extends SalesOfferPackageInfo {
@@ -707,7 +714,7 @@ export interface ProductDateInformation {
 
 export interface SelectSalesOfferPackageWithError {
     errors: ErrorInfo[];
-    selected: { [key: string]: string[] };
+    selected?: { [key: string]: SalesOfferPackage[] };
 }
 
 export interface Service {

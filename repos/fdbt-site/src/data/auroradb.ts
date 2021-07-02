@@ -114,7 +114,7 @@ const executeQuery = async <T>(query: string, values: (string | boolean)[]): Pro
         connectionPool = getAuroraDBClient();
     }
     const [rows] = await connectionPool.execute(query, values);
-    return JSON.parse(JSON.stringify(rows));
+    return JSON.parse(JSON.stringify(rows)) as T;
 };
 
 export const getServicesByNocCodeAndDataSource = async (nocCode: string, source: string): Promise<ServiceType[]> => {
@@ -698,21 +698,21 @@ export const getPassengerTypeByNameAndNocCode = async (
             throw new Error("Didn't expect more than one passenger type with same name and NOC");
         }
 
-        return queryResults[0] ? JSON.parse(queryResults[0].contents) : undefined;
+        return queryResults[0] ? (JSON.parse(queryResults[0].contents) as PassengerType) : undefined;
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
     }
 };
 
 interface SavedPassengerType {
-    group: GroupPassengerType[];
-    single: PassengerType[];
+    group: GroupPassengerType;
+    single: PassengerType;
 }
 
 export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerType>(
     nocCode: string,
     type: T,
-): Promise<SavedPassengerType[T]> => {
+): Promise<SavedPassengerType[T][]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving passenger types for given noc',
@@ -731,7 +731,7 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
             nocCode,
             type === 'group',
         ]);
-        return queryResults.map(row => JSON.parse(row.contents));
+        return queryResults.map(row => JSON.parse(row.contents) as SavedPassengerType[T]);
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
     }

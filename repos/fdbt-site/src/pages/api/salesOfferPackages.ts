@@ -1,5 +1,4 @@
 import { NextApiResponse } from 'next';
-import isArray from 'lodash/isArray';
 import { redirectTo, redirectToError } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import {
@@ -11,11 +10,27 @@ import {
 import { SOP_INFO_ATTRIBUTE } from '../../constants/attributes';
 import { purchaseLocationsList, paymentMethodsList, ticketFormatsList } from '../salesOfferPackages';
 
+const toArray = (thing: string | string[] | undefined): string[] => {
+    if (!thing) {
+        return [];
+    }
+
+    return Array.isArray(thing) ? thing : [thing];
+};
+
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const errors: ErrorInfo[] = [];
 
     try {
-        let { purchaseLocations, paymentMethods, ticketFormats } = req.body;
+        const {
+            purchaseLocations,
+            paymentMethods,
+            ticketFormats,
+        }: {
+            purchaseLocations?: string | string[];
+            paymentMethods?: string | string[];
+            ticketFormats?: string | string[];
+        } = req.body;
 
         if (!purchaseLocations) {
             errors.push({
@@ -38,22 +53,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             });
         }
 
-        if (purchaseLocations && !isArray(purchaseLocations)) {
-            purchaseLocations = purchaseLocations.split();
-        }
-
-        if (paymentMethods && !isArray(paymentMethods)) {
-            paymentMethods = paymentMethods.split();
-        }
-
-        if (ticketFormats && !isArray(ticketFormats)) {
-            ticketFormats = ticketFormats.split();
-        }
-
         const salesOfferPackageInfo: SalesOfferPackageInfo = {
-            purchaseLocations: purchaseLocations || [],
-            paymentMethods: paymentMethods || [],
-            ticketFormats: ticketFormats || [],
+            purchaseLocations: toArray(purchaseLocations),
+            paymentMethods: toArray(paymentMethods),
+            ticketFormats: toArray(ticketFormats),
         };
 
         if (errors.length > 0) {

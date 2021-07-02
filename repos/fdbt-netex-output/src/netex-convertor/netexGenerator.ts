@@ -1,29 +1,25 @@
 import { startCase } from 'lodash';
 import {
     isHybridTicket,
-    Operator,
-    PeriodTicket,
-    PointToPointTicket,
-    isSchemeOperatorTicket,
+    FareZoneList,
+    FlatFareProductDetails,
+    isBaseSchemeOperatorInfo,
+    isGeoZoneTicket,
     isMultiOperatorGeoZoneTicket,
     isMultiOperatorMultipleServicesTicket,
-    isPointToPointTicket,
     isMultiOperatorTicket,
-    ScheduledStopPoints,
-    FareZoneList,
-    isSingleTicket,
-    isReturnTicket,
-    SchemeOperatorFlatFareTicket,
-    SchemeOperatorGeoZoneTicket,
-    ProductDetails,
-    FlatFareProductDetails,
-    isSchemeOperatorGeoZoneTicket,
-    isSchemeOperatorFlatFareTicket,
-    FlatFareTicket,
-    isGeoZoneTicket,
-    isBaseSchemeOperatorInfo,
     isMultiServiceTicket,
+    isPointToPointTicket,
     isProductDetails,
+    isReturnTicket,
+    isSchemeOperatorFlatFareTicket,
+    isSchemeOperatorGeoZoneTicket,
+    isSchemeOperatorTicket,
+    isSingleTicket,
+    Operator,
+    ProductDetails,
+    ScheduledStopPoints,
+    Ticket,
 } from '../types/index';
 import {
     getPointToPointScheduledStopPointsList,
@@ -45,29 +41,21 @@ import {
 } from './sharedHelpers';
 
 import {
-    getScheduledStopPointsList,
-    getTopographicProjectionRefList,
-    getLinesList,
     getGeoZoneFareTable,
+    getGroupOfOperators,
+    getLinesList,
     getMultiServiceFareTable,
     getPreassignedFareProducts,
     getSalesOfferPackageList,
+    getScheduledStopPointsList,
     getTimeIntervals,
     getOrganisations,
-    getGroupOfOperators,
     getGroupOfLinesList,
     getHybridFareTable,
+    getTopographicProjectionRefList,
 } from './period-tickets/periodTicketNetexHelpers';
 
-const netexGenerator = (
-    ticket:
-        | PointToPointTicket
-        | PeriodTicket
-        | FlatFareTicket
-        | SchemeOperatorGeoZoneTicket
-        | SchemeOperatorFlatFareTicket,
-    operatorData: Operator[],
-): { generate: Function } => {
+const netexGenerator = (ticket: Ticket, operatorData: Operator[]): { generate: Function } => {
     const coreData = getCoreData(operatorData, ticket);
     const baseOperatorInfo = coreData.baseOperatorInfo[0];
     const ticketIdentifier: string = isPointToPointTicket(ticket)

@@ -196,13 +196,13 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
             className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            {(radio.inputs as BaseReactElement[]).map(input => {
+            {(radio.inputs as BaseReactElement[]).map((input, index) => {
                 const inputGroupError = radio.inputErrors.find(({ id }) => {
                     return id.includes(input.id);
                 });
 
                 return (
-                    <div className="govuk-form-group">
+                    <div className="govuk-form-group" key={index}>
                         <fieldset className="govuk-fieldset" role="group">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{input.label}</legend>
                             <div className={`govuk-form-group${inputGroupError ? ' govuk-form-group--error' : ''}`}>

@@ -33,6 +33,7 @@ import {
     isMultiServiceTicket,
     isProductDetails,
     GroupOfLines,
+    Ticket,
 } from '../../types/index';
 
 import {
@@ -662,9 +663,7 @@ export const getDurationElement = (
     },
 });
 
-export const getPeriodEligibilityElement = (
-    userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket,
-): NetexObject[] => {
+export const getPeriodEligibilityElement = (userPeriodTicket: Ticket): NetexObject[] => {
     const users = isGroupTicket(userPeriodTicket)
         ? userPeriodTicket.groupDefinition.companions
         : [
@@ -701,7 +700,7 @@ export const getPeriodEligibilityElement = (
 };
 
 export const getPeriodConditionsElement = (
-    userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket,
+    userPeriodTicket: Ticket,
     product: ProductDetails | FlatFareProductDetails,
 ): NetexObject => {
     let usagePeriodValidity = {};

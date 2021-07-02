@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount, shallow, ShallowWrapper } from 'enzyme';
 import * as auroradb from '../../src/data/auroradb';
 import * as s3 from '../../src/data/s3';
 import {
@@ -24,10 +24,10 @@ jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
 
 describe('Inbound Matching Page', () => {
-    let wrapper: any;
-    let getServiceByNocCodeLineNameAndDataSourceSpy: any;
-    let batchGetStopsByAtcoCodeSpy: any;
-    let getUserFareStagesSpy: any;
+    let wrapper: ShallowWrapper;
+    let getServiceByNocCodeLineNameAndDataSourceSpy = jest.spyOn(auroradb, 'getServiceByNocCodeLineNameAndDataSource');
+    let batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
+    let getUserFareStagesSpy = jest.spyOn(s3, 'getUserFareStages');
 
     beforeEach(() => {
         getServiceByNocCodeLineNameAndDataSourceSpy = jest.spyOn(auroradb, 'getServiceByNocCodeLineNameAndDataSource');

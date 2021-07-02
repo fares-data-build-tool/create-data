@@ -7,9 +7,7 @@ module.exports = {
     extends: [
         'plugin:@typescript-eslint/recommended',
         'plugin:react/recommended',
-        'airbnb',
         'plugin:prettier/recommended',
-        'prettier/react',
         'plugin:jsx-a11y/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'eslint-config-prettier',
@@ -54,7 +52,6 @@ module.exports = {
                 SwitchCase: 1,
             },
         ],
-        'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': [
             'error',
             {
@@ -64,32 +61,17 @@ module.exports = {
             },
         ],
         // TODO - review these new rules when bumping lint versions
-        'no-unused-expressions': 'off',
-        'no-shadow': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/no-unsafe-assignment': 'off',
-        '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-member-access': 'off',
-        '@typescript-eslint/no-unsafe-return': 'off',
         '@typescript-eslint/restrict-template-expressions': 'off',
         '@typescript-eslint/restrict-plus-operands': 'off',
         '@typescript-eslint/ban-types': 'off',
         '@typescript-eslint/no-floating-promises': 'off',
-        'no-use-before-define': 'off',
 
         '@typescript-eslint/no-unused-expressions': ['error'],
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
         'react/jsx-indent': [2, 4],
-        'import/extensions': [
-            'error',
-            'ignorePackages',
-            {
-                js: 'never',
-                jsx: 'never',
-                ts: 'never',
-                tsx: 'never',
-            },
-        ],
+        'react/require-default-props': 'off',
         'jsx-a11y/label-has-associated-control': [
             2,
             {
@@ -101,10 +83,8 @@ module.exports = {
         '@typescript-eslint/unbound-method': 0,
     },
     settings: {
-        'import/resolver': {
-            node: {
-                extensions: ['.js', '.jsx', '.ts', '.tsx'],
-            },
+        react: {
+            version: 'detect',
         },
     },
 };

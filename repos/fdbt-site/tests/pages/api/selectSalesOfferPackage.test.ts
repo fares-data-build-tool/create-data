@@ -1,14 +1,13 @@
-import { SalesOfferPackage } from '../../../src/interfaces/index';
+import { MULTIPLE_PRODUCT_ATTRIBUTE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../../../src/constants/attributes';
 import selectSalesOfferPackages, { sanitiseReqBody } from '../../../src/pages/api/selectSalesOfferPackage';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../../src/constants/attributes';
-import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as session from '../../../src/utils/sessions';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('selectSalesOfferPackage', () => {
     it('redirects back to /selectSalesOfferPackages if there are no sales offer packages selected, single product', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                TestProduct: '',
+                'product-TestProduct': '',
             },
         });
 
@@ -22,8 +21,8 @@ describe('selectSalesOfferPackage', () => {
     it('redirects back to /selectSalesOfferPackages if there are no sales offer packages selected, multiple product', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                TestProduct: '',
-                SecondTestProduct: '',
+                'product-TestProduct': '',
+                'product-SecondTestProduct': '',
             },
         });
 
@@ -38,7 +37,7 @@ describe('selectSalesOfferPackage', () => {
         const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
         const { req, res } = getMockRequestAndResponse({
             body: {
-                TestProduct: [
+                'product-TestProduct': [
                     '{"name":"Onboard (cash)","description":"","purchaseLocations":["onBoard"],"paymentMethods":["cash"],"ticketFormats":["paperTicket"]}',
                     '',
                 ],
@@ -72,7 +71,7 @@ describe('selectSalesOfferPackage', () => {
         const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
         const { req, res } = getMockRequestAndResponse({
             body: {
-                TestProduct: [
+                'product-TestProduct': [
                     '{"name":"Onboard (cash)","description":"","purchaseLocations":["onBoard"],"paymentMethods":["cash"],"ticketFormats":["paperTicket"]}',
                     '',
                 ],
@@ -133,14 +132,14 @@ describe('selectSalesOfferPackage', () => {
         it('fills an error array if the user has not selected a SOP for each product', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
-                    TestProduct: '',
+                    'product-TestProduct': '',
                 },
             });
             const result = sanitiseReqBody(req);
             expect(result.errors).toStrictEqual([
                 {
                     errorMessage: 'Choose at least one sales offer package from the options',
-                    id: 'TestProduct-checkbox-0',
+                    id: 'product-TestProduct-checkbox-0',
                 },
             ]);
             expect(result.sanitisedBody).toStrictEqual({});
@@ -148,7 +147,7 @@ describe('selectSalesOfferPackage', () => {
         it('returns an object with a string matching the SalesOfferPackage object structure', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
-                    TestProduct: [
+                    'product-TestProduct': [
                         '{"name":"Onboard (cash)","description":"","purchaseLocations":["onBoard"],"paymentMethods":["cash"],"ticketFormats":["paperTicket"]}',
                         '',
                     ],
@@ -158,10 +157,16 @@ describe('selectSalesOfferPackage', () => {
             expect(result.errors.length).toBe(0);
             expect(result.sanitisedBody).toStrictEqual({
                 TestProduct: [
-                    '{"name":"Onboard (cash)","description":"","purchaseLocations":["onBoard"],"paymentMethods":["cash"],"ticketFormats":["paperTicket"]}',
+                    {
+                        name: 'Onboard (cash)',
+                        description: '',
+                        purchaseLocations: ['onBoard'],
+                        paymentMethods: ['cash'],
+                        ticketFormats: ['paperTicket'],
+                    },
                 ],
             });
-            expect(JSON.parse(result.sanitisedBody.TestProduct[0])).toMatchObject<SalesOfferPackage>({
+            expect(result.sanitisedBody.TestProduct[0]).toEqual({
                 name: 'Onboard (cash)',
                 description: '',
                 purchaseLocations: ['onBoard'],

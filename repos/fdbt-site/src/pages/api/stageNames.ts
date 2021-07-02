@@ -18,7 +18,7 @@ export const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: s
 };
 
 export const isStageNameValid = (req: NextApiRequestWithSession): InputCheck[] => {
-    const { stageNameInput = [] } = req.body;
+    const { stageNameInput = [] }: { stageNameInput: string[] } = req.body;
     const response: InputCheck[] = [];
     for (let i = 0; i < stageNameInput.length; i += 1) {
         let error;

@@ -1,23 +1,20 @@
 import { S3Event } from 'aws-lambda';
+import AWS, { SNS } from 'aws-sdk';
 import libxslt from 'libxslt';
-import {
-    PointToPointTicket,
-    PeriodTicket,
-    isSchemeOperatorTicket,
-    Ticket,
-    SchemeOperatorGeoZoneTicket,
-    SchemeOperatorFlatFareTicket,
-    isPointToPointTicket,
-    isSchemeOperatorFlatFareTicket,
-    isFlatFareTicket,
-    isPeriodGeoZoneTicket,
-    isPeriodMultipleServicesTicket,
-    isSchemeOperatorGeoZoneTicket,
-    isMultiOperatorGeoZoneTicket,
-    isMultiOperatorMultipleServicesTicket,
-} from '../types/index';
 import * as db from '../data/auroradb';
 import * as s3 from '../data/s3';
+import {
+    isFlatFareTicket,
+    isMultiOperatorGeoZoneTicket,
+    isMultiOperatorMultipleServicesTicket,
+    isPeriodGeoZoneTicket,
+    isPeriodMultipleServicesTicket,
+    isPointToPointTicket,
+    isSchemeOperatorFlatFareTicket,
+    isSchemeOperatorGeoZoneTicket,
+    isSchemeOperatorTicket,
+    Ticket,
+} from '../types/index';
 import netexGenerator from './netexGenerator';
 
 const xsl = `
@@ -64,6 +61,18 @@ export const buildNocList = (ticket: Ticket): string[] => {
     const nocs: string[] = [];
 
     if (
+        // has user noc and additional nocs
+        isMultiOperatorGeoZoneTicket(ticket)
+    ) {
+        ticket.additionalNocs.forEach(additionalNoc => nocs.push(additionalNoc));
+        nocs.push(ticket.nocCode);
+    } else if (
+        // has user noc and additional operators
+        isMultiOperatorMultipleServicesTicket(ticket)
+    ) {
+        ticket.additionalOperators.forEach(additionalOperator => nocs.push(additionalOperator.nocCode));
+        nocs.push(ticket.nocCode);
+    } else if (
         // has only user noc
         isPointToPointTicket(ticket) ||
         isFlatFareTicket(ticket) ||
@@ -81,29 +90,17 @@ export const buildNocList = (ticket: Ticket): string[] => {
         isSchemeOperatorFlatFareTicket(ticket)
     ) {
         ticket.additionalOperators.forEach(additionalOperator => nocs.push(additionalOperator.nocCode));
-    } else if (
-        // has user noc and additional nocs
-        isMultiOperatorGeoZoneTicket(ticket)
-    ) {
-        ticket.additionalNocs.forEach(additionalNoc => nocs.push(additionalNoc));
-        nocs.push(ticket.nocCode);
-    } else if (
-        // has user noc and additional operators
-        isMultiOperatorMultipleServicesTicket(ticket)
-    ) {
-        ticket.additionalOperators.forEach(additionalOperator => nocs.push(additionalOperator.nocCode));
-        nocs.push(ticket.nocCode);
     }
 
     return nocs;
 };
 
 export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
+    const { SNS_ALERTS_ARN } = process.env;
+    let s3FileName = '';
     try {
-        const ticket = await s3.fetchDataFromS3<
-            PointToPointTicket | PeriodTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket
-        >(event);
-        const s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
+        const ticket = await s3.fetchDataFromS3<Ticket>(event);
+        s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
         const { type } = ticket;
 
         console.info(`NeTEx generation starting for type ${type}...`);
@@ -116,12 +113,30 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
 
         await uploadToS3(generatedNetex, fileName);
 
-        if (!isSchemeOperatorTicket(ticket) && ticket.nocCode !== 'IWBusCo') {
-            console.info(`NeTEx generation complete for type ${type}`);
+        // This gets logged for grafana
+        if (!('nocCode' in ticket) || ticket.nocCode !== 'IWBusCo') {
+            const scheme = isSchemeOperatorTicket(ticket) ? 'scheme:' : '';
+            const carnet = ticket.carnet ? 'carnet:' : '';
+            console.info(`NeTEx generation complete for type ${scheme}${carnet}${type}`);
         }
     } catch (error) {
-        console.error(error.stack);
-        throw new Error(error);
+        const sns: SNS = new AWS.SNS();
+
+        const messageParams = {
+            Subject: 'NeTEx Convertor',
+            Message: `There was an error when converting the NeTEx file: ${s3FileName}`,
+            TopicArn: SNS_ALERTS_ARN,
+            MessageAttributes: {
+                NewStateValue: {
+                    DataType: 'String',
+                    StringValue: 'ALARM',
+                },
+            },
+        };
+
+        await sns.publish(messageParams).promise();
+
+        throw error;
     }
 };
 

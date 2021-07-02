@@ -1,6 +1,6 @@
 import { Express } from 'express';
 import AWS, { DynamoDB } from 'aws-sdk';
-import session, { SessionOptions } from 'express-session';
+import session, { SessionOptions, Store } from 'express-session';
 import connectDynamoDb from 'connect-dynamodb';
 
 interface DynamoDbOptions {
@@ -12,7 +12,7 @@ interface DynamoDbOptions {
 }
 
 export default (server: Express): void => {
-    const DynamoDbStore = connectDynamoDb(session);
+    const DynamoDbStore: new (options: object) => Store = connectDynamoDb(session);
 
     const dynamoDbOptions: DynamoDbOptions = {
         table: 'sessions',

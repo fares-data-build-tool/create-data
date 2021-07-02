@@ -93,12 +93,12 @@ export const completeFlatFarePages = (productName: string, isScheme: boolean, is
     continueButtonClick();
 };
 
-export const completeFlatFareCarnet = () => {
+export const completeFlatFareCarnet = (): void => {
     randomlyChooseAndSelectServices();
     continueButtonClick();
 
     for (let i = 0; i < 3; i += 1) {
-        getElementById(`multiple-product-name-${i}`).type(`Flat fare carnet ${i}`);
+        getElementById(`multiple-product-name-${i}`).type(`Flat fare carnet ${i + 1}`);
         getElementById(`multiple-product-price-${i}`).type((9.5 + i).toString());
         getElementById(`product-details-carnet-quantity-${i}`).type((2 + i).toString());
         getElementById(`product-details-carnet-expiry-quantity-${i}`).type('7');
