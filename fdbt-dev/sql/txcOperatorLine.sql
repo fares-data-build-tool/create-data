@@ -299,6 +299,16 @@ INSERT INTO `txcOperatorLine` (id,nocCode,lineName,lineId,startDate,serviceCode,
 (11766,"WBTR","H20","zMR1aZ","2020-04-13","NW_07_NW_H20_2","Warrington''s Own Buses","Murdishaw - Murdishaw","NW","tnds","Aschau im Zillertal","Genaro Estrada"),
 (11871,"WBTR","H20A","U5oPWj","2020-04-13","NW_07_NW_H20A_2","Warrington''s Own Buses","Murdishaw - Murdishaw","NW","tnds","Dukinfield","Trzebnica");
 
+-- update a few rows to test end date logic for services
+
+-- a future date
+update txcOperatorLine set endDate = DATE_ADD(CURDATE(), INTERVAL 10 DAY) where lineId = 'I3vs2Q';
+
+-- today's date
+update txcOperatorLine set endDate = CURDATE() where lineId = 'QdeLAv';
+
+-- a date in the past
+update txcOperatorLine set endDate = DATE_SUB(CURDATE(), INTERVAL 10 DAY) where lineId = 'SeszrT';
 
 UNLOCK TABLES;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
