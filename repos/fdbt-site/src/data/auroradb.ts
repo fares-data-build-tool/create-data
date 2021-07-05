@@ -129,7 +129,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
         const queryInput = `
             SELECT lineName, lineId, startDate, serviceDescription AS description, origin, destination, serviceCode
             FROM txcOperatorLine
-            WHERE nocCode = ? AND dataSource = ?
+            WHERE nocCode = ? AND dataSource = ? AND (endDate IS NULL OR CURDATE() < endDate)
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
