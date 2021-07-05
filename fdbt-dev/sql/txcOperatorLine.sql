@@ -302,13 +302,13 @@ INSERT INTO `txcOperatorLine` (id,nocCode,lineName,lineId,startDate,serviceCode,
 -- update a few rows to test end date logic for services
 
 -- a future date
-update txcOperatorLine set endDate = DATE_ADD(CURDATE(), INTERVAL 10 DAY) where lineId = 'I3vs2Q';
+UPDATE txcOperatorLine SET endDate = DATE_ADD(CURDATE(), INTERVAL 10 DAY) WHERE lineId = 'I3vs2Q';
 
 -- today's date
-update txcOperatorLine set endDate = CURDATE() where lineId = 'QdeLAv';
+UPDATE txcOperatorLine SET endDate = CURDATE() WHERE lineId = 'QdeLAv';
 
 -- a date in the past
-update txcOperatorLine set endDate = DATE_SUB(CURDATE(), INTERVAL 10 DAY) where lineId = 'SeszrT';
+UPDATE txcOperatorLine SET endDate = DATE_SUB(CURDATE(), INTERVAL 10 DAY) WHERE lineId = 'SeszrT';
 
 UNLOCK TABLES;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
