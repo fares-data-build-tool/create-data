@@ -205,12 +205,12 @@ export const completeDefineGroupPassengersPages = (groupSize: string): void => {
     const sortedPassengerTypeIds = [firstPassengerTypeId, secondPassengerTypeId].sort();
     const sortedPassengerTypes: string[] = [];
 
-    getElementById(sortedPassengerTypeIds[0]).then(($elm0) => {
+    getElementById(sortedPassengerTypeIds[0]).then($elm0 => {
         sortedPassengerTypes.push($elm0.attr('value'));
-        getElementById(sortedPassengerTypeIds[1]).then(($elm1) => {
+        getElementById(sortedPassengerTypeIds[1]).then($elm1 => {
             sortedPassengerTypes.push($elm1.attr('value'));
             continueButtonClick();
-            sortedPassengerTypes.forEach((passengerType) => {
+            sortedPassengerTypes.forEach(passengerType => {
                 completeUserDetailsPage(true, groupSize, passengerType);
             });
         });
@@ -243,7 +243,7 @@ export const randomlyChooseProductPeriodValidity = (): void => {
 export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
     cy.get(`[id=${dropDownId}]`)
         .find('option')
-        .then(($elm) => {
+        .then($elm => {
             const numberOfOptions = $elm.length;
             const randomSelector = getRandomNumber(1, numberOfOptions - 1);
             $elm.get(randomSelector).setAttribute('selected', 'selected');
@@ -315,12 +315,12 @@ export const randomlyDecideTimeRestrictions = (): void => {
         selectYesToTimeRestrictions();
 
         const startTimes = ['0000', '0459', '0900'];
-        cy.get('[id^=start-time-]').each((input) => {
+        cy.get('[id^=start-time-]').each(input => {
             cy.wrap(input).type(startTimes[getRandomNumber(0, 2)]);
         });
 
         const endTimes = ['1420', '1750', '2359'];
-        cy.get('[id^=end-time-]').each((input) => {
+        cy.get('[id^=end-time-]').each(input => {
             cy.wrap(input).type(endTimes[getRandomNumber(0, 2)]);
         });
     }
@@ -337,7 +337,7 @@ export const randomlyDecideTermRestrictions = (): void => {
 };
 
 export const clickAllCheckboxes = (): void => {
-    cy.get('[class=govuk-checkboxes__input]').each((checkbox) => {
+    cy.get('[class=govuk-checkboxes__input]').each(checkbox => {
         cy.wrap(checkbox).click();
     });
 };
@@ -465,7 +465,7 @@ export const completeProductDateInformationPage = (): void => {
 export const isUuidStringValid = (isScheme = false): void => {
     getElementById('uuid-ref-number')
         .invoke('text')
-        .then((rawUuid) => {
+        .then(rawUuid => {
             const uuid = rawUuid.replace('Your reference number', '');
 
             if (isScheme) {

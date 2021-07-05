@@ -69,7 +69,7 @@ const TicketRepresentation = ({
                                             ? [
                                                   {
                                                       value: 'hybrid',
-                                                      label: 'Hybrid Period ticket',
+                                                      label: 'Hybrid period ticket',
                                                       hint: 'Unlimited travel within a geographic zone and certain additional services outside that zone',
                                                   },
                                               ]

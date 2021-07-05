@@ -83,8 +83,8 @@ module.exports = {
         '@typescript-eslint/unbound-method': 0,
     },
     settings: {
-        'react': {
-            version: 'detect'
-        }
+        react: {
+            version: 'detect',
+        },
     },
 };
