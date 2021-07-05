@@ -58,6 +58,7 @@ def get_lines_for_service(service):
 def extract_data_for_txc_operator_service_table(operator, service):
     noc_code = operator['NationalOperatorCode']
     start_date = service['OperatingPeriod']['StartDate']
+    end_date = service['OperatingPeriod']['EndDate']
     operator_short_name = operator['OperatorShortName']
     service_description = service['Description'] if 'Description' in service else ''
     service_code = service['ServiceCode'] if 'ServiceCode' in service else None
