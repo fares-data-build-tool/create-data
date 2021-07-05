@@ -7,7 +7,6 @@ module.exports = {
     root: true,
     extends: [
         'plugin:@typescript-eslint/recommended',
-        'airbnb',
         'plugin:prettier/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'eslint-config-prettier',
@@ -26,14 +25,6 @@ module.exports = {
     plugins: ['@typescript-eslint'],
     rules: {
         indent: [0, 4],
-        'import/extensions': [
-            'error',
-            'ignorePackages',
-            {
-                js: 'never',
-                ts: 'never',
-            },
-        ],
     },
     settings: {
         'import/resolver': {
