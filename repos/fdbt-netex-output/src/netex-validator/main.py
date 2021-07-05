@@ -104,17 +104,6 @@ def lambda_handler(event, context):
             logger.info('NeTEx valid, uploading to S3...')
             s3_client.upload_file(download_path, os.getenv('VALIDATED_NETEX_BUCKET'), key)
 
-            sns_client.publish(
-                TopicArn=SNS_ALERTS_ARN,
-                Subject="NeTEx Validator",
-                Message=f'NeTEx file: {key} has been successfully validated and uploaded',
-                MessageAttributes={
-                    'NewStateValue': {
-                        'DataType': 'String',
-                        'StringValue': 'OK'
-                    }
-                }
-            )
         except Exception as e:
             logger.error(f'There was an error when validating NeTEx file: {key}, error: {e}')
 
