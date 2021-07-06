@@ -234,7 +234,7 @@ export const getGeoZoneFareTable = (
                                             TimeIntervalPrice: {
                                                 version: '1.0',
                                                 id: `op:${product.productName}@${salesOfferPackage.name}@zone`,
-                                                Amount: { $t: `${salesOfferPackage.price}` },
+                                                Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
                                                 TimeIntervalRef: {
                                                     version: '1.0',
                                                     ref: `op:Tariff@${
@@ -301,7 +301,7 @@ const getMultiServiceList = (
                                             TimeIntervalPrice: {
                                                 version: '1.0',
                                                 id: `op:${product.productName}@${salesOfferPackage.name}@service`,
-                                                Amount: { $t: `${salesOfferPackage.price}` },
+                                                Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
                                                 TimeIntervalRef: {
                                                     version: '1.0',
                                                     ref: `op:Tariff@${
@@ -356,7 +356,7 @@ const getFlatFareList = (
                             DistanceMatrixElementPrice: {
                                 version: '1.0',
                                 id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}`,
-                                Amount: { $t: `${salesOfferPackage.price}` },
+                                Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
                             },
                         },
                     },
