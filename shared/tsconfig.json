@@ -1,4 +1,10 @@
 {
-  "extends": "../repos/fdbt-site",
-  "include": ["./**"]
+  "extends": "../repos/fdbt-site/tsconfig.json",
+  "include": ["./*"],
+  "compilerOptions": {
+    "rootDir": ".",
+    "composite": true,
+    "noEmit": false,
+    "declaration": true
+  }
 }

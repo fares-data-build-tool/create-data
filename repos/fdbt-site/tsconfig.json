@@ -31,6 +31,11 @@
       ]
     }
   },
+  "references": [
+    {
+      "path": "../../shared"
+    }
+  ],
   "include": [
     "server",
     "src",
