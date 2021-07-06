@@ -1,0 +1,90 @@
+{
+  "nocCode": "WBTR",
+  "type": "flatFare",
+  "passengerType": "anyone",
+  "email": "test@example.com",
+  "uuid": "WBTR64d9b36b",
+  "timeRestriction": [],
+  "ticketPeriod": {
+    "startDate": "2021-07-06T11:20:52.549Z",
+    "endDate": "2121-07-06T11:20:52.549Z"
+  },
+  "operatorName": "Test Operator",
+  "products": [
+    {
+      "productName": "test",
+      "productPrice": "4.99",
+      "salesOfferPackages": [
+        {
+          "name": "Onboard (cash)",
+          "description": "",
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "cash"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ],
+          "price": "4.99"
+        },
+        {
+          "name": "Onboard (contactless)",
+          "description": "",
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "contactlessPaymentCard"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ],
+          "price": "8.88"
+        },
+        {
+          "name": "Online (smart card)",
+          "description": "",
+          "purchaseLocations": [
+            "online"
+          ],
+          "paymentMethods": [
+            "directDebit",
+            "creditCard",
+            "debitCard"
+          ],
+          "ticketFormats": [
+            "smartCard"
+          ],
+          "price": "9.99"
+        }
+      ]
+    }
+  ],
+  "selectedServices": [
+    {
+      "lineName": "1",
+      "lineId": "lzkklu",
+      "serviceCode": "NW_07_NW_1_1",
+      "startDate": "06/04/2020",
+      "serviceDescription": "Warrington - Latchford/Westy (Circ)"
+    },
+    {
+      "lineName": "2",
+      "lineId": "wido2q",
+      "serviceCode": "NW_07_NW_2_1",
+      "startDate": "06/04/2020",
+      "serviceDescription": "Warrington - Westy/Latchford (Circ)"
+    },
+    {
+      "lineName": "3",
+      "lineId": "TgBKhM",
+      "serviceCode": "NW_07_NW_3_1",
+      "startDate": "06/04/2020",
+      "serviceDescription": "Warrington - Martinscroft"
+    }
+  ],
+  "termTime": false,
+  "carnet": false
+}

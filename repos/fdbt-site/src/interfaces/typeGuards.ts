@@ -25,7 +25,6 @@ import {
     ProductInfo,
     ProductInfoWithErrors,
     ProductWithSalesOfferPackages,
-    SalesOfferPackage,
     SelectSalesOfferPackageWithError,
     Service,
     ServiceWithErrors,
@@ -35,6 +34,7 @@ import {
     TicketRepresentationAttributeWithErrors,
     WithErrors,
 } from '.';
+import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
 import { validFareTypes } from '../constants';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;

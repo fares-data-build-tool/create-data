@@ -2,6 +2,7 @@
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import React from 'react';
+import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
 import {
     PointToPointPeriodTicket,
     BasicService,
@@ -23,7 +24,6 @@ import {
     RadioWithConditionalInputs,
     RawService,
     ReturnTicket,
-    SalesOfferPackage,
     SchemeOperatorFlatFareTicket,
     SchemeOperatorGeoZoneTicket,
     SchemeOperatorTicket,
@@ -31,7 +31,7 @@ import {
     SingleTicket,
     Stop,
     UserFareStages,
-} from '../../src/interfaces/index';
+} from '../../src/interfaces';
 import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,

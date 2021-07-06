@@ -1,9 +1,10 @@
 import { shallow } from 'enzyme';
 import React from 'react';
+import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
 import DescribeSalesOfferPackage, { getServerSideProps } from '../../src/pages/describeSalesOfferPackage';
 import { getMockContext } from '../testData/mockData';
 import { SOP_INFO_ATTRIBUTE, SOP_ATTRIBUTE } from '../../src/constants/attributes';
-import { ErrorInfo, SalesOfferPackage, SalesOfferPackageInfo, SalesOfferPackageWithErrors } from '../../src/interfaces';
+import { ErrorInfo, SalesOfferPackageInfo, SalesOfferPackageWithErrors } from '../../src/interfaces';
 
 describe('describeSalesOfferPackage', () => {
     const mockError: ErrorInfo = expect.objectContaining({ errorMessage: expect.any(String), id: expect.any(String) });

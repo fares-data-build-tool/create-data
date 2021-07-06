@@ -1,3 +1,4 @@
+import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
 import * as attributes from '../constants/attributes';
 import {
     POINT_TO_POINT_PRODUCT_ATTRIBUTE,
@@ -85,7 +86,6 @@ import {
     ProductWithSalesOfferPackages,
     ReturnPeriodValidity,
     ReturnPeriodValidityWithErrors,
-    SalesOfferPackage,
     SalesOfferPackageInfo,
     SalesOfferPackageInfoWithErrors,
     SalesOfferPackageWithErrors,
