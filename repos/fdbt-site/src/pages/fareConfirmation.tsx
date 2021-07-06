@@ -72,7 +72,7 @@ export const buildFareConfirmationElements = (
     }
 
     if (passengerType.passengerType === 'group' && groupPassengerInfo.length > 0) {
-        groupPassengerInfo.forEach(passenger => {
+        groupPassengerInfo.forEach((passenger) => {
             const href = `definePassengerType?groupPassengerType=${passenger.passengerType}`;
             if (passenger.ageRangeMin || passenger.ageRangeMax) {
                 confirmationElements.push({
@@ -92,7 +92,7 @@ export const buildFareConfirmationElements = (
             if (passenger.proofDocuments && passenger.proofDocuments.length > 0) {
                 confirmationElements.push({
                     name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
-                    content: passenger.proofDocuments.map(proofDoc => sentenceCaseString(proofDoc)).join(', '),
+                    content: passenger.proofDocuments.map((proofDoc) => sentenceCaseString(proofDoc)).join(', '),
                     href,
                 });
             } else {
@@ -123,7 +123,7 @@ export const buildFareConfirmationElements = (
         if (passengerType.proof && passengerType.proofDocuments) {
             confirmationElements.push({
                 name: 'Passenger information - proof documents',
-                content: passengerType.proofDocuments.map(proofDoc => sentenceCaseString(proofDoc)).join(', '),
+                content: passengerType.proofDocuments.map((proofDoc) => sentenceCaseString(proofDoc)).join(', '),
                 href: 'definePassengerType',
             });
         } else {
@@ -154,8 +154,8 @@ export const buildFareConfirmationElements = (
     }
 
     if (fullTimeRestrictions.length > 0) {
-        fullTimeRestrictions.forEach(fullTimeRestriction => {
-            fullTimeRestriction.timeBands.forEach(timeBand => {
+        fullTimeRestrictions.forEach((fullTimeRestriction) => {
+            fullTimeRestriction.timeBands.forEach((timeBand) => {
                 confirmationElements.push({
                     name: `Time restrictions - ${sentenceCaseString(fullTimeRestriction.day)}`,
                     content: `Start time: ${timeBand.startTime || 'N/A'} End time: ${timeBand.endTime || 'N/A'}`,

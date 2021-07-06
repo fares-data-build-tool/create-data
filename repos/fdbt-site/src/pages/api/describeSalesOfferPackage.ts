@@ -54,7 +54,7 @@ export const checkUserInput = async (
         await sopInfoSchema.validate(sopInfo, { abortEarly: false });
     } catch (validationErrors) {
         const validityErrors: yup.ValidationError = validationErrors;
-        errors = validityErrors.inner.map(error => {
+        errors = validityErrors.inner.map((error) => {
             return { errorMessage: error.message, id: `sop-${error.path}`, userInput: error.value };
         });
     }
@@ -98,7 +98,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const savedSops = await getSalesOfferPackagesByNocCode(nocCode);
-        const nameCheck = savedSops.find(sop => sop.name === salesOfferPackageInfo.name);
+        const nameCheck = savedSops.find((sop) => sop.name === salesOfferPackageInfo.name);
 
         if (nameCheck) {
             const sopWithError: SalesOfferPackageWithErrors = {

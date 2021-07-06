@@ -20,7 +20,7 @@ describe('MatchingBase', () => {
     describe('getDefaultStopItems', () => {
         it('should return an array of stop items each with a default dropdown value when there are no selectedFareStages', () => {
             const defaultStopItems = getDefaultStopItems(userFareStages, zoneStops, []);
-            [...defaultStopItems].forEach(stopItem => {
+            [...defaultStopItems].forEach((stopItem) => {
                 expect(stopItem.dropdownValue).toBe('');
             });
         });
@@ -51,7 +51,7 @@ describe('MatchingBase', () => {
     describe('javascript functionality', () => {
         const mockSetState = jest.fn();
         jest.mock('react', () => ({ useState: (initialState: unknown): unknown => [initialState, mockSetState] }));
-        const mockMouseEvent = ({ preventDefault: jest.fn() } as unknown) as React.MouseEvent;
+        const mockMouseEvent = { preventDefault: jest.fn() } as unknown as React.MouseEvent;
 
         afterEach(() => {
             jest.clearAllMocks();
@@ -100,12 +100,12 @@ describe('MatchingBase', () => {
             );
 
             it('should update the state such that each dropdown on the page has its value reset to an empty string', () => {
-                const dropdownValues = wrapper.find('select').map(item => item.prop('value'));
+                const dropdownValues = wrapper.find('select').map((item) => item.prop('value'));
                 expect(dropdownValues).toContainEqual(
                     expect.stringMatching('' || 'Acomb Green Lane' || 'Holl Bank/Beech Ave'),
                 );
                 (wrapper.find('#bottom-reset-all-fare-stages-button').prop('onClick') as Function)(mockMouseEvent);
-                wrapper.find('select').forEach(item => {
+                wrapper.find('select').forEach((item) => {
                     expect(item.prop('value')).toEqual('');
                 });
             });
@@ -140,7 +140,7 @@ describe('MatchingBase', () => {
                     mockMouseEvent,
                 );
                 matchingBaseWrapper.update();
-                matchingBaseWrapper.find('select').forEach(item => {
+                matchingBaseWrapper.find('select').forEach((item) => {
                     const itemIndex = Number(item.prop('id')?.split('-')[1]);
                     if (itemIndex < optionIndex) {
                         expect(item.prop('value')).toEqual('');
@@ -161,7 +161,7 @@ describe('MatchingBase', () => {
                         value: 'Holl Bank/Beech Ave',
                     },
                 ];
-                mockDropdownInfo.forEach(selection => {
+                mockDropdownInfo.forEach((selection) => {
                     (matchingBaseWrapper.find(`#option-${selection.index}`).prop('onChange') as Function)({
                         target: {
                             value: selection.value,
@@ -172,7 +172,7 @@ describe('MatchingBase', () => {
                     mockMouseEvent,
                 );
                 matchingBaseWrapper.update();
-                matchingBaseWrapper.find('select').forEach(item => {
+                matchingBaseWrapper.find('select').forEach((item) => {
                     const firstSelectionIndex = mockDropdownInfo[0].index;
                     const secondSelectionIndex = mockDropdownInfo[1].index;
                     const itemIndex = Number(item.prop('id')?.split('-')[1]);

@@ -15,8 +15,6 @@ import {
     FullTimeRestriction,
     Operator,
     isPointToPointTicket,
-    SchemeOperatorGeoZoneTicket,
-    SchemeOperatorFlatFareTicket,
     SchemeOperatorTicket,
     isGroupTicket,
     Ticket,
@@ -28,6 +26,7 @@ import {
     isProductDetails,
     BaseProduct,
     PointToPointCarnetProductDetails,
+    isHybridTicket,
 } from '../types/index';
 
 import {
@@ -244,15 +243,7 @@ export const replaceIWBusCoNocCode = (nocCode: string): string => {
     return nocCode;
 };
 
-export const getCoreData = (
-    operators: Operator[],
-    ticket:
-        | PointToPointTicket
-        | PeriodTicket
-        | FlatFareTicket
-        | SchemeOperatorGeoZoneTicket
-        | SchemeOperatorFlatFareTicket,
-): CoreData => {
+export const getCoreData = (operators: Operator[], ticket: Ticket): CoreData => {
     if (isPointToPointTicket(ticket)) {
         const baseOperatorInfo = operators.find(operator => operator.nocCode === replaceIWBusCoNocCode(ticket.nocCode));
         if (!baseOperatorInfo) {
@@ -328,14 +319,7 @@ export const getDistributionChannel = (purchaseLocation: string): string => {
 
 export const isFlatFareType = (ticket: Ticket): boolean => ticket.type === 'flatFare';
 
-export const getCarnetElement = (
-    ticket:
-        | PointToPointTicket
-        | PeriodTicket
-        | FlatFareTicket
-        | SchemeOperatorGeoZoneTicket
-        | SchemeOperatorFlatFareTicket,
-): NetexObject => {
+export const getCarnetElement = (ticket: Ticket): NetexObject => {
     const uniqueCarnetDenominations = new Set();
     ticket.products.forEach(product => {
         if ('carnetDetails' in product) {
@@ -365,15 +349,11 @@ export const getCarnetElement = (
 };
 
 export const getFareStructuresElements = (
-    ticket:
-        | PointToPointTicket
-        | PeriodTicket
-        | FlatFareTicket
-        | SchemeOperatorGeoZoneTicket
-        | SchemeOperatorFlatFareTicket,
+    ticket: Ticket,
     isCarnet: boolean,
     lineName: string,
     placeholderGroupOfProductsName: string,
+    groupOfLinesRef: string,
 ): NetexObject[] => {
     const fareStructureElements: NetexObject[] = [];
 
@@ -418,6 +398,27 @@ export const getFareStructuresElements = (
         if (isProductDetails(product) && (isGeoZoneTicket(ticket) || isMultiServiceTicket(ticket))) {
             return [
                 getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
+                getDurationElement(ticket, product),
+                getPeriodConditionsElement(ticket, product),
+            ];
+        }
+        if (isHybridTicket(ticket) && isProductDetails(product)) {
+            const zonalAvailabilityElementId = `Tariff@${product.productName}@access_zones`;
+            const zonalValidityParametersObject = {
+                FareZoneRef: {
+                    version: '1.0',
+                    ref: `op:${placeholderGroupOfProductsName}@${ticket.zoneName}`,
+                },
+            };
+
+            return [
+                getPeriodAvailabilityElement(
+                    zonalAvailabilityElementId,
+                    zonalValidityParametersObject,
+                    hasTimeRestriction,
+                    product.productName,
+                    groupOfLinesRef,
+                ),
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];

@@ -61,8 +61,7 @@ const TicketRepresentation = ({
                                                   {
                                                       value: 'pointToPointPeriod',
                                                       label: 'Point to Point',
-                                                      hint:
-                                                          'Unlimited travel between two fixed points in both directions',
+                                                      hint: 'Unlimited travel between two fixed points in both directions',
                                                   },
                                               ]
                                             : []),
@@ -70,9 +69,8 @@ const TicketRepresentation = ({
                                             ? [
                                                   {
                                                       value: 'hybrid',
-                                                      label: 'Hybrid Period ticket',
-                                                      hint:
-                                                          'Unlimited travel within a geographic zone and certain additional services outside that zone',
+                                                      label: 'Hybrid period ticket',
+                                                      hint: 'Unlimited travel within a geographic zone and certain additional services outside that zone',
                                                   },
                                               ]
                                             : []),
@@ -98,7 +96,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             fareType,
             errors: ticketType && isTicketRepresentationWithErrors(ticketType) ? ticketType.errors : [],
             csrfToken,
-            showHybrid: process.env.STAGE !== 'prod' && fareType !== 'multiOperator',
+            showHybrid: fareType !== 'multiOperator',
             showPointToPoint: process.env.STAGE !== 'prod' && fareType !== 'multiOperator',
         },
     };

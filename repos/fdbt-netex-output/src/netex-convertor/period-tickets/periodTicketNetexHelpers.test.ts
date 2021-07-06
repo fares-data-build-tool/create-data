@@ -1,10 +1,4 @@
-import {
-    PeriodMultipleServicesTicket,
-    GeoZoneTicket,
-    PeriodTicket,
-    SchemeOperator,
-    isGeoZoneTicket,
-} from '../../types/index';
+import { PeriodMultipleServicesTicket, GeoZoneTicket, SchemeOperator } from '../../types/index';
 
 import * as netexHelpers from './periodTicketNetexHelpers';
 import {
@@ -15,7 +9,7 @@ import {
     carnetPeriodMultipleServicesTicket,
 } from '../../test-data/matchingData';
 import { operatorData, multiOperatorList } from '../test-data/operatorData';
-import { getGroupOfOperators, getOrganisations } from './periodTicketNetexHelpers';
+import { getGroupOfLinesList, getGroupOfOperators, getOrganisations } from './periodTicketNetexHelpers';
 import * as db from '../../data/auroradb';
 
 describe('periodTicketNetexHelpers', () => {
@@ -25,96 +19,141 @@ describe('periodTicketNetexHelpers', () => {
     const opData = operatorData;
     const placeHolderText = `${geoUserPeriodTicket.nocCode}_products`;
     const opString = expect.stringContaining('op:');
-    const tripString = expect.stringContaining('Trip');
-    const carnetString = expect.stringContaining('multitrip');
 
-    const getExpectedFareTableColumn = (representingObject: {} | null): jest.Expect =>
-        expect.objectContaining({
-            Name: expect.objectContaining({ $t: expect.any(String) }),
-            id: opString,
-            representing: representingObject ? expect.objectContaining(representingObject) : null,
-            version: '1.0',
-        });
-
-    const getExpectedFareTableRow = (representingObject: {} | null): jest.Expect =>
-        expect.objectContaining({
-            Name: expect.objectContaining({ $t: expect.any(String) }),
-            id: opString,
-            representing: representingObject ? expect.objectContaining(representingObject) : null,
-            version: '1.0',
-        });
-
-    const getFareTableSchema = (
-        matchingData: PeriodTicket,
-        representingColumnsObject: {} | null,
-        representingRowsObject: {} | null,
-    ): {} => ({
+    const multiServiceFareTableSchema = (carnet: boolean): {} => ({
         version: '1.0',
-        id: opString,
-        Name: expect.objectContaining({ $t: expect.any(String) }),
-        specifics: isGeoZoneTicket(matchingData)
-            ? {
-                  TariffZoneRef: { ref: opString, version: '1.0' },
-              }
-            : null,
-        columns: expect.objectContaining({
-            FareTableColumn: isGeoZoneTicket(matchingData)
-                ? getExpectedFareTableColumn({
-                      TariffZoneRef: { ref: opString, version: '1.0' },
-                  })
-                : getExpectedFareTableColumn(null),
-        }),
+        id: expect.any(String),
+        Name: {
+            $t: expect.any(String),
+        },
+        pricesFor: {
+            PreassignedFareProductRef: {
+                version: '1.0',
+                ref: expect.any(String),
+            },
+        },
         includes: {
             FareTable: {
-                Name: { $t: expect.any(String) },
-                columns: {
-                    FareTableColumn: getExpectedFareTableColumn(representingColumnsObject),
+                version: '1.0',
+                id: expect.any(String),
+                Name: {
+                    $t: expect.any(String),
                 },
-                id: opString,
                 includes: {
                     FareTable: {
-                        Name: { $t: expect.any(String) },
-                        cells: {
-                            Cell: {
-                                TimeIntervalPrice: {
-                                    Amount: expect.any(Object),
-                                    TimeIntervalRef: { ref: opString, version: '1.0' },
-                                    id: opString,
-                                    version: '1.0',
-                                },
-                                id: opString,
-                                order: '1',
+                        version: '1.0',
+                        id: expect.any(String),
+                        pricesFor: {
+                            SalesOfferPackageRef: {
                                 version: '1.0',
-                                ColumnRef: { ref: opString, version: '1.0' },
-                                RowRef: { ref: opString, version: '1.0' },
+                                ref: expect.any(String),
+                            },
+                            ...(carnet
+                                ? {
+                                      QualityStructureFactorRef: {
+                                          ref: expect.any(String),
+                                          version: '1.0',
+                                      },
+                                  }
+                                : null),
+                        },
+                        includes: {
+                            FareTable: {
+                                version: '1.0',
+                                id: expect.any(String),
+                                limitations: {
+                                    UserProfileRef: {
+                                        version: '1.0',
+                                        ref: expect.any(String),
+                                    },
+                                },
+                                prices: {
+                                    TimeIntervalPrice: {
+                                        version: '1.0',
+                                        id: expect.any(String),
+                                        Amount: { $t: expect.any(String) },
+                                        TimeIntervalRef: {
+                                            version: '1.0',
+                                            ref: expect.any(String),
+                                        },
+                                    },
+                                },
                             },
                         },
-                        columns: {
-                            FareTableColumn: getExpectedFareTableColumn(representingColumnsObject),
-                        },
-                        rows: {
-                            FareTableRow: getExpectedFareTableRow(representingRowsObject),
-                        },
-                        id: opString,
-                        limitations: {
-                            UserProfileRef: { ref: opString, version: '1.0' },
-                        },
-                        version: '1.0',
                     },
                 },
-                pricesFor: {
-                    SalesOfferPackageRef: { ref: tripString, version: '1.0' },
-                    QualityStructureFactorRef: matchingData.products[0].carnetDetails
-                        ? {
-                              version: '1.0',
-                              ref: carnetString,
-                          }
-                        : undefined,
+            },
+        },
+    });
+
+    const geoZoneFareTableSchema = (carnet: boolean): {} => ({
+        version: '1.0',
+        id: expect.any(String),
+        Name: {
+            $t: expect.any(String),
+        },
+        pricesFor: {
+            PreassignedFareProductRef: {
+                version: '1.0',
+                ref: expect.any(String),
+            },
+        },
+        includes: {
+            FareTable: {
+                version: '1.0',
+                id: expect.any(String),
+                Name: {
+                    $t: expect.any(String),
                 },
                 specifics: {
-                    TypeOfTravelDocumentRef: { ref: opString, version: '1.0' },
+                    TariffZoneRef: {
+                        version: '1.0',
+                        ref: expect.any(String),
+                    },
                 },
-                version: '1.0',
+                includes: {
+                    FareTable: {
+                        version: '1.0',
+                        id: expect.any(String),
+                        pricesFor: {
+                            SalesOfferPackageRef: {
+                                version: '1.0',
+                                ref: expect.any(String),
+                            },
+                            ...(carnet
+                                ? {
+                                      QualityStructureFactorRef: {
+                                          ref: expect.any(String),
+                                          version: '1.0',
+                                      },
+                                  }
+                                : null),
+                        },
+                        includes: {
+                            FareTable: {
+                                version: '1.0',
+                                id: expect.any(String),
+                                limitations: {
+                                    UserProfileRef: {
+                                        version: '1.0',
+                                        ref: expect.any(String),
+                                    },
+                                },
+                                prices: {
+                                    TimeIntervalPrice: {
+                                        version: '1.0',
+                                        id: expect.any(String),
+                                        Amount: { $t: expect.any(String) },
+                                        TimeIntervalRef: {
+                                            version: '1.0',
+                                            ref: expect.any(String),
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
             },
         },
     });
@@ -202,30 +241,18 @@ describe('periodTicketNetexHelpers', () => {
 
     describe('getGeoZoneFareTable', () => {
         it.each([
-            ['periodGeoZoneTicket', geoUserPeriodTicket],
-            ['carnetPeriodGeoZoneTicket', carnetGeoUserPeriodTicket],
+            ['periodGeoZoneTicket', geoUserPeriodTicket, false],
+            ['carnetPeriodGeoZoneTicket', carnetGeoUserPeriodTicket, true],
         ])(
             'returns a list of geoFareZoneTable objects for the products defined in %s matching data',
-            (_ticketType, matchingData) => {
-                const representingObjectTypeOfTravelDoc = {
-                    TypeOfTravelDocumentRef: expect.objectContaining({ ref: opString, version: '1.0' }),
-                    UserProfileRef: expect.objectContaining({ ref: opString, version: '1.0' }),
-                };
-                const representingObjectTimeIntervalDoc = {
-                    TimeIntervalRef: expect.objectContaining({ ref: opString, version: '1.0' }),
-                };
-                const geoZoneFareTableSchema = getFareTableSchema(
-                    matchingData,
-                    representingObjectTypeOfTravelDoc,
-                    representingObjectTimeIntervalDoc,
-                );
+            (_ticketType, matchingData, carnet) => {
                 const expectedLength = matchingData.products
                     .map(product => product.salesOfferPackages.length)
                     .reduce((a, b) => a + b);
                 const geoZoneFareTables = netexHelpers.getGeoZoneFareTable(matchingData, placeHolderText, 'test');
                 expect(geoZoneFareTables).toHaveLength(expectedLength);
                 geoZoneFareTables.forEach(fareTable => {
-                    expect(fareTable).toEqual(geoZoneFareTableSchema);
+                    expect(fareTable).toEqual(geoZoneFareTableSchema(carnet));
                 });
             },
         );
@@ -233,43 +260,48 @@ describe('periodTicketNetexHelpers', () => {
 
     describe('getMultiServiceFareTable', () => {
         it.each([
-            ['periodMultipleServicesTicket', periodMultipleServicesTicket],
-            ['carnetPeriodMultipleServicesTicket', carnetPeriodMultipleServicesTicket],
-        ])('returns a list of fare table objects when given %s matching data', (_ticketType, matchingData) => {
-            const representingObjectTypeOfTravelDoc = {
-                TypeOfTravelDocumentRef: expect.objectContaining({ ref: opString, version: '1.0' }),
-                UserProfileRef: expect.objectContaining({ ref: opString, version: '1.0' }),
-            };
-            const representingObjectTimeIntervalDoc = {
-                TimeIntervalRef: expect.objectContaining({ ref: opString, version: '1.0' }),
-            };
-            const multiServiceFareTableSchema = getFareTableSchema(
-                matchingData,
-                representingObjectTypeOfTravelDoc,
-                representingObjectTimeIntervalDoc,
-            );
-            const expectedLength = periodMultipleServicesTicket.products
-                .map(product => product.salesOfferPackages.length)
-                .reduce((a, b) => a + b);
-            const multiServiceFareTables = netexHelpers.getMultiServiceFareTable(matchingData, 'test');
-            expect(multiServiceFareTables).toHaveLength(expectedLength);
-            multiServiceFareTables.forEach(fareTable => {
-                expect(fareTable).toEqual(multiServiceFareTableSchema);
-            });
-        });
+            ['periodMultipleServicesTicket', periodMultipleServicesTicket, false],
+            ['carnetPeriodMultipleServicesTicket', carnetPeriodMultipleServicesTicket, true],
+        ])(
+            'returns a list of fare table objects when given %s matching data',
+            (_ticketType, matchingData, carnet: boolean) => {
+                const expectedLength = periodMultipleServicesTicket.products
+                    .map(product => product.salesOfferPackages.length)
+                    .reduce((a, b) => a + b);
+                const multiServiceFareTables = netexHelpers.getMultiServiceFareTable(matchingData, 'test');
+                expect(multiServiceFareTables).toHaveLength(expectedLength);
+                multiServiceFareTables.forEach(fareTable => {
+                    expect(fareTable).toEqual(multiServiceFareTableSchema(carnet));
+                });
+            },
+        );
 
         it('returns a list of fare table objects when given flatFareTicket matching data', () => {
             const flatFareFareTableSchema = {
                 version: '1.0',
                 id: opString,
                 Name: { $t: expect.any(String) },
+                pricesFor: {
+                    SalesOfferPackageRef: {
+                        version: '1.0',
+                        ref: expect.any(String),
+                    },
+                    PreassignedFareProductRef: {
+                        version: '1.0',
+                        ref: expect.any(String),
+                    },
+                },
+                limitations: {
+                    UserProfileRef: {
+                        version: '1.0',
+                        ref: expect.any(String),
+                    },
+                },
                 includes: {
                     FareTable: {
                         version: '1.0',
                         id: opString,
                         Name: { $t: expect.any(String) },
-                        pricesFor: { SalesOfferPackageRef: { version: '1.0', ref: tripString } },
-                        limitations: { UserProfileRef: { version: '1.0', ref: opString } },
                         prices: {
                             DistanceMatrixElementPrice: {
                                 version: '1.0',
@@ -291,6 +323,68 @@ describe('periodTicketNetexHelpers', () => {
             flatFareFareTables.forEach(fareTable => {
                 expect(fareTable).toEqual(flatFareFareTableSchema);
             });
+        });
+    });
+
+    describe('getGroupOfLinesList', () => {
+        const lines = [
+            {
+                version: '',
+                id: '1',
+                Name: {},
+                Description: {},
+                Url: {},
+                PublicCode: {},
+                PrivateCode: {},
+                OperatorRef: {},
+                LineType: {},
+            },
+            {
+                version: '',
+                id: '2',
+                Name: {},
+                Description: {},
+                Url: {},
+                PublicCode: {},
+                PrivateCode: {},
+                OperatorRef: {},
+                LineType: {},
+            },
+            {
+                version: '',
+                id: '3',
+                Name: {},
+                Description: {},
+                Url: {},
+                PublicCode: {},
+                PrivateCode: {},
+                OperatorRef: {},
+                LineType: {},
+            },
+        ];
+
+        it('takes a list of lines, gets their references, and builds a group of lines from it for hybrid', () => {
+            const result = getGroupOfLinesList('opId', true, lines);
+            expect(result[0].members).toStrictEqual({
+                LineRef: [
+                    { ref: '1', version: '1.0' },
+                    { ref: '2', version: '1.0' },
+                    { ref: '3', version: '1.0' },
+                ],
+            });
+            expect(result[0].Name.$t).toBe('A group of available additional services.');
+        });
+
+        it('takes a list of lines, gets their references, and builds a group of lines from it for non-hybrid', () => {
+            const result = getGroupOfLinesList('opId', false, lines);
+            expect(result[0].members).toStrictEqual({
+                LineRef: [
+                    { ref: '1', version: '1.0' },
+                    { ref: '2', version: '1.0' },
+                    { ref: '3', version: '1.0' },
+                ],
+            });
+            expect(result[0].Name.$t).toBe('A group of available services.');
         });
     });
 

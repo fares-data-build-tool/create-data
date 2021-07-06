@@ -14,7 +14,7 @@ export const collectInputsFromRequest = (
     chosenDays: string[],
 ): FullTimeRestriction[] => {
     const timeRestrictions: FullTimeRestriction[] = [];
-    chosenDays.forEach(day => {
+    chosenDays.forEach((day) => {
         const startTimeInputs = req.body[`startTime${day}`];
         const endTimeInputs = req.body[`endTime${day}`];
         if (isArray(startTimeInputs) && isArray(endTimeInputs)) {
@@ -45,7 +45,7 @@ export const collectInputsFromRequest = (
 
 export const collectErrors = (userInputs: FullTimeRestriction[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
-    userInputs.forEach(input => {
+    userInputs.forEach((input) => {
         input.timeBands.forEach((timeBand, index) => {
             if (timeBand.startTime && !isValid24hrTimeFormat(timeBand.startTime)) {
                 if (timeBand.startTime === '2400') {
@@ -111,11 +111,11 @@ export const collectErrors = (userInputs: FullTimeRestriction[]): ErrorInfo[] =>
 };
 
 export const removeDuplicateAndEmptyTimebands = (inputs: FullTimeRestriction[]): FullTimeRestriction[] => {
-    const cleansedInputs = inputs.map(input => {
+    const cleansedInputs = inputs.map((input) => {
         return {
             ...input,
             timeBands: input.timeBands.reduce((unique, o) => {
-                if (!unique.some(obj => obj.startTime === o.startTime && obj.endTime === o.endTime)) {
+                if (!unique.some((obj) => obj.startTime === o.startTime && obj.endTime === o.endTime)) {
                     unique.push(o);
                 }
                 return unique;
@@ -123,9 +123,9 @@ export const removeDuplicateAndEmptyTimebands = (inputs: FullTimeRestriction[]):
         };
     });
 
-    return cleansedInputs.map(cleansedInput => {
+    return cleansedInputs.map((cleansedInput) => {
         const timeBands: TimeBand[] = [];
-        cleansedInput.timeBands.forEach(timeBand => {
+        cleansedInput.timeBands.forEach((timeBand) => {
             if (timeBand.startTime || timeBand.endTime) {
                 timeBands.push(timeBand);
             }

@@ -114,7 +114,7 @@ const executeQuery = async <T>(query: string, values: (string | boolean)[]): Pro
         connectionPool = getAuroraDBClient();
     }
     const [rows] = await connectionPool.execute(query, values);
-    return JSON.parse(JSON.stringify(rows));
+    return JSON.parse(JSON.stringify(rows)) as T;
 };
 
 export const getServicesByNocCodeAndDataSource = async (nocCode: string, source: string): Promise<ServiceType[]> => {
@@ -129,14 +129,14 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
         const queryInput = `
             SELECT lineName, lineId, startDate, serviceDescription AS description, origin, destination, serviceCode
             FROM txcOperatorLine
-            WHERE nocCode = ? AND dataSource = ?
+            WHERE nocCode = ? AND dataSource = ? AND (endDate IS NULL OR CURDATE() <= endDate)
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
         const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter, source]);
 
         return (
-            queryResults.map(item => ({
+            queryResults.map((item) => ({
                 lineName: item.lineName,
                 lineId: item.lineId,
                 startDate: convertDateFormat(item.startDate),
@@ -170,7 +170,7 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
         const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter]);
 
         return (
-            queryResults.map(item => ({
+            queryResults.map((item) => ({
                 lineName: item.lineName,
                 lineId: item.lineId,
                 startDate: convertDateFormat(item.startDate),
@@ -252,7 +252,7 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
             throw new Error('Not all ATCO codes returned stops, some must be invalid.');
         }
 
-        return queryResults.map(item => ({
+        return queryResults.map((item) => ({
             stopName: item.commonName,
             naptanCode: item.naptanCode,
             atcoCode: item.atcoCode,
@@ -284,7 +284,7 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
     try {
         const queryResults = await executeQuery<NaptanAtcoCodes[]>(atcoCodesByNaptanCodeQuery, naptanCodes);
 
-        return queryResults.map(item => ({ atcoCode: item.atcoCode, naptanCode: item.naptanCode }));
+        return queryResults.map((item) => ({ atcoCode: item.atcoCode, naptanCode: item.naptanCode }));
     } catch (error) {
         throw new Error(
             `Error performing queries for ATCO Codes using Naptan Codes '${JSON.stringify(naptanCodes)}': ${
@@ -330,11 +330,11 @@ export const getServiceByNocCodeLineNameAndDataSource = async (
 
     // allows to get the unique journey's for the operator e.g. [1,2,3]
     const uniqueJourneyPatterns = queryResult
-        .map(item => item.journeyPatternId)
+        .map((item) => item.journeyPatternId)
         .filter((value, index, self) => self.indexOf(value) === index);
 
-    const rawPatternService = uniqueJourneyPatterns.map(journey => {
-        const filteredJourney = queryResult.filter(item => {
+    const rawPatternService = uniqueJourneyPatterns.map((journey) => {
+        const filteredJourney = queryResult.filter((item) => {
             return item.journeyPatternId === journey;
         });
 
@@ -381,7 +381,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
         const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode]);
 
         return (
-            queryResults.map(item => ({
+            queryResults.map((item) => ({
                 id: item.id,
                 name: item.name,
                 description: item.description,
@@ -477,7 +477,7 @@ export const getOperatorGroupsByNoc = async (nocCode: string): Promise<OperatorG
 
         const queryResults = await executeQuery<RawOperatorGroup[]>(queryInput, [nocCode]);
 
-        return queryResults.map(item => ({
+        return queryResults.map((item) => ({
             name: item.name,
             operators: JSON.parse(item.contents),
         }));
@@ -504,7 +504,7 @@ export const getOperatorGroupsByNameAndNoc = async (name: string, nocCode: strin
 
         const queryResults = await executeQuery<RawOperatorGroup[]>(queryInput, [name, nocCode]);
 
-        return queryResults.map(item => ({
+        return queryResults.map((item) => ({
             name,
             nocCode,
             operators: JSON.parse(item.contents),
@@ -555,7 +555,7 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
         const queryResults = await executeQuery<RawTimeRestriction[]>(queryInput, [nocCode]);
 
         return (
-            queryResults.map(item => ({
+            queryResults.map((item) => ({
                 name: item.name,
                 contents: JSON.parse(item.contents),
             })) || []
@@ -586,7 +586,7 @@ export const getTimeRestrictionByNameAndNoc = async (
 
         const queryResults = await executeQuery<RawTimeRestriction[]>(queryInput, [name, nocCode]);
 
-        return queryResults.map(item => ({
+        return queryResults.map((item) => ({
             name,
             contents: JSON.parse(item.contents),
         }));
@@ -698,21 +698,21 @@ export const getPassengerTypeByNameAndNocCode = async (
             throw new Error("Didn't expect more than one passenger type with same name and NOC");
         }
 
-        return queryResults[0] ? JSON.parse(queryResults[0].contents) : undefined;
+        return queryResults[0] ? (JSON.parse(queryResults[0].contents) as PassengerType) : undefined;
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
     }
 };
 
 interface SavedPassengerType {
-    group: GroupPassengerType[];
-    single: PassengerType[];
+    group: GroupPassengerType;
+    single: PassengerType;
 }
 
 export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerType>(
     nocCode: string,
     type: T,
-): Promise<SavedPassengerType[T]> => {
+): Promise<SavedPassengerType[T][]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving passenger types for given noc',
@@ -731,7 +731,7 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
             nocCode,
             type === 'group',
         ]);
-        return queryResults.map(row => JSON.parse(row.contents));
+        return queryResults.map((row) => JSON.parse(row.contents) as SavedPassengerType[T]);
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
     }

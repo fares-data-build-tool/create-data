@@ -31,9 +31,9 @@ const addErrorClasses = (child: ReactElement, errorClass: string, errorId: strin
 export const FormErrorBlock = ({ errors, errorIds }: FormErrorBlockProps): ReactElement => (
     <div>
         {errors
-            .filter(error => errorIds.includes(error.id))
-            .map(error => (
-                <span className="govuk-error-message">
+            .filter((error) => errorIds.includes(error.id))
+            .map((error) => (
+                <span className="govuk-error-message" key={error.errorMessage}>
                     <span className="govuk-visually-hidden">Error: </span>
                     {error.errorMessage}
                 </span>
@@ -47,7 +47,7 @@ export const FormGroupWrapper = ({
     children,
     hideErrorBar = false,
 }: FormGroupWrapperProps): ReactElement => {
-    const errorForElement = errors.find(err => errorIds.includes(err.id));
+    const errorForElement = errors.find((err) => errorIds.includes(err.id));
 
     return (
         <div className={`govuk-form-group ${errorForElement && !hideErrorBar ? 'govuk-form-group--error' : ''}`}>
@@ -64,7 +64,7 @@ const FormElementWrapper = ({
     addFormGroupError,
     hideText,
 }: FormElementWrapperProps): ReactElement => {
-    const errorForElement = errors.find(err => err.id === errorId);
+    const errorForElement = errors.find((err) => err.id === errorId);
 
     return (
         <div className={addFormGroupError && errorForElement ? 'govuk-form-group--error' : ''}>

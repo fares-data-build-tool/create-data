@@ -57,7 +57,7 @@ const Service = ({
                             <option value="" disabled>
                                 Select One
                             </option>
-                            {services.map(service => (
+                            {services.map((service) => (
                                 <option
                                     key={`${service.lineName}#${service.startDate}`}
                                     value={`${service.lineName}#${service.startDate}`}
@@ -65,8 +65,9 @@ const Service = ({
                                 >
                                     {dataSourceAttribute.source === 'tnds'
                                         ? `${service.lineName} - Start date ${service.startDate}`
-                                        : `${service.lineName} ${service.origin || 'N/A'} - ${service.destination ||
-                                              'N/A'} (Start date ${service.startDate})`}
+                                        : `${service.lineName} ${service.origin || 'N/A'} - ${
+                                              service.destination || 'N/A'
+                                          } (Start date ${service.startDate})`}
                                 </option>
                             ))}
                         </select>

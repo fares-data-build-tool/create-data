@@ -8,7 +8,7 @@ interface ConfirmationTableProps {
 }
 
 const ConfirmationTable = ({ confirmationElements, header }: ConfirmationTableProps): ReactElement => {
-    const builtElements = confirmationElements.map(element => {
+    const builtElements = confirmationElements.map((element) => {
         const content = isArray(element.content) ? element.content : [element.content];
         return (
             <React.Fragment key={header}>
@@ -16,7 +16,7 @@ const ConfirmationTable = ({ confirmationElements, header }: ConfirmationTablePr
                     <div className="govuk-summary-list__row" key={element.name}>
                         <dt className="govuk-summary-list__key">{element.name}</dt>
                         <dd className="govuk-summary-list__value">
-                            {content.map(item => (
+                            {content.map((item) => (
                                 <div key={item}>{item}</div>
                             ))}
                         </dd>

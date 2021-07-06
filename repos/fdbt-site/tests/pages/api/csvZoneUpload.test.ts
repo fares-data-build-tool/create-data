@@ -49,16 +49,12 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(fileUpload, 'getFormData')
-                .mockImplementation()
-                .mockResolvedValue({
-                    files: file,
-                    fileContents: csv,
-                });
+            jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+                files: file,
+                fileContents: csv,
+            });
 
-            jest.spyOn(virusCheck, 'containsViruses')
-                .mockImplementation()
-                .mockResolvedValue(false);
+            jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
             jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
                 .mockImplementation()
@@ -86,16 +82,12 @@ describe('csvZoneUpload', () => {
             },
         };
 
-        jest.spyOn(fileUpload, 'getFormData')
-            .mockImplementation()
-            .mockResolvedValue({
-                files: file,
-                fileContents: csvData.testCsv,
-            });
+        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.testCsv,
+        });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvZoneUpload.default(req, res);
 
@@ -128,16 +120,12 @@ describe('csvZoneUpload', () => {
             },
         };
 
-        jest.spyOn(fileUpload, 'getFormData')
-            .mockImplementation()
-            .mockResolvedValue({
-                files: file,
-                fileContents: csvData.testCsv,
-            });
+        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.testCsv,
+        });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         await csvZoneUpload.default(multiOperatorReq, res);
 
@@ -161,16 +149,12 @@ describe('csvZoneUpload', () => {
         };
         const dynamoError = 'Could not fetch data from dynamo in test';
 
-        jest.spyOn(fileUpload, 'getFormData')
-            .mockImplementation()
-            .mockResolvedValue({
-                files: file,
-                fileContents: csvData.testCsvWithEmptyCells,
-            });
+        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.testCsvWithEmptyCells,
+        });
 
-        jest.spyOn(virusCheck, 'containsViruses')
-            .mockImplementation()
-            .mockResolvedValue(false);
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
         jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes').mockImplementation(() => {
             throw new Error(dynamoError);
@@ -197,16 +181,12 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(fileUpload, 'getFormData')
-                .mockImplementation()
-                .mockResolvedValue({
-                    files: file,
-                    fileContents: '',
-                });
+            jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+                files: file,
+                fileContents: '',
+            });
 
-            jest.spyOn(virusCheck, 'containsViruses')
-                .mockImplementation()
-                .mockResolvedValue(false);
+            jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
             await csvZoneUpload.default(req, res);
 
@@ -237,16 +217,12 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(fileUpload, 'getFormData')
-                .mockImplementation()
-                .mockResolvedValue({
-                    files: file,
-                    fileContents: csvData.testCsv,
-                });
+            jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+                files: file,
+                fileContents: csvData.testCsv,
+            });
 
-            jest.spyOn(virusCheck, 'containsViruses')
-                .mockImplementation()
-                .mockResolvedValue(false);
+            jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
             await csvZoneUpload.default(req, res);
 
@@ -277,16 +253,12 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(fileUpload, 'getFormData')
-                .mockImplementation()
-                .mockResolvedValue({
-                    files: file,
-                    fileContents: csvData.testCsv,
-                });
+            jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+                files: file,
+                fileContents: csvData.testCsv,
+            });
 
-            jest.spyOn(virusCheck, 'containsViruses')
-                .mockImplementation()
-                .mockResolvedValue(false);
+            jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
             await csvZoneUpload.default(req, res);
 
@@ -319,16 +291,12 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(fileUpload, 'getFormData')
-                .mockImplementation()
-                .mockResolvedValue({
-                    files: file,
-                    fileContents: 'i am a virus',
-                });
+            jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+                files: file,
+                fileContents: 'i am a virus',
+            });
 
-            jest.spyOn(virusCheck, 'containsViruses')
-                .mockImplementation()
-                .mockResolvedValue(true);
+            jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(true);
 
             await csvZoneUpload.default(req, res);
 
@@ -363,9 +331,7 @@ describe('csvZoneUpload', () => {
 
         it('returns null when a csv upload contains no stops info', async () => {
             const fileContent = csvData.testCsvWithNoStopsInfo;
-            jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
-                .mockImplementation()
-                .mockResolvedValue([]);
+            jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes').mockImplementation().mockResolvedValue([]);
 
             const result = await csvZoneUpload.processCsv(fileContent, req, res);
 

@@ -29,8 +29,9 @@ export const renderTable = (
                         {index === 0 ? (
                             <>
                                 <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
-                                    <span className="govuk-visually-hidden">{`Product Name - Product ${index +
-                                        1}`}</span>
+                                    <span className="govuk-visually-hidden">{`Product Name - Product ${
+                                        index + 1
+                                    }`}</span>
                                     <span aria-hidden>Product name</span>
                                 </label>
                                 <span className="govuk-hint" id={`product-name-hint-${index}`}>
@@ -67,8 +68,9 @@ export const renderTable = (
                         {index === 0 ? (
                             <>
                                 <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
-                                    <span className="govuk-visually-hidden">{`Product Price, in pounds - Product ${index +
-                                        1}`}</span>
+                                    <span className="govuk-visually-hidden">{`Product Price, in pounds - Product ${
+                                        index + 1
+                                    }`}</span>
                                     <span aria-hidden>Price</span>
                                 </label>
                                 <span className="govuk-hint" id={`product-price-hint-${index}`}>

@@ -23,12 +23,14 @@ export const sanitiseReqBody = (req: NextApiRequestWithSession): SanitisedBodyAn
     const sanitisedBody: { [key: string]: SalesOfferPackage[] } = {};
 
     const errors: ErrorInfo[] = [];
-    Object.entries(req.body).forEach(item => {
+    Object.entries(req.body).forEach((item) => {
         const [key, value]: [string, unknown] = item;
 
         if (key.startsWith(productPrefix)) {
             if (value && Array.isArray(value)) {
-                sanitisedBody[key.substring(productPrefix.length)] = value.filter(a => a).map(it => JSON.parse(it));
+                sanitisedBody[key.substring(productPrefix.length)] = value
+                    .filter((a) => a)
+                    .map((it) => JSON.parse(it) as SalesOfferPackage);
             } else {
                 errors.push({
                     errorMessage: 'Choose at least one sales offer package from the options',
@@ -38,7 +40,7 @@ export const sanitiseReqBody = (req: NextApiRequestWithSession): SanitisedBodyAn
         } else if (key.startsWith(pricePrefix) && typeof value === 'string') {
             const price = removeExcessWhiteSpace(value);
 
-            const productName = Object.keys(sanitisedBody).find(productName =>
+            const productName = Object.keys(sanitisedBody).find((productName) =>
                 key.startsWith(pricePrefix + productName),
             );
             if (!productName) {
@@ -46,7 +48,7 @@ export const sanitiseReqBody = (req: NextApiRequestWithSession): SanitisedBodyAn
             }
             const sopName = key.substring(`${pricePrefix}${productName}-`.length);
 
-            const sop = sanitisedBody[productName].find(sop => sop.name === sopName);
+            const sop = sanitisedBody[productName].find((sop) => sop.name === sopName);
             if (!sop) {
                 throw new Error(`Unknown sop passed for sop price ${key}:${value}`);
             }
@@ -94,7 +96,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackages);
         } else {
             const keys: string[] = Object.keys(sanitisedBody);
-            const productsAndSalesOfferPackages: ProductWithSalesOfferPackages[] = keys.map(objectKey => {
+            const productsAndSalesOfferPackages: ProductWithSalesOfferPackages[] = keys.map((objectKey) => {
                 return {
                     productName: objectKey,
                     salesOfferPackages: sanitisedBody[objectKey],

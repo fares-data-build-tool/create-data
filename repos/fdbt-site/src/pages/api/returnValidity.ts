@@ -11,10 +11,7 @@ const selectInputError = 'Choose one of the options from the dropdown list';
 
 export const returnValiditySchema = yup
     .object({
-        validity: yup
-            .string()
-            .oneOf(['Yes', 'No'])
-            .required(radioButtonError),
+        validity: yup.string().oneOf(['Yes', 'No']).required(radioButtonError),
         amount: yup
             .mixed()
             .when('validity', {
@@ -55,27 +52,20 @@ export const returnValiditySchema = yup
                     })
                     .when('duration', {
                         is: 'year',
-                        then: yup
-                            .number()
-                            .typeError(textInputError)
-                            .integer(textInputError)
-                            .min(1, textInputError),
+                        then: yup.number().typeError(textInputError).integer(textInputError).min(1, textInputError),
                     })
                     .required(textInputError),
             }),
         duration: yup.string().when('validity', {
             is: 'Yes',
-            then: yup
-                .string()
-                .oneOf(['day', 'week', 'month', 'year'], selectInputError)
-                .required(selectInputError),
+            then: yup.string().oneOf(['day', 'week', 'month', 'year'], selectInputError).required(selectInputError),
         }),
     })
     .required();
 
 export const formatRequestBody = (req: NextApiRequestWithSession): { [key: string]: string } => {
     const filteredReqBody: { [key: string]: string } = {};
-    Object.entries(req.body).forEach(entry => {
+    Object.entries(req.body).forEach((entry) => {
         if (entry[0] === 'amount') {
             const input = entry[1] as string;
             const strippedInput = input.replace(/\s+/g, '');
@@ -121,7 +111,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             await returnValiditySchema.validate(filteredReqBody, { abortEarly: false });
         } catch (validationErrors) {
             const validityErrors: yup.ValidationError = validationErrors;
-            errors = validityErrors.inner.map(error => ({
+            errors = validityErrors.inner.map((error) => ({
                 id: getErrorIdFromValidityError(error.path),
                 errorMessage: error.message,
                 userInput: String(error.value),

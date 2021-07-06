@@ -76,7 +76,7 @@ export interface SelectSalesOfferPackageProps {
 }
 
 const formatSOPArray = (stringArray: string[]): string =>
-    stringArray.map(string => sentenceCaseString(string)).join(', ');
+    stringArray.map((string) => sentenceCaseString(string)).join(', ');
 
 const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],
@@ -95,7 +95,7 @@ const generateCheckbox = (
     const [selected, setSelected] = useState(selectedDefault);
 
     return pairs.map((pair, pairIndex) => (
-        <div className="govuk-grid-row">
+        <div className="govuk-grid-row" key={pairIndex}>
             {pair.map((offer, innerIndex) => {
                 const index = 2 * pairIndex + innerIndex;
                 const { name, description, purchaseLocations, paymentMethods, ticketFormats } = offer;
@@ -103,13 +103,13 @@ const generateCheckbox = (
                 const productNameIds = removeAllWhiteSpace(productName);
 
                 const selectedOffer =
-                    selected && selected[productName]?.find(selectedEntry => selectedEntry.name === offer.name);
+                    selected && selected[productName]?.find((selectedEntry) => selectedEntry.name === offer.name);
 
                 const updateSelected: ChangeEventHandler = () => {
                     const newSelected: { [key: string]: SalesOfferPackage[] } = { ...selected } || {};
                     const sops = newSelected[productName] || [];
-                    newSelected[productName] = sops.find(sop => sop.name === offer.name)
-                        ? sops.filter(it => it.name !== offer.name)
+                    newSelected[productName] = sops.find((sop) => sop.name === offer.name)
+                        ? sops.filter((it) => it.name !== offer.name)
                         : [...sops, offer];
                     setSelected(newSelected);
                 };
@@ -189,7 +189,7 @@ const createSalesOffer = (
     customPriceEnabled: boolean,
 ): ReactElement[] =>
     products.map(({ productName, productPrice }) => (
-        <div className="sop-option">
+        <div className="sop-option" key={productName}>
             <FormGroupWrapper
                 errorIds={[`product-${[removeAllWhiteSpace(productName)]}-checkbox-0`]}
                 errors={errors}
@@ -317,13 +317,13 @@ export const getServerSideProps = async (
         ('errors' in sopAttribute
             ? sopAttribute.selected
             : sopAttribute
-                  .map((product: SalesOfferPackage | ProductWithSalesOfferPackages): [
-                      string,
-                      SalesOfferPackage[] | ProductWithSalesOfferPackages[],
-                  ] =>
-                      'salesOfferPackages' in product
-                          ? [product.productName, product.salesOfferPackages]
-                          : ['product', sopAttribute],
+                  .map(
+                      (
+                          product: SalesOfferPackage | ProductWithSalesOfferPackages,
+                      ): [string, SalesOfferPackage[] | ProductWithSalesOfferPackages[]] =>
+                          'salesOfferPackages' in product
+                              ? [product.productName, product.salesOfferPackages]
+                              : ['product', sopAttribute],
                   )
                   .reduce((result, item) => ({ ...result, [item[0]]: item[1] }), {}));
 

@@ -13,7 +13,7 @@ import {
     COOKIE_PREFERENCES_COOKIE,
     CSRF_COOKIE,
     EXPRESS_SESSION_COOKIE,
-} from '../constants/index';
+} from '../constants';
 import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { getSessionAttribute } from './sessions';
 import {
@@ -32,7 +32,7 @@ export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribu
         if (jsonAttribute) {
             const parsedCookie = JSON.parse(cookies[cookie]);
 
-            return parsedCookie[jsonAttribute];
+            return parsedCookie[jsonAttribute] as string;
         }
 
         return cookies[cookie];
@@ -73,7 +73,7 @@ export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
         EXPRESS_SESSION_COOKIE,
     ];
 
-    Object.keys(cookies).forEach(cookie => {
+    Object.keys(cookies).forEach((cookie) => {
         if (!cookieWhitelist.includes(cookie)) {
             destroyCookie(ctx, cookie);
         }
@@ -190,7 +190,7 @@ export const isSchemeOperator = (ctx: NextPageContextWithSession): boolean => !!
 
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
     const compactErrors: ErrorInfo[] = [];
-    errors.forEach(error => {
+    errors.forEach((error) => {
         if (ids.includes(error.id)) {
             compactErrors.push(error);
         }

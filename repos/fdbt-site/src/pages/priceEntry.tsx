@@ -24,7 +24,7 @@ export const getDefaultValue = (fareInformation: FaresInformation, rowStage: str
         return '';
     }
     const cellName = `${rowStage}-${columnStage}`;
-    const defaultInput = fareInformation.inputs.find(input => {
+    const defaultInput = fareInformation.inputs.find((input) => {
         return input.locator === cellName;
     });
 
@@ -46,7 +46,7 @@ export const createClassName = (
 
     const name = `${removeAllWhiteSpace(rowStage)}-${removeAllWhiteSpace(columnStage)}`;
 
-    if (inputs.errorInformation.some(el => el.locator === name)) {
+    if (inputs.errorInformation.some((el) => el.locator === name)) {
         errorClass = ' govuk-input--error';
     }
 
@@ -55,8 +55,8 @@ export const createClassName = (
 
 export const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => {
     const filteredErrors: ErrorInfo[] = [];
-    errors.forEach(error => {
-        if (!filteredErrors.some(el => !!el.errorMessage && el.errorMessage !== '')) {
+    errors.forEach((error) => {
+        if (!filteredErrors.some((el) => !!el.errorMessage && el.errorMessage !== '')) {
             filteredErrors.push({ errorMessage: error.errorMessage, id: error.id });
         }
     });
@@ -104,7 +104,7 @@ const PriceEntry = ({
                                     <span className="govuk-heading-s fare-triangle-label-left" aria-hidden="true">
                                         <span>{rowIndex > 0 ? rowStage : null}</span>
                                     </span>
-                                    {stageNamesArray.slice(0, rowIndex).map(columnStage => (
+                                    {stageNamesArray.slice(0, rowIndex).map((columnStage) => (
                                         <React.Fragment key={columnStage}>
                                             <span
                                                 className={`fare-triangle-input ${
@@ -167,7 +167,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const priceEntryInfo = getSessionAttribute(ctx.req, PRICE_ENTRY_ATTRIBUTE);
 
     if (priceEntryInfo) {
-        const errors: ErrorInfo[] = priceEntryInfo.errorInformation.map(error => {
+        const errors: ErrorInfo[] = priceEntryInfo.errorInformation.map((error) => {
             return { errorMessage: error.input, id: priceEntryInfo.errorInformation[0].locator };
         });
         const filteredErrors = filterErrors(errors);

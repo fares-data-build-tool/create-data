@@ -11,7 +11,7 @@
         "project_name": "fdbt-site",
         "build_name": "build-name",
         "exclude": [],
-        "parallels": "3",
+        "parallels": "5",
         "cypress_version": "6",
         "npm_dependencies": {
             "@cypress/webpack-preprocessor": "^5.7.0",

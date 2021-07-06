@@ -130,8 +130,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const schemeOp = isSchemeOperator(ctx);
     const nocCode = getAndValidateNoc(ctx);
     const services = await getAllServicesByNocCode(nocCode);
-    const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
-    const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
+    const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
+    const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
 
     if (!schemeOp && services.length === 0) {
         if (ctx.res) {

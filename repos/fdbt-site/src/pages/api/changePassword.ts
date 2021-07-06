@@ -36,7 +36,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             inputChecks.push(newPasswordValidityError);
         }
 
-        if (inputChecks.some(el => el.errorMessage !== '')) {
+        if (inputChecks.some((el) => el.errorMessage !== '')) {
             setAttributeAndRedirect(req, res, inputChecks);
             return;
         }

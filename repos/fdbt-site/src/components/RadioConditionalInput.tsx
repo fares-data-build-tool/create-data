@@ -40,7 +40,7 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
                 >
                     {radio.inputHint.content}
                 </legend>
-                {(radio.inputs as BaseReactElement[]).map(input => {
+                {(radio.inputs as BaseReactElement[]).map((input) => {
                     const errorId = createErrorId(input, radio.inputErrors);
                     return (
                         <div
@@ -95,7 +95,7 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
                         errorClass=""
                     >
                         <div className="govuk-checkboxes">
-                            {(radio.inputs as BaseReactElement[]).map(input => {
+                            {(radio.inputs as BaseReactElement[]).map((input) => {
                                 return (
                                     <div key={input.id} className="govuk-checkboxes__item">
                                         <input
@@ -137,7 +137,7 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
                 >
                     {radio.inputHint.content}
                 </legend>
-                {(radio.inputs as BaseReactElement[]).map(input => {
+                {(radio.inputs as BaseReactElement[]).map((input) => {
                     const errorId = createErrorId(input, radio.inputErrors);
                     return (
                         <div
@@ -164,7 +164,7 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
                                         <option value="" disabled>
                                             Select a {input.name}
                                         </option>
-                                        {input.options?.map(unit => (
+                                        {input.options?.map((unit) => (
                                             <option key={`${unit}-option`} value={unit}>
                                                 {startCase(`${unit}s`)}
                                             </option>
@@ -196,13 +196,13 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
             className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            {(radio.inputs as BaseReactElement[]).map(input => {
+            {(radio.inputs as BaseReactElement[]).map((input, index) => {
                 const inputGroupError = radio.inputErrors.find(({ id }) => {
                     return id.includes(input.id);
                 });
 
                 return (
-                    <div className="govuk-form-group">
+                    <div className="govuk-form-group" key={index}>
                         <fieldset className="govuk-fieldset" role="group">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{input.label}</legend>
                             <div className={`govuk-form-group${inputGroupError ? ' govuk-form-group--error' : ''}`}>
@@ -317,7 +317,7 @@ const renderConditionalDropdown = (radio: RadioWithConditionalInputs): ReactElem
                             <option value="" disabled>
                                 Select One
                             </option>
-                            {(radio.inputs as BaseReactElement[]).map(input => (
+                            {(radio.inputs as BaseReactElement[]).map((input) => (
                                 <option key={`${input.name}`} value={`${input.name}`} className="govuk-select">
                                     {input.name}
                                 </option>
@@ -332,13 +332,13 @@ const renderConditionalDropdown = (radio: RadioWithConditionalInputs): ReactElem
 
 export const conditionalRadioInputDefaultExists = (radio: RadioWithConditionalInputs): boolean => {
     if (radio.inputType === 'text' || radio.inputType === 'textWithUnits') {
-        return (radio.inputs as BaseReactElement[]).some(input => input.defaultValue !== '');
+        return (radio.inputs as BaseReactElement[]).some((input) => input.defaultValue !== '');
     }
     if (radio.inputType === 'date') {
-        return (radio.inputs as BaseReactElement[]).some(input => input.defaultValue !== '##');
+        return (radio.inputs as BaseReactElement[]).some((input) => input.defaultValue !== '##');
     }
     if (radio.inputType === 'checkbox') {
-        return (radio.inputs as BaseReactElement[]).some(input => input.defaultChecked);
+        return (radio.inputs as BaseReactElement[]).some((input) => input.defaultChecked);
     }
     return false;
 };
@@ -444,7 +444,7 @@ const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactE
                     errorClass="govuk-radios--error"
                 >
                     <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                        {fieldset.radios.map(radio => {
+                        {fieldset.radios.map((radio) => {
                             return renderRadioButtonSet(radio);
                         })}
                     </div>

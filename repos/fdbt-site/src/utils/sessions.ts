@@ -169,7 +169,7 @@ export type SessionAttribute<T extends string> = T extends keyof SessionAttribut
 export const getSessionAttribute = <T extends keyof SessionAttributeTypes>(
     req: IncomingMessageWithSession,
     attributeName: T,
-): SessionAttributeTypes[T] | undefined => req?.session?.[attributeName];
+): SessionAttributeTypes[T] | undefined => req?.session?.[attributeName] as SessionAttributeTypes[T];
 
 export const updateSessionAttribute = <T extends string>(
     req: IncomingMessageWithSession,
@@ -182,7 +182,7 @@ export const updateSessionAttribute = <T extends string>(
 export const regenerateSession = (req: IncomingMessageWithSession): void => {
     const attributesList = Object.values(attributes) as string[];
 
-    Object.keys(req.session).forEach(attribute => {
+    Object.keys(req.session).forEach((attribute) => {
         if (attributesList.includes(attribute) && attribute !== OPERATOR_ATTRIBUTE) {
             updateSessionAttribute(req, attribute, undefined);
         }

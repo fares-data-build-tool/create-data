@@ -45,7 +45,7 @@ export const getUserFareStages = async (uuid: string): Promise<UserFareStages> =
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
-        return JSON.parse(dataAsString);
+        return JSON.parse(dataAsString) as UserFareStages;
     } catch (error) {
         throw new Error(`Could not retrieve fare stages from S3: ${error.stack}`);
     }
@@ -70,7 +70,7 @@ export const getCsvZoneUploadData = async (key: string): Promise<string[]> => {
 
         const parsedData: UserFareZone[] = JSON.parse(dataAsString);
 
-        const atcoCodes: string[] = parsedData.map(data => data.AtcoCodes);
+        const atcoCodes: string[] = parsedData.map((data) => data.AtcoCodes);
 
         return atcoCodes;
     } catch (error) {
@@ -94,7 +94,7 @@ export const getOutboundMatchingFareStages = async (uuid: string): Promise<Match
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
-        return JSON.parse(dataAsString);
+        return JSON.parse(dataAsString) as MatchingFareZones;
     } catch (error) {
         throw new Error(`Could not retrieve outbound matching fare zones from S3: ${error.stack}`);
     }
@@ -179,7 +179,7 @@ export const getMatchingDataObject = async (
 
 export const retrieveNetexForNocs = async (nocList: string[]): Promise<AWS.S3.Object[]> => {
     try {
-        const requestPromises = nocList.map(noc => {
+        const requestPromises = nocList.map((noc) => {
             const request: AWS.S3.ListObjectsV2Request = {
                 Bucket: NETEX_BUCKET_NAME,
                 Prefix: noc,
@@ -190,7 +190,7 @@ export const retrieveNetexForNocs = async (nocList: string[]): Promise<AWS.S3.Ob
 
         const response = await Promise.all(requestPromises);
 
-        return response.flatMap(item => item.Contents || []);
+        return response.flatMap((item) => item.Contents || []);
     } catch (error) {
         throw new Error(`Failed to retrieve NeTEx from NOCs, ${error.stack}`);
     }

@@ -30,7 +30,7 @@ export const isValidInputDuration = (durationInput: string, carnet: boolean): bo
 export const getErrorsForSession = (validationResult: MultiProductWithErrors[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
 
-    validationResult.forEach(product => {
+    validationResult.forEach((product) => {
         if (product.productDurationError) {
             errors.push({
                 errorMessage: product.productDurationError,
@@ -84,7 +84,7 @@ export const getErrorsForSession = (validationResult: MultiProductWithErrors[]):
 
 export const containsErrors = (products: MultiProductWithErrors[]): boolean => {
     return products.some(
-        product =>
+        (product) =>
             product.productNameError ||
             product.productPriceError ||
             product.productDurationError ||
@@ -96,7 +96,7 @@ export const containsErrors = (products: MultiProductWithErrors[]): boolean => {
 };
 
 export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
-    const productsWithErrors: MultiProduct[] = products.map(product => {
+    const productsWithErrors: MultiProduct[] = products.map((product) => {
         const { productDuration } = product;
         const trimmedDuration = removeExcessWhiteSpace(productDuration);
         const productDurationError = checkDurationIsValid(trimmedDuration);
@@ -115,7 +115,7 @@ export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiPr
 };
 
 export const checkProductDurationTypesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
-    const productsWithErrors: MultiProduct[] = products.map(product => {
+    const productsWithErrors: MultiProduct[] = products.map((product) => {
         const { productDurationUnits } = product;
         const productDurationUnitsError = !isValidInputDuration(productDurationUnits as string, false)
             ? 'Choose an option from the dropdown'
@@ -134,7 +134,7 @@ export const checkProductDurationTypesAreValid = (products: MultiProduct[]): Mul
 };
 
 export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
-    const productsWithErrors: MultiProduct[] = products.map(product => {
+    const productsWithErrors: MultiProduct[] = products.map((product) => {
         const { productPrice } = product;
         const trimmedPrice = removeExcessWhiteSpace(productPrice);
         const productPriceError = checkPriceIsValid(trimmedPrice);
@@ -153,13 +153,13 @@ export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProdu
 };
 
 export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
-    const productNames = products.map(product => product.productName);
+    const productNames = products.map((product) => product.productName);
 
-    const productsWithErrors: MultiProduct[] = products.map(product => {
+    const productsWithErrors: MultiProduct[] = products.map((product) => {
         const { productName } = product;
         const trimmedProductName = removeExcessWhiteSpace(productName);
         const duplicateError =
-            productNames.filter(item => item === productName).length > 1 ? 'Product names must be unique' : '';
+            productNames.filter((item) => item === productName).length > 1 ? 'Product names must be unique' : '';
         const productNameError = checkProductNameIsValid(trimmedProductName) || duplicateError;
 
         if (productNameError) {
@@ -176,7 +176,7 @@ export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduc
 };
 
 export const checkCarnetQuantitiesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
-    const productsWithErrors: MultiProduct[] = products.map(product => {
+    const productsWithErrors: MultiProduct[] = products.map((product) => {
         const quantity = product.carnetDetails?.quantity;
         const trimmedQuantity = removeExcessWhiteSpace(quantity);
         const quantityError = checkIntegerIsValid(trimmedQuantity, 'Quantity in bundle', 2, 999);
@@ -195,7 +195,7 @@ export const checkCarnetQuantitiesAreValid = (products: MultiProduct[]): MultiPr
 };
 
 export const checkCarnetExpiriesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] =>
-    products.map(product => {
+    products.map((product) => {
         const expiryTime = product.carnetDetails?.expiryTime;
         const trimmedQuantity = removeExcessWhiteSpace(expiryTime);
         const expiryError = checkIntegerIsValid(trimmedQuantity, 'Carnet expiry amount', 1, 999);
@@ -211,7 +211,7 @@ export const checkCarnetExpiriesAreValid = (products: MultiProduct[]): MultiProd
     });
 
 export const checkCarnetExpiryUnitsAreValid = (products: MultiProduct[]): MultiProductWithErrors[] =>
-    products.map(product => {
+    products.map((product) => {
         const expiryUnit = product.carnetDetails?.expiryUnit;
         const productDurationUnitsError =
             !expiryUnit || !isValidInputDuration(expiryUnit, true) ? 'Choose an option from the dropdown' : '';

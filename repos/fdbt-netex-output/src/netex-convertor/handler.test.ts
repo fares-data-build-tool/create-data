@@ -252,6 +252,29 @@ describe('netexConvertorHandler', () => {
         expect(generatedNetex.includes('undefined')).toBeFalsy();
     });
 
+    it('should generate hybrid period netex with no undefined variables', async () => {
+        netexGeneratorSpy.mockRestore();
+        dbSpy.mockImplementation(() =>
+            Promise.resolve([
+                {
+                    nocCode: 'IW_Buses-Y',
+                    website: 'www.unittest.com',
+                    ttrteEnq: 'aaaaaa',
+                    operatorPublicName: 'Test Buses',
+                    opId: '7Z',
+                    vosaPsvLicenseName: 'CCD',
+                    fareEnq: 'SSSS',
+                    complEnq: '334',
+                    mode: 'test',
+                },
+            ]),
+        );
+        mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(schemeOperatorFlatFareTicket));
+        await netexConvertorHandler(event);
+        const generatedNetex: string = mockUploadNetexToS3Spy.mock.calls[0][0];
+        expect(generatedNetex.includes('undefined')).toBeFalsy();
+    });
+
     it('should generate the correct filename', () => {
         const mockDate = Date.now();
         jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);

@@ -1,4 +1,6 @@
 import {
+    isHybridTicket,
+    HybridPeriodTicket,
     FlatFareTicket,
     MultiOperatorMultipleServicesTicket,
     isMultiOperatorMultipleServicesTicket,
@@ -22,7 +24,6 @@ import {
     SelectedService,
     SchemeOperator,
     SchemeOperatorTicket,
-    isSchemeOperatorTicket,
     SchemeOperatorGeoZoneTicket,
     FlatFareProductDetails,
     SchemeOperatorFlatFareTicket,
@@ -31,6 +32,8 @@ import {
     isGeoZoneTicket,
     isMultiServiceTicket,
     isProductDetails,
+    GroupOfLines,
+    Ticket,
 } from '../../types/index';
 
 import {
@@ -146,6 +149,25 @@ export const getLinesList = (
     return linesList;
 };
 
+export const getGroupOfLinesList = (operatorIdentifier: string, isHybrid: boolean, lines: Line[]): GroupOfLines[] => {
+    const lineReferences = lines.map(line => line.id);
+    return [
+        {
+            version: '1.0',
+            id: `${operatorIdentifier}@groupOfLines@1`,
+            Name: {
+                $t: `A group of available${isHybrid ? ' additional' : ''} services.`,
+            },
+            members: {
+                LineRef: lineReferences.map(lineRef => ({
+                    version: '1.0',
+                    ref: lineRef,
+                })),
+            },
+        },
+    ];
+};
+
 export const getLineRefList = (
     userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorFlatFareTicket,
 ): LineRef[] => {
@@ -163,142 +185,63 @@ export const getGeoZoneFareTable = (
     placeHolderGroupOfProductsName: string,
     ticketUserConcat: string,
 ): NetexObject[] => {
-    const operatorIdentifier = isSchemeOperatorTicket(userPeriodTicket)
-        ? `${userPeriodTicket.schemeOperatorName}-${userPeriodTicket.schemeOperatorRegionCode}`
-        : userPeriodTicket.nocCode;
-    const name = `${operatorIdentifier}-geo-zone`;
-    const profileRef = getProfileRef(userPeriodTicket);
-
-    return userPeriodTicket.products.flatMap(product => {
-        return product.salesOfferPackages.map(salesOfferPackage => {
+    return userPeriodTicket.products.flatMap((product, indexOne) => {
+        return product.salesOfferPackages.map((salesOfferPackage, indexTwo) => {
             return {
                 version: '1.0',
-                id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}`,
-                Name: { $t: `${userPeriodTicket.zoneName}` },
-                specifics: {
-                    TariffZoneRef: {
-                        version: '1.0',
-                        ref: `op:${placeHolderGroupOfProductsName}@${userPeriodTicket.zoneName}`,
-                    },
+                id: `op:fareTable@${product.productName}@${salesOfferPackage.name}@zone`,
+                Name: {
+                    $t: `${product.productName} - ${salesOfferPackage.name} - ${userPeriodTicket.zoneName}`,
                 },
-                columns: {
-                    FareTableColumn: {
+                pricesFor: {
+                    PreassignedFareProductRef: {
                         version: '1.0',
-                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}`,
-                        Name: { $t: `${userPeriodTicket.zoneName}` },
-                        representing: {
-                            TariffZoneRef: {
-                                version: '1.0',
-                                ref: `op:${placeHolderGroupOfProductsName}@${userPeriodTicket.zoneName}`,
-                            },
-                        },
+                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
                     },
                 },
                 includes: {
                     FareTable: {
                         version: '1.0',
-                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}@p-ticket`,
-                        Name: { $t: `${product.productName}` },
-                        pricesFor: {
-                            SalesOfferPackageRef: {
-                                version: '1.0',
-                                ref: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}`,
-                            },
-                            ...getCarnetQualityStructureFactorRef(product),
+                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}@product-${indexOne}@SOP-${indexTwo}@zone`,
+                        Name: {
+                            $t: `${product.productName} - ${salesOfferPackage.name}  - ${userPeriodTicket.passengerType}`,
                         },
                         specifics: {
-                            TypeOfTravelDocumentRef: {
+                            TariffZoneRef: {
                                 version: '1.0',
-                                ref: 'op:p-ticket',
-                            },
-                        },
-                        columns: {
-                            FareTableColumn: {
-                                version: '1.0',
-                                id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}@p-ticket`,
-                                Name: { $t: `${product.productName}` },
-                                representing: {
-                                    TypeOfTravelDocumentRef: {
-                                        version: '1.0',
-                                        ref: 'op:p-ticket',
-                                    },
-                                    ...profileRef,
-                                },
+                                ref: `op:${placeHolderGroupOfProductsName}@${userPeriodTicket.zoneName}`,
                             },
                         },
                         includes: {
                             FareTable: {
                                 version: '1.0',
-                                id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
-                                Name: { $t: `${product.productName} - ${userPeriodTicket.passengerType}` },
-                                limitations: {
-                                    ...profileRef,
-                                },
-                                columns: {
-                                    FareTableColumn: {
+                                id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}@zone@nested`,
+                                pricesFor: {
+                                    SalesOfferPackageRef: {
                                         version: '1.0',
-                                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
-                                        Name: { $t: userPeriodTicket.passengerType },
-                                        representing: {
-                                            TypeOfTravelDocumentRef: {
-                                                version: '1.0',
-                                                ref: 'op:p-ticket',
-                                            },
-                                            ...profileRef,
-                                        },
+                                        ref: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}`,
                                     },
+                                    ...getCarnetQualityStructureFactorRef(product),
                                 },
-                                rows: {
-                                    FareTableRow: {
+                                includes: {
+                                    FareTable: {
                                         version: '1.0',
-                                        id: `op:${product.productName}@${name}@${
-                                            salesOfferPackage.name
-                                        }@p-ticket@${product.productDuration.replace(' ', '-')}`,
-                                        Name: { $t: product.productDuration },
-                                        representing: {
-                                            TimeIntervalRef: {
+                                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}@zone@nested@prices`,
+                                        limitations: {
+                                            ...getProfileRef(userPeriodTicket),
+                                        },
+                                        prices: {
+                                            TimeIntervalPrice: {
                                                 version: '1.0',
-                                                ref: `op:Tariff@${
-                                                    product.productName
-                                                }@${product.productDuration.replace(' ', '-')}`,
+                                                id: `op:${product.productName}@${salesOfferPackage.name}@zone`,
+                                                Amount: { $t: `${product.productPrice}` },
+                                                TimeIntervalRef: {
+                                                    version: '1.0',
+                                                    ref: `op:Tariff@${
+                                                        product.productName
+                                                    }@${product.productDuration.replace(' ', '-')}`,
+                                                },
                                             },
-                                        },
-                                    },
-                                },
-                                cells: {
-                                    Cell: {
-                                        version: '1.0',
-                                        id: `op:${product.productName}@${salesOfferPackage.name}@${
-                                            userPeriodTicket.zoneName
-                                        }@p-ticket@${userPeriodTicket.passengerType}@${product.productDuration.replace(
-                                            ' ',
-                                            '-',
-                                        )}`,
-                                        order: '1',
-                                        TimeIntervalPrice: {
-                                            version: '1.0',
-                                            id: `op:${product.productName}@${salesOfferPackage.name}@${
-                                                userPeriodTicket.zoneName
-                                            }@p-ticket@${
-                                                userPeriodTicket.passengerType
-                                            }@${product.productDuration.replace(' ', '-')}`,
-                                            Amount: { $t: `${product.productPrice}` },
-                                            TimeIntervalRef: {
-                                                version: '1.0',
-                                                ref: `op:Tariff@${
-                                                    product.productName
-                                                }@${product.productDuration.replace(' ', '-')}`,
-                                            },
-                                        },
-                                        ColumnRef: {
-                                            version: '1.0',
-                                            ref: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.zoneName}@p-ticket@${userPeriodTicket.passengerType}`,
-                                        },
-                                        RowRef: {
-                                            version: '1.0',
-                                            ref: `op:${product.productName}@${name}@${
-                                                salesOfferPackage.name
-                                            }@p-ticket@${product.productDuration.replace(' ', '-')}`,
                                         },
                                     },
                                 },
@@ -315,133 +258,66 @@ const getMultiServiceList = (
     userPeriodTicket: PeriodMultipleServicesTicket,
     ticketUserConcat: string,
 ): NetexObject[] => {
-    const name = `${userPeriodTicket.nocCode}-multi-service`;
-    const profileRef = getProfileRef(userPeriodTicket);
-
-    return userPeriodTicket.products.flatMap(product => {
-        return product.salesOfferPackages.map(salesOfferPackage => ({
-            version: '1.0',
-            id: `op:${product.productName}@${name}@${salesOfferPackage.name}`,
-            Name: { $t: name },
-            specifics: null,
-            columns: {
-                FareTableColumn: {
-                    version: '1.0',
-                    id: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket`,
-                    Name: { $t: name },
-                    representing: null,
+    return userPeriodTicket.products.flatMap((product, indexOne) => {
+        return product.salesOfferPackages.map((salesOfferPackage, indexTwo) => {
+            return {
+                version: '1.0',
+                id: `op:fareTable@${product.productName}@${salesOfferPackage.name}@services`,
+                Name: {
+                    $t: `${product.productName} - ${salesOfferPackage.name} - ${userPeriodTicket.selectedServices.length} services`,
                 },
-            },
-            includes: {
-                FareTable: {
-                    version: '1.0',
-                    id: `op:${product.productName}@${name}@${salesOfferPackage.name}@all_media`,
-                    Name: { $t: `${product.productName}` },
-                    pricesFor: {
-                        SalesOfferPackageRef: {
-                            version: '1.0',
-                            ref: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}`,
-                        },
-                        ...getCarnetQualityStructureFactorRef(product),
+                pricesFor: {
+                    PreassignedFareProductRef: {
+                        version: '1.0',
+                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
                     },
-                    specifics: {
-                        TypeOfTravelDocumentRef: {
-                            version: '1.0',
-                            ref: 'op:p-ticket',
+                },
+                includes: {
+                    FareTable: {
+                        version: '1.0',
+                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}@product-${indexOne}@SOP-${indexTwo}@service`,
+                        Name: {
+                            $t: `${product.productName} - ${salesOfferPackage.name}  - ${userPeriodTicket.passengerType}`,
                         },
-                    },
-                    columns: {
-                        FareTableColumn: {
-                            version: '1.0',
-                            id: `op:${product.productName}@${name}@${salesOfferPackage.name}@all_media@paper`,
-                            Name: { $t: `${product.productName}` },
-                            representing: {
-                                TypeOfTravelDocumentRef: {
-                                    version: '1.0',
-                                    ref: 'op:p-ticket',
-                                },
-                                ...profileRef,
-                            },
-                        },
-                    },
-                    includes: {
-                        FareTable: {
-                            version: '1.0',
-                            id: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket@${userPeriodTicket.passengerType}`,
-                            Name: { $t: `${product.productName} - ${userPeriodTicket.passengerType}` },
-                            limitations: {
-                                ...profileRef,
-                            },
-                            columns: {
-                                FareTableColumn: {
-                                    version: '1.0',
-                                    id: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket@${userPeriodTicket.passengerType}`,
-                                    Name: { $t: userPeriodTicket.passengerType },
-                                    representing: {
-                                        TypeOfTravelDocumentRef: {
-                                            version: '1.0',
-                                            ref: 'op:p-ticket',
-                                        },
-                                        ...profileRef,
-                                    },
-                                },
-                            },
-                            rows: {
-                                FareTableRow: {
-                                    version: '1.0',
-                                    id: `op:${product.productName}@${name}@${
-                                        salesOfferPackage.name
-                                    }@p-ticket@${product.productDuration.replace(' ', '-')}`,
-                                    Name: { $t: product.productDuration },
-                                    representing: {
-                                        TimeIntervalRef: {
-                                            version: '1.0',
-                                            ref: `op:Tariff@${product.productName}@${product.productDuration.replace(
-                                                ' ',
-                                                '-',
-                                            )}`,
-                                        },
-                                    },
-                                },
-                            },
-                            cells: {
-                                Cell: {
-                                    version: '1.0',
-                                    id: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket@${
-                                        userPeriodTicket.passengerType
-                                    }@${product.productDuration.replace(' ', '-')}`,
-                                    order: '1',
-                                    TimeIntervalPrice: {
+                        includes: {
+                            FareTable: {
+                                version: '1.0',
+                                id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}@service@nested`,
+                                pricesFor: {
+                                    SalesOfferPackageRef: {
                                         version: '1.0',
-                                        id: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket@${
-                                            userPeriodTicket.passengerType
-                                        }@${product.productDuration.replace(' ', '-')}`,
-                                        Amount: { $t: `${product.productPrice}` },
-                                        TimeIntervalRef: {
-                                            version: '1.0',
-                                            ref: `op:Tariff@${product.productName}@${product.productDuration.replace(
-                                                ' ',
-                                                '-',
-                                            )}`,
+                                        ref: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}`,
+                                    },
+                                    ...getCarnetQualityStructureFactorRef(product),
+                                },
+                                includes: {
+                                    FareTable: {
+                                        version: '1.0',
+                                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}@service@nested@prices`,
+                                        limitations: {
+                                            ...getProfileRef(userPeriodTicket),
                                         },
-                                    },
-                                    ColumnRef: {
-                                        version: '1.0',
-                                        ref: `op:${product.productName}@${name}@${salesOfferPackage.name}@p-ticket@${userPeriodTicket.passengerType}`,
-                                    },
-                                    RowRef: {
-                                        version: '1.0',
-                                        ref: `op:${product.productName}@${name}@${
-                                            salesOfferPackage.name
-                                        }@p-ticket@${product.productDuration.replace(' ', '-')}`,
+                                        prices: {
+                                            TimeIntervalPrice: {
+                                                version: '1.0',
+                                                id: `op:${product.productName}@${salesOfferPackage.name}@service`,
+                                                Amount: { $t: `${product.productPrice}` },
+                                                TimeIntervalRef: {
+                                                    version: '1.0',
+                                                    ref: `op:Tariff@${
+                                                        product.productName
+                                                    }@${product.productDuration.replace(' ', '-')}`,
+                                                },
+                                            },
+                                        },
                                     },
                                 },
                             },
                         },
                     },
                 },
-            },
-        }));
+            };
+        });
     });
 };
 
@@ -455,25 +331,31 @@ const getFlatFareList = (
                 version: '1.0',
                 id: `op:${product.productName}@${salesOfferPackage.name}`,
                 Name: { $t: `${product.productName}` },
+                pricesFor: {
+                    SalesOfferPackageRef: {
+                        version: '1.0',
+                        ref: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}`,
+                    },
+                    ...getCarnetQualityStructureFactorRef(product),
+                    PreassignedFareProductRef: {
+                        version: '1.0',
+                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                    },
+                },
+                limitations: {
+                    ...getProfileRef(userPeriodTicket),
+                },
                 includes: {
                     FareTable: {
                         version: '1.0',
-                        id: `op:${product.productName}@${salesOfferPackage.name}@p-ticket@${userPeriodTicket.passengerType}`,
-                        Name: { $t: `${product.productName}` },
-                        pricesFor: {
-                            SalesOfferPackageRef: {
-                                version: '1.0',
-                                ref: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}`,
-                            },
-                            ...getCarnetQualityStructureFactorRef(product),
-                        },
-                        limitations: {
-                            ...getProfileRef(userPeriodTicket),
+                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}`,
+                        Name: {
+                            $t: `${product.productName} - ${salesOfferPackage.name} - ${userPeriodTicket.passengerType}`,
                         },
                         prices: {
                             DistanceMatrixElementPrice: {
                                 version: '1.0',
-                                id: `op:${product.productName}@${salesOfferPackage.name}@p-ticket@${userPeriodTicket.passengerType}`,
+                                id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}`,
                                 Amount: { $t: `${product.productPrice}` },
                             },
                         },
@@ -492,6 +374,17 @@ export const getMultiServiceFareTable = (
     }
 
     return getFlatFareList(userPeriodTicket, ticketUserConcat);
+};
+
+export const getHybridFareTable = (
+    userPeriodTicket: HybridPeriodTicket,
+    placeHolderGroupOfProductsName: string,
+    ticketUserConcat: string,
+): NetexObject[] => {
+    return [
+        ...getGeoZoneFareTable(userPeriodTicket, placeHolderGroupOfProductsName, ticketUserConcat),
+        ...getMultiServiceFareTable(userPeriodTicket, ticketUserConcat),
+    ];
 };
 
 export const getSalesOfferPackageList = (
@@ -593,20 +486,19 @@ export const getPreassignedFareProducts = (
 ): NetexObject[] => {
     const { passengerType } = userPeriodTicket;
     return userPeriodTicket.products.map((product: ProductDetails | FlatFareProductDetails) => {
-        let elementZeroRef: string;
+        let elementZeroRef = '';
         let fareStructureElementRefs: NetexObject;
 
-        if (isGeoZoneTicket(userPeriodTicket)) {
+        if (isGeoZoneTicket(userPeriodTicket) || isHybridTicket(userPeriodTicket)) {
             elementZeroRef = `op:Tariff@${product.productName}@access_zones`;
         } else if (isMultiServiceTicket(userPeriodTicket) || isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
             elementZeroRef = `op:Tariff@${product.productName}@access_lines`;
-        } else {
-            elementZeroRef = '';
         }
 
         if (
             isGeoZoneTicket(userPeriodTicket) ||
-            (isMultiServiceTicket(userPeriodTicket) && isProductDetails(userPeriodTicket.products[0]))
+            (isMultiServiceTicket(userPeriodTicket) && isProductDetails(userPeriodTicket.products[0])) ||
+            isHybridTicket(userPeriodTicket)
         ) {
             fareStructureElementRefs = getPeriodTicketFareStructureElementRefs(elementZeroRef, product, passengerType);
         } else {
@@ -698,8 +590,10 @@ export const getTimeIntervals = (userPeriodTicket: PeriodTicket | SchemeOperator
 
 export const getPeriodAvailabilityElement = (
     id: string,
-    validityParametersObject: object,
+    validityParametersObject: {},
     hasTimeRestriction: boolean,
+    productName?: string,
+    groupOfLinesRef?: string,
 ): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
@@ -726,6 +620,25 @@ export const getPeriodAvailabilityElement = (
         },
         ValidityParameterGroupingType: { $t: 'OR' },
         validityParameters: validityParametersObject,
+        includes: groupOfLinesRef
+            ? {
+                  GenericParameterAssignment: {
+                      version: '1.0',
+                      id: `${productName}-groupsOfLinesWrapper`,
+                      order: '2',
+                      TypeOfAccessRightAssignmentRef: {
+                          version: 'fxc:v1.0',
+                          ref: 'fxc:can_access',
+                      },
+                      validityParameters: {
+                          GroupOfLinesRef: {
+                              version: '1.0',
+                              ref: groupOfLinesRef,
+                          },
+                      },
+                  },
+              }
+            : null,
     },
 });
 
@@ -750,9 +663,7 @@ export const getDurationElement = (
     },
 });
 
-export const getPeriodEligibilityElement = (
-    userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket,
-): NetexObject[] => {
+export const getPeriodEligibilityElement = (userPeriodTicket: Ticket): NetexObject[] => {
     const users = isGroupTicket(userPeriodTicket)
         ? userPeriodTicket.groupDefinition.companions
         : [
@@ -789,7 +700,7 @@ export const getPeriodEligibilityElement = (
 };
 
 export const getPeriodConditionsElement = (
-    userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket,
+    userPeriodTicket: Ticket,
     product: ProductDetails | FlatFareProductDetails,
 ): NetexObject => {
     let usagePeriodValidity = {};

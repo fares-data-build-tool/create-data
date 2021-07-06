@@ -58,6 +58,7 @@ def get_lines_for_service(service):
 def extract_data_for_txc_operator_service_table(operator, service):
     noc_code = operator['NationalOperatorCode']
     start_date = service['OperatingPeriod']['StartDate']
+    end_date = service['OperatingPeriod']['EndDate'] if 'EndDate' in service['OperatingPeriod'] else None
     operator_short_name = operator['OperatorShortName']
     service_description = service['Description'] if 'Description' in service else ''
     service_code = service['ServiceCode'] if 'ServiceCode' in service else None
@@ -65,7 +66,7 @@ def extract_data_for_txc_operator_service_table(operator, service):
     origin = standard_service['Origin'] if standard_service and 'Origin' in standard_service else None
     destination = standard_service['Destination'] if standard_service and 'Destination' in standard_service else None
 
-    return noc_code, start_date, operator_short_name, service_description, service_code, origin, destination
+    return noc_code, start_date, end_date, operator_short_name, service_description, service_code, origin, destination
 
 
 def collect_journey_pattern_section_refs_and_info(raw_journey_patterns):
@@ -208,6 +209,7 @@ def insert_into_txc_operator_service_table(cursor, operator, service, line, regi
     (
         noc_code,
         start_date,
+        end_date,
         operator_short_name,
         service_description,
         service_code,
@@ -215,8 +217,8 @@ def insert_into_txc_operator_service_table(cursor, operator, service, line, regi
         destination
     ) = extract_data_for_txc_operator_service_table(operator, service)
 
-    query = f"""INSERT INTO txcOperatorLine (nocCode, lineName, lineId, startDate, operatorShortName, serviceDescription, serviceCode, regionCode, dataSource, origin, destination)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    query = f"""INSERT INTO txcOperatorLine (nocCode, lineName, lineId, startDate, endDate, operatorShortName, serviceDescription, serviceCode, regionCode, dataSource, origin, destination)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
     line_id = line.get('@id', '')
     line_name = line.get('LineName', '')
@@ -229,6 +231,7 @@ def insert_into_txc_operator_service_table(cursor, operator, service, line, regi
                 line_name,
                 line_id,
                 start_date,
+                end_date,
                 operator_short_name,
                 service_description,
                 service_code,
@@ -256,6 +259,7 @@ def check_txc_line_exists(cursor, operator, service, line, data_source, cloudwat
     (
         noc_code,
         start_date,
+        end_date,
         operator_short_name,
         service_description,
         service_code,
@@ -265,7 +269,7 @@ def check_txc_line_exists(cursor, operator, service, line, data_source, cloudwat
 
     query = f"""
         SELECT id FROM txcOperatorLine
-        WHERE nocCode = %s AND lineName = %s AND serviceCode = %s AND startDate = %s AND dataSource = %s
+        WHERE nocCode = %s AND lineName = %s AND serviceCode = %s AND startDate = %s AND endDate = %s AND dataSource = %s
         LIMIT 1
     """
 
@@ -278,6 +282,7 @@ def check_txc_line_exists(cursor, operator, service, line, data_source, cloudwat
             line_name,
             service_code,
             start_date,
+            end_date,
             data_source
         ]
     )

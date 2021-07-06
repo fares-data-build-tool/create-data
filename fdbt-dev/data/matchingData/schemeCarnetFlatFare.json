@@ -24,15 +24,9 @@
         {
           "name": "Onboard (cash)",
           "description": "",
-          "purchaseLocations": [
-            "onBoard"
-          ],
-          "paymentMethods": [
-            "cash"
-          ],
-          "ticketFormats": [
-            "paperTicket"
-          ]
+          "purchaseLocations": ["onBoard"],
+          "paymentMethods": ["cash"],
+          "ticketFormats": ["paperTicket"]
         }
       ]
     }

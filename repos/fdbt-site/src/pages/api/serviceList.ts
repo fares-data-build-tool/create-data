@@ -37,7 +37,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const requestBody: { [key: string]: string | string[] } = req.body;
 
-        Object.entries(requestBody).forEach(entry => {
+        Object.entries(requestBody).forEach((entry) => {
             const lineNameLineIdServiceCodeStartDate = entry[0];
             const description = entry[1];
             let serviceDescription: string;

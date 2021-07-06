@@ -110,10 +110,12 @@ generate-validate-carnet-return: generate-carnet-return validate-latest-file
 generate-carnet-period-geo-zone:
 	./scripts/trigger_netex_convertor.sh carnetPeriodGeoZone
 
+generate-validate-carnet-period-geo-zone: generate-carnet-period-geo-zone validate-latest-file
+
 generate-scheme-carnet-period-geo-zone:
 	./scripts/trigger_netex_convertor.sh schemeCarnetPeriod
 
-generate-validate-carnet-period-geo-zone: generate-carnet-period-geo-zone validate-latest-file
+generate-validate-scheme-carnet-period-geo-zone: generate-scheme-carnet-period-geo-zone validate-latest-file
 
 generate-carnet-period-multi-service:
 	./scripts/trigger_netex_convertor.sh carnetPeriodMultiService
@@ -123,10 +125,17 @@ generate-validate-carnet-period-multi-service: generate-carnet-period-multi-serv
 generate-carnet-flat-fare:
 	./scripts/trigger_netex_convertor.sh carnetFlatFare
 
+generate-validate-carnet-flat-fare: generate-carnet-flat-fare validate-latest-file
+
 generate-scheme-carnet-flat-fare:
 	./scripts/trigger_netex_convertor.sh schemeCarnetFlatFare
 
-generate-validate-carnet-flat-fare: generate-carnet-flat-fare validate-latest-file
+generate-validate-scheme-carnet-flat-fare: generate-scheme-carnet-flat-fare validate-latest-file
+
+generate-hybrid-period:
+	./scripts/trigger_netex_convertor.sh hybridPeriod
+
+generate-validate-hybrid-period: generate-hybrid-period validate-latest-file
 
 validate-netex:
 	./scripts/trigger_netex_validator.sh $(file)

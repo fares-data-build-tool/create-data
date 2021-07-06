@@ -33,7 +33,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             await groupSizeSchema.validate(attributeValue.maxGroupSize, { abortEarly: false });
         } catch (validationErrors) {
             const validityErrors: yup.ValidationError = validationErrors;
-            errors = validityErrors.inner.map(error => {
+            errors = validityErrors.inner.map((error) => {
                 return {
                     id: 'max-group-size',
                     errorMessage: error.message,

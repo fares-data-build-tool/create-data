@@ -63,10 +63,10 @@ export interface MatchedFareStages {
 export const buildMatchedFareStages = (matchingFareZones: MatchingFareZones): MatchedFareStages[] => {
     const matchedFareStages: MatchedFareStages[] = [];
     const entries = Object.entries(matchingFareZones);
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
         if (entry[0] !== 'undefined') {
             const stopList = entry[1].stops;
-            const stops: string[] = stopList.map(stop => stop.stopName);
+            const stops: string[] = stopList.map((stop) => stop.stopName);
             matchedFareStages.push({ fareStage: entry[1].name, stops });
         }
     });
@@ -111,10 +111,10 @@ export const buildSingleTicketConfirmationElements = (ctx: NextPageContextWithSe
             href: 'inputMethod',
         },
     );
-    matchedFareStages.forEach(fareStage => {
+    matchedFareStages.forEach((fareStage) => {
         confirmationElements.push({
             name: `Fare stage - ${fareStage.fareStage}`,
-            content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
+            content: `Stops - ${fareStage.stops.map((stop) => upperFirst(stop)).join(', ')}`,
             href: 'matching',
         });
     });
@@ -167,17 +167,17 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
         const outboundMatchedFareStages = buildMatchedFareStages(outboundMatchingFareZones);
         const inboundMatchedFareStages = buildMatchedFareStages(inboundMatchingFareZones);
 
-        outboundMatchedFareStages.forEach(fareStage => {
+        outboundMatchedFareStages.forEach((fareStage) => {
             confirmationElements.push({
                 name: `Outbound fare stage - ${fareStage.fareStage}`,
-                content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
+                content: `Stops - ${fareStage.stops.map((stop) => upperFirst(stop)).join(', ')}`,
                 href: 'outboundMatching',
             });
         });
-        inboundMatchedFareStages.forEach(fareStage => {
+        inboundMatchedFareStages.forEach((fareStage) => {
             confirmationElements.push({
                 name: `Inbound fare stage - ${fareStage.fareStage}`,
-                content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
+                content: `Stops - ${fareStage.stops.map((stop) => upperFirst(stop)).join(', ')}`,
                 href: 'inboundMatching',
             });
         });
@@ -186,10 +186,10 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
             (getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE) as MatchingInfo).matchingFareZones,
         );
 
-        nonCircularMatchedFareStages.forEach(fareStage => {
+        nonCircularMatchedFareStages.forEach((fareStage) => {
             confirmationElements.push({
                 name: `Fare stage - ${fareStage.fareStage}`,
-                content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
+                content: `Stops - ${fareStage.stops.map((stop) => upperFirst(stop)).join(', ')}`,
                 href: 'matching',
             });
         });
@@ -269,10 +269,9 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
 
-    const ticketRepresentation = (getSessionAttribute(
-        ctx.req,
-        TICKET_REPRESENTATION_ATTRIBUTE,
-    ) as TicketRepresentationAttribute).name;
+    const ticketRepresentation = (
+        getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE) as TicketRepresentationAttribute
+    ).name;
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const multiOpAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute;
     const multiOpServices = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) as MultiOperatorInfo[];
@@ -297,7 +296,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         confirmationElements.push(
             {
                 name: `${opName}${opName ? 's' : 'S'}ervices`,
-                content: `${services.map(service => service.lineName).join(', ')}`,
+                content: `${services.map((service) => service.lineName).join(', ')}`,
                 href: 'serviceList',
             },
             {
@@ -312,17 +311,17 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         const additionalOperators = multiOpAttribute.selectedOperators;
         confirmationElements.push({
             name: 'Additional operators',
-            content: `${additionalOperators.map(operator => operator.name).join(', ')}`,
+            content: `${additionalOperators.map((operator) => operator.name).join(', ')}`,
             href: 'searchOperators',
         });
 
         if (!zone && multiOpServices) {
-            multiOpServices.forEach(serviceInfo => {
+            multiOpServices.forEach((serviceInfo) => {
                 confirmationElements.push({
                     name: `${
-                        additionalOperators.find(operator => operator.nocCode === serviceInfo.nocCode)?.name
+                        additionalOperators.find((operator) => operator.nocCode === serviceInfo.nocCode)?.name
                     } Services`,
-                    content: `${serviceInfo.services.map(service => service.lineName).join(', ')}`,
+                    content: `${serviceInfo.services.map((service) => service.lineName).join(', ')}`,
                     href: 'searchOperators',
                 });
             });
@@ -341,7 +340,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             throw new Error('Multiple produect arrribute contains errors');
         }
         if (isArray(products)) {
-            products.forEach(product => {
+            products.forEach((product) => {
                 addProductDetails(product, confirmationElements);
             });
         } else if (!isArray(products)) {
@@ -376,8 +375,8 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
             ctx.req,
             MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
         ) as MultiOperatorInfo[];
-        multiOpServicesAttribute.forEach(additionalOperator => {
-            additionalOperator.services.forEach(service => {
+        multiOpServicesAttribute.forEach((additionalOperator) => {
+            additionalOperator.services.forEach((service) => {
                 services.push(service);
             });
         });
@@ -387,7 +386,7 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
     confirmationElements.push(
         {
             name: 'Services',
-            content: `${services.map(service => service.lineName).join(', ')}`,
+            content: `${services.map((service) => service.lineName).join(', ')}`,
             href: 'serviceList',
         },
         {
@@ -397,7 +396,7 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
         },
     );
 
-    products.forEach(product => {
+    products.forEach((product) => {
         confirmationElements.push({
             name: `${product.productName}`,
             content: [`Price - £${product.productPrice}`, ...getCarnetDetailsContent(product.carnetDetails)],
