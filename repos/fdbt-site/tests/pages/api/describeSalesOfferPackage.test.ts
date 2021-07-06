@@ -1,3 +1,4 @@
+import { SalesOfferPackage } from '../../../../../shared/matchingJsonTypes';
 import describeSalesOfferPackage, {
     sopInfoSchema,
     checkUserInput,
@@ -10,7 +11,6 @@ import * as sessionUtils from '../../../src/utils/sessions';
 import * as aurora from '../../../src/data/auroradb';
 import {
     ErrorInfo,
-    SalesOfferPackage,
     SalesOfferPackageInfo,
     SalesOfferPackageInfoWithErrors,
     SalesOfferPackageWithErrors,

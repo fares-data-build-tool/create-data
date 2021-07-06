@@ -1,4 +1,5 @@
 import startCase from 'lodash/startCase';
+import { SalesOfferPackage } from '../../../../../shared/matchingJsonTypes';
 import {
     FareZone,
     FareZoneList,
@@ -7,7 +8,6 @@ import {
     PointToPointTicket,
     DistributionAssignment,
     SalesOfferPackageElement,
-    SalesOfferPackage,
     BaseProduct,
     NetexSalesOfferPackage,
     isReturnTicket,
