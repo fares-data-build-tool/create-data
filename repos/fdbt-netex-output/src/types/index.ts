@@ -519,4 +519,5 @@ export interface OperatorRef {
     $t: string;
 }
 
+// eslint-disable-next-line prettier/prettier
 export type { SalesOfferPackage };
