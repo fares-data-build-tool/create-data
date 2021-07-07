@@ -35,6 +35,24 @@ executors:
       - image: circleci/node
 
 jobs:
+  build-image:
+    executor: default
+    <<: *slack-fail-post-step
+    steps:
+      - aws-ecr/build-image:
+          repo: "${SITE_ECR_REPO}"
+          tag: "${CIRCLE_SHA1},latest"
+          path: ~/project
+          dockerfile: site.Dockerfile
+
+  push-image:
+    executor: default
+    <<: *slack-fail-post-step
+    steps:
+      - aws-ecr/push-image:
+          repo: "${SITE_ECR_REPO}"
+          tag: "${CIRCLE_SHA1},latest"
+
   slack-notify:
     docker:
       - image: "cimg/base:stable"
@@ -652,17 +670,22 @@ workflows:
             tags:
               only: /^v.*/
 
-      - aws-ecr/build-and-push-image:
+      - build-image:
           <<: *slack-fail-post-step
           requires:
             - audit
             - test
             - lint
-          repo: "${SITE_ECR_REPO}"
-          tag: "${CIRCLE_SHA1},latest"
           context: tfn-fdbt-core
-          path: ~/project
-          dockerfile: site.Dockerfile
+          filters:
+            tags:
+              only: /^v.*/
+
+      - push-image:
+          <<: *slack-fail-post-step
+          requires:
+            - build-image
+          context: tfn-fdbt-core
           filters:
             tags:
               only: /^v.*/
@@ -674,7 +697,7 @@ workflows:
       - aws-ecs/deploy-service-update:
           <<: *slack-fail-post-step
           requires:
-            - aws-ecr/build-and-push-image
+            - push-image
           name: deploy-site-to-test
           family: "${SITE_ECS_FAMILY}"
           cluster-name: "${SITE_ECS_CLUSTER}"
@@ -698,7 +721,7 @@ workflows:
       - aws-ecs/deploy-service-update:
           <<: *slack-fail-post-step
           requires:
-            - aws-ecr/build-and-push-image
+            - push-image
           family: "${SITE_ECS_FAMILY}"
           name: deploy-site-to-preprod
           cluster-name: "${SITE_ECS_CLUSTER}"
@@ -712,7 +735,7 @@ workflows:
       - slack/on-hold:
           <<: *slack-fail-post-step
           requires:
-            - aws-ecr/build-and-push-image
+            - push-image
           filters:
             tags:
               only: /^v.*/
