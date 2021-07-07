@@ -2,7 +2,7 @@ import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { IncomingMessage, ServerResponse } from 'http';
 import { ReactElement } from 'react';
-import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
+import { SalesOfferPackage } from '../../shared/matchingJsonTypes';
 
 // Session Attributes and Cookies
 
@@ -844,3 +844,5 @@ export interface PeriodExpiry {
     productValidity: string;
     productEndTime: string;
 }
+
+export type { SalesOfferPackage };

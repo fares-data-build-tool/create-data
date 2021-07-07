@@ -2,7 +2,6 @@ import awsParamStore from 'aws-param-store';
 import dateFormat from 'dateformat';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
-import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
     FullTimeRestriction,
@@ -12,6 +11,7 @@ import {
     PassengerType,
     PremadeTimeRestriction,
     RawService,
+    SalesOfferPackage,
     ServiceType,
     Stop,
 } from '../interfaces';

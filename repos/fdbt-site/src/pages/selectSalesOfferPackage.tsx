@@ -1,5 +1,4 @@
 import React, { ChangeEventHandler, ReactElement, useState } from 'react';
-import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
 import CsrfForm from '../components/CsrfForm';
 import DeleteSOPButton from '../components/DeleteSOPButton';
 import ErrorSummary from '../components/ErrorSummary';
@@ -16,6 +15,7 @@ import {
     NextPageContextWithSession,
     ProductInfo,
     ProductWithSalesOfferPackages,
+    SalesOfferPackage,
     SchoolFareTypeAttribute,
 } from '../interfaces';
 import { isFareType } from '../interfaces/typeGuards';

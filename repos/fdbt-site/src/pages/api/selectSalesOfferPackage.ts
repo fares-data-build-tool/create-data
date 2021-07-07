@@ -1,10 +1,10 @@
 import { NextApiResponse } from 'next';
-import { SalesOfferPackage } from '../../../../../shared/matchingJsonTypes';
 import { MULTIPLE_PRODUCT_ATTRIBUTE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../../constants/attributes';
 import {
     ErrorInfo,
     NextApiRequestWithSession,
     ProductWithSalesOfferPackages,
+    SalesOfferPackage,
     SelectSalesOfferPackageWithError,
 } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';

@@ -1,4 +1,4 @@
-import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
+import { SalesOfferPackage } from '../../shared/matchingJsonTypes';
 import { NetexObject } from '../netex-convertor/sharedHelpers';
 
 // Misc
@@ -518,3 +518,5 @@ export interface OperatorRef {
     ref: string;
     $t: string;
 }
+
+export type { SalesOfferPackage };

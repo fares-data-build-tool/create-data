@@ -2,7 +2,6 @@
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import React from 'react';
-import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
 import {
     PointToPointPeriodTicket,
     BasicService,
@@ -24,6 +23,7 @@ import {
     RadioWithConditionalInputs,
     RawService,
     ReturnTicket,
+    SalesOfferPackage,
     SchemeOperatorFlatFareTicket,
     SchemeOperatorGeoZoneTicket,
     SchemeOperatorTicket,

@@ -16,10 +16,5 @@
         "outDir": ".build",
         "rootDir": "./"
     },
-    "references": [
-      {
-        "path": "../../shared"
-      }
-    ],
     "exclude": ["node_modules", "jest.config.js"]
 }
