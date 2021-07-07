@@ -37,7 +37,6 @@ executors:
 jobs:
   build-image:
     executor: default
-    <<: *slack-fail-post-step
     steps:
       - aws-ecr/build-image:
           repo: "${SITE_ECR_REPO}"
@@ -47,7 +46,6 @@ jobs:
 
   push-image:
     executor: default
-    <<: *slack-fail-post-step
     steps:
       - aws-ecr/push-image:
           repo: "${SITE_ECR_REPO}"
