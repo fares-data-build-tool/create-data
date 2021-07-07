@@ -2,10 +2,12 @@ FROM node:14-alpine AS build
 
 WORKDIR /tmp
 
-COPY package*.json ./
+COPY ./repos/fdbt-site .
 RUN apk add --no-cache git && npm install --ignore-scripts
 
-COPY . .
+RUN rm shared
+COPY ./shared ./shared
+
 RUN npm run build
 
 FROM node:14-alpine
