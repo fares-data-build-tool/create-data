@@ -36,7 +36,7 @@ executors:
 
 jobs:
   build-image:
-    executor: default
+    executor: node
     steps:
       - aws-ecr/build-image:
           repo: "${SITE_ECR_REPO}"
@@ -45,7 +45,7 @@ jobs:
           dockerfile: site.Dockerfile
 
   push-image:
-    executor: default
+    executor: node
     steps:
       - aws-ecr/push-image:
           repo: "${SITE_ECR_REPO}"
