@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
 import SelectSalesOfferPackage, {
     SelectSalesOfferPackageProps,
     getServerSideProps,
@@ -11,6 +10,7 @@ import SelectSalesOfferPackage, {
 } from '../../src/pages/selectSalesOfferPackage';
 import { getMockContext } from '../testData/mockData';
 import { getSalesOfferPackagesByNocCode } from '../../src/data/auroradb';
+import { SalesOfferPackage } from '../../src/interfaces';
 import { FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb');

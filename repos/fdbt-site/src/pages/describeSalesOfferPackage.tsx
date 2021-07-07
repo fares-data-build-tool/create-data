@@ -1,8 +1,12 @@
 import React, { ReactElement } from 'react';
-import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import { NextPageContextWithSession, SalesOfferPackageInfo, SalesOfferPackageWithErrors } from '../interfaces';
+import {
+    NextPageContextWithSession,
+    SalesOfferPackageInfo,
+    SalesOfferPackage,
+    SalesOfferPackageWithErrors,
+} from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../constants/attributes';

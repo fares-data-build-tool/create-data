@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { isArray, upperFirst } from 'lodash';
 import moment from 'moment';
-import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE } from '../constants/attributes';
 import {
     NextPageContextWithSession,
+    SalesOfferPackage,
     ProductWithSalesOfferPackages,
     TicketPeriodWithInput,
     ConfirmationElement,

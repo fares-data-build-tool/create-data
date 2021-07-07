@@ -1,6 +1,5 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
-import { SalesOfferPackage } from '../../../../../shared/matchingJsonTypes';
 import {
     defaultSalesOfferPackageOne,
     defaultSalesOfferPackageTwo,
@@ -9,7 +8,7 @@ import {
 } from '../selectSalesOfferPackage';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
-import { NextApiRequestWithSession, ErrorInfo, SalesOfferPackageWithErrors } from '../../interfaces';
+import { NextApiRequestWithSession, ErrorInfo, SalesOfferPackage, SalesOfferPackageWithErrors } from '../../interfaces';
 import { isSalesOfferPackageWithErrors } from '../describeSalesOfferPackage';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isSalesOfferPackageInfoWithErrors } from '../salesOfferPackages';

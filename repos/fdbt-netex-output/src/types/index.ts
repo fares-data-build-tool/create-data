@@ -1,4 +1,4 @@
-import { SalesOfferPackage } from '../../../../shared/matchingJsonTypes';
+import { SalesOfferPackage } from '../../shared/matchingJsonTypes';
 import { NetexObject } from '../netex-convertor/sharedHelpers';
 
 // Misc
@@ -518,3 +518,6 @@ export interface OperatorRef {
     ref: string;
     $t: string;
 }
+
+// eslint-disable-next-line prettier/prettier
+export type { SalesOfferPackage };
