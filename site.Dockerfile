@@ -16,8 +16,8 @@ ENV NODE_ENV production
 
 WORKDIR /home/node/app
 
-COPY package*.json start_clamav.sh ./
-COPY supervisord.conf /etc/supervisor/
+COPY ./repos/fdbt-site/package*.json ./repos/fdbt-site/start_clamav.sh ./
+COPY ./repos/fdbt-site/supervisord.conf /etc/supervisor/
 
 RUN apk update && apk upgrade && \
     apk add --no-cache -t .clamv-run-deps openrc clamav clamav-daemon clamav-libunrar supervisor && \
