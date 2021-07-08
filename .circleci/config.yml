@@ -36,17 +36,26 @@ executors:
 
 jobs:
   build-image:
-    executor: node
+    docker:
+      - image: "cimg/base:stable"
     steps:
+      - attach_workspace:
+          at: ~/project
       - aws-ecr/build-image:
           repo: "${SITE_ECR_REPO}"
           tag: "${CIRCLE_SHA1},latest"
           path: ~/project
           dockerfile: site.Dockerfile
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - "*"
 
   push-image:
     executor: node
     steps:
+      - attach_workspace:
+          at: ~/project
       - aws-ecr/push-image:
           repo: "${SITE_ECR_REPO}"
           tag: "${CIRCLE_SHA1},latest"
