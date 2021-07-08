@@ -36,8 +36,7 @@ executors:
 
 jobs:
   build-image:
-    docker:
-      - image: "cimg/base:stable"
+    machine: true
     steps:
       - attach_workspace:
           at: ~/project
@@ -52,7 +51,7 @@ jobs:
             - "*"
 
   push-image:
-    executor: node
+    machine: true
     steps:
       - attach_workspace:
           at: ~/project
