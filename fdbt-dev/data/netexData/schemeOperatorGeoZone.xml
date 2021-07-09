@@ -4,7 +4,7 @@
   <PublicationRequest version="1.0">
     <RequestTimestamp>2021-07-08T14:03:29.685Z</RequestTimestamp>
     <ParticipantRef>SYS002</ParticipantRef>
-    <Description>Request for BLAC bus pass fares</Description>
+    <Description>Request for IW Buses-Y bus pass fares</Description>
     <topics>
       <NetworkFrameTopic>
         <selectionValidityConditions>
@@ -15,14 +15,14 @@
         <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+            <OperatorRef version="1.0" ref="noc:IW_Buses-Y">noc:IW Buses-Y-opId</OperatorRef>
             <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_group"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_group"/>
-            <BrandingRef version="1.0" ref="op:BLAC@brand"/>
+            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
+            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_adult"/>
+            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_adult"/>
+            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_adult"/>
+            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_adult"/>
+            <BrandingRef version="1.0" ref="op:IW_Buses-Y@brand"/>
           </objectReferences>
         </NetworkFilterByValue>
       </NetworkFrameTopic>
@@ -34,9 +34,9 @@
   <PublicationRefreshInterval>P1M</PublicationRefreshInterval>
   <Description>Example of simple zonal pass fares.</Description>
   <dataObjects>
-    <CompositeFrame version="1.0" id="epd:UK:BLAC:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@BLAC_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
-      <Name>Fares for Blackpool Transport</Name>
-      <Description>Period ticket for Blackpool Transport</Description>
+    <CompositeFrame version="1.0" id="epd:UK:IW_Buses-Y:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@IW_Buses-Y_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
+      <Name>Fares for IW Buses</Name>
+      <Description>Period ticket for IW Buses</Description>
       <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
       <codespaces>
         <CodespaceRef ref="epd_data"/>
@@ -56,13 +56,12 @@
         <CompositeFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc"/>
       </prerequisites>
       <frames>
-        <ResourceFrame version="1.0" id="epd:UK:BLAC:ResourceFrame_UK_PI_COMMON:BLAC:op" dataSourceRef="op:src" responsibilitySetRef="op:network_data">
+        <ResourceFrame version="1.0" id="epd:UK:IW_Buses-Y:ResourceFrame_UK_PI_COMMON:IW_Buses-Y:op" dataSourceRef="op:src" responsibilitySetRef="op:network_data">
           <Name>Operator specific common resources</Name>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_COMMON:FXCP" version="fxc:v1.0"/>
           <codespaces>
             <Codespace id="op_data">
               <Xmlns>op</Xmlns>
-              <XmlnsUrl>http://www.blackpooltransport.com</XmlnsUrl>
               <Description>Operator data</Description>
             </Codespace>
           </codespaces>
@@ -72,9 +71,7 @@
             <DefaultCurrency>GBP</DefaultCurrency>
           </FrameDefaults>
           <dataSources>
-            <DataSource id="op:src" version="1.0">
-              <Email>enquiries@blackpooltransport.com</Email>
-            </DataSource>
+            <DataSource id="op:src" version="1.0"/>
           </dataSources>
           <responsibilitySets>
             <ResponsibilitySet version="1.0" id="op:tariffs">
@@ -83,7 +80,7 @@
                 <ResponsibilityRoleAssignment version="1.0" id="op:tariff_data@creates">
                   <DataRoleType>creates</DataRoleType>
                   <StakeholderRoleType>FareManagement</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Blackpool Transport</ResponsibleOrganisationRef>
+                  <ResponsibleOrganisationRef ref="noc:IW_Buses-Y" version="1.0">IW Buses</ResponsibleOrganisationRef>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
@@ -93,7 +90,7 @@
                 <ResponsibilityRoleAssignment version="1.0" id="op:network_data@creates">
                   <DataRoleType>creates</DataRoleType>
                   <StakeholderRoleType>Planning</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Blackpool Transport</ResponsibleOrganisationRef>
+                  <ResponsibleOrganisationRef ref="noc:IW_Buses-Y" version="1.0">IW Buses</ResponsibleOrganisationRef>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
@@ -102,9 +99,8 @@
             <ValueSet version="1.0" id="op:Branding" classOfValues="Branding">
               <Name>Operator Branding</Name>
               <values>
-                <Branding version="1.0" id="op:BLAC@brand">
-                  <Name>Blackpool Transport</Name>
-                  <Url>http://www.blackpooltransport.com</Url>
+                <Branding version="1.0" id="op:IW_Buses-Y@brand">
+                  <Name>IW Buses</Name>
                 </Branding>
               </values>
             </ValueSet>
@@ -125,9 +121,8 @@
             </ValueSet>
           </typesOfValue>
           <organisations>
-            <Operator version="1.0" id="noc:BLAC">
-              <PublicCode>BLAC</PublicCode>
-              <PrivateCode type="nocn">nocn:00000</PrivateCode>
+            <Operator version="1.0" id="noc:WBTR">
+              <PublicCode>WBTR</PublicCode>
               <Name>Blackpool Transport</Name>
               <ShortName>Blackpool Transport</ShortName>
               <TradingName>Blackpool Transport Services Ltd</TradingName>
@@ -135,30 +130,72 @@
                 <Phone>01253 473001</Phone>
                 <Url>http://www.blackpooltransport.com</Url>
               </ContactDetails>
-              <OrganisationType>operator</OrganisationType>
               <Address>
                 <Street>Rigby Road, Blackpool FY1 5DD</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
-              <CustomerServiceContactDetails>
-                <Email>enquiries@blackpooltransport.com</Email>
-              </CustomerServiceContactDetails>
+            </Operator>
+            <Operator version="1.0" id="noc:DCCL">
+              <PublicCode>DCCL</PublicCode>
+              <Name>Blackpool Transport</Name>
+              <ShortName>Blackpool Transport</ShortName>
+              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <ContactDetails>
+                <Phone>01253 473001</Phone>
+                <Url>http://www.blackpooltransport.com</Url>
+              </ContactDetails>
+              <Address>
+                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+              </Address>
+              <PrimaryMode>bus</PrimaryMode>
+            </Operator>
+            <Operator version="1.0" id="noc:HCTY">
+              <PublicCode>HCTY</PublicCode>
+              <Name>Blackpool Transport</Name>
+              <ShortName>Blackpool Transport</ShortName>
+              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <ContactDetails>
+                <Phone>01253 473001</Phone>
+                <Url>http://www.blackpooltransport.com</Url>
+              </ContactDetails>
+              <Address>
+                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+              </Address>
+              <PrimaryMode>bus</PrimaryMode>
+            </Operator>
+            <Operator version="1.0" id="noc:IW_Buses-Y">
+              <PublicCode>IW Buses-Y</PublicCode>
+              <Name>IW Buses</Name>
+              <ShortName>IW Buses</ShortName>
+              <ContactDetails/>
+              <Address/>
+              <PrimaryMode>bus</PrimaryMode>
             </Operator>
           </organisations>
+          <groupsOfOperators>
+            <GroupOfOperators version="1.0" id="operators@bus">
+              <Name>Bus Operators</Name>
+              <members>
+                <OperatorRef version="1.0" ref="noc:WBTR">Blackpool Transport</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:DCCL">Blackpool Transport</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:HCTY">Blackpool Transport</OperatorRef>
+              </members>
+            </GroupOfOperators>
+          </groupsOfOperators>
         </ResourceFrame>
-        <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_NETWORK:BLAC_products@pass:op" responsibilitySetRef="op:network_data">
-          <Name>BLAC_products Network</Name>
+        <FareFrame version="1.0" id="epd:UK:IW_Buses-Y:FareFrame_UK_PI_FARE_NETWORK:IW_Buses-Y_products@pass:op" responsibilitySetRef="op:network_data">
+          <Name>IW Buses-Y_products Network</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP"/>
           <FrameDefaults>
             <DefaultResponsibilitySetRef version="1.0" ref="op:network_data"/>
           </FrameDefaults>
           <prerequisites>
-            <ResourceFrameRef version="1.0" ref="epd:UK:BLAC:ResourceFrame_UK_PI_COMMON:BLAC:op"/>
+            <ResourceFrameRef version="1.0" ref="epd:UK:IW_Buses-Y:ResourceFrame_UK_PI_COMMON:IW_Buses-Y:op"/>
           </prerequisites>
           <fareZones>
-            <FareZone version="1.0" id="op:BLAC_products@Test_Town_Centre">
+            <FareZone version="1.0" id="op:IW_Buses-Y_products@Test_Town_Centre">
               <Name>Test Town Centre</Name>
-              <Description>Test Town Centre BLAC_products Zone</Description>
+              <Description>Test Town Centre IW Buses-Y_products Zone</Description>
               <members>
                 <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:CHEPJWM">The Towers, Park Street, Macclesfield</ScheduledStopPointRef>
                 <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:wrgdpma">Dog &amp; Partridge, New Manchester Road, Paddington</ScheduledStopPointRef>
@@ -207,7 +244,7 @@
             </FareZone>
           </fareZones>
         </FareFrame>
-        <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:BLAC_products@pass:op" responsibilitySetRef="op:tariffs">
+        <FareFrame version="1.0" id="epd:UK:IW_Buses-Y:FareFrame_UK_PI_FARE_PRODUCT:IW_Buses-Y_products@pass:op" responsibilitySetRef="op:tariffs">
           <Name>Fare products</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP"/>
           <FrameDefaults>
@@ -215,39 +252,39 @@
             <DefaultResponsibilitySetRef version="1.0" ref="op:tariffs"/>
           </FrameDefaults>
           <prerequisites>
-            <FareFrameRef version="1.0" ref="epd:UK:BLAC:FareFrame_UK_PI_FARE_NETWORK:BLAC_products@pass:op"/>
+            <FareFrameRef version="1.0" ref="epd:UK:IW_Buses-Y:FareFrame_UK_PI_FARE_NETWORK:IW_Buses-Y_products@pass:op"/>
           </prerequisites>
           <tariffs>
-            <Tariff version="1.0" id="op:Tariff@BLAC_products">
+            <Tariff version="1.0" id="op:Tariff@IW_Buses-Y_products">
               <validityConditions>
                 <ValidBetween>
                   <FromDate>2010-12-17T09:30:46.0Z</FromDate>
                   <ToDate>2028-12-17T09:30:46.0Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Blackpool Transport - BLAC_products - Fares for Period ticket</Name>
-              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <Name>IW Buses - IW Buses-Y_products - Fares for Period ticket</Name>
+              <OperatorRef version="1.0" ref="noc:IW_Buses-Y">noc:IW Buses-Y-opId</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <timeIntervals>
-                <TimeInterval version="1.0" id="op:Tariff@Product_1@1-month">
-                  <Name>1 month</Name>
-                  <Description>P1M</Description>
+                <TimeInterval version="1.0" id="op:Tariff@Product_1@1-day">
+                  <Name>1 day</Name>
+                  <Description>P1D</Description>
                 </TimeInterval>
-                <TimeInterval version="1.0" id="op:Tariff@Product_2@2-years">
-                  <Name>2 years</Name>
-                  <Description>P2Y</Description>
+                <TimeInterval version="1.0" id="op:Tariff@Product_2@2-days">
+                  <Name>2 days</Name>
+                  <Description>P2D</Description>
                 </TimeInterval>
                 <TimeInterval version="1.0" id="op:Tariff@Product_3@5-days">
                   <Name>5 days</Name>
                   <Description>P5D</Description>
                 </TimeInterval>
-                <TimeInterval version="1.0" id="op:Tariff@Product_4@7-weeks">
-                  <Name>7 weeks</Name>
-                  <Description>P49D</Description>
+                <TimeInterval version="1.0" id="op:Tariff@Product_4@7-months">
+                  <Name>7 months</Name>
+                  <Description>P7M</Description>
                 </TimeInterval>
-                <TimeInterval version="1.0" id="op:Tariff@Product_5@28-days">
-                  <Name>28 days</Name>
-                  <Description>P28D</Description>
+                <TimeInterval version="1.0" id="op:Tariff@Product_5@28-weeks">
+                  <Name>28 weeks</Name>
+                  <Description>P196D</Description>
                 </TimeInterval>
               </timeIntervals>
               <qualityStructureFactors>
@@ -256,19 +293,13 @@
                     <AvailabilityCondition id="op@Tariff@Condition" version="1.0">
                       <IsAvailable>true</IsAvailable>
                       <dayTypes>
-                        <FareDayType id="op@Tariff@DayType@monday" version="1.0">
-                          <EarliestTime>06:00:00</EarliestTime>
+                        <FareDayType id="op@Tariff@DayType@bankHoliday" version="1.0">
                           <properties>
                             <PropertyOfDay>
-                              <DaysOfWeek>Monday</DaysOfWeek>
+                              <DaysOfWeek>Everyday</DaysOfWeek>
+                              <HolidayTypes>NationalHoliday</HolidayTypes>
                             </PropertyOfDay>
                           </properties>
-                          <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_monday@timeband_1">
-                              <StartTime>06:00:00</StartTime>
-                              <EndTime>10:00:00</EndTime>
-                            </Timeband>
-                          </timebands>
                         </FareDayType>
                         <FareDayType id="op@Tariff@DayType@tuesday" version="1.0">
                           <EarliestTime>09:00:00</EarliestTime>
@@ -281,6 +312,10 @@
                             <Timeband version="1.0" id="op:timeband_for_tuesday@timeband_1">
                               <StartTime>09:00:00</StartTime>
                               <EndTime>17:00:00</EndTime>
+                            </Timeband>
+                            <Timeband version="1.0" id="op:timeband_for_tuesday@timeband_2">
+                              <StartTime>18:00:00</StartTime>
+                              <EndTime>22:00:00</EndTime>
                             </Timeband>
                           </timebands>
                         </FareDayType>
@@ -295,6 +330,9 @@
                             <Timeband version="1.0" id="op:timeband_for_wednesday@timeband_1">
                               <StartTime>13:50:00</StartTime>
                               <EndTime>19:50:00</EndTime>
+                            </Timeband>
+                            <Timeband version="1.0" id="op:timeband_for_wednesday@timeband_2">
+                              <StartTime>23:50:00</StartTime>
                             </Timeband>
                           </timebands>
                         </FareDayType>
@@ -318,31 +356,6 @@
                 </FareDemandFactor>
               </qualityStructureFactors>
               <fareStructureElements>
-                <FareStructureElement version="1.0" id="op:Tariff@group">
-                  <Name>Eligible groups</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:groups"/>
-                  <GenericParameterAssignment id="op:Tariff@group" version="1.0" order="0">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
-                    <LimitationGroupingType>OR</LimitationGroupingType>
-                    <limitations>
-                      <GroupTicket id="op:group" version="1.0">
-                        <MaximumNumberOfPersons>5</MaximumNumberOfPersons>
-                        <companionProfiles>
-                          <CompanionProfile version="1.0" id="op:companion@adult">
-                            <UserProfileRef version="1.0" ref="op:adult"/>
-                            <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-                            <MaximumNumberOfPersons>2</MaximumNumberOfPersons>
-                          </CompanionProfile>
-                          <CompanionProfile version="1.0" id="op:companion@child">
-                            <UserProfileRef version="1.0" ref="op:child"/>
-                            <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-                            <MaximumNumberOfPersons>3</MaximumNumberOfPersons>
-                          </CompanionProfile>
-                        </companionProfiles>
-                      </GroupTicket>
-                    </limitations>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
                 <FareStructureElement version="1.0" id="op:Tariff@Product_1@access_zones">
                   <Name>Available lines and/or zones</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
@@ -353,15 +366,15 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <FareZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                      <FareZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Product_1@durations@group">
-                  <Name>Available duration combination - group ticket</Name>
+                <FareStructureElement version="1.0" id="op:Tariff@Product_1@durations@adult">
+                  <Name>Available duration combination - adult ticket</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
                   <timeIntervals>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-month"/>
+                    <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-day"/>
                   </timeIntervals>
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Product_1@conditions_of_travel" version="1.0">
@@ -391,15 +404,15 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <FareZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                      <FareZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Product_2@durations@group">
-                  <Name>Available duration combination - group ticket</Name>
+                <FareStructureElement version="1.0" id="op:Tariff@Product_2@durations@adult">
+                  <Name>Available duration combination - adult ticket</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
                   <timeIntervals>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@Product_2@2-years"/>
+                    <TimeIntervalRef version="1.0" ref="op:Tariff@Product_2@2-days"/>
                   </timeIntervals>
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Product_2@conditions_of_travel" version="1.0">
@@ -429,12 +442,12 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <FareZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                      <FareZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Product_3@durations@group">
-                  <Name>Available duration combination - group ticket</Name>
+                <FareStructureElement version="1.0" id="op:Tariff@Product_3@durations@adult">
+                  <Name>Available duration combination - adult ticket</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
                   <timeIntervals>
                     <TimeIntervalRef version="1.0" ref="op:Tariff@Product_3@5-days"/>
@@ -467,15 +480,15 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <FareZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                      <FareZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Product_4@durations@group">
-                  <Name>Available duration combination - group ticket</Name>
+                <FareStructureElement version="1.0" id="op:Tariff@Product_4@durations@adult">
+                  <Name>Available duration combination - adult ticket</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
                   <timeIntervals>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@Product_4@7-weeks"/>
+                    <TimeIntervalRef version="1.0" ref="op:Tariff@Product_4@7-months"/>
                   </timeIntervals>
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Product_4@conditions_of_travel" version="1.0">
@@ -505,15 +518,15 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <FareZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                      <FareZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Product_5@durations@group">
-                  <Name>Available duration combination - group ticket</Name>
+                <FareStructureElement version="1.0" id="op:Tariff@Product_5@durations@adult">
+                  <Name>Available duration combination - adult ticket</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
                   <timeIntervals>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@Product_5@28-days"/>
+                    <TimeIntervalRef version="1.0" ref="op:Tariff@Product_5@28-weeks"/>
                   </timeIntervals>
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Product_5@conditions_of_travel" version="1.0">
@@ -544,24 +557,6 @@
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                         <MinimumAge>18</MinimumAge>
-                        <ProofRequired>identityDocument</ProofRequired>
-                      </UserProfile>
-                    </limitations>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@eligibility@child">
-                  <Name>Eligible user types</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@child" version="1.0" order="0">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
-                    <LimitationGroupingType>XOR</LimitationGroupingType>
-                    <limitations>
-                      <UserProfile version="1.0" id="op:child">
-                        <Name>child</Name>
-                        <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
-                        <MinimumAge>5</MinimumAge>
-                        <MaximumAge>17</MaximumAge>
-                        <ProofRequired>identityDocument</ProofRequired>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -570,478 +565,478 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Product_1_group">
-              <Name>Product 1 Pass - group</Name>
+            <PreassignedFareProduct version="1.0" id="op:Pass@Product_1_adult">
+              <Name>Product 1 Pass - adult</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <typesOfFareProduct>
                 <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               </typesOfFareProduct>
-              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:IW_Buses-Y">noc:IW Buses-Y-opId</OperatorRef>
               <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Product_1_group@travel">
+                <ValidableElement version="1.0" id="op:Pass@Product_1_adult@travel">
                   <Name>Rides available for specified durations</Name>
                   <fareStructureElements>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_1@access_zones"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_1@durations@group"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_1@durations@adult"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_1@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@group"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Product_1_group@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Product_1_group@travel"/>
+                <AccessRightInProduct version="1.0" id="op:Pass@Product_1_adult@travel" order="1">
+                  <ValidableElementRef version="1.0" ref="op:Pass@Product_1_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Product_2_group">
-              <Name>Product 2 Pass - group</Name>
+            <PreassignedFareProduct version="1.0" id="op:Pass@Product_2_adult">
+              <Name>Product 2 Pass - adult</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <typesOfFareProduct>
                 <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               </typesOfFareProduct>
-              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:IW_Buses-Y">noc:IW Buses-Y-opId</OperatorRef>
               <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Product_2_group@travel">
+                <ValidableElement version="1.0" id="op:Pass@Product_2_adult@travel">
                   <Name>Rides available for specified durations</Name>
                   <fareStructureElements>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_2@access_zones"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_2@durations@group"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_2@durations@adult"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_2@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@group"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Product_2_group@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Product_2_group@travel"/>
+                <AccessRightInProduct version="1.0" id="op:Pass@Product_2_adult@travel" order="1">
+                  <ValidableElementRef version="1.0" ref="op:Pass@Product_2_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Product_3_group">
-              <Name>Product 3 Pass - group</Name>
+            <PreassignedFareProduct version="1.0" id="op:Pass@Product_3_adult">
+              <Name>Product 3 Pass - adult</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <typesOfFareProduct>
                 <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               </typesOfFareProduct>
-              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:IW_Buses-Y">noc:IW Buses-Y-opId</OperatorRef>
               <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Product_3_group@travel">
+                <ValidableElement version="1.0" id="op:Pass@Product_3_adult@travel">
                   <Name>Rides available for specified durations</Name>
                   <fareStructureElements>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_3@access_zones"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_3@durations@group"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_3@durations@adult"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_3@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@group"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Product_3_group@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Product_3_group@travel"/>
+                <AccessRightInProduct version="1.0" id="op:Pass@Product_3_adult@travel" order="1">
+                  <ValidableElementRef version="1.0" ref="op:Pass@Product_3_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Product_4_group">
-              <Name>Product 4 Pass - group</Name>
+            <PreassignedFareProduct version="1.0" id="op:Pass@Product_4_adult">
+              <Name>Product 4 Pass - adult</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <typesOfFareProduct>
                 <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               </typesOfFareProduct>
-              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:IW_Buses-Y">noc:IW Buses-Y-opId</OperatorRef>
               <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Product_4_group@travel">
+                <ValidableElement version="1.0" id="op:Pass@Product_4_adult@travel">
                   <Name>Rides available for specified durations</Name>
                   <fareStructureElements>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_4@access_zones"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_4@durations@group"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_4@durations@adult"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_4@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@group"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Product_4_group@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Product_4_group@travel"/>
+                <AccessRightInProduct version="1.0" id="op:Pass@Product_4_adult@travel" order="1">
+                  <ValidableElementRef version="1.0" ref="op:Pass@Product_4_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Product_5_group">
-              <Name>Product 5 Pass - group</Name>
+            <PreassignedFareProduct version="1.0" id="op:Pass@Product_5_adult">
+              <Name>Product 5 Pass - adult</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <typesOfFareProduct>
                 <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               </typesOfFareProduct>
-              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:IW_Buses-Y">noc:IW Buses-Y-opId</OperatorRef>
               <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Product_5_group@travel">
+                <ValidableElement version="1.0" id="op:Pass@Product_5_adult@travel">
                   <Name>Rides available for specified durations</Name>
                   <fareStructureElements>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_5@access_zones"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_5@durations@group"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_5@durations@adult"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_5@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@group"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Product_5_group@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Product_5_group@travel"/>
+                <AccessRightInProduct version="1.0" id="op:Pass@Product_5_adult@travel" order="1">
+                  <ValidableElementRef version="1.0" ref="op:Pass@Product_5_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_1-SOP@Onboard_(cash)">
-              <Name>Product 1 - group - Onboard (cash)</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_1-SOP@Onboard_(cash)">
+              <Name>Product 1 - adult - Onboard (cash)</Name>
               <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_1-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_1-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_1-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_1-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_1-SOP@Onboard_(contactless)">
-              <Name>Product 1 - group - Onboard (contactless)</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_1-SOP@Onboard_(contactless)">
+              <Name>Product 1 - adult - Onboard (contactless)</Name>
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_1-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_1-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_1-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_1-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_1-SOP@Online_(smart_card)">
-              <Name>Product 1 - group - Online (smart card)</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_1-SOP@Online_(smart_card)">
+              <Name>Product 1 - adult - Online (smart card)</Name>
               <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_1-SOP@Online_(smart_card)@online" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_1-SOP@Online_(smart_card)@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_1-Online_(smart_card)@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_1-Online_(smart_card)@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_1-SOP@Mobile_App">
-              <Name>Product 1 - group - Mobile App</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_1-SOP@Mobile_App">
+              <Name>Product 1 - adult - Mobile App</Name>
               <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_1-SOP@Mobile_App@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_1-SOP@Mobile_App@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_1-Mobile_App@mobileApp" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_1-Mobile_App@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_2-SOP@Onboard_(cash)">
-              <Name>Product 2 - group - Onboard (cash)</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_2-SOP@Onboard_(cash)">
+              <Name>Product 2 - adult - Onboard (cash)</Name>
               <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_2-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_2-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_2-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_2-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_2-SOP@Onboard_(contactless)">
-              <Name>Product 2 - group - Onboard (contactless)</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_2-SOP@Onboard_(contactless)">
+              <Name>Product 2 - adult - Onboard (contactless)</Name>
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_2-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_2-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_2-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_2-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_2-SOP@Online_(smart_card)">
-              <Name>Product 2 - group - Online (smart card)</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_2-SOP@Online_(smart_card)">
+              <Name>Product 2 - adult - Online (smart card)</Name>
               <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_2-SOP@Online_(smart_card)@online" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_2-SOP@Online_(smart_card)@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_2-Online_(smart_card)@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_2-Online_(smart_card)@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_2-SOP@Mobile_App">
-              <Name>Product 2 - group - Mobile App</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_2-SOP@Mobile_App">
+              <Name>Product 2 - adult - Mobile App</Name>
               <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_2-SOP@Mobile_App@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_2-SOP@Mobile_App@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_2-Mobile_App@mobileApp" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_2-Mobile_App@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_3-SOP@Onboard_(contactless)">
-              <Name>Product 3 - group - Onboard (contactless)</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_3-SOP@Onboard_(contactless)">
+              <Name>Product 3 - adult - Onboard (contactless)</Name>
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_3-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_3-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_3-SOP@Online_(smart_card)">
-              <Name>Product 3 - group - Online (smart card)</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_3-SOP@Online_(smart_card)">
+              <Name>Product 3 - adult - Online (smart card)</Name>
               <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@Online_(smart_card)@online" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_3-SOP@Online_(smart_card)@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-Online_(smart_card)@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_3-Online_(smart_card)@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_3-SOP@Mobile_App">
-              <Name>Product 3 - group - Mobile App</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_3-SOP@Mobile_App">
+              <Name>Product 3 - adult - Mobile App</Name>
               <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@Mobile_App@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_3-SOP@Mobile_App@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-Mobile_App@mobileApp" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_3-Mobile_App@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_3-SOP@All_Encompassing">
-              <Name>Product 3 - group - All Encompassing</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_3-SOP@All_Encompassing">
+              <Name>Product 3 - adult - All Encompassing</Name>
               <Description>All currently available options selected</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@All_Encompassing@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_3-SOP@All_Encompassing@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@All_Encompassing@online" order="2">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_3-SOP@All_Encompassing@online" order="2">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@All_Encompassing@mobileDevice" order="3">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_3-SOP@All_Encompassing@mobileDevice" order="3">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-All_Encompassing@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_3-All_Encompassing@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_adult"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-All_Encompassing@mobileApp" version="1.0" order="2">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_3-All_Encompassing@mobileApp" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_adult"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-All_Encompassing@smartCard" version="1.0" order="3">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_3-All_Encompassing@smartCard" version="1.0" order="3">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_4-SOP@Onboard_(cash)">
-              <Name>Product 4 - group - Onboard (cash)</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_4-SOP@Onboard_(cash)">
+              <Name>Product 4 - adult - Onboard (cash)</Name>
               <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_4-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_4-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_4-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_4-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_4-SOP@Onboard_(contactless)">
-              <Name>Product 4 - group - Onboard (contactless)</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_4-SOP@Onboard_(contactless)">
+              <Name>Product 4 - adult - Onboard (contactless)</Name>
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_4-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_4-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_4-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_4-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_5-SOP@onboard_sales_offer_package">
-              <Name>Product 5 - group - onboard sales offer package</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_5-SOP@onboard_sales_offer_package">
+              <Name>Product 5 - adult - onboard sales offer package</Name>
               <Description>this sales offer package explains how to buy the ticket onboard</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_5-SOP@onboard_sales_offer_package@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_5-SOP@onboard_sales_offer_package@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_5-onboard_sales_offer_package@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_5-onboard_sales_offer_package@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_5-SOP@mobile_app_offer_package">
-              <Name>Product 5 - group - mobile app offer package</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_5-SOP@mobile_app_offer_package">
+              <Name>Product 5 - adult - mobile app offer package</Name>
               <Description>this sales offer package explains how to buy the ticket on a mobile app</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_5-SOP@mobile_app_offer_package@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_5-SOP@mobile_app_offer_package@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_5-mobile_app_offer_package@mobileApp" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_5-mobile_app_offer_package@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_5-SOP@online_offer_package">
-              <Name>Product 5 - group - online offer package</Name>
+            <SalesOfferPackage version="1.0" id="Trip@period_adult-Product_5-SOP@online_offer_package">
+              <Name>Product 5 - adult - online offer package</Name>
               <Description>this sales offer package explains how to buy the ticket on a mobile app</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_5-SOP@online_offer_package@online" order="1">
+                <DistributionAssignment version="any" id="Trip@period_adult-Product_5-SOP@online_offer_package@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_5-online_offer_package@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@period_adult-Product_5-online_offer_package@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
           </salesOfferPackages>
         </FareFrame>
-        <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:BLAC_products@pass:op" responsibilitySetRef="op:tariffs">
-          <Name>BLAC_products Prices</Name>
+        <FareFrame version="1.0" id="epd:UK:IW_Buses-Y:FareFrame_UK_PI_FARE_PRICE:IW_Buses-Y_products@pass:op" responsibilitySetRef="op:tariffs">
+          <Name>IW Buses-Y_products Prices</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP"/>
           <FrameDefaults>
             <DefaultCodespaceRef ref="op_data"/>
             <DefaultResponsibilitySetRef version="1.0" ref="op:tariffs"/>
           </FrameDefaults>
           <prerequisites>
-            <FareFrameRef version="1.0" ref="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:BLAC_products@pass:op"/>
+            <FareFrameRef version="1.0" ref="epd:UK:IW_Buses-Y:FareFrame_UK_PI_FARE_PRODUCT:IW_Buses-Y_products@pass:op"/>
           </prerequisites>
           <fareTables>
             <FareTable version="1.0" id="op:fareTable@Product_1@Onboard_(cash)@zone">
               <Name>Product 1 - Onboard (cash) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@group@product-0@SOP-0@zone">
-                  <Name>Product 1 - Onboard (cash)  - group</Name>
+                <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@adult@product-0@SOP-0@zone">
+                  <Name>Product 1 - Onboard (cash)  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_1-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_1-SOP@Onboard_(cash)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_1@Onboard_(cash)@zone">
                               <Amount>3</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-month"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-day"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1054,28 +1049,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_1@Onboard_(contactless)@zone">
               <Name>Product 1 - Onboard (contactless) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@group@product-0@SOP-1@zone">
-                  <Name>Product 1 - Onboard (contactless)  - group</Name>
+                <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@adult@product-0@SOP-1@zone">
+                  <Name>Product 1 - Onboard (contactless)  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_1-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_1-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_1@Onboard_(contactless)@zone">
                               <Amount>3</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-month"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-day"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1088,28 +1083,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_1@Online_(smart_card)@zone">
               <Name>Product 1 - Online (smart card) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@group@product-0@SOP-2@zone">
-                  <Name>Product 1 - Online (smart card)  - group</Name>
+                <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@adult@product-0@SOP-2@zone">
+                  <Name>Product 1 - Online (smart card)  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_1-SOP@Online_(smart_card)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_1-SOP@Online_(smart_card)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_1@Online_(smart_card)@zone">
                               <Amount>3</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-month"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-day"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1122,28 +1117,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_1@Mobile_App@zone">
               <Name>Product 1 - Mobile App - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_1@Mobile_App@group@product-0@SOP-3@zone">
-                  <Name>Product 1 - Mobile App  - group</Name>
+                <FareTable version="1.0" id="op:Product_1@Mobile_App@adult@product-0@SOP-3@zone">
+                  <Name>Product 1 - Mobile App  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_1@Mobile_App@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_1@Mobile_App@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_1-SOP@Mobile_App"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_1-SOP@Mobile_App"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_1@Mobile_App@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_1@Mobile_App@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_1@Mobile_App@zone">
                               <Amount>3</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-month"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-day"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1156,28 +1151,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_2@Onboard_(cash)@zone">
               <Name>Product 2 - Onboard (cash) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_2@Onboard_(cash)@group@product-1@SOP-0@zone">
-                  <Name>Product 2 - Onboard (cash)  - group</Name>
+                <FareTable version="1.0" id="op:Product_2@Onboard_(cash)@adult@product-1@SOP-0@zone">
+                  <Name>Product 2 - Onboard (cash)  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_2@Onboard_(cash)@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_2@Onboard_(cash)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_2-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_2-SOP@Onboard_(cash)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_2@Onboard_(cash)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_2@Onboard_(cash)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_2@Onboard_(cash)@zone">
                               <Amount>5</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_2@2-years"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_2@2-days"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1190,28 +1185,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_2@Onboard_(contactless)@zone">
               <Name>Product 2 - Onboard (contactless) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_2@Onboard_(contactless)@group@product-1@SOP-1@zone">
-                  <Name>Product 2 - Onboard (contactless)  - group</Name>
+                <FareTable version="1.0" id="op:Product_2@Onboard_(contactless)@adult@product-1@SOP-1@zone">
+                  <Name>Product 2 - Onboard (contactless)  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_2@Onboard_(contactless)@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_2@Onboard_(contactless)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_2-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_2-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_2@Onboard_(contactless)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_2@Onboard_(contactless)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_2@Onboard_(contactless)@zone">
                               <Amount>5</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_2@2-years"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_2@2-days"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1224,28 +1219,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_2@Online_(smart_card)@zone">
               <Name>Product 2 - Online (smart card) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_2@Online_(smart_card)@group@product-1@SOP-2@zone">
-                  <Name>Product 2 - Online (smart card)  - group</Name>
+                <FareTable version="1.0" id="op:Product_2@Online_(smart_card)@adult@product-1@SOP-2@zone">
+                  <Name>Product 2 - Online (smart card)  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_2@Online_(smart_card)@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_2@Online_(smart_card)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_2-SOP@Online_(smart_card)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_2-SOP@Online_(smart_card)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_2@Online_(smart_card)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_2@Online_(smart_card)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_2@Online_(smart_card)@zone">
                               <Amount>5</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_2@2-years"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_2@2-days"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1258,28 +1253,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_2@Mobile_App@zone">
               <Name>Product 2 - Mobile App - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_2@Mobile_App@group@product-1@SOP-3@zone">
-                  <Name>Product 2 - Mobile App  - group</Name>
+                <FareTable version="1.0" id="op:Product_2@Mobile_App@adult@product-1@SOP-3@zone">
+                  <Name>Product 2 - Mobile App  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_2@Mobile_App@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_2@Mobile_App@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_2-SOP@Mobile_App"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_2-SOP@Mobile_App"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_2@Mobile_App@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_2@Mobile_App@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_2@Mobile_App@zone">
                               <Amount>5</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_2@2-years"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_2@2-days"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1292,23 +1287,23 @@
             <FareTable version="1.0" id="op:fareTable@Product_3@Onboard_(contactless)@zone">
               <Name>Product 3 - Onboard (contactless) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_3@Onboard_(contactless)@group@product-2@SOP-0@zone">
-                  <Name>Product 3 - Onboard (contactless)  - group</Name>
+                <FareTable version="1.0" id="op:Product_3@Onboard_(contactless)@adult@product-2@SOP-0@zone">
+                  <Name>Product 3 - Onboard (contactless)  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_3@Onboard_(contactless)@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_3@Onboard_(contactless)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_3-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_3-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_3@Onboard_(contactless)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_3@Onboard_(contactless)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_3@Onboard_(contactless)@zone">
@@ -1326,23 +1321,23 @@
             <FareTable version="1.0" id="op:fareTable@Product_3@Online_(smart_card)@zone">
               <Name>Product 3 - Online (smart card) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_3@Online_(smart_card)@group@product-2@SOP-1@zone">
-                  <Name>Product 3 - Online (smart card)  - group</Name>
+                <FareTable version="1.0" id="op:Product_3@Online_(smart_card)@adult@product-2@SOP-1@zone">
+                  <Name>Product 3 - Online (smart card)  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_3@Online_(smart_card)@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_3@Online_(smart_card)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_3-SOP@Online_(smart_card)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_3-SOP@Online_(smart_card)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_3@Online_(smart_card)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_3@Online_(smart_card)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_3@Online_(smart_card)@zone">
@@ -1360,23 +1355,23 @@
             <FareTable version="1.0" id="op:fareTable@Product_3@Mobile_App@zone">
               <Name>Product 3 - Mobile App - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_3@Mobile_App@group@product-2@SOP-2@zone">
-                  <Name>Product 3 - Mobile App  - group</Name>
+                <FareTable version="1.0" id="op:Product_3@Mobile_App@adult@product-2@SOP-2@zone">
+                  <Name>Product 3 - Mobile App  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_3@Mobile_App@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_3@Mobile_App@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_3-SOP@Mobile_App"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_3-SOP@Mobile_App"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_3@Mobile_App@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_3@Mobile_App@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_3@Mobile_App@zone">
@@ -1394,23 +1389,23 @@
             <FareTable version="1.0" id="op:fareTable@Product_3@All_Encompassing@zone">
               <Name>Product 3 - All Encompassing - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_3@All_Encompassing@group@product-2@SOP-3@zone">
-                  <Name>Product 3 - All Encompassing  - group</Name>
+                <FareTable version="1.0" id="op:Product_3@All_Encompassing@adult@product-2@SOP-3@zone">
+                  <Name>Product 3 - All Encompassing  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_3@All_Encompassing@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_3@All_Encompassing@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_3-SOP@All_Encompassing"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_3-SOP@All_Encompassing"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_3@All_Encompassing@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_3@All_Encompassing@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_3@All_Encompassing@zone">
@@ -1428,28 +1423,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_4@Onboard_(cash)@zone">
               <Name>Product 4 - Onboard (cash) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_4@Onboard_(cash)@group@product-3@SOP-0@zone">
-                  <Name>Product 4 - Onboard (cash)  - group</Name>
+                <FareTable version="1.0" id="op:Product_4@Onboard_(cash)@adult@product-3@SOP-0@zone">
+                  <Name>Product 4 - Onboard (cash)  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_4@Onboard_(cash)@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_4@Onboard_(cash)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_4-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_4-SOP@Onboard_(cash)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_4@Onboard_(cash)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_4@Onboard_(cash)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_4@Onboard_(cash)@zone">
                               <Amount>15</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_4@7-weeks"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_4@7-months"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1462,28 +1457,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_4@Onboard_(contactless)@zone">
               <Name>Product 4 - Onboard (contactless) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_4@Onboard_(contactless)@group@product-3@SOP-1@zone">
-                  <Name>Product 4 - Onboard (contactless)  - group</Name>
+                <FareTable version="1.0" id="op:Product_4@Onboard_(contactless)@adult@product-3@SOP-1@zone">
+                  <Name>Product 4 - Onboard (contactless)  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_4@Onboard_(contactless)@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_4@Onboard_(contactless)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_4-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_4-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_4@Onboard_(contactless)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_4@Onboard_(contactless)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_4@Onboard_(contactless)@zone">
                               <Amount>15</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_4@7-weeks"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_4@7-months"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1496,28 +1491,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_5@onboard_sales_offer_package@zone">
               <Name>Product 5 - onboard sales offer package - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_5@onboard_sales_offer_package@group@product-4@SOP-0@zone">
-                  <Name>Product 5 - onboard sales offer package  - group</Name>
+                <FareTable version="1.0" id="op:Product_5@onboard_sales_offer_package@adult@product-4@SOP-0@zone">
+                  <Name>Product 5 - onboard sales offer package  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_5@onboard_sales_offer_package@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_5@onboard_sales_offer_package@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_5-SOP@onboard_sales_offer_package"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_5-SOP@onboard_sales_offer_package"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_5@onboard_sales_offer_package@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_5@onboard_sales_offer_package@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_5@onboard_sales_offer_package@zone">
                               <Amount>30</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_5@28-days"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_5@28-weeks"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1530,28 +1525,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_5@mobile_app_offer_package@zone">
               <Name>Product 5 - mobile app offer package - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_5@mobile_app_offer_package@group@product-4@SOP-1@zone">
-                  <Name>Product 5 - mobile app offer package  - group</Name>
+                <FareTable version="1.0" id="op:Product_5@mobile_app_offer_package@adult@product-4@SOP-1@zone">
+                  <Name>Product 5 - mobile app offer package  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_5@mobile_app_offer_package@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_5@mobile_app_offer_package@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_5-SOP@mobile_app_offer_package"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_5-SOP@mobile_app_offer_package"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_5@mobile_app_offer_package@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_5@mobile_app_offer_package@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_5@mobile_app_offer_package@zone">
                               <Amount>30</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_5@28-days"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_5@28-weeks"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -1564,28 +1559,28 @@
             <FareTable version="1.0" id="op:fareTable@Product_5@online_offer_package@zone">
               <Name>Product 5 - online offer package - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_5@online_offer_package@group@product-4@SOP-2@zone">
-                  <Name>Product 5 - online offer package  - group</Name>
+                <FareTable version="1.0" id="op:Product_5@online_offer_package@adult@product-4@SOP-2@zone">
+                  <Name>Product 5 - online offer package  - adult</Name>
                   <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                    <TariffZoneRef version="1.0" ref="op:IW_Buses-Y_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_5@online_offer_package@group@zone@nested">
+                    <FareTable version="1.0" id="op:Product_5@online_offer_package@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_5-SOP@online_offer_package"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Product_5-SOP@online_offer_package"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_5@online_offer_package@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:Product_5@online_offer_package@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_5@online_offer_package@zone">
                               <Amount>30</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_5@28-days"/>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_5@28-weeks"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>

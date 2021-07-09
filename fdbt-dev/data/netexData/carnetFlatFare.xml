@@ -1,8 +1,8 @@
 <PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:siri="http://www.siri.org.uk/siri" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex http://netex.uk/netex/schema/1.10/xsd/NeTEx_publication.xsd">
-  <PublicationTimestamp>2021-06-25T10:01:50.297Z</PublicationTimestamp>
+  <PublicationTimestamp>2021-07-08T14:03:29.685Z</PublicationTimestamp>
   <ParticipantRef>SYS001</ParticipantRef>
   <PublicationRequest version="1.0">
-    <RequestTimestamp>2021-06-25T10:01:50.297Z</RequestTimestamp>
+    <RequestTimestamp>2021-07-08T14:03:29.685Z</RequestTimestamp>
     <ParticipantRef>SYS002</ParticipantRef>
     <Description>Request for BLAC bus pass fares</Description>
     <topics>
@@ -404,20 +404,126 @@
             <FareFrameRef version="1.0" ref="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:BLAC_products@pass:op"/>
           </prerequisites>
           <fareTables>
-            <FareTable version="1.0" id="op:Weekly_Rider">
+            <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(cash)">
               <Name>Weekly Rider</Name>
+              <pricesFor>
+                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@Onboard_(cash)"/>
+                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+              </pricesFor>
+              <limitations>
+                <UserProfileRef version="1.0" ref="op:senior"/>
+              </limitations>
               <includes>
-                <FareTable version="1.0" id="op:Weekly_Rider@p-ticket@senior">
-                  <Name>Weekly Rider</Name>
-                  <pricesFor>
-                    <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@Onboard_(cash)"/>
-                    <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
-                  </pricesFor>
-                  <limitations>
-                    <UserProfileRef version="1.0" ref="op:senior"/>
-                  </limitations>
+                <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(cash)@senior">
+                  <Name>Weekly Rider - Onboard (cash) - senior</Name>
                   <prices>
-                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@p-ticket@senior">
+                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Onboard_(cash)@senior">
+                      <Amount>14</Amount>
+                    </DistanceMatrixElementPrice>
+                  </prices>
+                </FareTable>
+              </includes>
+            </FareTable>
+            <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(contactless)">
+              <Name>Weekly Rider</Name>
+              <pricesFor>
+                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@Onboard_(contactless)"/>
+                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+              </pricesFor>
+              <limitations>
+                <UserProfileRef version="1.0" ref="op:senior"/>
+              </limitations>
+              <includes>
+                <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(contactless)@senior">
+                  <Name>Weekly Rider - Onboard (contactless) - senior</Name>
+                  <prices>
+                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Onboard_(contactless)@senior">
+                      <Amount>14</Amount>
+                    </DistanceMatrixElementPrice>
+                  </prices>
+                </FareTable>
+              </includes>
+            </FareTable>
+            <FareTable version="1.0" id="op:Weekly_Rider@Online_(smart_card)">
+              <Name>Weekly Rider</Name>
+              <pricesFor>
+                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@Online_(smart_card)"/>
+                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+              </pricesFor>
+              <limitations>
+                <UserProfileRef version="1.0" ref="op:senior"/>
+              </limitations>
+              <includes>
+                <FareTable version="1.0" id="op:Weekly_Rider@Online_(smart_card)@senior">
+                  <Name>Weekly Rider - Online (smart card) - senior</Name>
+                  <prices>
+                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Online_(smart_card)@senior">
+                      <Amount>14</Amount>
+                    </DistanceMatrixElementPrice>
+                  </prices>
+                </FareTable>
+              </includes>
+            </FareTable>
+            <FareTable version="1.0" id="op:Weekly_Rider@Mobile_App">
+              <Name>Weekly Rider</Name>
+              <pricesFor>
+                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@Mobile_App"/>
+                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+              </pricesFor>
+              <limitations>
+                <UserProfileRef version="1.0" ref="op:senior"/>
+              </limitations>
+              <includes>
+                <FareTable version="1.0" id="op:Weekly_Rider@Mobile_App@senior">
+                  <Name>Weekly Rider - Mobile App - senior</Name>
+                  <prices>
+                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Mobile_App@senior">
+                      <Amount>14</Amount>
+                    </DistanceMatrixElementPrice>
+                  </prices>
+                </FareTable>
+              </includes>
+            </FareTable>
+            <FareTable version="1.0" id="op:Weekly_Rider@All_Encompassing">
+              <Name>Weekly Rider</Name>
+              <pricesFor>
+                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@All_Encompassing"/>
+                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+              </pricesFor>
+              <limitations>
+                <UserProfileRef version="1.0" ref="op:senior"/>
+              </limitations>
+              <includes>
+                <FareTable version="1.0" id="op:Weekly_Rider@All_Encompassing@senior">
+                  <Name>Weekly Rider - All Encompassing - senior</Name>
+                  <prices>
+                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@All_Encompassing@senior">
+                      <Amount>14</Amount>
+                    </DistanceMatrixElementPrice>
+                  </prices>
+                </FareTable>
+              </includes>
+            </FareTable>
+            <FareTable version="1.0" id="op:Weekly_Rider@School_Service_Payment_Methods">
+              <Name>Weekly Rider</Name>
+              <pricesFor>
+                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@School_Service_Payment_Methods"/>
+                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+              </pricesFor>
+              <limitations>
+                <UserProfileRef version="1.0" ref="op:senior"/>
+              </limitations>
+              <includes>
+                <FareTable version="1.0" id="op:Weekly_Rider@School_Service_Payment_Methods@senior">
+                  <Name>Weekly Rider - School Service Payment Methods - senior</Name>
+                  <prices>
+                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@School_Service_Payment_Methods@senior">
                       <Amount>14</Amount>
                     </DistanceMatrixElementPrice>
                   </prices>
@@ -427,7 +533,7 @@
           </fareTables>
         </FareFrame>
         <ServiceFrame version="1.0" id="epd:UK:BLAC:ServiceFrame_UK_PI_NETWORK:BLAC_products:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
-          <Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
+          <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
             <Line version="1.0" id="op:25#NW_07_BLAC_25_1#06/04/2020">
@@ -557,6 +663,27 @@
               <LineType>local</LineType>
             </Line>
           </lines>
+          <groupsOfLines>
+            <GroupOfLines version="1.0" id="BLAC@groupOfLines@1">
+              <Name>A group of available services.</Name>
+              <members>
+                <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_1#06/04/2020"/>
+                <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_2#13/04/2020"/>
+                <LineRef version="1.0" ref="op:4#NW_05_BLAC_4_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:19#NW_05_BLAC_19_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:1#NW_05_BLAC_1_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:2#NW_05_BLAC_2_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:5#NW_05_BLAC_5_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:9#NW_05_BLAC_9_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:14#NW_05_BLAC_14_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:18#NW_05_BLAC_18_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:11#NW_05_BLAC_11_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:3#NW_05_BLAC_3_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:7#NW_05_BLAC_7_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:6#NW_05_BLAC_6_1#05/04/2020"/>
+              </members>
+            </GroupOfLines>
+          </groupsOfLines>
         </ServiceFrame>
       </frames>
     </CompositeFrame>
@@ -586,7 +713,7 @@
       </FrameDefaults>
       <frames>
         <ResourceFrame id="fxc:UK:DFT:ResourceFrame_UK_PI_METADATA_FRAMES:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
-          <Name>UK FXCP  Fare profile Frame types and codepaces</Name>
+          <Name>UK FXCP Fare profile Frame types and codespaces</Name>
           <codespaces>
             <Codespace id="fxc_metadata">
               <Xmlns>fxc</Xmlns>
@@ -596,7 +723,7 @@
             <Codespace id="epd_data">
               <Xmlns>epd</Xmlns>
               <XmlnsUrl>http://fnetex-cen.eu/epd</XmlnsUrl>
-              <Description>European Passenger Information profile data -use for UK frame names</Description>
+              <Description>European Passenger Information profile data - use for UK frame names</Description>
             </Codespace>
           </codespaces>
           <dataSources>
@@ -672,15 +799,15 @@
               <Name>Types of FXC Specific  Frame</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_COMMON:FXCP">
-                  <Name>UK Bus Profile fare common paramaters</Name>
+                  <Name>UK Bus Profile Fare Common Parameters</Name>
                   <FrameClassRef nameOfClass="FareFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP">
-                  <Name>UK Bus Profile fare network</Name>
+                  <Name>UK Bus Profile Fare Network</Name>
                   <FrameClassRef nameOfClass="ServiceFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP">
-                  <Name>UK FXCP Fare Porducts Frame</Name>
+                  <Name>UK FXCP Fare Products Frame</Name>
                   <FrameClassRef nameOfClass="FareFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP">
@@ -707,7 +834,7 @@
               </values>
             </ValueSet>
             <ValueSet version="fxc:v1.0" id="fxc:Types_of_Transaction_Frame" classOfValues="TypeOfFrame">
-              <Name>Types of UK Trasnaction  Frame</Name>
+              <Name>Types of UK Transaction Frame</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_TRANSACTIONS:FXCP">
                   <Name>UK Bus Profile Operator sample transactions</Name>
