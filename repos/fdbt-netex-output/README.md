@@ -41,11 +41,11 @@ sls deploy --stage={STAGE_TO_DEPLOY_TO}
 
 ## Tips
 
-There's a few conecpts it's good to grasp prior to working with the netex repo.
+There's a few concepts it's good to grasp prior to working with the netex repo.
 
 ### JSON -> XML Parsing
 
-We use the xml2json node package to parse JSON into XML. There's some quirks to how it translates JSON to XML, here's a few examples.
+We use the xml2json node package to parse JSON into XML. There's some quirks to how it translates JSON to XML, here's an example to highlight these.
 
 #### Example
 
@@ -74,11 +74,6 @@ becomes:
 
 Here, %t is used to denote the string contents of an XML block.
 
-### Generating NeTEx locally
-
-When we make changes to the way we generate our NeTEx, we often want to validate the output of the netex-convertor against our expectations. The simplest way to do this is to run:
-
-
 ### Validating NeTEx changes
 
 When making changes to the way we generate our NeTEx, it's important that we validate the generated NeTEx. There's two main ways in which we do this.
@@ -88,10 +83,11 @@ When making changes to the way we generate our NeTEx, it's important that we val
 We maintain a set of sample NeTEx files in the `fdbt-dev/data/netexData` folder. In order to check whether a change we've made has affected the NeTEx we generate, run the `generateAll.test.ts` test file:
 
 ```
-npm run ${FDBT_ROOT}/repos/fdbt-netex-output/src/netex-convertor/generateAll.test.ts
+cd ${FDBT_ROOT}/repos/fdbt-netex-output/
+npm run test src/netex-convertor/generateAll.test.ts
 ```
 
-This generates a set of NeTEx files based on the matching json in the `fdbt-dev/data/matchingData` folder, and compares it against the NeTEX files in `fdbt-dev/data/netexData`. You should review any differences that are flagged, and make corrections accordingly. If we want the produced NeTEx to have changes, we need to update the sample NeTEx in `fdbt-dev/data/netexData`.
+This generates a set of NeTEx files based on the matching json in the `fdbt-dev/data/matchingData` folder, outputs the files to `fdbt-dev/data/generatedNetex` and compares it against the NeTEX files in `fdbt-dev/data/netexData`. You should review any differences that are flagged, and make corrections accordingly. If the differences observed are intentional, we need to update the sample NeTEx in `fdbt-dev/data/netexData` to reflect these changes.
 
 #### Running the netex-validator
 

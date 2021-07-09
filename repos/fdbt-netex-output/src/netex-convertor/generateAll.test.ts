@@ -4,7 +4,6 @@ import { buildNocList, xsl } from './handler';
 import netexGenerator from './netexGenerator';
 import libxslt from 'libxslt';
 
-
 describe('generateAll', () => {
     jest.spyOn(global.Date, 'now').mockImplementation(() => 1625753009685);
 
@@ -15,7 +14,7 @@ describe('generateAll', () => {
     const generatedNetexPath = `${dataPath}/generatedNetex/`;
     const matchingDataPath = `${dataPath}/matchingData/`;
 
-    beforeAll(async () => {
+    beforeAll(() => {
         if (!fs.existsSync(generatedNetexPath)) {
             fs.mkdirSync(generatedNetexPath);
         }
@@ -43,9 +42,9 @@ describe('generateAll', () => {
         const parsedXsl = libxslt.parse(xsl);
         const transformedNetex = parsedXsl.apply(generatedNetex);
 
-        const xmlFileName = `${fileName.split('.')[0]}.xml`
+        const xmlFileName = `${fileName.split('.')[0]}.xml`;
         await fs.promises.writeFile(`${generatedNetexPath}${xmlFileName}`, transformedNetex);
-        
+
         const file1 = await fs.promises.readFile(`../../fdbt-dev/data/generatedNetex/${xmlFileName}`, 'utf-8');
         const file2 = await fs.promises.readFile(`../../fdbt-dev/data/netexData/${xmlFileName}`, 'utf-8');
         expect(file1).toEqual(file2);
