@@ -47,11 +47,6 @@ generate-flat-fare:
 
 generate-validate-flat-fare: generate-flat-fare validate-latest-file
 
-generate-flat-fare-with-sop-prices:
-	./scripts/trigger_netex_convertor.sh flatFareWithSopPrices
-
-generate-validate-flat-fare-with-sop-prices: generate-flat-fare-with-sop-prices validate-latest-file
-
 generate-flat-fare-group:
 	./scripts/trigger_netex_convertor.sh flatFareGroup
 

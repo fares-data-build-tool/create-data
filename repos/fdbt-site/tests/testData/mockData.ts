@@ -31,7 +31,7 @@ import {
     SingleTicket,
     Stop,
     UserFareStages,
-} from '../../src/interfaces';
+} from '../../src/interfaces/index';
 import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,

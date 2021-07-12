@@ -166,10 +166,10 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
         </p>
         <a
           className="govuk-link govuk-!-font-size-19"
-          href="/account"
+          href="/globalSettings"
           id="account-link"
         >
-          My account settings
+          Open operator settings
         </a>
       </div>
       <div

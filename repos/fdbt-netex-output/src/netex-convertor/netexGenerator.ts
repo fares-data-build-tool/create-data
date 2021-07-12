@@ -20,7 +20,7 @@ import {
     ProductDetails,
     ScheduledStopPoints,
     Ticket,
-} from '../types';
+} from '../types/index';
 import {
     getPointToPointScheduledStopPointsList,
     getFareZoneList,

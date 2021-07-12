@@ -120,8 +120,6 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             console.info(`NeTEx generation complete for type ${scheme}${carnet}${type}`);
         }
     } catch (error) {
-        console.error(error);
-
         const sns: SNS = new AWS.SNS();
 
         const messageParams = {
@@ -136,9 +134,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             },
         };
 
-        if (process.env.STAGE !== 'dev') {
-            await sns.publish(messageParams).promise();
-        }
+        await sns.publish(messageParams).promise();
 
         throw error;
     }

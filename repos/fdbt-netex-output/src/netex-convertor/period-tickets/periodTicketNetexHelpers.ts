@@ -185,8 +185,8 @@ export const getGeoZoneFareTable = (
     placeHolderGroupOfProductsName: string,
     ticketUserConcat: string,
 ): NetexObject[] => {
-    return userPeriodTicket.products.flatMap((product, indexProduct) => {
-        return product.salesOfferPackages.map((salesOfferPackage, indexSop) => {
+    return userPeriodTicket.products.flatMap((product, indexOne) => {
+        return product.salesOfferPackages.map((salesOfferPackage, indexTwo) => {
             return {
                 version: '1.0',
                 id: `op:fareTable@${product.productName}@${salesOfferPackage.name}@zone`,
@@ -202,7 +202,7 @@ export const getGeoZoneFareTable = (
                 includes: {
                     FareTable: {
                         version: '1.0',
-                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}@product-${indexProduct}@SOP-${indexSop}@zone`,
+                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}@product-${indexOne}@SOP-${indexTwo}@zone`,
                         Name: {
                             $t: `${product.productName} - ${salesOfferPackage.name}  - ${userPeriodTicket.passengerType}`,
                         },
@@ -234,7 +234,7 @@ export const getGeoZoneFareTable = (
                                             TimeIntervalPrice: {
                                                 version: '1.0',
                                                 id: `op:${product.productName}@${salesOfferPackage.name}@zone`,
-                                                Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
+                                                Amount: { $t: `${product.productPrice}` },
                                                 TimeIntervalRef: {
                                                     version: '1.0',
                                                     ref: `op:Tariff@${
@@ -301,7 +301,7 @@ const getMultiServiceList = (
                                             TimeIntervalPrice: {
                                                 version: '1.0',
                                                 id: `op:${product.productName}@${salesOfferPackage.name}@service`,
-                                                Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
+                                                Amount: { $t: `${product.productPrice}` },
                                                 TimeIntervalRef: {
                                                     version: '1.0',
                                                     ref: `op:Tariff@${
@@ -356,7 +356,7 @@ const getFlatFareList = (
                             DistanceMatrixElementPrice: {
                                 version: '1.0',
                                 id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}`,
-                                Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
+                                Amount: { $t: `${product.productPrice}` },
                             },
                         },
                     },

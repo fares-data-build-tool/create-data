@@ -7,6 +7,7 @@ module.exports = {
     extends: [
         'plugin:@typescript-eslint/recommended',
         'prettier/@typescript-eslint',
+        'airbnb-base',
         'plugin:prettier/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'eslint-config-prettier',
@@ -33,6 +34,15 @@ module.exports = {
                 vars: 'all',
                 args: 'after-used',
                 ignoreRestSiblings: false,
+            },
+        ],
+        'no-console': 'warn',
+        'import/extensions': [
+            'error',
+            'ignorePackages',
+            {
+                js: 'never',
+                ts: 'never',
             },
         ],
         'no-console': 0,
