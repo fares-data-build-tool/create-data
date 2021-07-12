@@ -9,7 +9,7 @@ describe('pages', () => {
             expect(tree).toMatchSnapshot();
         });
         it('should render correctly with no multiple operators', () => {
-            const tree = shallow(<Home multipleOperators={false} />);
+            const tree = shallow(<Home multipleOperators={false} isOnTestEnvironment={true} />);
             expect(tree).toMatchSnapshot();
         });
     });
