@@ -1,10 +1,10 @@
 <PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:siri="http://www.siri.org.uk/siri" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex http://netex.uk/netex/schema/1.10/xsd/NeTEx_publication.xsd">
-  <PublicationTimestamp>2021-07-08T14:03:29.685Z</PublicationTimestamp>
+  <PublicationTimestamp>2020-09-03T09:28:55.391Z</PublicationTimestamp>
   <ParticipantRef>SYS001</ParticipantRef>
   <PublicationRequest version="1.0">
-    <RequestTimestamp>2021-07-08T14:03:29.685Z</RequestTimestamp>
+    <RequestTimestamp>2020-09-03T09:28:55.391Z</RequestTimestamp>
     <ParticipantRef>SYS002</ParticipantRef>
-    <Description>Request for BLAC Line_19 bus pass fares</Description>
+    <Description>Request for BLAC Line_19.</Description>
     <topics>
       <NetworkFrameTopic>
         <selectionValidityConditions>
@@ -15,7 +15,7 @@
         <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <OperatorRef version="1.0" ref="noc:BLAC"/>
+            <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
             <LineRef version="1.0" ref="19"/>
             <BrandingRef version="1.0" ref="op:BLAC@brand"/>
           </objectReferences>
@@ -30,7 +30,7 @@
   <dataObjects>
     <CompositeFrame version="1.0" id="epd:UK:BLAC:CompositeFrame_UK_PI_LINE_FARE_OFFER:Trip@Line_19:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
       <Name>Fares for Line_19</Name>
-      <Description>BLAC Line_19 is accessible as a return trip fare. Prices are given zone to zone, where each zone is a linear group of stops, i.e. fare stage.</Description>
+      <Description>BLAC Line_19 is accessible as a return trip fare.  Prices are given zone to zone, where each zone is a linear group of stops, i.e. fare stage.</Description>
       <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP" version="fxc:v1.0"/>
       <codespaces>
         <CodespaceRef ref="epd_data"/>
@@ -97,10 +97,9 @@
               <PublicCode>BLAC</PublicCode>
               <Name>Blackpool Transport</Name>
               <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <TradingName>Blackpool Transport</TradingName>
               <ContactDetails>
                 <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
               </ContactDetails>
               <OrganisationType>operator</OrganisationType>
               <Address>
@@ -121,7 +120,7 @@
               <Name>Blackpool Transport 19</Name>
               <Description>STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)</Description>
               <PublicCode>19</PublicCode>
-              <PrivateCode type="txc:Line@id">Line_19</PrivateCode>
+              <PrivateCode type="noc">BLAC_19</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineType>local</LineType>
             </Line>
@@ -308,17 +307,16 @@
             </FareZone>
           </fareZones>
         </FareFrame>
-        <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:Line_19@pass:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
+        <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:Line_19:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP" versionRef="fxc:v1.0"/>
           <tariffs>
             <Tariff version="1.0" id="Tariff@return@Line_19">
               <validityConditions>
                 <ValidBetween>
-                  <FromDate>2010-12-17T09:30:46.0Z</FromDate>
-                  <ToDate>2028-12-17T09:30:46.0Z</ToDate>
+                  <FromDate>2020-09-03T09:28:55.391Z</FromDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Blackpool Transport - Line_19 - Fares for Return ticket</Name>
+              <Name>Blackpool Transport 19 - return fares</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="19"/>
               <TariffBasis>zoneToZone</TariffBasis>
@@ -328,65 +326,12 @@
                     <AvailabilityCondition id="op@Tariff@Condition" version="1.0">
                       <IsAvailable>true</IsAvailable>
                       <dayTypes>
-                        <FareDayType id="op@Tariff@DayType@monday" version="1.0">
-                          <EarliestTime>13:50:00</EarliestTime>
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Monday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                          <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_monday@timeband_1">
-                              <StartTime>13:50:00</StartTime>
-                              <EndTime>20:00:00</EndTime>
-                            </Timeband>
-                          </timebands>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@tuesday" version="1.0">
-                          <EarliestTime>09:00:00</EarliestTime>
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Tuesday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                          <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_tuesday@timeband_1">
-                              <StartTime>09:00:00</StartTime>
-                              <EndTime>17:00:00</EndTime>
-                            </Timeband>
-                            <Timeband version="1.0" id="op:timeband_for_tuesday@timeband_2">
-                              <StartTime>13:50:00</StartTime>
-                              <EndTime>22:00:00</EndTime>
-                            </Timeband>
-                          </timebands>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@wednesday" version="1.0">
-                          <EarliestTime>13:50:00</EarliestTime>
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Wednesday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                          <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_wednesday@timeband_1">
-                              <StartTime>13:50:00</StartTime>
-                              <EndTime>19:50:00</EndTime>
-                            </Timeband>
-                          </timebands>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@thursday" version="1.0">
-                          <EarliestTime>00:00:00</EarliestTime>
+                        <FareDayType id="op@Tariff@DayType" version="1.0">
                           <properties>
                             <PropertyOfDay>
                               <DaysOfWeek>Thursday</DaysOfWeek>
                             </PropertyOfDay>
                           </properties>
-                          <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_thursday@timeband_1">
-                              <StartTime>00:00:00</StartTime>
-                              <EndTime>23:59:00</EndTime>
-                            </Timeband>
-                          </timebands>
                         </FareDayType>
                       </dayTypes>
                     </AvailabilityCondition>
@@ -602,9 +547,9 @@
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="Tariff@return@eligibility">
+                <FareStructureElement id="Tariff@return@eligibility" version="1.0">
                   <Name>eligible user types</Name>
-                  <GenericParameterAssignment version="1.0" order="1" id="Tariff@return@eligibility">
+                  <GenericParameterAssignment order="1" id="Tariff@return@eligibility" version="1.0">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
@@ -616,14 +561,15 @@
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="Tariff@return@conditions_of_travel">
-                  <Name>Conditions of travel</Name>
+                <FareStructureElement id="Tariff@return@conditions_of_travel" version="1.0">
+                  <Name>eligible user types</Name>
                   <GenericParameterAssignment version="1.0" order="1" id="Tariff@return@conditions_of_travel">
+                    <Name>Conditions of travel</Name>
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
                     <limitations>
                       <RoundTrip version="1.0" id="Tariff@return@condition@direction">
-                        <Name>Return Trip</Name>
+                        <Name>return Trip</Name>
                         <TripType>return</TripType>
                       </RoundTrip>
                       <FrequencyOfUse version="1.0" id="Tariff@return@oneTrip">
@@ -631,12 +577,9 @@
                         <FrequencyOfUseType>none</FrequencyOfUseType>
                         <MaximalFrequency>1</MaximalFrequency>
                       </FrequencyOfUse>
-                      <UsageValidityPeriod version="1.0" id="op:Trip@back@frequency">
-                        <UsageTrigger>startOutboundRide</UsageTrigger>
-                        <UsageEnd>standardDuration</UsageEnd>
-                        <StandardDuration>P0Y0M21D</StandardDuration>
-                        <ActivationMeans>noneRequired</ActivationMeans>
-                      </UsageValidityPeriod>
+                      <Interchanging version="1.0" id="Tariff@return@NoTransfers">
+                        <MaximumNumberOfInterchanges>0</MaximumNumberOfInterchanges>
+                      </Interchanging>
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -677,7 +620,7 @@
               <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
               <distributionAssignments>
                 <DistributionAssignment version="any" id="Trip@return_child-SOP@Onboard_(cash)@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
+                  <DistributionChannelRef ref="fxc:onBoard" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
@@ -694,7 +637,7 @@
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
                 <DistributionAssignment version="any" id="Trip@return_child-SOP@Onboard_(contactless)@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
+                  <DistributionChannelRef ref="fxc:onBoard" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
@@ -728,7 +671,7 @@
               <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
               <distributionAssignments>
                 <DistributionAssignment version="any" id="Trip@return_child-SOP@Mobile_App@mobileDevice" order="1">
-                  <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
+                  <DistributionChannelRef ref="fxc:mobileDevice" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
                 </DistributionAssignment>
@@ -745,7 +688,7 @@
               <Description>All currently available options selected</Description>
               <distributionAssignments>
                 <DistributionAssignment version="any" id="Trip@return_child-SOP@All_Encompassing@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
+                  <DistributionChannelRef ref="fxc:onBoard" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
@@ -755,7 +698,7 @@
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
                 <DistributionAssignment version="any" id="Trip@return_child-SOP@All_Encompassing@mobileDevice" order="3">
-                  <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
+                  <DistributionChannelRef ref="fxc:mobileDevice" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
@@ -777,15 +720,11 @@
             </SalesOfferPackage>
           </salesOfferPackages>
         </FareFrame>
-        <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:Line_19@pass:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
-          <Name>Line_19 Prices</Name>
+        <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:Line_19:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" version="fxc:v1.0"/>
           <FrameDefaults>
             <DefaultCurrency>GBP</DefaultCurrency>
           </FrameDefaults>
-          <prerequisites>
-            <FareFrameRef version="1.0" ref="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:Line_19@pass:op"/>
-          </prerequisites>
           <priceGroups>
             <PriceGroup version="1.0" id="price_band_1.10">
               <members>
@@ -3563,10 +3502,12 @@
             <priceUnits>
               <PriceUnit id="fxc:GBP" version="fxc:v1.0">
                 <Name>Pound Sterling</Name>
+                <PrivateCode>£</PrivateCode>
                 <Precision>2</Precision>
               </PriceUnit>
               <PriceUnit id="fxc:EUR" version="fxc:v1.0">
                 <Name>Euro</Name>
+                <PrivateCode>¬</PrivateCode>
                 <Precision>2</Precision>
               </PriceUnit>
             </priceUnits>
@@ -3658,17 +3599,7 @@
               <DistributionChannelType>online</DistributionChannelType>
               <IsObligatory>false</IsObligatory>
             </DistributionChannel>
-            <DistributionChannel id="fxc:postal" version="fxc:v1.0">
-              <ShortName>Ticket or card received by post</ShortName>
-              <DistributionChannelType>postal</DistributionChannelType>
-              <IsObligatory>false</IsObligatory>
-            </DistributionChannel>
-            <DistributionChannel id="fxc:agency" version="fxc:v1.0">
-              <ShortName>e.g. Travel shop</ShortName>
-              <DistributionChannelType>agency</DistributionChannelType>
-              <IsObligatory>false</IsObligatory>
-            </DistributionChannel>
-            <DistributionChannel id="fxc:at_stop" version="fxc:v1.0">
+            <DistributionChannel id="fxc:atStop" version="fxc:v1.0">
               <ShortName>In station sale by machine, counter or payg</ShortName>
               <DistributionChannelType>atStop</DistributionChannelType>
               <IsObligatory>false</IsObligatory>
@@ -3694,12 +3625,12 @@
               <DistributionChannelType>atStop</DistributionChannelType>
               <IsObligatory>false</IsObligatory>
             </DistributionChannel>
-            <DistributionChannel id="fxc:on_board" version="fxc:v1.0">
+            <DistributionChannel id="fxc:onBoard" version="fxc:v1.0">
               <ShortName>on_board</ShortName>
               <DistributionChannelType>onBoard</DistributionChannelType>
               <IsObligatory>false</IsObligatory>
             </DistributionChannel>
-            <DistributionChannel id="fxc:mobile_device" version="fxc:v1.0">
+            <DistributionChannel id="fxc:mobileDevice" version="fxc:v1.0">
               <ShortName>Mobile Device</ShortName>
               <DistributionChannelType>mobileDevice</DistributionChannelType>
               <IsObligatory>false</IsObligatory>

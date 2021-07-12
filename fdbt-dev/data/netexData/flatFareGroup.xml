@@ -1,8 +1,8 @@
 <PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:siri="http://www.siri.org.uk/siri" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex http://netex.uk/netex/schema/1.10/xsd/NeTEx_publication.xsd">
-  <PublicationTimestamp>2021-07-08T14:03:29.685Z</PublicationTimestamp>
+  <PublicationTimestamp>2020-09-03T09:26:30.732Z</PublicationTimestamp>
   <ParticipantRef>SYS001</ParticipantRef>
   <PublicationRequest version="1.0">
-    <RequestTimestamp>2021-07-08T14:03:29.685Z</RequestTimestamp>
+    <RequestTimestamp>2020-09-03T09:26:30.732Z</RequestTimestamp>
     <ParticipantRef>SYS002</ParticipantRef>
     <Description>Request for BLAC bus pass fares</Description>
     <topics>
@@ -16,7 +16,7 @@
         <NetworkFilterByValue>
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
+            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
             <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
             <BrandingRef version="1.0" ref="op:BLAC@brand"/>
           </objectReferences>
@@ -32,7 +32,7 @@
   <dataObjects>
     <CompositeFrame version="1.0" id="epd:UK:BLAC:CompositeFrame_UK_PI_LINE_FARE_OFFER:Pass@BLAC_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
       <Name>Fares for Blackpool Transport</Name>
-      <Description>Flat fare ticket for Blackpool Transport</Description>
+      <Description>Period ticket for Blackpool Transport</Description>
       <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
       <codespaces>
         <CodespaceRef ref="epd_data"/>
@@ -136,9 +136,6 @@
                 <Street>Rigby Road, Blackpool FY1 5DD</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
-              <CustomerServiceContactDetails>
-                <Email>enquiries@blackpooltransport.com</Email>
-              </CustomerServiceContactDetails>
             </Operator>
           </organisations>
         </ResourceFrame>
@@ -153,78 +150,34 @@
             <Tariff version="1.0" id="op:Tariff@BLAC_products">
               <validityConditions>
                 <ValidBetween>
-                  <FromDate>2010-12-17T09:30:46.0Z</FromDate>
-                  <ToDate>2028-12-17T09:30:46.0Z</ToDate>
+                  <FromDate>2020-09-03T09:26:30.732Z</FromDate>
                 </ValidBetween>
-                <ValidityCondition id="op:termtime" version="1.0">
-                  <Name>Term Time Usage Only</Name>
-                </ValidityCondition>
               </validityConditions>
-              <Name>Blackpool Transport - BLAC_products - Fares for Flat Fare ticket</Name>
+              <Name>BLAC_products - Tariff</Name>
+              <Description>BLAC_products single zone tariff</Description>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
+              <geographicalIntervals>
+                <GeographicalInterval version="1.0" id="">
+                  <Name>Travel in one zone</Name>
+                  <NumberOfUnits>1</NumberOfUnits>
+                  <IntervalType>tariffZone</IntervalType>
+                </GeographicalInterval>
+              </geographicalIntervals>
               <qualityStructureFactors>
                 <FareDemandFactor id="op@Tariff@Demand" version="1.0">
                   <validityConditions>
                     <AvailabilityCondition id="op@Tariff@Condition" version="1.0">
                       <IsAvailable>true</IsAvailable>
                       <dayTypes>
-                        <FareDayType id="op@Tariff@DayType@bankHoliday" version="1.0">
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Everyday</DaysOfWeek>
-                              <HolidayTypes>NationalHoliday</HolidayTypes>
-                            </PropertyOfDay>
-                          </properties>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@tuesday" version="1.0">
-                          <EarliestTime>09:00:00</EarliestTime>
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Tuesday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                          <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_tuesday@timeband_1">
-                              <StartTime>09:00:00</StartTime>
-                              <EndTime>17:00:00</EndTime>
-                            </Timeband>
-                            <Timeband version="1.0" id="op:timeband_for_tuesday@timeband_2">
-                              <StartTime>18:00:00</StartTime>
-                              <EndTime>22:00:00</EndTime>
-                            </Timeband>
-                          </timebands>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@wednesday" version="1.0">
-                          <EarliestTime>13:50:00</EarliestTime>
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Wednesday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                          <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_wednesday@timeband_1">
-                              <StartTime>13:50:00</StartTime>
-                              <EndTime>19:50:00</EndTime>
-                            </Timeband>
-                            <Timeband version="1.0" id="op:timeband_for_wednesday@timeband_2">
-                              <StartTime>23:50:00</StartTime>
-                            </Timeband>
-                          </timebands>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@thursday" version="1.0">
+                        <FareDayType id="op@Tariff@DayType" version="1.0">
                           <EarliestTime>00:00:00</EarliestTime>
+                          <DayLength>PT12H</DayLength>
                           <properties>
                             <PropertyOfDay>
-                              <DaysOfWeek>Thursday</DaysOfWeek>
+                              <DaysOfWeek>Monday</DaysOfWeek>
                             </PropertyOfDay>
                           </properties>
-                          <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_thursday@timeband_1">
-                              <StartTime>00:00:00</StartTime>
-                              <EndTime>23:59:00</EndTime>
-                            </Timeband>
-                          </timebands>
                         </FareDayType>
                       </dayTypes>
                     </AvailabilityCondition>
@@ -232,33 +185,9 @@
                 </FareDemandFactor>
               </qualityStructureFactors>
               <fareStructureElements>
-                <FareStructureElement version="1.0" id="op:Tariff@group">
-                  <Name>Eligible groups</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:groups"/>
-                  <GenericParameterAssignment id="op:Tariff@group" version="1.0" order="0">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
-                    <LimitationGroupingType>OR</LimitationGroupingType>
-                    <limitations>
-                      <GroupTicket id="op:group" version="1.0">
-                        <MaximumNumberOfPersons>5</MaximumNumberOfPersons>
-                        <companionProfiles>
-                          <CompanionProfile version="1.0" id="op:companion@adult">
-                            <UserProfileRef version="1.0" ref="op:adult"/>
-                            <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-                            <MaximumNumberOfPersons>2</MaximumNumberOfPersons>
-                          </CompanionProfile>
-                          <CompanionProfile version="1.0" id="op:companion@child">
-                            <UserProfileRef version="1.0" ref="op:child"/>
-                            <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-                            <MaximumNumberOfPersons>3</MaximumNumberOfPersons>
-                          </CompanionProfile>
-                        </companionProfiles>
-                      </GroupTicket>
-                    </limitations>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
                 <FareStructureElement version="1.0" id="op:Tariff@Weekly_Rider@access_lines">
-                  <Name>Available lines and/or zones</Name>
+                  <Name>Available zones</Name>
+                  <Description>single zone.</Description>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
                   <qualityStructureFactors>
                     <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
@@ -267,16 +196,16 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_1#06/04/2020"/>
-                      <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_2#13/04/2020"/>
+                      <LineRef version="1.0" ref="op:2C#NW_05_BLAC_2C_1#05/04/2020"/>
+                      <LineRef version="1.0" ref="op:17#NW_05_BLAC_17_1#05/04/2020"/>
                       <LineRef version="1.0" ref="op:4#NW_05_BLAC_4_1#05/04/2020"/>
                       <LineRef version="1.0" ref="op:19#NW_05_BLAC_19_1#05/04/2020"/>
                       <LineRef version="1.0" ref="op:1#NW_05_BLAC_1_1#05/04/2020"/>
                       <LineRef version="1.0" ref="op:2#NW_05_BLAC_2_1#05/04/2020"/>
                       <LineRef version="1.0" ref="op:5#NW_05_BLAC_5_1#05/04/2020"/>
                       <LineRef version="1.0" ref="op:9#NW_05_BLAC_9_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:14#NW_05_BLAC_14_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:18#NW_05_BLAC_18_1#05/04/2020"/>
+                      <LineRef version="1.0" ref="op:14#NW_07_BLAC_14_1#06/04/2020"/>
+                      <LineRef version="1.0" ref="op:14#NW_07_BLAC_14_2#13/04/2020"/>
                       <LineRef version="1.0" ref="op:11#NW_05_BLAC_11_1#05/04/2020"/>
                       <LineRef version="1.0" ref="op:3#NW_05_BLAC_3_1#05/04/2020"/>
                       <LineRef version="1.0" ref="op:7#NW_05_BLAC_7_1#05/04/2020"/>
@@ -290,9 +219,16 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
                     <limitations>
+                      <Transferability version="1.0" id="op:Pass@Weekly_Rider@transferability">
+                        <Name>Ticket is not transferable</Name>
+                        <CanTransfer>false</CanTransfer>
+                      </Transferability>
                       <FrequencyOfUse version="1.0" id="op:Pass@Weekly_Rider@frequency">
-                        <FrequencyOfUseType>single</FrequencyOfUseType>
+                        <FrequencyOfUseType>unlimited</FrequencyOfUseType>
                       </FrequencyOfUse>
+                      <Interchanging version="1.0" id="op:Pass@Weekly_Rider@interchanging">
+                        <CanInterchange>true</CanInterchange>
+                      </Interchanging>
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -329,6 +265,31 @@
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
+                <FareStructureElement version="1.0" id="op:Tariff@group">
+                  <Name>Eligible groups</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:groups"/>
+                  <GenericParameterAssignment id="op:Tariff@group" version="1.0" order="0">
+                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
+                    <LimitationGroupingType>OR</LimitationGroupingType>
+                    <limitations>
+                      <GroupTicket id="op:group" version="1.0">
+                        <MaximumNumberOfPersons>5</MaximumNumberOfPersons>
+                        <companionProfiles>
+                          <CompanionProfile version="1.0" id="op:companion@adult">
+                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
+                            <MaximumNumberOfPersons>2</MaximumNumberOfPersons>
+                          </CompanionProfile>
+                          <CompanionProfile version="1.0" id="op:companion@child">
+                            <UserProfileRef version="1.0" ref="op:child"/>
+                            <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
+                            <MaximumNumberOfPersons>3</MaximumNumberOfPersons>
+                          </CompanionProfile>
+                        </companionProfiles>
+                      </GroupTicket>
+                    </limitations>
+                  </GenericParameterAssignment>
+                </FareStructureElement>
               </fareStructureElements>
             </Tariff>
           </tariffs>
@@ -337,12 +298,12 @@
               <Name>Weekly Rider Pass - group</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <typesOfFareProduct>
-                <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
+                <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               </typesOfFareProduct>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@Weekly_Rider_group@travel">
-                  <Name>Rides available for specified durations</Name>
+                  <Name>Unlimited rides available for specified durations</Name>
                   <fareStructureElements>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Weekly_Rider@access_lines"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Weekly_Rider@conditions_of_travel"/>
@@ -355,7 +316,7 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@Weekly_Rider_group@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>singleTrip</ProductType>
+              <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
@@ -364,7 +325,7 @@
               <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
               <distributionAssignments>
                 <DistributionAssignment version="any" id="Trip@flatFare_group-Weekly_Rider-SOP@Onboard_(cash)@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
+                  <DistributionChannelRef ref="fxc:onBoard" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
@@ -381,7 +342,7 @@
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
                 <DistributionAssignment version="any" id="Trip@flatFare_group-Weekly_Rider-SOP@Onboard_(contactless)@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
+                  <DistributionChannelRef ref="fxc:onBoard" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
@@ -415,7 +376,7 @@
               <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
               <distributionAssignments>
                 <DistributionAssignment version="any" id="Trip@flatFare_group-Weekly_Rider-SOP@Mobile_App@mobileDevice" order="1">
-                  <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
+                  <DistributionChannelRef ref="fxc:mobileDevice" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
                 </DistributionAssignment>
@@ -432,7 +393,7 @@
               <Description>All currently available options selected</Description>
               <distributionAssignments>
                 <DistributionAssignment version="any" id="Trip@flatFare_group-Weekly_Rider-SOP@All_Encompassing@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
+                  <DistributionChannelRef ref="fxc:onBoard" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
@@ -442,7 +403,7 @@
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
                 <DistributionAssignment version="any" id="Trip@flatFare_group-Weekly_Rider-SOP@All_Encompassing@mobileDevice" order="3">
-                  <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
+                  <DistributionChannelRef ref="fxc:mobileDevice" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
@@ -475,100 +436,19 @@
             <FareFrameRef version="1.0" ref="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:BLAC_products@pass:op"/>
           </prerequisites>
           <fareTables>
-            <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(cash)">
+            <FareTable version="1.0" id="op:Weekly_Rider">
               <Name>Weekly Rider</Name>
-              <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_group-Weekly_Rider-SOP@Onboard_(cash)"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-              </pricesFor>
-              <limitations>
-                <GroupTicketRef version="1.0" ref="op:group"/>
-              </limitations>
               <includes>
-                <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(cash)@group">
-                  <Name>Weekly Rider - Onboard (cash) - group</Name>
+                <FareTable version="1.0" id="op:Weekly_Rider@p-ticket@group">
+                  <Name>Weekly Rider</Name>
+                  <pricesFor>
+                    <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_group-Weekly_Rider-SOP@Onboard_(cash)"/>
+                  </pricesFor>
+                  <limitations>
+                    <GroupTicketRef version="1.0" ref="op:group"/>
+                  </limitations>
                   <prices>
-                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Onboard_(cash)@group">
-                      <Amount>14</Amount>
-                    </DistanceMatrixElementPrice>
-                  </prices>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(contactless)">
-              <Name>Weekly Rider</Name>
-              <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_group-Weekly_Rider-SOP@Onboard_(contactless)"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-              </pricesFor>
-              <limitations>
-                <GroupTicketRef version="1.0" ref="op:group"/>
-              </limitations>
-              <includes>
-                <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(contactless)@group">
-                  <Name>Weekly Rider - Onboard (contactless) - group</Name>
-                  <prices>
-                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Onboard_(contactless)@group">
-                      <Amount>14</Amount>
-                    </DistanceMatrixElementPrice>
-                  </prices>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:Weekly_Rider@Online_(smart_card)">
-              <Name>Weekly Rider</Name>
-              <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_group-Weekly_Rider-SOP@Online_(smart_card)"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-              </pricesFor>
-              <limitations>
-                <GroupTicketRef version="1.0" ref="op:group"/>
-              </limitations>
-              <includes>
-                <FareTable version="1.0" id="op:Weekly_Rider@Online_(smart_card)@group">
-                  <Name>Weekly Rider - Online (smart card) - group</Name>
-                  <prices>
-                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Online_(smart_card)@group">
-                      <Amount>14</Amount>
-                    </DistanceMatrixElementPrice>
-                  </prices>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:Weekly_Rider@Mobile_App">
-              <Name>Weekly Rider</Name>
-              <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_group-Weekly_Rider-SOP@Mobile_App"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-              </pricesFor>
-              <limitations>
-                <GroupTicketRef version="1.0" ref="op:group"/>
-              </limitations>
-              <includes>
-                <FareTable version="1.0" id="op:Weekly_Rider@Mobile_App@group">
-                  <Name>Weekly Rider - Mobile App - group</Name>
-                  <prices>
-                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Mobile_App@group">
-                      <Amount>14</Amount>
-                    </DistanceMatrixElementPrice>
-                  </prices>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:Weekly_Rider@All_Encompassing">
-              <Name>Weekly Rider</Name>
-              <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_group-Weekly_Rider-SOP@All_Encompassing"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-              </pricesFor>
-              <limitations>
-                <GroupTicketRef version="1.0" ref="op:group"/>
-              </limitations>
-              <includes>
-                <FareTable version="1.0" id="op:Weekly_Rider@All_Encompassing@group">
-                  <Name>Weekly Rider - All Encompassing - group</Name>
-                  <prices>
-                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@All_Encompassing@group">
+                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@p-ticket@group">
                       <Amount>14</Amount>
                     </DistanceMatrixElementPrice>
                   </prices>
@@ -578,24 +458,24 @@
           </fareTables>
         </FareFrame>
         <ServiceFrame version="1.0" id="epd:UK:BLAC:ServiceFrame_UK_PI_NETWORK:BLAC_products:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
-          <Description>This frame contains the stop and line definitions for the service.</Description>
+          <Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:25#NW_07_BLAC_25_1#06/04/2020">
-              <Name>Line 25</Name>
+            <Line version="1.0" id="op:2C#NW_05_BLAC_2C_1#05/04/2020">
+              <Name>Line 2C</Name>
               <Description>KNOTT END - POULTON - BLACKPOOL</Description>
               <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>25</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ1_Outbound</PrivateCode>
+              <PublicCode>2C</PublicCode>
+              <PrivateCode type="noc">BLAC_2C</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:25#NW_07_BLAC_25_2#13/04/2020">
-              <Name>Line 25</Name>
+            <Line version="1.0" id="op:17#NW_05_BLAC_17_1#05/04/2020">
+              <Name>Line 17</Name>
               <Description>BLACKPOOL - ST ANNES - LYTHAM</Description>
               <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>25</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ2_Outbound</PrivateCode>
+              <PublicCode>17</PublicCode>
+              <PrivateCode type="noc">BLAC_17</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
@@ -604,7 +484,7 @@
               <Description>CLEVELEYS - MERESIDE via Blackpool</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>4</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ4_Outbound</PrivateCode>
+              <PrivateCode type="noc">BLAC_4</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
@@ -613,7 +493,7 @@
               <Description>STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>19</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ19_Outbound</PrivateCode>
+              <PrivateCode type="noc">BLAC_19</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
@@ -622,7 +502,7 @@
               <Description>FLEETWOOD - BLACKPOOL via Promenade</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>1</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ01_Outbound</PrivateCode>
+              <PrivateCode type="noc">BLAC_1</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
@@ -631,7 +511,7 @@
               <Description>POULTON - BLACKPOOL via Victoria Hospital Outpatients</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>2</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ02_Outbound</PrivateCode>
+              <PrivateCode type="noc">BLAC_2</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
@@ -640,7 +520,7 @@
               <Description>VICTORIA HOSPITAL - BLACKPOOL TOWN CENTRE - HALFWAY HOUSE</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>5</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ05_Outbound</PrivateCode>
+              <PrivateCode type="noc">BLAC_5</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
@@ -649,25 +529,25 @@
               <Description>CLEVELEYS - BLACKPOOL via Bispham</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>9</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ9_Outbound</PrivateCode>
+              <PrivateCode type="noc">BLAC_9</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:14#NW_05_BLAC_14_1#05/04/2020">
+            <Line version="1.0" id="op:14#NW_07_BLAC_14_1#06/04/2020">
               <Name>Line 14</Name>
               <Description>FLEETWOOD - BLACKPOOL via Layton</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>14</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ014_Outbound</PrivateCode>
+              <PrivateCode type="noc">BLAC_14</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:18#NW_05_BLAC_18_1#05/04/2020">
-              <Name>Line 18</Name>
+            <Line version="1.0" id="op:14#NW_07_BLAC_14_2#13/04/2020">
+              <Name>Line 14</Name>
               <Description>BLACKPOOL - MERESIDE via South Shore</Description>
               <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>18</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ018_Outbound</PrivateCode>
+              <PublicCode>14</PublicCode>
+              <PrivateCode type="noc">BLAC_14</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
@@ -676,7 +556,7 @@
               <Description>LYTHAM - BLACKPOOL via St Annes</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>11</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ011_Outbound</PrivateCode>
+              <PrivateCode type="noc">BLAC_11</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
@@ -685,7 +565,7 @@
               <Description>MERESIDE - BLACKPOOL - CLEVELEYS - CLEVELEYS PARK</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>3</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ003_Outbound</PrivateCode>
+              <PrivateCode type="noc">BLAC_3</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
@@ -694,7 +574,7 @@
               <Description>CLEVELEYS - BLACKPOOL - ST ANNES CLIFTON HOSPITAL</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>7</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ007_Outbound</PrivateCode>
+              <PrivateCode type="noc">BLAC_7</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
@@ -703,32 +583,11 @@
               <Description>MERESIDE - BLACKPOOL - GRANGE PARK</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>6</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ006_Outbound</PrivateCode>
+              <PrivateCode type="noc">BLAC_6</PrivateCode>
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
           </lines>
-          <groupsOfLines>
-            <GroupOfLines version="1.0" id="BLAC@groupOfLines@1">
-              <Name>A group of available services.</Name>
-              <members>
-                <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_1#06/04/2020"/>
-                <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_2#13/04/2020"/>
-                <LineRef version="1.0" ref="op:4#NW_05_BLAC_4_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:19#NW_05_BLAC_19_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:1#NW_05_BLAC_1_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:2#NW_05_BLAC_2_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:5#NW_05_BLAC_5_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:9#NW_05_BLAC_9_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:14#NW_05_BLAC_14_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:18#NW_05_BLAC_18_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:11#NW_05_BLAC_11_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:3#NW_05_BLAC_3_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:7#NW_05_BLAC_7_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:6#NW_05_BLAC_6_1#05/04/2020"/>
-              </members>
-            </GroupOfLines>
-          </groupsOfLines>
         </ServiceFrame>
       </frames>
     </CompositeFrame>
@@ -758,7 +617,7 @@
       </FrameDefaults>
       <frames>
         <ResourceFrame id="fxc:UK:DFT:ResourceFrame_UK_PI_METADATA_FRAMES:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
-          <Name>UK FXCP Fare profile Frame types and codespaces</Name>
+          <Name>UK FXCP  Fare profile Frame types and codepaces</Name>
           <codespaces>
             <Codespace id="fxc_metadata">
               <Xmlns>fxc</Xmlns>
@@ -768,7 +627,7 @@
             <Codespace id="epd_data">
               <Xmlns>epd</Xmlns>
               <XmlnsUrl>http://fnetex-cen.eu/epd</XmlnsUrl>
-              <Description>European Passenger Information profile data - use for UK frame names</Description>
+              <Description>European Passenger Information profile data -use for UK frame names</Description>
             </Codespace>
           </codespaces>
           <dataSources>
@@ -831,7 +690,7 @@
                   <FrameClassRef nameOfClass="CompositeFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_OFFER:FXCP">
-                  <Name>UK FXCP   composite container NETWORK OFFER</Name>
+                  <Name>UK FXCP   composite container LINE OFFER</Name>
                   <FrameClassRef nameOfClass="CompositeFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc">
@@ -844,15 +703,15 @@
               <Name>Types of FXC Specific  Frame</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_COMMON:FXCP">
-                  <Name>UK Bus Profile Fare Common Parameters</Name>
+                  <Name>UK Bus Profile fare common paramaters</Name>
                   <FrameClassRef nameOfClass="FareFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP">
-                  <Name>UK Bus Profile Fare Network</Name>
+                  <Name>UK Bus Profile fare network</Name>
                   <FrameClassRef nameOfClass="ServiceFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP">
-                  <Name>UK FXCP Fare Products Frame</Name>
+                  <Name>UK FXCP Fare Porducts Frame</Name>
                   <FrameClassRef nameOfClass="FareFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP">
@@ -879,7 +738,7 @@
               </values>
             </ValueSet>
             <ValueSet version="fxc:v1.0" id="fxc:Types_of_Transaction_Frame" classOfValues="TypeOfFrame">
-              <Name>Types of UK Transaction Frame</Name>
+              <Name>Types of UK Trasnaction  Frame</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_TRANSACTIONS:FXCP">
                   <Name>UK Bus Profile Operator sample transactions</Name>
@@ -1836,10 +1695,12 @@
             <priceUnits>
               <PriceUnit id="fxc:GBP" version="fxc:v1.0">
                 <Name>Pound Sterling</Name>
+                <PrivateCode>£</PrivateCode>
                 <Precision>2</Precision>
               </PriceUnit>
               <PriceUnit id="fxc:EUR" version="fxc:v1.0">
                 <Name>Euro</Name>
+                <PrivateCode>¬</PrivateCode>
                 <Precision>2</Precision>
               </PriceUnit>
             </priceUnits>
@@ -1931,17 +1792,7 @@
               <DistributionChannelType>online</DistributionChannelType>
               <IsObligatory>false</IsObligatory>
             </DistributionChannel>
-            <DistributionChannel id="fxc:postal" version="fxc:v1.0">
-              <ShortName>Ticket or card received by post</ShortName>
-              <DistributionChannelType>postal</DistributionChannelType>
-              <IsObligatory>false</IsObligatory>
-            </DistributionChannel>
-            <DistributionChannel id="fxc:agency" version="fxc:v1.0">
-              <ShortName>e.g. Travel shop</ShortName>
-              <DistributionChannelType>agency</DistributionChannelType>
-              <IsObligatory>false</IsObligatory>
-            </DistributionChannel>
-            <DistributionChannel id="fxc:at_stop" version="fxc:v1.0">
+            <DistributionChannel id="fxc:atStop" version="fxc:v1.0">
               <ShortName>In station sale by machine, counter or payg</ShortName>
               <DistributionChannelType>atStop</DistributionChannelType>
               <IsObligatory>false</IsObligatory>
@@ -1967,12 +1818,12 @@
               <DistributionChannelType>atStop</DistributionChannelType>
               <IsObligatory>false</IsObligatory>
             </DistributionChannel>
-            <DistributionChannel id="fxc:on_board" version="fxc:v1.0">
+            <DistributionChannel id="fxc:onBoard" version="fxc:v1.0">
               <ShortName>on_board</ShortName>
               <DistributionChannelType>onBoard</DistributionChannelType>
               <IsObligatory>false</IsObligatory>
             </DistributionChannel>
-            <DistributionChannel id="fxc:mobile_device" version="fxc:v1.0">
+            <DistributionChannel id="fxc:mobileDevice" version="fxc:v1.0">
               <ShortName>Mobile Device</ShortName>
               <DistributionChannelType>mobileDevice</DistributionChannelType>
               <IsObligatory>false</IsObligatory>
