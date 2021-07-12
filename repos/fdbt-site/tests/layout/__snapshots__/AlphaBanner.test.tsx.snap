@@ -23,6 +23,7 @@ exports[`PhaseBanner should render correctly 1`] = `
         <a
           className="govuk-link"
           href="/feedback"
+          id="feedback-link"
         >
           feedback
         </a>
