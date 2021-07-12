@@ -1,13 +1,11 @@
 import React, { ReactElement } from 'react';
 import { NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
-import { checkIfMultipleOperators } from '../utils';
+import { redirectTo } from './api/apiUtils';
 
 const title = 'Operator Settings';
 const description = 'View and access your settings in one place.';
-interface HomeProps {
-    multipleOperators: boolean;
-}
+
 const GlobalSettings = (): ReactElement => (
     <BaseLayout title={title} description={description} showNavigation={true}>
         <div className="govuk-width-container">
@@ -97,8 +95,12 @@ const GlobalSettings = (): ReactElement => (
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => ({
-    props: { multipleOperators: checkIfMultipleOperators(ctx) },
-});
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: {} } => {
+    if (process.env.STAGE === 'prod' && ctx.res) {
+        redirectTo(ctx.res, '/home');
+    }
+
+    return { props: {} };
+};
 
 export default GlobalSettings;
