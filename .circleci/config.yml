@@ -661,7 +661,8 @@ workflows:
           repo: "${SITE_ECR_REPO}"
           tag: "${CIRCLE_SHA1},latest"
           context: tfn-fdbt-core
-          path: ~/project/repos/fdbt-site
+          path: ~/project
+          dockerfile: site.Dockerfile
           filters:
             tags:
               only: /^v.*/

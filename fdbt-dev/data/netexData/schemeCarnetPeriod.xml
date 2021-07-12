@@ -1,8 +1,8 @@
 <PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:siri="http://www.siri.org.uk/siri" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="http://www.netex.org.uk/netex http://netex.uk/netex/schema/1.10/xsd/NeTEx_publication.xsd">
-  <PublicationTimestamp>2021-06-25T11:14:15.095Z</PublicationTimestamp>
+  <PublicationTimestamp>2021-07-08T14:03:29.685Z</PublicationTimestamp>
   <ParticipantRef>SYS001</ParticipantRef>
   <PublicationRequest version="1.0">
-    <RequestTimestamp>2021-06-25T11:14:15.095Z</RequestTimestamp>
+    <RequestTimestamp>2021-07-08T14:03:29.685Z</RequestTimestamp>
     <ParticipantRef>SYS002</ParticipantRef>
     <Description>Request for Test Scheme Op-SE bus pass fares</Description>
     <topics>
@@ -119,15 +119,15 @@
           <organisations>
             <Operator version="1.0" id="noc:HCTY">
               <PublicCode>HCTY</PublicCode>
-              <Name>Connexions Buses</Name>
-              <ShortName>Connexions Buses</ShortName>
-              <TradingName>Harrogate Coach Travel Ltd</TradingName>
+              <Name>Blackpool Transport</Name>
+              <ShortName>Blackpool Transport</ShortName>
+              <TradingName>Blackpool Transport Services Ltd</TradingName>
               <ContactDetails>
-                <Phone>01423339600</Phone>
-                <Url>http://www.connexionsbuses.com/</Url>
+                <Phone>01253 473001</Phone>
+                <Url>http://www.blackpooltransport.com</Url>
               </ContactDetails>
               <Address>
-                <Street>Unit 3, South Field Lane, Tockwith, York YO26 7QP</Street>
+                <Street>Rigby Road, Blackpool FY1 5DD</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
@@ -144,7 +144,7 @@
             <GroupOfOperators version="1.0" id="operators@bus">
               <Name>Bus Operators</Name>
               <members>
-                <OperatorRef version="1.0" ref="noc:HCTY">Connexions Buses</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:HCTY">Blackpool Transport</OperatorRef>
               </members>
             </GroupOfOperators>
           </groupsOfOperators>
@@ -355,71 +355,36 @@
             <FareFrameRef version="1.0" ref="epd:UK:Test_Scheme_Op-SE:FareFrame_UK_PI_FARE_PRODUCT:Test_Scheme_Op-SE_products@pass:op"/>
           </prerequisites>
           <fareTables>
-            <FareTable version="1.0" id="op:jakes@Test_Town_Centre">
-              <Name>Test Town Centre</Name>
-              <specifics>
-                <TariffZoneRef version="1.0" ref="op:Test_Scheme_Op-SE_products@Test_Town_Centre"/>
-              </specifics>
-              <columns>
-                <FareTableColumn version="1.0" id="op:jakes@Test_Town_Centre">
-                  <Name>Test Town Centre</Name>
-                  <representing>
-                    <TariffZoneRef version="1.0" ref="op:Test_Scheme_Op-SE_products@Test_Town_Centre"/>
-                  </representing>
-                </FareTableColumn>
-              </columns>
+            <FareTable version="1.0" id="op:fareTable@jakes@Onboard_(cash)@zone">
+              <Name>jakes - Onboard (cash) - Test Town Centre</Name>
+              <pricesFor>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@jakes_anyone"/>
+              </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:jakes@Test_Town_Centre@p-ticket">
-                  <Name>jakes</Name>
-                  <pricesFor>
-                    <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-jakes-SOP@Onboard_(cash)"/>
-                    <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@5"/>
-                  </pricesFor>
+                <FareTable version="1.0" id="op:jakes@Onboard_(cash)@anyone@product-0@SOP-0@zone">
+                  <Name>jakes - Onboard (cash)  - anyone</Name>
                   <specifics>
-                    <TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket"/>
+                    <TariffZoneRef version="1.0" ref="op:Test_Scheme_Op-SE_products@Test_Town_Centre"/>
                   </specifics>
-                  <columns>
-                    <FareTableColumn version="1.0" id="op:jakes@Test_Town_Centre@p-ticket">
-                      <Name>jakes</Name>
-                      <representing>
-                        <TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket"/>
-                        <UserProfileRef version="1.0" ref="op:anyone"/>
-                      </representing>
-                    </FareTableColumn>
-                  </columns>
                   <includes>
-                    <FareTable version="1.0" id="op:jakes@Test_Town_Centre@p-ticket@anyone">
-                      <Name>jakes - anyone</Name>
-                      <limitations>
-                        <UserProfileRef version="1.0" ref="op:anyone"/>
-                      </limitations>
-                      <columns>
-                        <FareTableColumn version="1.0" id="op:jakes@Test_Town_Centre@p-ticket@anyone">
-                          <Name>anyone</Name>
-                          <representing>
-                            <TypeOfTravelDocumentRef version="1.0" ref="op:p-ticket"/>
+                    <FareTable version="1.0" id="op:jakes@Onboard_(cash)@anyone@zone@nested">
+                      <pricesFor>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-jakes-SOP@Onboard_(cash)"/>
+                        <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@5"/>
+                      </pricesFor>
+                      <includes>
+                        <FareTable version="1.0" id="op:jakes@Onboard_(cash)@anyone@zone@nested@prices">
+                          <limitations>
                             <UserProfileRef version="1.0" ref="op:anyone"/>
-                          </representing>
-                        </FareTableColumn>
-                      </columns>
-                      <rows>
-                        <FareTableRow version="1.0" id="op:jakes@Test_Scheme_Op-SE-geo-zone@p-ticket@2-weeks">
-                          <Name>2 weeks</Name>
-                          <representing>
-                            <TimeIntervalRef version="1.0" ref="op:Tariff@jakes@2-weeks"/>
-                          </representing>
-                        </FareTableRow>
-                      </rows>
-                      <cells>
-                        <Cell version="1.0" id="op:jakes@Test_Town_Centre@p-ticket@anyone@2-weeks" order="1">
-                          <TimeIntervalPrice version="1.0" id="op:jakes@Test_Town_Centre@p-ticket@anyone@2-weeks">
-                            <Amount>2.99</Amount>
-                            <TimeIntervalRef version="1.0" ref="op:Tariff@jakes@2-weeks"/>
-                          </TimeIntervalPrice>
-                          <ColumnRef version="1.0" ref="op:jakes@Test_Town_Centre@p-ticket@anyone"/>
-                          <RowRef version="1.0" ref="op:jakes@Test_Scheme_Op-SE-geo-zone@p-ticket@2-weeks"/>
-                        </Cell>
-                      </cells>
+                          </limitations>
+                          <prices>
+                            <TimeIntervalPrice version="1.0" id="op:jakes@Onboard_(cash)@zone">
+                              <Amount>2.99</Amount>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@jakes@2-weeks"/>
+                            </TimeIntervalPrice>
+                          </prices>
+                        </FareTable>
+                      </includes>
                     </FareTable>
                   </includes>
                 </FareTable>
@@ -455,7 +420,7 @@
       </FrameDefaults>
       <frames>
         <ResourceFrame id="fxc:UK:DFT:ResourceFrame_UK_PI_METADATA_FRAMES:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
-          <Name>UK FXCP  Fare profile Frame types and codepaces</Name>
+          <Name>UK FXCP Fare profile Frame types and codespaces</Name>
           <codespaces>
             <Codespace id="fxc_metadata">
               <Xmlns>fxc</Xmlns>
@@ -465,7 +430,7 @@
             <Codespace id="epd_data">
               <Xmlns>epd</Xmlns>
               <XmlnsUrl>http://fnetex-cen.eu/epd</XmlnsUrl>
-              <Description>European Passenger Information profile data -use for UK frame names</Description>
+              <Description>European Passenger Information profile data - use for UK frame names</Description>
             </Codespace>
           </codespaces>
           <dataSources>
@@ -541,15 +506,15 @@
               <Name>Types of FXC Specific  Frame</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_COMMON:FXCP">
-                  <Name>UK Bus Profile fare common paramaters</Name>
+                  <Name>UK Bus Profile Fare Common Parameters</Name>
                   <FrameClassRef nameOfClass="FareFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP">
-                  <Name>UK Bus Profile fare network</Name>
+                  <Name>UK Bus Profile Fare Network</Name>
                   <FrameClassRef nameOfClass="ServiceFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP">
-                  <Name>UK FXCP Fare Porducts Frame</Name>
+                  <Name>UK FXCP Fare Products Frame</Name>
                   <FrameClassRef nameOfClass="FareFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP">
@@ -576,7 +541,7 @@
               </values>
             </ValueSet>
             <ValueSet version="fxc:v1.0" id="fxc:Types_of_Transaction_Frame" classOfValues="TypeOfFrame">
-              <Name>Types of UK Trasnaction  Frame</Name>
+              <Name>Types of UK Transaction Frame</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_TRANSACTIONS:FXCP">
                   <Name>UK Bus Profile Operator sample transactions</Name>

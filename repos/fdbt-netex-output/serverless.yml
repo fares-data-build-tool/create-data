@@ -84,8 +84,7 @@ functions:
       UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
       RDS_HOST:
         Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
-      SNS_ALERTS_ARN:
-        Fn::ImportValue: ${self:provider.stage}:SlackAlertsTopicArn
+      SNS_ALERTS_ARN: ${self:custom.sns.alertsTopic.value}
 
   NetexEmailer:
     handler: src/netex-emailer/handler.netexEmailerHandler
@@ -171,3 +170,11 @@ package:
   include:
     - ./src/netex-convertor/point-to-point-tickets/pointToPointTicketNetexTemplate.xml
     - ./src/netex-convertor/period-tickets/periodTicketNetexTemplate.xml
+
+custom:
+  sns:
+    alertsTopic:
+      value: ${self:custom.sns.alertsTopic.${self:provider.stage}, self:custom.sns.alertsTopic.other}
+      dev: arn:aws:sns:us-east-1:000000000000:AlertsTopic
+      other:
+        Fn::ImportValue: ${self:provider.stage}:SlackAlertsTopicArn
