@@ -5,7 +5,9 @@ import { checkIfMultipleOperators } from '../utils';
 
 const title = 'Operator Settings';
 const description = 'View and access your settings in one place.';
-
+interface HomeProps {
+    multipleOperators: boolean;
+}
 const GlobalSettings = (): ReactElement => (
     <BaseLayout title={title} description={description} showNavigation={true}>
         <div className="govuk-width-container">
@@ -95,7 +97,7 @@ const GlobalSettings = (): ReactElement => (
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: NextPageContextWithSession} => ({
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => ({
     props: { multipleOperators: checkIfMultipleOperators(ctx) },
 });
 
