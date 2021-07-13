@@ -55,10 +55,8 @@ export const BaseLayout = ({
 
             {showNavigation && <Navigation />}
 
-            <div className="govuk-width-container app-width-container--wide">
-                <main id="main-content" role="main" tabIndex={-1}>
-                    <div className="govuk-main-wrapper app-main-class">{children}</div>
-                </main>
+            <div className="govuk-width-container">
+                <main className="govuk-main-wrapper">{children}</main>
                 {!hideHelp && <Help />}
             </div>
             <Footer />

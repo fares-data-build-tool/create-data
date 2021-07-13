@@ -1,6 +1,4 @@
-import '../design/Pages.scss';
-import '../design/Layout.scss';
-import '../design/Components.scss';
+import '../design/main.scss';
 import { AppProps } from 'next/app';
 import React, { ReactElement, useEffect } from 'react';
 

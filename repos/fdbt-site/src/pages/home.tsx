@@ -60,6 +60,7 @@ const Home = ({ multipleOperators, isOnTestEnvironment }: HomeProps): ReactEleme
                     </p>
                 </div>
             </div>
+
             <div className="govuk-grid-column-one-third">
                 <h2 className="govuk-heading-s">Public information</h2>
                 <a href="/contact" className="govuk-link govuk-!-font-size-19" id="contact-link">

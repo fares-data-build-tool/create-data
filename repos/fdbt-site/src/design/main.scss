@@ -1,0 +1,10 @@
+@import '../../node_modules/govuk-frontend/govuk/all';
+@import './modules/_layout.scss';
+@import './modules/_components.scss';
+@import './modules/_pages.scss';
+
+// import header styles
+@import './modules/_header.scss';
+
+// import phase banner styles
+@import './modules/_phase-banner.scss';

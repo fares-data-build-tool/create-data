@@ -7,7 +7,7 @@ exports[`Header should render correctly 1`] = `
   role="banner"
 >
   <div
-    className="govuk-header__container govuk-width-container"
+    className="govuk-header__container app-header__container govuk-width-container"
   >
     <div
       className="govuk-header__logo"

@@ -22,7 +22,7 @@ const GlobalSettings = (): ReactElement => (
                                     <li className="app-subnav__section-item app-subnav__section-item--current">
                                         <a
                                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/components/accordion/"
+                                            href="/globalSettings"
                                         >
                                             Settings overview
                                         </a>
@@ -31,7 +31,7 @@ const GlobalSettings = (): ReactElement => (
                                     <li className="app-subnav__section-item">
                                         <a
                                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/components/back-link/"
+                                            href="/globalSettings"
                                         >
                                             Passenger types
                                         </a>
@@ -40,7 +40,7 @@ const GlobalSettings = (): ReactElement => (
                                     <li className="app-subnav__section-item">
                                         <a
                                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/components/breadcrumbs/"
+                                            href="/globalSettings"
                                         >
                                             Service day end
                                         </a>
@@ -49,7 +49,7 @@ const GlobalSettings = (): ReactElement => (
                                     <li className="app-subnav__section-item">
                                         <a
                                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/components/button/"
+                                            href="/globalSettings"
                                         >
                                             Purchase methods
                                         </a>
@@ -58,7 +58,7 @@ const GlobalSettings = (): ReactElement => (
                                     <li className="app-subnav__section-item">
                                         <a
                                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/components/character-count/"
+                                            href="/globalSettings"
                                         >
                                             Time restrictions
                                         </a>
@@ -67,7 +67,7 @@ const GlobalSettings = (): ReactElement => (
                                     <li className="app-subnav__section-item">
                                         <a
                                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/components/checkboxes/"
+                                            href="/globalSettings"
                                         >
                                             Multi-operator groups
                                         </a>
@@ -76,7 +76,7 @@ const GlobalSettings = (): ReactElement => (
                                     <li className="app-subnav__section-item">
                                         <a
                                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/components/cookie-banner/"
+                                            href="/globalSettings"
                                         >
                                             Travel Zones
                                         </a>

@@ -1,17 +1,6 @@
-@import '../../node_modules/govuk-frontend/govuk/all';
-
 main {
     border: none;
     outline: none;
-}
-
-.govuk-header.app-header {
-    border-bottom: 10px solid #1d70b8;
-    min-height: 60px;
-}
-
-.govuk-header > .govuk-header__container {
-    border-bottom: 0;
 }
 
 .app-navigation {
@@ -93,6 +82,10 @@ main {
     text-decoration: none;
 }
 
+.app-phase-banner {
+  border: none;
+}
+
 .skip {
     position: absolute;
     overflow: hidden;
@@ -121,19 +114,6 @@ main {
 .govuk-grid-row {
     margin-right: -15px;
     margin-left: -15px;
-}
-
-.govuk-grid-column-two-thirds {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 0 15px;
-}
-
-@media (min-width: 40.0625em) {
-    .govuk-grid-column-two-thirds {
-        width: 16%;
-        float: left;
-    }
 }
 
 .gem-c-organisation-logo {
