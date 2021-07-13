@@ -18,6 +18,7 @@ const Start = ({ multipleOperators }: StartProps): ReactElement => (
             This service is for creating or accessing NeTEx data for public transport services, excluding rail, in
             England. The service can be used by:
         </p>
+
         <ul className="govuk-list govuk-list--bullet">
             <li>Bus operators running commercial services in England</li>
             <li>Local transport authorities acting on behalf of bus operators</li>
@@ -25,6 +26,7 @@ const Start = ({ multipleOperators }: StartProps): ReactElement => (
         </ul>
 
         <p className="govuk-body">Use this service to:</p>
+
         <ul className="govuk-list govuk-list--bullet">
             <li>Generate fares data in NeTEx format for a new or existing service</li>
             <li>Download your own fares data</li>
