@@ -6,6 +6,7 @@ import favicon from '../assets/images/favicon.ico';
 import { buildTitle } from '../utils';
 import { ErrorInfo } from '../interfaces';
 import PhaseBanner from './PhaseBanner';
+import Navigation from './Navigation';
 import Footer from './Footer';
 import Help from '../components/Help';
 import CookieBanner from './CookieBanner';
@@ -15,6 +16,7 @@ interface LayoutProps {
     description: string;
     errors?: ErrorInfo[];
     hideCookieBanner?: boolean;
+    showNavigation?: boolean;
     hideHelp?: boolean;
 }
 
@@ -24,6 +26,7 @@ export const BaseLayout = ({
     errors = [],
     children,
     hideCookieBanner = false,
+    showNavigation = false,
     hideHelp = false,
 }: PropsWithChildren<LayoutProps>): ReactElement => {
     const [showBanner, setShowBanner] = useState(false);
@@ -48,8 +51,11 @@ export const BaseLayout = ({
                 </Portal>
             )}
 
+            <PhaseBanner />
+
+            {showNavigation && <Navigation />}
+
             <div className="govuk-width-container app-width-container--wide">
-                <PhaseBanner />
                 <main id="main-content" role="main" tabIndex={-1}>
                     <div className="govuk-main-wrapper app-main-class">{children}</div>
                 </main>

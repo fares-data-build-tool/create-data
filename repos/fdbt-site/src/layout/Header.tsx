@@ -7,7 +7,7 @@ interface HeaderProps {
 }
 
 const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
-    <header className="govuk-header " role="banner" data-module="govuk-header">
+    <header className="govuk-header app-header" role="banner" data-module="govuk-header">
         <div className="govuk-header__container govuk-width-container">
             <div className="govuk-header__logo">
                 <a href="https://www.gov.uk/" className="govuk-header__link govuk-header__link--homepage">
