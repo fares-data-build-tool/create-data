@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { isArray, upperFirst } from 'lodash';
+import { isArray, lowerCase, upperFirst } from 'lodash';
 import moment from 'moment';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE } from '../constants/attributes';
 import {
@@ -31,6 +31,9 @@ interface TicketDating {
     startDefault: boolean;
     endDefault: boolean;
 }
+export const formatSalesOfferPackageEnumerations = (enumerations: string[]): string[] => {
+    return enumerations.map((enumeration) => ` ` + upperFirst(lowerCase(enumeration.replace(/([A-Z])/g, ' $1'))));
+};
 
 export const buildSalesConfirmationElements = (
     salesOfferPackages: SalesOfferPackage[] | ProductWithSalesOfferPackages[],
@@ -50,9 +53,9 @@ export const buildSalesConfirmationElements = (
                     content: [
                         `Name: ${sop.name}`,
                         ...(sop.price ? [`Price: £${sop.price}`] : []),
-                        `Purchase Location: ${sop.purchaseLocations}`,
-                        `Payment Method(s): ${sop.paymentMethods}`,
-                        `Ticket Formats: ${sop.ticketFormats}`,
+                        `Purchase location:${formatSalesOfferPackageEnumerations(sop.purchaseLocations)}`,
+                        `Payment method(s):${formatSalesOfferPackageEnumerations(sop.paymentMethods)}`,
+                        `Ticket formats:${formatSalesOfferPackageEnumerations(sop.ticketFormats)}`,
                     ],
                     href: 'selectSalesOfferPackage',
                 });

@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import SalesConfirmation, {
     buildSalesConfirmationElements,
+    formatSalesOfferPackageEnumerations,
     getServerSideProps,
 } from '../../src/pages/salesConfirmation';
 import { getMockContext } from '../testData/mockData';
@@ -260,7 +261,12 @@ describe('pages', () => {
                     name: 'Product',
                 },
                 {
-                    content: ['Name: A sales offer package'],
+                    content: [
+                        'Name: A sales offer package',
+                        'Purchase location: At stop, Website',
+                        'Payment method(s): Cash',
+                        'Ticket formats: Paper',
+                    ],
                     href: 'selectSalesOfferPackage',
                     name: 'Sales offer package',
                 },
@@ -270,12 +276,24 @@ describe('pages', () => {
                     name: 'Product',
                 },
                 {
-                    content: ['Name: A sales offer package', 'Price: £1.99'],
+                    content: [
+                        'Name: A sales offer package',
+                        'Price: £1.99',
+                        'Purchase location: At stop, Website',
+                        'Payment method(s): Cash',
+                        'Ticket formats: Paper',
+                    ],
                     href: 'selectSalesOfferPackage',
                     name: 'Sales offer package',
                 },
                 {
-                    content: ['Name: Another sales offer package', 'Price: £2.49'],
+                    content: [
+                        'Name: Another sales offer package',
+                        'Price: £2.49',
+                        'Purchase location: In station, Phone',
+                        'Payment method(s): Mobile device',
+                        'Ticket formats: Phone',
+                    ],
                     href: 'selectSalesOfferPackage',
                     name: 'Sales offer package',
                 },
@@ -290,6 +308,17 @@ describe('pages', () => {
                     name: 'Ticket end date (default)',
                 },
             ]);
+        });
+    });
+
+    describe('formatSalesOfferPackageEnumerations', () => {
+        it('format a string array with one item', () => {
+            expect(formatSalesOfferPackageEnumerations(['mobileDevice'])).toEqual([' Mobile device']);
+        });
+        it('format a string array with multiple items', () => {
+            expect(
+                formatSalesOfferPackageEnumerations(['debitCard', 'creditCard', 'mobilePhone', 'directDebit']),
+            ).toEqual([' Debit card', ' Credit card', ' Mobile phone', ' Direct debit']);
         });
     });
 });
