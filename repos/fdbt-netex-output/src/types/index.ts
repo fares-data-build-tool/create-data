@@ -1,3 +1,4 @@
+import { SalesOfferPackage } from '../../shared/matchingJsonTypes';
 import { NetexObject } from '../netex-convertor/sharedHelpers';
 
 // Misc
@@ -79,14 +80,6 @@ export type Ticket = SpecificTicket &
         groupDefinition: { maxPeople?: string; companions?: GroupCompanion[] };
         carnet: boolean;
     }>;
-
-export interface SalesOfferPackage {
-    name: string;
-    description: string;
-    purchaseLocations: string[];
-    paymentMethods: string[];
-    ticketFormats: string[];
-}
 
 export interface TimeBand {
     startTime: string;
@@ -525,3 +518,6 @@ export interface OperatorRef {
     ref: string;
     $t: string;
 }
+
+// eslint-disable-next-line prettier/prettier
+export type { SalesOfferPackage };

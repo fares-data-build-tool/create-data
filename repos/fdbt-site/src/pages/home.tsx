@@ -8,9 +8,10 @@ const description = 'Create Fares Data is a service that allows you to generate 
 
 interface HomeProps {
     multipleOperators: boolean;
+    isOnTestEnvironment: boolean;
 }
 
-const Home = ({ multipleOperators }: HomeProps): ReactElement => (
+const Home = ({ multipleOperators, isOnTestEnvironment }: HomeProps): ReactElement => (
     <BaseLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Create fares data</h1>
         <div className="govuk-grid-row">
@@ -40,8 +41,12 @@ const Home = ({ multipleOperators }: HomeProps): ReactElement => (
                         For updating the information we use about your services when creating NeTEx data.
                     </p>
 
-                    <a href="/account" className="govuk-link govuk-!-font-size-19" id="account-link">
-                        My account settings
+                    <a
+                        href={isOnTestEnvironment ? '/globalSettings' : '/account'}
+                        className="govuk-link govuk-!-font-size-19"
+                        id="account-link"
+                    >
+                        {isOnTestEnvironment ? 'Open operator settings' : 'My account settings'}
                     </a>
                 </div>
                 <div className="govuk-!-margin-top-7 govuk-!-padding-bottom-7">
@@ -55,6 +60,7 @@ const Home = ({ multipleOperators }: HomeProps): ReactElement => (
                     </p>
                 </div>
             </div>
+
             <div className="govuk-grid-column-one-third">
                 <h2 className="govuk-heading-s">Public information</h2>
                 <a href="/contact" className="govuk-link govuk-!-font-size-19" id="contact-link">
@@ -66,7 +72,7 @@ const Home = ({ multipleOperators }: HomeProps): ReactElement => (
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => ({
-    props: { multipleOperators: checkIfMultipleOperators(ctx) },
+    props: { multipleOperators: checkIfMultipleOperators(ctx), isOnTestEnvironment: process.env.STAGE !== 'prod' },
 });
 
 export default Home;

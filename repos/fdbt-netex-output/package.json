@@ -12,13 +12,12 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci && npx audit-ci --moderate"
+            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci && npx audit-ci --moderate -a 1751"
         }
     },
     "lint-staged": {
         "src/**/*.{ts,tsx}": [
-            "eslint --fix . --ext .ts,.tsx",
-            "pretty-quick --staged"
+            "eslint --fix . --ext .ts,.tsx"
         ]
     },
     "author": "",
@@ -59,7 +58,6 @@
         "jest": "^26.6.3",
         "lint-staged": "^10.0.8",
         "prettier": "^1.19.1",
-        "pretty-quick": "^2.0.1",
         "serverless-dynamodb-local": "^0.2.40",
         "serverless-offline": "^6.5.0",
         "serverless-plugin-typescript": "^1.1.9",

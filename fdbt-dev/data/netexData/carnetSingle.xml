@@ -511,6 +511,16 @@
                 </FareDemandFactor>
               </qualityStructureFactors>
               <fareStructureElements>
+                <FareStructureElement version="1.0" id="mb:Tariff@multitrip@units">
+                  <Name>Carnet denominations</Name>
+                  <Description>Number of single units in bundle.</Description>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:carnet_units"/>
+                  <qualityStructureFactors>
+                    <QualityStructureFactor version="1.0" id="mb:Tariff@multitrip@10">
+                      <Value>10</Value>
+                    </QualityStructureFactor>
+                  </qualityStructureFactors>
+                </FareStructureElement>
                 <FareStructureElement version="1.0" id="Tariff@single@lines">
                   <Name>O/D pairs for 4</Name>
                   <distanceMatrixElements>
@@ -2097,6 +2107,7 @@
                 <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Onboard_(cash)"/>
                 <UserProfileRef version="1.0" ref="op:adult"/>
+                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@"/>
@@ -3866,6 +3877,7 @@
                 <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Onboard_(contactless)"/>
                 <UserProfileRef version="1.0" ref="op:adult"/>
+                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@"/>
@@ -5635,6 +5647,7 @@
                 <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Online_(smart_card)"/>
                 <UserProfileRef version="1.0" ref="op:adult"/>
+                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@"/>
@@ -7404,6 +7417,7 @@
                 <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Mobile_App"/>
                 <UserProfileRef version="1.0" ref="op:adult"/>
+                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@"/>
@@ -9173,6 +9187,7 @@
                 <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@All_Encompassing"/>
                 <UserProfileRef version="1.0" ref="op:adult"/>
+                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@"/>

@@ -1,3 +1,6 @@
 #ide
 .idea/
 .DS_Store
+
+# Generated NeTEx
+data/generatedNetex/
