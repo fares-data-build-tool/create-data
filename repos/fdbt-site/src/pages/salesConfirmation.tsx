@@ -47,7 +47,13 @@ export const buildSalesConfirmationElements = (
             product.salesOfferPackages.forEach((sop) => {
                 confirmationElements.push({
                     name: `Sales offer package`,
-                    content: [`Name: ${sop.name}`, ...(sop.price ? [`Price: £${sop.price}`] : [])],
+                    content: [
+                        `Name: ${sop.name}`,
+                        ...(sop.price ? [`Price: £${sop.price}`] : []),
+                        `Purchase Location: ${sop.purchaseLocations}`,
+                        `Payment Method(s): ${sop.paymentMethods}`,
+                        `Ticket Formats: ${sop.ticketFormats}`,
+                    ],
                     href: 'selectSalesOfferPackage',
                 });
             });
