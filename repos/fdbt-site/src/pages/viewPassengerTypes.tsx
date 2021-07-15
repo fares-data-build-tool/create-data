@@ -39,7 +39,7 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                         <li className="actions__item">
                                             <a
                                                 className="govuk-link govuk-!-font-size-19 govuk-!-font-weight-regular"
-                                                href="#"
+                                                href="/viewPassengerTypes"
                                             >
                                                 Edit
                                             </a>
@@ -48,7 +48,7 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                         <li className="actions__item">
                                             <a
                                                 className="govuk-link govuk-!-font-size-19 govuk-!-font-weight-regular actions__delete"
-                                                href="#"
+                                                href="/viewPassengerTypes"
                                             >
                                                 Delete
                                             </a>
@@ -118,7 +118,7 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
                                         <li className="actions__item">
                                             <a
                                                 className="govuk-link govuk-!-font-size-19 govuk-!-font-weight-regular"
-                                                href="#"
+                                                href="/viewPassengerTypes"
                                             >
                                                 Edit
                                             </a>
@@ -127,7 +127,7 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
                                         <li className="actions__item">
                                             <a
                                                 className="govuk-link govuk-!-font-size-19 govuk-!-font-weight-regular actions__delete"
-                                                href="#"
+                                                href="/viewPassengerTypes"
                                             >
                                                 Delete
                                             </a>
@@ -142,7 +142,7 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
                                 </p>
 
                                 {d.companions.map((c) => (
-                                    <p className="govuk-body-s govuk-!-margin-bottom-2">
+                                    <p key={c.passengerType} className="govuk-body-s govuk-!-margin-bottom-2">
                                         <span className="govuk-!-font-weight-bold">
                                             {sentenceCaseString(c.passengerType)}:
                                         </span>{' '}
