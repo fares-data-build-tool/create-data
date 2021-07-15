@@ -13,16 +13,6 @@ interface GlobalSettingsProps {
     savedPassengerTypesDetails: SettingsOverview;
 }
 
-export const buildPassengerTypesDetails = async (noc: string): Promise<SettingsOverview> => {
-    const savedPassengerTypes = await getPassengerTypesByNocCode(noc, 'single');
-    const savedGroupPassengerTypes = await getPassengerTypesByNocCode(noc, 'group');
-    const totalNumberOfPassengerTypes = savedPassengerTypes.length + savedGroupPassengerTypes.length;
-    return {
-        name: 'Passenger types',
-        description: 'Define age range and required proof documents of your passengers as well as passenger groups',
-        count: totalNumberOfPassengerTypes,
-    };
-};
 const GlobalSettings = ({ savedPassengerTypesDetails }: GlobalSettingsProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description} showNavigation={true}>
@@ -133,6 +123,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if (process.env.STAGE === 'prod' && ctx.res) {
         redirectTo(ctx.res, '/home');
     }
+
+    const buildPassengerTypesDetails = async (noc: string): Promise<SettingsOverview> => {
+        const savedPassengerTypes = await getPassengerTypesByNocCode(noc, 'single');
+        const savedGroupPassengerTypes = await getPassengerTypesByNocCode(noc, 'group');
+        const totalNumberOfPassengerTypes = savedPassengerTypes.length + savedGroupPassengerTypes.length;
+        return {
+            name: 'Passenger types',
+            description: 'Define age range and required proof documents of your passengers as well as passenger groups',
+            count: totalNumberOfPassengerTypes,
+        };
+    };
 
     const savedPassengerTypesDetails = await buildPassengerTypesDetails(noc);
 
