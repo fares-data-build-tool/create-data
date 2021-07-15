@@ -1,0 +1,297 @@
+{
+    "nocCode": "BLAC",
+    "type": "period",
+    "passengerType": "adult",
+    "ageRange": "No",
+    "email": "test@example.com",
+    "uuid": "BLAC38f8e74b",
+    "timeRestriction": [
+        {
+            "day": "monday",
+            "timeBands": [
+                {
+                    "startTime": "0900",
+                    "endTime": "1420"
+                }
+            ]
+        },
+        {
+            "day": "tuesday",
+            "timeBands": [
+                {
+                    "startTime": "0000",
+                    "endTime": "1420"
+                }
+            ]
+        },
+        {
+            "day": "wednesday",
+            "timeBands": [
+                {
+                    "startTime": "0459",
+                    "endTime": "1750"
+                }
+            ]
+        },
+        {
+            "day": "thursday",
+            "timeBands": [
+                {
+                    "startTime": "0459",
+                    "endTime": "1420"
+                }
+            ]
+        },
+        {
+            "day": "friday",
+            "timeBands": [
+                {
+                    "startTime": "0000",
+                    "endTime": "2359"
+                }
+            ]
+        },
+        {
+            "day": "saturday",
+            "timeBands": [
+                {
+                    "startTime": "0900",
+                    "endTime": "2359"
+                }
+            ]
+        },
+        {
+            "day": "sunday",
+            "timeBands": [
+                {
+                    "startTime": "0000",
+                    "endTime": "1420"
+                }
+            ]
+        },
+        {
+            "day": "bankHoliday",
+            "timeBands": [
+                {
+                    "startTime": "0900",
+                    "endTime": "1750"
+                }
+            ]
+        }
+    ],
+    "ticketPeriod": {
+        "startDate": "2010-10-13T01:01:00.000Z",
+        "endDate": "2025-12-07T23:59:00.000Z"
+    },
+    "lineName": "74",
+    "operatorShortName": "Blackpool Transport",
+    "serviceDescription": "FLEETWOOD - PRESTON via Thornton, Elswick, Inskip, Catforth, Riversway",
+    "lineId": "SL1",
+    "outboundFareZones": [
+        {
+            "name": "Shott Drive",
+            "stops": [
+                {
+                    "stopName": "Bus Station",
+                    "naptanCode": "langmtad",
+                    "atcoCode": "2500JB32",
+                    "localityCode": "N0078525",
+                    "localityName": "Preston City Centre",
+                    "parentLocalityName": "Preston",
+                    "indicator": "Stand 7",
+                    "street": "Carlisle Street",
+                    "qualifierName": ""
+                }
+            ],
+            "prices": [
+                {
+                    "price": "1.00",
+                    "fareZones": [
+                        "The Stag pub"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "The Stag pub",
+            "stops": [
+                {
+                    "stopName": "Boots",
+                    "naptanCode": "landptpd",
+                    "atcoCode": "2500IMG1296",
+                    "localityCode": "N0078525",
+                    "localityName": "Preston City Centre",
+                    "parentLocalityName": "Preston",
+                    "indicator": "Stand E",
+                    "street": "Fishergate",
+                    "qualifierName": ""
+                }
+            ],
+            "prices": [
+                {
+                    "price": "1.50",
+                    "fareZones": [
+                        "Frederick Drive"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Frederick Drive",
+            "stops": [
+                {
+                    "stopName": "Railway Station",
+                    "naptanCode": "landgwpd",
+                    "atcoCode": "2500DCL3256",
+                    "localityCode": "N0078525",
+                    "localityName": "Preston City Centre",
+                    "parentLocalityName": "Preston",
+                    "indicator": "Stand C",
+                    "street": "Fishergate Hill",
+                    "qualifierName": ""
+                }
+            ],
+            "prices": []
+        }
+    ],
+    "inboundFareZones": [
+        {
+            "name": "Shott Drive",
+            "stops": [
+                {
+                    "stopName": "Bus Station",
+                    "naptanCode": "langmtad",
+                    "atcoCode": "2500JB32",
+                    "localityCode": "N0078525",
+                    "localityName": "Preston City Centre",
+                    "parentLocalityName": "Preston",
+                    "indicator": "Stand 7",
+                    "street": "Carlisle Street",
+                    "qualifierName": ""
+                }
+            ],
+            "prices": [
+                {
+                    "price": "1.00",
+                    "fareZones": [
+                        "The Stag pub"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "The Stag pub",
+            "stops": [
+                {
+                    "stopName": "Boots",
+                    "naptanCode": "landptpd",
+                    "atcoCode": "2500IMG1296",
+                    "localityCode": "N0078525",
+                    "localityName": "Preston City Centre",
+                    "parentLocalityName": "Preston",
+                    "indicator": "Stand E",
+                    "street": "Fishergate",
+                    "qualifierName": ""
+                }
+            ],
+            "prices": [
+                {
+                    "price": "1.50",
+                    "fareZones": [
+                        "Frederick Drive"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Frederick Drive",
+            "stops": [
+                {
+                    "stopName": "Railway Station",
+                    "naptanCode": "landgwpd",
+                    "atcoCode": "2500DCL3256",
+                    "localityCode": "N0078525",
+                    "localityName": "Preston City Centre",
+                    "parentLocalityName": "Preston",
+                    "indicator": "Stand C",
+                    "street": "Fishergate Hill",
+                    "qualifierName": ""
+                }
+            ],
+            "prices": []
+        }
+    ],
+    "products": [
+        {
+            "salesOfferPackages": [
+                {
+                    "name": "Onboard (cash)",
+                    "description": "",
+                    "purchaseLocations": [
+                        "onBoard"
+                    ],
+                    "paymentMethods": [
+                        "cash"
+                    ],
+                    "ticketFormats": [
+                        "paperTicket"
+                    ]
+                },
+                {
+                    "name": "Onboard (contactless)",
+                    "description": "",
+                    "purchaseLocations": [
+                        "onBoard"
+                    ],
+                    "paymentMethods": [
+                        "contactlessPaymentCard"
+                    ],
+                    "ticketFormats": [
+                        "paperTicket"
+                    ]
+                },
+                {
+                    "name": "Online (smart card)",
+                    "description": "",
+                    "purchaseLocations": [
+                        "online"
+                    ],
+                    "paymentMethods": [
+                        "directDebit",
+                        "creditCard",
+                        "debitCard"
+                    ],
+                    "ticketFormats": [
+                        "smartCard"
+                    ]
+                },
+                {
+                    "name": "Mobile App",
+                    "description": "",
+                    "purchaseLocations": [
+                        "mobileDevice"
+                    ],
+                    "paymentMethods": [
+                        "debitCard",
+                        "creditCard",
+                        "mobilePhone",
+                        "directDebit"
+                    ],
+                    "ticketFormats": [
+                        "mobileApp"
+                    ]
+                }
+            ]
+        }
+    ],
+    "pointToPointProduct": {
+        "productName": "Product Test",
+        "productDuration": "5",
+        "productDurationUnits": "day"
+    },
+    "periodExpiry": {
+        "productValidity": "24hr",
+        "productEndTime": ""
+    },
+    "carnet": false
+}
