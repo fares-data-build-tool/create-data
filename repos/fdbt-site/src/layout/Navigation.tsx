@@ -6,8 +6,8 @@ const Navigation = (): ReactElement => (
             <li className="app-navigation__list-item app-navigation__list-item--current">
                 <a
                     className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
-                    href="/get-started/"
-                    data-topnav="Get started"
+                    href="/globalSettings"
+                    data-topnav="Operator settings"
                 >
                     Operator settings
                 </a>
