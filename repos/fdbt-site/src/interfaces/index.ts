@@ -207,6 +207,12 @@ export interface ServiceListAttributeWithErrors {
 
 // Miscellaneous
 
+export interface SettingsOverview {
+    name: string;
+    description: string;
+    count: number;
+}
+
 export interface PassengerAttributes {
     passengerTypeDisplay: string;
     passengerTypeValue: string;
