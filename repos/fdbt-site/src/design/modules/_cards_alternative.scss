@@ -1,0 +1,35 @@
+.card {
+    &__body {
+        background-color: govuk-colour('light-grey');
+        padding: govuk-spacing(5) govuk-spacing(5) 10px govuk-spacing(5);
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin: 0;
+        }
+    }
+
+    &__actions {
+        border: 2px solid govuk-colour('light-grey');
+        padding: govuk-spacing(2) govuk-spacing(5);
+
+        .actions__list {
+            list-style: none;
+            margin: 0 0 10px 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+
+            .action__item {
+            }
+        }
+
+        .actions__delete {
+            color: govuk-colour('red');
+        }
+    }
+}

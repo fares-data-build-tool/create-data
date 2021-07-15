@@ -9,7 +9,7 @@ const Navigation = (): ReactElement => (
                     href="/get-started/"
                     data-topnav="Get started"
                 >
-                    My settings
+                    Operator settings
                 </a>
             </li>
         </ul>
