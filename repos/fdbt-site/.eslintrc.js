@@ -23,7 +23,6 @@ module.exports = {
         },
         ecmaVersion: 2018,
         sourceType: 'module',
-        tsconfigRootDir: __dirname,
         project: `./tsconfig.json`,
     },
     plugins: ['react', '@typescript-eslint', 'jsx-a11y', 'jest'],
