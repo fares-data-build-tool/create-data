@@ -2,7 +2,7 @@
   "lineName": "709",
   "lineId": "PK1146649_RJ1_Outbound",
   "nocCode": "WBTR",
-  "operatorShortName": "Warrington's Own Buses",
+  "operatorName": "Warrington's Own Buses",
   "serviceDescription": "Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road",
   "type": "return",
   "email": "test@example.com",

@@ -1,8 +1,23 @@
+import { IncomingMessage, ServerResponse } from 'http';
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
-import { IncomingMessage, ServerResponse } from 'http';
 import { ReactElement } from 'react';
-import { SalesOfferPackage } from '../../shared/matchingJsonTypes';
+import {
+    BaseProduct,
+    BaseTicket,
+    CarnetDetails,
+    CarnetProductInfo,
+    ExpiryUnit,
+    FullTimeRestriction,
+    PointToPointPeriodTicket,
+    PointToPointTicket,
+    Product,
+    ProductDetails,
+    SalesOfferPackage,
+    SchemeOperatorTicket,
+    Stop,
+    TicketType,
+} from '../../shared/matchingJsonTypes';
 
 // Session Attributes and Cookies
 
@@ -22,49 +37,15 @@ export type DocumentContextWithSession = DocumentContext & {
 
 export type IncomingMessageWithSession = IncomingMessage & Session;
 
-export enum CarnetExpiryUnit {
-    HOUR = 'hour',
-    DAY = 'day',
-    WEEK = 'week',
-    MONTH = 'month',
-    YEAR = 'year',
-    NO_EXPIRY = 'no expiry',
-}
-
-export enum ExpiryUnit {
-    HOUR = 'hour',
-    DAY = 'day',
-    WEEK = 'week',
-    MONTH = 'month',
-    YEAR = 'year',
-}
-
 export interface CookiePolicy {
     essential: boolean;
     usage: boolean;
-}
-
-export interface CarnetDetails {
-    quantity: string;
-    expiryTime: string;
-    expiryUnit: CarnetExpiryUnit;
 }
 
 export interface ProductInfo {
     productName: string;
     productPrice: string;
     carnetDetails?: CarnetDetails;
-}
-
-export interface CarnetProductInfo {
-    productName: string;
-    carnetDetails: CarnetDetails;
-}
-
-export interface PointToPointPeriodProduct {
-    productName: string;
-    productDuration: string;
-    productDurationUnits: ExpiryUnit;
 }
 
 export interface PointToPointProductInfoWithSOP extends CarnetProductInfo {
@@ -263,18 +244,6 @@ export interface PremadeTimeRestriction {
 
 // AWS and Reference Data (e.g. NOC, TNDS, NaPTAN datasets)
 
-export interface Stop {
-    stopName: string;
-    naptanCode: string;
-    atcoCode: string;
-    localityCode: string;
-    localityName: string;
-    parentLocalityName: string;
-    qualifierName?: string;
-    indicator?: string;
-    street?: string;
-}
-
 export interface StopPoint {
     stopPointRef: string;
     commonName: string;
@@ -324,49 +293,14 @@ export type SpecificTicket =
     | PeriodMultipleServicesTicket
     | PeriodHybridTicket
     | FlatFareTicket
-    | SchemeOperatorTicket;
+    | SchemeOperatorTicket
+    | PointToPointPeriodTicket;
 
 export type Ticket = SpecificTicket &
     Partial<{
         groupDefinition: { maxPeople?: string; companions?: CompanionInfo[] };
         carnet: boolean;
     }>;
-
-export type PointToPointTicket = SingleTicket | ReturnTicket;
-
-export interface BaseTicket {
-    nocCode: string;
-    type: string;
-    passengerType: string;
-    ageRange?: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proof?: string;
-    proofDocuments?: string[];
-    email: string;
-    uuid: string;
-    timeRestriction: FullTimeRestriction[];
-    ticketPeriod: TicketPeriod;
-}
-
-export interface BasePointToPointTicket extends BaseTicket {
-    operatorShortName: string;
-    lineName: string;
-    lineId: string;
-    serviceDescription: string;
-    products: (BaseProduct | CarnetProductInfo)[];
-}
-
-export interface SingleTicket extends BasePointToPointTicket {
-    fareZones: FareZone[];
-    termTime: boolean;
-}
-
-export interface ReturnTicket extends BasePointToPointTicket {
-    inboundFareZones: FareZone[];
-    outboundFareZones: FareZone[];
-    returnPeriodValidity?: ReturnPeriodValidity;
-}
 
 export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
 
@@ -378,16 +312,6 @@ export interface BasePeriodTicket extends BaseTicket {
 export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     zoneName: string;
     stops: Stop[];
-}
-
-export interface Product {
-    productName: string;
-    productPrice: string;
-    productDuration?: string;
-    productValidity?: string;
-    productDurationUnits?: string;
-    productEndTime?: string;
-    carnetDetails?: CarnetDetails;
 }
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
@@ -403,11 +327,6 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
 
 export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
 
-export interface PointToPointPeriodTicket extends ReturnTicket {
-    pointToPointProduct: PointToPointPeriodProduct;
-    periodExpiry: PeriodExpiry;
-}
-
 export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
     additionalOperators: {
         nocCode: string;
@@ -420,23 +339,6 @@ export interface FlatFareTicket extends BaseTicket {
     products: FlatFareProductDetails[];
     selectedServices: SelectedService[];
     termTime: boolean;
-}
-
-export interface SchemeOperatorTicket {
-    schemeOperatorName: string;
-    schemeOperatorRegionCode: string;
-    nocCode?: string;
-    type: string;
-    passengerType: string;
-    ageRange?: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proof?: string;
-    proofDocuments?: string[];
-    email: string;
-    uuid: string;
-    timeRestriction: FullTimeRestriction[];
-    ticketPeriod: TicketPeriod;
 }
 
 export interface SchemeOperatorGeoZoneTicket extends SchemeOperatorTicket {
@@ -453,10 +355,6 @@ export interface SchemeOperatorFlatFareTicket extends SchemeOperatorTicket {
         selectedServices: SelectedService[];
     }[];
 }
-
-export const isSchemeOperatorTicket = (data: Ticket): data is SchemeOperatorTicket =>
-    (data as SchemeOperatorTicket).schemeOperatorName !== undefined &&
-    (data as SchemeOperatorTicket).schemeOperatorRegionCode !== undefined;
 
 // Matching Data (created by the user on the site)
 
@@ -493,30 +391,14 @@ export interface TimeRestriction {
     validDays: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday' | 'bankHoliday')[];
 }
 
-export interface ReturnPeriodValidity {
-    amount: string;
-    typeOfDuration: string;
-}
-
 export interface ReturnPeriodValidityWithErrors {
     amount?: string;
     typeOfDuration?: string;
     errors: ErrorInfo[];
 }
 
-export interface FareZone {
-    name: string;
-    stops: Stop[];
-    prices: FareZonePrices[];
-}
-
 export interface FareZoneWithErrors {
     errors: ErrorInfo[];
-}
-
-export interface FareZonePrices {
-    price: string;
-    fareZones: string[];
 }
 
 export interface SelectedService {
@@ -559,10 +441,6 @@ export interface TicketPeriodWithInput extends TicketPeriod {
     dateInput: ProductDateInformation;
 }
 
-export interface BaseProduct {
-    salesOfferPackages: SalesOfferPackage[];
-}
-
 export interface ProductWithSalesOfferPackages extends BaseProduct {
     productName: string;
 }
@@ -582,16 +460,6 @@ export interface MultiOperatorInfoWithErrors {
     errors: ErrorInfo[];
 }
 
-export interface TimeBand {
-    startTime: string;
-    endTime: string;
-}
-
-export interface FullTimeRestriction {
-    day: string;
-    timeBands: TimeBand[];
-}
-
 export interface FullTimeRestrictionAttribute {
     fullTimeRestrictions: FullTimeRestriction[];
     errors: ErrorInfo[];
@@ -601,7 +469,7 @@ export interface TimeInput {
     timeInput: string;
     day: string;
 }
-export interface ProductDetails extends Product, BaseProduct {}
+
 export interface FareStage {
     stageName: string;
     prices: {
@@ -633,7 +501,7 @@ export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDe
 }
 
 export interface FareType {
-    fareType: 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
+    fareType: TicketType;
 }
 
 export interface FareTypeWithErrors {
@@ -846,9 +714,28 @@ export interface TxcSourceAttribute {
     hasTnds: boolean;
     hasBods: boolean;
 }
-export interface PeriodExpiry {
-    productValidity: string;
-    productEndTime: string;
-}
 
-export type { SalesOfferPackage };
+export type {
+    BasePointToPointTicket,
+    BaseProduct,
+    BaseTicket,
+    PointToPointPeriodProduct,
+    ReturnPeriodValidity,
+    CarnetDetails,
+    CarnetProductInfo,
+    FareZone,
+    FullTimeRestriction,
+    ReturnTicket,
+    SalesOfferPackage,
+    Stop,
+    TimeBand,
+    PeriodExpiry,
+    SchemeOperatorTicket,
+    SingleTicket,
+    PointToPointTicket,
+    ProductDetails,
+    Product,
+    PointToPointPeriodTicket,
+} from '../../shared/matchingJsonTypes';
+
+export { ExpiryUnit, CarnetExpiryUnit } from '../../shared/matchingJsonTypes';

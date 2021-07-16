@@ -31,8 +31,6 @@
       <RequestDetail>AllWithXref</RequestDetail>
     </RequestPolicy>
   </PublicationRequest>
-  <PublicationRefreshInterval>P1M</PublicationRefreshInterval>
-  <Description>Example of simple zonal pass fares.</Description>
   <dataObjects>
     <CompositeFrame version="1.0" id="epd:UK:BLAC:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@BLAC_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
       <Name>Fares for Blackpool Transport</Name>
@@ -106,21 +104,6 @@
                   <Name>Blackpool Transport</Name>
                   <Url>http://www.blackpooltransport.com</Url>
                 </Branding>
-              </values>
-            </ValueSet>
-            <ValueSet version="1.0" id="op:TypeOfTravelDocument" nameOfClass="TypeOfTravelDocument">
-              <values>
-                <TypeOfTravelDocument version="1.0" id="op:p-ticket">
-                  <Name>Bought on the bus with Cash</Name>
-                  <Description>Paper ticket</Description>
-                  <IsSmartCard>false</IsSmartCard>
-                  <MediaType>paperTicket</MediaType>
-                </TypeOfTravelDocument>
-                <TypeOfTravelDocument version="1.0" id="op:m-ticket">
-                  <Name>Stored on your mobile phone as m-tickets</Name>
-                  <IsSmartCard>false</IsSmartCard>
-                  <MediaType>mobileApp</MediaType>
-                </TypeOfTravelDocument>
               </values>
             </ValueSet>
           </typesOfValue>
@@ -274,8 +257,8 @@
                 </ValidBetween>
               </validityConditions>
               <Name>Blackpool Transport - BLAC_products - Fares for Multi Operator ticket</Name>
-              <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
+              <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
               <timeIntervals>
                 <TimeInterval version="1.0" id="op:Tariff@Product_1@1-day">
                   <Name>1 day</Name>
@@ -562,9 +545,7 @@
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_1_adult">
               <Name>Product 1 Pass - adult</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <typesOfFareProduct>
-                <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              </typesOfFareProduct>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@Product_1_adult@travel">
@@ -587,9 +568,7 @@
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_2_adult">
               <Name>Product 2 Pass - adult</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <typesOfFareProduct>
-                <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              </typesOfFareProduct>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@Product_2_adult@travel">
@@ -612,9 +591,7 @@
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_3_adult">
               <Name>Product 3 Pass - adult</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <typesOfFareProduct>
-                <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              </typesOfFareProduct>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@Product_3_adult@travel">
@@ -637,9 +614,7 @@
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_4_adult">
               <Name>Product 4 Pass - adult</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <typesOfFareProduct>
-                <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              </typesOfFareProduct>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@Product_4_adult@travel">
@@ -662,9 +637,7 @@
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_5_adult">
               <Name>Product 5 Pass - adult</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <typesOfFareProduct>
-                <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              </typesOfFareProduct>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@Product_5_adult@travel">

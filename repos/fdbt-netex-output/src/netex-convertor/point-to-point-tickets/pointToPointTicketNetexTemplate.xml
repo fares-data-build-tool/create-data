@@ -27,7 +27,6 @@
 			<RequestDetail>AllWithXref</RequestDetail>
 		</RequestPolicy>
 	</PublicationRequest>
-	<Description>Example  of simple point to point fares</Description>
 	<!-- =============== RESULTS =========== -->
 	<dataObjects>
 		<CompositeFrame version="1.0" id="operator@Products@Trip@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
@@ -45,12 +44,15 @@
 			</codespaces>
 			<!--==== FRAME DEFAULTS ==== -->
 			<FrameDefaults>
-				<!---  The default means that actually we could leave off all ids that belong to the  namespace. -->
+				<!---  The default means that actually we could leave off all ids that belong to the op: namespace. -->
 				<DefaultCodespaceRef ref="op_data" />
 				<DefaultDataSourceRef version="1.0" ref="op:src" />
 				<DefaultResponsibilitySetRef version="1.0" ref="op:tariffs" />
 				<DefaultCurrency>GBP</DefaultCurrency>
 			</FrameDefaults>
+            <prerequisites>
+                <CompositeFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc"/>
+            </prerequisites>
 			<frames>
 				<!--==== STEP 1:: Define some data regarding the operator - OPERATOR COMMON RESOURCES ====-->
 				<ResourceFrame version="1.0" id="operator" dataSourceRef="op:src" responsibilitySetRef="network_data">
@@ -146,126 +148,8 @@
 				<!--==== STEP 3:: THIS IS OUR FARE STAGES DEFINED IN HERE AND LINKED TO THE SERVICE FRAME ====-->
 				<FareFrame version="1.0" id="epd:UK:HCTY:SiteFrame_UK_PI_NETWORK:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="network_data">
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0" />
-					<!--==== Fare zones ===     NB These are just a guess from the map  and may be bogus.in places -->
+					<!--==== Fare zones === -->
 					<fareZones>
-						<FareZone version="1.0" id="fs@Bewbush_West">
-							<Name>Bewbush West (loop)</Name>
-							<members>
-								<ScheduledStopPointRef ref="naptan:4400CY0037" version="any">Brettingham Close, Bewbush</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0038" version="any">Neptune Close, Bewbush</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0039" version="any">Mercury Close, Bewbush</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0040" version="any">Sullivan Drive, Bewbush</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0042" version="any">Bewbush Roundabout, Bewbush</ScheduledStopPointRef>
-							</members>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
-						</FareZone>
-						<FareZone version="1.0" id="fs@Bewbush">
-							<Name>Neighboughood Centre</Name>
-							<members>
-								<ScheduledStopPointRef ref="naptan:4400CY0073">Dorsten Square</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0023">Colwyn Close, Bewbush</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0025">Ellman Road, Bewbush</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0047">Henshaw Close, Bewbush</ScheduledStopPointRef>
-							</members>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
-						</FareZone>
-						<FareZone version="1.0" id="fs@Gossops_Green">
-							<Name>Gossops Green Shops</Name>
-							<members>
-								<ScheduledStopPointRef ref="naptan:4400CY0037">Brettingham Close, Bewbush</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0038">Neptune Close, Bewbush</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0039">Mercury Close, Bewbush</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0040">Sullivan Drive, Bewbush</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0042">Bewbush Roundabout, Bewbush</ScheduledStopPointRef>
-							</members>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
-						</FareZone>
-						<FareZone version="1.0" id="fs@West_Green">
-							<Name>West Green Crawley Hospital/Apple Tree</Name>
-							<members>
-								<ScheduledStopPointRef ref="naptan:4400CY0050">Gossops Green Shops, Gossops Green</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0053">Craigans, Gossops Green</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0054">Overdene Drive, Gossops Green</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0119">The Mardens, Ifield</ScheduledStopPointRef>
-							</members>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
-						</FareZone>
-						<FareZone version="1.0" id="fs@Crawley">
-							<Name>Crawley Town Centre</Name>
-							<members>
-								<ScheduledStopPointRef ref="naptan:4400CY0330">Ambulance Station, West Green (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0334">The Apple Tree, West Green (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0336">Crawley Hospital, West Green (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0338">Smalls Lane, Crawley (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0339">Orchard Street, Crawley (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0305">Broadway,Crawley (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0292">Bus Station, rawley (WSusx)</ScheduledStopPointRef>
-							</members>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
-						</FareZone>
-						<FareZone version="1.0" id="fs@Southgate_Avenue">
-							<Name>Southgate Avenue North</Name>
-							<members>
-								<ScheduledStopPointRef ref="naptan:4400CY0514">Arora Hotel, Southgate (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0127">Southgate Avenue, Southgate (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0083">Southgate Parade, Southgate (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0081">Barrington Road, Southgate (WSusx)</ScheduledStopPointRef>
-							</members>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
-						</FareZone>
-						<FareZone version="1.0" id="fs@Southgate">
-							<Name>Southgate Wensleydale</Name>
-							<members>
-								<ScheduledStopPointRef ref="naptan:4400CY0032">Wensleydale, Southgate (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0034">Downland Place, Southgate (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0036">Clayton Hill, Southgate (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0077">Cheals Roundabout, Gossops Green</ScheduledStopPointRef>
-							</members>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
-						</FareZone>
-						<FareZone version="1.0" id="fs@Broadfield">
-							<Name>Broadfield (all stops)</Name>
-							<members>
-								<ScheduledStopPointRef ref="naptan:4400CY0124">Broadfield Drive, Broadfield (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0109">Sandringham Road, Broadfield (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0110">Seymour Schools, Broadfield (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0113">Trefoil Crescent, Broadfield (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0090">Pelham Drive, Broadfield (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0092">Creasys Drive North, Broadfield (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0277">Creasys Drive West, Broadfield (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0275">Creasys Drive South, Broadfield (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0448">Creasys Drive East,Broadfield (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0099">Bishopstone Walk, Broadfield (WSusx)</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400CY0102">William Morris Way, Broadfield (WSusx)</ScheduledStopPointRef>
-							</members>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
-						</FareZone>
-						<FareZone version="1.0" id="fs@Pease_Pottage">
-							<Name>Pease Pottage Black Swan</Name>
-							<members>
-								<ScheduledStopPointRef ref="naptan:4400HR0501">Parish Lane, Pease Pottage</ScheduledStopPointRef>
-								<ScheduledStopPointRef ref="naptan:4400HR0500">The Black Swan, Pease Pottage</ScheduledStopPointRef>
-							</members>
-							<types>
-								<TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0" />
-							</types>
-						</FareZone>
 					</fareZones>
 				</FareFrame>
 				<!--==== STEP 4:: DEFINE THE FARES TRIANGLE USING STAGES!!! ? CHECK THIS WITH STEVE PENN ====-->
@@ -282,85 +166,19 @@
 							<LineRef version="1.0" ref="" />
 							<TariffBasis>zoneToZone</TariffBasis>
 							<qualityStructureFactors></qualityStructureFactors>
-							<fareStructureElements>
-								<FareStructureElement version="1.0" id="Tariff@single@lines">
-									<Name></Name>
-									<distanceMatrixElements></distanceMatrixElements>
-									<GenericParameterAssignment version="1.0" order="01" id="Tariff@single@lines">
-										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access" />
-										<ValidityParameterAssignmentType>EQ</ValidityParameterAssignmentType>
-										<validityParameters>
-											<LineRef version="1.0" ref="Line_1" />
-										</validityParameters>
-									</GenericParameterAssignment>
-								</FareStructureElement>
-								<FareStructureElement id="Tariff@single@eligibility" version="1.0">
-									<Name>eligible user types</Name>
-									<GenericParameterAssignment order="1" id="Tariff@single@eligibility" version="1.0">
-										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible" />
-										<LimitationGroupingType>XOR</LimitationGroupingType>
-										<limitations>
-											<UserProfile version="1.0" id="anyone">
-												<Name>Anyone</Name>
-												<Description>Valid for any person</Description>
-												<UserType>anyone</UserType>
-											</UserProfile>
-										</limitations>
-									</GenericParameterAssignment>
-								</FareStructureElement>
-								<FareStructureElement id="Tariff@single@conditions_of_travel" version="1.0">
-									<Name>eligible user types</Name>
-									<GenericParameterAssignment version="1.0" order="1" id="Tariff@single@conditions_of_travel">
-										<Name>Conditions of travel</Name>
-										<TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use" />
-										<LimitationGroupingType>AND</LimitationGroupingType>
-										<limitations>
-											<RoundTrip version="1.0" id="Trip@travel@condition@direction">
-												<Name>Single Trip</Name>
-												<TripType>single</TripType>
-											</RoundTrip>
-											<FrequencyOfUse version="1.0" id="Trip@single@oneTrip">
-												<Name>One trip no transfers</Name>
-												<FrequencyOfUseType>none</FrequencyOfUseType>
-												<MaximalFrequency>1</MaximalFrequency>
-											</FrequencyOfUse>
-										</limitations>
-									</GenericParameterAssignment>
-								</FareStructureElement>
-							</fareStructureElements>
+							<fareStructureElements></fareStructureElements>
 						</Tariff>
 					</tariffs>
 					<!--==== Fare Usage Parameters ==== -->
 					<!--==== Fare Product ==== -->
 					<fareProducts>
-						<PreassignedFareProduct version="1.0" id="Trip@single">
-							<Name> Single Ticket</Name>
-							<ChargingMomentRef version="fxc:v1.0" ref="fxc:prepayment" />
-							<TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single" />
-							<!--==== VALIDABLE ELEMENTs ==== -->
-							<validableElements>
-								<ValidableElement version="1.0" id="Trip@single@travel">
-									<Name>Single ride</Name>
-									<fareStructureElements>
-										<FareStructureElementRef version="1.0" ref="Tariff@single@lines" />
-										<FareStructureElementRef version="1.0" ref="Tariff@single@eligibility" />
-										<FareStructureElementRef version="1.0" ref="Tariff@single@conditions_of_travel" />
-									</fareStructureElements>
-								</ValidableElement>
-							</validableElements>
-							<!--==== ACCESS RIGHTs ===== -->
-							<accessRightsInProduct>
-								<AccessRightInProduct version="1.0" id="Trip@single" order="1">
-									<ValidableElementRef version="1.0" ref="Trip@single@travel" />
-								</AccessRightInProduct>
-							</accessRightsInProduct>
-						</PreassignedFareProduct>
+						<PreassignedFareProduct version="1.0" id=""></PreassignedFareProduct>
 						<!--==== Other Products ==== -->
 					</fareProducts>
 					<!--==== Sales Packages==== -->
 					<salesOfferPackages></salesOfferPackages>
 				</FareFrame>
-				<FareFrame version="1.0" id="epd:UK:HCTY:FareFrame_UK_PI_FARE_PRICE:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
+				<FareFrame version="1.0" id="" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
 					<Name></Name>
 					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" version="fxc:v1.0" />
 					<FrameDefaults>
@@ -371,170 +189,17 @@
 						<FareFrameRef version="1.0" ref="" />
 					</prerequisites>
 					<!--==== Fare Prices ==== -->
-					<priceGroups>
-						<!--  === PRICE BANDS  === -->
-						<PriceGroup version="1.0" id="price_band_A">
-							<members>
-								<GeographicalIntervalPrice version="1.0" id="price_band_A@adult">
-									<Amount>1.60</Amount>
-								</GeographicalIntervalPrice>
-								<GeographicalIntervalPrice version="1.0" id="price_band_A@child">
-									<Name>Child price -  derived from the adult</Name>
-									<Amount>0.80</Amount>
-									<GeographicalIntervalPriceRef version="1.0" ref="price_band_A@adult" />
-									<DiscountingRuleRef version="1.0" ref="half_price" />
-								</GeographicalIntervalPrice>
-							</members>
-						</PriceGroup>
-						<PriceGroup version="1.0" id="price_band_B">
-							<members>
-								<GeographicalIntervalPrice version="1.0" id="price_band_B@adult">
-									<Amount>2.40</Amount>
-								</GeographicalIntervalPrice>
-								<GeographicalIntervalPrice version="1.0" id="price_band_B@child">
-									<Name>Child price -  derived from the adult</Name>
-									<Amount>1.60</Amount>
-									<GeographicalIntervalPriceRef version="1.0" ref="price_band_B@adult" />
-									<DiscountingRuleRef version="1.0" ref="half_price" />
-								</GeographicalIntervalPrice>
-							</members>
-						</PriceGroup>
-					</priceGroups>
-					<fareTables>
-						<FareTable version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult">
-							<Name>Bewbush West - Crawley - Broadfield/Pease Pottage</Name>
-							<Description>Adult Single Fares - Organised as a fare triangle</Description>
-							<pricesFor>
-								<PreassignedFareProductRef version="1.0" ref="Trip@single" />
-								<SalesOfferPackageRef version="1.0" ref="Trip@single-SOP@p-ticket" />
-								<UserProfileRef version="1.0" ref="adult" />
-							</pricesFor>
-							<usedIn>
-								<TariffRef version="1.0" ref="Tariff@single@Line_1" />
-							</usedIn>
-							<specifics>
-								<LineRef ref="Line_1" />
-								<TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket" />
-							</specifics>
-							<columns>
-								<!-- <FareTableColumn version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@c1@Bewbush_West" order="1">
-									<Name>Bewbush West (loop)</Name>
-								</FareTableColumn>
-								<FareTableColumn version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@c2@Bewbush" order="2">
-									<Name>Bewbush Neighbourhood Centre</Name>
-								</FareTableColumn>
-								<FareTableColumn version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@c3@Gossops_Green" order="3">
-									<Name>Gossops Green Shops</Name>
-								</FareTableColumn>
-								<FareTableColumn version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@c4@West_Green" order="4">
-									<Name>West Green Crawley Hospital/Apple Tree</Name>
-								</FareTableColumn>
-								<FareTableColumn version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@c5@Crawley" order="5">
-									<Name> Crawley Town Centre</Name>
-								</FareTableColumn>
-								<FareTableColumn version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@c6@Southgate_Avenue" order="6">
-									<Name>Southgate Avenue North</Name>
-								</FareTableColumn>
-								<FareTableColumn version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@c7@Southgate" order="7">
-									<Name>Southgate Avenue Wensleydale</Name>
-								</FareTableColumn>
-								<FareTableColumn version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@c8@Broadfield" order="8">
-									<Name>Broadfield (all stops)</Name>
-								</FareTableColumn> -->
-							</columns>
-							<rows>
-								<!-- <FareTableRow version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@r1@Pease_Pottage" order="1"/>
-								<FareTableRow version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@r2@Broadfield" order="2"/>
-								<FareTableRow version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@r3@Southgate" order="3"/>
-								<FareTableRow version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@r4@Southgate_Avenue" order="4"/>
-								<FareTableRow version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@r5@Crawley" order="5"/>
-								<FareTableRow version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@r6@West_Green" order="6"/>
-								<FareTableRow version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@r7@Gossops_Green" order="7"/>
-								<FareTableRow version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@r8@Bewbush" order="8"/> -->
-							</rows>
-							<includes>
-								<!-- <FareTable version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West">
-									<Name>Bewbush West (loop)</Name>
-									<Description>Column 1</Description>
-									<cells>
-										<Cell version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West" order="1">
-											<DistanceMatrixElementPrice version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Bewbush">
-												<GeographicalIntervalPriceRef version="1.0" ref="price_band_A@adult"/>
-												<DistanceMatrixElementRef version="1.0" ref="Bewbush_West+Bewbush"/>
-											</DistanceMatrixElementPrice>
-											<ColumnRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@c1@Bewbush_West"/>
-											<RowRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@r8@Bewbush"/>
-										</Cell>
-										<Cell version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West" order="2">
-											<DistanceMatrixElementPrice version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Gossops_Green">
-												<GeographicalIntervalPriceRef version="1.0" ref="price_band_B@adult"/>
-												<DistanceMatrixElementRef version="1.0" ref="Bewbush_West+Gossops_Green"/>
-											</DistanceMatrixElementPrice>
-											<ColumnRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@c1@Bewbush_West"/>
-											<RowRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@r7@Gossops_Green"/>
-										</Cell>
-										<Cell version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West" order="3">
-											<DistanceMatrixElementPrice version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+West_Green">
-												<GeographicalIntervalPriceRef version="1.0" ref="price_band_B@adult"/>
-												<DistanceMatrixElementRef version="1.0" ref="Bewbush_West+West_Green"/>
-											</DistanceMatrixElementPrice>
-											<ColumnRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@c1@Bewbush_West"/>
-											<RowRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@r6@West_Green"/>
-										</Cell>
-										<Cell version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West" order="4">
-											<DistanceMatrixElementPrice version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Crawley">
-												<GeographicalIntervalPriceRef version="1.0" ref="price_band_B@adult"/>
-												<DistanceMatrixElementRef version="1.0" ref="Bewbush_West+Crawley"/>
-											</DistanceMatrixElementPrice>
-											<ColumnRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@c1@Bewbush_West"/>
-											<RowRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@r5@Crawley"/>
-										</Cell>
-										<Cell version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West" order="5">
-											<DistanceMatrixElementPrice version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Southgate_Avenue">
-												<GeographicalIntervalPriceRef version="1.0" ref="price_band_B@adult"/>
-												<DistanceMatrixElementRef version="1.0" ref="Bewbush_West+Southgate_Avenue"/>
-											</DistanceMatrixElementPrice>
-											<ColumnRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@c1@Bewbush_West"/>
-											<RowRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@r4@Southgate_Avenue"/>
-										</Cell>
-										<Cell version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West" order="6">
-											<DistanceMatrixElementPrice version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Southgate">
-												<GeographicalIntervalPriceRef version="1.0" ref="price_band_B@adult"/>
-												<DistanceMatrixElementRef version="1.0" ref="Bewbush_West+Southgate"/>
-											</DistanceMatrixElementPrice>
-											<ColumnRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@c1@Bewbush_West"/>
-											<RowRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@r3@Southgate"/>
-										</Cell>
-										<Cell version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West" order="7">
-											<DistanceMatrixElementPrice version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Broadfield">
-												<GeographicalIntervalPriceRef version="1.0" ref="price_band_B@adult"/>
-												<DistanceMatrixElementRef version="1.0" ref="Bewbush_West+Broadfield"/>
-											</DistanceMatrixElementPrice>
-											<ColumnRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@c1@Bewbush_West"/>
-											<RowRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@r2@Broadfield"/>
-										</Cell>
-										<Cell version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West" order="8">
-											<DistanceMatrixElementPrice version="1.0" id="Trip@single-SOP@p-ticket@Line_1@adult@Bewbush_West+Pease_Pottage">
-												<GeographicalIntervalPriceRef version="1.0" ref="price_band_B@adult"/>
-												<DistanceMatrixElementRef version="1.0" ref="Bewbush_West+Pease_Pottage"/>
-											</DistanceMatrixElementPrice>
-											<ColumnRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@c1@Bewbush_West"/>
-											<RowRef versionRef="1" ref="Trip@single-SOP@p-ticket@Line_1@adult@r1@Pease_Pottage"/>
-										</Cell>
-									</cells>
-								</FareTable> -->
-							</includes>
-						</FareTable>
-					</fareTables>
+					<priceGroups></priceGroups>
+					<fareTables></fareTables>
 				</FareFrame>
 			</frames>
 		</CompositeFrame>
 		<!--   ========== UK BUs Fares Generic Metadata ========== -->
 		<CompositeFrame id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
-			<ValidBetween>
-				<FromDate>2019-05-01T00:00:00</FromDate>
-				<ToDate>2022-12-31T12:00:00</ToDate>
-			</ValidBetween>
+            <ValidBetween>
+                <FromDate>2019-05-01T00:00:00</FromDate>
+                <ToDate>2022-12-31T12:00:00</ToDate>
+            </ValidBetween>
 			<Name>UK FXCP Passenger Information Profile common resources</Name>
 			<TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" />
 			<codespaces>
@@ -557,7 +222,7 @@
 			<frames>
 				<!-- === Profile Frame Types ===  -->
 				<ResourceFrame id="fxc:UK:DFT:ResourceFrame_UK_PI_METADATA_FRAMES:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
-					<Name>UK FXCP  Fare profile Frame types and codepaces</Name>
+					<Name>UK FXCP Fare profile Frame types and codespaces</Name>
 					<codespaces>
 						<Codespace id="fxc_metadata">
 							<Xmlns>fxc</Xmlns>
@@ -567,7 +232,7 @@
 						<Codespace id="epd_data">
 							<Xmlns>epd</Xmlns>
 							<XmlnsUrl>http://fnetex-cen.eu/epd</XmlnsUrl>
-							<Description>European Passenger Information profile data -use for UK frame names</Description>
+							<Description>European Passenger Information profile data - use for UK frame names</Description>
 						</Codespace>
 					</codespaces>
 					<dataSources>
@@ -651,15 +316,15 @@
 							<values>
 								<!-- === PAYLOAD  ==== -->
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_COMMON:FXCP">
-									<Name>UK Bus Profile fare common paramaters</Name>
+									<Name>UK Bus Profile Fare Common Parameters</Name>
 									<FrameClassRef nameOfClass="FareFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP">
-									<Name>UK Bus Profile fare network</Name>
+									<Name>UK Bus Profile Fare Network</Name>
 									<FrameClassRef nameOfClass="ServiceFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP">
-									<Name>UK FXCP Fare Porducts Frame</Name>
+									<Name>UK FXCP Fare Products Frame</Name>
 									<FrameClassRef nameOfClass="FareFrame" />
 								</TypeOfFrame>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP">
@@ -687,7 +352,7 @@
 							</values>
 						</ValueSet>
 						<ValueSet version="fxc:v1.0" id="fxc:Types_of_Transaction_Frame" classOfValues="TypeOfFrame">
-							<Name>Types of UK Trasnaction  Frame</Name>
+							<Name>Types of UK Transaction Frame</Name>
 							<values>
 								<TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_TRANSACTIONS:FXCP">
 									<Name>UK Bus Profile Operator sample transactions</Name>
@@ -1569,31 +1234,6 @@
 									<FrameClassRef nameOfClass="SiteeFrame" />
 									<classes>
 										<ClassInFrame nameOfClass="TopographicPlace">
-											<!-- 	 TopographicPlace maps to  a NPTG Locality 
-<NptgLocality Status="active" Modification="delete" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" ModificationDateTime="2001-12-17T09:30:47Z" id="E0000003" RevisionNumber="1">
-			<NptgLocalityCode>E0000003</NptgLocalityCode>
-			<Descriptor Modification="delete" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" id="E0000001-1" RevisionNumber="1">
-				<LocalityName>Locality Three</LocalityName>
-				<ShortName>Locality 3</ShortName>
-				<Qualify>
-					<QualifierName>Loc 22 </QualifierName>
-					<NptgLocalityRef>E0000022</NptgLocalityRef>
-				</Qualify>
-			</Descriptor> 
-			<ParentNptgLocalityRef Status="pending" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" RevisionNumber="1">E0000022</ParentNptgLocalityRef>
-			<AdministrativeAreaRef>101</AdministrativeAreaRef>
-			<NptgDistrictRef>111</NptgDistrictRef>
-			<AdjacentLocalities>
-				<NptgLocalityRef Status="active" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" RevisionNumber="1">E0000001</NptgLocalityRef>
-			</AdjacentLocalities>
-			<SourceLocalityType> Pa</SourceLocalityType>
-			<LocalityClassification> village</LocalityClassification>
-			<Location id="NMTOKEN" Precision="10m">
-				<GridType>UKOS</GridType>
-				<Easting>999999</Easting>
-				<Northing>1999999</Northing>
-			</Location> 
-		</NptgLocality>			-->
 											<Mandatory>required</Mandatory>
 											<attributes>
 												<ClassAttributeInFrame name="_id">
@@ -1898,26 +1538,6 @@
 											</relationships>
 										</ClassInFrame>
 										<ClassInFrame nameOfClass="TransportAdministrativeZone">
-											<!-- Maps some aspects of  NPTG Admin Area								
-	<AdministrativeArea Modification="new" Status="active" DataRightRef="DR01" CreationDateTime="2001-12-17T09:30:47Z" ModificationDateTime="2001-12-17T09:30:47Z" BaselineVersion="1" RevisionNumber="1">
-					<AdministrativeAreaCode>101</AdministrativeAreaCode>
-					<AtcoAreaCode>001</AtcoAreaCode>
-					<Name>Nptg Admin area 101</Name>
-					<ShortName>Nptg Admin area 101 short Name</ShortName>
-
-
-
-		<MaximumLengthForShortNames>24</MaximumLengthForShortNames>   USE KEY LIST FOR MAPPING
-					<National>false</National>       represent by TypeOf 
-					<NaptanPrefixes>   <CodespaceAssignment><CodePrefix>
-						<AlphaPrefix>333</AlphaPrefix>
-					</NaptanPrefixes>
-					<CleardownRange>   
-						<CleardownStart>2</CleardownStart>   <CodespaceAssignment><StartValue>
-						<CleardownEnd>4</CleardownEnd>  <CodespaceAssignment><EndValue>
-					</CleardownRange>
-
-  -->
 											<Mandatory>required</Mandatory>
 											<attributes>
 												<ClassAttributeInFrame name="_id">
@@ -1979,15 +1599,6 @@
 											</relationships>
 										</ClassInFrame>
 										<ClassInFrame nameOfClass="CodespaceAssignment">
-											<!--   NPTG  <AdministrativeArea 	 
-							........
-					<NaptanPrefixes>   <CodespaceAssignment><CodePrefix>
-						<AlphaPrefix>333</AlphaPrefix>
-					</NaptanPrefixes>
-					<CleardownRange>   
-						<CleardownStart>2</CleardownStart>   <CodespaceAssignment><StartValue>
-						<CleardownEnd>4</CleardownEnd>  <CodespaceAssignment><EndValue>
-					</CleardownRange> -->
 											<Mandatory>optional</Mandatory>
 											<attributes>
 												<ClassAttributeInFrame name="_id">

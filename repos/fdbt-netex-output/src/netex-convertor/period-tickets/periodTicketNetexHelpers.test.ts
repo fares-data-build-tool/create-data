@@ -462,11 +462,9 @@ describe('periodTicketNetexHelpers', () => {
                 ProductType: expect.objectContaining({ $t: expect.any(String) }),
                 accessRightsInProduct: expect.any(Object),
                 id: expect.any(String),
-                typesOfFareProduct: expect.objectContaining({
-                    TypeOfFareProductRef: expect.objectContaining({
-                        ref: expect.any(String),
-                        version: expect.any(String),
-                    }),
+                TypeOfFareProductRef: expect.objectContaining({
+                    ref: expect.any(String),
+                    version: expect.any(String),
                 }),
                 validableElements: expect.any(Object),
                 version: '1.0',
@@ -498,11 +496,9 @@ describe('periodTicketNetexHelpers', () => {
                 ProductType: expect.objectContaining({ $t: expect.any(String) }),
                 accessRightsInProduct: expect.any(Object),
                 id: expect.any(String),
-                typesOfFareProduct: expect.objectContaining({
-                    TypeOfFareProductRef: expect.objectContaining({
-                        ref: expect.any(String),
-                        version: expect.any(String),
-                    }),
+                TypeOfFareProductRef: expect.objectContaining({
+                    ref: expect.any(String),
+                    version: expect.any(String),
                 }),
                 validableElements: expect.any(Object),
                 version: '1.0',
@@ -526,6 +522,8 @@ describe('periodTicketNetexHelpers', () => {
                 id: expect.any(String),
                 version: '1.0',
             };
+
+            if (!result) throw Error('result was not defined');
 
             result.forEach(timeInterval => {
                 expect(timeInterval).toEqual(expectedFormat);

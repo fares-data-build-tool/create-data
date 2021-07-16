@@ -11,6 +11,7 @@ import {
     returnNonCircularTicket,
     multiOperatorGeoZoneTicket,
     multiOperatorMultiServiceTicket,
+    pointToPointPeriodTicket,
 } from '../test-data/matchingData';
 import mockS3Event from './test-data/mockS3Event';
 import * as s3 from '../data/s3';
@@ -363,5 +364,9 @@ describe('buildNocList', () => {
     it('should return an array of nocs for a multi operator multi service ticket', () => {
         const result = buildNocList(multiOperatorMultiServiceTicket);
         expect(result).toStrictEqual(['WBTR', 'DCCL', 'BLAC']);
+    });
+    it('should return an array of nocs for a point to point period ticket', () => {
+        const result = buildNocList(pointToPointPeriodTicket);
+        expect(result).toStrictEqual(['BLAC']);
     });
 });

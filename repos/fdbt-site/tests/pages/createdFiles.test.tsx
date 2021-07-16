@@ -1,9 +1,9 @@
-import * as React from 'react';
 import { shallow } from 'enzyme';
-import CreatedFiles, { getServerSideProps, buildName } from '../../src/pages/createdFiles';
-import { S3NetexFile } from '../../src/interfaces';
+import * as React from 'react';
 import * as s3 from '../../src/data/s3';
-import { getMockContext, expectedSingleTicket } from '../testData/mockData';
+import { PeriodGeoZoneTicket, S3NetexFile } from '../../src/interfaces';
+import CreatedFiles, { buildName, getServerSideProps } from '../../src/pages/createdFiles';
+import { expectedSingleTicket, getMockContext } from '../testData/mockData';
 
 jest.mock('../../src/data/s3.ts');
 
@@ -199,11 +199,11 @@ describe('pages', () => {
 
         describe('buildName', () => {
             it('includes the NOC if its there', () => {
-                const file = {
+                const file: PeriodGeoZoneTicket = {
                     operatorName: '',
                     products: [],
                     nocCode: 'NOC',
-                    type: 'Single',
+                    type: 'single',
                     passengerType: 'Child',
                     email: '',
                     uuid: '',
@@ -211,14 +211,6 @@ describe('pages', () => {
                     ticketPeriod: {
                         startDate: '',
                         endDate: '',
-                        dateInput: {
-                            startDateDay: '',
-                            startDateMonth: '',
-                            startDateYear: '',
-                            endDateDay: '',
-                            endDateMonth: '',
-                            endDateYear: '',
-                        },
                     },
                     zoneName: 'The Test Zone',
                     stops: [],
@@ -226,11 +218,11 @@ describe('pages', () => {
                 expect(buildName(file, false)).toBe('NOC - Single - Child - The Test Zone');
             });
             it('does not include the NOC if its not there', () => {
-                const file = {
+                const file: PeriodGeoZoneTicket = {
                     operatorName: '',
                     products: [],
                     nocCode: '',
-                    type: 'Single',
+                    type: 'single',
                     passengerType: 'Child',
                     email: '',
                     uuid: '',
@@ -238,14 +230,6 @@ describe('pages', () => {
                     ticketPeriod: {
                         startDate: '',
                         endDate: '',
-                        dateInput: {
-                            startDateDay: '',
-                            startDateMonth: '',
-                            startDateYear: '',
-                            endDateDay: '',
-                            endDateMonth: '',
-                            endDateYear: '',
-                        },
                     },
                     zoneName: 'The Test Zone',
                     stops: [],

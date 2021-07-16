@@ -27,7 +27,7 @@ import {
     BaseProduct,
     PointToPointCarnetProductDetails,
     isHybridTicket,
-} from '../types/index';
+} from '../types';
 
 import {
     getBaseSchemeOperatorInfo,
@@ -244,30 +244,6 @@ export const replaceIWBusCoNocCode = (nocCode: string): string => {
 };
 
 export const getCoreData = (operators: Operator[], ticket: Ticket): CoreData => {
-    if (isPointToPointTicket(ticket)) {
-        const baseOperatorInfo = operators.find(operator => operator.nocCode === replaceIWBusCoNocCode(ticket.nocCode));
-        if (!baseOperatorInfo) {
-            throw new Error('Could not find base operator information for point to point ticket.');
-        }
-        return {
-            opIdNocFormat: `noc:${operators[0].opId}`,
-            nocCodeFormat: `noc:${ticket.nocCode}`,
-            currentDate: new Date(Date.now()),
-            website: getCleanWebsite(operators[0].website),
-            brandingId: `op:${ticket.nocCode}@brand`,
-            operatorIdentifier: ticket.nocCode,
-            baseOperatorInfo: [baseOperatorInfo],
-            placeholderGroupOfProductsName: '',
-            ticketUserConcat: `${ticket.type}_${ticket.passengerType}`,
-            operatorPublicNameLineNameFormat: `${operators[0].operatorPublicName} ${ticket.lineName}`,
-            nocCodeLineNameFormat: `${ticket.nocCode}_${ticket.lineName}`,
-            lineIdName: ticket.lineId ?? `Line_${ticket.lineName}`,
-            lineName: ticket.lineName,
-            operatorName: ticket.operatorShortName,
-            ticketType: ticket.type,
-            isCarnet: 'carnetDetails' in ticket.products[0],
-        };
-    }
     const baseOperatorInfo = isSchemeOperatorTicket(ticket)
         ? getBaseSchemeOperatorInfo(ticket)
         : operators.find(operator => operator.nocCode === replaceIWBusCoNocCode(ticket.nocCode));
@@ -292,12 +268,16 @@ export const getCoreData = (operators: Operator[], ticket: Ticket): CoreData => 
         brandingId: `op:${operatorIdentifier}@brand`,
         operatorIdentifier,
         baseOperatorInfo: [baseOperatorInfo],
-        placeholderGroupOfProductsName: `${operatorIdentifier}_products`,
+        placeholderGroupOfProductsName: isPointToPointTicket(ticket) ? '' : `${operatorIdentifier}_products`,
         ticketUserConcat: `${ticket.type}_${ticket.passengerType}`,
-        operatorPublicNameLineNameFormat: '',
-        nocCodeLineNameFormat: '',
-        lineIdName: '',
-        lineName: '',
+        operatorPublicNameLineNameFormat:
+            'lineName' in ticket && 'operatorPublicName' in baseOperatorInfo
+                ? `${baseOperatorInfo.operatorPublicName} ${ticket.lineName}`
+                : '',
+        nocCodeLineNameFormat: 'lineName' in ticket ? `${operatorIdentifier}_${ticket.lineName}` : '',
+        lineIdName:
+            'lineId' in ticket && ticket.lineId ? ticket.lineId : 'lineName' in ticket ? `Line_${ticket.lineName}` : '',
+        lineName: 'lineName' in ticket ? ticket.lineName : '',
         operatorName: isSchemeOperatorTicket(ticket) ? ticket.schemeOperatorName : ticket.operatorName,
         ticketType: ticket.type,
         isCarnet: 'carnetDetails' in ticket.products[0],
@@ -365,10 +345,19 @@ export const getFareStructuresElements = (
         fareStructureElements.push(getGroupElement(ticket));
     }
 
-    if (isPointToPointTicket(ticket)) {
+    if ('lineName' in ticket) {
         fareStructureElements.push(getLinesElement(ticket, lineName));
         fareStructureElements.push(getEligibilityElement(ticket));
-        fareStructureElements.push(getPointToPointConditionsElement(ticket));
+
+        // P2P Periods have one product with duration details attached
+        if (ticket.type === 'period') {
+            fareStructureElements.push(
+                getDurationElement(ticket, ticket.products[0]),
+                getPeriodConditionsElement(ticket, ticket.products[0]),
+            );
+        } else {
+            fareStructureElements.push(getPointToPointConditionsElement(ticket));
+        }
 
         if (ticket.timeRestriction.length > 0) {
             fareStructureElements.push(getPointToPointAvailabilityElement(ticket));
@@ -377,7 +366,7 @@ export const getFareStructuresElements = (
         return fareStructureElements;
     }
 
-    const productFareStructureElements = ticket.products.flatMap((product: ProductDetails | FlatFareProductDetails) => {
+    const productFareStructureElements = ticket.products.flatMap(product => {
         let availabilityElementId = '';
         let validityParametersObject = {};
         const hasTimeRestriction = !!ticket.timeRestriction && ticket.timeRestriction.length > 0;
@@ -395,7 +384,7 @@ export const getFareStructuresElements = (
             validityParametersObject = { LineRef: getLineRefList(ticket) };
         }
 
-        if (isProductDetails(product) && (isGeoZoneTicket(ticket) || isMultiServiceTicket(ticket))) {
+        if ('productDuration' in product && (isGeoZoneTicket(ticket) || isMultiServiceTicket(ticket))) {
             return [
                 getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
                 getDurationElement(ticket, product),

@@ -188,7 +188,7 @@ describe('userData', () => {
                 },
             });
             const result = getSingleTicketJson(req, res);
-            expect(result).toStrictEqual(expectedSingleTicket);
+            expect(result).toEqual(expectedSingleTicket);
         });
 
         it('should correctly add carnet detail', () => {
@@ -226,7 +226,7 @@ describe('userData', () => {
                 },
             });
             const result = getSingleTicketJson(req, res);
-            expect(result).toStrictEqual(expectedCarnetSingleTicket);
+            expect(result).toEqual(expectedCarnetSingleTicket);
         });
     });
 
@@ -262,7 +262,7 @@ describe('userData', () => {
                 },
             });
             const result = getReturnTicketJson(req, res);
-            expect(result).toStrictEqual(expectedNonCircularReturnTicket);
+            expect(result).toEqual(expectedNonCircularReturnTicket);
         });
 
         it('should return a ReturnTicket object for a circular journey', () => {
@@ -293,7 +293,7 @@ describe('userData', () => {
                 },
             });
             const result = getReturnTicketJson(req, res);
-            expect(result).toStrictEqual(expectedCircularReturnTicket);
+            expect(result).toEqual(expectedCircularReturnTicket);
         });
 
         it('should correctly add carnet detail', () => {
@@ -334,7 +334,7 @@ describe('userData', () => {
                 },
             });
             const result = getReturnTicketJson(req, res);
-            expect(result).toStrictEqual(expectedCarnetReturnTicket);
+            expect(result).toEqual(expectedCarnetReturnTicket);
         });
     });
 
@@ -383,7 +383,7 @@ describe('userData', () => {
                 },
             });
             const result = getPointToPointPeriodJson(req, res);
-            expect(result).toStrictEqual(expectedPointToPointPeriodTicket);
+            expect(result).toEqual(expectedPointToPointPeriodTicket);
         });
     });
 

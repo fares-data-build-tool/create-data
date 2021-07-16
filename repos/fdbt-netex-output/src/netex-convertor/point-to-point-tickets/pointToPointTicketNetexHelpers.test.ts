@@ -517,7 +517,11 @@ describe('Netex Helpers', () => {
                 },
                 version: '1.0',
             };
-            const actualPreassignedFareProduct = netexHelpers.getPreassignedFareProduct(ticket);
+            const actualPreassignedFareProduct = netexHelpers.getPreassignedFareProduct(ticket, [
+                { id: '@lines' },
+                { id: '@eligibility' },
+                { id: '@conditions_of_travel' },
+            ]);
             expect(actualPreassignedFareProduct).toEqual(expectedPreassignedFareProduct);
         });
     });

@@ -1,4 +1,10 @@
-import { SalesOfferPackage } from '../../shared/matchingJsonTypes';
+import {
+    PointToPointTicket, BaseTicket, PointToPointCarnetProductDetails,
+    PointToPointPeriodTicket,
+    ReturnTicket,
+    SalesOfferPackage,
+    SchemeOperatorTicket, SingleTicket
+} from '../../shared/matchingJsonTypes';
 import { NetexObject } from '../netex-convertor/sharedHelpers';
 
 // Misc
@@ -73,7 +79,8 @@ export type SpecificTicket =
     | FlatFareTicket
     | SchemeOperatorGeoZoneTicket
     | SchemeOperatorFlatFareTicket
-    | MultiOperatorGeoZoneTicket;
+    | MultiOperatorGeoZoneTicket
+    | PointToPointPeriodTicket;
 
 export type Ticket = SpecificTicket &
     Partial<{
@@ -89,21 +96,6 @@ export interface TimeBand {
 export interface FullTimeRestriction {
     day: string;
     timeBands: TimeBand[];
-}
-
-export interface BaseTicket {
-    nocCode: string;
-    type: string;
-    passengerType: string;
-    ageRange?: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proof?: string;
-    proofDocuments?: string[];
-    email: string;
-    uuid: string;
-    timeRestriction: FullTimeRestriction[];
-    ticketPeriod: TicketPeriod;
 }
 
 export interface TicketPeriod {
@@ -130,27 +122,6 @@ export type GroupTicket = (PointToPointTicket | PeriodTicket) & {
     };
 };
 
-export type PointToPointTicket = SingleTicket | ReturnTicket;
-
-export interface BasePointToPointTicket extends BaseTicket {
-    operatorShortName: string;
-    lineName: string;
-    lineId: string;
-    serviceDescription: string;
-    products: (BaseProduct | PointToPointCarnetProductDetails)[];
-}
-
-export interface SingleTicket extends BasePointToPointTicket {
-    fareZones: FareZone[];
-    termTime: boolean;
-}
-
-export interface ReturnTicket extends BasePointToPointTicket {
-    inboundFareZones: FareZone[];
-    outboundFareZones: FareZone[];
-    returnPeriodValidity?: ReturnPeriodValidity;
-}
-
 export interface ReturnPeriodValidity {
     amount: string;
     typeOfDuration: TypeOfDuration;
@@ -169,7 +140,7 @@ export interface FareZonePrices {
     fareZones: string[];
 }
 
-export type PeriodTicket = GeoZoneTicket | MultipleServicesTicket | HybridPeriodTicket;
+export type PeriodTicket = GeoZoneTicket | MultipleServicesTicket | HybridPeriodTicket | PointToPointPeriodTicket;
 
 export interface BasePeriodTicket extends BaseTicket {
     operatorName: string;
@@ -220,11 +191,6 @@ export interface BaseProduct {
     salesOfferPackages: SalesOfferPackage[];
 }
 
-export interface PointToPointCarnetProductDetails extends BaseProduct {
-    productName: string;
-    carnetDetails: CarnetDetails;
-}
-
 export interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
@@ -237,23 +203,6 @@ export interface ProductDetails extends BaseProduct {
     productDuration: string;
     productValidity: string;
     carnetDetails?: CarnetDetails;
-}
-
-export interface SchemeOperatorTicket {
-    schemeOperatorName: string;
-    schemeOperatorRegionCode: string;
-    type: string;
-    passengerType: string;
-    ageRange?: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proof?: string;
-    proofDocuments?: string[];
-    email: string;
-    uuid: string;
-    timeRestriction?: FullTimeRestriction[];
-    ticketPeriod: TicketPeriod;
-    products: (ProductDetails | FlatFareProductDetails)[];
 }
 
 export interface SchemeOperatorGeoZoneTicket extends SchemeOperatorTicket {
@@ -291,11 +240,11 @@ export interface CarnetDetails {
 export const isPointToPointTicket = (ticketData: Ticket): ticketData is PointToPointTicket =>
     ticketData.type === 'single' || ticketData.type === 'return';
 
-export const isReturnTicket = (ticket: PointToPointTicket): ticket is ReturnTicket =>
+export const isReturnTicket = (ticket: Ticket): ticket is ReturnTicket | PointToPointPeriodTicket =>
     ((ticket as ReturnTicket).inboundFareZones !== undefined && (ticket as ReturnTicket).inboundFareZones.length > 0) ||
     ((ticket as ReturnTicket).outboundFareZones !== undefined && (ticket as ReturnTicket).outboundFareZones.length > 0);
 
-export const isSingleTicket = (ticket: PointToPointTicket): ticket is SingleTicket =>
+export const isSingleTicket = (ticket: Ticket): ticket is SingleTicket =>
     (ticket as SingleTicket).fareZones !== undefined && (ticket as SingleTicket).fareZones.length > 0;
 
 export const isGeoZoneTicket = (ticket: Ticket): ticket is GeoZoneTicket =>
@@ -350,7 +299,7 @@ export const isGroupTicket = (
 ): ticket is GroupTicket => (ticket as GroupTicket).groupDefinition !== undefined;
 
 export const isProductDetails = (
-    product: ProductDetails | FlatFareProductDetails | PointToPointCarnetProductDetails,
+    product: ProductDetails | FlatFareProductDetails | PointToPointCarnetProductDetails | BaseProduct,
 ): product is ProductDetails => (product as ProductDetails).productDuration !== undefined;
 
 export const isBaseSchemeOperatorInfo = (operatorInfo: Operator | SchemeOperator): operatorInfo is SchemeOperator =>
@@ -520,4 +469,4 @@ export interface OperatorRef {
 }
 
 // eslint-disable-next-line prettier/prettier
-export type { SalesOfferPackage };
+export type { SalesOfferPackage, PointToPointCarnetProductDetails, ReturnTicket, BaseTicket, SchemeOperatorTicket, SingleTicket, PointToPointTicket };

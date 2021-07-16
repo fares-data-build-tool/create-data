@@ -142,6 +142,11 @@ generate-hybrid-period:
 
 generate-validate-hybrid-period: generate-hybrid-period validate-latest-file
 
+generate-p2p-period:
+	./scripts/trigger_netex_convertor.sh periodPointToPoint
+
+generate-validate-p2p-period: generate-p2p-period validate-latest-file
+
 validate-netex:
 	./scripts/trigger_netex_validator.sh $(file)
 
