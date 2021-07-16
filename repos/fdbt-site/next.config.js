@@ -4,6 +4,7 @@ const withImages = require('next-images');
 const nextConfig = {
     target: 'server',
     poweredByHeader: false,
+    productionBrowserSourceMaps: true,
     webpack: (config, { isServer }) => {
         config.module.rules.push({
             test: /\.(pdf|csv)$/,
