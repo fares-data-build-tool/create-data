@@ -142,6 +142,11 @@ generate-hybrid-period:
 
 generate-validate-hybrid-period: generate-hybrid-period validate-latest-file
 
+generate-p2p-period:
+	./scripts/trigger_netex_convertor.sh periodPointToPoint
+
+generate-validate-p2p-period: generate-p2p-period validate-latest-file
+
 validate-netex:
 	./scripts/trigger_netex_validator.sh $(file)
 
@@ -156,6 +161,9 @@ generate-validate-all: add-data-to-buckets
 
 generate-validate-all-parallel: add-data-to-buckets
 	./scripts/generate_validate_all_netex_parallel.sh
+
+generate-validate-all-parallel-quiet: add-data-to-buckets
+	./scripts/generate_validate_all_netex_parallel.sh | grep -E "Uploading file|valid schema|ERROR"
 
 generate-netex-emailer:
 	./scripts/trigger_netex_emailer.sh $(file)

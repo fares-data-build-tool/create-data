@@ -1,7 +1,7 @@
 {
   "lineName": "19",
   "nocCode": "BLAC",
-  "operatorShortName": "Blackpool Transport",
+  "operatorName": "Blackpool Transport",
   "serviceDescription": "STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)",
   "type": "return",
   "email": "test@example.com",

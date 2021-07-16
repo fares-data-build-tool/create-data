@@ -15,7 +15,7 @@
         <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <OperatorRef version="1.0" ref="noc:BLAC"/>
+            <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
             <LineRef version="1.0" ref="4"/>
             <BrandingRef version="1.0" ref="op:BLAC@brand"/>
           </objectReferences>
@@ -26,7 +26,6 @@
       <RequestDetail>AllWithXref</RequestDetail>
     </RequestPolicy>
   </PublicationRequest>
-  <Description>Example  of simple point to point fares</Description>
   <dataObjects>
     <CompositeFrame version="1.0" id="epd:UK:BLAC:CompositeFrame_UK_PI_LINE_FARE_OFFER:Trip@PK1146649_RJ1_Outbound:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
       <Name>Fares for PK1146649_RJ1_Outbound</Name>
@@ -46,6 +45,9 @@
         <DefaultResponsibilitySetRef version="1.0" ref="op:tariffs"/>
         <DefaultCurrency>GBP</DefaultCurrency>
       </FrameDefaults>
+      <prerequisites>
+        <CompositeFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc"/>
+      </prerequisites>
       <frames>
         <ResourceFrame version="1.0" id="epd:UK:BLAC:ResourceFrame_UK_PI_COMMON:op" dataSourceRef="op:src" responsibilitySetRef="network_data">
           <Name>Operator specific common resources</Name>
@@ -88,7 +90,10 @@
             <ValueSet version="1.0" id="Branding" classOfValues="Branding">
               <Name>Operator Branding</Name>
               <values>
-                <Branding version="1.0" id="op:BLAC@brand"/>
+                <Branding version="1.0" id="op:BLAC@brand">
+                  <Name>Blackpool Transport</Name>
+                  <Url>http://www.blackpooltransport.com</Url>
+                </Branding>
               </values>
             </ValueSet>
           </typesOfValue>
@@ -1932,8 +1937,9 @@
                 <ValidableElement id="Trip@single_group@travel" version="1.0">
                   <Name>single Ride</Name>
                   <fareStructureElements>
-                    <FareStructureElementRef version="1.0" ref="Tariff@single@lines"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@group"/>
+                    <FareStructureElementRef version="1.0" ref="Tariff@single@lines"/>
+                    <FareStructureElementRef version="1.0" ref="Tariff@single@eligibility"/>
                     <FareStructureElementRef version="1.0" ref="Tariff@single@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="Tariff@single@availability"/>
                   </fareStructureElements>
@@ -10995,7 +11001,7 @@
       </FrameDefaults>
       <frames>
         <ResourceFrame id="fxc:UK:DFT:ResourceFrame_UK_PI_METADATA_FRAMES:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
-          <Name>UK FXCP  Fare profile Frame types and codepaces</Name>
+          <Name>UK FXCP Fare profile Frame types and codespaces</Name>
           <codespaces>
             <Codespace id="fxc_metadata">
               <Xmlns>fxc</Xmlns>
@@ -11005,7 +11011,7 @@
             <Codespace id="epd_data">
               <Xmlns>epd</Xmlns>
               <XmlnsUrl>http://fnetex-cen.eu/epd</XmlnsUrl>
-              <Description>European Passenger Information profile data -use for UK frame names</Description>
+              <Description>European Passenger Information profile data - use for UK frame names</Description>
             </Codespace>
           </codespaces>
           <dataSources>
@@ -11081,15 +11087,15 @@
               <Name>Types of FXC Specific  Frame</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_COMMON:FXCP">
-                  <Name>UK Bus Profile fare common paramaters</Name>
+                  <Name>UK Bus Profile Fare Common Parameters</Name>
                   <FrameClassRef nameOfClass="FareFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP">
-                  <Name>UK Bus Profile fare network</Name>
+                  <Name>UK Bus Profile Fare Network</Name>
                   <FrameClassRef nameOfClass="ServiceFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP">
-                  <Name>UK FXCP Fare Porducts Frame</Name>
+                  <Name>UK FXCP Fare Products Frame</Name>
                   <FrameClassRef nameOfClass="FareFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP">
@@ -11116,7 +11122,7 @@
               </values>
             </ValueSet>
             <ValueSet version="fxc:v1.0" id="fxc:Types_of_Transaction_Frame" classOfValues="TypeOfFrame">
-              <Name>Types of UK Trasnaction  Frame</Name>
+              <Name>Types of UK Transaction Frame</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_TRANSACTIONS:FXCP">
                   <Name>UK Bus Profile Operator sample transactions</Name>

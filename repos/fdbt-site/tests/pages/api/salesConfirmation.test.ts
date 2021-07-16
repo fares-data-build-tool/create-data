@@ -6,6 +6,7 @@ import {
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
+import { SingleTicket } from '../../../src/interfaces';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import salesConfirmation from '../../../src/pages/api/salesConfirmation';
 import * as session from '../../../src/utils/sessions';
@@ -203,7 +204,7 @@ describe('salesOfferPackages', () => {
         const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
         getFareTypeFromFromAttributesSpy.mockImplementation(() => 'single');
         const putUserDataInS3Spy = jest.spyOn(userData, 'putUserDataInS3');
-        const exampleUserJson = {
+        const exampleUserJson: SingleTicket = {
             nocCode: 'TEST',
             type: 'single',
             passengerType: 'adult',
@@ -218,16 +219,8 @@ describe('salesOfferPackages', () => {
             ticketPeriod: {
                 startDate: 'now',
                 endDate: 'a year later',
-                dateInput: {
-                    startDateDay: '',
-                    startDateMonth: '',
-                    startDateYear: '',
-                    endDateDay: '',
-                    endDateMonth: '',
-                    endDateYear: '',
-                },
             },
-            operatorShortName: 'string',
+            operatorName: 'string',
             lineName: 'string',
             lineId: '3h3vb32ik',
             serviceDescription: 'string',

@@ -44,6 +44,10 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
 export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Operator[]> => {
     try {
         const cleansedNocs: string[] = nocCodes.map(noc => replaceIWBusCoNocCode(noc));
+        if (cleansedNocs.length < 1) {
+            throw new Error('No noc codes provided');
+        }
+
         const substitution = cleansedNocs.map(() => '?').join(',');
 
         const queryInput = `

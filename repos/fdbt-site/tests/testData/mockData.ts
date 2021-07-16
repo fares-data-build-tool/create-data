@@ -2,8 +2,25 @@
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import React from 'react';
+import { PointToPointPeriodTicket } from '../../shared/matchingJsonTypes';
+import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
-    PointToPointPeriodTicket,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    DURATION_VALID_ATTRIBUTE,
+    FARE_STAGES_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    STAGE_NAMES_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+} from '../../src/constants/attributes';
+import {
     BasicService,
     CarnetExpiryUnit,
     ErrorInfo,
@@ -32,23 +49,6 @@ import {
     Stop,
     UserFareStages,
 } from '../../src/interfaces';
-import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
-import {
-    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-    DURATION_VALID_ATTRIBUTE,
-    FARE_STAGES_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
-    INPUT_METHOD_ATTRIBUTE,
-    MULTIPLE_PRODUCT_ATTRIBUTE,
-    NUMBER_OF_PRODUCTS_ATTRIBUTE,
-    OPERATOR_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
-    SALES_OFFER_PACKAGES_ATTRIBUTE,
-    SERVICE_ATTRIBUTE,
-    SERVICE_LIST_ATTRIBUTE,
-    STAGE_NAMES_ATTRIBUTE,
-    TICKET_REPRESENTATION_ATTRIBUTE,
-} from '../../src/constants/attributes';
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
@@ -1237,7 +1237,7 @@ export const expectedSingleTicket: SingleTicket = {
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
     passengerType: 'Adult',
-    operatorShortName: 'DCC',
+    operatorName: 'DCC',
     termTime: true,
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
@@ -1372,7 +1372,7 @@ export const expectedCarnetSingleTicket: SingleTicket = {
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
     passengerType: 'Adult',
-    operatorShortName: 'DCC',
+    operatorName: 'DCC',
     termTime: true,
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
@@ -1513,7 +1513,7 @@ export const expectedNonCircularReturnTicket: ReturnTicket = {
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
-    operatorShortName: 'DCC',
+    operatorName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
@@ -1677,7 +1677,7 @@ export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
-    operatorShortName: 'DCC',
+    operatorName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
@@ -1689,8 +1689,12 @@ export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
     products: [
         {
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            productName: 'My product',
+            productDuration: '7 weeks',
+            productValidity: '24hr',
+            productEndTime: '',
         },
-    ],
+    ] as PointToPointPeriodTicket['products'],
     inboundFareZones: [
         {
             name: 'Acomb Green Lane',
@@ -1833,15 +1837,6 @@ export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
             ],
         },
     ],
-    pointToPointProduct: {
-        productName: 'My product',
-        productDuration: '7',
-        productDurationUnits: ExpiryUnit.WEEK,
-    },
-    periodExpiry: {
-        productValidity: '24hr',
-        productEndTime: '',
-    },
 };
 
 export const expectedCircularReturnTicket: ReturnTicket = {
@@ -1850,7 +1845,7 @@ export const expectedCircularReturnTicket: ReturnTicket = {
     lineId: 'q2gv2ve',
     passengerType: 'Adult',
     nocCode: 'DCCL',
-    operatorShortName: 'DCC',
+    operatorName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
@@ -1985,7 +1980,7 @@ export const expectedCarnetReturnTicket: ReturnTicket = {
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
-    operatorShortName: 'DCC',
+    operatorName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
@@ -2573,11 +2568,10 @@ export const expectedFlatFareTicket: FlatFareTicket = {
     timeRestriction: [],
 };
 
-export const expectedSchemeOperatorTicket = (type: string): SchemeOperatorTicket => {
+export const expectedSchemeOperatorTicket = (type: SchemeOperatorTicket['type']): SchemeOperatorTicket => {
     return {
         schemeOperatorName: expect.any(String),
         schemeOperatorRegionCode: expect.any(String),
-        nocCode: expect.any(String),
         type,
         uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
         email: 'test@example.com',
@@ -2593,7 +2587,6 @@ export const expectedSchemeOperatorTicket = (type: string): SchemeOperatorTicket
 export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: SchemeOperatorFlatFareTicket = {
     schemeOperatorName: expect.any(String),
     schemeOperatorRegionCode: expect.any(String),
-    nocCode: expect.any(String),
     type: 'flatFare',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
@@ -2725,7 +2718,6 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: SchemeOperator
 export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorGeoZoneTicket = {
     schemeOperatorName: expect.any(String),
     schemeOperatorRegionCode: expect.any(String),
-    nocCode: expect.any(String),
     additionalNocs: ['MCTR', 'WBTR', 'BLAC'],
     type: 'period',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
