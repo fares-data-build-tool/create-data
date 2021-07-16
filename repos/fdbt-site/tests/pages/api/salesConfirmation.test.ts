@@ -22,13 +22,8 @@ describe('salesOfferPackages', () => {
     const getMultipleServicesTicketJsonSpy = jest.spyOn(userData, 'getMultipleServicesTicketJson');
     const getFlatFareTicketJsonSpy = jest.spyOn(userData, 'getFlatFareTicketJson');
 
-    const todaysDate = moment()
-        .toISOString()
-        .substr(0, 10);
-    const hundredYearsDate = moment()
-        .add(100, 'y')
-        .toISOString()
-        .substr(0, 10);
+    const todaysDate = moment().toISOString().substr(0, 10);
+    const hundredYearsDate = moment().add(100, 'y').toISOString().substr(0, 10);
 
     afterEach(() => {
         jest.resetAllMocks();

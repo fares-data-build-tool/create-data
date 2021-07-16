@@ -6,7 +6,7 @@ import RadioButtons from '../components/RadioButtons';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
-    TICKET_REPRESENTATION_ATTRIBUTE
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../constants/attributes';
 import { ErrorInfo, FareType, NextPageContextWithSession } from '../interfaces';
 import { isTicketRepresentationWithErrors } from '../interfaces/typeGuards';
