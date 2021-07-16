@@ -178,7 +178,7 @@ export const getPointToPointAvailabilityElement = (
     ticket: PointToPointTicket | PointToPointPeriodTicket,
 ): NetexObject => ({
     version: '1.0',
-    id: `Tariff@${isReturnTicket(ticket) ? 'return' : 'single'}@availability`,
+    id: `Tariff@${ticket.type}@availability`,
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
         ref: 'fxc:access',
@@ -377,7 +377,7 @@ export const getLinesElement = (
     ticket: PointToPointTicket | PointToPointPeriodTicket,
     lineName: string,
 ): NetexObject => {
-    const typeOfPointToPoint = isReturnTicket(ticket) ? 'return' : 'single';
+    const typeOfPointToPoint = ticket.type;
 
     return {
         version: '1.0',
@@ -408,7 +408,7 @@ export const getLinesElement = (
 };
 
 export const getEligibilityElement = (ticket: PointToPointTicket | PointToPointPeriodTicket): NetexObject => {
-    const typeOfPointToPoint = isReturnTicket(ticket) ? 'return' : 'single';
+    const typeOfPointToPoint = ticket.type;
     const users = isGroupTicket(ticket)
         ? ticket.groupDefinition.companions
         : [
@@ -441,7 +441,7 @@ export const getEligibilityElement = (ticket: PointToPointTicket | PointToPointP
 };
 
 export const getPointToPointConditionsElement = (ticket: PointToPointTicket): NetexObject => {
-    const typeOfPointToPoint = isReturnTicket(ticket) ? 'return' : 'single';
+    const typeOfPointToPoint = ticket.type;
     let usagePeriodValidity = {};
 
     if (isReturnTicket(ticket) && ticket.returnPeriodValidity) {

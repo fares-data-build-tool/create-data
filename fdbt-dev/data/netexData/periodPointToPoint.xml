@@ -967,7 +967,7 @@
                 </FareDemandFactor>
               </qualityStructureFactors>
               <fareStructureElements>
-                <FareStructureElement version="1.0" id="Tariff@return@lines">
+                <FareStructureElement version="1.0" id="Tariff@period@lines">
                   <Name>O/D pairs for 2</Name>
                   <distanceMatrixElements>
                     <DistanceMatrixElement version="1.0" id="Shott_Drive+The_Stag_pub">
@@ -992,7 +992,7 @@
                       <EndTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
                     </DistanceMatrixElement>
                   </distanceMatrixElements>
-                  <GenericParameterAssignment version="1.0" order="01" id="Tariff@return@lines">
+                  <GenericParameterAssignment version="1.0" order="01" id="Tariff@period@lines">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterAssignmentType>EQ</ValidityParameterAssignmentType>
                     <validityParameters>
@@ -1000,9 +1000,9 @@
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="Tariff@return@eligibility">
+                <FareStructureElement version="1.0" id="Tariff@period@eligibility">
                   <Name>eligible user types</Name>
-                  <GenericParameterAssignment version="1.0" order="1" id="Tariff@return@eligibility">
+                  <GenericParameterAssignment version="1.0" order="1" id="Tariff@period@eligibility">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
@@ -1037,7 +1037,7 @@
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="Tariff@return@availability">
+                <FareStructureElement version="1.0" id="Tariff@period@availability">
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
                   <qualityStructureFactors>
                     <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
@@ -1054,11 +1054,11 @@
                 <ValidableElement id="Trip@period_anyone@travel" version="1.0">
                   <Name>period Ride</Name>
                   <fareStructureElements>
-                    <FareStructureElementRef version="1.0" ref="Tariff@return@lines"/>
-                    <FareStructureElementRef version="1.0" ref="Tariff@return@eligibility"/>
+                    <FareStructureElementRef version="1.0" ref="Tariff@period@lines"/>
+                    <FareStructureElementRef version="1.0" ref="Tariff@period@eligibility"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Period_Point_to_Point@durations@anyone"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Period_Point_to_Point@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="Tariff@return@availability"/>
+                    <FareStructureElementRef version="1.0" ref="Tariff@period@availability"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
