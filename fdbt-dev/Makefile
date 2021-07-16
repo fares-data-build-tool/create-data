@@ -162,6 +162,9 @@ generate-validate-all: add-data-to-buckets
 generate-validate-all-parallel: add-data-to-buckets
 	./scripts/generate_validate_all_netex_parallel.sh
 
+generate-validate-all-parallel-quiet: add-data-to-buckets
+	./scripts/generate_validate_all_netex_parallel.sh | grep -E "Uploading file|valid schema|ERROR"
+
 generate-netex-emailer:
 	./scripts/trigger_netex_emailer.sh $(file)
 

@@ -1691,11 +1691,10 @@ export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             productName: 'My product',
             productDuration: '7 weeks',
-            productDurationUnits: ExpiryUnit.WEEK,
             productValidity: '24hr',
             productEndTime: '',
         },
-    ],
+    ] as PointToPointPeriodTicket['products'],
     inboundFareZones: [
         {
             name: 'Acomb Green Lane',

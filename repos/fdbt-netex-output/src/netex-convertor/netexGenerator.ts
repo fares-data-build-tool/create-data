@@ -375,6 +375,8 @@ const netexGenerator = (ticket: Ticket, operatorData: Operator[]): { generate: F
                 ref: 'operators@bus',
             };
             delete tariff.OperatorRef;
+        } else {
+            delete priceFareFrameToUpdate.tariffs.Tariff.GroupOfOperatorsRef;
         }
 
         // This is horrible but in the netex the timeIntervals need to come before the qualityStructureFactors and fareStructureElements
