@@ -18,95 +18,7 @@ exports[`pages view passenger types should render correctly when groups and indi
         <div
           className="govuk-grid-column-one-third"
         >
-          <div
-            className="app-pane__subnav"
-          >
-            <nav
-              aria-labelledby="app-subnav-heading"
-              className="app-subnav"
-            >
-              <h2
-                className="govuk-visually-hidden"
-                id="app-subnav-heading"
-              >
-                Pages in this section
-              </h2>
-              <ul
-                className="app-subnav__section"
-              >
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Settings overview
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item app-subnav__section-item--current"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Passenger types
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Service day end
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Purchase methods
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Time restrictions
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Multi-operator groups
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Travel Zones
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+          <SubNavigation />
         </div>
         <div
           className="govuk-grid-column-two-thirds"
@@ -119,7 +31,7 @@ exports[`pages view passenger types should render correctly when groups and indi
           <p
             className="govuk-body"
           >
-            Define age range and require proof documents of your passengers as well as passenger groups
+            Define age range and required proof documents of your passengers as well as passenger groups
           </p>
           <IndividualPassengerTypes
             passengerTypes={
@@ -185,95 +97,7 @@ exports[`pages view passenger types should render correctly when no individual o
         <div
           className="govuk-grid-column-one-third"
         >
-          <div
-            className="app-pane__subnav"
-          >
-            <nav
-              aria-labelledby="app-subnav-heading"
-              className="app-subnav"
-            >
-              <h2
-                className="govuk-visually-hidden"
-                id="app-subnav-heading"
-              >
-                Pages in this section
-              </h2>
-              <ul
-                className="app-subnav__section"
-              >
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Settings overview
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item app-subnav__section-item--current"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Passenger types
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Service day end
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Purchase methods
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Time restrictions
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Multi-operator groups
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Travel Zones
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+          <SubNavigation />
         </div>
         <div
           className="govuk-grid-column-two-thirds"
@@ -286,7 +110,7 @@ exports[`pages view passenger types should render correctly when no individual o
           <p
             className="govuk-body"
           >
-            Define age range and require proof documents of your passengers as well as passenger groups
+            Define age range and required proof documents of your passengers as well as passenger groups
           </p>
           <NoIndividualPassengerTypes />
           <NoPassengerTypeGroups />
@@ -315,95 +139,7 @@ exports[`pages view passenger types should render correctly when only individual
         <div
           className="govuk-grid-column-one-third"
         >
-          <div
-            className="app-pane__subnav"
-          >
-            <nav
-              aria-labelledby="app-subnav-heading"
-              className="app-subnav"
-            >
-              <h2
-                className="govuk-visually-hidden"
-                id="app-subnav-heading"
-              >
-                Pages in this section
-              </h2>
-              <ul
-                className="app-subnav__section"
-              >
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Settings overview
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item app-subnav__section-item--current"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Passenger types
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Service day end
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Purchase methods
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Time restrictions
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Multi-operator groups
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Travel Zones
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+          <SubNavigation />
         </div>
         <div
           className="govuk-grid-column-two-thirds"
@@ -416,7 +152,7 @@ exports[`pages view passenger types should render correctly when only individual
           <p
             className="govuk-body"
           >
-            Define age range and require proof documents of your passengers as well as passenger groups
+            Define age range and required proof documents of your passengers as well as passenger groups
           </p>
           <IndividualPassengerTypes
             passengerTypes={
@@ -458,95 +194,7 @@ exports[`pages view passenger types should render correctly when only passenger 
         <div
           className="govuk-grid-column-one-third"
         >
-          <div
-            className="app-pane__subnav"
-          >
-            <nav
-              aria-labelledby="app-subnav-heading"
-              className="app-subnav"
-            >
-              <h2
-                className="govuk-visually-hidden"
-                id="app-subnav-heading"
-              >
-                Pages in this section
-              </h2>
-              <ul
-                className="app-subnav__section"
-              >
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Settings overview
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item app-subnav__section-item--current"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Passenger types
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Service day end
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Purchase methods
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Time restrictions
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Multi-operator groups
-                  </a>
-                </li>
-                <li
-                  className="app-subnav__section-item"
-                >
-                  <a
-                    className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                    href="/globalSettings"
-                  >
-                    Travel Zones
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+          <SubNavigation />
         </div>
         <div
           className="govuk-grid-column-two-thirds"
@@ -559,7 +207,7 @@ exports[`pages view passenger types should render correctly when only passenger 
           <p
             className="govuk-body"
           >
-            Define age range and require proof documents of your passengers as well as passenger groups
+            Define age range and required proof documents of your passengers as well as passenger groups
           </p>
           <NoIndividualPassengerTypes />
           <PassengerTypeGroups
@@ -575,6 +223,7 @@ exports[`pages view passenger types should render correctly when only passenger 
                       "ageRangeMax": "16",
                       "ageRangeMin": "4",
                       "maxNumber": "1",
+                      "minNumber": "0",
                       "passengerType": "child",
                       "proofDocuments": Array [
                         "studentCard",

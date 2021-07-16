@@ -29,6 +29,7 @@ describe('pages', () => {
 
             const childCompanion = {
                 passengerType: 'child',
+                minNumber: '0',
                 maxNumber: '1',
                 ageRangeMin: '4',
                 ageRangeMax: '16',

@@ -3,6 +3,7 @@ import { BaseLayout } from '../layout/Layout';
 import { PassengerType, NextPageContextWithSession, GroupPassengerType } from '../interfaces';
 import { getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getPassengerTypesByNocCode } from '../data/auroradb';
+import SubNavigation from '../layout/SubNavigation';
 
 const title = 'Passenger types';
 const description = 'View and edit your passenger types.';
@@ -11,6 +12,39 @@ interface PassengerTypeProps {
     passengerTypes: PassengerType[];
     passengerTypeGroups: GroupPassengerType[];
 }
+
+const ViewPassengerTypes = ({ passengerTypes, passengerTypeGroups }: PassengerTypeProps): ReactElement => (
+    <BaseLayout title={title} description={description} showNavigation={true}>
+        <div className="govuk-width-container">
+            <main className="govuk-main-wrapper">
+                <div className="govuk-grid-row">
+                    <div className="govuk-grid-column-one-third">
+                        <SubNavigation />
+                    </div>
+
+                    <div className="govuk-grid-column-two-thirds">
+                        <h1 className="govuk-heading-xl">Passenger types</h1>
+                        <p className="govuk-body">
+                            Define age range and required proof documents of your passengers as well as passenger groups
+                        </p>
+
+                        {!passengerTypes.length ? (
+                            <NoIndividualPassengerTypes />
+                        ) : (
+                            <IndividualPassengerTypes passengerTypes={passengerTypes} />
+                        )}
+
+                        {!passengerTypeGroups.length ? (
+                            <NoPassengerTypeGroups />
+                        ) : (
+                            <PassengerTypeGroups passengerTypeGroups={passengerTypeGroups} />
+                        )}
+                    </div>
+                </div>
+            </main>
+        </div>
+    </BaseLayout>
+);
 
 const NoIndividualPassengerTypes = (): ReactElement => {
     return (
@@ -38,7 +72,7 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                     <ul className="actions__list">
                                         <li className="actions__item">
                                             <a
-                                                className="govuk-link govuk-!-font-size-19 govuk-!-font-weight-regular"
+                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
                                                 href="/viewPassengerTypes"
                                             >
                                                 Edit
@@ -47,7 +81,7 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
 
                                         <li className="actions__item">
                                             <a
-                                                className="govuk-link govuk-!-font-size-19 govuk-!-font-weight-regular actions__delete"
+                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
                                                 href="/viewPassengerTypes"
                                             >
                                                 Delete
@@ -69,8 +103,10 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Proof document:</span>{' '}
-                                    {d.proofDocuments ? d.proofDocuments : 'N/A'}
+                                    <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
+                                    {d.proofDocuments
+                                        ? d.proofDocuments.map((pd) => sentenceCaseString(pd)).join(', ')
+                                        : 'N/A'}
                                 </p>
                             </div>
                         </div>
@@ -117,7 +153,7 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
                                     <ul className="actions__list">
                                         <li className="actions__item">
                                             <a
-                                                className="govuk-link govuk-!-font-size-19 govuk-!-font-weight-regular"
+                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
                                                 href="/viewPassengerTypes"
                                             >
                                                 Edit
@@ -126,7 +162,7 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
 
                                         <li className="actions__item">
                                             <a
-                                                className="govuk-link govuk-!-font-size-19 govuk-!-font-weight-regular actions__delete"
+                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
                                                 href="/viewPassengerTypes"
                                             >
                                                 Delete
@@ -162,115 +198,10 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
     );
 };
 
-const ViewPassengerTypes = ({ passengerTypes, passengerTypeGroups }: PassengerTypeProps): ReactElement => (
-    <BaseLayout title={title} description={description} showNavigation={true}>
-        <div className="govuk-width-container">
-            <main className="govuk-main-wrapper">
-                <div className="govuk-grid-row">
-                    <div className="govuk-grid-column-one-third">
-                        <div className="app-pane__subnav">
-                            <nav className="app-subnav" aria-labelledby="app-subnav-heading">
-                                <h2 className="govuk-visually-hidden" id="app-subnav-heading">
-                                    Pages in this section
-                                </h2>
-
-                                <ul className="app-subnav__section">
-                                    <li className="app-subnav__section-item">
-                                        <a
-                                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/globalSettings"
-                                        >
-                                            Settings overview
-                                        </a>
-                                    </li>
-
-                                    <li className="app-subnav__section-item app-subnav__section-item--current">
-                                        <a
-                                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/globalSettings"
-                                        >
-                                            Passenger types
-                                        </a>
-                                    </li>
-
-                                    <li className="app-subnav__section-item">
-                                        <a
-                                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/globalSettings"
-                                        >
-                                            Service day end
-                                        </a>
-                                    </li>
-
-                                    <li className="app-subnav__section-item">
-                                        <a
-                                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/globalSettings"
-                                        >
-                                            Purchase methods
-                                        </a>
-                                    </li>
-
-                                    <li className="app-subnav__section-item">
-                                        <a
-                                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/globalSettings"
-                                        >
-                                            Time restrictions
-                                        </a>
-                                    </li>
-
-                                    <li className="app-subnav__section-item">
-                                        <a
-                                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/globalSettings"
-                                        >
-                                            Multi-operator groups
-                                        </a>
-                                    </li>
-
-                                    <li className="app-subnav__section-item">
-                                        <a
-                                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                                            href="/globalSettings"
-                                        >
-                                            Travel Zones
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <div className="govuk-grid-column-two-thirds">
-                        <h1 className="govuk-heading-xl">Passenger types</h1>
-                        <p className="govuk-body">
-                            Define age range and require proof documents of your passengers as well as passenger groups
-                        </p>
-
-                        {!passengerTypes.length ? (
-                            <NoIndividualPassengerTypes />
-                        ) : (
-                            <IndividualPassengerTypes passengerTypes={passengerTypes} />
-                        )}
-
-                        {!passengerTypeGroups.length ? (
-                            <NoPassengerTypeGroups />
-                        ) : (
-                            <PassengerTypeGroups passengerTypeGroups={passengerTypeGroups} />
-                        )}
-                    </div>
-                </div>
-            </main>
-        </div>
-    </BaseLayout>
-);
-
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: PassengerTypeProps }> => {
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const passengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const passengerTypeGroups = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
-
-    console.log(passengerTypeGroups);
 
     return { props: { passengerTypes, passengerTypeGroups } };
 };
