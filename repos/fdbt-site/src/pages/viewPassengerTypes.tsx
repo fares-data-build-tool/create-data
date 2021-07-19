@@ -177,14 +177,16 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
                                     <span className="govuk-!-font-weight-bold">Max size:</span> {d.maxGroupSize}
                                 </p>
 
-                                {d.companions.map((c) => (
-                                    <p key={c.passengerType} className="govuk-body-s govuk-!-margin-bottom-2">
-                                        <span className="govuk-!-font-weight-bold">
-                                            {sentenceCaseString(c.passengerType)}:
-                                        </span>{' '}
-                                        {c.minNumber ? c.minNumber : '0'} - {c.maxNumber}
-                                    </p>
-                                ))}
+                                {d.companions.length
+                                    ? d.companions.map((c) => (
+                                          <p key={c.passengerType} className="govuk-body-s govuk-!-margin-bottom-2">
+                                              <span className="govuk-!-font-weight-bold">
+                                                  {sentenceCaseString(c.passengerType)}:
+                                              </span>{' '}
+                                              {c.minNumber ? c.minNumber : '0'} - {c.maxNumber}
+                                          </p>
+                                      ))
+                                    : ''}
                             </div>
                         </div>
                     </div>
