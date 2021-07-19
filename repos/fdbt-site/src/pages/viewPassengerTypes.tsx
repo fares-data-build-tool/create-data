@@ -64,8 +64,11 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
             <h3>Individual</h3>
 
             <div className="govuk-grid-row">
-                {passengerTypes.map((d) => (
-                    <div key={d.passengerType} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
+                {passengerTypes.map((passengerType) => (
+                    <div
+                        key={passengerType.passengerType}
+                        className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
+                    >
                         <div className="card">
                             <div className="card__body">
                                 <div className="card__actions">
@@ -90,22 +93,24 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                     </ul>
                                 </div>
 
-                                <h4 className="govuk-!-padding-bottom-4">{sentenceCaseString(d.passengerType)}</h4>
+                                <h4 className="govuk-!-padding-bottom-4">
+                                    {sentenceCaseString(passengerType.passengerType)}
+                                </h4>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Minimum age:</span>{' '}
-                                    {d.ageRangeMin ? d.ageRangeMin : 'N/A'}
+                                    {passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Maximum age:</span>{' '}
-                                    {d.ageRangeMax ? d.ageRangeMax : 'N/A'}
+                                    {passengerType.ageRangeMax ? passengerType.ageRangeMax : 'N/A'}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
-                                    {d.proofDocuments
-                                        ? d.proofDocuments.map((pd) => sentenceCaseString(pd)).join(', ')
+                                    {passengerType.proofDocuments
+                                        ? passengerType.proofDocuments.map((pd) => sentenceCaseString(pd)).join(', ')
                                         : 'N/A'}
                                 </p>
                             </div>
