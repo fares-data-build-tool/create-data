@@ -8,9 +8,10 @@ const Help = (): ReactElement => {
                 If you are having problems, please contact the Create Fares Data Service via this link:{' '}
                 <span>
                     <a href="/contact" className="govuk-link govuk-!-font-size-19">
-                        Contact Us
+                        Contact
                     </a>
                 </span>
+                us
             </p>
         </div>
     );
