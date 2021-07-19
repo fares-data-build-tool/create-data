@@ -32,7 +32,7 @@ const Error = ({ statusCode }: ErrorProps): ReactElement => (
                 <p className="govuk-body">Your answers have not been saved, use the button below to start again.</p>
                 <p className="govuk-body">
                     {' '}
-                    <a className="govuk-link" id="feedback-link" href={FEEDBACK_LINK}>
+                    <a className="govuk-link" id="feedback-link" href={'/contact'}>
                         Contact
                     </a>{' '}
                     us for assistance.

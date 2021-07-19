@@ -71,7 +71,7 @@ module.exports = {
 
         '@typescript-eslint/no-unused-expressions': ['error'],
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
-        'react/jsx-indent': [2, 4],
+        'react/jsx-indent': [0, 4],
         'react/require-default-props': 'off',
         'jsx-a11y/label-has-associated-control': [
             2,

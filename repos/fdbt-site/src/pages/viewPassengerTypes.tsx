@@ -64,8 +64,11 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
             <h3>Individual</h3>
 
             <div className="govuk-grid-row">
-                {passengerTypes.map((d) => (
-                    <div key={d.passengerType} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
+                {passengerTypes.map((passengerType) => (
+                    <div
+                        key={passengerType.passengerType}
+                        className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
+                    >
                         <div className="card">
                             <div className="card__body">
                                 <div className="card__actions">
@@ -90,22 +93,24 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                     </ul>
                                 </div>
 
-                                <h4 className="govuk-!-padding-bottom-4">{sentenceCaseString(d.passengerType)}</h4>
+                                <h4 className="govuk-!-padding-bottom-4">
+                                    {sentenceCaseString(passengerType.passengerType)}
+                                </h4>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Minimum age:</span>{' '}
-                                    {d.ageRangeMin ? d.ageRangeMin : 'N/A'}
+                                    {passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Maximum age:</span>{' '}
-                                    {d.ageRangeMax ? d.ageRangeMax : 'N/A'}
+                                    {passengerType.ageRangeMax ? passengerType.ageRangeMax : 'N/A'}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
-                                    {d.proofDocuments
-                                        ? d.proofDocuments.map((pd) => sentenceCaseString(pd)).join(', ')
+                                    {passengerType.proofDocuments
+                                        ? passengerType.proofDocuments.map((pd) => sentenceCaseString(pd)).join(', ')
                                         : 'N/A'}
                                 </p>
                             </div>
@@ -145,8 +150,8 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
             <h3>Groups</h3>
 
             <div className="govuk-grid-row">
-                {passengerTypeGroups.map((d) => (
-                    <div key={d.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
+                {passengerTypeGroups.map((passengerTypeGroup) => (
+                    <div key={passengerTypeGroup.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
                         <div className="card">
                             <div className="card__body">
                                 <div className="card__actions">
@@ -171,20 +176,28 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
                                     </ul>
                                 </div>
 
-                                <h4 className="govuk-!-padding-bottom-4">{sentenceCaseString(d.name)}</h4>
+                                <h4 className="govuk-!-padding-bottom-4">
+                                    {sentenceCaseString(passengerTypeGroup.name)}
+                                </h4>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Max size:</span> {d.maxGroupSize}
+                                    <span className="govuk-!-font-weight-bold">Max size:</span>{' '}
+                                    {passengerTypeGroup.maxGroupSize}
                                 </p>
 
-                                {d.companions.map((c) => (
-                                    <p key={c.passengerType} className="govuk-body-s govuk-!-margin-bottom-2">
-                                        <span className="govuk-!-font-weight-bold">
-                                            {sentenceCaseString(c.passengerType)}:
-                                        </span>{' '}
-                                        {c.minNumber ? c.minNumber : '0'} - {c.maxNumber}
-                                    </p>
-                                ))}
+                                {passengerTypeGroup.companions.length
+                                    ? passengerTypeGroup.companions.map((companion) => (
+                                          <p
+                                              key={companion.passengerType}
+                                              className="govuk-body-s govuk-!-margin-bottom-2"
+                                          >
+                                              <span className="govuk-!-font-weight-bold">
+                                                  {sentenceCaseString(companion.passengerType)}:
+                                              </span>{' '}
+                                              {companion.minNumber ? companion.minNumber : '0'} - {companion.maxNumber}
+                                          </p>
+                                      ))
+                                    : ''}
                             </div>
                         </div>
                     </div>
