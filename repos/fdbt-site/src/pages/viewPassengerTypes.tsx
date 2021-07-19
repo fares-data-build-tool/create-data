@@ -28,13 +28,13 @@ const ViewPassengerTypes = ({ passengerTypes, passengerTypeGroups }: PassengerTy
                             Define age range and required proof documents of your passengers as well as passenger groups
                         </p>
 
-                        {!passengerTypes.length ? (
+                        {!passengerTypes?.length ? (
                             <NoIndividualPassengerTypes />
                         ) : (
                             <IndividualPassengerTypes passengerTypes={passengerTypes} />
                         )}
 
-                        {!passengerTypeGroups.length ? (
+                        {!passengerTypeGroups?.length ? (
                             <NoPassengerTypeGroups />
                         ) : (
                             <PassengerTypeGroups passengerTypeGroups={passengerTypeGroups} />
@@ -185,7 +185,7 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
                                     {passengerTypeGroup.maxGroupSize}
                                 </p>
 
-                                {passengerTypeGroup.companions.length
+                                {passengerTypeGroup?.companions?.length
                                     ? passengerTypeGroup.companions.map((companion) => (
                                           <p
                                               key={companion.passengerType}
