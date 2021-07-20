@@ -315,7 +315,7 @@ describe('pages', () => {
         it('formats a string array with one item', () => {
             expect(formatSalesOfferPackageEnumerations(['mobileDevice'])).toEqual([' Mobile device']);
         });
-        it('format a string array with multiple items', () => {
+        it('formats a string array with multiple items', () => {
             expect(
                 formatSalesOfferPackageEnumerations(['debitCard', 'creditCard', 'mobilePhone', 'directDebit']),
             ).toEqual([' Debit card', ' Credit card', ' Mobile phone', ' Direct debit']);
