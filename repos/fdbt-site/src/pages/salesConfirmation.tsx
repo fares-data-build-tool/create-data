@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { isArray, lowerCase, upperFirst } from 'lodash';
+import { isArray, upperFirst } from 'lodash';
 import moment from 'moment';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE } from '../constants/attributes';
 import {
@@ -16,6 +16,8 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
 import { redirectTo } from './api/apiUtils';
+import { ticketFormatsList } from './salesOfferPackages';
+import { formatSOPArray } from './selectSalesOfferPackage';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
@@ -31,8 +33,15 @@ interface TicketDating {
     startDefault: boolean;
     endDefault: boolean;
 }
-export const formatSalesOfferPackageEnumerations = (enumerations: string[]): string[] => {
-    return enumerations.map((enumeration) => ` ` + upperFirst(lowerCase(enumeration.replace(/([A-Z])/g, ' $1'))));
+
+export const sopDisplayValueConverter = (enumerations: string[]) => {
+    return enumerations
+        .map(
+            (enumeration) =>
+                ticketFormatsList.ticketFormats.find((ticketFormat) => ticketFormat.value === enumeration)?.display ||
+                '',
+        )
+        .join(', ');
 };
 
 export const buildSalesConfirmationElements = (
@@ -53,9 +62,9 @@ export const buildSalesConfirmationElements = (
                     content: [
                         `Name: ${sop.name}`,
                         ...(sop.price ? [`Price: £${sop.price}`] : []),
-                        `Purchase location:${formatSalesOfferPackageEnumerations(sop.purchaseLocations)}`,
-                        `Payment method(s):${formatSalesOfferPackageEnumerations(sop.paymentMethods)}`,
-                        `Ticket formats:${formatSalesOfferPackageEnumerations(sop.ticketFormats)}`,
+                        `Purchase location: ${formatSOPArray(sop.purchaseLocations)}`,
+                        `Payment method(s): ${formatSOPArray(sop.paymentMethods)}`,
+                        `Ticket formats: ${sopDisplayValueConverter(sop.ticketFormats)}`,
                     ],
                     href: 'selectSalesOfferPackage',
                 });

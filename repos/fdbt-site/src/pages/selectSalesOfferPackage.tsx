@@ -75,7 +75,7 @@ export interface SelectSalesOfferPackageProps {
     customPriceEnabled: boolean;
 }
 
-const formatSOPArray = (stringArray: string[]): string =>
+export const formatSOPArray = (stringArray: string[]): string =>
     stringArray.map((string) => sentenceCaseString(string)).join(', ');
 
 const generateCheckbox = (

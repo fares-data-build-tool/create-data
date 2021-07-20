@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import SalesConfirmation, {
     buildSalesConfirmationElements,
-    formatSalesOfferPackageEnumerations,
     getServerSideProps,
+    sopDisplayValueConverter,
 } from '../../src/pages/salesConfirmation';
 import { getMockContext } from '../testData/mockData';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
@@ -211,7 +211,7 @@ describe('pages', () => {
                                 description: 'my way of selling tickets',
                                 purchaseLocations: ['at stop', 'website'],
                                 paymentMethods: ['cash'],
-                                ticketFormats: ['paper'],
+                                ticketFormats: ['paperTicket'],
                             },
                         ],
                     },
@@ -223,7 +223,7 @@ describe('pages', () => {
                                 description: 'my way of selling tickets',
                                 purchaseLocations: ['at stop', 'website'],
                                 paymentMethods: ['cash'],
-                                ticketFormats: ['paper'],
+                                ticketFormats: ['paperTicket'],
                                 price: '1.99',
                             },
                             {
@@ -231,7 +231,7 @@ describe('pages', () => {
                                 description: 'another way of selling tickets',
                                 purchaseLocations: ['in station', 'phone'],
                                 paymentMethods: ['mobileDevice'],
-                                ticketFormats: ['phone'],
+                                ticketFormats: ['mobileApp'],
                                 price: '2.49',
                             },
                         ],
@@ -265,7 +265,7 @@ describe('pages', () => {
                         'Name: A sales offer package',
                         'Purchase location: At stop, Website',
                         'Payment method(s): Cash',
-                        'Ticket formats: Paper',
+                        'Ticket formats: Paper ticket',
                     ],
                     href: 'selectSalesOfferPackage',
                     name: 'Sales offer package',
@@ -281,7 +281,7 @@ describe('pages', () => {
                         'Price: £1.99',
                         'Purchase location: At stop, Website',
                         'Payment method(s): Cash',
-                        'Ticket formats: Paper',
+                        'Ticket formats: Paper ticket',
                     ],
                     href: 'selectSalesOfferPackage',
                     name: 'Sales offer package',
@@ -292,7 +292,7 @@ describe('pages', () => {
                         'Price: £2.49',
                         'Purchase location: In station, Phone',
                         'Payment method(s): Mobile device',
-                        'Ticket formats: Phone',
+                        'Ticket formats: Mobile app',
                     ],
                     href: 'selectSalesOfferPackage',
                     name: 'Sales offer package',
@@ -311,14 +311,14 @@ describe('pages', () => {
         });
     });
 
-    describe('formatSalesOfferPackageEnumerations', () => {
+    describe('sopDisplayValueConverter', () => {
         it('formats a string array with one item', () => {
-            expect(formatSalesOfferPackageEnumerations(['mobileDevice'])).toEqual([' Mobile device']);
+            expect(sopDisplayValueConverter(['electronic_document'])).toEqual('Digital');
         });
         it('formats a string array with multiple items', () => {
-            expect(
-                formatSalesOfferPackageEnumerations(['debitCard', 'creditCard', 'mobilePhone', 'directDebit']),
-            ).toEqual([' Debit card', ' Credit card', ' Mobile phone', ' Direct debit']);
+            expect(sopDisplayValueConverter(['paperTicket', 'mobileApp', 'smartCard', 'electronic_document'])).toEqual(
+                'Paper ticket, Mobile app, Smart card, Digital',
+            );
         });
     });
 });
