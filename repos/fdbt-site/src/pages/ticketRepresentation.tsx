@@ -102,7 +102,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             errors: ticketType && isTicketRepresentationWithErrors(ticketType) ? ticketType.errors : [],
             csrfToken,
             showHybrid: fareType !== 'multiOperator',
-            showPointToPoint: process.env.STAGE !== 'prod' && fareType !== 'multiOperator' && !isCarnet,
+            showPointToPoint: fareType !== 'multiOperator' && !isCarnet,
         },
     };
 };
