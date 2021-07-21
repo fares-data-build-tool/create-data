@@ -98,6 +98,11 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                 </h4>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
+                                    <span className="govuk-!-font-weight-bold">Passenger type:</span>{' '}
+                                    {sentenceCaseString(passengerType.passengerType)}
+                                </p>
+
+                                <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Minimum age:</span>{' '}
                                     {passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'}
                                 </p>
@@ -110,7 +115,7 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
                                     {passengerType.proofDocuments
-                                        ? passengerType.proofDocuments.map((pd) => sentenceCaseString(pd)).join(', ')
+                                        ? getProofOfDocumentsString(passengerType.proofDocuments)
                                         : 'N/A'}
                                 </p>
                             </div>
@@ -217,6 +222,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const passengerTypeGroups = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
 
     return { props: { passengerTypes, passengerTypeGroups } };
+};
+
+const getProofOfDocumentsString = (documents: string[]) => {
+    let proofOfDocumentsString = documents.map((document) => sentenceCaseString(document)).join(', ');
+
+    proofOfDocumentsString =
+        proofOfDocumentsString.length > 44
+            ? proofOfDocumentsString.substring(0, 44).concat('…')
+            : proofOfDocumentsString;
+
+    return proofOfDocumentsString;
 };
 
 export default ViewPassengerTypes;
