@@ -98,6 +98,11 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                 </h4>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
+                                    <span className="govuk-!-font-weight-bold">Passenger type:</span>{' '}
+                                    {sentenceCaseString(passengerType.passengerType)}
+                                </p>
+
+                                <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Minimum age:</span>{' '}
                                     {passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'}
                                 </p>
