@@ -4,6 +4,8 @@ import { PassengerType, NextPageContextWithSession, GroupPassengerType } from '.
 import { getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
+import { stringify } from 'querystring';
+import { profile } from 'winston';
 
 const title = 'Passenger types';
 const description = 'View and edit your passenger types.';
@@ -110,7 +112,7 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
                                     {passengerType.proofDocuments
-                                        ? passengerType.proofDocuments.map((pd) => sentenceCaseString(pd)).join(', ')
+                                        ? getProofOfDocumentsString(passengerType.proofDocuments)
                                         : 'N/A'}
                                 </p>
                             </div>
@@ -217,6 +219,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const passengerTypeGroups = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
 
     return { props: { passengerTypes, passengerTypeGroups } };
+};
+
+const getProofOfDocumentsString = (documents) => {
+    let proofOfDocumentsString = documents.map((document) => sentenceCaseString(document)).join(', ');
+
+    proofOfDocumentsString =
+        proofOfDocumentsString.length > 44
+            ? proofOfDocumentsString.substring(0, 44).concat('…')
+            : proofOfDocumentsString;
+
+    return proofOfDocumentsString;
 };
 
 export default ViewPassengerTypes;
