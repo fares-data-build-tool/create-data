@@ -4,8 +4,6 @@ import { PassengerType, NextPageContextWithSession, GroupPassengerType } from '.
 import { getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
-import { stringify } from 'querystring';
-import { profile } from 'winston';
 
 const title = 'Passenger types';
 const description = 'View and edit your passenger types.';
@@ -221,7 +219,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     return { props: { passengerTypes, passengerTypeGroups } };
 };
 
-const getProofOfDocumentsString = (documents) => {
+const getProofOfDocumentsString = (documents: string[]) => {
     let proofOfDocumentsString = documents.map((document) => sentenceCaseString(document)).join(', ');
 
     proofOfDocumentsString =
