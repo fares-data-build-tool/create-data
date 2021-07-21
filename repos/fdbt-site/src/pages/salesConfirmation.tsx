@@ -16,6 +16,8 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
 import { redirectTo } from './api/apiUtils';
+import { ticketFormatsList } from './salesOfferPackages';
+import { formatSOPArray } from './selectSalesOfferPackage';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
@@ -32,6 +34,16 @@ interface TicketDating {
     endDefault: boolean;
 }
 
+export const sopTicketFormatConverter = (enumerations: string[]) => {
+    return enumerations
+        .map(
+            (enumeration) =>
+                ticketFormatsList.ticketFormats.find((ticketFormat) => ticketFormat.value === enumeration)?.display ||
+                '',
+        )
+        .join(', ');
+};
+
 export const buildSalesConfirmationElements = (
     salesOfferPackages: SalesOfferPackage[] | ProductWithSalesOfferPackages[],
     ticketDating: TicketDating,
@@ -47,7 +59,13 @@ export const buildSalesConfirmationElements = (
             product.salesOfferPackages.forEach((sop) => {
                 confirmationElements.push({
                     name: `Sales offer package`,
-                    content: [`Name: ${sop.name}`, ...(sop.price ? [`Price: £${sop.price}`] : [])],
+                    content: [
+                        `Name: ${sop.name}`,
+                        ...(sop.price ? [`Price: £${sop.price}`] : []),
+                        `Purchase location: ${formatSOPArray(sop.purchaseLocations)}`,
+                        `Payment method(s): ${formatSOPArray(sop.paymentMethods)}`,
+                        `Ticket formats: ${sopTicketFormatConverter(sop.ticketFormats)}`,
+                    ],
                     href: 'selectSalesOfferPackage',
                 });
             });
