@@ -18,6 +18,8 @@ const nextConfig = {
             },
         });
 
+        config.resolve = { ...config.resolve, symlinks: false }
+
         if (!isServer) {
             config.node = {
                 fs: 'empty',

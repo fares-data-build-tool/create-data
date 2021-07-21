@@ -27,8 +27,6 @@
       <RequestDetail>AllWithXref</RequestDetail>
     </RequestPolicy>
   </PublicationRequest>
-  <PublicationRefreshInterval>P1M</PublicationRefreshInterval>
-  <Description>Example of simple zonal pass fares.</Description>
   <dataObjects>
     <CompositeFrame version="1.0" id="epd:UK:IW_Buses-Y:CompositeFrame_UK_PI_LINE_FARE_OFFER:Pass@IW_Buses-Y_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
       <Name>Fares for IW Buses</Name>
@@ -98,21 +96,6 @@
                 <Branding version="1.0" id="op:IW_Buses-Y@brand">
                   <Name>IW Buses</Name>
                 </Branding>
-              </values>
-            </ValueSet>
-            <ValueSet version="1.0" id="op:TypeOfTravelDocument" nameOfClass="TypeOfTravelDocument">
-              <values>
-                <TypeOfTravelDocument version="1.0" id="op:p-ticket">
-                  <Name>Bought on the bus with Cash</Name>
-                  <Description>Paper ticket</Description>
-                  <IsSmartCard>false</IsSmartCard>
-                  <MediaType>paperTicket</MediaType>
-                </TypeOfTravelDocument>
-                <TypeOfTravelDocument version="1.0" id="op:m-ticket">
-                  <Name>Stored on your mobile phone as m-tickets</Name>
-                  <IsSmartCard>false</IsSmartCard>
-                  <MediaType>mobileApp</MediaType>
-                </TypeOfTravelDocument>
               </values>
             </ValueSet>
           </typesOfValue>
@@ -234,9 +217,7 @@
             <PreassignedFareProduct version="1.0" id="op:Pass@Weekly_Rider_senior">
               <Name>Weekly Rider Pass - senior</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <typesOfFareProduct>
-                <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
-              </typesOfFareProduct>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
               <OperatorRef version="1.0" ref="noc:IW_Buses-Y">noc:IW Buses-Y-opId</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@Weekly_Rider_senior@travel">

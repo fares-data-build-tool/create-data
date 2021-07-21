@@ -1,15 +1,6 @@
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import { NextApiResponse } from 'next';
-import {
-    isWithErrors,
-    isFareType,
-    isPassengerType,
-    isPeriodExpiry,
-    isSalesOfferPackages,
-    isSalesOfferPackageWithErrors,
-    isTicketPeriodAttributeWithInput,
-} from '../../../interfaces/typeGuards';
 import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from '.';
 
 import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants';
@@ -26,13 +17,13 @@ import {
     OPERATOR_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
+    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
-    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
 } from '../../../constants/attributes';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
@@ -41,20 +32,23 @@ import {
     BaseProduct,
     BaseTicket,
     CognitoIdToken,
+    FlatFareProductDetails,
     FlatFareTicket,
     GeoZoneTicket,
-    isSchemeOperatorTicket,
     MultiOperatorInfo,
     MultiOperatorMultipleServicesTicket,
-    MultipleProductAttribute,
+    MultiProduct,
     NextApiRequestWithSession,
     PeriodExpiry,
     PeriodHybridTicket,
     PeriodMultipleServicesTicket,
+    PointToPointPeriodProduct,
+    PointToPointPeriodTicket,
     PointToPointProductInfoWithSOP,
     ProductDetails,
     ProductWithSalesOfferPackages,
     ReturnTicket,
+    SalesOfferPackage,
     SchemeOperatorFlatFareTicket,
     SchemeOperatorGeoZoneTicket,
     SchemeOperatorTicket,
@@ -64,9 +58,17 @@ import {
     Ticket,
     TicketPeriod,
     TicketPeriodWithInput,
-    PointToPointPeriodTicket,
 } from '../../../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
+import {
+    isFareType,
+    isPassengerType,
+    isPeriodExpiry,
+    isSalesOfferPackages,
+    isSalesOfferPackageWithErrors,
+    isTicketPeriodAttributeWithInput,
+    isWithErrors,
+} from '../../../interfaces/typeGuards';
 
 import logger from '../../../utils/logger';
 import { getSessionAttribute } from '../../../utils/sessions';
@@ -82,7 +84,7 @@ export const isTermTime = (req: NextApiRequestWithSession): boolean => {
 
 export const getProductsAndSalesOfferPackages = (
     salesOfferPackagesInfo: ProductWithSalesOfferPackages[],
-    multipleProductAttribute: MultipleProductAttribute,
+    multipleProductAttribute: { products: (MultiProduct | PointToPointPeriodProduct)[] },
     periodExpiryAttributeInfo: PeriodExpiry | undefined,
 ): ProductDetails[] => {
     const productSOPList: ProductDetails[] = [];
@@ -96,7 +98,7 @@ export const getProductsAndSalesOfferPackages = (
         }
         const productDetailsItem: ProductDetails = {
             productName: matchedProduct.productName,
-            productPrice: matchedProduct.productPrice,
+            productPrice: 'productPrice' in matchedProduct ? matchedProduct.productPrice : undefined,
             productDuration: matchedProduct.productDuration
                 ? `${matchedProduct.productDuration} ${matchedProduct.productDurationUnits}${
                       matchedProduct.productDuration === '1' ? '' : 's'
@@ -104,7 +106,7 @@ export const getProductsAndSalesOfferPackages = (
                 : undefined,
             productValidity: periodExpiryAttributeInfo?.productValidity,
             productEndTime: periodExpiryAttributeInfo?.productEndTime,
-            carnetDetails: matchedProduct.carnetDetails,
+            carnetDetails: 'carnetDetails' in matchedProduct ? matchedProduct.carnetDetails : undefined,
             salesOfferPackages: sopInfo.salesOfferPackages,
         };
         productSOPList.push(productDetailsItem);
@@ -115,11 +117,7 @@ export const getProductsAndSalesOfferPackages = (
 
 export const putUserDataInS3 = async (data: Ticket, uuid: string): Promise<void> => {
     const s3Data = { ...data };
-    const filePath = `${s3Data.nocCode}/${s3Data.type}/${uuid}_${Date.now()}.json`;
-
-    if (isSchemeOperatorTicket(s3Data)) {
-        delete s3Data.nocCode;
-    }
+    const filePath = `${'nocCode' in s3Data ? s3Data.nocCode : ''}/${s3Data.type}/${uuid}_${Date.now()}.json`;
 
     await putStringInS3(MATCHING_DATA_BUCKET_NAME, filePath, JSON.stringify(s3Data), 'application/json; charset=utf-8');
 };
@@ -257,9 +255,12 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     return {
         ...baseTicketAttributes,
         ...service,
+        type: 'single',
         fareZones: getFareZones(userFareStages, matchingFareZones),
         products,
         termTime: isTermTime(req),
+        operatorName: service.operatorShortName,
+        ...{ operatorShortName: undefined },
     };
 };
 
@@ -292,6 +293,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     return {
         ...baseTicketAttributes,
         ...service,
+        type: 'return',
         outboundFareZones: getFareZones(userFareStages, matchingFareZones),
         inboundFareZones:
             inboundMatchingAttributeInfo && isInboundMatchingInfo(inboundMatchingAttributeInfo)
@@ -302,6 +304,8 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
                 : [],
         ...(returnPeriodValidity && { returnPeriodValidity }),
         products,
+        operatorName: service.operatorShortName,
+        ...{ operatorShortName: undefined },
     };
 };
 
@@ -423,7 +427,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     return {
         ...baseTicketAttributes,
         operatorName: operatorAttribute?.name || '',
-        products: productsAndSops,
+        products: productsAndSops as FlatFareProductDetails[],
         selectedServices,
         termTime: isTermTime(req),
     };
@@ -442,13 +446,22 @@ export const getPointToPointPeriodJson = (
     if (!isPeriodExpiry(periodExpiryAttributeInfo)) {
         throw new Error('Period expiry could not be retrieved from session');
     }
+
+    const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE) as SalesOfferPackage[];
+    if (!salesOfferPackages || 'errors' in salesOfferPackages) {
+        throw new Error(`Invalid sales offer packages: ${salesOfferPackages}`);
+    }
+
+    const products = getProductsAndSalesOfferPackages(
+        [{ ...pointToPointProduct, salesOfferPackages }],
+        { products: [pointToPointProduct] },
+        periodExpiryAttributeInfo,
+    );
+
     return {
         ...userDataJson,
-        pointToPointProduct,
-        periodExpiry: {
-            productValidity: periodExpiryAttributeInfo.productValidity,
-            productEndTime: periodExpiryAttributeInfo.productEndTime,
-        },
+        type: 'period',
+        products: products as PointToPointPeriodTicket['products'],
     };
 };
 
@@ -479,12 +492,10 @@ export const getSchemeOperatorTicketJson = (
     const { email } = decodedIdToken;
     const schemeOperatorName = decodedIdToken['custom:schemeOperator'];
     const schemeOperatorRegionCode = decodedIdToken['custom:schemeRegionCode'];
-    const noc = getAndValidateNoc(req, res);
 
     return {
         schemeOperatorName,
         schemeOperatorRegionCode,
-        nocCode: noc,
         type: fareType,
         ...passengerTypeAttribute,
         email,
@@ -524,7 +535,7 @@ export const adjustSchemeOperatorJson = async (
             salesOfferPackages,
             multipleProductsAttribute,
             undefined,
-        );
+        ) as FlatFareProductDetails[];
         const multipleOperatorsServices = getSessionAttribute(
             req,
             MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,

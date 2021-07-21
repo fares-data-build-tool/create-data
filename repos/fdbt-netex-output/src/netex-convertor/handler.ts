@@ -3,18 +3,7 @@ import AWS, { SNS } from 'aws-sdk';
 import libxslt from 'libxslt';
 import * as db from '../data/auroradb';
 import * as s3 from '../data/s3';
-import {
-    isFlatFareTicket,
-    isMultiOperatorGeoZoneTicket,
-    isMultiOperatorMultipleServicesTicket,
-    isPeriodGeoZoneTicket,
-    isPeriodMultipleServicesTicket,
-    isPointToPointTicket,
-    isSchemeOperatorFlatFareTicket,
-    isSchemeOperatorGeoZoneTicket,
-    isSchemeOperatorTicket,
-    Ticket,
-} from '../types/index';
+import { isSchemeOperatorTicket, Ticket } from '../types/index';
 import netexGenerator from './netexGenerator';
 
 export const xsl = `
@@ -60,36 +49,16 @@ export const generateFileName = (eventFileName: string): string => eventFileName
 export const buildNocList = (ticket: Ticket): string[] => {
     const nocs: string[] = [];
 
-    if (
-        // has user noc and additional nocs
-        isMultiOperatorGeoZoneTicket(ticket)
-    ) {
-        ticket.additionalNocs.forEach(additionalNoc => nocs.push(additionalNoc));
+    if ('additionalNocs' in ticket) {
+        nocs.push(...ticket.additionalNocs);
+    }
+
+    if ('additionalOperators' in ticket) {
+        nocs.push(...ticket.additionalOperators.map(op => op.nocCode));
+    }
+
+    if ('nocCode' in ticket) {
         nocs.push(ticket.nocCode);
-    } else if (
-        // has user noc and additional operators
-        isMultiOperatorMultipleServicesTicket(ticket)
-    ) {
-        ticket.additionalOperators.forEach(additionalOperator => nocs.push(additionalOperator.nocCode));
-        nocs.push(ticket.nocCode);
-    } else if (
-        // has only user noc
-        isPointToPointTicket(ticket) ||
-        isFlatFareTicket(ticket) ||
-        isPeriodGeoZoneTicket(ticket) ||
-        isPeriodMultipleServicesTicket(ticket)
-    ) {
-        nocs.push(ticket.nocCode);
-    } else if (
-        // has only additional nocs
-        isSchemeOperatorGeoZoneTicket(ticket)
-    ) {
-        ticket.additionalNocs.forEach(additionalNoc => nocs.push(additionalNoc));
-    } else if (
-        // has only additional operators
-        isSchemeOperatorFlatFareTicket(ticket)
-    ) {
-        ticket.additionalOperators.forEach(additionalOperator => nocs.push(additionalOperator.nocCode));
     }
 
     return nocs;

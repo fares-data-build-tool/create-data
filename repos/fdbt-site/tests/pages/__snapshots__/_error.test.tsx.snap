@@ -77,7 +77,7 @@ exports[`pages error page should render error page correctly 1`] = `
        
       <a
         className="govuk-link"
-        href="/feedback"
+        href="/contact"
         id="feedback-link"
       >
         Contact

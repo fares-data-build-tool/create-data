@@ -3,7 +3,11 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import RadioButtons from '../components/RadioButtons';
-import { FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants/attributes';
+import {
+    CARNET_FARE_TYPE_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+} from '../constants/attributes';
 import { ErrorInfo, FareType, NextPageContextWithSession } from '../interfaces';
 import { isTicketRepresentationWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
@@ -90,6 +94,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
     const csrfToken = getCsrfToken(ctx);
     const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
     const ticketType = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
+    const isCarnet = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
 
     return {
         props: {
@@ -97,7 +102,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             errors: ticketType && isTicketRepresentationWithErrors(ticketType) ? ticketType.errors : [],
             csrfToken,
             showHybrid: fareType !== 'multiOperator',
-            showPointToPoint: process.env.STAGE !== 'prod' && fareType !== 'multiOperator',
+            showPointToPoint: fareType !== 'multiOperator' && !isCarnet,
         },
     };
 };

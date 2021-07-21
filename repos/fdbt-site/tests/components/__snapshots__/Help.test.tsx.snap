@@ -17,9 +17,10 @@ exports[`Help should render the Help component 1`] = `
         className="govuk-link govuk-!-font-size-19"
         href="/contact"
       >
-        Contact Us
+        Contact
       </a>
     </span>
+    us
   </p>
 </div>
 `;

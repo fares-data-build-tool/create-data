@@ -3,79 +3,10 @@ main {
     outline: none;
 }
 
-.app-navigation {
-    font-family: 'GDS Transport', arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-weight: 700;
-    /* font-size: 16px; */
-    font-size: 1.1875rem;
-    line-height: 1.25;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 100%;
-    background-color: #f8f8f8;
-}
-
-.app-navigation__list {
-    position: relative;
-    left: -15px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.app-navigation__list-item {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    display: block;
-    position: relative;
-    height: 50px;
-    padding: 0 15px;
-    float: left;
-    line-height: 50px;
-}
-
-.app-navigation__list-item--current {
-    border-bottom: 5px solid #1d70b8;
-}
-
 .app-width-container {
     max-width: 960px;
     margin-right: auto;
     margin-left: auto;
-}
-
-.app-subnav__section-item {
-	margin-bottom: 5px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-
-.app-subnav__section-item .app-subnav__link {
-	font-weight: normal;
-
-  &:hover {
-    text-underline-offset: .3em;
-    text-decoration-thickness: 3px;
-  }
-}
-
-.app-subnav__section-item--current {
-	margin-left: -14px;
-	padding-left: 10px;
-	border-left: 4px solid #1d70b8;
-	background-color: #fff;
-
-  .app-subnav__link {
-    font-weight: bold;
-  }
-}
-
-.app-subnav__section {
-    margin: 0 0 20px;
-    padding: 0;
-    list-style-type: none;
 }
 
 .govuk-link--no-underline:not(:hover):not(:active) {

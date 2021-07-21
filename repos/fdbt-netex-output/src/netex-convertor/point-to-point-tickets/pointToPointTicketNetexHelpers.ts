@@ -1,4 +1,5 @@
 import startCase from 'lodash/startCase';
+import { PointToPointPeriodTicket } from '../../../shared/matchingJsonTypes';
 import {
     FareZone,
     FareZoneList,
@@ -41,7 +42,7 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
         },
     }));
 
-export const getPriceGroups = (matchingData: PointToPointTicket): {}[] => {
+export const getPriceGroups = (matchingData: PointToPointTicket | PointToPointPeriodTicket): {}[] => {
     const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
     const priceGroups = getUniquePriceGroups(fareZones).map(price => ({
         version: '1.0',
@@ -173,9 +174,11 @@ export const getInnerFareTables = (
         };
     });
 
-export const getPointToPointAvailabilityElement = (ticket: PointToPointTicket): NetexObject => ({
+export const getPointToPointAvailabilityElement = (
+    ticket: PointToPointTicket | PointToPointPeriodTicket,
+): NetexObject => ({
     version: '1.0',
-    id: `Tariff@${isReturnTicket(ticket) ? 'return' : 'single'}@availability`,
+    id: `Tariff@${ticket.type}@availability`,
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
         ref: 'fxc:access',
@@ -188,29 +191,16 @@ export const getPointToPointAvailabilityElement = (ticket: PointToPointTicket): 
     },
 });
 
-export const getPreassignedFareProduct = (matchingData: PointToPointTicket): NetexObject => {
+export const getPreassignedFareProduct = (
+    matchingData: PointToPointTicket | PointToPointPeriodTicket,
+    fareStructuresElements: NetexObject[],
+): NetexObject => {
     const ticketUserConcat = `${matchingData.type}_${matchingData.passengerType}`;
-    const fareStructureElementList = [
-        {
-            version: '1.0',
-            ref: `Tariff@${matchingData.type}@lines`,
-        },
-        {
-            version: '1.0',
-            ref: isGroupTicket(matchingData) ? 'op:Tariff@group' : `Tariff@${matchingData.type}@eligibility`,
-        },
-        {
-            version: '1.0',
-            ref: `Tariff@${matchingData.type}@conditions_of_travel`,
-        },
-    ];
 
-    if (matchingData.timeRestriction.length > 0) {
-        fareStructureElementList.push({
-            version: '1.0',
-            ref: `Tariff@${matchingData.type}@availability`,
-        });
-    }
+    const fareStructureElementRefs = fareStructuresElements.map(element => ({
+        version: '1.0',
+        ref: element.id,
+    }));
 
     return {
         id: `Trip@${ticketUserConcat}`,
@@ -228,7 +218,7 @@ export const getPreassignedFareProduct = (matchingData: PointToPointTicket): Net
                 version: '1.0',
                 Name: { $t: `${matchingData.type} Ride` },
                 fareStructureElements: {
-                    FareStructureElementRef: fareStructureElementList,
+                    FareStructureElementRef: fareStructureElementRefs,
                 },
             },
         },
@@ -314,7 +304,10 @@ export const buildSalesOfferPackages = (product: BaseProduct, ticketUserConcat: 
     });
 };
 
-export const getFareTables = (matchingData: PointToPointTicket, lineIdName: string): NetexObject[] => {
+export const getFareTables = (
+    matchingData: PointToPointTicket | PointToPointPeriodTicket,
+    lineIdName: string,
+): NetexObject[] => {
     const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
     const ticketUserConcat = `${matchingData.type}_${matchingData.passengerType}`;
 
@@ -380,8 +373,11 @@ export const getFareTables = (matchingData: PointToPointTicket, lineIdName: stri
     });
 };
 
-export const getLinesElement = (ticket: PointToPointTicket, lineName: string): NetexObject => {
-    const typeOfPointToPoint = isReturnTicket(ticket) ? 'return' : 'single';
+export const getLinesElement = (
+    ticket: PointToPointTicket | PointToPointPeriodTicket,
+    lineName: string,
+): NetexObject => {
+    const typeOfPointToPoint = ticket.type;
 
     return {
         version: '1.0',
@@ -411,8 +407,8 @@ export const getLinesElement = (ticket: PointToPointTicket, lineName: string): N
     };
 };
 
-export const getEligibilityElement = (ticket: PointToPointTicket): NetexObject => {
-    const typeOfPointToPoint = isReturnTicket(ticket) ? 'return' : 'single';
+export const getEligibilityElement = (ticket: PointToPointTicket | PointToPointPeriodTicket): NetexObject => {
+    const typeOfPointToPoint = ticket.type;
     const users = isGroupTicket(ticket)
         ? ticket.groupDefinition.companions
         : [
@@ -445,7 +441,7 @@ export const getEligibilityElement = (ticket: PointToPointTicket): NetexObject =
 };
 
 export const getPointToPointConditionsElement = (ticket: PointToPointTicket): NetexObject => {
-    const typeOfPointToPoint = isReturnTicket(ticket) ? 'return' : 'single';
+    const typeOfPointToPoint = ticket.type;
     let usagePeriodValidity = {};
 
     if (isReturnTicket(ticket) && ticket.returnPeriodValidity) {

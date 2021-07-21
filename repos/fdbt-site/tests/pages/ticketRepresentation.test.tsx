@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import TicketRepresentation, { getServerSideProps } from '../../src/pages/ticketRepresentation';
 import { getMockContext } from '../testData/mockData';
-import { FARE_TYPE_ATTRIBUTE } from '../../src/constants/attributes';
+import { CARNET_FARE_TYPE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('ticketRepresentation', () => {
@@ -57,7 +57,7 @@ describe('pages', () => {
             expect(result.props.showHybrid).toBeFalsy();
         });
 
-        it('should set showHybrid to false when the ticket is not a multiOperator', () => {
+        it('should set showHybrid to true when the ticket is not a multiOperator', () => {
             const ctx = getMockContext({
                 session: {
                     [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
@@ -65,7 +65,19 @@ describe('pages', () => {
             });
             const result = getServerSideProps(ctx);
 
-            expect(result.props.showHybrid).toBeTruthy();
+            expect(result.props.showHybrid).toBe(true);
+        });
+
+        it('should set showPointToPoint to false when the ticket is a carnet', () => {
+            const ctx = getMockContext({
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                    [CARNET_FARE_TYPE_ATTRIBUTE]: true,
+                },
+            });
+            const result = getServerSideProps(ctx);
+
+            expect(result.props.showPointToPoint).toBe(false);
         });
     });
 });
