@@ -34,7 +34,7 @@ interface TicketDating {
     endDefault: boolean;
 }
 
-export const sopDisplayValueConverter = (enumerations: string[]) => {
+export const sopTicketFormatConverter = (enumerations: string[]) => {
     return enumerations
         .map(
             (enumeration) =>
@@ -64,7 +64,7 @@ export const buildSalesConfirmationElements = (
                         ...(sop.price ? [`Price: £${sop.price}`] : []),
                         `Purchase location: ${formatSOPArray(sop.purchaseLocations)}`,
                         `Payment method(s): ${formatSOPArray(sop.paymentMethods)}`,
-                        `Ticket formats: ${sopDisplayValueConverter(sop.ticketFormats)}`,
+                        `Ticket formats: ${sopTicketFormatConverter(sop.ticketFormats)}`,
                     ],
                     href: 'selectSalesOfferPackage',
                 });

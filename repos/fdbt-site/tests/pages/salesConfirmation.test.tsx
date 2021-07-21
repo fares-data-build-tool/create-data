@@ -4,7 +4,7 @@ import moment from 'moment';
 import SalesConfirmation, {
     buildSalesConfirmationElements,
     getServerSideProps,
-    sopDisplayValueConverter,
+    sopTicketFormatConverter,
 } from '../../src/pages/salesConfirmation';
 import { getMockContext } from '../testData/mockData';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
@@ -313,10 +313,10 @@ describe('pages', () => {
 
     describe('sopDisplayValueConverter', () => {
         it('formats a string array with one item', () => {
-            expect(sopDisplayValueConverter(['electronic_document'])).toEqual('Digital');
+            expect(sopTicketFormatConverter(['electronic_document'])).toEqual('Digital');
         });
         it('formats a string array with multiple items', () => {
-            expect(sopDisplayValueConverter(['paperTicket', 'mobileApp', 'smartCard', 'electronic_document'])).toEqual(
+            expect(sopTicketFormatConverter(['paperTicket', 'mobileApp', 'smartCard', 'electronic_document'])).toEqual(
                 'Paper ticket, Mobile app, Smart card, Digital',
             );
         });
