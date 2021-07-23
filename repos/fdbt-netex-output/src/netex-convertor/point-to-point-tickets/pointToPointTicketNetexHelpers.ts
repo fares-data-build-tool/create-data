@@ -35,6 +35,7 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
         version: 'any',
         id: stop.atcoCode ? `atco:${stop.atcoCode}` : `naptan:${stop.naptanCode}`,
         Name: { $t: stop.stopName },
+        NameSuffix: { $t: stop.indicator },
         TopographicPlaceView: {
             TopographicPlaceRef: { ref: `nptgLocality:${stop.localityCode}` },
             Name: { $t: stop.localityName },
