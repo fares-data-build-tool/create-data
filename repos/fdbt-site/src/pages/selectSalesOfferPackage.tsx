@@ -74,7 +74,7 @@ export interface SelectSalesOfferPackageProps {
     csrfToken: string;
 }
 
-const formatSOPArray = (stringArray: string[]): string =>
+export const formatSOPArray = (stringArray: string[]): string =>
     stringArray.map((string) => sentenceCaseString(string)).join(', ');
 
 const generateCheckbox = (

@@ -4,6 +4,7 @@ import moment from 'moment';
 import SalesConfirmation, {
     buildSalesConfirmationElements,
     getServerSideProps,
+    sopTicketFormatConverter,
 } from '../../src/pages/salesConfirmation';
 import { getMockContext } from '../testData/mockData';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
@@ -210,7 +211,7 @@ describe('pages', () => {
                                 description: 'my way of selling tickets',
                                 purchaseLocations: ['at stop', 'website'],
                                 paymentMethods: ['cash'],
-                                ticketFormats: ['paper'],
+                                ticketFormats: ['paperTicket'],
                             },
                         ],
                     },
@@ -222,7 +223,7 @@ describe('pages', () => {
                                 description: 'my way of selling tickets',
                                 purchaseLocations: ['at stop', 'website'],
                                 paymentMethods: ['cash'],
-                                ticketFormats: ['paper'],
+                                ticketFormats: ['paperTicket'],
                                 price: '1.99',
                             },
                             {
@@ -230,7 +231,7 @@ describe('pages', () => {
                                 description: 'another way of selling tickets',
                                 purchaseLocations: ['in station', 'phone'],
                                 paymentMethods: ['mobileDevice'],
-                                ticketFormats: ['phone'],
+                                ticketFormats: ['mobileApp'],
                                 price: '2.49',
                             },
                         ],
@@ -260,7 +261,12 @@ describe('pages', () => {
                     name: 'Product',
                 },
                 {
-                    content: ['Name: A sales offer package'],
+                    content: [
+                        'Name: A sales offer package',
+                        'Purchase location: At stop, Website',
+                        'Payment method(s): Cash',
+                        'Ticket formats: Paper ticket',
+                    ],
                     href: 'selectSalesOfferPackage',
                     name: 'Sales offer package',
                 },
@@ -270,12 +276,24 @@ describe('pages', () => {
                     name: 'Product',
                 },
                 {
-                    content: ['Name: A sales offer package', 'Price: £1.99'],
+                    content: [
+                        'Name: A sales offer package',
+                        'Price: £1.99',
+                        'Purchase location: At stop, Website',
+                        'Payment method(s): Cash',
+                        'Ticket formats: Paper ticket',
+                    ],
                     href: 'selectSalesOfferPackage',
                     name: 'Sales offer package',
                 },
                 {
-                    content: ['Name: Another sales offer package', 'Price: £2.49'],
+                    content: [
+                        'Name: Another sales offer package',
+                        'Price: £2.49',
+                        'Purchase location: In station, Phone',
+                        'Payment method(s): Mobile device',
+                        'Ticket formats: Mobile app',
+                    ],
                     href: 'selectSalesOfferPackage',
                     name: 'Sales offer package',
                 },
@@ -290,6 +308,17 @@ describe('pages', () => {
                     name: 'Ticket end date (default)',
                 },
             ]);
+        });
+    });
+
+    describe('sopDisplayValueConverter', () => {
+        it('formats a string array with one item', () => {
+            expect(sopTicketFormatConverter(['electronic_document'])).toEqual('Digital');
+        });
+        it('formats a string array with multiple items', () => {
+            expect(sopTicketFormatConverter(['paperTicket', 'mobileApp', 'smartCard', 'electronic_document'])).toEqual(
+                'Paper ticket, Mobile app, Smart card, Digital',
+            );
         });
     });
 });
