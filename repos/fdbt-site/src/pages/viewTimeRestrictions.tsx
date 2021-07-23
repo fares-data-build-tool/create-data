@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
-import { NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
+import { NextPageContextWithSession, PremadeTimeRestriction, TimeBand } from '../interfaces';
 import { getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
@@ -8,7 +8,7 @@ import SubNavigation from '../layout/SubNavigation';
 const title = 'Time restrictions';
 const description = 'View and edit your time restrictions.';
 
-const days = {
+const dayMappings = {
     monday: 'Mon',
     tuesday: 'Tue',
     wednesday: 'Wed',
@@ -23,6 +23,23 @@ interface TimeRestrictionProps {
     timeRestrictions: PremadeTimeRestriction[];
 }
 
+const formatTime = (time: string): string => (time ? `${time.substring(0, 2)}:${time.substring(2, 4)}` : '');
+
+const formatTimeBand = (timeBand: TimeBand): string =>
+    `${formatTime(timeBand.startTime)}–${formatTime(timeBand.endTime)}`;
+
+const formatTimeBands = (timeBands: TimeBand[]): string =>
+    timeBands.length > 0
+        ? timeBands
+              .map((timeBand, index) => (index === 0 ? formatTimeBand(timeBand) : `, ${formatTimeBand(timeBand)}`))
+              .join('')
+        : 'Valid all day';
+
+const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: string): string => {
+    const matchedDayRestriction = timeRestriction.contents.find(dayRestriction => dayRestriction.day === day);
+    return matchedDayRestriction ? formatTimeBands(matchedDayRestriction.timeBands) : 'Not valid'
+}
+        
 const ViewTimeRestrictions = ({ timeRestrictions }: TimeRestrictionProps): ReactElement => (
     <BaseLayout title={title} description={description} showNavigation={true}>
         <div className="govuk-width-container">
@@ -61,8 +78,6 @@ const NoTimeRestrictions = (): ReactElement => {
 };
 
 const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeRestriction[] }): ReactElement => {
-    timeRestrictions.map
-    
     return (
         <div className="govuk-heading-m">
             <h3>Individual</h3>
@@ -96,22 +111,14 @@ const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeR
 
                                 <h4 className="govuk-!-padding-bottom-4">{sentenceCaseString(timeRestriction.name)}</h4>
 
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Days</span>{' '}
-                                    {timeRestriction ? timeRestriction.ageRangeMin : 'N/A'}
-                                </p>
-
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Maximum age:</span>{' '}
-                                    {timeRestriction.ageRangeMax ? timeRestriction.ageRangeMax : 'N/A'}
-                                </p>
-
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
-                                    {timeRestriction.proofDocuments
-                                        ? timeRestriction.proofDocuments.map((pd) => sentenceCaseString(pd)).join(', ')
-                                        : 'N/A'}
-                                </p>
+                                {Object.entries(dayMappings).map((dayMapping) => {
+                                    return <p className="govuk-body-s govuk-!-margin-bottom-2">
+                                        <span className="govuk-!-font-weight-bold">
+                                            {dayMapping[1]}
+                                        </span>{' '}
+                                        {formatDayRestriction(timeRestriction, dayMapping[0])}
+                                    </p>;
+                                })}
                             </div>
                         </div>
                     </div>
@@ -128,7 +135,6 @@ const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeR
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: TimeRestrictionProps }> => {
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
-    console.log(timeRestrictions[0].contents[2]);
 
     return { props: { timeRestrictions } };
 };

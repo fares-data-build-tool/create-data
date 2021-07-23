@@ -74,8 +74,18 @@ export interface PointToPointPeriodTicket extends Omit<ReturnTicket, 'products' 
     products: (PointToPointPeriodProduct & ProductDetails)[];
 }
 
+export type TimeRestrictionDay =
+    | 'monday'
+    | 'tuesday'
+    | 'wednesday'
+    | 'thursday'
+    | 'friday'
+    | 'saturday'
+    | 'sunday'
+    | 'bankHoliday';
+
 export interface FullTimeRestriction {
-    day: string;
+    day: TimeRestrictionDay;
     timeBands: TimeBand[];
 }
 
