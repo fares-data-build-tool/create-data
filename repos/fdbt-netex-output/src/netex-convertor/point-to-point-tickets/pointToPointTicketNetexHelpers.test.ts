@@ -157,6 +157,7 @@ describe('Netex Helpers', () => {
             expect(stops).toEqual([
                 {
                     Name: { $t: 'Ashton Bus Station' },
+                    NameSuffix: null,
                     TopographicPlaceView: {
                         Name: { $t: 'Ashton-under-Lyne' },
                         QualifierName: { $t: '' },
@@ -167,6 +168,7 @@ describe('Netex Helpers', () => {
                 },
                 {
                     Name: { $t: 'Henrietta Street' },
+                    NameSuffix: null,
                     TopographicPlaceView: {
                         Name: { $t: 'Ashton-under-Lyne' },
                         QualifierName: { $t: '' },
@@ -177,6 +179,7 @@ describe('Netex Helpers', () => {
                 },
                 {
                     Name: { $t: 'Crickets Ln' },
+                    NameSuffix: null,
                     TopographicPlaceView: {
                         Name: { $t: 'Ashton-under-Lyne' },
                         QualifierName: { $t: '' },
@@ -187,6 +190,7 @@ describe('Netex Helpers', () => {
                 },
                 {
                     Name: { $t: 'Tameside College' },
+                    NameSuffix: null,
                     TopographicPlaceView: {
                         Name: { $t: 'Cockbrook' },
                         QualifierName: { $t: '' },
