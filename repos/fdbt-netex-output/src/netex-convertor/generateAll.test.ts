@@ -47,6 +47,6 @@ describe('generateAll', () => {
 
         const file1 = await fs.promises.readFile(`../../fdbt-dev/data/generatedNetex/${xmlFileName}`, 'utf-8');
         const file2 = await fs.promises.readFile(`../../fdbt-dev/data/netexData/${xmlFileName}`, 'utf-8');
-        expect(file2).toEqual(file1); //Should this be the other way round?
+        expect(file1).toEqual(file2); 
     });
 });
