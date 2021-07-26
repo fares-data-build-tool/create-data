@@ -136,6 +136,7 @@
           <scheduledStopPoints>
             <ScheduledStopPoint version="any" id="atco:250014868">
               <Name>Bold Street</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -143,6 +144,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:25001680">
               <Name>Albert Square</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -150,6 +152,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500DCL2158">
               <Name>St Marys Church</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -157,6 +160,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG2">
               <Name>Mount Street</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -164,6 +168,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500BTA01077">
               <Name>Elm Street</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -171,6 +176,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:250011593">
               <Name>Birch Street</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -178,6 +184,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:25002161">
               <Name>Agnew Road</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -185,6 +192,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:25001664">
               <Name>Aldi Poulton Road</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -192,6 +200,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:25001687">
               <Name>Queens Hotel</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -199,6 +208,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG726">
               <Name>Westview</Name>
+              <NameSuffix>adj</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -206,6 +216,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA16315">
               <Name>Health Village</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -213,6 +224,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:250011603">
               <Name>Flakefleet School</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -220,6 +232,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500DCL2165">
               <Name>Flakefleet Avenue</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -227,6 +240,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG767">
               <Name>Interchange</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -234,6 +248,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:250020148">
               <Name>Jameson Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -241,6 +256,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG746">
               <Name>Broadwater Caravan Park</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -248,6 +264,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:250020149">
               <Name>Cala Gran</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -255,6 +272,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG745">
               <Name>Venture Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -262,6 +280,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA16543">
               <Name>Iron Horse</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016539"/>
                 <Name>Burn Naze</Name>
@@ -269,6 +288,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG518">
               <Name>Bourne Poacher</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016539"/>
                 <Name>Burn Naze</Name>
@@ -276,6 +296,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:250014447">
               <Name>Springfield Drive</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016539"/>
                 <Name>Burn Naze</Name>
@@ -283,6 +304,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG510">
               <Name>Reta Drive</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016539"/>
                 <Name>Burn Naze</Name>
@@ -290,6 +312,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:250020137">
               <Name>Trunnah Church</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016610"/>
                 <Name>Trunnah</Name>
@@ -297,6 +320,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:250013370">
               <Name>Gardeners Arms</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016607"/>
                 <Name>Thornton</Name>
@@ -304,6 +328,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500DCL155">
               <Name>Marsh Mill</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016610"/>
                 <Name>Trunnah</Name>
@@ -311,6 +336,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG615">
               <Name>Four Lane Ends</Name>
+              <NameSuffix>Stop 3</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016607"/>
                 <Name>Thornton</Name>
@@ -318,6 +344,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:250013379">
               <Name>Neville Drive</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016607"/>
                 <Name>Thornton</Name>
@@ -325,6 +352,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500BTA01078">
               <Name>Newton Grove</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016576"/>
                 <Name>Norcross</Name>
@@ -332,6 +360,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA07546">
               <Name>New Lane</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016586"/>
                 <Name>Rington</Name>
@@ -339,6 +368,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA07544">
               <Name>Arundel Drive</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016586"/>
                 <Name>Rington</Name>
@@ -346,6 +376,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG466">
               <Name>Castle Gardens</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -353,6 +384,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG465">
               <Name>Greenheys Ave</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -360,6 +392,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG464">
               <Name>Tudor Close</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -367,6 +400,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG463">
               <Name>Crematorium</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -374,6 +408,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500DCL150">
               <Name>Meadow Crescent</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -381,6 +416,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:250020144">
               <Name>Fairway</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -388,6 +424,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:250010642">
               <Name>Blackpool Sixth Form College</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -395,6 +432,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500B0104">
               <Name>Aspire Academy</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -402,6 +440,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0105">
               <Name>Poulton Old Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079363"/>
                 <Name>Boundary Park</Name>
@@ -409,6 +448,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0416">
               <Name>Petrol Station</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079363"/>
                 <Name>Boundary Park</Name>
@@ -416,6 +456,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0116">
               <Name>Rodwell Walk</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035286"/>
                 <Name>Wades Farm</Name>
@@ -423,6 +464,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0117">
               <Name>Meyler Avenue</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035292"/>
                 <Name>North Shore</Name>
@@ -430,6 +472,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0118">
               <Name>Mansfield Road</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035282"/>
                 <Name>Layton</Name>
@@ -437,6 +480,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0119">
               <Name>Layton Institute</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035282"/>
                 <Name>Layton</Name>
@@ -444,6 +488,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0342">
               <Name>Layton Square</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035282"/>
                 <Name>Layton</Name>
@@ -451,6 +496,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0343">
               <Name>Rossall Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035282"/>
                 <Name>Layton</Name>
@@ -458,6 +504,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0344">
               <Name>Devonshire Road</Name>
+              <NameSuffix>adj</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079370"/>
                 <Name>Central</Name>
@@ -465,6 +512,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0345">
               <Name>Greenhill</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079370"/>
                 <Name>Central</Name>
@@ -472,6 +520,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0346">
               <Name>Buchanan Street</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079370"/>
                 <Name>Central</Name>
@@ -479,6 +528,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0763">
               <Name>Talbot Road</Name>
+              <NameSuffix>TA2</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0054826"/>
                 <Name>Blackpool Town Centre</Name>
@@ -486,6 +536,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0080">
               <Name>Corporation Street C04</Name>
+              <NameSuffix>Stop C04</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0054826"/>
                 <Name>Blackpool Town Centre</Name>
@@ -493,6 +544,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590BTA01313">
               <Name>Talbot Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0054826"/>
                 <Name>Blackpool Town Centre</Name>
@@ -500,6 +552,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0315">
               <Name>Buchanan Street</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079370"/>
                 <Name>Central</Name>
@@ -507,6 +560,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0316">
               <Name>Spencer Court</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079370"/>
                 <Name>Central</Name>
@@ -514,6 +568,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0317">
               <Name>Devonshire Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035282"/>
                 <Name>Layton</Name>
@@ -521,6 +576,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0318">
               <Name>Layton Square</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035282"/>
                 <Name>Layton</Name>
@@ -528,6 +584,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0088">
               <Name>Layton Institute</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035282"/>
                 <Name>Layton</Name>
@@ -535,6 +592,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0089">
               <Name>Mansfield Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035282"/>
                 <Name>Layton</Name>
@@ -542,6 +600,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0090">
               <Name>Meyler Avenue</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035286"/>
                 <Name>Wades Farm</Name>
@@ -549,6 +608,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0091">
               <Name>Rodwell Walk</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035286"/>
                 <Name>Wades Farm</Name>
@@ -556,6 +616,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0415">
               <Name>Petrol Station</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079363"/>
                 <Name>Boundary Park</Name>
@@ -563,6 +624,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0102">
               <Name>Poulton Old Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079363"/>
                 <Name>Boundary Park</Name>
@@ -570,6 +632,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500B0103">
               <Name>Aspire Academy</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -577,6 +640,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG484">
               <Name>Blackpool Sixth Form College</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -584,6 +648,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500595">
               <Name>Fairway</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -591,6 +656,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG462">
               <Name>Meadow Crescent</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -598,6 +664,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG461">
               <Name>Crematorium</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -605,6 +672,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG460">
               <Name>Tudor Close</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -612,6 +680,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG459">
               <Name>Greenheys Ave</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -619,6 +688,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA07540">
               <Name>Moorfield Ave</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -626,6 +696,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA07541">
               <Name>Castle Gardens</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -633,6 +704,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500593">
               <Name>Arundel Drive</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016541"/>
                 <Name>Carleton</Name>
@@ -640,6 +712,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA07547">
               <Name>New Lane</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016586"/>
                 <Name>Rington</Name>
@@ -647,6 +720,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500BTA01075">
               <Name>Newton Grove</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016576"/>
                 <Name>Norcross</Name>
@@ -654,6 +728,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG613">
               <Name>Beechwood Drive</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016607"/>
                 <Name>Thornton</Name>
@@ -661,6 +736,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG612">
               <Name>Neville Drive</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016607"/>
                 <Name>Thornton</Name>
@@ -668,6 +744,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG609">
               <Name>Four Lane Ends</Name>
+              <NameSuffix>Stop 4</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016607"/>
                 <Name>Thornton</Name>
@@ -675,6 +752,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA07613">
               <Name>Marsh Mill</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016607"/>
                 <Name>Thornton</Name>
@@ -682,6 +760,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG519">
               <Name>Gardeners Arms</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016607"/>
                 <Name>Thornton</Name>
@@ -689,6 +768,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500DCL154">
               <Name>Trunnah Church</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016610"/>
                 <Name>Trunnah</Name>
@@ -696,6 +776,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG505">
               <Name>Reta Drive</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016539"/>
                 <Name>Burn Naze</Name>
@@ -703,6 +784,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG512">
               <Name>Bourne Poacher</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016539"/>
                 <Name>Burn Naze</Name>
@@ -710,6 +792,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA16542">
               <Name>Iron Horse</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016539"/>
                 <Name>Burn Naze</Name>
@@ -717,6 +800,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG744">
               <Name>Venture Road</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -724,6 +808,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:25001671">
               <Name>Cala Gran</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -731,6 +816,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:25001668">
               <Name>Broadwater Caravan Park</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -738,6 +824,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:25001681">
               <Name>Nautical College</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -745,6 +832,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:25001667">
               <Name>Interchange</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -752,6 +840,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG739">
               <Name>Larkholme Avenue</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -759,6 +848,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500DCL2164">
               <Name>Flakefleet Avenue</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -766,6 +856,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500DCL2163">
               <Name>Leyburn Avenue</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -773,6 +864,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA16316">
               <Name>Health Village</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016536"/>
                 <Name>Broadwater</Name>
@@ -780,6 +872,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG728">
               <Name>Westview</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -787,6 +880,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:25001685">
               <Name>Queens Hotel</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -794,6 +888,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:250013924">
               <Name>Mersey Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -801,6 +896,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500DCL2160">
               <Name>Agnew Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -808,6 +904,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG3">
               <Name>Strawberry Gardens</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -815,6 +912,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA07614">
               <Name>Elm Street</Name>
+              <NameSuffix>adj</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -822,6 +920,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500DCL2159">
               <Name>Preston Street</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>
@@ -829,6 +928,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:25001663">
               <Name>Albert Square</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016552"/>
                 <Name>Fleetwood</Name>

@@ -54,7 +54,7 @@ We use the xml2json node package to parse JSON into XML. There's some quirks to 
     SalesOfferPackage: {
         id: 'SOP_1',
         version: '1.0',
-        Name: { %t: 'Sales Offer Package 1' },
+        Name: { $t: 'Sales Offer Package 1' },
         TypeOfTravelDocumentRef: {
             version="fxc:v1.0",
             ref="fxc:paperTicket",

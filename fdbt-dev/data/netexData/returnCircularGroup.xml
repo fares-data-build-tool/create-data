@@ -134,6 +134,7 @@
           <scheduledStopPoints>
             <ScheduledStopPoint version="any" id="atco:2800S14038B">
               <Name>Dunbeath Avenue</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0071071"/>
                 <Name>Rainhill Stoops</Name>
@@ -141,6 +142,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2800S13247A">
               <Name>Stratton Drive</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0029906"/>
                 <Name>Thatto Heath</Name>
@@ -148,6 +150,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2800S14005A">
               <Name>Elton Head Road</Name>
+              <NameSuffix>adj</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0052697"/>
                 <Name>Rainhill</Name>
@@ -155,6 +158,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2800S14023A">
               <Name>Wedgewood Gardens</Name>
+              <NameSuffix>nr</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0029827"/>
                 <Name>Nutgrove</Name>
@@ -162,6 +166,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2800S14004A">
               <Name>Foxwood</Name>
+              <NameSuffix>adj</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0029906"/>
                 <Name>Thatto Heath</Name>
@@ -169,6 +174,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2800S14003A">
               <Name>Edge Street</Name>
+              <NameSuffix>adj</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0029906"/>
                 <Name>Thatto Heath</Name>
@@ -176,6 +182,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2800S13025C">
               <Name>Scholes Lane</Name>
+              <NameSuffix>adj</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0029906"/>
                 <Name>Thatto Heath</Name>
@@ -183,6 +190,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2800S16052A">
               <Name>Thatto Heath Station</Name>
+              <NameSuffix>Stop A</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0029906"/>
                 <Name>Thatto Heath</Name>

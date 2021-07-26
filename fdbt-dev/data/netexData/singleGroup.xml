@@ -134,6 +134,7 @@
           <scheduledStopPoints>
             <ScheduledStopPoint version="any" id="atco:2500B0204">
               <Name>Victoria Square</Name>
+              <NameSuffix>Stop D</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0016545"/>
                 <Name>Cleveleys</Name>
@@ -141,6 +142,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0205">
               <Name>Lauderdale Avenue</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035271"/>
                 <Name>Anchorsholme</Name>
@@ -148,6 +150,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0206">
               <Name>Anchorsholme Lane Shops</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035271"/>
                 <Name>Anchorsholme</Name>
@@ -155,6 +158,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0207">
               <Name>Cresswood Avenue</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035271"/>
                 <Name>Anchorsholme</Name>
@@ -162,6 +166,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0487">
               <Name>North Drive</Name>
+              <NameSuffix>adj</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035271"/>
                 <Name>Anchorsholme</Name>
@@ -169,6 +174,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0488">
               <Name>Luton Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035271"/>
                 <Name>Anchorsholme</Name>
@@ -176,6 +182,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0489">
               <Name>All Saints Church</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035271"/>
                 <Name>Anchorsholme</Name>
@@ -183,6 +190,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0490">
               <Name>Lyddesdale Avenue</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035271"/>
                 <Name>Anchorsholme</Name>
@@ -190,6 +198,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0151">
               <Name>Branstree Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035290"/>
                 <Name>Mereside</Name>
@@ -197,6 +206,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0491">
               <Name>Russell Avenue</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035271"/>
                 <Name>Anchorsholme</Name>
@@ -204,6 +214,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0814">
               <Name>Norbreck School</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035271"/>
                 <Name>Anchorsholme</Name>
@@ -211,6 +222,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0815">
               <Name>Shore Road</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035291"/>
                 <Name>Norbreck</Name>
@@ -218,6 +230,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0816">
               <Name>Wilson Square</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035291"/>
                 <Name>Norbreck</Name>
@@ -225,6 +238,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0817">
               <Name>Mossom Lane</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035291"/>
                 <Name>Norbreck</Name>
@@ -232,6 +246,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0818">
               <Name>Guildford Avenue</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035291"/>
                 <Name>Norbreck</Name>
@@ -239,6 +254,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0819">
               <Name>Norbreck Shops</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035291"/>
                 <Name>Norbreck</Name>
@@ -246,6 +262,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0820">
               <Name>Chatsworth Avenue</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035291"/>
                 <Name>Norbreck</Name>
@@ -253,6 +270,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0821">
               <Name>Leyburn Avenue</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035291"/>
                 <Name>Norbreck</Name>
@@ -260,6 +278,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0822">
               <Name>Madison Avenue</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035272"/>
                 <Name>Bispham</Name>
@@ -267,6 +286,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0070">
               <Name>Lowther Avenue</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035292"/>
                 <Name>North Shore</Name>
@@ -274,6 +294,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0073">
               <Name>Warbreck Hill</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035292"/>
                 <Name>North Shore</Name>
@@ -281,6 +302,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0055">
               <Name>Ashburton Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035276"/>
                 <Name>Claremont</Name>
@@ -288,6 +310,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590BTA01280">
               <Name>Oxford Square</Name>
+              <NameSuffix>adj</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079372"/>
                 <Name>Oxford Square</Name>
@@ -295,6 +318,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0839">
               <Name>Doncaster Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035278"/>
                 <Name>Marton</Name>
