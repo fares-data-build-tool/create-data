@@ -150,7 +150,7 @@ describe('Netex Helpers', () => {
             ]);
         });
 
-        it('gets a NeTEx scheduled stop point for each stop in the fare zones', () => {
+        it('gets a NeTEx scheduled stop point for each stop in the fare zones with NameSuffix ommited', () => {
             fareZones = fareZonesWithoutStopIndicator;
             const stops = netexHelpers.getPointToPointScheduledStopPointsList(fareZones);
 
