@@ -5,6 +5,7 @@ import {
     returnNonCircularTicket,
     returnCircularTicket,
     returnNonCircularTicketWithReturnValidity,
+    fareZonesWithoutStopIndicator,
 } from '../../test-data/matchingData';
 import { NetexObject, getUserProfile } from '../sharedHelpers';
 import {
@@ -138,6 +139,54 @@ describe('Netex Helpers', () => {
                 {
                     Name: { $t: 'Tameside College' },
                     NameSuffix: { $t: 'opp' },
+                    TopographicPlaceView: {
+                        Name: { $t: 'Cockbrook' },
+                        QualifierName: { $t: '' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:N0077788' },
+                    },
+                    id: 'atco:1800EH21241',
+                    version: 'any',
+                },
+            ]);
+        });
+
+        it('gets a NeTEx scheduled stop point for each stop in the fare zones', () => {
+            fareZones = fareZonesWithoutStopIndicator;
+            const stops = netexHelpers.getPointToPointScheduledStopPointsList(fareZones);
+
+            expect(stops).toEqual([
+                {
+                    Name: { $t: 'Ashton Bus Station' },
+                    TopographicPlaceView: {
+                        Name: { $t: 'Ashton-under-Lyne' },
+                        QualifierName: { $t: '' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0028492' },
+                    },
+                    id: 'atco:1800EHQ0081',
+                    version: 'any',
+                },
+                {
+                    Name: { $t: 'Henrietta Street' },
+                    TopographicPlaceView: {
+                        Name: { $t: 'Ashton-under-Lyne' },
+                        QualifierName: { $t: '' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0028492' },
+                    },
+                    id: 'atco:1800EH24201',
+                    version: 'any',
+                },
+                {
+                    Name: { $t: 'Crickets Ln' },
+                    TopographicPlaceView: {
+                        Name: { $t: 'Ashton-under-Lyne' },
+                        QualifierName: { $t: '' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0028492' },
+                    },
+                    id: 'atco:1800EH24151',
+                    version: 'any',
+                },
+                {
+                    Name: { $t: 'Tameside College' },
                     TopographicPlaceView: {
                         Name: { $t: 'Cockbrook' },
                         QualifierName: { $t: '' },
