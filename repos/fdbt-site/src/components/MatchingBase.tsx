@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import React, { ReactElement, useState } from 'react';
-import ErrorSummary from './ErrorSummary';
+import ErrorSummary from './WarningSummary';
 import FormElementWrapper from './FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { BasicService, ErrorInfo, Stop, FareStage, UserFareStages } from '../interfaces';
@@ -174,7 +174,7 @@ const MatchingBase = ({
     };
 
     if (error) {
-        errors.push({ errorMessage: 'Ensure each fare stage is assigned at least once.', id: 'option-0' });
+        errors.push({ errorMessage: 'The fare stages X, Y and Z have not been assigned.', id: 'option-0' });
     }
 
     return (
