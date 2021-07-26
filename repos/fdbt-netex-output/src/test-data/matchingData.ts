@@ -5306,7 +5306,7 @@ export const pointToPointPeriodTicket: PointToPointPeriodTicket = {
     ],
 };
 
-export const fareZoneWithoutStopIndicator: FareZone[] = [
+export const fareZonesWithoutStopIndicator: FareZone[] = [
     {
         name: 'Fare Zone 1',
         stops: [
