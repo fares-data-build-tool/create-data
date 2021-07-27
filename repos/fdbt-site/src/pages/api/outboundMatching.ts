@@ -8,6 +8,8 @@ import { NextApiRequestWithSession, BasicService, UserFareStages } from '../../i
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
+        const { overrideWarning } = req.body;
+        console.log('Override Warning: ' + overrideWarning);
         if (!req.body.service || !req.body.userfarestages) {
             throw new Error('No service or userfarestages info found');
         }
@@ -20,7 +22,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         delete req.body.service;
         delete req.body.userfarestages;
 
-        if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
+        if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {} && !overrideWarning) {
             const selectedStagesList: string[][] = getSelectedStages(req);
             updateSessionAttribute(req, MATCHING_ATTRIBUTE, { error: true, selectedFareStages: selectedStagesList });
             redirectTo(res, '/outboundMatching');

@@ -27,19 +27,12 @@ const ErrorSummary = ({ errors }: ErrorSummary): null | ReactElement => {
                         <li key={error.id}>
                             <a href={`#${error.id}`}>{error.errorMessage}</a>
                             <p />
-                            <div className="govuk-checkboxes__item" key="randomKey">
-                                <input
-                                    className="govuk-checkboxes__input"
-                                    type="checkbox"
-                                    id="bypass"
-                                    value="yes"
-                                    name="scales"
-                                ></input>
-                                <label htmlFor="override">
-                                    Check this box if you wish to proceed without assigning all fare stages, then click
-                                    Continue
-                                </label>
-                            </div>
+
+                            <input type="checkbox" id="bypass" value="yes" name="overrideWarning"></input>
+                            <label htmlFor="overrideWarning">
+                                Check this box if you wish to proceed without assigning all fare stages, then click
+                                Continue
+                            </label>
                         </li>
                     ))}
                 </ul>
