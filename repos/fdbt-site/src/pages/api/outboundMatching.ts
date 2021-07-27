@@ -9,7 +9,6 @@ import { NextApiRequestWithSession, BasicService, UserFareStages } from '../../i
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const { overrideWarning } = req.body;
-        console.log('Override Warning: ' + overrideWarning);
         if (!req.body.service || !req.body.userfarestages) {
             throw new Error('No service or userfarestages info found');
         }

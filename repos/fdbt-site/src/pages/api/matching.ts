@@ -9,6 +9,7 @@ import { isFareType } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
+        const { overrideWarning } = req.body;
         if (!req.body.service || !req.body.userfarestages) {
             throw new Error('No service or userfarestages info found');
         }
@@ -28,7 +29,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         delete req.body.service;
         delete req.body.userfarestages;
 
-        if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
+        if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {} && !overrideWarning) {
             const selectedStagesList: string[][] = getSelectedStages(req);
             const matchingAttributeError: MatchingWithErrors = { error: true, selectedFareStages: selectedStagesList };
             updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeError);
