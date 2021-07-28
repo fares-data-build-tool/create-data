@@ -11,7 +11,7 @@ describe('The carnet faretype product journey', () => {
     it('completes successfully for single faretype', () => {
         selectCarnetFareType('single');
         defineUserTypeAndTimeRestrictions();
-        completeSinglePages(true, true);
+        completeSinglePages(true, true, false);
         completeSalesPages();
         isUuidStringValid();
     });
@@ -19,7 +19,15 @@ describe('The carnet faretype product journey', () => {
     it('completes successfully for return faretype', () => {
         selectCarnetFareType('return');
         defineUserTypeAndTimeRestrictions();
-        completeReturnPages(true, true, false);
+        completeReturnPages(true, true, false, false);
+        completeSalesPages();
+        isUuidStringValid();
+    });
+
+    it('completes successfully for return faretype', () => {
+        selectCarnetFareType('return');
+        defineUserTypeAndTimeRestrictions();
+        completeReturnPages(true, true, false, true);
         completeSalesPages();
         isUuidStringValid();
     });

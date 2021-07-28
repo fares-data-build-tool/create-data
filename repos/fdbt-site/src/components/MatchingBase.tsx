@@ -174,7 +174,7 @@ const MatchingBase = ({
     };
 
     if (error) {
-        errors.push({ errorMessage: 'The fare stages X, Y and Z have not been assigned.', id: 'option-0' });
+        errors.push({ errorMessage: 'One or more fare stages have not been assigned.', id: 'option-0' });
     }
 
     return (

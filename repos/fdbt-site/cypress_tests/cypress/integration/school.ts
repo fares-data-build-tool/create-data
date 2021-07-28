@@ -22,7 +22,7 @@ describe('The school faretype product journey', () => {
         selectFareType('schoolService', false);
         defineSchoolUserAndTimeRestrictions();
         selectSchoolFareType('single');
-        completeSinglePages(false, false);
+        completeSinglePages(false, false, false);
         completeSalesPages();
         isUuidStringValid();
     });
@@ -30,7 +30,15 @@ describe('The school faretype product journey', () => {
         selectFareType('schoolService', false);
         defineSchoolUserAndTimeRestrictions();
         selectSchoolFareType('single');
-        completeSinglePages(true, false);
+        completeSinglePages(true, false, false);
+        completeSalesPages();
+        isUuidStringValid();
+    });
+    it('completes successfully for school single csv upload with partial matching fare stages', () => {
+        selectFareType('schoolService', false);
+        defineSchoolUserAndTimeRestrictions();
+        selectSchoolFareType('single');
+        completeSinglePages(true, false, true);
         completeSalesPages();
         isUuidStringValid();
     });
