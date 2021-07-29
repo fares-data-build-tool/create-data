@@ -198,6 +198,7 @@ export interface SettingsOverview {
 export interface GlobalSettingsCounts {
     passengerTypesCount: number;
     timeRestrictionsCount: number;
+    // More to be added
 }
 
 export interface PassengerAttributes {

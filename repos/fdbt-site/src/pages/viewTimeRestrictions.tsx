@@ -84,64 +84,62 @@ const NoTimeRestrictions = (): ReactElement => {
     );
 };
 
-const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeRestriction[] }): ReactElement => {
-    return (
-        <div className="govuk-heading-m">
-            <h3>Individual</h3>
+const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeRestriction[] }): ReactElement => (
+    <div className="govuk-heading-m">
+        <h3>Individual</h3>
 
-            <div className="govuk-grid-row">
-                {timeRestrictions.map((timeRestriction) => (
-                    <div key={timeRestriction.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
-                        <div className="card">
-                            <div className="card__body">
-                                <div className="card__actions">
-                                    <ul className="actions__list">
-                                        <li className="actions__item">
-                                            <a
-                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                                href="/viewTimeRestrictions"
-                                            >
-                                                Edit
-                                            </a>
-                                        </li>
+        <div className="govuk-grid-row">
+            {timeRestrictions.map((timeRestriction) => (
+                <div key={timeRestriction.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
+                    <div className="card">
+                        <div className="card__body">
+                            <div className="card__actions">
+                                <ul className="actions__list">
+                                    <li className="actions__item">
+                                        <a
+                                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
+                                            href="/viewTimeRestrictions"
+                                        >
+                                            Edit
+                                        </a>
+                                    </li>
 
-                                        <li className="actions__item">
-                                            <a
-                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                href="/viewTimeRestrictions"
-                                            >
-                                                Delete
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <h4 className="time-restriction-title govuk-!-padding-bottom-4">
-                                    {sentenceCaseString(timeRestriction.name)}
-                                </h4>
-
-                                <ul className="day-restrictions-list">
-                                    {Object.entries(dayMappings).map((dayMapping) => {
-                                        return (
-                                            <li className="govuk-body-s govuk-!-margin-bottom-2">
-                                                <span className="day govuk-!-font-weight-bold">{dayMapping[1]}</span>{' '}
-                                                {formatDayRestriction(timeRestriction, dayMapping[0])}
-                                            </li>
-                                        );
-                                    })}
+                                    <li className="actions__item">
+                                        <a
+                                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                                            href="/viewTimeRestrictions"
+                                        >
+                                            Delete
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
+
+                            <h4 className="time-restriction-title govuk-!-padding-bottom-4">
+                                {sentenceCaseString(timeRestriction.name)}
+                            </h4>
+
+                            <ul className="day-restrictions-list">
+                                {Object.entries(dayMappings).map((dayMapping) => {
+                                    return (
+                                        <li className="govuk-body-s govuk-!-margin-bottom-2">
+                                            <span className="day govuk-!-font-weight-bold">{dayMapping[1]}</span>{' '}
+                                            {formatDayRestriction(timeRestriction, dayMapping[0])}
+                                        </li>
+                                    );
+                                })}
+                            </ul>
                         </div>
                     </div>
-                ))}
-            </div>
-
-            <button className="govuk-button" data-module="govuk-button">
-                Add a time restriction
-            </button>
+                </div>
+            ))}
         </div>
-    );
-};
+
+        <button className="govuk-button" data-module="govuk-button">
+            Add a time restriction
+        </button>
+    </div>
+);
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: TimeRestrictionProps }> => {
     const nationalOperatorCode = getAndValidateNoc(ctx);
