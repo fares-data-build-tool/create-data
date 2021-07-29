@@ -122,7 +122,7 @@ const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeR
                             <ul className="day-restrictions-list">
                                 {Object.entries(dayMappings).map((dayMapping) => {
                                     return (
-                                        <li className="govuk-body-s govuk-!-margin-bottom-2">
+                                        <li key={dayMapping[0]} className="govuk-body-s govuk-!-margin-bottom-2">
                                             <span className="day govuk-!-font-weight-bold">{dayMapping[1]}</span>{' '}
                                             {formatDayRestriction(timeRestriction, dayMapping[0])}
                                         </li>
