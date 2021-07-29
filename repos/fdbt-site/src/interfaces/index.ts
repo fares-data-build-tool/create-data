@@ -497,6 +497,10 @@ export interface DefinePassengerTypeWithErrors extends CompanionInfo {
     errors: ErrorInfo[];
 }
 
+export interface ManagePassengerTypeWithErrors extends ActualPassengerType {
+    errors: ErrorInfo[];
+}
+
 export interface TimeRestrictionsDefinition extends TimeRestriction {
     timeRestrictionChoice?: string;
 }

@@ -7,7 +7,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
-    Passenger,
+    ActualPassengerType,
     ManagePassengerTypeWithErrors,
     ErrorInfo,
     FareType,
@@ -158,13 +158,23 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         let errors: ErrorInfo[] = [];
 
-        const filteredReqBody = formatRequestBody(req);
+        const requestBody = formatRequestBody(req);
 
-        const passenger = filteredReqBody as Passenger;
+        const actualPassengerType = {
+            name: requestBody.name,
+            passengerType: {
+                passengerType: requestBody.type,
+                ageRangeMin: requestBody.ageRangeMin,
+                ageRangeMax: requestBody.ageRangeMax,
+                proofDocuments: requestBody.proofDocuments,
+            },
+        } as ActualPassengerType;
 
         try {
-            await requestValidationRules.validate(filteredReqBody, { abortEarly: false });
+            await requestValidationRules.validate(requestBody, { abortEarly: false });
         } catch (exception) {
+            console.log('ERRORS MAAAAN!!!!!!!');
+
             const validationErrors: yup.ValidationError = exception;
 
             errors = validationErrors.inner.map((error) => ({
@@ -174,26 +184,33 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (errors.length === 0) {
+            console.log('there were no errors!');
             const nationalOperatorCode = getAndValidateNoc(req, res);
 
-            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, passenger);
+            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, actualPassengerType.passengerType);
 
             updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
-            await upsertSinglePassengerType(nationalOperatorCode, passenger, passenger.name);
+            await upsertSinglePassengerType(
+                nationalOperatorCode,
+                actualPassengerType.passengerType,
+                actualPassengerType.name,
+            );
 
             redirectTo(res, '/viewPassengerTypes');
         }
 
         const sessionInfo: ManagePassengerTypeWithErrors = {
             errors,
-            ...passenger,
+            ...actualPassengerType,
         };
 
         updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, sessionInfo);
+
         redirectTo(res, '/managePassengerTypes');
     } catch (error) {
-        const message = 'There was a problem in the managePassengerType API.';
-        redirectToError(res, message, 'api.managePassengerType', error);
+        const message = 'There was a problem in the managePassengerTypes API.';
+
+        redirectToError(res, message, 'api.managePassengerTypes', error);
     }
 };

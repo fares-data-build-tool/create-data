@@ -34,18 +34,22 @@ exports[`pages view passenger types should render correctly when groups and indi
             Define age range and required proof documents of your passengers as well as passenger groups
           </p>
           <IndividualPassengerTypes
-            passengerTypes={
+            actualPassengerTypes={
               Array [
                 Object {
-                  "ageRangeMax": "16",
-                  "ageRangeMin": "5",
-                  "passengerType": "child",
-                  "proofDocuments": Array [
-                    "studentCard",
-                  ],
+                  "name": "Regular Child",
+                  "passengerType": Object {
+                    "ageRangeMax": "16",
+                    "ageRangeMin": "5",
+                    "passengerType": "child",
+                    "proofDocuments": Array [
+                      "studentCard",
+                    ],
+                  },
                 },
               ]
             }
+            deleteActionHandler={[Function]}
           />
           <PassengerTypeGroups
             passengerTypeGroups={
@@ -71,6 +75,13 @@ exports[`pages view passenger types should render correctly when groups and indi
                 },
               ]
             }
+          />
+          <DeleteConfirmationPopup
+            cancelActionHandler={[Function]}
+            csrfToken=""
+            isGroup={false}
+            isVisible={false}
+            passengerTypeName=""
           />
         </div>
       </div>
@@ -114,6 +125,13 @@ exports[`pages view passenger types should render correctly when no individual o
           </p>
           <NoIndividualPassengerTypes />
           <NoPassengerTypeGroups />
+          <DeleteConfirmationPopup
+            cancelActionHandler={[Function]}
+            csrfToken=""
+            isGroup={false}
+            isVisible={false}
+            passengerTypeName=""
+          />
         </div>
       </div>
     </main>
@@ -155,20 +173,31 @@ exports[`pages view passenger types should render correctly when only individual
             Define age range and required proof documents of your passengers as well as passenger groups
           </p>
           <IndividualPassengerTypes
-            passengerTypes={
+            actualPassengerTypes={
               Array [
                 Object {
-                  "ageRangeMax": "16",
-                  "ageRangeMin": "5",
-                  "passengerType": "child",
-                  "proofDocuments": Array [
-                    "studentCard",
-                  ],
+                  "name": "Regular Child",
+                  "passengerType": Object {
+                    "ageRangeMax": "16",
+                    "ageRangeMin": "5",
+                    "passengerType": "child",
+                    "proofDocuments": Array [
+                      "studentCard",
+                    ],
+                  },
                 },
               ]
             }
+            deleteActionHandler={[Function]}
           />
           <NoPassengerTypeGroups />
+          <DeleteConfirmationPopup
+            cancelActionHandler={[Function]}
+            csrfToken=""
+            isGroup={false}
+            isVisible={false}
+            passengerTypeName=""
+          />
         </div>
       </div>
     </main>
@@ -235,6 +264,13 @@ exports[`pages view passenger types should render correctly when only passenger 
                 },
               ]
             }
+          />
+          <DeleteConfirmationPopup
+            cancelActionHandler={[Function]}
+            csrfToken=""
+            isGroup={false}
+            isVisible={false}
+            passengerTypeName=""
           />
         </div>
       </div>

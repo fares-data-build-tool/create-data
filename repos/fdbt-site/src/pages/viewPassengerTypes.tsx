@@ -1,68 +1,118 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import { ActualPassengerType, NextPageContextWithSession, GroupPassengerType } from '../interfaces';
-import { getAndValidateNoc, sentenceCaseString } from '../utils';
+import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
+import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 
 const title = 'Passenger types';
 const description = 'View and edit your passenger types.';
 
 interface PassengerTypeProps {
+    csrfToken: string;
     actualPassengerTypes: ActualPassengerType[];
     passengerTypeGroups: GroupPassengerType[];
 }
 
-const ViewPassengerTypes = ({ actualPassengerTypes, passengerTypeGroups }: PassengerTypeProps): ReactElement => (
-    <BaseLayout title={title} description={description} showNavigation={true}>
-        <div className="govuk-width-container">
-            <main className="govuk-main-wrapper">
-                <div className="govuk-grid-row">
-                    <div className="govuk-grid-column-one-third">
-                        <SubNavigation />
+const ViewPassengerTypes = ({
+    actualPassengerTypes,
+    passengerTypeGroups,
+    csrfToken,
+}: PassengerTypeProps): ReactElement => {
+    const [popUpState, setPopUpState] = useState({
+        isVisible: false,
+        passengerTypeName: '',
+        isGroup: false,
+    });
+
+    const deleteActionHandler = (name: string, isGroup: boolean): void => {
+        const previousState = { ...popUpState };
+
+        previousState.isVisible = true;
+        previousState.passengerTypeName = name;
+        previousState.isGroup = isGroup;
+
+        setPopUpState({ ...previousState });
+    };
+
+    const cancelActionHandler = (): void => {
+        const previousState = { ...popUpState };
+
+        previousState.isVisible = false;
+        previousState.passengerTypeName = '';
+        previousState.isGroup = false;
+
+        setPopUpState({ ...previousState });
+    };
+
+    return (
+        <BaseLayout title={title} description={description} showNavigation={true}>
+            <div className="govuk-width-container">
+                <main className="govuk-main-wrapper">
+                    <div className="govuk-grid-row">
+                        <div className="govuk-grid-column-one-third">
+                            <SubNavigation />
+                        </div>
+
+                        <div className="govuk-grid-column-two-thirds">
+                            <h1 className="govuk-heading-xl">Passenger types</h1>
+                            <p className="govuk-body">
+                                Define age range and required proof documents of your passengers as well as passenger
+                                groups
+                            </p>
+
+                            {!actualPassengerTypes.length ? (
+                                <NoIndividualPassengerTypes />
+                            ) : (
+                                <IndividualPassengerTypes
+                                    actualPassengerTypes={actualPassengerTypes}
+                                    deleteActionHandler={deleteActionHandler}
+                                />
+                            )}
+
+                            {!passengerTypeGroups.length ? (
+                                <NoPassengerTypeGroups />
+                            ) : (
+                                <PassengerTypeGroups passengerTypeGroups={passengerTypeGroups} />
+                            )}
+
+                            <DeleteConfirmationPopup
+                                isVisible={popUpState.isVisible}
+                                csrfToken={csrfToken}
+                                isGroup={popUpState.isGroup}
+                                passengerTypeName={popUpState.passengerTypeName}
+                                cancelActionHandler={cancelActionHandler}
+                            />
+                        </div>
                     </div>
-
-                    <div className="govuk-grid-column-two-thirds">
-                        <h1 className="govuk-heading-xl">Passenger types</h1>
-                        <p className="govuk-body">
-                            Define age range and required proof documents of your passengers as well as passenger groups
-                        </p>
-
-                        {!actualPassengerTypes.length ? (
-                            <NoIndividualPassengerTypes />
-                        ) : (
-                            <IndividualPassengerTypes actualPassengerTypes={actualPassengerTypes} />
-                        )}
-
-                        {!passengerTypeGroups.length ? (
-                            <NoPassengerTypeGroups />
-                        ) : (
-                            <PassengerTypeGroups passengerTypeGroups={passengerTypeGroups} />
-                        )}
-                    </div>
-                </div>
-            </main>
-        </div>
-    </BaseLayout>
-);
+                </main>
+            </div>
+        </BaseLayout>
+    );
+};
 
 const NoIndividualPassengerTypes = (): ReactElement => {
     return (
         <div className="govuk-heading-m">
             <h4>Individual</h4>
             <p className="govuk-body">You currently have no passenger types saved.</p>
-            <button className="govuk-button" data-module="govuk-button">
+            <a className="govuk-button" data-module="govuk-button" href="/managePassengerTypes">
                 Add a passenger type
-            </button>
+            </a>
         </div>
     );
 };
 
+interface IndividualPassengerTypesProps {
+    actualPassengerTypes: ActualPassengerType[];
+    deleteActionHandler: Function;
+}
+
 const IndividualPassengerTypes = ({
     actualPassengerTypes,
-}: {
-    actualPassengerTypes: ActualPassengerType[];
-}): ReactElement => {
+    deleteActionHandler,
+}: IndividualPassengerTypesProps): ReactElement => {
     return (
         <div className="govuk-heading-m">
             <h3>Individual</h3>
@@ -84,12 +134,12 @@ const IndividualPassengerTypes = ({
                                         </li>
 
                                         <li className="actions__item">
-                                            <a
+                                            <button
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                href="/viewPassengerTypes"
+                                                onClick={() => deleteActionHandler(actualPassengerType.name, false)}
                                             >
                                                 Delete
-                                            </a>
+                                            </button>
                                         </li>
                                     </ul>
                                 </div>
@@ -129,9 +179,9 @@ const IndividualPassengerTypes = ({
                 ))}
             </div>
 
-            <button className="govuk-button" data-module="govuk-button">
+            <a className="govuk-button" data-module="govuk-button" href="/managePassengerTypes">
                 Add a passenger type
-            </button>
+            </a>
         </div>
     );
 };
@@ -222,14 +272,12 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: PassengerTypeProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const actualPassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const passengerTypeGroups = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
 
-    console.log('Here is the actual passenger type object');
-    console.log(actualPassengerTypes);
-
-    return { props: { actualPassengerTypes: actualPassengerTypes, passengerTypeGroups } };
+    return { props: { csrfToken, actualPassengerTypes, passengerTypeGroups } };
 };
 
 const getProofOfDocumentsString = (documents: string[]) => {

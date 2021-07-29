@@ -19,12 +19,16 @@ interface FormData {
     documents: string[];
 }
 
-interface FilteredRequestBody {
-    name?: string;
+interface FilteredRequestBodyPassengerType {
     type?: string;
     ageRangeMin?: string;
     ageRangeMax?: string;
     proofDocuments?: string[];
+}
+
+interface FilteredRequestBody {
+    name?: string;
+    passengerType: FilteredRequestBodyPassengerType;
 }
 
 interface ManagePassengerTypesProps {
@@ -35,11 +39,11 @@ interface ManagePassengerTypesProps {
 
 const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassengerTypesProps): ReactElement => {
     const [state, setState] = useState<FormData>({
-        type: model.type ? model.type : '',
+        type: model.passengerType.type ? model.passengerType.type : '',
         name: model.name ? model.name : '',
-        ageRangeMin: model.ageRangeMin ? model.ageRangeMin : '',
-        ageRangeMax: model.ageRangeMax ? model.ageRangeMax : '',
-        documents: model.proofDocuments ? model.proofDocuments : [],
+        ageRangeMin: model.passengerType.ageRangeMin ? model.passengerType.ageRangeMin : '',
+        ageRangeMax: model.passengerType.ageRangeMax ? model.passengerType.ageRangeMax : '',
+        documents: model.passengerType.proofDocuments ? model.passengerType.proofDocuments : [],
     });
 
     const typeChangeHandler = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +94,7 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
     };
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
-            <CsrfForm action="/api/managePassengerType" method="post" csrfToken={csrfToken}>
+            <CsrfForm action="/api/managePassengerTypes" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
 
@@ -221,7 +225,7 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
                                 id="ageRangeMin"
                                 name="ageRangeMin"
                                 type="text"
-                                value={state.ageRangeMin !== undefined ? state.ageRangeMin : ''}
+                                value={state.ageRangeMin}
                                 onChange={ageRangeMinHandler}
                             />
                         </div>
@@ -236,7 +240,7 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
                                 id="ageRangeMax"
                                 name="ageRangeMax"
                                 type="text"
-                                value={state.ageRangeMax !== undefined ? state.ageRangeMax : ''}
+                                value={state.ageRangeMax}
                                 onChange={ageRangeMaxHandler}
                             />
                         </div>
@@ -350,7 +354,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ma
 
     const errors: ErrorInfo[] = isWithErrors(errorsFromSession) ? errorsFromSession.errors : [];
 
-    const model = { ...errorsFromSession };
+    const model = { ...errorsFromSession } as FilteredRequestBody;
 
     return {
         props: {
