@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { BaseLayout } from '../layout/Layout';
-import { ActualPassengerType, NextPageContextWithSession, GroupPassengerType } from '../interfaces';
+import { SinglePassengerType, NextPageContextWithSession, GroupPassengerType } from '../interfaces';
 import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
@@ -11,13 +11,13 @@ const description = 'View and edit your passenger types.';
 
 interface PassengerTypeProps {
     csrfToken: string;
-    actualPassengerTypes: ActualPassengerType[];
-    passengerTypeGroups: GroupPassengerType[];
+    singlePassengerTypes: SinglePassengerType[];
+    groupPrssengerTypes: GroupPassengerType[];
 }
 
 const ViewPassengerTypes = ({
-    actualPassengerTypes,
-    passengerTypeGroups,
+    singlePassengerTypes,
+    groupPrssengerTypes,
     csrfToken,
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState({
@@ -62,19 +62,19 @@ const ViewPassengerTypes = ({
                                 groups
                             </p>
 
-                            {!actualPassengerTypes.length ? (
+                            {!singlePassengerTypes.length ? (
                                 <NoIndividualPassengerTypes />
                             ) : (
                                 <IndividualPassengerTypes
-                                    actualPassengerTypes={actualPassengerTypes}
+                                    singlePassengerTypes={singlePassengerTypes}
                                     deleteActionHandler={deleteActionHandler}
                                 />
                             )}
 
-                            {!passengerTypeGroups.length ? (
+                            {!groupPrssengerTypes.length ? (
                                 <NoPassengerTypeGroups />
                             ) : (
-                                <PassengerTypeGroups passengerTypeGroups={passengerTypeGroups} />
+                                <PassengerTypeGroups passengerTypeGroups={groupPrssengerTypes} />
                             )}
 
                             <DeleteConfirmationPopup
@@ -105,12 +105,12 @@ const NoIndividualPassengerTypes = (): ReactElement => {
 };
 
 interface IndividualPassengerTypesProps {
-    actualPassengerTypes: ActualPassengerType[];
+    singlePassengerTypes: SinglePassengerType[];
     deleteActionHandler: (name: string, isGroup: boolean) => void;
 }
 
 const IndividualPassengerTypes = ({
-    actualPassengerTypes,
+    singlePassengerTypes,
     deleteActionHandler,
 }: IndividualPassengerTypesProps): ReactElement => {
     return (
@@ -118,8 +118,8 @@ const IndividualPassengerTypes = ({
             <h3>Individual</h3>
 
             <div className="govuk-grid-row">
-                {actualPassengerTypes.map((actualPassengerType) => (
-                    <div key={actualPassengerType.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
+                {singlePassengerTypes.map((singlePassengerType) => (
+                    <div key={singlePassengerType.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
                         <div className="card">
                             <div className="card__body">
                                 <div className="card__actions">
@@ -136,7 +136,7 @@ const IndividualPassengerTypes = ({
                                         <li className="actions__item">
                                             <button
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                onClick={() => deleteActionHandler(actualPassengerType.name, false)}
+                                                onClick={() => deleteActionHandler(singlePassengerType.name, false)}
                                             >
                                                 Delete
                                             </button>
@@ -145,32 +145,32 @@ const IndividualPassengerTypes = ({
                                 </div>
 
                                 <h4 className="govuk-!-padding-bottom-4">
-                                    {sentenceCaseString(actualPassengerType.name)}
+                                    {sentenceCaseString(singlePassengerType.name)}
                                 </h4>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Passenger type:</span>{' '}
-                                    {sentenceCaseString(actualPassengerType.passengerType.passengerType)}
+                                    {sentenceCaseString(singlePassengerType.passengerType.passengerType)}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Minimum age:</span>{' '}
-                                    {actualPassengerType.passengerType.ageRangeMin
-                                        ? actualPassengerType.passengerType.ageRangeMin
+                                    {singlePassengerType.passengerType.ageRangeMin
+                                        ? singlePassengerType.passengerType.ageRangeMin
                                         : 'N/A'}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Maximum age:</span>{' '}
-                                    {actualPassengerType.passengerType.ageRangeMax
-                                        ? actualPassengerType.passengerType.ageRangeMax
+                                    {singlePassengerType.passengerType.ageRangeMax
+                                        ? singlePassengerType.passengerType.ageRangeMax
                                         : 'N/A'}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
-                                    {actualPassengerType.passengerType.proofDocuments
-                                        ? getProofOfDocumentsString(actualPassengerType.passengerType.proofDocuments)
+                                    {singlePassengerType.passengerType.proofDocuments
+                                        ? getProofOfDocumentsString(singlePassengerType.passengerType.proofDocuments)
                                         : 'N/A'}
                                 </p>
                             </div>
@@ -274,10 +274,10 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: PassengerTypeProps }> => {
     const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
-    const actualPassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
-    const passengerTypeGroups = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
+    const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
+    const groupPrssengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
 
-    return { props: { csrfToken, actualPassengerTypes, passengerTypeGroups } };
+    return { props: { csrfToken, singlePassengerTypes: singlePassengerTypes, groupPrssengerTypes } };
 };
 
 const getProofOfDocumentsString = (documents: string[]) => {

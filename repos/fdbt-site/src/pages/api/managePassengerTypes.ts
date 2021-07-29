@@ -7,7 +7,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
-    ActualPassengerType,
+    SinglePassengerType,
     ManagePassengerTypeWithErrors,
     ErrorInfo,
     FareType,
@@ -168,7 +168,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 ageRangeMax: requestBody.ageRangeMax,
                 proofDocuments: requestBody.proofDocuments,
             },
-        } as ActualPassengerType;
+        } as SinglePassengerType;
 
         try {
             await requestValidationRules.validate(requestBody, { abortEarly: false });

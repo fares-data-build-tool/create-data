@@ -7,9 +7,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     try {
         const { query } = req;
 
-        const name = (query?.name as string) || '';
+        const name = query?.name as string;
 
-        const isGroup = (query?.isGroup as string) || '';
+        const isGroup = query?.isGroup as string;
 
         if (!name || !isGroup) {
             throw new Error('groupName not provided for delete query');

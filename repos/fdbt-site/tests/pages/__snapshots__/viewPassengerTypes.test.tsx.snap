@@ -34,7 +34,8 @@ exports[`pages view passenger types should render correctly when groups and indi
             Define age range and required proof documents of your passengers as well as passenger groups
           </p>
           <IndividualPassengerTypes
-            actualPassengerTypes={
+            deleteActionHandler={[Function]}
+            singlePassengerTypes={
               Array [
                 Object {
                   "name": "Regular Child",
@@ -49,7 +50,6 @@ exports[`pages view passenger types should render correctly when groups and indi
                 },
               ]
             }
-            deleteActionHandler={[Function]}
           />
           <PassengerTypeGroups
             passengerTypeGroups={
@@ -173,7 +173,8 @@ exports[`pages view passenger types should render correctly when only individual
             Define age range and required proof documents of your passengers as well as passenger groups
           </p>
           <IndividualPassengerTypes
-            actualPassengerTypes={
+            deleteActionHandler={[Function]}
+            singlePassengerTypes={
               Array [
                 Object {
                   "name": "Regular Child",
@@ -188,7 +189,6 @@ exports[`pages view passenger types should render correctly when only individual
                 },
               ]
             }
-            deleteActionHandler={[Function]}
           />
           <NoPassengerTypeGroups />
           <DeleteConfirmationPopup

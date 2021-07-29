@@ -385,7 +385,7 @@ export interface GroupPassengerType {
     companions: CompanionInfo[];
 }
 
-export interface ActualPassengerType {
+export interface SinglePassengerType {
     name: string;
     passengerType: PassengerType;
 }
@@ -497,7 +497,7 @@ export interface DefinePassengerTypeWithErrors extends CompanionInfo {
     errors: ErrorInfo[];
 }
 
-export interface ManagePassengerTypeWithErrors extends ActualPassengerType {
+export interface ManagePassengerTypeWithErrors extends SinglePassengerType {
     errors: ErrorInfo[];
 }
 

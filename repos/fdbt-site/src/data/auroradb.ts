@@ -4,7 +4,7 @@ import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
 import { INTERNAL_NOC } from '../constants';
 import {
-    ActualPassengerType,
+    SinglePassengerType,
     FullTimeRestriction,
     GroupPassengerType,
     Operator,
@@ -707,7 +707,7 @@ export const getPassengerTypeByNameAndNocCode = async (
 
 interface SavedPassengerType {
     group: GroupPassengerType;
-    single: ActualPassengerType;
+    single: SinglePassengerType;
 }
 
 export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerType>(
