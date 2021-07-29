@@ -134,6 +134,7 @@
           <scheduledStopPoints>
             <ScheduledStopPoint version="any" id="atco:2500B0636">
               <Name>Bibby Drive</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0015867"/>
                 <Name>Staining</Name>
@@ -141,6 +142,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500B0637">
               <Name>Meadow Park</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0015867"/>
                 <Name>Staining</Name>
@@ -148,6 +150,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0007">
               <Name>Milton Avenue</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035280"/>
                 <Name>Kingscote</Name>
@@ -155,6 +158,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500B0638">
               <Name>Primary School</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0015867"/>
                 <Name>Staining</Name>
@@ -162,6 +166,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500LAA16042">
               <Name>Moons Farm</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0015850"/>
                 <Name>Newton</Name>
@@ -169,6 +174,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500B0640">
               <Name>Newton Hall Holiday Centre</Name>
+              <NameSuffix>o/s</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0015852"/>
                 <Name>Normoss</Name>
@@ -176,6 +182,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0024">
               <Name>Collingwood Avenue</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035282"/>
                 <Name>Layton</Name>
@@ -183,6 +190,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500B0641">
               <Name>Shaftesbury Avenue</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0015852"/>
                 <Name>Normoss</Name>
@@ -190,6 +198,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500B0639">
               <Name>The Newton Arms</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0015852"/>
                 <Name>Normoss</Name>
@@ -197,6 +206,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500B0017">
               <Name>Staining Road End</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0015852"/>
                 <Name>Normoss</Name>
@@ -204,6 +214,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0658">
               <Name>Central Library</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0057144"/>
                 <Name>Blackpool</Name>
@@ -211,6 +222,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590BTA01313">
               <Name>Talbot Road</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0054826"/>
                 <Name>Blackpool Town Centre</Name>
@@ -218,6 +230,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590BTA01318">
               <Name>Hospital Entrance</Name>
+              <NameSuffix>Stand B</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079369"/>
                 <Name>Victoria Hospital</Name>
@@ -225,6 +238,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0009">
               <Name>Lakeway</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079368"/>
                 <Name>St Walburgas</Name>
@@ -232,6 +246,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590BTA01109">
               <Name>Layton Rd</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0035282"/>
                 <Name>Layton</Name>
@@ -239,6 +254,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500IMG437">
               <Name>Newton Hall Holiday Centre</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0015850"/>
                 <Name>Newton</Name>
@@ -246,6 +262,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2500B0635">
               <Name>Bibby Drive</Name>
+              <NameSuffix>opp</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:E0015867"/>
                 <Name>Staining</Name>
@@ -253,6 +270,7 @@
             </ScheduledStopPoint>
             <ScheduledStopPoint version="any" id="atco:2590B0014">
               <Name>Bathurst Avenue</Name>
+              <NameSuffix>by</NameSuffix>
               <TopographicPlaceView>
                 <TopographicPlaceRef ref="nptgLocality:N0079364"/>
                 <Name>Grange Park</Name>

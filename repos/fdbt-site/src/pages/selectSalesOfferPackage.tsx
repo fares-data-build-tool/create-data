@@ -72,10 +72,9 @@ export interface SelectSalesOfferPackageProps {
     salesOfferPackagesList: SalesOfferPackage[];
     errors: ErrorInfo[];
     csrfToken: string;
-    customPriceEnabled: boolean;
 }
 
-const formatSOPArray = (stringArray: string[]): string =>
+export const formatSOPArray = (stringArray: string[]): string =>
     stringArray.map((string) => sentenceCaseString(string)).join(', ');
 
 const generateCheckbox = (
@@ -84,7 +83,6 @@ const generateCheckbox = (
     csrfToken: string,
     selectedDefault: { [key: string]: SalesOfferPackage[] } | undefined,
     defaultPrice: string,
-    customPriceEnabled: boolean,
 ): ReactElement[] => {
     const fullList = [...salesOfferPackagesList];
     const pairs = [];
@@ -144,7 +142,7 @@ const generateCheckbox = (
                         <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
                             Ticket formats: {formatSOPArray(ticketFormats)}
                         </span>
-                        {!!selectedOffer && defaultPrice && customPriceEnabled && (
+                        {!!selectedOffer && defaultPrice && (
                             <div className="govuk-currency-input govuk-!-margin-left-3">
                                 <div className="govuk-currency-input__inner">
                                     <span
@@ -186,7 +184,6 @@ const createSalesOffer = (
     csrfToken: string,
     selected: { [key: string]: SalesOfferPackage[] } | undefined,
     errors: ErrorInfo[],
-    customPriceEnabled: boolean,
 ): ReactElement[] =>
     products.map(({ productName, productPrice }) => (
         <div className="sop-option" key={productName}>
@@ -205,14 +202,7 @@ const createSalesOffer = (
                         errorClass=""
                     >
                         <div className="govuk-checkboxes">
-                            {generateCheckbox(
-                                salesOfferPackagesList,
-                                productName,
-                                csrfToken,
-                                selected,
-                                productPrice,
-                                customPriceEnabled,
-                            )}
+                            {generateCheckbox(salesOfferPackagesList, productName, csrfToken, selected, productPrice)}
                             <input type="hidden" name={`product-${productName}`} />
                         </div>
                     </FormElementWrapper>
@@ -227,7 +217,6 @@ const SelectSalesOfferPackage = ({
     salesOfferPackagesList,
     csrfToken,
     errors,
-    customPriceEnabled,
 }: SelectSalesOfferPackageProps): ReactElement => {
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
@@ -252,14 +241,7 @@ const SelectSalesOfferPackage = ({
                             for these products.
                         </p>
                     </div>
-                    {createSalesOffer(
-                        salesOfferPackagesList,
-                        products,
-                        csrfToken,
-                        selected,
-                        errors,
-                        customPriceEnabled,
-                    )}
+                    {createSalesOffer(salesOfferPackagesList, products, csrfToken, selected, errors)}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                     <a
                         href="/salesOfferPackages"
@@ -334,7 +316,6 @@ export const getServerSideProps = async (
             salesOfferPackagesList,
             errors,
             csrfToken,
-            customPriceEnabled: process.env.STAGE !== 'prod',
         },
     };
 };
