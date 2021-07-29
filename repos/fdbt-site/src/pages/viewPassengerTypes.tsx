@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
-import { PassengerType, NextPageContextWithSession, GroupPassengerType } from '../interfaces';
+import { ActualPassengerType, NextPageContextWithSession, GroupPassengerType } from '../interfaces';
 import { getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
@@ -9,11 +9,11 @@ const title = 'Passenger types';
 const description = 'View and edit your passenger types.';
 
 interface PassengerTypeProps {
-    passengerTypes: PassengerType[];
+    actualPassengerTypes: ActualPassengerType[];
     passengerTypeGroups: GroupPassengerType[];
 }
 
-const ViewPassengerTypes = ({ passengerTypes, passengerTypeGroups }: PassengerTypeProps): ReactElement => (
+const ViewPassengerTypes = ({ actualPassengerTypes, passengerTypeGroups }: PassengerTypeProps): ReactElement => (
     <BaseLayout title={title} description={description} showNavigation={true}>
         <div className="govuk-width-container">
             <main className="govuk-main-wrapper">
@@ -28,10 +28,10 @@ const ViewPassengerTypes = ({ passengerTypes, passengerTypeGroups }: PassengerTy
                             Define age range and required proof documents of your passengers as well as passenger groups
                         </p>
 
-                        {!passengerTypes.length ? (
+                        {!actualPassengerTypes.length ? (
                             <NoIndividualPassengerTypes />
                         ) : (
-                            <IndividualPassengerTypes passengerTypes={passengerTypes} />
+                            <IndividualPassengerTypes actualPassengerTypes={actualPassengerTypes} />
                         )}
 
                         {!passengerTypeGroups.length ? (
@@ -58,17 +58,18 @@ const NoIndividualPassengerTypes = (): ReactElement => {
     );
 };
 
-const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: PassengerType[] }): ReactElement => {
+const IndividualPassengerTypes = ({
+    actualPassengerTypes,
+}: {
+    actualPassengerTypes: ActualPassengerType[];
+}): ReactElement => {
     return (
         <div className="govuk-heading-m">
             <h3>Individual</h3>
 
             <div className="govuk-grid-row">
-                {passengerTypes.map((passengerType) => (
-                    <div
-                        key={passengerType.passengerType}
-                        className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
-                    >
+                {actualPassengerTypes.map((actualPassengerType) => (
+                    <div key={actualPassengerType.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
                         <div className="card">
                             <div className="card__body">
                                 <div className="card__actions">
@@ -94,28 +95,32 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                 </div>
 
                                 <h4 className="govuk-!-padding-bottom-4">
-                                    {sentenceCaseString(passengerType.passengerType)}
+                                    {sentenceCaseString(actualPassengerType.name)}
                                 </h4>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Passenger type:</span>{' '}
-                                    {sentenceCaseString(passengerType.passengerType)}
+                                    {sentenceCaseString(actualPassengerType.passengerType.passengerType)}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Minimum age:</span>{' '}
-                                    {passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'}
+                                    {actualPassengerType.passengerType.ageRangeMin
+                                        ? actualPassengerType.passengerType.ageRangeMin
+                                        : 'N/A'}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Maximum age:</span>{' '}
-                                    {passengerType.ageRangeMax ? passengerType.ageRangeMax : 'N/A'}
+                                    {actualPassengerType.passengerType.ageRangeMax
+                                        ? actualPassengerType.passengerType.ageRangeMax
+                                        : 'N/A'}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
-                                    {passengerType.proofDocuments
-                                        ? getProofOfDocumentsString(passengerType.proofDocuments)
+                                    {actualPassengerType.passengerType.proofDocuments
+                                        ? getProofOfDocumentsString(actualPassengerType.passengerType.proofDocuments)
                                         : 'N/A'}
                                 </p>
                             </div>
@@ -218,10 +223,13 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: PassengerTypeProps }> => {
     const nationalOperatorCode = getAndValidateNoc(ctx);
-    const passengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
+    const actualPassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const passengerTypeGroups = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
 
-    return { props: { passengerTypes, passengerTypeGroups } };
+    console.log('Here is the actual passenger type object');
+    console.log(actualPassengerTypes);
+
+    return { props: { actualPassengerTypes: actualPassengerTypes, passengerTypeGroups } };
 };
 
 const getProofOfDocumentsString = (documents: string[]) => {

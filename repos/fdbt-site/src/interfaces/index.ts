@@ -385,6 +385,11 @@ export interface GroupPassengerType {
     companions: CompanionInfo[];
 }
 
+export interface ActualPassengerType {
+    name: string;
+    passengerType: PassengerType;
+}
+
 export interface TimeRestriction {
     startTime?: string;
     endTime?: string;
