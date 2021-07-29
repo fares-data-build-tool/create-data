@@ -189,9 +189,15 @@ export interface ServiceListAttributeWithErrors {
 // Miscellaneous
 
 export interface SettingsOverview {
+    href: string;
     name: string;
     description: string;
     count: number;
+}
+
+export interface GlobalSettingsCounts {
+    passengerTypesCount: number;
+    timeRestrictionsCount: number;
 }
 
 export interface PassengerAttributes {

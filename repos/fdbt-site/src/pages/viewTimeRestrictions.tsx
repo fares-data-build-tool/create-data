@@ -35,11 +35,15 @@ const formatTimeBands = (timeBands: TimeBand[]): string =>
               .join('')
         : 'Valid all day';
 
-const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: string): string => {
-    const matchedDayRestriction = timeRestriction.contents.find(dayRestriction => dayRestriction.day === day);
-    return matchedDayRestriction ? formatTimeBands(matchedDayRestriction.timeBands) : 'Not valid'
-}
-        
+const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: string): JSX.Element => {
+    const matchedDayRestriction = timeRestriction.contents.find((dayRestriction) => dayRestriction.day === day);
+    return matchedDayRestriction ? (
+        <span className="day-restriction">{formatTimeBands(matchedDayRestriction.timeBands)}</span>
+    ) : (
+        <span className="day-restriction not-valid">Not valid</span>
+    );
+};
+
 const ViewTimeRestrictions = ({ timeRestrictions }: TimeRestrictionProps): ReactElement => (
     <BaseLayout title={title} description={description} showNavigation={true}>
         <div className="govuk-width-container">
@@ -51,7 +55,9 @@ const ViewTimeRestrictions = ({ timeRestrictions }: TimeRestrictionProps): React
 
                     <div className="govuk-grid-column-two-thirds">
                         <h1 className="govuk-heading-xl">Time restrictions</h1>
-                        <p className="govuk-body">Define ____ of your time restrictions</p>
+                        <p className="govuk-body">
+                            Define certain days and time periods that your tickets can be used within
+                        </p>
 
                         {!timeRestrictions.length ? (
                             <NoTimeRestrictions />
@@ -68,8 +74,9 @@ const ViewTimeRestrictions = ({ timeRestrictions }: TimeRestrictionProps): React
 const NoTimeRestrictions = (): ReactElement => {
     return (
         <div className="govuk-heading-m">
-            <h4>Individual</h4>
-            <p className="govuk-body">You currently have no time restrictions saved.</p>
+            <p className="govuk-body">
+                <em>You currently have no time restrictions saved.</em>
+            </p>
             <button className="govuk-button" data-module="govuk-button">
                 Add a time restriction
             </button>
@@ -109,16 +116,20 @@ const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeR
                                     </ul>
                                 </div>
 
-                                <h4 className="govuk-!-padding-bottom-4">{sentenceCaseString(timeRestriction.name)}</h4>
+                                <h4 className="time-restriction-title govuk-!-padding-bottom-4">
+                                    {sentenceCaseString(timeRestriction.name)}
+                                </h4>
 
-                                {Object.entries(dayMappings).map((dayMapping) => {
-                                    return <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                        <span className="govuk-!-font-weight-bold">
-                                            {dayMapping[1]}
-                                        </span>{' '}
-                                        {formatDayRestriction(timeRestriction, dayMapping[0])}
-                                    </p>;
-                                })}
+                                <ul className="day-restrictions-list">
+                                    {Object.entries(dayMappings).map((dayMapping) => {
+                                        return (
+                                            <li className="govuk-body-s govuk-!-margin-bottom-2">
+                                                <span className="day govuk-!-font-weight-bold">{dayMapping[1]}</span>{' '}
+                                                {formatDayRestriction(timeRestriction, dayMapping[0])}
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
                             </div>
                         </div>
                     </div>

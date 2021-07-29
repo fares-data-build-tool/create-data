@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages view passenger types should render correctly when no individual or group passenger types 1`] = `
+<BaseLayout
+  description="View and edit your time restrictions."
+  showNavigation={true}
+  title="Time restrictions"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <main
+      className="govuk-main-wrapper"
+    >
+      <div
+        className="govuk-grid-row"
+      >
+        <div
+          className="govuk-grid-column-one-third"
+        >
+          <SubNavigation />
+        </div>
+        <div
+          className="govuk-grid-column-two-thirds"
+        >
+          <h1
+            className="govuk-heading-xl"
+          >
+            Time restrictions
+          </h1>
+          <p
+            className="govuk-body"
+          >
+            Define certain days and time periods that your tickets can be used within
+          </p>
+          <NoTimeRestrictions />
+        </div>
+      </div>
+    </main>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages view passenger types should render correctly when time restrictions exist 1`] = `
+<BaseLayout
+  description="View and edit your time restrictions."
+  showNavigation={true}
+  title="Time restrictions"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <main
+      className="govuk-main-wrapper"
+    >
+      <div
+        className="govuk-grid-row"
+      >
+        <div
+          className="govuk-grid-column-one-third"
+        >
+          <SubNavigation />
+        </div>
+        <div
+          className="govuk-grid-column-two-thirds"
+        >
+          <h1
+            className="govuk-heading-xl"
+          >
+            Time restrictions
+          </h1>
+          <p
+            className="govuk-body"
+          >
+            Define certain days and time periods that your tickets can be used within
+          </p>
+          <TimeRestrictions
+            timeRestrictions={
+              Array [
+                Object {
+                  "contents": Array [
+                    Object {
+                      "day": "monday",
+                      "timeBands": Array [
+                        Object {
+                          "endTime": "2300",
+                          "startTime": "0400",
+                        },
+                      ],
+                    },
+                    Object {
+                      "day": "tuesday",
+                      "timeBands": Array [
+                        Object {
+                          "endTime": "",
+                          "startTime": "0400",
+                        },
+                      ],
+                    },
+                  ],
+                  "name": "Restriction 1",
+                },
+                Object {
+                  "contents": Array [
+                    Object {
+                      "day": "bankHoliday",
+                      "timeBands": Array [],
+                    },
+                    Object {
+                      "day": "sunday",
+                      "timeBands": Array [
+                        Object {
+                          "endTime": "1200",
+                          "startTime": "0400",
+                        },
+                        Object {
+                          "endTime": "2200",
+                          "startTime": "1300",
+                        },
+                      ],
+                    },
+                  ],
+                  "name": "Restriction 2",
+                },
+              ]
+            }
+          />
+        </div>
+      </div>
+    </main>
+  </div>
+</BaseLayout>
+`;

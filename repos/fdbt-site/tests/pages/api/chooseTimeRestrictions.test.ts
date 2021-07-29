@@ -11,6 +11,7 @@ import {
 } from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
+import { FullTimeRestriction, TimeRestrictionDay } from 'shared/matchingJsonTypes';
 
 describe('chooseTimeRestrictions', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
@@ -45,7 +46,7 @@ describe('chooseTimeRestrictions', () => {
                     endTimefriday: '2120',
                 },
             });
-            const validDays = ['monday', 'tuesday', 'bankHoliday', 'friday'];
+            const validDays: TimeRestrictionDay[] = ['monday', 'tuesday', 'bankHoliday', 'friday'];
             const result = collectInputsFromRequest(req, validDays);
             expect(result).toStrictEqual([
                 { day: 'monday', timeBands: [{ endTime: '2120', startTime: '0200' }] },
@@ -58,7 +59,7 @@ describe('chooseTimeRestrictions', () => {
 
     describe('collectErrors', () => {
         it('should return an array of errors for some incorrect inputs', () => {
-            const inputs = [
+            const inputs: FullTimeRestriction[] = [
                 {
                     day: 'monday',
                     timeBands: [
@@ -122,7 +123,7 @@ describe('chooseTimeRestrictions', () => {
             ]);
         });
         it('should return no errors for empty inputs', () => {
-            const inputs = [
+            const inputs: FullTimeRestriction[] = [
                 {
                     day: 'monday',
                     timeBands: [
@@ -146,7 +147,7 @@ describe('chooseTimeRestrictions', () => {
             expect(result).toStrictEqual([]);
         });
         it('should return no errors for valid only inputs', () => {
-            const inputs = [
+            const inputs: FullTimeRestriction[] = [
                 {
                     day: 'monday',
                     timeBands: [
@@ -170,7 +171,7 @@ describe('chooseTimeRestrictions', () => {
             expect(result).toStrictEqual([]);
         });
         it('should return errors for a mixture of empty inputs and valid inputs, according to endTime not being the only input', () => {
-            const inputs = [
+            const inputs: FullTimeRestriction[] = [
                 {
                     day: 'monday',
                     timeBands: [
@@ -190,7 +191,7 @@ describe('chooseTimeRestrictions', () => {
                     ],
                 },
                 {
-                    day: 'bank holiday',
+                    day: 'bankHoliday',
                     timeBands: [
                         {
                             startTime: '0800',
@@ -221,7 +222,7 @@ describe('chooseTimeRestrictions', () => {
 
     describe('removeDuplicateTimebands', () => {
         it('returns an array of inputs removed of duplicates', () => {
-            const inputs = [
+            const inputs: FullTimeRestriction[] = [
                 {
                     day: 'monday',
                     timeBands: [
@@ -253,7 +254,7 @@ describe('chooseTimeRestrictions', () => {
                     ],
                 },
                 {
-                    day: 'bank holiday',
+                    day: 'bankHoliday',
                     timeBands: [
                         {
                             startTime: '0900',
@@ -312,7 +313,7 @@ describe('chooseTimeRestrictions', () => {
                     ],
                 },
                 {
-                    day: 'bank holiday',
+                    day: 'bankHoliday',
                     timeBands: [
                         {
                             startTime: '0900',

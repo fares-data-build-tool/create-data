@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { SettingsOverview } from '../interfaces';
 
-const SettingOverview = ({ name, description, count }: SettingsOverview): ReactElement => {
+const SettingOverview = ({ href, name, description, count }: SettingsOverview): ReactElement => {
     return (
         <>
-            <a href={'/viewPassengerTypes'} className="setting-record">
+            <a href={href} className="setting-record">
                 <p className="govuk-body-s govuk-!-font-weight-bold">
                     {name}
                     <b className="numberCircle">{count}</b>

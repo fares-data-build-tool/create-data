@@ -30,7 +30,7 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '1600' }],
                         },
                         {
-                            day: 'bank holiday',
+                            day: 'bankHoliday',
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
@@ -67,7 +67,7 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '1600' }],
                         },
                         {
-                            day: 'bank holiday',
+                            day: 'bankHoliday',
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
@@ -104,7 +104,7 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '1600' }],
                         },
                         {
-                            day: 'bank holiday',
+                            day: 'bankHoliday',
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
@@ -155,7 +155,7 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '1600' }],
                         },
                         {
-                            day: 'bank holiday',
+                            day: 'bankHoliday',
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
