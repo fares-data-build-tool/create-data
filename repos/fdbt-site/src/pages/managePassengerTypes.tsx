@@ -5,7 +5,7 @@ import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
 import { isWithErrors } from '../interfaces/typeGuards';
-import { getSessionAttribute } from 'src/utils/sessions';
+import { getSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
 
 const title = 'Manage Passenger Type - Create Fares Data Service';
@@ -39,11 +39,11 @@ interface ManagePassengerTypesProps {
 
 const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassengerTypesProps): ReactElement => {
     const [state, setState] = useState<FormData>({
-        type: model.passengerType.type ? model.passengerType.type : '',
+        type: model.passengerType && model.passengerType.type ? model.passengerType.type : '',
         name: model.name ? model.name : '',
-        ageRangeMin: model.passengerType.ageRangeMin ? model.passengerType.ageRangeMin : '',
-        ageRangeMax: model.passengerType.ageRangeMax ? model.passengerType.ageRangeMax : '',
-        documents: model.passengerType.proofDocuments ? model.passengerType.proofDocuments : [],
+        ageRangeMin: model.passengerType && model.passengerType.ageRangeMin ? model.passengerType.ageRangeMin : '',
+        ageRangeMax: model.passengerType && model.passengerType.ageRangeMax ? model.passengerType.ageRangeMax : '',
+        documents: model.passengerType && model.passengerType.proofDocuments ? model.passengerType.proofDocuments : [],
     });
 
     const typeChangeHandler = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {

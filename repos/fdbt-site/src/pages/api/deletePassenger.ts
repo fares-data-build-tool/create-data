@@ -12,7 +12,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const isGroup = query?.isGroup as string;
 
         if (!name || !isGroup) {
-            throw new Error('groupName not provided for delete query');
+            throw new Error('insufficient data provided for delete query');
         }
 
         const nationalOperatorCode = getAndValidateNoc(req, res);

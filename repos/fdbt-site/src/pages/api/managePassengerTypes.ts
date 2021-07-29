@@ -33,7 +33,7 @@ interface IFilteredRequestBody {
 
 const passengerTypeRequiredErrorMessage = 'You must select a passenger type';
 const nameRequiredErrorMessage = 'You must provide a name';
-const nameGreaterThanMaxErrorMessage = 'The name caannot be greater than 50 characters';
+const nameGreaterThanMaxErrorMessage = 'The name cannot be greater than 50 characters';
 const ageRangeNumberError = 'Enter a whole number between 0-150';
 const ageRangeInputError = 'Enter a minimum or maximum age';
 const proofSelectionError = 'Select at least one proof document';
@@ -95,11 +95,7 @@ export const formatRequestBody = (req: NextApiRequestWithSession): FilteredReque
         const key = entry[0];
         const value = entry[1];
 
-        if (key === 'type') {
-            filteredReqBody[key] = value as string;
-        }
-
-        if (key === 'name') {
+        if (key === 'type' || key === 'name') {
             filteredReqBody[key] = value as string;
         }
 
@@ -138,7 +134,7 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
         case 'ageRangeMax':
             return 'age-range-max';
         case 'proofDocuments':
-            return 'membership-card';
+            return 'proof-documents';
         default:
             throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
     }
@@ -160,7 +156,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const requestBody = formatRequestBody(req);
 
-        const actualPassengerType = {
+        const singlePassengerType = {
             name: requestBody.name,
             passengerType: {
                 passengerType: requestBody.type,
@@ -173,8 +169,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         try {
             await requestValidationRules.validate(requestBody, { abortEarly: false });
         } catch (exception) {
-            console.log('ERRORS MAAAAN!!!!!!!');
-
             const validationErrors: yup.ValidationError = exception;
 
             errors = validationErrors.inner.map((error) => ({
@@ -184,17 +178,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (errors.length === 0) {
-            console.log('there were no errors!');
             const nationalOperatorCode = getAndValidateNoc(req, res);
 
-            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, actualPassengerType.passengerType);
+            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, singlePassengerType.passengerType);
 
             updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
             await upsertSinglePassengerType(
                 nationalOperatorCode,
-                actualPassengerType.passengerType,
-                actualPassengerType.name,
+                singlePassengerType.passengerType,
+                singlePassengerType.name,
             );
 
             redirectTo(res, '/viewPassengerTypes');
@@ -202,7 +195,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const sessionInfo: ManagePassengerTypeWithErrors = {
             errors,
-            ...actualPassengerType,
+            ...singlePassengerType,
         };
 
         updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, sessionInfo);
