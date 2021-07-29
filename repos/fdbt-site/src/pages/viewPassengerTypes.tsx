@@ -106,7 +106,7 @@ const NoIndividualPassengerTypes = (): ReactElement => {
 
 interface IndividualPassengerTypesProps {
     actualPassengerTypes: ActualPassengerType[];
-    deleteActionHandler: Function;
+    deleteActionHandler: (name: string, isGroup: boolean) => void;
 }
 
 const IndividualPassengerTypes = ({
