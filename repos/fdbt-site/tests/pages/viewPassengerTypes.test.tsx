@@ -5,19 +5,28 @@ import ViewPassengerTypes from '../../src/pages/viewPassengerTypes';
 describe('pages', () => {
     describe('view passenger types', () => {
         it('should render correctly when no individual or group passenger types', () => {
-            const tree = shallow(<ViewPassengerTypes passengerTypes={[]} passengerTypeGroups={[]} />);
+            const tree = shallow(
+                <ViewPassengerTypes singlePassengerTypes={[]} groupPrssengerTypes={[]} csrfToken={''} />,
+            );
+
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly when only individual passenger types', () => {
             const passengerType = {
-                passengerType: 'child',
-                ageRangeMin: '5',
-                ageRangeMax: '16',
-                proofDocuments: ['studentCard'],
+                name: 'Regular Child',
+                passengerType: {
+                    passengerType: 'child',
+                    ageRangeMin: '5',
+                    ageRangeMax: '16',
+                    proofDocuments: ['studentCard'],
+                },
             };
 
-            const tree = shallow(<ViewPassengerTypes passengerTypes={[passengerType]} passengerTypeGroups={[]} />);
+            const tree = shallow(
+                <ViewPassengerTypes singlePassengerTypes={[passengerType]} groupPrssengerTypes={[]} csrfToken={''} />,
+            );
+
             expect(tree).toMatchSnapshot();
         });
 
@@ -41,16 +50,27 @@ describe('pages', () => {
                 maxGroupSize: '3',
                 companions: [adultCompanion, childCompanion],
             };
-            const tree = shallow(<ViewPassengerTypes passengerTypes={[]} passengerTypeGroups={[passengerTypeGroup]} />);
+
+            const tree = shallow(
+                <ViewPassengerTypes
+                    singlePassengerTypes={[]}
+                    groupPrssengerTypes={[passengerTypeGroup]}
+                    csrfToken={''}
+                />,
+            );
+
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly when groups and individual passenger types', () => {
             const passengerType = {
-                passengerType: 'child',
-                ageRangeMin: '5',
-                ageRangeMax: '16',
-                proofDocuments: ['studentCard'],
+                name: 'Regular Child',
+                passengerType: {
+                    passengerType: 'child',
+                    ageRangeMin: '5',
+                    ageRangeMax: '16',
+                    proofDocuments: ['studentCard'],
+                },
             };
 
             const adultCompanion = {
@@ -73,7 +93,11 @@ describe('pages', () => {
             };
 
             const tree = shallow(
-                <ViewPassengerTypes passengerTypes={[passengerType]} passengerTypeGroups={[passengerTypeGroup]} />,
+                <ViewPassengerTypes
+                    singlePassengerTypes={[passengerType]}
+                    groupPrssengerTypes={[passengerTypeGroup]}
+                    csrfToken={''}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });

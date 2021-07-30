@@ -4,6 +4,7 @@ import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
 import { INTERNAL_NOC } from '../constants';
 import {
+    SinglePassengerType,
     FullTimeRestriction,
     GroupPassengerType,
     Operator,
@@ -706,7 +707,7 @@ export const getPassengerTypeByNameAndNocCode = async (
 
 interface SavedPassengerType {
     group: GroupPassengerType;
-    single: PassengerType;
+    single: SinglePassengerType;
 }
 
 export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerType>(
@@ -721,18 +722,50 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
 
     try {
         const queryInput = `
-            SELECT contents, name
+            SELECT name, contents
             FROM passengerType
             WHERE nocCode = ?
             AND isGroup = ?
         `;
 
-        const queryResults = await executeQuery<{ contents: string; name: string }[]>(queryInput, [
+        const queryResults = await executeQuery<{ name: string; contents: string }[]>(queryInput, [
             nocCode,
             type === 'group',
         ]);
+
+        if (type === 'single') {
+            return queryResults.map(
+                (row) => ({ name: row.name, passengerType: JSON.parse(row.contents) } as SavedPassengerType[T]),
+            );
+        }
+
         return queryResults.map((row) => JSON.parse(row.contents) as SavedPassengerType[T]);
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
+    }
+};
+
+export const deletePassengerTypeByNocCodeAndName = async (
+    name: string,
+    nocCode: string,
+    isGroup: boolean,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'deleting passenger type for given name',
+        name,
+    });
+
+    const deleteQuery = `
+            DELETE FROM passengerType 
+            WHERE name = ?
+            AND nocCode = ?
+            AND isGroup = ?`;
+    try {
+        await executeQuery(deleteQuery, [name, nocCode, isGroup]);
+    } catch (error) {
+        throw new Error(
+            `Could not delete ${isGroup === true ? 'group' : 'passenger'} from the passengerType table. ${error.stack}`,
+        );
     }
 };

@@ -8,6 +8,8 @@ export const PASSENGER_TYPE_ATTRIBUTE = 'fdbt-passenger-type';
 
 export const DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE = 'fdbt-passenger-type-errors';
 
+export const MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE = 'fdbt-manage-passenger-type-errors';
+
 export const SERVICE_ATTRIBUTE = 'fdbt-service';
 
 export const JOURNEY_ATTRIBUTE = 'fdbt-journey';

@@ -29,11 +29,7 @@ const formatTimeBand = (timeBand: TimeBand): string =>
     `${formatTime(timeBand.startTime)}–${formatTime(timeBand.endTime)}`;
 
 const formatTimeBands = (timeBands: TimeBand[]): string =>
-    timeBands.length > 0
-        ? timeBands
-              .map((timeBand, index) => (index === 0 ? formatTimeBand(timeBand) : `, ${formatTimeBand(timeBand)}`))
-              .join('')
-        : 'Valid all day';
+    timeBands.length > 0 ? timeBands.map((timeBand) => formatTimeBand(timeBand)).join(', ') : 'Valid all day';
 
 const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: string): JSX.Element => {
     const matchedDayRestriction = timeRestriction.contents.find((dayRestriction) => dayRestriction.day === day);

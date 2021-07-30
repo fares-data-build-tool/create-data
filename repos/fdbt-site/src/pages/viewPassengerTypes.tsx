@@ -1,50 +1,84 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { BaseLayout } from '../layout/Layout';
-import { PassengerType, NextPageContextWithSession, GroupPassengerType } from '../interfaces';
-import { getAndValidateNoc, sentenceCaseString } from '../utils';
+import { SinglePassengerType, NextPageContextWithSession, GroupPassengerType } from '../interfaces';
+import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
+import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 
-const title = 'Passenger types';
+const title = 'Passenger Types - Create Fares Data Service';
 const description = 'View and edit your passenger types.';
 
 interface PassengerTypeProps {
-    passengerTypes: PassengerType[];
-    passengerTypeGroups: GroupPassengerType[];
+    csrfToken: string;
+    singlePassengerTypes: SinglePassengerType[];
+    groupPrssengerTypes: GroupPassengerType[];
 }
 
-const ViewPassengerTypes = ({ passengerTypes, passengerTypeGroups }: PassengerTypeProps): ReactElement => (
-    <BaseLayout title={title} description={description} showNavigation={true}>
-        <div className="govuk-width-container">
-            <main className="govuk-main-wrapper">
-                <div className="govuk-grid-row">
-                    <div className="govuk-grid-column-one-third">
-                        <SubNavigation />
+const ViewPassengerTypes = ({
+    singlePassengerTypes,
+    groupPrssengerTypes,
+    csrfToken,
+}: PassengerTypeProps): ReactElement => {
+    const [popUpState, setPopUpState] = useState({
+        isVisible: false,
+        passengerTypeName: '',
+        isGroup: false,
+    });
+
+    const deleteActionHandler = (name: string, isGroup: boolean): void => {
+        setPopUpState({ ...popUpState, isVisible: true, passengerTypeName: name, isGroup: isGroup });
+    };
+
+    const cancelActionHandler = (): void => {
+        setPopUpState({ ...popUpState, isVisible: false, passengerTypeName: '', isGroup: false });
+    };
+
+    return (
+        <BaseLayout title={title} description={description} showNavigation={true}>
+            <div className="govuk-width-container">
+                <main className="govuk-main-wrapper">
+                    <div className="govuk-grid-row">
+                        <div className="govuk-grid-column-one-third">
+                            <SubNavigation />
+                        </div>
+
+                        <div className="govuk-grid-column-two-thirds">
+                            <h1 className="govuk-heading-xl">Passenger types</h1>
+                            <p className="govuk-body">
+                                Define age range and required proof documents of your passengers as well as passenger
+                                groups
+                            </p>
+
+                            {!singlePassengerTypes.length ? (
+                                <NoIndividualPassengerTypes />
+                            ) : (
+                                <IndividualPassengerTypes
+                                    singlePassengerTypes={singlePassengerTypes}
+                                    deleteActionHandler={deleteActionHandler}
+                                />
+                            )}
+
+                            {!groupPrssengerTypes.length ? (
+                                <NoPassengerTypeGroups />
+                            ) : (
+                                <PassengerTypeGroups passengerTypeGroups={groupPrssengerTypes} />
+                            )}
+
+                            <DeleteConfirmationPopup
+                                isVisible={popUpState.isVisible}
+                                csrfToken={csrfToken}
+                                isGroup={popUpState.isGroup}
+                                passengerTypeName={popUpState.passengerTypeName}
+                                cancelActionHandler={cancelActionHandler}
+                            />
+                        </div>
                     </div>
-
-                    <div className="govuk-grid-column-two-thirds">
-                        <h1 className="govuk-heading-xl">Passenger types</h1>
-                        <p className="govuk-body">
-                            Define age range and required proof documents of your passengers as well as passenger groups
-                        </p>
-
-                        {!passengerTypes.length ? (
-                            <NoIndividualPassengerTypes />
-                        ) : (
-                            <IndividualPassengerTypes passengerTypes={passengerTypes} />
-                        )}
-
-                        {!passengerTypeGroups.length ? (
-                            <NoPassengerTypeGroups />
-                        ) : (
-                            <PassengerTypeGroups passengerTypeGroups={passengerTypeGroups} />
-                        )}
-                    </div>
-                </div>
-            </main>
-        </div>
-    </BaseLayout>
-);
+                </main>
+            </div>
+        </BaseLayout>
+    );
+};
 
 const NoIndividualPassengerTypes = (): ReactElement => {
     return (
@@ -53,24 +87,29 @@ const NoIndividualPassengerTypes = (): ReactElement => {
             <p className="govuk-body">
                 <em>You currently have no passenger types saved.</em>
             </p>
-            <button className="govuk-button" data-module="govuk-button">
+            <a className="govuk-button" data-module="govuk-button" href="/managePassengerTypes">
                 Add a passenger type
-            </button>
+            </a>
         </div>
     );
 };
 
-const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: PassengerType[] }): ReactElement => {
+interface IndividualPassengerTypesProps {
+    singlePassengerTypes: SinglePassengerType[];
+    deleteActionHandler: (name: string, isGroup: boolean) => void;
+}
+
+const IndividualPassengerTypes = ({
+    singlePassengerTypes,
+    deleteActionHandler,
+}: IndividualPassengerTypesProps): ReactElement => {
     return (
         <div className="govuk-heading-m">
             <h3>Individual</h3>
 
             <div className="govuk-grid-row">
-                {passengerTypes.map((passengerType) => (
-                    <div
-                        key={passengerType.passengerType}
-                        className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
-                    >
+                {singlePassengerTypes.map((singlePassengerType) => (
+                    <div key={singlePassengerType.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
                         <div className="card">
                             <div className="card__body individual-passenger-type">
                                 <div className="card__actions">
@@ -85,39 +124,43 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                                         </li>
 
                                         <li className="actions__item">
-                                            <a
+                                            <button
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                href="/viewPassengerTypes"
+                                                onClick={() => deleteActionHandler(singlePassengerType.name, false)}
                                             >
                                                 Delete
-                                            </a>
+                                            </button>
                                         </li>
                                     </ul>
                                 </div>
 
                                 <h4 className="govuk-!-padding-bottom-4">
-                                    {sentenceCaseString(passengerType.passengerType)}
+                                    {sentenceCaseString(singlePassengerType.name)}
                                 </h4>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Passenger type:</span>{' '}
-                                    {sentenceCaseString(passengerType.passengerType)}
+                                    {sentenceCaseString(singlePassengerType.passengerType.passengerType)}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Minimum age:</span>{' '}
-                                    {passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'}
+                                    {singlePassengerType.passengerType.ageRangeMin
+                                        ? singlePassengerType.passengerType.ageRangeMin
+                                        : 'N/A'}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Maximum age:</span>{' '}
-                                    {passengerType.ageRangeMax ? passengerType.ageRangeMax : 'N/A'}
+                                    {singlePassengerType.passengerType.ageRangeMax
+                                        ? singlePassengerType.passengerType.ageRangeMax
+                                        : 'N/A'}
                                 </p>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
-                                    {passengerType.proofDocuments
-                                        ? getProofOfDocumentsString(passengerType.proofDocuments)
+                                    {singlePassengerType.passengerType.proofDocuments
+                                        ? getProofOfDocumentsString(singlePassengerType.passengerType.proofDocuments)
                                         : 'N/A'}
                                 </p>
                             </div>
@@ -126,9 +169,9 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                 ))}
             </div>
 
-            <button className="govuk-button" data-module="govuk-button">
+            <a className="govuk-button" data-module="govuk-button" href="/managePassengerTypes">
                 Add a passenger type
-            </button>
+            </a>
         </div>
     );
 };
@@ -221,11 +264,12 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: PassengerTypeProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
-    const passengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
-    const passengerTypeGroups = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
+    const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
+    const groupPrssengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
 
-    return { props: { passengerTypes, passengerTypeGroups } };
+    return { props: { csrfToken, singlePassengerTypes: singlePassengerTypes, groupPrssengerTypes } };
 };
 
 const getProofOfDocumentsString = (documents: string[]) => {

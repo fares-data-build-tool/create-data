@@ -4,7 +4,7 @@ exports[`pages globalSettings should render correctly 1`] = `
 <BaseLayout
   description="View and access your settings in one place."
   showNavigation={true}
-  title="Operator Settings"
+  title="Operator Settings - Create Fares Data Service"
 >
   <div
     className="govuk-width-container"
