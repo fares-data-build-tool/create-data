@@ -4,6 +4,7 @@ import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     CSV_UPLOAD_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     DURATION_VALID_ATTRIBUTE,
     FARE_STAGES_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -106,6 +107,7 @@ import {
     UserAttribute,
     WithErrors,
     PointToPointPeriodProduct,
+    ManagePassengerTypeWithErrors,
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -139,6 +141,7 @@ interface SessionAttributeTypes {
     [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
     [PASSENGER_TYPE_ATTRIBUTE]: PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
+    [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | ManagePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
     [TICKET_REPRESENTATION_ATTRIBUTE]: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors;

@@ -34,7 +34,7 @@ interface TicketDating {
     endDefault: boolean;
 }
 
-export const sopTicketFormatConverter = (enumerations: string[]) => {
+export const sopTicketFormatConverter = (enumerations: string[]): string => {
     return enumerations
         .map(
             (enumeration) =>

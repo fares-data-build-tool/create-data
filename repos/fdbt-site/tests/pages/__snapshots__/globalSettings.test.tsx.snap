@@ -4,7 +4,7 @@ exports[`pages globalSettings should render correctly with some saved passenger 
 <BaseLayout
   description="View and access your settings in one place."
   showNavigation={true}
-  title="Operator Settings"
+  title="Operator Settings - Create Fares Data Service"
 >
   <div
     className="govuk-width-container"
@@ -52,7 +52,7 @@ exports[`pages globalSettings should render correctly with zero saved passenger 
 <BaseLayout
   description="View and access your settings in one place."
   showNavigation={true}
-  title="Operator Settings"
+  title="Operator Settings - Create Fares Data Service"
 >
   <div
     className="govuk-width-container"
