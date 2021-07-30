@@ -25,7 +25,7 @@ describe('MatchingBase', () => {
             });
         });
 
-        it('should return an array of stop items with dropdown values macthing those in selectedFareStages', () => {
+        it('should return an array of stop items with dropdown values matching those in selectedFareStages', () => {
             const expectedStopItems: StopItem = {
                 index: expect.any(Number),
                 stopName: expect.any(String),
@@ -63,6 +63,7 @@ describe('MatchingBase', () => {
                     userFareStages={userFareStages}
                     stops={zoneStops}
                     service={service}
+                    warning={false}
                     error={false}
                     selectedFareStages={[]}
                     csrfToken=""
@@ -91,6 +92,7 @@ describe('MatchingBase', () => {
                     userFareStages={userFareStages}
                     stops={zoneStops}
                     service={service}
+                    warning={false}
                     error={false}
                     selectedFareStages={selectedFareStages}
                     csrfToken=""
@@ -121,6 +123,7 @@ describe('MatchingBase', () => {
                         stops={zoneStops}
                         service={service}
                         error={false}
+                        warning={false}
                         selectedFareStages={[]}
                         csrfToken=""
                         // eslint-disable-next-line react/jsx-props-no-spreading

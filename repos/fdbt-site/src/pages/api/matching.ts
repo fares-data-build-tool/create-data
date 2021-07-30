@@ -29,9 +29,26 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         delete req.body.service;
         delete req.body.userfarestages;
 
-        if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {} && !overrideWarning) {
+        if (!Object.keys(matchingFareZones).length) {
             const selectedStagesList: string[][] = getSelectedStages(req);
-            const matchingAttributeError: MatchingWithErrors = { error: true, selectedFareStages: selectedStagesList };
+            const matchingAttributeError: MatchingWithErrors = {
+                error: true,
+                selectedFareStages: selectedStagesList,
+            };
+            updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeError);
+
+            redirectTo(res, '/matching');
+            return;
+        } else if (
+            isFareStageUnassigned(userFareStages, matchingFareZones) &&
+            matchingFareZones !== {} &&
+            !overrideWarning
+        ) {
+            const selectedStagesList: string[][] = getSelectedStages(req);
+            const matchingAttributeError: MatchingWithErrors = {
+                warning: true,
+                selectedFareStages: selectedStagesList,
+            };
             updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeError);
 
             redirectTo(res, '/matching');

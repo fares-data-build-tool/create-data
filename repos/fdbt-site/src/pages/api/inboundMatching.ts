@@ -22,21 +22,37 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const inboundMatchingFareZones = getMatchingFareZonesFromForm(req);
 
-        // Deleting these keys from the object in order to faciliate looping through the fare stage values in the body
+        // Deleting these keys from the object in order to facilitate looping through the fare stage values in the body
         delete req.body.service;
         delete req.body.userfarestages;
 
-        if (
+        if (!Object.keys(inboundMatchingFareZones).length) {
+            const selectedStagesList: string[][] = getSelectedStages(req);
+            const matchingAttributeError: MatchingWithErrors = {
+                error: true,
+                selectedFareStages: selectedStagesList,
+            };
+            updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeError);
+
+            redirectTo(res, '/outboundMatching');
+            return;
+        } else if (
             isFareStageUnassigned(inboundUserFareStages, inboundMatchingFareZones) &&
             inboundMatchingFareZones !== {} &&
             !overrideWarning
         ) {
             const selectedStagesList: string[][] = getSelectedStages(req);
-            const matchingAttributeError: MatchingWithErrors = { error: true, selectedFareStages: selectedStagesList };
+            const matchingAttributeError: MatchingWithErrors = {
+                warning: true,
+                selectedFareStages: selectedStagesList,
+            };
             updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeError);
+
             redirectTo(res, '/inboundMatching');
+
             return;
         }
+
         const matchingAttributeValue: InboundMatchingInfo = { inboundUserFareStages, inboundMatchingFareZones };
         updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeValue);
 

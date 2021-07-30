@@ -1,17 +1,19 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import React, { ReactElement, useState } from 'react';
-import ErrorSummary from './WarningSummary';
+import WarningSummary from './WarningSummary';
 import FormElementWrapper from './FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { BasicService, ErrorInfo, Stop, FareStage, UserFareStages } from '../interfaces';
 import CsrfForm from './CsrfForm';
 import { formatStopName } from '../utils';
+import ErrorSummary from './ErrorSummary';
 
 interface MatchingBaseProps {
     userFareStages: UserFareStages;
     stops: Stop[];
     service: BasicService;
     error: boolean;
+    warning: boolean;
     selectedFareStages: string[][];
     title: string;
     description: string;
@@ -90,6 +92,7 @@ const MatchingBase = ({
     stops,
     service,
     error,
+    warning,
     selectedFareStages,
     title,
     description,
@@ -100,6 +103,7 @@ const MatchingBase = ({
     csrfToken,
 }: MatchingBaseProps): ReactElement => {
     const errors: ErrorInfo[] = [];
+    const warnings: ErrorInfo[] = [];
 
     const [selections, updateSelections] = useState<StopItem[]>([]);
     const [stopItems, updateStopItems] = useState(getDefaultStopItems(userFareStages, stops, selectedFareStages));
@@ -174,7 +178,9 @@ const MatchingBase = ({
     };
 
     if (error) {
-        errors.push({ errorMessage: 'One or more fare stages have not been assigned.', id: 'option-0' });
+        errors.push({ errorMessage: 'No fare stages have been assigned.', id: 'option-0' });
+    } else if (warning) {
+        warnings.push({ errorMessage: 'One or more fare stages have not been assigned.', id: 'option-0' });
     }
 
     return (
@@ -182,6 +188,7 @@ const MatchingBase = ({
             <CsrfForm action={apiEndpoint} method="post" className="matching-page" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
+                    <WarningSummary errors={warnings} />
                     <div className={`govuk-form-group${error ? ' govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">

@@ -23,12 +23,4 @@ describe('The carnet faretype product journey', () => {
         completeSalesPages();
         isUuidStringValid();
     });
-
-    it('completes successfully for return faretype', () => {
-        selectCarnetFareType('return');
-        defineUserTypeAndTimeRestrictions();
-        completeReturnPages(true, true, false, true);
-        completeSalesPages();
-        isUuidStringValid();
-    });
 });

@@ -5,7 +5,7 @@ interface ErrorSummary {
     errors: ErrorInfo[];
 }
 
-const ErrorSummary = ({ errors }: ErrorSummary): null | ReactElement => {
+const WarningSummary = ({ errors }: ErrorSummary): null | ReactElement => {
     if (!errors || errors.length === 0) {
         return null;
     }
@@ -19,26 +19,29 @@ const ErrorSummary = ({ errors }: ErrorSummary): null | ReactElement => {
             data-module="govuk-error-summary"
         >
             <h2 className="govuk-error-summary__title" id="error-summary-title">
-                You have not matched all fare stages to stops
+                {errors[0].errorMessage}
             </h2>
             <div className="govuk-error-summary__body">
                 <ul className="govuk-list govuk-error-summary__list">
-                    {errors.map((error) => (
-                        <li key={error.id}>
-                            <a href={`#${error.id}`}>{error.errorMessage}</a>
-                            <p />
-
-                            <input type="checkbox" id="bypass" value="yes" name="overrideWarning"></input>
-                            <label htmlFor="overrideWarning">
+                    <div className="govuk-checkboxes">
+                        <div className="govuk-checkboxes__item">
+                            <input
+                                className="govuk-checkboxes__input"
+                                id="bypass"
+                                name="overrideWarning"
+                                value="yes"
+                                type="checkbox"
+                            />
+                            <label htmlFor="overrideWarning" className="govuk-label govuk-checkboxes__label">
                                 Check this box if you wish to proceed without assigning all fare stages, then click
                                 Continue
                             </label>
-                        </li>
-                    ))}
+                        </div>
+                    </div>
                 </ul>
             </div>
         </div>
     );
 };
 
-export default ErrorSummary;
+export default WarningSummary;
