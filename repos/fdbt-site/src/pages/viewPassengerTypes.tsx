@@ -50,7 +50,9 @@ const NoIndividualPassengerTypes = (): ReactElement => {
     return (
         <div className="govuk-heading-m">
             <h4>Individual</h4>
-            <p className="govuk-body">You currently have no passenger types saved.</p>
+            <p className="govuk-body">
+                <em>You currently have no passenger types saved.</em>
+            </p>
             <button className="govuk-button" data-module="govuk-button">
                 Add a passenger type
             </button>
@@ -137,10 +139,12 @@ const NoPassengerTypeGroups = (): ReactElement => {
             <h3>Groups</h3>
 
             <div className="govuk-inset-text">
-                Individual passengers must be created before they can be added to a group.
+                <em>Individual passengers must be created before they can be added to a group.</em>
             </div>
 
-            <p className="govuk-body">You currently have no passenger groups saved.</p>
+            <p className="govuk-body">
+                <em>You currently have no passenger groups saved.</em>
+            </p>
 
             <button className="govuk-button" data-module="govuk-button">
                 Add a passenger group
