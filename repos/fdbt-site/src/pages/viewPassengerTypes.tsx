@@ -70,7 +70,7 @@ const IndividualPassengerTypes = ({ passengerTypes }: { passengerTypes: Passenge
                         className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
                     >
                         <div className="card">
-                            <div className="card__body">
+                            <div className="card__body individual-passenger-type">
                                 <div className="card__actions">
                                     <ul className="actions__list">
                                         <li className="actions__item">

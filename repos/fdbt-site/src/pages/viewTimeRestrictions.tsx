@@ -92,7 +92,7 @@ const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeR
             {timeRestrictions.map((timeRestriction) => (
                 <div key={timeRestriction.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
                     <div className="card">
-                        <div className="card__body">
+                        <div className="card__body time-restriction">
                             <div className="card__actions">
                                 <ul className="actions__list">
                                     <li className="actions__item">

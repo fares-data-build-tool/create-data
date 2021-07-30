@@ -1,7 +1,6 @@
 .card {
     &__body {
         box-sizing: border-box;
-        height: 225px;
         background-color: govuk-colour('light-grey');
         padding: govuk-spacing(5) govuk-spacing(5) 10px govuk-spacing(5);
 
@@ -13,6 +12,14 @@
         h6 {
             margin: 0;
         }
+    }
+
+    &__body.individual-passenger-type {
+        height: 225px;
+    }
+
+    &__body.time-restriction {
+        height: 325px;
 
         .time-restriction-title {
             max-width: 200px;
