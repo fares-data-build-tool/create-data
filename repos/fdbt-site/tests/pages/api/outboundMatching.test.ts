@@ -62,7 +62,7 @@ describe('Outbound Matching API', () => {
 
     it('correctly generates matching error info, updates the MATCHING_ATTRIBUTE and then redirects to outboundMatching page when there are unassigned fare stages', () => {
         const mockMatchingError: MatchingWithErrors = {
-            error: true,
+            warning: true,
             selectedFareStages: expect.any(Object),
         };
         const { req, res } = getMockRequestAndResponse({

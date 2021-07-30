@@ -321,5 +321,6 @@ exports[`Matching Page should render correctly 1`] = `
       ],
     }
   }
+  warning={false}
 />
 `;

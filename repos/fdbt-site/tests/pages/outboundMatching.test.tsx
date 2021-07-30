@@ -44,6 +44,7 @@ describe('OutboundMatching Page', () => {
                 stops={zoneStops}
                 service={service}
                 error={false}
+                warning={false}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
             />,
@@ -65,6 +66,7 @@ describe('OutboundMatching Page', () => {
                 stops={zoneStops}
                 service={service}
                 error={false}
+                warning={false}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
             />,
