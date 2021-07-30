@@ -18,7 +18,7 @@ const DeleteConfirmationPopup = ({
     isGroup,
     passengerTypeName,
     cancelActionHandler,
-}: PopUpProps): ReactElement => {
+}: PopUpProps): ReactElement | null => {
     return isVisible ? (
         <div className="popup">
             <div className="popup__content">
@@ -44,9 +44,7 @@ const DeleteConfirmationPopup = ({
                 </form>
             </div>
         </div>
-    ) : (
-        <React.Fragment></React.Fragment>
-    );
+    ) : null;
 };
 
 export default DeleteConfirmationPopup;

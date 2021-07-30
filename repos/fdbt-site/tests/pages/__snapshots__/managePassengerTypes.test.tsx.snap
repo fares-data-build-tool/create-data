@@ -4,7 +4,7 @@ exports[`pages manage passenger types should render correctly 1`] = `
 <TwoThirdsLayout
   description="Manage Passenger Type page of the Create Fares Data Service"
   errors={Array []}
-  title="Manage Passenger Type - Create Fares Data Service"
+  title="Manage Passenger Types - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/managePassengerTypes"
@@ -36,143 +36,142 @@ exports[`pages manage passenger types should render correctly 1`] = `
             Select passenger type
           </h1>
         </legend>
-        <div
-          className="govuk-radios"
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="type"
+          errors={Array []}
         >
           <div
-            className="govuk-radios__item"
+            className="govuk-radios"
           >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="adult"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="adult"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="adult"
+            <div
+              className="govuk-radios__item"
             >
-              Adult
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="child"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="child"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="child"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="adult"
+                name="type"
+                type="radio"
+                value="adult"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="adult"
+              >
+                Adult
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Child
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="infant"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="infant"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="infant"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="child"
+                name="type"
+                type="radio"
+                value="child"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="child"
+              >
+                Child
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Infant
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="senior"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="senior"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="senior"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="infant"
+                name="type"
+                type="radio"
+                value="infant"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="infant"
+              >
+                Infant
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Senior
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="student"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="student"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="student"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="senior"
+                name="type"
+                type="radio"
+                value="senior"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="senior"
+              >
+                Senior
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Student
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="young_person"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="youngPerson"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="young_person"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="student"
+                name="type"
+                type="radio"
+                value="student"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="student"
+              >
+                Student
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Young person
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="anyone"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="anyone"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="anyone"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="young_person"
+                name="type"
+                type="radio"
+                value="youngPerson"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="young_person"
+              >
+                Young person
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Anyone
-            </label>
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="anyone"
+                name="type"
+                type="radio"
+                value="anyone"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="anyone"
+              >
+                Anyone
+              </label>
+            </div>
           </div>
-        </div>
+        </FormElementWrapper>
       </fieldset>
     </div>
     <fieldset
@@ -192,36 +191,42 @@ exports[`pages manage passenger types should render correctly 1`] = `
       >
         <div
           className="govuk-hint"
-          id="ageRangeMin"
+          id="age-range-min"
         >
           Minimum age (if applicable)
         </div>
-        <input
-          className="govuk-input govuk-input--width-5"
-          id="ageRangeMin"
-          name="ageRangeMin"
-          onChange={[Function]}
-          type="text"
-          value=""
-        />
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="age-range-min"
+          errors={Array []}
+        >
+          <input
+            className="govuk-input govuk-input--width-5"
+            name="ageRangeMin"
+            type="text"
+          />
+        </FormElementWrapper>
       </div>
       <div
         className="govuk-form-group"
       >
         <div
           className="govuk-hint"
-          id="ageRangeMax"
+          id="age-range-max"
         >
           Maximum age (if applicable)
         </div>
-        <input
-          className="govuk-input govuk-input--width-5"
-          id="ageRangeMax"
-          name="ageRangeMax"
-          onChange={[Function]}
-          type="text"
-          value=""
-        />
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="age-range-max"
+          errors={Array []}
+        >
+          <input
+            className="govuk-input govuk-input--width-5"
+            name="ageRangeMax"
+            type="text"
+          />
+        </FormElementWrapper>
       </div>
     </fieldset>
     <div
@@ -253,11 +258,10 @@ exports[`pages manage passenger types should render correctly 1`] = `
             className="govuk-checkboxes__item"
           >
             <input
-              checked={false}
               className="govuk-checkboxes__input"
+              defaultChecked={false}
               id="membership_card"
               name="proofDocuments"
-              onChange={[Function]}
               type="checkbox"
               value="membershipCard"
             />
@@ -272,11 +276,10 @@ exports[`pages manage passenger types should render correctly 1`] = `
             className="govuk-checkboxes__item"
           >
             <input
-              checked={false}
               className="govuk-checkboxes__input"
+              defaultChecked={false}
               id="student_card"
               name="proofDocuments"
-              onChange={[Function]}
               type="checkbox"
               value="studentCard"
             />
@@ -291,11 +294,10 @@ exports[`pages manage passenger types should render correctly 1`] = `
             className="govuk-checkboxes__item"
           >
             <input
-              checked={false}
               className="govuk-checkboxes__input"
+              defaultChecked={false}
               id="identity_document"
               name="proofDocuments"
-              onChange={[Function]}
               type="checkbox"
               value="identityDocument"
             />
@@ -329,15 +331,19 @@ exports[`pages manage passenger types should render correctly 1`] = `
       >
         50 characters maximum
       </div>
-      <input
-        aria-describedby="passenger_type_name_hint"
-        className="govuk-input"
-        id="passenger_type_name"
-        name="name"
-        onChange={[Function]}
-        type="text"
-        value=""
-      />
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="name"
+        errors={Array []}
+      >
+        <input
+          aria-describedby="passenger_type_name_hint"
+          className="govuk-input"
+          id="passenger_type_name"
+          name="name"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"
@@ -360,7 +366,7 @@ exports[`pages manage passenger types should render error state on name form gro
       },
     ]
   }
-  title="Manage Passenger Type - Create Fares Data Service"
+  title="Manage Passenger Types - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/managePassengerTypes"
@@ -399,143 +405,149 @@ exports[`pages manage passenger types should render error state on name form gro
             Select passenger type
           </h1>
         </legend>
-        <div
-          className="govuk-radios"
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="type"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "You must provide a name",
+                "id": "name",
+              },
+            ]
+          }
         >
           <div
-            className="govuk-radios__item"
+            className="govuk-radios"
           >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="adult"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="adult"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="adult"
+            <div
+              className="govuk-radios__item"
             >
-              Adult
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="child"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="child"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="child"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="adult"
+                name="type"
+                type="radio"
+                value="adult"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="adult"
+              >
+                Adult
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Child
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="infant"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="infant"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="infant"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={true}
+                id="child"
+                name="type"
+                type="radio"
+                value="child"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="child"
+              >
+                Child
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Infant
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="senior"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="senior"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="senior"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="infant"
+                name="type"
+                type="radio"
+                value="infant"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="infant"
+              >
+                Infant
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Senior
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="student"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="student"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="student"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="senior"
+                name="type"
+                type="radio"
+                value="senior"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="senior"
+              >
+                Senior
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Student
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="young_person"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="youngPerson"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="young_person"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="student"
+                name="type"
+                type="radio"
+                value="student"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="student"
+              >
+                Student
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Young person
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="anyone"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="anyone"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="anyone"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="young_person"
+                name="type"
+                type="radio"
+                value="youngPerson"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="young_person"
+              >
+                Young person
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Anyone
-            </label>
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="anyone"
+                name="type"
+                type="radio"
+                value="anyone"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="anyone"
+              >
+                Anyone
+              </label>
+            </div>
           </div>
-        </div>
+        </FormElementWrapper>
       </fieldset>
     </div>
     <fieldset
@@ -555,36 +567,58 @@ exports[`pages manage passenger types should render error state on name form gro
       >
         <div
           className="govuk-hint"
-          id="ageRangeMin"
+          id="age-range-min"
         >
           Minimum age (if applicable)
         </div>
-        <input
-          className="govuk-input govuk-input--width-5"
-          id="ageRangeMin"
-          name="ageRangeMin"
-          onChange={[Function]}
-          type="text"
-          value="4"
-        />
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="age-range-min"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "You must provide a name",
+                "id": "name",
+              },
+            ]
+          }
+        >
+          <input
+            className="govuk-input govuk-input--width-5"
+            defaultValue="4"
+            name="ageRangeMin"
+            type="text"
+          />
+        </FormElementWrapper>
       </div>
       <div
         className="govuk-form-group"
       >
         <div
           className="govuk-hint"
-          id="ageRangeMax"
+          id="age-range-max"
         >
           Maximum age (if applicable)
         </div>
-        <input
-          className="govuk-input govuk-input--width-5"
-          id="ageRangeMax"
-          name="ageRangeMax"
-          onChange={[Function]}
-          type="text"
-          value="15"
-        />
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="age-range-max"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "You must provide a name",
+                "id": "name",
+              },
+            ]
+          }
+        >
+          <input
+            className="govuk-input govuk-input--width-5"
+            defaultValue="15"
+            name="ageRangeMax"
+            type="text"
+          />
+        </FormElementWrapper>
       </div>
     </fieldset>
     <div
@@ -616,11 +650,10 @@ exports[`pages manage passenger types should render error state on name form gro
             className="govuk-checkboxes__item"
           >
             <input
-              checked={false}
               className="govuk-checkboxes__input"
+              defaultChecked={false}
               id="membership_card"
               name="proofDocuments"
-              onChange={[Function]}
               type="checkbox"
               value="membershipCard"
             />
@@ -635,11 +668,10 @@ exports[`pages manage passenger types should render error state on name form gro
             className="govuk-checkboxes__item"
           >
             <input
-              checked={true}
               className="govuk-checkboxes__input"
+              defaultChecked={true}
               id="student_card"
               name="proofDocuments"
-              onChange={[Function]}
               type="checkbox"
               value="studentCard"
             />
@@ -654,11 +686,10 @@ exports[`pages manage passenger types should render error state on name form gro
             className="govuk-checkboxes__item"
           >
             <input
-              checked={false}
               className="govuk-checkboxes__input"
+              defaultChecked={false}
               id="identity_document"
               name="proofDocuments"
-              onChange={[Function]}
               type="checkbox"
               value="identityDocument"
             />
@@ -692,15 +723,27 @@ exports[`pages manage passenger types should render error state on name form gro
       >
         50 characters maximum
       </div>
-      <input
-        aria-describedby="passenger_type_name_hint"
-        className="govuk-input"
-        id="passenger_type_name"
-        name="name"
-        onChange={[Function]}
-        type="text"
-        value=""
-      />
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="name"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "You must provide a name",
+              "id": "name",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="passenger_type_name_hint"
+          className="govuk-input"
+          defaultValue=""
+          id="passenger_type_name"
+          name="name"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"
@@ -723,7 +766,7 @@ exports[`pages manage passenger types should render error state on passenger typ
       },
     ]
   }
-  title="Manage Passenger Type - Create Fares Data Service"
+  title="Manage Passenger Types - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/managePassengerTypes"
@@ -762,143 +805,149 @@ exports[`pages manage passenger types should render error state on passenger typ
             Select passenger type
           </h1>
         </legend>
-        <div
-          className="govuk-radios"
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="type"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "You must select a passenger type",
+                "id": "type",
+              },
+            ]
+          }
         >
           <div
-            className="govuk-radios__item"
+            className="govuk-radios"
           >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="adult"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="adult"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="adult"
+            <div
+              className="govuk-radios__item"
             >
-              Adult
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="child"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="child"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="child"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="adult"
+                name="type"
+                type="radio"
+                value="adult"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="adult"
+              >
+                Adult
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Child
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="infant"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="infant"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="infant"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="child"
+                name="type"
+                type="radio"
+                value="child"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="child"
+              >
+                Child
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Infant
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="senior"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="senior"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="senior"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="infant"
+                name="type"
+                type="radio"
+                value="infant"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="infant"
+              >
+                Infant
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Senior
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="student"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="student"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="student"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="senior"
+                name="type"
+                type="radio"
+                value="senior"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="senior"
+              >
+                Senior
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Student
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="young_person"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="youngPerson"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="young_person"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="student"
+                name="type"
+                type="radio"
+                value="student"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="student"
+              >
+                Student
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Young person
-            </label>
-          </div>
-          <div
-            className="govuk-radios__item"
-          >
-            <input
-              checked={false}
-              className="govuk-radios__input"
-              id="anyone"
-              name="type"
-              onChange={[Function]}
-              type="radio"
-              value="anyone"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="anyone"
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="young_person"
+                name="type"
+                type="radio"
+                value="youngPerson"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="young_person"
+              >
+                Young person
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
             >
-              Anyone
-            </label>
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="anyone"
+                name="type"
+                type="radio"
+                value="anyone"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="anyone"
+              >
+                Anyone
+              </label>
+            </div>
           </div>
-        </div>
+        </FormElementWrapper>
       </fieldset>
     </div>
     <fieldset
@@ -918,36 +967,58 @@ exports[`pages manage passenger types should render error state on passenger typ
       >
         <div
           className="govuk-hint"
-          id="ageRangeMin"
+          id="age-range-min"
         >
           Minimum age (if applicable)
         </div>
-        <input
-          className="govuk-input govuk-input--width-5"
-          id="ageRangeMin"
-          name="ageRangeMin"
-          onChange={[Function]}
-          type="text"
-          value="15"
-        />
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="age-range-min"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "You must select a passenger type",
+                "id": "type",
+              },
+            ]
+          }
+        >
+          <input
+            className="govuk-input govuk-input--width-5"
+            defaultValue="15"
+            name="ageRangeMin"
+            type="text"
+          />
+        </FormElementWrapper>
       </div>
       <div
         className="govuk-form-group"
       >
         <div
           className="govuk-hint"
-          id="ageRangeMax"
+          id="age-range-max"
         >
           Maximum age (if applicable)
         </div>
-        <input
-          className="govuk-input govuk-input--width-5"
-          id="ageRangeMax"
-          name="ageRangeMax"
-          onChange={[Function]}
-          type="text"
-          value="65"
-        />
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="age-range-max"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "You must select a passenger type",
+                "id": "type",
+              },
+            ]
+          }
+        >
+          <input
+            className="govuk-input govuk-input--width-5"
+            defaultValue="65"
+            name="ageRangeMax"
+            type="text"
+          />
+        </FormElementWrapper>
       </div>
     </fieldset>
     <div
@@ -979,11 +1050,10 @@ exports[`pages manage passenger types should render error state on passenger typ
             className="govuk-checkboxes__item"
           >
             <input
-              checked={false}
               className="govuk-checkboxes__input"
+              defaultChecked={false}
               id="membership_card"
               name="proofDocuments"
-              onChange={[Function]}
               type="checkbox"
               value="membershipCard"
             />
@@ -998,11 +1068,10 @@ exports[`pages manage passenger types should render error state on passenger typ
             className="govuk-checkboxes__item"
           >
             <input
-              checked={false}
               className="govuk-checkboxes__input"
+              defaultChecked={false}
               id="student_card"
               name="proofDocuments"
-              onChange={[Function]}
               type="checkbox"
               value="studentCard"
             />
@@ -1017,11 +1086,10 @@ exports[`pages manage passenger types should render error state on passenger typ
             className="govuk-checkboxes__item"
           >
             <input
-              checked={false}
               className="govuk-checkboxes__input"
+              defaultChecked={false}
               id="identity_document"
               name="proofDocuments"
-              onChange={[Function]}
               type="checkbox"
               value="identityDocument"
             />
@@ -1055,15 +1123,27 @@ exports[`pages manage passenger types should render error state on passenger typ
       >
         50 characters maximum
       </div>
-      <input
-        aria-describedby="passenger_type_name_hint"
-        className="govuk-input"
-        id="passenger_type_name"
-        name="name"
-        onChange={[Function]}
-        type="text"
-        value="Regular Adult"
-      />
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="name"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "You must select a passenger type",
+              "id": "type",
+            },
+          ]
+        }
+      >
+        <input
+          aria-describedby="passenger_type_name_hint"
+          className="govuk-input"
+          defaultValue="Regular Adult"
+          id="passenger_type_name"
+          name="name"
+          type="text"
+        />
+      </FormElementWrapper>
     </div>
     <input
       className="govuk-button"

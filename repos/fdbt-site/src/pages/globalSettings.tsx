@@ -7,7 +7,7 @@ import { getNocFromIdToken } from '../utils';
 import { getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
 
-const title = 'Operator Settings';
+const title = 'Operator Settings - Create Fares Data Service';
 const description = 'View and access your settings in one place.';
 
 interface GlobalSettingsProps {

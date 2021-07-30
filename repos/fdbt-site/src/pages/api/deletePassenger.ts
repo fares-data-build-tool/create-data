@@ -7,11 +7,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     try {
         const { query } = req;
 
-        const name = query?.name as string;
+        const name = query?.name;
 
-        const isGroup = query?.isGroup as string;
+        const isGroup = query?.isGroup;
 
-        if (!name || !isGroup) {
+        if (typeof name !== 'string' || typeof isGroup !== 'string') {
             throw new Error('insufficient data provided for delete query');
         }
 

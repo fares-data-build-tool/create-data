@@ -1,0 +1,186 @@
+import isArray from 'lodash/isArray';
+import { NextApiResponse } from 'next';
+import * as yup from 'yup';
+import { PASSENGER_TYPE_ATTRIBUTE, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../../constants/attributes';
+import {
+    SinglePassengerType,
+    ManagePassengerTypeWithErrors,
+    ErrorInfo,
+    NextApiRequestWithSession,
+} from '../../interfaces';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { redirectTo, redirectToError } from './apiUtils/index';
+import { removeAllWhiteSpace } from './apiUtils/validator';
+import { upsertSinglePassengerType } from '../../data/auroradb';
+import { getAndValidateNoc } from './apiUtils/index';
+
+interface FilteredRequestBody {
+    name: string;
+    type: string;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proofDocuments?: string[];
+}
+
+interface IFilteredRequestBody {
+    [key: string]: string | string[];
+}
+
+const passengerTypeRequiredErrorMessage = 'You must select a passenger type';
+const nameRequiredErrorMessage = 'You must provide a name';
+const nameGreaterThanMaxErrorMessage = 'The name cannot be greater than 50 characters';
+const ageRangeNumberError = 'Enter a whole number between 0-150';
+const ageRangeInputError = 'Enter a minimum or maximum age';
+const proofSelectionError = 'Select at least one proof document';
+const maxLessThanMinError = (inputType: string): string =>
+    `Maximum ${inputType} cannot be less than minimum ${inputType}`;
+const minGreaterThanMaxError = (inputType: string): string =>
+    `Minimum ${inputType} cannot be greater than maximum ${inputType}`;
+
+const minAgeRangeSchema = yup
+    .number()
+    .typeError(ageRangeNumberError)
+    .integer(ageRangeNumberError)
+    .min(0, ageRangeNumberError);
+
+const maxAgeRangeSchema = yup
+    .number()
+    .typeError(ageRangeNumberError)
+    .integer(ageRangeNumberError)
+    .max(150, ageRangeNumberError);
+
+export const requestValidationRules = yup
+    .object({
+        type: yup.string().required(passengerTypeRequiredErrorMessage),
+        name: yup.string().required(nameRequiredErrorMessage).max(50, nameGreaterThanMaxErrorMessage),
+        ageRangeMin: yup.number().when('ageRange', {
+            is: 'Yes',
+            then: yup
+                .number()
+                .when('ageRangeMax', {
+                    is: (ageRangeMaxValue) => !!ageRangeMaxValue,
+                    then: minAgeRangeSchema.max(yup.ref('ageRangeMax'), minGreaterThanMaxError('age')).notRequired(),
+                })
+                .when('ageRangeMax', {
+                    is: (ageRangeMaxValue) => !ageRangeMaxValue,
+                    then: minAgeRangeSchema.max(150, ageRangeNumberError).required(ageRangeInputError),
+                }),
+        }),
+        ageRangeMax: yup.number().when('ageRange', {
+            is: 'Yes',
+            then: yup
+                .number()
+                .when('ageRangeMin', {
+                    is: (ageRangeMinValue) => !!ageRangeMinValue,
+                    then: maxAgeRangeSchema.min(yup.ref('ageRangeMin'), maxLessThanMinError('age')).notRequired(),
+                })
+                .when('ageRangeMin', {
+                    is: (ageRangeMinValue) => !ageRangeMinValue,
+                    then: maxAgeRangeSchema.min(0, ageRangeNumberError).required(ageRangeInputError),
+                }),
+        }),
+        proofDocuments: yup.string().when('proof', { is: 'Yes', then: yup.string().required(proofSelectionError) }),
+    })
+    .required();
+
+export const formatRequestBody = (req: NextApiRequestWithSession): SinglePassengerType => {
+    const name = req.body.name;
+    const type = req.body.type;
+    const ageRangeMin = req.body.ageRangeMin;
+    const ageRangeMax = req.body.ageRangeMax;
+    const proofDocuments = !isArray(req.body.proofDocuments) ? [req.body.proofDocuments] : req.body.proofDocuments;
+
+    if (
+        typeof name !== 'string' &&
+        typeof type !== 'string' &&
+        typeof ageRangeMin !== 'string' &&
+        typeof ageRangeMax !== 'string'
+    ) {
+        throw Error('name should be a string, but was not!');
+    }
+
+    const singlePassengerType: SinglePassengerType = {
+        name: name,
+        passengerType: {
+            passengerType: type,
+            ageRangeMin: ageRangeMin,
+            ageRangeMax: ageRangeMax,
+            proofDocuments: proofDocuments,
+        },
+    };
+
+    return singlePassengerType;
+};
+
+export const getErrorIdFromValidityError = (errorPath: string): string => {
+    switch (errorPath) {
+        case 'type':
+            return 'type';
+        case 'name':
+            return 'name';
+        case 'ageRangeMin':
+            return 'age-range-min';
+        case 'ageRangeMax':
+            return 'age-range-max';
+        case 'proofDocuments':
+            return 'proof-documents';
+        default:
+            throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
+    }
+};
+
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
+    try {
+        if (!req.body) {
+            throw new Error('Could not extract the relevant data from the request.');
+        }
+
+        let errors: ErrorInfo[] = [];
+
+        const singlePassengerType = formatRequestBody(req);
+
+        try {
+            await requestValidationRules.validate(singlePassengerType, { abortEarly: false });
+        } catch (exception) {
+            const validationErrors: yup.ValidationError = exception;
+
+            errors = validationErrors.inner.map((error) => ({
+                id: getErrorIdFromValidityError(error.path),
+                errorMessage: error.message,
+            }));
+        }
+
+        if (errors.length === 0) {
+            const nationalOperatorCode = getAndValidateNoc(req, res);
+
+            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, singlePassengerType.passengerType);
+
+            updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
+
+            await upsertSinglePassengerType(
+                nationalOperatorCode,
+                singlePassengerType.passengerType,
+                singlePassengerType.name,
+            );
+
+            redirectTo(res, '/viewPassengerTypes');
+
+            return;
+        }
+
+        const sessionInfo: ManagePassengerTypeWithErrors = {
+            errors,
+            ...singlePassengerType,
+        };
+
+        updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, sessionInfo);
+
+        redirectTo(res, '/managePassengerTypes');
+
+        return;
+    } catch (error) {
+        const message = 'There was a problem in the managePassengerTypes API.';
+
+        redirectToError(res, message, 'api.managePassengerTypes', error);
+    }
+};

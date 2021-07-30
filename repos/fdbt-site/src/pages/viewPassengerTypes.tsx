@@ -6,7 +6,7 @@ import { getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 
-const title = 'Passenger types';
+const title = 'Passenger Types - Create Fares Data Service';
 const description = 'View and edit your passenger types.';
 
 interface PassengerTypeProps {
@@ -27,23 +27,11 @@ const ViewPassengerTypes = ({
     });
 
     const deleteActionHandler = (name: string, isGroup: boolean): void => {
-        const previousState = { ...popUpState };
-
-        previousState.isVisible = true;
-        previousState.passengerTypeName = name;
-        previousState.isGroup = isGroup;
-
-        setPopUpState({ ...previousState });
+        setPopUpState({ ...popUpState, isVisible: true, passengerTypeName: name, isGroup: isGroup });
     };
 
     const cancelActionHandler = (): void => {
-        const previousState = { ...popUpState };
-
-        previousState.isVisible = false;
-        previousState.passengerTypeName = '';
-        previousState.isGroup = false;
-
-        setPopUpState({ ...previousState });
+        setPopUpState({ ...popUpState, isVisible: false, passengerTypeName: '', isGroup: false });
     };
 
     return (

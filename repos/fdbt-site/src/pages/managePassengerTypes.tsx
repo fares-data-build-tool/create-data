@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -7,20 +7,13 @@ import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes'
 import { isWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
+import FormElementWrapper from '../components/FormElementWrapper';
 
-const title = 'Manage Passenger Type - Create Fares Data Service';
+const title = 'Manage Passenger Types - Create Fares Data Service';
 const description = 'Manage Passenger Type page of the Create Fares Data Service';
 
-interface FormData {
-    name: string;
-    type: string;
-    ageRangeMin: string;
-    ageRangeMax: string;
-    documents: string[];
-}
-
 interface FilteredRequestBodyPassengerType {
-    type?: string;
+    passengerType?: string;
     ageRangeMin?: string;
     ageRangeMax?: string;
     proofDocuments?: string[];
@@ -38,60 +31,12 @@ interface ManagePassengerTypesProps {
 }
 
 const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassengerTypesProps): ReactElement => {
-    const [state, setState] = useState<FormData>({
-        type: model.passengerType && model.passengerType.type ? model.passengerType.type : '',
-        name: model.name ? model.name : '',
-        ageRangeMin: model.passengerType && model.passengerType.ageRangeMin ? model.passengerType.ageRangeMin : '',
-        ageRangeMax: model.passengerType && model.passengerType.ageRangeMax ? model.passengerType.ageRangeMax : '',
-        documents: model.passengerType && model.passengerType.proofDocuments ? model.passengerType.proofDocuments : [],
-    });
+    const name = model?.name;
+    const type = model?.passengerType?.passengerType;
+    const ageRangeMin = model?.passengerType?.ageRangeMin;
+    const ageRangeMax = model?.passengerType?.ageRangeMax;
+    const documents = model?.passengerType?.proofDocuments ?? [];
 
-    const typeChangeHandler = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
-        const currentState = { ...state };
-
-        currentState.type = changeEvent.currentTarget.value;
-
-        setState({ ...currentState });
-    };
-
-    const ageRangeMinHandler = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
-        const currentState = { ...state };
-
-        currentState.ageRangeMin = changeEvent.currentTarget.value;
-
-        setState({ ...currentState });
-    };
-
-    const ageRangeMaxHandler = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
-        const currentState = { ...state };
-
-        currentState.ageRangeMax = changeEvent.currentTarget.value;
-
-        setState({ ...currentState });
-    };
-
-    const proofDocumentsHandler = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
-        const currentState = { ...state };
-
-        const checked = changeEvent.currentTarget.checked;
-        const value = changeEvent.currentTarget.value;
-
-        if (checked) {
-            currentState.documents.push(value);
-        } else {
-            currentState.documents = currentState.documents.filter((doc) => doc !== value);
-        }
-
-        setState({ ...currentState });
-    };
-
-    const nameHandler = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
-        const currentState = { ...state };
-
-        currentState.name = changeEvent.currentTarget.value;
-
-        setState({ ...currentState });
-    };
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/managePassengerTypes" method="post" csrfToken={csrfToken}>
@@ -107,106 +52,102 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                                 <h1 className="govuk-fieldset__heading">Select passenger type</h1>
                             </legend>
-                            <div className="govuk-radios">
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="adult"
-                                        name="type"
-                                        type="radio"
-                                        value="adult"
-                                        checked={state.type === 'adult'}
-                                        onChange={typeChangeHandler}
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="adult">
-                                        Adult
-                                    </label>
+
+                            <FormElementWrapper errors={errors} errorId={'type'} errorClass={'govuk-radios--error'}>
+                                <div className="govuk-radios">
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="adult"
+                                            name="type"
+                                            type="radio"
+                                            value="adult"
+                                            defaultChecked={type === 'adult'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="adult">
+                                            Adult
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="child"
+                                            name="type"
+                                            type="radio"
+                                            value="child"
+                                            defaultChecked={type === 'child'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="child">
+                                            Child
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="infant"
+                                            name="type"
+                                            type="radio"
+                                            value="infant"
+                                            defaultChecked={type === 'infant'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="infant">
+                                            Infant
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="senior"
+                                            name="type"
+                                            type="radio"
+                                            value="senior"
+                                            defaultChecked={type === 'senior'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="senior">
+                                            Senior
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="student"
+                                            name="type"
+                                            type="radio"
+                                            value="student"
+                                            defaultChecked={type === 'student'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="student">
+                                            Student
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="young_person"
+                                            name="type"
+                                            type="radio"
+                                            value="youngPerson"
+                                            defaultChecked={type === 'youngPerson'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="young_person">
+                                            Young person
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="anyone"
+                                            name="type"
+                                            type="radio"
+                                            value="anyone"
+                                            defaultChecked={type === 'anyone'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="anyone">
+                                            Anyone
+                                        </label>
+                                    </div>
                                 </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="child"
-                                        name="type"
-                                        type="radio"
-                                        value="child"
-                                        checked={state.type === 'child'}
-                                        onChange={typeChangeHandler}
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="child">
-                                        Child
-                                    </label>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="infant"
-                                        name="type"
-                                        type="radio"
-                                        value="infant"
-                                        checked={state.type === 'infant'}
-                                        onChange={typeChangeHandler}
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="infant">
-                                        Infant
-                                    </label>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="senior"
-                                        name="type"
-                                        type="radio"
-                                        value="senior"
-                                        checked={state.type === 'senior'}
-                                        onChange={typeChangeHandler}
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="senior">
-                                        Senior
-                                    </label>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="student"
-                                        name="type"
-                                        type="radio"
-                                        value="student"
-                                        checked={state.type === 'student'}
-                                        onChange={typeChangeHandler}
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="student">
-                                        Student
-                                    </label>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="young_person"
-                                        name="type"
-                                        type="radio"
-                                        value="youngPerson"
-                                        checked={state.type === 'youngPerson'}
-                                        onChange={typeChangeHandler}
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="young_person">
-                                        Young person
-                                    </label>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="anyone"
-                                        name="type"
-                                        type="radio"
-                                        value="anyone"
-                                        checked={state.type === 'anyone'}
-                                        onChange={typeChangeHandler}
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="anyone">
-                                        Anyone
-                                    </label>
-                                </div>
-                            </div>
+                            </FormElementWrapper>
                         </fieldset>
                     </div>
 
@@ -215,34 +156,42 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
                             <h1 className="govuk-fieldset__heading">Does this passenger type have an age range?</h1>
                         </legend>
 
-                        <div className="govuk-form-group">
-                            <div id="ageRangeMin" className="govuk-hint">
+                        <div className={`govuk-form-group${hasError(errors, 'age-range-min')}`}>
+                            <div id="age-range-min" className="govuk-hint">
                                 Minimum age (if applicable)
                             </div>
 
-                            <input
-                                className="govuk-input govuk-input--width-5"
-                                id="ageRangeMin"
-                                name="ageRangeMin"
-                                type="text"
-                                value={state.ageRangeMin}
-                                onChange={ageRangeMinHandler}
-                            />
+                            <FormElementWrapper
+                                errors={errors}
+                                errorId={'age-range-min'}
+                                errorClass={'govuk-input--error'}
+                            >
+                                <input
+                                    className="govuk-input govuk-input--width-5"
+                                    name="ageRangeMin"
+                                    type="text"
+                                    defaultValue={ageRangeMin}
+                                />
+                            </FormElementWrapper>
                         </div>
 
-                        <div className="govuk-form-group">
-                            <div id="ageRangeMax" className="govuk-hint">
+                        <div className={`govuk-form-group${hasError(errors, 'age-range-max')}`}>
+                            <div id="age-range-max" className="govuk-hint">
                                 Maximum age (if applicable)
                             </div>
 
-                            <input
-                                className="govuk-input govuk-input--width-5"
-                                id="ageRangeMax"
-                                name="ageRangeMax"
-                                type="text"
-                                value={state.ageRangeMax}
-                                onChange={ageRangeMaxHandler}
-                            />
+                            <FormElementWrapper
+                                errors={errors}
+                                errorId={'age-range-max'}
+                                errorClass={'govuk-input--error'}
+                            >
+                                <input
+                                    className="govuk-input govuk-input--width-5"
+                                    name="ageRangeMax"
+                                    type="text"
+                                    defaultValue={ageRangeMax}
+                                />
+                            </FormElementWrapper>
                         </div>
                     </fieldset>
 
@@ -266,8 +215,7 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
                                         name="proofDocuments"
                                         type="checkbox"
                                         value="membershipCard"
-                                        checked={state.documents.includes('membershipCard')}
-                                        onChange={proofDocumentsHandler}
+                                        defaultChecked={documents.includes('membershipCard')}
                                     />
 
                                     <label className="govuk-label govuk-checkboxes__label" htmlFor="membership_card">
@@ -282,8 +230,7 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
                                         name="proofDocuments"
                                         type="checkbox"
                                         value="studentCard"
-                                        checked={state.documents.includes('studentCard')}
-                                        onChange={proofDocumentsHandler}
+                                        defaultChecked={documents.includes('studentCard')}
                                     />
 
                                     <label className="govuk-label govuk-checkboxes__label" htmlFor="student_card">
@@ -298,8 +245,7 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
                                         name="proofDocuments"
                                         type="checkbox"
                                         value="identityDocument"
-                                        checked={state.documents.includes('identityDocument')}
-                                        onChange={proofDocumentsHandler}
+                                        defaultChecked={documents.includes('identityDocument')}
                                     />
 
                                     <label className="govuk-label govuk-checkboxes__label" htmlFor="identity_document">
@@ -321,15 +267,16 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
                             50 characters maximum
                         </div>
 
-                        <input
-                            className="govuk-input"
-                            id="passenger_type_name"
-                            name="name"
-                            type="text"
-                            aria-describedby="passenger_type_name_hint"
-                            value={state.name !== undefined ? state.name : ''}
-                            onChange={nameHandler}
-                        />
+                        <FormElementWrapper errors={errors} errorId={'name'} errorClass={'govuk-input--error'}>
+                            <input
+                                className="govuk-input"
+                                id="passenger_type_name"
+                                name="name"
+                                type="text"
+                                aria-describedby="passenger_type_name_hint"
+                                defaultValue={name}
+                            />
+                        </FormElementWrapper>
                     </div>
 
                     <input type="submit" value="Add passenger type" id="continue-button" className="govuk-button" />
