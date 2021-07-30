@@ -34,7 +34,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             };
             updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeError);
 
-            redirectTo(res, '/outboundMatching');
+            redirectTo(res, '/inboundMatching');
             return;
         } else if (
             isFareStageUnassigned(inboundUserFareStages, inboundMatchingFareZones) &&
