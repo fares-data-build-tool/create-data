@@ -4,8 +4,8 @@ import ViewTimeRestrictions from '../../src/pages/viewTimeRestrictions';
 import { PremadeTimeRestriction } from 'src/interfaces';
 
 describe('pages', () => {
-    describe('view passenger types', () => {
-        it('should render correctly when no individual or group passenger types', () => {
+    describe('view time restrictions', () => {
+        it('should render correctly when no individual or group time restrictions', () => {
             const tree = shallow(<ViewTimeRestrictions timeRestrictions={[]} />);
             expect(tree).toMatchSnapshot();
         });

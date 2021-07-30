@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages view passenger types should render correctly when no individual or group passenger types 1`] = `
+exports[`pages view time restrictions should render correctly when no individual or group time restrictions 1`] = `
 <BaseLayout
   description="View and edit your time restrictions."
   showNavigation={true}
@@ -41,7 +41,7 @@ exports[`pages view passenger types should render correctly when no individual o
 </BaseLayout>
 `;
 
-exports[`pages view passenger types should render correctly when time restrictions exist 1`] = `
+exports[`pages view time restrictions should render correctly when time restrictions exist 1`] = `
 <BaseLayout
   description="View and edit your time restrictions."
   showNavigation={true}
