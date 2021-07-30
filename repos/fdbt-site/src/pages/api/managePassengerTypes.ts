@@ -66,23 +66,6 @@ export const formatRequestBody = (req: NextApiRequestWithSession): [SinglePassen
     return [passengerType, errors];
 };
 
-export const getErrorIdFromValidityError = (errorPath: string): string => {
-    switch (errorPath) {
-        case 'passengerType':
-            return 'type';
-        case 'name':
-            return 'name';
-        case 'ageRangeMin':
-            return 'age-range-min';
-        case 'ageRangeMax':
-            return 'age-range-max';
-        case 'proofDocuments':
-            return 'proof-documents';
-        default:
-            throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
-    }
-};
-
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         console.log('The Request Body is:');
