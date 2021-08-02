@@ -9,12 +9,69 @@ import {
 } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from './apiUtils/index';
-import { upsertSinglePassengerType } from '../../data/auroradb';
+import {
+    getSinglePassengerTypeByNameAndNationalOperatorCode,
+    updateSinglePassengerType,
+    upsertSinglePassengerType,
+} from '../../data/auroradb';
 import { getAndValidateNoc } from './apiUtils/index';
-import { checkIntegerIsValid } from './apiUtils/validator';
+import { removeExcessWhiteSpace, checkIntegerIsValid } from './apiUtils/validator';
 
-export const formatRequestBody = (req: NextApiRequestWithSession): [SinglePassengerType, ErrorInfo[]] => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
+    try {
+        if (!req.body) {
+            throw new Error('Could not extract the relevant data from the request.');
+        }
+
+        const nationalOperatorCode = getAndValidateNoc(req, res);
+
+        const [isEditMode, singlePassengerType, errors] = await formatRequestBody(req, nationalOperatorCode);
+
+        if (errors.length) {
+            const sessionInfo: ManagePassengerTypeWithErrors = {
+                errors,
+                ...singlePassengerType,
+            };
+
+            updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, sessionInfo);
+
+            const location = isEditMode
+                ? `/managePassengerTypes?id=${singlePassengerType.id}`
+                : '/managePassengerTypes';
+
+            redirectTo(res, location);
+
+            return;
+        }
+
+        updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, singlePassengerType.passengerType);
+
+        updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
+
+        if (isEditMode) {
+            await updateSinglePassengerType(singlePassengerType);
+        } else {
+            await upsertSinglePassengerType(
+                nationalOperatorCode,
+                singlePassengerType.passengerType,
+                singlePassengerType.name,
+            );
+        }
+
+        redirectTo(res, '/viewPassengerTypes');
+    } catch (error) {
+        const message = 'There was a problem in the managePassengerTypes API.';
+
+        redirectToError(res, message, 'api.managePassengerTypes', error);
+    }
+};
+
+export const formatRequestBody = async (
+    req: NextApiRequestWithSession,
+    nationalOperatorCode: string,
+): Promise<[boolean, SinglePassengerType, ErrorInfo[]]> => {
     const errors: ErrorInfo[] = [];
+    const id = Number(req.body.id);
     const name = req.body.name;
     const type = req.body.type;
     const ageRangeMin = req.body.ageRangeMin;
@@ -29,8 +86,19 @@ export const formatRequestBody = (req: NextApiRequestWithSession): [SinglePassen
         errors.push({ id: 'type', errorMessage: 'You must select a passenger type' });
     }
 
+    let isInEditMode = false;
+
+    const idIsANumber = Number.isInteger(id);
+
+    if (idIsANumber && id !== 0) {
+        isInEditMode = true;
+    }
+
+    const trimmedName = removeExcessWhiteSpace(name);
+
     const passengerType: SinglePassengerType = {
-        name: name,
+        id: id,
+        name: trimmedName,
         passengerType: {
             passengerType: type,
             ageRangeMin: ageRangeMin,
@@ -39,12 +107,12 @@ export const formatRequestBody = (req: NextApiRequestWithSession): [SinglePassen
         },
     };
 
-    if (passengerType.name.length < 1) {
+    if (trimmedName.length < 1) {
         errors.push({ id: 'name', errorMessage: 'Name must be provided' });
     }
 
-    if (passengerType.name.length >= 50) {
-        errors.push({ id: 'name', errorMessage: 'Name must be fewer than 50 characters long' });
+    if (trimmedName.length >= 50) {
+        errors.push({ id: 'name', errorMessage: 'Name must be 50 characters or under' });
     }
 
     const invalidAgeRangeMin = ageRangeMin && checkIntegerIsValid(ageRangeMin, 'Age', 0, 150);
@@ -60,53 +128,20 @@ export const formatRequestBody = (req: NextApiRequestWithSession): [SinglePassen
     }
 
     if (Number.parseInt(ageRangeMin) > Number.parseInt(ageRangeMax)) {
-        errors.push({ id: 'age-range-min', errorMessage: 'Minimum age cannot be greater than Maximum age' });
+        errors.push({ id: 'age-range-min', errorMessage: 'Minimum age cannot be greater than maximum age' });
     }
 
-    return [passengerType, errors];
-};
+    const singlePassengerType = await getSinglePassengerTypeByNameAndNationalOperatorCode(
+        nationalOperatorCode,
+        trimmedName,
+        false,
+    );
 
-export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
-    try {
-        console.log('The Request Body is:');
-
-        console.log(req.body);
-
-        if (!req.body) {
-            throw new Error('Could not extract the relevant data from the request.');
+    if (singlePassengerType !== undefined) {
+        if (id !== singlePassengerType.id) {
+            errors.push({ id: 'duplicate', errorMessage: `${trimmedName} already exists as a passenger type` });
         }
-
-        const [singlePassengerType, errors] = formatRequestBody(req);
-
-        if (errors.length) {
-            const sessionInfo: ManagePassengerTypeWithErrors = {
-                errors,
-                ...singlePassengerType,
-            };
-
-            updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, sessionInfo);
-
-            redirectTo(res, '/managePassengerTypes');
-
-            return;
-        }
-
-        const nationalOperatorCode = getAndValidateNoc(req, res);
-
-        updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, singlePassengerType.passengerType);
-
-        updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
-
-        await upsertSinglePassengerType(
-            nationalOperatorCode,
-            singlePassengerType.passengerType,
-            singlePassengerType.name,
-        );
-
-        redirectTo(res, '/viewPassengerTypes');
-    } catch (error) {
-        const message = 'There was a problem in the managePassengerTypes API.';
-
-        redirectToError(res, message, 'api.managePassengerTypes', error);
     }
+
+    return [isInEditMode, passengerType, errors];
 };

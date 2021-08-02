@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
@@ -8,6 +8,7 @@ import { isWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
+import { getPassengerTypeById } from '../data/auroradb';
 
 const title = 'Manage Passenger Types - Create Fares Data Service';
 const description = 'Manage Passenger Type page of the Create Fares Data Service';
@@ -20,17 +21,25 @@ interface FilteredRequestBodyPassengerType {
 }
 
 interface FilteredRequestBody {
+    id?: number;
     name?: string;
     passengerType: FilteredRequestBodyPassengerType;
 }
 
 interface ManagePassengerTypesProps {
+    isInEditMode: boolean;
     csrfToken: string;
     errors: ErrorInfo[];
     model: FilteredRequestBody;
 }
 
-const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassengerTypesProps): ReactElement => {
+const ManagePassengerTypes = ({
+    isInEditMode,
+    csrfToken,
+    errors = [],
+    model,
+}: ManagePassengerTypesProps): ReactElement => {
+    const id = model?.id;
     const name = model?.name;
     const type = model?.passengerType?.passengerType;
     const ageRangeMin = model?.passengerType?.ageRangeMin;
@@ -42,6 +51,8 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
             <CsrfForm action="/api/managePassengerTypes" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
+
+                    <input type="hidden" name="id" value={id} />
 
                     <h1 className="govuk-heading-l" id="define-passenger-type-page-heading">
                         Provide passenger type details
@@ -279,7 +290,12 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
                         </FormElementWrapper>
                     </div>
 
-                    <input type="submit" value="Add passenger type" id="continue-button" className="govuk-button" />
+                    <input
+                        type="submit"
+                        value={`${isInEditMode ? 'Update' : 'Add'} passenger type`}
+                        id="continue-button"
+                        className="govuk-button"
+                    />
                 </>
             </CsrfForm>
         </TwoThirdsLayout>
@@ -294,17 +310,38 @@ const hasError = (errors: ErrorInfo[], name: string) => {
     return '';
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ManagePassengerTypesProps } => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: ManagePassengerTypesProps }> => {
+    let singlePassengerType: SinglePassengerType | undefined;
     const csrfToken = getCsrfToken(ctx);
 
-    const errorsFromSession = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
+    const passengerTypeId = Number(ctx.query.id);
 
-    const errors: ErrorInfo[] = isWithErrors(errorsFromSession) ? errorsFromSession.errors : [];
+    const passengerTypeIdIsANumber = Number.isInteger(passengerTypeId);
 
-    const model = { ...errorsFromSession } as FilteredRequestBody;
+    const isInEditMode = passengerTypeIdIsANumber;
+
+    const sessionObject = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
+
+    if (sessionObject === undefined && passengerTypeIdIsANumber) {
+        singlePassengerType = await getPassengerTypeById(passengerTypeId);
+
+        if (singlePassengerType === undefined) {
+            throw Error('could not find passenger type');
+        }
+    }
+
+    const errors: ErrorInfo[] = isWithErrors(sessionObject) ? sessionObject.errors : [];
+
+    const model =
+        sessionObject === undefined
+            ? ({ ...singlePassengerType } as FilteredRequestBody)
+            : ({ ...sessionObject } as FilteredRequestBody);
 
     return {
         props: {
+            isInEditMode,
             csrfToken,
             errors,
             model,

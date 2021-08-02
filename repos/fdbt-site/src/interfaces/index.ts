@@ -393,6 +393,7 @@ export interface GroupPassengerType {
 }
 
 export interface SinglePassengerType {
+    id: number;
     name: string;
     passengerType: PassengerType;
 }

@@ -110,7 +110,7 @@ export const replaceInternalNocCode = (nocCode: string): string => {
 
 let connectionPool: Pool;
 
-const executeQuery = async <T>(query: string, values: (string | boolean)[]): Promise<T> => {
+const executeQuery = async <T>(query: string, values: (string | boolean | number)[]): Promise<T> => {
     if (!connectionPool) {
         connectionPool = getAuroraDBClient();
     }
@@ -673,6 +673,31 @@ export const upsertSinglePassengerType = async (
     }
 };
 
+export const updateSinglePassengerType = async (passengerType: SinglePassengerType): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'updating passenger type for given id',
+        id: passengerType.id,
+        name: passengerType.name,
+    });
+
+    const contents = JSON.stringify(passengerType.passengerType);
+
+    try {
+        const updateQuery = `UPDATE passengerType
+                             SET name = ?, contents = ?
+                             WHERE id = ?`;
+
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [passengerType.name, contents, passengerType.id]);
+
+        if (meta.affectedRows > 1) {
+            throw Error(`Updated too many rows when updating passenger type ${meta}`);
+        }
+    } catch (error) {
+        throw new Error(`Could not update passenger type. ${error}`);
+    }
+};
+
 export const getPassengerTypeByNameAndNocCode = async (
     nocCode: string,
     name: string,
@@ -705,6 +730,82 @@ export const getPassengerTypeByNameAndNocCode = async (
     }
 };
 
+export const getSinglePassengerTypeByNameAndNationalOperatorCode = async (
+    nationalOperatorCode: string,
+    name: string,
+    isGroup: boolean,
+): Promise<SinglePassengerType | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving passenger type for a given national operator code and name',
+        nationalOperatorCode,
+        name,
+        isGroup,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, name, contents
+            FROM passengerType
+            WHERE nocCode = ? AND name = ? AND isGroup = ?`;
+
+        const queryResults = await executeQuery<{ id: number; name: string; contents: string }[]>(queryInput, [
+            nationalOperatorCode,
+            name,
+            isGroup,
+        ]);
+
+        if (queryResults.length > 1) {
+            throw new Error("Didn't expect more than one passenger type with the same national operator code and name");
+        }
+
+        const data = queryResults[0];
+
+        return data
+            ? ({
+                  id: data.id,
+                  name: data.name,
+                  passengerType: JSON.parse(data.contents),
+              } as SinglePassengerType)
+            : undefined;
+    } catch (error) {
+        throw new Error(`Could not retrieve passenger type by national operator code and name from AuroraDB: ${error}`);
+    }
+};
+
+export const getPassengerTypeById = async (id: number): Promise<SinglePassengerType | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving passenger type for a given id',
+        id: id,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, name, contents
+            FROM passengerType
+            WHERE id = ?`;
+
+        const queryResults = await executeQuery<{ id: number; name: string; contents: string }[]>(queryInput, [id]);
+
+        if (queryResults.length > 1) {
+            throw new Error("Didn't expect more than one passenger type with the same id");
+        }
+
+        const data = queryResults[0];
+
+        return data
+            ? ({
+                  id: data.id,
+                  name: data.name,
+                  passengerType: JSON.parse(data.contents),
+              } as SinglePassengerType)
+            : undefined;
+    } catch (error) {
+        throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
+    }
+};
+
 interface SavedPassengerType {
     group: GroupPassengerType;
     single: SinglePassengerType;
@@ -722,20 +823,21 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
 
     try {
         const queryInput = `
-            SELECT name, contents
+            SELECT id, name, contents
             FROM passengerType
             WHERE nocCode = ?
             AND isGroup = ?
         `;
 
-        const queryResults = await executeQuery<{ name: string; contents: string }[]>(queryInput, [
+        const queryResults = await executeQuery<{ id: number; name: string; contents: string }[]>(queryInput, [
             nocCode,
             type === 'group',
         ]);
 
         if (type === 'single') {
             return queryResults.map(
-                (row) => ({ name: row.name, passengerType: JSON.parse(row.contents) } as SavedPassengerType[T]),
+                (row) =>
+                    ({ id: row.id, name: row.name, passengerType: JSON.parse(row.contents) } as SavedPassengerType[T]),
             );
         }
 
