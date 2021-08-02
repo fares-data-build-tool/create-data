@@ -59,6 +59,36 @@ describe('Matching Page', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
+    it('should render with warning', () => {
+        wrapper = shallow(
+            <Matching
+                userFareStages={userFareStages}
+                stops={zoneStops}
+                service={service}
+                error={false}
+                warning={true}
+                selectedFareStages={selectedFareStages}
+                csrfToken=""
+            />,
+        );
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render with error', () => {
+        wrapper = shallow(
+            <Matching
+                userFareStages={userFareStages}
+                stops={zoneStops}
+                service={service}
+                error={true}
+                warning={false}
+                selectedFareStages={selectedFareStages}
+                csrfToken=""
+            />,
+        );
+        expect(wrapper).toMatchSnapshot();
+    });
+
     it('shows the correct amount of fare stages in the select boxes', () => {
         const mountedWrapper = mount(
             <Matching
