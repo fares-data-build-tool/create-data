@@ -3,9 +3,10 @@ import { ErrorInfo } from '../interfaces';
 
 interface WarningSummary {
     errors: ErrorInfo[];
+    label: string;
 }
 
-const WarningSummary = ({ errors }: WarningSummary): null | ReactElement => {
+const WarningSummary = ({ errors, label }: WarningSummary): null | ReactElement => {
     if (!errors || errors.length === 0) {
         return null;
     }
@@ -32,9 +33,8 @@ const WarningSummary = ({ errors }: WarningSummary): null | ReactElement => {
                                 value="yes"
                                 type="checkbox"
                             />
-                            <label htmlFor="overrideWarning" className="govuk-label govuk-checkboxes__label">
-                                Check this box if you wish to proceed without assigning all fare stages, then click
-                                Continue
+                            <label htmlFor="bypass" className="govuk-label govuk-checkboxes__label">
+                                {label}
                             </label>
                         </div>
                     </div>

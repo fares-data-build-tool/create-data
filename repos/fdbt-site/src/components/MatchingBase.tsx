@@ -191,7 +191,10 @@ const MatchingBase = ({
             <CsrfForm action={apiEndpoint} method="post" className="matching-page" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
-                    <WarningSummary errors={warnings} />
+                    <WarningSummary
+                        errors={warnings}
+                        label="Check this box if you wish to proceed without assigning all fare stages, then click Continue"
+                    />
                     <div className={`govuk-form-group${error ? ' govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
