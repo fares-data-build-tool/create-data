@@ -1,6 +1,6 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
-import { PASSENGER_TYPE_ATTRIBUTE, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../../constants/attributes';
+import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../../constants/attributes';
 import {
     SinglePassengerType,
     ManagePassengerTypeWithErrors,
@@ -19,10 +19,6 @@ import { removeExcessWhiteSpace, checkIntegerIsValid } from './apiUtils/validato
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        if (!req.body) {
-            throw new Error('Could not extract the relevant data from the request.');
-        }
-
         const nationalOperatorCode = getAndValidateNoc(req, res);
 
         const [isEditMode, singlePassengerType, errors] = await formatRequestBody(req, nationalOperatorCode);
@@ -44,8 +40,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, singlePassengerType.passengerType);
-
         updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
         if (isEditMode) {
@@ -66,7 +60,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     }
 };
 
-export const formatRequestBody = async (
+const formatRequestBody = async (
     req: NextApiRequestWithSession,
     nationalOperatorCode: string,
 ): Promise<[boolean, SinglePassengerType, ErrorInfo[]]> => {
@@ -139,7 +133,7 @@ export const formatRequestBody = async (
 
     if (singlePassengerType !== undefined) {
         if (id !== singlePassengerType.id) {
-            errors.push({ id: 'duplicate', errorMessage: `${trimmedName} already exists as a passenger type` });
+            errors.push({ id: 'name', errorMessage: `${trimmedName} already exists as a passenger type` });
         }
     }
 
