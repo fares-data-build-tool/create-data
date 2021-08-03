@@ -59,7 +59,7 @@ describe('Inbound Matching API', () => {
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/returnValidity' });
     });
 
-    it('correctly generates matching warning info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there are unassigned fare stages', () => {
+    it('correctly generates matching error info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there are unassigned fare stages', () => {
         const mockMatchingError: MatchingWithErrors = {
             error: true,
             selectedFareStages: expect.any(Object),
@@ -80,7 +80,7 @@ describe('Inbound Matching API', () => {
             Location: '/inboundMatching',
         });
     });
-    it('correctly generates matching error info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there are unassigned fare stages', () => {
+    it('correctly generates matching warning info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there are unassigned fare stages', () => {
         const mockMatchingError: MatchingWithErrors = {
             warning: true,
             selectedFareStages: expect.any(Object),
