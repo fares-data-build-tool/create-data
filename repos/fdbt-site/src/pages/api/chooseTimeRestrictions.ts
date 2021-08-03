@@ -6,12 +6,13 @@ import { NextApiRequestWithSession, TimeRestriction, ErrorInfo, FullTimeRestrict
 import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
+import { TimeRestrictionDay } from 'shared/matchingJsonTypes';
 
 export const isValid24hrTimeFormat = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);
 
 export const collectInputsFromRequest = (
     req: NextApiRequestWithSession,
-    chosenDays: string[],
+    chosenDays: TimeRestrictionDay[],
 ): FullTimeRestriction[] => {
     const timeRestrictions: FullTimeRestriction[] = [];
     chosenDays.forEach((day) => {

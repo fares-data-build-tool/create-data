@@ -1212,7 +1212,7 @@ export const mockTimeRestriction: FullTimeRestriction[] = [
         ],
     },
     {
-        day: 'bank holiday',
+        day: 'bankHoliday',
         timeBands: [
             {
                 startTime: '0900',
@@ -4837,7 +4837,7 @@ export const mockFullTimeRestrictions: FullTimeRestrictionAttribute = {
             ],
         },
         {
-            day: 'bank holiday',
+            day: 'bankHoliday',
             timeBands: [
                 {
                     startTime: '0900',

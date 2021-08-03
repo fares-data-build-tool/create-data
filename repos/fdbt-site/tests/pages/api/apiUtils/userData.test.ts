@@ -947,7 +947,7 @@ describe('userData', () => {
                                 ],
                             },
                             {
-                                day: 'bank holiday',
+                                day: 'bankHoliday',
                                 timeBands: [
                                     {
                                         startTime: '0900',
@@ -1090,7 +1090,7 @@ describe('userData', () => {
                                 ],
                             },
                             {
-                                day: 'bank holiday',
+                                day: 'bankHoliday',
                                 timeBands: [
                                     {
                                         startTime: '0900',
@@ -1198,7 +1198,7 @@ describe('userData', () => {
                                 ],
                             },
                             {
-                                day: 'bank holiday',
+                                day: 'bankHoliday',
                                 timeBands: [
                                     {
                                         startTime: '0900',

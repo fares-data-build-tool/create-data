@@ -4,7 +4,7 @@ exports[`pages view passenger types should render correctly when groups and indi
 <BaseLayout
   description="View and edit your passenger types."
   showNavigation={true}
-  title="Passenger types"
+  title="Passenger Types - Create Fares Data Service"
 >
   <div
     className="govuk-width-container"
@@ -34,15 +34,19 @@ exports[`pages view passenger types should render correctly when groups and indi
             Define age range and required proof documents of your passengers as well as passenger groups
           </p>
           <IndividualPassengerTypes
-            passengerTypes={
+            deleteActionHandler={[Function]}
+            singlePassengerTypes={
               Array [
                 Object {
-                  "ageRangeMax": "16",
-                  "ageRangeMin": "5",
-                  "passengerType": "child",
-                  "proofDocuments": Array [
-                    "studentCard",
-                  ],
+                  "name": "Regular Child",
+                  "passengerType": Object {
+                    "ageRangeMax": "16",
+                    "ageRangeMin": "5",
+                    "passengerType": "child",
+                    "proofDocuments": Array [
+                      "studentCard",
+                    ],
+                  },
                 },
               ]
             }
@@ -72,6 +76,13 @@ exports[`pages view passenger types should render correctly when groups and indi
               ]
             }
           />
+          <DeleteConfirmationPopup
+            cancelActionHandler={[Function]}
+            csrfToken=""
+            isGroup={false}
+            isVisible={false}
+            passengerTypeName=""
+          />
         </div>
       </div>
     </main>
@@ -83,7 +94,7 @@ exports[`pages view passenger types should render correctly when no individual o
 <BaseLayout
   description="View and edit your passenger types."
   showNavigation={true}
-  title="Passenger types"
+  title="Passenger Types - Create Fares Data Service"
 >
   <div
     className="govuk-width-container"
@@ -114,6 +125,13 @@ exports[`pages view passenger types should render correctly when no individual o
           </p>
           <NoIndividualPassengerTypes />
           <NoPassengerTypeGroups />
+          <DeleteConfirmationPopup
+            cancelActionHandler={[Function]}
+            csrfToken=""
+            isGroup={false}
+            isVisible={false}
+            passengerTypeName=""
+          />
         </div>
       </div>
     </main>
@@ -125,7 +143,7 @@ exports[`pages view passenger types should render correctly when only individual
 <BaseLayout
   description="View and edit your passenger types."
   showNavigation={true}
-  title="Passenger types"
+  title="Passenger Types - Create Fares Data Service"
 >
   <div
     className="govuk-width-container"
@@ -155,20 +173,31 @@ exports[`pages view passenger types should render correctly when only individual
             Define age range and required proof documents of your passengers as well as passenger groups
           </p>
           <IndividualPassengerTypes
-            passengerTypes={
+            deleteActionHandler={[Function]}
+            singlePassengerTypes={
               Array [
                 Object {
-                  "ageRangeMax": "16",
-                  "ageRangeMin": "5",
-                  "passengerType": "child",
-                  "proofDocuments": Array [
-                    "studentCard",
-                  ],
+                  "name": "Regular Child",
+                  "passengerType": Object {
+                    "ageRangeMax": "16",
+                    "ageRangeMin": "5",
+                    "passengerType": "child",
+                    "proofDocuments": Array [
+                      "studentCard",
+                    ],
+                  },
                 },
               ]
             }
           />
           <NoPassengerTypeGroups />
+          <DeleteConfirmationPopup
+            cancelActionHandler={[Function]}
+            csrfToken=""
+            isGroup={false}
+            isVisible={false}
+            passengerTypeName=""
+          />
         </div>
       </div>
     </main>
@@ -180,7 +209,7 @@ exports[`pages view passenger types should render correctly when only passenger 
 <BaseLayout
   description="View and edit your passenger types."
   showNavigation={true}
-  title="Passenger types"
+  title="Passenger Types - Create Fares Data Service"
 >
   <div
     className="govuk-width-container"
@@ -235,6 +264,13 @@ exports[`pages view passenger types should render correctly when only passenger 
                 },
               ]
             }
+          />
+          <DeleteConfirmationPopup
+            cancelActionHandler={[Function]}
+            csrfToken=""
+            isGroup={false}
+            isVisible={false}
+            passengerTypeName=""
           />
         </div>
       </div>

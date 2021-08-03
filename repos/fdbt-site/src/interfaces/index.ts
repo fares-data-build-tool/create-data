@@ -189,9 +189,16 @@ export interface ServiceListAttributeWithErrors {
 // Miscellaneous
 
 export interface SettingsOverview {
+    href: string;
     name: string;
     description: string;
     count: number;
+}
+
+export interface GlobalSettingsCounts {
+    passengerTypesCount: number;
+    timeRestrictionsCount: number;
+    // More to be added
 }
 
 export interface PassengerAttributes {
@@ -385,6 +392,11 @@ export interface GroupPassengerType {
     companions: CompanionInfo[];
 }
 
+export interface SinglePassengerType {
+    name: string;
+    passengerType: PassengerType;
+}
+
 export interface TimeRestriction {
     startTime?: string;
     endTime?: string;
@@ -489,6 +501,10 @@ export interface UserFareZone {
 }
 
 export interface DefinePassengerTypeWithErrors extends CompanionInfo {
+    errors: ErrorInfo[];
+}
+
+export interface ManagePassengerTypeWithErrors extends SinglePassengerType {
     errors: ErrorInfo[];
 }
 
