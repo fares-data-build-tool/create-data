@@ -104,11 +104,11 @@ describe('multipleOperatorsServiceList', () => {
                 [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
                     {
                         nocCode: 'N1',
-                        services: ['service one', 'service two'],
+                        services: [],
                     },
                     {
                         nocCode: 'N2',
-                        services: ['service one', 'service two'],
+                        services: [],
                     },
                 ],
             },
@@ -146,8 +146,8 @@ describe('multipleOperatorsServiceList', () => {
                     },
                 ],
             },
-            { nocCode: 'N1', services: ['service one', 'service two'] },
-            { nocCode: 'N2', services: ['service one', 'service two'] },
+            { nocCode: 'N1', services: [] },
+            { nocCode: 'N2', services: [] },
         ]);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, undefined);
     });

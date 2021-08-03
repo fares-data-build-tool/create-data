@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { TicketType } from '../../shared/matchingJsonTypes';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -18,12 +19,23 @@ const title = 'Ticket Representation - Create Fares Data Service';
 const description = 'Ticket Representation selection page of the Create Fares Data Service';
 
 interface TicketRepresentationProps {
-    fareType: string;
+    fareType: TicketType;
     errors: ErrorInfo[];
     csrfToken: string;
     showHybrid: boolean;
     showPointToPoint: boolean;
 }
+
+const getFareTypeDesc = (fareType: TicketType) => {
+    switch (fareType) {
+        case 'multiOperator':
+            return 'multi-operator';
+        case 'flatFare':
+            return 'flat fare';
+        default:
+            return fareType;
+    }
+};
 
 const TicketRepresentation = ({
     fareType,
@@ -32,6 +44,8 @@ const TicketRepresentation = ({
     showHybrid,
     showPointToPoint,
 }: TicketRepresentationProps): ReactElement => {
+    const fareTypeDesc = getFareTypeDesc(fareType);
+
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/ticketRepresentation" method="post" csrfToken={csrfToken}>
@@ -41,9 +55,7 @@ const TicketRepresentation = ({
                         <fieldset className="govuk-fieldset" aria-describedby="ticket-representation-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 className="govuk-fieldset__heading" id="ticket-representation-page-heading">
-                                    {`Select a type of ${
-                                        fareType === 'multiOperator' ? 'multi-operator' : 'period'
-                                    } ticket`}
+                                    {`Select a type of ${fareTypeDesc} ticket`}
                                 </h1>
                             </legend>
                             <FormElementWrapper errors={errors} errorId="geo-zone" errorClass="govuk-radios--errors">
@@ -101,8 +113,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             fareType,
             errors: ticketType && isTicketRepresentationWithErrors(ticketType) ? ticketType.errors : [],
             csrfToken,
-            showHybrid: fareType !== 'multiOperator',
-            showPointToPoint: fareType !== 'multiOperator' && !isCarnet,
+            showHybrid: fareType === 'period',
+            showPointToPoint: fareType === 'period' && !isCarnet,
         },
     };
 };

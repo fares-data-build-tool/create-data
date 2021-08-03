@@ -71,7 +71,7 @@ const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
         },
         {
             value: 'flatFare',
-            label: 'Flat fare ticket',
+            label: 'Flat fare/short hop ticket',
             hint: 'A fixed fee ticket for a single journey',
         },
         {

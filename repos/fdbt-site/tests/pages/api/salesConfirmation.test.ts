@@ -5,8 +5,10 @@ import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
-import { SingleTicket } from '../../../src/interfaces';
+import { SingleTicket, TicketPeriodWithInput } from '../../../src/interfaces';
+import { SessionAttributeTypes } from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import salesConfirmation from '../../../src/pages/api/salesConfirmation';
 import * as session from '../../../src/utils/sessions';
@@ -20,7 +22,6 @@ describe('salesOfferPackages', () => {
     const getReturnTicketJsonSpy = jest.spyOn(userData, 'getReturnTicketJson');
     const getGeoZoneTicketJsonSpy = jest.spyOn(userData, 'getGeoZoneTicketJson');
     const getMultipleServicesTicketJsonSpy = jest.spyOn(userData, 'getMultipleServicesTicketJson');
-    const getFlatFareTicketJsonSpy = jest.spyOn(userData, 'getFlatFareTicketJson');
 
     const todaysDate = moment().toISOString().substr(0, 10);
     const hundredYearsDate = moment().add(100, 'y').toISOString().substr(0, 10);
@@ -36,7 +37,7 @@ describe('salesOfferPackages', () => {
                 [PRODUCT_DATE_ATTRIBUTE]: {
                     startDate: 'test start date',
                     endDate: 'test end date',
-                },
+                } as TicketPeriodWithInput,
             },
         });
 
@@ -54,7 +55,7 @@ describe('salesOfferPackages', () => {
             session: {
                 [PRODUCT_DATE_ATTRIBUTE]: {
                     endDate: 'test end date',
-                },
+                } as TicketPeriodWithInput,
             },
         });
 
@@ -72,7 +73,7 @@ describe('salesOfferPackages', () => {
             session: {
                 [PRODUCT_DATE_ATTRIBUTE]: {
                     startDate: 'test start date',
-                },
+                } as TicketPeriodWithInput,
             },
         });
 
@@ -97,10 +98,11 @@ describe('salesOfferPackages', () => {
     });
 
     it('gets single json for a single ticket', () => {
-        const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
-        getFareTypeFromFromAttributesSpy.mockImplementation(() => 'single');
         const { req, res } = getMockRequestAndResponse({
             body: {},
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+            },
         });
 
         salesConfirmation(req, res);
@@ -109,10 +111,11 @@ describe('salesOfferPackages', () => {
     });
 
     it('gets return json for a return ticket', () => {
-        const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
-        getFareTypeFromFromAttributesSpy.mockImplementation(() => 'return');
         const { req, res } = getMockRequestAndResponse({
             body: {},
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' },
+            },
         });
 
         salesConfirmation(req, res);
@@ -121,11 +124,10 @@ describe('salesOfferPackages', () => {
     });
 
     it('gets geoZone json for a period geoZone ticket', () => {
-        const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
-        getFareTypeFromFromAttributesSpy.mockImplementation(() => 'period');
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
                 [TICKET_REPRESENTATION_ATTRIBUTE]: {
                     name: 'geoZone',
                 },
@@ -138,11 +140,10 @@ describe('salesOfferPackages', () => {
     });
 
     it('gets geoZone json for a multi operator geoZone ticket', () => {
-        const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
-        getFareTypeFromFromAttributesSpy.mockImplementation(() => 'multiOperator');
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
                 [TICKET_REPRESENTATION_ATTRIBUTE]: {
                     name: 'geoZone',
                 },
@@ -155,11 +156,10 @@ describe('salesOfferPackages', () => {
     });
 
     it('gets multiService json for a period multiService ticket', () => {
-        const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
-        getFareTypeFromFromAttributesSpy.mockImplementation(() => 'period');
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
                 [TICKET_REPRESENTATION_ATTRIBUTE]: {
                     name: 'multipleServices',
                 },
@@ -172,11 +172,10 @@ describe('salesOfferPackages', () => {
     });
 
     it('gets multiService json for a multi operator multiService ticket', () => {
-        const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
-        getFareTypeFromFromAttributesSpy.mockImplementation(() => 'multiOperator');
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
                 [TICKET_REPRESENTATION_ATTRIBUTE]: {
                     name: 'multipleServices',
                 },
@@ -188,16 +187,36 @@ describe('salesOfferPackages', () => {
         expect(getMultipleServicesTicketJsonSpy).toBeCalledWith(req, res);
     });
 
-    it('gets flatFare json for a flatFare ticket', () => {
-        const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
-        getFareTypeFromFromAttributesSpy.mockImplementation(() => 'flatFare');
+    it('gets flatFare json for a flatFare multiple services ticket', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'multipleServices',
+                },
+            },
         });
 
         salesConfirmation(req, res);
 
-        expect(getFlatFareTicketJsonSpy).toBeCalledWith(req, res);
+        expect(getMultipleServicesTicketJsonSpy).toBeCalledWith(req, res);
+    });
+
+    it('gets flatFare json for a flatFare geoZone ticket', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {},
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'geoZone',
+                },
+            },
+        });
+
+        salesConfirmation(req, res);
+
+        expect(getGeoZoneTicketJsonSpy).toBeCalledWith(req, res);
     });
 
     it('creates a group definition for a group ticket and adds to user json object', () => {
@@ -243,7 +262,7 @@ describe('salesOfferPackages', () => {
                 [PASSENGER_TYPE_ATTRIBUTE]: {
                     passengerType: 'group',
                 },
-            },
+            } as unknown as SessionAttributeTypes,
         });
 
         salesConfirmation(req, res);

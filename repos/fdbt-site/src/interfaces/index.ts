@@ -166,8 +166,9 @@ export interface MultipleProductAttributeWithErrors extends MultipleProductAttri
     errors: ErrorInfo[];
 }
 
+export type SchoolFareType = 'flatFare' | 'single' | 'period' | '';
 export interface SchoolFareTypeAttribute {
-    schoolFareType: 'flatFare' | 'single' | 'period' | '';
+    schoolFareType: SchoolFareType;
 }
 
 export interface MultipleOperatorsAttribute {
@@ -341,12 +342,16 @@ export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServi
     }[];
 }
 
-export interface FlatFareTicket extends BaseTicket {
-    operatorName: string;
+export type FlatFareGeoZone = Omit<PeriodGeoZoneTicket, 'products'> & {
+    type: 'flatFare';
     products: FlatFareProductDetails[];
-    selectedServices: SelectedService[];
+};
+export type FlatFareMultipleServices = Omit<PeriodMultipleServicesTicket, 'products'> & {
+    type: 'flatFare';
+    products: FlatFareProductDetails[];
     termTime: boolean;
-}
+};
+export type FlatFareTicket = FlatFareGeoZone | FlatFareMultipleServices;
 
 export interface SchemeOperatorGeoZoneTicket extends SchemeOperatorTicket {
     zoneName: string;
