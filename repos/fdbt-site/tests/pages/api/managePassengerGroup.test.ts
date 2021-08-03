@@ -203,7 +203,7 @@ describe('managePassengerGroup', () => {
         });
     });
 
-    it('should return 302 redirect to /viewPassengerTypes when there have been correct user inputs and the group is saved to the db', async () => {
+    it('should return 302 redirect to /viewPassengerTypes when there have been correct user inputs and the group is saved to the db ', async () => {
         const writeHeadMock = jest.fn();
         getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce(undefined).mockResolvedValueOnce(undefined);
         const { req, res } = getMockRequestAndResponse({
