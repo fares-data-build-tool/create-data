@@ -60,7 +60,7 @@ describe('Outbound Matching API', () => {
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/inboundMatching' });
     });
 
-    it('correctly generates matching error info, updates the MATCHING_ATTRIBUTE and then redirects to outboundMatching page when there are unassigned fare stages', () => {
+    it('correctly generates matching warning info, updates the MATCHING_ATTRIBUTE and then redirects to outboundMatching page when there are unassigned fare stages', () => {
         const mockMatchingError: MatchingWithErrors = {
             warning: true,
             selectedFareStages: expect.any(Object),
