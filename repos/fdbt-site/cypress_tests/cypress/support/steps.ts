@@ -268,7 +268,7 @@ export const completeHybridPages = (
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
 };
 
-export const completePointToPointPeriodPages = (partialMatching: boolean): void => {
+export const completePointToPointPeriodPages = (): void => {
     clickElementById('radio-option-pointToPointPeriod');
     continueButtonClick();
     completeReturnPages(false, false, true);

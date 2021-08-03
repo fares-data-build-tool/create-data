@@ -49,15 +49,7 @@ describe('the period faretype product journey', () => {
     it('completes successfully for point to point period products', () => {
         selectFareType('period', false);
         defineUserTypeAndTimeRestrictions();
-        completePointToPointPeriodPages(false);
-        completeSalesPages();
-        isUuidStringValid();
-    });
-
-    it('completes successfully for point to point period products with partial fare stage matching', () => {
-        selectFareType('period', false);
-        defineUserTypeAndTimeRestrictions();
-        completePointToPointPeriodPages(true);
+        completePointToPointPeriodPages();
         completeSalesPages();
         isUuidStringValid();
     });
