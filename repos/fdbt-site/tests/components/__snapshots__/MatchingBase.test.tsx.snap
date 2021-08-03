@@ -29,7 +29,7 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
   errors={
     Array [
       Object {
-        "errorMessage": "No fare stages have been assigned.",
+        "errorMessage": "No fare stages have been assigned, assign each fare stage to a stop",
         "id": "option-0",
       },
     ]
@@ -46,7 +46,7 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
       errors={
         Array [
           Object {
-            "errorMessage": "No fare stages have been assigned.",
+            "errorMessage": "No fare stages have been assigned, assign each fare stage to a stop",
             "id": "option-0",
           },
         ]
@@ -123,7 +123,7 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
           errors={
             Array [
               Object {
-                "errorMessage": "No fare stages have been assigned.",
+                "errorMessage": "No fare stages have been assigned, assign each fare stage to a stop",
                 "id": "option-0",
               },
             ]
