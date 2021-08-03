@@ -153,21 +153,6 @@ const completeMatchingPage = (): void => {
     submitButtonClick();
 };
 
-const completeMatchingPagePartialMapping = (): void => {
-    submitButtonClick();
-    clickElementById('bypass');
-    for (let i = 0; i < 3; i += 1) {
-        cy.get(`[id=option-${i}]`)
-            .find('option')
-            .then(($elm) => {
-                $elm.get(i + 1).setAttribute('selected', 'selected');
-            })
-            .parent()
-            .trigger('change');
-    }
-    submitButtonClick();
-};
-
 const completePointToPointProductDetail = (): void => {
     getElementById('product-details-name').type('Product Test');
     getElementById('product-details-carnet-quantity').type('5');
@@ -184,17 +169,12 @@ const completePointToPointPeriodProductDetail = (): void => {
     randomlyChooseProductPeriodValidity();
 };
 
-export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean, partialMatching: boolean): void => {
+export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void => {
     completeServicePage();
     selectRandomOptionFromDropDown('direction-journey-pattern');
     continueButtonClick();
     completeFareTrianglePages(csvUpload);
-
-    if (partialMatching) {
-        completeMatchingPagePartialMapping();
-    } else {
-        completeMatchingPage();
-    }
+    completeMatchingPage();
 
     if (isCarnet) {
         completePointToPointProductDetail();
@@ -213,23 +193,14 @@ export const completePointToPointPeriodReturnPages = (csvUpload: boolean): void 
     completeMatchingPage();
 };
 
-export const completeReturnPages = (
-    csvUpload: boolean,
-    isCarnet: boolean,
-    isPeriod: boolean,
-    partialMatching: boolean,
-): void => {
+export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPeriod: boolean): void => {
     completeServicePage();
     selectRandomOptionFromDropDown('outbound-journey');
     selectRandomOptionFromDropDown('inbound-journey');
     continueButtonClick();
     completeFareTrianglePages(csvUpload);
-
-    if (partialMatching) {
-    } else {
-        completeMatchingPage();
-        completeMatchingPage();
-    }
+    completeMatchingPage();
+    completeMatchingPage();
 
     if (isCarnet) {
         completePointToPointProductDetail();
@@ -300,7 +271,7 @@ export const completeHybridPages = (
 export const completePointToPointPeriodPages = (partialMatching: boolean): void => {
     clickElementById('radio-option-pointToPointPeriod');
     continueButtonClick();
-    completeReturnPages(false, false, true, partialMatching);
+    completeReturnPages(false, false, true);
     continueButtonClick();
 };
 

@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../interfaces';
 
-interface ErrorSummary {
+interface WarningSummary {
     errors: ErrorInfo[];
 }
 
-const WarningSummary = ({ errors }: ErrorSummary): null | ReactElement => {
+const WarningSummary = ({ errors }: WarningSummary): null | ReactElement => {
     if (!errors || errors.length === 0) {
         return null;
     }

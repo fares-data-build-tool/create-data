@@ -45,6 +45,37 @@ describe('MatchingBase', () => {
                 const wrapper = shallow(renderResetAndAutoPopulateButtons(mockFn, mockFn, 'bottom'));
                 expect(wrapper).toMatchSnapshot();
             });
+            it('should render with warning', () => {
+                const wrapper = shallow(
+                    <MatchingBase
+                        userFareStages={userFareStages}
+                        stops={zoneStops}
+                        service={service}
+                        error={false}
+                        warning={true}
+                        selectedFareStages={selectedFareStages}
+                        csrfToken=""
+                        {...baseProps}
+                    />,
+                );
+                expect(wrapper).toMatchSnapshot();
+            });
+
+            it('should render with error', () => {
+                const wrapper = shallow(
+                    <MatchingBase
+                        userFareStages={userFareStages}
+                        stops={zoneStops}
+                        service={service}
+                        error={true}
+                        warning={false}
+                        selectedFareStages={selectedFareStages}
+                        csrfToken=""
+                        {...baseProps}
+                    />,
+                );
+                expect(wrapper).toMatchSnapshot();
+            });
         });
     });
 

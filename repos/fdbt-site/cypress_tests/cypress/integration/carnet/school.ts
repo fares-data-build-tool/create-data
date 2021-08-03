@@ -13,7 +13,7 @@ describe('The school carnet fare type product journey', () => {
         selectCarnetFareType('schoolService');
         defineSchoolUserAndTimeRestrictions();
         selectSchoolFareType('single');
-        completeSinglePages(false, true, false);
+        completeSinglePages(false, true);
         completeSalesPages();
         isUuidStringValid();
     });

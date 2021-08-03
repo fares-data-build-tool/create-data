@@ -81,6 +81,28 @@ describe('Outbound Matching API', () => {
         });
     });
 
+    it('correctly generates matching error info, updates the MATCHING_ATTRIBUTE and then redirects to outboundMatching page when there are unassigned fare stages', () => {
+        const mockMatchingError: MatchingWithErrors = {
+            error: true,
+            selectedFareStages: expect.any(Object),
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                option0: '',
+                option1: '',
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        outboundMatching(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingError);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/outboundMatching',
+        });
+    });
+
     it('redirects to outbound matching page if no stops are allocated to fare stages', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {

@@ -11,7 +11,7 @@ describe('The carnet faretype product journey', () => {
     it('completes successfully for single faretype', () => {
         selectCarnetFareType('single');
         defineUserTypeAndTimeRestrictions();
-        completeSinglePages(true, true, false);
+        completeSinglePages(true, true);
         completeSalesPages();
         isUuidStringValid();
     });
@@ -19,7 +19,7 @@ describe('The carnet faretype product journey', () => {
     it('completes successfully for return faretype', () => {
         selectCarnetFareType('return');
         defineUserTypeAndTimeRestrictions();
-        completeReturnPages(true, true, false, false);
+        completeReturnPages(true, true, false);
         completeSalesPages();
         isUuidStringValid();
     });

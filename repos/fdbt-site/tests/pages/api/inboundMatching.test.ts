@@ -59,6 +59,27 @@ describe('Inbound Matching API', () => {
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/returnValidity' });
     });
 
+    it('correctly generates matching warning info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there are unassigned fare stages', () => {
+        const mockMatchingError: MatchingWithErrors = {
+            error: true,
+            selectedFareStages: expect.any(Object),
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                option0: '',
+                option1: '',
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        inboundMatching(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, INBOUND_MATCHING_ATTRIBUTE, mockMatchingError);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/inboundMatching',
+        });
+    });
     it('correctly generates matching error info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there are unassigned fare stages', () => {
         const mockMatchingError: MatchingWithErrors = {
             warning: true,
