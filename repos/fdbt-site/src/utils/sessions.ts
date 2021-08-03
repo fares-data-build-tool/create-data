@@ -46,6 +46,7 @@ import {
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
     USER_ATTRIBUTE,
+    GS_PASSENGER_GROUP_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CompanionInfo,
@@ -108,6 +109,7 @@ import {
     WithErrors,
     PointToPointPeriodProduct,
     ManagePassengerTypeWithErrors,
+    GlobalSettingsGroupInputs,
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -163,6 +165,7 @@ interface SessionAttributeTypes {
     [CARNET_FARE_TYPE_ATTRIBUTE]: boolean;
     [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: GroupPassengerType[];
     [POINT_TO_POINT_PRODUCT_ATTRIBUTE]: PointToPointPeriodProduct | WithErrors<PointToPointPeriodProduct>;
+    [GS_PASSENGER_GROUP_ATTRIBUTE]: GlobalSettingsGroupInputs;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

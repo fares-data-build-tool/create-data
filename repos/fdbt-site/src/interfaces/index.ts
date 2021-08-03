@@ -201,6 +201,11 @@ export interface GlobalSettingsCounts {
     // More to be added
 }
 
+export interface GlobalSettingsGroupInputs {
+    inputs: GroupPassengerType;
+    errors: ErrorInfo[];
+}
+
 export interface PassengerAttributes {
     passengerTypeDisplay: string;
     passengerTypeValue: string;
@@ -378,6 +383,7 @@ export interface PassengerDetails {
 }
 
 export interface CompanionInfo {
+    name?: string;
     passengerType: string;
     minNumber?: string;
     maxNumber: string;
