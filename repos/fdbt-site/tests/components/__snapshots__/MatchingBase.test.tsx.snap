@@ -54,6 +54,7 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
     />
     <WarningSummary
       errors={Array []}
+      label="Check this box if you wish to proceed without assigning all fare stages, then click Continue"
     />
     <div
       className="govuk-form-group govuk-form-group--error"
@@ -1642,6 +1643,7 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
           },
         ]
       }
+      label="Check this box if you wish to proceed without assigning all fare stages, then click Continue"
     />
     <div
       className="govuk-form-group"
