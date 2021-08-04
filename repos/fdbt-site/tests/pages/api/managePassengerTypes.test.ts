@@ -11,6 +11,8 @@ const getSinglePassengerTypeByNameAndNationalOperatorCodeSpy = jest.spyOn(
     aurora,
     'getSinglePassengerTypeByNameAndNationalOperatorCode',
 );
+const updateSinglePassengerTypeSpy = jest.spyOn(aurora, 'updateSinglePassengerType');
+const upsertSinglePassengerTypeSpy = jest.spyOn(aurora, 'upsertSinglePassengerType');
 
 describe('managePassengerTypes', () => {
     const writeHeadMock = jest.fn();
@@ -38,7 +40,7 @@ describe('managePassengerTypes', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
-                id: 1,
+                id: '1',
                 name: '',
                 type: 'Adult',
                 ageRangeMin: '18',
@@ -69,13 +71,15 @@ describe('managePassengerTypes', () => {
         await managePassengerTypes(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, attributeValue);
+
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/managePassengerTypes?id=1' });
     });
 
     it('should error when name is a bunch of spaces and no real characters', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
-                id: 1,
+                id: '1',
                 name: '     ',
                 type: 'Adult',
                 ageRangeMin: '18',
@@ -106,13 +110,15 @@ describe('managePassengerTypes', () => {
         await managePassengerTypes(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, attributeValue);
+
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/managePassengerTypes?id=1' });
     });
 
     it('should error when name is greater than 50 characters', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
-                id: 1,
+                id: '1',
                 name: 'ThisIsSomeVeryLongNameThatIsUnlikleyButYouNeverKnow,Right?',
                 type: 'Adult',
                 ageRangeMin: '18',
@@ -143,13 +149,15 @@ describe('managePassengerTypes', () => {
         await managePassengerTypes(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, attributeValue);
+
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/managePassengerTypes?id=1' });
     });
 
     it('should error when age greater than 150', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
-                id: 1,
+                id: '1',
                 name: 'Adults',
                 type: 'Adult',
                 ageRangeMin: '151',
@@ -184,13 +192,15 @@ describe('managePassengerTypes', () => {
         await managePassengerTypes(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, attributeValue);
+
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/managePassengerTypes?id=1' });
     });
 
     it('should error when minimum age is greater than maximum age', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
-                id: 1,
+                id: '1',
                 name: 'Adults',
                 type: 'Adult',
                 ageRangeMin: '19',
@@ -221,6 +231,8 @@ describe('managePassengerTypes', () => {
         await managePassengerTypes(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, attributeValue);
+
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/managePassengerTypes?id=1' });
     });
 
     it('should error when adding a passenger type with the same name as an existing one', async () => {
@@ -238,7 +250,7 @@ describe('managePassengerTypes', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
-                id: 2,
+                id: '2',
                 name: 'Adults',
                 type: 'Adult',
                 ageRangeMin: '18',
@@ -269,5 +281,77 @@ describe('managePassengerTypes', () => {
         await managePassengerTypes(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, attributeValue);
+
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/managePassengerTypes?id=2' });
+    });
+
+    it('should call updateSessionAttribute with undefined when no errors present & updateSinglePassengerType', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                id: '1',
+                name: 'Adults',
+                type: 'Adult',
+                ageRangeMin: '18',
+                ageRangeMax: '65',
+                proofDocuments: [],
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        const singlePassengerType = {
+            id: 1,
+            name: 'Adults',
+            passengerType: {
+                passengerType: 'Adult',
+                ageRangeMin: '18',
+                ageRangeMax: '65',
+                proofDocuments: [],
+            },
+        };
+
+        const attributeValue = undefined;
+
+        await managePassengerTypes(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, attributeValue);
+
+        expect(updateSinglePassengerTypeSpy).toBeCalledWith(singlePassengerType);
+
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/viewPassengerTypes' });
+    });
+
+    it('should call updateSessionAttribute with undefined & upsertSinglePassengerType when not in Edit mode', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                id: '',
+                name: 'Adults',
+                type: 'Adult',
+                ageRangeMin: '18',
+                ageRangeMax: '65',
+                proofDocuments: [],
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        const passengerType = {
+            passengerType: 'Adult',
+            ageRangeMin: '18',
+            ageRangeMax: '65',
+            proofDocuments: [],
+        };
+
+        const attributeValue = undefined;
+
+        await managePassengerTypes(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, attributeValue);
+
+        expect(upsertSinglePassengerTypeSpy).toBeCalledWith(undefined, passengerType, 'Adults');
+
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/viewPassengerTypes' });
     });
 });
