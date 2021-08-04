@@ -157,8 +157,7 @@ const IndividualPassengerTypes = ({
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
-                                    {singlePassengerType.passengerType.proofDocuments &&
-                                    singlePassengerType.passengerType.proofDocuments[0] !== null
+                                    {singlePassengerType.passengerType.proofDocuments
                                         ? getProofOfDocumentsString(singlePassengerType.passengerType.proofDocuments)
                                         : 'N/A'}
                                 </p>
@@ -270,6 +269,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 };
 
 const getProofOfDocumentsString = (documents: string[]) => {
+    // console.log(`documents is: ${documents}`);
     let proofOfDocumentsString = documents.map((document) => sentenceCaseString(document)).join(', ');
 
     proofOfDocumentsString =

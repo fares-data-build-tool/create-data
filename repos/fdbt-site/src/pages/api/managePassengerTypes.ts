@@ -10,9 +10,9 @@ import {
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from './apiUtils/index';
 import {
-    getSinglePassengerTypeByNameAndNationalOperatorCode,
+    getSinglePassengerTypeByNameAndNocCode,
+    insertSinglePassengerType,
     updateSinglePassengerType,
-    upsertSinglePassengerType,
 } from '../../data/auroradb';
 import { getAndValidateNoc } from './apiUtils/index';
 import { removeExcessWhiteSpace, checkIntegerIsValid } from './apiUtils/validator';
@@ -42,10 +42,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
+        // console.log('single passenger type is:');
+        // console.log(singlePassengerType);
+
         if (isEditMode) {
             await updateSinglePassengerType(singlePassengerType);
         } else {
-            await upsertSinglePassengerType(
+            await insertSinglePassengerType(
                 nationalOperatorCode,
                 singlePassengerType.passengerType,
                 singlePassengerType.name,
@@ -65,12 +68,17 @@ const formatRequestBody = async (
     nationalOperatorCode: string,
 ): Promise<[boolean, SinglePassengerType, ErrorInfo[]]> => {
     const errors: ErrorInfo[] = [];
-    const id = Number(req.body.id);
+    const id = req.body.id && Number(req.body.id);
     const name = req.body.name;
     const type = req.body.type;
     const ageRangeMin = req.body.ageRangeMin;
     const ageRangeMax = req.body.ageRangeMax;
-    const proofDocuments = !isArray(req.body.proofDocuments) ? [req.body.proofDocuments] : req.body.proofDocuments;
+    // console.log(`proof documents is: ${req.body.proofDocuments}`);
+    const proofDocuments = isArray(req.body.proofDocuments)
+        ? req.body.proofDocuments
+        : req.body.proofDocuments
+        ? [req.body.proofDocuments]
+        : undefined;
 
     if (typeof name !== 'string' || typeof ageRangeMin !== 'string' || typeof ageRangeMax !== 'string') {
         throw Error('one of the parameters is not a string!');
@@ -80,13 +88,7 @@ const formatRequestBody = async (
         errors.push({ id: 'type', errorMessage: 'You must select a passenger type' });
     }
 
-    let isInEditMode = false;
-
-    const idIsANumber = Number.isInteger(id);
-
-    if (idIsANumber && id !== 0) {
-        isInEditMode = true;
-    }
+    const isInEditMode = id && Number.isInteger(id);
 
     const trimmedName = removeExcessWhiteSpace(name);
 
@@ -125,11 +127,7 @@ const formatRequestBody = async (
         errors.push({ id: 'age-range-min', errorMessage: 'Minimum age cannot be greater than maximum age' });
     }
 
-    const singlePassengerType = await getSinglePassengerTypeByNameAndNationalOperatorCode(
-        nationalOperatorCode,
-        trimmedName,
-        false,
-    );
+    const singlePassengerType = await getSinglePassengerTypeByNameAndNocCode(nationalOperatorCode, trimmedName, false);
 
     if (singlePassengerType !== undefined) {
         if (id !== singlePassengerType.id) {

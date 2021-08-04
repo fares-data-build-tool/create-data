@@ -690,8 +690,8 @@ export const updateSinglePassengerType = async (passengerType: SinglePassengerTy
 
         const meta = await executeQuery<ResultSetHeader>(updateQuery, [passengerType.name, contents, passengerType.id]);
 
-        if (meta.affectedRows > 1) {
-            throw Error(`Updated too many rows when updating passenger type ${meta}`);
+        if (meta.affectedRows !== 1) {
+            throw Error(`Did not update a single row: ${meta}`);
         }
     } catch (error) {
         throw new Error(`Could not update passenger type. ${error}`);
@@ -730,7 +730,7 @@ export const getPassengerTypeByNameAndNocCode = async (
     }
 };
 
-export const getSinglePassengerTypeByNameAndNationalOperatorCode = async (
+export const getSinglePassengerTypeByNameAndNocCode = async (
     nationalOperatorCode: string,
     name: string,
     isGroup: boolean,
@@ -795,11 +795,11 @@ export const getPassengerTypeById = async (id: number): Promise<SinglePassengerT
         const data = queryResults[0];
 
         return data
-            ? ({
+            ? {
                   id: data.id,
                   name: data.name,
-                  passengerType: JSON.parse(data.contents),
-              } as SinglePassengerType)
+                  passengerType: JSON.parse(data.contents) as PassengerType,
+              }
             : undefined;
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);

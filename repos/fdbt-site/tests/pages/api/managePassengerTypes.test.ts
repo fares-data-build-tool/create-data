@@ -9,17 +9,13 @@ const getAndValidateNocSpy = jest.spyOn(utils, 'getAndValidateNoc');
 const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
 const getSinglePassengerTypeByNameAndNationalOperatorCodeSpy = jest.spyOn(
     aurora,
-    'getSinglePassengerTypeByNameAndNationalOperatorCode',
+    'getSinglePassengerTypeByNameAndNocCode',
 );
 const updateSinglePassengerTypeSpy = jest.spyOn(aurora, 'updateSinglePassengerType');
-const upsertSinglePassengerTypeSpy = jest.spyOn(aurora, 'upsertSinglePassengerType');
+const insertSinglePassengerTypeSpy = jest.spyOn(aurora, 'insertSinglePassengerType');
 
 describe('managePassengerTypes', () => {
     const writeHeadMock = jest.fn();
-
-    beforeAll(() => {
-        jest.spyOn(aurora, 'getSinglePassengerTypeByNameAndNationalOperatorCode');
-    });
 
     afterEach(jest.resetAllMocks);
 
@@ -350,7 +346,7 @@ describe('managePassengerTypes', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, attributeValue);
 
-        expect(upsertSinglePassengerTypeSpy).toBeCalledWith(undefined, passengerType, 'Adults');
+        expect(insertSinglePassengerTypeSpy).toBeCalledWith(undefined, passengerType, 'Adults');
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/viewPassengerTypes' });
     });

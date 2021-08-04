@@ -5,7 +5,7 @@ import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
 import { isWithErrors } from '../interfaces/typeGuards';
-import { getSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getPassengerTypeById } from '../data/auroradb';
@@ -318,13 +318,18 @@ export const getServerSideProps = async (
 
     const passengerTypeId = Number(ctx.query.id);
 
-    const passengerTypeIdIsANumber = Number.isInteger(passengerTypeId);
+    const isInEditMode = Number.isInteger(passengerTypeId);
 
-    const isInEditMode = passengerTypeIdIsANumber;
+    let sessionObject = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
 
-    const sessionObject = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
+    console.log({ isInEditMode, sessionObject, passengerTypeId });
 
-    if (sessionObject === undefined && passengerTypeIdIsANumber) {
+    if (isInEditMode && sessionObject?.id !== passengerTypeId) {
+        updateSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
+        sessionObject = undefined;
+    }
+
+    if (sessionObject === undefined && isInEditMode) {
         singlePassengerType = await getPassengerTypeById(passengerTypeId);
 
         if (singlePassengerType === undefined) {
