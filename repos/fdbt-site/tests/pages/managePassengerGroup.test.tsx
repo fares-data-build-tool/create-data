@@ -16,6 +16,7 @@ describe('pages', () => {
                     }}
                     passengers={[
                         {
+                            id: 1,
                             name: 'Normal adult',
                             passengerType: {
                                 passengerType: 'adult',
@@ -25,6 +26,7 @@ describe('pages', () => {
                             },
                         },
                         {
+                            id: 2,
                             name: 'Normal child',
                             passengerType: {
                                 passengerType: 'child',
@@ -63,6 +65,7 @@ describe('pages', () => {
                     inputs={{ name: '', maxGroupSize: '4', companions: [] }}
                     passengers={[
                         {
+                            id: 1,
                             name: 'Regular Senior',
                             passengerType: {
                                 passengerType: 'senior',
@@ -72,6 +75,7 @@ describe('pages', () => {
                             },
                         },
                         {
+                            id: 2,
                             name: 'Regular infant',
                             passengerType: {
                                 passengerType: 'infant',

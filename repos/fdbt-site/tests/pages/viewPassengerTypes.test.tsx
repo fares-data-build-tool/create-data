@@ -15,6 +15,7 @@ describe('pages', () => {
 
         it('should render correctly when only individual passenger types', () => {
             const passengerType = {
+                id: 1,
                 name: 'Regular Child',
                 passengerType: {
                     passengerType: 'child',
@@ -66,6 +67,7 @@ describe('pages', () => {
         it('should render correctly when groups and individual passenger types', () => {
             const passengerTypes: SinglePassengerType[] = [
                 {
+                    id: 1,
                     name: 'Regular Child',
                     passengerType: {
                         passengerType: 'child',

@@ -9,7 +9,9 @@ describe('pages', () => {
                 passengerType: {},
             };
 
-            const tree = shallow(<ManagePassengerTypes csrfToken={''} errors={[]} model={model} />);
+            const tree = shallow(
+                <ManagePassengerTypes isInEditMode={false} csrfToken={''} errors={[]} model={model} />,
+            );
 
             expect(tree).toMatchSnapshot();
         });
@@ -23,7 +25,9 @@ describe('pages', () => {
                 passengerType: { ageRangeMin: '15', ageRangeMax: '65' },
             };
 
-            const tree = shallow(<ManagePassengerTypes csrfToken={''} errors={errors} model={model} />);
+            const tree = shallow(
+                <ManagePassengerTypes isInEditMode={false} csrfToken={''} errors={errors} model={model} />,
+            );
 
             expect(tree).toMatchSnapshot();
         });
@@ -42,7 +46,29 @@ describe('pages', () => {
                 },
             };
 
-            const tree = shallow(<ManagePassengerTypes csrfToken={''} errors={errors} model={model} />);
+            const tree = shallow(
+                <ManagePassengerTypes isInEditMode={false} csrfToken={''} errors={errors} model={model} />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render update passenger type button when in edit mode', () => {
+            const model = {
+                errors: [],
+                id: 1,
+                name: 'Regular child',
+                passengerType: {
+                    passengerType: 'child',
+                    ageRangeMin: '4',
+                    ageRangeMax: '15',
+                    proofDocuments: ['studentCard'],
+                },
+            };
+
+            const tree = shallow(
+                <ManagePassengerTypes isInEditMode={false} csrfToken={''} errors={[]} model={model} />,
+            );
 
             expect(tree).toMatchSnapshot();
         });

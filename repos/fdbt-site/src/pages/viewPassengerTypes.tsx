@@ -88,9 +88,7 @@ const NoIndividualPassengerTypes = (): ReactElement => {
     return (
         <div className="govuk-heading-m">
             <h4>Individual</h4>
-            <p className="govuk-body">
-                <em>You currently have no passenger types saved.</em>
-            </p>
+            <p className="govuk-body">You currently have no passenger types saved.</p>
             <a className="govuk-button" data-module="govuk-button" href="/managePassengerTypes">
                 Add a passenger type
             </a>
@@ -121,7 +119,7 @@ const IndividualPassengerTypes = ({
                                         <li className="actions__item">
                                             <a
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                                href="/viewPassengerTypes"
+                                                href={`/managePassengerTypes?id=${singlePassengerType.id}`}
                                             >
                                                 Edit
                                             </a>
@@ -186,12 +184,10 @@ const NoPassengerTypeGroups = ({ passengerTypesExist }: { passengerTypesExist: b
             <h3>Groups</h3>
 
             <div className="govuk-inset-text">
-                <em>Individual passengers must be created before they can be added to a group.</em>
+                Individual passengers must be created before they can be added to a group.
             </div>
 
-            <p className="govuk-body">
-                <em>You currently have no passenger groups saved.</em>
-            </p>
+            <p className="govuk-body">You currently have no passenger groups saved.</p>
 
             {passengerTypesExist ? (
                 <a className="govuk-button" data-module="govuk-button" href="/managePassengerGroup">

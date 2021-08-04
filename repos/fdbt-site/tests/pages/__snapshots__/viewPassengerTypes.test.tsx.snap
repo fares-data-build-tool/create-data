@@ -38,6 +38,7 @@ exports[`pages view passenger types should render correctly when groups and indi
             singlePassengerTypes={
               Array [
                 Object {
+                  "id": 1,
                   "name": "Regular Child",
                   "passengerType": Object {
                     "ageRangeMax": "16",
@@ -181,6 +182,7 @@ exports[`pages view passenger types should render correctly when only individual
             singlePassengerTypes={
               Array [
                 Object {
+                  "id": 1,
                   "name": "Regular Child",
                   "passengerType": Object {
                     "ageRangeMax": "16",

@@ -12,14 +12,12 @@ exports[`Help should render the Help component 1`] = `
   >
     If you are having problems, please contact the Create Fares Data Service via this link:
      
-    <span>
-      <a
-        className="govuk-link govuk-!-font-size-19"
-        href="/contact"
-      >
-        Contact us
-      </a>
-    </span>
+    <a
+      className="govuk-link govuk-!-font-size-19"
+      href="/contact"
+    >
+      Contact us
+    </a>
   </p>
 </div>
 `;
