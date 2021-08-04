@@ -338,9 +338,9 @@ export const getServerSideProps = async (
             if (ctx.res) {
                 redirectToError(
                     ctx.res,
-                    'Something went wrong when editing the passenger type',
+                    `No passenger type for id: ${passengerTypeId}`,
                     'Editing a passenger type',
-                    {} as Error,
+                    new Error(),
                 );
             }
         }
