@@ -1,6 +1,6 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
-import { PASSENGER_TYPE_ATTRIBUTE, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../../constants/attributes';
+import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../../constants/attributes';
 import {
     SinglePassengerType,
     ManagePassengerTypeWithErrors,
@@ -68,10 +68,6 @@ export const formatRequestBody = (req: NextApiRequestWithSession): [SinglePassen
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        console.log('The Request Body is:');
-
-        console.log(req.body);
-
         if (!req.body) {
             throw new Error('Could not extract the relevant data from the request.');
         }
@@ -92,8 +88,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const nationalOperatorCode = getAndValidateNoc(req, res);
-
-        updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, singlePassengerType.passengerType);
 
         updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
