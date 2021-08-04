@@ -658,11 +658,11 @@ export const upsertSinglePassengerType = async (
 
     try {
         const updateQuery = `UPDATE passengerType
-                             SET contents = ?,
-                                 isGroup  = ?
-                             WHERE name = ?
-                               AND nocCode = ?`;
-        const meta = await executeQuery<ResultSetHeader>(updateQuery, [contents, false, name, nocCode]);
+                             SET contents = ?
+                             WHERE name = ? 
+                             AND isGroup  = ?
+                             AND nocCode = ?`;
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [contents, name, false, nocCode]);
         if (meta.affectedRows > 1) {
             throw Error(`Updated too many rows when updating passenger type ${meta}`);
         } else if (meta.affectedRows === 0) {

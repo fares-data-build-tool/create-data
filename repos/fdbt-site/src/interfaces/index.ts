@@ -186,6 +186,11 @@ export interface ServiceListAttributeWithErrors {
     errors: ErrorInfo[];
 }
 
+export interface GlobalSettingsGroupAttribute {
+    inputs: GroupPassengerType;
+    errors: ErrorInfo[];
+}
+
 // Miscellaneous
 
 export interface SettingsOverview {
@@ -199,11 +204,6 @@ export interface GlobalSettingsCounts {
     passengerTypesCount: number;
     timeRestrictionsCount: number;
     // More to be added
-}
-
-export interface GlobalSettingsGroupInputs {
-    inputs: GroupPassengerType;
-    errors: ErrorInfo[];
 }
 
 export interface PassengerAttributes {

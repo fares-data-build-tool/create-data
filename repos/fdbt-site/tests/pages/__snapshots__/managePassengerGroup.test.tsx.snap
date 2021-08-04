@@ -55,7 +55,8 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
       Provide passenger group details
     </h1>
     <div
-      className="govuk-form-group govuk-form-group--error"
+      className="govuk-form-group"
+      id="max-group-size-header"
     >
       <label
         htmlFor="max-group-size"
@@ -160,7 +161,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
               <input
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-0"
-                defaultChecked={true}
+                defaultChecked={false}
                 id="passenger-type-0"
                 name="passengerTypes"
                 type="checkbox"
@@ -198,7 +199,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  defaultValue="5"
+                  defaultValue=""
                   id="minimum-passengers-Regular Senior"
                   name="minimumPassengersRegular Senior"
                 />
@@ -332,7 +333,8 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
       </fieldset>
     </div>
     <div
-      className="govuk-form-group"
+      className="govuk-form-group govuk-form-group--error"
+      id="passenger-group-name"
     >
       <label
         htmlFor="passenger-group-name"
@@ -414,6 +416,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
     </h1>
     <div
       className="govuk-form-group"
+      id="max-group-size-header"
     >
       <label
         htmlFor="max-group-size"
@@ -657,6 +660,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
     </div>
     <div
       className="govuk-form-group"
+      id="passenger-group-name"
     >
       <label
         htmlFor="passenger-group-name"

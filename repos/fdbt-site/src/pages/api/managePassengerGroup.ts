@@ -12,32 +12,30 @@ import { checkIntegerIsValid, removeExcessWhiteSpace } from './apiUtils/validato
 export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerType => {
     const maxGroupSize = removeExcessWhiteSpace(req.body.maxGroupSize);
     const groupName = removeExcessWhiteSpace(req.body.passengerGroupName);
-    const passengerTypes: string[] = !req.body.passengerTypes
+    const passengerTypeNames: string[] = !req.body.passengerTypes
         ? []
         : isArray(req.body.passengerTypes)
         ? req.body.passengerTypes
         : [req.body.passengerTypes];
 
-    const companions: CompanionInfo[] = [];
-    if (passengerTypes.length > 0) {
-        passengerTypes.forEach((passengerType) => {
-            const minNumber = req.body[`minimumPassengers${passengerType}`];
-            const maxNumber = req.body[`maximumPassengers${passengerType}`];
-            const typeOfPassenger = req.body[`${passengerType}-type`];
-            const ageRangeMin = req.body[`${passengerType}-age-range-min`];
-            const ageRangeMax = req.body[`${passengerType}-age-range-max`];
-            const proofDocuments = req.body[`${passengerType}-proof-docs`];
-            companions.push({
-                name: passengerType,
-                passengerType: typeOfPassenger,
-                minNumber,
-                maxNumber,
-                ageRangeMin,
-                ageRangeMax,
-                proofDocuments,
-            });
-        });
-    }
+    const companions: CompanionInfo[] = passengerTypeNames.map((passengerTypeName) => {
+        const minNumber = req.body[`minimumPassengers${passengerTypeName}`];
+        const maxNumber = req.body[`maximumPassengers${passengerTypeName}`];
+        const typeOfPassenger = req.body[`${passengerTypeName}-type`];
+        const ageRangeMin = req.body[`${passengerTypeName}-age-range-min`];
+        const ageRangeMax = req.body[`${passengerTypeName}-age-range-max`];
+        const proofDocuments = req.body[`${passengerTypeName}-proof-docs`];
+
+        return {
+            name: passengerTypeName,
+            passengerType: typeOfPassenger,
+            minNumber,
+            maxNumber,
+            ageRangeMin,
+            ageRangeMax,
+            proofDocuments,
+        };
+    });
 
     return {
         name: groupName,
@@ -57,7 +55,7 @@ export const collectErrors = async (userInput: GroupPassengerType, nocCode: stri
             userInput: userInput.maxGroupSize || '',
         });
     }
-    if (!userInput.companions || userInput.companions.length === 0) {
+    if (!userInput.companions?.length) {
         errors.push({
             errorMessage: 'Select at least one passenger type',
             id: 'passenger-type-0',
@@ -111,20 +109,10 @@ export const collectErrors = async (userInput: GroupPassengerType, nocCode: stri
         });
     }
     const groupNameCheck = await getPassengerTypeByNameAndNocCode(nocCode, userInput.name, true);
-    const passengerTypeNameCheck = await getPassengerTypeByNameAndNocCode(nocCode, userInput.name, false);
 
     if (groupNameCheck) {
         errors.push({
             errorMessage: 'There is already a group with this name. Choose another',
-            id: 'passenger-group-name',
-            userInput: userInput.name,
-        });
-        return errors;
-    }
-
-    if (passengerTypeNameCheck) {
-        errors.push({
-            errorMessage: 'There is already a passenger type with this name. Choose another',
             id: 'passenger-group-name',
             userInput: userInput.name,
         });

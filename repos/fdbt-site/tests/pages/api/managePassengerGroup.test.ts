@@ -16,7 +16,7 @@ afterEach(() => {
 describe('managePassengerGroup', () => {
     it('should return 302 redirect to /managePassengerGroup when there have been no user inputs and update session with errors', async () => {
         const writeHeadMock = jest.fn();
-        getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce(undefined).mockResolvedValueOnce(undefined);
+        getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce(undefined);
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -58,7 +58,7 @@ describe('managePassengerGroup', () => {
 
     it('should return 302 redirect to /managePassengerGroup when there have been incorrect user inputs and update session with errors and inputs', async () => {
         const writeHeadMock = jest.fn();
-        getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce(undefined).mockResolvedValueOnce(undefined);
+        getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce(undefined);
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -137,11 +137,9 @@ describe('managePassengerGroup', () => {
 
     it('should return 302 redirect to /managePassengerGroup when there have been correct user inputs but there is a group with the same name', async () => {
         const writeHeadMock = jest.fn();
-        getPassengerTypeByNameAndNocCodeSpy
-            .mockResolvedValueOnce({
-                passengerType: 'group',
-            })
-            .mockResolvedValueOnce(undefined);
+        getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce({
+            passengerType: 'group',
+        });
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -205,7 +203,7 @@ describe('managePassengerGroup', () => {
 
     it('should return 302 redirect to /viewPassengerTypes when there have been correct user inputs and the group is saved to the db ', async () => {
         const writeHeadMock = jest.fn();
-        getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce(undefined).mockResolvedValueOnce(undefined);
+        getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce(undefined);
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -223,7 +221,7 @@ describe('managePassengerGroup', () => {
                 ['Regular infant-age-range-min']: '1',
                 ['Regular infant-age-range-max']: '3',
                 ['Regular infant-proof-docs']: [],
-                passengerGroupName: 'My duplicate group',
+                passengerGroupName: 'My group',
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -257,9 +255,9 @@ describe('managePassengerGroup', () => {
                     },
                 ],
                 maxGroupSize: '7',
-                name: 'My duplicate group',
+                name: 'My group',
             },
-            'My duplicate group',
+            'My group',
         );
     });
 });

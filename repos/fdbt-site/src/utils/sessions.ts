@@ -109,7 +109,7 @@ import {
     WithErrors,
     PointToPointPeriodProduct,
     ManagePassengerTypeWithErrors,
-    GlobalSettingsGroupInputs,
+    GlobalSettingsGroupAttribute,
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -165,7 +165,7 @@ interface SessionAttributeTypes {
     [CARNET_FARE_TYPE_ATTRIBUTE]: boolean;
     [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: GroupPassengerType[];
     [POINT_TO_POINT_PRODUCT_ATTRIBUTE]: PointToPointPeriodProduct | WithErrors<PointToPointPeriodProduct>;
-    [GS_PASSENGER_GROUP_ATTRIBUTE]: GlobalSettingsGroupInputs;
+    [GS_PASSENGER_GROUP_ATTRIBUTE]: GlobalSettingsGroupAttribute;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

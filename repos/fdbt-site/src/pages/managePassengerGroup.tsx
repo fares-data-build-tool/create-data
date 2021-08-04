@@ -20,6 +20,17 @@ interface ManagePassengerGroupProps {
     inputs: GroupPassengerType;
 }
 
+const hasError = (errors: ErrorInfo[], name: string) => {
+    if (errors.filter((e) => e.id === name).length > 0) {
+        return ' govuk-form-group--error';
+    }
+    return '';
+};
+
+const findCorrectPassengerType = (inputs: GroupPassengerType, passengerName: string) => {
+    return inputs.companions.find((companion) => companion.name === passengerName);
+};
+
 const ManagePassengerGroup = ({
     passengers,
     csrfToken,
@@ -34,7 +45,7 @@ const ManagePassengerGroup = ({
                     <h1 className="govuk-heading-xl" id="group-page-heading">
                         Provide passenger group details
                     </h1>
-                    <div className={`govuk-form-group${errors.length > 0 ? ' govuk-form-group--error' : ''}`}>
+                    <div className={`govuk-form-group${hasError(errors, 'max-group-size')}`} id="max-group-size-header">
                         <label htmlFor="max-group-size">
                             <h1 className="govuk-heading-m" id="group-size-heading">
                                 How many passengers can use this ticket at one time?
@@ -51,11 +62,7 @@ const ManagePassengerGroup = ({
                                 id="max-group-size"
                                 name="maxGroupSize"
                                 type="text"
-                                defaultValue={
-                                    errors.find((error) => error.id === `max-group-size`)?.userInput ||
-                                    inputs.maxGroupSize ||
-                                    ''
-                                }
+                                defaultValue={inputs.maxGroupSize || ''}
                             />
                         </FormElementWrapper>
                     </div>
@@ -89,16 +96,7 @@ const ManagePassengerGroup = ({
                                                         value={passenger.name}
                                                         data-aria-controls={`conditional-input-${index}`}
                                                         defaultChecked={
-                                                            errors.find(
-                                                                (error) =>
-                                                                    error.id === `minimum-passengers-${passenger.name}`,
-                                                            )
-                                                                ? true
-                                                                : inputs.companions.find(
-                                                                      (companion) => companion.name === passenger.name,
-                                                                  )
-                                                                ? true
-                                                                : false
+                                                            !!findCorrectPassengerType(inputs, passenger.name)
                                                         }
                                                     />
                                                     <label
@@ -129,15 +127,8 @@ const ManagePassengerGroup = ({
                                                             id={`minimum-passengers-${passenger.name}`}
                                                             name={`minimumPassengers${passenger.name}`}
                                                             defaultValue={
-                                                                errors.find(
-                                                                    (error) =>
-                                                                        error.id ===
-                                                                        `minimum-passengers-${passenger.name}`,
-                                                                )?.userInput ||
-                                                                inputs.companions.find(
-                                                                    (companion) => companion.name === passenger.name,
-                                                                )?.minNumber ||
-                                                                ''
+                                                                findCorrectPassengerType(inputs, passenger.name)
+                                                                    ?.minNumber || ''
                                                             }
                                                         />
                                                     </div>
@@ -153,15 +144,8 @@ const ManagePassengerGroup = ({
                                                             id={`maximum-passengers-${passenger.name}`}
                                                             name={`maximumPassengers${passenger.name}`}
                                                             defaultValue={
-                                                                errors.find(
-                                                                    (error) =>
-                                                                        error.id ===
-                                                                        `maximum-passengers-${passenger.name}`,
-                                                                )?.userInput ||
-                                                                inputs.companions.find(
-                                                                    (companion) => companion.name === passenger.name,
-                                                                )?.maxNumber ||
-                                                                ''
+                                                                findCorrectPassengerType(inputs, passenger.name)
+                                                                    ?.maxNumber || ''
                                                             }
                                                         />
                                                     </div>
@@ -193,7 +177,10 @@ const ManagePassengerGroup = ({
                             </FormElementWrapper>
                         </fieldset>
                     </div>
-                    <div className="govuk-form-group">
+                    <div
+                        className={`govuk-form-group${hasError(errors, 'passenger-group-name')}`}
+                        id="passenger-group-name"
+                    >
                         <label htmlFor="passenger-group-name">
                             <h1 className="govuk-heading-m" id="passenger-group-name-heading">
                                 Provide a name for your group
@@ -214,10 +201,7 @@ const ManagePassengerGroup = ({
                                 name="passengerGroupName"
                                 type="text"
                                 maxLength={50}
-                                defaultValue={
-                                    errors.find((error) => error.id === 'passenger-group-name')?.userInput ||
-                                    inputs.name
-                                }
+                                defaultValue={inputs.name || ''}
                             />
                         </FormElementWrapper>
                     </div>
