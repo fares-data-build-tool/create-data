@@ -111,7 +111,7 @@ export interface PointToPointPeriodProduct {
 
 export interface PeriodExpiry {
     productValidity: string;
-    productEndTime: string;
+    productEndTime?: string;
 }
 
 export interface FareZone {

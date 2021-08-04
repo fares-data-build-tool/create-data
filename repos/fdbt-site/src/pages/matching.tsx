@@ -13,7 +13,6 @@ import MatchingBase from '../components/MatchingBase';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import { getSessionAttribute } from '../utils/sessions';
-import { MatchingWithErrors, MatchingInfo } from '../interfaces/matchingInterface';
 import { isService, isJourney } from '../interfaces/typeGuards';
 
 const title = 'Matching - Create Fares Data Service';
@@ -28,6 +27,7 @@ interface MatchingProps {
     stops: Stop[];
     service: BasicService;
     error: boolean;
+    warning: boolean;
     selectedFareStages: string[][];
     csrfToken: string;
 }
@@ -37,6 +37,7 @@ const Matching = ({
     stops,
     service,
     error,
+    warning,
     selectedFareStages,
     csrfToken,
 }: MatchingProps): ReactElement => (
@@ -45,6 +46,7 @@ const Matching = ({
         stops={stops}
         service={service}
         error={error}
+        warning={warning}
         selectedFareStages={selectedFareStages}
         heading={heading}
         title={title}
@@ -55,10 +57,6 @@ const Matching = ({
         csrfToken={csrfToken}
     />
 );
-
-export const isMatchingWithErrors = (
-    matchingAttribute: MatchingInfo | MatchingWithErrors,
-): matchingAttribute is MatchingWithErrors => (matchingAttribute as MatchingWithErrors)?.error;
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const csrfToken = getCsrfToken(ctx);
@@ -108,9 +106,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 serviceDescription: service.serviceDescription,
                 lineId: service.lineId,
             },
-            error: matchingAttribute && isMatchingWithErrors(matchingAttribute) ? matchingAttribute.error : false,
+            error: (matchingAttribute && 'error' in matchingAttribute && matchingAttribute.error) ?? false,
+            warning: (matchingAttribute && 'warning' in matchingAttribute && matchingAttribute.warning) ?? false,
             selectedFareStages:
-                matchingAttribute && isMatchingWithErrors(matchingAttribute)
+                matchingAttribute && ('error' in matchingAttribute || 'warning' in matchingAttribute)
                     ? matchingAttribute.selectedFareStages
                     : [],
             csrfToken,

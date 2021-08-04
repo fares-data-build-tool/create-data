@@ -1,4 +1,6 @@
+import { ExpiryUnit } from '../../../shared/matchingJsonTypes';
 import { MULTIPLE_PRODUCT_ATTRIBUTE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../../../src/constants/attributes';
+import { MultiProduct } from '../../../src/interfaces';
 import selectSalesOfferPackages, { sanitiseReqBody } from '../../../src/pages/api/selectSalesOfferPackage';
 import * as session from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -83,24 +85,24 @@ describe('selectSalesOfferPackage', () => {
                             productName: 'Weekly Ticket',
                             productPrice: '50',
                             productDuration: '5',
-                            productDurationUnits: 'week',
+                            productDurationUnits: ExpiryUnit.WEEK,
                             productValidity: '24hr',
                         },
                         {
                             productName: 'Day Ticket',
                             productPrice: '2.50',
                             productDuration: '1',
-                            productDurationUnits: 'year',
+                            productDurationUnits: ExpiryUnit.YEAR,
                             productValidity: '24hr',
                         },
                         {
                             productName: 'Monthly Ticket',
                             productPrice: '200',
                             productDuration: '28',
-                            productDurationUnits: 'month',
+                            productDurationUnits: ExpiryUnit.MONTH,
                             productValidity: 'endOfCalendarDay',
                         },
-                    ],
+                    ] as MultiProduct[],
                 },
             },
         });

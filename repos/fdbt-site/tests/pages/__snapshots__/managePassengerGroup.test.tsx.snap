@@ -106,7 +106,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
       </FormElementWrapper>
     </div>
     <div
-      className="govuk-form-group govuk-form-group--error"
+      className="govuk-form-group"
     >
       <fieldset
         aria-describedby="passenger-type-page-heading"
@@ -126,7 +126,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
           className="govuk-hint"
           id="passenger-type-hint"
         >
-          Select the passenger types included in your group ticket. Select the ‘Anyone’ option if your group contains more than two of the below choices.
+          Select the passenger types included in your group ticket.
         </span>
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
@@ -449,7 +449,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
       </FormElementWrapper>
     </div>
     <div
-      className="govuk-form-group "
+      className="govuk-form-group"
     >
       <fieldset
         aria-describedby="passenger-type-page-heading"
@@ -469,7 +469,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
           className="govuk-hint"
           id="passenger-type-hint"
         >
-          Select the passenger types included in your group ticket. Select the ‘Anyone’ option if your group contains more than two of the below choices.
+          Select the passenger types included in your group ticket.
         </span>
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"

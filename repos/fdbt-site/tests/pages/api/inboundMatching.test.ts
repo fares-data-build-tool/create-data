@@ -66,6 +66,27 @@ describe('Inbound Matching API', () => {
         };
         const { req, res } = getMockRequestAndResponse({
             body: {
+                option0: '',
+                option1: '',
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        inboundMatching(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, INBOUND_MATCHING_ATTRIBUTE, mockMatchingError);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/inboundMatching',
+        });
+    });
+    it('correctly generates matching warning info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there are unassigned fare stages', () => {
+        const mockMatchingError: MatchingWithErrors = {
+            warning: true,
+            selectedFareStages: expect.any(Object),
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: {
                 ...selectedOptions,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithUnassignedStages),

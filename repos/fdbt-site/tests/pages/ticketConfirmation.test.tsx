@@ -1,6 +1,7 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import {
+    CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
     JOURNEY_ATTRIBUTE,
@@ -10,7 +11,6 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
-    CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
@@ -315,6 +315,7 @@ describe('pages', () => {
             it('should build confirmation elements for a flat fare ticket', () => {
                 const ctx = getMockContext({
                     session: {
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: undefined,
                         [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                             products: [
                                 {
@@ -334,6 +335,30 @@ describe('pages', () => {
                 const confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
+            });
+
+            it('should build confirmation elements for a flat fare geo zone ticket', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'geoZone' },
+                        [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                            products: [
+                                {
+                                    productName: 'Some Product',
+                                    productPrice: '12',
+                                },
+                            ],
+                        },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
+                const confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
+                expect(confirmationElements).toContainEqual(confirmationElementStructure);
+                expect(confirmationElements).toHaveLength(2);
             });
         });
 
