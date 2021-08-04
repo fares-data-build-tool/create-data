@@ -1,76 +1,81 @@
+import { TicketType } from '../../../../shared/matchingJsonTypes';
 import {
-    isTermTime,
-    getSingleTicketJson,
-    getReturnTicketJson,
-    getGeoZoneTicketJson,
-    getMultipleServicesTicketJson,
-    getFlatFareTicketJson,
-    getProductsAndSalesOfferPackages,
-    getSchemeOperatorTicketJson,
-    getPointToPointPeriodJson,
-    getBaseTicketAttributes,
-    adjustSchemeOperatorJson,
-} from '../../../../src/pages/api/apiUtils/userData';
-import {
-    TERM_TIME_ATTRIBUTE,
-    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
-    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
-    SALES_OFFER_PACKAGES_ATTRIBUTE,
-    MATCHING_ATTRIBUTE,
-    INBOUND_MATCHING_ATTRIBUTE,
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
-    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
-    MULTIPLE_PRODUCT_ATTRIBUTE,
-    PRODUCT_DATE_ATTRIBUTE,
-    TICKET_REPRESENTATION_ATTRIBUTE,
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+    INBOUND_MATCHING_ATTRIBUTE,
+    MATCHING_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
-    SCHOOL_FARE_TYPE_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
     POINT_TO_POINT_PRODUCT_ATTRIBUTE,
+    PRODUCT_DATE_ATTRIBUTE,
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    TERM_TIME_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
 } from '../../../../src/constants/attributes';
+import * as auroradb from '../../../../src/data/auroradb';
+import * as s3 from '../../../../src/data/s3';
+import {
+    CarnetExpiryUnit,
+    ExpiryUnit,
+    MultipleProductAttribute,
+    MultiProduct,
+    Operator,
+    PeriodExpiry,
+    TicketPeriodWithInput,
+} from '../../../../src/interfaces';
+import {
+    adjustSchemeOperatorJson,
+    getBaseTicketAttributes,
+    getGeoZoneTicketJson,
+    getMultipleServicesTicketJson,
+    getPointToPointPeriodJson,
+    getProductsAndSalesOfferPackages,
+    getReturnTicketJson,
+    getSchemeOperatorTicketJson,
+    getSingleTicketJson,
+    isTermTime,
+} from '../../../../src/pages/api/apiUtils/userData';
 import {
     defaultSalesOfferPackageOne,
+    defaultSalesOfferPackageThree,
     defaultSalesOfferPackageTwo,
 } from '../../../../src/pages/selectSalesOfferPackage';
 import {
-    getMockRequestAndResponse,
-    expectedSingleTicket,
-    expectedPointToPointPeriodTicket,
-    userFareStages,
-    service,
-    mockMatchingFaresZones,
-    expectedNonCircularReturnTicket,
-    mockOutboundMatchingFaresZones,
-    expectedPeriodGeoZoneTicketWithMultipleProducts,
-    zoneStops,
-    expectedFlatFareTicket,
-    expectedCircularReturnTicket,
-    expectedProductDetailsArray,
-    expectedPeriodMultipleServicesTicketWithMultipleProducts,
-    mockTimeRestriction,
-    expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
-    expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
-    mockSchemOpIdToken,
-    expectedSchemeOperatorTicket,
-    mockFullTimeRestrictions,
-    expectedSchemeOperatorTicketAfterGeoZoneAdjustment,
-    expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
-    expectedCarnetSingleTicket,
-    expectedCarnetReturnTicket,
     expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts,
+    expectedCarnetReturnTicket,
+    expectedCarnetSingleTicket,
+    expectedCircularReturnTicket,
+    expectedFlatFareGeoZoneTicket,
+    expectedFlatFareTicket,
+    expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
+    expectedNonCircularReturnTicket,
+    expectedPeriodGeoZoneTicketWithMultipleProducts,
+    expectedPeriodMultipleServicesTicketWithMultipleProducts,
+    expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
+    expectedPointToPointPeriodTicket,
+    expectedProductDetailsArray,
+    expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
+    expectedSchemeOperatorTicket,
+    expectedSchemeOperatorTicketAfterGeoZoneAdjustment,
+    expectedSingleTicket,
+    getMockRequestAndResponse,
+    mockFullTimeRestrictionAttribute,
+    mockMatchingFaresZones,
+    mockOutboundMatchingFaresZones,
+    mockSchemOpIdToken,
+    mockTimeRestriction,
+    service,
+    userFareStages,
+    zoneStops,
 } from '../../../testData/mockData';
-import * as s3 from '../../../../src/data/s3';
-import * as auroradb from '../../../../src/data/auroradb';
-import {
-    Operator,
-    MultipleProductAttribute,
-    ExpiryUnit,
-    PeriodExpiry,
-    CarnetExpiryUnit,
-} from '../../../../src/interfaces';
 
 describe('userData', () => {
     describe('isTermTime', () => {
@@ -149,8 +154,8 @@ describe('userData', () => {
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
-                    },
-                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    } as TicketPeriodWithInput,
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [TERM_TIME_ATTRIBUTE]: { termTime: true },
                 },
             });
@@ -182,7 +187,7 @@ describe('userData', () => {
                             endDateYear: '2020',
                         },
                     },
-                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [TERM_TIME_ATTRIBUTE]: { termTime: true },
                     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
                 },
@@ -213,14 +218,14 @@ describe('userData', () => {
                             endDateYear: '2020',
                         },
                     },
-                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [TERM_TIME_ATTRIBUTE]: { termTime: true },
                     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: {
                         productName: 'Test Product',
                         carnetDetails: {
                             quantity: '5',
                             expiryTime: '10',
-                            expiryUnit: ExpiryUnit.DAY,
+                            expiryUnit: CarnetExpiryUnit.DAY,
                         },
                     },
                 },
@@ -257,7 +262,7 @@ describe('userData', () => {
                             endDateYear: '2020',
                         },
                     },
-                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
                 },
             });
@@ -288,7 +293,7 @@ describe('userData', () => {
                             endDateYear: '2020',
                         },
                     },
-                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
                 },
             });
@@ -322,7 +327,7 @@ describe('userData', () => {
                             endDateYear: '2020',
                         },
                     },
-                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: {
                         productName: 'Test Return Product',
                         carnetDetails: {
@@ -369,12 +374,12 @@ describe('userData', () => {
                             endDateYear: '2020',
                         },
                     },
-                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
                     [POINT_TO_POINT_PRODUCT_ATTRIBUTE]: {
                         productName: 'My product',
                         productDuration: '7',
-                        productDurationUnits: 'week',
+                        productDurationUnits: ExpiryUnit.WEEK,
                     },
                     [PERIOD_EXPIRY_ATTRIBUTE]: {
                         productValidity: '24hr',
@@ -424,7 +429,7 @@ describe('userData', () => {
                 cookieValues: {},
                 session: {
                     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
-                    [FARE_TYPE_ATTRIBUTE]: { fareType },
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: fareType as TicketType },
                     [FARE_ZONE_ATTRIBUTE]: 'Green Lane Shops',
                     [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                         products: [
@@ -432,25 +437,28 @@ describe('userData', () => {
                                 productName: 'Weekly Ticket',
                                 productPrice: '50',
                                 productDuration: '5',
-                                productDurationUnits: 'week',
-                                salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                                productDurationUnits: ExpiryUnit.WEEK,
                                 carnetDetails: undefined,
+                                productPriceId: '',
+                                productNameId: '',
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
-                                productDurationUnits: 'year',
-                                salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                                productDurationUnits: ExpiryUnit.YEAR,
                                 carnetDetails: undefined,
+                                productPriceId: '',
+                                productNameId: '',
                             },
                             {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
-                                productDurationUnits: 'month',
-                                salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                                productDurationUnits: ExpiryUnit.MONTH,
                                 carnetDetails: undefined,
+                                productPriceId: '',
+                                productNameId: '',
                             },
                         ],
                     },
@@ -487,7 +495,7 @@ describe('userData', () => {
                     ...(fareType === 'multiOperator' && {
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
                     }),
-                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                 },
             });
             batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
@@ -510,19 +518,25 @@ describe('userData', () => {
                                 productName: 'Weekly Ticket',
                                 productPrice: '50',
                                 productDuration: '5',
-                                productDurationUnits: 'week',
+                                productDurationUnits: ExpiryUnit.WEEK,
+                                productPriceId: '',
+                                productNameId: '',
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
-                                productDurationUnits: 'year',
+                                productDurationUnits: ExpiryUnit.YEAR,
+                                productPriceId: '',
+                                productNameId: '',
                             },
                             {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
-                                productDurationUnits: 'month',
+                                productDurationUnits: ExpiryUnit.MONTH,
+                                productPriceId: '',
+                                productNameId: '',
                             },
                         ],
                     },
@@ -555,7 +569,7 @@ describe('userData', () => {
                             endDateYear: '2020',
                         },
                     },
-                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                 },
             });
             const result = getMultipleServicesTicketJson(req, res);
@@ -575,37 +589,43 @@ describe('userData', () => {
                                 productName: 'Weekly Ticket',
                                 productPrice: '50',
                                 productDuration: '5',
-                                productDurationUnits: 'week',
+                                productDurationUnits: ExpiryUnit.WEEK,
                                 productValidity: '24hr',
                                 carnetDetails: {
                                     quantity: '10',
                                     expiryTime: '15',
                                     expiryUnit: CarnetExpiryUnit.WEEK,
                                 },
+                                productPriceId: '',
+                                productNameId: '',
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
-                                productDurationUnits: 'year',
+                                productDurationUnits: ExpiryUnit.YEAR,
                                 productValidity: '24hr',
                                 carnetDetails: {
                                     quantity: '15',
                                     expiryTime: '10',
                                     expiryUnit: CarnetExpiryUnit.MONTH,
                                 },
+                                productPriceId: '',
+                                productNameId: '',
                             },
                             {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
-                                productDurationUnits: 'month',
+                                productDurationUnits: ExpiryUnit.MONTH,
                                 productValidity: 'endOfCalendarDay',
                                 carnetDetails: {
                                     quantity: '30',
                                     expiryTime: '10',
                                     expiryUnit: CarnetExpiryUnit.YEAR,
                                 },
+                                productPriceId: '',
+                                productNameId: '',
                             },
                         ],
                     },
@@ -635,7 +655,7 @@ describe('userData', () => {
                             endDateYear: '2020',
                         },
                     },
-                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [PERIOD_EXPIRY_ATTRIBUTE]: {
                         productValidity: 'endOfCalendarDay',
                     },
@@ -658,7 +678,7 @@ describe('userData', () => {
                                 productName: 'Weekly Ticket',
                                 productPrice: '50',
                                 productDuration: '5',
-                                productDurationUnits: 'week',
+                                productDurationUnits: ExpiryUnit.WEEK,
                             },
                             {
                                 productName: 'Day Ticket',
@@ -670,9 +690,9 @@ describe('userData', () => {
                                 productName: 'Monthly Ticket',
                                 productPrice: '200',
                                 productDuration: '28',
-                                productDurationUnits: 'month',
+                                productDurationUnits: ExpiryUnit.MONTH,
                             },
-                        ],
+                        ] as MultiProduct[],
                     },
                     [PERIOD_EXPIRY_ATTRIBUTE]: { productValidity: 'endOfServiceDay', productEndTime: '1900' },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
@@ -781,7 +801,7 @@ describe('userData', () => {
                             ],
                         },
                     ],
-                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                 },
             });
             const result = getMultipleServicesTicketJson(req, res);
@@ -789,8 +809,8 @@ describe('userData', () => {
         });
     });
 
-    describe('getFlatFareTicketJson', () => {
-        it('should return a FlatFareTicket object', () => {
+    describe('Flat fares', () => {
+        it('should return a FlatFareTicket object for multiple services', () => {
             const { req, res } = getMockRequestAndResponse({
                 session: {
                     [MULTIPLE_PRODUCT_ATTRIBUTE]: {
@@ -799,7 +819,7 @@ describe('userData', () => {
                                 productName: 'Weekly Rider',
                                 productPrice: '7',
                             },
-                        ],
+                        ] as MultiProduct[],
                     },
                     [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
                     [PRODUCT_DATE_ATTRIBUTE]: {
@@ -822,8 +842,51 @@ describe('userData', () => {
                     ],
                 },
             });
-            const result = getFlatFareTicketJson(req, res);
+            const result = getMultipleServicesTicketJson(req, res);
             expect(result).toEqual(expectedFlatFareTicket);
+        });
+
+        it('should return a FlatFareTicket object for geo zone', async () => {
+            const atcoCodes: string[] = ['13003305E', '13003622B', '13003655B'];
+
+            jest.spyOn(s3, 'getCsvZoneUploadData').mockImplementation(() => Promise.resolve(atcoCodes));
+            jest.spyOn(auroradb, 'batchGetStopsByAtcoCode').mockImplementation(() => Promise.resolve(zoneStops));
+
+            const { req, res } = getMockRequestAndResponse({
+                session: {
+                    [SERVICE_LIST_ATTRIBUTE]: undefined,
+                    [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                        products: [
+                            {
+                                productName: 'Flat fare with geo zone',
+                                productPrice: '7',
+                            },
+                        ] as MultiProduct[],
+                    },
+                    [FARE_ZONE_ATTRIBUTE]: 'my flat fare zone',
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        startDate: '2020-12-17T09:30:46.0Z',
+                        endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
+                    },
+                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+                        {
+                            productName: 'Flat fare with geo zone',
+                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageThree],
+                        },
+                    ],
+                },
+            });
+            const result = await getGeoZoneTicketJson(req, res);
+            expect(result).toEqual(expectedFlatFareGeoZoneTicket);
         });
     });
 
@@ -877,17 +940,15 @@ describe('userData', () => {
                                 productName: 'Weekly Ticket',
                                 productPrice: '50',
                                 productDuration: '5',
-                                productDurationUnits: 'week',
+                                productDurationUnits: ExpiryUnit.WEEK,
                                 productValidity: '24hr',
-                                salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
-                                productDurationUnits: 'month',
+                                productDurationUnits: ExpiryUnit.MONTH,
                                 productValidity: '24hr',
-                                salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                             },
                             {
                                 productName: 'Monthly Ticket',
@@ -895,9 +956,8 @@ describe('userData', () => {
                                 productDuration: '28',
                                 productDurationUnits: 'year',
                                 productValidity: 'endOfCalendarDay',
-                                salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                             },
-                        ],
+                        ] as MultiProduct[],
                     },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
@@ -1025,13 +1085,13 @@ describe('userData', () => {
                                 productName: 'Weekly Ticket',
                                 productPrice: '50',
                                 productDuration: '5',
-                                productDurationUnits: 'week',
+                                productDurationUnits: ExpiryUnit.WEEK,
                             },
                             {
                                 productName: 'Day Ticket',
                                 productPrice: '2.50',
                                 productDuration: '1',
-                                productDurationUnits: 'month',
+                                productDurationUnits: ExpiryUnit.MONTH,
                             },
                             {
                                 productName: 'Monthly Ticket',
@@ -1039,7 +1099,7 @@ describe('userData', () => {
                                 productDuration: '28',
                                 productDurationUnits: 'year',
                             },
-                        ],
+                        ] as MultiProduct[],
                     },
                     [PERIOD_EXPIRY_ATTRIBUTE]: { productValidity: 'endOfServiceDay', productEndTime: '1900' },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
@@ -1228,7 +1288,7 @@ describe('userData', () => {
                                 productName: 'product two',
                                 productPrice: '502',
                             },
-                        ],
+                        ] as MultiProduct[],
                     },
                     [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
                         {

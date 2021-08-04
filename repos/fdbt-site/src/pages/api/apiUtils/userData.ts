@@ -33,7 +33,6 @@ import {
     BaseTicket,
     CognitoIdToken,
     FlatFareProductDetails,
-    FlatFareTicket,
     GeoZoneTicket,
     MultiOperatorInfo,
     MultiOperatorMultipleServicesTicket,
@@ -194,8 +193,7 @@ export const getBasePeriodTicketAttributes = (
         isSalesOfferPackageWithErrors(salesOfferPackages) ||
         !salesOfferPackages ||
         !multipleProductAttribute ||
-        !periodExpiryAttributeInfo ||
-        !isPeriodExpiry(periodExpiryAttributeInfo)
+        (periodExpiryAttributeInfo && !isPeriodExpiry(periodExpiryAttributeInfo))
     ) {
         logger.error('Attributes missing / incorrect', {
             operatorAttribute,
@@ -393,44 +391,6 @@ export const getHybridTicketJson = async (
     const geoZone = await getGeoZoneTicketJson(req, res);
     const multipleServices = getMultipleServicesTicketJson(req, res);
     return { ...geoZone, ...multipleServices };
-};
-
-export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): FlatFareTicket => {
-    const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
-
-    const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, 'flat fare');
-
-    const productWithSalesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
-    const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
-    const multipleProductsAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
-
-    if (
-        !operatorAttribute ||
-        !serviceListAttribute ||
-        isServiceListAttributeWithErrors(serviceListAttribute) ||
-        !multipleProductsAttribute ||
-        !productWithSalesOfferPackages ||
-        isSalesOfferPackages(productWithSalesOfferPackages) ||
-        isSalesOfferPackageWithErrors(productWithSalesOfferPackages)
-    ) {
-        throw new Error('Could not create flat fare ticket json. Necessary cookies and session objects not found.');
-    }
-
-    const { selectedServices } = serviceListAttribute;
-
-    const productsAndSops = getProductsAndSalesOfferPackages(
-        productWithSalesOfferPackages,
-        multipleProductsAttribute,
-        undefined,
-    );
-
-    return {
-        ...baseTicketAttributes,
-        operatorName: operatorAttribute?.name || '',
-        products: productsAndSops as FlatFareProductDetails[],
-        selectedServices,
-        termTime: isTermTime(req),
-    };
 };
 
 export const getPointToPointPeriodJson = (

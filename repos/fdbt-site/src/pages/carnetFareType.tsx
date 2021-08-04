@@ -35,7 +35,7 @@ const carnetRadioProps = [
     },
     {
         value: 'flatFare',
-        label: 'Flat fare carnet',
+        label: 'Flat fare/short hop ticket',
         hint: 'A ticket bundle of flat fare journeys',
     },
     {
