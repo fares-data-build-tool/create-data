@@ -60,9 +60,9 @@ describe('Outbound Matching API', () => {
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/inboundMatching' });
     });
 
-    it('correctly generates matching error info, updates the MATCHING_ATTRIBUTE and then redirects to outboundMatching page when there are unassigned fare stages', () => {
+    it('correctly generates matching warning info, updates the MATCHING_ATTRIBUTE and then redirects to outboundMatching page when there are unassigned fare stages', () => {
         const mockMatchingError: MatchingWithErrors = {
-            error: true,
+            warning: true,
             selectedFareStages: expect.any(Object),
         };
         const { req, res } = getMockRequestAndResponse({
@@ -70,6 +70,28 @@ describe('Outbound Matching API', () => {
                 ...selectedOptions,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithUnassignedStages),
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        outboundMatching(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingError);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/outboundMatching',
+        });
+    });
+
+    it('correctly generates matching error info, updates the MATCHING_ATTRIBUTE and then redirects to outboundMatching page when there are unassigned fare stages', () => {
+        const mockMatchingError: MatchingWithErrors = {
+            error: true,
+            selectedFareStages: expect.any(Object),
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                option0: '',
+                option1: '',
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
             mockWriteHeadFn: writeHeadMock,
         });
