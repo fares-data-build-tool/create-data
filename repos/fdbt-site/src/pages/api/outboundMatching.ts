@@ -21,7 +21,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         delete req.body.service;
         delete req.body.userfarestages;
 
-        if (!Object.keys(matchingFareZones).length) {
+        if (!Object.keys(matchingFareZones).find((fareZone) => fareZone !== 'notApplicable')) {
             const selectedStagesList: string[][] = getSelectedStages(req);
             const matchingAttributeError: MatchingWithErrors = {
                 error: true,
