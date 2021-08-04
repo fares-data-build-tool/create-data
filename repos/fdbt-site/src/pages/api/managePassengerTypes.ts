@@ -42,9 +42,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
-        // console.log('single passenger type is:');
-        // console.log(singlePassengerType);
-
         if (isEditMode) {
             await updateSinglePassengerType(singlePassengerType);
         } else {
@@ -73,7 +70,6 @@ const formatRequestBody = async (
     const type = req.body.type;
     const ageRangeMin = req.body.ageRangeMin;
     const ageRangeMax = req.body.ageRangeMax;
-    // console.log(`proof documents is: ${req.body.proofDocuments}`);
     const proofDocuments = isArray(req.body.proofDocuments)
         ? req.body.proofDocuments
         : req.body.proofDocuments

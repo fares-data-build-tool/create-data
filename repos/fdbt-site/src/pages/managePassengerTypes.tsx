@@ -322,8 +322,6 @@ export const getServerSideProps = async (
 
     let sessionObject = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
 
-    console.log({ isInEditMode, sessionObject, passengerTypeId });
-
     if (isInEditMode && sessionObject?.id !== passengerTypeId) {
         updateSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
         sessionObject = undefined;

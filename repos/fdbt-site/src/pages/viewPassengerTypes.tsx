@@ -269,7 +269,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 };
 
 const getProofOfDocumentsString = (documents: string[]) => {
-    // console.log(`documents is: ${documents}`);
     let proofOfDocumentsString = documents.map((document) => sentenceCaseString(document)).join(', ');
 
     proofOfDocumentsString =
