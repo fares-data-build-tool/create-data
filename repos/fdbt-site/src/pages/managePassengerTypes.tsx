@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { ErrorInfo, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { getCsrfToken } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
 import { isWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
@@ -313,7 +313,10 @@ const hasError = (errors: ErrorInfo[], name: string) => {
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: ManagePassengerTypesProps }> => {
+    const nationalOperatorCode = getAndValidateNoc(ctx);
+
     let singlePassengerType: SinglePassengerType | undefined;
+
     const csrfToken = getCsrfToken(ctx);
 
     const passengerTypeId = Number(ctx.query.id);
@@ -328,7 +331,7 @@ export const getServerSideProps = async (
     }
 
     if (sessionObject === undefined && isInEditMode) {
-        singlePassengerType = await getPassengerTypeById(passengerTypeId);
+        singlePassengerType = await getPassengerTypeById(passengerTypeId, nationalOperatorCode);
 
         if (singlePassengerType === undefined) {
             throw Error('could not find passenger type');

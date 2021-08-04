@@ -43,7 +43,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
         if (isEditMode) {
-            await updateSinglePassengerType(singlePassengerType);
+            await updateSinglePassengerType(nationalOperatorCode, singlePassengerType);
         } else {
             await insertSinglePassengerType(
                 nationalOperatorCode,

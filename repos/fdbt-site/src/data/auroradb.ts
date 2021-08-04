@@ -673,7 +673,7 @@ export const upsertSinglePassengerType = async (
     }
 };
 
-export const updateSinglePassengerType = async (passengerType: SinglePassengerType): Promise<void> => {
+export const updateSinglePassengerType = async (noc: string, passengerType: SinglePassengerType): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'updating passenger type for given id',
@@ -686,9 +686,14 @@ export const updateSinglePassengerType = async (passengerType: SinglePassengerTy
     try {
         const updateQuery = `UPDATE passengerType
                              SET name = ?, contents = ?
-                             WHERE id = ?`;
+                             WHERE id = ? AND nocCode = ?`;
 
-        const meta = await executeQuery<ResultSetHeader>(updateQuery, [passengerType.name, contents, passengerType.id]);
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [
+            passengerType.name,
+            contents,
+            passengerType.id,
+            noc,
+        ]);
 
         if (meta.affectedRows !== 1) {
             throw Error(`Did not update a single row: ${meta}`);
@@ -773,7 +778,7 @@ export const getSinglePassengerTypeByNameAndNocCode = async (
     }
 };
 
-export const getPassengerTypeById = async (id: number): Promise<SinglePassengerType | undefined> => {
+export const getPassengerTypeById = async (id: number, noc: string): Promise<SinglePassengerType | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving passenger type for a given id',
@@ -784,9 +789,12 @@ export const getPassengerTypeById = async (id: number): Promise<SinglePassengerT
         const queryInput = `
             SELECT id, name, contents
             FROM passengerType
-            WHERE id = ?`;
+            WHERE id = ? AND nocCode = ?`;
 
-        const queryResults = await executeQuery<{ id: number; name: string; contents: string }[]>(queryInput, [id]);
+        const queryResults = await executeQuery<{ id: number; name: string; contents: string }[]>(queryInput, [
+            id,
+            noc,
+        ]);
 
         if (queryResults.length > 1) {
             throw new Error("Didn't expect more than one passenger type with the same id");

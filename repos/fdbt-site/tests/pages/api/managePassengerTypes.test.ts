@@ -313,7 +313,7 @@ describe('managePassengerTypes', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, attributeValue);
 
-        expect(updateSinglePassengerTypeSpy).toBeCalledWith(singlePassengerType);
+        expect(updateSinglePassengerTypeSpy).toBeCalledWith(undefined, singlePassengerType);
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/viewPassengerTypes' });
     });
