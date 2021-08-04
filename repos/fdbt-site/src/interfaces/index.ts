@@ -186,6 +186,11 @@ export interface ServiceListAttributeWithErrors {
     errors: ErrorInfo[];
 }
 
+export interface GlobalSettingsGroupAttribute {
+    inputs: GroupPassengerType;
+    errors: ErrorInfo[];
+}
+
 // Miscellaneous
 
 export interface SettingsOverview {
@@ -378,6 +383,7 @@ export interface PassengerDetails {
 }
 
 export interface CompanionInfo {
+    name?: string;
     passengerType: string;
     minNumber?: string;
     maxNumber: string;

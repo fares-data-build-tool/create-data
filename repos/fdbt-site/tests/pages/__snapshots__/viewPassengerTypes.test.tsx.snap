@@ -53,6 +53,7 @@ exports[`pages view passenger types should render correctly when groups and indi
             }
           />
           <PassengerTypeGroups
+            deleteActionHandler={[Function]}
             passengerTypeGroups={
               Array [
                 Object {
@@ -76,6 +77,7 @@ exports[`pages view passenger types should render correctly when groups and indi
                 },
               ]
             }
+            passengerTypesExist={true}
           />
           <DeleteConfirmationPopup
             cancelActionHandler={[Function]}
@@ -125,7 +127,9 @@ exports[`pages view passenger types should render correctly when no individual o
             Define age range and required proof documents of your passengers as well as passenger groups
           </p>
           <NoIndividualPassengerTypes />
-          <NoPassengerTypeGroups />
+          <NoPassengerTypeGroups
+            passengerTypesExist={false}
+          />
           <DeleteConfirmationPopup
             cancelActionHandler={[Function]}
             csrfToken=""
@@ -192,7 +196,9 @@ exports[`pages view passenger types should render correctly when only individual
               ]
             }
           />
-          <NoPassengerTypeGroups />
+          <NoPassengerTypeGroups
+            passengerTypesExist={true}
+          />
           <DeleteConfirmationPopup
             cancelActionHandler={[Function]}
             csrfToken=""
@@ -242,6 +248,7 @@ exports[`pages view passenger types should render correctly when only passenger 
           </p>
           <NoIndividualPassengerTypes />
           <PassengerTypeGroups
+            deleteActionHandler={[Function]}
             passengerTypeGroups={
               Array [
                 Object {
@@ -266,6 +273,7 @@ exports[`pages view passenger types should render correctly when only passenger 
                 },
               ]
             }
+            passengerTypesExist={true}
           />
           <DeleteConfirmationPopup
             cancelActionHandler={[Function]}

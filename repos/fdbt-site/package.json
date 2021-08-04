@@ -103,7 +103,7 @@
         "@types/express-session": "1.17.0",
         "@types/formidable": "^1.0.31",
         "@types/helmet": "0.0.47",
-        "@types/jest": "^25.1.4",
+        "@types/jest": "^25.2.3",
         "@types/jsonwebtoken": "^8.5.0",
         "@types/lodash": "^4.14.155",
         "@types/mock-req-res": "^1.1.0",

@@ -12,12 +12,12 @@ const description = 'View and edit your passenger types.';
 interface PassengerTypeProps {
     csrfToken: string;
     singlePassengerTypes: SinglePassengerType[];
-    groupPrssengerTypes: GroupPassengerType[];
+    groupPassengerTypes: GroupPassengerType[];
 }
 
 const ViewPassengerTypes = ({
     singlePassengerTypes,
-    groupPrssengerTypes,
+    groupPassengerTypes,
     csrfToken,
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState({
@@ -59,10 +59,14 @@ const ViewPassengerTypes = ({
                                 />
                             )}
 
-                            {!groupPrssengerTypes.length ? (
-                                <NoPassengerTypeGroups />
+                            {!groupPassengerTypes.length ? (
+                                <NoPassengerTypeGroups passengerTypesExist={singlePassengerTypes.length > 0} />
                             ) : (
-                                <PassengerTypeGroups passengerTypeGroups={groupPrssengerTypes} />
+                                <PassengerTypeGroups
+                                    deleteActionHandler={deleteActionHandler}
+                                    passengerTypeGroups={groupPassengerTypes}
+                                    passengerTypesExist={groupPassengerTypes.length > 0}
+                                />
                             )}
 
                             <DeleteConfirmationPopup
@@ -174,7 +178,7 @@ const IndividualPassengerTypes = ({
     );
 };
 
-const NoPassengerTypeGroups = (): ReactElement => {
+const NoPassengerTypeGroups = ({ passengerTypesExist }: { passengerTypesExist: boolean }): ReactElement => {
     return (
         <div className="govuk-heading-m">
             <h3>Groups</h3>
@@ -185,14 +189,28 @@ const NoPassengerTypeGroups = (): ReactElement => {
 
             <p className="govuk-body">You currently have no passenger groups saved.</p>
 
-            <button className="govuk-button" data-module="govuk-button">
-                Add a passenger group
-            </button>
+            {passengerTypesExist ? (
+                <a className="govuk-button" data-module="govuk-button" href="/managePassengerGroup">
+                    Add a passenger group
+                </a>
+            ) : (
+                ''
+            )}
         </div>
     );
 };
 
-const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: GroupPassengerType[] }): ReactElement => {
+interface PassengerTypeGroupProps {
+    deleteActionHandler: (name: string, isGroup: boolean) => void;
+    passengerTypesExist: boolean;
+    passengerTypeGroups: GroupPassengerType[];
+}
+
+const PassengerTypeGroups = ({
+    deleteActionHandler,
+    passengerTypeGroups,
+    passengerTypesExist,
+}: PassengerTypeGroupProps): ReactElement => {
     return (
         <div className="govuk-heading-m">
             <h3>Groups</h3>
@@ -207,19 +225,19 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
                                         <li className="actions__item">
                                             <a
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                                href="/viewPassengerTypes"
+                                                href="/managePassengerGroup"
                                             >
                                                 Edit
                                             </a>
                                         </li>
 
                                         <li className="actions__item">
-                                            <a
+                                            <button
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                href="/viewPassengerTypes"
+                                                onClick={() => deleteActionHandler(passengerTypeGroup.name, true)}
                                             >
                                                 Delete
-                                            </a>
+                                            </button>
                                         </li>
                                     </ul>
                                 </div>
@@ -242,7 +260,8 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
                                               <span className="govuk-!-font-weight-bold">
                                                   {sentenceCaseString(companion.passengerType)}:
                                               </span>{' '}
-                                              {companion.minNumber ? companion.minNumber : '0'} - {companion.maxNumber}
+                                              {`Min: ${companion.minNumber ? companion.minNumber : '0'}`} -{' '}
+                                              {`Max: ${companion.maxNumber}`}
                                           </p>
                                       ))
                                     : ''}
@@ -252,9 +271,13 @@ const PassengerTypeGroups = ({ passengerTypeGroups }: { passengerTypeGroups: Gro
                 ))}
             </div>
 
-            <button className="govuk-button" data-module="govuk-button">
-                Add a passenger group
-            </button>
+            {passengerTypesExist ? (
+                <a className="govuk-button" data-module="govuk-button" href="/managePassengerGroup">
+                    Add a passenger group
+                </a>
+            ) : (
+                ''
+            )}
         </div>
     );
 };
@@ -263,12 +286,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
-    const groupPrssengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
+    const groupPassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
 
-    return { props: { csrfToken, singlePassengerTypes: singlePassengerTypes, groupPrssengerTypes } };
+    return { props: { csrfToken, singlePassengerTypes: singlePassengerTypes, groupPassengerTypes } };
 };
 
-const getProofOfDocumentsString = (documents: string[]) => {
+const getProofOfDocumentsString = (documents: string[]): string => {
     let proofOfDocumentsString = documents.map((document) => sentenceCaseString(document)).join(', ');
 
     proofOfDocumentsString =
