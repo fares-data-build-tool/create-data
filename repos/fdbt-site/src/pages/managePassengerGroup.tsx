@@ -67,7 +67,7 @@ const ManagePassengerGroup = ({
                         </FormElementWrapper>
                     </div>
 
-                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                    <div className={`govuk-form-group${hasError(errors, 'passenger-type-0')}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="passenger-type-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                                 <h1 className="govuk-fieldset__heading" id="passenger-type-page-heading">
@@ -75,8 +75,7 @@ const ManagePassengerGroup = ({
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="passenger-type-hint">
-                                Select the passenger types included in your group ticket. Select the ‘Anyone’ option if
-                                your group contains more than two of the below choices.
+                                Select the passenger types included in your group ticket.
                             </span>
                             <FormElementWrapper
                                 errors={errors}
