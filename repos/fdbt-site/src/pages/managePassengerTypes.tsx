@@ -9,6 +9,7 @@ import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getPassengerTypeById } from '../data/auroradb';
+import { redirectToError } from './api/apiUtils';
 
 const title = 'Manage Passenger Types - Create Fares Data Service';
 const description = 'Manage Passenger Type page of the Create Fares Data Service';
@@ -334,7 +335,14 @@ export const getServerSideProps = async (
         singlePassengerType = await getPassengerTypeById(passengerTypeId, nationalOperatorCode);
 
         if (singlePassengerType === undefined) {
-            throw Error('could not find passenger type');
+            if (ctx.res) {
+                redirectToError(
+                    ctx.res,
+                    'Something went wrong when editing the passenger type',
+                    'Editing a passenger type',
+                    {} as Error,
+                );
+            }
         }
     }
 
