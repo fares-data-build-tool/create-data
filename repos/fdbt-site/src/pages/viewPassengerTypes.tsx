@@ -262,7 +262,7 @@ const PassengerTypeGroups = ({
                                               className="govuk-body-s govuk-!-margin-bottom-2"
                                           >
                                               <span className="govuk-!-font-weight-bold">
-                                                  {sentenceCaseString(companion.passengerType)}:
+                                                  {sentenceCaseString(companion.name || companion.passengerType)}:
                                               </span>{' '}
                                               {`Min: ${companion.minNumber ? companion.minNumber : '0'}`} -{' '}
                                               {`Max: ${companion.maxNumber}`}

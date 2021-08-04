@@ -26,7 +26,8 @@ const DeleteConfirmationPopup = ({
                     <h1 className="govuk-heading-m">Are you sure you want to delete {passengerTypeName}?</h1>
 
                     <span className="govuk-hint" id="delete-hint">
-                        When you delete, you will no longer be able to create new fares for this passenger type
+                        When you delete, you will no longer be able to create new fares for this passenger{' '}
+                        {isGroup ? 'group ' : 'type'}
                     </span>
 
                     <button className="govuk-button govuk-button--secondary" onClick={cancelActionHandler}>
