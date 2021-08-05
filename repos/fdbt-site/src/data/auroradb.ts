@@ -4,9 +4,10 @@ import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
 import { INTERNAL_NOC } from '../constants';
 import {
-    SinglePassengerType,
+    CompanionInfo,
     FullTimeRestriction,
     GroupPassengerType,
+    GroupPassengerTypeDb,
     Operator,
     OperatorGroup,
     PassengerType,
@@ -14,8 +15,8 @@ import {
     RawService,
     SalesOfferPackage,
     ServiceType,
+    SinglePassengerType,
     Stop,
-    GroupPassengerTypeDb,
 } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -848,9 +849,62 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
                 (row) =>
                     ({ id: row.id, name: row.name, passengerType: JSON.parse(row.contents) } as SavedPassengerType[T]),
             );
+        } else {
+            // filter out the ones with IDs that are created in global settings
+            return queryResults
+                .map((row) => JSON.parse(row.contents) as GroupPassengerType | GroupPassengerTypeDb)
+                .filter((row) => !row.companions.some((it) => 'id' in it)) as SavedPassengerType[T][];
         }
+    } catch (error) {
+        throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
+    }
+};
 
-        return queryResults.map((row) => JSON.parse(row.contents) as SavedPassengerType[T]);
+export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string): Promise<GroupPassengerType[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving global settings group passenger types for given noc',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, name, contents
+            FROM passengerType
+            WHERE nocCode = ?
+            AND isGroup = ?
+        `;
+
+        const queryResults = await executeQuery<{ id: number; name: string; contents: string }[]>(queryInput, [
+            nocCode,
+            true,
+        ]);
+
+        // filter out the ones without IDs that are not created in global settings
+        const dbGroups = queryResults
+            .map((row) => JSON.parse(row.contents) as GroupPassengerType | GroupPassengerTypeDb)
+            .filter((row) => row.companions.some((it) => 'id' in it)) as GroupPassengerTypeDb[];
+
+        return Promise.all(
+            dbGroups.map(async (group) => ({
+                ...group,
+                companions: await Promise.all(
+                    group.companions.map(async (companion): Promise<CompanionInfo> => {
+                        const individual = await getPassengerTypeById(companion.id, nocCode);
+                        if (!individual) {
+                            throw new Error(`no passenger type found for companion id [${companion.id}]`);
+                        }
+                        return {
+                            minNumber: companion.minNumber,
+                            maxNumber: companion.maxNumber,
+                            ...individual.passengerType,
+                            passengerType: individual.passengerType.passengerType,
+                            name: individual.name,
+                        };
+                    }),
+                ),
+            })),
+        );
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
     }

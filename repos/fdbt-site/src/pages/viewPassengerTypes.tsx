@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import { SinglePassengerType, NextPageContextWithSession, GroupPassengerType } from '../interfaces';
 import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
-import { getPassengerTypesByNocCode } from '../data/auroradb';
+import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 
@@ -286,7 +286,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
-    const groupPassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
+    const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
 
     return { props: { csrfToken, singlePassengerTypes: singlePassengerTypes, groupPassengerTypes } };
 };

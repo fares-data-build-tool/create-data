@@ -156,7 +156,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
           >
             <div
               className="govuk-checkboxes__item"
-              key="Regular Senior"
+              key="1"
             >
               <input
                 className="govuk-checkboxes__input"
@@ -165,7 +165,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 id="passenger-type-0"
                 name="passengerTypes"
                 type="checkbox"
-                value="Regular Senior"
+                value={1}
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
@@ -201,7 +201,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
                   id="minimum-passengers-Regular Senior"
-                  name="minimumPassengersRegular Senior"
+                  name="minimumPassengers1"
                 />
               </div>
               <div
@@ -217,33 +217,13 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
                   id="maximum-passengers-Regular Senior"
-                  name="maximumPassengersRegular Senior"
+                  name="maximumPassengers1"
                 />
               </div>
             </div>
-            <input
-              name="Regular Senior-type"
-              type="hidden"
-              value="senior"
-            />
-            <input
-              name="Regular Senior-age-range-min"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="Regular Senior-age-range-max"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="Regular Senior-proof-docs"
-              type="hidden"
-              value="[]"
-            />
             <div
               className="govuk-checkboxes__item"
-              key="Regular infant"
+              key="2"
             >
               <input
                 className="govuk-checkboxes__input"
@@ -252,7 +232,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 id="passenger-type-1"
                 name="passengerTypes"
                 type="checkbox"
-                value="Regular infant"
+                value={2}
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
@@ -288,7 +268,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
                   id="minimum-passengers-Regular infant"
-                  name="minimumPassengersRegular infant"
+                  name="minimumPassengers2"
                 />
               </div>
               <div
@@ -304,30 +284,10 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
                   id="maximum-passengers-Regular infant"
-                  name="maximumPassengersRegular infant"
+                  name="maximumPassengers2"
                 />
               </div>
             </div>
-            <input
-              name="Regular infant-type"
-              type="hidden"
-              value="infant"
-            />
-            <input
-              name="Regular infant-age-range-min"
-              type="hidden"
-              value="1"
-            />
-            <input
-              name="Regular infant-age-range-max"
-              type="hidden"
-              value="3"
-            />
-            <input
-              name="Regular infant-proof-docs"
-              type="hidden"
-              value="[]"
-            />
           </div>
         </FormElementWrapper>
       </fieldset>
@@ -482,7 +442,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
           >
             <div
               className="govuk-checkboxes__item"
-              key="Normal adult"
+              key="1"
             >
               <input
                 className="govuk-checkboxes__input"
@@ -491,7 +451,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 id="passenger-type-0"
                 name="passengerTypes"
                 type="checkbox"
-                value="Normal adult"
+                value={1}
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
@@ -527,7 +487,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
                   id="minimum-passengers-Normal adult"
-                  name="minimumPassengersNormal adult"
+                  name="minimumPassengers1"
                 />
               </div>
               <div
@@ -543,33 +503,13 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
                   id="maximum-passengers-Normal adult"
-                  name="maximumPassengersNormal adult"
+                  name="maximumPassengers1"
                 />
               </div>
             </div>
-            <input
-              name="Normal adult-type"
-              type="hidden"
-              value="adult"
-            />
-            <input
-              name="Normal adult-age-range-min"
-              type="hidden"
-              value="18"
-            />
-            <input
-              name="Normal adult-age-range-max"
-              type="hidden"
-              value="75"
-            />
-            <input
-              name="Normal adult-proof-docs"
-              type="hidden"
-              value="[]"
-            />
             <div
               className="govuk-checkboxes__item"
-              key="Normal child"
+              key="2"
             >
               <input
                 className="govuk-checkboxes__input"
@@ -578,7 +518,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 id="passenger-type-1"
                 name="passengerTypes"
                 type="checkbox"
-                value="Normal child"
+                value={2}
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
@@ -614,7 +554,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
                   id="minimum-passengers-Normal child"
-                  name="minimumPassengersNormal child"
+                  name="minimumPassengers2"
                 />
               </div>
               <div
@@ -630,30 +570,10 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
                   id="maximum-passengers-Normal child"
-                  name="maximumPassengersNormal child"
+                  name="maximumPassengers2"
                 />
               </div>
             </div>
-            <input
-              name="Normal child-type"
-              type="hidden"
-              value="child"
-            />
-            <input
-              name="Normal child-age-range-min"
-              type="hidden"
-              value="5"
-            />
-            <input
-              name="Normal child-age-range-max"
-              type="hidden"
-              value="13"
-            />
-            <input
-              name="Normal child-proof-docs"
-              type="hidden"
-              value="[]"
-            />
           </div>
         </FormElementWrapper>
       </fieldset>
