@@ -15,6 +15,7 @@ import {
     SalesOfferPackage,
     ServiceType,
     Stop,
+    GroupPassengerTypeDb,
 } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -631,7 +632,7 @@ export const insertSinglePassengerType = async (
 
 export const insertGroupPassengerType = async (
     nocCode: string,
-    passengerType: GroupPassengerType,
+    passengerType: GroupPassengerType | GroupPassengerTypeDb,
     name: string,
 ): Promise<void> => {
     const contents = JSON.stringify(passengerType);
