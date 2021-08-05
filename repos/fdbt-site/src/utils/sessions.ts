@@ -46,6 +46,7 @@ import {
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
     USER_ATTRIBUTE,
+    GS_PASSENGER_GROUP_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CompanionInfo,
@@ -108,11 +109,12 @@ import {
     WithErrors,
     PointToPointPeriodProduct,
     ManagePassengerTypeWithErrors,
+    GlobalSettingsGroupAttribute,
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 
-interface SessionAttributeTypes {
+export interface SessionAttributeTypes {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
     [DURATION_VALID_ATTRIBUTE]: DurationValidInfo;
     [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo;
@@ -141,7 +143,7 @@ interface SessionAttributeTypes {
     [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
     [PASSENGER_TYPE_ATTRIBUTE]: PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
-    [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | ManagePassengerTypeWithErrors;
+    [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
     [TICKET_REPRESENTATION_ATTRIBUTE]: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors;
@@ -163,6 +165,7 @@ interface SessionAttributeTypes {
     [CARNET_FARE_TYPE_ATTRIBUTE]: boolean;
     [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: GroupPassengerType[];
     [POINT_TO_POINT_PRODUCT_ATTRIBUTE]: PointToPointPeriodProduct | WithErrors<PointToPointPeriodProduct>;
+    [GS_PASSENGER_GROUP_ATTRIBUTE]: GlobalSettingsGroupAttribute;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

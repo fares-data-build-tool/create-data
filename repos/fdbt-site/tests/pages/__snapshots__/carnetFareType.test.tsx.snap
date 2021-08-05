@@ -58,7 +58,7 @@ exports[`pages carnetFareType should render correctly 1`] = `
                 },
                 Object {
                   "hint": "A ticket bundle of flat fare journeys",
-                  "label": "Flat fare carnet",
+                  "label": "Flat fare/short hop ticket",
                   "value": "flatFare",
                 },
                 Object {
@@ -166,7 +166,7 @@ exports[`pages carnetFareType should render error messaging when errors are pass
                 },
                 Object {
                   "hint": "A ticket bundle of flat fare journeys",
-                  "label": "Flat fare carnet",
+                  "label": "Flat fare/short hop ticket",
                   "value": "flatFare",
                 },
                 Object {

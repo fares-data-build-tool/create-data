@@ -21,7 +21,6 @@ import {
 } from './apiUtils';
 import {
     adjustSchemeOperatorJson,
-    getFlatFareTicketJson,
     getGeoZoneTicketJson,
     getHybridTicketJson,
     getMultipleServicesTicketJson,
@@ -65,7 +64,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson = getSingleTicketJson(req, res);
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
-        } else if (fareType === 'period' || fareType === 'multiOperator') {
+        } else if (fareType === 'period' || fareType === 'multiOperator' || fareType === 'flatFare') {
             const ticketRepresentation = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
             const ticketType = isTicketRepresentation(ticketRepresentation) ? ticketRepresentation.name : '';
 
@@ -87,8 +86,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         `Fare type of '${fareType}' and Ticket type of '${ticketType} not compatible. User data json cannot be created.`,
                     );
             }
-        } else if (fareType === 'flatFare') {
-            userDataJson = getFlatFareTicketJson(req, res);
         }
 
         if (userDataJson) {

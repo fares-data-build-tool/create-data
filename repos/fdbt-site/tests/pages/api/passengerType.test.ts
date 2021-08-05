@@ -6,6 +6,7 @@ import {
     SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import * as aurora from '../../../src/data/auroradb';
+import { GroupPassengerType } from '../../../src/interfaces';
 import passengerType from '../../../src/pages/api/passengerType';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -98,7 +99,7 @@ describe('passengerType', () => {
                         name: 'Hi Name',
                         companions: [{ passengerType: 'adult' }, { passengerType: 'senior', ageRangeMax: 100 }],
                     },
-                ],
+                ] as GroupPassengerType[],
             },
         });
 
@@ -130,7 +131,7 @@ describe('passengerType', () => {
             mockWriteHeadFn: writeHeadMock,
             session: {
                 [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
-                [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: [{}],
+                [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: [{} as GroupPassengerType],
             },
         });
 

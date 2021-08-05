@@ -1,13 +1,14 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { MATCHING_ATTRIBUTE } from '../../constants/attributes';
-import { MatchingFareZones, MatchingInfo } from '../../interfaces/matchingInterface';
+import { MatchingFareZones, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import { getFareZones, getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, BasicService, UserFareStages } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
+        const { overrideWarning } = req.body;
         if (!req.body.service || !req.body.userfarestages) {
             throw new Error('No service or userfarestages info found');
         }
@@ -16,16 +17,37 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
         const matchingFareZones = getMatchingFareZonesFromForm(req);
 
-        // Deleting these keys from the object in order to faciliate looping through the fare stage values in the body
+        // Deleting these keys from the object in order to facilitate looping through the fare stage values in the body
         delete req.body.service;
         delete req.body.userfarestages;
 
-        if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
+        if (!Object.keys(matchingFareZones).find((fareZone) => fareZone !== 'notApplicable')) {
             const selectedStagesList: string[][] = getSelectedStages(req);
-            updateSessionAttribute(req, MATCHING_ATTRIBUTE, { error: true, selectedFareStages: selectedStagesList });
+            const matchingAttributeError: MatchingWithErrors = {
+                error: true,
+                selectedFareStages: selectedStagesList,
+            };
+            updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeError);
+
             redirectTo(res, '/outboundMatching');
             return;
+        } else if (
+            isFareStageUnassigned(userFareStages, matchingFareZones) &&
+            matchingFareZones !== {} &&
+            !overrideWarning
+        ) {
+            const selectedStagesList: string[][] = getSelectedStages(req);
+            const matchingAttributeError: MatchingWithErrors = {
+                warning: true,
+                selectedFareStages: selectedStagesList,
+            };
+            updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeError);
+
+            redirectTo(res, '/outboundMatching');
+
+            return;
         }
+
         const formatMatchingFareZones = getFareZones(userFareStages, matchingFareZones);
 
         const matchedFareZones: MatchingFareZones = {};
