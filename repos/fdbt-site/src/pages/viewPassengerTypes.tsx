@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { BaseLayout } from '../layout/Layout';
-import { SinglePassengerType, NextPageContextWithSession, GroupPassengerTypeDb } from '../interfaces';
+import { SinglePassengerType, NextPageContextWithSession, FullGroupPassengerType } from '../interfaces';
 import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
@@ -12,7 +12,7 @@ const description = 'View and edit your passenger types.';
 interface PassengerTypeProps {
     csrfToken: string;
     singlePassengerTypes: SinglePassengerType[];
-    groupPassengerTypes: GroupPassengerTypeDb[];
+    groupPassengerTypes:  FullGroupPassengerType[];
 }
 
 const ViewPassengerTypes = ({
@@ -203,7 +203,7 @@ const NoPassengerTypeGroups = ({ passengerTypesExist }: { passengerTypesExist: b
 interface PassengerTypeGroupProps {
     deleteActionHandler: (name: string, isGroup: boolean) => void;
     passengerTypesExist: boolean;
-    passengerTypeGroups: GroupPassengerTypeDb[];
+    passengerTypeGroups:  FullGroupPassengerType[];
 }
 
 const PassengerTypeGroups = ({
@@ -254,7 +254,7 @@ const PassengerTypeGroups = ({
                                 {passengerTypeGroup.groupPassengerType.companions.length
                                     ? passengerTypeGroup.groupPassengerType.companions.map((companion) => (
                                           <p
-                                              key={companion.passengerType}
+                                              key={companion.name}
                                               className="govuk-body-s govuk-!-margin-bottom-2"
                                           >
                                               <span className="govuk-!-font-weight-bold">
@@ -288,7 +288,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
 
-    // reset both session objects
     console.log(groupPassengerTypes);
 
     return { props: { csrfToken, singlePassengerTypes: singlePassengerTypes, groupPassengerTypes } };

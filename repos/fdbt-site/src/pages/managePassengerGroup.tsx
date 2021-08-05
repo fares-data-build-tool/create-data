@@ -1,20 +1,14 @@
 import React, { ReactElement } from 'react';
-import TwoThirdsLayout from '../layout/Layout';
-import {
-    ErrorInfo,
-    GroupPassengerType,
-    GroupPassengerTypeDb,
-    NextPageContextWithSession,
-    SinglePassengerType,
-} from '../interfaces';
+import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import CsrfForm from '../components/CsrfForm';
+import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../constants/attributes';
+import { getGroupPassengerTypeById, getPassengerTypesByNocCode } from '../data/auroradb';
+import upperFirst from 'lodash/upperFirst';
+import { ErrorInfo, GroupPassengerTypeDb, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
+import TwoThirdsLayout from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../constants/attributes';
-import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
-import upperFirst from 'lodash/upperFirst';
 
 const title = 'Manage Passenger Group - Create Fares Data Service';
 const description = 'Manage Passenger Group page of the Create Fares Data Service';
@@ -34,8 +28,8 @@ const hasError = (errors: ErrorInfo[], name: string) => {
     return '';
 };
 
-const findCorrectPassengerType = (inputs: GroupPassengerType, passengerName: string) => {
-    return inputs.companions.find((companion) => companion.name === passengerName);
+const findCorrectPassengerType = (inputs: GroupPassengerTypeDb, passenger: SinglePassengerType) => {
+    return inputs.groupPassengerType.companions.find((companion) => companion.id === passenger.id);
 };
 
 const ManagePassengerGroup = ({
@@ -94,19 +88,19 @@ const ManagePassengerGroup = ({
                                     {passengers.map(
                                         (passenger, index): ReactElement => (
                                             <>
-                                                <div className="govuk-checkboxes__item" key={passenger.name}>
+                                                <div className="govuk-checkboxes__item" key={passenger.id}>
                                                     <input
                                                         className="govuk-checkboxes__input"
                                                         id={`passenger-type-${index}`}
                                                         name="passengerTypes"
                                                         type="checkbox"
-                                                        value={passenger.name}
+                                                        value={passenger.id}
                                                         data-aria-controls={`conditional-input-${index}`}
                                                         defaultChecked={
                                                             inputs?.groupPassengerType
                                                                 ? !!findCorrectPassengerType(
-                                                                      inputs.groupPassengerType,
-                                                                      passenger.name,
+                                                                      inputs,
+                                                                      passenger,
                                                                   )
                                                                 : false
                                                         }
@@ -137,12 +131,12 @@ const ManagePassengerGroup = ({
                                                         <input
                                                             className="govuk-input govuk-!-width-one-third"
                                                             id={`minimum-passengers-${passenger.name}`}
-                                                            name={`minimumPassengers${passenger.name}`}
+                                                            name={`minimumPassengers${passenger.id}`}
                                                             defaultValue={
                                                                 inputs?.groupPassengerType
                                                                     ? findCorrectPassengerType(
-                                                                          inputs?.groupPassengerType,
-                                                                          passenger.name,
+                                                                          inputs,
+                                                                          passenger,
                                                                       )?.minNumber
                                                                     : ''
                                                             }
@@ -158,12 +152,12 @@ const ManagePassengerGroup = ({
                                                         <input
                                                             className="govuk-input govuk-!-width-one-third"
                                                             id={`maximum-passengers-${passenger.name}`}
-                                                            name={`maximumPassengers${passenger.name}`}
+                                                            name={`maximumPassengers${passenger.id}`}
                                                             defaultValue={
                                                                 inputs?.groupPassengerType
                                                                     ? findCorrectPassengerType(
-                                                                          inputs?.groupPassengerType,
-                                                                          passenger.name,
+                                                                          inputs,
+                                                                          passenger,
                                                                       )?.maxNumber
                                                                     : ''
                                                             }
@@ -248,8 +242,7 @@ export const getServerSideProps = async (
     const editMode = !!ctx.query.id && Number.isInteger(passengerTypeId);
 
     if (editMode) {
-        const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
-        const groupToDisplay = groupPassengerTypes.find((group) => group.id === passengerTypeId);
+        const groupToDisplay = await getGroupPassengerTypeById(passengerTypeId, nationalOperatorCode);
         if (!groupToDisplay) {
             throw new Error('No groups for this NOC matches the passed id');
         }

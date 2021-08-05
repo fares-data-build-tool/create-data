@@ -4,7 +4,7 @@ import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
 import { INTERNAL_NOC } from '../constants';
 import {
-    SinglePassengerType,
+    CompanionInfo,
     FullTimeRestriction,
     GroupPassengerType,
     Operator,
@@ -14,8 +14,11 @@ import {
     RawService,
     SalesOfferPackage,
     ServiceType,
+    SinglePassengerType,
     Stop,
     GroupPassengerTypeDb,
+    GroupPassengerTypeReference,
+    FullGroupPassengerType,
 } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -632,7 +635,7 @@ export const insertSinglePassengerType = async (
 
 export const insertGroupPassengerType = async (
     nocCode: string,
-    passengerType: GroupPassengerType,
+    passengerType: GroupPassengerType | GroupPassengerTypeReference,
     name: string,
 ): Promise<void> => {
     const contents = JSON.stringify(passengerType);
@@ -810,10 +813,12 @@ export const getGroupPassengerTypeById = async (
 
     const { id, name, contents } = result;
 
+    const parsedContents = JSON.parse(contents) as GroupPassengerTypeReference;
+
     return {
         id,
         name,
-        groupPassengerType: JSON.parse(contents) as GroupPassengerType,
+        groupPassengerType: parsedContents,
     };
 };
 
@@ -892,14 +897,18 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
                 (row) =>
                     ({ id: row.id, name: row.name, passengerType: JSON.parse(row.contents) } as SavedPassengerType[T]),
             );
+        } else {
+            // filter out the ones with IDs that are created in global settings
+            return queryResults
+                .map((row) => JSON.parse(row.contents) as GroupPassengerType | GroupPassengerTypeReference)
+                .filter((row) => !row.companions.some((companion) => 'id' in companion)) as SavedPassengerType[T][];
         }
-        return queryResults.map((row) => JSON.parse(row.contents) as SavedPassengerType[T]);
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
     }
 };
 
-export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string): Promise<GroupPassengerTypeDb[]> => {
+export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string): Promise<FullGroupPassengerType[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving global settings group passenger types for given noc',
@@ -919,11 +928,34 @@ export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string):
             true,
         ]);
 
-        return queryResults.map((row) => ({
-            id: row.id,
-            name: row.name,
-            groupPassengerType: JSON.parse(row.contents),
-        }));
+        // filter out the ones without IDs that are not created in global settings
+        const dbGroups = queryResults
+            .map((row) => ( { id: row.id, name: row.name, groupPassengerType: JSON.parse(row.contents) as GroupPassengerType | GroupPassengerTypeReference}))
+            .filter((row) => row.groupPassengerType.companions.some((it) => 'id' in it)) as GroupPassengerTypeDb[];
+
+        return Promise.all(
+            dbGroups.map(async (group) => ({ 
+                id: group.id,
+                name: group.name,
+                groupPassengerType: {
+                ...group.groupPassengerType,
+                companions: await Promise.all(
+                    group.groupPassengerType.companions.map(async (companion): Promise<CompanionInfo> => {
+                        const individual = await getPassengerTypeById(companion.id, nocCode);
+                        if (!individual) {
+                            throw new Error(`no passenger type found for companion id [${companion.id}]`);
+                        }
+                        return {
+                            minNumber: companion.minNumber,
+                            maxNumber: companion.maxNumber,
+                            ...individual.passengerType,
+                            passengerType: individual.passengerType.passengerType,
+                            name: individual.name,
+                        };
+                    }),
+                ),
+            }})),
+        );
     } catch (error) {
         throw new Error(`Could not retrieve group passenger type by nocCode from AuroraDB: ${error}`);
     }

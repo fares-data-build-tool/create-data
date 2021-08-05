@@ -340,10 +340,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             errors,
             passengerType,
             maxNumber: filteredReqBody.maxNumber || '',
-            ...(filteredReqBody.ageRangeMin && { ageRangeMin: filteredReqBody.ageRangeMin }),
-            ...(filteredReqBody.ageRangeMax && { ageRangeMax: filteredReqBody.ageRangeMax }),
-            ...(filteredReqBody.minNumber && { minNumber: filteredReqBody.minNumber }),
-            ...(filteredReqBody.proofDocuments && { proofDocuments: filteredReqBody.proofDocuments }),
+            ageRangeMin: filteredReqBody.ageRangeMin || undefined,
+            ageRangeMax: filteredReqBody.ageRangeMax || undefined,
+            minNumber: filteredReqBody.minNumber || undefined,
+            proofDocuments: filteredReqBody.proofDocuments || undefined,
         };
 
         updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, sessionInfo);
