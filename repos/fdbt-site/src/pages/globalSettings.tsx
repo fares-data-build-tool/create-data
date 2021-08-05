@@ -4,7 +4,11 @@ import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces'
 import { BaseLayout } from '../layout/Layout';
 import { redirectTo } from './api/apiUtils';
 import { getNocFromIdToken } from '../utils';
-import { getPassengerTypesByNocCode, getTimeRestrictionByNocCode } from '../data/auroradb';
+import {
+    getGroupPassengerTypesFromGlobalSettings,
+    getPassengerTypesByNocCode,
+    getTimeRestrictionByNocCode,
+} from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
 
 const title = 'Operator Settings - Create Fares Data Service';
@@ -63,7 +67,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const savedPassengerTypes = await getPassengerTypesByNocCode(noc, 'single');
-    const savedGroupPassengerTypes = await getPassengerTypesByNocCode(noc, 'group');
+    const savedGroupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(noc);
     const passengerTypesCount = savedPassengerTypes.length + savedGroupPassengerTypes.length;
 
     const savedTimeRestrictions = await getTimeRestrictionByNocCode(noc);
