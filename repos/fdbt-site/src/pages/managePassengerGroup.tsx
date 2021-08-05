@@ -1,13 +1,19 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { ErrorInfo, GroupPassengerType, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
+import {
+    ErrorInfo,
+    GroupPassengerType,
+    GroupPassengerTypeDb,
+    NextPageContextWithSession,
+    SinglePassengerType,
+} from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../constants/attributes';
-import { getPassengerTypesByNocCode } from '../data/auroradb';
+import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import upperFirst from 'lodash/upperFirst';
 
 const title = 'Manage Passenger Group - Create Fares Data Service';
@@ -17,7 +23,8 @@ interface ManagePassengerGroupProps {
     passengers: SinglePassengerType[];
     csrfToken: string;
     errors: ErrorInfo[];
-    inputs: GroupPassengerType;
+    inputs?: GroupPassengerTypeDb;
+    editMode: boolean;
 }
 
 const hasError = (errors: ErrorInfo[], name: string) => {
@@ -36,6 +43,7 @@ const ManagePassengerGroup = ({
     csrfToken,
     errors = [],
     inputs,
+    editMode,
 }: ManagePassengerGroupProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -62,7 +70,7 @@ const ManagePassengerGroup = ({
                                 id="max-group-size"
                                 name="maxGroupSize"
                                 type="text"
-                                defaultValue={inputs.maxGroupSize || ''}
+                                defaultValue={inputs?.groupPassengerType.maxGroupSize || ''}
                             />
                         </FormElementWrapper>
                     </div>
@@ -95,7 +103,12 @@ const ManagePassengerGroup = ({
                                                         value={passenger.name}
                                                         data-aria-controls={`conditional-input-${index}`}
                                                         defaultChecked={
-                                                            !!findCorrectPassengerType(inputs, passenger.name)
+                                                            inputs?.groupPassengerType
+                                                                ? !!findCorrectPassengerType(
+                                                                      inputs.groupPassengerType,
+                                                                      passenger.name,
+                                                                  )
+                                                                : false
                                                         }
                                                     />
                                                     <label
@@ -126,8 +139,12 @@ const ManagePassengerGroup = ({
                                                             id={`minimum-passengers-${passenger.name}`}
                                                             name={`minimumPassengers${passenger.name}`}
                                                             defaultValue={
-                                                                findCorrectPassengerType(inputs, passenger.name)
-                                                                    ?.minNumber || ''
+                                                                inputs?.groupPassengerType
+                                                                    ? findCorrectPassengerType(
+                                                                          inputs?.groupPassengerType,
+                                                                          passenger.name,
+                                                                      )?.minNumber
+                                                                    : ''
                                                             }
                                                         />
                                                     </div>
@@ -143,8 +160,12 @@ const ManagePassengerGroup = ({
                                                             id={`maximum-passengers-${passenger.name}`}
                                                             name={`maximumPassengers${passenger.name}`}
                                                             defaultValue={
-                                                                findCorrectPassengerType(inputs, passenger.name)
-                                                                    ?.maxNumber || ''
+                                                                inputs?.groupPassengerType
+                                                                    ? findCorrectPassengerType(
+                                                                          inputs?.groupPassengerType,
+                                                                          passenger.name,
+                                                                      )?.maxNumber
+                                                                    : ''
                                                             }
                                                         />
                                                     </div>
@@ -168,6 +189,11 @@ const ManagePassengerGroup = ({
                                                     type="hidden"
                                                     name={`${passenger.name}-proof-docs`}
                                                     value={JSON.stringify(passenger.passengerType.proofDocuments || [])}
+                                                />
+                                                <input
+                                                    type="hidden"
+                                                    name={`${passenger.name}-id`}
+                                                    value={JSON.stringify(passenger.id)}
                                                 />
                                             </>
                                         ),
@@ -200,11 +226,11 @@ const ManagePassengerGroup = ({
                                 name="passengerGroupName"
                                 type="text"
                                 maxLength={50}
-                                defaultValue={inputs.name || ''}
+                                defaultValue={inputs?.name || ''}
                             />
                         </FormElementWrapper>
                     </div>
-                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                    <input type="submit" value={`${editMode ? 'Update' : 'Add'} passenger type`} id="continue-button" className="govuk-button" />
                 </>
             </CsrfForm>
         </TwoThirdsLayout>
@@ -218,6 +244,26 @@ export const getServerSideProps = async (
     const userInputsAndErrors = getSessionAttribute(ctx.req, GS_PASSENGER_GROUP_ATTRIBUTE);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const passengers = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
+    const passengerTypeId = Number(ctx.query.id);
+    const editMode = !!ctx.query.id && Number.isInteger(passengerTypeId);
+
+    if (editMode) {
+        const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
+        const groupToDisplay = groupPassengerTypes.find((group) => group.id === passengerTypeId);
+        if (!groupToDisplay) {
+            throw new Error('No groups for this NOC matches the passed id');
+        }
+
+        return {
+            props: {
+                passengers,
+                csrfToken,
+                errors: [],
+                inputs: groupToDisplay,
+                editMode,
+            },
+        };
+    }
 
     if (!userInputsAndErrors) {
         return {
@@ -225,11 +271,7 @@ export const getServerSideProps = async (
                 passengers,
                 csrfToken,
                 errors: [],
-                inputs: {
-                    companions: [],
-                    name: '',
-                    maxGroupSize: '',
-                },
+                editMode,
             },
         };
     }
@@ -240,6 +282,7 @@ export const getServerSideProps = async (
             csrfToken,
             errors: userInputsAndErrors.errors,
             inputs: userInputsAndErrors.inputs,
+            editMode,
         },
     };
 };

@@ -14,38 +14,25 @@ import { redirectToError } from './api/apiUtils';
 const title = 'Manage Passenger Types - Create Fares Data Service';
 const description = 'Manage Passenger Type page of the Create Fares Data Service';
 
-interface FilteredRequestBodyPassengerType {
-    passengerType?: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proofDocuments?: string[];
-}
-
-interface FilteredRequestBody {
-    id?: number;
-    name?: string;
-    passengerType: FilteredRequestBodyPassengerType;
-}
-
 interface ManagePassengerTypesProps {
     isInEditMode: boolean;
     csrfToken: string;
     errors: ErrorInfo[];
-    model: FilteredRequestBody;
+    inputs?: SinglePassengerType;
 }
 
 const ManagePassengerTypes = ({
     isInEditMode,
     csrfToken,
     errors = [],
-    model,
+    inputs,
 }: ManagePassengerTypesProps): ReactElement => {
-    const id = model?.id;
-    const name = model?.name;
-    const type = model?.passengerType?.passengerType;
-    const ageRangeMin = model?.passengerType?.ageRangeMin;
-    const ageRangeMax = model?.passengerType?.ageRangeMax;
-    const documents = model?.passengerType?.proofDocuments ?? [];
+    const id = inputs?.id;
+    const name = inputs?.name;
+    const type = inputs?.passengerType?.passengerType;
+    const ageRangeMin = inputs?.passengerType?.ageRangeMin;
+    const ageRangeMax = inputs?.passengerType?.ageRangeMax;
+    const documents = inputs?.passengerType?.proofDocuments ?? [];
 
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -348,17 +335,14 @@ export const getServerSideProps = async (
 
     const errors: ErrorInfo[] = isWithErrors(sessionObject) ? sessionObject.errors : [];
 
-    const model =
-        sessionObject === undefined
-            ? ({ ...singlePassengerType } as FilteredRequestBody)
-            : ({ ...sessionObject } as FilteredRequestBody);
+    const inputs = sessionObject || singlePassengerType;
 
     return {
         props: {
             isInEditMode,
             csrfToken,
             errors,
-            model,
+            inputs,
         },
     };
 };

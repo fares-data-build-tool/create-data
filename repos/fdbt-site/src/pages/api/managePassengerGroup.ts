@@ -1,4 +1,4 @@
-import { CompanionInfo, GroupPassengerType } from './../../interfaces/index';
+import { CompanionInfo, GroupPassengerTypeDb } from './../../interfaces/index';
 import { getAndValidateNoc, redirectTo } from './apiUtils/index';
 import { updateSessionAttribute } from './../../utils/sessions';
 import { isArray } from 'lodash';
@@ -9,7 +9,8 @@ import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../../src/constants/attributes'
 import { getPassengerTypeByNameAndNocCode, insertGroupPassengerType } from '../../data/auroradb';
 import { checkIntegerIsValid, removeExcessWhiteSpace } from './apiUtils/validator';
 
-export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerType => {
+export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerTypeDb => {
+    const id = req.body.groupId;
     const maxGroupSize = removeExcessWhiteSpace(req.body.maxGroupSize);
     const groupName = removeExcessWhiteSpace(req.body.passengerGroupName);
     const passengerTypeNames: string[] = !req.body.passengerTypes
@@ -25,6 +26,7 @@ export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassenge
         const ageRangeMin = req.body[`${passengerTypeName}-age-range-min`];
         const ageRangeMax = req.body[`${passengerTypeName}-age-range-max`];
         const proofDocuments = req.body[`${passengerTypeName}-proof-docs`];
+        const id = req.body[`${passengerTypeName}-id`];
 
         return {
             name: passengerTypeName,
@@ -34,42 +36,43 @@ export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassenge
             ageRangeMin,
             ageRangeMax,
             proofDocuments,
+            id,
         };
     });
 
     return {
+        id,
         name: groupName,
-        maxGroupSize,
-        companions,
+        groupPassengerType: { name: groupName, maxGroupSize, companions },
     };
 };
 
-export const collectErrors = async (userInput: GroupPassengerType, nocCode: string): Promise<ErrorInfo[]> => {
+export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: string): Promise<ErrorInfo[]> => {
     const errors: ErrorInfo[] = [];
-    const integerCheck = checkIntegerIsValid(userInput.maxGroupSize, 'Maximum group size', 1, 30);
+    const integerCheck = checkIntegerIsValid(userInput.groupPassengerType.maxGroupSize, 'Maximum group size', 1, 30);
 
     if (integerCheck) {
         errors.push({
             errorMessage: integerCheck,
             id: 'max-group-size',
-            userInput: userInput.maxGroupSize || '',
+            userInput: userInput.groupPassengerType.maxGroupSize || '',
         });
     }
-    if (!userInput.companions?.length) {
+    if (!userInput.groupPassengerType.companions?.length) {
         errors.push({
             errorMessage: 'Select at least one passenger type',
             id: 'passenger-type-0',
         });
     }
 
-    if (userInput.companions && userInput.companions.length && userInput.maxGroupSize) {
-        userInput.companions.forEach((companion) => {
+    if (userInput.groupPassengerType.companions && userInput.groupPassengerType.companions.length && userInput.groupPassengerType.maxGroupSize) {
+        userInput.groupPassengerType.companions.forEach((companion) => {
             if (companion.minNumber) {
                 const minCheck = checkIntegerIsValid(
                     companion.minNumber,
                     'Minimum amount',
                     1,
-                    Number(userInput.maxGroupSize),
+                    Number(userInput.groupPassengerType.maxGroupSize),
                 );
                 if (minCheck) {
                     errors.push({
@@ -89,7 +92,7 @@ export const collectErrors = async (userInput: GroupPassengerType, nocCode: stri
                     companion.maxNumber,
                     'Maximum amount',
                     1,
-                    Number(userInput.maxGroupSize),
+                    Number(userInput.groupPassengerType.maxGroupSize),
                 );
                 if (maxCheck) {
                     errors.push({
@@ -143,7 +146,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
         updateSessionAttribute(req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
-        await insertGroupPassengerType(noc, formattedRequest, formattedRequest.name);
+        await insertGroupPassengerType(noc, formattedRequest.groupPassengerType, formattedRequest.name);
         redirectTo(res, '/viewPassengerTypes');
         return;
     } catch (error) {

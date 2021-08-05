@@ -188,7 +188,7 @@ export interface ServiceListAttributeWithErrors {
 }
 
 export interface GlobalSettingsGroupAttribute {
-    inputs: GroupPassengerType;
+    inputs: GroupPassengerTypeDb;
     errors: ErrorInfo[];
 }
 
@@ -388,6 +388,7 @@ export interface PassengerDetails {
 }
 
 export interface CompanionInfo {
+    id?: number;
     name?: string;
     passengerType: string;
     minNumber?: string;
@@ -395,6 +396,12 @@ export interface CompanionInfo {
     ageRangeMin?: string;
     ageRangeMax?: string;
     proofDocuments?: string[];
+}
+
+export interface GroupPassengerTypeDb {
+    id: number;
+    name: string;
+    groupPassengerType: GroupPassengerType;
 }
 
 export interface GroupPassengerType {

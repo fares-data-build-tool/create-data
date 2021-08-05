@@ -1,8 +1,8 @@
 import React, { ReactElement, useState } from 'react';
 import { BaseLayout } from '../layout/Layout';
-import { SinglePassengerType, NextPageContextWithSession, GroupPassengerType } from '../interfaces';
+import { SinglePassengerType, NextPageContextWithSession, GroupPassengerTypeDb } from '../interfaces';
 import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
-import { getPassengerTypesByNocCode } from '../data/auroradb';
+import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 
@@ -12,7 +12,7 @@ const description = 'View and edit your passenger types.';
 interface PassengerTypeProps {
     csrfToken: string;
     singlePassengerTypes: SinglePassengerType[];
-    groupPassengerTypes: GroupPassengerType[];
+    groupPassengerTypes: GroupPassengerTypeDb[];
 }
 
 const ViewPassengerTypes = ({
@@ -203,7 +203,7 @@ const NoPassengerTypeGroups = ({ passengerTypesExist }: { passengerTypesExist: b
 interface PassengerTypeGroupProps {
     deleteActionHandler: (name: string, isGroup: boolean) => void;
     passengerTypesExist: boolean;
-    passengerTypeGroups: GroupPassengerType[];
+    passengerTypeGroups: GroupPassengerTypeDb[];
 }
 
 const PassengerTypeGroups = ({
@@ -225,7 +225,7 @@ const PassengerTypeGroups = ({
                                         <li className="actions__item">
                                             <a
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                                href="/managePassengerGroup"
+                                                href={`/managePassengerGroup?id=${passengerTypeGroup.id}`}
                                             >
                                                 Edit
                                             </a>
@@ -248,11 +248,11 @@ const PassengerTypeGroups = ({
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Max size:</span>{' '}
-                                    {passengerTypeGroup.maxGroupSize}
+                                    {passengerTypeGroup.groupPassengerType.maxGroupSize}
                                 </p>
 
-                                {passengerTypeGroup.companions.length
-                                    ? passengerTypeGroup.companions.map((companion) => (
+                                {passengerTypeGroup.groupPassengerType.companions.length
+                                    ? passengerTypeGroup.groupPassengerType.companions.map((companion) => (
                                           <p
                                               key={companion.passengerType}
                                               className="govuk-body-s govuk-!-margin-bottom-2"
@@ -286,7 +286,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
-    const groupPassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'group');
+    const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
+
+    // reset both session objects
+    console.log(groupPassengerTypes);
 
     return { props: { csrfToken, singlePassengerTypes: singlePassengerTypes, groupPassengerTypes } };
 };

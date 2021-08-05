@@ -15,6 +15,7 @@ import {
     SalesOfferPackage,
     ServiceType,
     Stop,
+    GroupPassengerTypeDb,
 } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -778,7 +779,56 @@ export const getSinglePassengerTypeByNameAndNocCode = async (
     }
 };
 
-export const getPassengerTypeById = async (id: number, noc: string): Promise<SinglePassengerType | undefined> => {
+export const getPassengerTypeById = async (
+    passengerId: number,
+    noc: string,
+): Promise<SinglePassengerType | undefined> => {
+    const result = await retrievePassengerTypeById(passengerId, noc, false);
+
+    if (!result) {
+        return undefined;
+    }
+
+    const { id, name, contents } = result;
+
+    return {
+        id,
+        name,
+        passengerType: JSON.parse(contents) as PassengerType,
+    };
+};
+
+export const getGroupPassengerTypeById = async (
+    passengerId: number,
+    noc: string,
+): Promise<GroupPassengerTypeDb | undefined> => {
+    const result = await retrievePassengerTypeById(passengerId, noc, true);
+
+    if (!result) {
+        return undefined;
+    }
+
+    const { id, name, contents } = result;
+
+    return {
+        id,
+        name,
+        groupPassengerType: JSON.parse(contents) as GroupPassengerType,
+    };
+};
+
+const retrievePassengerTypeById = async (
+    id: number,
+    noc: string,
+    isGroup: boolean,
+): Promise<
+    | {
+          id: number;
+          name: string;
+          contents: string;
+      }
+    | undefined
+> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving passenger type for a given id',
@@ -789,26 +839,21 @@ export const getPassengerTypeById = async (id: number, noc: string): Promise<Sin
         const queryInput = `
             SELECT id, name, contents
             FROM passengerType
-            WHERE id = ? AND nocCode = ?`;
+            WHERE id = ? 
+            AND nocCode = ?
+            AND isGroup = ?`;
 
         const queryResults = await executeQuery<{ id: number; name: string; contents: string }[]>(queryInput, [
             id,
             noc,
+            isGroup,
         ]);
 
         if (queryResults.length > 1) {
             throw new Error("Didn't expect more than one passenger type with the same id");
         }
 
-        const data = queryResults[0];
-
-        return data
-            ? {
-                  id: data.id,
-                  name: data.name,
-                  passengerType: JSON.parse(data.contents) as PassengerType,
-              }
-            : undefined;
+        return queryResults[0];
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
     }
@@ -848,10 +893,39 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
                     ({ id: row.id, name: row.name, passengerType: JSON.parse(row.contents) } as SavedPassengerType[T]),
             );
         }
-
         return queryResults.map((row) => JSON.parse(row.contents) as SavedPassengerType[T]);
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
+    }
+};
+
+export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string): Promise<GroupPassengerTypeDb[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving global settings group passenger types for given noc',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, name, contents
+            FROM passengerType
+            WHERE nocCode = ?
+            AND isGroup = ?
+        `;
+
+        const queryResults = await executeQuery<{ id: number; name: string; contents: string }[]>(queryInput, [
+            nocCode,
+            true,
+        ]);
+
+        return queryResults.map((row) => ({
+            id: row.id,
+            name: row.name,
+            groupPassengerType: JSON.parse(row.contents),
+        }));
+    } catch (error) {
+        throw new Error(`Could not retrieve group passenger type by nocCode from AuroraDB: ${error}`);
     }
 };
 
