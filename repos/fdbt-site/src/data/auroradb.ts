@@ -853,7 +853,7 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
             // filter out the ones with IDs that are created in global settings
             return queryResults
                 .map((row) => JSON.parse(row.contents) as GroupPassengerType | GroupPassengerTypeDb)
-                .filter((row) => !row.companions.some((it) => 'id' in it)) as SavedPassengerType[T][];
+                .filter((row) => !row.companions.some((companion) => 'id' in companion)) as SavedPassengerType[T][];
         }
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
