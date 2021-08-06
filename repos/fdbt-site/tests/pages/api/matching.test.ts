@@ -1,10 +1,5 @@
 import matching from '../../../src/pages/api/matching';
-import {
-    getMockRequestAndResponse,
-    service,
-    mockMatchingUserFareStagesWithUnassignedStages,
-    mockMatchingUserFareStagesWithAllStagesAssigned,
-} from '../../testData/mockData';
+import { getMockRequestAndResponse, service, mockMatchingUserFareStages } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import { MatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
 import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
@@ -40,8 +35,8 @@ describe('Matching API', () => {
         jest.resetAllMocks();
     });
 
-    it('generates matching info, updates the MATCHING_ATTRIBUTE and redirects to /selectSalesOfferPackage if all is valid, when fare type is anything but return', () => {
-        const mockMatchingInfo: MatchingInfo = {
+    it('generates matching info, updates the MATCHING_ATTRIBUTE and redirects to /ticketConfirmation if all is valid, when fare type is anything but return', () => {
+        const expectedMatchingInfo: MatchingInfo = {
             service: expect.any(Object),
             userFareStages: expect.any(Object),
             matchingFareZones: expect.any(Object),
@@ -50,18 +45,18 @@ describe('Matching API', () => {
             body: {
                 ...selections,
                 service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
             mockWriteHeadFn: writeHeadMock,
         });
         matching(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingInfo);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, expectedMatchingInfo);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/ticketConfirmation' });
     });
 
     it('generates matching info, updates the MATCHING_ATTRIBUTE and redirects to /returnValidity if all is valid, when fare type is return', () => {
-        const mockMatchingInfo: MatchingInfo = {
+        const expectedMatchingInfo: MatchingInfo = {
             service: expect.any(Object),
             userFareStages: expect.any(Object),
             matchingFareZones: expect.any(Object),
@@ -70,7 +65,7 @@ describe('Matching API', () => {
             body: {
                 ...selections,
                 service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
             session: {
                 [FARE_TYPE_ATTRIBUTE]: {
@@ -81,35 +76,13 @@ describe('Matching API', () => {
         });
         matching(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingInfo);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, expectedMatchingInfo);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/returnValidity' });
     });
 
-    it('correctly generates matching warning info, updates the MATCHING_ATTRIBUTE and then redirects to matching page when there are unassigned fare stages', () => {
-        const mockMatchingError: MatchingWithErrors = {
-            warning: true,
-            selectedFareStages: expect.any(Object),
-        };
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                ...selections,
-                service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithUnassignedStages),
-            },
-
-            mockWriteHeadFn: writeHeadMock,
-        });
-        matching(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingError);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/matching',
-        });
-    });
-
     it('correctly generates matching error info, updates the MATCHING_ATTRIBUTE and then redirects to matching page when there are unassigned fare stages', () => {
-        const mockMatchingError: MatchingWithErrors = {
-            error: true,
+        const expectedMatchingError: MatchingWithErrors = {
+            error: 'One or more fare stages have not been assigned, assign each fare stage to a stop',
             selectedFareStages: expect.any(Object),
         };
         const { req, res } = getMockRequestAndResponse({
@@ -117,32 +90,13 @@ describe('Matching API', () => {
                 option0: '',
                 option1: '',
                 service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
             mockWriteHeadFn: writeHeadMock,
         });
         matching(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingError);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/matching',
-        });
-    });
-
-    it('redirects to matching page if no stops are allocated to fare stages', () => {
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                option0: '',
-                option1: '',
-                service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
-            },
-
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        matching(req, res);
-
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, expectedMatchingError);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/matching',
         });
@@ -166,7 +120,7 @@ describe('Matching API', () => {
             body: {
                 ...selections,
                 service: '',
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
 
             mockWriteHeadFn: writeHeadMock,

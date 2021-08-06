@@ -1,39 +1,34 @@
-import { CompanionInfo, GroupPassengerType } from './../../interfaces/index';
-import { getAndValidateNoc, redirectTo } from './apiUtils/index';
-import { updateSessionAttribute } from './../../utils/sessions';
 import { isArray } from 'lodash';
 import { NextApiResponse } from 'next';
-import { ErrorInfo, NextApiRequestWithSession } from '../../../src/interfaces';
-import { redirectToError } from './apiUtils';
-import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../../src/constants/attributes';
+import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../constants/attributes';
 import { getPassengerTypeByNameAndNocCode, insertGroupPassengerType } from '../../data/auroradb';
+import { CompanionReference, ErrorInfo, GroupPassengerTypeDb, NextApiRequestWithSession } from '../../interfaces';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils';
 import { checkIntegerIsValid, removeExcessWhiteSpace } from './apiUtils/validator';
 
-export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerType => {
+export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerTypeDb => {
     const maxGroupSize = removeExcessWhiteSpace(req.body.maxGroupSize);
     const groupName = removeExcessWhiteSpace(req.body.passengerGroupName);
-    const passengerTypeNames: string[] = !req.body.passengerTypes
+    const passengerTypeIds: string[] = !req.body.passengerTypes
         ? []
         : isArray(req.body.passengerTypes)
         ? req.body.passengerTypes
         : [req.body.passengerTypes];
 
-    const companions: CompanionInfo[] = passengerTypeNames.map((passengerTypeName) => {
-        const minNumber = req.body[`minimumPassengers${passengerTypeName}`];
-        const maxNumber = req.body[`maximumPassengers${passengerTypeName}`];
-        const typeOfPassenger = req.body[`${passengerTypeName}-type`];
-        const ageRangeMin = req.body[`${passengerTypeName}-age-range-min`];
-        const ageRangeMax = req.body[`${passengerTypeName}-age-range-max`];
-        const proofDocuments = req.body[`${passengerTypeName}-proof-docs`];
+    const companions: CompanionReference[] = passengerTypeIds.map((passengerTypeId) => {
+        const minNumber = req.body[`minimumPassengers${passengerTypeId}`];
+        const maxNumber = req.body[`maximumPassengers${passengerTypeId}`];
+
+        const id = Number(passengerTypeId);
+        if (!Number.isInteger(id) || id < 1) {
+            throw Error(`Received invalid id in passenger group [${passengerTypeId}]`);
+        }
 
         return {
-            name: passengerTypeName,
-            passengerType: typeOfPassenger,
+            id,
             minNumber,
             maxNumber,
-            ageRangeMin,
-            ageRangeMax,
-            proofDocuments,
         };
     });
 
@@ -44,7 +39,7 @@ export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassenge
     };
 };
 
-export const collectErrors = async (userInput: GroupPassengerType, nocCode: string): Promise<ErrorInfo[]> => {
+export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: string): Promise<ErrorInfo[]> => {
     const errors: ErrorInfo[] = [];
     const integerCheck = checkIntegerIsValid(userInput.maxGroupSize, 'Maximum group size', 1, 30);
 
@@ -74,7 +69,7 @@ export const collectErrors = async (userInput: GroupPassengerType, nocCode: stri
                 if (minCheck) {
                     errors.push({
                         errorMessage: minCheck,
-                        id: `minimum-passengers-${companion.name}`,
+                        id: `minimum-passengers-${companion.id}`,
                         userInput: companion.minNumber || '',
                     });
                 }
@@ -82,7 +77,7 @@ export const collectErrors = async (userInput: GroupPassengerType, nocCode: stri
             if (!companion.maxNumber) {
                 errors.push({
                     errorMessage: 'Maximum amount is required',
-                    id: `minimum-passengers-${companion.name}`,
+                    id: `minimum-passengers-${companion.id}`,
                 });
             } else {
                 const maxCheck = checkIntegerIsValid(
@@ -94,14 +89,14 @@ export const collectErrors = async (userInput: GroupPassengerType, nocCode: stri
                 if (maxCheck) {
                     errors.push({
                         errorMessage: maxCheck,
-                        id: `maximum-passengers-${companion.name}`,
+                        id: `maximum-passengers-${companion.id}`,
                         userInput: companion.maxNumber || '',
                     });
                 }
                 if (companion.minNumber && companion.minNumber > companion.maxNumber) {
                     errors.push({
                         errorMessage: 'Minimum amount cannot be greated than maximum amount',
-                        id: `minumum-passengers-${companion.name}`,
+                        id: `minumum-passengers-${companion.id}`,
                         userInput: companion.minNumber || '',
                     });
                 }

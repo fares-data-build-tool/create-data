@@ -1,10 +1,5 @@
 import inboundMatching from '../../../src/pages/api/inboundMatching';
-import {
-    getMockRequestAndResponse,
-    service,
-    mockMatchingUserFareStagesWithUnassignedStages,
-    mockMatchingUserFareStagesWithAllStagesAssigned,
-} from '../../testData/mockData';
+import { getMockRequestAndResponse, service, mockMatchingUserFareStages } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import { InboundMatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
 import { INBOUND_MATCHING_ATTRIBUTE } from '../../../src/constants/attributes';
@@ -40,8 +35,8 @@ describe('Inbound Matching API', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates matching info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to selectSalesOfferPackage page is all is valid', () => {
-        const mockMatchingInfo: InboundMatchingInfo = {
+    it('correctly generates matching info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to returnValidity page is all is valid', () => {
+        const expectedMatchingInfo: InboundMatchingInfo = {
             inboundUserFareStages: expect.any(Object),
             inboundMatchingFareZones: expect.any(Object),
         };
@@ -49,19 +44,19 @@ describe('Inbound Matching API', () => {
             body: {
                 ...selectedOptions,
                 service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
             mockWriteHeadFn: writeHeadMock,
         });
         inboundMatching(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, INBOUND_MATCHING_ATTRIBUTE, mockMatchingInfo);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, INBOUND_MATCHING_ATTRIBUTE, expectedMatchingInfo);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/returnValidity' });
     });
 
-    it('correctly generates matching error info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there are unassigned fare stages', () => {
-        const mockMatchingError: MatchingWithErrors = {
-            error: true,
+    it('correctly generates matching error info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there no assigned fare stages', () => {
+        const expectedMatchingError: MatchingWithErrors = {
+            error: 'No fare stages have been assigned, assign each fare stage to a stop',
             selectedFareStages: expect.any(Object),
         };
         const { req, res } = getMockRequestAndResponse({
@@ -69,51 +64,38 @@ describe('Inbound Matching API', () => {
                 option0: '',
                 option1: '',
                 service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
             mockWriteHeadFn: writeHeadMock,
         });
         inboundMatching(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, INBOUND_MATCHING_ATTRIBUTE, mockMatchingError);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, INBOUND_MATCHING_ATTRIBUTE, expectedMatchingError);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/inboundMatching',
         });
     });
+
     it('correctly generates matching warning info, updates the INBOUND_MATCHING_ATTRIBUTE and then redirects to inboundMatching page when there are unassigned fare stages', () => {
-        const mockMatchingError: MatchingWithErrors = {
+        const expectedMatchingError: MatchingWithErrors = {
             warning: true,
             selectedFareStages: expect.any(Object),
         };
         const { req, res } = getMockRequestAndResponse({
             body: {
-                ...selectedOptions,
-                service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithUnassignedStages),
-            },
-            mockWriteHeadFn: writeHeadMock,
-        });
-        inboundMatching(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, INBOUND_MATCHING_ATTRIBUTE, mockMatchingError);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/inboundMatching',
-        });
-    });
-
-    it('redirects to inboundMatching page if no stops are allocated to fare stages', () => {
-        const { req, res } = getMockRequestAndResponse({
-            body: {
                 option0: '',
-                option1: '',
+                option1: [
+                    'Acomb Green Lane',
+                    '{"stop":{"stopName":"Yoden Way - Chapel Hill Road","naptanCode":"duratdmj","atcoCode":"13003521G","localityCode":"E0045956","localityName":"Peterlee","indicator":"W-bound","street":"Yodan Way","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Acomb Green Lane"}',
+                ],
                 service: JSON.stringify(service),
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
             mockWriteHeadFn: writeHeadMock,
         });
-
         inboundMatching(req, res);
 
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, INBOUND_MATCHING_ATTRIBUTE, expectedMatchingError);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/inboundMatching',
         });
@@ -136,7 +118,7 @@ describe('Inbound Matching API', () => {
             body: {
                 ...selectedOptions,
                 service: '',
-                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
             mockWriteHeadFn: writeHeadMock,
         });

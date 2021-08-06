@@ -26,8 +26,7 @@ interface MatchingProps {
     userFareStages: UserFareStages;
     stops: Stop[];
     service: BasicService;
-    error: boolean;
-    warning: boolean;
+    error: string;
     selectedFareStages: string[][];
     csrfToken: string;
 }
@@ -37,7 +36,6 @@ const Matching = ({
     stops,
     service,
     error,
-    warning,
     selectedFareStages,
     csrfToken,
 }: MatchingProps): ReactElement => (
@@ -46,7 +44,7 @@ const Matching = ({
         stops={stops}
         service={service}
         error={error}
-        warning={warning}
+        warning={false}
         selectedFareStages={selectedFareStages}
         heading={heading}
         title={title}
@@ -106,12 +104,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 serviceDescription: service.serviceDescription,
                 lineId: service.lineId,
             },
-            error: (matchingAttribute && 'error' in matchingAttribute && matchingAttribute.error) ?? false,
-            warning: (matchingAttribute && 'warning' in matchingAttribute && matchingAttribute.warning) ?? false,
+            error:
+                matchingAttribute && 'error' in matchingAttribute && matchingAttribute.error
+                    ? matchingAttribute.error
+                    : '',
             selectedFareStages:
-                matchingAttribute && ('error' in matchingAttribute || 'warning' in matchingAttribute)
-                    ? matchingAttribute.selectedFareStages
-                    : [],
+                matchingAttribute && 'error' in matchingAttribute ? matchingAttribute.selectedFareStages : [],
             csrfToken,
         },
     };

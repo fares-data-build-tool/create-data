@@ -1,14 +1,14 @@
+import upperFirst from 'lodash/upperFirst';
 import React, { ReactElement } from 'react';
-import TwoThirdsLayout from '../layout/Layout';
-import { ErrorInfo, GroupPassengerType, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
+import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import CsrfForm from '../components/CsrfForm';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
-import { getSessionAttribute } from '../utils/sessions';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../constants/attributes';
 import { getPassengerTypesByNocCode } from '../data/auroradb';
-import upperFirst from 'lodash/upperFirst';
+import { ErrorInfo, GroupPassengerTypeDb, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
+import TwoThirdsLayout from '../layout/Layout';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Manage Passenger Group - Create Fares Data Service';
 const description = 'Manage Passenger Group page of the Create Fares Data Service';
@@ -17,7 +17,7 @@ interface ManagePassengerGroupProps {
     passengers: SinglePassengerType[];
     csrfToken: string;
     errors: ErrorInfo[];
-    inputs: GroupPassengerType;
+    inputs: GroupPassengerTypeDb;
 }
 
 const hasError = (errors: ErrorInfo[], name: string) => {
@@ -27,8 +27,8 @@ const hasError = (errors: ErrorInfo[], name: string) => {
     return '';
 };
 
-const findCorrectPassengerType = (inputs: GroupPassengerType, passengerName: string) => {
-    return inputs.companions.find((companion) => companion.name === passengerName);
+const findCorrectPassengerType = (inputs: GroupPassengerTypeDb, passenger: SinglePassengerType) => {
+    return inputs.companions.find((companion) => companion.id === passenger.id);
 };
 
 const ManagePassengerGroup = ({
@@ -86,17 +86,15 @@ const ManagePassengerGroup = ({
                                     {passengers.map(
                                         (passenger, index): ReactElement => (
                                             <>
-                                                <div className="govuk-checkboxes__item" key={passenger.name}>
+                                                <div className="govuk-checkboxes__item" key={passenger.id}>
                                                     <input
                                                         className="govuk-checkboxes__input"
                                                         id={`passenger-type-${index}`}
                                                         name="passengerTypes"
                                                         type="checkbox"
-                                                        value={passenger.name}
+                                                        value={passenger.id}
                                                         data-aria-controls={`conditional-input-${index}`}
-                                                        defaultChecked={
-                                                            !!findCorrectPassengerType(inputs, passenger.name)
-                                                        }
+                                                        defaultChecked={!!findCorrectPassengerType(inputs, passenger)}
                                                     />
                                                     <label
                                                         className="govuk-label govuk-checkboxes__label"
@@ -124,9 +122,9 @@ const ManagePassengerGroup = ({
                                                         <input
                                                             className="govuk-input govuk-!-width-one-third"
                                                             id={`minimum-passengers-${passenger.name}`}
-                                                            name={`minimumPassengers${passenger.name}`}
+                                                            name={`minimumPassengers${passenger.id}`}
                                                             defaultValue={
-                                                                findCorrectPassengerType(inputs, passenger.name)
+                                                                findCorrectPassengerType(inputs, passenger)
                                                                     ?.minNumber || ''
                                                             }
                                                         />
@@ -141,34 +139,14 @@ const ManagePassengerGroup = ({
                                                         <input
                                                             className="govuk-input govuk-!-width-one-third"
                                                             id={`maximum-passengers-${passenger.name}`}
-                                                            name={`maximumPassengers${passenger.name}`}
+                                                            name={`maximumPassengers${passenger.id}`}
                                                             defaultValue={
-                                                                findCorrectPassengerType(inputs, passenger.name)
+                                                                findCorrectPassengerType(inputs, passenger)
                                                                     ?.maxNumber || ''
                                                             }
                                                         />
                                                     </div>
                                                 </div>
-                                                <input
-                                                    type="hidden"
-                                                    name={`${passenger.name}-type`}
-                                                    value={passenger.passengerType.passengerType}
-                                                />
-                                                <input
-                                                    type="hidden"
-                                                    name={`${passenger.name}-age-range-min`}
-                                                    value={passenger.passengerType.ageRangeMin || ''}
-                                                />
-                                                <input
-                                                    type="hidden"
-                                                    name={`${passenger.name}-age-range-max`}
-                                                    value={passenger.passengerType.ageRangeMax || ''}
-                                                />
-                                                <input
-                                                    type="hidden"
-                                                    name={`${passenger.name}-proof-docs`}
-                                                    value={JSON.stringify(passenger.passengerType.proofDocuments || [])}
-                                                />
                                             </>
                                         ),
                                     )}
