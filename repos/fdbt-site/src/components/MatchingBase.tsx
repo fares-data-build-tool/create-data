@@ -12,7 +12,7 @@ interface MatchingBaseProps {
     userFareStages: UserFareStages;
     stops: Stop[];
     service: BasicService;
-    error: boolean;
+    error: string;
     warning: boolean;
     selectedFareStages: string[][];
     title: string;
@@ -179,7 +179,7 @@ const MatchingBase = ({
 
     if (error) {
         errors.push({
-            errorMessage: 'No fare stages have been assigned, assign each fare stage to a stop',
+            errorMessage: error,
             id: 'option-0',
         });
     } else if (warning) {

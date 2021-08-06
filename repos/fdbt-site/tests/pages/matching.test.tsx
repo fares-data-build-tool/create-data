@@ -43,8 +43,7 @@ describe('Matching Page', () => {
                 userFareStages={userFareStages}
                 stops={zoneStops}
                 service={service}
-                error={false}
-                warning={false}
+                error=""
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
             />,
@@ -59,29 +58,13 @@ describe('Matching Page', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('should render with warning', () => {
-        wrapper = shallow(
-            <Matching
-                userFareStages={userFareStages}
-                stops={zoneStops}
-                service={service}
-                error={false}
-                warning={true}
-                selectedFareStages={selectedFareStages}
-                csrfToken=""
-            />,
-        );
-        expect(wrapper).toMatchSnapshot();
-    });
-
     it('should render with error', () => {
         wrapper = shallow(
             <Matching
                 userFareStages={userFareStages}
                 stops={zoneStops}
                 service={service}
-                error={true}
-                warning={false}
+                error="One or more fare stages have not been assigned, assign each fare stage to a stop"
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
             />,
@@ -95,8 +78,7 @@ describe('Matching Page', () => {
                 userFareStages={userFareStages}
                 stops={zoneStops}
                 service={service}
-                error={false}
-                warning={false}
+                error=""
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
             />,
