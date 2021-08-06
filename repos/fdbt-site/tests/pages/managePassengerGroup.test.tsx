@@ -9,11 +9,7 @@ describe('pages', () => {
                 <ManagePassengerGroup
                     csrfToken={''}
                     errors={[]}
-                    inputs={{
-                        companions: [],
-                        name: '',
-                        maxGroupSize: '',
-                    }}
+                    editMode={false}
                     passengers={[
                         {
                             id: 1,
@@ -62,7 +58,135 @@ describe('pages', () => {
                             userInput: '',
                         },
                     ]}
-                    inputs={{ name: '', maxGroupSize: '4', companions: [] }}
+                    editMode={false}
+                    inputs={{
+                        id: 0,
+                        name: '',
+                        groupPassengerType: {
+                            name: 'group',
+                            maxGroupSize: '4',
+                            companions: [],
+                        },
+                    }}
+                    passengers={[
+                        {
+                            id: 1,
+                            name: 'Regular Senior',
+                            passengerType: {
+                                passengerType: 'senior',
+                                ageRangeMin: '',
+                                ageRangeMax: '',
+                                proofDocuments: [],
+                            },
+                        },
+                        {
+                            id: 2,
+                            name: 'Regular infant',
+                            passengerType: {
+                                passengerType: 'infant',
+                                ageRangeMin: '1',
+                                ageRangeMax: '3',
+                                proofDocuments: [],
+                            },
+                        },
+                    ]}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly in edit mode', () => {
+            const tree = shallow(
+                <ManagePassengerGroup
+                    csrfToken={''}
+                    errors={[]}
+                    editMode
+                    inputs={{
+                        id: 5,
+                        name: 'the best group',
+                        groupPassengerType: {
+                            name: 'the best group',
+                            maxGroupSize: '4',
+                            companions: [
+                                {
+                                    id: 3,
+                                    maxNumber: '2',
+                                },
+                                {
+                                    id: 4,
+                                    maxNumber: '1',
+                                },
+                            ],
+                        },
+                    }}
+                    passengers={[
+                        {
+                            id: 1,
+                            name: 'Regular Senior',
+                            passengerType: {
+                                passengerType: 'senior',
+                                ageRangeMin: '',
+                                ageRangeMax: '',
+                                proofDocuments: [],
+                            },
+                        },
+                        {
+                            id: 2,
+                            name: 'Regular infant',
+                            passengerType: {
+                                passengerType: 'infant',
+                                ageRangeMin: '1',
+                                ageRangeMax: '3',
+                                proofDocuments: [],
+                            },
+                        },
+                    ]}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly in edit mode with errors', () => {
+            const tree = shallow(
+                <ManagePassengerGroup
+                    csrfToken={''}
+                    errors={[
+                        {
+                            errorMessage: 'Minimum amount cannot be greater than 4',
+                            id: 'minimum-passengers-Regular Senior',
+                            userInput: '5',
+                        },
+                        {
+                            errorMessage: 'Maximum amount is required',
+                            id: 'minimum-passengers-Regular Senior',
+                        },
+                        {
+                            errorMessage: 'Enter a group name of up to 50 characters',
+                            id: 'passenger-group-name',
+                            userInput: '',
+                        },
+                    ]}
+                    editMode
+                    inputs={{
+                        id: 5,
+                        name: 'the best group',
+                        groupPassengerType: {
+                            name: 'the best group',
+                            maxGroupSize: '4',
+                            companions: [
+                                {
+                                    id: 3,
+                                    maxNumber: '2',
+                                },
+                                {
+                                    id: 4,
+                                    maxNumber: '1',
+                                },
+                            ],
+                        },
+                    }}
                     passengers={[
                         {
                             id: 1,

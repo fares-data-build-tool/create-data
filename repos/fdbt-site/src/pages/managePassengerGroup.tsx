@@ -44,6 +44,7 @@ const ManagePassengerGroup = ({
             <CsrfForm action="/api/managePassengerGroup" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
+                    <input type="hidden" name="groupId" value={inputs?.id} />
                     <h1 className="govuk-heading-xl" id="group-page-heading">
                         Provide passenger group details
                     </h1>
@@ -98,10 +99,7 @@ const ManagePassengerGroup = ({
                                                         data-aria-controls={`conditional-input-${index}`}
                                                         defaultChecked={
                                                             inputs?.groupPassengerType
-                                                                ? !!findCorrectPassengerType(
-                                                                      inputs,
-                                                                      passenger,
-                                                                  )
+                                                                ? !!findCorrectPassengerType(inputs, passenger)
                                                                 : false
                                                         }
                                                     />
@@ -134,10 +132,8 @@ const ManagePassengerGroup = ({
                                                             name={`minimumPassengers${passenger.id}`}
                                                             defaultValue={
                                                                 inputs?.groupPassengerType
-                                                                    ? findCorrectPassengerType(
-                                                                          inputs,
-                                                                          passenger,
-                                                                      )?.minNumber
+                                                                    ? findCorrectPassengerType(inputs, passenger)
+                                                                          ?.minNumber
                                                                     : ''
                                                             }
                                                         />
@@ -155,10 +151,8 @@ const ManagePassengerGroup = ({
                                                             name={`maximumPassengers${passenger.id}`}
                                                             defaultValue={
                                                                 inputs?.groupPassengerType
-                                                                    ? findCorrectPassengerType(
-                                                                          inputs,
-                                                                          passenger,
-                                                                      )?.maxNumber
+                                                                    ? findCorrectPassengerType(inputs, passenger)
+                                                                          ?.maxNumber
                                                                     : ''
                                                             }
                                                         />
@@ -224,7 +218,12 @@ const ManagePassengerGroup = ({
                             />
                         </FormElementWrapper>
                     </div>
-                    <input type="submit" value={`${editMode ? 'Update' : 'Add'} passenger type`} id="continue-button" className="govuk-button" />
+                    <input
+                        type="submit"
+                        value={`${editMode ? 'Update' : 'Add'} passenger group`}
+                        id="continue-button"
+                        className="govuk-button"
+                    />
                 </>
             </CsrfForm>
         </TwoThirdsLayout>
@@ -251,8 +250,8 @@ export const getServerSideProps = async (
             props: {
                 passengers,
                 csrfToken,
-                errors: [],
-                inputs: groupToDisplay,
+                errors: userInputsAndErrors?.errors || [],
+                inputs: userInputsAndErrors?.errors ? userInputsAndErrors.inputs : groupToDisplay,
                 editMode,
             },
         };

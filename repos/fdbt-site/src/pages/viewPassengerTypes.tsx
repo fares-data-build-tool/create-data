@@ -12,7 +12,7 @@ const description = 'View and edit your passenger types.';
 interface PassengerTypeProps {
     csrfToken: string;
     singlePassengerTypes: SinglePassengerType[];
-    groupPassengerTypes:  FullGroupPassengerType[];
+    groupPassengerTypes: FullGroupPassengerType[];
 }
 
 const ViewPassengerTypes = ({
@@ -203,7 +203,7 @@ const NoPassengerTypeGroups = ({ passengerTypesExist }: { passengerTypesExist: b
 interface PassengerTypeGroupProps {
     deleteActionHandler: (name: string, isGroup: boolean) => void;
     passengerTypesExist: boolean;
-    passengerTypeGroups:  FullGroupPassengerType[];
+    passengerTypeGroups: FullGroupPassengerType[];
 }
 
 const PassengerTypeGroups = ({
@@ -253,10 +253,7 @@ const PassengerTypeGroups = ({
 
                                 {passengerTypeGroup.groupPassengerType.companions.length
                                     ? passengerTypeGroup.groupPassengerType.companions.map((companion) => (
-                                          <p
-                                              key={companion.name}
-                                              className="govuk-body-s govuk-!-margin-bottom-2"
-                                          >
+                                          <p key={companion.name} className="govuk-body-s govuk-!-margin-bottom-2">
                                               <span className="govuk-!-font-weight-bold">
                                                   {sentenceCaseString(companion.name || companion.passengerType)}:
                                               </span>{' '}
@@ -287,8 +284,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
-
-    console.log(groupPassengerTypes);
 
     return { props: { csrfToken, singlePassengerTypes: singlePassengerTypes, groupPassengerTypes } };
 };
