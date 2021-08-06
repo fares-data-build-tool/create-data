@@ -26,14 +26,7 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
 exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons should render with error 1`] = `
 <FullColumnLayout
   description="Matching page of the Create Fares Data Service"
-  errors={
-    Array [
-      Object {
-        "errorMessage": "No fare stages have been assigned, assign each fare stage to a stop",
-        "id": "option-0",
-      },
-    ]
-  }
+  errors={Array []}
   title="Matching - Create Fares Data Service"
 >
   <CsrfForm
@@ -43,21 +36,14 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
     method="post"
   >
     <ErrorSummary
-      errors={
-        Array [
-          Object {
-            "errorMessage": "No fare stages have been assigned, assign each fare stage to a stop",
-            "id": "option-0",
-          },
-        ]
-      }
+      errors={Array []}
     />
     <WarningSummary
       errors={Array []}
       label="Check this box if you wish to proceed without assigning all fare stages, then click Continue"
     />
     <div
-      className="govuk-form-group govuk-form-group--error"
+      className="govuk-form-group"
     >
       <fieldset
         className="govuk-fieldset"
@@ -120,14 +106,7 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
         <FormElementWrapper
           errorClass=""
           errorId="option-0"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "No fare stages have been assigned, assign each fare stage to a stop",
-                "id": "option-0",
-              },
-            ]
-          }
+          errors={Array []}
         >
           <table
             className="govuk-table"

@@ -26,7 +26,7 @@ interface MatchingProps {
     userFareStages: UserFareStages;
     stops: Stop[];
     service: BasicService;
-    error: boolean;
+    error: string;
     warning: boolean;
     selectedFareStages: string[][];
     csrfToken: string;
@@ -103,7 +103,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 serviceDescription: service.serviceDescription,
                 lineId: service.lineId,
             },
-            error: (matchingAttribute && 'error' in matchingAttribute && matchingAttribute.error) ?? false,
+            error:
+                matchingAttribute && 'error' in matchingAttribute && matchingAttribute.error
+                    ? matchingAttribute.error
+                    : '',
             warning: (matchingAttribute && 'warning' in matchingAttribute && matchingAttribute.warning) ?? false,
             selectedFareStages:
                 matchingAttribute && ('error' in matchingAttribute || 'warning' in matchingAttribute)

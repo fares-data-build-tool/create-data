@@ -18,7 +18,7 @@ export interface InboundMatchingInfo {
 
 export interface MatchingWithErrors {
     warning?: boolean;
-    error?: boolean;
+    error?: string;
     selectedFareStages: string[][];
 }
 
