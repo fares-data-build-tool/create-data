@@ -8,6 +8,8 @@ import {
     SchemeOperatorTicket,
     SingleTicket,
     FlatFareGeoZone,
+    FlatFareTicket,
+    SelectedService,
 } from '../../shared/matchingJsonTypes';
 import { NetexObject } from '../netex-convertor/sharedHelpers';
 
