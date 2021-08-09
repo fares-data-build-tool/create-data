@@ -4,17 +4,21 @@ import { DocumentContext } from 'next/document';
 import { ReactElement } from 'react';
 import {
     BaseProduct,
-    BaseTicket,
     CarnetDetails,
     CarnetProductInfo,
     ExpiryUnit,
+    FlatFareProductDetails,
+    FlatFareTicket,
     FullTimeRestriction,
+    PeriodGeoZoneTicket,
+    PeriodMultipleServicesTicket,
     PointToPointPeriodTicket,
     PointToPointTicket,
     Product,
     ProductDetails,
     SalesOfferPackage,
     SchemeOperatorTicket,
+    SelectedService,
     Stop,
     TicketType,
 } from '../../shared/matchingJsonTypes';
@@ -317,26 +321,11 @@ export type Ticket = SpecificTicket &
 
 export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
 
-export interface BasePeriodTicket extends BaseTicket {
-    operatorName: string;
-    products: ProductDetails[];
-}
-
-export interface PeriodGeoZoneTicket extends BasePeriodTicket {
-    zoneName: string;
-    stops: Stop[];
-}
-
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
     additionalNocs: string[];
 }
 
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
-
-export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
-    selectedServices: SelectedService[];
-    termTime: boolean;
-}
 
 export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
 
@@ -346,17 +335,6 @@ export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServi
         selectedServices: SelectedService[];
     }[];
 }
-
-export type FlatFareGeoZone = Omit<PeriodGeoZoneTicket, 'products'> & {
-    type: 'flatFare';
-    products: FlatFareProductDetails[];
-};
-export type FlatFareMultipleServices = Omit<PeriodMultipleServicesTicket, 'products'> & {
-    type: 'flatFare';
-    products: FlatFareProductDetails[];
-    termTime: boolean;
-};
-export type FlatFareTicket = FlatFareGeoZone | FlatFareMultipleServices;
 
 export interface SchemeOperatorGeoZoneTicket extends SchemeOperatorTicket {
     zoneName: string;
@@ -437,14 +415,6 @@ export interface FareZoneWithErrors {
     errors: ErrorInfo[];
 }
 
-export interface SelectedService {
-    lineName: string;
-    lineId: string;
-    serviceCode: string;
-    startDate: string;
-    serviceDescription: string;
-}
-
 export interface BasicService {
     lineName: string;
     lineId: string;
@@ -479,12 +449,6 @@ export interface TicketPeriodWithInput extends TicketPeriod {
 
 export interface ProductWithSalesOfferPackages extends BaseProduct {
     productName: string;
-}
-
-export interface FlatFareProductDetails extends BaseProduct {
-    productName: string;
-    productPrice: string;
-    carnetDetails?: CarnetDetails;
 }
 
 export interface ProductData {

@@ -1,6 +1,7 @@
+import { FlatFareGeoZone, FlatFareTicket, SelectedService } from '../../../shared/matchingJsonTypes';
+
 import {
     DistributionAssignment,
-    FlatFareTicket,
     GeoZoneTicket,
     GroupCompanion,
     GroupOfLines,
@@ -27,7 +28,6 @@ import {
     SchemeOperatorFlatFareTicket,
     SchemeOperatorGeoZoneTicket,
     SchemeOperatorTicket,
-    SelectedService,
     Stop,
     Ticket,
     TopographicProjectionRef,
@@ -179,7 +179,7 @@ export const getLineRefList = (
 };
 
 export const getGeoZoneFareTable = (
-    userPeriodTicket: GeoZoneTicket,
+    userPeriodTicket: GeoZoneTicket | FlatFareGeoZone,
     placeHolderGroupOfProductsName: string,
     ticketUserConcat: string,
 ): NetexObject[] => {
@@ -228,19 +228,32 @@ export const getGeoZoneFareTable = (
                                         limitations: {
                                             ...getProfileRef(userPeriodTicket),
                                         },
-                                        prices: {
-                                            TimeIntervalPrice: {
-                                                version: '1.0',
-                                                id: `op:${product.productName}@${salesOfferPackage.name}@zone`,
-                                                Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
-                                                TimeIntervalRef: {
-                                                    version: '1.0',
-                                                    ref: `op:Tariff@${
-                                                        product.productName
-                                                    }@${product.productDuration.replace(' ', '-')}`,
-                                                },
-                                            },
-                                        },
+                                        prices:
+                                            'productDuration' in product
+                                                ? {
+                                                      TimeIntervalPrice: {
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@zone`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                          TimeIntervalRef: {
+                                                              version: '1.0',
+                                                              ref: `op:Tariff@${
+                                                                  product.productName
+                                                              }@${product.productDuration.replace(' ', '-')}`,
+                                                          },
+                                                      },
+                                                  }
+                                                : {
+                                                      DistanceMatrixElementPrice: {
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                      },
+                                                  },
                                     },
                                 },
                             },
@@ -561,7 +574,7 @@ export const getPreassignedFareProducts = (
 };
 
 export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
-    const timeIntervals = ticket.products.flatMap(product => {
+    const timeIntervals = ticket.products.flatMap((product: { productDuration: string; productName: any }) => {
         if ('productDuration' in product && product.productDuration) {
             const amount = product.productDuration.split(' ')[0];
             const type = product.productDuration.split(' ')[1];

@@ -313,8 +313,8 @@ describe('periodTicketNetexHelpers', () => {
                 },
             };
             const expectedLength = flatFareTicket.products
-                .map(product => product.salesOfferPackages.length)
-                .reduce((a, b) => a + b);
+                .map((product: { salesOfferPackages: string | any[]; }) => product.salesOfferPackages.length)
+                .reduce((a: any, b: any) => a + b);
             const flatFareFareTables = netexHelpers.getMultiServiceFareTable(
                 flatFareTicket as PeriodMultipleServicesTicket,
                 'test',
