@@ -128,7 +128,7 @@ const ManagePassengerGroup = ({
                                                         </label>
                                                         <input
                                                             className="govuk-input govuk-!-width-one-third"
-                                                            id={`minimum-passengers-${passenger.name}`}
+                                                            id={`minimum-passengers-${passenger.id}`}
                                                             name={`minimumPassengers${passenger.id}`}
                                                             defaultValue={
                                                                 inputs?.groupPassengerType
@@ -147,7 +147,7 @@ const ManagePassengerGroup = ({
                                                         </label>
                                                         <input
                                                             className="govuk-input govuk-!-width-one-third"
-                                                            id={`maximum-passengers-${passenger.name}`}
+                                                            id={`maximum-passengers-${passenger.id}`}
                                                             name={`maximumPassengers${passenger.id}`}
                                                             defaultValue={
                                                                 inputs?.groupPassengerType

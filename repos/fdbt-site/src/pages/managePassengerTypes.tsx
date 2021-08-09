@@ -342,7 +342,9 @@ export const getServerSideProps = async (
             isInEditMode,
             csrfToken,
             errors,
-            inputs,
+            ...(inputs && {
+                inputs,
+            }),
         },
     };
 };

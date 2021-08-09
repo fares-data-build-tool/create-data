@@ -100,7 +100,7 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
                         userInput: companion.maxNumber || '',
                     });
                 }
-                if (companion.minNumber && companion.minNumber > companion.maxNumber) {
+                if (companion.minNumber && Number(companion.minNumber) > Number(companion.maxNumber)) {
                     errors.push({
                         errorMessage: 'Minimum amount cannot be greated than maximum amount',
                         id: `minumum-passengers-${companion.id}`,

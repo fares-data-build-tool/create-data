@@ -204,7 +204,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="minimum-passengers-Regular Senior"
+                  id="minimum-passengers-1"
                   name="minimumPassengers1"
                 />
               </div>
@@ -219,7 +219,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="maximum-passengers-Regular Senior"
+                  id="maximum-passengers-1"
                   name="maximumPassengers1"
                 />
               </div>
@@ -294,7 +294,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="minimum-passengers-Regular infant"
+                  id="minimum-passengers-2"
                   name="minimumPassengers2"
                 />
               </div>
@@ -309,7 +309,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="maximum-passengers-Regular infant"
+                  id="maximum-passengers-2"
                   name="maximumPassengers2"
                 />
               </div>
@@ -541,7 +541,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="minimum-passengers-Regular Senior"
+                  id="minimum-passengers-1"
                   name="minimumPassengers1"
                 />
               </div>
@@ -556,7 +556,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="maximum-passengers-Regular Senior"
+                  id="maximum-passengers-1"
                   name="maximumPassengers1"
                 />
               </div>
@@ -631,7 +631,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="minimum-passengers-Regular infant"
+                  id="minimum-passengers-2"
                   name="minimumPassengers2"
                 />
               </div>
@@ -646,7 +646,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="maximum-passengers-Regular infant"
+                  id="maximum-passengers-2"
                   name="maximumPassengers2"
                 />
               </div>
@@ -929,7 +929,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="minimum-passengers-Regular Senior"
+                  id="minimum-passengers-1"
                   name="minimumPassengers1"
                 />
               </div>
@@ -944,7 +944,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="maximum-passengers-Regular Senior"
+                  id="maximum-passengers-1"
                   name="maximumPassengers1"
                 />
               </div>
@@ -1019,7 +1019,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="minimum-passengers-Regular infant"
+                  id="minimum-passengers-2"
                   name="minimumPassengers2"
                 />
               </div>
@@ -1034,7 +1034,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  id="maximum-passengers-Regular infant"
+                  id="maximum-passengers-2"
                   name="maximumPassengers2"
                 />
               </div>
@@ -1266,7 +1266,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 <input
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
-                  id="minimum-passengers-Normal adult"
+                  id="minimum-passengers-1"
                   name="minimumPassengers1"
                 />
               </div>
@@ -1282,7 +1282,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 <input
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
-                  id="maximum-passengers-Normal adult"
+                  id="maximum-passengers-1"
                   name="maximumPassengers1"
                 />
               </div>
@@ -1358,7 +1358,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 <input
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
-                  id="minimum-passengers-Normal child"
+                  id="minimum-passengers-2"
                   name="minimumPassengers2"
                 />
               </div>
@@ -1374,7 +1374,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 <input
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
-                  id="maximum-passengers-Normal child"
+                  id="maximum-passengers-2"
                   name="maximumPassengers2"
                 />
               </div>
