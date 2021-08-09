@@ -7,12 +7,12 @@ import {
     GroupOfLines,
     GroupOfOperators,
     HybridPeriodTicket,
+    isFlatFareTicket,
     isGeoZoneTicket,
     isGroupTicket,
     isHybridTicket,
     isMultiOperatorMultipleServicesTicket,
     isMultiServiceTicket,
-    isProductDetails,
     isSchemeOperatorFlatFareTicket,
     Line,
     LineRef,
@@ -377,14 +377,14 @@ const getFlatFareList = (
     });
 
 export const getMultiServiceFareTable = (
-    userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorFlatFareTicket,
+    userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorFlatFareTicket | FlatFareTicket,
     ticketUserConcat: string,
 ): NetexObject[] => {
-    if (isProductDetails(userPeriodTicket.products[0]) && !isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
+    if (isSchemeOperatorFlatFareTicket(userPeriodTicket) || isFlatFareTicket(userPeriodTicket)) {
+        return getFlatFareList(userPeriodTicket, ticketUserConcat);
+    } else {
         return getMultiServiceList(userPeriodTicket, ticketUserConcat);
     }
-
-    return getFlatFareList(userPeriodTicket, ticketUserConcat);
 };
 
 export const getHybridFareTable = (
@@ -574,7 +574,7 @@ export const getPreassignedFareProducts = (
 };
 
 export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
-    const timeIntervals = ticket.products.flatMap((product: { productDuration: string; productName: any }) => {
+    const timeIntervals = ticket.products.flatMap((product) => {
         if ('productDuration' in product && product.productDuration) {
             const amount = product.productDuration.split(' ')[0];
             const type = product.productDuration.split(' ')[1];

@@ -147,6 +147,11 @@ generate-p2p-period:
 
 generate-validate-p2p-period: generate-p2p-period validate-latest-file
 
+generate-flat-fare-geo-zone:
+	./scripts/trigger_netex_convertor.sh flatFareGeoZone
+
+generate-validate-flat-fare-geo-zone: generate-flat-fare-geo-zone validate-latest-file
+
 validate-netex:
 	./scripts/trigger_netex_validator.sh $(file)
 
