@@ -397,13 +397,19 @@ export interface CompanionInfo {
     proofDocuments?: string[];
 }
 
+export interface GroupPassengerTypeDb {
+    id: number;
+    name: string;
+    groupPassengerType: GroupPassengerTypeReference;
+}
+
 export interface CompanionReference {
     id: number;
     minNumber?: string;
     maxNumber: string;
 }
 
-export interface GroupPassengerTypeDb {
+export interface GroupPassengerTypeReference {
     name: string;
     maxGroupSize: string;
     companions: CompanionReference[];
@@ -413,6 +419,12 @@ export interface GroupPassengerType {
     name: string;
     maxGroupSize: string;
     companions: CompanionInfo[];
+}
+
+export interface FullGroupPassengerType {
+    id: number;
+    name: string;
+    groupPassengerType: GroupPassengerType;
 }
 
 export interface SinglePassengerType {

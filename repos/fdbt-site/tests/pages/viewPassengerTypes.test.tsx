@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import ViewPassengerTypes from '../../src/pages/viewPassengerTypes';
-import { GroupPassengerType, SinglePassengerType } from '../../src/interfaces';
+import { SinglePassengerType } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('view passenger types', () => {
@@ -48,9 +48,13 @@ describe('pages', () => {
             };
 
             const passengerTypeGroup = {
+                groupPassengerType: {
+                    name: 'family group',
+                    maxGroupSize: '3',
+                    companions: [adultCompanion, childCompanion],
+                },
                 name: 'family group',
-                maxGroupSize: '3',
-                companions: [adultCompanion, childCompanion],
+                id: 0,
             };
 
             const tree = shallow(
@@ -91,11 +95,15 @@ describe('pages', () => {
                 proofDocuments: ['studentCard'],
             };
 
-            const passengerTypeGroups: GroupPassengerType[] = [
+            const passengerTypeGroups = [
                 {
+                    id: 3,
                     name: 'family group',
-                    maxGroupSize: '3',
-                    companions: [adultCompanion, childCompanion],
+                    groupPassengerType: {
+                        name: 'family group',
+                        maxGroupSize: '3',
+                        companions: [adultCompanion, childCompanion],
+                    },
                 },
             ];
 

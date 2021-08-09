@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { BaseLayout } from '../layout/Layout';
-import { SinglePassengerType, NextPageContextWithSession, GroupPassengerType } from '../interfaces';
+import { SinglePassengerType, NextPageContextWithSession, FullGroupPassengerType } from '../interfaces';
 import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
@@ -12,7 +12,7 @@ const description = 'View and edit your passenger types.';
 interface PassengerTypeProps {
     csrfToken: string;
     singlePassengerTypes: SinglePassengerType[];
-    groupPassengerTypes: GroupPassengerType[];
+    groupPassengerTypes: FullGroupPassengerType[];
 }
 
 const ViewPassengerTypes = ({
@@ -203,7 +203,7 @@ const NoPassengerTypeGroups = ({ passengerTypesExist }: { passengerTypesExist: b
 interface PassengerTypeGroupProps {
     deleteActionHandler: (name: string, isGroup: boolean) => void;
     passengerTypesExist: boolean;
-    passengerTypeGroups: GroupPassengerType[];
+    passengerTypeGroups: FullGroupPassengerType[];
 }
 
 const PassengerTypeGroups = ({
@@ -225,7 +225,7 @@ const PassengerTypeGroups = ({
                                         <li className="actions__item">
                                             <a
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                                href="/managePassengerGroup"
+                                                href={`/managePassengerGroup?id=${passengerTypeGroup.id}`}
                                             >
                                                 Edit
                                             </a>
@@ -248,15 +248,12 @@ const PassengerTypeGroups = ({
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Max size:</span>{' '}
-                                    {passengerTypeGroup.maxGroupSize}
+                                    {passengerTypeGroup.groupPassengerType.maxGroupSize}
                                 </p>
 
-                                {passengerTypeGroup.companions.length
-                                    ? passengerTypeGroup.companions.map((companion) => (
-                                          <p
-                                              key={companion.passengerType}
-                                              className="govuk-body-s govuk-!-margin-bottom-2"
-                                          >
+                                {passengerTypeGroup.groupPassengerType.companions.length
+                                    ? passengerTypeGroup.groupPassengerType.companions.map((companion) => (
+                                          <p key={companion.name} className="govuk-body-s govuk-!-margin-bottom-2">
                                               <span className="govuk-!-font-weight-bold">
                                                   {sentenceCaseString(companion.name || companion.passengerType)}:
                                               </span>{' '}

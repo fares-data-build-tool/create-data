@@ -17,6 +17,7 @@ exports[`pages manage passenger types should render correctly 1`] = `
     <input
       name="id"
       type="hidden"
+      value={0}
     />
     <h1
       className="govuk-heading-l"
@@ -53,7 +54,7 @@ exports[`pages manage passenger types should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                defaultChecked={false}
+                defaultChecked={true}
                 id="adult"
                 name="type"
                 type="radio"
@@ -343,6 +344,7 @@ exports[`pages manage passenger types should render correctly 1`] = `
         <input
           aria-describedby="passenger_type_name_hint"
           className="govuk-input"
+          defaultValue=""
           id="passenger_type_name"
           name="name"
           type="text"
@@ -390,6 +392,7 @@ exports[`pages manage passenger types should render error state on name form gro
     <input
       name="id"
       type="hidden"
+      value={0}
     />
     <h1
       className="govuk-heading-l"
@@ -794,6 +797,7 @@ exports[`pages manage passenger types should render error state on passenger typ
     <input
       name="id"
       type="hidden"
+      value={0}
     />
     <h1
       className="govuk-heading-l"

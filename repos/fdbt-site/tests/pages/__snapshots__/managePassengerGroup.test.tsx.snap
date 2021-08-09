@@ -48,6 +48,11 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
         ]
       }
     />
+    <input
+      name="groupId"
+      type="hidden"
+      value={0}
+    />
     <h1
       className="govuk-heading-xl"
       id="group-page-heading"
@@ -199,8 +204,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  defaultValue=""
-                  id="minimum-passengers-Regular Senior"
+                  id="minimum-passengers-1"
                   name="minimumPassengers1"
                 />
               </div>
@@ -215,12 +219,36 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  defaultValue=""
-                  id="maximum-passengers-Regular Senior"
+                  id="maximum-passengers-1"
                   name="maximumPassengers1"
                 />
               </div>
             </div>
+            <input
+              name="Regular Senior-type"
+              type="hidden"
+              value="senior"
+            />
+            <input
+              name="Regular Senior-age-range-min"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="Regular Senior-age-range-max"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="Regular Senior-proof-docs"
+              type="hidden"
+              value="[]"
+            />
+            <input
+              name="Regular Senior-id"
+              type="hidden"
+              value="1"
+            />
             <div
               className="govuk-checkboxes__item"
               key="2"
@@ -266,8 +294,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  defaultValue=""
-                  id="minimum-passengers-Regular infant"
+                  id="minimum-passengers-2"
                   name="minimumPassengers2"
                 />
               </div>
@@ -282,12 +309,36 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
-                  defaultValue=""
-                  id="maximum-passengers-Regular infant"
+                  id="maximum-passengers-2"
                   name="maximumPassengers2"
                 />
               </div>
             </div>
+            <input
+              name="Regular infant-type"
+              type="hidden"
+              value="infant"
+            />
+            <input
+              name="Regular infant-age-range-min"
+              type="hidden"
+              value="1"
+            />
+            <input
+              name="Regular infant-age-range-max"
+              type="hidden"
+              value="3"
+            />
+            <input
+              name="Regular infant-proof-docs"
+              type="hidden"
+              value="[]"
+            />
+            <input
+              name="Regular infant-id"
+              type="hidden"
+              value="2"
+            />
           </div>
         </FormElementWrapper>
       </fieldset>
@@ -348,7 +399,732 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
       className="govuk-button"
       id="continue-button"
       type="submit"
-      value="Continue"
+      value="Add passenger group"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
+<TwoThirdsLayout
+  description="Manage Passenger Group page of the Create Fares Data Service"
+  errors={Array []}
+  title="Manage Passenger Group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/managePassengerGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <input
+      name="groupId"
+      type="hidden"
+      value={5}
+    />
+    <h1
+      className="govuk-heading-xl"
+      id="group-page-heading"
+    >
+      Provide passenger group details
+    </h1>
+    <div
+      className="govuk-form-group"
+      id="max-group-size-header"
+    >
+      <label
+        htmlFor="max-group-size"
+      >
+        <h1
+          className="govuk-heading-m"
+          id="group-size-heading"
+        >
+          How many passengers can use this ticket at one time?
+        </h1>
+      </label>
+      <p
+        className="govuk-hint"
+        id="group-size-example"
+      >
+        We need to know the maximum size of the group of passengers that can use this ticket at one time. Example: Up to 5 passengers at a time would require an input of 5
+      </p>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="max-group-size"
+        errors={Array []}
+      >
+        <input
+          className="govuk-input govuk-input--width-2"
+          defaultValue="4"
+          id="max-group-size"
+          name="maxGroupSize"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="passenger-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="passenger-type-page-heading"
+          >
+            Which type of passengers can use this ticket?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="passenger-type-hint"
+        >
+          Select the passenger types included in your group ticket.
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-checkboxes--error"
+          errorId="passenger-type-0"
+          errors={Array []}
+        >
+          <div
+            className="govuk-checkboxes"
+            data-module="govuk-checkboxes"
+          >
+            <div
+              className="govuk-checkboxes__item"
+              key="1"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                data-aria-controls="conditional-input-0"
+                defaultChecked={false}
+                id="passenger-type-0"
+                name="passengerTypes"
+                type="checkbox"
+                value={1}
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-0"
+              >
+                Regular Senior
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+              id="conditional-input-0"
+            >
+              <label
+                htmlFor="maximum-passengers-Regular Senior"
+              >
+                <h1
+                  className="govuk-heading-s"
+                  id="individual-limit-heading"
+                >
+                  We need to know how many passengers can use this at one time
+                </h1>
+              </label>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="minimum-passengers-Regular Senior"
+                >
+                  Minimum (optional)
+                </label>
+                <input
+                  className="govuk-input govuk-!-width-one-third"
+                  id="minimum-passengers-1"
+                  name="minimumPassengers1"
+                />
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="maximum-passengers-Regular Senior"
+                >
+                  Maximum (required)
+                </label>
+                <input
+                  className="govuk-input govuk-!-width-one-third"
+                  id="maximum-passengers-1"
+                  name="maximumPassengers1"
+                />
+              </div>
+            </div>
+            <input
+              name="Regular Senior-type"
+              type="hidden"
+              value="senior"
+            />
+            <input
+              name="Regular Senior-age-range-min"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="Regular Senior-age-range-max"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="Regular Senior-proof-docs"
+              type="hidden"
+              value="[]"
+            />
+            <input
+              name="Regular Senior-id"
+              type="hidden"
+              value="1"
+            />
+            <div
+              className="govuk-checkboxes__item"
+              key="2"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                data-aria-controls="conditional-input-1"
+                defaultChecked={false}
+                id="passenger-type-1"
+                name="passengerTypes"
+                type="checkbox"
+                value={2}
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-1"
+              >
+                Regular infant
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+              id="conditional-input-1"
+            >
+              <label
+                htmlFor="maximum-passengers-Regular infant"
+              >
+                <h1
+                  className="govuk-heading-s"
+                  id="individual-limit-heading"
+                >
+                  We need to know how many passengers can use this at one time
+                </h1>
+              </label>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="minimum-passengers-Regular infant"
+                >
+                  Minimum (optional)
+                </label>
+                <input
+                  className="govuk-input govuk-!-width-one-third"
+                  id="minimum-passengers-2"
+                  name="minimumPassengers2"
+                />
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="maximum-passengers-Regular infant"
+                >
+                  Maximum (required)
+                </label>
+                <input
+                  className="govuk-input govuk-!-width-one-third"
+                  id="maximum-passengers-2"
+                  name="maximumPassengers2"
+                />
+              </div>
+            </div>
+            <input
+              name="Regular infant-type"
+              type="hidden"
+              value="infant"
+            />
+            <input
+              name="Regular infant-age-range-min"
+              type="hidden"
+              value="1"
+            />
+            <input
+              name="Regular infant-age-range-max"
+              type="hidden"
+              value="3"
+            />
+            <input
+              name="Regular infant-proof-docs"
+              type="hidden"
+              value="[]"
+            />
+            <input
+              name="Regular infant-id"
+              type="hidden"
+              value="2"
+            />
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <div
+      className="govuk-form-group"
+      id="passenger-group-name"
+    >
+      <label
+        htmlFor="passenger-group-name"
+      >
+        <h1
+          className="govuk-heading-m"
+          id="passenger-group-name-heading"
+        >
+          Provide a name for your group
+        </h1>
+      </label>
+      <p
+        className="govuk-hint"
+        id="group-name-hint"
+      >
+        50 characters maximum
+      </p>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="passenger-group-name"
+        errors={Array []}
+      >
+        <input
+          className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+          defaultValue="the best group"
+          id="passenger-group-name"
+          maxLength={50}
+          name="passengerGroupName"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Update passenger group"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages managePassengerGroup should render correctly in edit mode with errors 1`] = `
+<TwoThirdsLayout
+  description="Manage Passenger Group page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Minimum amount cannot be greater than 4",
+        "id": "minimum-passengers-Regular Senior",
+        "userInput": "5",
+      },
+      Object {
+        "errorMessage": "Maximum amount is required",
+        "id": "minimum-passengers-Regular Senior",
+      },
+      Object {
+        "errorMessage": "Enter a group name of up to 50 characters",
+        "id": "passenger-group-name",
+        "userInput": "",
+      },
+    ]
+  }
+  title="Manage Passenger Group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/managePassengerGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Minimum amount cannot be greater than 4",
+            "id": "minimum-passengers-Regular Senior",
+            "userInput": "5",
+          },
+          Object {
+            "errorMessage": "Maximum amount is required",
+            "id": "minimum-passengers-Regular Senior",
+          },
+          Object {
+            "errorMessage": "Enter a group name of up to 50 characters",
+            "id": "passenger-group-name",
+            "userInput": "",
+          },
+        ]
+      }
+    />
+    <input
+      name="groupId"
+      type="hidden"
+      value={5}
+    />
+    <h1
+      className="govuk-heading-xl"
+      id="group-page-heading"
+    >
+      Provide passenger group details
+    </h1>
+    <div
+      className="govuk-form-group"
+      id="max-group-size-header"
+    >
+      <label
+        htmlFor="max-group-size"
+      >
+        <h1
+          className="govuk-heading-m"
+          id="group-size-heading"
+        >
+          How many passengers can use this ticket at one time?
+        </h1>
+      </label>
+      <p
+        className="govuk-hint"
+        id="group-size-example"
+      >
+        We need to know the maximum size of the group of passengers that can use this ticket at one time. Example: Up to 5 passengers at a time would require an input of 5
+      </p>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="max-group-size"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Minimum amount cannot be greater than 4",
+              "id": "minimum-passengers-Regular Senior",
+              "userInput": "5",
+            },
+            Object {
+              "errorMessage": "Maximum amount is required",
+              "id": "minimum-passengers-Regular Senior",
+            },
+            Object {
+              "errorMessage": "Enter a group name of up to 50 characters",
+              "id": "passenger-group-name",
+              "userInput": "",
+            },
+          ]
+        }
+      >
+        <input
+          className="govuk-input govuk-input--width-2"
+          defaultValue="4"
+          id="max-group-size"
+          name="maxGroupSize"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="passenger-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="passenger-type-page-heading"
+          >
+            Which type of passengers can use this ticket?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="passenger-type-hint"
+        >
+          Select the passenger types included in your group ticket.
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-checkboxes--error"
+          errorId="passenger-type-0"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Minimum amount cannot be greater than 4",
+                "id": "minimum-passengers-Regular Senior",
+                "userInput": "5",
+              },
+              Object {
+                "errorMessage": "Maximum amount is required",
+                "id": "minimum-passengers-Regular Senior",
+              },
+              Object {
+                "errorMessage": "Enter a group name of up to 50 characters",
+                "id": "passenger-group-name",
+                "userInput": "",
+              },
+            ]
+          }
+        >
+          <div
+            className="govuk-checkboxes"
+            data-module="govuk-checkboxes"
+          >
+            <div
+              className="govuk-checkboxes__item"
+              key="1"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                data-aria-controls="conditional-input-0"
+                defaultChecked={false}
+                id="passenger-type-0"
+                name="passengerTypes"
+                type="checkbox"
+                value={1}
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-0"
+              >
+                Regular Senior
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+              id="conditional-input-0"
+            >
+              <label
+                htmlFor="maximum-passengers-Regular Senior"
+              >
+                <h1
+                  className="govuk-heading-s"
+                  id="individual-limit-heading"
+                >
+                  We need to know how many passengers can use this at one time
+                </h1>
+              </label>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="minimum-passengers-Regular Senior"
+                >
+                  Minimum (optional)
+                </label>
+                <input
+                  className="govuk-input govuk-!-width-one-third"
+                  id="minimum-passengers-1"
+                  name="minimumPassengers1"
+                />
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="maximum-passengers-Regular Senior"
+                >
+                  Maximum (required)
+                </label>
+                <input
+                  className="govuk-input govuk-!-width-one-third"
+                  id="maximum-passengers-1"
+                  name="maximumPassengers1"
+                />
+              </div>
+            </div>
+            <input
+              name="Regular Senior-type"
+              type="hidden"
+              value="senior"
+            />
+            <input
+              name="Regular Senior-age-range-min"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="Regular Senior-age-range-max"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="Regular Senior-proof-docs"
+              type="hidden"
+              value="[]"
+            />
+            <input
+              name="Regular Senior-id"
+              type="hidden"
+              value="1"
+            />
+            <div
+              className="govuk-checkboxes__item"
+              key="2"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                data-aria-controls="conditional-input-1"
+                defaultChecked={false}
+                id="passenger-type-1"
+                name="passengerTypes"
+                type="checkbox"
+                value={2}
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="passenger-type-1"
+              >
+                Regular infant
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+              id="conditional-input-1"
+            >
+              <label
+                htmlFor="maximum-passengers-Regular infant"
+              >
+                <h1
+                  className="govuk-heading-s"
+                  id="individual-limit-heading"
+                >
+                  We need to know how many passengers can use this at one time
+                </h1>
+              </label>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="minimum-passengers-Regular infant"
+                >
+                  Minimum (optional)
+                </label>
+                <input
+                  className="govuk-input govuk-!-width-one-third"
+                  id="minimum-passengers-2"
+                  name="minimumPassengers2"
+                />
+              </div>
+              <div
+                className="govuk-form-group"
+              >
+                <label
+                  className="govuk-label"
+                  htmlFor="maximum-passengers-Regular infant"
+                >
+                  Maximum (required)
+                </label>
+                <input
+                  className="govuk-input govuk-!-width-one-third"
+                  id="maximum-passengers-2"
+                  name="maximumPassengers2"
+                />
+              </div>
+            </div>
+            <input
+              name="Regular infant-type"
+              type="hidden"
+              value="infant"
+            />
+            <input
+              name="Regular infant-age-range-min"
+              type="hidden"
+              value="1"
+            />
+            <input
+              name="Regular infant-age-range-max"
+              type="hidden"
+              value="3"
+            />
+            <input
+              name="Regular infant-proof-docs"
+              type="hidden"
+              value="[]"
+            />
+            <input
+              name="Regular infant-id"
+              type="hidden"
+              value="2"
+            />
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <div
+      className="govuk-form-group govuk-form-group--error"
+      id="passenger-group-name"
+    >
+      <label
+        htmlFor="passenger-group-name"
+      >
+        <h1
+          className="govuk-heading-m"
+          id="passenger-group-name-heading"
+        >
+          Provide a name for your group
+        </h1>
+      </label>
+      <p
+        className="govuk-hint"
+        id="group-name-hint"
+      >
+        50 characters maximum
+      </p>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="passenger-group-name"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Minimum amount cannot be greater than 4",
+              "id": "minimum-passengers-Regular Senior",
+              "userInput": "5",
+            },
+            Object {
+              "errorMessage": "Maximum amount is required",
+              "id": "minimum-passengers-Regular Senior",
+            },
+            Object {
+              "errorMessage": "Enter a group name of up to 50 characters",
+              "id": "passenger-group-name",
+              "userInput": "",
+            },
+          ]
+        }
+      >
+        <input
+          className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+          defaultValue="the best group"
+          id="passenger-group-name"
+          maxLength={50}
+          name="passengerGroupName"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Update passenger group"
     />
   </CsrfForm>
 </TwoThirdsLayout>
@@ -367,6 +1143,10 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
   >
     <ErrorSummary
       errors={Array []}
+    />
+    <input
+      name="groupId"
+      type="hidden"
     />
     <h1
       className="govuk-heading-xl"
@@ -486,7 +1266,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 <input
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
-                  id="minimum-passengers-Normal adult"
+                  id="minimum-passengers-1"
                   name="minimumPassengers1"
                 />
               </div>
@@ -502,11 +1282,36 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 <input
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
-                  id="maximum-passengers-Normal adult"
+                  id="maximum-passengers-1"
                   name="maximumPassengers1"
                 />
               </div>
             </div>
+            <input
+              name="Normal adult-type"
+              type="hidden"
+              value="adult"
+            />
+            <input
+              name="Normal adult-age-range-min"
+              type="hidden"
+              value="18"
+            />
+            <input
+              name="Normal adult-age-range-max"
+              type="hidden"
+              value="75"
+            />
+            <input
+              name="Normal adult-proof-docs"
+              type="hidden"
+              value="[]"
+            />
+            <input
+              name="Normal adult-id"
+              type="hidden"
+              value="1"
+            />
             <div
               className="govuk-checkboxes__item"
               key="2"
@@ -553,7 +1358,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 <input
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
-                  id="minimum-passengers-Normal child"
+                  id="minimum-passengers-2"
                   name="minimumPassengers2"
                 />
               </div>
@@ -569,11 +1374,36 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 <input
                   className="govuk-input govuk-!-width-one-third"
                   defaultValue=""
-                  id="maximum-passengers-Normal child"
+                  id="maximum-passengers-2"
                   name="maximumPassengers2"
                 />
               </div>
             </div>
+            <input
+              name="Normal child-type"
+              type="hidden"
+              value="child"
+            />
+            <input
+              name="Normal child-age-range-min"
+              type="hidden"
+              value="5"
+            />
+            <input
+              name="Normal child-age-range-max"
+              type="hidden"
+              value="13"
+            />
+            <input
+              name="Normal child-proof-docs"
+              type="hidden"
+              value="[]"
+            />
+            <input
+              name="Normal child-id"
+              type="hidden"
+              value="2"
+            />
           </div>
         </FormElementWrapper>
       </fieldset>
@@ -617,7 +1447,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
       className="govuk-button"
       id="continue-button"
       type="submit"
-      value="Continue"
+      value="Add passenger group"
     />
   </CsrfForm>
 </TwoThirdsLayout>
