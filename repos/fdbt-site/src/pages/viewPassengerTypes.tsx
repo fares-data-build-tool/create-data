@@ -6,6 +6,7 @@ import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
+import UnableToDeletePopup from '../components/UnableToDeletePopup';
 import { updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Passenger Types - Create Fares Data Service';
@@ -22,14 +23,15 @@ const ViewPassengerTypes = ({
     groupPassengerTypes,
     csrfToken,
 }: PassengerTypeProps): ReactElement => {
-    const [popUpState, setPopUpState] = useState({
-        isVisible: false,
-        passengerTypeName: '',
-        isGroup: false,
-    });
+    const [popUpState, setPopUpState] =
+        useState<{ isVisible: boolean; passengerTypeName: string; isGroup: boolean; groupsInUse?: string[] }>();
 
     const deleteActionHandler = (name: string, isGroup: boolean): void => {
-        setPopUpState({ ...popUpState, isVisible: true, passengerTypeName: name, isGroup: isGroup });
+        const groupsInUse = groupPassengerTypes.flatMap((group) =>
+            group.groupPassengerType.companions.some((individual) => individual.name === name) ? group.name : [],
+        );
+
+        setPopUpState({ ...popUpState, isVisible: true, passengerTypeName: name, isGroup, groupsInUse });
     };
 
     const cancelActionHandler = (): void => {
@@ -71,13 +73,20 @@ const ViewPassengerTypes = ({
                                 />
                             )}
 
-                            <DeleteConfirmationPopup
-                                isVisible={popUpState.isVisible}
-                                csrfToken={csrfToken}
-                                isGroup={popUpState.isGroup}
-                                passengerTypeName={popUpState.passengerTypeName}
-                                cancelActionHandler={cancelActionHandler}
-                            />
+                            {popUpState &&
+                                (popUpState.groupsInUse?.length ? (
+                                    <UnableToDeletePopup
+                                        {...popUpState}
+                                        csrfToken={csrfToken}
+                                        cancelActionHandler={cancelActionHandler}
+                                    />
+                                ) : (
+                                    <DeleteConfirmationPopup
+                                        {...popUpState}
+                                        csrfToken={csrfToken}
+                                        cancelActionHandler={cancelActionHandler}
+                                    />
+                                ))}
                         </div>
                     </div>
                 </main>
@@ -138,9 +147,7 @@ const IndividualPassengerTypes = ({
                                     </ul>
                                 </div>
 
-                                <h4 className="govuk-!-padding-bottom-4">
-                                    {sentenceCaseString(singlePassengerType.name)}
-                                </h4>
+                                <h4 className="govuk-!-padding-bottom-4">{singlePassengerType.name}</h4>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Passenger type:</span>{' '}

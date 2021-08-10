@@ -989,6 +989,7 @@ export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string):
                                 ...individual.passengerType,
                                 passengerType: individual.passengerType.passengerType,
                                 name: individual.name,
+                                id: individual.id,
                             };
                         }),
                     ),
