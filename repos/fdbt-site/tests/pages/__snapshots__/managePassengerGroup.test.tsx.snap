@@ -204,6 +204,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="minimum-passengers-1"
                   name="minimumPassengers1"
                 />
@@ -219,36 +220,12 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="maximum-passengers-1"
                   name="maximumPassengers1"
                 />
               </div>
             </div>
-            <input
-              name="Regular Senior-type"
-              type="hidden"
-              value="senior"
-            />
-            <input
-              name="Regular Senior-age-range-min"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="Regular Senior-age-range-max"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="Regular Senior-proof-docs"
-              type="hidden"
-              value="[]"
-            />
-            <input
-              name="Regular Senior-id"
-              type="hidden"
-              value="1"
-            />
             <div
               className="govuk-checkboxes__item"
               key="2"
@@ -294,6 +271,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="minimum-passengers-2"
                   name="minimumPassengers2"
                 />
@@ -309,36 +287,12 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="maximum-passengers-2"
                   name="maximumPassengers2"
                 />
               </div>
             </div>
-            <input
-              name="Regular infant-type"
-              type="hidden"
-              value="infant"
-            />
-            <input
-              name="Regular infant-age-range-min"
-              type="hidden"
-              value="1"
-            />
-            <input
-              name="Regular infant-age-range-max"
-              type="hidden"
-              value="3"
-            />
-            <input
-              name="Regular infant-proof-docs"
-              type="hidden"
-              value="[]"
-            />
-            <input
-              name="Regular infant-id"
-              type="hidden"
-              value="2"
-            />
           </div>
         </FormElementWrapper>
       </fieldset>
@@ -541,6 +495,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="minimum-passengers-1"
                   name="minimumPassengers1"
                 />
@@ -556,36 +511,12 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="maximum-passengers-1"
                   name="maximumPassengers1"
                 />
               </div>
             </div>
-            <input
-              name="Regular Senior-type"
-              type="hidden"
-              value="senior"
-            />
-            <input
-              name="Regular Senior-age-range-min"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="Regular Senior-age-range-max"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="Regular Senior-proof-docs"
-              type="hidden"
-              value="[]"
-            />
-            <input
-              name="Regular Senior-id"
-              type="hidden"
-              value="1"
-            />
             <div
               className="govuk-checkboxes__item"
               key="2"
@@ -631,6 +562,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="minimum-passengers-2"
                   name="minimumPassengers2"
                 />
@@ -646,36 +578,12 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="maximum-passengers-2"
                   name="maximumPassengers2"
                 />
               </div>
             </div>
-            <input
-              name="Regular infant-type"
-              type="hidden"
-              value="infant"
-            />
-            <input
-              name="Regular infant-age-range-min"
-              type="hidden"
-              value="1"
-            />
-            <input
-              name="Regular infant-age-range-max"
-              type="hidden"
-              value="3"
-            />
-            <input
-              name="Regular infant-proof-docs"
-              type="hidden"
-              value="[]"
-            />
-            <input
-              name="Regular infant-id"
-              type="hidden"
-              value="2"
-            />
           </div>
         </FormElementWrapper>
       </fieldset>
@@ -929,6 +837,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="minimum-passengers-1"
                   name="minimumPassengers1"
                 />
@@ -944,36 +853,12 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="maximum-passengers-1"
                   name="maximumPassengers1"
                 />
               </div>
             </div>
-            <input
-              name="Regular Senior-type"
-              type="hidden"
-              value="senior"
-            />
-            <input
-              name="Regular Senior-age-range-min"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="Regular Senior-age-range-max"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="Regular Senior-proof-docs"
-              type="hidden"
-              value="[]"
-            />
-            <input
-              name="Regular Senior-id"
-              type="hidden"
-              value="1"
-            />
             <div
               className="govuk-checkboxes__item"
               key="2"
@@ -1019,6 +904,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="minimum-passengers-2"
                   name="minimumPassengers2"
                 />
@@ -1034,36 +920,12 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  defaultValue=""
                   id="maximum-passengers-2"
                   name="maximumPassengers2"
                 />
               </div>
             </div>
-            <input
-              name="Regular infant-type"
-              type="hidden"
-              value="infant"
-            />
-            <input
-              name="Regular infant-age-range-min"
-              type="hidden"
-              value="1"
-            />
-            <input
-              name="Regular infant-age-range-max"
-              type="hidden"
-              value="3"
-            />
-            <input
-              name="Regular infant-proof-docs"
-              type="hidden"
-              value="[]"
-            />
-            <input
-              name="Regular infant-id"
-              type="hidden"
-              value="2"
-            />
           </div>
         </FormElementWrapper>
       </fieldset>
@@ -1287,31 +1149,6 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 />
               </div>
             </div>
-            <input
-              name="Normal adult-type"
-              type="hidden"
-              value="adult"
-            />
-            <input
-              name="Normal adult-age-range-min"
-              type="hidden"
-              value="18"
-            />
-            <input
-              name="Normal adult-age-range-max"
-              type="hidden"
-              value="75"
-            />
-            <input
-              name="Normal adult-proof-docs"
-              type="hidden"
-              value="[]"
-            />
-            <input
-              name="Normal adult-id"
-              type="hidden"
-              value="1"
-            />
             <div
               className="govuk-checkboxes__item"
               key="2"
@@ -1379,31 +1216,6 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 />
               </div>
             </div>
-            <input
-              name="Normal child-type"
-              type="hidden"
-              value="child"
-            />
-            <input
-              name="Normal child-age-range-min"
-              type="hidden"
-              value="5"
-            />
-            <input
-              name="Normal child-age-range-max"
-              type="hidden"
-              value="13"
-            />
-            <input
-              name="Normal child-proof-docs"
-              type="hidden"
-              value="[]"
-            />
-            <input
-              name="Normal child-id"
-              type="hidden"
-              value="2"
-            />
           </div>
         </FormElementWrapper>
       </fieldset>
