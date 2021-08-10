@@ -664,7 +664,7 @@ export const upsertSinglePassengerType = async (
         const updateQuery = `UPDATE passengerType
                              SET contents = ?
                              WHERE name = ? 
-                             AND isGroup  = ?
+                             AND isGroup = ?
                              AND nocCode = ?`;
         const meta = await executeQuery<ResultSetHeader>(updateQuery, [contents, name, false, nocCode]);
         if (meta.affectedRows > 1) {
@@ -690,13 +690,14 @@ export const updateSinglePassengerType = async (noc: string, passengerType: Sing
     try {
         const updateQuery = `UPDATE passengerType
                              SET name = ?, contents = ?
-                             WHERE id = ? AND nocCode = ?`;
+                             WHERE id = ? AND nocCode = ? AND isGroup = ?`;
 
         const meta = await executeQuery<ResultSetHeader>(updateQuery, [
             passengerType.name,
             contents,
             passengerType.id,
             noc,
+            false,
         ]);
 
         if (meta.affectedRows !== 1) {

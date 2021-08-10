@@ -39,7 +39,7 @@ export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassenge
     });
 
     return {
-        id: id,
+        id,
         name: groupName,
         groupPassengerType: { name: groupName, maxGroupSize, companions },
     };
