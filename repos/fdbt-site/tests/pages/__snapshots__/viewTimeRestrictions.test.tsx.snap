@@ -1,5 +1,378 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pages time restrictions inner component renders normally when time restrictions are present 1`] = `
+<div
+  className="govuk-heading-m"
+>
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
+      key="Restriction 1"
+    >
+      <div
+        className="card"
+      >
+        <div
+          className="card__body time-restriction"
+        >
+          <div
+            className="card__actions"
+          >
+            <ul
+              className="actions__list"
+            >
+              <li
+                className="actions__item"
+              >
+                <a
+                  className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
+                  href="/viewTimeRestrictions"
+                >
+                  Edit
+                </a>
+              </li>
+              <li
+                className="actions__item"
+              >
+                <a
+                  className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                  href="/viewTimeRestrictions"
+                >
+                  Delete
+                </a>
+              </li>
+            </ul>
+          </div>
+          <h4
+            className="time-restriction-title govuk-!-padding-bottom-4"
+          >
+            Restriction 1
+          </h4>
+          <ul
+            className="day-restrictions-list"
+          >
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="monday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Mon
+              </span>
+               
+              <span
+                className="day-restriction"
+              >
+                04:00–23:00
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="tuesday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Tue
+              </span>
+               
+              <span
+                className="day-restriction"
+              >
+                04:00–
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="wednesday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Wed
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="thursday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Thu
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="friday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Fri
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="saturday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Sat
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="sunday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Sun
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="bankHoliday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                BH
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div
+      className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
+      key="Restriction 2"
+    >
+      <div
+        className="card"
+      >
+        <div
+          className="card__body time-restriction"
+        >
+          <div
+            className="card__actions"
+          >
+            <ul
+              className="actions__list"
+            >
+              <li
+                className="actions__item"
+              >
+                <a
+                  className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
+                  href="/viewTimeRestrictions"
+                >
+                  Edit
+                </a>
+              </li>
+              <li
+                className="actions__item"
+              >
+                <a
+                  className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                  href="/viewTimeRestrictions"
+                >
+                  Delete
+                </a>
+              </li>
+            </ul>
+          </div>
+          <h4
+            className="time-restriction-title govuk-!-padding-bottom-4"
+          >
+            Restriction 2
+          </h4>
+          <ul
+            className="day-restrictions-list"
+          >
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="monday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Mon
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="tuesday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Tue
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="wednesday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Wed
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="thursday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Thu
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="friday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Fri
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="saturday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Sat
+              </span>
+               
+              <span
+                className="day-restriction not-valid"
+              >
+                Not valid
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="sunday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                Sun
+              </span>
+               
+              <span
+                className="day-restriction"
+              >
+                04:00–12:00, 13:00–22:00
+              </span>
+            </li>
+            <li
+              className="govuk-body-s govuk-!-margin-bottom-2"
+              key="bankHoliday"
+            >
+              <span
+                className="day govuk-!-font-weight-bold"
+              >
+                BH
+              </span>
+               
+              <span
+                className="day-restriction"
+              >
+                Valid all day
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    className="govuk-button"
+    data-module="govuk-button"
+  >
+    Add a time restriction
+  </button>
+</div>
+`;
+
 exports[`pages view time restrictions should render correctly when no individual or group time restrictions 1`] = `
 <BaseLayout
   description="View and edit your time restrictions."
