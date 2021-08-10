@@ -13,9 +13,7 @@ describe('pages', () => {
                 },
             };
 
-            const tree = shallow(
-                <ManagePassengerTypes isInEditMode={false} csrfToken={''} errors={[]} inputs={inputs} />,
-            );
+            const tree = shallow(<ManagePassengerTypes editMode={false} csrfToken={''} errors={[]} inputs={inputs} />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -34,7 +32,7 @@ describe('pages', () => {
             };
 
             const tree = shallow(
-                <ManagePassengerTypes isInEditMode={false} csrfToken={''} errors={errors} inputs={inputs} />,
+                <ManagePassengerTypes editMode={false} csrfToken={''} errors={errors} inputs={inputs} />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -55,7 +53,7 @@ describe('pages', () => {
             };
 
             const tree = shallow(
-                <ManagePassengerTypes isInEditMode={false} csrfToken={''} errors={errors} inputs={inputs} />,
+                <ManagePassengerTypes editMode={false} csrfToken={''} errors={errors} inputs={inputs} />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -73,9 +71,7 @@ describe('pages', () => {
                 },
             };
 
-            const tree = shallow(
-                <ManagePassengerTypes isInEditMode={false} csrfToken={''} errors={[]} inputs={inputs} />,
-            );
+            const tree = shallow(<ManagePassengerTypes editMode={false} csrfToken={''} errors={[]} inputs={inputs} />);
 
             expect(tree).toMatchSnapshot();
         });

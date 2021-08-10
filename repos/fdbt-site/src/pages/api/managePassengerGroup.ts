@@ -1,4 +1,4 @@
-import { updateGroupPassengerType } from './../../data/auroradb';
+import { updateGroupPassengerType } from '../../data/auroradb';
 import { isArray } from 'lodash';
 import { NextApiResponse } from 'next';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../constants/attributes';
@@ -9,7 +9,11 @@ import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils';
 import { checkIntegerIsValid, removeExcessWhiteSpace } from './apiUtils/validator';
 
 export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerTypeDb => {
-    const id = req.body.groupId;
+    const id = req.body.groupId && Number(req.body.groupId);
+    if (id && !Number.isInteger(id)) {
+        throw Error(`Received invalid id for passenger group [${req.body.groupId}]`);
+    }
+
     const maxGroupSize = removeExcessWhiteSpace(req.body.maxGroupSize);
     const groupName = removeExcessWhiteSpace(req.body.passengerGroupName);
     const passengerTypeIds: string[] = !req.body.passengerTypes
@@ -35,7 +39,7 @@ export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassenge
     });
 
     return {
-        id,
+        id: id,
         name: groupName,
         groupPassengerType: { name: groupName, maxGroupSize, companions },
     };
@@ -116,7 +120,7 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
     // checks to see if the duplicate name exists
     // OR
     // editMode is on and there is only one group with the same name, and it is the one being edited
-    if ((groupNameCheck && !editMode) || (editMode && groupNameCheck && groupNameCheck.id !== Number(userInput.id))) {
+    if ((groupNameCheck && !editMode) || (editMode && groupNameCheck && groupNameCheck.id !== userInput.id)) {
         errors.push({
             errorMessage: 'There is already a group with this name. Choose another',
             id: 'passenger-group-name',
