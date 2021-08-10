@@ -24,7 +24,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!Object.keys(matchingFareZones).find((fareZone) => fareZone !== 'notApplicable')) {
             const selectedStagesList: string[][] = getSelectedStages(req);
             const matchingAttributeError: MatchingWithErrors = {
-                error: true,
+                error: 'No fare stages have been assigned, assign each fare stage to a stop',
                 selectedFareStages: selectedStagesList,
             };
             updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeError);

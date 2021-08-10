@@ -80,10 +80,12 @@ const NoTimeRestrictions = (): ReactElement => {
     );
 };
 
-const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeRestriction[] }): ReactElement => (
+export const TimeRestrictions = ({
+    timeRestrictions,
+}: {
+    timeRestrictions: PremadeTimeRestriction[];
+}): ReactElement => (
     <div className="govuk-heading-m">
-        <h3>Individual</h3>
-
         <div className="govuk-grid-row">
             {timeRestrictions.map((timeRestriction) => (
                 <div key={timeRestriction.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">

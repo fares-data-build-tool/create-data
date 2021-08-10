@@ -57,22 +57,26 @@ exports[`pages view passenger types should render correctly when groups and indi
             passengerTypeGroups={
               Array [
                 Object {
-                  "companions": Array [
-                    Object {
-                      "maxNumber": "2",
-                      "passengerType": "adult",
-                    },
-                    Object {
-                      "ageRangeMax": "16",
-                      "ageRangeMin": "4",
-                      "maxNumber": "1",
-                      "passengerType": "child",
-                      "proofDocuments": Array [
-                        "studentCard",
-                      ],
-                    },
-                  ],
-                  "maxGroupSize": "3",
+                  "groupPassengerType": Object {
+                    "companions": Array [
+                      Object {
+                        "maxNumber": "2",
+                        "passengerType": "adult",
+                      },
+                      Object {
+                        "ageRangeMax": "16",
+                        "ageRangeMin": "4",
+                        "maxNumber": "1",
+                        "passengerType": "child",
+                        "proofDocuments": Array [
+                          "studentCard",
+                        ],
+                      },
+                    ],
+                    "maxGroupSize": "3",
+                    "name": "family group",
+                  },
+                  "id": 3,
                   "name": "family group",
                 },
               ]
@@ -252,23 +256,27 @@ exports[`pages view passenger types should render correctly when only passenger 
             passengerTypeGroups={
               Array [
                 Object {
-                  "companions": Array [
-                    Object {
-                      "maxNumber": "2",
-                      "passengerType": "adult",
-                    },
-                    Object {
-                      "ageRangeMax": "16",
-                      "ageRangeMin": "4",
-                      "maxNumber": "1",
-                      "minNumber": "0",
-                      "passengerType": "child",
-                      "proofDocuments": Array [
-                        "studentCard",
-                      ],
-                    },
-                  ],
-                  "maxGroupSize": "3",
+                  "groupPassengerType": Object {
+                    "companions": Array [
+                      Object {
+                        "maxNumber": "2",
+                        "passengerType": "adult",
+                      },
+                      Object {
+                        "ageRangeMax": "16",
+                        "ageRangeMin": "4",
+                        "maxNumber": "1",
+                        "minNumber": "0",
+                        "passengerType": "child",
+                        "proofDocuments": Array [
+                          "studentCard",
+                        ],
+                      },
+                    ],
+                    "maxGroupSize": "3",
+                    "name": "family group",
+                  },
+                  "id": 0,
                   "name": "family group",
                 },
               ]
