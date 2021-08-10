@@ -5,11 +5,12 @@ interface PopUpProps {
     isVisible: boolean;
     isGroup: boolean;
     passengerTypeName: string;
+    passengerTypeId: number;
     cancelActionHandler: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const deleteUrl = (isGroup: boolean, nameToDelete: string, csrfToken: string): string => {
-    return `/api/deletePassenger?name=${nameToDelete}&isGroup=${isGroup}&_csrf=${csrfToken}`;
+const deleteUrl = (isGroup: boolean, idToDelete: number, csrfToken: string): string => {
+    return `/api/deletePassenger?id=${idToDelete}&isGroup=${isGroup}&_csrf=${csrfToken}`;
 };
 
 const DeleteConfirmationPopup = ({
@@ -17,6 +18,7 @@ const DeleteConfirmationPopup = ({
     isVisible,
     isGroup,
     passengerTypeName,
+    passengerTypeId,
     cancelActionHandler,
 }: PopUpProps): ReactElement | null => {
     return isVisible ? (
@@ -36,7 +38,7 @@ const DeleteConfirmationPopup = ({
 
                     <button
                         className="govuk-button govuk-button--warning"
-                        formAction={deleteUrl(isGroup, passengerTypeName, csrfToken)}
+                        formAction={deleteUrl(isGroup, passengerTypeId, csrfToken)}
                         formMethod="post"
                         type="submit"
                     >

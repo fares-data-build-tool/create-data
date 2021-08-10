@@ -23,19 +23,31 @@ const ViewPassengerTypes = ({
     groupPassengerTypes,
     csrfToken,
 }: PassengerTypeProps): ReactElement => {
-    const [popUpState, setPopUpState] =
-        useState<{ isVisible: boolean; passengerTypeName: string; isGroup: boolean; groupsInUse?: string[] }>();
+    const [popUpState, setPopUpState] = useState<{
+        isVisible: boolean;
+        passengerTypeName: string;
+        passengerTypeId: number;
+        isGroup: boolean;
+        groupsInUse?: string[];
+    }>();
 
-    const deleteActionHandler = (name: string, isGroup: boolean): void => {
+    const deleteActionHandler = (id: number, name: string, isGroup: boolean): void => {
         const groupsInUse = groupPassengerTypes.flatMap((group) =>
             group.groupPassengerType.companions.some((individual) => individual.name === name) ? group.name : [],
         );
 
-        setPopUpState({ ...popUpState, isVisible: true, passengerTypeName: name, isGroup, groupsInUse });
+        setPopUpState({
+            ...popUpState,
+            isVisible: true,
+            passengerTypeName: name,
+            passengerTypeId: id,
+            isGroup,
+            groupsInUse,
+        });
     };
 
     const cancelActionHandler = (): void => {
-        setPopUpState({ ...popUpState, isVisible: false, passengerTypeName: '', isGroup: false });
+        setPopUpState(undefined);
     };
 
     return (
@@ -109,7 +121,7 @@ const NoIndividualPassengerTypes = (): ReactElement => {
 
 interface IndividualPassengerTypesProps {
     singlePassengerTypes: SinglePassengerType[];
-    deleteActionHandler: (name: string, isGroup: boolean) => void;
+    deleteActionHandler: (id: number, name: string, isGroup: boolean) => void;
 }
 
 const IndividualPassengerTypes = ({
@@ -139,7 +151,13 @@ const IndividualPassengerTypes = ({
                                         <li className="actions__item">
                                             <button
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                onClick={() => deleteActionHandler(singlePassengerType.name, false)}
+                                                onClick={() =>
+                                                    deleteActionHandler(
+                                                        singlePassengerType.id,
+                                                        singlePassengerType.name,
+                                                        false,
+                                                    )
+                                                }
                                             >
                                                 Delete
                                             </button>
@@ -210,7 +228,7 @@ const NoPassengerTypeGroups = ({ passengerTypesExist }: { passengerTypesExist: b
 };
 
 interface PassengerTypeGroupProps {
-    deleteActionHandler: (name: string, isGroup: boolean) => void;
+    deleteActionHandler: (id: number, name: string, isGroup: boolean) => void;
     passengerTypesExist: boolean;
     passengerTypeGroups: FullGroupPassengerType[];
 }
@@ -243,7 +261,13 @@ const PassengerTypeGroups = ({
                                         <li className="actions__item">
                                             <button
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                onClick={() => deleteActionHandler(passengerTypeGroup.name, true)}
+                                                onClick={() =>
+                                                    deleteActionHandler(
+                                                        passengerTypeGroup.id,
+                                                        passengerTypeGroup.name,
+                                                        true,
+                                                    )
+                                                }
                                             >
                                                 Delete
                                             </button>

@@ -9,12 +9,7 @@ interface PopUpProps {
     groupsInUse?: string[];
 }
 
-const deleteUrl = (isGroup: boolean, nameToDelete: string, csrfToken: string): string => {
-    return `/api/deletePassenger?name=${nameToDelete}&isGroup=${isGroup}&_csrf=${csrfToken}`;
-};
-
 const UnableToDeletePopup = ({
-    csrfToken,
     isVisible,
     groupsInUse,
     passengerTypeName,
