@@ -574,7 +574,7 @@ export const getPreassignedFareProducts = (
 };
 
 export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
-    const timeIntervals = ticket.products.flatMap((product) => {
+    const timeIntervals = ticket.products.flatMap(product => {
         if ('productDuration' in product && product.productDuration) {
             const amount = product.productDuration.split(' ')[0];
             const type = product.productDuration.split(' ')[1];
