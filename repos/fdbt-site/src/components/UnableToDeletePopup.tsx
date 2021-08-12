@@ -27,7 +27,7 @@ const UnableToDeletePopup = ({
                     </span>
 
                     <button className="govuk-button govuk-button--secondary" onClick={cancelActionHandler}>
-                        I Understand
+                        Ok
                     </button>
                 </form>
             </div>
