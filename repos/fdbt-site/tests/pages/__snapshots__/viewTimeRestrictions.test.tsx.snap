@@ -38,7 +38,7 @@ exports[`pages time restrictions inner component renders normally when time rest
               >
                 <a
                   className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                  href="/viewTimeRestrictions"
+                  href="/viewTimeRestrictions?id=1"
                 >
                   Delete
                 </a>
@@ -216,7 +216,7 @@ exports[`pages time restrictions inner component renders normally when time rest
               >
                 <a
                   className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                  href="/viewTimeRestrictions"
+                  href="/viewTimeRestrictions?id=2"
                 >
                   Delete
                 </a>
@@ -471,6 +471,7 @@ exports[`pages view time restrictions should render correctly when time restrict
                       ],
                     },
                   ],
+                  "id": 1,
                   "name": "Restriction 1",
                 },
                 Object {
@@ -493,6 +494,7 @@ exports[`pages view time restrictions should render correctly when time restrict
                       ],
                     },
                   ],
+                  "id": 2,
                   "name": "Restriction 2",
                 },
               ]
