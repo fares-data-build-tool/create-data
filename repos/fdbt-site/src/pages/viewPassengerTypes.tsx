@@ -6,6 +6,7 @@ import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
+import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Passenger Types - Create Fares Data Service';
@@ -15,12 +16,14 @@ interface PassengerTypeProps {
     csrfToken: string;
     singlePassengerTypes: SinglePassengerType[];
     groupPassengerTypes: FullGroupPassengerType[];
+    referer: string | null;
 }
 
 const ViewPassengerTypes = ({
     singlePassengerTypes,
     groupPassengerTypes,
     csrfToken,
+    referer,
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState({
         isVisible: false,
@@ -37,50 +40,45 @@ const ViewPassengerTypes = ({
     };
 
     return (
-        <BaseLayout title={title} description={description} showNavigation={true}>
-            <div className="govuk-width-container">
-                <main className="govuk-main-wrapper">
-                    <div className="govuk-grid-row">
-                        <div className="govuk-grid-column-one-third">
-                            <SubNavigation />
-                        </div>
+        <BaseLayout title={title} description={description} showNavigation referer={referer}>
+            <div className="govuk-grid-row">
+                <div className="govuk-grid-column-one-third">
+                    <SubNavigation />
+                </div>
 
-                        <div className="govuk-grid-column-two-thirds">
-                            <h1 className="govuk-heading-xl">Passenger types</h1>
-                            <p className="govuk-body">
-                                Define age range and required proof documents of your passengers as well as passenger
-                                groups
-                            </p>
+                <div className="govuk-grid-column-two-thirds">
+                    <h1 className="govuk-heading-xl">Passenger types</h1>
+                    <p className="govuk-body">
+                        Define age range and required proof documents of your passengers as well as passenger groups
+                    </p>
 
-                            {!singlePassengerTypes.length ? (
-                                <NoIndividualPassengerTypes />
-                            ) : (
-                                <IndividualPassengerTypes
-                                    singlePassengerTypes={singlePassengerTypes}
-                                    deleteActionHandler={deleteActionHandler}
-                                />
-                            )}
+                    {!singlePassengerTypes.length ? (
+                        <NoIndividualPassengerTypes />
+                    ) : (
+                        <IndividualPassengerTypes
+                            singlePassengerTypes={singlePassengerTypes}
+                            deleteActionHandler={deleteActionHandler}
+                        />
+                    )}
 
-                            {!groupPassengerTypes.length ? (
-                                <NoPassengerTypeGroups passengerTypesExist={singlePassengerTypes.length > 0} />
-                            ) : (
-                                <PassengerTypeGroups
-                                    deleteActionHandler={deleteActionHandler}
-                                    passengerTypeGroups={groupPassengerTypes}
-                                    passengerTypesExist={groupPassengerTypes.length > 0}
-                                />
-                            )}
+                    {!groupPassengerTypes.length ? (
+                        <NoPassengerTypeGroups passengerTypesExist={singlePassengerTypes.length > 0} />
+                    ) : (
+                        <PassengerTypeGroups
+                            deleteActionHandler={deleteActionHandler}
+                            passengerTypeGroups={groupPassengerTypes}
+                            passengerTypesExist={groupPassengerTypes.length > 0}
+                        />
+                    )}
 
-                            <DeleteConfirmationPopup
-                                isVisible={popUpState.isVisible}
-                                csrfToken={csrfToken}
-                                isGroup={popUpState.isGroup}
-                                passengerTypeName={popUpState.passengerTypeName}
-                                cancelActionHandler={cancelActionHandler}
-                            />
-                        </div>
-                    </div>
-                </main>
+                    <DeleteConfirmationPopup
+                        isVisible={popUpState.isVisible}
+                        csrfToken={csrfToken}
+                        isGroup={popUpState.isGroup}
+                        passengerTypeName={popUpState.passengerTypeName}
+                        cancelActionHandler={cancelActionHandler}
+                    />
+                </div>
             </div>
         </BaseLayout>
     );
@@ -290,7 +288,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     updateSessionAttribute(ctx.req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
-    return { props: { csrfToken, singlePassengerTypes: singlePassengerTypes, groupPassengerTypes } };
+    return {
+        props: {
+            csrfToken,
+            singlePassengerTypes: singlePassengerTypes,
+            groupPassengerTypes,
+            referer: extractGlobalSettingsReferer(ctx),
+        },
+    };
 };
 
 const getProofOfDocumentsString = (documents: string[]): string => {

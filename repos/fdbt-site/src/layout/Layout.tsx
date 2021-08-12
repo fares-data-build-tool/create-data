@@ -1,15 +1,16 @@
-import React, { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
 import Head from 'next/head';
+import React, { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
 import { Portal } from 'react-portal';
 
 import favicon from '../assets/images/favicon.ico';
-import { buildTitle } from '../utils';
-import { ErrorInfo } from '../interfaces';
-import PhaseBanner from './PhaseBanner';
-import Navigation from './Navigation';
-import Footer from './Footer';
 import Help from '../components/Help';
+import { ErrorInfo } from '../interfaces';
+import { buildTitle } from '../utils';
 import CookieBanner from './CookieBanner';
+import Footer from './Footer';
+import { GlobalSettingReturnHeader } from './GlobalSettingReturnHeader';
+import Navigation from './Navigation';
+import PhaseBanner from './PhaseBanner';
 
 interface LayoutProps {
     title: string;
@@ -18,6 +19,7 @@ interface LayoutProps {
     hideCookieBanner?: boolean;
     showNavigation?: boolean;
     hideHelp?: boolean;
+    referer?: string | null;
 }
 
 export const BaseLayout = ({
@@ -25,9 +27,10 @@ export const BaseLayout = ({
     description,
     errors = [],
     children,
-    hideCookieBanner = false,
-    showNavigation = false,
-    hideHelp = false,
+    hideCookieBanner,
+    showNavigation,
+    hideHelp,
+    referer,
 }: PropsWithChildren<LayoutProps>): ReactElement => {
     const [showBanner, setShowBanner] = useState(false);
 
@@ -54,6 +57,7 @@ export const BaseLayout = ({
             <PhaseBanner />
 
             {showNavigation && <Navigation />}
+            {referer && <GlobalSettingReturnHeader />}
 
             <div className="govuk-width-container">
                 <main className="govuk-main-wrapper">{children}</main>
