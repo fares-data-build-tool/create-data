@@ -89,6 +89,7 @@ describe('pages', () => {
             it('should return props containing a premade time restriction when one is found in the DB', async () => {
                 (getTimeRestrictionByNocCode as jest.Mock).mockImplementation(() => [
                     {
+                        id: 1,
                         name: 'Test Time restriction',
                         contents: [
                             {

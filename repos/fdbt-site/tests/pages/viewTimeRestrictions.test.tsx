@@ -5,6 +5,7 @@ import { PremadeTimeRestriction } from 'src/interfaces';
 
 const timeRestrictions: PremadeTimeRestriction[] = [
     {
+        id: 1,
         name: 'Restriction 1',
         contents: [
             {
@@ -28,6 +29,7 @@ const timeRestrictions: PremadeTimeRestriction[] = [
         ],
     },
     {
+        id: 2,
         name: 'Restriction 2',
         contents: [
             {

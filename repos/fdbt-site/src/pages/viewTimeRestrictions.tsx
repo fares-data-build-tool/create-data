@@ -105,7 +105,7 @@ export const TimeRestrictions = ({
                                     <li className="actions__item">
                                         <a
                                             className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                            href="/viewTimeRestrictions"
+                                            href={`/viewTimeRestrictions?id=${timeRestriction.id}`}
                                         >
                                             Delete
                                         </a>
