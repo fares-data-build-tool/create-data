@@ -7,13 +7,9 @@ import {
 } from '../../constants/attributes';
 import { redirectTo, redirectToError } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import {
-    NextApiRequestWithSession,
-    MultiOperatorInfo,
-    MultipleOperatorsAttribute,
-    SelectedService,
-} from '../../interfaces';
+import { NextApiRequestWithSession, MultiOperatorInfo, MultipleOperatorsAttribute } from '../../interfaces';
 import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
+import { SelectedService } from 'shared/matchingJsonTypes';
 
 const errorId = 'checkbox-0';
 

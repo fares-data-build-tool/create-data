@@ -1,9 +1,15 @@
 import {
-    PointToPointTicket, BaseTicket, PointToPointCarnetProductDetails,
+    PointToPointTicket,
+    BaseTicket,
+    PointToPointCarnetProductDetails,
     PointToPointPeriodTicket,
     ReturnTicket,
     SalesOfferPackage,
-    SchemeOperatorTicket, SingleTicket
+    SchemeOperatorTicket,
+    SingleTicket,
+    FlatFareGeoZone,
+    FlatFareTicket,
+    SelectedService,
 } from '../../shared/matchingJsonTypes';
 import { NetexObject } from '../netex-convertor/sharedHelpers';
 
@@ -172,21 +178,6 @@ export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServi
 
 export type MultipleServicesTicket = PeriodMultipleServicesTicket | MultiOperatorMultipleServicesTicket;
 
-export interface FlatFareTicket extends BaseTicket {
-    operatorName: string;
-    products: FlatFareProductDetails[];
-    selectedServices: SelectedService[];
-    termTime: boolean;
-}
-
-export interface SelectedService {
-    lineName: string;
-    lineId: string;
-    serviceCode: string;
-    startDate: string;
-    serviceDescription: string;
-}
-
 export interface BaseProduct {
     salesOfferPackages: SalesOfferPackage[];
 }
@@ -247,7 +238,7 @@ export const isReturnTicket = (ticket: Ticket): ticket is ReturnTicket | PointTo
 export const isSingleTicket = (ticket: Ticket): ticket is SingleTicket =>
     (ticket as SingleTicket).fareZones !== undefined && (ticket as SingleTicket).fareZones.length > 0;
 
-export const isGeoZoneTicket = (ticket: Ticket): ticket is GeoZoneTicket =>
+export const isGeoZoneTicket = (ticket: Ticket): ticket is GeoZoneTicket | FlatFareGeoZone =>
     'zoneName' in ticket && !('selectedServices' in ticket);
 
 export const isMultiServiceTicket = (ticket: Ticket): ticket is PeriodMultipleServicesTicket =>
@@ -469,4 +460,12 @@ export interface OperatorRef {
 }
 
 // eslint-disable-next-line prettier/prettier
-export type { SalesOfferPackage, PointToPointCarnetProductDetails, ReturnTicket, BaseTicket, SchemeOperatorTicket, SingleTicket, PointToPointTicket };
+export type {
+    SalesOfferPackage,
+    PointToPointCarnetProductDetails,
+    ReturnTicket,
+    BaseTicket,
+    SchemeOperatorTicket,
+    SingleTicket,
+    PointToPointTicket,
+};

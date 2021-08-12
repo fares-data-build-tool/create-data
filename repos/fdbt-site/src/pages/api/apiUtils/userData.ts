@@ -1,6 +1,7 @@
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import { NextApiResponse } from 'next';
+import { BasePeriodTicket, FlatFareProductDetails, PeriodMultipleServicesTicket } from 'shared/matchingJsonTypes';
 import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from '.';
 
 import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants';
@@ -28,11 +29,9 @@ import {
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
 import {
-    BasePeriodTicket,
     BaseProduct,
     BaseTicket,
     CognitoIdToken,
-    FlatFareProductDetails,
     GeoZoneTicket,
     MultiOperatorInfo,
     MultiOperatorMultipleServicesTicket,
@@ -40,7 +39,6 @@ import {
     NextApiRequestWithSession,
     PeriodExpiry,
     PeriodHybridTicket,
-    PeriodMultipleServicesTicket,
     PointToPointPeriodProduct,
     PointToPointPeriodTicket,
     PointToPointProductInfoWithSOP,
