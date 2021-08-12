@@ -1,5 +1,192 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pages delete passenger types should render DeleteConformation popup when trying to delete passenger not in group 1`] = `
+<BaseLayout
+  description="View and edit your passenger types."
+  showNavigation={true}
+  title="Passenger Types - Create Fares Data Service"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <main
+      className="govuk-main-wrapper"
+    >
+      <div
+        className="govuk-grid-row"
+      >
+        <div
+          className="govuk-grid-column-one-third"
+        >
+          <SubNavigation />
+        </div>
+        <div
+          className="govuk-grid-column-two-thirds"
+        >
+          <h1
+            className="govuk-heading-xl"
+          >
+            Passenger types
+          </h1>
+          <p
+            className="govuk-body"
+          >
+            Define age range and required proof documents of your passengers as well as passenger groups
+          </p>
+          <IndividualPassengerTypes
+            deleteActionHandler={[Function]}
+            singlePassengerTypes={
+              Array [
+                Object {
+                  "id": 1,
+                  "name": "Regular Child",
+                  "passengerType": Object {
+                    "ageRangeMax": "16",
+                    "ageRangeMin": "5",
+                    "passengerType": "child",
+                    "proofDocuments": Array [
+                      "studentCard",
+                    ],
+                  },
+                },
+                Object {
+                  "id": 2,
+                  "name": "Regular Adult",
+                  "passengerType": Object {
+                    "ageRangeMin": "18",
+                    "passengerType": "adult",
+                  },
+                },
+              ]
+            }
+          />
+          <PassengerTypeGroups
+            deleteActionHandler={[Function]}
+            passengerTypeGroups={
+              Array [
+                Object {
+                  "groupPassengerType": Object {
+                    "companions": Array [
+                      Object {
+                        "maxNumber": "2",
+                        "passengerType": "adult",
+                      },
+                    ],
+                    "maxGroupSize": "3",
+                    "name": "family group",
+                  },
+                  "id": 3,
+                  "name": "family group",
+                },
+              ]
+            }
+            passengerTypesExist={true}
+          />
+        </div>
+      </div>
+    </main>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages delete passenger types should render UnableToDelete when trying to delete passenger in group one group, and name that group 1`] = `
+<BaseLayout
+  description="View and edit your passenger types."
+  showNavigation={true}
+  title="Passenger Types - Create Fares Data Service"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <main
+      className="govuk-main-wrapper"
+    >
+      <div
+        className="govuk-grid-row"
+      >
+        <div
+          className="govuk-grid-column-one-third"
+        >
+          <SubNavigation />
+        </div>
+        <div
+          className="govuk-grid-column-two-thirds"
+        >
+          <h1
+            className="govuk-heading-xl"
+          >
+            Passenger types
+          </h1>
+          <p
+            className="govuk-body"
+          >
+            Define age range and required proof documents of your passengers as well as passenger groups
+          </p>
+          <IndividualPassengerTypes
+            deleteActionHandler={[Function]}
+            singlePassengerTypes={
+              Array [
+                Object {
+                  "id": 1,
+                  "name": "Regular Child",
+                  "passengerType": Object {
+                    "ageRangeMax": "16",
+                    "ageRangeMin": "5",
+                    "passengerType": "child",
+                    "proofDocuments": Array [
+                      "studentCard",
+                    ],
+                  },
+                },
+                Object {
+                  "id": 2,
+                  "name": "Regular Adult",
+                  "passengerType": Object {
+                    "ageRangeMin": "18",
+                    "passengerType": "adult",
+                  },
+                },
+              ]
+            }
+          />
+          <PassengerTypeGroups
+            deleteActionHandler={[Function]}
+            passengerTypeGroups={
+              Array [
+                Object {
+                  "groupPassengerType": Object {
+                    "companions": Array [
+                      Object {
+                        "maxNumber": "2",
+                        "passengerType": "adult",
+                      },
+                      Object {
+                        "ageRangeMax": "16",
+                        "ageRangeMin": "4",
+                        "maxNumber": "1",
+                        "passengerType": "child",
+                        "proofDocuments": Array [
+                          "studentCard",
+                        ],
+                      },
+                    ],
+                    "maxGroupSize": "3",
+                    "name": "family group",
+                  },
+                  "id": 3,
+                  "name": "family group",
+                },
+              ]
+            }
+            passengerTypesExist={true}
+          />
+        </div>
+      </div>
+    </main>
+  </div>
+</BaseLayout>
+`;
+
 exports[`pages view passenger types should render correctly when groups and individual passenger types 1`] = `
 <BaseLayout
   description="View and edit your passenger types."
