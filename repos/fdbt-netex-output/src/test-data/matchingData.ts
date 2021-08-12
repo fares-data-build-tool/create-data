@@ -1,8 +1,7 @@
-import { ExpiryUnit, PointToPointPeriodTicket } from '../../shared/matchingJsonTypes';
+import { ExpiryUnit, FlatFareTicket, PointToPointPeriodTicket } from '../../shared/matchingJsonTypes';
 import {
     CarnetExpiryUnit,
     FareZone,
-    FlatFareTicket,
     HybridPeriodTicket,
     MultiOperatorGeoZoneTicket,
     MultiOperatorMultipleServicesTicket,

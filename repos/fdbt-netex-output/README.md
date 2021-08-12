@@ -49,15 +49,15 @@ We use the xml2json node package to parse JSON into XML. There's some quirks to 
 
 #### Example
 
-```
+```json
 {
     SalesOfferPackage: {
         id: 'SOP_1',
         version: '1.0',
         Name: { $t: 'Sales Offer Package 1' },
         TypeOfTravelDocumentRef: {
-            version="fxc:v1.0",
-            ref="fxc:paperTicket",
+            version='fxc:v1.0',
+            ref='fxc:paperTicket',
         }
     }
 }
@@ -65,10 +65,10 @@ We use the xml2json node package to parse JSON into XML. There's some quirks to 
 
 becomes:
 
-```
-<SalesOfferPackageElement id='SOP_1' version='1.0>
+```xml
+<SalesOfferPackageElement id="SOP_1" version="1.0">
     <Name>Sales Offer Package 1</Name>
-    <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
+    <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket" />
 </SalesOfferPackageElement>
 ```
 
