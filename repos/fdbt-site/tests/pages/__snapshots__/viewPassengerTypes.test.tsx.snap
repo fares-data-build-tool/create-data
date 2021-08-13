@@ -78,13 +78,6 @@ exports[`pages view passenger types should render correctly when groups and indi
         }
         passengerTypesExist={true}
       />
-      <DeleteConfirmationPopup
-        cancelActionHandler={[Function]}
-        csrfToken=""
-        isGroup={false}
-        isVisible={false}
-        passengerTypeName=""
-      />
     </div>
   </div>
 </BaseLayout>
@@ -121,13 +114,6 @@ exports[`pages view passenger types should render correctly when no individual o
       <NoIndividualPassengerTypes />
       <NoPassengerTypeGroups
         passengerTypesExist={false}
-      />
-      <DeleteConfirmationPopup
-        cancelActionHandler={[Function]}
-        csrfToken=""
-        isGroup={false}
-        isVisible={false}
-        passengerTypeName=""
       />
     </div>
   </div>
@@ -183,13 +169,6 @@ exports[`pages view passenger types should render correctly when only individual
       />
       <NoPassengerTypeGroups
         passengerTypesExist={true}
-      />
-      <DeleteConfirmationPopup
-        cancelActionHandler={[Function]}
-        csrfToken=""
-        isGroup={false}
-        isVisible={false}
-        passengerTypeName=""
       />
     </div>
   </div>
@@ -256,13 +235,6 @@ exports[`pages view passenger types should render correctly when only passenger 
           ]
         }
         passengerTypesExist={true}
-      />
-      <DeleteConfirmationPopup
-        cancelActionHandler={[Function]}
-        csrfToken=""
-        isGroup={false}
-        isVisible={false}
-        passengerTypeName=""
       />
     </div>
   </div>

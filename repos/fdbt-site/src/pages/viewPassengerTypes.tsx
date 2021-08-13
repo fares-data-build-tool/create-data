@@ -7,6 +7,7 @@ import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } 
 import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
+import UnableToDeletePopup from '../components/UnableToDeletePopup';
 import { updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Passenger Types - Create Fares Data Service';
@@ -25,18 +26,29 @@ const ViewPassengerTypes = ({
     csrfToken,
     referer,
 }: PassengerTypeProps): ReactElement => {
-    const [popUpState, setPopUpState] = useState({
-        isVisible: false,
-        passengerTypeName: '',
-        isGroup: false,
-    });
+    const [popUpState, setPopUpState] = useState<{
+        passengerTypeName: string;
+        passengerTypeId: number;
+        isGroup: boolean;
+        groupsInUse?: string[];
+    }>();
 
-    const deleteActionHandler = (name: string, isGroup: boolean): void => {
-        setPopUpState({ ...popUpState, isVisible: true, passengerTypeName: name, isGroup: isGroup });
+    const deleteActionHandler = (id: number, name: string, isGroup: boolean): void => {
+        const groupsInUse = groupPassengerTypes.flatMap((group) =>
+            group.groupPassengerType.companions.some((individual) => individual.name === name) ? group.name : [],
+        );
+
+        setPopUpState({
+            ...popUpState,
+            passengerTypeName: name,
+            passengerTypeId: id,
+            isGroup,
+            groupsInUse,
+        });
     };
 
     const cancelActionHandler = (): void => {
-        setPopUpState({ ...popUpState, isVisible: false, passengerTypeName: '', isGroup: false });
+        setPopUpState(undefined);
     };
 
     return (
@@ -71,13 +83,20 @@ const ViewPassengerTypes = ({
                         />
                     )}
 
-                    <DeleteConfirmationPopup
-                        isVisible={popUpState.isVisible}
-                        csrfToken={csrfToken}
-                        isGroup={popUpState.isGroup}
-                        passengerTypeName={popUpState.passengerTypeName}
-                        cancelActionHandler={cancelActionHandler}
-                    />
+                    {popUpState &&
+                        (popUpState.groupsInUse?.length ? (
+                            <UnableToDeletePopup
+                                {...popUpState}
+                                csrfToken={csrfToken}
+                                cancelActionHandler={cancelActionHandler}
+                            />
+                        ) : (
+                            <DeleteConfirmationPopup
+                                {...popUpState}
+                                csrfToken={csrfToken}
+                                cancelActionHandler={cancelActionHandler}
+                            />
+                        ))}
                 </div>
             </div>
         </BaseLayout>
@@ -98,7 +117,7 @@ const NoIndividualPassengerTypes = (): ReactElement => {
 
 interface IndividualPassengerTypesProps {
     singlePassengerTypes: SinglePassengerType[];
-    deleteActionHandler: (name: string, isGroup: boolean) => void;
+    deleteActionHandler: (id: number, name: string, isGroup: boolean) => void;
 }
 
 const IndividualPassengerTypes = ({
@@ -128,7 +147,13 @@ const IndividualPassengerTypes = ({
                                         <li className="actions__item">
                                             <button
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                onClick={() => deleteActionHandler(singlePassengerType.name, false)}
+                                                onClick={() =>
+                                                    deleteActionHandler(
+                                                        singlePassengerType.id,
+                                                        singlePassengerType.name,
+                                                        false,
+                                                    )
+                                                }
                                             >
                                                 Delete
                                             </button>
@@ -136,9 +161,7 @@ const IndividualPassengerTypes = ({
                                     </ul>
                                 </div>
 
-                                <h4 className="govuk-!-padding-bottom-4">
-                                    {sentenceCaseString(singlePassengerType.name)}
-                                </h4>
+                                <h4 className="govuk-!-padding-bottom-4">{singlePassengerType.name}</h4>
 
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Passenger type:</span>{' '}
@@ -201,7 +224,7 @@ const NoPassengerTypeGroups = ({ passengerTypesExist }: { passengerTypesExist: b
 };
 
 interface PassengerTypeGroupProps {
-    deleteActionHandler: (name: string, isGroup: boolean) => void;
+    deleteActionHandler: (id: number, name: string, isGroup: boolean) => void;
     passengerTypesExist: boolean;
     passengerTypeGroups: FullGroupPassengerType[];
 }
@@ -234,7 +257,13 @@ const PassengerTypeGroups = ({
                                         <li className="actions__item">
                                             <button
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                onClick={() => deleteActionHandler(passengerTypeGroup.name, true)}
+                                                onClick={() =>
+                                                    deleteActionHandler(
+                                                        passengerTypeGroup.id,
+                                                        passengerTypeGroup.name,
+                                                        true,
+                                                    )
+                                                }
                                             >
                                                 Delete
                                             </button>

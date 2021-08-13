@@ -1,7 +1,7 @@
-import * as React from 'react';
 import { shallow } from 'enzyme';
-import ViewPassengerTypes from '../../src/pages/viewPassengerTypes';
+import * as React from 'react';
 import { SinglePassengerType } from '../../src/interfaces';
+import ViewPassengerTypes from '../../src/pages/viewPassengerTypes';
 
 describe('pages', () => {
     describe('view passenger types', () => {
