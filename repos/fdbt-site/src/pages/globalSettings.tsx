@@ -10,6 +10,7 @@ import {
     getTimeRestrictionByNocCode,
 } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
+import { globalSettingsEnabled } from '../constants/featureFlag';
 
 const title = 'Operator Settings - Create Fares Data Service';
 const description = 'View and access your settings in one place.';
@@ -62,7 +63,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('No NOC found for useer.');
     }
 
-    if (process.env.STAGE === 'prod' && ctx.res) {
+    if (!globalSettingsEnabled && ctx.res) {
         redirectTo(ctx.res, '/home');
     }
 

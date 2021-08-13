@@ -3,7 +3,6 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import PassengerTypeCard from '../components/PassengerTypeCard';
 import { PASSENGER_TYPE_ATTRIBUTE } from '../constants/attributes';
-import FormElementWrapper from '../components/FormElementWrapper';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import { ErrorInfo, FullGroupPassengerType, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
 import { isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
@@ -60,21 +59,17 @@ const SelectPassengerType = ({
                                 </span>
                             </>
                         ) : (
-                            <div className="govuk-heading-m">
-                                <div className="govuk-radios" id="individual-passengers">
-                                    <h3>Individuals</h3>
-                                    <FormElementWrapper errors={errors} errorId={''} errorClass="govuk-radios--error">
-                                        <>
-                                            {savedPassengerTypes.map((passengerType) => (
-                                                <PassengerTypeCard
-                                                    contents={passengerType}
-                                                    key={passengerType.id.toString()}
-                                                />
-                                            ))}
-                                        </>
-                                    </FormElementWrapper>
+                            <>
+                                <h3 className="govuk-heading-m">Individuals</h3>
 
-                                    <h3>Groups</h3>
+                                <div className="govuk-grid-row" id="individual-passengers">
+                                    {savedPassengerTypes.map((passengerType) => (
+                                        <PassengerTypeCard contents={passengerType} key={passengerType.id.toString()} />
+                                    ))}
+                                </div>
+
+                                <h3 className="govuk-heading-m">Groups</h3>
+                                <div className="govuk-grid-row">
                                     {savedGroups.length ? (
                                         <>
                                             {savedGroups.map((passengerTypeGroup) => (
@@ -90,14 +85,19 @@ const SelectPassengerType = ({
                                         </span>
                                     )}
                                 </div>
-                            </div>
+                            </>
                         )}
                     </fieldset>
                 </div>
                 {!!savedPassengerTypes.length && (
-                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                    <input
+                        type="submit"
+                        value="Continue"
+                        id="continue-button"
+                        className="govuk-button govuk-!-margin-right-2"
+                    />
                 )}
-                <a className="govuk-button govuk-button--secondary govuk-!-margin-left-2" href="/viewPassengerTypes">
+                <a className="govuk-button govuk-button--secondary" href="/viewPassengerTypes">
                     Create new
                 </a>
             </>

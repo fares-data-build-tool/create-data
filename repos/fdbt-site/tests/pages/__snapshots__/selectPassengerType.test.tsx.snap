@@ -71,7 +71,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
       </fieldset>
     </div>
     <a
-      className="govuk-button govuk-button--secondary govuk-!-margin-left-2"
+      className="govuk-button govuk-button--secondary"
       href="/viewPassengerTypes"
     >
       Create new
@@ -141,74 +141,72 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
             Don't worry you can navigate back to this page when you are finished.
           </strong>
         </div>
-        <div
+        <h3
           className="govuk-heading-m"
         >
-          <div
-            className="govuk-radios"
-            id="individual-passengers"
+          Individuals
+        </h3>
+        <div
+          className="govuk-grid-row"
+          id="individual-passengers"
+        >
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 3,
+                "name": "adult",
+                "passengerType": Object {
+                  "ageRangeMax": "75",
+                  "ageRangeMin": "18",
+                  "passengerType": "adult",
+                  "proofDocuments": Array [],
+                },
+              }
+            }
+            key="3"
+          />
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 2,
+                "name": "kid",
+                "passengerType": Object {
+                  "ageRangeMax": "17",
+                  "ageRangeMin": "5",
+                  "passengerType": "child",
+                  "proofDocuments": Array [],
+                },
+              }
+            }
+            key="2"
+          />
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Groups
+        </h3>
+        <div
+          className="govuk-grid-row"
+        >
+          <span
+            className="govuk-body"
           >
-            <h3>
-              Individuals
-            </h3>
-            <FormElementWrapper
-              errorClass="govuk-radios--error"
-              errorId=""
-              errors={Array []}
-            >
-              <PassengerTypeCard
-                contents={
-                  Object {
-                    "id": 3,
-                    "name": "adult",
-                    "passengerType": Object {
-                      "ageRangeMax": "75",
-                      "ageRangeMin": "18",
-                      "passengerType": "adult",
-                      "proofDocuments": Array [],
-                    },
-                  }
-                }
-                key="3"
-              />
-              <PassengerTypeCard
-                contents={
-                  Object {
-                    "id": 2,
-                    "name": "kid",
-                    "passengerType": Object {
-                      "ageRangeMax": "17",
-                      "ageRangeMin": "5",
-                      "passengerType": "child",
-                      "proofDocuments": Array [],
-                    },
-                  }
-                }
-                key="2"
-              />
-            </FormElementWrapper>
-            <h3>
-              Groups
-            </h3>
-            <span
-              className="govuk-body"
-            >
-              <i>
-                You currently have no saved groups
-              </i>
-            </span>
-          </div>
+            <i>
+              You currently have no saved groups
+            </i>
+          </span>
         </div>
       </fieldset>
     </div>
     <input
-      className="govuk-button"
+      className="govuk-button govuk-!-margin-right-2"
       id="continue-button"
       type="submit"
       value="Continue"
     />
     <a
-      className="govuk-button govuk-button--secondary govuk-!-margin-left-2"
+      className="govuk-button govuk-button--secondary"
       href="/viewPassengerTypes"
     >
       Create new
@@ -278,124 +276,122 @@ exports[`pages selectPassengerType should render correctly with saved groups and
             Don't worry you can navigate back to this page when you are finished.
           </strong>
         </div>
-        <div
+        <h3
           className="govuk-heading-m"
         >
-          <div
-            className="govuk-radios"
-            id="individual-passengers"
-          >
-            <h3>
-              Individuals
-            </h3>
-            <FormElementWrapper
-              errorClass="govuk-radios--error"
-              errorId=""
-              errors={Array []}
-            >
-              <PassengerTypeCard
-                contents={
-                  Object {
-                    "id": 3,
-                    "name": "adult",
-                    "passengerType": Object {
+          Individuals
+        </h3>
+        <div
+          className="govuk-grid-row"
+          id="individual-passengers"
+        >
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 3,
+                "name": "adult",
+                "passengerType": Object {
+                  "ageRangeMax": "75",
+                  "ageRangeMin": "18",
+                  "passengerType": "adult",
+                  "proofDocuments": Array [],
+                },
+              }
+            }
+            key="3"
+          />
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 2,
+                "name": "kid",
+                "passengerType": Object {
+                  "ageRangeMax": "17",
+                  "ageRangeMin": "5",
+                  "passengerType": "child",
+                  "proofDocuments": Array [],
+                },
+              }
+            }
+            key="2"
+          />
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Groups
+        </h3>
+        <div
+          className="govuk-grid-row"
+        >
+          <PassengerTypeCard
+            contents={
+              Object {
+                "groupPassengerType": Object {
+                  "companions": Array [
+                    Object {
                       "ageRangeMax": "75",
                       "ageRangeMin": "18",
+                      "maxNumber": "2",
+                      "minNumber": "1",
+                      "name": "adult",
                       "passengerType": "adult",
                       "proofDocuments": Array [],
                     },
-                  }
-                }
-                key="3"
-              />
-              <PassengerTypeCard
-                contents={
-                  Object {
-                    "id": 2,
-                    "name": "kid",
-                    "passengerType": Object {
+                    Object {
                       "ageRangeMax": "17",
                       "ageRangeMin": "5",
+                      "maxNumber": "2",
+                      "minNumber": "1",
+                      "name": "kid",
                       "passengerType": "child",
                       "proofDocuments": Array [],
                     },
-                  }
-                }
-                key="2"
-              />
-            </FormElementWrapper>
-            <h3>
-              Groups
-            </h3>
-            <PassengerTypeCard
-              contents={
-                Object {
-                  "groupPassengerType": Object {
-                    "companions": Array [
-                      Object {
-                        "ageRangeMax": "75",
-                        "ageRangeMin": "18",
-                        "maxNumber": "2",
-                        "minNumber": "1",
-                        "name": "adult",
-                        "passengerType": "adult",
-                        "proofDocuments": Array [],
-                      },
-                      Object {
-                        "ageRangeMax": "17",
-                        "ageRangeMin": "5",
-                        "maxNumber": "2",
-                        "minNumber": "1",
-                        "name": "kid",
-                        "passengerType": "child",
-                        "proofDocuments": Array [],
-                      },
-                    ],
-                    "maxGroupSize": "3",
-                    "name": "family",
-                  },
-                  "id": 1,
+                  ],
+                  "maxGroupSize": "3",
                   "name": "family",
-                }
+                },
+                "id": 1,
+                "name": "family",
               }
-              key="1"
-            />
-            <PassengerTypeCard
-              contents={
-                Object {
-                  "groupPassengerType": Object {
-                    "companions": Array [
-                      Object {
-                        "ageRangeMax": "75",
-                        "ageRangeMin": "18",
-                        "maxNumber": "2",
-                        "minNumber": "2",
-                        "name": "adult",
-                        "passengerType": "adult",
-                        "proofDocuments": Array [],
-                      },
-                    ],
-                    "maxGroupSize": "2",
-                    "name": "couple",
-                  },
-                  "id": 4,
+            }
+            key="1"
+          />
+          <PassengerTypeCard
+            contents={
+              Object {
+                "groupPassengerType": Object {
+                  "companions": Array [
+                    Object {
+                      "ageRangeMax": "75",
+                      "ageRangeMin": "18",
+                      "maxNumber": "2",
+                      "minNumber": "2",
+                      "name": "adult",
+                      "passengerType": "adult",
+                      "proofDocuments": Array [],
+                    },
+                  ],
+                  "maxGroupSize": "2",
                   "name": "couple",
-                }
+                },
+                "id": 4,
+                "name": "couple",
               }
-              key="4"
-            />
-          </div>
+            }
+            key="4"
+          />
         </div>
       </fieldset>
     </div>
     <input
-      className="govuk-button"
+      className="govuk-button govuk-!-margin-right-2"
       id="continue-button"
       type="submit"
       value="Continue"
     />
     <a
-      className="govuk-button govuk-button--secondary govuk-!-margin-left-2"
+      className="govuk-button govuk-button--secondary"
       href="/viewPassengerTypes"
     >
       Create new
@@ -479,131 +475,122 @@ exports[`pages selectPassengerType should render correctly with saved groups and
             Don't worry you can navigate back to this page when you are finished.
           </strong>
         </div>
-        <div
+        <h3
           className="govuk-heading-m"
         >
-          <div
-            className="govuk-radios"
-            id="individual-passengers"
-          >
-            <h3>
-              Individuals
-            </h3>
-            <FormElementWrapper
-              errorClass="govuk-radios--error"
-              errorId=""
-              errors={
-                Array [
-                  Object {
-                    "errorMessage": "Select a passenger type",
-                    "id": "individual-passengers",
-                  },
-                ]
+          Individuals
+        </h3>
+        <div
+          className="govuk-grid-row"
+          id="individual-passengers"
+        >
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 3,
+                "name": "adult",
+                "passengerType": Object {
+                  "ageRangeMax": "75",
+                  "ageRangeMin": "18",
+                  "passengerType": "adult",
+                  "proofDocuments": Array [],
+                },
               }
-            >
-              <PassengerTypeCard
-                contents={
-                  Object {
-                    "id": 3,
-                    "name": "adult",
-                    "passengerType": Object {
+            }
+            key="3"
+          />
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 2,
+                "name": "kid",
+                "passengerType": Object {
+                  "ageRangeMax": "17",
+                  "ageRangeMin": "5",
+                  "passengerType": "child",
+                  "proofDocuments": Array [],
+                },
+              }
+            }
+            key="2"
+          />
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Groups
+        </h3>
+        <div
+          className="govuk-grid-row"
+        >
+          <PassengerTypeCard
+            contents={
+              Object {
+                "groupPassengerType": Object {
+                  "companions": Array [
+                    Object {
                       "ageRangeMax": "75",
                       "ageRangeMin": "18",
+                      "maxNumber": "2",
+                      "minNumber": "1",
+                      "name": "adult",
                       "passengerType": "adult",
                       "proofDocuments": Array [],
                     },
-                  }
-                }
-                key="3"
-              />
-              <PassengerTypeCard
-                contents={
-                  Object {
-                    "id": 2,
-                    "name": "kid",
-                    "passengerType": Object {
+                    Object {
                       "ageRangeMax": "17",
                       "ageRangeMin": "5",
+                      "maxNumber": "2",
+                      "minNumber": "1",
+                      "name": "kid",
                       "passengerType": "child",
                       "proofDocuments": Array [],
                     },
-                  }
-                }
-                key="2"
-              />
-            </FormElementWrapper>
-            <h3>
-              Groups
-            </h3>
-            <PassengerTypeCard
-              contents={
-                Object {
-                  "groupPassengerType": Object {
-                    "companions": Array [
-                      Object {
-                        "ageRangeMax": "75",
-                        "ageRangeMin": "18",
-                        "maxNumber": "2",
-                        "minNumber": "1",
-                        "name": "adult",
-                        "passengerType": "adult",
-                        "proofDocuments": Array [],
-                      },
-                      Object {
-                        "ageRangeMax": "17",
-                        "ageRangeMin": "5",
-                        "maxNumber": "2",
-                        "minNumber": "1",
-                        "name": "kid",
-                        "passengerType": "child",
-                        "proofDocuments": Array [],
-                      },
-                    ],
-                    "maxGroupSize": "3",
-                    "name": "family",
-                  },
-                  "id": 1,
+                  ],
+                  "maxGroupSize": "3",
                   "name": "family",
-                }
+                },
+                "id": 1,
+                "name": "family",
               }
-              key="1"
-            />
-            <PassengerTypeCard
-              contents={
-                Object {
-                  "groupPassengerType": Object {
-                    "companions": Array [
-                      Object {
-                        "ageRangeMax": "75",
-                        "ageRangeMin": "18",
-                        "maxNumber": "2",
-                        "minNumber": "2",
-                        "name": "adult",
-                        "passengerType": "adult",
-                        "proofDocuments": Array [],
-                      },
-                    ],
-                    "maxGroupSize": "2",
-                    "name": "couple",
-                  },
-                  "id": 4,
+            }
+            key="1"
+          />
+          <PassengerTypeCard
+            contents={
+              Object {
+                "groupPassengerType": Object {
+                  "companions": Array [
+                    Object {
+                      "ageRangeMax": "75",
+                      "ageRangeMin": "18",
+                      "maxNumber": "2",
+                      "minNumber": "2",
+                      "name": "adult",
+                      "passengerType": "adult",
+                      "proofDocuments": Array [],
+                    },
+                  ],
+                  "maxGroupSize": "2",
                   "name": "couple",
-                }
+                },
+                "id": 4,
+                "name": "couple",
               }
-              key="4"
-            />
-          </div>
+            }
+            key="4"
+          />
         </div>
       </fieldset>
     </div>
     <input
-      className="govuk-button"
+      className="govuk-button govuk-!-margin-right-2"
       id="continue-button"
       type="submit"
       value="Continue"
     />
     <a
-      className="govuk-button govuk-button--secondary govuk-!-margin-left-2"
+      className="govuk-button govuk-button--secondary"
       href="/viewPassengerTypes"
     >
       Create new
