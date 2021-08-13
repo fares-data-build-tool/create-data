@@ -5,6 +5,7 @@ import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
+import PassengerTypeCard from '../components/PassengerTypeCard';
 
 const title = 'Passenger Types - Create Fares Data Service';
 const description = 'View and edit your passenger types.';
@@ -111,63 +112,7 @@ const IndividualPassengerTypes = ({
 
             <div className="govuk-grid-row">
                 {singlePassengerTypes.map((singlePassengerType) => (
-                    <div key={singlePassengerType.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
-                        <div className="card">
-                            <div className="card__body individual-passenger-type">
-                                <div className="card__actions">
-                                    <ul className="actions__list">
-                                        <li className="actions__item">
-                                            <a
-                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                                href={`/managePassengerTypes?id=${singlePassengerType.id}`}
-                                            >
-                                                Edit
-                                            </a>
-                                        </li>
-
-                                        <li className="actions__item">
-                                            <button
-                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                onClick={() => deleteActionHandler(singlePassengerType.name, false)}
-                                            >
-                                                Delete
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <h4 className="govuk-!-padding-bottom-4">
-                                    {sentenceCaseString(singlePassengerType.name)}
-                                </h4>
-
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Passenger type:</span>{' '}
-                                    {sentenceCaseString(singlePassengerType.passengerType.passengerType)}
-                                </p>
-
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Minimum age:</span>{' '}
-                                    {singlePassengerType.passengerType.ageRangeMin
-                                        ? singlePassengerType.passengerType.ageRangeMin
-                                        : 'N/A'}
-                                </p>
-
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Maximum age:</span>{' '}
-                                    {singlePassengerType.passengerType.ageRangeMax
-                                        ? singlePassengerType.passengerType.ageRangeMax
-                                        : 'N/A'}
-                                </p>
-
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
-                                    {singlePassengerType.passengerType.proofDocuments
-                                        ? getProofOfDocumentsString(singlePassengerType.passengerType.proofDocuments)
-                                        : 'N/A'}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    <PassengerTypeCard contents={singlePassengerType} deleteActionHandler={deleteActionHandler}/>
                 ))}
             </div>
 
@@ -286,17 +231,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
 
     return { props: { csrfToken, singlePassengerTypes: singlePassengerTypes, groupPassengerTypes } };
-};
-
-const getProofOfDocumentsString = (documents: string[]): string => {
-    let proofOfDocumentsString = documents.map((document) => sentenceCaseString(document)).join(', ');
-
-    proofOfDocumentsString =
-        proofOfDocumentsString.length > 44
-            ? proofOfDocumentsString.substring(0, 44).concat('…')
-            : proofOfDocumentsString;
-
-    return proofOfDocumentsString;
 };
 
 export default ViewPassengerTypes;

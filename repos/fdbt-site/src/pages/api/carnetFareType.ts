@@ -20,7 +20,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 redirectTo(res, '/definePassengerType');
                 return;
             }
-            redirectTo(res, '/passengerType');
+            if (['test', 'dev'].includes(process.env.STAGE || '')) {
+                redirectTo(res, '/selectPassengerType');
+            } else {
+                redirectTo(res, '/passengerType');
+            }
+            
         } else {
             const errors: ErrorInfo[] = [
                 { id: 'fare-type-single', errorMessage: 'Choose a carnet fare type from the options' },

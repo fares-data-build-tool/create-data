@@ -39,7 +39,7 @@ exports[`pages fareType should render correctly 1`] = `
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="fare-type-single"
+          errorId="radio-option-single"
           errors={Array []}
         >
           <RadioButtons
@@ -136,7 +136,7 @@ exports[`pages fareType should render correctly for a scheme operator 1`] = `
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="fare-type-single"
+          errorId="radio-option-single"
           errors={Array []}
         >
           <RadioButtons
@@ -232,7 +232,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="fare-type-single"
+          errorId="radio-option-single"
           errors={
             Array [
               Object {

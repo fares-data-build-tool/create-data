@@ -25,6 +25,17 @@ import {
     ResponseWithLocals,
 } from '../interfaces';
 
+export const getProofDocumentsString = (documents: string[]): string => {
+    let proofOfDocumentsString = documents.map((document) => sentenceCaseString(document)).join(', ');
+
+    proofOfDocumentsString =
+        proofOfDocumentsString.length > 44
+            ? proofOfDocumentsString.substring(0, 44).concat('…')
+            : proofOfDocumentsString;
+
+    return proofOfDocumentsString;
+};
+
 export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribute = ''): string | null => {
     const cookies = parseCookies(ctx);
 
