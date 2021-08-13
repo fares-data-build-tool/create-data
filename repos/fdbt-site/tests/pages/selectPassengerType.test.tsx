@@ -113,12 +113,7 @@ describe('pages', () => {
 
         it('should render correctly with no saved groups and no saved passenger types', () => {
             const tree = shallow(
-                <SelectPassengerType
-                    errors={[]}
-                    csrfToken="csrf"
-                    savedGroups={[]}
-                    savedPassengerTypes={[]}
-                />,
+                <SelectPassengerType errors={[]} csrfToken="csrf" savedGroups={[]} savedPassengerTypes={[]} />,
             );
             expect(tree).toMatchSnapshot();
         });

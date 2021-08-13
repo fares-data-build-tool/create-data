@@ -1,4 +1,5 @@
 import React, { ReactElement, useState } from 'react';
+import { GS_PASSENGER_GROUP_ATTRIBUTE, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
 import { BaseLayout } from '../layout/Layout';
 import { SinglePassengerType, NextPageContextWithSession, FullGroupPassengerType } from '../interfaces';
 import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
@@ -6,6 +7,7 @@ import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } 
 import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 import PassengerTypeCard from '../components/PassengerTypeCard';
+import { updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Passenger Types - Create Fares Data Service';
 const description = 'View and edit your passenger types.';
@@ -112,7 +114,11 @@ const IndividualPassengerTypes = ({
 
             <div className="govuk-grid-row">
                 {singlePassengerTypes.map((singlePassengerType) => (
-                    <PassengerTypeCard contents={singlePassengerType} deleteActionHandler={deleteActionHandler}/>
+                    <PassengerTypeCard
+                        contents={singlePassengerType}
+                        deleteActionHandler={deleteActionHandler}
+                        key={singlePassengerType.id.toString()}
+                    />
                 ))}
             </div>
 
@@ -229,6 +235,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
+
+    updateSessionAttribute(ctx.req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
+    updateSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
     return { props: { csrfToken, singlePassengerTypes: singlePassengerTypes, groupPassengerTypes } };
 };

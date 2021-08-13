@@ -664,7 +664,7 @@ export const upsertSinglePassengerType = async (
         const updateQuery = `UPDATE passengerType
                              SET contents = ?
                              WHERE name = ? 
-                             AND isGroup  = ?
+                             AND isGroup = ?
                              AND nocCode = ?`;
         const meta = await executeQuery<ResultSetHeader>(updateQuery, [contents, name, false, nocCode]);
         if (meta.affectedRows > 1) {
@@ -690,13 +690,14 @@ export const updateSinglePassengerType = async (noc: string, passengerType: Sing
     try {
         const updateQuery = `UPDATE passengerType
                              SET name = ?, contents = ?
-                             WHERE id = ? AND nocCode = ?`;
+                             WHERE id = ? AND nocCode = ? AND isGroup = ?`;
 
         const meta = await executeQuery<ResultSetHeader>(updateQuery, [
             passengerType.name,
             contents,
             passengerType.id,
             noc,
+            false,
         ]);
 
         if (meta.affectedRows !== 1) {
@@ -970,15 +971,16 @@ export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string):
             }))
             .filter((row) => row.groupPassengerType.companions.some((it) => 'id' in it)) as GroupPassengerTypeDb[];
 
-        return Promise.all(
-            dbGroups.map((group) => convertToFullPassengerType(group, nocCode)),
-        );
+        return Promise.all(dbGroups.map((group) => convertToFullPassengerType(group, nocCode)));
     } catch (error) {
         throw new Error(`Could not retrieve group passenger type by nocCode from AuroraDB: ${error}`);
     }
 };
 
-export const convertToFullPassengerType = async (group: GroupPassengerTypeDb, nocCode: string): Promise<FullGroupPassengerType> => ({
+export const convertToFullPassengerType = async (
+    group: GroupPassengerTypeDb,
+    nocCode: string,
+): Promise<FullGroupPassengerType> => ({
     id: group.id,
     name: group.name,
     groupPassengerType: {
@@ -999,7 +1001,7 @@ export const convertToFullPassengerType = async (group: GroupPassengerTypeDb, no
             }),
         ),
     },
-})
+});
 
 export const deletePassengerTypeByNocCodeAndName = async (
     name: string,

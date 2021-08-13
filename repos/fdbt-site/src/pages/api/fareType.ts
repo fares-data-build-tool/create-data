@@ -32,7 +32,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 fareType,
             });
-            
+
             if (['test', 'dev'].includes(process.env.STAGE || '')) {
                 redirectTo(res, '/selectPassengerType');
             } else if (fareType === 'schoolService') {

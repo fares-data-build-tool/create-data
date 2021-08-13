@@ -28,8 +28,8 @@ const hasError = (errors: ErrorInfo[], name: string) => {
     return '';
 };
 
-const findCorrectPassengerType = (inputs: GroupPassengerTypeDb, passenger: SinglePassengerType) => {
-    return inputs.groupPassengerType.companions.find((companion) => companion.id === passenger.id);
+const findCorrectPassengerType = (inputs: GroupPassengerTypeDb | undefined, passenger: SinglePassengerType) => {
+    return inputs?.groupPassengerType.companions.find((companion) => companion.id === passenger.id);
 };
 
 const ManagePassengerGroup = ({
@@ -97,11 +97,7 @@ const ManagePassengerGroup = ({
                                                         type="checkbox"
                                                         value={passenger.id}
                                                         data-aria-controls={`conditional-input-${index}`}
-                                                        defaultChecked={
-                                                            inputs?.groupPassengerType
-                                                                ? !!findCorrectPassengerType(inputs, passenger)
-                                                                : false
-                                                        }
+                                                        defaultChecked={!!findCorrectPassengerType(inputs, passenger)}
                                                     />
                                                     <label
                                                         className="govuk-label govuk-checkboxes__label"
@@ -131,10 +127,8 @@ const ManagePassengerGroup = ({
                                                             id={`minimum-passengers-${passenger.id}`}
                                                             name={`minimumPassengers${passenger.id}`}
                                                             defaultValue={
-                                                                inputs?.groupPassengerType
-                                                                    ? findCorrectPassengerType(inputs, passenger)
-                                                                          ?.minNumber
-                                                                    : ''
+                                                                findCorrectPassengerType(inputs, passenger)
+                                                                    ?.minNumber ?? ''
                                                             }
                                                         />
                                                     </div>
@@ -150,39 +144,12 @@ const ManagePassengerGroup = ({
                                                             id={`maximum-passengers-${passenger.id}`}
                                                             name={`maximumPassengers${passenger.id}`}
                                                             defaultValue={
-                                                                inputs?.groupPassengerType
-                                                                    ? findCorrectPassengerType(inputs, passenger)
-                                                                          ?.maxNumber
-                                                                    : ''
+                                                                findCorrectPassengerType(inputs, passenger)
+                                                                    ?.maxNumber ?? ''
                                                             }
                                                         />
                                                     </div>
                                                 </div>
-                                                <input
-                                                    type="hidden"
-                                                    name={`${passenger.name}-type`}
-                                                    value={passenger.passengerType.passengerType}
-                                                />
-                                                <input
-                                                    type="hidden"
-                                                    name={`${passenger.name}-age-range-min`}
-                                                    value={passenger.passengerType.ageRangeMin || ''}
-                                                />
-                                                <input
-                                                    type="hidden"
-                                                    name={`${passenger.name}-age-range-max`}
-                                                    value={passenger.passengerType.ageRangeMax || ''}
-                                                />
-                                                <input
-                                                    type="hidden"
-                                                    name={`${passenger.name}-proof-docs`}
-                                                    value={JSON.stringify(passenger.passengerType.proofDocuments || [])}
-                                                />
-                                                <input
-                                                    type="hidden"
-                                                    name={`${passenger.name}-id`}
-                                                    value={JSON.stringify(passenger.id)}
-                                                />
                                             </>
                                         ),
                                     )}
@@ -237,44 +204,27 @@ export const getServerSideProps = async (
     const userInputsAndErrors = getSessionAttribute(ctx.req, GS_PASSENGER_GROUP_ATTRIBUTE);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const passengers = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
-    const passengerTypeId = Number(ctx.query.id);
-    const editMode = !!ctx.query.id && Number.isInteger(passengerTypeId);
+    const editId = Number.isInteger(Number(ctx.query.id)) ? Number(ctx.query.id) : undefined;
 
-    if (editMode) {
-        const groupToDisplay = await getGroupPassengerTypeById(passengerTypeId, nationalOperatorCode);
-        if (!groupToDisplay) {
+    let inputs: GroupPassengerTypeDb | undefined,
+        errors: ErrorInfo[] = [];
+    if ((userInputsAndErrors?.inputs.id || undefined) === editId) {
+        inputs = userInputsAndErrors?.inputs;
+        errors = userInputsAndErrors?.errors ?? [];
+    } else if (editId) {
+        inputs = await getGroupPassengerTypeById(editId, nationalOperatorCode);
+        if (!inputs) {
             throw new Error('No groups for this NOC matches the passed id');
         }
-
-        return {
-            props: {
-                passengers,
-                csrfToken,
-                errors: userInputsAndErrors?.errors || [],
-                inputs: userInputsAndErrors?.errors ? userInputsAndErrors.inputs : groupToDisplay,
-                editMode,
-            },
-        };
-    }
-
-    if (!userInputsAndErrors) {
-        return {
-            props: {
-                passengers,
-                csrfToken,
-                errors: [],
-                editMode,
-            },
-        };
     }
 
     return {
         props: {
             passengers,
             csrfToken,
-            errors: userInputsAndErrors.errors,
-            inputs: userInputsAndErrors.inputs,
-            editMode,
+            errors,
+            editMode: !!editId,
+            ...(inputs && { inputs }),
         },
     };
 };

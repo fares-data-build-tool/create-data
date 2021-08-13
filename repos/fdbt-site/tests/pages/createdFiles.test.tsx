@@ -1,7 +1,8 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
+import { PeriodGeoZoneTicket } from 'shared/matchingJsonTypes';
 import * as s3 from '../../src/data/s3';
-import { PeriodGeoZoneTicket, S3NetexFile } from '../../src/interfaces';
+import { S3NetexFile } from '../../src/interfaces';
 import CreatedFiles, { buildName, getServerSideProps } from '../../src/pages/createdFiles';
 import { expectedSingleTicket, getMockContext } from '../testData/mockData';
 

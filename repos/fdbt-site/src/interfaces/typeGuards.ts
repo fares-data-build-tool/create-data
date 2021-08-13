@@ -1,3 +1,4 @@
+import { FlatFareTicket, PeriodMultipleServicesTicket } from 'shared/matchingJsonTypes';
 import {
     CarnetProductInfo,
     ErrorInfo,
@@ -5,7 +6,6 @@ import {
     FareStagesAttributeWithErrors,
     FareType,
     FareTypeWithErrors,
-    FlatFareTicket,
     GeoZoneTicket,
     InputCheck,
     InputMethodInfo,
@@ -18,7 +18,6 @@ import {
     PassengerType,
     PassengerTypeWithErrors,
     PeriodExpiry,
-    PeriodMultipleServicesTicket,
     PeriodTicket,
     PointToPointTicket,
     ProductData,

@@ -169,6 +169,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
                     },
                   }
                 }
+                key="3"
               />
               <PassengerTypeCard
                 contents={
@@ -183,6 +184,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
                     },
                   }
                 }
+                key="2"
               />
             </FormElementWrapper>
             <h3>
@@ -304,6 +306,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                     },
                   }
                 }
+                key="3"
               />
               <PassengerTypeCard
                 contents={
@@ -318,6 +321,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                     },
                   }
                 }
+                key="2"
               />
             </FormElementWrapper>
             <h3>
@@ -354,6 +358,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                   "name": "family",
                 }
               }
+              key="1"
             />
             <PassengerTypeCard
               contents={
@@ -377,6 +382,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                   "name": "couple",
                 }
               }
+              key="4"
             />
           </div>
         </div>
@@ -508,6 +514,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                     },
                   }
                 }
+                key="3"
               />
               <PassengerTypeCard
                 contents={
@@ -522,6 +529,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                     },
                   }
                 }
+                key="2"
               />
             </FormElementWrapper>
             <h3>
@@ -558,6 +566,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                   "name": "family",
                 }
               }
+              key="1"
             />
             <PassengerTypeCard
               contents={
@@ -581,6 +590,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                   "name": "couple",
                 }
               }
+              key="4"
             />
           </div>
         </div>

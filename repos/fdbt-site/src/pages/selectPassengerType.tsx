@@ -49,7 +49,7 @@ const SelectPassengerType = ({
                                     operator settings.
                                 </a>{' '}
                                 <br />
-                                Don't worry you can navigate back to this page when you are finished.
+                                Don&apos;t worry you can navigate back to this page when you are finished.
                             </strong>
                         </div>
 
@@ -66,7 +66,10 @@ const SelectPassengerType = ({
                                     <FormElementWrapper errors={errors} errorId={''} errorClass="govuk-radios--error">
                                         <>
                                             {savedPassengerTypes.map((passengerType) => (
-                                                <PassengerTypeCard contents={passengerType} />
+                                                <PassengerTypeCard
+                                                    contents={passengerType}
+                                                    key={passengerType.id.toString()}
+                                                />
                                             ))}
                                         </>
                                     </FormElementWrapper>
@@ -75,7 +78,10 @@ const SelectPassengerType = ({
                                     {savedGroups.length ? (
                                         <>
                                             {savedGroups.map((passengerTypeGroup) => (
-                                                <PassengerTypeCard contents={passengerTypeGroup} />
+                                                <PassengerTypeCard
+                                                    contents={passengerTypeGroup}
+                                                    key={passengerTypeGroup.id.toString()}
+                                                />
                                             ))}
                                         </>
                                     ) : (

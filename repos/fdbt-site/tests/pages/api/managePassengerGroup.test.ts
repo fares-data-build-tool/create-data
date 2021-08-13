@@ -285,7 +285,7 @@ describe('managePassengerGroup', () => {
                 maxGroupSize: '7',
                 name: 'group',
             },
-            id: '2',
+            id: 2,
             name: 'group',
         });
     });
@@ -349,7 +349,7 @@ describe('managePassengerGroup', () => {
                     maxGroupSize: '7',
                     name: 'group',
                 },
-                id: '2',
+                id: 2,
                 name: 'group',
             },
         });

@@ -1,17 +1,18 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { FullGroupPassengerType, SinglePassengerType } from '../interfaces';
 import { sentenceCaseString, getProofDocumentsString } from '../utils';
 
 interface PassengerTypeCardProps {
     contents: FullGroupPassengerType | SinglePassengerType;
     deleteActionHandler?: (name: string, isGroup: boolean) => void;
+    key: string;
 }
 
-const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardProps): ReactElement => {
+const PassengerTypeCard = ({ contents, deleteActionHandler, key }: PassengerTypeCardProps): ReactElement => {
     const { name, id } = contents;
     const refinedName = name.length > 11 ? name.substring(0, 11).concat('…') : name;
     return (
-        <div key={name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
+        <div key={key} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
             <div className="card">
                 <div className="card__body">
                     {deleteActionHandler ? (
@@ -45,7 +46,9 @@ const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardP
                                     name="passengerTypeId"
                                     type="radio"
                                     value={id}
+                                    aria-label={name}
                                 />
+                                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                                 <label className="govuk-label govuk-radios__label" />
                             </div>
                         </div>

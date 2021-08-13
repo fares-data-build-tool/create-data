@@ -25,7 +25,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             } else {
                 redirectTo(res, '/passengerType');
             }
-            
         } else {
             const errors: ErrorInfo[] = [
                 { id: 'fare-type-single', errorMessage: 'Choose a carnet fare type from the options' },
