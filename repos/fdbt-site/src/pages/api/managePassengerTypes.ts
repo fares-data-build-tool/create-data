@@ -89,7 +89,7 @@ const formatRequestBody = async (
     const trimmedName = removeExcessWhiteSpace(name);
 
     const passengerType: SinglePassengerType = {
-        id: id,
+        id,
         name: trimmedName,
         passengerType: {
             passengerType: type,

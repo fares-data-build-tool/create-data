@@ -2,7 +2,12 @@
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import React from 'react';
-import { PointToPointPeriodTicket } from '../../shared/matchingJsonTypes';
+import {
+    FlatFareTicket,
+    PeriodGeoZoneTicket,
+    PeriodMultipleServicesTicket,
+    PointToPointPeriodTicket,
+} from '../../shared/matchingJsonTypes';
 import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
@@ -25,7 +30,6 @@ import {
     CarnetExpiryUnit,
     ErrorInfo,
     ExpiryUnit,
-    FlatFareTicket,
     FullTimeRestriction,
     FullTimeRestrictionAttribute,
     MultiOperatorGeoZoneTicket,
@@ -33,8 +37,6 @@ import {
     MultiProduct,
     MultiProductWithErrors,
     NextPageContextWithSession,
-    PeriodGeoZoneTicket,
-    PeriodMultipleServicesTicket,
     ProductDetails,
     RadioConditionalInputFieldset,
     RadioWithConditionalInputs,

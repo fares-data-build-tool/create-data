@@ -1,51 +1,36 @@
 import React, { ReactElement } from 'react';
-import { ErrorInfo, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
-import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
-import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
-import { isWithErrors } from '../interfaces/typeGuards';
-import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
+import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
 import { getPassengerTypeById } from '../data/auroradb';
-import { redirectToError } from './api/apiUtils';
+import { ErrorInfo, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
+import TwoThirdsLayout from '../layout/Layout';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Manage Passenger Types - Create Fares Data Service';
 const description = 'Manage Passenger Type page of the Create Fares Data Service';
 
-interface FilteredRequestBodyPassengerType {
-    passengerType?: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proofDocuments?: string[];
-}
-
-interface FilteredRequestBody {
-    id?: number;
-    name?: string;
-    passengerType: FilteredRequestBodyPassengerType;
-}
-
 interface ManagePassengerTypesProps {
-    isInEditMode: boolean;
+    editMode: boolean;
     csrfToken: string;
     errors: ErrorInfo[];
-    model: FilteredRequestBody;
+    inputs?: SinglePassengerType;
 }
 
 const ManagePassengerTypes = ({
-    isInEditMode,
+    editMode,
     csrfToken,
     errors = [],
-    model,
+    inputs,
 }: ManagePassengerTypesProps): ReactElement => {
-    const id = model?.id;
-    const name = model?.name;
-    const type = model?.passengerType?.passengerType;
-    const ageRangeMin = model?.passengerType?.ageRangeMin;
-    const ageRangeMax = model?.passengerType?.ageRangeMax;
-    const documents = model?.passengerType?.proofDocuments ?? [];
+    const id = inputs?.id;
+    const name = inputs?.name;
+    const type = inputs?.passengerType?.passengerType;
+    const ageRangeMin = inputs?.passengerType?.ageRangeMin;
+    const ageRangeMax = inputs?.passengerType?.ageRangeMax;
+    const documents = inputs?.passengerType?.proofDocuments ?? [];
 
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -293,7 +278,7 @@ const ManagePassengerTypes = ({
 
                     <input
                         type="submit"
-                        value={`${isInEditMode ? 'Update' : 'Add'} passenger type`}
+                        value={`${editMode ? 'Update' : 'Add'} passenger type`}
                         id="continue-button"
                         className="govuk-button"
                     />
@@ -315,50 +300,30 @@ export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: ManagePassengerTypesProps }> => {
     const nationalOperatorCode = getAndValidateNoc(ctx);
-
-    let singlePassengerType: SinglePassengerType | undefined;
-
     const csrfToken = getCsrfToken(ctx);
-
     const passengerTypeId = Number(ctx.query.id);
+    const userInputsAndErrors = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
+    const editId = Number.isInteger(Number(ctx.query.id)) ? Number(ctx.query.id) : undefined;
 
-    const isInEditMode = Number.isInteger(passengerTypeId);
+    let inputs: SinglePassengerType | undefined,
+        errors: ErrorInfo[] = [];
 
-    let sessionObject = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
-
-    if (isInEditMode && sessionObject?.id !== passengerTypeId) {
-        updateSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
-        sessionObject = undefined;
-    }
-
-    if (sessionObject === undefined && isInEditMode) {
-        singlePassengerType = await getPassengerTypeById(passengerTypeId, nationalOperatorCode);
-
-        if (singlePassengerType === undefined) {
-            if (ctx.res) {
-                redirectToError(
-                    ctx.res,
-                    `No passenger type for id: ${passengerTypeId}`,
-                    'Editing a passenger type',
-                    new Error(),
-                );
-            }
+    if ((userInputsAndErrors?.id || undefined) === editId) {
+        inputs = userInputsAndErrors;
+        errors = userInputsAndErrors?.errors ?? [];
+    } else if (editId) {
+        inputs = await getPassengerTypeById(passengerTypeId, nationalOperatorCode);
+        if (!inputs) {
+            throw new Error('No groups for this NOC matches the passed id');
         }
     }
 
-    const errors: ErrorInfo[] = isWithErrors(sessionObject) ? sessionObject.errors : [];
-
-    const model =
-        sessionObject === undefined
-            ? ({ ...singlePassengerType } as FilteredRequestBody)
-            : ({ ...sessionObject } as FilteredRequestBody);
-
     return {
         props: {
-            isInEditMode,
             csrfToken,
             errors,
-            model,
+            editMode: !!editId,
+            ...(inputs && { inputs }),
         },
     };
 };

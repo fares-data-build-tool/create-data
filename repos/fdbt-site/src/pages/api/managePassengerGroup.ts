@@ -1,13 +1,19 @@
+import { updateGroupPassengerType } from '../../data/auroradb';
 import { isArray } from 'lodash';
 import { NextApiResponse } from 'next';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../constants/attributes';
-import { getPassengerTypeByNameAndNocCode, insertGroupPassengerType } from '../../data/auroradb';
+import { getGroupPassengerTypesFromGlobalSettings, insertGroupPassengerType } from '../../data/auroradb';
 import { CompanionReference, ErrorInfo, GroupPassengerTypeDb, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils';
 import { checkIntegerIsValid, removeExcessWhiteSpace } from './apiUtils/validator';
 
 export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerTypeDb => {
+    const id = req.body.groupId && Number(req.body.groupId);
+    if (id && !Number.isInteger(id)) {
+        throw Error(`Received invalid id for passenger group [${req.body.groupId}]`);
+    }
+
     const maxGroupSize = removeExcessWhiteSpace(req.body.maxGroupSize);
     const groupName = removeExcessWhiteSpace(req.body.passengerGroupName);
     const passengerTypeIds: string[] = !req.body.passengerTypes
@@ -33,38 +39,43 @@ export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassenge
     });
 
     return {
+        id,
         name: groupName,
-        maxGroupSize,
-        companions,
+        groupPassengerType: { name: groupName, maxGroupSize, companions },
     };
 };
 
 export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: string): Promise<ErrorInfo[]> => {
     const errors: ErrorInfo[] = [];
-    const integerCheck = checkIntegerIsValid(userInput.maxGroupSize, 'Maximum group size', 1, 30);
+    const integerCheck = checkIntegerIsValid(userInput.groupPassengerType.maxGroupSize, 'Maximum group size', 1, 30);
+    const editMode = !!userInput.id;
 
     if (integerCheck) {
         errors.push({
             errorMessage: integerCheck,
             id: 'max-group-size',
-            userInput: userInput.maxGroupSize || '',
+            userInput: userInput.groupPassengerType.maxGroupSize || '',
         });
     }
-    if (!userInput.companions?.length) {
+    if (!userInput.groupPassengerType.companions?.length) {
         errors.push({
             errorMessage: 'Select at least one passenger type',
             id: 'passenger-type-0',
         });
     }
 
-    if (userInput.companions && userInput.companions.length && userInput.maxGroupSize) {
-        userInput.companions.forEach((companion) => {
+    if (
+        userInput.groupPassengerType.companions &&
+        userInput.groupPassengerType.companions.length &&
+        userInput.groupPassengerType.maxGroupSize
+    ) {
+        userInput.groupPassengerType.companions.forEach((companion) => {
             if (companion.minNumber) {
                 const minCheck = checkIntegerIsValid(
                     companion.minNumber,
                     'Minimum amount',
                     1,
-                    Number(userInput.maxGroupSize),
+                    Number(userInput.groupPassengerType.maxGroupSize),
                 );
                 if (minCheck) {
                     errors.push({
@@ -84,7 +95,7 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
                     companion.maxNumber,
                     'Maximum amount',
                     1,
-                    Number(userInput.maxGroupSize),
+                    Number(userInput.groupPassengerType.maxGroupSize),
                 );
                 if (maxCheck) {
                     errors.push({
@@ -93,7 +104,7 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
                         userInput: companion.maxNumber || '',
                     });
                 }
-                if (companion.minNumber && companion.minNumber > companion.maxNumber) {
+                if (companion.minNumber && Number(companion.minNumber) > Number(companion.maxNumber)) {
                     errors.push({
                         errorMessage: 'Minimum amount cannot be greated than maximum amount',
                         id: `minumum-passengers-${companion.id}`,
@@ -103,9 +114,13 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
             }
         });
     }
-    const groupNameCheck = await getPassengerTypeByNameAndNocCode(nocCode, userInput.name, true);
+    const groups = await getGroupPassengerTypesFromGlobalSettings(nocCode);
+    const groupNameCheck = groups.find((group) => group.name === userInput.name);
 
-    if (groupNameCheck) {
+    // checks to see if the duplicate name exists
+    // OR
+    // editMode is on and there is only one group with the same name, and it is the one being edited
+    if ((groupNameCheck && !editMode) || (editMode && groupNameCheck && groupNameCheck.id !== userInput.id)) {
         errors.push({
             errorMessage: 'There is already a group with this name. Choose another',
             id: 'passenger-group-name',
@@ -134,11 +149,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 errors,
                 inputs: formattedRequest,
             });
-            redirectTo(res, '/managePassengerGroup');
+            redirectTo(res, `/managePassengerGroup${formattedRequest.id ? `?id=${formattedRequest.id}` : ''}`);
             return;
         }
         updateSessionAttribute(req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
-        await insertGroupPassengerType(noc, formattedRequest, formattedRequest.name);
+        if (formattedRequest.id) {
+            await updateGroupPassengerType(noc, formattedRequest);
+        } else {
+            await insertGroupPassengerType(noc, formattedRequest.groupPassengerType, formattedRequest.name);
+        }
         redirectTo(res, '/viewPassengerTypes');
         return;
     } catch (error) {

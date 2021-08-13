@@ -5,9 +5,11 @@ import * as aurora from '../../../src/data/auroradb';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../../src/constants/attributes';
 
 const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
-const getPassengerTypeByNameAndNocCodeSpy = jest.spyOn(aurora, 'getPassengerTypeByNameAndNocCode');
+const getGroupPassengerTypesFromGlobalSettingsSpy = jest.spyOn(aurora, 'getGroupPassengerTypesFromGlobalSettings');
 const insertGroupPassengerTypeSpy = jest.spyOn(aurora, 'insertGroupPassengerType');
+const updateGroupPassengerTypeSpy = jest.spyOn(aurora, 'updateGroupPassengerType');
 insertGroupPassengerTypeSpy.mockResolvedValue();
+updateGroupPassengerTypeSpy.mockResolvedValue();
 
 afterEach(() => {
     jest.resetAllMocks();
@@ -16,7 +18,7 @@ afterEach(() => {
 describe('managePassengerGroup', () => {
     it('should return 302 redirect to /managePassengerGroup when there have been no user inputs and update session with errors', async () => {
         const writeHeadMock = jest.fn();
-        getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce(undefined);
+        getGroupPassengerTypesFromGlobalSettingsSpy.mockResolvedValueOnce([]);
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -44,13 +46,13 @@ describe('managePassengerGroup', () => {
                     userInput: '',
                 },
             ],
-            inputs: { companions: [], maxGroupSize: '', name: '' },
+            inputs: { groupPassengerType: { companions: [], maxGroupSize: '', name: '' }, id: undefined, name: '' },
         });
     });
 
     it('should return 302 redirect to /managePassengerGroup when there have been incorrect user inputs and update session with errors and inputs', async () => {
         const writeHeadMock = jest.fn();
-        getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce(undefined);
+        getGroupPassengerTypesFromGlobalSettingsSpy.mockResolvedValueOnce([]);
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -93,19 +95,23 @@ describe('managePassengerGroup', () => {
                 },
             ],
             inputs: {
-                companions: [
-                    {
-                        id: 12,
-                        maxNumber: 'three',
-                        minNumber: 'one',
-                    },
-                    {
-                        id: 43,
-                        maxNumber: '2',
-                        minNumber: '1',
-                    },
-                ],
-                maxGroupSize: 'seven',
+                groupPassengerType: {
+                    companions: [
+                        {
+                            id: 12,
+                            maxNumber: 'three',
+                            minNumber: 'one',
+                        },
+                        {
+                            id: 43,
+                            maxNumber: '2',
+                            minNumber: '1',
+                        },
+                    ],
+                    maxGroupSize: 'seven',
+                    name: '',
+                },
+                id: undefined,
                 name: '',
             },
         });
@@ -113,9 +119,27 @@ describe('managePassengerGroup', () => {
 
     it('should return 302 redirect to /managePassengerGroup when there have been correct user inputs but there is a group with the same name', async () => {
         const writeHeadMock = jest.fn();
-        getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce({
-            passengerType: 'group',
-        });
+        getGroupPassengerTypesFromGlobalSettingsSpy.mockResolvedValueOnce([
+            {
+                id: 2,
+                name: 'My duplicate group',
+                groupPassengerType: {
+                    name: 'adult',
+                    maxGroupSize: '3',
+                    companions: [
+                        {
+                            name: 'adult',
+                            passengerType: 'adult',
+                            minNumber: '2',
+                            maxNumber: '3',
+                            ageRangeMin: '18',
+                            ageRangeMax: '79',
+                            proofDocuments: [],
+                        },
+                    ],
+                },
+            },
+        ]);
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -143,27 +167,31 @@ describe('managePassengerGroup', () => {
                 },
             ],
             inputs: {
-                companions: [
-                    {
-                        id: 12,
-                        maxNumber: '3',
-                        minNumber: '2',
-                    },
-                    {
-                        id: 43,
-                        maxNumber: '2',
-                        minNumber: '1',
-                    },
-                ],
-                maxGroupSize: '7',
+                groupPassengerType: {
+                    companions: [
+                        {
+                            id: 12,
+                            maxNumber: '3',
+                            minNumber: '2',
+                        },
+                        {
+                            id: 43,
+                            maxNumber: '2',
+                            minNumber: '1',
+                        },
+                    ],
+                    maxGroupSize: '7',
+                    name: 'My duplicate group',
+                },
                 name: 'My duplicate group',
+                id: undefined,
             },
         });
     });
 
     it('should return 302 redirect to /viewPassengerTypes when there have been correct user inputs and the group is saved to the db ', async () => {
         const writeHeadMock = jest.fn();
-        getPassengerTypeByNameAndNocCodeSpy.mockResolvedValueOnce(undefined);
+        getGroupPassengerTypesFromGlobalSettingsSpy.mockResolvedValueOnce([]);
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -203,5 +231,128 @@ describe('managePassengerGroup', () => {
             },
             'My group',
         );
+    });
+
+    it('should return 302 redirect to /viewPassengerTypes when there has been a correct edit made and the group is updated in the db', async () => {
+        const writeHeadMock = jest.fn();
+        getGroupPassengerTypesFromGlobalSettingsSpy.mockResolvedValueOnce([
+            {
+                id: 2,
+                name: 'group',
+                groupPassengerType: {
+                    name: 'adult',
+                    maxGroupSize: '3',
+                    companions: [
+                        {
+                            name: 'adult',
+                            passengerType: 'adult',
+                            minNumber: '2',
+                            maxNumber: '3',
+                            ageRangeMin: '18',
+                            ageRangeMax: '79',
+                            proofDocuments: [],
+                        },
+                    ],
+                },
+            },
+        ]);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                groupId: '2',
+                maxGroupSize: '7',
+                passengerTypes: ['12', '43'],
+                ['minimumPassengers12']: '2',
+                ['maximumPassengers12']: '3',
+                ['minimumPassengers43']: '1',
+                ['maximumPassengers43']: '2',
+                passengerGroupName: 'group',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await managePassengerGroup(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/viewPassengerTypes',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
+        expect(updateGroupPassengerTypeSpy).toBeCalledWith('TEST', {
+            groupPassengerType: {
+                companions: [
+                    { id: 12, maxNumber: '3', minNumber: '2' },
+                    { id: 43, maxNumber: '2', minNumber: '1' },
+                ],
+                maxGroupSize: '7',
+                name: 'group',
+            },
+            id: 2,
+            name: 'group',
+        });
+    });
+
+    it('should return 302 redirect to /managePassengerGroup?id=2 with errors when the group name is already in use by another group in edit mode', async () => {
+        const writeHeadMock = jest.fn();
+        getGroupPassengerTypesFromGlobalSettingsSpy.mockResolvedValueOnce([
+            {
+                id: 3,
+                name: 'group',
+                groupPassengerType: {
+                    name: 'adult',
+                    maxGroupSize: '3',
+                    companions: [
+                        {
+                            name: 'adult',
+                            passengerType: 'adult',
+                            minNumber: '2',
+                            maxNumber: '3',
+                            ageRangeMin: '18',
+                            ageRangeMax: '79',
+                            proofDocuments: [],
+                        },
+                    ],
+                },
+            },
+        ]);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                groupId: '2',
+                maxGroupSize: '7',
+                passengerTypes: ['12', '43'],
+                ['minimumPassengers12']: '2',
+                ['maximumPassengers12']: '3',
+                ['minimumPassengers43']: '1',
+                ['maximumPassengers43']: '2',
+                passengerGroupName: 'group',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await managePassengerGroup(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/managePassengerGroup?id=2',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_PASSENGER_GROUP_ATTRIBUTE, {
+            errors: [
+                {
+                    errorMessage: 'There is already a group with this name. Choose another',
+                    id: 'passenger-group-name',
+                    userInput: 'group',
+                },
+            ],
+            inputs: {
+                groupPassengerType: {
+                    companions: [
+                        { id: 12, maxNumber: '3', minNumber: '2' },
+                        { id: 43, maxNumber: '2', minNumber: '1' },
+                    ],
+                    maxGroupSize: '7',
+                    name: 'group',
+                },
+                id: 2,
+                name: 'group',
+            },
+        });
+        expect(updateGroupPassengerTypeSpy).toBeCalledTimes(0);
     });
 });

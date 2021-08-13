@@ -7,7 +7,6 @@ import {
     CompanionInfo,
     FullTimeRestriction,
     GroupPassengerType,
-    GroupPassengerTypeDb,
     Operator,
     OperatorGroup,
     PassengerType,
@@ -17,6 +16,9 @@ import {
     ServiceType,
     SinglePassengerType,
     Stop,
+    GroupPassengerTypeDb,
+    GroupPassengerTypeReference,
+    FullGroupPassengerType,
 } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -633,7 +635,7 @@ export const insertSinglePassengerType = async (
 
 export const insertGroupPassengerType = async (
     nocCode: string,
-    passengerType: GroupPassengerType | GroupPassengerTypeDb,
+    passengerType: GroupPassengerType | GroupPassengerTypeReference,
     name: string,
 ): Promise<void> => {
     const contents = JSON.stringify(passengerType);
@@ -662,7 +664,7 @@ export const upsertSinglePassengerType = async (
         const updateQuery = `UPDATE passengerType
                              SET contents = ?
                              WHERE name = ? 
-                             AND isGroup  = ?
+                             AND isGroup = ?
                              AND nocCode = ?`;
         const meta = await executeQuery<ResultSetHeader>(updateQuery, [contents, name, false, nocCode]);
         if (meta.affectedRows > 1) {
@@ -688,13 +690,14 @@ export const updateSinglePassengerType = async (noc: string, passengerType: Sing
     try {
         const updateQuery = `UPDATE passengerType
                              SET name = ?, contents = ?
-                             WHERE id = ? AND nocCode = ?`;
+                             WHERE id = ? AND nocCode = ? AND isGroup = ?`;
 
         const meta = await executeQuery<ResultSetHeader>(updateQuery, [
             passengerType.name,
             contents,
             passengerType.id,
             noc,
+            false,
         ]);
 
         if (meta.affectedRows !== 1) {
@@ -702,6 +705,39 @@ export const updateSinglePassengerType = async (noc: string, passengerType: Sing
         }
     } catch (error) {
         throw new Error(`Could not update passenger type. ${error}`);
+    }
+};
+
+export const updateGroupPassengerType = async (
+    noc: string,
+    groupPassengerType: GroupPassengerTypeDb,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'updating group passenger type for given id',
+        id: groupPassengerType.id,
+        name: groupPassengerType.name,
+    });
+
+    const contents = JSON.stringify(groupPassengerType.groupPassengerType);
+
+    try {
+        const updateQuery = `UPDATE passengerType
+                             SET name = ?, contents = ?
+                             WHERE id = ? AND nocCode = ?`;
+
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [
+            groupPassengerType.name,
+            contents,
+            groupPassengerType.id,
+            noc,
+        ]);
+
+        if (meta.affectedRows !== 1) {
+            throw Error(`Did not update a single row: ${meta}`);
+        }
+    } catch (error) {
+        throw new Error(`Could not update group passenger type. ${error}`);
     }
 };
 
@@ -780,7 +816,58 @@ export const getSinglePassengerTypeByNameAndNocCode = async (
     }
 };
 
-export const getPassengerTypeById = async (id: number, noc: string): Promise<SinglePassengerType | undefined> => {
+export const getPassengerTypeById = async (
+    passengerId: number,
+    noc: string,
+): Promise<SinglePassengerType | undefined> => {
+    const result = await retrievePassengerTypeById(passengerId, noc, false);
+
+    if (!result) {
+        return undefined;
+    }
+
+    const { id, name, contents } = result;
+
+    return {
+        id,
+        name,
+        passengerType: JSON.parse(contents) as PassengerType,
+    };
+};
+
+export const getGroupPassengerTypeById = async (
+    passengerId: number,
+    noc: string,
+): Promise<GroupPassengerTypeDb | undefined> => {
+    const result = await retrievePassengerTypeById(passengerId, noc, true);
+
+    if (!result) {
+        return undefined;
+    }
+
+    const { id, name, contents } = result;
+
+    const parsedContents = JSON.parse(contents) as GroupPassengerTypeReference;
+
+    return {
+        id,
+        name,
+        groupPassengerType: parsedContents,
+    };
+};
+
+const retrievePassengerTypeById = async (
+    id: number,
+    noc: string,
+    isGroup: boolean,
+): Promise<
+    | {
+          id: number;
+          name: string;
+          contents: string;
+      }
+    | undefined
+> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving passenger type for a given id',
@@ -791,26 +878,21 @@ export const getPassengerTypeById = async (id: number, noc: string): Promise<Sin
         const queryInput = `
             SELECT id, name, contents
             FROM passengerType
-            WHERE id = ? AND nocCode = ?`;
+            WHERE id = ? 
+            AND nocCode = ?
+            AND isGroup = ?`;
 
         const queryResults = await executeQuery<{ id: number; name: string; contents: string }[]>(queryInput, [
             id,
             noc,
+            isGroup,
         ]);
 
         if (queryResults.length > 1) {
             throw new Error("Didn't expect more than one passenger type with the same id");
         }
 
-        const data = queryResults[0];
-
-        return data
-            ? {
-                  id: data.id,
-                  name: data.name,
-                  passengerType: JSON.parse(data.contents) as PassengerType,
-              }
-            : undefined;
+        return queryResults[0];
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
     }
@@ -852,7 +934,7 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
         } else {
             // filter out the ones with IDs that are created in global settings
             return queryResults
-                .map((row) => JSON.parse(row.contents) as GroupPassengerType | GroupPassengerTypeDb)
+                .map((row) => JSON.parse(row.contents) as GroupPassengerType | GroupPassengerTypeReference)
                 .filter((row) => !row.companions.some((companion) => 'id' in companion)) as SavedPassengerType[T][];
         }
     } catch (error) {
@@ -860,7 +942,7 @@ export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerT
     }
 };
 
-export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string): Promise<GroupPassengerType[]> => {
+export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string): Promise<FullGroupPassengerType[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving global settings group passenger types for given noc',
@@ -882,31 +964,39 @@ export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string):
 
         // filter out the ones without IDs that are not created in global settings
         const dbGroups = queryResults
-            .map((row) => JSON.parse(row.contents) as GroupPassengerType | GroupPassengerTypeDb)
-            .filter((row) => row.companions.some((it) => 'id' in it)) as GroupPassengerTypeDb[];
+            .map((row) => ({
+                id: row.id,
+                name: row.name,
+                groupPassengerType: JSON.parse(row.contents) as GroupPassengerType | GroupPassengerTypeReference,
+            }))
+            .filter((row) => row.groupPassengerType.companions.some((it) => 'id' in it)) as GroupPassengerTypeDb[];
 
         return Promise.all(
             dbGroups.map(async (group) => ({
-                ...group,
-                companions: await Promise.all(
-                    group.companions.map(async (companion): Promise<CompanionInfo> => {
-                        const individual = await getPassengerTypeById(companion.id, nocCode);
-                        if (!individual) {
-                            throw new Error(`no passenger type found for companion id [${companion.id}]`);
-                        }
-                        return {
-                            minNumber: companion.minNumber,
-                            maxNumber: companion.maxNumber,
-                            ...individual.passengerType,
-                            passengerType: individual.passengerType.passengerType,
-                            name: individual.name,
-                        };
-                    }),
-                ),
+                id: group.id,
+                name: group.name,
+                groupPassengerType: {
+                    ...group.groupPassengerType,
+                    companions: await Promise.all(
+                        group.groupPassengerType.companions.map(async (companion): Promise<CompanionInfo> => {
+                            const individual = await getPassengerTypeById(companion.id, nocCode);
+                            if (!individual) {
+                                throw new Error(`no passenger type found for companion id [${companion.id}]`);
+                            }
+                            return {
+                                minNumber: companion.minNumber,
+                                maxNumber: companion.maxNumber,
+                                ...individual.passengerType,
+                                passengerType: individual.passengerType.passengerType,
+                                name: individual.name,
+                            };
+                        }),
+                    ),
+                },
             })),
         );
     } catch (error) {
-        throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
+        throw new Error(`Could not retrieve group passenger type by nocCode from AuroraDB: ${error}`);
     }
 };
 
