@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { deletePassengerTypeByNocCodeAndName } from '../../data/auroradb';
+import { deletePassengerTypeByNocCodeAndId, getGroupPassengerTypeDbsFromGlobalSettings } from '../../data/auroradb';
 import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils/index';
 import { NextApiRequestWithSession } from '../../interfaces';
 
@@ -7,17 +7,25 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     try {
         const { query } = req;
 
-        const name = query?.name;
+        const id = Number(query?.id);
 
         const isGroup = query?.isGroup;
 
-        if (typeof name !== 'string' || typeof isGroup !== 'string') {
+        if (!Number.isInteger(id) || typeof isGroup !== 'string') {
             throw new Error('insufficient data provided for delete query');
         }
 
         const nationalOperatorCode = getAndValidateNoc(req, res);
+        const groups = await getGroupPassengerTypeDbsFromGlobalSettings(nationalOperatorCode);
+        const groupsInUse = groups.some((group) =>
+            group.groupPassengerType.companions.some((individual) => individual.id === id),
+        );
 
-        await deletePassengerTypeByNocCodeAndName(name, nationalOperatorCode, isGroup === 'true');
+        if (groupsInUse) {
+            throw new Error('This individual cannot be deleted because it is in use in a group.');
+        }
+
+        await deletePassengerTypeByNocCodeAndId(id, nationalOperatorCode, isGroup === 'true');
 
         redirectTo(res, '/viewPassengerTypes');
     } catch (error) {

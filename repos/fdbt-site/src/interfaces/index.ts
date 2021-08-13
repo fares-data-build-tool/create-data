@@ -366,6 +366,7 @@ export interface PassengerDetails {
 }
 
 export interface CompanionInfo {
+    id?: number;
     name?: string;
     passengerType: string;
     minNumber?: string;
