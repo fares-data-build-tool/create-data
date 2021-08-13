@@ -992,6 +992,7 @@ export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string):
                                 ...individual.passengerType,
                                 passengerType: individual.passengerType.passengerType,
                                 name: individual.name,
+                                id: individual.id,
                             };
                         }),
                     ),
@@ -1003,24 +1004,57 @@ export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string):
     }
 };
 
-export const deletePassengerTypeByNocCodeAndName = async (
-    name: string,
+export const getGroupPassengerTypeDbsFromGlobalSettings = async (nocCode: string): Promise<GroupPassengerTypeDb[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving global settings group passenger types for given noc',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, name, contents
+            FROM passengerType
+            WHERE nocCode = ?
+            AND isGroup = ?
+        `;
+
+        const queryResults = await executeQuery<{ id: number; name: string; contents: string }[]>(queryInput, [
+            nocCode,
+            true,
+        ]);
+
+        // filter out the ones without IDs that are not created in global settings
+        return queryResults
+            .map((row) => ({
+                id: row.id,
+                name: row.name,
+                groupPassengerType: JSON.parse(row.contents) as GroupPassengerType | GroupPassengerTypeReference,
+            }))
+            .filter((row) => row.groupPassengerType.companions.some((it) => 'id' in it)) as GroupPassengerTypeDb[];
+    } catch (error) {
+        throw new Error(`Could not retrieve group passenger type by nocCode from AuroraDB: ${error}`);
+    }
+};
+
+export const deletePassengerTypeByNocCodeAndId = async (
+    id: number,
     nocCode: string,
     isGroup: boolean,
 ): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'deleting passenger type for given name',
-        name,
+        message: 'deleting passenger type for given id',
+        id,
     });
 
     const deleteQuery = `
             DELETE FROM passengerType 
-            WHERE name = ?
+            WHERE id = ?
             AND nocCode = ?
             AND isGroup = ?`;
     try {
-        await executeQuery(deleteQuery, [name, nocCode, isGroup]);
+        await executeQuery(deleteQuery, [id, nocCode, isGroup]);
     } catch (error) {
         throw new Error(
             `Could not delete ${isGroup === true ? 'group' : 'passenger'} from the passengerType table. ${error.stack}`,
