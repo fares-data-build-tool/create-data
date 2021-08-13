@@ -24,7 +24,6 @@ const ViewPassengerTypes = ({
     csrfToken,
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
-        isVisible: boolean;
         passengerTypeName: string;
         passengerTypeId: number;
         isGroup: boolean;
@@ -38,7 +37,6 @@ const ViewPassengerTypes = ({
 
         setPopUpState({
             ...popUpState,
-            isVisible: true,
             passengerTypeName: name,
             passengerTypeId: id,
             isGroup,
