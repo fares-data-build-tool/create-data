@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-export const GlobalSettingReturnHeader = () => (
+export const GlobalSettingReturnHeader: FunctionComponent = () => (
     <div className="govuk-warning-text govuk-width-container govuk-!-margin-bottom-0">
         <div
             className="govuk-notification-banner"
@@ -9,11 +9,7 @@ export const GlobalSettingReturnHeader = () => (
             data-module="govuk-notification-banner"
             style={{ margin: '24px -15px 0' }}
         >
-            <div className="govuk-notification-banner__header">
-                <h2 className="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                    Information
-                </h2>
-            </div>
+            <div className="govuk-notification-banner__header" />
             <div
                 className="govuk-notification-banner__content"
                 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
