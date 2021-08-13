@@ -95,3 +95,5 @@ export const SAVED_PASSENGER_GROUPS_ATTRIBUTE = 'fdbt-saved-passenger-groups';
 export const POINT_TO_POINT_PRODUCT_ATTRIBUTE = 'fdbt-point-to-point-product';
 
 export const GS_PASSENGER_GROUP_ATTRIBUTE = 'fdbt-global-settings-passenger-group';
+
+export const GS_TIME_RESTRICTION_ATTRIBUTE = 'fdbt-global-settings-time-restriction';

@@ -191,6 +191,11 @@ export interface GlobalSettingsGroupAttribute {
     errors: ErrorInfo[];
 }
 
+export interface GlobalSettingsTimeRestrictionAttribute {
+    inputs: PremadeTimeRestriction;
+    errors: ErrorInfo[];
+}
+
 // Miscellaneous
 
 export interface SettingsOverview {
@@ -479,7 +484,7 @@ export interface MultiOperatorInfoWithErrors {
 }
 
 export interface FullTimeRestrictionAttribute {
-    fullTimeRestrictions: FullTimeRestriction[];
+       fullTimeRestrictions: FullTimeRestriction[];
     errors: ErrorInfo[];
 }
 

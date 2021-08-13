@@ -73,9 +73,9 @@ const NoTimeRestrictions = (): ReactElement => {
             <p className="govuk-body">
                 <em>You currently have no time restrictions saved.</em>
             </p>
-            <button className="govuk-button" data-module="govuk-button">
+            <a className="govuk-button" data-module="govuk-button" href="/manageTimeRestriction">
                 Add a time restriction
-            </button>
+            </a>
         </div>
     );
 };
@@ -131,9 +131,9 @@ const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeR
             ))}
         </div>
 
-        <button className="govuk-button" data-module="govuk-button">
+        <a className="govuk-button" data-module="govuk-button" href="/manageTimeRestrictions">
             Add a time restriction
-        </button>
+        </a>
     </div>
 );
 

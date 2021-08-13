@@ -332,6 +332,7 @@ svg:not(:root) {
 
     .govuk-form-group {
         margin-bottom: 0;
+        max-width: 230px;
     }
 }
 
@@ -358,5 +359,15 @@ svg:not(:root) {
 
     &:not(:last-child) {
         margin-bottom: 20px;
+    }
+}
+
+.global-settings-time-restriction-row {
+    &:not(:last-child) {
+        margin-bottom: 20px;
+    }
+
+    .govuk-form-group {
+        display: flex;
     }
 }
