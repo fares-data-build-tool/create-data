@@ -1,21 +1,34 @@
 import React from 'react';
 
 export const GlobalSettingReturnHeader = () => (
-    <div className="govuk-!-padding-top-2 govuk-!-padding-bottom-2" style={{ borderBottom: '4px solid yellow' }}>
-        <div className="govuk-warning-text govuk-width-container govuk-!-margin-bottom-0">
-            <span className="govuk-warning-text__icon" aria-hidden="true">
-                !
-            </span>
-            <strong className="govuk-warning-text__text">
-                Once you&apos;ve made your changes you can return to your fare creation
-            </strong>
-            <a
-                href={`/globalSettingsRedirect`}
-                className="govuk-button govuk-button--secondary"
-                style={{ float: 'right', marginTop: '-32px' }}
+    <div className="govuk-warning-text govuk-width-container govuk-!-margin-bottom-0">
+        <div
+            className="govuk-notification-banner"
+            role="region"
+            aria-labelledby="govuk-notification-banner-title"
+            data-module="govuk-notification-banner"
+            style={{ margin: '24px -15px 0' }}
+        >
+            <div className="govuk-notification-banner__header">
+                <h2 className="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                    Information
+                </h2>
+            </div>
+            <div
+                className="govuk-notification-banner__content"
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
             >
-                Back
-            </a>
+                <p className="govuk-heading-s govuk-!-margin-0">
+                    Once you&apos;ve made your changes you can return to your fare creation.
+                </p>
+                <a
+                    href={`/globalSettingsRedirect`}
+                    className="govuk-button govuk-button--secondary"
+                    style={{ alignSelf: 'flex-start' }}
+                >
+                    Back
+                </a>
+            </div>
         </div>
     </div>
 );

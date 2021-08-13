@@ -56,7 +56,7 @@
         "express-session": "^1.17.1",
         "express-winston": "^4.0.3",
         "formidable": "^1.2.2",
-        "govuk-frontend": "^3.6.0",
+        "govuk-frontend": "^3.13.0",
         "helmet": "^3.22.0",
         "jest-enzyme": "^7.1.2",
         "jsdom-global": "^3.0.2",
