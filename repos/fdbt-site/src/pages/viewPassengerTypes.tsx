@@ -1,13 +1,14 @@
 import React, { ReactElement, useState } from 'react';
-import { GS_PASSENGER_GROUP_ATTRIBUTE, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
-import { BaseLayout } from '../layout/Layout';
-import { SinglePassengerType, NextPageContextWithSession, FullGroupPassengerType } from '../interfaces';
-import { getCsrfToken, getAndValidateNoc, sentenceCaseString } from '../utils';
-import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
-import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
-import { extractGlobalSettingsReferer } from '../utils/globalSettings';
+import PassengerTypeCard from '../components/PassengerTypeCard';
 import UnableToDeletePopup from '../components/UnableToDeletePopup';
+import { GS_PASSENGER_GROUP_ATTRIBUTE, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
+import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
+import { FullGroupPassengerType, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
+import { BaseLayout } from '../layout/Layout';
+import SubNavigation from '../layout/SubNavigation';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Passenger Types - Create Fares Data Service';
@@ -130,67 +131,11 @@ const IndividualPassengerTypes = ({
 
             <div className="govuk-grid-row">
                 {singlePassengerTypes.map((singlePassengerType) => (
-                    <div key={singlePassengerType.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
-                        <div className="card">
-                            <div className="card__body individual-passenger-type">
-                                <div className="card__actions">
-                                    <ul className="actions__list">
-                                        <li className="actions__item">
-                                            <a
-                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                                href={`/managePassengerTypes?id=${singlePassengerType.id}`}
-                                            >
-                                                Edit
-                                            </a>
-                                        </li>
-
-                                        <li className="actions__item">
-                                            <button
-                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                onClick={() =>
-                                                    deleteActionHandler(
-                                                        singlePassengerType.id,
-                                                        singlePassengerType.name,
-                                                        false,
-                                                    )
-                                                }
-                                            >
-                                                Delete
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <h4 className="govuk-!-padding-bottom-4">{singlePassengerType.name}</h4>
-
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Passenger type:</span>{' '}
-                                    {sentenceCaseString(singlePassengerType.passengerType.passengerType)}
-                                </p>
-
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Minimum age:</span>{' '}
-                                    {singlePassengerType.passengerType.ageRangeMin
-                                        ? singlePassengerType.passengerType.ageRangeMin
-                                        : 'N/A'}
-                                </p>
-
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Maximum age:</span>{' '}
-                                    {singlePassengerType.passengerType.ageRangeMax
-                                        ? singlePassengerType.passengerType.ageRangeMax
-                                        : 'N/A'}
-                                </p>
-
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Proof document(s):</span>{' '}
-                                    {singlePassengerType.passengerType.proofDocuments
-                                        ? getProofOfDocumentsString(singlePassengerType.passengerType.proofDocuments)
-                                        : 'N/A'}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    <PassengerTypeCard
+                        contents={singlePassengerType}
+                        deleteActionHandler={deleteActionHandler}
+                        key={singlePassengerType.id.toString()}
+                    />
                 ))}
             </div>
 
@@ -240,60 +185,11 @@ const PassengerTypeGroups = ({
 
             <div className="govuk-grid-row">
                 {passengerTypeGroups.map((passengerTypeGroup) => (
-                    <div key={passengerTypeGroup.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
-                        <div className="card">
-                            <div className="card__body">
-                                <div className="card__actions">
-                                    <ul className="actions__list">
-                                        <li className="actions__item">
-                                            <a
-                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                                href={`/managePassengerGroup?id=${passengerTypeGroup.id}`}
-                                            >
-                                                Edit
-                                            </a>
-                                        </li>
-
-                                        <li className="actions__item">
-                                            <button
-                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                onClick={() =>
-                                                    deleteActionHandler(
-                                                        passengerTypeGroup.id,
-                                                        passengerTypeGroup.name,
-                                                        true,
-                                                    )
-                                                }
-                                            >
-                                                Delete
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <h4 className="govuk-!-padding-bottom-4">
-                                    {sentenceCaseString(passengerTypeGroup.name)}
-                                </h4>
-
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="govuk-!-font-weight-bold">Max size:</span>{' '}
-                                    {passengerTypeGroup.groupPassengerType.maxGroupSize}
-                                </p>
-
-                                {passengerTypeGroup.groupPassengerType.companions.length
-                                    ? passengerTypeGroup.groupPassengerType.companions.map((companion) => (
-                                          <p key={companion.name} className="govuk-body-s govuk-!-margin-bottom-2">
-                                              <span className="govuk-!-font-weight-bold">
-                                                  {sentenceCaseString(companion.name || companion.passengerType)}:
-                                              </span>{' '}
-                                              {`Min: ${companion.minNumber ? companion.minNumber : '0'}`} -{' '}
-                                              {`Max: ${companion.maxNumber}`}
-                                          </p>
-                                      ))
-                                    : ''}
-                            </div>
-                        </div>
-                    </div>
+                    <PassengerTypeCard
+                        contents={passengerTypeGroup}
+                        deleteActionHandler={deleteActionHandler}
+                        key={passengerTypeGroup.id}
+                    />
                 ))}
             </div>
 
@@ -325,17 +221,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             referer: extractGlobalSettingsReferer(ctx),
         },
     };
-};
-
-const getProofOfDocumentsString = (documents: string[]): string => {
-    let proofOfDocumentsString = documents.map((document) => sentenceCaseString(document)).join(', ');
-
-    proofOfDocumentsString =
-        proofOfDocumentsString.length > 44
-            ? proofOfDocumentsString.substring(0, 44).concat('…')
-            : proofOfDocumentsString;
-
-    return proofOfDocumentsString;
 };
 
 export default ViewPassengerTypes;

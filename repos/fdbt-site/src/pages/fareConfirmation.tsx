@@ -8,6 +8,7 @@ import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
+import { globalSettingsEnabled } from '../constants/featureFlag';
 import {
     NextPageContextWithSession,
     FullTimeRestriction,
@@ -38,6 +39,7 @@ interface FareConfirmationProps {
     fullTimeRestrictions: FullTimeRestriction[];
     newTimeRestrictionCreated: string;
     csrfToken: string;
+    globalSettingsEnabled: boolean;
 }
 
 export const buildFareConfirmationElements = (
@@ -49,6 +51,7 @@ export const buildFareConfirmationElements = (
     termTime: string,
     fullTimeRestrictions: FullTimeRestriction[],
     newTimeRestrictionCreated: string,
+    globalSettingsEnabled: boolean,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
         {
@@ -59,7 +62,7 @@ export const buildFareConfirmationElements = (
         {
             name: 'Passenger type',
             content: sentenceCaseString(passengerType.passengerType),
-            href: fareType === 'schoolService' ? '' : 'passengerType',
+            href: fareType === 'schoolService' ? '' : globalSettingsEnabled ? 'selectPassengerType' : 'passengerType',
         },
     ];
 
@@ -73,7 +76,9 @@ export const buildFareConfirmationElements = (
 
     if (passengerType.passengerType === 'group' && groupPassengerInfo.length > 0) {
         groupPassengerInfo.forEach((passenger) => {
-            const href = `definePassengerType?groupPassengerType=${passenger.passengerType}`;
+            const href = globalSettingsEnabled
+                ? 'selectPassengerType'
+                : `definePassengerType?groupPassengerType=${passenger.passengerType}`;
             if (passenger.ageRangeMin || passenger.ageRangeMax) {
                 confirmationElements.push({
                     name: `${sentenceCaseString(passenger.passengerType)} passenger - age range`,
@@ -192,6 +197,7 @@ const FareConfirmation = ({
     fullTimeRestrictions,
     newTimeRestrictionCreated,
     csrfToken,
+    globalSettingsEnabled,
 }: FareConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/fareConfirmation" method="post" csrfToken={csrfToken}>
@@ -208,6 +214,7 @@ const FareConfirmation = ({
                         termTime,
                         fullTimeRestrictions,
                         newTimeRestrictionCreated,
+                        globalSettingsEnabled,
                     )}
                 />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -251,6 +258,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
             fullTimeRestrictions: fullTimeRestrictionsAttribute?.fullTimeRestrictions || [],
             newTimeRestrictionCreated,
             csrfToken,
+            globalSettingsEnabled: globalSettingsEnabled,
         },
     };
 };

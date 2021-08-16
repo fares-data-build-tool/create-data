@@ -8,6 +8,7 @@ import {
 import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
+import { globalSettingsEnabled } from '../constants/featureFlag';
 import { getNocFromIdToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { redirectTo } from './api/apiUtils';
@@ -62,7 +63,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('No NOC found for useer.');
     }
 
-    if (process.env.STAGE === 'prod' && ctx.res) {
+    if (!globalSettingsEnabled && ctx.res) {
         redirectTo(ctx.res, '/home');
     }
 

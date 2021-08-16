@@ -49,7 +49,7 @@ describe('fareType', () => {
 
     it('should return 302 redirect to /fareType with errors when no option is selected', () => {
         const mockError: ErrorInfo[] = [
-            { id: 'fare-type-single', errorMessage: 'Choose a fare type from the options' },
+            { id: 'radio-option-single', errorMessage: 'Choose a fare type from the options' },
         ];
         const { req, res } = getMockRequestAndResponse({
             body: {},

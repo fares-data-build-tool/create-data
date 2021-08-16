@@ -971,35 +971,38 @@ export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string):
             }))
             .filter((row) => row.groupPassengerType.companions.some((it) => 'id' in it)) as GroupPassengerTypeDb[];
 
-        return Promise.all(
-            dbGroups.map(async (group) => ({
-                id: group.id,
-                name: group.name,
-                groupPassengerType: {
-                    ...group.groupPassengerType,
-                    companions: await Promise.all(
-                        group.groupPassengerType.companions.map(async (companion): Promise<CompanionInfo> => {
-                            const individual = await getPassengerTypeById(companion.id, nocCode);
-                            if (!individual) {
-                                throw new Error(`no passenger type found for companion id [${companion.id}]`);
-                            }
-                            return {
-                                minNumber: companion.minNumber,
-                                maxNumber: companion.maxNumber,
-                                ...individual.passengerType,
-                                passengerType: individual.passengerType.passengerType,
-                                name: individual.name,
-                                id: individual.id,
-                            };
-                        }),
-                    ),
-                },
-            })),
-        );
+        return Promise.all(dbGroups.map((group) => convertToFullPassengerType(group, nocCode)));
     } catch (error) {
         throw new Error(`Could not retrieve group passenger type by nocCode from AuroraDB: ${error}`);
     }
 };
+
+export const convertToFullPassengerType = async (
+    group: GroupPassengerTypeDb,
+    nocCode: string,
+): Promise<FullGroupPassengerType> => ({
+    id: group.id,
+    name: group.name,
+    groupPassengerType: {
+        ...group.groupPassengerType,
+        companions: await Promise.all(
+            group.groupPassengerType.companions.map(async (companion): Promise<CompanionInfo> => {
+                const individual = await getPassengerTypeById(companion.id, nocCode);
+                if (!individual) {
+                    throw new Error(`no passenger type found for companion id [${companion.id}]`);
+                }
+                return {
+                    minNumber: companion.minNumber,
+                    maxNumber: companion.maxNumber,
+                    ...individual.passengerType,
+                    passengerType: individual.passengerType.passengerType,
+                    name: individual.name,
+                    id: individual.id,
+                };
+            }),
+        ),
+    },
+});
 
 export const getGroupPassengerTypeDbsFromGlobalSettings = async (nocCode: string): Promise<GroupPassengerTypeDb[]> => {
     logger.info('', {
