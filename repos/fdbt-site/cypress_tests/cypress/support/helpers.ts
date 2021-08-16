@@ -257,12 +257,12 @@ export const completeGroupPassengerDetailsPages = (): void => {
 };
 
 export const randomlyDetermineUserType = (): void => {
-    const randomSelector = getRandomNumber(1, 4);
+    const randomSelector = getRandomNumber(1, 1);
 
     switch (randomSelector) {
         case 1: {
-            cy.log('Click Any and continue');
-            clickElementById('passenger-type-anyone');
+            cy.log('Click Adult radio');
+            clickElementById('adult-radio');
             continueButtonClick();
             break;
         }
