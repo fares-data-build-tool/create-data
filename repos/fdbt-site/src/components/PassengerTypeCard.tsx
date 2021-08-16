@@ -4,7 +4,7 @@ import { sentenceCaseString, getProofDocumentsString } from '../utils';
 
 interface PassengerTypeCardProps {
     contents: FullGroupPassengerType | SinglePassengerType;
-    deleteActionHandler?: (name: string, isGroup: boolean) => void;
+    deleteActionHandler?: (id: number, name: string, isGroup: boolean) => void;
 }
 
 const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardProps): ReactElement => {
@@ -29,7 +29,7 @@ const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardP
                                 <li className="actions__item">
                                     <button
                                         className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                        onClick={() => deleteActionHandler(name, 'groupPassengerType' in contents)}
+                                        onClick={() => deleteActionHandler(id, name, 'groupPassengerType' in contents)}
                                     >
                                         Delete
                                     </button>
