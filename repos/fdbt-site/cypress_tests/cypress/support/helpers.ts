@@ -257,12 +257,12 @@ export const completeGroupPassengerDetailsPages = (): void => {
 };
 
 export const randomlyDetermineUserType = (): void => {
-    cy.get('[class=govuk-radios__input]').each((radio, index, radios) => {
-        const numberOfRadioButtons = radios.length;
-        if (numberOfRadioButtons === 1 || index !== numberOfRadioButtons - 1) {
-            cy.wrap(radio).click();
-        }
-    });
+    cy.get('[class=govuk-radios__input]')
+        .its('length')
+        .then((length) => {
+            const randomNumber = getRandomNumber(0, length - 1);
+            cy.get('[class=govuk-radios__input]').eq(randomNumber).click();
+        });
     continueButtonClick();
 };
 
