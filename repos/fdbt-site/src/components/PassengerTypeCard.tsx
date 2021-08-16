@@ -38,7 +38,7 @@ const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardP
                         </div>
                     ) : (
                         <div className="govuk-radios">
-                            <div className="govuk-radios__item" style={{ padding: '0 8px 0 0', float: 'right' }}>
+                            <div className="govuk-radios__item card__radio">
                                 <input
                                     className="govuk-radios__input"
                                     id={`${name}-radio`}
