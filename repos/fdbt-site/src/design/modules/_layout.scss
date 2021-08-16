@@ -360,3 +360,13 @@ svg:not(:root) {
         margin-bottom: 20px;
     }
 }
+
+.global-settings-return-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sop-row {
+  clear: none;
+}
