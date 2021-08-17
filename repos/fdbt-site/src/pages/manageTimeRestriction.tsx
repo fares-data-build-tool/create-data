@@ -6,7 +6,7 @@ import { getCsrfToken } from '../utils';
 import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../constants/attributes';
 import { getSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
-import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
+import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Manage Time Restrictions - Create Fares Data Service';
 const description = 'Manage Time Restrictions page of the Create Fares Data Service';
@@ -180,7 +180,7 @@ const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRes
                         Enter times in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
                     </div>
 
-                    <div className="govuk-form-group">
+                    <div className={`govuk-form-group${hasError(errors, 'time-restriction-days')}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="time-restriction-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                                 <h1 className="govuk-fieldset__heading" id="time-restriction-heading">
@@ -189,7 +189,7 @@ const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRes
                             </legend>
                             <FormElementWrapper
                                 errors={errors}
-                                errorId="time-restriction-0"
+                                errorId="time-restriction-days"
                                 errorClass="govuk-checkboxes--error"
                             >
                                 <div className="govuk-checkboxes" data-module="govuk-checkboxes">
@@ -303,7 +303,6 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ma
     const csrfToken = getCsrfToken(ctx);
 
     const userInputsAndErrors = getSessionAttribute(ctx.req, GS_TIME_RESTRICTION_ATTRIBUTE);
-    console.log(userInputsAndErrors);
 
     if (!userInputsAndErrors) {
         return {
@@ -311,35 +310,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ma
                 csrfToken,
                 errors: [],
                 inputs: {
-                    name: 'test',
-                    contents: [
-                        {
-                            day: 'monday',
-                            timeBands: [
-                                {
-                                    startTime: '1200',
-                                    endTime: '1400',
-                                },
-                                {
-                                    startTime: '2000',
-                                    endTime: '2300',
-                                },
-                            ],
-                        },
-                        {
-                            day: 'bankHoliday',
-                            timeBands: [
-                                {
-                                    startTime: '',
-                                    endTime: '1400',
-                                },
-                                {
-                                    startTime: '2000',
-                                    endTime: '2300',
-                                },
-                            ],
-                        },
-                    ],
+                    name: '',
+                    contents: [],
                 },
             },
         };

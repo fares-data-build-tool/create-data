@@ -484,7 +484,7 @@ export interface MultiOperatorInfoWithErrors {
 }
 
 export interface FullTimeRestrictionAttribute {
-       fullTimeRestrictions: FullTimeRestriction[];
+    fullTimeRestrictions: FullTimeRestriction[];
     errors: ErrorInfo[];
 }
 

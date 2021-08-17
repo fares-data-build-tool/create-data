@@ -46,7 +46,7 @@ export const collectInputsFromRequest = (
 
 export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTimeRestriction[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
-    
+
     if (!refinedName) {
         errors.push({
             errorMessage: `Time restriction name is required.`,
@@ -56,7 +56,7 @@ export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTim
     }
 
     if (!fullTimeRestrictions.length) {
-        errors.push({ errorMessage: `You must select at least one day.`, id: 'time-restriction-0' });
+        errors.push({ errorMessage: `You must select at least one day.`, id: 'time-restriction-days' });
     }
 
     fullTimeRestrictions.forEach((fullTimeRestriction) => {
@@ -183,19 +183,20 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
         }
 
-        updateSessionAttribute(req, GS_TIME_RESTRICTION_ATTRIBUTE, {
-            inputs: {
-                name: refinedName,
-                contents: sanitisedInputs,
-            },
-            errors,
-        });
-
         if (errors.length > 0) {
+            updateSessionAttribute(req, GS_TIME_RESTRICTION_ATTRIBUTE, {
+                inputs: {
+                    name: refinedName,
+                    contents: sanitisedInputs,
+                },
+                errors,
+            });
+
             redirectTo(res, '/manageTimeRestriction');
             return;
         }
 
+        updateSessionAttribute(req, GS_TIME_RESTRICTION_ATTRIBUTE, undefined);
         redirectTo(res, `/viewTimeRestrictions`);
         return;
     } catch (error) {

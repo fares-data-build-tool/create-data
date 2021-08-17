@@ -131,7 +131,7 @@ const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeR
             ))}
         </div>
 
-        <a className="govuk-button" data-module="govuk-button" href="/manageTimeRestrictions">
+        <a className="govuk-button" data-module="govuk-button" href="/manageTimeRestriction">
             Add a time restriction
         </a>
     </div>
