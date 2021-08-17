@@ -62,7 +62,7 @@ export const buildFareConfirmationElements = (
         {
             name: 'Passenger type',
             content: sentenceCaseString(passengerType.passengerType),
-            href: fareType === 'schoolService' ? '' : globalSettingsEnabled ? 'selectPassengerType' : 'passengerType',
+            href: globalSettingsEnabled ? 'selectPassengerType' : fareType === 'schoolService' ? '' : 'passengerType',
         },
     ];
 
@@ -109,33 +109,36 @@ export const buildFareConfirmationElements = (
             }
         });
     } else {
-        if (passengerType.ageRange && (passengerType.ageRangeMin || passengerType.ageRangeMax)) {
+        const href = globalSettingsEnabled
+            ? `selectPassengerType`
+            : `${passengerType.passengerType === 'anyone' ? '' : 'definePassengerType'}`;
+        if (passengerType.ageRangeMin || passengerType.ageRangeMax) {
             confirmationElements.push({
                 name: 'Passenger information - age range',
                 content: `Minimum age: ${passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'} Maximum age: ${
                     passengerType.ageRangeMax ? passengerType.ageRangeMax : 'N/A'
                 }`,
-                href: 'definePassengerType',
+                href,
             });
         } else {
             confirmationElements.push({
                 name: 'Passenger information - age range',
                 content: 'N/A',
-                href: `${passengerType.passengerType === 'anyone' ? '' : 'definePassengerType'}`,
+                href,
             });
         }
 
-        if (passengerType.proof && passengerType.proofDocuments) {
+        if (passengerType.proofDocuments) {
             confirmationElements.push({
                 name: 'Passenger information - proof documents',
                 content: passengerType.proofDocuments.map((proofDoc) => sentenceCaseString(proofDoc)).join(', '),
-                href: 'definePassengerType',
+                href,
             });
         } else {
             confirmationElements.push({
                 name: 'Passenger information - proof documents',
                 content: 'N/A',
-                href: `${passengerType.passengerType === 'anyone' ? '' : 'definePassengerType'}`,
+                href,
             });
         }
     }

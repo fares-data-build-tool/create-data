@@ -346,15 +346,15 @@ describe('pages', () => {
                 );
                 expect(result).toStrictEqual([
                     { content: 'School service', href: 'fareType', name: 'Fare type' },
-                    { content: 'School pupil', href: '', name: 'Passenger type' },
+                    { content: 'School pupil', href: 'selectPassengerType', name: 'Passenger type' },
                     {
                         content: 'Minimum age: N/A Maximum age: 18',
-                        href: 'definePassengerType',
+                        href: 'selectPassengerType',
                         name: 'Passenger information - age range',
                     },
                     {
                         content: 'Student card',
-                        href: 'definePassengerType',
+                        href: 'selectPassengerType',
                         name: 'Passenger information - proof documents',
                     },
                     {
