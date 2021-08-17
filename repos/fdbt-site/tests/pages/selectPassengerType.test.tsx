@@ -1,0 +1,121 @@
+import * as React from 'react';
+import { shallow } from 'enzyme';
+import SelectPassengerType from '../../src/pages/selectPassengerType';
+import { FullGroupPassengerType, SinglePassengerType } from '../../src/interfaces';
+
+describe('pages', () => {
+    const savedGroups: FullGroupPassengerType[] = [
+        {
+            id: 1,
+            name: 'family',
+            groupPassengerType: {
+                name: 'family',
+                maxGroupSize: '3',
+                companions: [
+                    {
+                        name: 'adult',
+                        passengerType: 'adult',
+                        minNumber: '1',
+                        maxNumber: '2',
+                        ageRangeMin: '18',
+                        ageRangeMax: '75',
+                        proofDocuments: [],
+                    },
+                    {
+                        name: 'kid',
+                        passengerType: 'child',
+                        minNumber: '1',
+                        maxNumber: '2',
+                        ageRangeMin: '5',
+                        ageRangeMax: '17',
+                        proofDocuments: [],
+                    },
+                ],
+            },
+        },
+        {
+            id: 4,
+            name: 'couple',
+            groupPassengerType: {
+                name: 'couple',
+                maxGroupSize: '2',
+                companions: [
+                    {
+                        name: 'adult',
+                        passengerType: 'adult',
+                        minNumber: '2',
+                        maxNumber: '2',
+                        ageRangeMin: '18',
+                        ageRangeMax: '75',
+                        proofDocuments: [],
+                    },
+                ],
+            },
+        },
+    ];
+    const savedPassengerTypes: SinglePassengerType[] = [
+        {
+            id: 3,
+            name: 'adult',
+            passengerType: {
+                passengerType: 'adult',
+                ageRangeMin: '18',
+                ageRangeMax: '75',
+                proofDocuments: [],
+            },
+        },
+        {
+            name: 'kid',
+            id: 2,
+            passengerType: {
+                passengerType: 'child',
+                ageRangeMin: '5',
+                ageRangeMax: '17',
+                proofDocuments: [],
+            },
+        },
+    ];
+
+    describe('selectPassengerType', () => {
+        it('should render correctly with saved groups and saved passenger types', () => {
+            const tree = shallow(
+                <SelectPassengerType
+                    errors={[]}
+                    csrfToken="csrf"
+                    savedGroups={savedGroups}
+                    savedPassengerTypes={savedPassengerTypes}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+        it('should render correctly with saved groups and saved passenger types and errors', () => {
+            const tree = shallow(
+                <SelectPassengerType
+                    errors={[{ errorMessage: 'Select a passenger type', id: 'individual-passengers' }]}
+                    csrfToken="csrf"
+                    savedGroups={savedGroups}
+                    savedPassengerTypes={savedPassengerTypes}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+        it('should render correctly with no saved groups and saved passenger types', () => {
+            const tree = shallow(
+                <SelectPassengerType
+                    errors={[]}
+                    csrfToken="csrf"
+                    savedGroups={[]}
+                    savedPassengerTypes={savedPassengerTypes}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly with no saved groups and no saved passenger types', () => {
+            const tree = shallow(
+                <SelectPassengerType errors={[]} csrfToken="csrf" savedGroups={[]} savedPassengerTypes={[]} />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+    });
+});

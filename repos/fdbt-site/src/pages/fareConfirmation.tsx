@@ -8,6 +8,7 @@ import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
+import { globalSettingsEnabled } from '../constants/featureFlag';
 import {
     NextPageContextWithSession,
     FullTimeRestriction,
@@ -38,6 +39,7 @@ interface FareConfirmationProps {
     fullTimeRestrictions: FullTimeRestriction[];
     newTimeRestrictionCreated: string;
     csrfToken: string;
+    globalSettingsEnabled: boolean;
 }
 
 export const buildFareConfirmationElements = (
@@ -49,6 +51,7 @@ export const buildFareConfirmationElements = (
     termTime: string,
     fullTimeRestrictions: FullTimeRestriction[],
     newTimeRestrictionCreated: string,
+    globalSettingsEnabled: boolean,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
         {
@@ -59,7 +62,7 @@ export const buildFareConfirmationElements = (
         {
             name: 'Passenger type',
             content: sentenceCaseString(passengerType.passengerType),
-            href: fareType === 'schoolService' ? '' : 'passengerType',
+            href: globalSettingsEnabled ? 'selectPassengerType' : fareType === 'schoolService' ? '' : 'passengerType',
         },
     ];
 
@@ -73,7 +76,9 @@ export const buildFareConfirmationElements = (
 
     if (passengerType.passengerType === 'group' && groupPassengerInfo.length > 0) {
         groupPassengerInfo.forEach((passenger) => {
-            const href = `definePassengerType?groupPassengerType=${passenger.passengerType}`;
+            const href = globalSettingsEnabled
+                ? 'selectPassengerType'
+                : `definePassengerType?groupPassengerType=${passenger.passengerType}`;
             if (passenger.ageRangeMin || passenger.ageRangeMax) {
                 confirmationElements.push({
                     name: `${sentenceCaseString(passenger.passengerType)} passenger - age range`,
@@ -104,33 +109,36 @@ export const buildFareConfirmationElements = (
             }
         });
     } else {
-        if (passengerType.ageRange && (passengerType.ageRangeMin || passengerType.ageRangeMax)) {
+        const href = globalSettingsEnabled
+            ? `selectPassengerType`
+            : `${passengerType.passengerType === 'anyone' ? '' : 'definePassengerType'}`;
+        if (passengerType.ageRangeMin || passengerType.ageRangeMax) {
             confirmationElements.push({
                 name: 'Passenger information - age range',
                 content: `Minimum age: ${passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'} Maximum age: ${
                     passengerType.ageRangeMax ? passengerType.ageRangeMax : 'N/A'
                 }`,
-                href: 'definePassengerType',
+                href,
             });
         } else {
             confirmationElements.push({
                 name: 'Passenger information - age range',
                 content: 'N/A',
-                href: `${passengerType.passengerType === 'anyone' ? '' : 'definePassengerType'}`,
+                href,
             });
         }
 
-        if (passengerType.proof && passengerType.proofDocuments) {
+        if (passengerType.proofDocuments) {
             confirmationElements.push({
                 name: 'Passenger information - proof documents',
                 content: passengerType.proofDocuments.map((proofDoc) => sentenceCaseString(proofDoc)).join(', '),
-                href: 'definePassengerType',
+                href,
             });
         } else {
             confirmationElements.push({
                 name: 'Passenger information - proof documents',
                 content: 'N/A',
-                href: `${passengerType.passengerType === 'anyone' ? '' : 'definePassengerType'}`,
+                href,
             });
         }
     }
@@ -192,6 +200,7 @@ const FareConfirmation = ({
     fullTimeRestrictions,
     newTimeRestrictionCreated,
     csrfToken,
+    globalSettingsEnabled,
 }: FareConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/fareConfirmation" method="post" csrfToken={csrfToken}>
@@ -208,6 +217,7 @@ const FareConfirmation = ({
                         termTime,
                         fullTimeRestrictions,
                         newTimeRestrictionCreated,
+                        globalSettingsEnabled,
                     )}
                 />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -251,6 +261,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
             fullTimeRestrictions: fullTimeRestrictionsAttribute?.fullTimeRestrictions || [],
             newTimeRestrictionCreated,
             csrfToken,
+            globalSettingsEnabled: globalSettingsEnabled,
         },
     };
 };

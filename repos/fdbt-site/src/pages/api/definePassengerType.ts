@@ -200,10 +200,10 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
     }
 };
 
-export const getPassengerTypeRedirectLocation = (req: NextApiRequestWithSession, passengerType: string): string => {
+export const getPassengerTypeRedirectLocation = (req: NextApiRequestWithSession): string => {
     const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
-    return passengerType === 'schoolPupil' && fareType === 'schoolService' ? '/termTime' : '/defineTimeRestrictions';
+    return fareType === 'schoolService' ? '/termTime' : '/defineTimeRestrictions';
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -250,7 +250,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 await upsertSinglePassengerType(noc, filteredPassengerType, filteredPassengerType.passengerType);
 
-                const redirectLocation = getPassengerTypeRedirectLocation(req, passengerType);
+                const redirectLocation = getPassengerTypeRedirectLocation(req);
                 redirectTo(res, redirectLocation);
                 return;
             }

@@ -3,96 +3,82 @@
 exports[`pages view passenger types should render correctly when groups and individual passenger types 1`] = `
 <BaseLayout
   description="View and edit your passenger types."
+  referer="hello"
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
   <div
-    className="govuk-width-container"
+    className="govuk-grid-row"
   >
-    <main
-      className="govuk-main-wrapper"
+    <div
+      className="govuk-grid-column-one-third"
     >
-      <div
-        className="govuk-grid-row"
+      <SubNavigation />
+    </div>
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <h1
+        className="govuk-heading-xl"
       >
-        <div
-          className="govuk-grid-column-one-third"
-        >
-          <SubNavigation />
-        </div>
-        <div
-          className="govuk-grid-column-two-thirds"
-        >
-          <h1
-            className="govuk-heading-xl"
-          >
-            Passenger types
-          </h1>
-          <p
-            className="govuk-body"
-          >
-            Define age range and required proof documents of your passengers as well as passenger groups
-          </p>
-          <IndividualPassengerTypes
-            deleteActionHandler={[Function]}
-            singlePassengerTypes={
-              Array [
-                Object {
-                  "id": 1,
-                  "name": "Regular Child",
-                  "passengerType": Object {
+        Passenger types
+      </h1>
+      <p
+        className="govuk-body"
+      >
+        Define age range and required proof documents of your passengers as well as passenger groups
+      </p>
+      <IndividualPassengerTypes
+        deleteActionHandler={[Function]}
+        singlePassengerTypes={
+          Array [
+            Object {
+              "id": 1,
+              "name": "Regular Child",
+              "passengerType": Object {
+                "ageRangeMax": "16",
+                "ageRangeMin": "5",
+                "passengerType": "child",
+                "proofDocuments": Array [
+                  "studentCard",
+                ],
+              },
+            },
+          ]
+        }
+      />
+      <PassengerTypeGroups
+        deleteActionHandler={[Function]}
+        passengerTypeGroups={
+          Array [
+            Object {
+              "groupPassengerType": Object {
+                "companions": Array [
+                  Object {
+                    "maxNumber": "2",
+                    "passengerType": "adult",
+                  },
+                  Object {
                     "ageRangeMax": "16",
-                    "ageRangeMin": "5",
+                    "ageRangeMin": "4",
+                    "maxNumber": "1",
                     "passengerType": "child",
                     "proofDocuments": Array [
                       "studentCard",
                     ],
                   },
-                },
-              ]
-            }
-          />
-          <PassengerTypeGroups
-            deleteActionHandler={[Function]}
-            passengerTypeGroups={
-              Array [
-                Object {
-                  "groupPassengerType": Object {
-                    "companions": Array [
-                      Object {
-                        "maxNumber": "2",
-                        "passengerType": "adult",
-                      },
-                      Object {
-                        "ageRangeMax": "16",
-                        "ageRangeMin": "4",
-                        "maxNumber": "1",
-                        "passengerType": "child",
-                        "proofDocuments": Array [
-                          "studentCard",
-                        ],
-                      },
-                    ],
-                    "maxGroupSize": "3",
-                    "name": "family group",
-                  },
-                  "id": 3,
-                  "name": "family group",
-                },
-              ]
-            }
-            passengerTypesExist={true}
-          />
-          <DeleteConfirmationPopup
-            cancelActionHandler={[Function]}
-            csrfToken=""
-            isGroup={false}
-            isVisible={false}
-            passengerTypeName=""
-          />
-        </div>
-      </div>
-    </main>
+                ],
+                "maxGroupSize": "3",
+                "name": "family group",
+              },
+              "id": 3,
+              "name": "family group",
+            },
+          ]
+        }
+        passengerTypesExist={true}
+      />
+    </div>
   </div>
 </BaseLayout>
 `;
@@ -100,50 +86,36 @@ exports[`pages view passenger types should render correctly when groups and indi
 exports[`pages view passenger types should render correctly when no individual or group passenger types 1`] = `
 <BaseLayout
   description="View and edit your passenger types."
+  referer={null}
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
   <div
-    className="govuk-width-container"
+    className="govuk-grid-row"
   >
-    <main
-      className="govuk-main-wrapper"
+    <div
+      className="govuk-grid-column-one-third"
     >
-      <div
-        className="govuk-grid-row"
+      <SubNavigation />
+    </div>
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <h1
+        className="govuk-heading-xl"
       >
-        <div
-          className="govuk-grid-column-one-third"
-        >
-          <SubNavigation />
-        </div>
-        <div
-          className="govuk-grid-column-two-thirds"
-        >
-          <h1
-            className="govuk-heading-xl"
-          >
-            Passenger types
-          </h1>
-          <p
-            className="govuk-body"
-          >
-            Define age range and required proof documents of your passengers as well as passenger groups
-          </p>
-          <NoIndividualPassengerTypes />
-          <NoPassengerTypeGroups
-            passengerTypesExist={false}
-          />
-          <DeleteConfirmationPopup
-            cancelActionHandler={[Function]}
-            csrfToken=""
-            isGroup={false}
-            isVisible={false}
-            passengerTypeName=""
-          />
-        </div>
-      </div>
-    </main>
+        Passenger types
+      </h1>
+      <p
+        className="govuk-body"
+      >
+        Define age range and required proof documents of your passengers as well as passenger groups
+      </p>
+      <NoIndividualPassengerTypes />
+      <NoPassengerTypeGroups
+        passengerTypesExist={false}
+      />
+    </div>
   </div>
 </BaseLayout>
 `;
@@ -151,68 +123,54 @@ exports[`pages view passenger types should render correctly when no individual o
 exports[`pages view passenger types should render correctly when only individual passenger types 1`] = `
 <BaseLayout
   description="View and edit your passenger types."
+  referer="hello"
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
   <div
-    className="govuk-width-container"
+    className="govuk-grid-row"
   >
-    <main
-      className="govuk-main-wrapper"
+    <div
+      className="govuk-grid-column-one-third"
     >
-      <div
-        className="govuk-grid-row"
+      <SubNavigation />
+    </div>
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <h1
+        className="govuk-heading-xl"
       >
-        <div
-          className="govuk-grid-column-one-third"
-        >
-          <SubNavigation />
-        </div>
-        <div
-          className="govuk-grid-column-two-thirds"
-        >
-          <h1
-            className="govuk-heading-xl"
-          >
-            Passenger types
-          </h1>
-          <p
-            className="govuk-body"
-          >
-            Define age range and required proof documents of your passengers as well as passenger groups
-          </p>
-          <IndividualPassengerTypes
-            deleteActionHandler={[Function]}
-            singlePassengerTypes={
-              Array [
-                Object {
-                  "id": 1,
-                  "name": "Regular Child",
-                  "passengerType": Object {
-                    "ageRangeMax": "16",
-                    "ageRangeMin": "5",
-                    "passengerType": "child",
-                    "proofDocuments": Array [
-                      "studentCard",
-                    ],
-                  },
-                },
-              ]
-            }
-          />
-          <NoPassengerTypeGroups
-            passengerTypesExist={true}
-          />
-          <DeleteConfirmationPopup
-            cancelActionHandler={[Function]}
-            csrfToken=""
-            isGroup={false}
-            isVisible={false}
-            passengerTypeName=""
-          />
-        </div>
-      </div>
-    </main>
+        Passenger types
+      </h1>
+      <p
+        className="govuk-body"
+      >
+        Define age range and required proof documents of your passengers as well as passenger groups
+      </p>
+      <IndividualPassengerTypes
+        deleteActionHandler={[Function]}
+        singlePassengerTypes={
+          Array [
+            Object {
+              "id": 1,
+              "name": "Regular Child",
+              "passengerType": Object {
+                "ageRangeMax": "16",
+                "ageRangeMin": "5",
+                "passengerType": "child",
+                "proofDocuments": Array [
+                  "studentCard",
+                ],
+              },
+            },
+          ]
+        }
+      />
+      <NoPassengerTypeGroups
+        passengerTypesExist={true}
+      />
+    </div>
   </div>
 </BaseLayout>
 `;
@@ -220,79 +178,65 @@ exports[`pages view passenger types should render correctly when only individual
 exports[`pages view passenger types should render correctly when only passenger type groups 1`] = `
 <BaseLayout
   description="View and edit your passenger types."
+  referer={null}
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
   <div
-    className="govuk-width-container"
+    className="govuk-grid-row"
   >
-    <main
-      className="govuk-main-wrapper"
+    <div
+      className="govuk-grid-column-one-third"
     >
-      <div
-        className="govuk-grid-row"
+      <SubNavigation />
+    </div>
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <h1
+        className="govuk-heading-xl"
       >
-        <div
-          className="govuk-grid-column-one-third"
-        >
-          <SubNavigation />
-        </div>
-        <div
-          className="govuk-grid-column-two-thirds"
-        >
-          <h1
-            className="govuk-heading-xl"
-          >
-            Passenger types
-          </h1>
-          <p
-            className="govuk-body"
-          >
-            Define age range and required proof documents of your passengers as well as passenger groups
-          </p>
-          <NoIndividualPassengerTypes />
-          <PassengerTypeGroups
-            deleteActionHandler={[Function]}
-            passengerTypeGroups={
-              Array [
-                Object {
-                  "groupPassengerType": Object {
-                    "companions": Array [
-                      Object {
-                        "maxNumber": "2",
-                        "passengerType": "adult",
-                      },
-                      Object {
-                        "ageRangeMax": "16",
-                        "ageRangeMin": "4",
-                        "maxNumber": "1",
-                        "minNumber": "0",
-                        "passengerType": "child",
-                        "proofDocuments": Array [
-                          "studentCard",
-                        ],
-                      },
-                    ],
-                    "maxGroupSize": "3",
-                    "name": "family group",
+        Passenger types
+      </h1>
+      <p
+        className="govuk-body"
+      >
+        Define age range and required proof documents of your passengers as well as passenger groups
+      </p>
+      <NoIndividualPassengerTypes />
+      <PassengerTypeGroups
+        deleteActionHandler={[Function]}
+        passengerTypeGroups={
+          Array [
+            Object {
+              "groupPassengerType": Object {
+                "companions": Array [
+                  Object {
+                    "maxNumber": "2",
+                    "passengerType": "adult",
                   },
-                  "id": 0,
-                  "name": "family group",
-                },
-              ]
-            }
-            passengerTypesExist={true}
-          />
-          <DeleteConfirmationPopup
-            cancelActionHandler={[Function]}
-            csrfToken=""
-            isGroup={false}
-            isVisible={false}
-            passengerTypeName=""
-          />
-        </div>
-      </div>
-    </main>
+                  Object {
+                    "ageRangeMax": "16",
+                    "ageRangeMin": "4",
+                    "maxNumber": "1",
+                    "minNumber": "0",
+                    "passengerType": "child",
+                    "proofDocuments": Array [
+                      "studentCard",
+                    ],
+                  },
+                ],
+                "maxGroupSize": "3",
+                "name": "family group",
+              },
+              "id": 0,
+              "name": "family group",
+            },
+          ]
+        }
+        passengerTypesExist={true}
+      />
+    </div>
   </div>
 </BaseLayout>
 `;
