@@ -42,9 +42,7 @@ export type FareType =
     | 'carnetPeriod';
 
 export const defineSchoolUserAndTimeRestrictions = (): void => {
-    randomlyChooseSchoolAgeLimits();
-    randomlyChooseASchoolProof();
-    continueButtonClick();
+    randomlyDetermineUserType();
     randomlyDecideTermRestrictions();
 };
 

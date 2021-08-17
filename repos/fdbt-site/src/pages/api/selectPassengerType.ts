@@ -9,6 +9,7 @@ import { convertToFullPassengerType, getGroupPassengerTypeById, getPassengerType
 import { NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError, getAndValidateNoc } from './apiUtils/index';
+import { getPassengerTypeRedirectLocation } from './definePassengerType';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -45,7 +46,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, databaseCheck?.passengerType);
         }
 
-        redirectTo(res, '/defineTimeRestrictions');
+        redirectTo(res, getPassengerTypeRedirectLocation(req));
         return;
     } catch (error) {
         const message = 'There was a problem selecting the passenger type:';

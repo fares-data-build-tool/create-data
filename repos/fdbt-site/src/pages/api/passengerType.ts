@@ -61,7 +61,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const storedPassengerType = await getPassengerTypeByNameAndNocCode(noc, passengerType, false);
             if (storedPassengerType) {
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, storedPassengerType);
-                redirectTo(res, getPassengerTypeRedirectLocation(req, passengerType));
+                redirectTo(res, getPassengerTypeRedirectLocation(req));
                 return;
             }
 
