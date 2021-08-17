@@ -36,12 +36,12 @@ exports[`pages fareConfirmation should render correctly for a carnet ticket 1`] 
           },
           Object {
             "content": "Minimum age: 18 Maximum age: 100",
-            "href": "definePassengerType",
+            "href": "selectPassengerType",
             "name": "Passenger information - age range",
           },
           Object {
             "content": "Membership card",
-            "href": "definePassengerType",
+            "href": "selectPassengerType",
             "name": "Passenger information - proof documents",
           },
           Object {
@@ -104,12 +104,12 @@ exports[`pages fareConfirmation should render correctly for a ticket with a prem
           },
           Object {
             "content": "Minimum age: 18 Maximum age: 100",
-            "href": "definePassengerType",
+            "href": "selectPassengerType",
             "name": "Passenger information - age range",
           },
           Object {
             "content": "Membership card",
-            "href": "definePassengerType",
+            "href": "selectPassengerType",
             "name": "Passenger information - proof documents",
           },
           Object {
@@ -260,12 +260,12 @@ exports[`pages fareConfirmation should render correctly for non school single ti
           },
           Object {
             "content": "Minimum age: 18 Maximum age: 100",
-            "href": "definePassengerType",
+            "href": "selectPassengerType",
             "name": "Passenger information - age range",
           },
           Object {
             "content": "Membership card",
-            "href": "definePassengerType",
+            "href": "selectPassengerType",
             "name": "Passenger information - proof documents",
           },
           Object {
@@ -323,17 +323,17 @@ exports[`pages fareConfirmation should render correctly for school tickets 1`] =
           },
           Object {
             "content": "School pupil",
-            "href": "",
+            "href": "selectPassengerType",
             "name": "Passenger type",
           },
           Object {
             "content": "Minimum age: N/A Maximum age: 18",
-            "href": "definePassengerType",
+            "href": "selectPassengerType",
             "name": "Passenger information - age range",
           },
           Object {
             "content": "Student card",
-            "href": "definePassengerType",
+            "href": "selectPassengerType",
             "name": "Passenger information - proof documents",
           },
           Object {
