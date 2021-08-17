@@ -1080,6 +1080,6 @@ export const deleteTimeRestrictionByIdAndNocCode = async (id: number, nocCode: s
     try {
         await executeQuery(deleteQuery, [id, nocCode]);
     } catch (error) {
-        throw new Error(`Could not delete time restriction with id: ${id}.`);
+        throw new Error(`Could not delete time restriction with id: ${id}. ${error.stack}`);
     }
 };

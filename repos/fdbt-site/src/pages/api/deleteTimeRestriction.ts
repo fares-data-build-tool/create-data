@@ -15,7 +15,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         redirectTo(res, '/viewTimeRestrictions');
     } catch (error) {
-        const message = 'There was a problem deleting the selected passenger or group';
+        const message = 'There was a problem deleting the time restriction';
 
         redirectToError(res, message, 'api.deletePassenger', error);
     }

@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import { NextPageContextWithSession, PremadeTimeRestriction, TimeBand } from '../interfaces';
-import { getAndValidateNoc, sentenceCaseString } from '../utils';
+import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
@@ -22,6 +22,7 @@ const dayMappings = {
 };
 
 interface TimeRestrictionProps {
+    csrfToken: string;
     timeRestrictions: PremadeTimeRestriction[];
     referer: string | null;
 }
@@ -43,18 +44,23 @@ const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: stri
     );
 };
 
-const ViewTimeRestrictions = ({ timeRestrictions, referer }: TimeRestrictionProps): ReactElement => {
+const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRestrictionProps): ReactElement => {
     const [popUpState, setPopUpState] = useState({
         isVisible: false,
         timeRestrictionId: 0,
+        timeRestrictionName: '',
     });
 
-    const deleteActionHandler = (id: number): void => {
-        setPopUpState({ ...popUpState, isVisible: true, timeRestrictionId: id });
+    const deleteActionHandler = (id: number, name: string): void => {
+        setPopUpState({ ...popUpState, isVisible: true, timeRestrictionId: id, timeRestrictionName: name });
     };
 
     const cancelActionHandler = (): void => {
-        setPopUpState({ ...popUpState, isVisible: false, timeRestrictionId: 0 });
+        setPopUpState({ ...popUpState, isVisible: false, timeRestrictionId: 0, timeRestrictionName: '' });
+    };
+
+    const buildDeleteUrl = (idToDelete: number, csrfToken: string): string => {
+        return `/api/deleteTimeRestriction?id=${idToDelete}&_csrf=${csrfToken}`;
     };
 
     return (
@@ -81,13 +87,14 @@ const ViewTimeRestrictions = ({ timeRestrictions, referer }: TimeRestrictionProp
                                 />
                             )}
 
-                            <DeleteConfirmationPopup
-                                isVisible={popUpState.isVisible}
-                                csrfToken={csrfToken}
-                                isGroup={popUpState.isGroup}
-                                passengerTypeName={popUpState.passengerTypeName}
-                                cancelActionHandler={cancelActionHandler}
-                            />
+                            {popUpState.isVisible && (
+                                <DeleteConfirmationPopup
+                                    entityType="time restriction"
+                                    entityName={popUpState.timeRestrictionName}
+                                    deleteUrl={buildDeleteUrl(popUpState.timeRestrictionId, csrfToken)}
+                                    cancelActionHandler={cancelActionHandler}
+                                />
+                            )}
                         </div>
                     </div>
                 </main>
@@ -173,10 +180,11 @@ export const TimeRestrictions = ({
 );
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: TimeRestrictionProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
 
-    return { props: { timeRestrictions, referer: extractGlobalSettingsReferer(ctx) } };
+    return { props: { timeRestrictions, referer: extractGlobalSettingsReferer(ctx), csrfToken } };
 };
 
 export default ViewTimeRestrictions;
