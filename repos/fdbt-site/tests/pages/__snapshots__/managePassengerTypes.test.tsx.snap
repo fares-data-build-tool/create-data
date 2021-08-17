@@ -163,6 +163,24 @@ exports[`pages manage passenger types should render correctly 1`] = `
               <input
                 className="govuk-radios__input"
                 defaultChecked={false}
+                id="school_pupil"
+                name="type"
+                type="radio"
+                value="schoolPupil"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="school_pupil"
+              >
+                School pupil
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
                 id="anyone"
                 name="type"
                 type="radio"
@@ -537,6 +555,24 @@ exports[`pages manage passenger types should render error state on name form gro
                 htmlFor="young_person"
               >
                 Young person
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="school_pupil"
+                name="type"
+                type="radio"
+                value="schoolPupil"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="school_pupil"
+              >
+                School pupil
               </label>
             </div>
             <div
@@ -950,6 +986,24 @@ exports[`pages manage passenger types should render error state on passenger typ
               <input
                 className="govuk-radios__input"
                 defaultChecked={false}
+                id="school_pupil"
+                name="type"
+                type="radio"
+                value="schoolPupil"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="school_pupil"
+              >
+                School pupil
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
                 id="anyone"
                 name="type"
                 type="radio"
@@ -1326,6 +1380,24 @@ exports[`pages manage passenger types should render update passenger type button
                 htmlFor="young_person"
               >
                 Young person
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="school_pupil"
+                name="type"
+                type="radio"
+                value="schoolPupil"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="school_pupil"
+              >
+                School pupil
               </label>
             </div>
             <div

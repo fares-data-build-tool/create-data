@@ -133,6 +133,19 @@ const ManagePassengerTypes = ({
                                     <div className="govuk-radios__item">
                                         <input
                                             className="govuk-radios__input"
+                                            id="school_pupil"
+                                            name="type"
+                                            type="radio"
+                                            value="schoolPupil"
+                                            defaultChecked={type === 'schoolPupil'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="school_pupil">
+                                            School pupil
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
                                             id="anyone"
                                             name="type"
                                             type="radio"
