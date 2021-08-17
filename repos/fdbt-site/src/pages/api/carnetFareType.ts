@@ -16,13 +16,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 fareType,
             });
-            if (fareType === 'schoolService') {
+
+            if (globalSettingsEnabled) {
+                redirectTo(res, '/selectPassengerType');
+            } else if (fareType === 'schoolService') {
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType: 'schoolPupil' });
                 redirectTo(res, '/definePassengerType');
                 return;
-            }
-            if (globalSettingsEnabled) {
-                redirectTo(res, '/selectPassengerType');
             } else {
                 redirectTo(res, '/passengerType');
             }
