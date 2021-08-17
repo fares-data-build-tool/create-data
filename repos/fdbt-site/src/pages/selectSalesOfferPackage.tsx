@@ -114,8 +114,7 @@ const generateCheckbox = (
 
                 return (
                     <div
-                        className="govuk-checkboxes__item govuk-!-margin-bottom-6 govuk-grid-column-one-half"
-                        style={{ clear: 'none' }}
+                        className="govuk-checkboxes__item govuk-!-margin-bottom-6 govuk-grid-column-one-half sop-row"
                         key={`checkbox-item-${name}`}
                     >
                         <input
@@ -145,12 +144,7 @@ const generateCheckbox = (
                         {!!selectedOffer && defaultPrice && (
                             <div className="govuk-currency-input govuk-!-margin-left-3">
                                 <div className="govuk-currency-input__inner">
-                                    <span
-                                        className="govuk-currency-input__inner__unit"
-                                        style={{ lineHeight: 'normal' }}
-                                    >
-                                        £
-                                    </span>
+                                    <span className="govuk-currency-input__inner__unit">£</span>
                                     <FormElementWrapper
                                         errors={[]}
                                         errorId={`multiple-product-price-${index}`}

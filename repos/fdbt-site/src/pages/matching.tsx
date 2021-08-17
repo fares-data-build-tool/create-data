@@ -13,7 +13,6 @@ import MatchingBase from '../components/MatchingBase';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import { getSessionAttribute } from '../utils/sessions';
-import { MatchingWithErrors, MatchingInfo } from '../interfaces/matchingInterface';
 import { isService, isJourney } from '../interfaces/typeGuards';
 
 const title = 'Matching - Create Fares Data Service';
@@ -27,7 +26,7 @@ interface MatchingProps {
     userFareStages: UserFareStages;
     stops: Stop[];
     service: BasicService;
-    error: boolean;
+    error: string;
     selectedFareStages: string[][];
     csrfToken: string;
 }
@@ -45,6 +44,7 @@ const Matching = ({
         stops={stops}
         service={service}
         error={error}
+        warning={false}
         selectedFareStages={selectedFareStages}
         heading={heading}
         title={title}
@@ -55,10 +55,6 @@ const Matching = ({
         csrfToken={csrfToken}
     />
 );
-
-export const isMatchingWithErrors = (
-    matchingAttribute: MatchingInfo | MatchingWithErrors,
-): matchingAttribute is MatchingWithErrors => (matchingAttribute as MatchingWithErrors)?.error;
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const csrfToken = getCsrfToken(ctx);
@@ -108,11 +104,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 serviceDescription: service.serviceDescription,
                 lineId: service.lineId,
             },
-            error: matchingAttribute && isMatchingWithErrors(matchingAttribute) ? matchingAttribute.error : false,
+            error:
+                matchingAttribute && 'error' in matchingAttribute && matchingAttribute.error
+                    ? matchingAttribute.error
+                    : '',
             selectedFareStages:
-                matchingAttribute && isMatchingWithErrors(matchingAttribute)
-                    ? matchingAttribute.selectedFareStages
-                    : [],
+                matchingAttribute && 'error' in matchingAttribute ? matchingAttribute.selectedFareStages : [],
             csrfToken,
         },
     };

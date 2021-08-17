@@ -4,17 +4,21 @@ import { DocumentContext } from 'next/document';
 import { ReactElement } from 'react';
 import {
     BaseProduct,
-    BaseTicket,
     CarnetDetails,
     CarnetProductInfo,
     ExpiryUnit,
+    FlatFareProductDetails,
+    FlatFareTicket,
     FullTimeRestriction,
+    PeriodGeoZoneTicket,
+    PeriodMultipleServicesTicket,
     PointToPointPeriodTicket,
     PointToPointTicket,
     Product,
     ProductDetails,
     SalesOfferPackage,
     SchemeOperatorTicket,
+    SelectedService,
     Stop,
     TicketType,
 } from '../../shared/matchingJsonTypes';
@@ -166,8 +170,9 @@ export interface MultipleProductAttributeWithErrors extends MultipleProductAttri
     errors: ErrorInfo[];
 }
 
+export type SchoolFareType = 'flatFare' | 'single' | 'period' | '';
 export interface SchoolFareTypeAttribute {
-    schoolFareType: 'flatFare' | 'single' | 'period' | '';
+    schoolFareType: SchoolFareType;
 }
 
 export interface MultipleOperatorsAttribute {
@@ -187,7 +192,7 @@ export interface ServiceListAttributeWithErrors {
 }
 
 export interface GlobalSettingsGroupAttribute {
-    inputs: GroupPassengerType;
+    inputs: GroupPassengerTypeDb;
     errors: ErrorInfo[];
 }
 
@@ -321,26 +326,11 @@ export type Ticket = SpecificTicket &
 
 export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
 
-export interface BasePeriodTicket extends BaseTicket {
-    operatorName: string;
-    products: ProductDetails[];
-}
-
-export interface PeriodGeoZoneTicket extends BasePeriodTicket {
-    zoneName: string;
-    stops: Stop[];
-}
-
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
     additionalNocs: string[];
 }
 
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
-
-export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
-    selectedServices: SelectedService[];
-    termTime: boolean;
-}
 
 export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
 
@@ -349,13 +339,6 @@ export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServi
         nocCode: string;
         selectedServices: SelectedService[];
     }[];
-}
-
-export interface FlatFareTicket extends BaseTicket {
-    operatorName: string;
-    products: FlatFareProductDetails[];
-    selectedServices: SelectedService[];
-    termTime: boolean;
 }
 
 export interface SchemeOperatorGeoZoneTicket extends SchemeOperatorTicket {
@@ -388,6 +371,7 @@ export interface PassengerDetails {
 }
 
 export interface CompanionInfo {
+    id?: number;
     name?: string;
     passengerType: string;
     minNumber?: string;
@@ -397,13 +381,38 @@ export interface CompanionInfo {
     proofDocuments?: string[];
 }
 
+export interface GroupPassengerTypeDb {
+    id: number;
+    name: string;
+    groupPassengerType: GroupPassengerTypeReference;
+}
+
+export interface CompanionReference {
+    id: number;
+    minNumber?: string;
+    maxNumber: string;
+}
+
+export interface GroupPassengerTypeReference {
+    name: string;
+    maxGroupSize: string;
+    companions: CompanionReference[];
+}
+
 export interface GroupPassengerType {
     name: string;
     maxGroupSize: string;
     companions: CompanionInfo[];
 }
 
+export interface FullGroupPassengerType {
+    id: number;
+    name: string;
+    groupPassengerType: GroupPassengerType;
+}
+
 export interface SinglePassengerType {
+    id: number;
     name: string;
     passengerType: PassengerType;
 }
@@ -422,14 +431,6 @@ export interface ReturnPeriodValidityWithErrors {
 
 export interface FareZoneWithErrors {
     errors: ErrorInfo[];
-}
-
-export interface SelectedService {
-    lineName: string;
-    lineId: string;
-    serviceCode: string;
-    startDate: string;
-    serviceDescription: string;
 }
 
 export interface BasicService {
@@ -466,12 +467,6 @@ export interface TicketPeriodWithInput extends TicketPeriod {
 
 export interface ProductWithSalesOfferPackages extends BaseProduct {
     productName: string;
-}
-
-export interface FlatFareProductDetails extends BaseProduct {
-    productName: string;
-    productPrice: string;
-    carnetDetails?: CarnetDetails;
 }
 
 export interface ProductData {

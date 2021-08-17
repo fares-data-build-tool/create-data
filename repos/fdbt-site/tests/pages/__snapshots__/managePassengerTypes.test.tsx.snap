@@ -14,6 +14,11 @@ exports[`pages manage passenger types should render correctly 1`] = `
     <ErrorSummary
       errors={Array []}
     />
+    <input
+      name="id"
+      type="hidden"
+      value={0}
+    />
     <h1
       className="govuk-heading-l"
       id="define-passenger-type-page-heading"
@@ -49,7 +54,7 @@ exports[`pages manage passenger types should render correctly 1`] = `
             >
               <input
                 className="govuk-radios__input"
-                defaultChecked={false}
+                defaultChecked={true}
                 id="adult"
                 name="type"
                 type="radio"
@@ -150,6 +155,24 @@ exports[`pages manage passenger types should render correctly 1`] = `
                 htmlFor="young_person"
               >
                 Young person
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="school_pupil"
+                name="type"
+                type="radio"
+                value="schoolPupil"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="school_pupil"
+              >
+                School pupil
               </label>
             </div>
             <div
@@ -339,6 +362,7 @@ exports[`pages manage passenger types should render correctly 1`] = `
         <input
           aria-describedby="passenger_type_name_hint"
           className="govuk-input"
+          defaultValue=""
           id="passenger_type_name"
           name="name"
           type="text"
@@ -382,6 +406,11 @@ exports[`pages manage passenger types should render error state on name form gro
           },
         ]
       }
+    />
+    <input
+      name="id"
+      type="hidden"
+      value={0}
     />
     <h1
       className="govuk-heading-l"
@@ -526,6 +555,24 @@ exports[`pages manage passenger types should render error state on name form gro
                 htmlFor="young_person"
               >
                 Young person
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="school_pupil"
+                name="type"
+                type="radio"
+                value="schoolPupil"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="school_pupil"
+              >
+                School pupil
               </label>
             </div>
             <div
@@ -783,6 +830,11 @@ exports[`pages manage passenger types should render error state on passenger typ
         ]
       }
     />
+    <input
+      name="id"
+      type="hidden"
+      value={0}
+    />
     <h1
       className="govuk-heading-l"
       id="define-passenger-type-page-heading"
@@ -926,6 +978,24 @@ exports[`pages manage passenger types should render error state on passenger typ
                 htmlFor="young_person"
               >
                 Young person
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="school_pupil"
+                name="type"
+                type="radio"
+                value="schoolPupil"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="school_pupil"
+              >
+                School pupil
               </label>
             </div>
             <div
@@ -1139,6 +1209,387 @@ exports[`pages manage passenger types should render error state on passenger typ
           aria-describedby="passenger_type_name_hint"
           className="govuk-input"
           defaultValue="Regular Adult"
+          id="passenger_type_name"
+          name="name"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Add passenger type"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages manage passenger types should render update passenger type button when in edit mode 1`] = `
+<TwoThirdsLayout
+  description="Manage Passenger Type page of the Create Fares Data Service"
+  errors={Array []}
+  title="Manage Passenger Types - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/managePassengerTypes"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <input
+      name="id"
+      type="hidden"
+      value={1}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="define-passenger-type-page-heading"
+    >
+      Provide passenger type details
+    </h1>
+    <div
+      className="govuk-form-group"
+      id="type"
+    >
+      <fieldset
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+          >
+            Select passenger type
+          </h1>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="type"
+          errors={Array []}
+        >
+          <div
+            className="govuk-radios"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="adult"
+                name="type"
+                type="radio"
+                value="adult"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="adult"
+              >
+                Adult
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={true}
+                id="child"
+                name="type"
+                type="radio"
+                value="child"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="child"
+              >
+                Child
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="infant"
+                name="type"
+                type="radio"
+                value="infant"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="infant"
+              >
+                Infant
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="senior"
+                name="type"
+                type="radio"
+                value="senior"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="senior"
+              >
+                Senior
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="student"
+                name="type"
+                type="radio"
+                value="student"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="student"
+              >
+                Student
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="young_person"
+                name="type"
+                type="radio"
+                value="youngPerson"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="young_person"
+              >
+                Young person
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="school_pupil"
+                name="type"
+                type="radio"
+                value="schoolPupil"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="school_pupil"
+              >
+                School pupil
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="anyone"
+                name="type"
+                type="radio"
+                value="anyone"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="anyone"
+              >
+                Anyone
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <fieldset
+      className="govuk-fieldset"
+    >
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--m"
+      >
+        <h1
+          className="govuk-fieldset__heading"
+        >
+          Does this passenger type have an age range?
+        </h1>
+      </legend>
+      <div
+        className="govuk-form-group"
+      >
+        <div
+          className="govuk-hint"
+          id="age-range-min"
+        >
+          Minimum age (if applicable)
+        </div>
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="age-range-min"
+          errors={Array []}
+        >
+          <input
+            className="govuk-input govuk-input--width-5"
+            defaultValue="4"
+            name="ageRangeMin"
+            type="text"
+          />
+        </FormElementWrapper>
+      </div>
+      <div
+        className="govuk-form-group"
+      >
+        <div
+          className="govuk-hint"
+          id="age-range-max"
+        >
+          Maximum age (if applicable)
+        </div>
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="age-range-max"
+          errors={Array []}
+        >
+          <input
+            className="govuk-input govuk-input--width-5"
+            defaultValue="15"
+            name="ageRangeMax"
+            type="text"
+          />
+        </FormElementWrapper>
+      </div>
+    </fieldset>
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+          >
+            Does this passenger type require a proof document?
+          </h1>
+        </legend>
+        <div
+          className="govuk-hint"
+          id="proofDocuments-hint"
+        >
+          Select the applicable proof document(s)
+        </div>
+        <div
+          className="govuk-checkboxes"
+          data-module="govuk-checkboxes"
+        >
+          <div
+            className="govuk-checkboxes__item"
+          >
+            <input
+              className="govuk-checkboxes__input"
+              defaultChecked={false}
+              id="membership_card"
+              name="proofDocuments"
+              type="checkbox"
+              value="membershipCard"
+            />
+            <label
+              className="govuk-label govuk-checkboxes__label"
+              htmlFor="membership_card"
+            >
+              Membership card
+            </label>
+          </div>
+          <div
+            className="govuk-checkboxes__item"
+          >
+            <input
+              className="govuk-checkboxes__input"
+              defaultChecked={true}
+              id="student_card"
+              name="proofDocuments"
+              type="checkbox"
+              value="studentCard"
+            />
+            <label
+              className="govuk-label govuk-checkboxes__label"
+              htmlFor="student_card"
+            >
+              Student card
+            </label>
+          </div>
+          <div
+            className="govuk-checkboxes__item"
+          >
+            <input
+              className="govuk-checkboxes__input"
+              defaultChecked={false}
+              id="identity_document"
+              name="proofDocuments"
+              type="checkbox"
+              value="identityDocument"
+            />
+            <label
+              className="govuk-label govuk-checkboxes__label"
+              htmlFor="identity_document"
+            >
+              Identity document
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div
+      className="govuk-form-group"
+      id="name"
+    >
+      <h1
+        className="govuk-label-wrapper"
+      >
+        <label
+          className="govuk-label govuk-label--m"
+          htmlFor="passenger_type_name"
+        >
+          Provide a name for your passenger type
+        </label>
+      </h1>
+      <div
+        className="govuk-hint"
+        id="passenger_type_name_hint"
+      >
+        50 characters maximum
+      </div>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="name"
+        errors={Array []}
+      >
+        <input
+          aria-describedby="passenger_type_name_hint"
+          className="govuk-input"
+          defaultValue="Regular child"
           id="passenger_type_name"
           name="name"
           type="text"

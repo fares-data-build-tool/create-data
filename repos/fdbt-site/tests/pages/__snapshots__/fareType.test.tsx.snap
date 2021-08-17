@@ -39,7 +39,7 @@ exports[`pages fareType should render correctly 1`] = `
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="fare-type-single"
+          errorId="radio-option-single"
           errors={Array []}
         >
           <RadioButtons
@@ -58,7 +58,7 @@ exports[`pages fareType should render correctly 1`] = `
                 },
                 Object {
                   "hint": "A fixed fee ticket for a single journey",
-                  "label": "Flat fare ticket",
+                  "label": "Flat fare/short hop ticket",
                   "value": "flatFare",
                 },
                 Object {
@@ -136,7 +136,7 @@ exports[`pages fareType should render correctly for a scheme operator 1`] = `
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="fare-type-single"
+          errorId="radio-option-single"
           errors={Array []}
         >
           <RadioButtons
@@ -232,7 +232,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="fare-type-single"
+          errorId="radio-option-single"
           errors={
             Array [
               Object {
@@ -258,7 +258,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
                 },
                 Object {
                   "hint": "A fixed fee ticket for a single journey",
-                  "label": "Flat fare ticket",
+                  "label": "Flat fare/short hop ticket",
                   "value": "flatFare",
                 },
                 Object {

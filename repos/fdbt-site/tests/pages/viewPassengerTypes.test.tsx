@@ -1,13 +1,13 @@
-import * as React from 'react';
 import { shallow } from 'enzyme';
+import * as React from 'react';
+import { SinglePassengerType } from '../../src/interfaces';
 import ViewPassengerTypes from '../../src/pages/viewPassengerTypes';
-import { GroupPassengerType, SinglePassengerType } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('view passenger types', () => {
         it('should render correctly when no individual or group passenger types', () => {
             const tree = shallow(
-                <ViewPassengerTypes singlePassengerTypes={[]} groupPassengerTypes={[]} csrfToken={''} />,
+                <ViewPassengerTypes singlePassengerTypes={[]} groupPassengerTypes={[]} csrfToken={''} referer={null} />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -15,6 +15,7 @@ describe('pages', () => {
 
         it('should render correctly when only individual passenger types', () => {
             const passengerType = {
+                id: 1,
                 name: 'Regular Child',
                 passengerType: {
                     passengerType: 'child',
@@ -25,7 +26,12 @@ describe('pages', () => {
             };
 
             const tree = shallow(
-                <ViewPassengerTypes singlePassengerTypes={[passengerType]} groupPassengerTypes={[]} csrfToken={''} />,
+                <ViewPassengerTypes
+                    singlePassengerTypes={[passengerType]}
+                    groupPassengerTypes={[]}
+                    csrfToken={''}
+                    referer={'hello'}
+                />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -47,9 +53,13 @@ describe('pages', () => {
             };
 
             const passengerTypeGroup = {
+                groupPassengerType: {
+                    name: 'family group',
+                    maxGroupSize: '3',
+                    companions: [adultCompanion, childCompanion],
+                },
                 name: 'family group',
-                maxGroupSize: '3',
-                companions: [adultCompanion, childCompanion],
+                id: 0,
             };
 
             const tree = shallow(
@@ -57,6 +67,7 @@ describe('pages', () => {
                     singlePassengerTypes={[]}
                     groupPassengerTypes={[passengerTypeGroup]}
                     csrfToken={''}
+                    referer={null}
                 />,
             );
 
@@ -66,6 +77,7 @@ describe('pages', () => {
         it('should render correctly when groups and individual passenger types', () => {
             const passengerTypes: SinglePassengerType[] = [
                 {
+                    id: 1,
                     name: 'Regular Child',
                     passengerType: {
                         passengerType: 'child',
@@ -89,11 +101,15 @@ describe('pages', () => {
                 proofDocuments: ['studentCard'],
             };
 
-            const passengerTypeGroups: GroupPassengerType[] = [
+            const passengerTypeGroups = [
                 {
+                    id: 3,
                     name: 'family group',
-                    maxGroupSize: '3',
-                    companions: [adultCompanion, childCompanion],
+                    groupPassengerType: {
+                        name: 'family group',
+                        maxGroupSize: '3',
+                        companions: [adultCompanion, childCompanion],
+                    },
                 },
             ];
 
@@ -102,6 +118,7 @@ describe('pages', () => {
                     singlePassengerTypes={passengerTypes}
                     groupPassengerTypes={passengerTypeGroups}
                     csrfToken={''}
+                    referer={'hello'}
                 />,
             );
             expect(tree).toMatchSnapshot();

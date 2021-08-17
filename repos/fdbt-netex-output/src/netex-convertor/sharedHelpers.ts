@@ -6,7 +6,6 @@ import moment from 'moment';
 import {
     CoreData,
     isSchemeOperatorTicket,
-    FlatFareTicket,
     PeriodTicket,
     PointToPointTicket,
     GroupTicket,
@@ -43,6 +42,7 @@ import {
     getLinesElement,
     getPointToPointAvailabilityElement,
 } from './point-to-point-tickets/pointToPointTicketNetexHelpers';
+import { FlatFareTicket } from '../../shared/matchingJsonTypes';
 
 export interface NetexObject {
     [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any

@@ -371,3 +371,13 @@ svg:not(:root) {
         display: flex;
     }
 }
+
+.global-settings-return-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sop-row {
+  clear: none;
+}

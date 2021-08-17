@@ -2,6 +2,7 @@ const withPlugins = require('next-compose-plugins');
 const withImages = require('next-images');
 
 const nextConfig = {
+    webpack5: false,
     target: 'server',
     poweredByHeader: false,
     webpack: (config, { isServer }) => {
@@ -18,7 +19,7 @@ const nextConfig = {
             },
         });
 
-        config.resolve = { ...config.resolve, symlinks: false }
+        config.resolve = { ...config.resolve, symlinks: false };
 
         if (!isServer) {
             config.node = {

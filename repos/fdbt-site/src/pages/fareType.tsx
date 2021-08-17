@@ -18,7 +18,7 @@ import { redirectTo } from './api/apiUtils';
 const title = 'Fare Type - Create Fares Data Service ';
 const description = 'Fare Type selection page of the Create Fares Data Service';
 
-const errorId = 'fare-type-single';
+const errorId = 'radio-option-single';
 
 interface FareTypeProps {
     operatorName: string;
@@ -71,7 +71,7 @@ const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
         },
         {
             value: 'flatFare',
-            label: 'Flat fare ticket',
+            label: 'Flat fare/short hop ticket',
             hint: 'A fixed fee ticket for a single journey',
         },
         {

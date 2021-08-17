@@ -1,47 +1,44 @@
 import React, { ReactElement } from 'react';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { getCsrfToken } from '../utils';
-import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
-import { isWithErrors } from '../interfaces/typeGuards';
-import { getSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
+import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
+import { getPassengerTypeById } from '../data/auroradb';
+import { ErrorInfo, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
+import TwoThirdsLayout from '../layout/Layout';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Manage Passenger Types - Create Fares Data Service';
 const description = 'Manage Passenger Type page of the Create Fares Data Service';
 
-interface FilteredRequestBodyPassengerType {
-    passengerType?: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proofDocuments?: string[];
-}
-
-interface FilteredRequestBody {
-    name?: string;
-    passengerType: FilteredRequestBodyPassengerType;
-}
-
 interface ManagePassengerTypesProps {
+    editMode: boolean;
     csrfToken: string;
     errors: ErrorInfo[];
-    model: FilteredRequestBody;
+    inputs?: SinglePassengerType;
 }
 
-const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassengerTypesProps): ReactElement => {
-    const name = model?.name;
-    const type = model?.passengerType?.passengerType;
-    const ageRangeMin = model?.passengerType?.ageRangeMin;
-    const ageRangeMax = model?.passengerType?.ageRangeMax;
-    const documents = model?.passengerType?.proofDocuments ?? [];
+const ManagePassengerTypes = ({
+    editMode,
+    csrfToken,
+    errors = [],
+    inputs,
+}: ManagePassengerTypesProps): ReactElement => {
+    const id = inputs?.id;
+    const name = inputs?.name;
+    const type = inputs?.passengerType?.passengerType;
+    const ageRangeMin = inputs?.passengerType?.ageRangeMin;
+    const ageRangeMax = inputs?.passengerType?.ageRangeMax;
+    const documents = inputs?.passengerType?.proofDocuments ?? [];
 
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/managePassengerTypes" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
+
+                    <input type="hidden" name="id" value={id} />
 
                     <h1 className="govuk-heading-l" id="define-passenger-type-page-heading">
                         Provide passenger type details
@@ -131,6 +128,19 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
                                         />
                                         <label className="govuk-label govuk-radios__label" htmlFor="young_person">
                                             Young person
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="school_pupil"
+                                            name="type"
+                                            type="radio"
+                                            value="schoolPupil"
+                                            defaultChecked={type === 'schoolPupil'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="school_pupil">
+                                            School pupil
                                         </label>
                                     </div>
                                     <div className="govuk-radios__item">
@@ -279,7 +289,12 @@ const ManagePassengerTypes = ({ csrfToken, errors = [], model }: ManagePassenger
                         </FormElementWrapper>
                     </div>
 
-                    <input type="submit" value="Add passenger type" id="continue-button" className="govuk-button" />
+                    <input
+                        type="submit"
+                        value={`${editMode ? 'Update' : 'Add'} passenger type`}
+                        id="continue-button"
+                        className="govuk-button"
+                    />
                 </>
             </CsrfForm>
         </TwoThirdsLayout>
@@ -294,20 +309,34 @@ const hasError = (errors: ErrorInfo[], name: string) => {
     return '';
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ManagePassengerTypesProps } => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: ManagePassengerTypesProps }> => {
+    const nationalOperatorCode = getAndValidateNoc(ctx);
     const csrfToken = getCsrfToken(ctx);
+    const passengerTypeId = Number(ctx.query.id);
+    const userInputsAndErrors = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
+    const editId = Number.isInteger(Number(ctx.query.id)) ? Number(ctx.query.id) : undefined;
 
-    const errorsFromSession = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
+    let inputs: SinglePassengerType | undefined,
+        errors: ErrorInfo[] = [];
 
-    const errors: ErrorInfo[] = isWithErrors(errorsFromSession) ? errorsFromSession.errors : [];
-
-    const model = { ...errorsFromSession } as FilteredRequestBody;
+    if ((userInputsAndErrors?.id || undefined) === editId) {
+        inputs = userInputsAndErrors;
+        errors = userInputsAndErrors?.errors ?? [];
+    } else if (editId) {
+        inputs = await getPassengerTypeById(passengerTypeId, nationalOperatorCode);
+        if (!inputs) {
+            throw new Error('No groups for this NOC matches the passed id');
+        }
+    }
 
     return {
         props: {
             csrfToken,
             errors,
-            model,
+            editMode: !!editId,
+            ...(inputs && { inputs }),
         },
     };
 };

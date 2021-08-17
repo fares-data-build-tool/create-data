@@ -2,7 +2,12 @@
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import React from 'react';
-import { PointToPointPeriodTicket } from '../../shared/matchingJsonTypes';
+import {
+    FlatFareTicket,
+    PeriodGeoZoneTicket,
+    PeriodMultipleServicesTicket,
+    PointToPointPeriodTicket,
+} from '../../shared/matchingJsonTypes';
 import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
@@ -25,7 +30,6 @@ import {
     CarnetExpiryUnit,
     ErrorInfo,
     ExpiryUnit,
-    FlatFareTicket,
     FullTimeRestriction,
     FullTimeRestrictionAttribute,
     MultiOperatorGeoZoneTicket,
@@ -33,8 +37,6 @@ import {
     MultiProduct,
     MultiProductWithErrors,
     NextPageContextWithSession,
-    PeriodGeoZoneTicket,
-    PeriodMultipleServicesTicket,
     ProductDetails,
     RadioConditionalInputFieldset,
     RadioWithConditionalInputs,
@@ -47,13 +49,19 @@ import {
     ServiceDB,
     SingleTicket,
     Stop,
+    TimeRestriction,
     UserFareStages,
 } from '../../src/interfaces';
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
 
-import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../src/pages/selectSalesOfferPackage';
+import {
+    defaultSalesOfferPackageOne,
+    defaultSalesOfferPackageThree,
+    defaultSalesOfferPackageTwo,
+} from '../../src/pages/selectSalesOfferPackage';
+import { SessionAttributeTypes } from '../../src/utils/sessions';
 
 interface GetMockContextInput {
     session?: { [key: string]: any };
@@ -68,7 +76,7 @@ interface GetMockContextInput {
 }
 
 interface GetMockRequestAndResponse {
-    session?: { [key: string]: any };
+    session?: Partial<SessionAttributeTypes>;
     cookieValues?: any;
     body?: any;
     uuid?: any;
@@ -991,105 +999,7 @@ export const mockService: ServiceDB = {
     lineId: 'q2gv2ve',
 };
 
-export const mockMatchingUserFareStagesWithUnassignedStages: UserFareStages = {
-    fareStages: [
-        {
-            stageName: 'Acomb Green Lane',
-            prices: [
-                {
-                    price: '1.10',
-                    fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
-                },
-                {
-                    price: '1.70',
-                    fareZones: [
-                        'Cambridge Street (York)',
-                        'Blossom Street',
-                        'Rail Station (York)',
-                        'Piccadilly (York)',
-                    ],
-                },
-            ],
-        },
-        {
-            stageName: 'Mattison Way',
-            prices: [
-                {
-                    price: '1.10',
-                    fareZones: ['Nursery Drive', 'Holl Bank/Beech Ave'],
-                },
-                {
-                    price: '1.70',
-                    fareZones: [
-                        'Cambridge Street (York)',
-                        'Blossom Street',
-                        'Rail Station (York)',
-                        'Piccadilly (York)',
-                    ],
-                },
-            ],
-        },
-        {
-            stageName: 'Nursery Drive',
-            prices: [
-                {
-                    price: '1.10',
-                    fareZones: ['Holl Bank/Beech Ave', 'Cambridge Street (York)', 'Blossom Street'],
-                },
-                {
-                    price: '1.70',
-                    fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
-                },
-            ],
-        },
-        {
-            stageName: 'Holl Bank/Beech Ave',
-            prices: [
-                {
-                    price: '1.10',
-                    fareZones: ['Cambridge Street (York)', 'Blossom Street'],
-                },
-                {
-                    price: '1.70',
-                    fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
-                },
-            ],
-        },
-        {
-            stageName: 'Cambridge Street (York)',
-            prices: [
-                {
-                    price: '1.00',
-                    fareZones: ['Blossom Street', 'Rail Station (York)', 'Piccadilly (York)'],
-                },
-            ],
-        },
-        {
-            stageName: 'Blossom Street',
-            prices: [
-                {
-                    price: '1.00',
-                    fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
-                },
-            ],
-        },
-        {
-            stageName: 'Rail Station (York)',
-            prices: [
-                {
-                    price: '1.00',
-                    fareZones: ['Piccadilly (York)'],
-                },
-            ],
-        },
-        {
-            stageName: 'Piccadilly (York)',
-            prices: [],
-        },
-    ],
-};
-
-export const mockMatchingUserFareStagesWithAllStagesAssigned: UserFareStages = {
+export const mockMatchingUserFareStages: UserFareStages = {
     fareStages: [
         {
             stageName: 'Acomb Green Lane',
@@ -1192,7 +1102,11 @@ export const expectedProductDetailsArray: ProductDetails[] = [
     },
 ];
 
-export const mockTimeRestriction: FullTimeRestriction[] = [
+export const mockTimeRestriction: TimeRestriction = {
+    validDays: ['monday', 'bankHoliday'],
+};
+
+const mockFullTimeRestriction: FullTimeRestriction[] = [
     {
         day: 'monday',
         timeBands: [
@@ -1242,7 +1156,7 @@ export const expectedSingleTicket: SingleTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -1377,7 +1291,7 @@ export const expectedCarnetSingleTicket: SingleTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -1517,7 +1431,7 @@ export const expectedNonCircularReturnTicket: ReturnTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -1681,7 +1595,7 @@ export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -1849,7 +1763,7 @@ export const expectedCircularReturnTicket: ReturnTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -1984,7 +1898,7 @@ export const expectedCarnetReturnTicket: ReturnTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2153,7 +2067,7 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
     zoneName: 'Green Lane Shops',
     stops: zoneStops,
     passengerType: 'Adult',
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2198,7 +2112,7 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
     zoneName: 'Green Lane Shops',
     stops: zoneStops,
     passengerType: 'Adult',
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2243,7 +2157,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
     email: 'test@example.com',
     passengerType: 'Adult',
     termTime: false,
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2307,7 +2221,7 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Per
     email: 'test@example.com',
     passengerType: 'Adult',
     termTime: false,
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2384,7 +2298,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
         email: 'test@example.com',
         passengerType: 'Adult',
         termTime: false,
-        timeRestriction: mockTimeRestriction,
+        timeRestriction: mockFullTimeRestriction,
         ticketPeriod: {
             startDate: '2020-12-17T09:30:46.0Z',
             endDate: '2020-12-18T09:30:46.0Z',
@@ -2568,6 +2482,29 @@ export const expectedFlatFareTicket: FlatFareTicket = {
     timeRestriction: [],
 };
 
+export const expectedFlatFareGeoZoneTicket: FlatFareTicket = {
+    operatorName: 'test',
+    passengerType: 'Adult',
+    type: 'flatFare',
+    nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
+    zoneName: 'my flat fare zone',
+    stops: zoneStops,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    products: [
+        {
+            productName: 'Flat fare with geo zone',
+            productPrice: '7',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageThree],
+        },
+    ],
+    timeRestriction: [],
+};
+
 export const expectedSchemeOperatorTicket = (type: SchemeOperatorTicket['type']): SchemeOperatorTicket => {
     return {
         schemeOperatorName: expect.any(String),
@@ -2576,7 +2513,7 @@ export const expectedSchemeOperatorTicket = (type: SchemeOperatorTicket['type'])
         uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
         email: 'test@example.com',
         passengerType: 'Adult',
-        timeRestriction: mockTimeRestriction,
+        timeRestriction: mockFullTimeRestriction,
         ticketPeriod: {
             startDate: '2020-12-17T09:30:46.0Z',
             endDate: '2020-12-18T09:30:46.0Z',
@@ -2591,7 +2528,7 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: SchemeOperator
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     passengerType: 'Adult',
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2723,7 +2660,7 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorG
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     passengerType: 'Adult',
-    timeRestriction: mockTimeRestriction,
+    timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -4816,45 +4753,8 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
     radioError: [{ errorMessage: 'Choose one of the options below', id: 'return-validity-defined' }],
 };
 
-export const mockFullTimeRestrictions: FullTimeRestrictionAttribute = {
-    fullTimeRestrictions: [
-        {
-            day: 'monday',
-            timeBands: [
-                {
-                    startTime: '0900',
-                    endTime: '',
-                },
-            ],
-        },
-        {
-            day: 'tuesday',
-            timeBands: [
-                {
-                    startTime: '',
-                    endTime: '1800',
-                },
-            ],
-        },
-        {
-            day: 'bankHoliday',
-            timeBands: [
-                {
-                    startTime: '0900',
-                    endTime: '1750',
-                },
-            ],
-        },
-        {
-            day: 'friday',
-            timeBands: [
-                {
-                    startTime: '',
-                    endTime: '',
-                },
-            ],
-        },
-    ],
+export const mockFullTimeRestrictionAttribute: FullTimeRestrictionAttribute = {
+    fullTimeRestrictions: mockFullTimeRestriction,
     errors: [],
 };
 

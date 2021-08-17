@@ -25,7 +25,7 @@ describe('MatchingBase', () => {
             });
         });
 
-        it('should return an array of stop items with dropdown values macthing those in selectedFareStages', () => {
+        it('should return an array of stop items with dropdown values matching those in selectedFareStages', () => {
             const expectedStopItems: StopItem = {
                 index: expect.any(Number),
                 stopName: expect.any(String),
@@ -43,6 +43,37 @@ describe('MatchingBase', () => {
             it('should render the reset and auto populate buttons on the page', () => {
                 const mockFn = jest.fn();
                 const wrapper = shallow(renderResetAndAutoPopulateButtons(mockFn, mockFn, 'bottom'));
+                expect(wrapper).toMatchSnapshot();
+            });
+            it('should render with warning', () => {
+                const wrapper = shallow(
+                    <MatchingBase
+                        userFareStages={userFareStages}
+                        stops={zoneStops}
+                        service={service}
+                        error=""
+                        warning={true}
+                        selectedFareStages={selectedFareStages}
+                        csrfToken=""
+                        {...baseProps}
+                    />,
+                );
+                expect(wrapper).toMatchSnapshot();
+            });
+
+            it('should render with error', () => {
+                const wrapper = shallow(
+                    <MatchingBase
+                        userFareStages={userFareStages}
+                        stops={zoneStops}
+                        service={service}
+                        error=""
+                        warning={false}
+                        selectedFareStages={selectedFareStages}
+                        csrfToken=""
+                        {...baseProps}
+                    />,
+                );
                 expect(wrapper).toMatchSnapshot();
             });
         });
@@ -63,7 +94,8 @@ describe('MatchingBase', () => {
                     userFareStages={userFareStages}
                     stops={zoneStops}
                     service={service}
-                    error={false}
+                    warning={false}
+                    error=""
                     selectedFareStages={[]}
                     csrfToken=""
                     // eslint-disable-next-line react/jsx-props-no-spreading
@@ -91,7 +123,8 @@ describe('MatchingBase', () => {
                     userFareStages={userFareStages}
                     stops={zoneStops}
                     service={service}
-                    error={false}
+                    warning={false}
+                    error=""
                     selectedFareStages={selectedFareStages}
                     csrfToken=""
                     // eslint-disable-next-line react/jsx-props-no-spreading
@@ -120,7 +153,8 @@ describe('MatchingBase', () => {
                         userFareStages={userFareStages}
                         stops={zoneStops}
                         service={service}
-                        error={false}
+                        error=""
+                        warning={false}
                         selectedFareStages={[]}
                         csrfToken=""
                         // eslint-disable-next-line react/jsx-props-no-spreading

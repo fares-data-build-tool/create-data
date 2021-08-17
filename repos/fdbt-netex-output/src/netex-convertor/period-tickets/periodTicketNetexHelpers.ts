@@ -1,17 +1,18 @@
+import { FlatFareGeoZone, FlatFareTicket, SelectedService } from '../../../shared/matchingJsonTypes';
+
 import {
     DistributionAssignment,
-    FlatFareTicket,
     GeoZoneTicket,
     GroupCompanion,
     GroupOfLines,
     GroupOfOperators,
     HybridPeriodTicket,
+    isFlatFareTicket,
     isGeoZoneTicket,
     isGroupTicket,
     isHybridTicket,
     isMultiOperatorMultipleServicesTicket,
     isMultiServiceTicket,
-    isProductDetails,
     isSchemeOperatorFlatFareTicket,
     Line,
     LineRef,
@@ -27,7 +28,6 @@ import {
     SchemeOperatorFlatFareTicket,
     SchemeOperatorGeoZoneTicket,
     SchemeOperatorTicket,
-    SelectedService,
     Stop,
     Ticket,
     TopographicProjectionRef,
@@ -179,7 +179,7 @@ export const getLineRefList = (
 };
 
 export const getGeoZoneFareTable = (
-    userPeriodTicket: GeoZoneTicket,
+    userPeriodTicket: GeoZoneTicket | FlatFareGeoZone,
     placeHolderGroupOfProductsName: string,
     ticketUserConcat: string,
 ): NetexObject[] => {
@@ -228,19 +228,32 @@ export const getGeoZoneFareTable = (
                                         limitations: {
                                             ...getProfileRef(userPeriodTicket),
                                         },
-                                        prices: {
-                                            TimeIntervalPrice: {
-                                                version: '1.0',
-                                                id: `op:${product.productName}@${salesOfferPackage.name}@zone`,
-                                                Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
-                                                TimeIntervalRef: {
-                                                    version: '1.0',
-                                                    ref: `op:Tariff@${
-                                                        product.productName
-                                                    }@${product.productDuration.replace(' ', '-')}`,
-                                                },
-                                            },
-                                        },
+                                        prices:
+                                            'productDuration' in product
+                                                ? {
+                                                      TimeIntervalPrice: {
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@zone`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                          TimeIntervalRef: {
+                                                              version: '1.0',
+                                                              ref: `op:Tariff@${
+                                                                  product.productName
+                                                              }@${product.productDuration.replace(' ', '-')}`,
+                                                          },
+                                                      },
+                                                  }
+                                                : {
+                                                      DistanceMatrixElementPrice: {
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                      },
+                                                  },
                                     },
                                 },
                             },
@@ -364,14 +377,14 @@ const getFlatFareList = (
     });
 
 export const getMultiServiceFareTable = (
-    userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorFlatFareTicket,
+    userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorFlatFareTicket | FlatFareTicket,
     ticketUserConcat: string,
 ): NetexObject[] => {
-    if (isProductDetails(userPeriodTicket.products[0]) && !isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
+    if (isSchemeOperatorFlatFareTicket(userPeriodTicket) || isFlatFareTicket(userPeriodTicket)) {
+        return getFlatFareList(userPeriodTicket, ticketUserConcat);
+    } else {
         return getMultiServiceList(userPeriodTicket, ticketUserConcat);
     }
-
-    return getFlatFareList(userPeriodTicket, ticketUserConcat);
 };
 
 export const getHybridFareTable = (

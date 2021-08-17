@@ -82,6 +82,7 @@ module.exports = {
         'func-style': [2, 'expression'],
         curly: [2, 'all'],
         '@typescript-eslint/unbound-method': 0,
+        'react/forbid-dom-props': ["error", { "forbid": ["style"] }]
     },
     settings: {
         react: {

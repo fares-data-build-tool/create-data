@@ -4,6 +4,7 @@ import { NextPageContextWithSession, PremadeTimeRestriction, TimeBand } from '..
 import { getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
+import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 
 const title = 'Time restrictions';
 const description = 'View and edit your time restrictions.';
@@ -21,6 +22,7 @@ const dayMappings = {
 
 interface TimeRestrictionProps {
     timeRestrictions: PremadeTimeRestriction[];
+    referer: string | null;
 }
 
 const formatTime = (time: string): string => (time ? `${time.substring(0, 2)}:${time.substring(2, 4)}` : '');
@@ -40,29 +42,23 @@ const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: stri
     );
 };
 
-const ViewTimeRestrictions = ({ timeRestrictions }: TimeRestrictionProps): ReactElement => (
-    <BaseLayout title={title} description={description} showNavigation={true}>
-        <div className="govuk-width-container">
-            <main className="govuk-main-wrapper">
-                <div className="govuk-grid-row">
-                    <div className="govuk-grid-column-one-third">
-                        <SubNavigation />
-                    </div>
+const ViewTimeRestrictions = ({ timeRestrictions, referer }: TimeRestrictionProps): ReactElement => (
+    <BaseLayout title={title} description={description} showNavigation referer={referer}>
+        <div className="govuk-grid-row">
+            <div className="govuk-grid-column-one-third">
+                <SubNavigation />
+            </div>
 
-                    <div className="govuk-grid-column-two-thirds">
-                        <h1 className="govuk-heading-xl">Time restrictions</h1>
-                        <p className="govuk-body">
-                            Define certain days and time periods that your tickets can be used within
-                        </p>
+            <div className="govuk-grid-column-two-thirds">
+                <h1 className="govuk-heading-xl">Time restrictions</h1>
+                <p className="govuk-body">Define certain days and time periods that your tickets can be used within</p>
 
-                        {!timeRestrictions.length ? (
-                            <NoTimeRestrictions />
-                        ) : (
-                            <TimeRestrictions timeRestrictions={timeRestrictions} />
-                        )}
-                    </div>
-                </div>
-            </main>
+                {!timeRestrictions.length ? (
+                    <NoTimeRestrictions />
+                ) : (
+                    <TimeRestrictions timeRestrictions={timeRestrictions} />
+                )}
+            </div>
         </div>
     </BaseLayout>
 );
@@ -80,10 +76,12 @@ const NoTimeRestrictions = (): ReactElement => {
     );
 };
 
-const TimeRestrictions = ({ timeRestrictions }: { timeRestrictions: PremadeTimeRestriction[] }): ReactElement => (
+export const TimeRestrictions = ({
+    timeRestrictions,
+}: {
+    timeRestrictions: PremadeTimeRestriction[];
+}): ReactElement => (
     <div className="govuk-heading-m">
-        <h3>Individual</h3>
-
         <div className="govuk-grid-row">
             {timeRestrictions.map((timeRestriction) => (
                 <div key={timeRestriction.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
@@ -141,7 +139,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
 
-    return { props: { timeRestrictions } };
+    return { props: { timeRestrictions, referer: extractGlobalSettingsReferer(ctx) } };
 };
 
 export default ViewTimeRestrictions;

@@ -13,6 +13,7 @@ import { isFareType } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
+        const { overrideWarning } = req.body;
         if (!req.body.service || !req.body.userfarestages) {
             throw new Error('No service or userfarestages info found');
         }
@@ -21,17 +22,37 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const inboundMatchingFareZones = getMatchingFareZonesFromForm(req);
 
-        // Deleting these keys from the object in order to faciliate looping through the fare stage values in the body
+        // Deleting these keys from the object in order to facilitate looping through the fare stage values in the body
         delete req.body.service;
         delete req.body.userfarestages;
 
-        if (isFareStageUnassigned(inboundUserFareStages, inboundMatchingFareZones) && inboundMatchingFareZones !== {}) {
+        if (!Object.keys(inboundMatchingFareZones).find((fareZone) => fareZone !== 'notApplicable')) {
             const selectedStagesList: string[][] = getSelectedStages(req);
-            const matchingAttributeError: MatchingWithErrors = { error: true, selectedFareStages: selectedStagesList };
+            const matchingAttributeError: MatchingWithErrors = {
+                error: 'No fare stages have been assigned, assign each fare stage to a stop',
+                selectedFareStages: selectedStagesList,
+            };
             updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeError);
+
             redirectTo(res, '/inboundMatching');
             return;
+        } else if (
+            isFareStageUnassigned(inboundUserFareStages, inboundMatchingFareZones) &&
+            inboundMatchingFareZones !== {} &&
+            !overrideWarning
+        ) {
+            const selectedStagesList: string[][] = getSelectedStages(req);
+            const matchingAttributeError: MatchingWithErrors = {
+                warning: true,
+                selectedFareStages: selectedStagesList,
+            };
+            updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeError);
+
+            redirectTo(res, '/inboundMatching');
+
+            return;
         }
+
         const matchingAttributeValue: InboundMatchingInfo = { inboundUserFareStages, inboundMatchingFareZones };
         updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeValue);
 

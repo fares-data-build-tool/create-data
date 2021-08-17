@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { globalSettingsEnabled } from '../constants/featureFlag';
 import { NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import { checkIfMultipleOperators } from '../utils';
@@ -72,7 +73,7 @@ const Home = ({ multipleOperators, isOnTestEnvironment }: HomeProps): ReactEleme
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => ({
-    props: { multipleOperators: checkIfMultipleOperators(ctx), isOnTestEnvironment: process.env.STAGE !== 'prod' },
+    props: { multipleOperators: checkIfMultipleOperators(ctx), isOnTestEnvironment: globalSettingsEnabled },
 });
 
 export default Home;

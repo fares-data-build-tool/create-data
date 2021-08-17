@@ -114,19 +114,13 @@ export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiR
     if (isFareType(fareTypeAttribute)) {
         switch (fareTypeAttribute.fareType) {
             case 'period':
+            case 'multiOperator':
+            case 'flatFare':
                 redirectTo(res, '/ticketRepresentation');
                 return;
             case 'single':
-                redirectTo(res, '/service');
-                return;
             case 'return':
                 redirectTo(res, '/service');
-                return;
-            case 'flatFare':
-                redirectTo(res, '/serviceList');
-                return;
-            case 'multiOperator':
-                redirectTo(res, '/ticketRepresentation');
                 return;
             case 'schoolService':
                 redirectOnSchoolFareType(req, res);

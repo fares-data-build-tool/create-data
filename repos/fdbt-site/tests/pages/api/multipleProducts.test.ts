@@ -212,9 +212,7 @@ describe('multipleProducts', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             session: {
-                [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
-                    numberOfProductsInput: '2',
-                },
+                [NUMBER_OF_PRODUCTS_ATTRIBUTE]: 2,
                 [CARNET_FARE_TYPE_ATTRIBUTE]: true,
             },
         });

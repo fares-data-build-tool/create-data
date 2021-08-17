@@ -1,0 +1,600 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages selectPassengerType should render correctly with no saved groups and no saved passenger types 1`] = `
+<TwoThirdsLayout
+  description="Select Passenger Type selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Select Passenger Type - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectPassengerType"
+    csrfToken="csrf"
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="passenger-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="passenger-type-page-heading"
+          >
+            Select a passenger type
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create new types in your
+             
+            <a
+              className="govuk-link"
+              href="/viewPassengerTypes"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+        <span
+          className="govuk-body"
+        >
+          <i>
+            You currently have no saved passenger types
+          </i>
+        </span>
+      </fieldset>
+    </div>
+    <a
+      className="govuk-button govuk-button--secondary"
+      href="/viewPassengerTypes"
+    >
+      Create new
+    </a>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages selectPassengerType should render correctly with no saved groups and saved passenger types 1`] = `
+<TwoThirdsLayout
+  description="Select Passenger Type selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Select Passenger Type - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectPassengerType"
+    csrfToken="csrf"
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="passenger-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="passenger-type-page-heading"
+          >
+            Select a passenger type
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create new types in your
+             
+            <a
+              className="govuk-link"
+              href="/viewPassengerTypes"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Individuals
+        </h3>
+        <div
+          className="govuk-grid-row"
+          id="individual-passengers"
+        >
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 3,
+                "name": "adult",
+                "passengerType": Object {
+                  "ageRangeMax": "75",
+                  "ageRangeMin": "18",
+                  "passengerType": "adult",
+                  "proofDocuments": Array [],
+                },
+              }
+            }
+            key="3"
+          />
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 2,
+                "name": "kid",
+                "passengerType": Object {
+                  "ageRangeMax": "17",
+                  "ageRangeMin": "5",
+                  "passengerType": "child",
+                  "proofDocuments": Array [],
+                },
+              }
+            }
+            key="2"
+          />
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Groups
+        </h3>
+        <div
+          className="govuk-grid-row"
+        >
+          <span
+            className="govuk-body"
+          >
+            <i>
+              You currently have no saved groups
+            </i>
+          </span>
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button govuk-!-margin-right-2"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+    <a
+      className="govuk-button govuk-button--secondary"
+      href="/viewPassengerTypes"
+    >
+      Create new
+    </a>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages selectPassengerType should render correctly with saved groups and saved passenger types 1`] = `
+<TwoThirdsLayout
+  description="Select Passenger Type selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Select Passenger Type - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectPassengerType"
+    csrfToken="csrf"
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="passenger-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="passenger-type-page-heading"
+          >
+            Select a passenger type
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create new types in your
+             
+            <a
+              className="govuk-link"
+              href="/viewPassengerTypes"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Individuals
+        </h3>
+        <div
+          className="govuk-grid-row"
+          id="individual-passengers"
+        >
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 3,
+                "name": "adult",
+                "passengerType": Object {
+                  "ageRangeMax": "75",
+                  "ageRangeMin": "18",
+                  "passengerType": "adult",
+                  "proofDocuments": Array [],
+                },
+              }
+            }
+            key="3"
+          />
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 2,
+                "name": "kid",
+                "passengerType": Object {
+                  "ageRangeMax": "17",
+                  "ageRangeMin": "5",
+                  "passengerType": "child",
+                  "proofDocuments": Array [],
+                },
+              }
+            }
+            key="2"
+          />
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Groups
+        </h3>
+        <div
+          className="govuk-grid-row"
+        >
+          <PassengerTypeCard
+            contents={
+              Object {
+                "groupPassengerType": Object {
+                  "companions": Array [
+                    Object {
+                      "ageRangeMax": "75",
+                      "ageRangeMin": "18",
+                      "maxNumber": "2",
+                      "minNumber": "1",
+                      "name": "adult",
+                      "passengerType": "adult",
+                      "proofDocuments": Array [],
+                    },
+                    Object {
+                      "ageRangeMax": "17",
+                      "ageRangeMin": "5",
+                      "maxNumber": "2",
+                      "minNumber": "1",
+                      "name": "kid",
+                      "passengerType": "child",
+                      "proofDocuments": Array [],
+                    },
+                  ],
+                  "maxGroupSize": "3",
+                  "name": "family",
+                },
+                "id": 1,
+                "name": "family",
+              }
+            }
+            key="1"
+          />
+          <PassengerTypeCard
+            contents={
+              Object {
+                "groupPassengerType": Object {
+                  "companions": Array [
+                    Object {
+                      "ageRangeMax": "75",
+                      "ageRangeMin": "18",
+                      "maxNumber": "2",
+                      "minNumber": "2",
+                      "name": "adult",
+                      "passengerType": "adult",
+                      "proofDocuments": Array [],
+                    },
+                  ],
+                  "maxGroupSize": "2",
+                  "name": "couple",
+                },
+                "id": 4,
+                "name": "couple",
+              }
+            }
+            key="4"
+          />
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button govuk-!-margin-right-2"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+    <a
+      className="govuk-button govuk-button--secondary"
+      href="/viewPassengerTypes"
+    >
+      Create new
+    </a>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages selectPassengerType should render correctly with saved groups and saved passenger types and errors 1`] = `
+<TwoThirdsLayout
+  description="Select Passenger Type selection page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Select a passenger type",
+        "id": "individual-passengers",
+      },
+    ]
+  }
+  title="Select Passenger Type - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectPassengerType"
+    csrfToken="csrf"
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Select a passenger type",
+            "id": "individual-passengers",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="passenger-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="passenger-type-page-heading"
+          >
+            Select a passenger type
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create new types in your
+             
+            <a
+              className="govuk-link"
+              href="/viewPassengerTypes"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Individuals
+        </h3>
+        <div
+          className="govuk-grid-row"
+          id="individual-passengers"
+        >
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 3,
+                "name": "adult",
+                "passengerType": Object {
+                  "ageRangeMax": "75",
+                  "ageRangeMin": "18",
+                  "passengerType": "adult",
+                  "proofDocuments": Array [],
+                },
+              }
+            }
+            key="3"
+          />
+          <PassengerTypeCard
+            contents={
+              Object {
+                "id": 2,
+                "name": "kid",
+                "passengerType": Object {
+                  "ageRangeMax": "17",
+                  "ageRangeMin": "5",
+                  "passengerType": "child",
+                  "proofDocuments": Array [],
+                },
+              }
+            }
+            key="2"
+          />
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Groups
+        </h3>
+        <div
+          className="govuk-grid-row"
+        >
+          <PassengerTypeCard
+            contents={
+              Object {
+                "groupPassengerType": Object {
+                  "companions": Array [
+                    Object {
+                      "ageRangeMax": "75",
+                      "ageRangeMin": "18",
+                      "maxNumber": "2",
+                      "minNumber": "1",
+                      "name": "adult",
+                      "passengerType": "adult",
+                      "proofDocuments": Array [],
+                    },
+                    Object {
+                      "ageRangeMax": "17",
+                      "ageRangeMin": "5",
+                      "maxNumber": "2",
+                      "minNumber": "1",
+                      "name": "kid",
+                      "passengerType": "child",
+                      "proofDocuments": Array [],
+                    },
+                  ],
+                  "maxGroupSize": "3",
+                  "name": "family",
+                },
+                "id": 1,
+                "name": "family",
+              }
+            }
+            key="1"
+          />
+          <PassengerTypeCard
+            contents={
+              Object {
+                "groupPassengerType": Object {
+                  "companions": Array [
+                    Object {
+                      "ageRangeMax": "75",
+                      "ageRangeMin": "18",
+                      "maxNumber": "2",
+                      "minNumber": "2",
+                      "name": "adult",
+                      "passengerType": "adult",
+                      "proofDocuments": Array [],
+                    },
+                  ],
+                  "maxGroupSize": "2",
+                  "name": "couple",
+                },
+                "id": 4,
+                "name": "couple",
+              }
+            }
+            key="4"
+          />
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button govuk-!-margin-right-2"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+    <a
+      className="govuk-button govuk-button--secondary"
+      href="/viewPassengerTypes"
+    >
+      Create new
+    </a>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;

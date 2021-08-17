@@ -42,9 +42,7 @@ export type FareType =
     | 'carnetPeriod';
 
 export const defineSchoolUserAndTimeRestrictions = (): void => {
-    randomlyChooseSchoolAgeLimits();
-    randomlyChooseASchoolProof();
-    continueButtonClick();
+    randomlyDetermineUserType();
     randomlyDecideTermRestrictions();
 };
 
@@ -73,9 +71,17 @@ export const startSchemeJourney = (): void => {
     startPageLinkClick();
 };
 
-export const completeFlatFarePages = (productName: string, isScheme: boolean, isCarnet = false): void => {
+export const completeFlatFarePages = (
+    productName: string,
+    isScheme: boolean,
+    isCarnet = false,
+    isGeoZone = false,
+): void => {
     if (isScheme) {
         completeOperatorSearch(true);
+    } else if (isGeoZone) {
+        uploadFile('csv-upload', 'fareZone.csv');
+        submitButtonClick();
     } else {
         randomlyChooseAndSelectServices();
         continueButtonClick();
@@ -94,6 +100,8 @@ export const completeFlatFarePages = (productName: string, isScheme: boolean, is
 };
 
 export const completeFlatFareCarnet = (): void => {
+    clickElementById('radio-option-multipleServices');
+    continueButtonClick();
     randomlyChooseAndSelectServices();
     continueButtonClick();
 

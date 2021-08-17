@@ -30,7 +30,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const selectedStagesList: string[][] = getSelectedStages(req);
-            const matchingAttributeError: MatchingWithErrors = { error: true, selectedFareStages: selectedStagesList };
+            const matchingAttributeError: MatchingWithErrors = {
+                error: 'One or more fare stages have not been assigned, assign each fare stage to a stop',
+                selectedFareStages: selectedStagesList,
+            };
             updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeError);
 
             redirectTo(res, '/matching');
