@@ -31,7 +31,7 @@ exports[`pages fareConfirmation should render correctly for a carnet ticket 1`] 
           },
           Object {
             "content": "Adult",
-            "href": "passengerType",
+            "href": "selectPassengerType",
             "name": "Passenger type",
           },
           Object {
@@ -99,7 +99,7 @@ exports[`pages fareConfirmation should render correctly for a ticket with a prem
           },
           Object {
             "content": "Adult",
-            "href": "passengerType",
+            "href": "selectPassengerType",
             "name": "Passenger type",
           },
           Object {
@@ -172,27 +172,27 @@ exports[`pages fareConfirmation should render correctly for group tickets 1`] = 
           },
           Object {
             "content": "Group",
-            "href": "passengerType",
+            "href": "selectPassengerType",
             "name": "Passenger type",
           },
           Object {
             "content": "Minimum age: 16 Maximum age: 65",
-            "href": "definePassengerType?groupPassengerType=adult",
+            "href": "selectPassengerType",
             "name": "Adult passenger - age range",
           },
           Object {
             "content": "N/A",
-            "href": "definePassengerType?groupPassengerType=adult",
+            "href": "selectPassengerType",
             "name": "Adult passenger - proof documents",
           },
           Object {
             "content": "Minimum age: 0 Maximum age: 16",
-            "href": "definePassengerType?groupPassengerType=child",
+            "href": "selectPassengerType",
             "name": "Child passenger - age range",
           },
           Object {
             "content": "Identity document",
-            "href": "definePassengerType?groupPassengerType=child",
+            "href": "selectPassengerType",
             "name": "Child passenger - proof documents",
           },
           Object {
@@ -255,7 +255,7 @@ exports[`pages fareConfirmation should render correctly for non school single ti
           },
           Object {
             "content": "Adult",
-            "href": "passengerType",
+            "href": "selectPassengerType",
             "name": "Passenger type",
           },
           Object {

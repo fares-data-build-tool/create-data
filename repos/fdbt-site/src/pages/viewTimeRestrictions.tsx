@@ -5,6 +5,7 @@ import { getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
+import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 
 const title = 'Time restrictions';
 const description = 'View and edit your time restrictions.';
@@ -22,6 +23,7 @@ const dayMappings = {
 
 interface TimeRestrictionProps {
     timeRestrictions: PremadeTimeRestriction[];
+    referer: string | null;
 }
 
 const formatTime = (time: string): string => (time ? `${time.substring(0, 2)}:${time.substring(2, 4)}` : '');
@@ -41,7 +43,7 @@ const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: stri
     );
 };
 
-const ViewTimeRestrictions = ({ timeRestrictions }: TimeRestrictionProps): ReactElement => {
+const ViewTimeRestrictions = ({ timeRestrictions, referer }: TimeRestrictionProps): ReactElement => {
     const [popUpState, setPopUpState] = useState({
         isVisible: false,
         timeRestrictionId: 0,
@@ -52,11 +54,11 @@ const ViewTimeRestrictions = ({ timeRestrictions }: TimeRestrictionProps): React
     };
 
     const cancelActionHandler = (): void => {
-        setPopUpState({ ...popUpState, isVisible: false, timeRestrictionId: '' });
+        setPopUpState({ ...popUpState, isVisible: false, timeRestrictionId: 0 });
     };
 
     return (
-        <BaseLayout title={title} description={description} showNavigation={true}>
+        <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div className="govuk-width-container">
                 <main className="govuk-main-wrapper">
                     <div className="govuk-grid-row">
@@ -174,7 +176,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
 
-    return { props: { timeRestrictions } };
+    return { props: { timeRestrictions, referer: extractGlobalSettingsReferer(ctx) } };
 };
 
 export default ViewTimeRestrictions;

@@ -56,12 +56,12 @@ const timeRestrictions: PremadeTimeRestriction[] = [
 describe('pages', () => {
     describe('view time restrictions', () => {
         it('should render correctly when no individual or group time restrictions', () => {
-            const tree = shallow(<ViewTimeRestrictions timeRestrictions={[]} />);
+            const tree = shallow(<ViewTimeRestrictions timeRestrictions={[]} referer={null} />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly when time restrictions exist', () => {
-            const tree = shallow(<ViewTimeRestrictions timeRestrictions={timeRestrictions} />);
+            const tree = shallow(<ViewTimeRestrictions timeRestrictions={timeRestrictions} referer={'hello'} />);
             expect(tree).toMatchSnapshot();
         });
     });

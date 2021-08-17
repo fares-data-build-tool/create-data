@@ -3,6 +3,7 @@ import { redirectToError, redirectTo } from './apiUtils/index';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { globalSettingsEnabled } from '../../constants/featureFlag';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -20,7 +21,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 redirectTo(res, '/definePassengerType');
                 return;
             }
-            redirectTo(res, '/passengerType');
+            if (globalSettingsEnabled) {
+                redirectTo(res, '/selectPassengerType');
+            } else {
+                redirectTo(res, '/passengerType');
+            }
         } else {
             const errors: ErrorInfo[] = [
                 { id: 'fare-type-single', errorMessage: 'Choose a carnet fare type from the options' },

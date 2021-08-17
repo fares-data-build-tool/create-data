@@ -257,42 +257,13 @@ export const completeGroupPassengerDetailsPages = (): void => {
 };
 
 export const randomlyDetermineUserType = (): void => {
-    const randomSelector = getRandomNumber(1, 4);
-
-    switch (randomSelector) {
-        case 1: {
-            cy.log('Click Any and continue');
-            clickElementById('passenger-type-anyone');
-            continueButtonClick();
-            break;
-        }
-        case 2: {
-            cy.log('Click Group, complete following pages, and continue');
-            clickElementById('passenger-type-group');
-            continueButtonClick();
-            completeGroupPassengerDetailsPages();
-            break;
-        }
-        case 3: {
-            cy.log('Click Adult, complete following pages, and continue');
-            clickElementById('passenger-type-adult');
-            continueButtonClick();
-            completeUserDetailsPage(false, '0', 'adult');
-            break;
-        }
-        case 4: {
-            cy.log('Click a non-Any non-Group, complete the next page, and continue');
-            const otherPassengerTypes = ['child', 'infant', 'senior', 'student', 'youngPerson'];
-            const randomPassengerType = otherPassengerTypes[getRandomNumber(0, 4)];
-            clickElementById(`passenger-type-${randomPassengerType}`);
-            continueButtonClick();
-            completeUserDetailsPage(false, '0', randomPassengerType);
-            break;
-        }
-        default: {
-            throwInvalidRandomSelectorError();
-        }
-    }
+    cy.get('[class=govuk-radios__input]')
+        .its('length')
+        .then((length) => {
+            const randomNumber = getRandomNumber(0, length - 1);
+            cy.get('[class=govuk-radios__input]').eq(randomNumber).click();
+        });
+    continueButtonClick();
 };
 
 export const selectYesToTimeRestrictions = (): void => {

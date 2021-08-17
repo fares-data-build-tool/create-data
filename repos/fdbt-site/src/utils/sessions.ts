@@ -47,6 +47,7 @@ import {
     TXC_SOURCE_ATTRIBUTE,
     USER_ATTRIBUTE,
     GS_PASSENGER_GROUP_ATTRIBUTE,
+    GS_REFERER,
 } from '../constants/attributes';
 import {
     CompanionInfo,
@@ -166,6 +167,7 @@ export interface SessionAttributeTypes {
     [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: GroupPassengerType[];
     [POINT_TO_POINT_PRODUCT_ATTRIBUTE]: PointToPointPeriodProduct | WithErrors<PointToPointPeriodProduct>;
     [GS_PASSENGER_GROUP_ATTRIBUTE]: GlobalSettingsGroupAttribute;
+    [GS_REFERER]: string;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
