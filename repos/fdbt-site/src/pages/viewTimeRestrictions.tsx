@@ -1,9 +1,10 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import { NextPageContextWithSession, PremadeTimeRestriction, TimeBand } from '../interfaces';
-import { getAndValidateNoc, sentenceCaseString } from '../utils';
+import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import SubNavigation from '../layout/SubNavigation';
+import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 
 const title = 'Time restrictions';
@@ -21,6 +22,7 @@ const dayMappings = {
 };
 
 interface TimeRestrictionProps {
+    csrfToken: string;
     timeRestrictions: PremadeTimeRestriction[];
     referer: string | null;
 }
@@ -42,33 +44,65 @@ const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: stri
     );
 };
 
-const ViewTimeRestrictions = ({ timeRestrictions, referer }: TimeRestrictionProps): ReactElement => (
-    <BaseLayout title={title} description={description} showNavigation referer={referer}>
-        <div className="govuk-grid-row">
-            <div className="govuk-grid-column-one-third">
-                <SubNavigation />
-            </div>
+const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRestrictionProps): ReactElement => {
+    const [popUpState, setPopUpState] = useState<{ timeRestrictionId: number; timeRestrictionName: string }>();
 
-            <div className="govuk-grid-column-two-thirds">
-                <h1 className="govuk-heading-xl">Time restrictions</h1>
-                <p className="govuk-body">Define certain days and time periods that your tickets can be used within</p>
+    const deleteActionHandler = (id: number, name: string): void => {
+        setPopUpState({ timeRestrictionId: id, timeRestrictionName: name });
+    };
 
-                {!timeRestrictions.length ? (
-                    <NoTimeRestrictions />
-                ) : (
-                    <TimeRestrictions timeRestrictions={timeRestrictions} />
-                )}
+    const cancelActionHandler = (): void => {
+        setPopUpState(undefined);
+    };
+
+    const buildDeleteUrl = (idToDelete: number, csrfToken: string): string => {
+        return `/api/deleteTimeRestriction?id=${idToDelete}&_csrf=${csrfToken}`;
+    };
+
+    return (
+        <BaseLayout title={title} description={description} showNavigation referer={referer}>
+            <div className="govuk-width-container">
+                <main className="govuk-main-wrapper">
+                    <div className="govuk-grid-row">
+                        <div className="govuk-grid-column-one-third">
+                            <SubNavigation />
+                        </div>
+
+                        <div className="govuk-grid-column-two-thirds">
+                            <h1 className="govuk-heading-xl">Time restrictions</h1>
+                            <p className="govuk-body">
+                                Define certain days and time periods that your tickets can be used within
+                            </p>
+
+                            {!timeRestrictions.length ? (
+                                <NoTimeRestrictions />
+                            ) : (
+                                <TimeRestrictions
+                                    deleteActionHandler={deleteActionHandler}
+                                    timeRestrictions={timeRestrictions}
+                                />
+                            )}
+
+                            {popUpState && (
+                                <DeleteConfirmationPopup
+                                    entityType="time restriction"
+                                    entityName={popUpState.timeRestrictionName}
+                                    deleteUrl={buildDeleteUrl(popUpState.timeRestrictionId, csrfToken)}
+                                    cancelActionHandler={cancelActionHandler}
+                                />
+                            )}
+                        </div>
+                    </div>
+                </main>
             </div>
-        </div>
-    </BaseLayout>
-);
+        </BaseLayout>
+    );
+};
 
 const NoTimeRestrictions = (): ReactElement => {
     return (
         <div className="govuk-heading-m">
-            <p className="govuk-body">
-                <em>You currently have no time restrictions saved.</em>
-            </p>
+            <p className="govuk-body">You currently have no time restrictions saved.</p>
             <button className="govuk-button" data-module="govuk-button">
                 Add a time restriction
             </button>
@@ -78,8 +112,10 @@ const NoTimeRestrictions = (): ReactElement => {
 
 export const TimeRestrictions = ({
     timeRestrictions,
+    deleteActionHandler,
 }: {
     timeRestrictions: PremadeTimeRestriction[];
+    deleteActionHandler: (id: number, name: string) => void;
 }): ReactElement => (
     <div className="govuk-heading-m">
         <div className="govuk-grid-row">
@@ -99,12 +135,14 @@ export const TimeRestrictions = ({
                                     </li>
 
                                     <li className="actions__item">
-                                        <a
+                                        <button
                                             className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                            href="/viewTimeRestrictions"
+                                            onClick={() => {
+                                                deleteActionHandler(timeRestriction.id, timeRestriction.name);
+                                            }}
                                         >
                                             Delete
-                                        </a>
+                                        </button>
                                     </li>
                                 </ul>
                             </div>
@@ -136,10 +174,11 @@ export const TimeRestrictions = ({
 );
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: TimeRestrictionProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
 
-    return { props: { timeRestrictions, referer: extractGlobalSettingsReferer(ctx) } };
+    return { props: { timeRestrictions, referer: extractGlobalSettingsReferer(ctx), csrfToken } };
 };
 
 export default ViewTimeRestrictions;
