@@ -106,9 +106,7 @@ const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRest
 const NoTimeRestrictions = (): ReactElement => {
     return (
         <div className="govuk-heading-m">
-            <p className="govuk-body">
-                <em>You currently have no time restrictions saved.</em>
-            </p>
+            <p className="govuk-body">You currently have no time restrictions saved.</p>
             <button className="govuk-button" data-module="govuk-button">
                 Add a time restriction
             </button>
