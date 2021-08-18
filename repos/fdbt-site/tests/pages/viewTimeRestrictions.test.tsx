@@ -56,19 +56,28 @@ const timeRestrictions: PremadeTimeRestriction[] = [
 describe('pages', () => {
     describe('view time restrictions', () => {
         it('should render correctly when no individual or group time restrictions', () => {
-            const tree = shallow(<ViewTimeRestrictions timeRestrictions={[]} referer={null} />);
+            const tree = shallow(<ViewTimeRestrictions csrfToken={''} timeRestrictions={[]} referer={null} />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly when time restrictions exist', () => {
-            const tree = shallow(<ViewTimeRestrictions timeRestrictions={timeRestrictions} referer={'hello'} />);
+            const tree = shallow(
+                <ViewTimeRestrictions csrfToken={''} timeRestrictions={timeRestrictions} referer={'hello'} />,
+            );
             expect(tree).toMatchSnapshot();
         });
     });
 
     describe('time restrictions inner component', () => {
         it('renders normally when time restrictions are present', () => {
-            const tree = shallow(<TimeRestrictions timeRestrictions={timeRestrictions} />);
+            const tree = shallow(
+                <TimeRestrictions
+                    deleteActionHandler={() => {
+                        return;
+                    }}
+                    timeRestrictions={timeRestrictions}
+                />,
+            );
             expect(tree).toMatchSnapshot();
         });
     });

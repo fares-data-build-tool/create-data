@@ -121,7 +121,7 @@ export const TimeRestrictions = ({
     deleteActionHandler,
 }: {
     timeRestrictions: PremadeTimeRestriction[];
-    deleteActionHandler: (id: number) => void;
+    deleteActionHandler: (id: number, name: string) => void;
 }): ReactElement => (
     <div className="govuk-heading-m">
         <div className="govuk-grid-row">
@@ -144,7 +144,7 @@ export const TimeRestrictions = ({
                                         <button
                                             className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
                                             onClick={() => {
-                                                deleteActionHandler(timeRestriction.id);
+                                                deleteActionHandler(timeRestriction.id, timeRestriction.name);
                                             }}
                                         >
                                             Delete
