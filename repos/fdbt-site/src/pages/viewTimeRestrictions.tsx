@@ -45,18 +45,14 @@ const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: stri
 };
 
 const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRestrictionProps): ReactElement => {
-    const [popUpState, setPopUpState] = useState({
-        isVisible: false,
-        timeRestrictionId: 0,
-        timeRestrictionName: '',
-    });
+    const [popUpState, setPopUpState] = useState<{ timeRestrictionId: number; timeRestrictionName: string }>();
 
     const deleteActionHandler = (id: number, name: string): void => {
-        setPopUpState({ ...popUpState, isVisible: true, timeRestrictionId: id, timeRestrictionName: name });
+        setPopUpState({ timeRestrictionId: id, timeRestrictionName: name });
     };
 
     const cancelActionHandler = (): void => {
-        setPopUpState({ ...popUpState, isVisible: false, timeRestrictionId: 0, timeRestrictionName: '' });
+        setPopUpState(undefined);
     };
 
     const buildDeleteUrl = (idToDelete: number, csrfToken: string): string => {
@@ -87,7 +83,7 @@ const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRest
                                 />
                             )}
 
-                            {popUpState.isVisible && (
+                            {popUpState && (
                                 <DeleteConfirmationPopup
                                     entityType="time restriction"
                                     entityName={popUpState.timeRestrictionName}
