@@ -1,4 +1,4 @@
-import { updateGroupPassengerType } from '../../data/auroradb';
+import { convertToFullPassengerType, updateGroupPassengerType } from '../../data/auroradb';
 import { isArray } from 'lodash';
 import { NextApiResponse } from 'next';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../constants/attributes';
@@ -114,6 +114,7 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
             }
         });
     }
+
     const groups = await getGroupPassengerTypesFromGlobalSettings(nocCode);
     const groupNameCheck = groups.find((group) => group.name === userInput.name);
 
@@ -136,6 +137,26 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
             userInput: userInput.name || '',
         });
     }
+
+    // make sure underlying passenger types are not duplicated
+
+    const fullGroupPassengerType = await convertToFullPassengerType(userInput, nocCode);
+
+    const seen = new Set();
+    let typeName = '';
+
+    const hasDuplicates = fullGroupPassengerType.groupPassengerType.companions.some((item) => {
+        typeName = item.passengerType;
+        return seen.size === seen.add(item.passengerType).size;
+    });
+
+    if (hasDuplicates) {
+        errors.push({
+            errorMessage: `A group cannot contain multiple "${typeName}" passenger types`,
+            id: 'passenger-group',
+        });
+    }
+
     return errors;
 };
 
@@ -161,6 +182,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         redirectTo(res, '/viewPassengerTypes');
         return;
     } catch (error) {
+        console.log(error);
         const message = 'There was a problem in the managePassengerGroup API.';
         redirectToError(res, message, 'api.managePassengerGroup', error);
     }
