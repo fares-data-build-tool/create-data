@@ -52,6 +52,10 @@ const ViewPassengerTypes = ({
         setPopUpState(undefined);
     };
 
+    const buildDeleteUrl = (isGroup: boolean, idToDelete: number, csrfToken: string): string => {
+        return `/api/deletePassenger?id=${idToDelete}&isGroup=${isGroup}&_csrf=${csrfToken}`;
+    };
+
     return (
         <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div className="govuk-grid-row">
@@ -93,8 +97,9 @@ const ViewPassengerTypes = ({
                             />
                         ) : (
                             <DeleteConfirmationPopup
-                                {...popUpState}
-                                csrfToken={csrfToken}
+                                entityType={popUpState.isGroup ? 'passenger group' : 'passenger type'}
+                                entityName={popUpState.passengerTypeName}
+                                deleteUrl={buildDeleteUrl(popUpState.isGroup, popUpState.passengerTypeId, csrfToken)}
                                 cancelActionHandler={cancelActionHandler}
                             />
                         ))}

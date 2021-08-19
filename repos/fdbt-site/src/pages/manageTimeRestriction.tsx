@@ -49,11 +49,11 @@ const days = [
 interface ManageTimeRestrictionProps {
     csrfToken: string;
     errors: ErrorInfo[];
-    inputs: PremadeTimeRestriction;
+    inputs?: PremadeTimeRestriction;
 }
 
-const findCorrectTimeRestrictionDay = (inputs: PremadeTimeRestriction, day: string) => {
-    return inputs.contents.find((timeRestrictionDay) => timeRestrictionDay.day === day);
+const findCorrectTimeRestrictionDay = (day: string, inputs?: PremadeTimeRestriction) => {
+    return inputs?.contents.find((timeRestrictionDay) => timeRestrictionDay.day === day);
 };
 
 const findCorrectDefaultValue = (inputs: TimeInput[], day: string, inputIndex: number): string =>
@@ -90,7 +90,7 @@ const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRes
         }
     };
 
-    const getTimeRestrictionRows = (day: string, inputs: PremadeTimeRestriction): JSX.Element[] => {
+    const getTimeRestrictionRows = (day: string, inputs?: PremadeTimeRestriction): JSX.Element[] => {
         const rows = [];
         const startTimeInputs: TimeInput[] = [];
         const endTimeInputs: TimeInput[] = [];
@@ -99,7 +99,7 @@ const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRes
             counter: number;
         }[] = [];
 
-        const matchedInputTimeRestriction = inputs.contents.find(
+        const matchedInputTimeRestriction = inputs?.contents.find(
             (fullTimeRestriction) => fullTimeRestriction.day === day,
         );
 
@@ -211,7 +211,7 @@ const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRes
                                                         type="checkbox"
                                                         value={day.id}
                                                         data-aria-controls={`conditional-input-${index}`}
-                                                        defaultChecked={!!findCorrectTimeRestrictionDay(inputs, day.id)}
+                                                        defaultChecked={!!findCorrectTimeRestrictionDay(day.id, inputs)}
                                                     />
                                                     <label
                                                         className="govuk-label govuk-checkboxes__label"
@@ -286,7 +286,7 @@ const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRes
                                 name="timeRestrictionName"
                                 type="text"
                                 maxLength={50}
-                                defaultValue={inputs.name || ''}
+                                defaultValue={inputs?.name || ''}
                             />
                         </FormElementWrapper>
                     </div>
@@ -307,10 +307,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ma
         props: {
             csrfToken,
             errors: userInputsAndErrors?.errors || [],
-            inputs: userInputsAndErrors?.inputs || {
-                name: '',
-                contents: [],
-            },
+            ...(userInputsAndErrors?.inputs && { inputs: userInputsAndErrors.inputs }),
         },
     };
 };

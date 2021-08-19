@@ -6,12 +6,7 @@ import { PremadeTimeRestriction } from '../../src/interfaces';
 describe('pages', () => {
     describe('manage time restriction', () => {
         it('should render correctly', () => {
-            const inputs: PremadeTimeRestriction = {
-                name: '',
-                contents: [],
-            };
-
-            const tree = shallow(<ManageTimeRestriction csrfToken={''} errors={[]} inputs={inputs} />);
+            const tree = shallow(<ManageTimeRestriction csrfToken={''} errors={[]} inputs={undefined} />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -20,6 +15,7 @@ describe('pages', () => {
             const errors = [{ id: 'time-restriction-days', errorMessage: 'You must select at least one day.' }];
 
             const inputs: PremadeTimeRestriction = {
+                id: 0,
                 name: 'test',
                 contents: [],
             };
@@ -51,6 +47,7 @@ describe('pages', () => {
             ];
 
             const inputs: PremadeTimeRestriction = {
+                id: 0,
                 name: 'test',
                 contents: [
                     { day: 'monday', timeBands: [{ startTime: '', endTime: '2300' }] },
@@ -69,6 +66,7 @@ describe('pages', () => {
             const errors = [{ id: 'time-restriction-name', errorMessage: 'Time restriction name is required.' }];
 
             const inputs: PremadeTimeRestriction = {
+                id: 0,
                 name: '',
                 contents: [
                     {

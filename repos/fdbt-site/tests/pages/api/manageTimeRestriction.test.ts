@@ -51,6 +51,7 @@ describe('manageTimeRestriction', () => {
                 { id: 'time-restriction-days', errorMessage: 'You must select at least one day.' },
             ],
             inputs: {
+                id: 0,
                 name: '',
                 contents: [],
             },
@@ -110,6 +111,7 @@ describe('manageTimeRestriction', () => {
                 { errorMessage: 'Time must be in 24hr format.', id: 'start-time-thursday-0', userInput: '-1' },
             ],
             inputs: {
+                id: 0,
                 name: 'test',
                 contents: [
                     { day: 'monday', timeBands: [{ startTime: '', endTime: '2200' }] },
@@ -125,6 +127,7 @@ describe('manageTimeRestriction', () => {
         const writeHeadMock = jest.fn();
         getTimeRestrictionByNameAndNocSpy.mockResolvedValueOnce([
             {
+                id: 1,
                 name: 'test',
                 contents: [{ day: 'monday', timeBands: [] }],
             },
@@ -167,6 +170,7 @@ describe('manageTimeRestriction', () => {
                 },
             ],
             inputs: {
+                id: 0,
                 name: 'test',
                 contents: [
                     { day: 'monday', timeBands: [{ startTime: '0600', endTime: '2200' }] },

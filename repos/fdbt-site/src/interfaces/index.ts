@@ -260,6 +260,7 @@ export interface ResponseWithLocals extends ServerResponse {
 }
 
 export interface PremadeTimeRestriction {
+    id: number;
     name: string;
     contents: FullTimeRestriction[];
 }

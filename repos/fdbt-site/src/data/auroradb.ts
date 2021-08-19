@@ -61,6 +61,7 @@ interface RawSalesOfferPackage {
 }
 
 interface RawTimeRestriction {
+    id: number;
     nocCode: string;
     name: string;
     contents: string;
@@ -552,7 +553,7 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
 
     try {
         const queryInput = `
-            SELECT name, contents
+            SELECT id, name, contents
             FROM timeRestriction
             WHERE nocCode = ?
         `;
@@ -561,6 +562,7 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
 
         return (
             queryResults.map((item) => ({
+                id: item.id,
                 name: item.name,
                 contents: JSON.parse(item.contents),
             })) || []
@@ -583,7 +585,7 @@ export const getTimeRestrictionByNameAndNoc = async (
 
     try {
         const queryInput = `
-            SELECT contents
+            SELECT id, name, contents
             FROM timeRestriction
             WHERE name = ?
             AND nocCode = ?
@@ -592,7 +594,8 @@ export const getTimeRestrictionByNameAndNoc = async (
         const queryResults = await executeQuery<RawTimeRestriction[]>(queryInput, [name, nocCode]);
 
         return queryResults.map((item) => ({
-            name,
+            id: item.id,
+            name: item.name,
             contents: JSON.parse(item.contents),
         }));
     } catch (error) {
@@ -1059,5 +1062,24 @@ export const deletePassengerTypeByNocCodeAndId = async (
         throw new Error(
             `Could not delete ${isGroup === true ? 'group' : 'passenger'} from the passengerType table. ${error.stack}`,
         );
+    }
+};
+
+export const deleteTimeRestrictionByIdAndNocCode = async (id: number, nocCode: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: `deleting time restriction for id: ${id}.`,
+        id,
+        nocCode,
+    });
+
+    const deleteQuery = `
+            DELETE FROM timeRestriction 
+            WHERE id = ?
+            AND nocCode = ?`;
+    try {
+        await executeQuery(deleteQuery, [id, nocCode]);
+    } catch (error) {
+        throw new Error(`Could not delete time restriction with id: ${id}. ${error.stack}`);
     }
 };

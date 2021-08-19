@@ -184,6 +184,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (errors.length > 0) {
             updateSessionAttribute(req, GS_TIME_RESTRICTION_ATTRIBUTE, {
                 inputs: {
+                    id: 0,
                     name: refinedName,
                     contents: sanitisedInputs,
                 },
