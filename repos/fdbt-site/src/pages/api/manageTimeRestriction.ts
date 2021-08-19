@@ -1,21 +1,19 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
 import { getTimeRestrictionByNameAndNoc, insertTimeRestriction } from '../../data/auroradb';
-import { removeAllWhiteSpace, removeExcessWhiteSpace } from './apiUtils/validator';
+import { removeAllWhiteSpace, removeExcessWhiteSpace, isValid24hrTimeFormat } from './apiUtils/validator';
 import { NextApiRequestWithSession, ErrorInfo, FullTimeRestriction, TimeBand } from '../../interfaces';
 import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../../constants/attributes';
 import { TimeRestrictionDay } from 'shared/matchingJsonTypes';
 
-export const isValid24hrTimeFormat = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);
-
 export const collectInputsFromRequest = (
     req: NextApiRequestWithSession,
-    dayRestrictions: TimeRestrictionDay[],
+    timeRestrictionDays: TimeRestrictionDay[],
 ): FullTimeRestriction[] => {
-    const timeRestrictions: FullTimeRestriction[] = [];
-    dayRestrictions.forEach((day) => {
+    const fullTimeRestrictions: FullTimeRestriction[] = [];
+    timeRestrictionDays.forEach((day) => {
         const startTimeInputs = req.body[`startTime${day}`];
         const endTimeInputs = req.body[`endTime${day}`];
         if (isArray(startTimeInputs) && isArray(endTimeInputs)) {
@@ -25,12 +23,12 @@ export const collectInputsFromRequest = (
                     endTime: removeAllWhiteSpace(endTimeInputs[index]),
                 };
             });
-            timeRestrictions.push({
+            fullTimeRestrictions.push({
                 day,
                 timeBands,
             });
         } else {
-            timeRestrictions.push({
+            fullTimeRestrictions.push({
                 day,
                 timeBands: [
                     {
@@ -41,7 +39,7 @@ export const collectInputsFromRequest = (
             });
         }
     });
-    return timeRestrictions;
+    return fullTimeRestrictions;
 };
 
 export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTimeRestriction[]): ErrorInfo[] => {
@@ -70,7 +68,7 @@ export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTim
                     });
                 } else {
                     errors.push({
-                        errorMessage: 'Time must be in 24hr format',
+                        errorMessage: 'Time must be in 24hr format.',
                         id: `start-time-${fullTimeRestriction.day}-${index}`,
                         userInput: timeBand.startTime,
                     });
@@ -86,7 +84,7 @@ export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTim
                     });
                 } else {
                     errors.push({
-                        errorMessage: 'Time must be in 24hr format',
+                        errorMessage: 'Time must be in 24hr format.',
                         id: `end-time-${fullTimeRestriction.day}-${index}`,
                         userInput: timeBand.endTime,
                     });
@@ -100,12 +98,12 @@ export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTim
             ) {
                 errors.push(
                     {
-                        errorMessage: 'Start time and end time cannot be the same',
+                        errorMessage: 'Start time and end time cannot be the same.',
                         id: `start-time-${fullTimeRestriction.day}-${index}`,
                         userInput: timeBand.startTime,
                     },
                     {
-                        errorMessage: 'Start time and end time cannot be the same',
+                        errorMessage: 'Start time and end time cannot be the same.',
                         id: `end-time-${fullTimeRestriction.day}-${index}`,
                         userInput: timeBand.endTime,
                     },
@@ -114,7 +112,7 @@ export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTim
 
             if (timeBand.endTime && !timeBand.startTime) {
                 errors.push({
-                    errorMessage: 'Start time is required if end time is provided',
+                    errorMessage: 'Start time is required if end time is provided.',
                     id: `start-time-${fullTimeRestriction.day}-${index}`,
                     userInput: '',
                 });
@@ -154,16 +152,16 @@ export const removeDuplicateAndEmptyTimebands = (inputs: FullTimeRestriction[]):
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const { timeRestrictionName, dayRestrictions } = req.body;
+        const { timeRestrictionName, timeRestrictionDays } = req.body;
 
         const refinedName = removeExcessWhiteSpace(timeRestrictionName || '');
 
-        const dayRestrictionsArray = dayRestrictions
-            ? isArray(dayRestrictions)
-                ? dayRestrictions
-                : [dayRestrictions]
+        const timeRestrictionDaysArray = timeRestrictionDays
+            ? isArray(timeRestrictionDays)
+                ? timeRestrictionDays
+                : [timeRestrictionDays]
             : [];
-        const inputs = collectInputsFromRequest(req, dayRestrictionsArray);
+        const inputs = collectInputsFromRequest(req, timeRestrictionDaysArray);
         const sanitisedInputs = removeDuplicateAndEmptyTimebands(inputs);
         const errors = collectErrors(refinedName, sanitisedInputs);
 
@@ -200,7 +198,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         redirectTo(res, `/viewTimeRestrictions`);
         return;
     } catch (error) {
-        const message = 'There was a problem with the user selecting their time restriction times:';
+        const message = 'There was a problem with the user creating their time restriction:';
         redirectToError(res, message, 'api.manageTimeRestriction', error);
     }
 };

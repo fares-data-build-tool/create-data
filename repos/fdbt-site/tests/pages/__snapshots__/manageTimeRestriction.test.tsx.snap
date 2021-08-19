@@ -66,14 +66,14 @@ exports[`pages manage time restriction should render correctly 1`] = `
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-0"
                 defaultChecked={false}
-                id="day-restriction-0"
-                name="dayRestrictions"
+                id="time-restriction-day-0"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="monday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-0"
+                htmlFor="time-restriction-day-0"
               >
                 Monday
               </label>
@@ -160,14 +160,14 @@ exports[`pages manage time restriction should render correctly 1`] = `
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-1"
                 defaultChecked={false}
-                id="day-restriction-1"
-                name="dayRestrictions"
+                id="time-restriction-day-1"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="tuesday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-1"
+                htmlFor="time-restriction-day-1"
               >
                 Tuesday
               </label>
@@ -254,14 +254,14 @@ exports[`pages manage time restriction should render correctly 1`] = `
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-2"
                 defaultChecked={false}
-                id="day-restriction-2"
-                name="dayRestrictions"
+                id="time-restriction-day-2"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="wednesday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-2"
+                htmlFor="time-restriction-day-2"
               >
                 Wednesday
               </label>
@@ -348,14 +348,14 @@ exports[`pages manage time restriction should render correctly 1`] = `
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-3"
                 defaultChecked={false}
-                id="day-restriction-3"
-                name="dayRestrictions"
+                id="time-restriction-day-3"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="thursday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-3"
+                htmlFor="time-restriction-day-3"
               >
                 Thursday
               </label>
@@ -442,14 +442,14 @@ exports[`pages manage time restriction should render correctly 1`] = `
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-4"
                 defaultChecked={false}
-                id="day-restriction-4"
-                name="dayRestrictions"
+                id="time-restriction-day-4"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="friday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-4"
+                htmlFor="time-restriction-day-4"
               >
                 Friday
               </label>
@@ -536,14 +536,14 @@ exports[`pages manage time restriction should render correctly 1`] = `
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-5"
                 defaultChecked={false}
-                id="day-restriction-5"
-                name="dayRestrictions"
+                id="time-restriction-day-5"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="saturday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-5"
+                htmlFor="time-restriction-day-5"
               >
                 Saturday
               </label>
@@ -630,14 +630,14 @@ exports[`pages manage time restriction should render correctly 1`] = `
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-6"
                 defaultChecked={false}
-                id="day-restriction-6"
-                name="dayRestrictions"
+                id="time-restriction-day-6"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="sunday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-6"
+                htmlFor="time-restriction-day-6"
               >
                 Sunday
               </label>
@@ -724,14 +724,14 @@ exports[`pages manage time restriction should render correctly 1`] = `
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-7"
                 defaultChecked={false}
-                id="day-restriction-7"
-                name="dayRestrictions"
+                id="time-restriction-day-7"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="bankHoliday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-7"
+                htmlFor="time-restriction-day-7"
               >
                 Bank holiday
               </label>
@@ -1009,14 +1009,14 @@ exports[`pages manage time restriction should render error state on day restrict
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-0"
                 defaultChecked={true}
-                id="day-restriction-0"
-                name="dayRestrictions"
+                id="time-restriction-day-0"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="monday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-0"
+                htmlFor="time-restriction-day-0"
               >
                 Monday
               </label>
@@ -1108,14 +1108,14 @@ exports[`pages manage time restriction should render error state on day restrict
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-1"
                 defaultChecked={true}
-                id="day-restriction-1"
-                name="dayRestrictions"
+                id="time-restriction-day-1"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="tuesday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-1"
+                htmlFor="time-restriction-day-1"
               >
                 Tuesday
               </label>
@@ -1207,14 +1207,14 @@ exports[`pages manage time restriction should render error state on day restrict
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-2"
                 defaultChecked={true}
-                id="day-restriction-2"
-                name="dayRestrictions"
+                id="time-restriction-day-2"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="wednesday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-2"
+                htmlFor="time-restriction-day-2"
               >
                 Wednesday
               </label>
@@ -1306,14 +1306,14 @@ exports[`pages manage time restriction should render error state on day restrict
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-3"
                 defaultChecked={true}
-                id="day-restriction-3"
-                name="dayRestrictions"
+                id="time-restriction-day-3"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="thursday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-3"
+                htmlFor="time-restriction-day-3"
               >
                 Thursday
               </label>
@@ -1405,14 +1405,14 @@ exports[`pages manage time restriction should render error state on day restrict
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-4"
                 defaultChecked={false}
-                id="day-restriction-4"
-                name="dayRestrictions"
+                id="time-restriction-day-4"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="friday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-4"
+                htmlFor="time-restriction-day-4"
               >
                 Friday
               </label>
@@ -1499,14 +1499,14 @@ exports[`pages manage time restriction should render error state on day restrict
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-5"
                 defaultChecked={false}
-                id="day-restriction-5"
-                name="dayRestrictions"
+                id="time-restriction-day-5"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="saturday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-5"
+                htmlFor="time-restriction-day-5"
               >
                 Saturday
               </label>
@@ -1593,14 +1593,14 @@ exports[`pages manage time restriction should render error state on day restrict
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-6"
                 defaultChecked={false}
-                id="day-restriction-6"
-                name="dayRestrictions"
+                id="time-restriction-day-6"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="sunday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-6"
+                htmlFor="time-restriction-day-6"
               >
                 Sunday
               </label>
@@ -1687,14 +1687,14 @@ exports[`pages manage time restriction should render error state on day restrict
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-7"
                 defaultChecked={false}
-                id="day-restriction-7"
-                name="dayRestrictions"
+                id="time-restriction-day-7"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="bankHoliday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-7"
+                htmlFor="time-restriction-day-7"
               >
                 Bank holiday
               </label>
@@ -1937,14 +1937,14 @@ exports[`pages manage time restriction should render error state on name form gr
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-0"
                 defaultChecked={true}
-                id="day-restriction-0"
-                name="dayRestrictions"
+                id="time-restriction-day-0"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="monday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-0"
+                htmlFor="time-restriction-day-0"
               >
                 Monday
               </label>
@@ -2031,14 +2031,14 @@ exports[`pages manage time restriction should render error state on name form gr
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-1"
                 defaultChecked={false}
-                id="day-restriction-1"
-                name="dayRestrictions"
+                id="time-restriction-day-1"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="tuesday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-1"
+                htmlFor="time-restriction-day-1"
               >
                 Tuesday
               </label>
@@ -2125,14 +2125,14 @@ exports[`pages manage time restriction should render error state on name form gr
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-2"
                 defaultChecked={false}
-                id="day-restriction-2"
-                name="dayRestrictions"
+                id="time-restriction-day-2"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="wednesday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-2"
+                htmlFor="time-restriction-day-2"
               >
                 Wednesday
               </label>
@@ -2219,14 +2219,14 @@ exports[`pages manage time restriction should render error state on name form gr
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-3"
                 defaultChecked={false}
-                id="day-restriction-3"
-                name="dayRestrictions"
+                id="time-restriction-day-3"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="thursday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-3"
+                htmlFor="time-restriction-day-3"
               >
                 Thursday
               </label>
@@ -2313,14 +2313,14 @@ exports[`pages manage time restriction should render error state on name form gr
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-4"
                 defaultChecked={false}
-                id="day-restriction-4"
-                name="dayRestrictions"
+                id="time-restriction-day-4"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="friday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-4"
+                htmlFor="time-restriction-day-4"
               >
                 Friday
               </label>
@@ -2407,14 +2407,14 @@ exports[`pages manage time restriction should render error state on name form gr
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-5"
                 defaultChecked={false}
-                id="day-restriction-5"
-                name="dayRestrictions"
+                id="time-restriction-day-5"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="saturday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-5"
+                htmlFor="time-restriction-day-5"
               >
                 Saturday
               </label>
@@ -2501,14 +2501,14 @@ exports[`pages manage time restriction should render error state on name form gr
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-6"
                 defaultChecked={false}
-                id="day-restriction-6"
-                name="dayRestrictions"
+                id="time-restriction-day-6"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="sunday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-6"
+                htmlFor="time-restriction-day-6"
               >
                 Sunday
               </label>
@@ -2595,14 +2595,14 @@ exports[`pages manage time restriction should render error state on name form gr
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-7"
                 defaultChecked={false}
-                id="day-restriction-7"
-                name="dayRestrictions"
+                id="time-restriction-day-7"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="bankHoliday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-7"
+                htmlFor="time-restriction-day-7"
               >
                 Bank holiday
               </label>
@@ -2824,14 +2824,14 @@ exports[`pages manage time restriction should render error state on time restric
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-0"
                 defaultChecked={false}
-                id="day-restriction-0"
-                name="dayRestrictions"
+                id="time-restriction-day-0"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="monday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-0"
+                htmlFor="time-restriction-day-0"
               >
                 Monday
               </label>
@@ -2918,14 +2918,14 @@ exports[`pages manage time restriction should render error state on time restric
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-1"
                 defaultChecked={false}
-                id="day-restriction-1"
-                name="dayRestrictions"
+                id="time-restriction-day-1"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="tuesday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-1"
+                htmlFor="time-restriction-day-1"
               >
                 Tuesday
               </label>
@@ -3012,14 +3012,14 @@ exports[`pages manage time restriction should render error state on time restric
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-2"
                 defaultChecked={false}
-                id="day-restriction-2"
-                name="dayRestrictions"
+                id="time-restriction-day-2"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="wednesday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-2"
+                htmlFor="time-restriction-day-2"
               >
                 Wednesday
               </label>
@@ -3106,14 +3106,14 @@ exports[`pages manage time restriction should render error state on time restric
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-3"
                 defaultChecked={false}
-                id="day-restriction-3"
-                name="dayRestrictions"
+                id="time-restriction-day-3"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="thursday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-3"
+                htmlFor="time-restriction-day-3"
               >
                 Thursday
               </label>
@@ -3200,14 +3200,14 @@ exports[`pages manage time restriction should render error state on time restric
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-4"
                 defaultChecked={false}
-                id="day-restriction-4"
-                name="dayRestrictions"
+                id="time-restriction-day-4"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="friday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-4"
+                htmlFor="time-restriction-day-4"
               >
                 Friday
               </label>
@@ -3294,14 +3294,14 @@ exports[`pages manage time restriction should render error state on time restric
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-5"
                 defaultChecked={false}
-                id="day-restriction-5"
-                name="dayRestrictions"
+                id="time-restriction-day-5"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="saturday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-5"
+                htmlFor="time-restriction-day-5"
               >
                 Saturday
               </label>
@@ -3388,14 +3388,14 @@ exports[`pages manage time restriction should render error state on time restric
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-6"
                 defaultChecked={false}
-                id="day-restriction-6"
-                name="dayRestrictions"
+                id="time-restriction-day-6"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="sunday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-6"
+                htmlFor="time-restriction-day-6"
               >
                 Sunday
               </label>
@@ -3482,14 +3482,14 @@ exports[`pages manage time restriction should render error state on time restric
                 className="govuk-checkboxes__input"
                 data-aria-controls="conditional-input-7"
                 defaultChecked={false}
-                id="day-restriction-7"
-                name="dayRestrictions"
+                id="time-restriction-day-7"
+                name="timeRestrictionDays"
                 type="checkbox"
                 value="bankHoliday"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"
-                htmlFor="day-restriction-7"
+                htmlFor="time-restriction-day-7"
               >
                 Bank holiday
               </label>

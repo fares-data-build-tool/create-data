@@ -52,12 +52,20 @@ interface ManageTimeRestrictionProps {
     inputs: PremadeTimeRestriction;
 }
 
-const findCorrectDayRestriction = (inputs: PremadeTimeRestriction, day: string) => {
-    return inputs.contents.find((dayRestriction) => dayRestriction.day === day);
+const findCorrectTimeRestrictionDay = (inputs: PremadeTimeRestriction, day: string) => {
+    return inputs.contents.find((timeRestrictionDay) => timeRestrictionDay.day === day);
 };
 
 const findCorrectDefaultValue = (inputs: TimeInput[], day: string, inputIndex: number): string =>
     inputs.find((input, index) => input.day === day && input.timeInput && index === inputIndex)?.timeInput ?? '';
+
+const hasError = (errors: ErrorInfo[], name: string) => {
+    if (errors.filter((e) => e.id === name).length > 0) {
+        return ' govuk-form-group--error';
+    }
+
+    return '';
+};
 
 const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRestrictionProps): ReactElement => {
     const defaultState: { [key: string]: number } = {};
@@ -84,7 +92,6 @@ const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRes
 
     const getTimeRestrictionRows = (day: string, inputs: PremadeTimeRestriction): JSX.Element[] => {
         const rows = [];
-
         const startTimeInputs: TimeInput[] = [];
         const endTimeInputs: TimeInput[] = [];
         const dayCounters: {
@@ -199,16 +206,16 @@ const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRes
                                                 <div className="govuk-checkboxes__item" key={day.id}>
                                                     <input
                                                         className="govuk-checkboxes__input"
-                                                        id={`day-restriction-${index}`}
-                                                        name="dayRestrictions"
+                                                        id={`time-restriction-day-${index}`}
+                                                        name="timeRestrictionDays"
                                                         type="checkbox"
                                                         value={day.id}
                                                         data-aria-controls={`conditional-input-${index}`}
-                                                        defaultChecked={!!findCorrectDayRestriction(inputs, day.id)}
+                                                        defaultChecked={!!findCorrectTimeRestrictionDay(inputs, day.id)}
                                                     />
                                                     <label
                                                         className="govuk-label govuk-checkboxes__label"
-                                                        htmlFor={`day-restriction-${index}`}
+                                                        htmlFor={`time-restriction-day-${index}`}
                                                     >
                                                         {day.label}
                                                     </label>
@@ -291,37 +298,19 @@ const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRes
     );
 };
 
-const hasError = (errors: ErrorInfo[], name: string) => {
-    if (errors.filter((e) => e.id === name).length > 0) {
-        return ' govuk-form-group--error';
-    }
-
-    return '';
-};
-
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ManageTimeRestrictionProps } => {
     const csrfToken = getCsrfToken(ctx);
 
     const userInputsAndErrors = getSessionAttribute(ctx.req, GS_TIME_RESTRICTION_ATTRIBUTE);
 
-    if (!userInputsAndErrors) {
-        return {
-            props: {
-                csrfToken,
-                errors: [],
-                inputs: {
-                    name: '',
-                    contents: [],
-                },
-            },
-        };
-    }
-
     return {
         props: {
             csrfToken,
-            errors: userInputsAndErrors.errors,
-            inputs: userInputsAndErrors.inputs,
+            errors: userInputsAndErrors?.errors || [],
+            inputs: userInputsAndErrors?.inputs || {
+                name: '',
+                contents: [],
+            },
         },
     };
 };

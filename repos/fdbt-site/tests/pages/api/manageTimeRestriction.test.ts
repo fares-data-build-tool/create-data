@@ -63,7 +63,7 @@ describe('manageTimeRestriction', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
-                dayRestrictions: ['monday', 'tuesday', 'wednesday', 'thursday'],
+                timeRestrictionDays: ['monday', 'tuesday', 'wednesday', 'thursday'],
                 startTimemonday: '',
                 endTimemonday: '2200',
                 startTimetuesday: '1200',
@@ -92,22 +92,22 @@ describe('manageTimeRestriction', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_TIME_RESTRICTION_ATTRIBUTE, {
             errors: [
                 {
-                    errorMessage: 'Start time is required if end time is provided',
+                    errorMessage: 'Start time is required if end time is provided.',
                     id: 'start-time-monday-0',
                     userInput: '',
                 },
                 {
-                    errorMessage: 'Start time and end time cannot be the same',
+                    errorMessage: 'Start time and end time cannot be the same.',
                     id: 'start-time-tuesday-0',
                     userInput: '1200',
                 },
                 {
-                    errorMessage: 'Start time and end time cannot be the same',
+                    errorMessage: 'Start time and end time cannot be the same.',
                     id: 'end-time-tuesday-0',
                     userInput: '1200',
                 },
                 { errorMessage: '2400 is not a valid input. Use 0000.', id: 'end-time-wednesday-0', userInput: '2400' },
-                { errorMessage: 'Time must be in 24hr format', id: 'start-time-thursday-0', userInput: '-1' },
+                { errorMessage: 'Time must be in 24hr format.', id: 'start-time-thursday-0', userInput: '-1' },
             ],
             inputs: {
                 name: 'test',
@@ -132,7 +132,7 @@ describe('manageTimeRestriction', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
-                dayRestrictions: ['monday', 'tuesday', 'wednesday', 'bankHoliday'],
+                timeRestrictionDays: ['monday', 'tuesday', 'wednesday', 'bankHoliday'],
                 startTimemonday: '0600',
                 endTimemonday: '2200',
                 startTimetuesday: ['0600', '1300'],
@@ -190,7 +190,7 @@ describe('manageTimeRestriction', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
-                dayRestrictions: ['monday', 'tuesday', 'wednesday', 'bankHoliday'],
+                timeRestrictionDays: ['monday', 'tuesday', 'wednesday', 'bankHoliday'],
                 startTimemonday: '0600',
                 endTimemonday: '2200',
                 startTimetuesday: ['0600', '1300'],
