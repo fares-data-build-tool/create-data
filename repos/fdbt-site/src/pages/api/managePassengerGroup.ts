@@ -1,4 +1,4 @@
-import { updateGroupPassengerType } from '../../data/auroradb';
+import { convertToFullPassengerType, updateGroupPassengerType } from '../../data/auroradb';
 import { isArray } from 'lodash';
 import { NextApiResponse } from 'next';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../constants/attributes';
@@ -7,6 +7,8 @@ import { CompanionReference, ErrorInfo, GroupPassengerTypeDb, NextApiRequestWith
 import { updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils';
 import { checkIntegerIsValid, removeExcessWhiteSpace } from './apiUtils/validator';
+import { sentenceCaseString } from '../../utils';
+import logger from '../../utils/logger';
 
 export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerTypeDb => {
     const id = req.body.groupId && Number(req.body.groupId);
@@ -114,6 +116,7 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
             }
         });
     }
+
     const groups = await getGroupPassengerTypesFromGlobalSettings(nocCode);
     const groupNameCheck = groups.find((group) => group.name === userInput.name);
 
@@ -136,6 +139,24 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
             userInput: userInput.name || '',
         });
     }
+
+    // make sure underlying passenger types are not duplicated
+
+    const fullGroupPassengerType = await convertToFullPassengerType(userInput, nocCode);
+
+    const seen = new Set();
+
+    const duplicateName = fullGroupPassengerType.groupPassengerType.companions.find(
+        (item) => seen.size === seen.add(item.passengerType).size,
+    )?.passengerType;
+
+    if (duplicateName) {
+        errors.push({
+            errorMessage: `A group cannot contain multiple "${sentenceCaseString(duplicateName)}" passenger types`,
+            id: 'passenger-group',
+        });
+    }
+
     return errors;
 };
 
@@ -144,24 +165,37 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const formattedRequest = formatRequestBody(req);
         const noc = getAndValidateNoc(req, res);
         const errors: ErrorInfo[] = await collectErrors(formattedRequest, noc);
+
         if (errors.length) {
             updateSessionAttribute(req, GS_PASSENGER_GROUP_ATTRIBUTE, {
                 errors,
                 inputs: formattedRequest,
             });
+
             redirectTo(res, `/managePassengerGroup${formattedRequest.id ? `?id=${formattedRequest.id}` : ''}`);
+
             return;
         }
+
         updateSessionAttribute(req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
+
         if (formattedRequest.id) {
             await updateGroupPassengerType(noc, formattedRequest);
         } else {
             await insertGroupPassengerType(noc, formattedRequest.groupPassengerType, formattedRequest.name);
         }
+
         redirectTo(res, '/viewPassengerTypes');
+
         return;
     } catch (error) {
+        logger.error(error, {
+            context: 'api.managePassengerGroup',
+            message: 'failed when calling the managePassengerGroup api',
+        });
+
         const message = 'There was a problem in the managePassengerGroup API.';
+
         redirectToError(res, message, 'api.managePassengerGroup', error);
     }
 };
