@@ -209,7 +209,7 @@ describe('managePassengerGroup', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_PASSENGER_GROUP_ATTRIBUTE, {
             errors: [
                 {
-                    errorMessage: 'A group cannot contain multiple "adult" passenger types',
+                    errorMessage: 'A group cannot contain multiple "Adult" passenger types',
                     id: 'passenger-group',
                 },
             ],
