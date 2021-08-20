@@ -6,7 +6,9 @@ import { PremadeTimeRestriction } from '../../src/interfaces';
 describe('pages', () => {
     describe('manage time restriction', () => {
         it('should render correctly', () => {
-            const tree = shallow(<ManageTimeRestriction csrfToken={''} errors={[]} inputs={undefined} />);
+            const tree = shallow(
+                <ManageTimeRestriction csrfToken={''} errors={[]} inputs={undefined} editMode={false} />,
+            );
 
             expect(tree).toMatchSnapshot();
         });
@@ -20,7 +22,7 @@ describe('pages', () => {
                 contents: [],
             };
 
-            const tree = shallow(<ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} />);
+            const tree = shallow(<ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} editMode />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -57,7 +59,7 @@ describe('pages', () => {
                 ],
             };
 
-            const tree = shallow(<ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} />);
+            const tree = shallow(<ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} editMode />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -81,7 +83,9 @@ describe('pages', () => {
                 ],
             };
 
-            const tree = shallow(<ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} />);
+            const tree = shallow(
+                <ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} editMode={false} />,
+            );
 
             expect(tree).toMatchSnapshot();
         });

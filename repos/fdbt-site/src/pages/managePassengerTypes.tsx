@@ -6,18 +6,13 @@ import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes'
 import { getPassengerTypeById } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getGlobalSettingsManageProps, GlobalSettingsManageProps } from '../utils/globalSettings';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Manage Passenger Types - Create Fares Data Service';
 const description = 'Manage Passenger Type page of the Create Fares Data Service';
 
-interface ManagePassengerTypesProps {
-    editMode: boolean;
-    csrfToken: string;
-    errors: ErrorInfo[];
-    inputs?: SinglePassengerType;
-}
+type ManagePassengerTypesProps = GlobalSettingsManageProps<SinglePassengerType>;
 
 const ManagePassengerTypes = ({
     editMode,
@@ -312,33 +307,9 @@ const hasError = (errors: ErrorInfo[], name: string) => {
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: ManagePassengerTypesProps }> => {
-    const nationalOperatorCode = getAndValidateNoc(ctx);
-    const csrfToken = getCsrfToken(ctx);
-    const passengerTypeId = Number(ctx.query.id);
     const userInputsAndErrors = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
-    const editId = Number.isInteger(Number(ctx.query.id)) ? Number(ctx.query.id) : undefined;
 
-    let inputs: SinglePassengerType | undefined,
-        errors: ErrorInfo[] = [];
-
-    if ((userInputsAndErrors?.id || undefined) === editId) {
-        inputs = userInputsAndErrors;
-        errors = userInputsAndErrors?.errors ?? [];
-    } else if (editId) {
-        inputs = await getPassengerTypeById(passengerTypeId, nationalOperatorCode);
-        if (!inputs) {
-            throw new Error('No groups for this NOC matches the passed id');
-        }
-    }
-
-    return {
-        props: {
-            csrfToken,
-            errors,
-            editMode: !!editId,
-            ...(inputs && { inputs }),
-        },
-    };
+    return getGlobalSettingsManageProps(ctx, getPassengerTypeById, userInputsAndErrors);
 };
 
 export default ManagePassengerTypes;

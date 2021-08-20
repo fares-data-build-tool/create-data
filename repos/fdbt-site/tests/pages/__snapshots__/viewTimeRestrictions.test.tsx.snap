@@ -28,7 +28,7 @@ exports[`pages time restrictions inner component renders normally when time rest
               >
                 <a
                   className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                  href="/viewTimeRestrictions"
+                  href="/manageTimeRestriction?id=1"
                 >
                   Edit
                 </a>
@@ -206,7 +206,7 @@ exports[`pages time restrictions inner component renders normally when time rest
               >
                 <a
                   className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                  href="/viewTimeRestrictions"
+                  href="/manageTimeRestriction?id=2"
                 >
                   Edit
                 </a>
