@@ -102,11 +102,6 @@ describe('manageTimeRestriction', () => {
                     id: 'start-time-tuesday-0',
                     userInput: '1200',
                 },
-                {
-                    errorMessage: 'Start time and end time cannot be the same.',
-                    id: 'end-time-tuesday-0',
-                    userInput: '1200',
-                },
                 { errorMessage: '2400 is not a valid input. Use 0000.', id: 'end-time-wednesday-0', userInput: '2400' },
                 { errorMessage: 'Time must be in 24hr format.', id: 'start-time-thursday-0', userInput: '-1' },
             ],

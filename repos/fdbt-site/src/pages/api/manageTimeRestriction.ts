@@ -12,23 +12,21 @@ export const collectInputsFromRequest = (
     req: NextApiRequestWithSession,
     timeRestrictionDays: TimeRestrictionDay[],
 ): FullTimeRestriction[] => {
-    const fullTimeRestrictions: FullTimeRestriction[] = [];
-    timeRestrictionDays.forEach((day) => {
+    const fullTimeRestrictions: FullTimeRestriction[] = timeRestrictionDays.map((day) => {
         const startTimeInputs = req.body[`startTime${day}`];
         const endTimeInputs = req.body[`endTime${day}`];
         if (isArray(startTimeInputs) && isArray(endTimeInputs)) {
-            const timeBands = startTimeInputs.map((startTime, index) => {
-                return {
-                    startTime: removeAllWhiteSpace(startTime),
-                    endTime: removeAllWhiteSpace(endTimeInputs[index]),
-                };
-            });
-            fullTimeRestrictions.push({
+            const timeBands = startTimeInputs.map((startTime, index) => ({
+                startTime: removeAllWhiteSpace(startTime),
+                endTime: removeAllWhiteSpace(endTimeInputs[index]),
+            }));
+
+            return {
                 day,
                 timeBands,
-            });
+            };
         } else {
-            fullTimeRestrictions.push({
+            return {
                 day,
                 timeBands: [
                     {
@@ -36,7 +34,7 @@ export const collectInputsFromRequest = (
                         endTime: removeAllWhiteSpace(endTimeInputs),
                     },
                 ],
-            });
+            };
         }
     });
     return fullTimeRestrictions;
@@ -96,18 +94,11 @@ export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTim
                 isValid24hrTimeFormat(timeBand.endTime) &&
                 timeBand.startTime === timeBand.endTime
             ) {
-                errors.push(
-                    {
-                        errorMessage: 'Start time and end time cannot be the same.',
-                        id: `start-time-${fullTimeRestriction.day}-${index}`,
-                        userInput: timeBand.startTime,
-                    },
-                    {
-                        errorMessage: 'Start time and end time cannot be the same.',
-                        id: `end-time-${fullTimeRestriction.day}-${index}`,
-                        userInput: timeBand.endTime,
-                    },
-                );
+                errors.push({
+                    errorMessage: 'Start time and end time cannot be the same.',
+                    id: `start-time-${fullTimeRestriction.day}-${index}`,
+                    userInput: timeBand.startTime,
+                });
             }
 
             if (timeBand.endTime && !timeBand.startTime) {
@@ -123,32 +114,22 @@ export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTim
     return errors;
 };
 
-export const removeDuplicateAndEmptyTimebands = (inputs: FullTimeRestriction[]): FullTimeRestriction[] => {
-    const cleansedInputs = inputs.map((input) => {
-        return {
-            ...input,
-            timeBands: input.timeBands.reduce((unique, o) => {
-                if (!unique.some((obj) => obj.startTime === o.startTime && obj.endTime === o.endTime)) {
-                    unique.push(o);
-                }
-                return unique;
-            }, [] as TimeBand[]),
-        };
-    });
-
-    return cleansedInputs.map((cleansedInput) => {
-        const timeBands: TimeBand[] = [];
-        cleansedInput.timeBands.forEach((timeBand) => {
-            if (timeBand.startTime || timeBand.endTime) {
-                timeBands.push(timeBand);
+export const removeDuplicateAndEmptyTimebands = (fullTimeRestrictions: FullTimeRestriction[]): FullTimeRestriction[] =>
+    fullTimeRestrictions.map((fullTimeRestriction) => {
+        const timeBands: TimeBand[] = fullTimeRestriction.timeBands.reduce((unique, o) => {
+            if (!unique.some((obj) => obj.startTime === o.startTime && obj.endTime === o.endTime)) {
+                unique.push(o);
             }
-        });
+            return unique;
+        }, [] as TimeBand[]);
+
+        const filteredTimeBands = timeBands.filter((timeBand) => timeBand.startTime || timeBand.endTime);
+
         return {
-            day: cleansedInput.day,
-            timeBands,
+            day: fullTimeRestriction.day,
+            timeBands: filteredTimeBands,
         };
     });
-};
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
