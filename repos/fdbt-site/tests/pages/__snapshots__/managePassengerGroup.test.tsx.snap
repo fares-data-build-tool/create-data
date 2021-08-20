@@ -204,6 +204,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="minimum-passengers"
                   defaultValue=""
                   id="minimum-passengers-1"
                   name="minimumPassengers1"
@@ -220,6 +221,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="maximum-passengers"
                   defaultValue=""
                   id="maximum-passengers-1"
                   name="maximumPassengers1"
@@ -271,6 +273,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="minimum-passengers"
                   defaultValue=""
                   id="minimum-passengers-2"
                   name="minimumPassengers2"
@@ -287,6 +290,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="maximum-passengers"
                   defaultValue=""
                   id="maximum-passengers-2"
                   name="maximumPassengers2"
@@ -495,6 +499,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="minimum-passengers"
                   defaultValue=""
                   id="minimum-passengers-1"
                   name="minimumPassengers1"
@@ -511,6 +516,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="maximum-passengers"
                   defaultValue=""
                   id="maximum-passengers-1"
                   name="maximumPassengers1"
@@ -562,6 +568,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="minimum-passengers"
                   defaultValue=""
                   id="minimum-passengers-2"
                   name="minimumPassengers2"
@@ -578,6 +585,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="maximum-passengers"
                   defaultValue=""
                   id="maximum-passengers-2"
                   name="maximumPassengers2"
@@ -837,6 +845,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="minimum-passengers"
                   defaultValue=""
                   id="minimum-passengers-1"
                   name="minimumPassengers1"
@@ -853,6 +862,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="maximum-passengers"
                   defaultValue=""
                   id="maximum-passengers-1"
                   name="maximumPassengers1"
@@ -904,6 +914,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="minimum-passengers"
                   defaultValue=""
                   id="minimum-passengers-2"
                   name="minimumPassengers2"
@@ -920,6 +931,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="maximum-passengers"
                   defaultValue=""
                   id="maximum-passengers-2"
                   name="maximumPassengers2"
@@ -1127,6 +1139,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="minimum-passengers"
                   defaultValue=""
                   id="minimum-passengers-1"
                   name="minimumPassengers1"
@@ -1143,6 +1156,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="maximum-passengers"
                   defaultValue=""
                   id="maximum-passengers-1"
                   name="maximumPassengers1"
@@ -1194,6 +1208,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="minimum-passengers"
                   defaultValue=""
                   id="minimum-passengers-2"
                   name="minimumPassengers2"
@@ -1210,6 +1225,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 </label>
                 <input
                   className="govuk-input govuk-!-width-one-third"
+                  data-test-id="maximum-passengers"
                   defaultValue=""
                   id="maximum-passengers-2"
                   name="maximumPassengers2"
