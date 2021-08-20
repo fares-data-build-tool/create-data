@@ -47,6 +47,7 @@ import {
     TXC_SOURCE_ATTRIBUTE,
     USER_ATTRIBUTE,
     GS_PASSENGER_GROUP_ATTRIBUTE,
+    GS_TIME_RESTRICTION_ATTRIBUTE,
     GS_REFERER,
 } from '../constants/attributes';
 import {
@@ -111,6 +112,7 @@ import {
     PointToPointPeriodProduct,
     ManagePassengerTypeWithErrors,
     GlobalSettingsGroupAttribute,
+    GlobalSettingsTimeRestrictionAttribute,
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -167,6 +169,7 @@ export interface SessionAttributeTypes {
     [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: GroupPassengerType[];
     [POINT_TO_POINT_PRODUCT_ATTRIBUTE]: PointToPointPeriodProduct | WithErrors<PointToPointPeriodProduct>;
     [GS_PASSENGER_GROUP_ATTRIBUTE]: GlobalSettingsGroupAttribute;
+    [GS_TIME_RESTRICTION_ATTRIBUTE]: GlobalSettingsTimeRestrictionAttribute;
     [GS_REFERER]: string;
 }
 

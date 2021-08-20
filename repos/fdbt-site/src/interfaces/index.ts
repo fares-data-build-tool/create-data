@@ -196,6 +196,11 @@ export interface GlobalSettingsGroupAttribute {
     errors: ErrorInfo[];
 }
 
+export interface GlobalSettingsTimeRestrictionAttribute {
+    inputs: PremadeTimeRestriction;
+    errors: ErrorInfo[];
+}
+
 // Miscellaneous
 
 export interface SettingsOverview {
