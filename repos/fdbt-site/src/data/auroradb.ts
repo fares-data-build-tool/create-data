@@ -544,6 +544,33 @@ export const insertTimeRestriction = async (
     }
 };
 
+export const updateTimeRestriction = async (
+    id: number,
+    nocCode: string,
+    timeRestriction: FullTimeRestriction[],
+    name: string,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'updating time restriction',
+        nocCode,
+        name,
+        id,
+    });
+
+    const contents = JSON.stringify(timeRestriction);
+
+    const updateQuery = `UPDATE timeRestriction 
+                         SET name = ?, contents = ? 
+                         WHERE id = ? AND nocCode = ?`;
+
+    try {
+        await executeQuery(updateQuery, [name, contents, id, nocCode]);
+    } catch (error) {
+        throw new Error(`Could not update time restriction. ${error.stack}`);
+    }
+};
+
 export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<PremadeTimeRestriction[]> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -567,6 +594,31 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
                 contents: JSON.parse(item.contents),
             })) || []
         );
+    } catch (error) {
+        throw new Error(`Could not retrieve time restriction by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getTimeRestrictionById = async (
+    id: number,
+    nocCode: string,
+): Promise<PremadeTimeRestriction | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving time restriction for given id',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, name, contents
+            FROM timeRestriction
+            WHERE nocCode = ? AND id = ?
+        `;
+
+        const queryResult = (await executeQuery<RawTimeRestriction[]>(queryInput, [nocCode, id]))[0];
+
+        return queryResult && { ...queryResult, contents: JSON.parse(queryResult.contents) };
     } catch (error) {
         throw new Error(`Could not retrieve time restriction by nocCode from AuroraDB: ${error.stack}`);
     }
@@ -874,7 +926,9 @@ const retrievePassengerTypeById = async (
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving passenger type for a given id',
-        id: id,
+        id,
+        noc,
+        isGroup,
     });
 
     try {

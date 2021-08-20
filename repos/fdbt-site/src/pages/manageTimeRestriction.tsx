@@ -1,12 +1,13 @@
 import React, { ReactElement, useState } from 'react';
-import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction, TimeInput } from '../interfaces';
-import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { getCsrfToken } from '../utils';
-import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../constants/attributes';
-import { getSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
+import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../constants/attributes';
+import { getTimeRestrictionById } from '../data/auroradb';
+import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction, TimeInput } from '../interfaces';
+import TwoThirdsLayout from '../layout/Layout';
+import { getGlobalSettingsManageProps, GlobalSettingsManageProps } from '../utils/globalSettings';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Manage Time Restrictions - Create Fares Data Service';
 const description = 'Manage Time Restrictions page of the Create Fares Data Service';
@@ -46,11 +47,7 @@ const days = [
     },
 ];
 
-interface ManageTimeRestrictionProps {
-    csrfToken: string;
-    errors: ErrorInfo[];
-    inputs?: PremadeTimeRestriction;
-}
+type ManageTimeRestrictionProps = GlobalSettingsManageProps<PremadeTimeRestriction>;
 
 const findCorrectTimeRestrictionDay = (day: string, inputs?: PremadeTimeRestriction) => {
     return inputs?.contents.find((timeRestrictionDay) => timeRestrictionDay.day === day);
@@ -67,7 +64,12 @@ const hasError = (errors: ErrorInfo[], name: string) => {
     return '';
 };
 
-const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRestrictionProps): ReactElement => {
+const ManageTimeRestriction = ({
+    csrfToken,
+    errors = [],
+    inputs,
+    editMode,
+}: ManageTimeRestrictionProps): ReactElement => {
     const defaultState: { [key: string]: number } = {};
 
     days.forEach((day) => {
@@ -194,6 +196,7 @@ const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRes
                                     Select the days of the week that are applicable
                                 </h1>
                             </legend>
+                            <input type="hidden" name="id" value={inputs?.id} />
                             <FormElementWrapper
                                 errors={errors}
                                 errorId="time-restriction-days"
@@ -291,25 +294,26 @@ const ManageTimeRestriction = ({ csrfToken, errors = [], inputs }: ManageTimeRes
                         </FormElementWrapper>
                     </div>
 
-                    <input type="submit" value="Add time restriction" id="continue-button" className="govuk-button" />
+                    <input
+                        type="submit"
+                        value={`${editMode ? 'Update' : 'Add'} time restriction`}
+                        id="continue-button"
+                        className="govuk-button"
+                    />
                 </>
             </CsrfForm>
         </TwoThirdsLayout>
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ManageTimeRestrictionProps } => {
-    const csrfToken = getCsrfToken(ctx);
-
-    const userInputsAndErrors = getSessionAttribute(ctx.req, GS_TIME_RESTRICTION_ATTRIBUTE);
-
-    return {
-        props: {
-            csrfToken,
-            errors: userInputsAndErrors?.errors || [],
-            ...(userInputsAndErrors?.inputs && { inputs: userInputsAndErrors.inputs }),
-        },
-    };
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: ManageTimeRestrictionProps }> => {
+    return getGlobalSettingsManageProps(
+        ctx,
+        getTimeRestrictionById,
+        getSessionAttribute(ctx.req, GS_TIME_RESTRICTION_ATTRIBUTE),
+    );
 };
 
 export default ManageTimeRestriction;

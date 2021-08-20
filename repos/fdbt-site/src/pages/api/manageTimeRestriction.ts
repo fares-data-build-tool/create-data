@@ -1,18 +1,18 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
-import { getTimeRestrictionByNameAndNoc, insertTimeRestriction } from '../../data/auroradb';
-import { removeAllWhiteSpace, removeExcessWhiteSpace, isValid24hrTimeFormat } from './apiUtils/validator';
-import { NextApiRequestWithSession, ErrorInfo, FullTimeRestriction, TimeBand } from '../../interfaces';
-import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
-import { updateSessionAttribute } from '../../utils/sessions';
-import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../../constants/attributes';
 import { TimeRestrictionDay } from 'shared/matchingJsonTypes';
+import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../../constants/attributes';
+import { getTimeRestrictionByNameAndNoc, insertTimeRestriction, updateTimeRestriction } from '../../data/auroradb';
+import { ErrorInfo, FullTimeRestriction, NextApiRequestWithSession, TimeBand } from '../../interfaces';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils';
+import { isValid24hrTimeFormat, removeAllWhiteSpace, removeExcessWhiteSpace } from './apiUtils/validator';
 
 export const collectInputsFromRequest = (
     req: NextApiRequestWithSession,
     timeRestrictionDays: TimeRestrictionDay[],
-): FullTimeRestriction[] => {
-    const fullTimeRestrictions: FullTimeRestriction[] = timeRestrictionDays.map((day) => {
+): FullTimeRestriction[] =>
+    timeRestrictionDays.map((day) => {
         const startTimeInputs = req.body[`startTime${day}`];
         const endTimeInputs = req.body[`endTime${day}`];
         if (isArray(startTimeInputs) && isArray(endTimeInputs)) {
@@ -37,8 +37,6 @@ export const collectInputsFromRequest = (
             };
         }
     });
-    return fullTimeRestrictions;
-};
 
 export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTimeRestriction[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
@@ -142,43 +140,42 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 ? timeRestrictionDays
                 : [timeRestrictionDays]
             : [];
+        const id = req.body.id && Number(req.body.id);
         const inputs = collectInputsFromRequest(req, timeRestrictionDaysArray);
         const sanitisedInputs = removeDuplicateAndEmptyTimebands(inputs);
         const errors = collectErrors(refinedName, sanitisedInputs);
+        const noc = getAndValidateNoc(req, res);
 
         if (errors.length === 0) {
-            const noc = getAndValidateNoc(req, res);
-
             const results = await getTimeRestrictionByNameAndNoc(refinedName, noc);
 
-            if (results.length > 0) {
+            if (results.some((restriction) => restriction.id !== id)) {
                 errors.push({
                     errorMessage: `You already have a time restriction named ${refinedName}. Choose another name.`,
                     id: 'time-restriction-name',
                     userInput: refinedName,
                 });
-            } else {
-                await insertTimeRestriction(noc, sanitisedInputs, refinedName);
             }
         }
 
         if (errors.length > 0) {
             updateSessionAttribute(req, GS_TIME_RESTRICTION_ATTRIBUTE, {
                 inputs: {
-                    id: 0,
+                    id: id,
                     name: refinedName,
                     contents: sanitisedInputs,
                 },
                 errors,
             });
 
-            redirectTo(res, '/manageTimeRestriction');
-            return;
+            redirectTo(res, `/manageTimeRestriction${id ? `?id=${id}` : ''}`);
+        } else {
+            await (id
+                ? updateTimeRestriction(id, noc, sanitisedInputs, refinedName)
+                : insertTimeRestriction(noc, sanitisedInputs, refinedName));
+            updateSessionAttribute(req, GS_TIME_RESTRICTION_ATTRIBUTE, undefined);
+            redirectTo(res, `/viewTimeRestrictions`);
         }
-
-        updateSessionAttribute(req, GS_TIME_RESTRICTION_ATTRIBUTE, undefined);
-        redirectTo(res, `/viewTimeRestrictions`);
-        return;
     } catch (error) {
         const message = 'There was a problem with the user creating their time restriction:';
         redirectToError(res, message, 'api.manageTimeRestriction', error);

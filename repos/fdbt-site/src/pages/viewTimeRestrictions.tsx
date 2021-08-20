@@ -1,10 +1,10 @@
 import React, { ReactElement, useState } from 'react';
-import { BaseLayout } from '../layout/Layout';
-import { NextPageContextWithSession, PremadeTimeRestriction, TimeBand } from '../interfaces';
-import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
-import { getTimeRestrictionByNocCode } from '../data/auroradb';
-import SubNavigation from '../layout/SubNavigation';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
+import { getTimeRestrictionByNocCode } from '../data/auroradb';
+import { NextPageContextWithSession, PremadeTimeRestriction, TimeBand } from '../interfaces';
+import { BaseLayout } from '../layout/Layout';
+import SubNavigation from '../layout/SubNavigation';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 
 const title = 'Time restrictions';
@@ -130,7 +130,7 @@ export const TimeRestrictions = ({
                                     <li className="actions__item">
                                         <a
                                             className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                            href="/viewTimeRestrictions"
+                                            href={`/manageTimeRestriction?id=${timeRestriction.id}`}
                                         >
                                             Edit
                                         </a>
@@ -149,9 +149,7 @@ export const TimeRestrictions = ({
                                 </ul>
                             </div>
 
-                            <h4 className="time-restriction-title govuk-!-padding-bottom-4">
-                                {sentenceCaseString(timeRestriction.name)}
-                            </h4>
+                            <h4 className="time-restriction-title govuk-!-padding-bottom-4">{timeRestriction.name}</h4>
 
                             <ul className="day-restrictions-list">
                                 {Object.entries(dayMappings).map((dayMapping) => {

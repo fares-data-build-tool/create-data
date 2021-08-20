@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { FullGroupPassengerType, SinglePassengerType } from '../interfaces';
-import { sentenceCaseString, getProofDocumentsString } from '../utils';
+import { getProofDocumentsString, sentenceCaseString } from '../utils';
 
 interface PassengerTypeCardProps {
     contents: FullGroupPassengerType | SinglePassengerType;
@@ -10,6 +10,7 @@ interface PassengerTypeCardProps {
 const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardProps): ReactElement => {
     const { name, id } = contents;
     const refinedName = name.length > 11 ? name.substring(0, 11).concat('…') : name;
+    const isGroup = 'groupPassengerType' in contents;
     return (
         <div className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
             <div className="card">
@@ -20,7 +21,7 @@ const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardP
                                 <li className="actions__item">
                                     <a
                                         className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                        href={`/managePassengerGroup?id=${id}`}
+                                        href={`/managePassenger${isGroup ? `Group` : `Types`}?id=${id}`}
                                     >
                                         Edit
                                     </a>
@@ -29,7 +30,7 @@ const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardP
                                 <li className="actions__item">
                                     <button
                                         className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                        onClick={() => deleteActionHandler(id, name, 'groupPassengerType' in contents)}
+                                        onClick={() => deleteActionHandler(id, name, isGroup)}
                                     >
                                         Delete
                                     </button>
