@@ -1,185 +1,140 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import RadioConditionalInput from '../components/RadioConditionalInput';
-import {
-    ErrorInfo,
-    NextPageContextWithSession,
-    RadioConditionalInputFieldset,
-    TimeRestriction,
-    TimeRestrictionsDefinitionWithErrors,
-} from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
-import { getSessionAttribute } from '../utils/sessions';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants/attributes';
-import { getAndValidateNoc, getCsrfToken, getErrorsByIds } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
 
 const title = 'Define Time Restrictions - Create Fares Data Service';
 const description = 'Define Time Restrictions page of the Create Fares Data Service';
 
-interface DefineTimeRestrictionsProps {
-    errors: ErrorInfo[];
-    fieldsets: RadioConditionalInputFieldset[];
+interface SelectTimeRestrictionsProps {
     csrfToken: string;
+    errors: ErrorInfo[];
+    timeRestrictions: PremadeTimeRestriction[];
 }
 
-export const getFieldsets = (
-    errors: ErrorInfo[],
-    timeRestrictionNames: string[],
-    timeRestrictionsDefinition?: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
-): RadioConditionalInputFieldset[] => {
-    const validDaysFieldset: RadioConditionalInputFieldset = {
-        heading: {
-            id: 'define-valid-days',
-            content: 'Is this ticket only valid on certain days or times?',
-            hidden: true,
-        },
-        radios: [
-            {
-                id: 'valid-days-required',
-                name: 'timeRestrictionChoice',
-                value: 'Yes',
-                dataAriaControls: 'valid-days-required-conditional',
-                label: `${timeRestrictionNames.length > 0 ? 'Yes - define new time restriction' : 'Yes'}`,
-                inputHint: {
-                    id: 'define-valid-days-inputHint',
-                    content: 'Select the days of the week the ticket is valid for',
-                },
-                inputType: 'checkbox',
-                inputs: [
-                    {
-                        id: 'monday',
-                        name: 'validDays',
-                        label: 'Monday',
-                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('monday') || false,
-                    },
-                    {
-                        id: 'tuesday',
-                        name: 'validDays',
-                        label: 'Tuesday',
-                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('tuesday') || false,
-                    },
-                    {
-                        id: 'wednesday',
-                        name: 'validDays',
-                        label: 'Wednesday',
-                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('wednesday') || false,
-                    },
-                    {
-                        id: 'thursday',
-                        name: 'validDays',
-                        label: 'Thursday',
-                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('thursday') || false,
-                    },
-                    {
-                        id: 'friday',
-                        name: 'validDays',
-                        label: 'Friday',
-                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('friday') || false,
-                    },
-                    {
-                        id: 'saturday',
-                        name: 'validDays',
-                        label: 'Saturday',
-                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('saturday') || false,
-                    },
-                    {
-                        id: 'sunday',
-                        name: 'validDays',
-                        label: 'Sunday',
-                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('sunday') || false,
-                    },
-                    {
-                        id: 'bankHoliday',
-                        name: 'validDays',
-                        label: 'Bank holiday',
-                        defaultChecked: timeRestrictionsDefinition?.validDays?.includes('bankHoliday') || false,
-                    },
-                ],
-                inputErrors: getErrorsByIds(['monday'], errors),
-            },
-            {
-                id: 'valid-days-not-required',
-                name: 'timeRestrictionChoice',
-                value: 'No',
-                label: 'No',
-            },
-        ],
-        radioError: getErrorsByIds(['valid-days-required'], errors),
-    };
-    if (timeRestrictionNames.length > 0) {
-        validDaysFieldset.radios.splice(1, 0, {
-            id: 'premade-time-restriction-yes',
-            name: 'timeRestrictionChoice',
-            value: 'Premade',
-            label: 'Yes - reuse a saved time restriction',
-            inputHint: {
-                id: 'choose-time-restriction-hint',
-                content: 'Select a saved time restriction to use',
-            },
-            inputType: 'dropdown',
-            dataAriaControls: 'premade-time-restriction',
-            inputs: timeRestrictionNames.map((timeRestrictionName, index) => ({
-                id: `premade-time-restriction-${index}`,
-                name: timeRestrictionName,
-                label: timeRestrictionName,
-            })),
-            inputErrors: errors,
-            selectIdentifier: 'timeRestriction',
-        });
-    }
-    return [validDaysFieldset];
+const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectTimeRestrictionsProps): ReactElement => {
+    return (
+        <TwoThirdsLayout title={title} description={description} errors={errors}>
+            <ErrorSummary errors={errors} />
+
+            <CsrfForm action="/api/selectTimeRestrictions" method="post" csrfToken={csrfToken}>
+                <div className="govuk-form-group">
+                    <fieldset className="govuk-fieldset" aria-describedby="contact-hint">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 className="govuk-fieldset__heading">Are there time restrictions on your ticket?</h1>
+                        </legend>
+                        <div id="contact-hint" className="govuk-hint">
+                            We need to know if your ticket(s) will have any time restrictions, for example select yes if
+                            your ticket(s) can only be used on a certain day or during a certain time period. If you
+                            have a premade time restriction, you can select it here.
+                        </div>
+
+                        <div className="govuk-inset-text">
+                            You can create new time restrictions in your{' '}
+                            <a href="/viewTimeRestrictions">operator settings</a> and get back to this page when
+                            finished.
+                        </div>
+
+                        {/*<div className="govuk-warning-text">
+                            <span className="govuk-warning-text__icon" aria-hidden="true">
+                                !
+                            </span>
+                            <strong className="govuk-warning-text__text">
+                                <span className="govuk-warning-text__assistive">Warning</span>
+                                You can create new time restrictions in your operator settings and get back to this page
+                                when finished.
+                            </strong>
+                        </div>*/}
+
+                        <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+                            <div className="govuk-radios__item">
+                                <input
+                                    className="govuk-radios__input"
+                                    id="yes-choice"
+                                    name="timeRestrictionChoice"
+                                    type="radio"
+                                    value="yes"
+                                    data-aria-controls="conditional-contact"
+                                />
+                                <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">
+                                    Yes
+                                </label>
+                            </div>
+                            <div
+                                className="govuk-radios__conditional govuk-radios__conditional--hidden"
+                                id="conditional-contact"
+                            >
+                                {timeRestrictions.map((item) => (
+                                    <TimeRestrictionCard key={item.id} name={item.name} />
+                                ))}
+                            </div>
+                            <div className="govuk-radios__item">
+                                <input
+                                    className="govuk-radios__input"
+                                    id="no-choice"
+                                    name="timeRestrictionChoice"
+                                    type="radio"
+                                    value="no"
+                                    data-aria-controls="conditional-contact-2"
+                                />
+                                <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </CsrfForm>
+        </TwoThirdsLayout>
+    );
 };
 
-export const isTimeRestrictionsDefinitionWithErrors = (
-    timeRestrictionsDefinition: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
-): timeRestrictionsDefinition is TimeRestrictionsDefinitionWithErrors =>
-    (timeRestrictionsDefinition as TimeRestrictionsDefinitionWithErrors).errors !== undefined;
+interface TimeRestrictionCardProps {
+    name: string;
+}
 
-const DefineTimeRestrictions = ({ errors = [], fieldsets, csrfToken }: DefineTimeRestrictionsProps): ReactElement => (
-    <TwoThirdsLayout title={title} description={description} errors={errors}>
-        <CsrfForm action="/api/defineTimeRestrictions" method="post" csrfToken={csrfToken}>
-            <>
-                <ErrorSummary errors={errors} />
-                <div>
-                    <h1 className="govuk-heading-l" id="define-time-restrictions-page-heading">
-                        Are there time restrictions on your ticket?
-                    </h1>
-                    <span className="govuk-hint" id="define-time-restrictions-hint">
-                        We need to know if your ticket(s) will have any time restrictions, for example select yes if
-                        your ticket(s) can only be used on a certain day or during a certain time period. If you have a
-                        premade time restriction, you can select it here.
-                    </span>
-                    {fieldsets.map((fieldset) => {
-                        return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
-                    })}
+const TimeRestrictionCard = ({ name }: TimeRestrictionCardProps): ReactElement => {
+    const refinedName = name.length > 11 ? name.substring(0, 11).concat('…') : name;
+    return (
+        <div className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
+            <div className="card">
+                <div className="card__body">
+                    <h2>{refinedName}</h2>
+                    <div className="govuk-radios">
+                        <div className="govuk-radios__item card__radio">
+                            <input
+                                className="govuk-radios__input"
+                                id={`${name}-radio`}
+                                name="passengerTypeId"
+                                type="radio"
+                                value="blah"
+                                aria-label={name}
+                            />
+                            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                            <label className="govuk-label govuk-radios__label" />
+                        </div>
+                    </div>
                 </div>
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-            </>
-        </CsrfForm>
-    </TwoThirdsLayout>
-);
+            </div>
+        </div>
+    );
+};
 
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
-): Promise<{ props: DefineTimeRestrictionsProps }> => {
+): Promise<{ props: SelectTimeRestrictionsProps }> => {
     const csrfToken = getCsrfToken(ctx);
-    const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
-    const noc = getAndValidateNoc(ctx);
-    const timeRestrictions = await getTimeRestrictionByNocCode(noc || '');
 
-    let errors: ErrorInfo[] = [];
-    if (timeRestrictionsDefinition && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsDefinition)) {
-        errors = timeRestrictionsDefinition.errors;
-    }
-    const timeRestrictionNames = timeRestrictions.map((timeRestriction) => timeRestriction.name);
-    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(
-        errors,
-        timeRestrictionNames,
-        timeRestrictionsDefinition,
-    );
-    return { props: { errors, fieldsets, csrfToken } };
+    const errors: ErrorInfo[] = [];
+
+    const nationalOperatorCode = getAndValidateNoc(ctx);
+
+    const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
+
+    return { props: { csrfToken, errors, timeRestrictions } };
 };
 
-export default DefineTimeRestrictions;
+export default SelectTimeRestrictions;
