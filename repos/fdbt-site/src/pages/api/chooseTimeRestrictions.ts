@@ -1,14 +1,12 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
 import { getTimeRestrictionByNameAndNoc, insertTimeRestriction } from '../../data/auroradb';
-import { removeAllWhiteSpace, removeExcessWhiteSpace } from './apiUtils/validator';
+import { removeAllWhiteSpace, removeExcessWhiteSpace, isValid24hrTimeFormat } from './apiUtils/validator';
 import { NextApiRequestWithSession, TimeRestriction, ErrorInfo, FullTimeRestriction, TimeBand } from '../../interfaces';
 import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
 import { TimeRestrictionDay } from 'shared/matchingJsonTypes';
-
-export const isValid24hrTimeFormat = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);
 
 export const collectInputsFromRequest = (
     req: NextApiRequestWithSession,

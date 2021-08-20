@@ -364,12 +364,13 @@ exports[`pages time restrictions inner component renders normally when time rest
       </div>
     </div>
   </div>
-  <button
+  <a
     className="govuk-button"
     data-module="govuk-button"
+    href="/manageTimeRestriction"
   >
     Add a time restriction
-  </button>
+  </a>
 </div>
 `;
 

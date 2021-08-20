@@ -102,10 +102,12 @@ const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRest
 const NoTimeRestrictions = (): ReactElement => {
     return (
         <div className="govuk-heading-m">
-            <p className="govuk-body">You currently have no time restrictions saved.</p>
-            <button className="govuk-button" data-module="govuk-button">
+            <p className="govuk-body">
+                <em>You currently have no time restrictions saved.</em>
+            </p>
+            <a className="govuk-button" data-module="govuk-button" href="/manageTimeRestriction">
                 Add a time restriction
-            </button>
+            </a>
         </div>
     );
 };
@@ -167,9 +169,9 @@ export const TimeRestrictions = ({
             ))}
         </div>
 
-        <button className="govuk-button" data-module="govuk-button">
+        <a className="govuk-button" data-module="govuk-button" href="/manageTimeRestriction">
             Add a time restriction
-        </button>
+        </a>
     </div>
 );
 

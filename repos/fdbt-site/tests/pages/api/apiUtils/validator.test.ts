@@ -1,4 +1,9 @@
-import { removeExcessWhiteSpace, isCurrency, removeAllWhiteSpace } from '../../../../src/pages/api/apiUtils/validator';
+import {
+    removeExcessWhiteSpace,
+    isCurrency,
+    removeAllWhiteSpace,
+    isValid24hrTimeFormat,
+} from '../../../../src/pages/api/apiUtils/validator';
 
 describe('validator', () => {
     describe('removeExcessWhiteSpace', () => {
@@ -39,6 +44,18 @@ describe('validator', () => {
 
         it('should return false for an mixed-invalid input', () => {
             expect(isCurrency('1.ff4')).toBe(false);
+        });
+    });
+
+    describe('isValid24hrTimeFormat', () => {
+        it.each([
+            [true, 'a valid time', '0730'],
+            [true, 'the max value', '2359'],
+            [true, 'the min value', '0000'],
+            [false, 'a valid time over the max value', '2400'],
+            [false, 'an invalid time', '7pm'],
+        ])('should return %s for %s in 2400 format', (validity, _case, value) => {
+            expect(isValid24hrTimeFormat(value)).toBe(validity);
         });
     });
 });
