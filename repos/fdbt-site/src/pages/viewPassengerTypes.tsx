@@ -58,7 +58,7 @@ const ViewPassengerTypes = ({
 
     return (
         <BaseLayout title={title} description={description} showNavigation referer={referer}>
-            <div className="govuk-grid-row">
+            <div className="govuk-grid-row" data-card-count={singlePassengerTypes.length + groupPassengerTypes.length}>
                 <div className="govuk-grid-column-one-third">
                     <SubNavigation />
                 </div>

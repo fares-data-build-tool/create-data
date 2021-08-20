@@ -123,6 +123,7 @@ const ManagePassengerGroup = ({
                                                             className="govuk-input govuk-!-width-one-third"
                                                             id={`minimum-passengers-${passenger.id}`}
                                                             name={`minimumPassengers${passenger.id}`}
+                                                            data-test-id={'minimum-passengers'}
                                                             defaultValue={
                                                                 findCorrectPassengerType(inputs, passenger)
                                                                     ?.minNumber ?? ''
@@ -140,6 +141,7 @@ const ManagePassengerGroup = ({
                                                             className="govuk-input govuk-!-width-one-third"
                                                             id={`maximum-passengers-${passenger.id}`}
                                                             name={`maximumPassengers${passenger.id}`}
+                                                            data-test-id={'maximum-passengers'}
                                                             defaultValue={
                                                                 findCorrectPassengerType(inputs, passenger)
                                                                     ?.maxNumber ?? ''

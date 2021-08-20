@@ -6,14 +6,17 @@ export const throwInvalidRandomSelectorError = (): void => {
 };
 
 export const getElementById = (id: string): Cypress.Chainable<JQuery> => cy.get(`[id=${id}]`);
+export const getElementByName = (id: string): Cypress.Chainable<JQuery> => cy.get(`[name=${id}]`);
+export const getElementByClass = (id: string): Cypress.Chainable<JQuery> => cy.get(`[class=${id}]`);
+export const getElementByDataTestId = (id: string): Cypress.Chainable<JQuery> => cy.get(`[data-test-id=${id}]`);
 
 export const clickElementById = (id: string): Cypress.Chainable<JQuery> => getElementById(id).click();
 
 export const getRandomNumber = (min: number, max: number): number => Cypress._.random(min, max);
 
-export const getHomePage = (isScheme: boolean): void => {
+export const getHomePage = (noc = 'BLAC'): void => {
     cy.clearCookies();
-    cy.visit(`?disableAuth=${isScheme ? 'scheme' : 'BLAC'}`);
+    cy.visit(`?disableAuth=${noc}`);
 };
 
 export const fareTypeToFareTypeIdMapper = (fareType: FareType): string => `radio-option-${fareType}`;
