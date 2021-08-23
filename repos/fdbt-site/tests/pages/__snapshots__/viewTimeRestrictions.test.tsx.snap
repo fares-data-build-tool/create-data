@@ -1,514 +1,221 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pages time restrictions inner component renders normally when time restrictions are present 1`] = `
-<div
-  className="govuk-heading-m"
->
-  <div
-    className="govuk-grid-row"
+<Fragment>
+  <h4
+    className="time-restriction-title govuk-!-padding-bottom-4"
   >
-    <div
-      className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
-      key="Restriction 1"
-    >
-      <div
-        className="card"
-      >
-        <div
-          className="card__body time-restriction"
-        >
-          <div
-            className="card__actions"
-          >
-            <ul
-              className="actions__list"
-            >
-              <li
-                className="actions__item"
-              >
-                <a
-                  className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                  href="/manageTimeRestriction?id=1"
-                >
-                  Edit
-                </a>
-              </li>
-              <li
-                className="actions__item"
-              >
-                <button
-                  className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                  onClick={[Function]}
-                >
-                  Delete
-                </button>
-              </li>
-            </ul>
-          </div>
-          <h4
-            className="time-restriction-title govuk-!-padding-bottom-4"
-          >
-            Restriction 1
-          </h4>
-          <ul
-            className="day-restrictions-list"
-          >
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="monday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Mon
-              </span>
-               
-              <span
-                className="day-restriction"
-              >
-                04:00–23:00
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="tuesday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Tue
-              </span>
-               
-              <span
-                className="day-restriction"
-              >
-                04:00–
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="wednesday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Wed
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="thursday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Thu
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="friday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Fri
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="saturday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Sat
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="sunday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Sun
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="bankHoliday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                BH
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div
-      className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
-      key="Restriction 2"
-    >
-      <div
-        className="card"
-      >
-        <div
-          className="card__body time-restriction"
-        >
-          <div
-            className="card__actions"
-          >
-            <ul
-              className="actions__list"
-            >
-              <li
-                className="actions__item"
-              >
-                <a
-                  className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                  href="/manageTimeRestriction?id=2"
-                >
-                  Edit
-                </a>
-              </li>
-              <li
-                className="actions__item"
-              >
-                <button
-                  className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                  onClick={[Function]}
-                >
-                  Delete
-                </button>
-              </li>
-            </ul>
-          </div>
-          <h4
-            className="time-restriction-title govuk-!-padding-bottom-4"
-          >
-            Restriction 2
-          </h4>
-          <ul
-            className="day-restrictions-list"
-          >
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="monday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Mon
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="tuesday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Tue
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="wednesday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Wed
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="thursday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Thu
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="friday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Fri
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="saturday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Sat
-              </span>
-               
-              <span
-                className="day-restriction not-valid"
-              >
-                Not valid
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="sunday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                Sun
-              </span>
-               
-              <span
-                className="day-restriction"
-              >
-                04:00–12:00, 13:00–22:00
-              </span>
-            </li>
-            <li
-              className="govuk-body-s govuk-!-margin-bottom-2"
-              key="bankHoliday"
-            >
-              <span
-                className="day govuk-!-font-weight-bold"
-              >
-                BH
-              </span>
-               
-              <span
-                className="day-restriction"
-              >
-                Valid all day
-              </span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <a
-    className="govuk-button"
-    data-module="govuk-button"
-    href="/manageTimeRestriction"
+    Restriction 1
+  </h4>
+  <ul
+    className="day-restrictions-list"
   >
-    Add a time restriction
-  </a>
-</div>
+    <li
+      className="govuk-body-s govuk-!-margin-bottom-2"
+      key="monday"
+    >
+      <span
+        className="day govuk-!-font-weight-bold"
+      >
+        Mon
+      </span>
+       
+      <span
+        className="day-restriction"
+      >
+        04:00–23:00
+      </span>
+    </li>
+    <li
+      className="govuk-body-s govuk-!-margin-bottom-2"
+      key="tuesday"
+    >
+      <span
+        className="day govuk-!-font-weight-bold"
+      >
+        Tue
+      </span>
+       
+      <span
+        className="day-restriction"
+      >
+        04:00–
+      </span>
+    </li>
+    <li
+      className="govuk-body-s govuk-!-margin-bottom-2"
+      key="wednesday"
+    >
+      <span
+        className="day govuk-!-font-weight-bold"
+      >
+        Wed
+      </span>
+       
+      <span
+        className="day-restriction not-valid"
+      >
+        Not valid
+      </span>
+    </li>
+    <li
+      className="govuk-body-s govuk-!-margin-bottom-2"
+      key="thursday"
+    >
+      <span
+        className="day govuk-!-font-weight-bold"
+      >
+        Thu
+      </span>
+       
+      <span
+        className="day-restriction not-valid"
+      >
+        Not valid
+      </span>
+    </li>
+    <li
+      className="govuk-body-s govuk-!-margin-bottom-2"
+      key="friday"
+    >
+      <span
+        className="day govuk-!-font-weight-bold"
+      >
+        Fri
+      </span>
+       
+      <span
+        className="day-restriction not-valid"
+      >
+        Not valid
+      </span>
+    </li>
+    <li
+      className="govuk-body-s govuk-!-margin-bottom-2"
+      key="saturday"
+    >
+      <span
+        className="day govuk-!-font-weight-bold"
+      >
+        Sat
+      </span>
+       
+      <span
+        className="day-restriction not-valid"
+      >
+        Not valid
+      </span>
+    </li>
+    <li
+      className="govuk-body-s govuk-!-margin-bottom-2"
+      key="sunday"
+    >
+      <span
+        className="day govuk-!-font-weight-bold"
+      >
+        Sun
+      </span>
+       
+      <span
+        className="day-restriction not-valid"
+      >
+        Not valid
+      </span>
+    </li>
+    <li
+      className="govuk-body-s govuk-!-margin-bottom-2"
+      key="bankHoliday"
+    >
+      <span
+        className="day govuk-!-font-weight-bold"
+      >
+        BH
+      </span>
+       
+      <span
+        className="day-restriction not-valid"
+      >
+        Not valid
+      </span>
+    </li>
+  </ul>
+</Fragment>
 `;
 
-exports[`pages view time restrictions should render correctly when no individual or group time restrictions 1`] = `
-<BaseLayout
-  description="View and edit your time restrictions."
-  referer={null}
-  showNavigation={true}
-  title="Time restrictions"
->
-  <div
-    className="govuk-width-container"
-  >
-    <main
-      className="govuk-main-wrapper"
-      data-card-count={0}
-    >
-      <div
-        className="govuk-grid-row"
-      >
-        <div
-          className="govuk-grid-column-one-third"
-        >
-          <SubNavigation />
-        </div>
-        <div
-          className="govuk-grid-column-two-thirds"
-        >
-          <h1
-            className="govuk-heading-xl"
-          >
-            Time restrictions
-          </h1>
-          <p
-            className="govuk-body"
-          >
-            Define certain days and time periods that your tickets can be used within
-          </p>
-          <NoTimeRestrictions />
-        </div>
-      </div>
-    </main>
-  </div>
-</BaseLayout>
+exports[`pages view time restrictions should render correctly when no time restrictions 1`] = `
+<Fragment>
+  <GlobalSettingsViewPage
+    CardBody={[Function]}
+    csrfToken=""
+    description="Define certain days and time periods that your tickets can be used within."
+    entities={Array []}
+    entityDescription="time restriction"
+    referer={null}
+    title="Time restrictions"
+  />
+</Fragment>
 `;
 
 exports[`pages view time restrictions should render correctly when time restrictions exist 1`] = `
-<BaseLayout
-  description="View and edit your time restrictions."
-  referer="hello"
-  showNavigation={true}
-  title="Time restrictions"
->
-  <div
-    className="govuk-width-container"
-  >
-    <main
-      className="govuk-main-wrapper"
-      data-card-count={2}
-    >
-      <div
-        className="govuk-grid-row"
-      >
-        <div
-          className="govuk-grid-column-one-third"
-        >
-          <SubNavigation />
-        </div>
-        <div
-          className="govuk-grid-column-two-thirds"
-        >
-          <h1
-            className="govuk-heading-xl"
-          >
-            Time restrictions
-          </h1>
-          <p
-            className="govuk-body"
-          >
-            Define certain days and time periods that your tickets can be used within
-          </p>
-          <TimeRestrictions
-            deleteActionHandler={[Function]}
-            timeRestrictions={
-              Array [
+<Fragment>
+  <GlobalSettingsViewPage
+    CardBody={[Function]}
+    csrfToken=""
+    description="Define certain days and time periods that your tickets can be used within."
+    entities={
+      Array [
+        Object {
+          "contents": Array [
+            Object {
+              "day": "monday",
+              "timeBands": Array [
                 Object {
-                  "contents": Array [
-                    Object {
-                      "day": "monday",
-                      "timeBands": Array [
-                        Object {
-                          "endTime": "2300",
-                          "startTime": "0400",
-                        },
-                      ],
-                    },
-                    Object {
-                      "day": "tuesday",
-                      "timeBands": Array [
-                        Object {
-                          "endTime": "",
-                          "startTime": "0400",
-                        },
-                      ],
-                    },
-                  ],
-                  "id": 1,
-                  "name": "Restriction 1",
+                  "endTime": "2300",
+                  "startTime": "0400",
+                },
+              ],
+            },
+            Object {
+              "day": "tuesday",
+              "timeBands": Array [
+                Object {
+                  "endTime": "",
+                  "startTime": "0400",
+                },
+              ],
+            },
+          ],
+          "id": 1,
+          "name": "Restriction 1",
+        },
+        Object {
+          "contents": Array [
+            Object {
+              "day": "bankHoliday",
+              "timeBands": Array [],
+            },
+            Object {
+              "day": "sunday",
+              "timeBands": Array [
+                Object {
+                  "endTime": "1200",
+                  "startTime": "0400",
                 },
                 Object {
-                  "contents": Array [
-                    Object {
-                      "day": "bankHoliday",
-                      "timeBands": Array [],
-                    },
-                    Object {
-                      "day": "sunday",
-                      "timeBands": Array [
-                        Object {
-                          "endTime": "1200",
-                          "startTime": "0400",
-                        },
-                        Object {
-                          "endTime": "2200",
-                          "startTime": "1300",
-                        },
-                      ],
-                    },
-                  ],
-                  "id": 2,
-                  "name": "Restriction 2",
+                  "endTime": "2200",
+                  "startTime": "1300",
                 },
-              ]
-            }
-          />
-        </div>
-      </div>
-    </main>
-  </div>
-</BaseLayout>
+              ],
+            },
+          ],
+          "id": 2,
+          "name": "Restriction 2",
+        },
+      ]
+    }
+    entityDescription="time restriction"
+    referer="hello"
+    title="Time restrictions"
+  />
+</Fragment>
 `;

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
+import * as sessions from '../../src/utils/sessions';
 import FareType, { buildUuid, getServerSideProps } from '../../src/pages/fareType';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import { getAllServicesByNocCode } from '../../src/data/auroradb';
-import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
+import { GS_REFERER, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb');
 
@@ -58,6 +59,13 @@ describe('pages', () => {
                         serviceCode: 'WY_13_IWBT_07_1',
                     },
                 ]);
+            });
+
+            it('should clear the global settings redirect session attribute on page load', async () => {
+                const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+                const mockContext = getMockContext();
+                await getServerSideProps(mockContext);
+                expect(updateSessionAttributeSpy).toBeCalledWith(mockContext.req, GS_REFERER, undefined);
             });
 
             it('should return expected props when a the user logged in is not a scheme operator', async () => {
