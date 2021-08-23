@@ -83,7 +83,9 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                                             ))
                                         ) : (
                                             <p className="govuk-body govuk-error-message">
-                                                Create a time restriction in operator settings.
+                                                <a href="/viewTimeRestrictions">
+                                                    Create a time restriction in operator settings.
+                                                </a>
                                             </p>
                                         )}
                                     </div>
@@ -106,7 +108,18 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                         </fieldset>
                     </div>
 
-                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                    {!!timeRestrictions.length && (
+                        <input
+                            type="submit"
+                            value="Continue"
+                            id="continue-button"
+                            className="govuk-button govuk-!-margin-right-2"
+                        />
+                    )}
+
+                    <a className="govuk-button govuk-button--secondary" href="/viewTimeRestrictions">
+                        Create new
+                    </a>
                 </>
             </CsrfForm>
         </TwoThirdsLayout>
