@@ -1,24 +1,21 @@
+import upperFirst from 'lodash/upperFirst';
 import React, { ReactElement } from 'react';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../constants/attributes';
 import { getGroupPassengerTypeById, getPassengerTypesByNocCode } from '../data/auroradb';
-import upperFirst from 'lodash/upperFirst';
 import { ErrorInfo, GroupPassengerTypeDb, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getAndValidateNoc } from '../utils';
+import { getGlobalSettingsManageProps, GlobalSettingsManageProps } from '../utils/globalSettings';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Manage Passenger Group - Create Fares Data Service';
 const description = 'Manage Passenger Group page of the Create Fares Data Service';
 
-interface ManagePassengerGroupProps {
+interface ManagePassengerGroupProps extends GlobalSettingsManageProps<GroupPassengerTypeDb> {
     passengers: SinglePassengerType[];
-    csrfToken: string;
-    errors: ErrorInfo[];
-    inputs?: GroupPassengerTypeDb;
-    editMode: boolean;
 }
 
 const hasError = (errors: ErrorInfo[], name: string) => {
@@ -126,6 +123,7 @@ const ManagePassengerGroup = ({
                                                             className="govuk-input govuk-!-width-one-third"
                                                             id={`minimum-passengers-${passenger.id}`}
                                                             name={`minimumPassengers${passenger.id}`}
+                                                            data-test-id={'minimum-passengers'}
                                                             defaultValue={
                                                                 findCorrectPassengerType(inputs, passenger)
                                                                     ?.minNumber ?? ''
@@ -143,6 +141,7 @@ const ManagePassengerGroup = ({
                                                             className="govuk-input govuk-!-width-one-third"
                                                             id={`maximum-passengers-${passenger.id}`}
                                                             name={`maximumPassengers${passenger.id}`}
+                                                            data-test-id={'maximum-passengers'}
                                                             defaultValue={
                                                                 findCorrectPassengerType(inputs, passenger)
                                                                     ?.maxNumber ?? ''
@@ -200,31 +199,16 @@ const ManagePassengerGroup = ({
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: ManagePassengerGroupProps }> => {
-    const csrfToken = getCsrfToken(ctx);
     const userInputsAndErrors = getSessionAttribute(ctx.req, GS_PASSENGER_GROUP_ATTRIBUTE);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const passengers = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
-    const editId = Number.isInteger(Number(ctx.query.id)) ? Number(ctx.query.id) : undefined;
 
-    let inputs: GroupPassengerTypeDb | undefined,
-        errors: ErrorInfo[] = [];
-    if ((userInputsAndErrors?.inputs.id || undefined) === editId) {
-        inputs = userInputsAndErrors?.inputs;
-        errors = userInputsAndErrors?.errors ?? [];
-    } else if (editId) {
-        inputs = await getGroupPassengerTypeById(editId, nationalOperatorCode);
-        if (!inputs) {
-            throw new Error('No groups for this NOC matches the passed id');
-        }
-    }
+    const props = await getGlobalSettingsManageProps(ctx, getGroupPassengerTypeById, userInputsAndErrors);
 
     return {
         props: {
+            ...props.props,
             passengers,
-            csrfToken,
-            errors,
-            editMode: !!editId,
-            ...(inputs && { inputs }),
         },
     };
 };

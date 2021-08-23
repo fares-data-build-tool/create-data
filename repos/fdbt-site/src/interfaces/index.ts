@@ -511,7 +511,8 @@ export interface DefinePassengerTypeWithErrors extends CompanionInfo {
     errors: ErrorInfo[];
 }
 
-export interface ManagePassengerTypeWithErrors extends SinglePassengerType {
+export interface ManagePassengerTypeWithErrors {
+    inputs: SinglePassengerType;
     errors: ErrorInfo[];
 }
 

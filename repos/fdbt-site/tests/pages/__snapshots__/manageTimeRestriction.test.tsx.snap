@@ -49,6 +49,10 @@ exports[`pages manage time restriction should render correctly 1`] = `
             Select the days of the week that are applicable
           </h1>
         </legend>
+        <input
+          name="id"
+          type="hidden"
+        />
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
           errorId="time-restriction-days"
@@ -964,6 +968,11 @@ exports[`pages manage time restriction should render error state on day restrict
             Select the days of the week that are applicable
           </h1>
         </legend>
+        <input
+          name="id"
+          type="hidden"
+          value={0}
+        />
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
           errorId="time-restriction-days"
@@ -1844,7 +1853,7 @@ exports[`pages manage time restriction should render error state on day restrict
       className="govuk-button"
       id="continue-button"
       type="submit"
-      value="Add time restriction"
+      value="Update time restriction"
     />
   </CsrfForm>
 </TwoThirdsLayout>
@@ -1913,6 +1922,11 @@ exports[`pages manage time restriction should render error state on name form gr
             Select the days of the week that are applicable
           </h1>
         </legend>
+        <input
+          name="id"
+          type="hidden"
+          value={0}
+        />
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
           errorId="time-restriction-days"
@@ -2800,6 +2814,11 @@ exports[`pages manage time restriction should render error state on time restric
             Select the days of the week that are applicable
           </h1>
         </legend>
+        <input
+          name="id"
+          type="hidden"
+          value={0}
+        />
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
           errorId="time-restriction-days"
@@ -3618,7 +3637,7 @@ exports[`pages manage time restriction should render error state on time restric
       className="govuk-button"
       id="continue-button"
       type="submit"
-      value="Add time restriction"
+      value="Update time restriction"
     />
   </CsrfForm>
 </TwoThirdsLayout>

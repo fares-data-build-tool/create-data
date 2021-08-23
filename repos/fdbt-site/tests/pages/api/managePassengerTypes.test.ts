@@ -54,13 +54,15 @@ describe('managePassengerTypes', () => {
                     id: 'name',
                 },
             ],
-            id: 1,
-            name: '',
-            passengerType: {
-                passengerType: 'Adult',
-                ageRangeMin: '18',
-                ageRangeMax: '65',
-                proofDocuments: [],
+            inputs: {
+                id: 1,
+                name: '',
+                passengerType: {
+                    passengerType: 'Adult',
+                    ageRangeMin: '18',
+                    ageRangeMax: '65',
+                    proofDocuments: [],
+                },
             },
         };
 
@@ -93,13 +95,15 @@ describe('managePassengerTypes', () => {
                     id: 'name',
                 },
             ],
-            id: 1,
-            name: '',
-            passengerType: {
-                passengerType: 'Adult',
-                ageRangeMin: '18',
-                ageRangeMax: '65',
-                proofDocuments: [],
+            inputs: {
+                id: 1,
+                name: '',
+                passengerType: {
+                    passengerType: 'Adult',
+                    ageRangeMin: '18',
+                    ageRangeMax: '65',
+                    proofDocuments: [],
+                },
             },
         };
 
@@ -132,13 +136,15 @@ describe('managePassengerTypes', () => {
                     id: 'name',
                 },
             ],
-            id: 1,
-            name: 'ThisIsSomeVeryLongNameThatIsUnlikleyButYouNeverKnow,Right?',
-            passengerType: {
-                passengerType: 'Adult',
-                ageRangeMin: '18',
-                ageRangeMax: '65',
-                proofDocuments: [],
+            inputs: {
+                id: 1,
+                name: 'ThisIsSomeVeryLongNameThatIsUnlikleyButYouNeverKnow,Right?',
+                passengerType: {
+                    passengerType: 'Adult',
+                    ageRangeMin: '18',
+                    ageRangeMax: '65',
+                    proofDocuments: [],
+                },
             },
         };
 
@@ -175,13 +181,15 @@ describe('managePassengerTypes', () => {
                     id: 'age-range-max',
                 },
             ],
-            id: 1,
-            name: 'Adults',
-            passengerType: {
-                passengerType: 'Adult',
-                ageRangeMin: '151',
-                ageRangeMax: '161',
-                proofDocuments: [],
+            inputs: {
+                id: 1,
+                name: 'Adults',
+                passengerType: {
+                    passengerType: 'Adult',
+                    ageRangeMin: '151',
+                    ageRangeMax: '161',
+                    proofDocuments: [],
+                },
             },
         };
 
@@ -214,13 +222,15 @@ describe('managePassengerTypes', () => {
                     id: 'age-range-min',
                 },
             ],
-            id: 1,
-            name: 'Adults',
-            passengerType: {
-                passengerType: 'Adult',
-                ageRangeMin: '19',
-                ageRangeMax: '18',
-                proofDocuments: [],
+            inputs: {
+                id: 1,
+                name: 'Adults',
+                passengerType: {
+                    passengerType: 'Adult',
+                    ageRangeMin: '19',
+                    ageRangeMax: '18',
+                    proofDocuments: [],
+                },
             },
         };
 
@@ -264,13 +274,15 @@ describe('managePassengerTypes', () => {
                     id: 'name',
                 },
             ],
-            id: 2,
-            name: 'Adults',
-            passengerType: {
-                passengerType: 'Adult',
-                ageRangeMin: '18',
-                ageRangeMax: '65',
-                proofDocuments: [],
+            inputs: {
+                id: 2,
+                name: 'Adults',
+                passengerType: {
+                    passengerType: 'Adult',
+                    ageRangeMin: '18',
+                    ageRangeMax: '65',
+                    proofDocuments: [],
+                },
             },
         };
 

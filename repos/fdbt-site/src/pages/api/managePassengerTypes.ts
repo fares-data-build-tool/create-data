@@ -2,20 +2,19 @@ import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
 import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../../constants/attributes';
 import {
-    SinglePassengerType,
-    ManagePassengerTypeWithErrors,
-    NextApiRequestWithSession,
-    ErrorInfo,
-} from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
-import { redirectTo, redirectToError } from './apiUtils/index';
-import {
     getSinglePassengerTypeByNameAndNocCode,
     insertSinglePassengerType,
     updateSinglePassengerType,
 } from '../../data/auroradb';
-import { getAndValidateNoc } from './apiUtils/index';
-import { removeExcessWhiteSpace, checkIntegerIsValid } from './apiUtils/validator';
+import {
+    ErrorInfo,
+    ManagePassengerTypeWithErrors,
+    NextApiRequestWithSession,
+    SinglePassengerType,
+} from '../../interfaces';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils';
+import { checkIntegerIsValid, removeExcessWhiteSpace } from './apiUtils/validator';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -26,7 +25,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (errors.length) {
             const sessionInfo: ManagePassengerTypeWithErrors = {
                 errors,
-                ...singlePassengerType,
+                inputs: singlePassengerType,
             };
 
             updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, sessionInfo);

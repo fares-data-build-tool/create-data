@@ -31,6 +31,7 @@ const DeleteConfirmationPopup = ({
                     formAction={deleteUrl}
                     formMethod="post"
                     type="submit"
+                    id="popup-delete-button"
                 >
                     Delete
                 </button>

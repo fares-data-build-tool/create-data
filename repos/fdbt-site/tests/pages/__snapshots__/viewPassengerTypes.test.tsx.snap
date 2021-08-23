@@ -9,6 +9,7 @@ exports[`pages view passenger types should render correctly when groups and indi
 >
   <div
     className="govuk-grid-row"
+    data-card-count={2}
   >
     <div
       className="govuk-grid-column-one-third"
@@ -92,6 +93,7 @@ exports[`pages view passenger types should render correctly when no individual o
 >
   <div
     className="govuk-grid-row"
+    data-card-count={0}
   >
     <div
       className="govuk-grid-column-one-third"
@@ -129,6 +131,7 @@ exports[`pages view passenger types should render correctly when only individual
 >
   <div
     className="govuk-grid-row"
+    data-card-count={1}
   >
     <div
       className="govuk-grid-column-one-third"
@@ -184,6 +187,7 @@ exports[`pages view passenger types should render correctly when only passenger 
 >
   <div
     className="govuk-grid-row"
+    data-card-count={1}
   >
     <div
       className="govuk-grid-column-one-third"
