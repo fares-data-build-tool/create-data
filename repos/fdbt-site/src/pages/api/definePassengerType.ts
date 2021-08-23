@@ -1,6 +1,6 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
-import { globalSettingsEnabled } from 'src/constants/featureFlag';
+import { globalSettingsEnabled } from '../../../src/constants/featureFlag';
 import * as yup from 'yup';
 import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,

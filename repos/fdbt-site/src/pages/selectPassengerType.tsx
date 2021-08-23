@@ -37,6 +37,7 @@ const SelectPassengerType = ({
                                 Select a passenger type
                             </h1>
                         </legend>
+
                         <div className="govuk-warning-text">
                             <span className="govuk-warning-text__icon govuk-!-margin-top-1" aria-hidden="true">
                                 !
@@ -80,9 +81,9 @@ const SelectPassengerType = ({
                                             ))}
                                         </>
                                     ) : (
-                                        <span className="govuk-body">
-                                            <i>You currently have no saved groups</i>
-                                        </span>
+                                        <div className="govuk-grid-column-two-thirds">
+                                            <p className="govuk-body">You currently have no saved groups</p>
+                                        </div>
                                     )}
                                 </div>
                             </>

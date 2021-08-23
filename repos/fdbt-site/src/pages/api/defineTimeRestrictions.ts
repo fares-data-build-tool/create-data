@@ -24,10 +24,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 redirectTo(res, '/defineTimeRestrictions');
                 return;
             }
+
             const noc = getAndValidateNoc(req, res);
+
             if (!noc) {
                 throw new Error('Could not find users NOC code.');
             }
+
             const results = await getTimeRestrictionByNameAndNoc(timeRestriction, noc);
 
             if (results.length > 1 || results.length === 0) {
@@ -44,6 +47,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 fullTimeRestrictions: results[0].contents,
                 errors: [],
             });
+
             redirectTo(res, '/fareConfirmation');
             return;
         }
