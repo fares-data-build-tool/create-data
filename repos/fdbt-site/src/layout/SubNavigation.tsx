@@ -28,19 +28,19 @@ const SubNavigation = (): ReactElement => {
                         </a>
                     </li>
 
-                    <li className="app-subnav__section-item">
+                    {/*<li className="app-subnav__section-item">
                         <a
                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
                             href="/globalSettings"
                         >
                             Service day end
                         </a>
-                    </li>
+                    </li>*/}
 
                     <li className="app-subnav__section-item">
                         <a
                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                            href="/globalSettings"
+                            href="/viewPurchaseMethods"
                         >
                             Purchase methods
                         </a>
@@ -55,23 +55,23 @@ const SubNavigation = (): ReactElement => {
                         </a>
                     </li>
 
-                    <li className="app-subnav__section-item">
+                    {/*<li className="app-subnav__section-item">
                         <a
                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
                             href="/globalSettings"
                         >
                             Multi-operator groups
                         </a>
-                    </li>
+                    </li>*/}
 
-                    <li className="app-subnav__section-item">
+                    {/*<li className="app-subnav__section-item">
                         <a
                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
                             href="/globalSettings"
                         >
                             Travel Zones
                         </a>
-                    </li>
+                    </li>*/}
                 </ul>
             </nav>
         </div>

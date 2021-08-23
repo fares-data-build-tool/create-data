@@ -4,7 +4,7 @@ import DeleteSOPButton from '../../src/components/DeleteSOPButton';
 
 describe('DeleteSOPButton', () => {
     it('should render the button', () => {
-        const wrapper = shallow(<DeleteSOPButton sopId="1" csrfToken="token" />);
+        const wrapper = shallow(<DeleteSOPButton sopId={1} csrfToken="token" />);
         expect(wrapper).toMatchSnapshot();
     });
 });
