@@ -1,14 +1,12 @@
-import React, { ReactElement, useState } from 'react';
-import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
+import React, { FunctionComponent, ReactElement } from 'react';
+import { GlobalSettingsViewPage } from '../components/GlobalSettingsViewPage';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import { NextPageContextWithSession, PremadeTimeRestriction, TimeBand } from '../interfaces';
-import { BaseLayout } from '../layout/Layout';
-import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 
 const title = 'Time restrictions';
-const description = 'View and edit your time restrictions.';
+const description = 'Define certain days and time periods that your tickets can be used within.';
 
 const dayMappings = {
     monday: 'Mon',
@@ -45,130 +43,40 @@ const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: stri
 };
 
 const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRestrictionProps): ReactElement => {
-    const [popUpState, setPopUpState] = useState<{ timeRestrictionId: number; timeRestrictionName: string }>();
-
-    const deleteActionHandler = (id: number, name: string): void => {
-        setPopUpState({ timeRestrictionId: id, timeRestrictionName: name });
-    };
-
-    const cancelActionHandler = (): void => {
-        setPopUpState(undefined);
-    };
-
-    const buildDeleteUrl = (idToDelete: number, csrfToken: string): string => {
-        return `/api/deleteTimeRestriction?id=${idToDelete}&_csrf=${csrfToken}`;
-    };
-
     return (
-        <BaseLayout title={title} description={description} showNavigation referer={referer}>
-            <div className="govuk-width-container">
-                <main className="govuk-main-wrapper">
-                    <div className="govuk-grid-row">
-                        <div className="govuk-grid-column-one-third">
-                            <SubNavigation />
-                        </div>
-
-                        <div className="govuk-grid-column-two-thirds">
-                            <h1 className="govuk-heading-xl">Time restrictions</h1>
-                            <p className="govuk-body">
-                                Define certain days and time periods that your tickets can be used within
-                            </p>
-
-                            {!timeRestrictions.length ? (
-                                <NoTimeRestrictions />
-                            ) : (
-                                <TimeRestrictions
-                                    deleteActionHandler={deleteActionHandler}
-                                    timeRestrictions={timeRestrictions}
-                                />
-                            )}
-
-                            {popUpState && (
-                                <DeleteConfirmationPopup
-                                    entityType="time restriction"
-                                    entityName={popUpState.timeRestrictionName}
-                                    deleteUrl={buildDeleteUrl(popUpState.timeRestrictionId, csrfToken)}
-                                    cancelActionHandler={cancelActionHandler}
-                                />
-                            )}
-                        </div>
-                    </div>
-                </main>
-            </div>
-        </BaseLayout>
+        <>
+            <GlobalSettingsViewPage
+                entities={timeRestrictions}
+                entityDescription="time restriction"
+                referer={referer}
+                csrfToken={csrfToken}
+                title={title}
+                description={description}
+                CardBody={TimeRestrictions}
+            />
+        </>
     );
 };
 
-const NoTimeRestrictions = (): ReactElement => {
-    return (
-        <div className="govuk-heading-m">
-            <p className="govuk-body">You currently have no time restrictions saved.</p>
-            <a className="govuk-button" data-module="govuk-button" href="/manageTimeRestriction">
-                Add a time restriction
-            </a>
-        </div>
-    );
-};
-
-export const TimeRestrictions = ({
-    timeRestrictions,
-    deleteActionHandler,
+export const TimeRestrictions: FunctionComponent<{ entity: PremadeTimeRestriction }> = ({
+    entity,
 }: {
-    timeRestrictions: PremadeTimeRestriction[];
-    deleteActionHandler: (id: number, name: string) => void;
-}): ReactElement => (
-    <div className="govuk-heading-m">
-        <div className="govuk-grid-row">
-            {timeRestrictions.map((timeRestriction) => (
-                <div key={timeRestriction.name} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
-                    <div className="card">
-                        <div className="card__body time-restriction">
-                            <div className="card__actions">
-                                <ul className="actions__list">
-                                    <li className="actions__item">
-                                        <a
-                                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                            href={`/manageTimeRestriction?id=${timeRestriction.id}`}
-                                        >
-                                            Edit
-                                        </a>
-                                    </li>
+    entity: PremadeTimeRestriction;
+}) => (
+    <>
+        <h4 className="time-restriction-title govuk-!-padding-bottom-4">{entity.name}</h4>
 
-                                    <li className="actions__item">
-                                        <button
-                                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                            onClick={() => {
-                                                deleteActionHandler(timeRestriction.id, timeRestriction.name);
-                                            }}
-                                        >
-                                            Delete
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <h4 className="time-restriction-title govuk-!-padding-bottom-4">{timeRestriction.name}</h4>
-
-                            <ul className="day-restrictions-list">
-                                {Object.entries(dayMappings).map((dayMapping) => {
-                                    return (
-                                        <li key={dayMapping[0]} className="govuk-body-s govuk-!-margin-bottom-2">
-                                            <span className="day govuk-!-font-weight-bold">{dayMapping[1]}</span>{' '}
-                                            {formatDayRestriction(timeRestriction, dayMapping[0])}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            ))}
-        </div>
-
-        <a className="govuk-button" data-module="govuk-button" href="/manageTimeRestriction">
-            Add a time restriction
-        </a>
-    </div>
+        <ul className="day-restrictions-list">
+            {Object.entries(dayMappings).map((dayMapping) => {
+                return (
+                    <li key={dayMapping[0]} className="govuk-body-s govuk-!-margin-bottom-2">
+                        <span className="day govuk-!-font-weight-bold">{dayMapping[1]}</span>{' '}
+                        {formatDayRestriction(entity, dayMapping[0])}
+                    </li>
+                );
+            })}
+        </ul>
+    </>
 );
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: TimeRestrictionProps }> => {

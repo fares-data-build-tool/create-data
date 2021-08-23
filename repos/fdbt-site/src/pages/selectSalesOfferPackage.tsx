@@ -263,7 +263,7 @@ export const getServerSideProps = async (
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');
     }
 
-    const salesOfferPackagesList = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
+    const salesOfferPackagesList: SalesOfferPackage[] = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
     salesOfferPackagesList.unshift(...defaultSalesOfferPackages);
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
