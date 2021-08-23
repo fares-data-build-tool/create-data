@@ -5,7 +5,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import RadioButtons from '../components/RadioButtons';
 import { INTERNAL_NOC } from '../constants';
-import { FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../constants/attributes';
+import { FARE_TYPE_ATTRIBUTE, GS_REFERER, OPERATOR_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../constants/attributes';
 import { getAllServicesByNocCode } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession, RadioOption } from '../interfaces';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
@@ -126,6 +126,7 @@ const FareType = ({ operatorName, schemeOp, errors = [], csrfToken }: FareTypePr
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: FareTypeProps }> => {
+    updateSessionAttribute(ctx.req, GS_REFERER, undefined);
     const csrfToken = getCsrfToken(ctx);
     const schemeOp = isSchemeOperator(ctx);
     const nocCode = getAndValidateNoc(ctx);
