@@ -386,6 +386,7 @@ exports[`pages view time restrictions should render correctly when no individual
   >
     <main
       className="govuk-main-wrapper"
+      data-card-count={0}
     >
       <div
         className="govuk-grid-row"
@@ -428,6 +429,7 @@ exports[`pages view time restrictions should render correctly when time restrict
   >
     <main
       className="govuk-main-wrapper"
+      data-card-count={2}
     >
       <div
         className="govuk-grid-row"
