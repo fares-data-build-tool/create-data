@@ -67,6 +67,7 @@ describe('defineTimeRestrictions', () => {
         const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
         getTimeRestrictionByNameAndNocSpy.mockImplementation().mockResolvedValue([
             {
+                id: 1,
                 name: 'My time restriction',
                 contents: [
                     {

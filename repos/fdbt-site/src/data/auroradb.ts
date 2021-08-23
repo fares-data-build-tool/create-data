@@ -61,6 +61,7 @@ interface RawSalesOfferPackage {
 }
 
 interface RawTimeRestriction {
+    id: number;
     nocCode: string;
     name: string;
     contents: string;
@@ -543,6 +544,33 @@ export const insertTimeRestriction = async (
     }
 };
 
+export const updateTimeRestriction = async (
+    id: number,
+    nocCode: string,
+    timeRestriction: FullTimeRestriction[],
+    name: string,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'updating time restriction',
+        nocCode,
+        name,
+        id,
+    });
+
+    const contents = JSON.stringify(timeRestriction);
+
+    const updateQuery = `UPDATE timeRestriction 
+                         SET name = ?, contents = ? 
+                         WHERE id = ? AND nocCode = ?`;
+
+    try {
+        await executeQuery(updateQuery, [name, contents, id, nocCode]);
+    } catch (error) {
+        throw new Error(`Could not update time restriction. ${error.stack}`);
+    }
+};
+
 export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<PremadeTimeRestriction[]> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -552,7 +580,7 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
 
     try {
         const queryInput = `
-            SELECT name, contents
+            SELECT id, name, contents
             FROM timeRestriction
             WHERE nocCode = ?
         `;
@@ -561,10 +589,36 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
 
         return (
             queryResults.map((item) => ({
+                id: item.id,
                 name: item.name,
                 contents: JSON.parse(item.contents),
             })) || []
         );
+    } catch (error) {
+        throw new Error(`Could not retrieve time restriction by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getTimeRestrictionById = async (
+    id: number,
+    nocCode: string,
+): Promise<PremadeTimeRestriction | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving time restriction for given id',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, name, contents
+            FROM timeRestriction
+            WHERE nocCode = ? AND id = ?
+        `;
+
+        const queryResult = (await executeQuery<RawTimeRestriction[]>(queryInput, [nocCode, id]))[0];
+
+        return queryResult && { ...queryResult, contents: JSON.parse(queryResult.contents) };
     } catch (error) {
         throw new Error(`Could not retrieve time restriction by nocCode from AuroraDB: ${error.stack}`);
     }
@@ -583,7 +637,7 @@ export const getTimeRestrictionByNameAndNoc = async (
 
     try {
         const queryInput = `
-            SELECT contents
+            SELECT id, name, contents
             FROM timeRestriction
             WHERE name = ?
             AND nocCode = ?
@@ -592,7 +646,8 @@ export const getTimeRestrictionByNameAndNoc = async (
         const queryResults = await executeQuery<RawTimeRestriction[]>(queryInput, [name, nocCode]);
 
         return queryResults.map((item) => ({
-            name,
+            id: item.id,
+            name: item.name,
             contents: JSON.parse(item.contents),
         }));
     } catch (error) {
@@ -871,7 +926,9 @@ const retrievePassengerTypeById = async (
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving passenger type for a given id',
-        id: id,
+        id,
+        noc,
+        isGroup,
     });
 
     try {
@@ -1059,5 +1116,24 @@ export const deletePassengerTypeByNocCodeAndId = async (
         throw new Error(
             `Could not delete ${isGroup === true ? 'group' : 'passenger'} from the passengerType table. ${error.stack}`,
         );
+    }
+};
+
+export const deleteTimeRestrictionByIdAndNocCode = async (id: number, nocCode: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: `deleting time restriction for id: ${id}.`,
+        id,
+        nocCode,
+    });
+
+    const deleteQuery = `
+            DELETE FROM timeRestriction 
+            WHERE id = ?
+            AND nocCode = ?`;
+    try {
+        await executeQuery(deleteQuery, [id, nocCode]);
+    } catch (error) {
+        throw new Error(`Could not delete time restriction with id: ${id}. ${error.stack}`);
     }
 };

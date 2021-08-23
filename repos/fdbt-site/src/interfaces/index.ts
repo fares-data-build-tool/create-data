@@ -196,6 +196,11 @@ export interface GlobalSettingsGroupAttribute {
     errors: ErrorInfo[];
 }
 
+export interface GlobalSettingsTimeRestrictionAttribute {
+    inputs: PremadeTimeRestriction;
+    errors: ErrorInfo[];
+}
+
 // Miscellaneous
 
 export interface SettingsOverview {
@@ -255,6 +260,7 @@ export interface ResponseWithLocals extends ServerResponse {
 }
 
 export interface PremadeTimeRestriction {
+    id: number;
     name: string;
     contents: FullTimeRestriction[];
 }
@@ -505,7 +511,8 @@ export interface DefinePassengerTypeWithErrors extends CompanionInfo {
     errors: ErrorInfo[];
 }
 
-export interface ManagePassengerTypeWithErrors extends SinglePassengerType {
+export interface ManagePassengerTypeWithErrors {
+    inputs: SinglePassengerType;
     errors: ErrorInfo[];
 }
 

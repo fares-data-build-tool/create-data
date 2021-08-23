@@ -1,7 +1,6 @@
 import chooseTimeRestrictions, {
     removeDuplicateAndEmptyTimebands,
     collectErrors,
-    isValid24hrTimeFormat,
     collectInputsFromRequest,
 } from '../../../src/pages/api/chooseTimeRestrictions';
 import * as auroradb from '../../../src/data/auroradb';
@@ -17,18 +16,6 @@ describe('chooseTimeRestrictions', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     beforeEach(() => {
         jest.resetAllMocks();
-    });
-
-    describe('isValid24hrTimeFormat', () => {
-        it.each([
-            [true, 'a valid time', '0730'],
-            [true, 'the max value', '2359'],
-            [true, 'the min value', '0000'],
-            [false, 'a valid time over the max value', '2400'],
-            [false, 'an invalid time', '7pm'],
-        ])('should return %s for %s in 2400 format', (validity, _case, value) => {
-            expect(isValid24hrTimeFormat(value)).toBe(validity);
-        });
     });
 
     describe('collectInputsFromRequest', () => {
@@ -401,6 +388,7 @@ describe('chooseTimeRestrictions', () => {
         const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
         getTimeRestrictionByNameAndNocSpy.mockImplementation().mockResolvedValue([
             {
+                id: 1,
                 name: 'test time restriction',
                 contents: [
                     {

@@ -3,9 +3,11 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as session from '../../../src/utils/sessions';
 import * as aurora from '../../../src/data/auroradb';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../../src/constants/attributes';
+import { FullGroupPassengerType } from 'src/interfaces';
 
 const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
 const getGroupPassengerTypesFromGlobalSettingsSpy = jest.spyOn(aurora, 'getGroupPassengerTypesFromGlobalSettings');
+const convertToFullPassengerTypeSpy = jest.spyOn(aurora, 'convertToFullPassengerType');
 const insertGroupPassengerTypeSpy = jest.spyOn(aurora, 'insertGroupPassengerType');
 const updateGroupPassengerTypeSpy = jest.spyOn(aurora, 'updateGroupPassengerType');
 insertGroupPassengerTypeSpy.mockResolvedValue();
@@ -52,7 +54,32 @@ describe('managePassengerGroup', () => {
 
     it('should return 302 redirect to /managePassengerGroup when there have been incorrect user inputs and update session with errors and inputs', async () => {
         const writeHeadMock = jest.fn();
+
         getGroupPassengerTypesFromGlobalSettingsSpy.mockResolvedValueOnce([]);
+
+        const fullGroupPassengerType: FullGroupPassengerType = {
+            id: 2,
+            name: 'Family5',
+            groupPassengerType: {
+                name: 'adult',
+                maxGroupSize: '5',
+                companions: [
+                    {
+                        id: 12,
+                        name: 'adult',
+                        passengerType: 'adult',
+                        minNumber: '1',
+                        maxNumber: '2',
+                        ageRangeMin: '18',
+                        ageRangeMax: '65',
+                        proofDocuments: [],
+                    },
+                ],
+            },
+        };
+
+        convertToFullPassengerTypeSpy.mockResolvedValueOnce(fullGroupPassengerType);
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -67,10 +94,13 @@ describe('managePassengerGroup', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
+
         await managePassengerGroup(req, res);
+
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/managePassengerGroup',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_PASSENGER_GROUP_ATTRIBUTE, {
             errors: [
                 {
@@ -113,6 +143,95 @@ describe('managePassengerGroup', () => {
                 },
                 id: undefined,
                 name: '',
+            },
+        });
+    });
+
+    it('should return 302 redirect to /managePassengerGroup when group has two of the same passenger types', async () => {
+        const writeHeadMock = jest.fn();
+
+        getGroupPassengerTypesFromGlobalSettingsSpy.mockResolvedValueOnce([]);
+
+        const fullGroupPassengerType: FullGroupPassengerType = {
+            id: 2,
+            name: 'Family5',
+            groupPassengerType: {
+                name: 'Family5',
+                maxGroupSize: '5',
+                companions: [
+                    {
+                        id: 12,
+                        name: 'regular adult',
+                        passengerType: 'adult',
+                        minNumber: '1',
+                        maxNumber: '2',
+                        ageRangeMin: '18',
+                        ageRangeMax: '65',
+                        proofDocuments: [],
+                    },
+                    {
+                        id: 43,
+                        name: 'adults',
+                        passengerType: 'adult',
+                        minNumber: '1',
+                        maxNumber: '2',
+                        ageRangeMin: '18',
+                        ageRangeMax: '65',
+                        proofDocuments: [],
+                    },
+                ],
+            },
+        };
+
+        convertToFullPassengerTypeSpy.mockResolvedValueOnce(fullGroupPassengerType);
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                maxGroupSize: '5',
+                passengerTypes: ['12', '43'],
+                ['minimumPassengers12']: '1',
+                ['maximumPassengers12']: '2',
+                ['minimumPassengers43']: '1',
+                ['maximumPassengers43']: '2',
+                passengerGroupName: 'Family5',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await managePassengerGroup(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/managePassengerGroup',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_PASSENGER_GROUP_ATTRIBUTE, {
+            errors: [
+                {
+                    errorMessage: 'A group cannot contain multiple "Adult" passenger types',
+                    id: 'passenger-group',
+                },
+            ],
+            inputs: {
+                groupPassengerType: {
+                    companions: [
+                        {
+                            id: 12,
+                            minNumber: '1',
+                            maxNumber: '2',
+                        },
+                        {
+                            id: 43,
+                            minNumber: '1',
+                            maxNumber: '2',
+                        },
+                    ],
+                    maxGroupSize: '5',
+                    name: 'Family5',
+                },
+                id: undefined,
+                name: 'Family5',
             },
         });
     });
@@ -191,42 +310,71 @@ describe('managePassengerGroup', () => {
 
     it('should return 302 redirect to /viewPassengerTypes when there have been correct user inputs and the group is saved to the db ', async () => {
         const writeHeadMock = jest.fn();
+
         getGroupPassengerTypesFromGlobalSettingsSpy.mockResolvedValueOnce([]);
+
+        const fullGroupPassengerType: FullGroupPassengerType = {
+            id: 2,
+            name: 'Family5',
+            groupPassengerType: {
+                name: 'adult',
+                maxGroupSize: '5',
+                companions: [
+                    {
+                        id: 12,
+                        name: 'adult',
+                        passengerType: 'adult',
+                        minNumber: '1',
+                        maxNumber: '2',
+                        ageRangeMin: '18',
+                        ageRangeMax: '65',
+                        proofDocuments: [],
+                    },
+                ],
+            },
+        };
+
+        convertToFullPassengerTypeSpy.mockResolvedValueOnce(fullGroupPassengerType);
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
-                maxGroupSize: '7',
+                maxGroupSize: '5',
                 passengerTypes: ['12', '43'],
-                ['minimumPassengers12']: '2',
-                ['maximumPassengers12']: '3',
+                ['minimumPassengers12']: '1',
+                ['maximumPassengers12']: '2',
                 ['minimumPassengers43']: '1',
-                ['maximumPassengers43']: '2',
+                ['maximumPassengers43']: '3',
                 passengerGroupName: 'My group',
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
+
         await managePassengerGroup(req, res);
+
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/viewPassengerTypes',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
+
         expect(insertGroupPassengerTypeSpy).toBeCalledWith(
             'TEST',
             {
                 companions: [
                     {
                         id: 12,
-                        maxNumber: '3',
-                        minNumber: '2',
-                    },
-                    {
-                        id: 43,
                         maxNumber: '2',
                         minNumber: '1',
                     },
+                    {
+                        id: 43,
+                        maxNumber: '3',
+                        minNumber: '1',
+                    },
                 ],
-                maxGroupSize: '7',
+                maxGroupSize: '5',
                 name: 'My group',
             },
             'My group',
@@ -235,58 +383,88 @@ describe('managePassengerGroup', () => {
 
     it('should return 302 redirect to /viewPassengerTypes when there has been a correct edit made and the group is updated in the db', async () => {
         const writeHeadMock = jest.fn();
+
         getGroupPassengerTypesFromGlobalSettingsSpy.mockResolvedValueOnce([
             {
                 id: 2,
-                name: 'group',
+                name: 'Family5',
                 groupPassengerType: {
                     name: 'adult',
-                    maxGroupSize: '3',
+                    maxGroupSize: '5',
                     companions: [
                         {
+                            id: 12,
                             name: 'adult',
                             passengerType: 'adult',
-                            minNumber: '2',
-                            maxNumber: '3',
+                            minNumber: '1',
+                            maxNumber: '2',
                             ageRangeMin: '18',
-                            ageRangeMax: '79',
+                            ageRangeMax: '65',
                             proofDocuments: [],
                         },
                     ],
                 },
             },
         ]);
+
+        const fullGroupPassengerType: FullGroupPassengerType = {
+            id: 2,
+            name: 'Family5',
+            groupPassengerType: {
+                name: 'adult',
+                maxGroupSize: '5',
+                companions: [
+                    {
+                        id: 12,
+                        name: 'adult',
+                        passengerType: 'adult',
+                        minNumber: '1',
+                        maxNumber: '2',
+                        ageRangeMin: '18',
+                        ageRangeMax: '65',
+                        proofDocuments: [],
+                    },
+                ],
+            },
+        };
+
+        convertToFullPassengerTypeSpy.mockResolvedValueOnce(fullGroupPassengerType);
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
                 groupId: '2',
-                maxGroupSize: '7',
+                maxGroupSize: '5',
                 passengerTypes: ['12', '43'],
-                ['minimumPassengers12']: '2',
-                ['maximumPassengers12']: '3',
+                ['minimumPassengers12']: '1',
+                ['maximumPassengers12']: '2',
                 ['minimumPassengers43']: '1',
-                ['maximumPassengers43']: '2',
-                passengerGroupName: 'group',
+                ['maximumPassengers43']: '3',
+                passengerGroupName: 'Five Family',
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
+
         await managePassengerGroup(req, res);
+
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/viewPassengerTypes',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
+
         expect(updateGroupPassengerTypeSpy).toBeCalledWith('TEST', {
             groupPassengerType: {
                 companions: [
-                    { id: 12, maxNumber: '3', minNumber: '2' },
-                    { id: 43, maxNumber: '2', minNumber: '1' },
+                    { id: 12, maxNumber: '2', minNumber: '1' },
+                    { id: 43, maxNumber: '3', minNumber: '1' },
                 ],
-                maxGroupSize: '7',
-                name: 'group',
+                maxGroupSize: '5',
+                name: 'Five Family',
             },
             id: 2,
-            name: 'group',
+            name: 'Five Family',
         });
     });
 

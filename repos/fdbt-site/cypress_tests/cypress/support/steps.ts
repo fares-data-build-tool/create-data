@@ -47,7 +47,7 @@ export const defineSchoolUserAndTimeRestrictions = (): void => {
 };
 
 export const selectFareType = (fareType: FareType, isScheme: boolean): void => {
-    getHomePage(isScheme);
+    getHomePage(isScheme ? 'scheme' : 'BLAC');
     startPageLinkClick();
     clickElementById(fareTypeToFareTypeIdMapper(fareType));
     continueButtonClick();
@@ -65,10 +65,6 @@ export const selectSchoolFareType = (
     clickElementById(fareTypeToFareTypeIdMapper(fareType));
     continueButtonClick();
     continueButtonClick();
-};
-export const startSchemeJourney = (): void => {
-    getHomePage(true);
-    startPageLinkClick();
 };
 
 export const completeFlatFarePages = (
