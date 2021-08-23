@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 
 interface DeleteSOPButtonProps {
-    sopId: string;
+    sopId: number;
     csrfToken: string;
 }
 

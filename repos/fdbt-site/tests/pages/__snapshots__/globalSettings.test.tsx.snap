@@ -39,6 +39,12 @@ exports[`pages globalSettings should render correctly 1`] = `
           name="Passenger types"
         />
         <SettingOverview
+          count={7}
+          description="Define the way your tickets are sold, including where they are bought, the payment method and format"
+          href="/viewPurchaseMethods"
+          name="Purchase Methods"
+        />
+        <SettingOverview
           count={3}
           description="Define certain days and time periods that your tickets can be used within"
           href="/viewTimeRestrictions"

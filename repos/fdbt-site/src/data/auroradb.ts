@@ -2,6 +2,7 @@ import awsParamStore from 'aws-param-store';
 import dateFormat from 'dateformat';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
+import { FromDb } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
     CompanionInfo,
@@ -54,7 +55,7 @@ interface NaptanAtcoCodes {
 interface RawSalesOfferPackage {
     name: string;
     description: string;
-    id: string;
+    id: number;
     purchaseLocations: string;
     paymentMethods: string;
     ticketFormats: string;
@@ -370,7 +371,7 @@ export const getServiceByNocCodeLineNameAndDataSource = async (
     };
 };
 
-export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackage[]> => {
+export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<FromDb<SalesOfferPackage>[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving sales offer packages for given noc',

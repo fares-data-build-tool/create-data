@@ -1,0 +1,267 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] = `
+<BaseLayout
+  description="my description"
+  referer={null}
+  showNavigation={true}
+  title="my title"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <main
+      className="govuk-main-wrapper"
+    >
+      <div
+        className="govuk-grid-row"
+      >
+        <div
+          className="govuk-grid-column-one-third"
+        >
+          <SubNavigation />
+        </div>
+        <div
+          className="govuk-grid-column-two-thirds"
+        >
+          <h1
+            className="govuk-heading-xl"
+          >
+            my title
+          </h1>
+          <p
+            className="govuk-body"
+          >
+            my description
+          </p>
+          <div
+            className="govuk-heading-m"
+          >
+            <div
+              className="govuk-grid-row"
+            >
+              <div
+                className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
+                key="7"
+              >
+                <div
+                  className="card"
+                >
+                  <div
+                    className="card__body my-entity-description"
+                  >
+                    <div
+                      className="card__actions"
+                    >
+                      <ul
+                        className="actions__list"
+                      >
+                        <li
+                          className="actions__item"
+                        >
+                          <a
+                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
+                            href="/manageMyEntityDescription?id=7"
+                          >
+                            Edit
+                          </a>
+                        </li>
+                        <li
+                          className="actions__item"
+                        >
+                          <button
+                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                            onClick={[Function]}
+                          >
+                            Delete
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                    <CardBody
+                      entity={
+                        Object {
+                          "id": 7,
+                          "name": "name seven",
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
+                key="17"
+              >
+                <div
+                  className="card"
+                >
+                  <div
+                    className="card__body my-entity-description"
+                  >
+                    <div
+                      className="card__actions"
+                    >
+                      <ul
+                        className="actions__list"
+                      >
+                        <li
+                          className="actions__item"
+                        >
+                          <a
+                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
+                            href="/manageMyEntityDescription?id=17"
+                          >
+                            Edit
+                          </a>
+                        </li>
+                        <li
+                          className="actions__item"
+                        >
+                          <button
+                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                            onClick={[Function]}
+                          >
+                            Delete
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                    <CardBody
+                      entity={
+                        Object {
+                          "id": 17,
+                          "name": "name seventeen",
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="govuk-grid-column-one-half govuk-!-margin-bottom-5"
+                key="1"
+              >
+                <div
+                  className="card"
+                >
+                  <div
+                    className="card__body my-entity-description"
+                  >
+                    <div
+                      className="card__actions"
+                    >
+                      <ul
+                        className="actions__list"
+                      >
+                        <li
+                          className="actions__item"
+                        >
+                          <a
+                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
+                            href="/manageMyEntityDescription?id=1"
+                          >
+                            Edit
+                          </a>
+                        </li>
+                        <li
+                          className="actions__item"
+                        >
+                          <button
+                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                            onClick={[Function]}
+                          >
+                            Delete
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                    <CardBody
+                      entity={
+                        Object {
+                          "id": 1,
+                          "name": "another one",
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a
+              className="govuk-button"
+              data-module="govuk-button"
+              href="/manageMyEntityDescription"
+            >
+              Add a 
+              my entity description
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</BaseLayout>
+`;
+
+exports[`GlobalSettingsViewPage should render correctly when no entities 1`] = `
+<BaseLayout
+  description="my description"
+  referer={null}
+  showNavigation={true}
+  title="my title"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <main
+      className="govuk-main-wrapper"
+    >
+      <div
+        className="govuk-grid-row"
+      >
+        <div
+          className="govuk-grid-column-one-third"
+        >
+          <SubNavigation />
+        </div>
+        <div
+          className="govuk-grid-column-two-thirds"
+        >
+          <h1
+            className="govuk-heading-xl"
+          >
+            my title
+          </h1>
+          <p
+            className="govuk-body"
+          >
+            my description
+          </p>
+          <div
+            className="govuk-heading-m"
+          >
+            <p
+              className="govuk-body"
+            >
+              <em>
+                You currently have no 
+                my entity description
+                s saved.
+              </em>
+            </p>
+            <a
+              className="govuk-button"
+              data-module="govuk-button"
+              href="/manageMyEntityDescription"
+            >
+              Add a 
+              my entity description
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</BaseLayout>
+`;

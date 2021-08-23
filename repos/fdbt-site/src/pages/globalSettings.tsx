@@ -3,6 +3,7 @@ import SettingOverview from '../components/SettingOverview';
 import {
     getGroupPassengerTypesFromGlobalSettings,
     getPassengerTypesByNocCode,
+    getSalesOfferPackagesByNocCode,
     getTimeRestrictionByNocCode,
 } from '../data/auroradb';
 import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces';
@@ -44,6 +45,12 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             count={globalSettingsCounts.passengerTypesCount}
                         />
                         <SettingOverview
+                            href="/viewPurchaseMethods"
+                            name="Purchase Methods"
+                            description="Define the way your tickets are sold, including where they are bought, the payment method and format"
+                            count={globalSettingsCounts.purchaseMethodsCount}
+                        />
+                        <SettingOverview
                             href="/viewTimeRestrictions"
                             name="Time restrictions"
                             description="Define certain days and time periods that your tickets can be used within"
@@ -71,14 +78,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const savedPassengerTypes = await getPassengerTypesByNocCode(noc, 'single');
     const savedGroupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(noc);
-    const passengerTypesCount = savedPassengerTypes.length + savedGroupPassengerTypes.length;
-
     const savedTimeRestrictions = await getTimeRestrictionByNocCode(noc);
-    const timeRestrictionsCount = savedTimeRestrictions.length;
+    const purchaseMethodsCount = await getSalesOfferPackagesByNocCode(noc);
 
     const globalSettingsCounts: GlobalSettingsCounts = {
-        passengerTypesCount,
-        timeRestrictionsCount,
+        passengerTypesCount: savedPassengerTypes.length + savedGroupPassengerTypes.length,
+        timeRestrictionsCount: savedTimeRestrictions.length,
+        purchaseMethodsCount: purchaseMethodsCount.length,
     };
 
     return { props: { globalSettingsCounts, referer } };

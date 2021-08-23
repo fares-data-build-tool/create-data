@@ -194,6 +194,7 @@ describe('describeSalesOfferPackage', () => {
         jest.spyOn(aurora, 'getSalesOfferPackagesByNocCode').mockImplementation(() =>
             Promise.resolve([
                 {
+                    id: 7,
                     name: 'Sales Offer Package',
                     description: '',
                     paymentMethods: [],
