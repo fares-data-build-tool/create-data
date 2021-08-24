@@ -430,7 +430,10 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
     }
 };
 
-export const deleteSalesOfferPackageByNocCodeAndName = async (sopId: string, nocCode: string): Promise<void> => {
+export const deleteSalesOfferPackageByNocCodeAndName = async (
+    sopId: number | string,
+    nocCode: string,
+): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'deleting sales offer package for given name',
