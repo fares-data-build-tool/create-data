@@ -59,7 +59,7 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                                 <div className="govuk-radios__item">
                                     <input
                                         className="govuk-radios__input"
-                                        id="yes-choice"
+                                        id="valid-days-required"
                                         name="timeRestrictionChoice"
                                         type="radio"
                                         value="Premade"
@@ -92,11 +92,11 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                                 <div className="govuk-radios__item">
                                     <input
                                         className="govuk-radios__input"
-                                        id="no-choice"
+                                        id="valid-days-not-required"
                                         name="timeRestrictionChoice"
                                         type="radio"
                                         value="no"
-                                        data-aria-controls="conditional-contact-2"
+                                        data-aria-controls="conditional-time-restriction-2"
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
                                         No

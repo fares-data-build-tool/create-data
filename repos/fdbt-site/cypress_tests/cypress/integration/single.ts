@@ -14,6 +14,7 @@ describe('The single faretype product journey', () => {
         completeSalesPages();
         isUuidStringValid();
     });
+
     it('completes successfully for manual upload', () => {
         selectFareType('single', false);
         defineUserTypeAndTimeRestrictions();
