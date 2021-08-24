@@ -1,4 +1,4 @@
-import { clickElementById, getElementByClass, getElementByName } from './helpers';
+import { clickElementById, getElementByClass, getElementByDataTestId, getElementByName } from './helpers';
 
 interface TimeRestriction {
     days: string[];
@@ -25,10 +25,16 @@ export const createEditTimeRestriction = (): void => {
 
     addTimeRestriction(timeRestriction);
 
-    const timeRestrictionCard = getElementByClass('card').eq(0);
+    let timeRestrictionCard = getElementByClass('card').eq(0);
     timeRestrictionCard.should('include.text', timeRestriction.name);
-    timeRestrictionCard.should('include.text', 'Valid all day');
 
+    const saturday = getElementByDataTestId('day-restriction').eq(5);
+    saturday.should('include.text', 'Sat Valid all day');
+
+    const sunday = getElementByDataTestId('day-restriction').eq(6);
+    sunday.should('include.text', 'Sun Valid all day');
+
+    timeRestrictionCard = getElementByClass('card').eq(0);
     timeRestrictionCard.contains('Edit').click();
 
     const editedTimeRestriction = {
@@ -49,7 +55,21 @@ export const createEditTimeRestriction = (): void => {
 
     cy.contains('Update time restriction').click();
 
+    const monday = getElementByDataTestId('day-restriction').eq(0);
+    monday.should('include.text', 'Mon Valid all day');
+
+    const tuesday = getElementByDataTestId('day-restriction').eq(1);
+    tuesday.should('include.text', 'Tue Valid all day');
+
+    const wednesday = getElementByDataTestId('day-restriction').eq(2);
+    wednesday.should('include.text', 'Wed Valid all day');
+
+    const thursday = getElementByDataTestId('day-restriction').eq(3);
+    thursday.should('include.text', 'Thu Valid all day');
+
+    const friday = getElementByDataTestId('day-restriction').eq(4);
+    friday.should('include.text', 'Fri Valid all day');
+
     const editedCard = getElementByClass('card').eq(0);
     editedCard.should('include.text', editedTimeRestriction.name);
-    timeRestrictionCard.should('include.text', 'Valid all day');
 };

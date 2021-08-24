@@ -69,7 +69,11 @@ export const TimeRestrictions: FunctionComponent<{ entity: PremadeTimeRestrictio
         <ul className="day-restrictions-list">
             {Object.entries(dayMappings).map((dayMapping) => {
                 return (
-                    <li key={dayMapping[0]} className="govuk-body-s govuk-!-margin-bottom-2">
+                    <li
+                        key={dayMapping[0]}
+                        className="govuk-body-s govuk-!-margin-bottom-2"
+                        data-test-id="day-restriction"
+                    >
                         <span className="day govuk-!-font-weight-bold">{dayMapping[1]}</span>{' '}
                         {formatDayRestriction(entity, dayMapping[0])}
                     </li>
