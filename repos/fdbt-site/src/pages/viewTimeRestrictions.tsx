@@ -52,19 +52,19 @@ const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRest
                 csrfToken={csrfToken}
                 title={title}
                 description={description}
-                CardBody={TimeRestrictions}
+                CardBody={TimeRestriction}
             />
         </>
     );
 };
 
-export const TimeRestrictions: FunctionComponent<{ entity: PremadeTimeRestriction }> = ({
+export const TimeRestriction: FunctionComponent<{ entity: PremadeTimeRestriction }> = ({
     entity,
 }: {
     entity: PremadeTimeRestriction;
 }) => (
     <>
-        <h4 className="time-restriction-title govuk-!-padding-bottom-4">{entity.name}</h4>
+        <h4 className="time-restriction-title govuk-heading-m govuk-!-padding-bottom-4">{entity.name}</h4>
 
         <ul className="day-restrictions-list">
             {Object.entries(dayMappings).map((dayMapping) => {

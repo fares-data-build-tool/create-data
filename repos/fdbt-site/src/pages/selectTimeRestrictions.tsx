@@ -1,24 +1,14 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction, TimeBand } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
+import { TimeRestriction } from './viewTimeRestrictions';
 
 const title = 'Define Time Restrictions - Create Fares Data Service';
 const description = 'Define Time Restrictions page of the Create Fares Data Service';
-
-const dayMappings = {
-    monday: 'Mon',
-    tuesday: 'Tue',
-    wednesday: 'Wed',
-    thursday: 'Thu',
-    friday: 'Fri',
-    saturday: 'Sat',
-    sunday: 'Sun',
-    bankHoliday: 'BH',
-};
 
 interface SelectTimeRestrictionsProps {
     csrfToken: string;
@@ -146,40 +136,10 @@ const TimeRestrictionCard = ({ timeRestriction }: { timeRestriction: PremadeTime
                         </div>
                     </div>
 
-                    <h4 className="time-restriction-title govuk-heading-m govuk-!-padding-bottom-4">
-                        {timeRestriction.name}
-                    </h4>
-
-                    <ul className="day-restrictions-list">
-                        {Object.entries(dayMappings).map((dayMapping) => {
-                            return (
-                                <li key={dayMapping[0]} className="govuk-body-s govuk-!-margin-bottom-2">
-                                    <span className="day govuk-!-font-weight-bold">{dayMapping[1]}</span>{' '}
-                                    {formatDayRestriction(timeRestriction, dayMapping[0])}
-                                </li>
-                            );
-                        })}
-                    </ul>
+                    <TimeRestriction entity={timeRestriction} />
                 </div>
             </div>
         </div>
-    );
-};
-
-const formatTime = (time: string): string => (time ? `${time.substring(0, 2)}:${time.substring(2, 4)}` : '');
-
-const formatTimeBand = (timeBand: TimeBand): string =>
-    `${formatTime(timeBand.startTime)}–${formatTime(timeBand.endTime)}`;
-
-const formatTimeBands = (timeBands: TimeBand[]): string =>
-    timeBands.length > 0 ? timeBands.map((timeBand) => formatTimeBand(timeBand)).join(', ') : 'Valid all day';
-
-const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: string): JSX.Element => {
-    const matchedDayRestriction = timeRestriction.contents.find((dayRestriction) => dayRestriction.day === day);
-    return matchedDayRestriction ? (
-        <span className="day-restriction">{formatTimeBands(matchedDayRestriction.timeBands)}</span>
-    ) : (
-        <span className="day-restriction not-valid">Not valid</span>
     );
 };
 
