@@ -98,14 +98,12 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                         </fieldset>
                     </div>
 
-                    {!!timeRestrictions.length && (
-                        <input
-                            type="submit"
-                            value="Continue"
-                            id="continue-button"
-                            className="govuk-button govuk-!-margin-right-2"
-                        />
-                    )}
+                    <input
+                        type="submit"
+                        value="Continue"
+                        id="continue-button"
+                        className="govuk-button govuk-!-margin-right-2"
+                    />
 
                     <a className="govuk-button govuk-button--secondary" href="/viewTimeRestrictions">
                         Create new
