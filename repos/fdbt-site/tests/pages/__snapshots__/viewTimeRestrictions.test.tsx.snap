@@ -3,7 +3,7 @@
 exports[`pages time restrictions inner component renders normally when time restrictions are present 1`] = `
 <Fragment>
   <h4
-    className="time-restriction-title govuk-!-padding-bottom-4"
+    className="time-restriction-title govuk-heading-m govuk-!-padding-bottom-4"
   >
     Restriction 1
   </h4>

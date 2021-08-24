@@ -56,7 +56,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
     );
 
     const cards = () => (
-        <div className="govuk-heading-m">
+        <>
             <div className="govuk-grid-row">
                 {entities.map((entity) => (
                     <div key={entity.id} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
@@ -96,7 +96,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
             <a className="govuk-button" data-module="govuk-button" href={`/manage${entityUrl}`}>
                 Add a {entityDescription}
             </a>
-        </div>
+        </>
     );
 
     return (
