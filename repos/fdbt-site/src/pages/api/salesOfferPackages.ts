@@ -9,14 +9,7 @@ import {
 } from '../../interfaces';
 import { SOP_INFO_ATTRIBUTE } from '../../constants/attributes';
 import { purchaseLocationsList, paymentMethodsList, ticketFormatsList } from '../salesOfferPackages';
-
-const toArray = (thing: string | string[] | undefined): string[] => {
-    if (!thing) {
-        return [];
-    }
-
-    return Array.isArray(thing) ? thing : [thing];
-};
+import { toArray } from '../../utils';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const errors: ErrorInfo[] = [];

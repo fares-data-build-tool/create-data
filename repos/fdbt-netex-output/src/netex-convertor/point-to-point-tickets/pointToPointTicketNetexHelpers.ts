@@ -286,7 +286,7 @@ export const buildSalesOfferPackage = (
             $t: salesOfferPackageInfo.name,
         },
         Description: {
-            $t: salesOfferPackageInfo.description,
+            $t: salesOfferPackageInfo.description ?? '',
         },
         version: '1.0',
         id: `Trip@${ticketUserConcat}-SOP@${salesOfferPackageInfo.name}`,

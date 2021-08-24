@@ -7,7 +7,7 @@ import { paymentMethodsList, purchaseLocationsList, ticketFormatsList } from '..
 import { toArray } from '../../utils';
 import { FromDb } from '../../../shared/matchingJsonTypes';
 import { removeExcessWhiteSpace } from './apiUtils/validator';
-import { insertSalesOfferPackage } from '../../data/auroradb';
+import { insertSalesOfferPackage, getSalesOfferPackagesByNocCode } from '../../data/auroradb';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const errors: ErrorInfo[] = [];
@@ -64,6 +64,18 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             paymentMethods: toArray(paymentMethods),
             ticketFormats: toArray(ticketFormats),
         };
+
+        const noc = getAndValidateNoc(req, res);
+        if (errors.length === 0) {
+            const results = await getSalesOfferPackagesByNocCode(noc);
+
+            if (results.some((sop) => sop.id !== id && sop.name.toLowerCase() === trimmedName.toLowerCase())) {
+                errors.push({
+                    errorMessage: `You already have a purchase method named ${trimmedName}. Choose another name.`,
+                    id: 'purchase-method-name',
+                });
+            }
+        }
 
         if (errors.length > 0) {
             updateSessionAttribute(req, GS_PURCHASE_METHOD_ATTRIBUTE, { inputs: salesOfferPackage, errors });
