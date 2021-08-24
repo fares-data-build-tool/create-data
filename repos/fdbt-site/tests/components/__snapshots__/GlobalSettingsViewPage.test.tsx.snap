@@ -12,6 +12,7 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] 
   >
     <main
       className="govuk-main-wrapper"
+      data-card-count={3}
     >
       <div
         className="govuk-grid-row"
@@ -212,6 +213,7 @@ exports[`GlobalSettingsViewPage should render correctly when no entities 1`] = `
   >
     <main
       className="govuk-main-wrapper"
+      data-card-count={0}
     >
       <div
         className="govuk-grid-row"

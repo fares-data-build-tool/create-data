@@ -102,7 +102,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
     return (
         <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div className="govuk-width-container">
-                <main className="govuk-main-wrapper">
+                <main className="govuk-main-wrapper" data-card-count={entities.length}>
                     <div className="govuk-grid-row">
                         <div className="govuk-grid-column-one-third">
                             <SubNavigation />

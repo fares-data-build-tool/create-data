@@ -12,6 +12,7 @@ exports[`pages time restrictions inner component renders normally when time rest
   >
     <li
       className="govuk-body-s govuk-!-margin-bottom-2"
+      data-test-id="day-restriction"
       key="monday"
     >
       <span
@@ -28,6 +29,7 @@ exports[`pages time restrictions inner component renders normally when time rest
     </li>
     <li
       className="govuk-body-s govuk-!-margin-bottom-2"
+      data-test-id="day-restriction"
       key="tuesday"
     >
       <span
@@ -44,6 +46,7 @@ exports[`pages time restrictions inner component renders normally when time rest
     </li>
     <li
       className="govuk-body-s govuk-!-margin-bottom-2"
+      data-test-id="day-restriction"
       key="wednesday"
     >
       <span
@@ -60,6 +63,7 @@ exports[`pages time restrictions inner component renders normally when time rest
     </li>
     <li
       className="govuk-body-s govuk-!-margin-bottom-2"
+      data-test-id="day-restriction"
       key="thursday"
     >
       <span
@@ -76,6 +80,7 @@ exports[`pages time restrictions inner component renders normally when time rest
     </li>
     <li
       className="govuk-body-s govuk-!-margin-bottom-2"
+      data-test-id="day-restriction"
       key="friday"
     >
       <span
@@ -92,6 +97,7 @@ exports[`pages time restrictions inner component renders normally when time rest
     </li>
     <li
       className="govuk-body-s govuk-!-margin-bottom-2"
+      data-test-id="day-restriction"
       key="saturday"
     >
       <span
@@ -108,6 +114,7 @@ exports[`pages time restrictions inner component renders normally when time rest
     </li>
     <li
       className="govuk-body-s govuk-!-margin-bottom-2"
+      data-test-id="day-restriction"
       key="sunday"
     >
       <span
@@ -124,6 +131,7 @@ exports[`pages time restrictions inner component renders normally when time rest
     </li>
     <li
       className="govuk-body-s govuk-!-margin-bottom-2"
+      data-test-id="day-restriction"
       key="bankHoliday"
     >
       <span

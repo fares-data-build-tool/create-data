@@ -1,9 +1,5 @@
-import {
-    createEditGroupPassengerTypes,
-    createEditSinglePassengerTypes,
-    deleteAllCards,
-    startGlobalSettings,
-} from '../../support/globalSettings';
+import { deleteAllCards, startGlobalSettings } from '../../support/globalSettings';
+import { createEditGroupPassengerTypes, createEditSinglePassengerTypes } from '../../support/passengerTypes';
 
 describe('passenger types', () => {
     it('creates edits and deletes passenger types', () => {
@@ -11,7 +7,7 @@ describe('passenger types', () => {
 
         cy.contains('Passenger types').click();
 
-        // Start with clean environment
+        // start with clean environment
         deleteAllCards();
 
         createEditSinglePassengerTypes();
