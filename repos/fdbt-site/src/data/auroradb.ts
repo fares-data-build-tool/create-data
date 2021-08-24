@@ -420,7 +420,7 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
         await executeQuery(insertQuery, [
             nocCode,
             salesOfferPackage.name,
-            salesOfferPackage.description,
+            salesOfferPackage.description || '',
             purchaseLocations,
             paymentMethods,
             ticketFormats,

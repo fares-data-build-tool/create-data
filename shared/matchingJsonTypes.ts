@@ -48,7 +48,7 @@ export type FlatFareTicket = FlatFareGeoZone | FlatFareMultipleServices;
 export interface SalesOfferPackage {
     id?: number;
     name: string;
-    description: string;
+    description?: string;
     purchaseLocations: string[];
     paymentMethods: string[];
     ticketFormats: string[];
