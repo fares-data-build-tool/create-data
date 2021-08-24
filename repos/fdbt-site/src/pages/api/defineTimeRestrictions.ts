@@ -1,5 +1,6 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
+import { globalSettingsEnabled } from '../../constants/featureFlag';
 import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
 import { getTimeRestrictionByNameAndNoc } from '../../data/auroradb';
 import { NextApiRequestWithSession, TimeRestriction, TimeRestrictionsDefinitionWithErrors } from '../../interfaces';
@@ -16,12 +17,19 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     timeRestrictionChoice,
                     errors: [{ errorMessage: 'Choose one of the premade time restrictions', id: 'time-restriction' }],
                 };
+
                 updateSessionAttribute(
                     req,
                     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
                     timeRestrictionsDefinitionWithErrors,
                 );
-                redirectTo(res, '/defineTimeRestrictions');
+
+                if (globalSettingsEnabled) {
+                    redirectTo(res, '/selectTimeRestrictions');
+                } else {
+                    redirectTo(res, '/defineTimeRestrictions');
+                }
+
                 return;
             }
 
@@ -62,8 +70,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 timeRestrictionChoice,
                 errors: [{ errorMessage: 'Choose one of the options below', id: 'valid-days-required' }],
             };
+
             updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinitionWithErrors);
-            redirectTo(res, '/defineTimeRestrictions');
+
+            if (globalSettingsEnabled) {
+                redirectTo(res, '/selectTimeRestrictions');
+            } else {
+                redirectTo(res, '/defineTimeRestrictions');
+            }
+
             return;
         }
 

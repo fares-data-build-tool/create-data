@@ -1,11 +1,19 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
+import {
+    ErrorInfo,
+    NextPageContextWithSession,
+    PremadeTimeRestriction,
+    TimeRestriction,
+    TimeRestrictionsDefinitionWithErrors,
+} from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
-import { TimeRestriction } from './viewTimeRestrictions';
+import { TimeRestrictionCardBody } from './viewTimeRestrictions';
+import { getSessionAttribute } from 'src/utils/sessions';
+import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from 'src/constants/attributes';
 
 const title = 'Define Time Restrictions - Create Fares Data Service';
 const description = 'Define Time Restrictions page of the Create Fares Data Service';
@@ -134,19 +142,30 @@ const TimeRestrictionCard = ({ timeRestriction }: { timeRestriction: PremadeTime
                         </div>
                     </div>
 
-                    <TimeRestriction entity={timeRestriction} />
+                    <TimeRestrictionCardBody entity={timeRestriction} />
                 </div>
             </div>
         </div>
     );
 };
 
+export const isTimeRestrictionsDefinitionWithErrors = (
+    timeRestrictionsDefinition: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
+): timeRestrictionsDefinition is TimeRestrictionsDefinitionWithErrors =>
+    (timeRestrictionsDefinition as TimeRestrictionsDefinitionWithErrors).errors !== undefined;
+
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: SelectTimeRestrictionsProps }> => {
     const csrfToken = getCsrfToken(ctx);
 
-    const errors: ErrorInfo[] = [];
+    let errors: ErrorInfo[] = [];
+
+    const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+
+    if (timeRestrictionsDefinition && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsDefinition)) {
+        errors = timeRestrictionsDefinition.errors;
+    }
 
     const nationalOperatorCode = getAndValidateNoc(ctx);
 
