@@ -433,7 +433,7 @@ export const getSalesOfferPackageById = async (
             }
         );
     } catch (error) {
-        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+        throw new Error(`Could not retrieve sales offer packages from AuroraDB: ${error.stack}`);
     }
 };
 
