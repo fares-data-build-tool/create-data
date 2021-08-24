@@ -98,4 +98,6 @@ export const GS_PASSENGER_GROUP_ATTRIBUTE = 'fdbt-global-settings-passenger-grou
 
 export const GS_TIME_RESTRICTION_ATTRIBUTE = 'fdbt-global-settings-time-restriction';
 
+export const GS_PURCHASE_METHOD_ATTRIBUTE = 'fdbt-global-settings-purchase-method';
+
 export const GS_REFERER = 'fdbt-global-settings-referer';

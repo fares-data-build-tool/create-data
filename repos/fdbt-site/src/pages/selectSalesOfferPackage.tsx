@@ -130,7 +130,7 @@ const generateCheckbox = (
                             className="govuk-label govuk-checkboxes__label"
                             htmlFor={`product-${productNameIds}-checkbox-${index}`}
                         >
-                            <b>{name}</b> {description.length > 0 ? '-' : ''} {description}
+                            <b>{name}</b> {description && description.length > 0 ? '-' : ''} {description}
                         </label>
                         <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
                             Purchase locations: {formatSOPArray(purchaseLocations)}

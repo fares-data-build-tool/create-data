@@ -220,3 +220,11 @@ export const checkIfMultipleOperators = (ctx: NextPageContextWithSession): boole
 
 export const getCsrfToken = (ctx: DocumentContextWithSession | NextPageContextWithSession | NextPageContext): string =>
     (ctx.res as ResponseWithLocals)?.locals?.csrfToken ?? '';
+
+export const toArray = (thing: string | string[] | undefined): string[] => {
+    if (!thing) {
+        return [];
+    }
+
+    return Array.isArray(thing) ? thing : [thing];
+};

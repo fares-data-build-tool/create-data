@@ -191,13 +191,8 @@ export interface ServiceListAttributeWithErrors {
     errors: ErrorInfo[];
 }
 
-export interface GlobalSettingsGroupAttribute {
-    inputs: GroupPassengerTypeDb;
-    errors: ErrorInfo[];
-}
-
-export interface GlobalSettingsTimeRestrictionAttribute {
-    inputs: PremadeTimeRestriction;
+export interface GlobalSettingsAttribute<T> {
+    inputs: T;
     errors: ErrorInfo[];
 }
 

@@ -49,6 +49,7 @@ import {
     GS_PASSENGER_GROUP_ATTRIBUTE,
     GS_TIME_RESTRICTION_ATTRIBUTE,
     GS_REFERER,
+    GS_PURCHASE_METHOD_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CompanionInfo,
@@ -111,11 +112,13 @@ import {
     WithErrors,
     PointToPointPeriodProduct,
     ManagePassengerTypeWithErrors,
-    GlobalSettingsGroupAttribute,
-    GlobalSettingsTimeRestrictionAttribute,
+    GlobalSettingsAttribute,
+    GroupPassengerTypeDb,
+    PremadeTimeRestriction,
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
+import { FromDb } from '../../shared/matchingJsonTypes';
 
 export interface SessionAttributeTypes {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -168,8 +171,9 @@ export interface SessionAttributeTypes {
     [CARNET_FARE_TYPE_ATTRIBUTE]: boolean;
     [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: GroupPassengerType[];
     [POINT_TO_POINT_PRODUCT_ATTRIBUTE]: PointToPointPeriodProduct | WithErrors<PointToPointPeriodProduct>;
-    [GS_PASSENGER_GROUP_ATTRIBUTE]: GlobalSettingsGroupAttribute;
-    [GS_TIME_RESTRICTION_ATTRIBUTE]: GlobalSettingsTimeRestrictionAttribute;
+    [GS_PASSENGER_GROUP_ATTRIBUTE]: GlobalSettingsAttribute<GroupPassengerTypeDb>;
+    [GS_TIME_RESTRICTION_ATTRIBUTE]: GlobalSettingsAttribute<PremadeTimeRestriction>;
+    [GS_PURCHASE_METHOD_ATTRIBUTE]: GlobalSettingsAttribute<FromDb<SalesOfferPackage>>;
     [GS_REFERER]: string;
 }
 

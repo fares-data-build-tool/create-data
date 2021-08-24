@@ -46,7 +46,7 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                         />
                         <SettingOverview
                             href="/viewPurchaseMethods"
-                            name="Purchase Methods"
+                            name="Purchase methods"
                             description="Define the way your tickets are sold, including where they are bought, the payment method and format"
                             count={globalSettingsCounts.purchaseMethodsCount}
                         />
