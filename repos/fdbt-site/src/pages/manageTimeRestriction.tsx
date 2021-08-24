@@ -205,7 +205,7 @@ const ManageTimeRestriction = ({
                                 <div className="govuk-checkboxes" data-module="govuk-checkboxes">
                                     {days.map(
                                         (day, index): ReactElement => (
-                                            <>
+                                            <div key={day.id}>
                                                 <div className="govuk-checkboxes__item" key={day.id}>
                                                     <input
                                                         className="govuk-checkboxes__input"
@@ -257,7 +257,7 @@ const ManageTimeRestriction = ({
                                                         )}
                                                     </fieldset>
                                                 </div>
-                                            </>
+                                            </div>
                                         ),
                                     )}
                                 </div>

@@ -8,6 +8,7 @@ import * as db from '../../../src/data/auroradb';
 
 jest.mock('../../../src/data/auroradb');
 const insertSpy = jest.spyOn(db, 'insertSalesOfferPackage');
+const updateSpy = jest.spyOn(db, 'updateSalesOfferPackage');
 const getSpy = jest.spyOn(db, 'getSalesOfferPackagesByNocCode');
 
 describe('managePurchaseMethod', () => {
@@ -271,7 +272,37 @@ describe('managePurchaseMethod', () => {
 
         await managePurchaseMethod(req, res);
 
+        expect(updateSpy).not.toBeCalled();
         expect(insertSpy).toBeCalledWith('TEST', expected);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, GS_PURCHASE_METHOD_ATTRIBUTE, undefined);
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/viewPurchaseMethods',
+        });
+    });
+
+    it('updates and redirects to /viewPurchaseMethods when a valid edit is performed', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                id: 77,
+                purchaseLocations: ['OnBoard', 'Online Account'],
+                paymentMethods: ['Cash'],
+                ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
+                name: 'a name',
+            },
+        });
+
+        const expected: SalesOfferPackage = {
+            id: 77,
+            purchaseLocations: ['OnBoard', 'Online Account'],
+            ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
+            paymentMethods: ['Cash'],
+            name: 'a name',
+        };
+
+        await managePurchaseMethod(req, res);
+
+        expect(insertSpy).not.toBeCalled();
+        expect(updateSpy).toBeCalledWith('TEST', expected);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, GS_PURCHASE_METHOD_ATTRIBUTE, undefined);
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/viewPurchaseMethods',

@@ -7,11 +7,10 @@ import { paymentMethodsList, purchaseLocationsList, ticketFormatsList } from '..
 import { toArray } from '../../utils';
 import { FromDb } from '../../../shared/matchingJsonTypes';
 import { removeExcessWhiteSpace } from './apiUtils/validator';
-import { insertSalesOfferPackage, getSalesOfferPackagesByNocCode } from '../../data/auroradb';
+import { insertSalesOfferPackage, getSalesOfferPackagesByNocCode, updateSalesOfferPackage } from '../../data/auroradb';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const errors: ErrorInfo[] = [];
-    const id: any = undefined; // Temporary until edit
 
     try {
         const {
@@ -25,6 +24,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             ticketFormats?: string | string[];
             name?: string;
         } = req.body;
+
+        const id = req.body.id && Number(req.body.id);
 
         if (!purchaseLocations) {
             errors.push({
@@ -84,7 +85,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        await insertSalesOfferPackage(getAndValidateNoc(req, res), salesOfferPackage);
+        await (id ? updateSalesOfferPackage : insertSalesOfferPackage)(noc, salesOfferPackage);
         updateSessionAttribute(req, GS_PURCHASE_METHOD_ATTRIBUTE, undefined);
         redirectTo(res, '/viewPurchaseMethods');
     } catch (err) {
