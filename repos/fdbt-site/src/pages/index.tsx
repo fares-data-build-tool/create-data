@@ -1,16 +1,10 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { NextPageContextWithSession } from '../interfaces';
-import { checkIfMultipleOperators } from '../utils';
 
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
 
-interface StartProps {
-    multipleOperators: boolean;
-}
-
-const Start = ({ multipleOperators }: StartProps): ReactElement => (
+const Start = (): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Create fares data</h1>
 
@@ -37,7 +31,7 @@ const Start = ({ multipleOperators }: StartProps): ReactElement => (
         </p>
 
         <a
-            href={multipleOperators ? '/multipleOperators' : '/fareType'}
+            href="/home"
             role="button"
             draggable="false"
             className="govuk-button govuk-button--start"
@@ -60,8 +54,8 @@ const Start = ({ multipleOperators }: StartProps): ReactElement => (
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: StartProps } => ({
-    props: { multipleOperators: checkIfMultipleOperators(ctx) },
+export const getServerSideProps = (): { props: {} } => ({
+    props: {},
 });
 
 export default Start;

@@ -5,12 +5,12 @@ import Index from '../../src/pages/index';
 describe('pages', () => {
     describe('operator', () => {
         it('should render correctly', () => {
-            const tree = shallow(<Index multipleOperators />);
+            const tree = shallow(<Index />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly with no multiple operators', () => {
-            const tree = shallow(<Index multipleOperators />);
+            const tree = shallow(<Index />);
             expect(tree).toMatchSnapshot();
         });
     });
