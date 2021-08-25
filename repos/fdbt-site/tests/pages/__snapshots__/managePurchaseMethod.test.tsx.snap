@@ -30,6 +30,10 @@ exports[`pages manage purchase method should render correctly 1`] = `
         >
           Select at least one from each section below
         </span>
+        <input
+          name="id"
+          type="hidden"
+        />
         <FormGroupWrapper
           errorIds={
             Array [
@@ -442,7 +446,7 @@ exports[`pages manage purchase method should render correctly 1`] = `
           className="govuk-button"
           id="continue-button"
           type="submit"
-          value="Continue"
+          value="Add purchase method"
         />
       </CsrfForm>
     </div>
@@ -523,6 +527,11 @@ exports[`pages manage purchase method should render error state on purchase meth
         >
           Select at least one from each section below
         </span>
+        <input
+          name="id"
+          type="hidden"
+          value={0}
+        />
         <FormGroupWrapper
           errorIds={
             Array [
@@ -1007,7 +1016,7 @@ exports[`pages manage purchase method should render error state on purchase meth
           className="govuk-button"
           id="continue-button"
           type="submit"
-          value="Continue"
+          value="Update purchase method"
         />
       </CsrfForm>
     </div>

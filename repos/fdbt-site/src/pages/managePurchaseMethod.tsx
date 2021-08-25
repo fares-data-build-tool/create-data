@@ -10,6 +10,7 @@ import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementW
 import { sentenceCaseString } from '../utils';
 import { FromDb, SalesOfferPackage } from '../../shared/matchingJsonTypes';
 import { GlobalSettingsManageProps, getGlobalSettingsManageProps } from '../utils/globalSettings';
+import { getSalesOfferPackageById } from '../data/auroradb';
 
 const title = 'Manage Purchase Methods - Create Fares Data Service';
 const description = 'Manage Purchase Methods page of the Create Fares Data Service';
@@ -52,7 +53,7 @@ export const valuesMap: { [key: string]: string } = {
     contactlessTravelCard: 'Contactless SmartCard (e.g Oyster)',
 };
 
-const SalesOfferPackages = ({ inputs, csrfToken, errors }: ManagePurchaseMethodsProps): ReactElement => {
+const SalesOfferPackages = ({ inputs, csrfToken, errors, editMode }: ManagePurchaseMethodsProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description}>
             <ErrorSummary errors={errors} />
@@ -65,6 +66,7 @@ const SalesOfferPackages = ({ inputs, csrfToken, errors }: ManagePurchaseMethods
                             <span id="service-list-hint" className="govuk-hint">
                                 Select at least one from each section below
                             </span>
+                            <input type="hidden" name="id" value={inputs?.id} />
 
                             <FormGroupWrapper errorIds={[purchaseLocationsList.id]} errors={errors}>
                                 <fieldset className="govuk-fieldset" aria-describedby="sop-purchase-locations">
@@ -227,7 +229,12 @@ const SalesOfferPackages = ({ inputs, csrfToken, errors }: ManagePurchaseMethods
                                     </FormElementWrapper>
                                 </div>
                             </FormGroupWrapper>
-                            <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                            <input
+                                type="submit"
+                                value={`${editMode ? 'Update' : 'Add'} purchase method`}
+                                id="continue-button"
+                                className="govuk-button"
+                            />
                         </>
                     </CsrfForm>
                 </div>
@@ -253,7 +260,7 @@ export const getServerSideProps = async (
 ): Promise<{ props: ManagePurchaseMethodsProps }> => {
     return await getGlobalSettingsManageProps<FromDb<SalesOfferPackage>>(
         ctx,
-        () => Promise.resolve(undefined),
+        getSalesOfferPackageById,
         getSessionAttribute(ctx.req, GS_PURCHASE_METHOD_ATTRIBUTE),
     );
 };

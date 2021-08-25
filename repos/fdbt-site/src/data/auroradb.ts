@@ -402,6 +402,41 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<F
     }
 };
 
+export const getSalesOfferPackageById = async (
+    id: number,
+    nocCode: string,
+): Promise<FromDb<SalesOfferPackage> | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving sales offer package for given id',
+        noc: nocCode,
+        id,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, name, purchaseLocations, paymentMethods, ticketFormats
+            FROM salesOfferPackage
+            WHERE nocCode = ? AND id = ?
+        `;
+
+        const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode, id]);
+        const item = queryResults[0];
+
+        return (
+            item && {
+                id: item.id,
+                name: item.name,
+                purchaseLocations: item.purchaseLocations.split(','),
+                paymentMethods: item.paymentMethods.split(','),
+                ticketFormats: item.ticketFormats.split(','),
+            }
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve sales offer packages from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage: SalesOfferPackage): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -424,6 +459,38 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
             purchaseLocations,
             paymentMethods,
             ticketFormats,
+        ]);
+    } catch (error) {
+        throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);
+    }
+};
+
+export const updateSalesOfferPackage = async (
+    nocCode: string,
+    salesOfferPackage: FromDb<SalesOfferPackage>,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'updating sales offer package for given noc',
+        noc: nocCode,
+    });
+
+    const purchaseLocations = salesOfferPackage.purchaseLocations.toString();
+    const paymentMethods = salesOfferPackage.paymentMethods.toString();
+    const ticketFormats = salesOfferPackage.ticketFormats.toString();
+
+    const updateQuery = `UPDATE salesOfferPackage 
+    SET name = ?, purchaseLocations = ?, paymentMethods = ?, ticketFormats = ?
+    WHERE nocCode = ? AND id = ?`;
+
+    try {
+        await executeQuery(updateQuery, [
+            salesOfferPackage.name,
+            purchaseLocations,
+            paymentMethods,
+            ticketFormats,
+            nocCode,
+            salesOfferPackage.id,
         ]);
     } catch (error) {
         throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);
