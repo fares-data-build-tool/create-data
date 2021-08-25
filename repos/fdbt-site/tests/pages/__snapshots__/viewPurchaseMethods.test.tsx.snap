@@ -5,7 +5,7 @@ exports[`pages purchase methods inner component renders normally when time restr
   <h4
     className="govuk-heading-m govuk-!-padding-bottom-6"
   >
-    Onboard (ca…
+    Onboard (cash)
   </h4>
   <p
     className="govuk-body-s govuk-!-margin-bottom-2"

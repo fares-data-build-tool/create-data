@@ -63,14 +63,14 @@ const SelectPassengerType = ({
                             <>
                                 <h3 className="govuk-heading-m">Individuals</h3>
 
-                                <div className="govuk-grid-row" id="individual-passengers">
+                                <div className="card-row" id="individual-passengers">
                                     {savedPassengerTypes.map((passengerType) => (
                                         <PassengerTypeCard contents={passengerType} key={passengerType.id.toString()} />
                                     ))}
                                 </div>
 
                                 <h3 className="govuk-heading-m">Groups</h3>
-                                <div className="govuk-grid-row">
+                                <div className="card-row">
                                     {savedGroups.length ? (
                                         <>
                                             {savedGroups.map((passengerTypeGroup) => (
