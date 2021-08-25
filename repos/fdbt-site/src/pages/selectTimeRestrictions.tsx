@@ -22,7 +22,6 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <ErrorSummary errors={errors} />
-
             <CsrfForm action="/api/defineTimeRestrictions" method="post" csrfToken={csrfToken}>
                 <>
                     <div className="govuk-form-group">
@@ -58,8 +57,12 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                                         type="radio"
                                         value="Premade"
                                         data-aria-controls="conditional-time-restriction"
+                                        defaultChecked={errors.some((error) => error.id === 'time-restriction')}
                                     />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">
+                                    <label
+                                        className="govuk-label govuk-radios__label"
+                                        htmlFor="yes-choice"
+                                    >
                                         Yes
                                     </label>
                                 </div>
@@ -135,7 +138,6 @@ const TimeRestrictionCard = ({ timeRestriction }: { timeRestriction: PremadeTime
                             <label className="govuk-label govuk-radios__label" />
                         </div>
                     </div>
-
                     <TimeRestrictionCardBody entity={timeRestriction} />
                 </div>
             </div>
@@ -155,6 +157,8 @@ export const getServerSideProps = async (
     if (timeRestrictionsDefinition && 'errors' in timeRestrictionsDefinition) {
         errors = timeRestrictionsDefinition.errors;
     }
+
+    console.log(errors);
 
     const nationalOperatorCode = getAndValidateNoc(ctx);
 
