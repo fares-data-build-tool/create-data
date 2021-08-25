@@ -189,13 +189,15 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
         <div
           className="govuk-grid-row"
         >
-          <span
-            className="govuk-body"
+          <div
+            className="govuk-grid-column-two-thirds"
           >
-            <i>
+            <p
+              className="govuk-body"
+            >
               You currently have no saved groups
-            </i>
-          </span>
+            </p>
+          </div>
         </div>
       </fieldset>
     </div>

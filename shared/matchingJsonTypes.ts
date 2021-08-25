@@ -46,14 +46,16 @@ export type FlatFareMultipleServices = Omit<PeriodMultipleServicesTicket, 'produ
 export type FlatFareTicket = FlatFareGeoZone | FlatFareMultipleServices;
 
 export interface SalesOfferPackage {
-    id?: string;
+    id?: number;
     name: string;
-    description: string;
+    description?: string;
     purchaseLocations: string[];
     paymentMethods: string[];
     ticketFormats: string[];
     price?: string;
 }
+
+export type FromDb<T> = T & { id: number };
 
 export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
 

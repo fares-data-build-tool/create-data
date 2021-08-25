@@ -2,6 +2,7 @@ import awsParamStore from 'aws-param-store';
 import dateFormat from 'dateformat';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
+import { FromDb } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
     CompanionInfo,
@@ -54,7 +55,7 @@ interface NaptanAtcoCodes {
 interface RawSalesOfferPackage {
     name: string;
     description: string;
-    id: string;
+    id: number;
     purchaseLocations: string;
     paymentMethods: string;
     ticketFormats: string;
@@ -370,7 +371,7 @@ export const getServiceByNocCodeLineNameAndDataSource = async (
     };
 };
 
-export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackage[]> => {
+export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<FromDb<SalesOfferPackage>[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving sales offer packages for given noc',
@@ -401,6 +402,41 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
     }
 };
 
+export const getSalesOfferPackageById = async (
+    id: number,
+    nocCode: string,
+): Promise<FromDb<SalesOfferPackage> | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving sales offer package for given id',
+        noc: nocCode,
+        id,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, name, purchaseLocations, paymentMethods, ticketFormats
+            FROM salesOfferPackage
+            WHERE nocCode = ? AND id = ?
+        `;
+
+        const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode, id]);
+        const item = queryResults[0];
+
+        return (
+            item && {
+                id: item.id,
+                name: item.name,
+                purchaseLocations: item.purchaseLocations.split(','),
+                paymentMethods: item.paymentMethods.split(','),
+                ticketFormats: item.ticketFormats.split(','),
+            }
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve sales offer packages from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage: SalesOfferPackage): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -419,7 +455,7 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
         await executeQuery(insertQuery, [
             nocCode,
             salesOfferPackage.name,
-            salesOfferPackage.description,
+            salesOfferPackage.description || '',
             purchaseLocations,
             paymentMethods,
             ticketFormats,
@@ -429,7 +465,42 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
     }
 };
 
-export const deleteSalesOfferPackageByNocCodeAndName = async (sopId: string, nocCode: string): Promise<void> => {
+export const updateSalesOfferPackage = async (
+    nocCode: string,
+    salesOfferPackage: FromDb<SalesOfferPackage>,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'updating sales offer package for given noc',
+        noc: nocCode,
+    });
+
+    const purchaseLocations = salesOfferPackage.purchaseLocations.toString();
+    const paymentMethods = salesOfferPackage.paymentMethods.toString();
+    const ticketFormats = salesOfferPackage.ticketFormats.toString();
+
+    const updateQuery = `UPDATE salesOfferPackage 
+    SET name = ?, purchaseLocations = ?, paymentMethods = ?, ticketFormats = ?
+    WHERE nocCode = ? AND id = ?`;
+
+    try {
+        await executeQuery(updateQuery, [
+            salesOfferPackage.name,
+            purchaseLocations,
+            paymentMethods,
+            ticketFormats,
+            nocCode,
+            salesOfferPackage.id,
+        ]);
+    } catch (error) {
+        throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);
+    }
+};
+
+export const deleteSalesOfferPackageByNocCodeAndName = async (
+    sopId: number | string,
+    nocCode: string,
+): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'deleting sales offer package for given name',

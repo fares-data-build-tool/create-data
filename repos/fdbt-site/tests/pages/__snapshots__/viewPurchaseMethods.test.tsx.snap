@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages purchase methods inner component renders normally when time restrictions are present 1`] = `
+<Fragment>
+  <h4
+    className="govuk-heading-m govuk-!-padding-bottom-6"
+  >
+    Onboard (ca…
+  </h4>
+  <p
+    className="govuk-body-s govuk-!-margin-bottom-2"
+  >
+    <span
+      className="govuk-!-font-weight-bold"
+    >
+      Purchase locations:
+    </span>
+     
+    On board
+  </p>
+  <p
+    className="govuk-body-s govuk-!-margin-bottom-2"
+  >
+    <span
+      className="govuk-!-font-weight-bold"
+    >
+      Payment methods:
+    </span>
+     
+    Cash
+  </p>
+  <p
+    className="govuk-body-s govuk-!-margin-bottom-2"
+  >
+    <span
+      className="govuk-!-font-weight-bold"
+    >
+      Ticket formats:
+    </span>
+     
+    Paper ticket
+  </p>
+</Fragment>
+`;
+
+exports[`pages view purchase methods should render correctly with purchase methods 1`] = `
+<Fragment>
+  <GlobalSettingsViewPage
+    CardBody={[Function]}
+    csrfToken=""
+    description="Define the way your tickets are sold, including where they are bought, the payment method and format"
+    entities={
+      Array [
+        Object {
+          "description": "Purchasable on board the bus, with cash, as a paper ticket.",
+          "id": 7,
+          "name": "Onboard (cash)",
+          "paymentMethods": Array [
+            "cash",
+          ],
+          "purchaseLocations": Array [
+            "onBoard",
+          ],
+          "ticketFormats": Array [
+            "paperTicket",
+          ],
+        },
+        Object {
+          "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
+          "id": 8,
+          "name": "Onboard (contactless)",
+          "paymentMethods": Array [
+            "contactlessPaymentCard",
+          ],
+          "purchaseLocations": Array [
+            "onBoard",
+          ],
+          "ticketFormats": Array [
+            "paperTicket",
+          ],
+        },
+      ]
+    }
+    entityDescription="purchase method"
+    referer="hello"
+    title="Purchase methods"
+  />
+</Fragment>
+`;

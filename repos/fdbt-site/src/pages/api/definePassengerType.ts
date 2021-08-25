@@ -1,5 +1,6 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
+import { globalSettingsEnabled } from '../../../src/constants/featureFlag';
 import * as yup from 'yup';
 import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
@@ -203,7 +204,11 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
 export const getPassengerTypeRedirectLocation = (req: NextApiRequestWithSession): string => {
     const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
-    return fareType === 'schoolService' ? '/termTime' : '/defineTimeRestrictions';
+    return fareType === 'schoolService'
+        ? '/termTime'
+        : globalSettingsEnabled
+        ? '/selectTimeRestrictions'
+        : '/defineTimeRestrictions';
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {

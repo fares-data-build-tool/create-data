@@ -132,11 +132,6 @@ export const getFieldsets = (
     return [validDaysFieldset];
 };
 
-export const isTimeRestrictionsDefinitionWithErrors = (
-    timeRestrictionsDefinition: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
-): timeRestrictionsDefinition is TimeRestrictionsDefinitionWithErrors =>
-    (timeRestrictionsDefinition as TimeRestrictionsDefinitionWithErrors).errors !== undefined;
-
 const DefineTimeRestrictions = ({ errors = [], fieldsets, csrfToken }: DefineTimeRestrictionsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/defineTimeRestrictions" method="post" csrfToken={csrfToken}>
@@ -170,7 +165,7 @@ export const getServerSideProps = async (
     const timeRestrictions = await getTimeRestrictionByNocCode(noc || '');
 
     let errors: ErrorInfo[] = [];
-    if (timeRestrictionsDefinition && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsDefinition)) {
+    if (timeRestrictionsDefinition && 'errors' in timeRestrictionsDefinition) {
         errors = timeRestrictionsDefinition.errors;
     }
     const timeRestrictionNames = timeRestrictions.map((timeRestriction) => timeRestriction.name);

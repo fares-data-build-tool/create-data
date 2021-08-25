@@ -130,7 +130,7 @@ const generateCheckbox = (
                             className="govuk-label govuk-checkboxes__label"
                             htmlFor={`product-${productNameIds}-checkbox-${index}`}
                         >
-                            <b>{name}</b> {description.length > 0 ? '-' : ''} {description}
+                            <b>{name}</b> {description && description.length > 0 ? '-' : ''} {description}
                         </label>
                         <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
                             Purchase locations: {formatSOPArray(purchaseLocations)}
@@ -263,7 +263,7 @@ export const getServerSideProps = async (
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');
     }
 
-    const salesOfferPackagesList = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
+    const salesOfferPackagesList: SalesOfferPackage[] = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
     salesOfferPackagesList.unshift(...defaultSalesOfferPackages);
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);

@@ -160,141 +160,149 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
             data-module="govuk-checkboxes"
           >
             <div
-              className="govuk-checkboxes__item"
               key="1"
             >
-              <input
-                className="govuk-checkboxes__input"
-                data-aria-controls="conditional-input-0"
-                defaultChecked={false}
-                id="passenger-type-0"
-                name="passengerTypes"
-                type="checkbox"
-                value={1}
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-0"
-              >
-                Regular Senior
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
-              id="conditional-input-0"
-            >
-              <label
-                htmlFor="maximum-passengers-Regular Senior"
-              >
-                <h1
-                  className="govuk-heading-s"
-                  id="individual-limit-heading"
-                >
-                  We need to know how many passengers can use this at one time
-                </h1>
-              </label>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__item"
+                key="1"
               >
-                <label
-                  className="govuk-label"
-                  htmlFor="minimum-passengers-Regular Senior"
-                >
-                  Minimum (optional)
-                </label>
                 <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="minimum-passengers"
-                  defaultValue=""
-                  id="minimum-passengers-1"
-                  name="minimumPassengers1"
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-0"
+                  defaultChecked={false}
+                  id="passenger-type-0"
+                  name="passengerTypes"
+                  type="checkbox"
+                  value={1}
                 />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="passenger-type-0"
+                >
+                  Regular Senior
+                </label>
               </div>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-0"
               >
                 <label
-                  className="govuk-label"
                   htmlFor="maximum-passengers-Regular Senior"
                 >
-                  Maximum (required)
+                  <h1
+                    className="govuk-heading-s"
+                    id="individual-limit-heading"
+                  >
+                    We need to know how many passengers can use this at one time
+                  </h1>
                 </label>
-                <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="maximum-passengers"
-                  defaultValue=""
-                  id="maximum-passengers-1"
-                  name="maximumPassengers1"
-                />
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="minimum-passengers-Regular Senior"
+                  >
+                    Minimum (optional)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="minimum-passengers"
+                    defaultValue=""
+                    id="minimum-passengers-1"
+                    name="minimumPassengers1"
+                  />
+                </div>
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="maximum-passengers-Regular Senior"
+                  >
+                    Maximum (required)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="maximum-passengers"
+                    defaultValue=""
+                    id="maximum-passengers-1"
+                    name="maximumPassengers1"
+                  />
+                </div>
               </div>
             </div>
             <div
-              className="govuk-checkboxes__item"
               key="2"
             >
-              <input
-                className="govuk-checkboxes__input"
-                data-aria-controls="conditional-input-1"
-                defaultChecked={false}
-                id="passenger-type-1"
-                name="passengerTypes"
-                type="checkbox"
-                value={2}
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-1"
-              >
-                Regular infant
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
-              id="conditional-input-1"
-            >
-              <label
-                htmlFor="maximum-passengers-Regular infant"
-              >
-                <h1
-                  className="govuk-heading-s"
-                  id="individual-limit-heading"
-                >
-                  We need to know how many passengers can use this at one time
-                </h1>
-              </label>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__item"
+                key="2"
               >
-                <label
-                  className="govuk-label"
-                  htmlFor="minimum-passengers-Regular infant"
-                >
-                  Minimum (optional)
-                </label>
                 <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="minimum-passengers"
-                  defaultValue=""
-                  id="minimum-passengers-2"
-                  name="minimumPassengers2"
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-1"
+                  defaultChecked={false}
+                  id="passenger-type-1"
+                  name="passengerTypes"
+                  type="checkbox"
+                  value={2}
                 />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="passenger-type-1"
+                >
+                  Regular infant
+                </label>
               </div>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-1"
               >
                 <label
-                  className="govuk-label"
                   htmlFor="maximum-passengers-Regular infant"
                 >
-                  Maximum (required)
+                  <h1
+                    className="govuk-heading-s"
+                    id="individual-limit-heading"
+                  >
+                    We need to know how many passengers can use this at one time
+                  </h1>
                 </label>
-                <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="maximum-passengers"
-                  defaultValue=""
-                  id="maximum-passengers-2"
-                  name="maximumPassengers2"
-                />
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="minimum-passengers-Regular infant"
+                  >
+                    Minimum (optional)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="minimum-passengers"
+                    defaultValue=""
+                    id="minimum-passengers-2"
+                    name="minimumPassengers2"
+                  />
+                </div>
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="maximum-passengers-Regular infant"
+                  >
+                    Maximum (required)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="maximum-passengers"
+                    defaultValue=""
+                    id="maximum-passengers-2"
+                    name="maximumPassengers2"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -455,141 +463,149 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
             data-module="govuk-checkboxes"
           >
             <div
-              className="govuk-checkboxes__item"
               key="1"
             >
-              <input
-                className="govuk-checkboxes__input"
-                data-aria-controls="conditional-input-0"
-                defaultChecked={false}
-                id="passenger-type-0"
-                name="passengerTypes"
-                type="checkbox"
-                value={1}
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-0"
-              >
-                Regular Senior
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
-              id="conditional-input-0"
-            >
-              <label
-                htmlFor="maximum-passengers-Regular Senior"
-              >
-                <h1
-                  className="govuk-heading-s"
-                  id="individual-limit-heading"
-                >
-                  We need to know how many passengers can use this at one time
-                </h1>
-              </label>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__item"
+                key="1"
               >
-                <label
-                  className="govuk-label"
-                  htmlFor="minimum-passengers-Regular Senior"
-                >
-                  Minimum (optional)
-                </label>
                 <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="minimum-passengers"
-                  defaultValue=""
-                  id="minimum-passengers-1"
-                  name="minimumPassengers1"
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-0"
+                  defaultChecked={false}
+                  id="passenger-type-0"
+                  name="passengerTypes"
+                  type="checkbox"
+                  value={1}
                 />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="passenger-type-0"
+                >
+                  Regular Senior
+                </label>
               </div>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-0"
               >
                 <label
-                  className="govuk-label"
                   htmlFor="maximum-passengers-Regular Senior"
                 >
-                  Maximum (required)
+                  <h1
+                    className="govuk-heading-s"
+                    id="individual-limit-heading"
+                  >
+                    We need to know how many passengers can use this at one time
+                  </h1>
                 </label>
-                <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="maximum-passengers"
-                  defaultValue=""
-                  id="maximum-passengers-1"
-                  name="maximumPassengers1"
-                />
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="minimum-passengers-Regular Senior"
+                  >
+                    Minimum (optional)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="minimum-passengers"
+                    defaultValue=""
+                    id="minimum-passengers-1"
+                    name="minimumPassengers1"
+                  />
+                </div>
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="maximum-passengers-Regular Senior"
+                  >
+                    Maximum (required)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="maximum-passengers"
+                    defaultValue=""
+                    id="maximum-passengers-1"
+                    name="maximumPassengers1"
+                  />
+                </div>
               </div>
             </div>
             <div
-              className="govuk-checkboxes__item"
               key="2"
             >
-              <input
-                className="govuk-checkboxes__input"
-                data-aria-controls="conditional-input-1"
-                defaultChecked={false}
-                id="passenger-type-1"
-                name="passengerTypes"
-                type="checkbox"
-                value={2}
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-1"
-              >
-                Regular infant
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
-              id="conditional-input-1"
-            >
-              <label
-                htmlFor="maximum-passengers-Regular infant"
-              >
-                <h1
-                  className="govuk-heading-s"
-                  id="individual-limit-heading"
-                >
-                  We need to know how many passengers can use this at one time
-                </h1>
-              </label>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__item"
+                key="2"
               >
-                <label
-                  className="govuk-label"
-                  htmlFor="minimum-passengers-Regular infant"
-                >
-                  Minimum (optional)
-                </label>
                 <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="minimum-passengers"
-                  defaultValue=""
-                  id="minimum-passengers-2"
-                  name="minimumPassengers2"
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-1"
+                  defaultChecked={false}
+                  id="passenger-type-1"
+                  name="passengerTypes"
+                  type="checkbox"
+                  value={2}
                 />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="passenger-type-1"
+                >
+                  Regular infant
+                </label>
               </div>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-1"
               >
                 <label
-                  className="govuk-label"
                   htmlFor="maximum-passengers-Regular infant"
                 >
-                  Maximum (required)
+                  <h1
+                    className="govuk-heading-s"
+                    id="individual-limit-heading"
+                  >
+                    We need to know how many passengers can use this at one time
+                  </h1>
                 </label>
-                <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="maximum-passengers"
-                  defaultValue=""
-                  id="maximum-passengers-2"
-                  name="maximumPassengers2"
-                />
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="minimum-passengers-Regular infant"
+                  >
+                    Minimum (optional)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="minimum-passengers"
+                    defaultValue=""
+                    id="minimum-passengers-2"
+                    name="minimumPassengers2"
+                  />
+                </div>
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="maximum-passengers-Regular infant"
+                  >
+                    Maximum (required)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="maximum-passengers"
+                    defaultValue=""
+                    id="maximum-passengers-2"
+                    name="maximumPassengers2"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -801,141 +817,149 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
             data-module="govuk-checkboxes"
           >
             <div
-              className="govuk-checkboxes__item"
               key="1"
             >
-              <input
-                className="govuk-checkboxes__input"
-                data-aria-controls="conditional-input-0"
-                defaultChecked={false}
-                id="passenger-type-0"
-                name="passengerTypes"
-                type="checkbox"
-                value={1}
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-0"
-              >
-                Regular Senior
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
-              id="conditional-input-0"
-            >
-              <label
-                htmlFor="maximum-passengers-Regular Senior"
-              >
-                <h1
-                  className="govuk-heading-s"
-                  id="individual-limit-heading"
-                >
-                  We need to know how many passengers can use this at one time
-                </h1>
-              </label>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__item"
+                key="1"
               >
-                <label
-                  className="govuk-label"
-                  htmlFor="minimum-passengers-Regular Senior"
-                >
-                  Minimum (optional)
-                </label>
                 <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="minimum-passengers"
-                  defaultValue=""
-                  id="minimum-passengers-1"
-                  name="minimumPassengers1"
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-0"
+                  defaultChecked={false}
+                  id="passenger-type-0"
+                  name="passengerTypes"
+                  type="checkbox"
+                  value={1}
                 />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="passenger-type-0"
+                >
+                  Regular Senior
+                </label>
               </div>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-0"
               >
                 <label
-                  className="govuk-label"
                   htmlFor="maximum-passengers-Regular Senior"
                 >
-                  Maximum (required)
+                  <h1
+                    className="govuk-heading-s"
+                    id="individual-limit-heading"
+                  >
+                    We need to know how many passengers can use this at one time
+                  </h1>
                 </label>
-                <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="maximum-passengers"
-                  defaultValue=""
-                  id="maximum-passengers-1"
-                  name="maximumPassengers1"
-                />
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="minimum-passengers-Regular Senior"
+                  >
+                    Minimum (optional)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="minimum-passengers"
+                    defaultValue=""
+                    id="minimum-passengers-1"
+                    name="minimumPassengers1"
+                  />
+                </div>
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="maximum-passengers-Regular Senior"
+                  >
+                    Maximum (required)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="maximum-passengers"
+                    defaultValue=""
+                    id="maximum-passengers-1"
+                    name="maximumPassengers1"
+                  />
+                </div>
               </div>
             </div>
             <div
-              className="govuk-checkboxes__item"
               key="2"
             >
-              <input
-                className="govuk-checkboxes__input"
-                data-aria-controls="conditional-input-1"
-                defaultChecked={false}
-                id="passenger-type-1"
-                name="passengerTypes"
-                type="checkbox"
-                value={2}
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-1"
-              >
-                Regular infant
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
-              id="conditional-input-1"
-            >
-              <label
-                htmlFor="maximum-passengers-Regular infant"
-              >
-                <h1
-                  className="govuk-heading-s"
-                  id="individual-limit-heading"
-                >
-                  We need to know how many passengers can use this at one time
-                </h1>
-              </label>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__item"
+                key="2"
               >
-                <label
-                  className="govuk-label"
-                  htmlFor="minimum-passengers-Regular infant"
-                >
-                  Minimum (optional)
-                </label>
                 <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="minimum-passengers"
-                  defaultValue=""
-                  id="minimum-passengers-2"
-                  name="minimumPassengers2"
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-1"
+                  defaultChecked={false}
+                  id="passenger-type-1"
+                  name="passengerTypes"
+                  type="checkbox"
+                  value={2}
                 />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="passenger-type-1"
+                >
+                  Regular infant
+                </label>
               </div>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-1"
               >
                 <label
-                  className="govuk-label"
                   htmlFor="maximum-passengers-Regular infant"
                 >
-                  Maximum (required)
+                  <h1
+                    className="govuk-heading-s"
+                    id="individual-limit-heading"
+                  >
+                    We need to know how many passengers can use this at one time
+                  </h1>
                 </label>
-                <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="maximum-passengers"
-                  defaultValue=""
-                  id="maximum-passengers-2"
-                  name="maximumPassengers2"
-                />
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="minimum-passengers-Regular infant"
+                  >
+                    Minimum (optional)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="minimum-passengers"
+                    defaultValue=""
+                    id="minimum-passengers-2"
+                    name="minimumPassengers2"
+                  />
+                </div>
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="maximum-passengers-Regular infant"
+                  >
+                    Maximum (required)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="maximum-passengers"
+                    defaultValue=""
+                    id="maximum-passengers-2"
+                    name="maximumPassengers2"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1095,141 +1119,149 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
             data-module="govuk-checkboxes"
           >
             <div
-              className="govuk-checkboxes__item"
               key="1"
             >
-              <input
-                className="govuk-checkboxes__input"
-                data-aria-controls="conditional-input-0"
-                defaultChecked={false}
-                id="passenger-type-0"
-                name="passengerTypes"
-                type="checkbox"
-                value={1}
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-0"
-              >
-                Normal adult
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
-              id="conditional-input-0"
-            >
-              <label
-                htmlFor="maximum-passengers-Normal adult"
-              >
-                <h1
-                  className="govuk-heading-s"
-                  id="individual-limit-heading"
-                >
-                  We need to know how many passengers can use this at one time
-                </h1>
-              </label>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__item"
+                key="1"
               >
-                <label
-                  className="govuk-label"
-                  htmlFor="minimum-passengers-Normal adult"
-                >
-                  Minimum (optional)
-                </label>
                 <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="minimum-passengers"
-                  defaultValue=""
-                  id="minimum-passengers-1"
-                  name="minimumPassengers1"
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-0"
+                  defaultChecked={false}
+                  id="passenger-type-0"
+                  name="passengerTypes"
+                  type="checkbox"
+                  value={1}
                 />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="passenger-type-0"
+                >
+                  Normal adult
+                </label>
               </div>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-0"
               >
                 <label
-                  className="govuk-label"
                   htmlFor="maximum-passengers-Normal adult"
                 >
-                  Maximum (required)
+                  <h1
+                    className="govuk-heading-s"
+                    id="individual-limit-heading"
+                  >
+                    We need to know how many passengers can use this at one time
+                  </h1>
                 </label>
-                <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="maximum-passengers"
-                  defaultValue=""
-                  id="maximum-passengers-1"
-                  name="maximumPassengers1"
-                />
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="minimum-passengers-Normal adult"
+                  >
+                    Minimum (optional)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="minimum-passengers"
+                    defaultValue=""
+                    id="minimum-passengers-1"
+                    name="minimumPassengers1"
+                  />
+                </div>
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="maximum-passengers-Normal adult"
+                  >
+                    Maximum (required)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="maximum-passengers"
+                    defaultValue=""
+                    id="maximum-passengers-1"
+                    name="maximumPassengers1"
+                  />
+                </div>
               </div>
             </div>
             <div
-              className="govuk-checkboxes__item"
               key="2"
             >
-              <input
-                className="govuk-checkboxes__input"
-                data-aria-controls="conditional-input-1"
-                defaultChecked={false}
-                id="passenger-type-1"
-                name="passengerTypes"
-                type="checkbox"
-                value={2}
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="passenger-type-1"
-              >
-                Normal child
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
-              id="conditional-input-1"
-            >
-              <label
-                htmlFor="maximum-passengers-Normal child"
-              >
-                <h1
-                  className="govuk-heading-s"
-                  id="individual-limit-heading"
-                >
-                  We need to know how many passengers can use this at one time
-                </h1>
-              </label>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__item"
+                key="2"
               >
-                <label
-                  className="govuk-label"
-                  htmlFor="minimum-passengers-Normal child"
-                >
-                  Minimum (optional)
-                </label>
                 <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="minimum-passengers"
-                  defaultValue=""
-                  id="minimum-passengers-2"
-                  name="minimumPassengers2"
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-1"
+                  defaultChecked={false}
+                  id="passenger-type-1"
+                  name="passengerTypes"
+                  type="checkbox"
+                  value={2}
                 />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="passenger-type-1"
+                >
+                  Normal child
+                </label>
               </div>
               <div
-                className="govuk-form-group"
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-1"
               >
                 <label
-                  className="govuk-label"
                   htmlFor="maximum-passengers-Normal child"
                 >
-                  Maximum (required)
+                  <h1
+                    className="govuk-heading-s"
+                    id="individual-limit-heading"
+                  >
+                    We need to know how many passengers can use this at one time
+                  </h1>
                 </label>
-                <input
-                  className="govuk-input govuk-!-width-one-third"
-                  data-test-id="maximum-passengers"
-                  defaultValue=""
-                  id="maximum-passengers-2"
-                  name="maximumPassengers2"
-                />
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="minimum-passengers-Normal child"
+                  >
+                    Minimum (optional)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="minimum-passengers"
+                    defaultValue=""
+                    id="minimum-passengers-2"
+                    name="minimumPassengers2"
+                  />
+                </div>
+                <div
+                  className="govuk-form-group"
+                >
+                  <label
+                    className="govuk-label"
+                    htmlFor="maximum-passengers-Normal child"
+                  >
+                    Maximum (required)
+                  </label>
+                  <input
+                    className="govuk-input govuk-!-width-one-third"
+                    data-test-id="maximum-passengers"
+                    defaultValue=""
+                    id="maximum-passengers-2"
+                    name="maximumPassengers2"
+                  />
+                </div>
               </div>
             </div>
           </div>

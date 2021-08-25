@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import ViewTimeRestrictions, { TimeRestrictions } from '../../src/pages/viewTimeRestrictions';
+import ViewTimeRestrictions, { TimeRestrictionCardBody } from '../../src/pages/viewTimeRestrictions';
 import { PremadeTimeRestriction } from 'src/interfaces';
 
 const timeRestrictions: PremadeTimeRestriction[] = [
@@ -55,7 +55,7 @@ const timeRestrictions: PremadeTimeRestriction[] = [
 
 describe('pages', () => {
     describe('view time restrictions', () => {
-        it('should render correctly when no individual or group time restrictions', () => {
+        it('should render correctly when no time restrictions', () => {
             const tree = shallow(<ViewTimeRestrictions csrfToken={''} timeRestrictions={[]} referer={null} />);
             expect(tree).toMatchSnapshot();
         });
@@ -70,14 +70,7 @@ describe('pages', () => {
 
     describe('time restrictions inner component', () => {
         it('renders normally when time restrictions are present', () => {
-            const tree = shallow(
-                <TimeRestrictions
-                    deleteActionHandler={() => {
-                        return;
-                    }}
-                    timeRestrictions={timeRestrictions}
-                />,
-            );
+            const tree = shallow(<TimeRestrictionCardBody entity={timeRestrictions[0]} />);
             expect(tree).toMatchSnapshot();
         });
     });

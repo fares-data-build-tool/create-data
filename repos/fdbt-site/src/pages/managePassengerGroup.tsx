@@ -85,7 +85,7 @@ const ManagePassengerGroup = ({
                                 <div className="govuk-checkboxes" data-module="govuk-checkboxes">
                                     {passengers.map(
                                         (passenger, index): ReactElement => (
-                                            <>
+                                            <div key={passenger.id}>
                                                 <div className="govuk-checkboxes__item" key={passenger.id}>
                                                     <input
                                                         className="govuk-checkboxes__input"
@@ -149,7 +149,7 @@ const ManagePassengerGroup = ({
                                                         />
                                                     </div>
                                                 </div>
-                                            </>
+                                            </div>
                                         ),
                                     )}
                                 </div>

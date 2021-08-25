@@ -18,9 +18,7 @@ import {
     completeMultipleProducts,
     completeOperatorSearch,
     clickSomeCheckboxes,
-    randomlyChooseASchoolProof,
     randomlyDecideTermRestrictions,
-    randomlyChooseSchoolAgeLimits,
     randomlyChooseProductPeriodValidity,
 } from './helpers';
 

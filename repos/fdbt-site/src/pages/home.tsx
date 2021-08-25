@@ -9,10 +9,10 @@ const description = 'Create Fares Data is a service that allows you to generate 
 
 interface HomeProps {
     multipleOperators: boolean;
-    isOnTestEnvironment: boolean;
+    globalSettingsEnabled: boolean;
 }
 
-const Home = ({ multipleOperators, isOnTestEnvironment }: HomeProps): ReactElement => (
+const Home = ({ multipleOperators, globalSettingsEnabled }: HomeProps): ReactElement => (
     <BaseLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Create fares data</h1>
         <div className="govuk-grid-row">
@@ -36,20 +36,32 @@ const Home = ({ multipleOperators, isOnTestEnvironment }: HomeProps): ReactEleme
                         Download previously created NeTEx data
                     </a>
                 </div>
-                <div className="govuk-!-margin-top-7">
-                    <h2 className="govuk-heading-s">Operator settings</h2>
-                    <p className="govuk-body">
-                        For updating the information we use about your services when creating NeTEx data.
-                    </p>
+                {globalSettingsEnabled ? (
+                    <div className="govuk-!-margin-top-7">
+                        <h2 className="govuk-heading-s">
+                            <strong className="govuk-tag new-tag">new</strong>
+                            Operator settings
+                        </h2>
+                        <p className="govuk-body">
+                            Operator settings is where operators can define and save settings specific to a National
+                            Operator Code (NOC), such as passenger types, time restrictions and more. We recommend
+                            completing this section before creating your fares data.
+                        </p>
 
-                    <a
-                        href={isOnTestEnvironment ? '/globalSettings' : '/account'}
-                        className="govuk-link govuk-!-font-size-19"
-                        id="account-link"
-                    >
-                        {isOnTestEnvironment ? 'Open operator settings' : 'My account settings'}
-                    </a>
-                </div>
+                        <a href={'/globalSettings'} className="govuk-link govuk-!-font-size-19" id="account-link">
+                            {'Define and manage settings'}
+                        </a>
+                    </div>
+                ) : (
+                    <div className="govuk-!-margin-top-7">
+                        <h2 className="govuk-heading-s">Operator settings</h2>
+                        <p className="govuk-body">For updating your account settings.</p>
+
+                        <a href={'/account'} className="govuk-link govuk-!-font-size-19" id="account-link">
+                            {'My account settings'}
+                        </a>
+                    </div>
+                )}
                 <div className="govuk-!-margin-top-7 govuk-!-padding-bottom-7">
                     <h2 className="govuk-heading-s govuk-!-margin-top-3">Related services</h2>
                     <p className="govuk-body">
@@ -73,7 +85,7 @@ const Home = ({ multipleOperators, isOnTestEnvironment }: HomeProps): ReactEleme
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => ({
-    props: { multipleOperators: checkIfMultipleOperators(ctx), isOnTestEnvironment: globalSettingsEnabled },
+    props: { multipleOperators: checkIfMultipleOperators(ctx), globalSettingsEnabled: globalSettingsEnabled },
 });
 
 export default Home;

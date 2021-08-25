@@ -9,6 +9,7 @@ describe('pages', () => {
             const globalSettingsCounts: GlobalSettingsCounts = {
                 passengerTypesCount: 0,
                 timeRestrictionsCount: 3,
+                purchaseMethodsCount: 7,
             };
             const tree = shallow(<GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" />);
             expect(tree).toMatchSnapshot();

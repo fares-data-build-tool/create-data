@@ -1,5 +1,6 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
+import { globalSettingsEnabled } from '../../constants/featureFlag';
 import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
 import { getTimeRestrictionByNameAndNoc } from '../../data/auroradb';
 import { NextApiRequestWithSession, TimeRestriction, TimeRestrictionsDefinitionWithErrors } from '../../interfaces';
@@ -16,18 +17,28 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     timeRestrictionChoice,
                     errors: [{ errorMessage: 'Choose one of the premade time restrictions', id: 'time-restriction' }],
                 };
+
                 updateSessionAttribute(
                     req,
                     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
                     timeRestrictionsDefinitionWithErrors,
                 );
-                redirectTo(res, '/defineTimeRestrictions');
+
+                if (globalSettingsEnabled) {
+                    redirectTo(res, '/selectTimeRestrictions');
+                } else {
+                    redirectTo(res, '/defineTimeRestrictions');
+                }
+
                 return;
             }
+
             const noc = getAndValidateNoc(req, res);
+
             if (!noc) {
                 throw new Error('Could not find users NOC code.');
             }
+
             const results = await getTimeRestrictionByNameAndNoc(timeRestriction, noc);
 
             if (results.length > 1 || results.length === 0) {
@@ -44,6 +55,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 fullTimeRestrictions: results[0].contents,
                 errors: [],
             });
+
             redirectTo(res, '/fareConfirmation');
             return;
         }
@@ -58,8 +70,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 timeRestrictionChoice,
                 errors: [{ errorMessage: 'Choose one of the options below', id: 'valid-days-required' }],
             };
+
             updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinitionWithErrors);
-            redirectTo(res, '/defineTimeRestrictions');
+
+            if (globalSettingsEnabled) {
+                redirectTo(res, '/selectTimeRestrictions');
+            } else {
+                redirectTo(res, '/defineTimeRestrictions');
+            }
+
             return;
         }
 
