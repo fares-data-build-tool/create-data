@@ -308,4 +308,16 @@ describe('managePurchaseMethod', () => {
             Location: '/viewPurchaseMethods',
         });
     });
+
+    it('redirects back to /managePurchaseMethod?id= if an invalid edit', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: { id: '77' },
+        });
+
+        await managePurchaseMethod(req, res);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/managePurchaseMethod?id=77',
+        });
+    });
 });

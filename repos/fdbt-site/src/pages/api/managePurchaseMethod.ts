@@ -81,7 +81,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (errors.length > 0) {
             updateSessionAttribute(req, GS_PURCHASE_METHOD_ATTRIBUTE, { inputs: salesOfferPackage, errors });
 
-            redirectTo(res, '/managePurchaseMethod');
+            redirectTo(res, `/managePurchaseMethod${id ? `?id=${id}` : ''}`);
             return;
         }
 
