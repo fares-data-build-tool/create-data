@@ -40,9 +40,7 @@ export const PurchaseMethod: FunctionComponent<{ entity: FromDb<SalesOfferPackag
     entity: SalesOfferPackage;
 }) => (
     <>
-        <h4 className="govuk-heading-m govuk-!-padding-bottom-6">
-            {name.length > 11 ? name.substring(0, 11).concat('…') : name}
-        </h4>
+        <h4 className="govuk-heading-m govuk-!-padding-bottom-6">{name}</h4>
 
         <p className="govuk-body-s govuk-!-margin-bottom-2">
             <span className="govuk-!-font-weight-bold">Purchase locations:</span> {formatSOPArray(purchaseLocations)}

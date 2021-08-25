@@ -25,16 +25,8 @@ import {
     ResponseWithLocals,
 } from '../interfaces';
 
-export const getProofDocumentsString = (documents: string[]): string => {
-    let proofOfDocumentsString = documents.map((document) => sentenceCaseString(document)).join(', ');
-
-    proofOfDocumentsString =
-        proofOfDocumentsString.length > 44
-            ? proofOfDocumentsString.substring(0, 44).concat('…')
-            : proofOfDocumentsString;
-
-    return proofOfDocumentsString;
-};
+export const getProofDocumentsString = (documents: string[]): string =>
+    documents.map((document) => sentenceCaseString(document)).join(', ');
 
 export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribute = ''): string | null => {
     const cookies = parseCookies(ctx);
@@ -227,4 +219,13 @@ export const toArray = (thing: string | string[] | undefined): string[] => {
     }
 
     return Array.isArray(thing) ? thing : [thing];
+};
+
+export const chunk = <T>(array: T[], size: number): T[][] => {
+    const copy = [...array];
+    const chunks = [];
+    while (copy.length > 0) {
+        chunks.push(copy.splice(0, size));
+    }
+    return chunks;
 };
