@@ -1,13 +1,7 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import {
-    ErrorInfo,
-    NextPageContextWithSession,
-    PremadeTimeRestriction,
-    TimeRestriction,
-    TimeRestrictionsDefinitionWithErrors,
-} from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
@@ -149,11 +143,6 @@ const TimeRestrictionCard = ({ timeRestriction }: { timeRestriction: PremadeTime
     );
 };
 
-export const isTimeRestrictionsDefinitionWithErrors = (
-    timeRestrictionsDefinition: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
-): timeRestrictionsDefinition is TimeRestrictionsDefinitionWithErrors =>
-    (timeRestrictionsDefinition as TimeRestrictionsDefinitionWithErrors).errors !== undefined;
-
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: SelectTimeRestrictionsProps }> => {
@@ -163,7 +152,7 @@ export const getServerSideProps = async (
 
     const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
-    if (timeRestrictionsDefinition && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsDefinition)) {
+    if (timeRestrictionsDefinition && 'errors' in timeRestrictionsDefinition) {
         errors = timeRestrictionsDefinition.errors;
     }
 
