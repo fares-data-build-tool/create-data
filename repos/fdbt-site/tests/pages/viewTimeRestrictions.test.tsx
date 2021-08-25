@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import ViewTimeRestrictions, { TimeRestriction } from '../../src/pages/viewTimeRestrictions';
+import ViewTimeRestrictions, { TimeRestrictionCardBody } from '../../src/pages/viewTimeRestrictions';
 import { PremadeTimeRestriction } from 'src/interfaces';
 
 const timeRestrictions: PremadeTimeRestriction[] = [
@@ -70,7 +70,7 @@ describe('pages', () => {
 
     describe('time restrictions inner component', () => {
         it('renders normally when time restrictions are present', () => {
-            const tree = shallow(<TimeRestriction entity={timeRestrictions[0]} />);
+            const tree = shallow(<TimeRestrictionCardBody entity={timeRestrictions[0]} />);
             expect(tree).toMatchSnapshot();
         });
     });

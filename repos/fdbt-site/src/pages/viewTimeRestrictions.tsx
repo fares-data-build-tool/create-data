@@ -52,13 +52,13 @@ const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRest
                 csrfToken={csrfToken}
                 title={title}
                 description={description}
-                CardBody={TimeRestriction}
+                CardBody={TimeRestrictionCardBody}
             />
         </>
     );
 };
 
-export const TimeRestriction: FunctionComponent<{ entity: PremadeTimeRestriction }> = ({
+export const TimeRestrictionCardBody: FunctionComponent<{ entity: PremadeTimeRestriction }> = ({
     entity,
 }: {
     entity: PremadeTimeRestriction;

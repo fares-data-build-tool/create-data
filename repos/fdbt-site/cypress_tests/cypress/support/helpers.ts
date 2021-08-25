@@ -266,18 +266,7 @@ export const randomlyDetermineUserType = (): void => {
             const randomNumber = getRandomNumber(0, length - 1);
             cy.get('[class=govuk-radios__input]').eq(randomNumber).click();
         });
-    continueButtonClick();
-};
 
-export const selectYesToTimeRestrictions = (): void => {
-    assertElementNotVisibleById('valid-days-required-conditional');
-
-    clickElementById('valid-days-required');
-    const checkboxIds = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'bankHoliday'];
-    const randomNumber = getRandomNumber(1, 8);
-    for (let i = 0; i < randomNumber; i += 1) {
-        clickElementById(checkboxIds[i]);
-    }
     continueButtonClick();
 };
 
@@ -285,18 +274,19 @@ export const randomlyDecideTimeRestrictions = (): void => {
     if (getRandomNumber(0, 1) === 0) {
         clickElementById('valid-days-not-required');
     } else {
-        selectYesToTimeRestrictions();
+        // click yes button
+        clickElementById('valid-days-required');
 
-        const startTimes = ['0000', '0459', '0900'];
-        cy.get('[id^=start-time-]').each((input) => {
-            cy.wrap(input).type(startTimes[getRandomNumber(0, 2)]);
-        });
-
-        const endTimes = ['1420', '1750', '2359'];
-        cy.get('[id^=end-time-]').each((input) => {
-            cy.wrap(input).type(endTimes[getRandomNumber(0, 2)]);
-        });
+        // randomly pick a time restriction
+        getElementById('conditional-time-restriction')
+            .get('[class=govuk-radios__input]')
+            .its('length')
+            .then((length) => {
+                const randomNumber = getRandomNumber(0, length - 1);
+                cy.get('[class=govuk-radios__input]').eq(randomNumber).click();
+            });
     }
+
     continueButtonClick();
 };
 

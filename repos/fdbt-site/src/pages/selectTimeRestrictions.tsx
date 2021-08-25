@@ -5,7 +5,9 @@ import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction } from '.
 import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
-import { TimeRestriction } from './viewTimeRestrictions';
+import { TimeRestrictionCardBody } from './viewTimeRestrictions';
+import { getSessionAttribute } from 'src/utils/sessions';
+import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from 'src/constants/attributes';
 
 const title = 'Define Time Restrictions - Create Fares Data Service';
 const description = 'Define Time Restrictions page of the Create Fares Data Service';
@@ -51,7 +53,7 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                                 <div className="govuk-radios__item">
                                     <input
                                         className="govuk-radios__input"
-                                        id="yes-choice"
+                                        id="valid-days-required"
                                         name="timeRestrictionChoice"
                                         type="radio"
                                         value="Premade"
@@ -84,11 +86,11 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                                 <div className="govuk-radios__item">
                                     <input
                                         className="govuk-radios__input"
-                                        id="no-choice"
+                                        id="valid-days-not-required"
                                         name="timeRestrictionChoice"
                                         type="radio"
                                         value="no"
-                                        data-aria-controls="conditional-contact-2"
+                                        data-aria-controls="conditional-time-restriction-2"
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
                                         No
@@ -98,14 +100,12 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                         </fieldset>
                     </div>
 
-                    {!!timeRestrictions.length && (
-                        <input
-                            type="submit"
-                            value="Continue"
-                            id="continue-button"
-                            className="govuk-button govuk-!-margin-right-2"
-                        />
-                    )}
+                    <input
+                        type="submit"
+                        value="Continue"
+                        id="continue-button"
+                        className="govuk-button govuk-!-margin-right-2"
+                    />
 
                     <a className="govuk-button govuk-button--secondary" href="/viewTimeRestrictions">
                         Create new
@@ -136,7 +136,7 @@ const TimeRestrictionCard = ({ timeRestriction }: { timeRestriction: PremadeTime
                         </div>
                     </div>
 
-                    <TimeRestriction entity={timeRestriction} />
+                    <TimeRestrictionCardBody entity={timeRestriction} />
                 </div>
             </div>
         </div>
@@ -148,7 +148,13 @@ export const getServerSideProps = async (
 ): Promise<{ props: SelectTimeRestrictionsProps }> => {
     const csrfToken = getCsrfToken(ctx);
 
-    const errors: ErrorInfo[] = [];
+    let errors: ErrorInfo[] = [];
+
+    const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+
+    if (timeRestrictionsDefinition && 'errors' in timeRestrictionsDefinition) {
+        errors = timeRestrictionsDefinition.errors;
+    }
 
     const nationalOperatorCode = getAndValidateNoc(ctx);
 
