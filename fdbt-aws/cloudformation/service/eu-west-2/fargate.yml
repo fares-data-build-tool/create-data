@@ -707,7 +707,7 @@ Resources:
   Site4xxReponseAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: A 4xx response has ocurred on the site.
+      AlarmDescription: A 4xx response has occurred on the site.
       Namespace: FDBT/Site
       MetricName: 4xxResponses
       Statistic: Sum
@@ -726,7 +726,7 @@ Resources:
   Site5xxReponseAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: A 5xx response has ocurred on the site.
+      AlarmDescription: A 5xx response has occurred on the site.
       Namespace: FDBT/Site
       MetricName: 5xxResponses
       Statistic: Sum
