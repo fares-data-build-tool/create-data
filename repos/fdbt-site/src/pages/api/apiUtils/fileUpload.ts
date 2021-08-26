@@ -8,6 +8,7 @@ import logger from '../../../utils/logger';
 import { containsViruses } from './virusScan';
 
 interface FileData {
+    name: string;
     files: formidable.Files;
     fileContents: string;
     fields?: formidable.Fields;
@@ -43,7 +44,7 @@ export const formParse = async (req: NextApiRequest): Promise<FilesAndFields> =>
 
 export const getFormData = async (req: NextApiRequest): Promise<FileData> => {
     const { files, fields } = await formParse(req);
-    const { type } = files['csv-upload'];
+    const { type, name } = files['csv-upload'];
     let fileContents = '';
 
     if (ALLOWED_CSV_FILE_TYPES.includes(type)) {
@@ -58,6 +59,7 @@ export const getFormData = async (req: NextApiRequest): Promise<FileData> => {
         files,
         fileContents,
         fields,
+        name,
     };
 };
 

@@ -1,3 +1,4 @@
+import { CSV_ZONE_FILE_NAME } from './../constants/attributes';
 import * as attributes from '../constants/attributes';
 import {
     POINT_TO_POINT_PRODUCT_ATTRIBUTE,
@@ -175,6 +176,7 @@ export interface SessionAttributeTypes {
     [GS_TIME_RESTRICTION_ATTRIBUTE]: GlobalSettingsAttribute<PremadeTimeRestriction>;
     [GS_PURCHASE_METHOD_ATTRIBUTE]: GlobalSettingsAttribute<FromDb<SalesOfferPackage>>;
     [GS_REFERER]: string;
+    [CSV_ZONE_FILE_NAME]: string;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

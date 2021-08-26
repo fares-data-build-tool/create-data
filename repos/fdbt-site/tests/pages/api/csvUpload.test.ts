@@ -42,6 +42,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.testCsvDuplicateFareStages,
             fields: {
@@ -82,6 +83,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: '',
             fields: {
@@ -125,6 +127,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.testCsv,
             fields: {
@@ -173,6 +176,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.testCsv,
             fields: {
@@ -217,6 +221,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.testCsv,
             fields: {
@@ -252,6 +257,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.validTestCsvWithEmptyCellsAndEmptyLine,
             fields: {
@@ -287,6 +293,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.decimalPricesTestCsv,
             fields: {
@@ -331,6 +338,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.testCsv,
             fields: {
@@ -372,6 +380,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.nonTicketerTestCsv,
             fields: {
@@ -411,6 +420,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.nonNumericPricesTestCsv,
             fields: {
@@ -456,6 +466,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.decimalPricesTestCsv,
             fields: {
@@ -495,6 +506,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.decimalPricesTestCsv,
             fields: {
@@ -539,6 +551,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.emptyStageNameTestCsv,
             fields: {
@@ -584,6 +597,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.noPricesTestCsv,
             fields: {
@@ -623,6 +637,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.missingPricesTestCsv,
             fields: {
@@ -661,6 +676,7 @@ describe('csvUpload', () => {
         };
 
         getFormDataSpy.mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: 'i am a virus',
             fields: {

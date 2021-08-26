@@ -1,6 +1,11 @@
 import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
-import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants/attributes';
+import {
+    CSV_ZONE_FILE_NAME,
+    FARE_TYPE_ATTRIBUTE,
+    FARE_ZONE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+} from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { getUuidFromSession, redirectToError, redirectTo, getAndValidateNoc, isSchemeOperator } from './apiUtils';
 import { putDataInS3 } from '../../data/s3';
@@ -135,6 +140,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     try {
         const formData = await getFormData(req);
         const { fileContents, fileError } = await processFileUpload(formData, 'csv-upload');
+        const fileName = formData.name;
 
         if (fileError) {
             const errors: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: fileError }];
@@ -146,6 +152,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const uuid = getUuidFromSession(req);
             await putDataInS3(fileContents, `${uuid}.csv`, false);
             const userFareZones = await processCsv(fileContents, req, res);
+            updateSessionAttribute(req, CSV_ZONE_FILE_NAME, fileName);
 
             if (!userFareZones) {
                 const errors: ErrorInfo[] = [
