@@ -125,6 +125,8 @@ jobs:
           command: |
             echo "Linting"
             npm run lint
+            echo "Compiling typescript"
+            ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json && ./node_modules/.bin/tsc --project cypress_tests
 
     # fdbt-site
 
