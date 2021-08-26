@@ -28,13 +28,13 @@ const ViewPurchaseMethods = ({ purchaseMethods, referer, csrfToken }: PurchaseMe
                 csrfToken={csrfToken}
                 title={title}
                 description={description}
-                CardBody={PurchaseMethod}
+                CardBody={PurchaseMethodCardBody}
             />
         </>
     );
 };
 
-export const PurchaseMethod: FunctionComponent<{ entity: FromDb<SalesOfferPackage> }> = ({
+export const PurchaseMethodCardBody: FunctionComponent<{ entity: FromDb<SalesOfferPackage> }> = ({
     entity: { name, purchaseLocations, paymentMethods, ticketFormats },
 }: {
     entity: SalesOfferPackage;

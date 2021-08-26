@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import { FromDb, SalesOfferPackage } from '../../shared/matchingJsonTypes';
-import ViewPurchaseMethods, { PurchaseMethod } from '../../src/pages/viewPurchaseMethods';
+import ViewPurchaseMethods, { PurchaseMethodCardBody } from '../../src/pages/viewPurchaseMethods';
 import { expectedSalesOfferPackageArray } from '../testData/mockData';
 
 const purchaseMethods: FromDb<SalesOfferPackage>[] = expectedSalesOfferPackageArray.map((sop, index) => ({
@@ -21,7 +21,7 @@ describe('pages', () => {
 
     describe('purchase methods inner component', () => {
         it('renders normally when time restrictions are present', () => {
-            const tree = shallow(<PurchaseMethod entity={purchaseMethods[0]} />);
+            const tree = shallow(<PurchaseMethodCardBody entity={purchaseMethods[0]} />);
             expect(tree).toMatchSnapshot();
         });
     });

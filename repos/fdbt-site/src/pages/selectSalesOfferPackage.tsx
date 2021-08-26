@@ -256,7 +256,7 @@ export const getServerSideProps = async (
     const nocCode = getAndValidateNoc(ctx);
 
     if (!nocCode) {
-        throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');
+        throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackage page');
     }
 
     const salesOfferPackagesList: SalesOfferPackage[] = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];

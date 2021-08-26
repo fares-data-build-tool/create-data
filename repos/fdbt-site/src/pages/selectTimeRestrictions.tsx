@@ -22,7 +22,6 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             <ErrorSummary errors={errors} />
-
             <CsrfForm action="/api/defineTimeRestrictions" method="post" csrfToken={csrfToken}>
                 <>
                     <div className="govuk-form-group">
@@ -58,6 +57,7 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                                         type="radio"
                                         value="Premade"
                                         data-aria-controls="conditional-time-restriction"
+                                        defaultChecked={errors.some((error) => error.id === 'time-restriction')}
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">
                                         Yes
@@ -121,7 +121,7 @@ const TimeRestrictionCard = ({ timeRestriction }: { timeRestriction: PremadeTime
         <div className="card">
             <div className="card__body time-restriction">
                 <div className="govuk-radios">
-                    <div className="govuk-radios__item card__radio">
+                    <div className="govuk-radios__item card__selector">
                         <input
                             className="govuk-radios__input"
                             id={`${timeRestriction.name}-radio`}
@@ -134,7 +134,6 @@ const TimeRestrictionCard = ({ timeRestriction }: { timeRestriction: PremadeTime
                         <label className="govuk-label govuk-radios__label" />
                     </div>
                 </div>
-
                 <TimeRestrictionCardBody entity={timeRestriction} />
             </div>
         </div>
