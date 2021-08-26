@@ -148,7 +148,7 @@ jobs:
             cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
             cd ..
             ~/project/repos/<< parameters.package_name >>/run_tests_in_browserstack.sh
-          no_output_timeout: 40m
+          no_output_timeout: 100m
 
   compile-typescript:
     parameters:
@@ -165,12 +165,11 @@ jobs:
           at: ~/project
       - run:
           command: |
+            echo "Compiling typescript for site"
+            ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
             cd cypress_tests
-            npm i
-            echo "Compiling typescript"
-            ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json && ./node_modules/.bin/tsc --project cypress_tests
-          no_output_timeout: 40m
-
+            npm ci
+            ./node_modules/.bin/tsc --project cypress_tests
 
   #  fdbt-netex-output
 
