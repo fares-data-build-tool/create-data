@@ -125,8 +125,6 @@ jobs:
           command: |
             echo "Linting"
             npm run lint
-            echo "Compiling typescript"
-            ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json && ./node_modules/.bin/tsc --project cypress_tests
 
     # fdbt-site
 
@@ -151,6 +149,28 @@ jobs:
             cd ..
             ~/project/repos/<< parameters.package_name >>/run_tests_in_browserstack.sh
           no_output_timeout: 40m
+
+  compile-typescript:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    executor: aws-cli/default
+    steps:
+      - aws-cli/setup:
+          profile-name: default
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            cd cypress_tests
+            npm i
+            echo "Compiling typescript"
+            ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json && ./node_modules/.bin/tsc --project cypress_tests
+          no_output_timeout: 40m
+
 
   #  fdbt-netex-output
 
@@ -646,6 +666,15 @@ workflows:
               only: /^v.*/
 
       - lint:
+          <<: *slack-fail-post-step
+          package_name: fdbt-site
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+
+      - compile-typescript:
           <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:
