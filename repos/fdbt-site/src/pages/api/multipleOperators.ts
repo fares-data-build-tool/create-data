@@ -2,7 +2,8 @@ import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { redirectToError, redirectTo } from './apiUtils';
 import { OPERATOR_ATTRIBUTE } from '../../constants/attributes';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { updateSessionAttribute, regenerateSession } from '../../utils/sessions';
+import { globalSettingsEnabled } from '../../constants/featureFlag';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -10,11 +11,15 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const splitOperator = (req.body.operator as string).split('|');
             const noc = splitOperator.slice(-1)[0];
 
+            if (globalSettingsEnabled) {
+                regenerateSession(req);
+            }
+
             updateSessionAttribute(req, OPERATOR_ATTRIBUTE, {
                 name: splitOperator[0],
                 nocCode: noc,
             });
-            redirectTo(res, '/fareType');
+            redirectTo(res, globalSettingsEnabled ? '/home' : '/fareType');
         } else {
             updateSessionAttribute(req, OPERATOR_ATTRIBUTE, {
                 errors: [

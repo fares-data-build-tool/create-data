@@ -4,8 +4,10 @@ import { parseCookies } from 'nookies';
 import Header from '../layout/Header';
 import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, ID_TOKEN_COOKIE } from '../constants';
 import { DocumentContextWithSession, ResponseWithLocals } from '../interfaces';
-import { getCsrfToken } from '../utils';
+import { getCsrfToken, checkIfMultipleOperators } from '../utils';
 import { CookieBannerMessage } from '../layout/CookieBanner';
+import { getSessionAttribute } from '../utils/sessions';
+import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
 
 interface DocumentProps extends DocumentInitialProps {
     nonce: string;
@@ -14,6 +16,8 @@ interface DocumentProps extends DocumentInitialProps {
     url: string;
     showCookieBanner: boolean;
     allowTracking: boolean;
+    noc: string | undefined;
+    multiOperator: boolean;
 }
 
 class MyDocument extends Document<DocumentProps> {
@@ -36,6 +40,10 @@ class MyDocument extends Document<DocumentProps> {
             : false;
         const showCookieBanner = !cookiePreferencesSet && url !== '/cookies';
         const allowTracking = cookies[COOKIES_POLICY_COOKIE] ? JSON.parse(cookies[COOKIES_POLICY_COOKIE]).usage : false;
+        const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
+        const nocCode = operatorAttribute?.nocCode;
+        const noc = nocCode && !nocCode.includes('|') ? nocCode : undefined;
+        const multiOperator = checkIfMultipleOperators(ctx);
 
         return {
             ...initialProps,
@@ -45,6 +53,8 @@ class MyDocument extends Document<DocumentProps> {
             url,
             showCookieBanner,
             allowTracking,
+            noc,
+            multiOperator,
         };
     }
 
@@ -85,7 +95,12 @@ class MyDocument extends Document<DocumentProps> {
                         </div>
                     ) : null}
 
-                    <Header isAuthed={this.props.isAuthed} csrfToken={this.props.csrfToken} />
+                    <Header
+                        isAuthed={this.props.isAuthed}
+                        csrfToken={this.props.csrfToken}
+                        noc={this.props.noc}
+                        multiOperator={this.props.multiOperator}
+                    />
                     <Main />
                     <NextScript nonce={this.props.nonce} />
                     <script src="/scripts/all.js" nonce={this.props.nonce} />
