@@ -153,8 +153,6 @@ export const getServerSideProps = async (
         errors = timeRestrictionsDefinition.errors;
     }
 
-    console.log(errors);
-
     const nationalOperatorCode = getAndValidateNoc(ctx);
 
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
