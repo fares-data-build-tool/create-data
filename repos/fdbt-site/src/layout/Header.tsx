@@ -4,9 +4,11 @@ import CsrfForm from '../components/CsrfForm';
 interface HeaderProps {
     isAuthed: boolean;
     csrfToken: string;
+    noc: string | undefined;
+    multiOperator: boolean;
 }
 
-const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
+const Header = ({ isAuthed, csrfToken, noc, multiOperator }: HeaderProps): ReactElement => (
     <header className="govuk-header app-header" role="banner" data-module="govuk-header">
         <div className="govuk-header__container app-header__container govuk-width-container">
             <div className="govuk-header__logo">
@@ -43,11 +45,25 @@ const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
             </div>
 
             <div className="govuk-header__account-link">
-                <a href={isAuthed ? '/account' : '/login'} className="govuk-header__link">
-                    <span> {isAuthed ? 'My Account' : 'Sign in'} </span>
-                </a>
-                {isAuthed && (
+                {isAuthed ? (
                     <>
+                        {noc && (
+                            <>
+                                <strong className="govuk-!-margin-right-1">{noc}</strong>
+                                {multiOperator && (
+                                    <>
+                                        <span>- </span>
+                                        <a href={'/multipleOperators'} className="govuk-header__link">
+                                            <span>{'Change'}</span>
+                                        </a>
+                                    </>
+                                )}
+                                <span className="govuk-!-margin-right-1"> | </span>
+                            </>
+                        )}
+                        <a href={'/account'} className="govuk-header__link">
+                            <span> {'My Account'} </span>
+                        </a>
                         <span> | </span>
                         <CsrfForm
                             action="/api/signOut"
@@ -58,10 +74,14 @@ const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
                             <input
                                 type="submit"
                                 value="Sign out"
-                                className=" govuk-header__link govuk-header__signout"
+                                className="govuk-header__link govuk-header__signout"
                             />
                         </CsrfForm>{' '}
                     </>
+                ) : (
+                    <a href={'/login'} className="govuk-header__link">
+                        <span> {'Sign in'} </span>
+                    </a>
                 )}
             </div>
         </div>

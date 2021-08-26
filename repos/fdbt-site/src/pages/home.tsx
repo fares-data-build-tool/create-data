@@ -3,6 +3,9 @@ import { globalSettingsEnabled } from '../constants/featureFlag';
 import { NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import { checkIfMultipleOperators } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
+import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
+import { redirectTo } from './api/apiUtils';
 
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
@@ -84,8 +87,24 @@ const Home = ({ multipleOperators, globalSettingsEnabled }: HomeProps): ReactEle
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => ({
-    props: { multipleOperators: checkIfMultipleOperators(ctx), globalSettingsEnabled: globalSettingsEnabled },
-});
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => {
+    const multipleOperators = checkIfMultipleOperators(ctx);
+
+    if (globalSettingsEnabled) {
+        const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
+        const sessionNoc = operatorAttribute?.nocCode;
+
+        if ((!sessionNoc || sessionNoc.includes('|')) && multipleOperators && ctx.res) {
+            redirectTo(ctx.res, '/multipleOperators');
+        }
+    }
+
+    return {
+        props: {
+            multipleOperators: multipleOperators && !globalSettingsEnabled,
+            globalSettingsEnabled: globalSettingsEnabled,
+        },
+    };
+};
 
 export default Home;
