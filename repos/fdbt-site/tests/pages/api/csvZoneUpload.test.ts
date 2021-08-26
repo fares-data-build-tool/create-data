@@ -50,6 +50,7 @@ describe('csvZoneUpload', () => {
             };
 
             jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+                name: 'file',
                 files: file,
                 fileContents: csv,
             });
@@ -83,6 +84,7 @@ describe('csvZoneUpload', () => {
         };
 
         jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.testCsv,
         });
@@ -121,6 +123,7 @@ describe('csvZoneUpload', () => {
         };
 
         jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.testCsv,
         });
@@ -150,6 +153,7 @@ describe('csvZoneUpload', () => {
         const dynamoError = 'Could not fetch data from dynamo in test';
 
         jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            name: 'file',
             files: file,
             fileContents: csvData.testCsvWithEmptyCells,
         });
@@ -182,6 +186,7 @@ describe('csvZoneUpload', () => {
             };
 
             jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+                name: 'file',
                 files: file,
                 fileContents: '',
             });
@@ -218,6 +223,7 @@ describe('csvZoneUpload', () => {
             };
 
             jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+                name: 'file',
                 files: file,
                 fileContents: csvData.testCsv,
             });
@@ -254,6 +260,7 @@ describe('csvZoneUpload', () => {
             };
 
             jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+                name: 'file',
                 files: file,
                 fileContents: csvData.testCsv,
             });
@@ -292,6 +299,7 @@ describe('csvZoneUpload', () => {
             };
 
             jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+                name: 'file',
                 files: file,
                 fileContents: 'i am a virus',
             });
