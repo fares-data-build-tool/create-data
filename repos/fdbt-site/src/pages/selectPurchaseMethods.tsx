@@ -1,7 +1,6 @@
 import React, { ChangeEventHandler, ReactElement, useState } from 'react';
 import { FromDb } from 'shared/matchingJsonTypes';
 import CsrfForm from '../components/CsrfForm';
-import DeleteSOPButton from '../components/DeleteSOPButton';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import {
@@ -26,10 +25,10 @@ import { getSessionAttribute } from '../utils/sessions';
 import { removeAllWhiteSpace } from './api/apiUtils/validator';
 import { PurchaseMethodCardBody } from './viewPurchaseMethods';
 
-const pageTitle = 'Select Sales Offer Package - Create Fares Data Service';
-const pageDescription = 'Sales Offer Package selection page of the Create Fares Data Service';
+const pageTitle = 'Select Purchase Methods - Create Fares Data Service';
+const pageDescription = 'Purchase Methods selection page of the Create Fares Data Service';
 
-export interface SelectSalesOfferPackageProps {
+export interface PurchaseMethodsProps {
     selected?: { [key: string]: SalesOfferPackage[] };
     products: ProductInfo[];
     salesOfferPackagesList: FromDb<SalesOfferPackage>[];
@@ -45,19 +44,13 @@ const generateCheckbox = (
     productName: string,
     selectedDefault: { [key: string]: SalesOfferPackage[] } | undefined,
     defaultPrice: string,
-): ReactElement[] => {
-    const fullList = [...salesOfferPackagesList];
-    const pairs = [];
-    while (fullList.length > 0) {
-        pairs.push(fullList.splice(0, 2));
-    }
-
+    errors: ErrorInfo[],
+): ReactElement => {
     const [selected, setSelected] = useState(selectedDefault);
 
-    return pairs.map((pair, pairIndex) => (
-        <div className="govuk-grid-row" key={pairIndex}>
-            {pair.map((offer, innerIndex) => {
-                const index = 2 * pairIndex + innerIndex;
+    return (
+        <div className="card-row">
+            {salesOfferPackagesList.map((offer, index) => {
                 const { name } = offer;
 
                 const productNameIds = removeAllWhiteSpace(productName);
@@ -75,54 +68,57 @@ const generateCheckbox = (
                 };
 
                 return (
-                    <div
-                        className="govuk-checkboxes__item govuk-!-margin-bottom-6 govuk-grid-column-one-half sop-row"
-                        key={`checkbox-item-${name}`}
-                    >
-                        <input
-                            className="govuk-checkboxes__input"
-                            id={`product-${productNameIds}-checkbox-${index}`}
-                            name={`product-${productName}`}
-                            type="checkbox"
-                            value={JSON.stringify(offer)}
-                            defaultChecked={!!selectedOffer}
-                            onChange={updateSelected}
-                        />
-                        <label
-                            className="govuk-label govuk-checkboxes__label"
-                            htmlFor={`product-${productNameIds}-checkbox-${index}`}
-                        />
-                        <div className="card__body">
-                            <PurchaseMethodCardBody entity={offer} />
-                        </div>
-                        {!!selectedOffer && defaultPrice && (
-                            <div className="govuk-currency-input govuk-!-margin-left-3">
-                                <div className="govuk-currency-input__inner">
-                                    <span className="govuk-currency-input__inner__unit">£</span>
-                                    <FormElementWrapper
-                                        errors={[]}
-                                        errorId={`multiple-product-price-${index}`}
-                                        errorClass="govuk-input--error"
-                                        hideText
-                                        addFormGroupError={false}
-                                    >
-                                        <input
-                                            className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
-                                            name={`price-${productName}-${offer.name}`}
-                                            data-non-numeric
-                                            type="text"
-                                            id={`price-${productNameIds}-${removeAllWhiteSpace(offer.name)}`}
-                                            defaultValue={selectedOffer?.price || defaultPrice}
-                                        />
-                                    </FormElementWrapper>
-                                </div>
+                    <div className="card" key={`checkbox-item-${name}`}>
+                        <div className="card__body card_align">
+                            <div className="govuk-checkboxes__item card__selector">
+                                <input
+                                    className="govuk-checkboxes__input"
+                                    id={`product-${productNameIds}-checkbox-${index}`}
+                                    name={`product-${productName}`}
+                                    type="checkbox"
+                                    value={JSON.stringify(offer)}
+                                    defaultChecked={!!selectedOffer}
+                                    onChange={updateSelected}
+                                />
+                                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                                <label
+                                    className="govuk-label govuk-checkboxes__label"
+                                    htmlFor={`product-${productNameIds}-checkbox-${index}`}
+                                />
                             </div>
-                        )}
+
+                            <PurchaseMethodCardBody entity={offer} />
+                            {!!selectedOffer && defaultPrice && (
+                                <div className="govuk-currency-input card_align">
+                                    <div className="govuk-currency-input__inner">
+                                        <span className="govuk-currency-input__inner__unit">£</span>
+                                        <FormElementWrapper
+                                            errors={errors}
+                                            errorId={`price-${removeAllWhiteSpace(productName)}-${removeAllWhiteSpace(
+                                                offer.name,
+                                            )}`}
+                                            errorClass="govuk-input--error"
+                                            hideText
+                                            addFormGroupError={false}
+                                        >
+                                            <input
+                                                className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
+                                                name={`price-${productName}-${offer.name}`}
+                                                data-non-numeric
+                                                type="text"
+                                                id={`price-${productNameIds}-${removeAllWhiteSpace(offer.name)}`}
+                                                defaultValue={selectedOffer?.price || defaultPrice}
+                                            />
+                                        </FormElementWrapper>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 );
             })}
         </div>
-    ));
+    );
 };
 
 const createSalesOffer = (
@@ -134,7 +130,7 @@ const createSalesOffer = (
     products.map(({ productName, productPrice }) => (
         <div className="sop-option" key={productName}>
             <FormGroupWrapper
-                errorIds={[`product-${[removeAllWhiteSpace(productName)]}-checkbox-0`]}
+                errorIds={[`product-${removeAllWhiteSpace(productName)}-checkbox-0`]}
                 errors={errors}
                 hideErrorBar={false}
             >
@@ -144,11 +140,11 @@ const createSalesOffer = (
                     </h1>
                     <FormElementWrapper
                         errors={errors}
-                        errorId={`${removeAllWhiteSpace(productName)}-checkbox-0`}
+                        errorId={`product-${removeAllWhiteSpace(productName)}-checkbox-0`}
                         errorClass=""
                     >
                         <div className="govuk-checkboxes">
-                            {generateCheckbox(salesOfferPackagesList, productName, selected, productPrice)}
+                            {generateCheckbox(salesOfferPackagesList, productName, selected, productPrice, errors)}
                             <input type="hidden" name={`product-${productName}`} />
                         </div>
                     </FormElementWrapper>
@@ -157,13 +153,13 @@ const createSalesOffer = (
         </div>
     ));
 
-const SelectSalesOfferPackage = ({
+const SelectPurchaseMethods = ({
     selected,
     products,
     salesOfferPackagesList,
     csrfToken,
     errors,
-}: SelectSalesOfferPackageProps): ReactElement => {
+}: PurchaseMethodsProps): ReactElement => {
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
             <CsrfForm action="/api/selectSalesOfferPackage" method="post" csrfToken={csrfToken}>
@@ -205,14 +201,12 @@ const SelectSalesOfferPackage = ({
     );
 };
 
-export const getServerSideProps = async (
-    ctx: NextPageContextWithSession,
-): Promise<{ props: SelectSalesOfferPackageProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: PurchaseMethodsProps }> => {
     const csrfToken = getCsrfToken(ctx);
     const nocCode = getAndValidateNoc(ctx);
 
     if (!nocCode) {
-        throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');
+        throw new Error('Necessary nocCode from ID Token cookie not found to show selectPurchaseMethods page');
     }
 
     const salesOfferPackagesList: SalesOfferPackage[] = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
@@ -249,7 +243,7 @@ export const getServerSideProps = async (
                           product: SalesOfferPackage | ProductWithSalesOfferPackages,
                       ): [string, SalesOfferPackage[] | ProductWithSalesOfferPackages[]] =>
                           'salesOfferPackages' in product
-                              ? [product.productName, product.salesOfferPackages as SalesOfferPackage[]]
+                              ? [product.productName, product.salesOfferPackages]
                               : ['product', sopAttribute as ProductWithSalesOfferPackages[]],
                   )
                   .reduce((result, item) => ({ ...result, [item[0]]: item[1] }), {}));
@@ -265,4 +259,4 @@ export const getServerSideProps = async (
     };
 };
 
-export default SelectSalesOfferPackage;
+export default SelectPurchaseMethods;

@@ -25,60 +25,79 @@ exports[`pages view passenger types should render correctly when groups and indi
         Passenger types
       </h1>
       <p
-        className="govuk-body"
+        className="govuk-body govuk-!-margin-bottom-8"
       >
         Define age range and required proof documents of your passengers as well as passenger groups
       </p>
-      <IndividualPassengerTypes
-        deleteActionHandler={[Function]}
-        singlePassengerTypes={
-          Array [
-            Object {
-              "id": 1,
-              "name": "Regular Child",
-              "passengerType": Object {
-                "ageRangeMax": "16",
-                "ageRangeMin": "5",
-                "passengerType": "child",
-                "proofDocuments": Array [
-                  "studentCard",
-                ],
+      <div>
+        <IndividualPassengerTypes
+          deleteActionHandler={[Function]}
+          singlePassengerTypes={
+            Array [
+              Object {
+                "id": 1,
+                "name": "Regular Child",
+                "passengerType": Object {
+                  "ageRangeMax": "16",
+                  "ageRangeMin": "5",
+                  "passengerType": "child",
+                  "proofDocuments": Array [
+                    "studentCard",
+                  ],
+                },
               },
-            },
-          ]
-        }
-      />
-      <PassengerTypeGroups
-        deleteActionHandler={[Function]}
-        passengerTypeGroups={
-          Array [
-            Object {
-              "groupPassengerType": Object {
-                "companions": Array [
-                  Object {
-                    "maxNumber": "2",
-                    "passengerType": "adult",
-                  },
-                  Object {
-                    "ageRangeMax": "16",
-                    "ageRangeMin": "4",
-                    "maxNumber": "1",
-                    "passengerType": "child",
-                    "proofDocuments": Array [
-                      "studentCard",
-                    ],
-                  },
-                ],
-                "maxGroupSize": "3",
+            ]
+          }
+        />
+        <a
+          className="govuk-button govuk-button govuk-!-margin-top-5"
+          data-module="govuk-button"
+          href="/managePassengerTypes"
+        >
+          Add a passenger type
+        </a>
+      </div>
+      <div
+        className="govuk-!-margin-top-4"
+      >
+        <PassengerTypeGroups
+          deleteActionHandler={[Function]}
+          passengerTypeGroups={
+            Array [
+              Object {
+                "groupPassengerType": Object {
+                  "companions": Array [
+                    Object {
+                      "maxNumber": "2",
+                      "passengerType": "adult",
+                    },
+                    Object {
+                      "ageRangeMax": "16",
+                      "ageRangeMin": "4",
+                      "maxNumber": "1",
+                      "passengerType": "child",
+                      "proofDocuments": Array [
+                        "studentCard",
+                      ],
+                    },
+                  ],
+                  "maxGroupSize": "3",
+                  "name": "family group",
+                },
+                "id": 3,
                 "name": "family group",
               },
-              "id": 3,
-              "name": "family group",
-            },
-          ]
-        }
-        passengerTypesExist={true}
-      />
+            ]
+          }
+        />
+        <a
+          className="govuk-button"
+          data-module="govuk-button"
+          href="/managePassengerGroup"
+        >
+          Add a passenger group
+        </a>
+      </div>
     </div>
   </div>
 </BaseLayout>
@@ -109,14 +128,25 @@ exports[`pages view passenger types should render correctly when no individual o
         Passenger types
       </h1>
       <p
-        className="govuk-body"
+        className="govuk-body govuk-!-margin-bottom-8"
       >
         Define age range and required proof documents of your passengers as well as passenger groups
       </p>
-      <NoIndividualPassengerTypes />
-      <NoPassengerTypeGroups
-        passengerTypesExist={false}
-      />
+      <div>
+        <NoIndividualPassengerTypes />
+        <a
+          className="govuk-button govuk-button govuk-!-margin-top-5"
+          data-module="govuk-button"
+          href="/managePassengerTypes"
+        >
+          Add a passenger type
+        </a>
+      </div>
+      <div
+        className="govuk-!-margin-top-4"
+      >
+        <NoPassengerTypeGroups />
+      </div>
     </div>
   </div>
 </BaseLayout>
@@ -147,32 +177,50 @@ exports[`pages view passenger types should render correctly when only individual
         Passenger types
       </h1>
       <p
-        className="govuk-body"
+        className="govuk-body govuk-!-margin-bottom-8"
       >
         Define age range and required proof documents of your passengers as well as passenger groups
       </p>
-      <IndividualPassengerTypes
-        deleteActionHandler={[Function]}
-        singlePassengerTypes={
-          Array [
-            Object {
-              "id": 1,
-              "name": "Regular Child",
-              "passengerType": Object {
-                "ageRangeMax": "16",
-                "ageRangeMin": "5",
-                "passengerType": "child",
-                "proofDocuments": Array [
-                  "studentCard",
-                ],
+      <div>
+        <IndividualPassengerTypes
+          deleteActionHandler={[Function]}
+          singlePassengerTypes={
+            Array [
+              Object {
+                "id": 1,
+                "name": "Regular Child",
+                "passengerType": Object {
+                  "ageRangeMax": "16",
+                  "ageRangeMin": "5",
+                  "passengerType": "child",
+                  "proofDocuments": Array [
+                    "studentCard",
+                  ],
+                },
               },
-            },
-          ]
-        }
-      />
-      <NoPassengerTypeGroups
-        passengerTypesExist={true}
-      />
+            ]
+          }
+        />
+        <a
+          className="govuk-button govuk-button govuk-!-margin-top-5"
+          data-module="govuk-button"
+          href="/managePassengerTypes"
+        >
+          Add a passenger type
+        </a>
+      </div>
+      <div
+        className="govuk-!-margin-top-4"
+      >
+        <NoPassengerTypeGroups />
+        <a
+          className="govuk-button"
+          data-module="govuk-button"
+          href="/managePassengerGroup"
+        >
+          Add a passenger group
+        </a>
+      </div>
     </div>
   </div>
 </BaseLayout>
@@ -203,43 +251,55 @@ exports[`pages view passenger types should render correctly when only passenger 
         Passenger types
       </h1>
       <p
-        className="govuk-body"
+        className="govuk-body govuk-!-margin-bottom-8"
       >
         Define age range and required proof documents of your passengers as well as passenger groups
       </p>
-      <NoIndividualPassengerTypes />
-      <PassengerTypeGroups
-        deleteActionHandler={[Function]}
-        passengerTypeGroups={
-          Array [
-            Object {
-              "groupPassengerType": Object {
-                "companions": Array [
-                  Object {
-                    "maxNumber": "2",
-                    "passengerType": "adult",
-                  },
-                  Object {
-                    "ageRangeMax": "16",
-                    "ageRangeMin": "4",
-                    "maxNumber": "1",
-                    "minNumber": "0",
-                    "passengerType": "child",
-                    "proofDocuments": Array [
-                      "studentCard",
-                    ],
-                  },
-                ],
-                "maxGroupSize": "3",
+      <div>
+        <NoIndividualPassengerTypes />
+        <a
+          className="govuk-button govuk-button govuk-!-margin-top-5"
+          data-module="govuk-button"
+          href="/managePassengerTypes"
+        >
+          Add a passenger type
+        </a>
+      </div>
+      <div
+        className="govuk-!-margin-top-4"
+      >
+        <PassengerTypeGroups
+          deleteActionHandler={[Function]}
+          passengerTypeGroups={
+            Array [
+              Object {
+                "groupPassengerType": Object {
+                  "companions": Array [
+                    Object {
+                      "maxNumber": "2",
+                      "passengerType": "adult",
+                    },
+                    Object {
+                      "ageRangeMax": "16",
+                      "ageRangeMin": "4",
+                      "maxNumber": "1",
+                      "minNumber": "0",
+                      "passengerType": "child",
+                      "proofDocuments": Array [
+                        "studentCard",
+                      ],
+                    },
+                  ],
+                  "maxGroupSize": "3",
+                  "name": "family group",
+                },
+                "id": 0,
                 "name": "family group",
               },
-              "id": 0,
-              "name": "family group",
-            },
-          ]
-        }
-        passengerTypesExist={true}
-      />
+            ]
+          }
+        />
+      </div>
     </div>
   </div>
 </BaseLayout>

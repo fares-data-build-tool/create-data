@@ -57,37 +57,35 @@ export const GlobalSettingsViewPage = <T extends Entity>({
 
     const cards = () => (
         <>
-            <div className="govuk-grid-row">
+            <div className="card-row">
                 {entities.map((entity) => (
-                    <div key={entity.id} className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
-                        <div className="card">
-                            <div className={'card__body ' + entityDescription.replace(/ /g, '-')}>
-                                <div className="card__actions">
-                                    <ul className="actions__list">
-                                        <li className="actions__item">
-                                            <a
-                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                                href={`/manage${entityUrl}?id=${entity.id}`}
-                                            >
-                                                Edit
-                                            </a>
-                                        </li>
+                    <div className="card" key={entity.id}>
+                        <div className={'card__body ' + entityDescription.replace(/ /g, '-')}>
+                            <div className="card__actions">
+                                <ul className="actions__list">
+                                    <li className="actions__item">
+                                        <a
+                                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
+                                            href={`/manage${entityUrl}?id=${entity.id}`}
+                                        >
+                                            Edit
+                                        </a>
+                                    </li>
 
-                                        <li className="actions__item">
-                                            <button
-                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                onClick={() => {
-                                                    deleteActionHandler(entity.id, entity.name);
-                                                }}
-                                            >
-                                                Delete
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                {<CardBody entity={entity} />}
+                                    <li className="actions__item">
+                                        <button
+                                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                                            onClick={() => {
+                                                deleteActionHandler(entity.id, entity.name);
+                                            }}
+                                        >
+                                            Delete
+                                        </button>
+                                    </li>
+                                </ul>
                             </div>
+
+                            {<CardBody entity={entity} />}
                         </div>
                     </div>
                 ))}
@@ -101,30 +99,28 @@ export const GlobalSettingsViewPage = <T extends Entity>({
 
     return (
         <BaseLayout title={title} description={description} showNavigation referer={referer}>
-            <div className="govuk-width-container">
-                <main className="govuk-main-wrapper" data-card-count={entities.length}>
-                    <div className="govuk-grid-row">
-                        <div className="govuk-grid-column-one-third">
-                            <SubNavigation />
-                        </div>
-
-                        <div className="govuk-grid-column-two-thirds">
-                            <h1 className="govuk-heading-xl">{title}</h1>
-                            <p className="govuk-body">{description}</p>
-
-                            {entities.length ? cards() : noEntities()}
-
-                            {popUpState && (
-                                <DeleteConfirmationPopup
-                                    entityType={entityDescription}
-                                    entityName={popUpState.entityName}
-                                    deleteUrl={buildDeleteUrl(popUpState.entityId, csrfToken)}
-                                    cancelActionHandler={cancelActionHandler}
-                                />
-                            )}
-                        </div>
+            <div className="govuk-width-container" data-card-count={entities.length}>
+                <div className="govuk-grid-row">
+                    <div className="govuk-grid-column-one-third">
+                        <SubNavigation />
                     </div>
-                </main>
+
+                    <div className="govuk-grid-column-two-thirds">
+                        <h1 className="govuk-heading-xl">{title}</h1>
+                        <p className="govuk-body govuk-!-margin-bottom-8">{description}</p>
+
+                        {entities.length ? cards() : noEntities()}
+
+                        {popUpState && (
+                            <DeleteConfirmationPopup
+                                entityType={entityDescription}
+                                entityName={popUpState.entityName}
+                                deleteUrl={buildDeleteUrl(popUpState.entityId, csrfToken)}
+                                cancelActionHandler={cancelActionHandler}
+                            />
+                        )}
+                    </div>
+                </div>
             </div>
         </BaseLayout>
     );

@@ -20,7 +20,7 @@ import {
 } from '../interfaces';
 import { isFareType } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
-import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
+import { getAndValidateNoc, getCsrfToken, sentenceCaseString, chunk } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { removeAllWhiteSpace } from './api/apiUtils/validator';
 
@@ -84,11 +84,7 @@ const generateCheckbox = (
     selectedDefault: { [key: string]: SalesOfferPackage[] } | undefined,
     defaultPrice: string,
 ): ReactElement[] => {
-    const fullList = [...salesOfferPackagesList];
-    const pairs = [];
-    while (fullList.length > 0) {
-        pairs.push(fullList.splice(0, 2));
-    }
+    const pairs = chunk(salesOfferPackagesList, 2);
 
     const [selected, setSelected] = useState(selectedDefault);
 
@@ -260,7 +256,7 @@ export const getServerSideProps = async (
     const nocCode = getAndValidateNoc(ctx);
 
     if (!nocCode) {
-        throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');
+        throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackage page');
     }
 
     const salesOfferPackagesList: SalesOfferPackage[] = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];

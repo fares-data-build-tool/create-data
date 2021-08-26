@@ -55,14 +55,14 @@ exports[`pages home page should render correctly 1`] = `
         <p
           className="govuk-body"
         >
-          For updating the information we use about your services when creating NeTEx data.
+          For updating your account settings.
         </p>
         <a
           className="govuk-link govuk-!-font-size-19"
-          href="/globalSettings"
+          href="/account"
           id="account-link"
         >
-          Open operator settings
+          My account settings
         </a>
       </div>
       <div
@@ -157,19 +157,24 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
         <h2
           className="govuk-heading-s"
         >
+          <strong
+            className="govuk-tag new-tag"
+          >
+            new
+          </strong>
           Operator settings
         </h2>
         <p
           className="govuk-body"
         >
-          For updating the information we use about your services when creating NeTEx data.
+          Operator settings is where operators can define and save settings specific to a National Operator Code (NOC), such as passenger types, time restrictions and more. We recommend completing this section before creating your fares data.
         </p>
         <a
           className="govuk-link govuk-!-font-size-19"
           href="/globalSettings"
           id="account-link"
         >
-          Open operator settings
+          Define and manage settings
         </a>
       </div>
       <div
