@@ -166,7 +166,7 @@ jobs:
       - run:
           command: |
             echo "Compiling typescript for site"
-            ./node_modules/.bin/tsc -b --verbose && ./node_modules/.bin/tsc --project tsconfig.server.json
+            ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
             cd cypress_tests
             npm ci
             ./node_modules/.bin/tsc 
