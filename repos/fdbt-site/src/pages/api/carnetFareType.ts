@@ -28,7 +28,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             }
         } else {
             const errors: ErrorInfo[] = [
-                { id: 'fare-type-single', errorMessage: 'Choose a carnet fare type from the options', testing: 'true' },
+                { id: 'fare-type-single', errorMessage: 'Choose a carnet fare type from the options' },
             ];
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 errors,
