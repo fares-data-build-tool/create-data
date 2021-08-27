@@ -83,7 +83,7 @@ custom:
 functions:
     NocRetriever:
         handler: csv_retriever/main.lambda_handler
-        timeout: 20
+        timeout: 60
         memorySize: 256
         environment:
             DATA_URL: https://www.travelinedata.org.uk/wp-content/themes/desktop/nocadvanced_download.php?reportFormat=csvFlatFile&allTable%5B%5D=table_noclines&allTable%5B%5D=table_noc_table&allTable%5B%5D=table_public_name&submit=Submit
@@ -106,7 +106,7 @@ functions:
 
     NaptanRetriever:
         handler: csv_retriever/main.lambda_handler
-        timeout: 30
+        timeout: 60
         memorySize: 512
         environment:
             DATA_URL: http://naptan.app.dft.gov.uk/DataRequest/Naptan.ashx?format=csv
@@ -130,7 +130,7 @@ functions:
 
     TxcRetriever:
         handler: txc_retriever/main.lambda_handler
-        timeout: 600
+        timeout: 900
         memorySize: 3072
         maximumRetryAttempts: 2
         environment:
@@ -163,7 +163,7 @@ functions:
 
     TxcUnzipper:
         handler: txc_unzipper/main.lambda_handler
-        timeout: 400
+        timeout: 900
         memorySize: 1024
         maximumRetryAttempts: 0
         environment:
