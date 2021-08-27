@@ -31,6 +31,7 @@ module.exports = {
         'jest/no-disabled-tests': 'error',
         'jest/no-identical-title': 'error',
         'jest/valid-expect': 'error',
+        'no-console': 'error',
         indent: [
             0,
             4,

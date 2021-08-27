@@ -65,28 +65,47 @@ const ViewPassengerTypes = ({
 
                 <div className="govuk-grid-column-two-thirds">
                     <h1 className="govuk-heading-xl">Passenger types</h1>
-                    <p className="govuk-body">
+                    <p className="govuk-body govuk-!-margin-bottom-8">
                         Define age range and required proof documents of your passengers as well as passenger groups
                     </p>
 
-                    {!singlePassengerTypes.length ? (
-                        <NoIndividualPassengerTypes />
-                    ) : (
-                        <IndividualPassengerTypes
-                            singlePassengerTypes={singlePassengerTypes}
-                            deleteActionHandler={deleteActionHandler}
-                        />
-                    )}
+                    <div>
+                        {!singlePassengerTypes.length ? (
+                            <NoIndividualPassengerTypes />
+                        ) : (
+                            <IndividualPassengerTypes
+                                singlePassengerTypes={singlePassengerTypes}
+                                deleteActionHandler={deleteActionHandler}
+                            />
+                        )}
 
-                    {!groupPassengerTypes.length ? (
-                        <NoPassengerTypeGroups passengerTypesExist={singlePassengerTypes.length > 0} />
-                    ) : (
-                        <PassengerTypeGroups
-                            deleteActionHandler={deleteActionHandler}
-                            passengerTypeGroups={groupPassengerTypes}
-                            passengerTypesExist={groupPassengerTypes.length > 0}
-                        />
-                    )}
+                        <a
+                            className="govuk-button govuk-button govuk-!-margin-top-5"
+                            data-module="govuk-button"
+                            href="/managePassengerTypes"
+                        >
+                            Add a passenger type
+                        </a>
+                    </div>
+
+                    <div className="govuk-!-margin-top-4">
+                        {!groupPassengerTypes.length ? (
+                            <NoPassengerTypeGroups />
+                        ) : (
+                            <PassengerTypeGroups
+                                deleteActionHandler={deleteActionHandler}
+                                passengerTypeGroups={groupPassengerTypes}
+                            />
+                        )}
+
+                        {singlePassengerTypes.length ? (
+                            <a className="govuk-button" data-module="govuk-button" href="/managePassengerGroup">
+                                Add a passenger group
+                            </a>
+                        ) : (
+                            ''
+                        )}
+                    </div>
 
                     {popUpState &&
                         (popUpState.groupsInUse?.length ? (
@@ -111,13 +130,10 @@ const ViewPassengerTypes = ({
 
 const NoIndividualPassengerTypes = (): ReactElement => {
     return (
-        <div className="govuk-heading-m">
-            <h4>Individual</h4>
+        <>
+            <h2 className="govuk-heading-l">Individual</h2>
             <p className="govuk-body">You currently have no passenger types saved.</p>
-            <a className="govuk-button" data-module="govuk-button" href="/managePassengerTypes">
-                Add a passenger type
-            </a>
-        </div>
+        </>
     );
 };
 
@@ -131,10 +147,10 @@ const IndividualPassengerTypes = ({
     deleteActionHandler,
 }: IndividualPassengerTypesProps): ReactElement => {
     return (
-        <div className="govuk-heading-m">
-            <h3>Individual</h3>
+        <>
+            <h2 className="govuk-heading-l">Individual</h2>
 
-            <div className="govuk-grid-row">
+            <div className="card-row">
                 {singlePassengerTypes.map((singlePassengerType) => (
                     <PassengerTypeCard
                         contents={singlePassengerType}
@@ -143,52 +159,35 @@ const IndividualPassengerTypes = ({
                     />
                 ))}
             </div>
-
-            <a className="govuk-button" data-module="govuk-button" href="/managePassengerTypes">
-                Add a passenger type
-            </a>
-        </div>
+        </>
     );
 };
 
-const NoPassengerTypeGroups = ({ passengerTypesExist }: { passengerTypesExist: boolean }): ReactElement => {
+const NoPassengerTypeGroups = (): ReactElement => {
     return (
-        <div className="govuk-heading-m">
-            <h3>Groups</h3>
+        <>
+            <h2 className="govuk-heading-l">Groups</h2>
 
             <div className="govuk-inset-text">
                 Individual passengers must be created before they can be added to a group.
             </div>
 
             <p className="govuk-body">You currently have no passenger groups saved.</p>
-
-            {passengerTypesExist ? (
-                <a className="govuk-button" data-module="govuk-button" href="/managePassengerGroup">
-                    Add a passenger group
-                </a>
-            ) : (
-                ''
-            )}
-        </div>
+        </>
     );
 };
 
 interface PassengerTypeGroupProps {
     deleteActionHandler: (id: number, name: string, isGroup: boolean) => void;
-    passengerTypesExist: boolean;
     passengerTypeGroups: FullGroupPassengerType[];
 }
 
-const PassengerTypeGroups = ({
-    deleteActionHandler,
-    passengerTypeGroups,
-    passengerTypesExist,
-}: PassengerTypeGroupProps): ReactElement => {
+const PassengerTypeGroups = ({ deleteActionHandler, passengerTypeGroups }: PassengerTypeGroupProps): ReactElement => {
     return (
-        <div className="govuk-heading-m">
-            <h3>Groups</h3>
+        <>
+            <h2 className="govuk-heading-l">Groups</h2>
 
-            <div className="govuk-grid-row">
+            <div className="card-row">
                 {passengerTypeGroups.map((passengerTypeGroup) => (
                     <PassengerTypeCard
                         contents={passengerTypeGroup}
@@ -197,15 +196,7 @@ const PassengerTypeGroups = ({
                     />
                 ))}
             </div>
-
-            {passengerTypesExist ? (
-                <a className="govuk-button" data-module="govuk-button" href="/managePassengerGroup">
-                    Add a passenger group
-                </a>
-            ) : (
-                ''
-            )}
-        </div>
+        </>
     );
 };
 

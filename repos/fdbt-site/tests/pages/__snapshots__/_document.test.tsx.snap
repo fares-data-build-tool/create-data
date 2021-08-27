@@ -23,6 +23,7 @@ exports[`_document should not show the cookie banner when the showCookieBanner a
     <Header
       csrfToken=""
       isAuthed={true}
+      multiOperator={true}
     />
     <Main />
     <NextScript
@@ -64,6 +65,8 @@ exports[`_document should render correctly 1`] = `
     <Header
       csrfToken=""
       isAuthed={true}
+      multiOperator={false}
+      noc="HELLO"
     />
     <Main />
     <NextScript

@@ -101,3 +101,5 @@ export const GS_TIME_RESTRICTION_ATTRIBUTE = 'fdbt-global-settings-time-restrict
 export const GS_PURCHASE_METHOD_ATTRIBUTE = 'fdbt-global-settings-purchase-method';
 
 export const GS_REFERER = 'fdbt-global-settings-referer';
+
+export const CSV_ZONE_FILE_NAME = 'fdbt-csv-zone-file-name';

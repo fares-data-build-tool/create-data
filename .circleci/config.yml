@@ -148,7 +148,28 @@ jobs:
             cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
             cd ..
             ~/project/repos/<< parameters.package_name >>/run_tests_in_browserstack.sh
-          no_output_timeout: 40m
+          no_output_timeout: 100m
+
+  compile-typescript:
+    parameters:
+      package_name:
+        type: string
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project/repos/<< parameters.package_name >>
+    executor: aws-cli/default
+    steps:
+      - aws-cli/setup:
+          profile-name: default
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Compiling typescript for site"
+            ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
+            cd cypress_tests
+            npm ci
+            ./node_modules/.bin/tsc 
 
   #  fdbt-netex-output
 
@@ -644,6 +665,15 @@ workflows:
               only: /^v.*/
 
       - lint:
+          <<: *slack-fail-post-step
+          package_name: fdbt-site
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+
+      - compile-typescript:
           <<: *slack-fail-post-step
           package_name: fdbt-site
           requires:

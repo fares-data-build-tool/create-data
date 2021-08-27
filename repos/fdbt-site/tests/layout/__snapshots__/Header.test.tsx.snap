@@ -76,7 +76,7 @@ exports[`Header should render correctly 1`] = `
         method="post"
       >
         <input
-          className=" govuk-header__link govuk-header__signout"
+          className="govuk-header__link govuk-header__signout"
           type="submit"
           value="Sign out"
         />

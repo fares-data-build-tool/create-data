@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import TwoThirdsLayout from '../layout/Layout';
+import { FullColumnLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
@@ -20,9 +20,8 @@ interface SelectTimeRestrictionsProps {
 
 const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectTimeRestrictionsProps): ReactElement => {
     return (
-        <TwoThirdsLayout title={title} description={description} errors={errors}>
+        <FullColumnLayout title={title} description={description} errors={errors}>
             <ErrorSummary errors={errors} />
-
             <CsrfForm action="/api/defineTimeRestrictions" method="post" csrfToken={csrfToken}>
                 <>
                     <div className="govuk-form-group">
@@ -58,6 +57,7 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                                         type="radio"
                                         value="Premade"
                                         data-aria-controls="conditional-time-restriction"
+                                        defaultChecked={errors.some((error) => error.id === 'time-restriction')}
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">
                                         Yes
@@ -68,7 +68,7 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                                     className="govuk-radios__conditional govuk-radios__conditional--hidden"
                                     id="conditional-time-restriction"
                                 >
-                                    <div className="govuk-form-group">
+                                    <div className="govuk-form-group card-row">
                                         {timeRestrictions.length ? (
                                             timeRestrictions.map((item) => (
                                                 <TimeRestrictionCard key={item.id} timeRestriction={item} />
@@ -112,32 +112,29 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                     </a>
                 </>
             </CsrfForm>
-        </TwoThirdsLayout>
+        </FullColumnLayout>
     );
 };
 
 const TimeRestrictionCard = ({ timeRestriction }: { timeRestriction: PremadeTimeRestriction }): ReactElement => {
     return (
-        <div className="govuk-grid-column-one-half govuk-!-margin-bottom-5">
-            <div className="card">
-                <div className="card__body time-restriction">
-                    <div className="govuk-radios">
-                        <div className="govuk-radios__item card__radio">
-                            <input
-                                className="govuk-radios__input"
-                                id={`${timeRestriction.name}-radio`}
-                                name="timeRestriction"
-                                type="radio"
-                                value={timeRestriction.name}
-                                aria-label={timeRestriction.name}
-                            />
-                            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                            <label className="govuk-label govuk-radios__label" />
-                        </div>
+        <div className="card">
+            <div className="card__body time-restriction">
+                <div className="govuk-radios">
+                    <div className="govuk-radios__item card__selector">
+                        <input
+                            className="govuk-radios__input"
+                            id={`${timeRestriction.name}-radio`}
+                            name="timeRestriction"
+                            type="radio"
+                            value={timeRestriction.name}
+                            aria-label={timeRestriction.name}
+                        />
+                        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                        <label className="govuk-label govuk-radios__label" />
                     </div>
-
-                    <TimeRestrictionCardBody entity={timeRestriction} />
                 </div>
+                <TimeRestrictionCardBody entity={timeRestriction} />
             </div>
         </div>
     );

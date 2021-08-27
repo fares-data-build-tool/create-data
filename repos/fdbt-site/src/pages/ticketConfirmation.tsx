@@ -21,6 +21,7 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
     POINT_TO_POINT_PRODUCT_ATTRIBUTE,
+    CSV_ZONE_FILE_NAME,
 } from '../constants/attributes';
 import {
     CarnetDetails,
@@ -270,6 +271,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const multiOpAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute;
     const multiOpServices = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) as MultiOperatorInfo[];
+    const fileName = getSessionAttribute(ctx.req, CSV_ZONE_FILE_NAME);
 
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
@@ -279,7 +281,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     if (zone || hybrid) {
         confirmationElements.push({
             name: 'Zone',
-            content: 'You uploaded a fare zone CSV file',
+            content: `You uploaded a fare zone CSV file${!!fileName ? ` named: ${fileName}` : '.'}`,
             href: 'csvZoneUpload',
         });
     }
