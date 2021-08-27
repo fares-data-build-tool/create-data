@@ -91,6 +91,10 @@ custom:
             - functionInvocations
             - functionDuration
 
+        definitions:
+            functionDuration:
+                period: 900
+
 functions:
     CsvUploader:
         handler: csv_uploader/main.lambda_handler
