@@ -80,6 +80,10 @@ custom:
             - functionInvocations
             - functionDuration
 
+        definitions:
+            functionDuration:
+                period: 900
+
 functions:
     NocRetriever:
         handler: csv_retriever/main.lambda_handler
@@ -152,7 +156,7 @@ functions:
                 - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
         alarms:
             - name: functionDuration
-              threshold: 540000
+              threshold: 720000
               treatMissingData: notBreaching
             - name: functionThrottles
               treatMissingData: notBreaching

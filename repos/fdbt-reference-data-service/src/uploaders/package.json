@@ -12,7 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "serverless": "^2.45.2",
-    "serverless-plugin-aws-alerts": "^1.7.0",
+    "serverless-plugin-aws-alerts": "^1.7.3",
     "serverless-python-requirements": "^5.1.0"
   }
 }
