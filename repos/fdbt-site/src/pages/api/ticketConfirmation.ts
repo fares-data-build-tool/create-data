@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { globalSettingsEnabled } from 'src/constants/featureFlag';
+import { globalSettingsEnabled } from '../../constants/featureFlag';
 import { NextApiRequestWithSession } from '../../interfaces/index';
 import { redirectTo, redirectToError } from './apiUtils';
 
