@@ -344,7 +344,7 @@ export const completeSalesOfferPackagesForMultipleProducts = (
             getElementById(`${idPrefix}${randomSalesOfferPackageIndex}`).click();
             if (getRandomNumber(0, 1) === 1 && numberOfSalesOfferPackages > 1) {
                 const otherIndex =
-                    randomSalesOfferPackageIndex === numberOfSalesOfferPackages
+                    randomSalesOfferPackageIndex === numberOfSalesOfferPackages - 1
                         ? randomSalesOfferPackageIndex - 1
                         : randomSalesOfferPackageIndex + 1;
 

@@ -1,6 +1,7 @@
 import isArray from 'lodash/isArray';
 import upperFirst from 'lodash/upperFirst';
 import React, { ReactElement } from 'react';
+import logger from '../utils/logger';
 import ConfirmationTable from '../components/ConfirmationTable';
 import CsrfForm from '../components/CsrfForm';
 import {
@@ -452,6 +453,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
     const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
 
     if (!isFareType(fareTypeInfo)) {
+        logger.error('Did not receive an expected fareType.', { fareTypeInfo });
         throw new Error('Did not receive an expected fareType.');
     }
 
