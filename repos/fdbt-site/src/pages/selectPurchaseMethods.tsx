@@ -94,9 +94,7 @@ const generateCheckbox = (
                                         <span className="govuk-currency-input__inner__unit">£</span>
                                         <FormElementWrapper
                                             errors={errors}
-                                            errorId={`price-${removeAllWhiteSpace(productName)}-${removeAllWhiteSpace(
-                                                offer.name,
-                                            )}`}
+                                            errorId={`price-${productNameIds}-${index}`}
                                             errorClass="govuk-input--error"
                                             hideText
                                             addFormGroupError={false}
@@ -106,7 +104,7 @@ const generateCheckbox = (
                                                 name={`price-${productName}-${offer.name}`}
                                                 data-non-numeric
                                                 type="text"
-                                                id={`price-${productNameIds}-${removeAllWhiteSpace(offer.name)}`}
+                                                id={`price-${productNameIds}-${index}`}
                                                 defaultValue={selectedOffer?.price || defaultPrice}
                                             />
                                         </FormElementWrapper>
