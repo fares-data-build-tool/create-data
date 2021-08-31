@@ -201,6 +201,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 if (ticketType.name === 'hybrid') {
                     redirectTo(res, '/serviceList?selectAll=false');
+                    return;
                 }
             }
 
