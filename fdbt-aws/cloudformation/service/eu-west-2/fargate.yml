@@ -668,7 +668,7 @@ Resources:
     Type: AWS::Logs::MetricFilter
     Properties:
       LogGroupName: !Ref SiteLogGroup
-      FilterPattern: "?ERROR ?Error ?error"
+      FilterPattern: "{ $.level = error }"
       MetricTransformations:
         - MetricValue: "1"
           MetricNamespace: "FDBT/Site"
@@ -741,7 +741,7 @@ Resources:
         - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
       OKActions:
         - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
-  
+
   SiteErrorAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
