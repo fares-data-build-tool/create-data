@@ -337,22 +337,22 @@ export const completeSalesOfferPackagesForMultipleProducts = (
     for (let i = 0; i < numberOfProducts; i += 1) {
         const productName = `${encodeId(multiProductNamePrefix)}${i + 1}`;
         const idPrefix = `product-${productName}-checkbox-`;
-        let numberOfSalesOfferPackages = 0;
         cy.get('.govuk-checkboxes__input').then(($elements) => {
-            numberOfSalesOfferPackages = $elements.length / numberOfProducts;
-        });
-        const randomSalesOfferPackageIndex = getRandomNumber(0, numberOfSalesOfferPackages);
+            const numberOfSalesOfferPackages = $elements.length / numberOfProducts;
+            const randomSalesOfferPackageIndex = getRandomNumber(0, numberOfSalesOfferPackages - 1);
 
-        getElementById(`${idPrefix}${randomSalesOfferPackageIndex}`).click();
-        if (getRandomNumber(0, 1) === 1 && numberOfSalesOfferPackages > 1) {
-            getElementById(
-                `${idPrefix}${
+            getElementById(`${idPrefix}${randomSalesOfferPackageIndex}`).click();
+            if (getRandomNumber(0, 1) === 1 && numberOfSalesOfferPackages > 1) {
+                const otherIndex =
                     randomSalesOfferPackageIndex === numberOfSalesOfferPackages
                         ? randomSalesOfferPackageIndex - 1
-                        : randomSalesOfferPackageIndex + 1
-                }`,
-            ).click();
-        }
+                        : randomSalesOfferPackageIndex + 1;
+
+                getElementById(`${idPrefix}${otherIndex}`).click();
+
+                getElementById(`price-${productName}-${otherIndex}`).clear().type('9.99');
+            }
+        });
     }
 };
 
