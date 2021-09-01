@@ -76,7 +76,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 throw new Error('Auth response invalid');
             }
         } catch (error) {
-            logger.error(error, { context: 'api.login', message: 'login failed' });
+            logger.warn(error, { context: 'api.login', message: 'login failed', stack: error.stack });
 
             errors.push({
                 id: 'login',

@@ -335,25 +335,24 @@ export const completeSalesOfferPackagesForMultipleProducts = (
     multiProductNamePrefix: string,
 ): void => {
     for (let i = 0; i < numberOfProducts; i += 1) {
-        const randomSalesOfferPackageIndex = getRandomNumber(0, 3);
         const productName = `${encodeId(multiProductNamePrefix)}${i + 1}`;
         const idPrefix = `product-${productName}-checkbox-`;
+        cy.get('.govuk-checkboxes__input').then(($elements) => {
+            const numberOfSalesOfferPackages = $elements.length / numberOfProducts;
+            const randomSalesOfferPackageIndex = getRandomNumber(0, numberOfSalesOfferPackages - 1);
 
-        getElementById(`${idPrefix}${randomSalesOfferPackageIndex}`).click();
-        if (getRandomNumber(0, 1) === 1) {
-            getElementById(
-                `${idPrefix}${
-                    randomSalesOfferPackageIndex === 3
+            getElementById(`${idPrefix}${randomSalesOfferPackageIndex}`).click();
+            if (getRandomNumber(0, 1) === 1 && numberOfSalesOfferPackages > 1) {
+                const otherIndex =
+                    randomSalesOfferPackageIndex === numberOfSalesOfferPackages - 1
                         ? randomSalesOfferPackageIndex - 1
-                        : randomSalesOfferPackageIndex + 1
-                }`,
-            ).click();
-        }
+                        : randomSalesOfferPackageIndex + 1;
 
-        const salesOfferPackage = defaultSops[randomSalesOfferPackageIndex];
-        getElementById(`price-${productName}-${encodeId(salesOfferPackage)}`)
-            .clear()
-            .type('9.99');
+                getElementById(`${idPrefix}${otherIndex}`).click();
+
+                getElementById(`price-${productName}-${otherIndex}`).clear().type('9.99');
+            }
+        });
     }
 };
 

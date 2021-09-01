@@ -10,7 +10,7 @@ import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces'
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
 import { globalSettingsEnabled } from '../constants/featureFlag';
-import { getNocFromIdToken } from '../utils';
+import { getAndValidateNoc } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { redirectTo } from './api/apiUtils';
 
@@ -64,7 +64,7 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: GlobalSettingsProps }> => {
-    const noc = getNocFromIdToken(ctx);
+    const noc = getAndValidateNoc(ctx);
 
     if (!noc) {
         throw new Error('No NOC found for useer.');
