@@ -382,13 +382,6 @@ export const getFareStructuresElements = (
             validityParametersObject = { LineRef: getLineRefList(ticket) };
         }
 
-        if ('productDuration' in product && (isGeoZoneTicket(ticket) || isMultiServiceTicket(ticket))) {
-            return [
-                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
-                getDurationElement(ticket, product),
-                getPeriodConditionsElement(ticket, product),
-            ];
-        }
         if (isHybridTicket(ticket) && isProductDetails(product)) {
             const zonalAvailabilityElementId = `Tariff@${product.productName}@access_zones`;
             const zonalValidityParametersObject = {
@@ -406,6 +399,14 @@ export const getFareStructuresElements = (
                     product.productName,
                     groupOfLinesRef,
                 ),
+                getDurationElement(ticket, product),
+                getPeriodConditionsElement(ticket, product),
+            ];
+        }
+
+        if ('productDuration' in product) {
+            return [
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];

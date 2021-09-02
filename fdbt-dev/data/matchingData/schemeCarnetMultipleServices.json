@@ -1,0 +1,109 @@
+{
+  "schemeOperatorName": "Test Scheme Op",
+  "schemeOperatorRegionCode": "SE",
+  "type": "period",
+  "passengerType": "child",
+  "ageRangeMin": "",
+  "ageRangeMax": "",
+  "email": "test@example.com",
+  "uuid": "TESTSE6b307cc1",
+  "timeRestriction": [],
+  "ticketPeriod": {
+    "startDate": "2021-09-02T15:56:16.244Z",
+    "endDate": "2121-09-02T15:56:16.244Z"
+  },
+  "products": [
+    {
+      "productName": "test",
+      "productPrice": "2.99",
+      "productDuration": "1 month",
+      "productValidity": "endOfCalendarDay",
+      "productEndTime": "",
+      "carnetDetails": {
+        "quantity": "2",
+        "expiryTime": "88",
+        "expiryUnit": "month"
+      },
+      "salesOfferPackages": [
+        {
+          "id": 1,
+          "name": "Purchase method",
+          "description": "",
+          "purchaseLocations": [
+            "mobileDevice"
+          ],
+          "paymentMethods": [
+            "cash"
+          ],
+          "ticketFormats": [
+            "electronic_document"
+          ],
+          "price": "2.99"
+        }
+      ]
+    },
+    {
+      "productName": "Jacob Ellis",
+      "productPrice": "3.99",
+      "productDuration": "2 weeks",
+      "productValidity": "endOfCalendarDay",
+      "productEndTime": "",
+      "carnetDetails": {
+        "quantity": "5",
+        "expiryTime": "77",
+        "expiryUnit": "month"
+      },
+      "salesOfferPackages": [
+        {
+          "id": 1,
+          "name": "Purchase method",
+          "description": "",
+          "purchaseLocations": [
+            "mobileDevice"
+          ],
+          "paymentMethods": [
+            "cash"
+          ],
+          "ticketFormats": [
+            "electronic_document"
+          ],
+          "price": "3.99"
+        }
+      ]
+    }
+  ],
+  "additionalOperators": [
+    {
+      "nocCode": "PBLT",
+      "selectedServices": [
+        {
+          "lineName": "3",
+          "lineId": "lDJRAS",
+          "serviceCode": "NW_05_PBLT_3_1",
+          "startDate": "28/03/2020",
+          "serviceDescription": "CLITHEROE - CLITHEROE via Pimlico, Chatburn, Pimlico"
+        },
+        {
+          "lineName": "5",
+          "lineId": "A2EHwY",
+          "serviceCode": "NW_05_PBLT_5_3",
+          "startDate": "02/01/2020",
+          "serviceDescription": "ORMSKIRK - TOWN GREEN CIRCULAR"
+        }
+      ]
+    },
+    {
+      "nocCode": "NWBT",
+      "selectedServices": [
+        {
+          "lineName": "4",
+          "lineId": "DnmNdy",
+          "serviceCode": "NW_05_NWBT_4_1",
+          "startDate": "02/01/2020",
+          "serviceDescription": "CLITHEROE - PEEL PARK CIRCULAR via Claremont Ave, Standen Rd, Langshaw Dr, Turner St, Victoria St"
+        }
+      ]
+    }
+  ],
+  "carnet": true
+}
