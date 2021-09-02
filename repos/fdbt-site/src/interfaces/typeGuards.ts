@@ -1,4 +1,4 @@
-import { FlatFareTicket, PeriodMultipleServicesTicket } from 'shared/matchingJsonTypes';
+import { FlatFareTicket, PeriodMultipleServicesTicket, Ticket } from 'shared/matchingJsonTypes';
 import {
     CarnetProductInfo,
     ErrorInfo,
@@ -41,9 +41,7 @@ export const isNotEmpty = <T>(value: T | null | undefined): value is T => value 
 export const isPeriodTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is PeriodTicket =>
     (ticket as PeriodTicket).products?.[0]?.productName !== undefined;
 
-export const isMultipleServicesTicket = (
-    ticket: PeriodTicket | PointToPointTicket,
-): ticket is PeriodMultipleServicesTicket | FlatFareTicket =>
+export const isMultipleServicesTicket = (ticket: Ticket): ticket is PeriodMultipleServicesTicket | FlatFareTicket =>
     (ticket as PeriodMultipleServicesTicket).selectedServices !== undefined;
 
 export const isPointToPointTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is PointToPointTicket =>

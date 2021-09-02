@@ -8,14 +8,12 @@ import {
     isSchemeOperatorTicket,
     PeriodTicket,
     PointToPointTicket,
-    GroupTicket,
     User,
     GroupCompanion,
     FullTimeRestriction,
     Operator,
     isPointToPointTicket,
-    SchemeOperatorTicket,
-    isGroupTicket,
+    BaseSchemeOperatorTicket,
     Ticket,
     ProductDetails,
     FlatFareProductDetails,
@@ -42,7 +40,7 @@ import {
     getLinesElement,
     getPointToPointAvailabilityElement,
 } from './point-to-point-tickets/pointToPointTicketNetexHelpers';
-import { FlatFareTicket } from '../../shared/matchingJsonTypes';
+import { FlatFareTicket, GroupDefinition } from '../../shared/matchingJsonTypes';
 
 export interface NetexObject {
     [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -76,9 +74,9 @@ export const convertJsonToXml = (netexFileAsJsonObject: NetexObject): string => 
 };
 
 export const getProfileRef = (
-    ticket: PeriodTicket | PointToPointTicket | FlatFareTicket | SchemeOperatorTicket,
+    ticket: PeriodTicket | PointToPointTicket | FlatFareTicket | BaseSchemeOperatorTicket,
 ): NetexObject => {
-    if (isGroupTicket(ticket)) {
+    if (ticket.groupDefinition) {
         return {
             GroupTicketRef: {
                 version: '1.0',
@@ -110,7 +108,7 @@ export const getUserProfile = (user: User | GroupCompanion): NetexObject => ({
     ProofRequired: { $t: user.proofDocuments?.join(' ') || null },
 });
 
-export const getGroupElement = (userPeriodTicket: GroupTicket): NetexObject => {
+export const getGroupElement = (groupDefinition: GroupDefinition): NetexObject => {
     return {
         version: '1.0',
         id: `op:Tariff@group`,
@@ -133,10 +131,10 @@ export const getGroupElement = (userPeriodTicket: GroupTicket): NetexObject => {
                     id: 'op:group',
                     version: '1.0',
                     MaximumNumberOfPersons: {
-                        $t: userPeriodTicket.groupDefinition.maxPeople,
+                        $t: groupDefinition.maxPeople,
                     },
                     companionProfiles: {
-                        CompanionProfile: userPeriodTicket.groupDefinition.companions.map(companion => ({
+                        CompanionProfile: groupDefinition.companions.map(companion => ({
                             version: '1.0',
                             id: `op:companion@${companion.passengerType}`,
                             UserProfileRef: {
@@ -341,8 +339,8 @@ export const getFareStructuresElements = (
         fareStructureElements.push(getCarnetElement(ticket));
     }
 
-    if (isGroupTicket(ticket)) {
-        fareStructureElements.push(getGroupElement(ticket));
+    if (ticket.groupDefinition) {
+        fareStructureElements.push(getGroupElement(ticket.groupDefinition));
     }
 
     if ('lineName' in ticket) {

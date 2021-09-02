@@ -1,7 +1,12 @@
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import { NextApiResponse } from 'next';
-import { BasePeriodTicket, FlatFareProductDetails, PeriodMultipleServicesTicket } from 'shared/matchingJsonTypes';
+import {
+    BasePeriodTicket,
+    PeriodMultipleServicesTicket,
+    TicketType,
+    SchemeOperatorMultiServiceTicket,
+} from '../../../../shared/matchingJsonTypes';
 import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from '.';
 
 import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants';
@@ -25,6 +30,7 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../../constants/attributes';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
@@ -48,7 +54,7 @@ import {
     SalesOfferPackage,
     SchemeOperatorFlatFareTicket,
     SchemeOperatorGeoZoneTicket,
-    SchemeOperatorTicket,
+    BaseSchemeOperatorTicket,
     SingleTicket,
     Stop,
     TermTimeAttribute,
@@ -65,6 +71,7 @@ import {
     isSalesOfferPackageWithErrors,
     isTicketPeriodAttributeWithInput,
     isWithErrors,
+    isTicketRepresentation,
 } from '../../../interfaces/typeGuards';
 
 import logger from '../../../utils/logger';
@@ -93,7 +100,7 @@ export const getProductsAndSalesOfferPackages = (
         if (!matchedProduct) {
             throw new Error('No products could be found that matched the sales offer packages');
         }
-        const productDetailsItem: ProductDetails = {
+        const productDetailsItem = {
             productName: matchedProduct.productName,
             productPrice: 'productPrice' in matchedProduct ? matchedProduct.productPrice : undefined,
             productDuration: matchedProduct.productDuration
@@ -106,7 +113,7 @@ export const getProductsAndSalesOfferPackages = (
             carnetDetails: 'carnetDetails' in matchedProduct ? matchedProduct.carnetDetails : undefined,
             salesOfferPackages: sopInfo.salesOfferPackages,
         };
-        productSOPList.push(productDetailsItem);
+        productSOPList.push(productDetailsItem as ProductDetails);
     });
 
     return productSOPList;
@@ -124,11 +131,11 @@ const getTicketPeriod = (ticketPeriodWithInput: TicketPeriodWithInput): TicketPe
     endDate: ticketPeriodWithInput.endDate,
 });
 
-export const getBaseTicketAttributes = (
+export const getBaseTicketAttributes = <T extends TicketType>(
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-    ticketType: string,
-): BaseTicket => {
+    ticketType: T,
+): BaseTicket<T> => {
     const cookies = new Cookies(req, res);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
@@ -157,10 +164,9 @@ export const getBaseTicketAttributes = (
 
     return {
         nocCode,
-        type:
-            fareType === 'schoolService' && schoolFareTypeAttribute?.schoolFareType
-                ? schoolFareTypeAttribute?.schoolFareType
-                : fareType,
+        type: (fareType === 'schoolService' && schoolFareTypeAttribute?.schoolFareType
+            ? schoolFareTypeAttribute?.schoolFareType
+            : fareType) as T,
         ...passengerTypeAttribute,
         email,
         uuid,
@@ -175,11 +181,11 @@ export const getBaseTicketAttributes = (
 export const getBasePeriodTicketAttributes = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-    ticketType: string,
+    ticketType: 'period' | 'multiOperator',
 ): BasePeriodTicket => {
     const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
 
-    const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, ticketType);
+    const baseTicketAttributes = getBaseTicketAttributes(req, res, ticketType);
 
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
@@ -309,7 +315,7 @@ export const getGeoZoneTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
 ): Promise<GeoZoneTicket> => {
-    const basePeriodTicketAttributes: BasePeriodTicket = getBasePeriodTicketAttributes(req, res, 'geo zone');
+    const basePeriodTicketAttributes: BasePeriodTicket = getBasePeriodTicketAttributes(req, res, 'period');
 
     const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
     const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
@@ -344,7 +350,7 @@ export const getMultipleServicesTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
 ): PeriodMultipleServicesTicket | MultiOperatorMultipleServicesTicket => {
-    const basePeriodTicketAttributes: BasePeriodTicket = getBasePeriodTicketAttributes(req, res, 'multiple services');
+    const basePeriodTicketAttributes: BasePeriodTicket = getBasePeriodTicketAttributes(req, res, 'period');
 
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
 
@@ -426,7 +432,7 @@ export const getPointToPointPeriodJson = (
 export const getSchemeOperatorTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): SchemeOperatorTicket => {
+): BaseSchemeOperatorTicket => {
     const cookies = new Cookies(req, res);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
@@ -469,15 +475,18 @@ export const getSchemeOperatorTicketJson = (
 export const adjustSchemeOperatorJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-    matchingJson: SchemeOperatorTicket,
-): Promise<SchemeOperatorFlatFareTicket | SchemeOperatorGeoZoneTicket> => {
+    matchingJson: BaseSchemeOperatorTicket,
+): Promise<SchemeOperatorFlatFareTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorMultiServiceTicket> => {
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
 
     if (isSalesOfferPackageWithErrors(salesOfferPackages) || !salesOfferPackages) {
         throw new Error('Sales offer packages not found for scheme operator ticket matching json');
     }
 
-    if (matchingJson.type === 'flatFare') {
+    const ticketRepresentation = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
+    const ticketType = isTicketRepresentation(ticketRepresentation) ? ticketRepresentation.name : undefined;
+
+    if (matchingJson.type === 'flatFare' || ticketType === 'multipleServices') {
         const multipleProductsAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
         if (
@@ -489,11 +498,18 @@ export const adjustSchemeOperatorJson = async (
             throw new Error('Could not create flat fare ticket json. Necessary cookies and session objects not found.');
         }
 
+        const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
+        if (periodExpiryAttributeInfo && !('productValidity' in periodExpiryAttributeInfo)) {
+            logger.error('Period expiry contained errors', { periodExpiryAttributeInfo });
+            throw new Error('Period expiry contained errors');
+        }
+
         const productsAndSops = getProductsAndSalesOfferPackages(
             salesOfferPackages,
             multipleProductsAttribute,
-            undefined,
-        ) as FlatFareProductDetails[];
+            periodExpiryAttributeInfo,
+        );
+
         const multipleOperatorsServices = getSessionAttribute(
             req,
             MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
@@ -508,7 +524,7 @@ export const adjustSchemeOperatorJson = async (
             ...matchingJson,
             products: productsAndSops,
             additionalOperators: additionalOperatorsInfo.additionalOperators,
-        };
+        } as SchemeOperatorMultiServiceTicket;
     }
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);

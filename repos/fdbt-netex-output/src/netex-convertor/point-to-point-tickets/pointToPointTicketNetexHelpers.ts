@@ -12,7 +12,6 @@ import {
     BaseProduct,
     NetexSalesOfferPackage,
     isReturnTicket,
-    isGroupTicket,
 } from '../../types';
 import {
     NetexObject,
@@ -410,7 +409,7 @@ export const getLinesElement = (
 
 export const getEligibilityElement = (ticket: PointToPointTicket | PointToPointPeriodTicket): NetexObject => {
     const typeOfPointToPoint = ticket.type;
-    const users = isGroupTicket(ticket)
+    const users = ticket.groupDefinition
         ? ticket.groupDefinition.companions
         : [
               {

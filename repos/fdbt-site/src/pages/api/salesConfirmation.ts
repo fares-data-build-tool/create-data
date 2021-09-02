@@ -94,22 +94,19 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
             const carnetAttribute = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
 
-            const group =
-                !!sessionGroup &&
-                !!groupSize &&
+            if (
+                sessionGroup &&
+                groupSize &&
                 isPassengerType(passengerTypeAttribute) &&
-                passengerTypeAttribute.passengerType === 'group';
+                passengerTypeAttribute.passengerType === 'group'
+            ) {
+                userDataJson.groupDefinition = {
+                    maxPeople: groupSize.maxGroupSize,
+                    companions: sessionGroup,
+                };
+            }
 
-            userDataJson = {
-                ...userDataJson,
-                groupDefinition: group
-                    ? {
-                          maxPeople: groupSize?.maxGroupSize,
-                          companions: sessionGroup,
-                      }
-                    : undefined,
-                carnet: carnetAttribute,
-            };
+            userDataJson.carnet = carnetAttribute;
 
             await putUserDataInS3(userDataJson, uuid);
 

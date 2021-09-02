@@ -1,4 +1,12 @@
-import { FlatFareGeoZone, FlatFareTicket, SelectedService } from '../../../shared/matchingJsonTypes';
+import {
+    FlatFareGeoZoneTicket,
+    FlatFareTicket,
+    SelectedService,
+    PeriodMultipleServicesTicket,
+    SchemeOperatorTicket,
+    SchemeOperatorMultiServiceTicket,
+    SchemeOperatorGeoZoneTicket,
+} from '../../../shared/matchingJsonTypes';
 
 import {
     DistributionAssignment,
@@ -7,9 +15,7 @@ import {
     GroupOfLines,
     GroupOfOperators,
     HybridPeriodTicket,
-    isFlatFareTicket,
     isGeoZoneTicket,
-    isGroupTicket,
     isHybridTicket,
     isMultiOperatorMultipleServicesTicket,
     isMultiServiceTicket,
@@ -20,14 +26,12 @@ import {
     NetexOrganisationOperator,
     NetexSalesOfferPackage,
     Operator,
-    PeriodMultipleServicesTicket,
     PeriodTicket,
     SalesOfferPackageElement,
     ScheduledStopPoint,
     SchemeOperator,
     SchemeOperatorFlatFareTicket,
-    SchemeOperatorGeoZoneTicket,
-    SchemeOperatorTicket,
+    BaseSchemeOperatorTicket,
     Stop,
     Ticket,
     TopographicProjectionRef,
@@ -46,7 +50,7 @@ import {
     replaceIWBusCoNocCode,
 } from '../sharedHelpers';
 
-export const getBaseSchemeOperatorInfo = (userPeriodTicket: SchemeOperatorTicket): SchemeOperator => ({
+export const getBaseSchemeOperatorInfo = (userPeriodTicket: BaseSchemeOperatorTicket): SchemeOperator => ({
     schemeOperatorName: userPeriodTicket.schemeOperatorName,
     schemeOperatorRegionCode: userPeriodTicket.schemeOperatorRegionCode,
     website: '',
@@ -73,21 +77,30 @@ export const getTopographicProjectionRefList = (stops: Stop[]): TopographicProje
     }));
 
 const getFullServicesList = (
-    userPeriodTicket: PeriodMultipleServicesTicket | MultiOperatorMultipleServicesTicket | SchemeOperatorFlatFareTicket,
+    userPeriodTicket:
+        | PeriodMultipleServicesTicket
+        | MultiOperatorMultipleServicesTicket
+        | SchemeOperatorFlatFareTicket
+        | SchemeOperatorMultiServiceTicket,
 ): SelectedService[] => {
     let servicesList: SelectedService[] = [];
 
-    if (isMultiOperatorMultipleServicesTicket(userPeriodTicket) || isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
+    if ('additionalOperators' in userPeriodTicket) {
         servicesList = userPeriodTicket.additionalOperators.flatMap(operator => operator.selectedServices);
     }
-    if (!isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
+    if ('selectedServices' in userPeriodTicket) {
         servicesList = servicesList.concat(userPeriodTicket.selectedServices);
     }
     return servicesList;
 };
 
 export const getLinesList = (
-    userPeriodTicket: PeriodMultipleServicesTicket | MultiOperatorMultipleServicesTicket | SchemeOperatorFlatFareTicket,
+    userPeriodTicket:
+        | PeriodMultipleServicesTicket
+        | MultiOperatorMultipleServicesTicket
+        | SchemeOperatorFlatFareTicket
+        | SchemeOperatorMultiServiceTicket
+        | HybridPeriodTicket,
     website: string,
     operatorData: Operator[],
 ): Line[] => {
@@ -167,7 +180,7 @@ export const getGroupOfLinesList = (operatorIdentifier: string, isHybrid: boolea
 };
 
 export const getLineRefList = (
-    userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorFlatFareTicket,
+    userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorFlatFareTicket | SchemeOperatorMultiServiceTicket,
 ): LineRef[] => {
     const fullServicesList = getFullServicesList(userPeriodTicket);
     return fullServicesList.length > 0
@@ -179,7 +192,7 @@ export const getLineRefList = (
 };
 
 export const getGeoZoneFareTable = (
-    userPeriodTicket: GeoZoneTicket | FlatFareGeoZone,
+    userPeriodTicket: GeoZoneTicket | FlatFareGeoZoneTicket | SchemeOperatorGeoZoneTicket,
     placeHolderGroupOfProductsName: string,
     ticketUserConcat: string,
 ): NetexObject[] => {
@@ -266,16 +279,26 @@ export const getGeoZoneFareTable = (
 };
 
 const getMultiServiceList = (
-    userPeriodTicket: PeriodMultipleServicesTicket,
+    userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorMultiServiceTicket,
     ticketUserConcat: string,
 ): NetexObject[] => {
     return userPeriodTicket.products.flatMap((product, indexOne) => {
         return product.salesOfferPackages.map((salesOfferPackage, indexTwo) => {
+            const ownServiceCount =
+                'selectedServices' in userPeriodTicket ? userPeriodTicket.selectedServices.length : 0;
+            const serviceCount =
+                'additionalOperators' in userPeriodTicket
+                    ? userPeriodTicket.additionalOperators.reduce(
+                          (count, it) => count + it.selectedServices.length,
+                          ownServiceCount,
+                      )
+                    : ownServiceCount;
+
             return {
                 version: '1.0',
                 id: `op:fareTable@${product.productName}@${salesOfferPackage.name}@services`,
                 Name: {
-                    $t: `${product.productName} - ${salesOfferPackage.name} - ${userPeriodTicket.selectedServices.length} services`,
+                    $t: `${product.productName} - ${salesOfferPackage.name} - ${serviceCount} services`,
                 },
                 pricesFor: {
                     PreassignedFareProductRef: {
@@ -377,10 +400,14 @@ const getFlatFareList = (
     });
 
 export const getMultiServiceFareTable = (
-    userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorFlatFareTicket | FlatFareTicket,
+    userPeriodTicket:
+        | PeriodMultipleServicesTicket
+        | SchemeOperatorFlatFareTicket
+        | FlatFareTicket
+        | SchemeOperatorMultiServiceTicket,
     ticketUserConcat: string,
 ): NetexObject[] => {
-    if (isSchemeOperatorFlatFareTicket(userPeriodTicket) || isFlatFareTicket(userPeriodTicket)) {
+    if (userPeriodTicket.type === 'flatFare') {
         return getFlatFareList(userPeriodTicket, ticketUserConcat);
     } else {
         return getMultiServiceList(userPeriodTicket, ticketUserConcat);
@@ -399,7 +426,7 @@ export const getHybridFareTable = (
 };
 
 export const getSalesOfferPackageList = (
-    userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket,
+    userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorTicket,
     ticketUserConcat: string,
 ): NetexSalesOfferPackage[][] => {
     return userPeriodTicket.products.map(product => {
@@ -407,7 +434,7 @@ export const getSalesOfferPackageList = (
             const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
 
             const buildDistributionAssignments = (): DistributionAssignment[] => {
-                const distribAssignments = salesOfferPackage.purchaseLocations.map((purchaseLocation, index) => {
+                return salesOfferPackage.purchaseLocations.map((purchaseLocation, index) => {
                     return {
                         version: 'any',
                         id: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}@${purchaseLocation}`,
@@ -422,11 +449,10 @@ export const getSalesOfferPackageList = (
                         },
                     };
                 });
-                return distribAssignments;
             };
 
             const buildSalesOfferPackageElements = (): SalesOfferPackageElement[] => {
-                const salesOfferPackageElements = salesOfferPackage.ticketFormats.map((ticketFormat, index) => {
+                return salesOfferPackage.ticketFormats.map((ticketFormat, index) => {
                     return {
                         id: `Trip@${ticketUserConcat}-${product.productName}-${salesOfferPackage.name}@${ticketFormat}`,
                         version: '1.0',
@@ -441,7 +467,6 @@ export const getSalesOfferPackageList = (
                         },
                     };
                 });
-                return salesOfferPackageElements;
             };
             return {
                 version: '1.0',
@@ -488,7 +513,7 @@ const getFlatFareFareStructureElementRefs = (elementZeroRef: string, productName
 ];
 
 export const getPreassignedFareProducts = (
-    userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorFlatFareTicket,
+    userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorTicket,
     nocCodeNocFormat: string,
     opIdNocFormat: string,
 ): NetexObject[] => {
@@ -513,7 +538,7 @@ export const getPreassignedFareProducts = (
             fareStructureElementRefs = getFlatFareFareStructureElementRefs(elementZeroRef, product.productName);
         }
 
-        if (isGroupTicket(userPeriodTicket)) {
+        if (userPeriodTicket.groupDefinition) {
             fareStructureElementRefs.push({
                 version: '1.0',
                 ref: `op:Tariff@group`,
@@ -674,7 +699,7 @@ export const getDurationElement = (
 });
 
 export const getPeriodEligibilityElement = (userPeriodTicket: Ticket): NetexObject[] => {
-    const users = isGroupTicket(userPeriodTicket)
+    const users = userPeriodTicket.groupDefinition
         ? userPeriodTicket.groupDefinition.companions
         : [
               {
