@@ -1,4 +1,5 @@
 {
     "baseUrl": "http://localhost:5555",
+    "supportFile": "cypress/support/index.js",
     "retries": 3
 }
