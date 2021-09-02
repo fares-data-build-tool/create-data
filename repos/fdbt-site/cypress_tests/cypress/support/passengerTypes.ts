@@ -1,5 +1,6 @@
 import {
     clickElementById,
+    clickElementByText,
     getElementByClass,
     getElementByDataTestId,
     getElementById,
@@ -14,14 +15,14 @@ interface PassengerType {
     name: string;
 }
 
-const enterPassengerTypeDetails = ({ type, minAge, maxAge, documents, name }: PassengerType) => {
+export const enterPassengerTypeDetails = ({ type, minAge, maxAge, documents, name }: PassengerType) => {
     clickElementById(type);
 
     minAge && getElementByName('ageRangeMin').clear().type(minAge.toString());
     maxAge && getElementByName('ageRangeMax').clear().type(maxAge.toString());
 
     documents?.forEach((doc) => {
-        getElementById(doc).click();
+        clickElementById(doc);
     });
 
     getElementByName('name').clear().type(name);
@@ -33,11 +34,11 @@ const addSinglePassengerType = (passengerType: PassengerType) => {
     cy.contains('Add passenger type').click();
 };
 
-const addGroupPassengerType = () => {
-    cy.contains('Add a passenger group').click();
+export const addGroupPassengerType = () => {
+    clickElementByText('Add a passenger group');
     getElementById('max-group-size').clear().type('6');
-    getElementById('passenger-type-0').click();
-    getElementById('passenger-type-1').click();
+    clickElementById('passenger-type-0');
+    clickElementById('passenger-type-1');
     getElementByDataTestId('maximum-passengers').eq(0).clear().type('4');
 
     getElementByDataTestId('maximum-passengers').eq(1).clear().type('3');
