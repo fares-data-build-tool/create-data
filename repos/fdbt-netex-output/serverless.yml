@@ -164,7 +164,6 @@ resources:
 
 plugins:
   - serverless-plugin-typescript
-  - serverless-offline
 
 package:
   include:

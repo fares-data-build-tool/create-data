@@ -6,20 +6,14 @@ import {
     BaseProduct,
     CarnetDetails,
     CarnetProductInfo,
+    CompanionInfo,
     ExpiryUnit,
-    FlatFareProductDetails,
-    FlatFareTicket,
     FullTimeRestriction,
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
-    PointToPointPeriodTicket,
-    PointToPointTicket,
     Product,
-    ProductDetails,
     SalesOfferPackage,
-    SchemeOperatorTicket,
     SelectedService,
-    Stop,
     TicketType,
 } from '../../shared/matchingJsonTypes';
 
@@ -303,49 +297,9 @@ export interface CognitoIdToken {
     'custom:schemeRegionCode': string;
 }
 
-// Ticket Types
-
-export type SpecificTicket =
-    | PointToPointTicket
-    | GeoZoneTicket
-    | PeriodMultipleServicesTicket
-    | PeriodHybridTicket
-    | FlatFareTicket
-    | SchemeOperatorTicket
-    | PointToPointPeriodTicket;
-
-export type Ticket = SpecificTicket &
-    Partial<{
-        groupDefinition: { maxPeople?: string; companions?: CompanionInfo[] };
-        carnet: boolean;
-    }>;
-
 export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
 
-export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
-    additionalNocs: string[];
-}
-
-export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
-
-export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
-
 export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
-    additionalOperators: {
-        nocCode: string;
-        selectedServices: SelectedService[];
-    }[];
-}
-
-export interface SchemeOperatorGeoZoneTicket extends SchemeOperatorTicket {
-    zoneName: string;
-    stops: Stop[];
-    products: ProductDetails[];
-    additionalNocs: string[];
-}
-
-export interface SchemeOperatorFlatFareTicket extends SchemeOperatorTicket {
-    products: FlatFareProductDetails[];
     additionalOperators: {
         nocCode: string;
         selectedServices: SelectedService[];
@@ -364,17 +318,6 @@ export interface PassengerDetails {
     timeRestriction: FullTimeRestriction[];
     ticketPeriod: TicketPeriodWithInput;
     proof?: string[];
-}
-
-export interface CompanionInfo {
-    id?: number;
-    name?: string;
-    passengerType: string;
-    minNumber?: string;
-    maxNumber: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proofDocuments?: string[];
 }
 
 export interface GroupPassengerTypeDb {
@@ -749,12 +692,19 @@ export type {
     Stop,
     TimeBand,
     PeriodExpiry,
-    SchemeOperatorTicket,
+    BaseSchemeOperatorTicket,
     SingleTicket,
     PointToPointTicket,
     ProductDetails,
     Product,
     PointToPointPeriodTicket,
+    CompanionInfo,
+    GeoZoneTicket,
+    SchemeOperatorGeoZoneTicket,
+    SchemeOperatorFlatFareTicket,
+    PeriodHybridTicket,
+    Ticket,
+    MultiOperatorGeoZoneTicket,
 } from '../../shared/matchingJsonTypes';
 
 export { ExpiryUnit, CarnetExpiryUnit } from '../../shared/matchingJsonTypes';

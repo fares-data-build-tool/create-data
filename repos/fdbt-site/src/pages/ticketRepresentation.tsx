@@ -12,7 +12,7 @@ import {
 import { ErrorInfo, FareType, NextPageContextWithSession } from '../interfaces';
 import { isTicketRepresentationWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
-import { getCsrfToken } from '../utils';
+import { getCsrfToken, isSchemeOperator } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Ticket Representation - Create Fares Data Service';
@@ -107,14 +107,15 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
     const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
     const ticketType = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
     const isCarnet = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
+    const isScheme = isSchemeOperator(ctx);
 
     return {
         props: {
             fareType,
             errors: ticketType && isTicketRepresentationWithErrors(ticketType) ? ticketType.errors : [],
             csrfToken,
-            showHybrid: fareType === 'period',
-            showPointToPoint: fareType === 'period' && !isCarnet,
+            showHybrid: fareType === 'period' && !isScheme,
+            showPointToPoint: fareType === 'period' && !isCarnet && !isScheme,
         },
     };
 };

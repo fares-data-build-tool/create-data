@@ -17,6 +17,7 @@ import {
     PointToPointTicket,
     ScheduledStopPoints,
     Ticket,
+    assertNever,
 } from '../types';
 
 import {
@@ -421,24 +422,27 @@ const netexGenerator = (ticket: Ticket, operatorData: Operator[]): { generate: F
         if ('lineName' in ticket) {
             fareTableFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(ticket);
             fareTableFareFrameToUpdate.fareTables.FareTable = getFareTables(ticket, coreData.lineIdName);
-        } else if (isGeoZoneTicket(ticket)) {
-            fareTableFareFrameToUpdate.fareTables.FareTable = getGeoZoneFareTable(
-                ticket,
-                coreData.placeholderGroupOfProductsName,
-                coreData.ticketUserConcat,
-            );
-        } else if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket)) {
-            fareTableFareFrameToUpdate.fareTables.FareTable = getMultiServiceFareTable(
-                ticket,
-                coreData.ticketUserConcat,
-            );
-        } else if (isHybridTicket(ticket)) {
+        } else if ('zoneName' in ticket && 'selectedServices' in ticket) {
             fareTableFareFrameToUpdate.fareTables.FareTable = getHybridFareTable(
                 ticket,
                 coreData.placeholderGroupOfProductsName,
                 coreData.ticketUserConcat,
             );
+        } else if ('zoneName' in ticket) {
+            fareTableFareFrameToUpdate.fareTables.FareTable = getGeoZoneFareTable(
+                ticket,
+                coreData.placeholderGroupOfProductsName,
+                coreData.ticketUserConcat,
+            );
+        } else if ('selectedServices' in ticket || 'schemeOperatorName' in ticket) {
+            fareTableFareFrameToUpdate.fareTables.FareTable = getMultiServiceFareTable(
+                ticket,
+                coreData.ticketUserConcat,
+            );
+        } else {
+            assertNever(ticket);
         }
+
         return fareTableFareFrameToUpdate;
     };
 

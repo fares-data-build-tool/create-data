@@ -1,6 +1,7 @@
-import { PeriodMultipleServicesTicket, GeoZoneTicket, SchemeOperator } from '../../types/index';
+import { GeoZoneTicket, SchemeOperator } from '../../types';
 
 import * as netexHelpers from './periodTicketNetexHelpers';
+import { getGroupOfLinesList, getGroupOfOperators, getOrganisations } from './periodTicketNetexHelpers';
 import {
     periodGeoZoneTicket,
     periodMultipleServicesTicket,
@@ -9,7 +10,6 @@ import {
     carnetPeriodMultipleServicesTicket,
 } from '../../test-data/matchingData';
 import { operatorData, multiOperatorList } from '../test-data/operatorData';
-import { getGroupOfLinesList, getGroupOfOperators, getOrganisations } from './periodTicketNetexHelpers';
 import * as db from '../../data/auroradb';
 
 describe('periodTicketNetexHelpers', () => {
@@ -315,10 +315,7 @@ describe('periodTicketNetexHelpers', () => {
             const expectedLength = flatFareTicket.products
                 .map(product => product.salesOfferPackages.length)
                 .reduce((a, b) => a + b);
-            const flatFareFareTables = netexHelpers.getMultiServiceFareTable(
-                flatFareTicket as PeriodMultipleServicesTicket,
-                'test',
-            );
+            const flatFareFareTables = netexHelpers.getMultiServiceFareTable(flatFareTicket, 'test');
             expect(flatFareFareTables).toHaveLength(expectedLength);
             flatFareFareTables.forEach(fareTable => {
                 expect(fareTable).toEqual(flatFareFareTableSchema);
