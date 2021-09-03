@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoPopup should render the InfoPopup 1`] = `
+<div
+  className="popup"
+>
+  <div
+    className="popup__content"
+  >
+    <h1
+      className="govuk-heading-m"
+    >
+      my title
+    </h1>
+    <span
+      className="govuk-hint"
+      id="delete-hint"
+    >
+      this is my text
+    </span>
+    <button
+      className="govuk-button"
+      onClick={[MockFunction]}
+    >
+      Ok
+    </button>
+  </div>
+</div>
+`;

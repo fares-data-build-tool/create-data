@@ -1208,3 +1208,48 @@ export const deleteTimeRestrictionByIdAndNocCode = async (id: number, nocCode: s
         throw new Error(`Could not delete time restriction with id: ${id}. ${error.stack}`);
     }
 };
+
+export const getFareDayEnd = async (nocCode: string): Promise<string | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving fare day end for given nocCode',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT time
+            FROM fareDayEnd
+            WHERE nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<{ time: string }[]>(queryInput, [nocCode]);
+        return queryResults[0]?.time;
+    } catch (error) {
+        throw new Error(`Could not retrieve fare day end by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const upsertFareDayEnd = async (nocCode: string, fareDayEnd: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'upserting fare day end',
+        nocCode,
+    });
+
+    try {
+        const updateQuery = `UPDATE fareDayEnd
+                             SET time = ?
+                             WHERE nocCode = ?`;
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [fareDayEnd, nocCode]);
+        if (meta.affectedRows > 1) {
+            throw Error(`Updated too many rows when updating fare day end ${meta}`);
+        } else if (meta.affectedRows === 0) {
+            const insertQuery = `INSERT INTO fareDayEnd (time, nocCode) VALUES (?, ?)`;
+
+            await executeQuery(insertQuery, [fareDayEnd, nocCode]);
+        }
+    } catch (error) {
+        throw new Error(`Could not insert passenger type into the passengerType table. ${error}`);
+    }
+};
