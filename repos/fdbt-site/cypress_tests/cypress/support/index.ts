@@ -21,7 +21,8 @@ const randomlyAddPassengerTypes = (): void => {
         const numberOfPassengers = Number(element.attr('data-card-count'));
         cy.log('There are ' + numberOfPassengers + ' individuals/groups');
         if (numberOfPassengers > 1) {
-            cy.log('There is at least one passenger type');
+            cy.log('There is at least two passenger types');
+            addGroupPassengerType();
         } else {
             const passengerType1 = {
                 type: 'child',
@@ -43,7 +44,7 @@ const randomlyAddPassengerTypes = (): void => {
                     cy.log('Add one Individual, one Group');
                     clickElementByText('Add a passenger type');
                     enterPassengerTypeDetails(passengerType1);
-                    clickElementByText('Add a passenger type');
+                    clickElementByText('Add passenger type');
                     addGroupPassengerType();
                     break;
                 case 2:
@@ -58,7 +59,7 @@ const randomlyAddPassengerTypes = (): void => {
                     addGroupPassengerType();
                     break;
                 case 3:
-                    cy.log('Add three Individuals, no Groups');
+                    cy.log('Add three Individuals, one Groups');
                     clickElementByText('Add a passenger type');
                     enterPassengerTypeDetails(passengerType1);
                     clickElementByText('Add passenger type');
@@ -70,6 +71,51 @@ const randomlyAddPassengerTypes = (): void => {
                     clickElementByText('Add a passenger type');
                     enterPassengerTypeDetails(passengerType3);
                     clickElementByText('Add passenger type');
+                    addGroupPassengerType();
+                    break;
+                default:
+                    throwInvalidRandomSelectorError();
+            }
+        }
+    });
+};
+
+const randomlyAddPurchaseMethods = (): void => {
+    cy.get(`[data-card-count]`).then((element) => {
+        const numberOfPurchaseMethods = Number(element.attr('data-card-count'));
+        cy.log('There are ' + numberOfPurchaseMethods + ' purchase methods');
+        if (numberOfPurchaseMethods > 1) {
+            cy.log('There is at least two Purchase methods');
+        } else {
+            const purchaseMethod = {
+                purchaseLocations: ['checkbox-0-on-board'],
+                paymentMethods: ['checkbox-0-cash', 'checkbox-1-debit-card'],
+                ticketFormats: ['checkbox-3-electronic-document'],
+                name: 'Onboard',
+            };
+            const purchaseMethod2 = {
+                purchaseLocations: ['checkbox-0-on-board'],
+                paymentMethods: ['checkbox-0-cash', 'checkbox-1-debit-card'],
+                ticketFormats: ['checkbox-3-electronic-document'],
+                name: 'Onboard',
+            };
+            const purchaseMethod3 = {
+                purchaseLocations: ['checkbox-0-on-board'],
+                paymentMethods: ['checkbox-0-cash', 'checkbox-1-debit-card'],
+                ticketFormats: ['checkbox-3-electronic-document'],
+                name: 'Onboard',
+            };
+            const randomSelector = getRandomNumber(1, 3);
+            switch (randomSelector) {
+                case 1:
+                    cy.log('Add one purchase method');
+
+                    break;
+                case 2:
+                    cy.log('Add two purchase methods');
+                    break;
+                case 3:
+                    cy.log('Add three purchase methods');
                     break;
                 default:
                     throwInvalidRandomSelectorError();
