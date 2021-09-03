@@ -46,7 +46,7 @@ export const addGroupPassengerType = () => {
 
     getElementByName('passengerGroupName').clear().type('my group');
 
-    cy.contains('Add passenger group').click();
+    clickElementByText('Add passenger group');
 };
 
 const editGroupPassengerType = () => {
