@@ -283,7 +283,10 @@ export const randomlyDecideTimeRestrictions = (): void => {
             .its('length')
             .then((length) => {
                 const randomNumber = getRandomNumber(0, length - 1);
-                cy.get('[class=govuk-radios__input]').eq(randomNumber).click();
+                getElementById('conditional-time-restriction')
+                    .find('[class=govuk-radios__input]')
+                    .eq(randomNumber)
+                    .click();
             });
     }
 
