@@ -34,7 +34,7 @@ const addSinglePassengerType = (passengerType: PassengerType) => {
     cy.contains('Add passenger type').click();
 };
 
-export const addGroupPassengerType = () => {
+export const addGroupPassengerType = (groupName: string) => {
     clickElementByText('Add a passenger group');
     getElementById('max-group-size').clear().type('6');
     clickElementById('passenger-type-0');
@@ -44,7 +44,7 @@ export const addGroupPassengerType = () => {
     getElementByDataTestId('maximum-passengers').eq(1).clear().type('3');
     getElementByDataTestId('minimum-passengers').eq(1).clear().type('2');
 
-    getElementByName('passengerGroupName').clear().type('my group');
+    getElementByName('passengerGroupName').clear().type(groupName);
 
     clickElementByText('Add passenger group');
 };
@@ -102,7 +102,7 @@ export const createEditSinglePassengerTypes = (): void => {
 };
 
 export const createEditGroupPassengerTypes = (): void => {
-    addGroupPassengerType();
+    addGroupPassengerType('My Group');
 
     const group = getElementByClass('card').eq(2);
     group.should('include.text', 'my group');

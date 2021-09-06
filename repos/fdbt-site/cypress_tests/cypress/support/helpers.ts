@@ -324,8 +324,6 @@ export const clickFirstCheckboxIfMultiple = (): void => {
     });
 };
 
-const defaultSops = ['Onboard (cash)', 'Onboard (contactless)', 'Online (smart card)', 'Mobile App'];
-
 const encodeId = (str: string): string =>
     str
         .replace(/ /g, '')
