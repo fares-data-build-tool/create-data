@@ -35,7 +35,7 @@ before(() => {
 const randomlyAddPassengerTypes = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfPassengers = Number(element.attr('data-card-count'));
-        cy.log('There are ' + numberOfPassengers.toString() + ' individuals/groups');
+        cy.log(`There are ${numberOfPassengers} individuals/groups`);
         if (numberOfPassengers > 1) {
             cy.log('There is at least two passenger types');
         } else {
@@ -91,7 +91,7 @@ const randomlyAddPassengerTypes = (): void => {
 const randomlyAddPurchaseMethods = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfPurchaseMethods = Number(element.attr('data-card-count'));
-        cy.log('There are ' + numberOfPurchaseMethods.toString() + ' purchase methods');
+        cy.log(`There are ${numberOfPurchaseMethods} purchase methods`);
         if (numberOfPurchaseMethods > 0) {
             cy.log('There is at least one purchase method');
         } else {
@@ -141,7 +141,7 @@ const randomlyAddPurchaseMethods = (): void => {
 const randomlyAddTimeRestrictions = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfTimeRestrictions = Number(element.attr('data-card-count'));
-        cy.log('There are ' + numberOfTimeRestrictions.toString() + ' time restrictions');
+        cy.log(`There are ${numberOfTimeRestrictions} time restrictions`);
         if (numberOfTimeRestrictions > 0) {
             cy.log('There is at least one time restriction');
         } else {
