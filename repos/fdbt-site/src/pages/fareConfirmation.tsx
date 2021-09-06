@@ -97,7 +97,9 @@ export const buildFareConfirmationElements = (
             if (passenger.proofDocuments && passenger.proofDocuments.length > 0) {
                 confirmationElements.push({
                     name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
-                    content: passenger.proofDocuments.map((proofDoc) => sentenceCaseString(proofDoc)).join(', '),
+                    content: passenger.proofDocuments
+                        .map((proofDoc: string) => sentenceCaseString(proofDoc))
+                        .join(', '),
                     href,
                 });
             } else {
@@ -167,14 +169,14 @@ export const buildFareConfirmationElements = (
                 confirmationElements.push({
                     name: `Time restrictions - ${sentenceCaseString(fullTimeRestriction.day)}`,
                     content: `Start time: ${timeBand.startTime || 'N/A'} End time: ${timeBand.endTime || 'N/A'}`,
-                    href: 'defineTimeRestrictions',
+                    href: `${globalSettingsEnabled ? 'selectTimeRestrictions' : 'defineTimeRestrictions'}`,
                 });
             });
             if (!fullTimeRestriction.timeBands || fullTimeRestriction.timeBands.length === 0) {
                 confirmationElements.push({
                     name: `Time restrictions - ${sentenceCaseString(fullTimeRestriction.day)}`,
-                    content: 'N/A',
-                    href: 'defineTimeRestrictions',
+                    content: 'Valid all day',
+                    href: `${globalSettingsEnabled ? 'selectTimeRestrictions' : 'defineTimeRestrictions'}`,
                 });
             }
         });

@@ -46,17 +46,17 @@ exports[`pages fareConfirmation should render correctly for a carnet ticket 1`] 
           },
           Object {
             "content": "Start time: 0900 End time: 1600",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Thursday",
           },
           Object {
             "content": "Start time: N/A End time: 1600",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Friday",
           },
           Object {
             "content": "Start time: N/A End time: N/A",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Bank holiday",
           },
         ]
@@ -114,17 +114,17 @@ exports[`pages fareConfirmation should render correctly for a ticket with a prem
           },
           Object {
             "content": "Start time: 0900 End time: 1600",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Thursday",
           },
           Object {
             "content": "Start time: N/A End time: 1600",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Friday",
           },
           Object {
             "content": "Start time: N/A End time: N/A",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Bank holiday",
           },
           Object {
@@ -197,22 +197,22 @@ exports[`pages fareConfirmation should render correctly for group tickets 1`] = 
           },
           Object {
             "content": "Start time: 0900 End time: 1600",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Thursday",
           },
           Object {
             "content": "Start time: 1400 End time: 2000",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Thursday",
           },
           Object {
             "content": "Start time: N/A End time: 1600",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Friday",
           },
           Object {
             "content": "Start time: N/A End time: N/A",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Bank holiday",
           },
         ]
@@ -270,17 +270,17 @@ exports[`pages fareConfirmation should render correctly for non school single ti
           },
           Object {
             "content": "Start time: 0900 End time: 1600",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Thursday",
           },
           Object {
             "content": "Start time: N/A End time: 1600",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Friday",
           },
           Object {
             "content": "Start time: N/A End time: N/A",
-            "href": "defineTimeRestrictions",
+            "href": "selectTimeRestrictions",
             "name": "Time restrictions - Bank holiday",
           },
         ]
