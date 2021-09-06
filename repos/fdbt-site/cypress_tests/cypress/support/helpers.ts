@@ -279,7 +279,7 @@ export const randomlyDecideTimeRestrictions = (): void => {
 
         // randomly pick a time restriction
         getElementById('conditional-time-restriction')
-            .get('[class=govuk-radios__input]')
+            .find('[class=govuk-radios__input]')
             .its('length')
             .then((length) => {
                 const randomNumber = getRandomNumber(0, length - 1);
