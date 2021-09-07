@@ -293,7 +293,7 @@ export const completeMultiOpGeoZonePages = (
     numberOfProducts?: number,
     multiProductNamePrefix?: string,
 ): void => {
-    if (!isScheme) {
+    if (!isScheme || (isScheme && isCarnet)) {
         clickElementById('radio-option-geoZone');
         continueButtonClick();
     }
