@@ -1,4 +1,5 @@
 import React, { ChangeEventHandler, ReactElement, useState } from 'react';
+import { purchaseMethodsValuesMap } from '../constants/index';
 import CsrfForm from '../components/CsrfForm';
 import DeleteSOPButton from '../components/DeleteSOPButton';
 import ErrorSummary from '../components/ErrorSummary';
@@ -75,7 +76,7 @@ export interface SelectSalesOfferPackageProps {
 }
 
 export const formatSOPArray = (stringArray: string[]): string =>
-    stringArray.map((string) => sentenceCaseString(string)).join(', ');
+    stringArray.map((string) => sentenceCaseString(purchaseMethodsValuesMap[string] || string)).join(', ');
 
 const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],

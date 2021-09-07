@@ -1,5 +1,6 @@
 import React, { ChangeEventHandler, ReactElement, useState } from 'react';
 import { FromDb } from 'shared/matchingJsonTypes';
+import { globalSettingsEnabled } from '../constants/featureFlag';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
@@ -184,7 +185,7 @@ const SelectPurchaseMethods = ({
                     {createSalesOffer(salesOfferPackagesList, products, selected, errors)}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                     <a
-                        href="/salesOfferPackages"
+                        href={globalSettingsEnabled ? '/viewPurchaseMethods' : '/salesOfferPackages'}
                         role="button"
                         draggable="false"
                         className="govuk-button govuk-button--secondary create-new-sop-button"
