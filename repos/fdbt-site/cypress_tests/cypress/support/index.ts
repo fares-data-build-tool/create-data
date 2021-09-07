@@ -1,10 +1,4 @@
-import {
-    clickElementById,
-    clickElementByText,
-    getRandomNumber,
-    getHomePage,
-    throwInvalidRandomSelectorError,
-} from './helpers';
+import { clickElementById, clickElementByText, getHomePage } from './helpers';
 import { enterPassengerTypeDetails, addGroupPassengerType } from './passengerTypes';
 import { addPurchaseMethod } from './purchaseMethods';
 import { addTimeRestriction } from './timeRestrictions';
