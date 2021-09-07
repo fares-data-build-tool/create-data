@@ -1,6 +1,17 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 
+const link = (pageLink: string, text: string) => (
+    <li className={getNavLinkCSS(pageLink)}>
+        <a
+            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
+            href={pageLink}
+        >
+            {text}
+        </a>
+    </li>
+);
+
 const SubNavigation = (): ReactElement => {
     return (
         <div className="app-pane__subnav">
@@ -10,68 +21,11 @@ const SubNavigation = (): ReactElement => {
                 </h2>
 
                 <ul className="app-subnav__section">
-                    <li className={getNavLinkCSS('/globalSettings')}>
-                        <a
-                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                            href="/globalSettings"
-                        >
-                            Settings overview
-                        </a>
-                    </li>
-
-                    <li className={getNavLinkCSS('/viewPassengerTypes')}>
-                        <a
-                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                            href="/viewPassengerTypes"
-                        >
-                            Passenger types
-                        </a>
-                    </li>
-
-                    {/*<li className="app-subnav__section-item">
-                        <a
-                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                            href="/globalSettings"
-                        >
-                            Service day end
-                        </a>
-                    </li>*/}
-
-                    <li className={getNavLinkCSS('/viewPurchaseMethods')}>
-                        <a
-                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                            href="/viewPurchaseMethods"
-                        >
-                            Purchase methods
-                        </a>
-                    </li>
-
-                    <li className={getNavLinkCSS('/viewTimeRestrictions')}>
-                        <a
-                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                            href="/viewTimeRestrictions"
-                        >
-                            Time restrictions
-                        </a>
-                    </li>
-
-                    {/*<li className="app-subnav__section-item">
-                        <a
-                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                            href="/globalSettings"
-                        >
-                            Multi-operator groups
-                        </a>
-                    </li>*/}
-
-                    {/*<li className="app-subnav__section-item">
-                        <a
-                            className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
-                            href="/globalSettings"
-                        >
-                            Travel Zones
-                        </a>
-                    </li>*/}
+                    {link('/globalSettings', 'Settings overview')}
+                    {link('/viewPassengerTypes', 'Passenger types')}
+                    {link('/viewPurchaseMethods', 'Purchase methods')}
+                    {link('/viewTimeRestrictions', 'Time restrictions')}
+                    {link('/manageFareDayEnd', 'Fare day end')}
                 </ul>
             </nav>
         </div>
@@ -79,15 +33,12 @@ const SubNavigation = (): ReactElement => {
 };
 
 const getNavLinkCSS = (pageLink: string) => {
-    let cssClasses = '';
     const router = useRouter();
 
     const cssClassesForNonActiveItem = 'app-subnav__section-item';
     const cssClassesForActiveItem = 'app-subnav__section-item app-subnav__section-item--current';
 
-    cssClasses = router.pathname == pageLink ? cssClassesForActiveItem : cssClassesForNonActiveItem;
-
-    return cssClasses;
+    return router.pathname == pageLink ? cssClassesForActiveItem : cssClassesForNonActiveItem;
 };
 
 export default SubNavigation;

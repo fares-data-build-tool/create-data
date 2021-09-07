@@ -196,13 +196,14 @@ export interface SettingsOverview {
     href: string;
     name: string;
     description: string;
-    count: number;
+    count: number | boolean;
 }
 
 export interface GlobalSettingsCounts {
     passengerTypesCount: number;
     purchaseMethodsCount: number;
     timeRestrictionsCount: number;
+    fareDayEndSet: boolean;
 }
 
 export interface PassengerAttributes {

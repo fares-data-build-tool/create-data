@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 
 interface CsrfFormProps {
     action: string;
     method: string;
     csrfToken: string;
-    children: ReactElement;
+    children: ReactNode;
     [props: string]: unknown;
 }
 

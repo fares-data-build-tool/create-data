@@ -50,6 +50,12 @@ exports[`pages globalSettings should render correctly 1`] = `
           href="/viewTimeRestrictions"
           name="Time restrictions"
         />
+        <SettingOverview
+          count={true}
+          description="If your fare day extends past midnight, define its end time"
+          href="/manageFareDayEnd"
+          name="Fare day end"
+        />
       </div>
     </div>
   </BaseLayout>
