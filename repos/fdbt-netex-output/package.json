@@ -59,7 +59,6 @@
         "lint-staged": "^10.0.8",
         "prettier": "^1.19.1",
         "serverless-dynamodb-local": "^0.2.40",
-        "serverless-offline": "^6.5.0",
         "serverless-plugin-typescript": "^1.1.9",
         "ts-jest": "^26.4.4",
         "ts-node": "^10.0.0"

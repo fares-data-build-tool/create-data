@@ -3,7 +3,7 @@ export interface PointToPointCarnetProductDetails extends BaseProduct {
     carnetDetails: CarnetDetails;
 }
 
-export type FlatFareGeoZone = Omit<PeriodGeoZoneTicket, 'products'> & {
+export type FlatFareGeoZoneTicket = Omit<PeriodGeoZoneTicket, 'products' | 'type'> & {
     type: 'flatFare';
     products: FlatFareProductDetails[];
 };
@@ -13,7 +13,7 @@ export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     stops: Stop[];
 }
 
-export interface BasePeriodTicket extends BaseTicket {
+export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator'> {
     operatorName: string;
     products: ProductDetails[];
 }
@@ -37,13 +37,14 @@ export interface FlatFareProductDetails extends BaseProduct {
     carnetDetails?: CarnetDetails;
 }
 
-export type FlatFareMultipleServices = Omit<PeriodMultipleServicesTicket, 'products'> & {
-    type: 'flatFare';
+export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
     products: FlatFareProductDetails[];
     termTime: boolean;
-};
+    selectedServices: SelectedService[];
+    operatorName: string;
+}
 
-export type FlatFareTicket = FlatFareGeoZone | FlatFareMultipleServices;
+export type FlatFareTicket = FlatFareGeoZoneTicket | FlatFareMultipleServices;
 
 export interface SalesOfferPackage {
     id?: number;
@@ -59,9 +60,54 @@ export type FromDb<T> = T & { id: number };
 
 export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
 
-export interface BaseTicket {
+export type Ticket =
+    | PointToPointTicket
+    | GeoZoneTicket
+    | PeriodMultipleServicesTicket
+    | FlatFareTicket
+    | SchemeOperatorGeoZoneTicket
+    | SchemeOperatorFlatFareTicket
+    | SchemeOperatorMultiServiceTicket
+    | MultiOperatorGeoZoneTicket
+    | PointToPointPeriodTicket
+    | PeriodHybridTicket;
+
+export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
+
+export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
+
+export interface SchemeOperatorGeoZoneTicket extends BaseSchemeOperatorTicket {
+    zoneName: string;
+    stops: Stop[];
+    products: ProductDetails[];
+    additionalNocs: string[];
+}
+
+export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {
+    type: 'flatFare';
+    products: FlatFareProductDetails[];
+    additionalOperators: {
+        nocCode: string;
+        selectedServices: SelectedService[];
+    }[];
+}
+
+export interface SchemeOperatorMultiServiceTicket extends BaseSchemeOperatorTicket {
+    type: 'period';
+    products: ProductDetails[];
+    additionalOperators: {
+        nocCode: string;
+        selectedServices: SelectedService[];
+    }[];
+}
+
+export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
+    additionalNocs: string[];
+}
+
+export interface BaseTicket<T extends TicketType = TicketType> {
     nocCode: string;
-    type: TicketType;
+    type: T;
     passengerType: string;
     ageRange?: string;
     ageRangeMin?: string;
@@ -72,12 +118,35 @@ export interface BaseTicket {
     uuid: string;
     timeRestriction: FullTimeRestriction[];
     ticketPeriod: TicketPeriod;
+    groupDefinition?: GroupDefinition;
+    carnet?: boolean;
 }
 
-export interface SchemeOperatorTicket extends Omit<BaseTicket, 'nocCode'> {
+export interface GroupDefinition {
+    maxPeople: string;
+    companions: CompanionInfo[];
+}
+
+export interface CompanionInfo {
+    id?: number;
+    name?: string;
+    passengerType: string;
+    minNumber?: string;
+    maxNumber: string;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proofDocuments?: string[];
+}
+
+export interface BaseSchemeOperatorTicket extends Omit<BaseTicket, 'nocCode'> {
     schemeOperatorName: string;
     schemeOperatorRegionCode: string;
 }
+
+export type SchemeOperatorTicket =
+    | SchemeOperatorMultiServiceTicket
+    | SchemeOperatorGeoZoneTicket
+    | SchemeOperatorFlatFareTicket;
 
 export interface BasePointToPointTicket extends BaseTicket {
     operatorName: string;
@@ -111,11 +180,19 @@ export interface Product {
     productEndTime?: string;
     carnetDetails?: CarnetDetails;
 }
-export interface ProductDetails extends Product, BaseProduct {}
 
-export interface PointToPointPeriodTicket extends Omit<ReturnTicket, 'products' | 'type'>, BaseTicket {
+export interface ProductDetails extends BaseProduct {
+    productName: string;
+    productPrice: string;
+    productDuration: string;
+    productValidity: string;
+    productEndTime?: string;
+    carnetDetails?: CarnetDetails;
+}
+
+export interface PointToPointPeriodTicket extends Omit<ReturnTicket, 'products' | 'type'> {
     type: 'period';
-    products: (PointToPointPeriodProduct & ProductDetails)[];
+    products: (PointToPointPeriodProduct & Product & BaseProduct)[];
 }
 
 export type TimeRestrictionDay =

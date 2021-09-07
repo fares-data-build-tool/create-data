@@ -7,6 +7,8 @@ import {
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
     PointToPointPeriodTicket,
+    FlatFareGeoZoneTicket,
+    SchemeOperatorMultiServiceTicket,
 } from '../../shared/matchingJsonTypes';
 import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
@@ -45,7 +47,7 @@ import {
     SalesOfferPackage,
     SchemeOperatorFlatFareTicket,
     SchemeOperatorGeoZoneTicket,
-    SchemeOperatorTicket,
+    BaseSchemeOperatorTicket,
     ServiceDB,
     SingleTicket,
     Stop,
@@ -2482,7 +2484,7 @@ export const expectedFlatFareTicket: FlatFareTicket = {
     timeRestriction: [],
 };
 
-export const expectedFlatFareGeoZoneTicket: FlatFareTicket = {
+export const expectedFlatFareGeoZoneTicket: FlatFareGeoZoneTicket = {
     operatorName: 'test',
     passengerType: 'Adult',
     type: 'flatFare',
@@ -2505,10 +2507,10 @@ export const expectedFlatFareGeoZoneTicket: FlatFareTicket = {
     timeRestriction: [],
 };
 
-export const expectedSchemeOperatorTicket = (type: SchemeOperatorTicket['type']): SchemeOperatorTicket => {
+export const expectedSchemeOperatorTicket = (type: BaseSchemeOperatorTicket['type']): BaseSchemeOperatorTicket => {
     return {
-        schemeOperatorName: expect.any(String),
-        schemeOperatorRegionCode: expect.any(String),
+        schemeOperatorName: 'SCHEME_OPERATOR',
+        schemeOperatorRegionCode: 'SCHEME_REGION',
         type,
         uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
         email: 'test@example.com',
@@ -2565,6 +2567,146 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: SchemeOperator
                     purchaseLocations: ['online'],
                     paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
                     ticketFormats: ['smartCard'],
+                },
+            ],
+            carnetDetails: undefined,
+        },
+    ],
+    additionalOperators: [
+        {
+            nocCode: 'WBTR',
+            selectedServices: [
+                {
+                    lineId: '3h3vsergesrhg',
+                    lineName: '343',
+                    serviceCode: '11-444-_-y08-1',
+                    serviceDescription: 'Test Under Lyne - Glossop',
+                    startDate: '07/04/2020',
+                },
+                {
+                    lineId: '3h3vtrhtherhed',
+                    lineName: '444',
+                    serviceCode: 'NW_01_MCT_391_1',
+                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                    startDate: '23/04/2019',
+                },
+                {
+                    lineId: '3h3vb32ik',
+                    lineName: '543',
+                    serviceCode: 'NW_04_MCTR_232_1',
+                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                    startDate: '06/04/2020',
+                },
+            ],
+        },
+        {
+            nocCode: 'BLAC',
+            selectedServices: [
+                {
+                    lineId: '3h3rthsrty56y5',
+                    lineName: '100',
+                    serviceCode: '11-444-_-y08-1',
+                    serviceDescription: 'Test Under Lyne - Glossop',
+                    startDate: '07/04/2020',
+                },
+                {
+                    lineId: '3h34t43deefsf',
+                    lineName: '101',
+                    serviceCode: 'NW_01_MCT_391_1',
+                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                    startDate: '23/04/2019',
+                },
+                {
+                    lineId: '34tvwevdsvb32ik',
+                    lineName: '102',
+                    serviceCode: 'NW_04_MCTR_232_1',
+                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                    startDate: '06/04/2020',
+                },
+            ],
+        },
+        {
+            nocCode: 'LEDS',
+            selectedServices: [
+                {
+                    lineId: '45t34gvfdx2ik',
+                    lineName: '63',
+                    serviceCode: '11-444-_-y08-1',
+                    serviceDescription: 'Test Under Lyne - Glossop',
+                    startDate: '07/04/2020',
+                },
+                {
+                    lineId: 'q45g4rgergik',
+                    lineName: '64',
+                    serviceCode: 'NW_01_MCT_391_1',
+                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                    startDate: '23/04/2019',
+                },
+                {
+                    lineId: 'q34ttfwerfsxfc',
+                    lineName: '65',
+                    serviceCode: 'NW_04_MCTR_232_1',
+                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                    startDate: '06/04/2020',
+                },
+            ],
+        },
+    ],
+};
+
+export const expectedSchemeOperatorMultiServicesTicket: SchemeOperatorMultiServiceTicket = {
+    schemeOperatorName: 'SCHEME_OPERATOR',
+    schemeOperatorRegionCode: 'SCHEME_REGION',
+    type: 'period',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
+    passengerType: 'Adult',
+    timeRestriction: mockFullTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    products: [
+        {
+            productName: 'product one',
+            productPrice: '5.00',
+            productDuration: '2 weeks',
+            productEndTime: '',
+            productValidity: '24hr',
+            salesOfferPackages: [
+                {
+                    description: '',
+                    name: 'Onboard (cash)',
+                    paymentMethods: ['cash'],
+                    purchaseLocations: ['onBoard'],
+                    ticketFormats: ['paperTicket'],
+                    price: '4.99',
+                },
+            ],
+            carnetDetails: undefined,
+        },
+        {
+            productName: 'product two',
+            productPrice: '5.02',
+            productDuration: '5 days',
+            productEndTime: '',
+            productValidity: '24hr',
+            salesOfferPackages: [
+                {
+                    name: 'Onboard (contactless)',
+                    description: '',
+                    purchaseLocations: ['onBoard'],
+                    paymentMethods: ['contactlessPaymentCard'],
+                    ticketFormats: ['paperTicket'],
+                    price: '5.99',
+                },
+                {
+                    name: 'Online (smart card)',
+                    description: '',
+                    purchaseLocations: ['online'],
+                    paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
+                    ticketFormats: ['smartCard'],
+                    price: '6.99',
                 },
             ],
             carnetDetails: undefined,
