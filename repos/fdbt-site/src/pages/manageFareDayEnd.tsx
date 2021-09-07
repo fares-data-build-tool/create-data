@@ -46,7 +46,7 @@ const ManageFareDayEnd = ({ errors, csrfToken, fareDayEnd, referer, saved }: Man
                         </p>
 
                         <div className="govuk-inset-text">
-                            Enter times in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
+                            Enter the time in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
                         </div>
 
                         <CsrfForm action="/api/manageFareDayEnd" method="post" csrfToken={csrfToken}>
@@ -69,10 +69,18 @@ const ManageFareDayEnd = ({ errors, csrfToken, fareDayEnd, referer, saved }: Man
                                 </fieldset>
                             </FormGroupWrapper>
                             <input type="submit" value={`Save`} className="govuk-button" />
+                            <button
+                                className="govuk-button govuk-button--warning govuk-!-margin-left-4"
+                                formAction={`/api/manageFareDayEnd?delete=true&_csrf=${csrfToken}`}
+                                formMethod="post"
+                                type="submit"
+                            >
+                                Delete
+                            </button>
                             {showSaved && (
                                 <InfoPopup
                                     title="Success"
-                                    text="You have saved your fare day end time."
+                                    text={`You have ${fareDayEnd ? 'saved' : 'reset'} your fare day end time.`}
                                     okActionHandler={() => setShowSaved(false)}
                                 />
                             )}

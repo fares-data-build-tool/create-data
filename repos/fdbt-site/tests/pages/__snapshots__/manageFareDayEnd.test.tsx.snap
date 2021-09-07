@@ -38,7 +38,7 @@ exports[`pages manage passenger types should render correctly 1`] = `
         <div
           className="govuk-inset-text"
         >
-          Enter times in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
+          Enter the time in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
         </div>
         <CsrfForm
           action="/api/manageFareDayEnd"
@@ -77,6 +77,14 @@ exports[`pages manage passenger types should render correctly 1`] = `
             type="submit"
             value="Save"
           />
+          <button
+            className="govuk-button govuk-button--warning govuk-!-margin-left-4"
+            formAction="/api/manageFareDayEnd?delete=true&_csrf="
+            formMethod="post"
+            type="submit"
+          >
+            Delete
+          </button>
         </CsrfForm>
       </div>
     </div>
@@ -129,7 +137,7 @@ exports[`pages manage passenger types should render error state if error 1`] = `
         <div
           className="govuk-inset-text"
         >
-          Enter times in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
+          Enter the time in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
         </div>
         <CsrfForm
           action="/api/manageFareDayEnd"
@@ -182,6 +190,14 @@ exports[`pages manage passenger types should render error state if error 1`] = `
             type="submit"
             value="Save"
           />
+          <button
+            className="govuk-button govuk-button--warning govuk-!-margin-left-4"
+            formAction="/api/manageFareDayEnd?delete=true&_csrf="
+            formMethod="post"
+            type="submit"
+          >
+            Delete
+          </button>
         </CsrfForm>
       </div>
     </div>
@@ -227,7 +243,7 @@ exports[`pages manage passenger types should render popup if saved 1`] = `
         <div
           className="govuk-inset-text"
         >
-          Enter times in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
+          Enter the time in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
         </div>
         <CsrfForm
           action="/api/manageFareDayEnd"
@@ -266,6 +282,14 @@ exports[`pages manage passenger types should render popup if saved 1`] = `
             type="submit"
             value="Save"
           />
+          <button
+            className="govuk-button govuk-button--warning govuk-!-margin-left-4"
+            formAction="/api/manageFareDayEnd?delete=true&_csrf="
+            formMethod="post"
+            type="submit"
+          >
+            Delete
+          </button>
           <InfoPopup
             okActionHandler={[Function]}
             text="You have saved your fare day end time."

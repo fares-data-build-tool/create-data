@@ -60,7 +60,7 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                         <SettingOverview
                             href="/manageFareDayEnd"
                             name="Fare day end"
-                            description="Define the time at which your fare day ends"
+                            description="If your fare day extends past midnight, define its end time"
                             count={globalSettingsCounts.fareDayEndSet}
                         />
                     </div>

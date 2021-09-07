@@ -52,7 +52,7 @@ exports[`pages globalSettings should render correctly 1`] = `
         />
         <SettingOverview
           count={true}
-          description="Define the time at which your fare day ends"
+          description="If your fare day extends past midnight, define its end time"
           href="/manageFareDayEnd"
           name="Fare day end"
         />
