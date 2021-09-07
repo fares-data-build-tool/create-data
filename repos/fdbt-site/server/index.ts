@@ -1,4 +1,4 @@
-import express, { Request, Response, Express } from 'express';
+import express, { Request, Response, Express, NextFunction } from 'express';
 import nextjs from 'next';
 import requireAuth, { setDisableAuthParameters } from './middleware/authentication';
 import setupCsrfProtection from './middleware/csrf';
@@ -6,6 +6,7 @@ import setSecurityHeaders from './middleware/security';
 import setupLogging from './middleware/logging';
 import setupSessions from './middleware/sessions';
 import logger from '../src/utils/logger';
+import { redirectTo } from '../src/pages/api/apiUtils';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = nextjs({ dev });
@@ -106,6 +107,17 @@ const setStaticRoutes = (server: Express): void => {
 
         server.all('*', requireAuth, (req: Request, res: Response) => {
             return handle(req, res);
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        server.use((error: Error, _req: Request, res: Response, _next: NextFunction) => {
+            if (error.name === 'URIError') {
+                logger.warn('URI Error - Invalid URL Provided', { error: error.stack });
+            } else {
+                logger.error('Uncaught Error', { error: error.stack });
+            }
+
+            redirectTo(res, '/error');
         });
 
         server.listen(port, (err?: Error) => {
