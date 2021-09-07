@@ -169,7 +169,7 @@ jobs:
             ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
             cd cypress_tests
             npm ci
-            ./node_modules/.bin/tsc 
+            ./node_modules/.bin/tsc
 
   #  fdbt-netex-output
 

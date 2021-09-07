@@ -1,5 +1,6 @@
 import {
     clickElementById,
+    clickElementByText,
     getElementByClass,
     getElementByDataTestId,
     getElementById,
@@ -14,14 +15,14 @@ interface PassengerType {
     name: string;
 }
 
-const enterPassengerTypeDetails = ({ type, minAge, maxAge, documents, name }: PassengerType) => {
+export const enterPassengerTypeDetails = ({ type, minAge, maxAge, documents, name }: PassengerType) => {
     clickElementById(type);
 
     minAge && getElementByName('ageRangeMin').clear().type(minAge.toString());
     maxAge && getElementByName('ageRangeMax').clear().type(maxAge.toString());
 
     documents?.forEach((doc) => {
-        getElementById(doc).click();
+        clickElementById(doc);
     });
 
     getElementByName('name').clear().type(name);
@@ -33,19 +34,19 @@ const addSinglePassengerType = (passengerType: PassengerType) => {
     cy.contains('Add passenger type').click();
 };
 
-const addGroupPassengerType = () => {
-    cy.contains('Add a passenger group').click();
+export const addGroupPassengerType = (groupName: string) => {
+    clickElementByText('Add a passenger group');
     getElementById('max-group-size').clear().type('6');
-    getElementById('passenger-type-0').click();
-    getElementById('passenger-type-1').click();
+    clickElementById('passenger-type-0');
+    clickElementById('passenger-type-1');
     getElementByDataTestId('maximum-passengers').eq(0).clear().type('4');
 
     getElementByDataTestId('maximum-passengers').eq(1).clear().type('3');
     getElementByDataTestId('minimum-passengers').eq(1).clear().type('2');
 
-    getElementByName('passengerGroupName').clear().type('my group');
+    getElementByName('passengerGroupName').clear().type(groupName);
 
-    cy.contains('Add passenger group').click();
+    clickElementByText('Add passenger group');
 };
 
 const editGroupPassengerType = () => {
@@ -101,7 +102,7 @@ export const createEditSinglePassengerTypes = (): void => {
 };
 
 export const createEditGroupPassengerTypes = (): void => {
-    addGroupPassengerType();
+    addGroupPassengerType('my Group');
 
     const group = getElementByClass('card').eq(2);
     group.should('include.text', 'my group');

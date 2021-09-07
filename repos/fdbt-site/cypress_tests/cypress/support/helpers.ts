@@ -6,11 +6,13 @@ export const throwInvalidRandomSelectorError = (): void => {
 };
 
 export const getElementById = (id: string): Cypress.Chainable<JQuery> => cy.get(`[id=${id}]`);
+export const getElementByText = (text: string): Cypress.Chainable<JQuery> => cy.contains(text);
 export const getElementByName = (id: string): Cypress.Chainable<JQuery> => cy.get(`[name=${id}]`);
 export const getElementByClass = (id: string): Cypress.Chainable<JQuery> => cy.get(`[class=${id}]`);
 export const getElementByDataTestId = (id: string): Cypress.Chainable<JQuery> => cy.get(`[data-test-id=${id}]`);
 
 export const clickElementById = (id: string): Cypress.Chainable<JQuery> => getElementById(id).click();
+export const clickElementByText = (text: string): Cypress.Chainable<JQuery> => getElementByText(text).click();
 
 export const getRandomNumber = (min: number, max: number): number => Cypress._.random(min, max);
 
@@ -324,8 +326,6 @@ export const clickFirstCheckboxIfMultiple = (): void => {
         }
     });
 };
-
-const defaultSops = ['Onboard (cash)', 'Onboard (contactless)', 'Online (smart card)', 'Mobile App'];
 
 const encodeId = (str: string): string =>
     str
