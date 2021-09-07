@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import SalesOfferPackages, {
-    getServerSideProps,
-    SalesOfferPackagesProps,
-    valuesMap,
-} from '../../src/pages/salesOfferPackages';
+import SalesOfferPackages, { getServerSideProps, SalesOfferPackagesProps } from '../../src/pages/salesOfferPackages';
 import { getMockContext } from '../testData/mockData';
 import { ErrorInfo, SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../../src/interfaces';
 import { SOP_INFO_ATTRIBUTE } from '../../src/constants/attributes';
+import { purchaseMethodsValuesMap } from '../../src/constants';
 
 describe('pages', () => {
     afterEach(() => {
@@ -105,13 +102,13 @@ describe('pages', () => {
     });
     describe('valuesMap', () => {
         it('doesnt return a value for a non-mapped value', () => {
-            expect(valuesMap.directDebit).toBeUndefined();
+            expect(purchaseMethodsValuesMap.directDebit).toBeUndefined();
         });
         it('returns a value for agency', () => {
-            expect(valuesMap.agency).toBe('Travel Shop');
+            expect(purchaseMethodsValuesMap.agency).toBe('Travel Shop');
         });
         it('returns a value for contactlessTravelCard', () => {
-            expect(valuesMap.contactlessTravelCard).toBe('Contactless SmartCard (e.g Oyster)');
+            expect(purchaseMethodsValuesMap.contactlessTravelCard).toBe('Contactless SmartCard (e.g Oyster)');
         });
     });
 });
