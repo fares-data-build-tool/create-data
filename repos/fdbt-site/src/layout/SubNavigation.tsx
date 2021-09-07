@@ -37,7 +37,7 @@ const SubNavigation = (): ReactElement => {
                         </a>
                     </li>*/}
 
-                    <li className="app-subnav__section-item">
+                    <li className={getNavLinkCSS('/viewPurchaseMethods')}>
                         <a
                             className="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
                             href="/viewPurchaseMethods"

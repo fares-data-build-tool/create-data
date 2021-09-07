@@ -9,6 +9,7 @@ import { SOP_INFO_ATTRIBUTE } from '../constants/attributes';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
 import { getCsrfToken, sentenceCaseString } from '../utils';
+import { purchaseMethodsValuesMap } from '../constants/index';
 
 const title = 'Sales Offer Packages - Create Fares Data Service';
 const description = 'Sales Offer Packages page for the Create Fares Data Service';
@@ -48,11 +49,6 @@ export interface SalesOfferPackagesProps {
     salesOfferPackage: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
     csrfToken: string;
 }
-
-export const valuesMap: { [key: string]: string } = {
-    agency: 'Travel Shop',
-    contactlessTravelCard: 'Contactless SmartCard (e.g Oyster)',
-};
 
 export const isSalesOfferPackageInfoWithErrors = (
     salesOfferPackage: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors,
@@ -109,7 +105,7 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${purchaseLocationId}`}
                                                         >
-                                                            {valuesMap[purchaseLocation] ||
+                                                            {purchaseMethodsValuesMap[purchaseLocation] ||
                                                                 sentenceCaseString(purchaseLocation)}
                                                         </label>
                                                     </div>
@@ -154,7 +150,7 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${paymentMethodId}`}
                                                         >
-                                                            {valuesMap[paymentMethod] ||
+                                                            {purchaseMethodsValuesMap[paymentMethod] ||
                                                                 sentenceCaseString(paymentMethod)}
                                                         </label>
                                                     </div>
