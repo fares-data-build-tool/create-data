@@ -83,7 +83,6 @@ const ViewPassengerTypes = ({
                             className="govuk-button govuk-button govuk-!-margin-top-5"
                             data-module="govuk-button"
                             href="/managePassengerTypes"
-                            id="add-passenger-type"
                         >
                             Add a passenger type
                         </a>

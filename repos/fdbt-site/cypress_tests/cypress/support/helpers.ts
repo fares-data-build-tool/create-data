@@ -6,7 +6,7 @@ export const throwInvalidRandomSelectorError = (): void => {
 };
 
 export const getElementById = (id: string): Cypress.Chainable<JQuery> => cy.get(`[id=${id}]`);
-export const getElementByText = (text: string): Cypress.Chainable<JQuery> => cy.contains(`${text}`);
+export const getElementByText = (text: string): Cypress.Chainable<JQuery> => cy.contains(text);
 export const getElementByName = (id: string): Cypress.Chainable<JQuery> => cy.get(`[name=${id}]`);
 export const getElementByClass = (id: string): Cypress.Chainable<JQuery> => cy.get(`[class=${id}]`);
 export const getElementByDataTestId = (id: string): Cypress.Chainable<JQuery> => cy.get(`[data-test-id=${id}]`);
