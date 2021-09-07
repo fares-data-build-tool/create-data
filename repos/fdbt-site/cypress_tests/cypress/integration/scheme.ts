@@ -11,7 +11,7 @@ describe('the scheme journey', () => {
     it('completes successfully for geozone and a single product', () => {
         selectFareType('period', true);
         defineUserTypeAndTimeRestrictions();
-        completeMultiOpGeoZonePages(true);
+        completeMultiOpGeoZonePages();
         completeSalesPages();
         isUuidStringValid(true);
     });
@@ -21,7 +21,7 @@ describe('the scheme journey', () => {
         const multiProductNamePrefix = 'Scheme product ';
         selectFareType('period', true);
         defineUserTypeAndTimeRestrictions();
-        completeMultiOpGeoZonePages(true, false, numberOfProducts, multiProductNamePrefix);
+        completeMultiOpGeoZonePages(false, numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
         isUuidStringValid(true);
     });

@@ -288,15 +288,12 @@ export const completeSchoolPeriodMultiServicePages = (
 };
 
 export const completeMultiOpGeoZonePages = (
-    isScheme: boolean,
     isCarnet = false,
     numberOfProducts?: number,
     multiProductNamePrefix?: string,
 ): void => {
-    if (!isScheme || (isScheme && isCarnet)) {
-        clickElementById('radio-option-geoZone');
-        continueButtonClick();
-    }
+    clickElementById('radio-option-geoZone');
+    continueButtonClick();
 
     uploadFile('csv-upload', 'fareZone.csv');
     submitButtonClick();
