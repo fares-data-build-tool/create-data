@@ -11,7 +11,7 @@ describe('the multi-operator faretype product journey', () => {
     it('completes successfully for geozone and a single product', () => {
         selectFareType('multiOperator', false);
         defineUserTypeAndTimeRestrictions();
-        completeMultiOpGeoZonePages(false);
+        completeMultiOpGeoZonePages();
         completeSalesPages();
         isUuidStringValid();
     });
@@ -21,7 +21,7 @@ describe('the multi-operator faretype product journey', () => {
         const multiProductNamePrefix = 'Cypress product ';
         selectFareType('multiOperator', false);
         defineUserTypeAndTimeRestrictions();
-        completeMultiOpGeoZonePages(false, false, numberOfProducts, multiProductNamePrefix);
+        completeMultiOpGeoZonePages(false, numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
         isUuidStringValid();
     });

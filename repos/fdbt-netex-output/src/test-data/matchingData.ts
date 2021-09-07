@@ -1,4 +1,9 @@
-import { ExpiryUnit, FlatFareTicket, PointToPointPeriodTicket } from '../../shared/matchingJsonTypes';
+import {
+    ExpiryUnit,
+    PointToPointPeriodTicket,
+    PeriodMultipleServicesTicket,
+    FlatFareMultipleServices,
+} from '../../shared/matchingJsonTypes';
 import {
     CarnetExpiryUnit,
     FareZone,
@@ -6,7 +11,6 @@ import {
     MultiOperatorGeoZoneTicket,
     MultiOperatorMultipleServicesTicket,
     PeriodGeoZoneTicket,
-    PeriodMultipleServicesTicket,
     ReturnTicket,
     SchemeOperatorFlatFareTicket,
     SchemeOperatorGeoZoneTicket,
@@ -1955,7 +1959,7 @@ export const carnetPeriodMultipleServicesTicket: PeriodMultipleServicesTicket = 
     ],
 };
 
-export const flatFareTicket: FlatFareTicket = {
+export const flatFareTicket: FlatFareMultipleServices = {
     operatorName: 'Test Buses',
     nocCode: 'WBTR',
     type: 'flatFare',
@@ -5300,7 +5304,6 @@ export const pointToPointPeriodTicket: PointToPointPeriodTicket = {
                 },
             ],
             productValidity: '24hr',
-            productEndTime: '',
         },
     ],
 };

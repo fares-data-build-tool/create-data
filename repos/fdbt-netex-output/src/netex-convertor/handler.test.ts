@@ -17,7 +17,6 @@ import mockS3Event from './test-data/mockS3Event';
 import * as s3 from '../data/s3';
 import * as netexGenerator from './netexGenerator';
 import * as db from '../data/auroradb';
-import { PeriodTicket } from '../types';
 
 jest.mock('../data/auroradb.ts');
 jest.spyOn(s3, 'uploadNetexToS3').mockImplementation(() => Promise.resolve());
@@ -346,7 +345,7 @@ describe('buildNocList', () => {
         expect(result).toStrictEqual(['PBLT']);
     });
     it('should return an array of nocs for a flat fare ticket', () => {
-        const result = buildNocList(flatFareTicket as PeriodTicket);
+        const result = buildNocList(flatFareTicket);
         expect(result).toStrictEqual(['WBTR']);
     });
     it('should return an array of nocs for a scheme operator geozone ticket', () => {

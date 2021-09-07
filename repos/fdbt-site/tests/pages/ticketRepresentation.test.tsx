@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import TicketRepresentation, { getServerSideProps } from '../../src/pages/ticketRepresentation';
-import { getMockContext } from '../testData/mockData';
-import { CARNET_FARE_TYPE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../src/constants/attributes';
+import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
+import { CARNET_FARE_TYPE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('ticketRepresentation', () => {
@@ -78,6 +78,22 @@ describe('pages', () => {
             const result = getServerSideProps(ctx);
 
             expect(result.props.showPointToPoint).toBe(false);
+        });
+
+        it('should set showPointToPoint and showHybrid to false for a scheme', () => {
+            const ctx = getMockContext({
+                cookies: {
+                    idToken: mockSchemOpIdToken,
+                },
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                    [OPERATOR_ATTRIBUTE]: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
+                },
+            });
+            const result = getServerSideProps(ctx);
+
+            expect(result.props.showPointToPoint).toBe(false);
+            expect(result.props.showHybrid).toBe(false);
         });
     });
 });

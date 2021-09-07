@@ -140,7 +140,7 @@ functions:
               threshold: 50000
               treatMissingData: notBreaching
             - name: functionThrottles
-              threshold: 1000
+              threshold: 1500
               treatMissingData: notBreaching
             - name: functionErrors
               treatMissingData: notBreaching
