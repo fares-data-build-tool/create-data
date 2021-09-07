@@ -39,12 +39,12 @@ const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
             {
                 value: 'period',
                 label: 'Period ticket',
-                hint: 'A zonal ticket valid for a number of days, weeks, months or years',
+                hint: 'A ticket valid for a number of days, weeks, months or years',
             },
             {
                 value: 'carnetPeriod',
                 label: 'Carnet period ticket',
-                hint: 'A bundle of zonal tickets, each valid for a number of days, weeks, months or years',
+                hint: 'A bundle of period tickets, each valid for a number of days, weeks, months or years',
             },
             {
                 value: 'flatFare',

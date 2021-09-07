@@ -4,7 +4,7 @@
   <PublicationRequest version="1.0">
     <RequestTimestamp>2021-07-08T14:03:29.685Z</RequestTimestamp>
     <ParticipantRef>SYS002</ParticipantRef>
-    <Description>Request for BLAC bus pass fares</Description>
+    <Description>Request for Test Scheme Op-SE bus pass fares</Description>
     <topics>
       <NetworkFrameTopic>
         <selectionValidityConditions>
@@ -16,10 +16,9 @@
         <NetworkFilterByValue>
           <objectReferences>
             <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_1_youngPerson"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_2_youngPerson"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-            <BrandingRef version="1.0" ref="op:BLAC@brand"/>
+            <PreassignedFareProductRef version="1.0" ref="op:Pass@test_child"/>
+            <PreassignedFareProductRef version="1.0" ref="op:Pass@Jacob_Ellis_child"/>
+            <BrandingRef version="1.0" ref="op:Test_Scheme_Op-SE@brand"/>
             <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
           </objectReferences>
         </NetworkFilterByValue>
@@ -30,9 +29,9 @@
     </RequestPolicy>
   </PublicationRequest>
   <dataObjects>
-    <CompositeFrame version="1.0" id="epd:UK:BLAC:CompositeFrame_UK_PI_LINE_FARE_OFFER:Pass@BLAC_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
-      <Name>Fares for Blackpool Transport</Name>
-      <Description>Period ticket for Blackpool Transport</Description>
+    <CompositeFrame version="1.0" id="epd:UK:Test_Scheme_Op-SE:CompositeFrame_UK_PI_LINE_FARE_OFFER:Pass@Test_Scheme_Op-SE_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
+      <Name>Fares for Test Scheme Op</Name>
+      <Description>Period ticket for Test Scheme Op</Description>
       <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
       <codespaces>
         <CodespaceRef ref="epd_data"/>
@@ -52,13 +51,12 @@
         <CompositeFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc"/>
       </prerequisites>
       <frames>
-        <ResourceFrame version="1.0" id="epd:UK:BLAC:ResourceFrame_UK_PI_COMMON:BLAC:op" dataSourceRef="op:src" responsibilitySetRef="op:network_data">
+        <ResourceFrame version="1.0" id="epd:UK:Test_Scheme_Op-SE:ResourceFrame_UK_PI_COMMON:Test_Scheme_Op-SE:op" dataSourceRef="op:src" responsibilitySetRef="op:network_data">
           <Name>Operator specific common resources</Name>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_COMMON:FXCP" version="fxc:v1.0"/>
           <codespaces>
             <Codespace id="op_data">
               <Xmlns>op</Xmlns>
-              <XmlnsUrl>http://www.blackpooltransport.com</XmlnsUrl>
               <Description>Operator data</Description>
             </Codespace>
           </codespaces>
@@ -68,9 +66,7 @@
             <DefaultCurrency>GBP</DefaultCurrency>
           </FrameDefaults>
           <dataSources>
-            <DataSource id="op:src" version="1.0">
-              <Email>enquiries@blackpooltransport.com</Email>
-            </DataSource>
+            <DataSource id="op:src" version="1.0"/>
           </dataSources>
           <responsibilitySets>
             <ResponsibilitySet version="1.0" id="op:tariffs">
@@ -79,7 +75,7 @@
                 <ResponsibilityRoleAssignment version="1.0" id="op:tariff_data@creates">
                   <DataRoleType>creates</DataRoleType>
                   <StakeholderRoleType>FareManagement</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Blackpool Transport</ResponsibleOrganisationRef>
+                  <ResponsibleOrganisationRef ref="noc:Test_Scheme_Op-SE" version="1.0">Test Scheme Op</ResponsibleOrganisationRef>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
@@ -89,7 +85,7 @@
                 <ResponsibilityRoleAssignment version="1.0" id="op:network_data@creates">
                   <DataRoleType>creates</DataRoleType>
                   <StakeholderRoleType>Planning</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Blackpool Transport</ResponsibleOrganisationRef>
+                  <ResponsibleOrganisationRef ref="noc:Test_Scheme_Op-SE" version="1.0">Test Scheme Op</ResponsibleOrganisationRef>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
@@ -98,16 +94,15 @@
             <ValueSet version="1.0" id="op:Branding" classOfValues="Branding">
               <Name>Operator Branding</Name>
               <values>
-                <Branding version="1.0" id="op:BLAC@brand">
-                  <Name>Blackpool Transport</Name>
-                  <Url>http://www.blackpooltransport.com</Url>
+                <Branding version="1.0" id="op:Test_Scheme_Op-SE@brand">
+                  <Name>Test Scheme Op</Name>
                 </Branding>
               </values>
             </ValueSet>
           </typesOfValue>
           <organisations>
-            <Operator version="1.0" id="noc:WBTR">
-              <PublicCode>WBTR</PublicCode>
+            <Operator version="1.0" id="noc:PBLT">
+              <PublicCode>PBLT</PublicCode>
               <Name>Blackpool Transport</Name>
               <ShortName>Blackpool Transport</ShortName>
               <TradingName>Blackpool Transport Services Ltd</TradingName>
@@ -120,8 +115,8 @@
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
-            <Operator version="1.0" id="noc:DCCL">
-              <PublicCode>DCCL</PublicCode>
+            <Operator version="1.0" id="noc:NWBT">
+              <PublicCode>NWBT</PublicCode>
               <Name>Blackpool Transport</Name>
               <ShortName>Blackpool Transport</ShortName>
               <TradingName>Blackpool Transport Services Ltd</TradingName>
@@ -134,18 +129,12 @@
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
-            <Operator version="1.0" id="noc:BLAC">
-              <PublicCode>BLAC</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
-              <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
-              </ContactDetails>
-              <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
-              </Address>
+            <Operator version="1.0" id="noc:Test_Scheme_Op-SE">
+              <PublicCode>Test Scheme Op-SE</PublicCode>
+              <Name>Test Scheme Op</Name>
+              <ShortName>Test Scheme Op</ShortName>
+              <ContactDetails/>
+              <Address/>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
           </organisations>
@@ -153,14 +142,13 @@
             <GroupOfOperators version="1.0" id="operators@bus">
               <Name>Bus Operators</Name>
               <members>
-                <OperatorRef version="1.0" ref="noc:WBTR">Blackpool Transport</OperatorRef>
-                <OperatorRef version="1.0" ref="noc:DCCL">Blackpool Transport</OperatorRef>
-                <OperatorRef version="1.0" ref="noc:BLAC">Blackpool Transport</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:PBLT">Blackpool Transport</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:NWBT">Blackpool Transport</OperatorRef>
               </members>
             </GroupOfOperators>
           </groupsOfOperators>
         </ResourceFrame>
-        <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:BLAC_products@pass:op" responsibilitySetRef="op:tariffs">
+        <FareFrame version="1.0" id="epd:UK:Test_Scheme_Op-SE:FareFrame_UK_PI_FARE_PRODUCT:Test_Scheme_Op-SE_products@pass:op" responsibilitySetRef="op:tariffs">
           <Name>Fare products</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP"/>
           <FrameDefaults>
@@ -168,254 +156,124 @@
             <DefaultResponsibilitySetRef version="1.0" ref="op:tariffs"/>
           </FrameDefaults>
           <tariffs>
-            <Tariff version="1.0" id="op:Tariff@BLAC_products">
+            <Tariff version="1.0" id="op:Tariff@Test_Scheme_Op-SE_products">
               <validityConditions>
                 <ValidBetween>
-                  <FromDate>2010-12-17T09:30:46.0Z</FromDate>
-                  <ToDate>2028-12-17T09:30:46.0Z</ToDate>
+                  <FromDate>2021-09-02T15:56:16.244Z</FromDate>
+                  <ToDate>2121-09-02T15:56:16.244Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Blackpool Transport - BLAC_products - Fares for Multi Operator ticket</Name>
+              <Name>Test Scheme Op - Test Scheme Op-SE_products - Fares for Period ticket</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <timeIntervals>
-                <TimeInterval version="1.0" id="op:Tariff@Test_Product_1@1-year">
-                  <Name>1 year</Name>
-                  <Description>P1Y</Description>
+                <TimeInterval version="1.0" id="op:Tariff@test@1-month">
+                  <Name>1 month</Name>
+                  <Description>P1M</Description>
                 </TimeInterval>
-                <TimeInterval version="1.0" id="op:Tariff@Test_Product_2@2-weeks">
+                <TimeInterval version="1.0" id="op:Tariff@Jacob_Ellis@2-weeks">
                   <Name>2 weeks</Name>
                   <Description>P14D</Description>
                 </TimeInterval>
-                <TimeInterval version="1.0" id="op:Tariff@Test_Product_3@365-days">
-                  <Name>365 days</Name>
-                  <Description>P365D</Description>
-                </TimeInterval>
               </timeIntervals>
-              <qualityStructureFactors>
-                <FareDemandFactor id="op@Tariff@Demand" version="1.0">
-                  <validityConditions>
-                    <AvailabilityCondition id="op@Tariff@Condition" version="1.0">
-                      <IsAvailable>true</IsAvailable>
-                      <dayTypes>
-                        <FareDayType id="op@Tariff@DayType@monday" version="1.0">
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Monday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@tuesday" version="1.0">
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Tuesday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@wednesday" version="1.0">
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Wednesday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@thursday" version="1.0">
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Thursday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                        </FareDayType>
-                      </dayTypes>
-                    </AvailabilityCondition>
-                  </validityConditions>
-                </FareDemandFactor>
-              </qualityStructureFactors>
               <fareStructureElements>
-                <FareStructureElement version="1.0" id="op:Tariff@Test_Product_1@access_lines">
+                <FareStructureElement version="1.0" id="mb:Tariff@multitrip@units">
+                  <Name>Carnet denominations</Name>
+                  <Description>Number of period units in bundle.</Description>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:carnet_units"/>
+                  <qualityStructureFactors>
+                    <QualityStructureFactor version="1.0" id="mb:Tariff@multitrip@2">
+                      <Value>2</Value>
+                    </QualityStructureFactor>
+                    <QualityStructureFactor version="1.0" id="mb:Tariff@multitrip@5">
+                      <Value>5</Value>
+                    </QualityStructureFactor>
+                  </qualityStructureFactors>
+                </FareStructureElement>
+                <FareStructureElement version="1.0" id="op:Tariff@test@access_lines">
                   <Name>Available lines and/or zones</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
-                  <qualityStructureFactors>
-                    <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
-                  </qualityStructureFactors>
-                  <GenericParameterAssignment id="Tariff@Test_Product_1@access_lines" version="1.0" order="1">
+                  <GenericParameterAssignment id="Tariff@test@access_lines" version="1.0" order="1">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_1#06/04/2020"/>
-                      <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_2#13/04/2020"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_BLAC_4_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:19#NW_05_BLAC_19_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:1#NW_05_BLAC_1_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:2#NW_05_BLAC_2_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:5#NW_05_BLAC_5_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:9#NW_05_BLAC_9_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:14#NW_05_BLAC_14_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:18#NW_05_BLAC_18_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:11#NW_05_BLAC_11_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:3#NW_05_BLAC_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:7#NW_05_BLAC_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:6#NW_05_BLAC_6_1#05/04/2020"/>
+                      <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1#28/03/2020"/>
+                      <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3#02/01/2020"/>
+                      <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1#02/01/2020"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Test_Product_1@durations@youngPerson">
-                  <Name>Available duration combination - youngPerson ticket</Name>
+                <FareStructureElement version="1.0" id="op:Tariff@test@durations@child">
+                  <Name>Available duration combination - child ticket</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
                   <timeIntervals>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_1@1-year"/>
+                    <TimeIntervalRef version="1.0" ref="op:Tariff@test@1-month"/>
                   </timeIntervals>
                 </FareStructureElement>
-                <FareStructureElement id="op:Tariff@Test_Product_1@conditions_of_travel" version="1.0">
+                <FareStructureElement id="op:Tariff@test@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
-                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Test_Product_1@conditions_of_travel">
+                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@test@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
                     <limitations>
-                      <FrequencyOfUse version="1.0" id="op:Pass@Test_Product_1@frequency">
+                      <FrequencyOfUse version="1.0" id="op:Pass@test@frequency">
                         <FrequencyOfUseType>unlimited</FrequencyOfUseType>
                       </FrequencyOfUse>
-                      <UsageValidityPeriod version="1.0" id="op:Trip@Test_Product_1@back@frequency">
+                      <UsageValidityPeriod version="1.0" id="op:Trip@test@back@frequency">
                         <UsageTrigger>purchase</UsageTrigger>
-                        <UsageEnd>standardDuration</UsageEnd>
+                        <UsageEnd>endOfFareDay</UsageEnd>
                         <ActivationMeans>noneRequired</ActivationMeans>
                       </UsageValidityPeriod>
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Test_Product_2@access_lines">
+                <FareStructureElement version="1.0" id="op:Tariff@Jacob_Ellis@access_lines">
                   <Name>Available lines and/or zones</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
-                  <qualityStructureFactors>
-                    <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
-                  </qualityStructureFactors>
-                  <GenericParameterAssignment id="Tariff@Test_Product_2@access_lines" version="1.0" order="1">
+                  <GenericParameterAssignment id="Tariff@Jacob_Ellis@access_lines" version="1.0" order="1">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_1#06/04/2020"/>
-                      <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_2#13/04/2020"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_BLAC_4_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:19#NW_05_BLAC_19_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:1#NW_05_BLAC_1_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:2#NW_05_BLAC_2_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:5#NW_05_BLAC_5_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:9#NW_05_BLAC_9_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:14#NW_05_BLAC_14_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:18#NW_05_BLAC_18_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:11#NW_05_BLAC_11_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:3#NW_05_BLAC_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:7#NW_05_BLAC_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:6#NW_05_BLAC_6_1#05/04/2020"/>
+                      <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1#28/03/2020"/>
+                      <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3#02/01/2020"/>
+                      <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1#02/01/2020"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Test_Product_2@durations@youngPerson">
-                  <Name>Available duration combination - youngPerson ticket</Name>
+                <FareStructureElement version="1.0" id="op:Tariff@Jacob_Ellis@durations@child">
+                  <Name>Available duration combination - child ticket</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
                   <timeIntervals>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_2@2-weeks"/>
+                    <TimeIntervalRef version="1.0" ref="op:Tariff@Jacob_Ellis@2-weeks"/>
                   </timeIntervals>
                 </FareStructureElement>
-                <FareStructureElement id="op:Tariff@Test_Product_2@conditions_of_travel" version="1.0">
+                <FareStructureElement id="op:Tariff@Jacob_Ellis@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
-                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Test_Product_2@conditions_of_travel">
+                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Jacob_Ellis@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
                     <limitations>
-                      <FrequencyOfUse version="1.0" id="op:Pass@Test_Product_2@frequency">
+                      <FrequencyOfUse version="1.0" id="op:Pass@Jacob_Ellis@frequency">
                         <FrequencyOfUseType>unlimited</FrequencyOfUseType>
                       </FrequencyOfUse>
-                      <UsageValidityPeriod version="1.0" id="op:Trip@Test_Product_2@back@frequency">
+                      <UsageValidityPeriod version="1.0" id="op:Trip@Jacob_Ellis@back@frequency">
                         <UsageTrigger>purchase</UsageTrigger>
-                        <UsageEnd>standardDuration</UsageEnd>
+                        <UsageEnd>endOfFareDay</UsageEnd>
                         <ActivationMeans>noneRequired</ActivationMeans>
                       </UsageValidityPeriod>
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Test_Product_3@access_lines">
-                  <Name>Available lines and/or zones</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
-                  <qualityStructureFactors>
-                    <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
-                  </qualityStructureFactors>
-                  <GenericParameterAssignment id="Tariff@Test_Product_3@access_lines" version="1.0" order="1">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
-                    <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
-                    <validityParameters>
-                      <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_1#06/04/2020"/>
-                      <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_2#13/04/2020"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_BLAC_4_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:19#NW_05_BLAC_19_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:1#NW_05_BLAC_1_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:2#NW_05_BLAC_2_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:5#NW_05_BLAC_5_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:9#NW_05_BLAC_9_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:14#NW_05_BLAC_14_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:18#NW_05_BLAC_18_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:11#NW_05_BLAC_11_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:3#NW_05_BLAC_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:7#NW_05_BLAC_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:6#NW_05_BLAC_6_1#05/04/2020"/>
-                    </validityParameters>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Test_Product_3@durations@youngPerson">
-                  <Name>Available duration combination - youngPerson ticket</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
-                  <timeIntervals>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_3@365-days"/>
-                  </timeIntervals>
-                </FareStructureElement>
-                <FareStructureElement id="op:Tariff@Test_Product_3@conditions_of_travel" version="1.0">
-                  <Name>Conditions of travel</Name>
-                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Test_Product_3@conditions_of_travel">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
-                    <LimitationGroupingType>AND</LimitationGroupingType>
-                    <limitations>
-                      <FrequencyOfUse version="1.0" id="op:Pass@Test_Product_3@frequency">
-                        <FrequencyOfUseType>unlimited</FrequencyOfUseType>
-                      </FrequencyOfUse>
-                      <UsageValidityPeriod version="1.0" id="op:Trip@Test_Product_3@back@frequency">
-                        <UsageTrigger>purchase</UsageTrigger>
-                        <UsageEnd>standardDuration</UsageEnd>
-                        <ActivationMeans>noneRequired</ActivationMeans>
-                      </UsageValidityPeriod>
-                    </limitations>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@eligibility@youngPerson">
+                <FareStructureElement version="1.0" id="op:Tariff@eligibility@child">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@youngPerson" version="1.0" order="0">
+                  <GenericParameterAssignment id="op:Tariff@child" version="1.0" order="0">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:youngPerson">
-                        <Name>youngPerson</Name>
-                        <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:young_person"/>
-                        <MinimumAge>16</MinimumAge>
-                        <MaximumAge>25</MaximumAge>
-                        <ProofRequired>identityDocument</ProofRequired>
+                      <UserProfile version="1.0" id="op:child">
+                        <Name>child</Name>
+                        <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -424,283 +282,122 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Test_Product_1_youngPerson">
-              <Name>Test Product 1 Pass - youngPerson</Name>
+            <PreassignedFareProduct version="1.0" id="op:Pass@test_child">
+              <Name>test Pass - child</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
               <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Test_Product_1_youngPerson@travel">
+                <ValidableElement version="1.0" id="op:Pass@test_child@travel">
                   <Name>Rides available for specified durations</Name>
                   <fareStructureElements>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Test_Product_1@access_lines"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Test_Product_1@durations@youngPerson"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Test_Product_1@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@youngPerson"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@test@access_lines"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@test@durations@child"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@test@conditions_of_travel"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@child"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Test_Product_1_youngPerson@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Test_Product_1_youngPerson@travel"/>
+                <AccessRightInProduct version="1.0" id="op:Pass@test_child@travel" order="1">
+                  <ValidableElementRef version="1.0" ref="op:Pass@test_child@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Test_Product_2_youngPerson">
-              <Name>Test Product 2 Pass - youngPerson</Name>
+            <PreassignedFareProduct version="1.0" id="op:Pass@Jacob_Ellis_child">
+              <Name>Jacob Ellis Pass - child</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
               <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Test_Product_2_youngPerson@travel">
+                <ValidableElement version="1.0" id="op:Pass@Jacob_Ellis_child@travel">
                   <Name>Rides available for specified durations</Name>
                   <fareStructureElements>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Test_Product_2@access_lines"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Test_Product_2@durations@youngPerson"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Test_Product_2@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@youngPerson"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@Jacob_Ellis@access_lines"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@Jacob_Ellis@durations@child"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@Jacob_Ellis@conditions_of_travel"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@child"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Test_Product_2_youngPerson@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Test_Product_2_youngPerson@travel"/>
-                </AccessRightInProduct>
-              </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
-            </PreassignedFareProduct>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Test_Product_3_youngPerson">
-              <Name>Test Product 3 Pass - youngPerson</Name>
-              <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-              <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Test_Product_3_youngPerson@travel">
-                  <Name>Rides available for specified durations</Name>
-                  <fareStructureElements>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Test_Product_3@access_lines"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Test_Product_3@durations@youngPerson"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Test_Product_3@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@youngPerson"/>
-                  </fareStructureElements>
-                </ValidableElement>
-              </validableElements>
-              <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Test_Product_3_youngPerson@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson@travel"/>
+                <AccessRightInProduct version="1.0" id="op:Pass@Jacob_Ellis_child@travel" order="1">
+                  <ValidableElementRef version="1.0" ref="op:Pass@Jacob_Ellis_child@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@multiOperator_youngPerson-Test_Product_1-SOP@Online_(smart_card)">
-              <Name>Test Product 1 - youngPerson - Online (smart card)</Name>
-              <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
+            <SalesOfferPackage version="1.0" id="Trip@period_child-test-SOP@Purchase_method">
+              <Name>test - child - Purchase method</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@multiOperator_youngPerson-Test_Product_1-SOP@Online_(smart_card)@online" order="1">
-                  <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
-                  <DistributionChannelType>online</DistributionChannelType>
-                  <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@multiOperator_youngPerson-Test_Product_1-Online_(smart_card)@smartCard" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_1_youngPerson"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@multiOperator_youngPerson-Test_Product_1-SOP@Mobile_App">
-              <Name>Test Product 1 - youngPerson - Mobile App</Name>
-              <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@multiOperator_youngPerson-Test_Product_1-SOP@Mobile_App@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@period_child-test-SOP@Purchase_method@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
-                  <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@multiOperator_youngPerson-Test_Product_1-Mobile_App@mobileApp" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_1_youngPerson"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@multiOperator_youngPerson-Test_Product_2-SOP@Onboard_(cash)">
-              <Name>Test Product 2 - youngPerson - Onboard (cash)</Name>
-              <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@multiOperator_youngPerson-Test_Product_2-SOP@Onboard_(cash)@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
-                  <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@multiOperator_youngPerson-Test_Product_2-Onboard_(cash)@paperTicket" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_2_youngPerson"/>
+                <SalesOfferPackageElement id="Trip@period_child-test-Purchase_method@electronic_document" version="1.0" order="1">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:electronic_document"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@test_child"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@multiOperator_youngPerson-Test_Product_2-SOP@Onboard_(contactless)">
-              <Name>Test Product 2 - youngPerson - Onboard (contactless)</Name>
-              <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
+            <SalesOfferPackage version="1.0" id="Trip@period_child-Jacob_Ellis-SOP@Purchase_method">
+              <Name>Jacob Ellis - child - Purchase method</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@multiOperator_youngPerson-Test_Product_2-SOP@Onboard_(contactless)@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
-                  <DistributionChannelType>onBoard</DistributionChannelType>
-                  <PaymentMethods>contactlessPaymentCard</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@multiOperator_youngPerson-Test_Product_2-Onboard_(contactless)@paperTicket" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_2_youngPerson"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Onboard_(cash)">
-              <Name>Test Product 3 - youngPerson - Onboard (cash)</Name>
-              <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Onboard_(cash)@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
-                  <DistributionChannelType>onBoard</DistributionChannelType>
+                <DistributionAssignment version="any" id="Trip@period_child-Jacob_Ellis-SOP@Purchase_method@mobileDevice" order="1">
+                  <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
+                  <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@multiOperator_youngPerson-Test_Product_3-Onboard_(cash)@paperTicket" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Onboard_(contactless)">
-              <Name>Test Product 3 - youngPerson - Onboard (contactless)</Name>
-              <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Onboard_(contactless)@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
-                  <DistributionChannelType>onBoard</DistributionChannelType>
-                  <PaymentMethods>contactlessPaymentCard</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@multiOperator_youngPerson-Test_Product_3-Onboard_(contactless)@paperTicket" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Online_(smart_card)">
-              <Name>Test Product 3 - youngPerson - Online (smart card)</Name>
-              <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Online_(smart_card)@online" order="1">
-                  <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
-                  <DistributionChannelType>online</DistributionChannelType>
-                  <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@multiOperator_youngPerson-Test_Product_3-Online_(smart_card)@smartCard" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Mobile_App">
-              <Name>Test Product 3 - youngPerson - Mobile App</Name>
-              <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Mobile_App@mobileDevice" order="1">
-                  <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
-                  <DistributionChannelType>mobileDevice</DistributionChannelType>
-                  <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@multiOperator_youngPerson-Test_Product_3-Mobile_App@mobileApp" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@All_Encompassing">
-              <Name>Test Product 3 - youngPerson - All Encompassing</Name>
-              <Description>All currently available options selected</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@All_Encompassing@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
-                  <DistributionChannelType>onBoard</DistributionChannelType>
-                  <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
-                </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@All_Encompassing@online" order="2">
-                  <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
-                  <DistributionChannelType>online</DistributionChannelType>
-                  <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
-                </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@multiOperator_youngPerson-Test_Product_3-SOP@All_Encompassing@mobileDevice" order="3">
-                  <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
-                  <DistributionChannelType>mobileDevice</DistributionChannelType>
-                  <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@multiOperator_youngPerson-Test_Product_3-All_Encompassing@paperTicket" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-                </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@multiOperator_youngPerson-Test_Product_3-All_Encompassing@mobileApp" version="1.0" order="2">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-                </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@multiOperator_youngPerson-Test_Product_3-All_Encompassing@smartCard" version="1.0" order="3">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
+                <SalesOfferPackageElement id="Trip@period_child-Jacob_Ellis-Purchase_method@electronic_document" version="1.0" order="1">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:electronic_document"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Jacob_Ellis_child"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
           </salesOfferPackages>
         </FareFrame>
-        <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:BLAC_products@pass:op" responsibilitySetRef="op:tariffs">
-          <Name>BLAC_products Prices</Name>
+        <FareFrame version="1.0" id="epd:UK:Test_Scheme_Op-SE:FareFrame_UK_PI_FARE_PRICE:Test_Scheme_Op-SE_products@pass:op" responsibilitySetRef="op:tariffs">
+          <Name>Test Scheme Op-SE_products Prices</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP"/>
           <FrameDefaults>
             <DefaultCodespaceRef ref="op_data"/>
             <DefaultResponsibilitySetRef version="1.0" ref="op:tariffs"/>
           </FrameDefaults>
           <prerequisites>
-            <FareFrameRef version="1.0" ref="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:BLAC_products@pass:op"/>
+            <FareFrameRef version="1.0" ref="epd:UK:Test_Scheme_Op-SE:FareFrame_UK_PI_FARE_PRODUCT:Test_Scheme_Op-SE_products@pass:op"/>
           </prerequisites>
           <fareTables>
-            <FareTable version="1.0" id="op:fareTable@Test_Product_1@Online_(smart_card)@services">
-              <Name>Test Product 1 - Online (smart card) - 20 services</Name>
+            <FareTable version="1.0" id="op:fareTable@test@Purchase_method@services">
+              <Name>test - Purchase method - 3 services</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_1_youngPerson"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@test_child"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Test_Product_1@Online_(smart_card)@youngPerson@product-0@SOP-0@service">
-                  <Name>Test Product 1 - Online (smart card)  - youngPerson</Name>
+                <FareTable version="1.0" id="op:test@Purchase_method@child@product-0@SOP-0@service">
+                  <Name>test - Purchase method  - child</Name>
                   <includes>
-                    <FareTable version="1.0" id="op:Test_Product_1@Online_(smart_card)@youngPerson@service@nested">
+                    <FareTable version="1.0" id="op:test@Purchase_method@child@service@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@multiOperator_youngPerson-Test_Product_1-SOP@Online_(smart_card)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_child-test-SOP@Purchase_method"/>
+                        <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@2"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Test_Product_1@Online_(smart_card)@youngPerson@service@nested@prices">
+                        <FareTable version="1.0" id="op:test@Purchase_method@child@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
+                            <UserProfileRef version="1.0" ref="op:child"/>
                           </limitations>
                           <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Test_Product_1@Online_(smart_card)@service">
-                              <Amount>3</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_1@1-year"/>
+                            <TimeIntervalPrice version="1.0" id="op:test@Purchase_method@service">
+                              <Amount>2.99</Amount>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@test@1-month"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -710,245 +407,29 @@
                 </FareTable>
               </includes>
             </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Test_Product_1@Mobile_App@services">
-              <Name>Test Product 1 - Mobile App - 20 services</Name>
+            <FareTable version="1.0" id="op:fareTable@Jacob_Ellis@Purchase_method@services">
+              <Name>Jacob Ellis - Purchase method - 3 services</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_1_youngPerson"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@Jacob_Ellis_child"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Test_Product_1@Mobile_App@youngPerson@product-0@SOP-1@service">
-                  <Name>Test Product 1 - Mobile App  - youngPerson</Name>
+                <FareTable version="1.0" id="op:Jacob_Ellis@Purchase_method@child@product-1@SOP-0@service">
+                  <Name>Jacob Ellis - Purchase method  - child</Name>
                   <includes>
-                    <FareTable version="1.0" id="op:Test_Product_1@Mobile_App@youngPerson@service@nested">
+                    <FareTable version="1.0" id="op:Jacob_Ellis@Purchase_method@child@service@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@multiOperator_youngPerson-Test_Product_1-SOP@Mobile_App"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@period_child-Jacob_Ellis-SOP@Purchase_method"/>
+                        <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@5"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Test_Product_1@Mobile_App@youngPerson@service@nested@prices">
+                        <FareTable version="1.0" id="op:Jacob_Ellis@Purchase_method@child@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
+                            <UserProfileRef version="1.0" ref="op:child"/>
                           </limitations>
                           <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Test_Product_1@Mobile_App@service">
-                              <Amount>3</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_1@1-year"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Test_Product_2@Onboard_(cash)@services">
-              <Name>Test Product 2 - Onboard (cash) - 20 services</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_2_youngPerson"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Test_Product_2@Onboard_(cash)@youngPerson@product-1@SOP-0@service">
-                  <Name>Test Product 2 - Onboard (cash)  - youngPerson</Name>
-                  <includes>
-                    <FareTable version="1.0" id="op:Test_Product_2@Onboard_(cash)@youngPerson@service@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@multiOperator_youngPerson-Test_Product_2-SOP@Onboard_(cash)"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Test_Product_2@Onboard_(cash)@youngPerson@service@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Test_Product_2@Onboard_(cash)@service">
-                              <Amount>5</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_2@2-weeks"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Test_Product_2@Onboard_(contactless)@services">
-              <Name>Test Product 2 - Onboard (contactless) - 20 services</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_2_youngPerson"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Test_Product_2@Onboard_(contactless)@youngPerson@product-1@SOP-1@service">
-                  <Name>Test Product 2 - Onboard (contactless)  - youngPerson</Name>
-                  <includes>
-                    <FareTable version="1.0" id="op:Test_Product_2@Onboard_(contactless)@youngPerson@service@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@multiOperator_youngPerson-Test_Product_2-SOP@Onboard_(contactless)"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Test_Product_2@Onboard_(contactless)@youngPerson@service@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Test_Product_2@Onboard_(contactless)@service">
-                              <Amount>5</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_2@2-weeks"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Test_Product_3@Onboard_(cash)@services">
-              <Name>Test Product 3 - Onboard (cash) - 20 services</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Test_Product_3@Onboard_(cash)@youngPerson@product-2@SOP-0@service">
-                  <Name>Test Product 3 - Onboard (cash)  - youngPerson</Name>
-                  <includes>
-                    <FareTable version="1.0" id="op:Test_Product_3@Onboard_(cash)@youngPerson@service@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Onboard_(cash)"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Test_Product_3@Onboard_(cash)@youngPerson@service@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Test_Product_3@Onboard_(cash)@service">
-                              <Amount>100</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_3@365-days"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Test_Product_3@Onboard_(contactless)@services">
-              <Name>Test Product 3 - Onboard (contactless) - 20 services</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Test_Product_3@Onboard_(contactless)@youngPerson@product-2@SOP-1@service">
-                  <Name>Test Product 3 - Onboard (contactless)  - youngPerson</Name>
-                  <includes>
-                    <FareTable version="1.0" id="op:Test_Product_3@Onboard_(contactless)@youngPerson@service@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Onboard_(contactless)"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Test_Product_3@Onboard_(contactless)@youngPerson@service@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Test_Product_3@Onboard_(contactless)@service">
-                              <Amount>100</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_3@365-days"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Test_Product_3@Online_(smart_card)@services">
-              <Name>Test Product 3 - Online (smart card) - 20 services</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Test_Product_3@Online_(smart_card)@youngPerson@product-2@SOP-2@service">
-                  <Name>Test Product 3 - Online (smart card)  - youngPerson</Name>
-                  <includes>
-                    <FareTable version="1.0" id="op:Test_Product_3@Online_(smart_card)@youngPerson@service@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Online_(smart_card)"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Test_Product_3@Online_(smart_card)@youngPerson@service@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Test_Product_3@Online_(smart_card)@service">
-                              <Amount>100</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_3@365-days"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Test_Product_3@Mobile_App@services">
-              <Name>Test Product 3 - Mobile App - 20 services</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Test_Product_3@Mobile_App@youngPerson@product-2@SOP-3@service">
-                  <Name>Test Product 3 - Mobile App  - youngPerson</Name>
-                  <includes>
-                    <FareTable version="1.0" id="op:Test_Product_3@Mobile_App@youngPerson@service@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@multiOperator_youngPerson-Test_Product_3-SOP@Mobile_App"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Test_Product_3@Mobile_App@youngPerson@service@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Test_Product_3@Mobile_App@service">
-                              <Amount>100</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_3@365-days"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Test_Product_3@All_Encompassing@services">
-              <Name>Test Product 3 - All Encompassing - 20 services</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Test_Product_3_youngPerson"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Test_Product_3@All_Encompassing@youngPerson@product-2@SOP-4@service">
-                  <Name>Test Product 3 - All Encompassing  - youngPerson</Name>
-                  <includes>
-                    <FareTable version="1.0" id="op:Test_Product_3@All_Encompassing@youngPerson@service@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@multiOperator_youngPerson-Test_Product_3-SOP@All_Encompassing"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Test_Product_3@All_Encompassing@youngPerson@service@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Test_Product_3@All_Encompassing@service">
-                              <Amount>100</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Test_Product_3@365-days"/>
+                            <TimeIntervalPrice version="1.0" id="op:Jacob_Ellis@Purchase_method@service">
+                              <Amount>3.99</Amount>
+                              <TimeIntervalRef version="1.0" ref="op:Tariff@Jacob_Ellis@2-weeks"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -960,215 +441,45 @@
             </FareTable>
           </fareTables>
         </FareFrame>
-        <ServiceFrame version="1.0" id="epd:UK:BLAC:ServiceFrame_UK_PI_NETWORK:BLAC_products:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
+        <ServiceFrame version="1.0" id="epd:UK:Test_Scheme_Op-SE:ServiceFrame_UK_PI_NETWORK:Test_Scheme_Op-SE_products:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:5#NW_05_WBTR_3_1#05/04/2020">
-              <Name>Line 5</Name>
-              <Description>LONDON - ESSEX - BIRMINGHAM</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>5</PublicCode>
-              <PrivateCode type="txc:Line@id">AD1146649_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:WBTR"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:4#NW_05_WBTR_7_1#05/04/2020">
-              <Name>Line 4</Name>
-              <Description>EDINBURGH - GLASGOW - LEEDS</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>4</PublicCode>
-              <PrivateCode type="txc:Line@id">FD1146649_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:WBTR"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:7#NW_05_WBTR_6_1#05/04/2020">
-              <Name>Line 7</Name>
-              <Description>HULL - WIGAN - BOLTON</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>7</PublicCode>
-              <PrivateCode type="txc:Line@id">XC1146649_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:WBTR"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:663#NW_05_DCCL_3_1#05/04/2020">
-              <Name>Line 663</Name>
-              <Description>LEEDS - WAKEFIELD - YORK</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>663</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146639_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:DCCL"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:77#NW_05_DCCL_7_1#05/04/2020">
-              <Name>Line 77</Name>
-              <Description>BEESTON - HUNSLET - CITY CENTRE</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>77</PublicCode>
-              <PrivateCode type="txc:Line@id">PK133146649_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:DCCL"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:65#NW_05_DCCL_6_1#05/04/2020">
-              <Name>Line 65</Name>
-              <Description>LIVERPOOL - MANCHESTER - BOLTON</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>65</PublicCode>
-              <PrivateCode type="txc:Line@id">PK121146649_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:DCCL"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:25#NW_07_BLAC_25_1#06/04/2020">
-              <Name>Line 25</Name>
-              <Description>KNOTT END - POULTON - BLACKPOOL</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>25</PublicCode>
-              <PrivateCode type="txc:Line@id">AD11466334_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:25#NW_07_BLAC_25_2#13/04/2020">
-              <Name>Line 25</Name>
-              <Description>BLACKPOOL - ST ANNES - LYTHAM</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>25</PublicCode>
-              <PrivateCode type="txc:Line@id">AD1146567_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:4#NW_05_BLAC_4_1#05/04/2020">
-              <Name>Line 4</Name>
-              <Description>CLEVELEYS - MERESIDE via Blackpool</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>4</PublicCode>
-              <PrivateCode type="txc:Line@id">AD114878_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:19#NW_05_BLAC_19_1#05/04/2020">
-              <Name>Line 19</Name>
-              <Description>STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>19</PublicCode>
-              <PrivateCode type="txc:Line@id">AG245453_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:1#NW_05_BLAC_1_1#05/04/2020">
-              <Name>Line 1</Name>
-              <Description>FLEETWOOD - BLACKPOOL via Promenade</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>1</PublicCode>
-              <PrivateCode type="txc:Line@id">AA2454563_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:2#NW_05_BLAC_2_1#05/04/2020">
-              <Name>Line 2</Name>
-              <Description>POULTON - BLACKPOOL via Victoria Hospital Outpatients</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>2</PublicCode>
-              <PrivateCode type="txc:Line@id">AZ2451113_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:5#NW_05_BLAC_5_1#05/04/2020">
-              <Name>Line 5</Name>
-              <Description>VICTORIA HOSPITAL - BLACKPOOL TOWN CENTRE - HALFWAY HOUSE</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>5</PublicCode>
-              <PrivateCode type="txc:Line@id">AW245466666_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:9#NW_05_BLAC_9_1#05/04/2020">
-              <Name>Line 9</Name>
-              <Description>CLEVELEYS - BLACKPOOL via Bispham</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>9</PublicCode>
-              <PrivateCode type="txc:Line@id">SG2423D3_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:14#NW_05_BLAC_14_1#05/04/2020">
-              <Name>Line 14</Name>
-              <Description>FLEETWOOD - BLACKPOOL via Layton</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>14</PublicCode>
-              <PrivateCode type="txc:Line@id">AG24D5G3_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:18#NW_05_BLAC_18_1#05/04/2020">
-              <Name>Line 18</Name>
-              <Description>BLACKPOOL - MERESIDE via South Shore</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>18</PublicCode>
-              <PrivateCode type="txc:Line@id">SSSG24453_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:11#NW_05_BLAC_11_1#05/04/2020">
-              <Name>Line 11</Name>
-              <Description>LYTHAM - BLACKPOOL via St Annes</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>11</PublicCode>
-              <PrivateCode type="txc:Line@id">SSSG2321453_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="op:3#NW_05_BLAC_3_1#05/04/2020">
+            <Line version="1.0" id="op:3#NW_05_PBLT_3_1#28/03/2020">
               <Name>Line 3</Name>
-              <Description>MERESIDE - BLACKPOOL - CLEVELEYS - CLEVELEYS PARK</Description>
+              <Description>CLITHEROE - CLITHEROE via Pimlico, Chatburn, Pimlico</Description>
               <Url>http://www.blackpooltransport.com</Url>
               <PublicCode>3</PublicCode>
-              <PrivateCode type="txc:Line@id">SSSG24467H_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
+              <PrivateCode type="txc:Line@id">lDJRAS</PrivateCode>
+              <OperatorRef version="1.0" ref="noc:PBLT"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:7#NW_05_BLAC_7_1#05/04/2020">
-              <Name>Line 7</Name>
-              <Description>CLEVELEYS - BLACKPOOL - ST ANNES CLIFTON HOSPITAL</Description>
+            <Line version="1.0" id="op:5#NW_05_PBLT_5_3#02/01/2020">
+              <Name>Line 5</Name>
+              <Description>ORMSKIRK - TOWN GREEN CIRCULAR</Description>
               <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>7</PublicCode>
-              <PrivateCode type="txc:Line@id">SSSG251D67H_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
+              <PublicCode>5</PublicCode>
+              <PrivateCode type="txc:Line@id">A2EHwY</PrivateCode>
+              <OperatorRef version="1.0" ref="noc:PBLT"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:6#NW_05_BLAC_6_1#05/04/2020">
-              <Name>Line 6</Name>
-              <Description>MERESIDE - BLACKPOOL - GRANGE PARK</Description>
+            <Line version="1.0" id="op:4#NW_05_NWBT_4_1#02/01/2020">
+              <Name>Line 4</Name>
+              <Description>CLITHEROE - PEEL PARK CIRCULAR via Claremont Ave, Standen Rd, Langshaw Dr, Turner St, Victoria St</Description>
               <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>6</PublicCode>
-              <PrivateCode type="txc:Line@id">SDDSG24447H_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
+              <PublicCode>4</PublicCode>
+              <PrivateCode type="txc:Line@id">DnmNdy</PrivateCode>
+              <OperatorRef version="1.0" ref="noc:NWBT"/>
               <LineType>local</LineType>
             </Line>
           </lines>
           <groupsOfLines>
-            <GroupOfLines version="1.0" id="BLAC@groupOfLines@1">
+            <GroupOfLines version="1.0" id="Test_Scheme_Op-SE@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_1#06/04/2020"/>
-                <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_2#13/04/2020"/>
-                <LineRef version="1.0" ref="op:4#NW_05_BLAC_4_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:19#NW_05_BLAC_19_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:1#NW_05_BLAC_1_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:2#NW_05_BLAC_2_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:5#NW_05_BLAC_5_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:9#NW_05_BLAC_9_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:14#NW_05_BLAC_14_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:18#NW_05_BLAC_18_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:11#NW_05_BLAC_11_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:3#NW_05_BLAC_3_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:7#NW_05_BLAC_7_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:6#NW_05_BLAC_6_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1#28/03/2020"/>
+                <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3#02/01/2020"/>
+                <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1#02/01/2020"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>

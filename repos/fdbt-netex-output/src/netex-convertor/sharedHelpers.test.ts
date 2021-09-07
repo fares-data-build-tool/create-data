@@ -1,6 +1,6 @@
-import { FullTimeRestriction, GeoZoneTicket, PeriodTicket } from '../types';
-import { getTimeRestrictions, getEarliestTime } from './sharedHelpers';
+import { FullTimeRestriction, GeoZoneTicket } from '../types';
 import * as sharedHelpers from './sharedHelpers';
+import { getTimeRestrictions, getEarliestTime } from './sharedHelpers';
 import { periodGeoZoneTicket, periodMultipleServicesTicket, flatFareTicket } from '../test-data/matchingData';
 
 describe('Shared Helpers', () => {
@@ -274,7 +274,7 @@ describe('Shared Helpers', () => {
         it('returns 3 fareSructureElements for each product in the products array for multiService; Access Zones, Eligibility and Conditions of Travel', () => {
             const expectedLength = flatFareTicket.products.length * 3;
             const result = sharedHelpers.getFareStructuresElements(
-                flatFareTicket as PeriodTicket,
+                flatFareTicket,
                 false,
                 '',
                 placeHolderText,

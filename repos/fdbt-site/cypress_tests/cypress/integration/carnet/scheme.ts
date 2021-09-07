@@ -21,7 +21,7 @@ describe('the scheme carnet product journeys', () => {
         const numberOfProducts = 4;
         selectFareType('carnetPeriod', true);
         defineUserTypeAndTimeRestrictions();
-        completeMultiOpGeoZonePages(true, true, numberOfProducts, productName);
+        completeMultiOpGeoZonePages(true, numberOfProducts, productName);
         completeSalesPages(numberOfProducts, productName);
         isUuidStringValid(true);
     });

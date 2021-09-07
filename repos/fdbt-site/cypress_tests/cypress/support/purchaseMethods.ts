@@ -1,4 +1,10 @@
-import { clickElementById, getElementByClass, getElementByDataTestId, getElementByName } from './helpers';
+import {
+    clickElementById,
+    clickElementByText,
+    getElementByClass,
+    getElementByDataTestId,
+    getElementByName,
+} from './helpers';
 
 interface PurchaseMethod {
     purchaseLocations: string[];
@@ -15,10 +21,10 @@ const enterPurchaseMethodDetails = ({ purchaseLocations, paymentMethods, ticketF
     getElementByName('name').clear().type(name);
 };
 
-const addPurchaseMethod = (passengerType: PurchaseMethod) => {
-    cy.contains('Add a purchase method').click();
-    enterPurchaseMethodDetails(passengerType);
-    cy.contains('Add purchase method').click();
+export const addPurchaseMethod = (purchaseMethod: PurchaseMethod) => {
+    clickElementByText('Add a purchase method');
+    enterPurchaseMethodDetails(purchaseMethod);
+    clickElementByText('Add purchase method');
 };
 
 export const createEditPurchaseMethod = (): void => {

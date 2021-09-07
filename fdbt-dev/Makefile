@@ -152,6 +152,16 @@ generate-flat-fare-geo-zone:
 
 generate-validate-flat-fare-geo-zone: generate-flat-fare-geo-zone validate-latest-file
 
+generate-scheme-multiple-services:
+	./scripts/trigger_netex_convertor.sh schemeOperatorMultiServices
+
+generate-validate-scheme-multiple-services: generate-scheme-multiple-services validate-latest-file
+
+generate-scheme-carnet-multiple-services:
+	./scripts/trigger_netex_convertor.sh schemeCarnetMultipleServices
+
+generate-validate-scheme-carnet-multiple-services: generate-scheme-carnet-multiple-services validate-latest-file
+
 validate-netex:
 	./scripts/trigger_netex_validator.sh $(file)
 

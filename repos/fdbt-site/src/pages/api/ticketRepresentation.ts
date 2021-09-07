@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError } from './apiUtils';
+import { redirectTo, redirectToError, isSchemeOperator } from './apiUtils';
 import { TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants/attributes';
 import { NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -9,6 +9,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (req.body.ticketType) {
             const { ticketType } = req.body;
             const ticketTypeObject: TicketRepresentationAttribute = { name: ticketType };
+            const isScheme = isSchemeOperator(req, res);
+
             updateSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE, ticketTypeObject);
 
             switch (ticketType) {
@@ -17,7 +19,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                     redirectTo(res, '/csvZoneUpload');
                     return;
                 case 'multipleServices':
-                    redirectTo(res, '/serviceList?selectAll=false');
+                    redirectTo(res, isScheme ? '/reuseOperatorGroup' : '/serviceList?selectAll=false');
                     return;
                 case 'pointToPointPeriod':
                     redirectTo(res, '/service');

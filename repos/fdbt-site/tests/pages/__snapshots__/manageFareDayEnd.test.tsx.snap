@@ -1,0 +1,303 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages manage passenger types should render correctly 1`] = `
+<BaseLayout
+  description="Manage Fare Day End page of the Create Fares Data Service"
+  referer="hi"
+  showNavigation={true}
+  title="Manage Fare Day End - Create Fares Data Service"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-one-third"
+      >
+        <SubNavigation />
+      </div>
+      <div
+        className="govuk-grid-column-two-thirds"
+      >
+        <ErrorSummary
+          errors={Array []}
+        />
+        <h1
+          className="govuk-heading-xl"
+        >
+          Fare day end
+        </h1>
+        <p
+          className="govuk-body govuk-!-margin-bottom-4"
+          id="fare-day-text"
+        >
+          If your fare day extends past midnight, enter the time on the following morning when your tickets expire
+        </p>
+        <div
+          className="govuk-inset-text"
+        >
+          Enter the time in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
+        </div>
+        <CsrfForm
+          action="/api/manageFareDayEnd"
+          csrfToken=""
+          method="post"
+        >
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "fare-day-end-input",
+              ]
+            }
+            errors={Array []}
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="fare-day-end-input"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="fare-day-text"
+                  className="govuk-input govuk-input--width-5 govuk-!-margin-right-4"
+                  defaultValue="1234"
+                  id="fare-day-end-input"
+                  name="fareDayEnd"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <input
+            className="govuk-button"
+            type="submit"
+            value="Save"
+          />
+          <button
+            className="govuk-button govuk-button--warning govuk-!-margin-left-4"
+            formAction="/api/manageFareDayEnd?delete=true&_csrf="
+            formMethod="post"
+            type="submit"
+          >
+            Delete
+          </button>
+        </CsrfForm>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages manage passenger types should render error state if error 1`] = `
+<BaseLayout
+  description="Manage Fare Day End page of the Create Fares Data Service"
+  referer={null}
+  showNavigation={true}
+  title="Manage Fare Day End - Create Fares Data Service"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-one-third"
+      >
+        <SubNavigation />
+      </div>
+      <div
+        className="govuk-grid-column-two-thirds"
+      >
+        <ErrorSummary
+          errors={
+            Array [
+              Object {
+                "errorMessage": "An error happened!",
+                "id": "fare-day-end-input",
+              },
+            ]
+          }
+        />
+        <h1
+          className="govuk-heading-xl"
+        >
+          Fare day end
+        </h1>
+        <p
+          className="govuk-body govuk-!-margin-bottom-4"
+          id="fare-day-text"
+        >
+          If your fare day extends past midnight, enter the time on the following morning when your tickets expire
+        </p>
+        <div
+          className="govuk-inset-text"
+        >
+          Enter the time in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
+        </div>
+        <CsrfForm
+          action="/api/manageFareDayEnd"
+          csrfToken=""
+          method="post"
+        >
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "fare-day-end-input",
+              ]
+            }
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "An error happened!",
+                  "id": "fare-day-end-input",
+                },
+              ]
+            }
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="fare-day-end-input"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "An error happened!",
+                      "id": "fare-day-end-input",
+                    },
+                  ]
+                }
+              >
+                <input
+                  aria-describedby="fare-day-text"
+                  className="govuk-input govuk-input--width-5 govuk-!-margin-right-4"
+                  defaultValue="Not a time"
+                  id="fare-day-end-input"
+                  name="fareDayEnd"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <input
+            className="govuk-button"
+            type="submit"
+            value="Save"
+          />
+          <button
+            className="govuk-button govuk-button--warning govuk-!-margin-left-4"
+            formAction="/api/manageFareDayEnd?delete=true&_csrf="
+            formMethod="post"
+            type="submit"
+          >
+            Delete
+          </button>
+        </CsrfForm>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages manage passenger types should render popup if saved 1`] = `
+<BaseLayout
+  description="Manage Fare Day End page of the Create Fares Data Service"
+  referer={null}
+  showNavigation={true}
+  title="Manage Fare Day End - Create Fares Data Service"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-one-third"
+      >
+        <SubNavigation />
+      </div>
+      <div
+        className="govuk-grid-column-two-thirds"
+      >
+        <ErrorSummary
+          errors={Array []}
+        />
+        <h1
+          className="govuk-heading-xl"
+        >
+          Fare day end
+        </h1>
+        <p
+          className="govuk-body govuk-!-margin-bottom-4"
+          id="fare-day-text"
+        >
+          If your fare day extends past midnight, enter the time on the following morning when your tickets expire
+        </p>
+        <div
+          className="govuk-inset-text"
+        >
+          Enter the time in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
+        </div>
+        <CsrfForm
+          action="/api/manageFareDayEnd"
+          csrfToken=""
+          method="post"
+        >
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "fare-day-end-input",
+              ]
+            }
+            errors={Array []}
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="fare-day-end-input"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="fare-day-text"
+                  className="govuk-input govuk-input--width-5 govuk-!-margin-right-4"
+                  defaultValue="1254"
+                  id="fare-day-end-input"
+                  name="fareDayEnd"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <input
+            className="govuk-button"
+            type="submit"
+            value="Save"
+          />
+          <button
+            className="govuk-button govuk-button--warning govuk-!-margin-left-4"
+            formAction="/api/manageFareDayEnd?delete=true&_csrf="
+            formMethod="post"
+            type="submit"
+          >
+            Delete
+          </button>
+          <InfoPopup
+            okActionHandler={[Function]}
+            text="You have saved your fare day end time."
+            title="Success"
+          />
+        </CsrfForm>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;

@@ -5,6 +5,7 @@ import {
     getPassengerTypesByNocCode,
     getSalesOfferPackagesByNocCode,
     getTimeRestrictionByNocCode,
+    getFareDayEnd,
 } from '../data/auroradb';
 import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
@@ -37,7 +38,7 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             Operators may customise the following definitions relevant to their fares or choose to use
                             default settings.
                         </p>
-                        <hr className="govuk-section-break govuk-section-break--l govuk-section-break--visible"></hr>
+                        <hr className="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
                         <SettingOverview
                             href="/viewPassengerTypes"
                             name="Passenger types"
@@ -55,6 +56,12 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             name="Time restrictions"
                             description="Define certain days and time periods that your tickets can be used within"
                             count={globalSettingsCounts.timeRestrictionsCount}
+                        />
+                        <SettingOverview
+                            href="/manageFareDayEnd"
+                            name="Fare day end"
+                            description="If your fare day extends past midnight, define its end time"
+                            count={globalSettingsCounts.fareDayEndSet}
                         />
                     </div>
                 </div>
@@ -80,11 +87,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const savedGroupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(noc);
     const savedTimeRestrictions = await getTimeRestrictionByNocCode(noc);
     const purchaseMethodsCount = await getSalesOfferPackagesByNocCode(noc);
+    const fareDayEnd = await getFareDayEnd(noc);
 
     const globalSettingsCounts: GlobalSettingsCounts = {
         passengerTypesCount: savedPassengerTypes.length + savedGroupPassengerTypes.length,
         timeRestrictionsCount: savedTimeRestrictions.length,
         purchaseMethodsCount: purchaseMethodsCount.length,
+        fareDayEndSet: !!fareDayEnd,
     };
 
     return { props: { globalSettingsCounts, referer } };

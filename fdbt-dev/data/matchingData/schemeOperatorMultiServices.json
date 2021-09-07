@@ -1,0 +1,157 @@
+{
+  "schemeOperatorName": "Test Scheme Op",
+  "schemeOperatorRegionCode": "SE",
+  "type": "period",
+  "passengerType": "adult",
+  "ageRangeMin": "",
+  "ageRangeMax": "",
+  "email": "test@example.com",
+  "uuid": "TESTSEbf654d4b",
+  "timeRestriction": [
+    {
+      "day": "monday",
+      "timeBands": []
+    },
+    {
+      "day": "tuesday",
+      "timeBands": []
+    },
+    {
+      "day": "wednesday",
+      "timeBands": []
+    },
+    {
+      "day": "thursday",
+      "timeBands": []
+    },
+    {
+      "day": "friday",
+      "timeBands": [
+        {
+          "startTime": "0000",
+          "endTime": "1800"
+        }
+      ]
+    }
+  ],
+  "ticketPeriod": {
+    "startDate": "2011-01-01T01:01:00.000Z",
+    "endDate": "2022-02-02T23:59:00.000Z"
+  },
+  "products": [
+    {
+      "productName": "Week Rider",
+      "productPrice": "2.99",
+      "productDuration": "1 week",
+      "productValidity": "endOfServiceDay",
+      "productEndTime": "1500",
+      "salesOfferPackages": [
+        {
+          "id": 3,
+          "name": "Cash On Board",
+          "description": "blah",
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "cash",
+            "debitCard",
+            "creditCard"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ],
+          "price": "2.99"
+        },
+        {
+          "id": 4,
+          "name": "Online",
+          "description": "",
+          "purchaseLocations": [
+            "online"
+          ],
+          "paymentMethods": [
+            "creditCard",
+            "mobilePhone",
+            "directDebit",
+            "contactlessTravelCard"
+          ],
+          "ticketFormats": [
+            "smartCard",
+            "electronic_document"
+          ],
+          "price": "2.59"
+        }
+      ]
+    },
+    {
+      "productName": "Month Rider",
+      "productPrice": "3.99",
+      "productDuration": "1 month",
+      "productValidity": "endOfServiceDay",
+      "productEndTime": "1500",
+      "salesOfferPackages": [
+        {
+          "id": 4,
+          "name": "Online",
+          "description": "",
+          "purchaseLocations": [
+            "online"
+          ],
+          "paymentMethods": [
+            "creditCard",
+            "mobilePhone",
+            "directDebit",
+            "contactlessTravelCard"
+          ],
+          "ticketFormats": [
+            "smartCard",
+            "electronic_document"
+          ],
+          "price": "3.99"
+        }
+      ]
+    }
+  ],
+  "additionalOperators": [
+    {
+      "nocCode": "WBTR",
+      "selectedServices": [
+        {
+          "lineName": "1",
+          "lineId": "Mon1JJ",
+          "serviceCode": "NW_07_NW_1_2",
+          "startDate": "13/04/2020",
+          "serviceDescription": "Warrington - Latchford/Westy (Circ)"
+        }
+      ]
+    },
+    {
+      "nocCode": "NWBT",
+      "selectedServices": [
+        {
+          "lineName": "15",
+          "lineId": "rLjpBT",
+          "serviceCode": "NW_05_NWBT_15_1",
+          "startDate": "28/03/2020",
+          "serviceDescription": "BURNLEY - BURNLEY via Rose Hill Road, Moorland Road"
+        },
+        {
+          "lineName": "65",
+          "lineId": "M0L2FP",
+          "serviceCode": "NW_05_NWBT_65_1",
+          "startDate": "28/03/2020",
+          "serviceDescription": "BURNLEY - NELSON via Sycamore Avenue, Lowerhouse, Slade Lane, Higham, Barrowford"
+        },
+        {
+          "lineName": "67",
+          "lineId": "BptR81",
+          "serviceCode": "NW_05_NWBT_67_1",
+          "startDate": "28/03/2020",
+          "serviceDescription": "CLITHEROE - NELSON via Waddington, West Bradford, Grindleton, Downham, Blacko"
+        }
+      ]
+    }
+  ],
+  "carnet": false
+}

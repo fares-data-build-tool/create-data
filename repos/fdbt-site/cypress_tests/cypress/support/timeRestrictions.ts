@@ -1,4 +1,10 @@
-import { clickElementById, getElementByClass, getElementByDataTestId, getElementByName } from './helpers';
+import {
+    clickElementById,
+    clickElementByText,
+    getElementByClass,
+    getElementByDataTestId,
+    getElementByName,
+} from './helpers';
 
 interface TimeRestriction {
     days: string[];
@@ -11,10 +17,10 @@ const enterTimeRestrictionDetails = ({ days, name }: TimeRestriction) => {
     getElementByName('timeRestrictionName').clear().type(name);
 };
 
-const addTimeRestriction = (passengerType: TimeRestriction) => {
-    cy.contains('Add a time restriction').click();
+export const addTimeRestriction = (passengerType: TimeRestriction) => {
+    clickElementByText('Add a time restriction');
     enterTimeRestrictionDetails(passengerType);
-    cy.contains('Add time restriction').click();
+    clickElementByText('Add time restriction');
 };
 
 export const createEditTimeRestriction = (): void => {

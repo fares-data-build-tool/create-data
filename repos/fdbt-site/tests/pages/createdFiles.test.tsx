@@ -204,7 +204,7 @@ describe('pages', () => {
                     operatorName: '',
                     products: [],
                     nocCode: 'NOC',
-                    type: 'single',
+                    type: 'period',
                     passengerType: 'Child',
                     email: '',
                     uuid: '',
@@ -216,14 +216,14 @@ describe('pages', () => {
                     zoneName: 'The Test Zone',
                     stops: [],
                 };
-                expect(buildName(file, false)).toBe('NOC - Single - Child - The Test Zone');
+                expect(buildName(file, false)).toBe('NOC - Period - Child - The Test Zone');
             });
             it('does not include the NOC if its not there', () => {
                 const file: PeriodGeoZoneTicket = {
                     operatorName: '',
                     products: [],
                     nocCode: '',
-                    type: 'single',
+                    type: 'period',
                     passengerType: 'Child',
                     email: '',
                     uuid: '',
@@ -235,7 +235,7 @@ describe('pages', () => {
                     zoneName: 'The Test Zone',
                     stops: [],
                 };
-                expect(buildName(file, false)).toBe('Single - Child - The Test Zone');
+                expect(buildName(file, false)).toBe('Period - Child - The Test Zone');
             });
         });
 

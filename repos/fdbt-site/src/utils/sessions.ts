@@ -1,4 +1,4 @@
-import { CSV_ZONE_FILE_NAME } from './../constants/attributes';
+import { CSV_ZONE_FILE_NAME, GS_FARE_DAY_END_ATTRIBUTE } from './../constants/attributes';
 import * as attributes from '../constants/attributes';
 import {
     POINT_TO_POINT_PRODUCT_ATTRIBUTE,
@@ -175,6 +175,7 @@ export interface SessionAttributeTypes {
     [GS_PASSENGER_GROUP_ATTRIBUTE]: GlobalSettingsAttribute<GroupPassengerTypeDb>;
     [GS_TIME_RESTRICTION_ATTRIBUTE]: GlobalSettingsAttribute<PremadeTimeRestriction>;
     [GS_PURCHASE_METHOD_ATTRIBUTE]: GlobalSettingsAttribute<FromDb<SalesOfferPackage>>;
+    [GS_FARE_DAY_END_ATTRIBUTE]: { errors: ErrorInfo[]; input: string } | { saved: boolean };
     [GS_REFERER]: string;
     [CSV_ZONE_FILE_NAME]: string;
 }

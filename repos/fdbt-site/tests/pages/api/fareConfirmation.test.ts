@@ -19,7 +19,7 @@ describe('fareConfirmation', () => {
         expect(redirectOnFareTypeSpy).toHaveBeenCalled();
     });
 
-    it('should redirect to /csvZoneUpload when the user logged in is a scheme operator', () => {
+    it('should redirect to /ticketRepresentation when the user logged in is a scheme operator', () => {
         const { req, res } = getMockRequestAndResponse({
             mockWriteHeadFn: writeHeadMock,
             cookieValues: {
@@ -31,6 +31,6 @@ describe('fareConfirmation', () => {
             },
         });
         fareConfirmation(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/csvZoneUpload' });
+        expect(redirectOnFareTypeSpy).toHaveBeenCalled();
     });
 });
