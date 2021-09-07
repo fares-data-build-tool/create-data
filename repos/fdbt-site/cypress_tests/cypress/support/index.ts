@@ -14,25 +14,25 @@ before(() => {
     getHomePage();
     clickElementById('account-link');
     clickElementByText('Passenger types');
-    randomlyAddPassengerTypes();
+    addTestPassengerTypes();
     clickElementByText('Purchase methods');
-    randomlyAddPurchaseMethods();
+    addTestPurchaseMethods();
     clickElementByText('Time restrictions');
-    randomlyAddTimeRestrictions();
+    addTestTimeRestrictions();
     cy.log('Global Settings set up for BLAC');
 
     getHomePage('scheme');
     clickElementById('account-link');
     clickElementByText('Passenger types');
-    randomlyAddPassengerTypes();
+    addTestPassengerTypes();
     clickElementByText('Purchase methods');
-    randomlyAddPurchaseMethods();
+    addTestPurchaseMethods();
     clickElementByText('Time restrictions');
-    randomlyAddTimeRestrictions();
+    addTestTimeRestrictions();
     cy.log('Global Settings set up for scheme');
 });
 
-const randomlyAddPassengerTypes = (): void => {
+const addTestPassengerTypes = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfPassengers = Number(element.attr('data-card-count'));
         cy.log(`There are ${numberOfPassengers} individuals/groups`);
@@ -53,42 +53,24 @@ const randomlyAddPassengerTypes = (): void => {
                 type: 'adult',
                 name: 'Big People',
             };
-            const randomSelector = getRandomNumber(1, 2);
-            switch (randomSelector) {
-                case 1:
-                    cy.log('Add two Individuals, one Group');
-                    clickElementByText('Add a passenger type');
-                    enterPassengerTypeDetails(passengerType1);
-                    clickElementByText('Add passenger type');
+            cy.log('Add three Individuals, one Groups');
+            clickElementByText('Add a passenger type');
+            enterPassengerTypeDetails(passengerType1);
+            clickElementByText('Add passenger type');
 
-                    clickElementByText('Add a passenger type');
-                    enterPassengerTypeDetails(passengerType2);
-                    clickElementByText('Add passenger type');
-                    addGroupPassengerType('Test Group');
-                    break;
-                case 2:
-                    cy.log('Add three Individuals, one Groups');
-                    clickElementByText('Add a passenger type');
-                    enterPassengerTypeDetails(passengerType1);
-                    clickElementByText('Add passenger type');
+            clickElementByText('Add a passenger type');
+            enterPassengerTypeDetails(passengerType2);
+            clickElementByText('Add passenger type');
 
-                    clickElementByText('Add a passenger type');
-                    enterPassengerTypeDetails(passengerType2);
-                    clickElementByText('Add passenger type');
-
-                    clickElementByText('Add a passenger type');
-                    enterPassengerTypeDetails(passengerType3);
-                    clickElementByText('Add passenger type');
-                    addGroupPassengerType('Test Group');
-                    break;
-                default:
-                    throwInvalidRandomSelectorError();
-            }
+            clickElementByText('Add a passenger type');
+            enterPassengerTypeDetails(passengerType3);
+            clickElementByText('Add passenger type');
+            addGroupPassengerType('Test Group');
         }
     });
 };
 
-const randomlyAddPurchaseMethods = (): void => {
+const addTestPurchaseMethods = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfPurchaseMethods = Number(element.attr('data-card-count'));
         cy.log(`There are ${numberOfPurchaseMethods} purchase methods`);
@@ -113,32 +95,15 @@ const randomlyAddPurchaseMethods = (): void => {
                 ticketFormats: ['checkbox-3-electronic-document'],
                 name: 'Test Online',
             };
-            const randomSelector = getRandomNumber(1, 3);
-            switch (randomSelector) {
-                case 1:
-                    cy.log('Add one purchase method');
-                    addPurchaseMethod(purchaseMethod1);
-
-                    break;
-                case 2:
-                    cy.log('Add two purchase methods');
-                    addPurchaseMethod(purchaseMethod1);
-                    addPurchaseMethod(purchaseMethod2);
-                    break;
-                case 3:
-                    cy.log('Add three purchase methods');
-                    addPurchaseMethod(purchaseMethod1);
-                    addPurchaseMethod(purchaseMethod2);
-                    addPurchaseMethod(purchaseMethod3);
-                    break;
-                default:
-                    throwInvalidRandomSelectorError();
-            }
+            cy.log('Add three purchase methods');
+            addPurchaseMethod(purchaseMethod1);
+            addPurchaseMethod(purchaseMethod2);
+            addPurchaseMethod(purchaseMethod3);
         }
     });
 };
 
-const randomlyAddTimeRestrictions = (): void => {
+const addTestTimeRestrictions = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfTimeRestrictions = Number(element.attr('data-card-count'));
         cy.log(`There are ${numberOfTimeRestrictions} time restrictions`);
@@ -163,27 +128,10 @@ const randomlyAddTimeRestrictions = (): void => {
                 days: ['time-restriction-day-6', 'time-restriction-day-7'],
                 name: 'Test Bank Holidays',
             };
-            const randomSelector = getRandomNumber(1, 3);
-            switch (randomSelector) {
-                case 1:
-                    cy.log('Add one time restriction');
-                    addTimeRestriction(timeRestriction1);
-
-                    break;
-                case 2:
-                    cy.log('Add two time restrictions');
-                    addTimeRestriction(timeRestriction1);
-                    addTimeRestriction(timeRestriction2);
-                    break;
-                case 3:
-                    cy.log('Add three time restrictions');
-                    addTimeRestriction(timeRestriction1);
-                    addTimeRestriction(timeRestriction2);
-                    addTimeRestriction(timeRestriction3);
-                    break;
-                default:
-                    throwInvalidRandomSelectorError();
-            }
+            cy.log('Add three time restrictions');
+            addTimeRestriction(timeRestriction1);
+            addTimeRestriction(timeRestriction2);
+            addTimeRestriction(timeRestriction3);
         }
     });
 };

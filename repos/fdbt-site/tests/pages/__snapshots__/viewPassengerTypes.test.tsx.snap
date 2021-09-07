@@ -53,7 +53,6 @@ exports[`pages view passenger types should render correctly when groups and indi
           className="govuk-button govuk-button govuk-!-margin-top-5"
           data-module="govuk-button"
           href="/managePassengerTypes"
-          id="add-passenger-type"
         >
           Add a passenger type
         </a>
@@ -139,7 +138,6 @@ exports[`pages view passenger types should render correctly when no individual o
           className="govuk-button govuk-button govuk-!-margin-top-5"
           data-module="govuk-button"
           href="/managePassengerTypes"
-          id="add-passenger-type"
         >
           Add a passenger type
         </a>
@@ -207,7 +205,6 @@ exports[`pages view passenger types should render correctly when only individual
           className="govuk-button govuk-button govuk-!-margin-top-5"
           data-module="govuk-button"
           href="/managePassengerTypes"
-          id="add-passenger-type"
         >
           Add a passenger type
         </a>
@@ -264,7 +261,6 @@ exports[`pages view passenger types should render correctly when only passenger 
           className="govuk-button govuk-button govuk-!-margin-top-5"
           data-module="govuk-button"
           href="/managePassengerTypes"
-          id="add-passenger-type"
         >
           Add a passenger type
         </a>
