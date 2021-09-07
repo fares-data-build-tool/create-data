@@ -102,7 +102,7 @@ export const createEditSinglePassengerTypes = (): void => {
 };
 
 export const createEditGroupPassengerTypes = (): void => {
-    addGroupPassengerType('my Group');
+    addGroupPassengerType('my group');
 
     const group = getElementByClass('card').eq(2);
     group.should('include.text', 'my group');
