@@ -169,14 +169,14 @@ export const buildFareConfirmationElements = (
                 confirmationElements.push({
                     name: `Time restrictions - ${sentenceCaseString(fullTimeRestriction.day)}`,
                     content: `Start time: ${timeBand.startTime || 'N/A'} End time: ${timeBand.endTime || 'N/A'}`,
-                    href: `${globalSettingsEnabled ? 'selectTimeRestrictions' : 'defineTimeRestrictions'}`,
+                    href: globalSettingsEnabled ? 'selectTimeRestrictions' : 'defineTimeRestrictions',
                 });
             });
             if (!fullTimeRestriction.timeBands || fullTimeRestriction.timeBands.length === 0) {
                 confirmationElements.push({
                     name: `Time restrictions - ${sentenceCaseString(fullTimeRestriction.day)}`,
                     content: 'Valid all day',
-                    href: `${globalSettingsEnabled ? 'selectTimeRestrictions' : 'defineTimeRestrictions'}`,
+                    href: globalSettingsEnabled ? 'selectTimeRestrictions' : 'defineTimeRestrictions',
                 });
             }
         });
