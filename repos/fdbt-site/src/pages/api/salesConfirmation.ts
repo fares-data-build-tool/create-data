@@ -112,7 +112,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson.carnet = carnetAttribute;
             const noc = getAndValidateNoc(req, res);
             const filePath = await putUserDataInS3(userDataJson, uuid, noc);
-            console.log(globalSettingsEnabled);
             if (globalSettingsEnabled) {
                 const dateTime = moment().toDate();
                 const lineId: string | undefined = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
