@@ -1,41 +1,34 @@
 import { NextApiResponse } from 'next';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../../constants/attributes';
-import { redirectToError, redirectTo } from './apiUtils';
-import { isValid24hrTimeFormat } from './apiUtils/validator';
+import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
 import { ErrorInfo, NextApiRequestWithSession, PeriodExpiry } from '../../interfaces';
+import { getFareDayEnd } from '../../data/auroradb';
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const errors: ErrorInfo[] = [];
 
         if (req.body.periodValid) {
             const { periodValid } = req.body;
             let { productEndTime } = req.body;
-
+            let endOfFareDay = await getFareDayEnd(getAndValidateNoc(req, res));
+            console.log(endOfFareDay);
+            console.log('aaron42');
             if (periodValid === 'endOfServiceDay') {
-                if (productEndTime === '') {
-                    errors.push({ id: 'product-end-time', errorMessage: 'Specify an end time for service day' });
-                } else if (!isValid24hrTimeFormat(productEndTime)) {
-                    if (productEndTime === '2400') {
-                        errors.push({
-                            id: 'product-end-time',
-                            errorMessage: '2400 is not a valid input. Use 0000.',
-                            userInput: productEndTime,
-                        });
-                    } else {
-                        errors.push({
-                            id: 'product-end-time',
-                            errorMessage: 'Time must be in 2400 format',
-                            userInput: productEndTime,
-                        });
-                    }
-                }
+                if (!endOfFareDay) {
+                    errors.push({
+                        id: 'product-end-time',
+                        errorMessage: 'No fare day end defined.',
+                        userInput: productEndTime,
+                    });
 
-                if (errors.length > 0) {
                     updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, errors);
                     redirectTo(res, '/periodValidity');
+
                     return;
+                } else {
+                    productEndTime = endOfFareDay;
                 }
             } else {
                 productEndTime = '';
@@ -45,7 +38,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 productValidity: periodValid,
                 productEndTime: productEndTime || '',
             };
-
+            console.log(periodExpiryAttributeValue);
             updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, periodExpiryAttributeValue);
 
             redirectTo(res, '/ticketConfirmation');

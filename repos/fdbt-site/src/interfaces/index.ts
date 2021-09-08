@@ -218,6 +218,7 @@ export interface BaseReactElement {
     defaultValue?: string;
     defaultChecked?: boolean;
     options?: string[];
+    disabled?: boolean;
 }
 
 export interface InputCheck {

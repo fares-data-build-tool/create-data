@@ -60,6 +60,7 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
                                     id={input.id}
                                     name={input.name}
                                     type="text"
+                                    disabled={input.disabled}
                                     defaultValue={input.defaultValue || ''}
                                 />
                             </FormElementWrapper>

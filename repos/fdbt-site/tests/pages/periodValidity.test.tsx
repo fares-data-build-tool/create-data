@@ -34,7 +34,7 @@ describe('pages', () => {
         describe('getFieldset', () => {
             it('should return fieldsets with no errors when no errors are passed', () => {
                 const emptyErrors: ErrorInfo[] = [];
-                const fieldsets = getFieldset(emptyErrors);
+                const fieldsets = getFieldset(emptyErrors, '');
                 expect(fieldsets).toEqual(mockPeriodValidityFieldset);
             });
 
@@ -45,7 +45,7 @@ describe('pages', () => {
                         id: 'period-end-calendar',
                     },
                 ];
-                const fieldsets = getFieldset(radioErrors);
+                const fieldsets = getFieldset(radioErrors, '');
                 expect(fieldsets).toEqual(mockPeriodValidityFieldsetWithErrors);
             });
 
@@ -56,7 +56,7 @@ describe('pages', () => {
                         id: 'product-end-time',
                     },
                 ];
-                const fieldsets = getFieldset(inputErrors);
+                const fieldsets = getFieldset(inputErrors, '');
                 expect(fieldsets).toEqual(mockPeriodValidityFieldsetWithInputErrors);
             });
         });

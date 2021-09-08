@@ -3672,6 +3672,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                     name: 'productEndTime',
                     label: 'End time',
                     defaultValue: '',
+                    disabled: true,
                 },
             ],
             inputErrors: [],
@@ -3730,6 +3731,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                     name: 'productEndTime',
                     label: 'End time',
                     defaultValue: '',
+                    disabled: true,
                 },
             ],
             inputErrors: [],
@@ -3793,6 +3795,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                     name: 'productEndTime',
                     label: 'End time',
                     defaultValue: '',
+                    disabled: true,
                 },
             ],
             inputErrors: [

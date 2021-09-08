@@ -80,6 +80,7 @@ exports[`pages periodValidity should render correctly 1`] = `
                   "inputs": Array [
                     Object {
                       "defaultValue": "",
+                      "disabled": true,
                       "id": "product-end-time",
                       "label": "End time",
                       "name": "productEndTime",
@@ -97,6 +98,10 @@ exports[`pages periodValidity should render correctly 1`] = `
             }
           }
           key="period-validity"
+        />
+        <input
+          name="endOfFareDay"
+          type="hidden"
         />
       </fieldset>
     </div>
@@ -161,6 +166,36 @@ exports[`pages periodValidity should render error messaging when errors are pass
         >
           We need to know the time that this product would be valid until
         </span>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can set your fare day end in
+             
+            <a
+              className="govuk-link"
+              href="/manageFareDayEnd"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
         <RadioConditionalInput
           fieldset={
             Object {
@@ -204,6 +239,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
                   "inputs": Array [
                     Object {
                       "defaultValue": "",
+                      "disabled": true,
                       "id": "product-end-time",
                       "label": "End time",
                       "name": "productEndTime",
@@ -221,6 +257,10 @@ exports[`pages periodValidity should render error messaging when errors are pass
             }
           }
           key="period-validity"
+        />
+        <input
+          name="endOfFareDay"
+          type="hidden"
         />
       </fieldset>
     </div>

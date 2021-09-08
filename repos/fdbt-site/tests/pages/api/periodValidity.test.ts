@@ -3,6 +3,7 @@ import * as sessions from '../../../src/utils/sessions';
 import periodValidity from '../../../src/pages/api/periodValidity';
 import { ErrorInfo, PeriodExpiry } from '../../../src/interfaces';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../../../src/constants/attributes';
+import * as db from '../../../src/data/auroradb';
 
 describe('periodValidity', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
@@ -12,7 +13,9 @@ describe('periodValidity', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates product info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to /ticketConfirmation if all is valid', () => {
+    it.only('correctly generates product info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to /ticketConfirmation if all is valid', () => {
+        jest.spyOn(db, 'getFareDayEnd').mockImplementation(() => Promise.resolve('2200'));
+
         const mockProductInfo: PeriodExpiry = {
             productValidity: '24hr',
             productEndTime: '',

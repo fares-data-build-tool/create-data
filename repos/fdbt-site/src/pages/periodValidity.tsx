@@ -5,9 +5,10 @@ import { ErrorInfo, NextPageContextWithSession, RadioConditionalInputFieldset } 
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { getCsrfToken, getErrorsByIds } from '../utils';
+import { getAndValidateNoc, getCsrfToken, getErrorsByIds } from '../utils';
 import RadioConditionalInput from '../components/RadioConditionalInput';
 import { isPeriodExpiry } from '../interfaces/typeGuards';
+import { getFareDayEnd } from '../data/auroradb';
 
 const title = 'Period Validity - Create Fares Data Service';
 const description = 'Period Validity selection page of the Create Fares Data Service';
@@ -16,9 +17,10 @@ interface PeriodValidityProps {
     errors?: ErrorInfo[];
     fieldset: RadioConditionalInputFieldset;
     csrfToken: string;
+    endOfFareDay?: string;
 }
 
-export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset => {
+export const getFieldset = (errors: ErrorInfo[], endOfFareDay: string): RadioConditionalInputFieldset => {
     const periodValidityFieldSet: RadioConditionalInputFieldset = {
         heading: {
             id: 'period-validity',
@@ -69,7 +71,8 @@ export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset 
                         id: 'product-end-time',
                         name: 'productEndTime',
                         label: 'End time',
-                        defaultValue: errors.length > 0 && errors[0].userInput ? errors[0].userInput : '',
+                        disabled: true,
+                        defaultValue: errors.length > 0 && errors[0].userInput ? errors[0].userInput : endOfFareDay,
                     },
                 ],
                 inputErrors: getErrorsByIds(['product-end-time'], errors),
@@ -80,7 +83,7 @@ export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset 
     return periodValidityFieldSet;
 };
 
-const PeriodValidity = ({ errors = [], fieldset, csrfToken }: PeriodValidityProps): ReactElement => {
+const PeriodValidity = ({ errors = [], fieldset, csrfToken, endOfFareDay }: PeriodValidityProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/periodValidity" method="post" csrfToken={csrfToken}>
@@ -96,7 +99,24 @@ const PeriodValidity = ({ errors = [], fieldset, csrfToken }: PeriodValidityProp
                             <span className="govuk-hint" id="period-validity-hint">
                                 We need to know the time that this product would be valid until
                             </span>
+                            {errors.length > 0 && (
+                                <div className="govuk-warning-text">
+                                    <span className="govuk-warning-text__icon govuk-!-margin-top-1" aria-hidden="true">
+                                        !
+                                    </span>
+                                    <strong className="govuk-warning-text__text">
+                                        <span className="govuk-warning-text__assistive">Warning</span>
+                                        You can set your fare day end in{' '}
+                                        <a className="govuk-link" href="/manageFareDayEnd">
+                                            operator settings.
+                                        </a>{' '}
+                                        <br />
+                                        Don&apos;t worry you can navigate back to this page when you are finished.
+                                    </strong>
+                                </div>
+                            )}
                             <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
+                            <input type="hidden" name="endOfFareDay" value={endOfFareDay} />
                         </fieldset>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -106,17 +126,21 @@ const PeriodValidity = ({ errors = [], fieldset, csrfToken }: PeriodValidityProp
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PeriodValidityProps } => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: PeriodValidityProps }> => {
     let errors: ErrorInfo[] = [];
     const csrfToken = getCsrfToken(ctx);
     const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
+    let endOfFareDay = await getFareDayEnd(getAndValidateNoc(ctx));
+    if (!endOfFareDay) {
+        endOfFareDay = '';
+    }
 
     if (periodExpiryAttribute && !isPeriodExpiry(periodExpiryAttribute)) {
         errors = periodExpiryAttribute;
     }
+    const fieldset: RadioConditionalInputFieldset = getFieldset(errors, endOfFareDay);
 
-    const fieldset: RadioConditionalInputFieldset = getFieldset(errors);
-    return { props: { errors, fieldset, csrfToken } };
+    return { props: { errors, fieldset, csrfToken, endOfFareDay } };
 };
 
 export default PeriodValidity;
