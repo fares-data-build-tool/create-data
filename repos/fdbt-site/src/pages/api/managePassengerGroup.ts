@@ -1,4 +1,4 @@
-import { convertToFullPassengerType, updateGroupPassengerType } from '../../data/auroradb';
+import { updateGroupPassengerType } from '../../data/auroradb';
 import { isArray } from 'lodash';
 import { NextApiResponse } from 'next';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../constants/attributes';
@@ -7,7 +7,6 @@ import { CompanionReference, ErrorInfo, GroupPassengerTypeDb, NextApiRequestWith
 import { updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils';
 import { checkIntegerIsValid, removeExcessWhiteSpace } from './apiUtils/validator';
-import { sentenceCaseString } from '../../utils';
 import logger from '../../utils/logger';
 
 export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerTypeDb => {
@@ -137,23 +136,6 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
             errorMessage: 'Enter a group name of up to 50 characters',
             id: 'passenger-group-name',
             userInput: userInput.name || '',
-        });
-    }
-
-    // make sure underlying passenger types are not duplicated
-
-    const fullGroupPassengerType = await convertToFullPassengerType(userInput, nocCode);
-
-    const seen = new Set();
-
-    const duplicateName = fullGroupPassengerType.groupPassengerType.companions.find(
-        (item) => seen.size === seen.add(item.passengerType).size,
-    )?.passengerType;
-
-    if (duplicateName) {
-        errors.push({
-            errorMessage: `A group cannot contain multiple "${sentenceCaseString(duplicateName)}" passenger types`,
-            id: 'passenger-group',
         });
     }
 
