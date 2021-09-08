@@ -118,6 +118,63 @@ describe('defineTimeRestrictions', () => {
         expect(getTimeRestrictionByNameAndNocSpy).toBeCalledWith('My time restriction', 'HELLO');
     });
 
+    it('should populate endTimes with fareDayEnd selected', async () => {
+        const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+        const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
+        jest.spyOn(auroradb, 'getFareDayEnd').mockResolvedValue('0440');
+        getTimeRestrictionByNameAndNocSpy.mockImplementation().mockResolvedValue([
+            {
+                id: 1,
+                name: 'My time restriction',
+                contents: [
+                    {
+                        day: 'monday',
+                        timeBands: [
+                            { startTime: '1000', endTime: '1100' },
+                            { startTime: '1400', endTime: { fareDayEnd: true } },
+                        ],
+                    },
+                    { day: 'friday', timeBands: [{ startTime: '1400', endTime: { fareDayEnd: true } }] },
+                    { day: 'bankHoliday', timeBands: [{ startTime: '1400', endTime: '1600' }] },
+                ],
+            },
+        ]);
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                timeRestrictionChoice: 'Premade',
+                timeRestriction: 'My time restriction',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            cookieValues: {
+                idToken: mockIdTokenMultiple,
+            },
+            session: {
+                [OPERATOR_ATTRIBUTE]: { name: 'test', nocCode: 'HELLO', uuid: 'blah' },
+            },
+        });
+        await defineTimeRestrictions(req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
+            fullTimeRestrictions: [
+                {
+                    day: 'monday',
+                    timeBands: [
+                        { startTime: '1000', endTime: '1100' },
+                        { startTime: '1400', endTime: '0440' },
+                    ],
+                },
+                { day: 'friday', timeBands: [{ startTime: '1400', endTime: '0440' }] },
+                { day: 'bankHoliday', timeBands: [{ startTime: '1400', endTime: '1600' }] },
+            ],
+            errors: [],
+        });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/fareConfirmation',
+        });
+
+        expect(getTimeRestrictionByNameAndNocSpy).toBeCalledWith('My time restriction', 'HELLO');
+    });
+
     it('redirect back to defineTimeRestrictions with errors if user does not select a premade time restriction but chose premade radio button', async () => {
         const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
         const { req, res } = getMockRequestAndResponse({

@@ -6,7 +6,6 @@ import { FromDb } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
     CompanionInfo,
-    FullTimeRestriction,
     GroupPassengerType,
     Operator,
     OperatorGroup,
@@ -20,6 +19,7 @@ import {
     GroupPassengerTypeDb,
     GroupPassengerTypeReference,
     FullGroupPassengerType,
+    DbTimeRestriction,
 } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -593,7 +593,7 @@ export const getOperatorGroupsByNameAndNoc = async (name: string, nocCode: strin
 
 export const insertTimeRestriction = async (
     nocCode: string,
-    timeRestriction: FullTimeRestriction[],
+    timeRestriction: DbTimeRestriction[],
     name: string,
 ): Promise<void> => {
     logger.info('', {
@@ -618,7 +618,7 @@ export const insertTimeRestriction = async (
 export const updateTimeRestriction = async (
     id: number,
     nocCode: string,
-    timeRestriction: FullTimeRestriction[],
+    timeRestriction: DbTimeRestriction[],
     name: string,
 ): Promise<void> => {
     logger.info('', {

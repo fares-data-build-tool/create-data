@@ -214,7 +214,7 @@ export const getCsrfToken = (ctx: DocumentContextWithSession | NextPageContextWi
     (ctx.res as ResponseWithLocals)?.locals?.csrfToken ?? '';
 
 export const toArray = (thing: string | string[] | undefined): string[] => {
-    if (!thing) {
+    if (thing === undefined) {
         return [];
     }
 

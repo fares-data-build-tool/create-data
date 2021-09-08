@@ -105,10 +105,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 throw new Error(`unexpected challenge: ${ChallengeName}`);
             }
         } catch (error) {
-            logger.error(error, {
+            const meta = {
                 context: 'api.register',
                 message: 'registration failed',
-            });
+            };
+
+            if (error.name === 'NotAuthorizedException') {
+                logger.warn(error, meta);
+            } else {
+                logger.error(error, meta);
+            }
 
             inputChecks.push({
                 userInput: '',
