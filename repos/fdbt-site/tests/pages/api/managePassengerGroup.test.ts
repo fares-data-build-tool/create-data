@@ -147,7 +147,7 @@ describe('managePassengerGroup', () => {
         });
     });
 
-    it('should return 302 redirect to /managePassengerGroup when group has two of the same passenger types', async () => {
+    it('should return 302 redirect to /viewPassengerTypes when group has two of the same passenger types and allow creation', async () => {
         const writeHeadMock = jest.fn();
 
         getGroupPassengerTypesFromGlobalSettingsSpy.mockResolvedValueOnce([]);
@@ -203,37 +203,31 @@ describe('managePassengerGroup', () => {
         await managePassengerGroup(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/managePassengerGroup',
+            Location: '/viewPassengerTypes',
         });
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_PASSENGER_GROUP_ATTRIBUTE, {
-            errors: [
-                {
-                    errorMessage: 'A group cannot contain multiple "Adult" passenger types',
-                    id: 'passenger-group',
-                },
-            ],
-            inputs: {
-                groupPassengerType: {
-                    companions: [
-                        {
-                            id: 12,
-                            minNumber: '1',
-                            maxNumber: '2',
-                        },
-                        {
-                            id: 43,
-                            minNumber: '1',
-                            maxNumber: '2',
-                        },
-                    ],
-                    maxGroupSize: '5',
-                    name: 'Family5',
-                },
-                id: undefined,
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
+
+        expect(insertGroupPassengerTypeSpy).toBeCalledWith(
+            'TEST',
+            {
+                companions: [
+                    {
+                        id: 12,
+                        maxNumber: '2',
+                        minNumber: '1',
+                    },
+                    {
+                        id: 43,
+                        maxNumber: '2',
+                        minNumber: '1',
+                    },
+                ],
+                maxGroupSize: '5',
                 name: 'Family5',
             },
-        });
+            'Family5',
+        );
     });
 
     it('should return 302 redirect to /managePassengerGroup when there have been correct user inputs but there is a group with the same name', async () => {

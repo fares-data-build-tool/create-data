@@ -134,9 +134,9 @@ export const getGroupElement = (groupDefinition: GroupDefinition): NetexObject =
                         $t: groupDefinition.maxPeople,
                     },
                     companionProfiles: {
-                        CompanionProfile: groupDefinition.companions.map(companion => ({
+                        CompanionProfile: groupDefinition.companions.map((companion, index) => ({
                             version: '1.0',
-                            id: `op:companion@${companion.passengerType}`,
+                            id: `op:companion@${companion.passengerType}-${index}`,
                             UserProfileRef: {
                                 version: '1.0',
                                 ref: `op:${companion.passengerType}`,
