@@ -12,8 +12,9 @@ import { getMockRequestAndResponse, mockIdTokenMultiple } from '../../testData/m
 describe('defineTimeRestrictions', () => {
     const writeHeadMock = jest.fn();
 
-    afterEach(() => {
+    beforeEach(() => {
         jest.resetAllMocks();
+        jest.spyOn(auroradb, 'getFareDayEnd').mockResolvedValue('0440');
     });
 
     it('should set the TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE and redirect to fare confirmation when no errors are found', async () => {
@@ -121,7 +122,6 @@ describe('defineTimeRestrictions', () => {
     it('should populate endTimes with fareDayEnd selected', async () => {
         const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
         const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
-        jest.spyOn(auroradb, 'getFareDayEnd').mockResolvedValue('0440');
         getTimeRestrictionByNameAndNocSpy.mockImplementation().mockResolvedValue([
             {
                 id: 1,

@@ -6,11 +6,11 @@ import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../../../src/constants/attributes
 
 const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
 const getTimeRestrictionByNameAndNocSpy = jest.spyOn(aurora, 'getTimeRestrictionByNameAndNoc');
-const insertTimeRestrictionSpy = jest.spyOn(aurora, 'insertTimeRestriction');
-insertTimeRestrictionSpy.mockResolvedValue();
+const insertTimeRestrictionSpy = jest.spyOn(aurora, 'insertTimeRestriction').mockResolvedValue();
 
-afterEach(() => {
+beforeEach(() => {
     jest.resetAllMocks();
+    jest.spyOn(aurora, 'getFareDayEnd').mockResolvedValue('1234');
 });
 
 describe('manageTimeRestriction', () => {
@@ -234,7 +234,6 @@ describe('manageTimeRestriction', () => {
     it('should handle fare day end for time restrictions ', async () => {
         const writeHeadMock = jest.fn();
         getTimeRestrictionByNameAndNocSpy.mockResolvedValueOnce([]);
-        jest.spyOn(aurora, 'getFareDayEnd').mockResolvedValue('1234');
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
