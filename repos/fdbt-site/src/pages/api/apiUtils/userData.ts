@@ -119,11 +119,12 @@ export const getProductsAndSalesOfferPackages = (
     return productSOPList;
 };
 
-export const putUserDataInS3 = async (data: Ticket, uuid: string): Promise<void> => {
+export const putUserDataInS3 = async (data: Ticket, uuid: string, nocCode: string): Promise<string> => {
     const s3Data = { ...data };
-    const filePath = `${'nocCode' in s3Data ? s3Data.nocCode : ''}/${s3Data.type}/${uuid}_${Date.now()}.json`;
+    const filePath = `${nocCode}/${s3Data.type}/${uuid}_${Date.now()}.json`;
 
     await putStringInS3(MATCHING_DATA_BUCKET_NAME, filePath, JSON.stringify(s3Data), 'application/json; charset=utf-8');
+    return filePath;
 };
 
 const getTicketPeriod = (ticketPeriodWithInput: TicketPeriodWithInput): TicketPeriod => ({

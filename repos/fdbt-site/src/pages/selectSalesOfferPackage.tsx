@@ -70,22 +70,22 @@ export const defaultSalesOfferPackages = [
 export interface SelectSalesOfferPackageProps {
     selected?: { [key: string]: SalesOfferPackage[] };
     products: ProductInfo[];
-    salesOfferPackagesList: SalesOfferPackage[];
+    purchaseMethodsList: SalesOfferPackage[];
     errors: ErrorInfo[];
     csrfToken: string;
 }
 
 export const formatSOPArray = (stringArray: string[]): string =>
-    stringArray.map((string) => sentenceCaseString(purchaseMethodsValuesMap[string] || string)).join(', ');
+    stringArray.map((string) => purchaseMethodsValuesMap[string] || sentenceCaseString(string)).join(', ');
 
 const generateCheckbox = (
-    salesOfferPackagesList: SalesOfferPackage[],
+    purchaseMethodsList: SalesOfferPackage[],
     productName: string,
     csrfToken: string,
     selectedDefault: { [key: string]: SalesOfferPackage[] } | undefined,
     defaultPrice: string,
 ): ReactElement[] => {
-    const pairs = chunk(salesOfferPackagesList, 2);
+    const pairs = chunk(purchaseMethodsList, 2);
 
     const [selected, setSelected] = useState(selectedDefault);
 
@@ -170,7 +170,7 @@ const generateCheckbox = (
 };
 
 const createSalesOffer = (
-    salesOfferPackagesList: SalesOfferPackage[],
+    purchaseMethodsList: SalesOfferPackage[],
     products: ProductInfo[],
     csrfToken: string,
     selected: { [key: string]: SalesOfferPackage[] } | undefined,
@@ -193,7 +193,7 @@ const createSalesOffer = (
                         errorClass=""
                     >
                         <div className="govuk-checkboxes">
-                            {generateCheckbox(salesOfferPackagesList, productName, csrfToken, selected, productPrice)}
+                            {generateCheckbox(purchaseMethodsList, productName, csrfToken, selected, productPrice)}
                             <input type="hidden" name={`product-${productName}`} />
                         </div>
                     </FormElementWrapper>
@@ -205,7 +205,7 @@ const createSalesOffer = (
 const SelectSalesOfferPackage = ({
     selected,
     products,
-    salesOfferPackagesList,
+    purchaseMethodsList,
     csrfToken,
     errors,
 }: SelectSalesOfferPackageProps): ReactElement => {
@@ -232,7 +232,7 @@ const SelectSalesOfferPackage = ({
                             for these products.
                         </p>
                     </div>
-                    {createSalesOffer(salesOfferPackagesList, products, csrfToken, selected, errors)}
+                    {createSalesOffer(purchaseMethodsList, products, csrfToken, selected, errors)}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                     <a
                         href="/salesOfferPackages"
@@ -260,8 +260,8 @@ export const getServerSideProps = async (
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackage page');
     }
 
-    const salesOfferPackagesList: SalesOfferPackage[] = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
-    salesOfferPackagesList.unshift(...defaultSalesOfferPackages);
+    const purchaseMethodsList: SalesOfferPackage[] = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
+    purchaseMethodsList.unshift(...defaultSalesOfferPackages);
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
@@ -304,7 +304,7 @@ export const getServerSideProps = async (
         props: {
             ...(selected && { selected }),
             products,
-            salesOfferPackagesList,
+            purchaseMethodsList,
             errors,
             csrfToken,
         },
