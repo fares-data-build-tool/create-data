@@ -9,13 +9,15 @@ describe('periodValidity', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const writeHeadMock = jest.fn();
 
+    beforeEach(() => {
+        jest.spyOn(db, 'getFareDayEnd').mockImplementation(() => Promise.resolve('2200'));
+    });
+
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    it.only('correctly generates product info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to /ticketConfirmation if all is valid', () => {
-        jest.spyOn(db, 'getFareDayEnd').mockImplementation(() => Promise.resolve('2200'));
-
+    it('correctly generates product info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to /ticketConfirmation if all is valid', async () => {
         const mockProductInfo: PeriodExpiry = {
             productValidity: '24hr',
             productEndTime: '',
@@ -25,13 +27,15 @@ describe('periodValidity', () => {
             body: { periodValid: '24hr' },
             mockWriteHeadFn: writeHeadMock,
         });
-        periodValidity(req, res);
+
+        await periodValidity(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, mockProductInfo);
+
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/ticketConfirmation' });
     });
 
-    it('correctly generates product info, updates the PERIOD_EXPIRY_ATTRIBUTE with productEndTime empty even if supplied, if end of service day is not selected', () => {
+    it('correctly generates product info, updates the PERIOD_EXPIRY_ATTRIBUTE with productEndTime empty even if supplied, if end of service day is not selected', async () => {
         const mockProductInfo: PeriodExpiry = {
             productValidity: '24hr',
             productEndTime: '',
@@ -40,12 +44,13 @@ describe('periodValidity', () => {
         const { req, res } = getMockRequestAndResponse({
             body: { periodValid: '24hr', productEndTime: '2300' },
         });
-        periodValidity(req, res);
+
+        await periodValidity(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, mockProductInfo);
     });
 
-    it('correctly generates period expiry error info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to periodValidity page when there is no period validity info', () => {
+    it('correctly generates period expiry error info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to periodValidity page when there is no period validity info', async () => {
         const errors: ErrorInfo[] = [
             {
                 id: 'period-end-calendar',
@@ -57,7 +62,8 @@ describe('periodValidity', () => {
             body: {},
             mockWriteHeadFn: writeHeadMock,
         });
-        periodValidity(req, res);
+
+        await periodValidity(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, errors);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -65,11 +71,14 @@ describe('periodValidity', () => {
         });
     });
 
-    it('should redirect if the end of service day option selected and no time has been entered', () => {
+    it('should redirect if the end of service day option selected and no fare day end has been set in global settings', async () => {
+        jest.spyOn(db, 'getFareDayEnd').mockImplementation(() => Promise.resolve(''));
+
         const errors: ErrorInfo[] = [
             {
                 id: 'product-end-time',
-                errorMessage: 'Specify an end time for service day',
+                errorMessage: 'No fare day end defined.',
+                userInput: '',
             },
         ];
 
@@ -80,57 +89,11 @@ describe('periodValidity', () => {
             },
             mockWriteHeadFn: writeHeadMock,
         });
-        periodValidity(req, res);
+
+        await periodValidity(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, errors);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/periodValidity',
-        });
-    });
 
-    it('should redirect and display error if the service end time has the incorrect time', () => {
-        const errors: ErrorInfo[] = [
-            {
-                id: 'product-end-time',
-                userInput: '2400',
-                errorMessage: '2400 is not a valid input. Use 0000.',
-            },
-        ];
-
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                periodValid: 'endOfServiceDay',
-                productEndTime: '2400',
-            },
-            mockWriteHeadFn: writeHeadMock,
-        });
-        periodValidity(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, errors);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/periodValidity',
-        });
-    });
-
-    it('should redirect and display error if invalid characters are entered for the service end time', () => {
-        const errors: ErrorInfo[] = [
-            {
-                id: 'product-end-time',
-                userInput: 'abcd',
-                errorMessage: 'Time must be in 2400 format',
-            },
-        ];
-
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                periodValid: 'endOfServiceDay',
-                productEndTime: 'abcd',
-            },
-            mockWriteHeadFn: writeHeadMock,
-        });
-        periodValidity(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, errors);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/periodValidity',
         });

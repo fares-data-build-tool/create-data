@@ -8,13 +8,11 @@ import { getFareDayEnd } from '../../data/auroradb';
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const errors: ErrorInfo[] = [];
-
         if (req.body.periodValid) {
             const { periodValid } = req.body;
             let { productEndTime } = req.body;
-            let endOfFareDay = await getFareDayEnd(getAndValidateNoc(req, res));
-            console.log(endOfFareDay);
-            console.log('aaron42');
+            const endOfFareDay = await getFareDayEnd(getAndValidateNoc(req, res));
+
             if (periodValid === 'endOfServiceDay') {
                 if (!endOfFareDay) {
                     errors.push({
@@ -38,7 +36,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 productValidity: periodValid,
                 productEndTime: productEndTime || '',
             };
-            console.log(periodExpiryAttributeValue);
+
             updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, periodExpiryAttributeValue);
 
             redirectTo(res, '/ticketConfirmation');
