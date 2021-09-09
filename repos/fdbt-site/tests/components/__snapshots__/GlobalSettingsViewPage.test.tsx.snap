@@ -15,12 +15,12 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] 
       className="govuk-grid-row"
     >
       <div
-        className="govuk-grid-column-one-third"
+        className="govuk-grid-column-one-quarter"
       >
         <SubNavigation />
       </div>
       <div
-        className="govuk-grid-column-two-thirds"
+        className="govuk-grid-column-three-quarters"
       >
         <h1
           className="govuk-heading-xl"
@@ -200,12 +200,12 @@ exports[`GlobalSettingsViewPage should render correctly when no entities 1`] = `
       className="govuk-grid-row"
     >
       <div
-        className="govuk-grid-column-one-third"
+        className="govuk-grid-column-one-quarter"
       >
         <SubNavigation />
       </div>
       <div
-        className="govuk-grid-column-two-thirds"
+        className="govuk-grid-column-three-quarters"
       >
         <h1
           className="govuk-heading-xl"

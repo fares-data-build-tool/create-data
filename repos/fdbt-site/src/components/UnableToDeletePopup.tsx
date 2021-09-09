@@ -23,7 +23,7 @@ const UnableToDeletePopup = ({
                     {groupsInUse?.join(', ')}
                 </span>
 
-                <button className="govuk-button govuk-button--secondary" onClick={cancelActionHandler}>
+                <button className="govuk-button govuk-button" onClick={cancelActionHandler}>
                     Ok
                 </button>
             </form>

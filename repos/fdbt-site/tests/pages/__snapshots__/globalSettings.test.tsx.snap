@@ -20,7 +20,7 @@ exports[`pages globalSettings should render correctly 1`] = `
         className="govuk-grid-column-three-quarters"
       >
         <h1
-          className="govuk-heading-m"
+          className="govuk-heading-xl"
         >
           Settings overview
         </h1>

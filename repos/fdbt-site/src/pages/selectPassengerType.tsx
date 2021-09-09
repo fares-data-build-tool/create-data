@@ -82,7 +82,9 @@ const SelectPassengerType = ({
                                         </>
                                     ) : (
                                         <div className="govuk-grid-column-two-thirds">
-                                            <p className="govuk-body">You currently have no saved groups</p>
+                                            <p className="govuk-body">
+                                                <em>You currently have no saved groups</em>
+                                            </p>
                                         </div>
                                     )}
                                 </div>
