@@ -65,7 +65,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         updateSessionAttribute(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE, pointToPointPeriodProduct);
 
         if (globalSettingsEnabled) {
-            redirectTo(res, '/globalSettingsPeriodValidity');
+            redirectTo(res, '/selectPeriodValidity');
         } else {
             redirectTo(res, '/periodValidity');
         }

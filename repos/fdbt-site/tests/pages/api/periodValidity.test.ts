@@ -82,14 +82,14 @@ describe('periodValidity', () => {
         const errors: ErrorInfo[] = [
             {
                 id: 'product-end-time',
-                errorMessage: 'No fare day end defined.',
+                errorMessage: 'No fare day end defined',
                 userInput: '',
             },
         ];
 
         const { req, res } = getMockRequestAndResponse({
             body: {
-                periodValid: 'endOfServiceDay',
+                periodValid: 'fareDayEnd',
                 productEndTime: '',
             },
             mockWriteHeadFn: writeHeadMock,
@@ -100,7 +100,7 @@ describe('periodValidity', () => {
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, errors);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/globalSettingsPeriodValidity',
+            Location: '/selectPeriodValidity',
         });
     });
 
@@ -118,7 +118,7 @@ describe('periodValidity', () => {
 
         const { req, res } = getMockRequestAndResponse({
             body: {
-                periodValid: 'endOfServiceDay',
+                periodValid: 'fareDayEnd',
                 productEndTime: '',
             },
             mockWriteHeadFn: writeHeadMock,
@@ -147,7 +147,7 @@ describe('periodValidity', () => {
 
         const { req, res } = getMockRequestAndResponse({
             body: {
-                periodValid: 'endOfServiceDay',
+                periodValid: 'fareDayEnd',
                 productEndTime: '2400',
             },
             mockWriteHeadFn: writeHeadMock,
@@ -176,7 +176,7 @@ describe('periodValidity', () => {
 
         const { req, res } = getMockRequestAndResponse({
             body: {
-                periodValid: 'endOfServiceDay',
+                periodValid: 'fareDayEnd',
                 productEndTime: 'abcd',
             },
             mockWriteHeadFn: writeHeadMock,

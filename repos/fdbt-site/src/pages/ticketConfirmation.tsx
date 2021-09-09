@@ -355,7 +355,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             content: `${sentenceCaseString(periodExpiryAttribute.productValidity)}${
                 periodExpiryAttribute.productEndTime ? ` - ${periodExpiryAttribute.productEndTime}` : ''
             }`,
-            href: globalSettingsEnabled ? 'globalSettingsPeriodValidity' : 'periodValidity',
+            href: globalSettingsEnabled ? 'selectPeriodValidity' : 'periodValidity',
         });
     }
 

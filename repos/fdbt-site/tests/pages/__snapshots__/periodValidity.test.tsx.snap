@@ -91,7 +91,7 @@ exports[`pages periodValidity should render correctly 1`] = `
                     "content": "For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry",
                     "id": "period-end-of-service-hint",
                   },
-                  "value": "endOfServiceDay",
+                  "value": "fareDayEnd",
                 },
               ],
             }
@@ -215,7 +215,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
                     "content": "For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry",
                     "id": "period-end-of-service-hint",
                   },
-                  "value": "endOfServiceDay",
+                  "value": "fareDayEnd",
                 },
               ],
             }

@@ -15,17 +15,17 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             let { productEndTime } = req.body;
             const endOfFareDay = await getFareDayEnd(getAndValidateNoc(req, res));
 
-            if (periodValid === 'endOfServiceDay') {
+            if (periodValid === 'fareDayEnd') {
                 if (globalSettingsEnabled) {
                     if (!endOfFareDay) {
                         errors.push({
                             id: 'product-end-time',
-                            errorMessage: 'No fare day end defined.',
+                            errorMessage: 'No fare day end defined',
                             userInput: productEndTime,
                         });
 
                         updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, errors);
-                        redirectTo(res, '/globalSettingsPeriodValidity');
+                        redirectTo(res, '/selectPeriodValidity');
 
                         return;
                     } else {

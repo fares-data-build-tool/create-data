@@ -15,7 +15,7 @@
             "productName": "Best product one",
             "productPrice": "22",
             "productDuration": "3 months",
-            "productValidity": "endOfServiceDay",
+            "productValidity": "fareDayEnd",
             "productEndTime": "2300",
             "salesOfferPackages": [
                 {
@@ -52,7 +52,7 @@
             "productName": "Another great product",
             "productPrice": "320",
             "productDuration": "4 years",
-            "productValidity": "endOfServiceDay",
+            "productValidity": "fareDayEnd",
             "productEndTime": "2300",
             "salesOfferPackages": [
                 {

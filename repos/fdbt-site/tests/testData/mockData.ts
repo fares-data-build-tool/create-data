@@ -2310,7 +2310,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productName: 'Weekly Ticket',
                 productPrice: '50',
                 productDuration: '5 weeks',
-                productValidity: 'endOfServiceDay',
+                productValidity: 'fareDayEnd',
                 productEndTime: '1900',
                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                 carnetDetails: undefined,
@@ -2319,7 +2319,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productName: 'Day Ticket',
                 productPrice: '2.50',
                 productDuration: '1 year',
-                productValidity: 'endOfServiceDay',
+                productValidity: 'fareDayEnd',
                 productEndTime: '1900',
                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                 carnetDetails: undefined,
@@ -2328,7 +2328,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productName: 'Monthly Ticket',
                 productPrice: '200',
                 productDuration: '28 months',
-                productValidity: 'endOfServiceDay',
+                productValidity: 'fareDayEnd',
                 productEndTime: '1900',
                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                 carnetDetails: undefined,
@@ -2965,7 +2965,7 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorG
             productDuration: '5 weeks',
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productValidity: 'endOfServiceDay',
+            productValidity: 'fareDayEnd',
             productEndTime: '1900',
             salesOfferPackages: [
                 {
@@ -2988,7 +2988,7 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorG
             productDuration: '1 month',
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productValidity: 'endOfServiceDay',
+            productValidity: 'fareDayEnd',
             productEndTime: '1900',
             salesOfferPackages: [
                 {
@@ -3012,7 +3012,7 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorG
             productEndTime: '1900',
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productValidity: 'endOfServiceDay',
+            productValidity: 'fareDayEnd',
             salesOfferPackages: [
                 {
                     description: '',
@@ -3652,7 +3652,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
         {
             id: 'period-end-of-service',
             name: 'periodValid',
-            value: 'endOfServiceDay',
+            value: 'fareDayEnd',
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'End of service day',
             radioButtonHint: {
@@ -3680,7 +3680,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
     radioError: [],
 };
 
-export const mockGlobalSettingsPeriodValidityFieldset: RadioConditionalInputFieldset = {
+export const mockselectPeriodValidityFieldset: RadioConditionalInputFieldset = {
     heading: {
         id: 'period-validity',
         content: expect.any(String),
@@ -3710,7 +3710,7 @@ export const mockGlobalSettingsPeriodValidityFieldset: RadioConditionalInputFiel
         {
             id: 'period-end-of-service',
             name: 'periodValid',
-            value: 'endOfServiceDay',
+            value: 'fareDayEnd',
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
@@ -3769,7 +3769,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
         {
             id: 'period-end-of-service',
             name: 'periodValid',
-            value: 'endOfServiceDay',
+            value: 'fareDayEnd',
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'End of service day',
             radioButtonHint: {
@@ -3802,7 +3802,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
     ],
 };
 
-export const mockGlobalSettingsPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
+export const mockselectPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'period-validity',
         content: expect.any(String),
@@ -3832,7 +3832,7 @@ export const mockGlobalSettingsPeriodValidityFieldsetWithErrors: RadioConditiona
         {
             id: 'period-end-of-service',
             name: 'periodValid',
-            value: 'endOfServiceDay',
+            value: 'fareDayEnd',
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
@@ -3896,7 +3896,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
         {
             id: 'period-end-of-service',
             name: 'periodValid',
-            value: 'endOfServiceDay',
+            value: 'fareDayEnd',
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'End of service day',
             radioButtonHint: {
@@ -3929,7 +3929,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
     radioError: [],
 };
 
-export const mockGlobalSettingsPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
+export const mockselectPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'period-validity',
         content: expect.any(String),
@@ -3959,7 +3959,7 @@ export const mockGlobalSettingsPeriodValidityFieldsetWithInputErrors: RadioCondi
         {
             id: 'period-end-of-service',
             name: 'periodValid',
-            value: 'endOfServiceDay',
+            value: 'fareDayEnd',
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {

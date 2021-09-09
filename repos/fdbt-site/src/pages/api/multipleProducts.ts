@@ -314,11 +314,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products: multipleProducts });
         redirectTo(
             res,
-            isFlatFare
-                ? '/ticketConfirmation'
-                : globalSettingsEnabled
-                ? '/globalSettingsPeriodValidity'
-                : '/periodValidity',
+            isFlatFare ? '/ticketConfirmation' : globalSettingsEnabled ? '/selectPeriodValidity' : '/periodValidity',
         );
     } catch (error) {
         const message = 'There was a problem inputting the product name, price and/or duration:';
