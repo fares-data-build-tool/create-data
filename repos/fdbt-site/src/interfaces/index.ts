@@ -15,6 +15,7 @@ import {
     SalesOfferPackage,
     SelectedService,
     TicketType,
+    TimeRestrictionDay,
 } from '../../shared/matchingJsonTypes';
 
 // Session Attributes and Cookies
@@ -252,7 +253,22 @@ export interface ResponseWithLocals extends ServerResponse {
 export interface PremadeTimeRestriction {
     id: number;
     name: string;
-    contents: FullTimeRestriction[];
+    contents: DbTimeRestriction[];
+}
+
+export interface DbTimeBand {
+    startTime: string;
+    endTime: string | { fareDayEnd: boolean };
+}
+
+export interface DbTimeRestriction {
+    day: TimeRestrictionDay;
+    timeBands: DbTimeBand[];
+}
+
+export interface DbTimeInput {
+    timeInput: string | { fareDayEnd: boolean };
+    day: string;
 }
 
 // AWS and Reference Data (e.g. NOC, TNDS, NaPTAN datasets)

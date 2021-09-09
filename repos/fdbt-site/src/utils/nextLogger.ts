@@ -1,10 +1,14 @@
 import logger from './internalLogger';
 
-const passLogger = (level: string): ((obj: AnyError) => void) => {
+const passLogger = (level: string): ((...obj: AnyError[]) => void) => {
     const logMethod = getLogMethod(level);
 
-    return (obj) => {
-        const message = getMessage(obj);
+    return (first: AnyError, ...obj: AnyError[]) => {
+        let message = getMessage(first);
+        if (typeof obj[0] === 'string') {
+            message += ' ' + obj[0];
+            obj.splice(0);
+        }
 
         return logMethod(message, obj);
     };
@@ -28,7 +32,7 @@ const getMessage = (obj: AnyError): string => {
     if (obj.length === 1) {
         return obj[0];
     }
-    return obj.toString();
+    return typeof obj === 'string' ? obj : JSON.stringify(obj);
 };
 
 type AnyError = (Error & { [key: string]: unknown }) | string[] | string;

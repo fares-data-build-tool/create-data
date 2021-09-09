@@ -69,18 +69,10 @@ const ManageFareDayEnd = ({ errors, csrfToken, fareDayEnd, referer, saved }: Man
                                 </fieldset>
                             </FormGroupWrapper>
                             <input type="submit" value={`Save`} className="govuk-button" />
-                            <button
-                                className="govuk-button govuk-button--warning govuk-!-margin-left-4"
-                                formAction={`/api/manageFareDayEnd?delete=true&_csrf=${csrfToken}`}
-                                formMethod="post"
-                                type="submit"
-                            >
-                                Delete
-                            </button>
                             {showSaved && (
                                 <InfoPopup
                                     title="Success"
-                                    text={`You have ${fareDayEnd ? 'saved' : 'reset'} your fare day end time.`}
+                                    text={`You have saved your fare day end time.`}
                                     okActionHandler={() => setShowSaved(false)}
                                 />
                             )}

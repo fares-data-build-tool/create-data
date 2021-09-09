@@ -7,7 +7,13 @@ describe('pages', () => {
     describe('manage time restriction', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <ManageTimeRestriction csrfToken={''} errors={[]} inputs={undefined} editMode={false} />,
+                <ManageTimeRestriction
+                    csrfToken={''}
+                    errors={[]}
+                    inputs={undefined}
+                    editMode={false}
+                    fareDayEnd={'1234'}
+                />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -22,7 +28,9 @@ describe('pages', () => {
                 contents: [],
             };
 
-            const tree = shallow(<ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} editMode />);
+            const tree = shallow(
+                <ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} editMode fareDayEnd={'1234'} />,
+            );
 
             expect(tree).toMatchSnapshot();
         });
@@ -59,7 +67,53 @@ describe('pages', () => {
                 ],
             };
 
-            const tree = shallow(<ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} editMode />);
+            const tree = shallow(
+                <ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} editMode fareDayEnd={'1234'} />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render with fare day end selections', () => {
+            const errors = [
+                {
+                    errorMessage: 'Start time is required if end time is provided',
+                    id: 'start-time-monday-0',
+                    userInput: '',
+                },
+                { errorMessage: '2400 is not a valid input. Use 0000.', id: 'end-time-tuesday-0', userInput: '2400' },
+                {
+                    errorMessage: 'Start time and end time cannot be the same',
+                    id: 'start-time-wednesday-0',
+                    userInput: '1200',
+                },
+                {
+                    errorMessage: 'Start time and end time cannot be the same',
+                    id: 'end-time-wednesday-0',
+                    userInput: '1200',
+                },
+                { errorMessage: 'Time must be in 24hr format', id: 'start-time-thursday-0', userInput: '-1' },
+            ];
+
+            const inputs: PremadeTimeRestriction = {
+                id: 0,
+                name: 'test',
+                contents: [
+                    { day: 'monday', timeBands: [{ startTime: '1111', endTime: '2300' }] },
+                    { day: 'tuesday', timeBands: [{ startTime: '0100', endTime: { fareDayEnd: true } }] },
+                    {
+                        day: 'wednesday',
+                        timeBands: [
+                            { startTime: '1200', endTime: '1300' },
+                            { startTime: '1500', endTime: { fareDayEnd: true } },
+                        ],
+                    },
+                ],
+            };
+
+            const tree = shallow(
+                <ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} editMode fareDayEnd={'1234'} />,
+            );
 
             expect(tree).toMatchSnapshot();
         });
@@ -84,7 +138,13 @@ describe('pages', () => {
             };
 
             const tree = shallow(
-                <ManageTimeRestriction csrfToken={''} errors={errors} inputs={inputs} editMode={false} />,
+                <ManageTimeRestriction
+                    csrfToken={''}
+                    errors={errors}
+                    inputs={inputs}
+                    editMode={false}
+                    fareDayEnd={'1234'}
+                />,
             );
 
             expect(tree).toMatchSnapshot();

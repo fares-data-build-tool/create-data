@@ -9,11 +9,9 @@ import { fareDayEndInputId } from '../manageFareDayEnd';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const deleting = req.query.delete;
+        const fareDayEnd = removeExcessWhiteSpace(req.body.fareDayEnd);
 
-        const fareDayEnd = deleting ? '' : removeExcessWhiteSpace(req.body.fareDayEnd);
-
-        if (isValid24hrTimeFormat(fareDayEnd) || deleting) {
+        if (isValid24hrTimeFormat(fareDayEnd)) {
             const noc = getAndValidateNoc(req, res);
             await upsertFareDayEnd(noc, fareDayEnd);
 
