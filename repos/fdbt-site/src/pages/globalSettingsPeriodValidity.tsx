@@ -54,7 +54,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay: string | undefine
                 name: 'periodValid',
                 value: 'endOfServiceDay',
                 dataAriaControls: 'period-validity-end-of-service-required-conditional',
-                label: 'End of service day',
+                label: 'Fare day end',
                 radioButtonHint: {
                     id: 'period-end-of-service-hint',
                     content:
@@ -62,7 +62,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay: string | undefine
                 },
                 inputHint: {
                     id: 'product-end-time-hint',
-                    content: 'Enter an end time for your service day',
+                    content: 'You can update your fare day end in operator settings',
                     hidden: true,
                 },
                 inputType: 'text',
@@ -72,7 +72,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay: string | undefine
                         name: 'productEndTime',
                         label: 'End time',
                         disabled: true,
-                        defaultValue: errors.length > 0 && errors[0].userInput ? errors[0].userInput : endOfFareDay,
+                        defaultValue: endOfFareDay,
                     },
                 ],
                 inputErrors: getErrorsByIds(['product-end-time'], errors),

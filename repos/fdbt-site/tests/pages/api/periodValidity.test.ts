@@ -100,7 +100,7 @@ describe('periodValidity', () => {
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, errors);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/periodValidity',
+            Location: '/globalSettingsPeriodValidity',
         });
     });
 

@@ -3712,7 +3712,7 @@ export const mockGlobalSettingsPeriodValidityFieldset: RadioConditionalInputFiel
             name: 'periodValid',
             value: 'endOfServiceDay',
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
-            label: 'End of service day',
+            label: 'Fare day end',
             radioButtonHint: {
                 id: 'period-end-of-service-hint',
                 content:
@@ -3720,7 +3720,7 @@ export const mockGlobalSettingsPeriodValidityFieldset: RadioConditionalInputFiel
             },
             inputHint: {
                 id: 'product-end-time-hint',
-                content: 'Enter an end time for your service day',
+                content: 'You can update your fare day end in operator settings',
                 hidden: true,
             },
             inputType: 'text',
@@ -3834,7 +3834,7 @@ export const mockGlobalSettingsPeriodValidityFieldsetWithErrors: RadioConditiona
             name: 'periodValid',
             value: 'endOfServiceDay',
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
-            label: 'End of service day',
+            label: 'Fare day end',
             radioButtonHint: {
                 id: 'period-end-of-service-hint',
                 content:
@@ -3842,7 +3842,7 @@ export const mockGlobalSettingsPeriodValidityFieldsetWithErrors: RadioConditiona
             },
             inputHint: {
                 id: 'product-end-time-hint',
-                content: 'Enter an end time for your service day',
+                content: 'You can update your fare day end in operator settings',
                 hidden: true,
             },
             inputType: 'text',
@@ -3961,7 +3961,7 @@ export const mockGlobalSettingsPeriodValidityFieldsetWithInputErrors: RadioCondi
             name: 'periodValid',
             value: 'endOfServiceDay',
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
-            label: 'End of service day',
+            label: 'Fare day end',
             radioButtonHint: {
                 id: 'period-end-of-service-hint',
                 content:
@@ -3969,7 +3969,7 @@ export const mockGlobalSettingsPeriodValidityFieldsetWithInputErrors: RadioCondi
             },
             inputHint: {
                 id: 'product-end-time-hint',
-                content: 'Enter an end time for your service day',
+                content: 'You can update your fare day end in operator settings',
                 hidden: true,
             },
             inputType: 'text',

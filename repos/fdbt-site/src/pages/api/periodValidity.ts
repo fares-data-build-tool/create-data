@@ -25,7 +25,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         });
 
                         updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, errors);
-                        redirectTo(res, '/periodValidity');
+                        redirectTo(res, '/globalSettingsPeriodValidity');
 
                         return;
                     } else {
