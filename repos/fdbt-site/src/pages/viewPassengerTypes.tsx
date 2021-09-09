@@ -59,11 +59,11 @@ const ViewPassengerTypes = ({
     return (
         <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div className="govuk-grid-row" data-card-count={singlePassengerTypes.length + groupPassengerTypes.length}>
-                <div className="govuk-grid-column-one-third">
+                <div className="govuk-grid-column-one-quarter">
                     <SubNavigation />
                 </div>
 
-                <div className="govuk-grid-column-two-thirds">
+                <div className="govuk-grid-column-three-quarters">
                     <h1 className="govuk-heading-xl">Passenger types</h1>
                     <p className="govuk-body govuk-!-margin-bottom-8">
                         Define age range and required proof documents of your passengers as well as passenger groups

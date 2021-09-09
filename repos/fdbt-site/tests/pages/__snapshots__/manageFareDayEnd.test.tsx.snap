@@ -14,12 +14,12 @@ exports[`pages manage passenger types should render correctly 1`] = `
       className="govuk-grid-row"
     >
       <div
-        className="govuk-grid-column-one-third"
+        className="govuk-grid-column-one-quarter"
       >
         <SubNavigation />
       </div>
       <div
-        className="govuk-grid-column-two-thirds"
+        className="govuk-grid-column-three-quarters"
       >
         <ErrorSummary
           errors={Array []}
@@ -106,12 +106,12 @@ exports[`pages manage passenger types should render error state if error 1`] = `
       className="govuk-grid-row"
     >
       <div
-        className="govuk-grid-column-one-third"
+        className="govuk-grid-column-one-quarter"
       >
         <SubNavigation />
       </div>
       <div
-        className="govuk-grid-column-two-thirds"
+        className="govuk-grid-column-three-quarters"
       >
         <ErrorSummary
           errors={
@@ -219,12 +219,12 @@ exports[`pages manage passenger types should render popup if saved 1`] = `
       className="govuk-grid-row"
     >
       <div
-        className="govuk-grid-column-one-third"
+        className="govuk-grid-column-one-quarter"
       >
         <SubNavigation />
       </div>
       <div
-        className="govuk-grid-column-two-thirds"
+        className="govuk-grid-column-three-quarters"
       >
         <ErrorSummary
           errors={Array []}
