@@ -20,7 +20,7 @@ interface PeriodValidityProps {
     endOfFareDay?: string;
 }
 
-export const getFieldset = (errors: ErrorInfo[], endOfFareDay: string): RadioConditionalInputFieldset => {
+export const getFieldset = (errors: ErrorInfo[], endOfFareDay: string | undefined): RadioConditionalInputFieldset => {
     const periodValidityFieldSet: RadioConditionalInputFieldset = {
         heading: {
             id: 'period-validity',
@@ -130,14 +130,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     let errors: ErrorInfo[] = [];
     const csrfToken = getCsrfToken(ctx);
     const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
-    let endOfFareDay = await getFareDayEnd(getAndValidateNoc(ctx));
-    if (!endOfFareDay) {
-        endOfFareDay = '';
-    }
+    const endOfFareDay = await getFareDayEnd(getAndValidateNoc(ctx));
 
     if (periodExpiryAttribute && !isPeriodExpiry(periodExpiryAttribute)) {
         errors = periodExpiryAttribute;
     }
+
     const fieldset: RadioConditionalInputFieldset = getFieldset(errors, endOfFareDay);
 
     return { props: { errors, fieldset, csrfToken, endOfFareDay } };
