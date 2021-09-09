@@ -99,22 +99,26 @@ const PeriodValidity = ({ errors = [], fieldset, csrfToken, endOfFareDay }: Peri
                             <span className="govuk-hint" id="period-validity-hint">
                                 We need to know the time that this product would be valid until
                             </span>
-                            {errors.length > 0 && (
-                                <div className="govuk-warning-text">
-                                    <span className="govuk-warning-text__icon govuk-!-margin-top-1" aria-hidden="true">
-                                        !
-                                    </span>
-                                    <strong className="govuk-warning-text__text">
-                                        <span className="govuk-warning-text__assistive">Warning</span>
-                                        You can set your fare day end in{' '}
-                                        <a className="govuk-link" href="/manageFareDayEnd">
-                                            operator settings.
-                                        </a>{' '}
-                                        <br />
-                                        Don&apos;t worry you can navigate back to this page when you are finished.
-                                    </strong>
-                                </div>
-                            )}
+                            {errors.length > 0 &&
+                                errors.some((error) => error.errorMessage === 'No fare day end defined.') && (
+                                    <div className="govuk-warning-text">
+                                        <span
+                                            className="govuk-warning-text__icon govuk-!-margin-top-1"
+                                            aria-hidden="true"
+                                        >
+                                            !
+                                        </span>
+                                        <strong className="govuk-warning-text__text">
+                                            <span className="govuk-warning-text__assistive">Warning</span>
+                                            You can set your fare day end in{' '}
+                                            <a className="govuk-link" href="/manageFareDayEnd">
+                                                operator settings.
+                                            </a>{' '}
+                                            <br />
+                                            Don&apos;t worry you can navigate back to this page when you are finished.
+                                        </strong>
+                                    </div>
+                                )}
                             <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
                             <input type="hidden" name="endOfFareDay" value={endOfFareDay} />
                         </fieldset>

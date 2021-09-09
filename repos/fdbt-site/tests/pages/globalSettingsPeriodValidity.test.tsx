@@ -1,17 +1,19 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import PeriodValidity, { getFieldset } from '../../src/pages/periodValidity';
+import PeriodValidity, { getFieldset } from '../../src/pages/globalSettingsPeriodValidity';
 import {
-    mockPeriodValidityFieldset,
-    mockPeriodValidityFieldsetWithErrors,
-    mockPeriodValidityFieldsetWithInputErrors,
+    mockGlobalSettingsPeriodValidityFieldset,
+    mockGlobalSettingsPeriodValidityFieldsetWithErrors,
+    mockGlobalSettingsPeriodValidityFieldsetWithInputErrors,
 } from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('periodValidity', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PeriodValidity errors={[]} csrfToken="" fieldset={mockPeriodValidityFieldset} />);
+            const tree = shallow(
+                <PeriodValidity errors={[]} csrfToken="" fieldset={mockGlobalSettingsPeriodValidityFieldset} />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
@@ -25,7 +27,7 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
-                    fieldset={mockPeriodValidityFieldset}
+                    fieldset={mockGlobalSettingsPeriodValidityFieldset}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -34,8 +36,8 @@ describe('pages', () => {
         describe('getFieldset', () => {
             it('should return fieldsets with no errors when no errors are passed', () => {
                 const emptyErrors: ErrorInfo[] = [];
-                const fieldsets = getFieldset(emptyErrors);
-                expect(fieldsets).toEqual(mockPeriodValidityFieldset);
+                const fieldsets = getFieldset(emptyErrors, '');
+                expect(fieldsets).toEqual(mockGlobalSettingsPeriodValidityFieldset);
             });
 
             it('should return fieldsets with radio errors when radio errors are passed', () => {
@@ -45,8 +47,8 @@ describe('pages', () => {
                         id: 'period-end-calendar',
                     },
                 ];
-                const fieldsets = getFieldset(radioErrors);
-                expect(fieldsets).toEqual(mockPeriodValidityFieldsetWithErrors);
+                const fieldsets = getFieldset(radioErrors, '');
+                expect(fieldsets).toEqual(mockGlobalSettingsPeriodValidityFieldsetWithErrors);
             });
 
             it('should return fieldsets with input errors when input errors are passed', () => {
@@ -56,8 +58,8 @@ describe('pages', () => {
                         id: 'product-end-time',
                     },
                 ];
-                const fieldsets = getFieldset(inputErrors);
-                expect(fieldsets).toEqual(mockPeriodValidityFieldsetWithInputErrors);
+                const fieldsets = getFieldset(inputErrors, '');
+                expect(fieldsets).toEqual(mockGlobalSettingsPeriodValidityFieldsetWithInputErrors);
             });
         });
     });

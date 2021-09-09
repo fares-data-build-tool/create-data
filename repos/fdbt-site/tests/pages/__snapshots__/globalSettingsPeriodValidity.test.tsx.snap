@@ -80,6 +80,7 @@ exports[`pages periodValidity should render correctly 1`] = `
                   "inputs": Array [
                     Object {
                       "defaultValue": "",
+                      "disabled": true,
                       "id": "product-end-time",
                       "label": "End time",
                       "name": "productEndTime",
@@ -97,6 +98,10 @@ exports[`pages periodValidity should render correctly 1`] = `
             }
           }
           key="period-validity"
+        />
+        <input
+          name="endOfFareDay"
+          type="hidden"
         />
       </fieldset>
     </div>
@@ -204,6 +209,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
                   "inputs": Array [
                     Object {
                       "defaultValue": "",
+                      "disabled": true,
                       "id": "product-end-time",
                       "label": "End time",
                       "name": "productEndTime",
@@ -221,6 +227,10 @@ exports[`pages periodValidity should render error messaging when errors are pass
             }
           }
           key="period-validity"
+        />
+        <input
+          name="endOfFareDay"
+          type="hidden"
         />
       </fieldset>
     </div>

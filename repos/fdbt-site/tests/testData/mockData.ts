@@ -3672,6 +3672,64 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                     name: 'productEndTime',
                     label: 'End time',
                     defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [],
+};
+
+export const mockGlobalSettingsPeriodValidityFieldset: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'period-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'period-end-calendar',
+            name: 'periodValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'period-end-calendar-hint',
+                content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+            },
+        },
+        {
+            id: 'period-twenty-four-hours',
+            name: 'periodValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period from purchase',
+            radioButtonHint: {
+                id: 'period-twenty-four-hours-hint',
+                content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
+            },
+        },
+        {
+            id: 'period-end-of-service',
+            name: 'periodValid',
+            value: 'endOfServiceDay',
+            dataAriaControls: 'period-validity-end-of-service-required-conditional',
+            label: 'End of service day',
+            radioButtonHint: {
+                id: 'period-end-of-service-hint',
+                content:
+                    'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'Enter an end time for your service day',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
                     disabled: true,
                 },
             ],
@@ -3682,6 +3740,69 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
 };
 
 export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'period-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'period-end-calendar',
+            name: 'periodValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'period-end-calendar-hint',
+                content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+            },
+        },
+        {
+            id: 'period-twenty-four-hours',
+            name: 'periodValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period from purchase',
+            radioButtonHint: {
+                id: 'period-twenty-four-hours-hint',
+                content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
+            },
+        },
+        {
+            id: 'period-end-of-service',
+            name: 'periodValid',
+            value: 'endOfServiceDay',
+            dataAriaControls: 'period-validity-end-of-service-required-conditional',
+            label: 'End of service day',
+            radioButtonHint: {
+                id: 'period-end-of-service-hint',
+                content:
+                    'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'Enter an end time for your service day',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [
+        {
+            errorMessage: 'Choose one of the validity options',
+            id: 'period-end-calendar',
+        },
+    ],
+};
+
+export const mockGlobalSettingsPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'period-validity',
         content: expect.any(String),
@@ -3746,6 +3867,69 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
 };
 
 export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'period-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'period-end-calendar',
+            name: 'periodValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'period-end-calendar-hint',
+                content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+            },
+        },
+        {
+            id: 'period-twenty-four-hours',
+            name: 'periodValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period from purchase',
+            radioButtonHint: {
+                id: 'period-twenty-four-hours-hint',
+                content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
+            },
+        },
+        {
+            id: 'period-end-of-service',
+            name: 'periodValid',
+            value: 'endOfServiceDay',
+            dataAriaControls: 'period-validity-end-of-service-required-conditional',
+            label: 'End of service day',
+            radioButtonHint: {
+                id: 'period-end-of-service-hint',
+                content:
+                    'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'Enter an end time for your service day',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [
+                {
+                    errorMessage: 'Specify an end time for service day',
+                    id: 'product-end-time',
+                },
+            ],
+        },
+    ],
+    radioError: [],
+};
+
+export const mockGlobalSettingsPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'period-validity',
         content: expect.any(String),
