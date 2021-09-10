@@ -1,12 +1,12 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getAndValidateNoc } from './apiUtils';
+import { redirectTo, redirectToError, getAndValidateNoc } from '../../utils/apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession, SalesOfferPackage } from '../../interfaces';
 import { GS_PURCHASE_METHOD_ATTRIBUTE } from '../../constants/attributes';
 import { paymentMethodsList, purchaseLocationsList, ticketFormatsList } from '../managePurchaseMethod';
 import { toArray } from '../../utils';
 import { FromDb } from '../../../shared/matchingJsonTypes';
-import { removeExcessWhiteSpace } from './apiUtils/validator';
+import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { insertSalesOfferPackage, getSalesOfferPackagesByNocCode, updateSalesOfferPackage } from '../../data/auroradb';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {

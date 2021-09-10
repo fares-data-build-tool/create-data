@@ -10,7 +10,7 @@ import { GROUP_PASSENGER_TYPE, GROUP_REUSE_PASSENGER_TYPE, PASSENGER_TYPES_WITH_
 import { getPassengerTypeByNameAndNocCode } from '../../data/auroradb';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
+import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
 import { getPassengerTypeRedirectLocation } from './definePassengerType';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {

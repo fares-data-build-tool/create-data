@@ -13,7 +13,7 @@ import SubNavigation from '../layout/SubNavigation';
 import { globalSettingsEnabled } from '../constants/featureFlag';
 import { getAndValidateNoc } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 
 const title = 'Operator Settings - Create Fares Data Service';
 const description = 'View and access your settings in one place.';

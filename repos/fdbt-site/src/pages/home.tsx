@@ -5,7 +5,7 @@ import { BaseLayout } from '../layout/Layout';
 import { checkIfMultipleOperators } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';

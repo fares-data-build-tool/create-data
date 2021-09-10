@@ -16,7 +16,7 @@ import {
     invalidDurationTypeProducts,
     multipleProductsWithErrors,
 } from '../../testData/mockData';
-import * as apiUtils from '../../../src/pages/api/apiUtils';
+import * as apiUtils from '../../../src/utils/apiUtils';
 import {
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,

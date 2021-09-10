@@ -1,4 +1,4 @@
-import * as apiUtils from '../../../src/pages/api/apiUtils/index';
+import * as apiUtils from '../../../src/utils/apiUtils/index';
 import chooseStages, { isInvalidFareStageNumber } from '../../../src/pages/api/chooseStages';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { FARE_STAGES_ATTRIBUTE } from '../../../src/constants/attributes';

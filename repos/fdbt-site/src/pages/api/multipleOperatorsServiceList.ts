@@ -5,7 +5,7 @@ import {
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
 } from '../../constants/attributes';
-import { redirectTo, redirectToError } from './apiUtils';
+import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, MultiOperatorInfo, MultipleOperatorsAttribute } from '../../interfaces';
 import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';

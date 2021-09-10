@@ -3,7 +3,7 @@ import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import { USER_ATTRIBUTE } from '../constants/attributes';

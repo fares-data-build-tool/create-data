@@ -1,5 +1,5 @@
 /* eslint-disable no-multi-str */
-import { buildFeedbackContent } from '../../../../src/pages/api/apiUtils/feedbackEmailer';
+import { buildFeedbackContent } from '../../../../src/utils/apiUtils/feedbackEmailer';
 import { Feedback } from '../../../../src/interfaces';
 import {
     contactFeedbackQuestion,

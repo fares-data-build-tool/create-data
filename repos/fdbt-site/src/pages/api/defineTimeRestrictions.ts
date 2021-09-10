@@ -5,7 +5,7 @@ import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUT
 import { getTimeRestrictionByNameAndNoc, getFareDayEnd } from '../../data/auroradb';
 import { NextApiRequestWithSession, TimeRestriction, TimeRestrictionsDefinitionWithErrors } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
+import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {

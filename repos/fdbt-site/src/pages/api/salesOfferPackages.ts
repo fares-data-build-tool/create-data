@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError } from './apiUtils';
+import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import {
     ErrorInfo,

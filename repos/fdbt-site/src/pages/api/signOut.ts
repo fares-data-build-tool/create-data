@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { redirectToError, redirectTo, signOutUser, getAttributeFromIdToken } from './apiUtils';
+import { redirectToError, redirectTo, signOutUser, getAttributeFromIdToken } from '../../utils/apiUtils';
 import logger from '../../utils/logger';
 import { NextApiRequestWithSession } from '../../interfaces';
 

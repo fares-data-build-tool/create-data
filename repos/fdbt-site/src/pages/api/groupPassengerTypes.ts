@@ -2,7 +2,7 @@ import { isArray } from 'lodash';
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession, GroupPassengerTypesCollectionWithErrors } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { redirectToError, redirectTo } from './apiUtils/index';
+import { redirectToError, redirectTo } from '../../utils/apiUtils/index';
 import { GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../../constants/attributes';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {

@@ -15,7 +15,7 @@ import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 import { ticketFormatsList } from './salesOfferPackages';
 import { formatSOPArray } from './selectSalesOfferPackage';
 import { globalSettingsEnabled } from '../constants/featureFlag';

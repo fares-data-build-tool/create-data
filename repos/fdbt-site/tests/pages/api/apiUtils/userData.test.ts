@@ -42,7 +42,7 @@ import {
     getSchemeOperatorTicketJson,
     getSingleTicketJson,
     isTermTime,
-} from '../../../../src/pages/api/apiUtils/userData';
+} from '../../../../src/utils/apiUtils/userData';
 import {
     defaultSalesOfferPackageOne,
     defaultSalesOfferPackageThree,

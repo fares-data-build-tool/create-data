@@ -7,8 +7,8 @@ import {
     NextApiRequestWithSession,
 } from '../../interfaces';
 import { GROUP_SIZE_ATTRIBUTE } from '../../constants/attributes';
-import { removeAllWhiteSpace } from './apiUtils/validator';
-import { redirectToError, redirectTo } from './apiUtils';
+import { removeAllWhiteSpace } from '../../utils/apiUtils/validator';
+import { redirectToError, redirectTo } from '../../utils/apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 
 const wrongInputError = 'Enter a whole number between 1 and 30';

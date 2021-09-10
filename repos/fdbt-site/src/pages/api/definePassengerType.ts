@@ -26,8 +26,8 @@ import {
 } from '../../interfaces';
 import { isPassengerTypeAttributeWithErrors } from '../../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
-import { removeAllWhiteSpace, removeExcessWhiteSpace } from './apiUtils/validator';
+import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
+import { removeAllWhiteSpace, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 
 interface FilteredRequestBody {
     minNumber?: string;

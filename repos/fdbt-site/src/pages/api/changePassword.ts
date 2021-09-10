@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { redirectTo, redirectToError, getAttributeFromIdToken, validatePassword } from './apiUtils';
+import { redirectTo, redirectToError, getAttributeFromIdToken, validatePassword } from '../../utils/apiUtils';
 import { USER_ATTRIBUTE } from '../../constants/attributes';
 import { initiateAuth, updateUserPassword } from '../../data/cognito';
 import logger from '../../utils/logger';

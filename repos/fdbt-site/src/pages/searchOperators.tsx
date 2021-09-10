@@ -8,7 +8,7 @@ import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { getSearchOperatorsBySearchText } from '../data/auroradb';
 import { getCsrfToken } from '../utils';
-import { removeExcessWhiteSpace } from './api/apiUtils/validator';
+import { removeExcessWhiteSpace } from '../utils/apiUtils/validator';
 import { isSearchInputValid } from './api/searchOperators';
 import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
 

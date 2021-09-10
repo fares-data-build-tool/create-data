@@ -6,10 +6,10 @@ import {
     PeriodMultipleServicesTicket,
     TicketType,
     SchemeOperatorMultiServiceTicket,
-} from '../../../../shared/matchingJsonTypes';
-import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from '.';
+} from '../../../shared/matchingJsonTypes';
+import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from './index';
 
-import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants';
+import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../constants';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -31,9 +31,9 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
-} from '../../../constants/attributes';
-import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
-import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
+} from '../../constants/attributes';
+import { batchGetStopsByAtcoCode } from '../../data/auroradb';
+import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import {
     BaseProduct,
     BaseTicket,
@@ -61,8 +61,8 @@ import {
     Ticket,
     TicketPeriod,
     TicketPeriodWithInput,
-} from '../../../interfaces';
-import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
+} from '../../interfaces';
+import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import {
     isFareType,
     isPassengerType,
@@ -72,13 +72,13 @@ import {
     isTicketPeriodAttributeWithInput,
     isWithErrors,
     isTicketRepresentation,
-} from '../../../interfaces/typeGuards';
+} from '../../interfaces/typeGuards';
 
-import logger from '../../../utils/logger';
-import { getSessionAttribute } from '../../../utils/sessions';
-import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
-import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
-import { isServiceListAttributeWithErrors } from '../../serviceList';
+import logger from '../logger';
+import { getSessionAttribute } from '../sessions';
+import { isFareZoneAttributeWithErrors } from '../../pages/csvZoneUpload';
+import { isReturnPeriodValidityWithErrors } from '../../pages/returnValidity';
+import { isServiceListAttributeWithErrors } from '../../pages/serviceList';
 import { getFareZones } from './matching';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {

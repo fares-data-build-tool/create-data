@@ -23,7 +23,7 @@ import { isFareType } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { removeAllWhiteSpace } from './api/apiUtils/validator';
+import { removeAllWhiteSpace } from '../utils/apiUtils/validator';
 import { PurchaseMethodCardBody } from './viewPurchaseMethods';
 
 const pageTitle = 'Select Purchase Methods - Create Fares Data Service';

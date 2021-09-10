@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { GS_REFERER } from '../constants/attributes';
 import { NextPageContextWithSession } from '../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 
 const GlobalSettingsRedirect: FunctionComponent = () => null;
 

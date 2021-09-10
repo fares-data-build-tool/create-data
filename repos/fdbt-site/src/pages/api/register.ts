@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, checkEmailValid, validatePassword } from './apiUtils';
+import { redirectTo, redirectToError, checkEmailValid, validatePassword } from '../../utils/apiUtils';
 import { USER_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';

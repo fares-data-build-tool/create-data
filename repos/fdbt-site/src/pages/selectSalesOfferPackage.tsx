@@ -23,7 +23,7 @@ import { isFareType } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString, chunk } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { removeAllWhiteSpace } from './api/apiUtils/validator';
+import { removeAllWhiteSpace } from '../utils/apiUtils/validator';
 
 const pageTitle = 'Select Sales Offer Package - Create Fares Data Service';
 const pageDescription = 'Sales Offer Package selection page of the Create Fares Data Service';
