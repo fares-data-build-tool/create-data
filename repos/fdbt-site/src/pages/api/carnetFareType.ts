@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { redirectToError, redirectTo } from './apiUtils/index';
+import { redirectToError, redirectTo } from '../../utils/apiUtils/index';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';

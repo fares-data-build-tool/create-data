@@ -10,8 +10,8 @@ import {
 } from '../../data/auroradb';
 import { ErrorInfo, NextApiRequestWithSession, DbTimeRestriction, DbTimeBand } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils';
-import { isValid24hrTimeFormat, removeAllWhiteSpace, removeExcessWhiteSpace } from './apiUtils/validator';
+import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { isValid24hrTimeFormat, removeAllWhiteSpace, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { toArray } from '../../utils';
 
 export const collectInputsFromRequest = (

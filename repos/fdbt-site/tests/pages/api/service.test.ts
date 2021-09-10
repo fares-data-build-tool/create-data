@@ -1,6 +1,6 @@
 import service from '../../../src/pages/api/service';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import * as apiUtils from '../../../src/pages/api/apiUtils';
+import * as apiUtils from '../../../src/utils/apiUtils';
 
 afterEach(() => {
     jest.resetAllMocks();

@@ -2,9 +2,9 @@ import { NextApiResponse } from 'next';
 import uniqBy from 'lodash/uniqBy';
 import { ErrorInfo, NextApiRequestWithSession, Operator } from '../../interfaces';
 import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../constants/attributes';
-import { redirectTo, redirectToError } from './apiUtils';
+import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { removeExcessWhiteSpace } from './apiUtils/validator';
+import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { addOperatorsErrorId, removeOperatorsErrorId, searchInputId } from '../searchOperators';
 
 export const removeOperatorsFromPreviouslySelectedOperators = (

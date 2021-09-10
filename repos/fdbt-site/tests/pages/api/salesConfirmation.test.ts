@@ -12,8 +12,8 @@ import { SessionAttributeTypes } from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import salesConfirmation from '../../../src/pages/api/salesConfirmation';
 import * as session from '../../../src/utils/sessions';
-import * as userData from '../../../src/pages/api/apiUtils/userData';
-import * as index from '../../../src/pages/api/apiUtils/index';
+import * as userData from '../../../src/utils/apiUtils/userData';
+import * as index from '../../../src/utils/apiUtils/index';
 
 describe('salesOfferPackages', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');

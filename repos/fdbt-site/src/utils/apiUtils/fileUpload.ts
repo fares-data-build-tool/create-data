@@ -3,8 +3,8 @@ import formidable from 'formidable';
 import fs from 'fs';
 import { NextApiRequest } from 'next';
 import XLSX from 'xlsx';
-import { ALLOWED_CSV_FILE_TYPES, ALLOWED_XLSX_FILE_TYPES } from '../../../constants/index';
-import logger from '../../../utils/logger';
+import { ALLOWED_CSV_FILE_TYPES, ALLOWED_XLSX_FILE_TYPES } from '../../constants';
+import logger from '../logger';
 import { containsViruses } from './virusScan';
 
 interface FileData {

@@ -10,7 +10,7 @@ import {
 import { ErrorInfo, MultiProduct, MultiProductWithErrors, NextApiRequestWithSession } from '../../interfaces';
 import { isFareTypeAttributeWithErrors } from '../../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { redirectTo, redirectToError } from './apiUtils';
+import { redirectTo, redirectToError } from '../../utils/apiUtils';
 
 import {
     checkDurationIsValid,
@@ -18,7 +18,7 @@ import {
     checkPriceIsValid,
     checkProductNameIsValid,
     removeExcessWhiteSpace,
-} from './apiUtils/validator';
+} from '../../utils/apiUtils/validator';
 
 export const isValidInputDuration = (durationInput: string, carnet: boolean): boolean => {
     const allowedUnits = ['day', 'week', 'month', 'year', 'hour'];

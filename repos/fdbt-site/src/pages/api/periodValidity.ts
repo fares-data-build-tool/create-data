@@ -1,10 +1,10 @@
 import { NextApiResponse } from 'next';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../../constants/attributes';
-import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
+import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { ErrorInfo, NextApiRequestWithSession, PeriodExpiry } from '../../interfaces';
 import { getFareDayEnd } from '../../data/auroradb';
-import { isValid24hrTimeFormat } from './apiUtils/validator';
+import { isValid24hrTimeFormat } from '../../utils/apiUtils/validator';
 import { globalSettingsEnabled } from '../../constants/featureFlag';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {

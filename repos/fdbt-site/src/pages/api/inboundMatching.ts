@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
+import { redirectTo, redirectToError, getSelectedStages } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
-import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
+import { getMatchingFareZonesFromForm, isFareStageUnassigned } from '../../utils/apiUtils/matching';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,

@@ -7,10 +7,16 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { getUuidFromSession, redirectToError, redirectTo, getAndValidateNoc, isSchemeOperator } from './apiUtils';
+import {
+    getUuidFromSession,
+    redirectToError,
+    redirectTo,
+    getAndValidateNoc,
+    isSchemeOperator,
+} from '../../utils/apiUtils';
 import { putDataInS3 } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes, batchGetStopsByAtcoCode } from '../../data/auroradb';
-import { getFormData, processFileUpload } from './apiUtils/fileUpload';
+import { getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
 

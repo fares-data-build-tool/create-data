@@ -21,7 +21,7 @@ import {
     isSchemeOperator,
     redirectTo,
     redirectToError,
-} from './apiUtils';
+} from '../../utils/apiUtils';
 import {
     adjustSchemeOperatorJson,
     getGeoZoneTicketJson,
@@ -32,7 +32,7 @@ import {
     getSchemeOperatorTicketJson,
     getSingleTicketJson,
     putUserDataInS3,
-} from './apiUtils/userData';
+} from '../../utils/apiUtils/userData';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {

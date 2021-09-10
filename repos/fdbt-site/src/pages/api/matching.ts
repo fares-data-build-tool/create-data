@@ -1,9 +1,9 @@
 import { NextApiResponse } from 'next';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
-import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
+import { redirectTo, redirectToError, getSelectedStages } from '../../utils/apiUtils';
 import { BasicService, NextApiRequestWithSession, UserFareStages } from '../../interfaces';
 import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
-import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
+import { getMatchingFareZonesFromForm, isFareStageUnassigned } from '../../utils/apiUtils/matching';
 import { MatchingWithErrors, MatchingInfo } from '../../interfaces/matchingInterface';
 import { isFareType } from '../../interfaces/typeGuards';
 

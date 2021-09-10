@@ -13,7 +13,7 @@ import {
     isSchemeOperator,
     redirectOnSchoolFareType,
     getFareTypeFromFromAttributes,
-} from '../../../../src/pages/api/apiUtils';
+} from '../../../../src/utils/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse, mockSchemOpIdToken } from '../../../testData/mockData';
 import {

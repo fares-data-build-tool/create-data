@@ -12,7 +12,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo, NextPageContextWithSession, ServiceDB, RawService, TxcSourceAttribute } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { isFareType, isJourney, isService } from '../interfaces/typeGuards';

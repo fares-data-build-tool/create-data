@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { FORGOT_PASSWORD_ATTRIBUTE } from '../../constants/attributes';
-import { redirectTo, redirectToError, checkEmailValid } from './apiUtils';
+import { redirectTo, redirectToError, checkEmailValid } from '../../utils/apiUtils';
 import { forgotPassword } from '../../data/cognito';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession } from '../../interfaces';

@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { getAndValidateNoc, redirectToError, redirectTo, isSchemeOperator } from './apiUtils/index';
+import { getAndValidateNoc, redirectToError, redirectTo, isSchemeOperator } from '../../utils/apiUtils/index';
 import {
     NextApiRequestWithSession,
     MultipleOperatorsAttribute,
@@ -14,7 +14,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getOperatorGroupsByNameAndNoc, insertOperatorGroup } from '../../data/auroradb';
-import { removeExcessWhiteSpace } from './apiUtils/validator';
+import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {

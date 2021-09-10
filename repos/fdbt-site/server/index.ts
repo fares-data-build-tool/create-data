@@ -6,7 +6,7 @@ import setSecurityHeaders from './middleware/security';
 import setupLogging from './middleware/logging';
 import setupSessions from './middleware/sessions';
 import logger from '../src/utils/logger';
-import { redirectTo } from '../src/pages/api/apiUtils';
+import { redirectTo } from '../src/utils/apiUtils';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = nextjs({ dev });

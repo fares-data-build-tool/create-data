@@ -7,7 +7,7 @@ import {
     defaultSalesOfferPackageFour,
 } from '../selectSalesOfferPackage';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../constants/attributes';
-import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
+import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, ErrorInfo, SalesOfferPackage, SalesOfferPackageWithErrors } from '../../interfaces';
 import { isSalesOfferPackageWithErrors } from '../describeSalesOfferPackage';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';

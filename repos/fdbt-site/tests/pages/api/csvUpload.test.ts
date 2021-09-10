@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as csvUpload from '../../../src/pages/api/csvUpload';
-import * as fileUpload from '../../../src/pages/api/apiUtils/fileUpload';
-import * as virusCheck from '../../../src/pages/api/apiUtils/virusScan';
+import * as fileUpload from '../../../src/utils/apiUtils/fileUpload';
+import * as virusCheck from '../../../src/utils/apiUtils/virusScan';
 import * as csvData from '../../testData/csvFareTriangleData';
 import * as s3 from '../../../src/data/s3';
 import * as sessions from '../../../src/utils/sessions';

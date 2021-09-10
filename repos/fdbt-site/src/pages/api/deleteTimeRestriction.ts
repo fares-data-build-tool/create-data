@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { deleteTimeRestrictionByIdAndNocCode } from '../../data/auroradb';
-import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils/index';
+import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils/index';
 import { NextApiRequestWithSession } from '../../interfaces';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
