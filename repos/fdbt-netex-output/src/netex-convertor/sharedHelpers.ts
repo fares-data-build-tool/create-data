@@ -95,7 +95,7 @@ export const getProfileRef = (
 
 export const getUserProfile = (user: User | GroupCompanion, index: number): NetexObject => ({
     version: '1.0',
-    id: `op:${user.passengerType}-${index.toString()}`,
+    id: `op:${user.passengerType}-${index}`,
     Name: { $t: user.passengerType },
     TypeOfConcessionRef: {
         version: 'fxc:v1.0',
