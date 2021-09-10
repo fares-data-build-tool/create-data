@@ -710,16 +710,16 @@ export const getPeriodEligibilityElement = (userPeriodTicket: Ticket): NetexObje
               },
           ];
 
-    return users.map((user: GroupCompanion | User) => ({
+    return users.map((user: GroupCompanion | User, index) => ({
         version: '1.0',
-        id: `op:Tariff@eligibility@${user.passengerType}`,
+        id: `op:Tariff@eligibility@${user.passengerType}${users.length > 1 ? `-${index.toString()}` : ''}`,
         Name: { $t: 'Eligible user types' },
         TypeOfFareStructureElementRef: {
             version: 'fxc:v1.0',
             ref: 'fxc:eligibility',
         },
         GenericParameterAssignment: {
-            id: `op:Tariff@${user.passengerType}`,
+            id: `op:Tariff@${user.passengerType}-${index.toString()}`,
             version: '1.0',
             order: '0',
             TypeOfAccessRightAssignmentRef: {
@@ -728,7 +728,7 @@ export const getPeriodEligibilityElement = (userPeriodTicket: Ticket): NetexObje
             },
             LimitationGroupingType: { $t: 'XOR' },
             limitations: {
-                UserProfile: getUserProfile(user),
+                UserProfile: getUserProfile(user, index),
             },
         },
     }));

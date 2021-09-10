@@ -434,7 +434,9 @@ export const getEligibilityElement = (ticket: PointToPointTicket | PointToPointP
             },
             LimitationGroupingType: { $t: 'XOR' },
             limitations: {
-                UserProfile: users.map(getUserProfile),
+                UserProfile: users.map((user, index) => {
+                    return getUserProfile(user, index);
+                }),
             },
         },
     };

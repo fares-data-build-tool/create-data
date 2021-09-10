@@ -553,8 +553,8 @@
                             <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
                             <MaximumNumberOfPersons>2</MaximumNumberOfPersons>
                           </CompanionProfile>
-                          <CompanionProfile version="1.0" id="op:companion@child-1">
-                            <UserProfileRef version="1.0" ref="op:child-1"/>
+                          <CompanionProfile version="1.0" id="op:companion@adult-1">
+                            <UserProfileRef version="1.0" ref="op:adult-1"/>
                             <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
                             <MaximumNumberOfPersons>3</MaximumNumberOfPersons>
                           </CompanionProfile>
@@ -1916,12 +1916,12 @@
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                         <MinimumAge>18</MinimumAge>
                       </UserProfile>
-                      <UserProfile version="1.0" id="op:child-1">
-                        <Name>child</Name>
-                        <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+                      <UserProfile version="1.0" id="op:adult-1">
+                        <Name>adult</Name>
+                        <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                         <MinimumAge>5</MinimumAge>
                         <MaximumAge>17</MaximumAge>
-                        <ProofRequired>studentCard identityDocument</ProofRequired>
+                        <ProofRequired>identityDocument</ProofRequired>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>

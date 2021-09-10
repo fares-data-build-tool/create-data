@@ -171,11 +171,11 @@
                 <FareStructureElement version="1.0" id="op:Tariff@eligibility@anyone">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@anyone" version="1.0" order="0">
+                  <GenericParameterAssignment id="op:Tariff@anyone-0" version="1.0" order="0">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:anyone">
+                      <UserProfile version="1.0" id="op:anyone-0">
                         <Name>anyone</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                       </UserProfile>
@@ -278,7 +278,7 @@
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@test_anyone"/>
               </pricesFor>
               <limitations>
-                <UserProfileRef version="1.0" ref="op:anyone"/>
+                <UserProfileRef version="1.0" ref="op:anyone-0"/>
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:test@Onboard_(cash)@anyone">
@@ -298,7 +298,7 @@
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@test_anyone"/>
               </pricesFor>
               <limitations>
-                <UserProfileRef version="1.0" ref="op:anyone"/>
+                <UserProfileRef version="1.0" ref="op:anyone-0"/>
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:test@Onboard_(contactless)@anyone">
@@ -318,7 +318,7 @@
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@test_anyone"/>
               </pricesFor>
               <limitations>
-                <UserProfileRef version="1.0" ref="op:anyone"/>
+                <UserProfileRef version="1.0" ref="op:anyone-0"/>
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:test@Online_(smart_card)@anyone">

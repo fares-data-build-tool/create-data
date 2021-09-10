@@ -1889,7 +1889,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:adult">
+                      <UserProfile version="1.0" id="op:adult-0">
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                         <MinimumAge>18</MinimumAge>
@@ -2126,7 +2126,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Onboard_(cash)"/>
-                <UserProfileRef version="1.0" ref="op:adult"/>
+                <UserProfileRef version="1.0" ref="op:adult-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@Line_4"/>
@@ -3895,7 +3895,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Onboard_(contactless)"/>
-                <UserProfileRef version="1.0" ref="op:adult"/>
+                <UserProfileRef version="1.0" ref="op:adult-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@Line_4"/>
@@ -5664,7 +5664,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Online_(smart_card)"/>
-                <UserProfileRef version="1.0" ref="op:adult"/>
+                <UserProfileRef version="1.0" ref="op:adult-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@Line_4"/>
@@ -7433,7 +7433,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Mobile_App"/>
-                <UserProfileRef version="1.0" ref="op:adult"/>
+                <UserProfileRef version="1.0" ref="op:adult-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@Line_4"/>
@@ -9202,7 +9202,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@All_Encompassing"/>
-                <UserProfileRef version="1.0" ref="op:adult"/>
+                <UserProfileRef version="1.0" ref="op:adult-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@Line_4"/>

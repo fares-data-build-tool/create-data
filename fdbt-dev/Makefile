@@ -162,6 +162,11 @@ generate-scheme-carnet-multiple-services:
 
 generate-validate-scheme-carnet-multiple-services: generate-scheme-carnet-multiple-services validate-latest-file
 
+generate-single-group-multiple-adults:
+	./scripts/trigger_netex_convertor.sh singleGroupMultipleAdults
+
+generate-validate-single-group-multiple-adults: generate-single-group-multiple-adults validate-latest-file
+
 validate-netex:
 	./scripts/trigger_netex_validator.sh $(file)
 

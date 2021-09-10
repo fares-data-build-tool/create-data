@@ -185,11 +185,11 @@
                 <FareStructureElement version="1.0" id="op:Tariff@eligibility@senior">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@senior" version="1.0" order="0">
+                  <GenericParameterAssignment id="op:Tariff@senior-0" version="1.0" order="0">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:senior">
+                      <UserProfile version="1.0" id="op:senior-0">
                         <Name>senior</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
                         <MinimumAge>65</MinimumAge>
@@ -381,7 +381,7 @@
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
-                <UserProfileRef version="1.0" ref="op:senior"/>
+                <UserProfileRef version="1.0" ref="op:senior-0"/>
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(cash)@senior">
@@ -401,7 +401,7 @@
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
-                <UserProfileRef version="1.0" ref="op:senior"/>
+                <UserProfileRef version="1.0" ref="op:senior-0"/>
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(contactless)@senior">
@@ -421,7 +421,7 @@
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
-                <UserProfileRef version="1.0" ref="op:senior"/>
+                <UserProfileRef version="1.0" ref="op:senior-0"/>
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Online_(smart_card)@senior">
@@ -441,7 +441,7 @@
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
-                <UserProfileRef version="1.0" ref="op:senior"/>
+                <UserProfileRef version="1.0" ref="op:senior-0"/>
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Mobile_App@senior">
@@ -461,7 +461,7 @@
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
-                <UserProfileRef version="1.0" ref="op:senior"/>
+                <UserProfileRef version="1.0" ref="op:senior-0"/>
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@All_Encompassing@senior">
@@ -481,7 +481,7 @@
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
-                <UserProfileRef version="1.0" ref="op:senior"/>
+                <UserProfileRef version="1.0" ref="op:senior-0"/>
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@School_Service_Payment_Methods@senior">
