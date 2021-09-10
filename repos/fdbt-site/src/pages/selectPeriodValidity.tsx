@@ -71,7 +71,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioCo
                         name: 'productEndTime',
                         label: 'End time',
                         disabled: true,
-                        defaultValue: endOfFareDay,
+                        defaultValue: endOfFareDay ?? '',
                     },
                 ],
                 inputErrors: getErrorsByIds(['product-end-time'], errors),
