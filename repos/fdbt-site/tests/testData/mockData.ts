@@ -3680,7 +3680,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
     radioError: [],
 };
 
-export const mockselectPeriodValidityFieldset: RadioConditionalInputFieldset = {
+export const mockSelectPeriodValidityFieldset: RadioConditionalInputFieldset = {
     heading: {
         id: 'period-validity',
         content: expect.any(String),
@@ -3802,7 +3802,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
     ],
 };
 
-export const mockselectPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
+export const mockSelectPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'period-validity',
         content: expect.any(String),
@@ -3929,7 +3929,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
     radioError: [],
 };
 
-export const mockselectPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
+export const mockSelectPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'period-validity',
         content: expect.any(String),
