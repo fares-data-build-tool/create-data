@@ -9,6 +9,7 @@ import {
     isValidInputDuration,
     removeExcessWhiteSpace,
 } from './apiUtils/validator';
+import { globalSettingsEnabled } from '../../constants/featureFlag';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -62,7 +63,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         updateSessionAttribute(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE, pointToPointPeriodProduct);
-        redirectTo(res, '/periodValidity');
+
+        if (globalSettingsEnabled) {
+            redirectTo(res, '/selectPeriodValidity');
+        } else {
+            redirectTo(res, '/periodValidity');
+        }
     } catch (error) {
         const message = 'There was a problem processing the product details.';
         redirectToError(res, message, 'api.pointToPointPeriodProduct', error);

@@ -1,4 +1,4 @@
-import { clickElementById, clickElementByText, getHomePage } from './helpers';
+import { clickElementById, clickElementByText, getElementById, getHomePage } from './helpers';
 import { enterPassengerTypeDetails, addGroupPassengerType } from './passengerTypes';
 import { addPurchaseMethod } from './purchaseMethods';
 import { addTimeRestriction } from './timeRestrictions';
@@ -13,6 +13,8 @@ before(() => {
     addTestPurchaseMethods();
     clickElementByText('Time restrictions');
     addTestTimeRestrictions();
+    clickElementByText('Fare day end');
+    addTestFareDayEnd();
     cy.log('Global Settings set up for BLAC');
 
     getHomePage('scheme');
@@ -23,8 +25,14 @@ before(() => {
     addTestPurchaseMethods();
     clickElementByText('Time restrictions');
     addTestTimeRestrictions();
+    clickElementByText('Fare day end');
+    addTestFareDayEnd();
     cy.log('Global Settings set up for scheme');
 });
+
+const addTestFareDayEnd = (): void => {
+    clickElementById('fare-day-end-input').clear().type('2323');
+};
 
 const addTestPassengerTypes = (): void => {
     cy.get(`[data-card-count]`).then((element) => {

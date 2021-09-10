@@ -72,7 +72,7 @@ exports[`pages periodValidity should render correctly 1`] = `
                   "id": "period-end-of-service",
                   "inputErrors": Array [],
                   "inputHint": Object {
-                    "content": "Enter an end time for your service day",
+                    "content": "You can update your fare day end in operator settings",
                     "hidden": true,
                     "id": "product-end-time-hint",
                   },
@@ -80,12 +80,13 @@ exports[`pages periodValidity should render correctly 1`] = `
                   "inputs": Array [
                     Object {
                       "defaultValue": "",
+                      "disabled": true,
                       "id": "product-end-time",
                       "label": "End time",
                       "name": "productEndTime",
                     },
                   ],
-                  "label": "End of service day",
+                  "label": "Fare day end",
                   "name": "periodValid",
                   "radioButtonHint": Object {
                     "content": "For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry",
@@ -196,7 +197,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
                   "id": "period-end-of-service",
                   "inputErrors": Array [],
                   "inputHint": Object {
-                    "content": "Enter an end time for your service day",
+                    "content": "You can update your fare day end in operator settings",
                     "hidden": true,
                     "id": "product-end-time-hint",
                   },
@@ -204,12 +205,13 @@ exports[`pages periodValidity should render error messaging when errors are pass
                   "inputs": Array [
                     Object {
                       "defaultValue": "",
+                      "disabled": true,
                       "id": "product-end-time",
                       "label": "End time",
                       "name": "productEndTime",
                     },
                   ],
-                  "label": "End of service day",
+                  "label": "Fare day end",
                   "name": "periodValid",
                   "radioButtonHint": Object {
                     "content": "For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry",

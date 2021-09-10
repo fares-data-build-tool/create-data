@@ -695,7 +695,7 @@ describe('userData', () => {
                             },
                         ] as MultiProduct[],
                     },
-                    [PERIOD_EXPIRY_ATTRIBUTE]: { productValidity: 'endOfServiceDay', productEndTime: '1900' },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: { productValidity: 'fareDayEnd', productEndTime: '1900' },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',
@@ -1102,7 +1102,7 @@ describe('userData', () => {
                             },
                         ] as MultiProduct[],
                     },
-                    [PERIOD_EXPIRY_ATTRIBUTE]: { productValidity: 'endOfServiceDay', productEndTime: '1900' },
+                    [PERIOD_EXPIRY_ATTRIBUTE]: { productValidity: 'fareDayEnd', productEndTime: '1900' },
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',

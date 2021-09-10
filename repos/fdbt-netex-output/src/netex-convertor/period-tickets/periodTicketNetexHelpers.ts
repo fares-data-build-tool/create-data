@@ -748,7 +748,7 @@ export const getPeriodConditionsElement = (
                 UsageTrigger: { $t: 'purchase' },
                 UsageEnd: {
                     $t:
-                        product.productValidity === 'endOfCalendarDay' || product.productValidity === 'endOfServiceDay'
+                        product.productValidity === 'endOfCalendarDay' || product.productValidity === 'fareDayEnd'
                             ? 'endOfFareDay'
                             : 'standardDuration',
                 },

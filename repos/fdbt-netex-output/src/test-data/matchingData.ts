@@ -3779,7 +3779,7 @@ export const hybridPeriodTicket: HybridPeriodTicket = {
             productName: 'Best product one',
             productPrice: '22',
             productDuration: '3 months',
-            productValidity: 'endOfServiceDay',
+            productValidity: 'fareDayEnd',
             salesOfferPackages: [
                 {
                     name: 'Onboard (cash)',
@@ -3801,7 +3801,7 @@ export const hybridPeriodTicket: HybridPeriodTicket = {
             productName: 'Another great product',
             productPrice: '320',
             productDuration: '4 years',
-            productValidity: 'endOfServiceDay',
+            productValidity: 'fareDayEnd',
             salesOfferPackages: [
                 {
                     name: 'Onboard (cash)',

@@ -43,7 +43,7 @@
       "productName": "Week Rider",
       "productPrice": "2.99",
       "productDuration": "1 week",
-      "productValidity": "endOfServiceDay",
+      "productValidity": "fareDayEnd",
       "productEndTime": "1500",
       "salesOfferPackages": [
         {
@@ -88,7 +88,7 @@
       "productName": "Month Rider",
       "productPrice": "3.99",
       "productDuration": "1 month",
-      "productValidity": "endOfServiceDay",
+      "productValidity": "fareDayEnd",
       "productEndTime": "1500",
       "salesOfferPackages": [
         {
