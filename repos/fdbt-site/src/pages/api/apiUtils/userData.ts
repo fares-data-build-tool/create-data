@@ -1,3 +1,4 @@
+import { UNASSIGNED_STOPS_ATTRIBUTE } from './../../../constants/attributes';
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import { NextApiResponse } from 'next';
@@ -247,8 +248,9 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, 'single');
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const products = getPointToPointProducts(req);
+    const unassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
 
-    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo)) {
+    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo) || !unassignedStops) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
 
@@ -259,6 +261,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         ...service,
         type: 'single',
         fareZones: getFareZones(userFareStages, matchingFareZones),
+        unassignedStops,
         products,
         termTime: isTermTime(req),
         operatorName: service.operatorShortName,
@@ -281,11 +284,12 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const inboundMatchingAttributeInfo = getSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE);
     const returnPeriodValidity = getSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE);
     const products = getPointToPointProducts(req);
+    const unassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
 
     if (
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo) ||
-        isReturnPeriodValidityWithErrors(returnPeriodValidity)
+        isReturnPeriodValidityWithErrors(returnPeriodValidity) || !unassignedStops
     ) {
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
     }
@@ -305,6 +309,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
                   )
                 : [],
         ...(returnPeriodValidity && { returnPeriodValidity }),
+        unassignedStops,
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },

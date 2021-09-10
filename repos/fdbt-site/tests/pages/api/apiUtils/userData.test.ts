@@ -1,3 +1,4 @@
+import { UNASSIGNED_STOPS_ATTRIBUTE } from './../../../../src/constants/attributes';
 import { TicketType } from '../../../../shared/matchingJsonTypes';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
@@ -191,6 +192,19 @@ describe('userData', () => {
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [TERM_TIME_ATTRIBUTE]: { termTime: true },
                     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
+                    [UNASSIGNED_STOPS_ATTRIBUTE]: [
+                        {
+                            stopName: 'ABC',
+                            naptanCode: 'DEF',
+                            atcoCode: 'GHI',
+                            localityCode: 'JKL',
+                            localityName: 'MNO',
+                            parentLocalityName: 'PQR',
+                            qualifierName: 'STU',
+                            indicator: 'VWX',
+                            street: 'YZ!',
+                        },
+                    ],
                 },
             });
             const result = getSingleTicketJson(req, res);
@@ -229,6 +243,19 @@ describe('userData', () => {
                             expiryUnit: CarnetExpiryUnit.DAY,
                         },
                     },
+                    [UNASSIGNED_STOPS_ATTRIBUTE]: [
+                        {
+                            stopName: 'ABC',
+                            naptanCode: 'DEF',
+                            atcoCode: 'GHI',
+                            localityCode: 'JKL',
+                            localityName: 'MNO',
+                            parentLocalityName: 'PQR',
+                            qualifierName: 'STU',
+                            indicator: 'VWX',
+                            street: 'YZ!',
+                        },
+                    ],
                 },
             });
             const result = getSingleTicketJson(req, res);
@@ -265,6 +292,19 @@ describe('userData', () => {
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
+                    [UNASSIGNED_STOPS_ATTRIBUTE]: [
+                        {
+                            stopName: 'ABC',
+                            naptanCode: 'DEF',
+                            atcoCode: 'GHI',
+                            localityCode: 'JKL',
+                            localityName: 'MNO',
+                            parentLocalityName: 'PQR',
+                            qualifierName: 'STU',
+                            indicator: 'VWX',
+                            street: 'YZ!',
+                        },
+                    ],
                 },
             });
             const result = getReturnTicketJson(req, res);
@@ -296,6 +336,19 @@ describe('userData', () => {
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
+                    [UNASSIGNED_STOPS_ATTRIBUTE]: [
+                        {
+                            stopName: 'ABC',
+                            naptanCode: 'DEF',
+                            atcoCode: 'GHI',
+                            localityCode: 'JKL',
+                            localityName: 'MNO',
+                            parentLocalityName: 'PQR',
+                            qualifierName: 'STU',
+                            indicator: 'VWX',
+                            street: 'YZ!',
+                        },
+                    ],
                 },
             });
             const result = getReturnTicketJson(req, res);
@@ -337,6 +390,19 @@ describe('userData', () => {
                             expiryUnit: CarnetExpiryUnit.NO_EXPIRY,
                         },
                     },
+                    [UNASSIGNED_STOPS_ATTRIBUTE]: [
+                        {
+                            stopName: 'ABC',
+                            naptanCode: 'DEF',
+                            atcoCode: 'GHI',
+                            localityCode: 'JKL',
+                            localityName: 'MNO',
+                            parentLocalityName: 'PQR',
+                            qualifierName: 'STU',
+                            indicator: 'VWX',
+                            street: 'YZ!',
+                        },
+                    ],
                 },
             });
             const result = getReturnTicketJson(req, res);
@@ -386,6 +452,19 @@ describe('userData', () => {
                         productValidity: '24hr',
                         productEndTime: '',
                     },
+                    [UNASSIGNED_STOPS_ATTRIBUTE]: [
+                        {
+                            stopName: 'ABC',
+                            naptanCode: 'DEF',
+                            atcoCode: 'GHI',
+                            localityCode: 'JKL',
+                            localityName: 'MNO',
+                            parentLocalityName: 'PQR',
+                            qualifierName: 'STU',
+                            indicator: 'VWX',
+                            street: 'YZ!',
+                        },
+                    ],
                 },
             });
             const result = getPointToPointPeriodJson(req, res);

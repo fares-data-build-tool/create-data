@@ -23,13 +23,24 @@ export const getFareZones = (
         });
 };
 
-export const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones => {
+export const getMatchingFareZonesAndUnassignedStopsFromForm = (
+    req: NextApiRequest,
+): { matchingFareZones: MatchingFareZones; unassignedStops: Stop[] } => {
     const matchingFareZones: MatchingFareZones = {};
     const bodyValues: string[] = Object.values(req.body);
+    const unassignedStops: Stop[] = [];
 
     bodyValues.forEach((stopSelection: string) => {
         const stageName = stopSelection[0];
-        if (stageName && typeof stageName === 'string' && isArray(stopSelection)) {
+
+        if (isArray(stopSelection) && stageName === 'notApplicable') {
+            unassignedStops.push(JSON.parse(stopSelection[1]));
+        } else if (!isArray(stopSelection)) {
+            const item = JSON.parse(stopSelection);
+            if ('naptanCode' in item) {
+                unassignedStops.push(item);
+            }
+        } else if (stageName && typeof stageName === 'string' && isArray(stopSelection)) {
             const stop = JSON.parse(stopSelection[1]);
 
             if (matchingFareZones[stageName]) {
@@ -44,7 +55,7 @@ export const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZ
         }
     });
 
-    return matchingFareZones;
+    return { matchingFareZones, unassignedStops };
 };
 
 export const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>

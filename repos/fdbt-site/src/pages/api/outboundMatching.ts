@@ -1,8 +1,8 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
-import { MATCHING_ATTRIBUTE } from '../../constants/attributes';
+import { MATCHING_ATTRIBUTE, UNASSIGNED_STOPS_ATTRIBUTE } from '../../constants/attributes';
 import { MatchingFareZones, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
-import { getFareZones, getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
+import { getFareZones, getMatchingFareZonesAndUnassignedStopsFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, BasicService, UserFareStages } from '../../interfaces';
 
@@ -15,7 +15,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const service: BasicService = JSON.parse(req.body.service);
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
-        const matchingFareZones = getMatchingFareZonesFromForm(req);
+        const parsedInputs = getMatchingFareZonesAndUnassignedStopsFromForm(req);
+        const { matchingFareZones, unassignedStops } = parsedInputs;
 
         // Deleting these keys from the object in order to facilitate looping through the fare stage values in the body
         delete req.body.service;
@@ -61,6 +62,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             matchingFareZones: matchedFareZones,
         };
 
+        updateSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE, unassignedStops);
         updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingValues);
         redirectTo(res, '/inboundMatching');
     } catch (error) {
