@@ -406,11 +406,11 @@
                 <FareStructureElement version="1.0" id="op:Tariff@eligibility@youngPerson">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@youngPerson" version="1.0" order="0">
+                  <GenericParameterAssignment id="op:Tariff@youngPerson-0" version="1.0" order="0">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:youngPerson">
+                      <UserProfile version="1.0" id="op:youngPerson-0">
                         <Name>youngPerson</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:young_person"/>
                         <MinimumAge>16</MinimumAge>
@@ -695,7 +695,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Test_Product_1@Online_(smart_card)@youngPerson@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
+                            <UserProfileRef version="1.0" ref="op:youngPerson-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Test_Product_1@Online_(smart_card)@service">
@@ -726,7 +726,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Test_Product_1@Mobile_App@youngPerson@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
+                            <UserProfileRef version="1.0" ref="op:youngPerson-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Test_Product_1@Mobile_App@service">
@@ -757,7 +757,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Test_Product_2@Onboard_(cash)@youngPerson@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
+                            <UserProfileRef version="1.0" ref="op:youngPerson-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Test_Product_2@Onboard_(cash)@service">
@@ -788,7 +788,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Test_Product_2@Onboard_(contactless)@youngPerson@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
+                            <UserProfileRef version="1.0" ref="op:youngPerson-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Test_Product_2@Onboard_(contactless)@service">
@@ -819,7 +819,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Test_Product_3@Onboard_(cash)@youngPerson@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
+                            <UserProfileRef version="1.0" ref="op:youngPerson-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Test_Product_3@Onboard_(cash)@service">
@@ -850,7 +850,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Test_Product_3@Onboard_(contactless)@youngPerson@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
+                            <UserProfileRef version="1.0" ref="op:youngPerson-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Test_Product_3@Onboard_(contactless)@service">
@@ -881,7 +881,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Test_Product_3@Online_(smart_card)@youngPerson@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
+                            <UserProfileRef version="1.0" ref="op:youngPerson-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Test_Product_3@Online_(smart_card)@service">
@@ -912,7 +912,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Test_Product_3@Mobile_App@youngPerson@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
+                            <UserProfileRef version="1.0" ref="op:youngPerson-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Test_Product_3@Mobile_App@service">
@@ -943,7 +943,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Test_Product_3@All_Encompassing@youngPerson@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:youngPerson"/>
+                            <UserProfileRef version="1.0" ref="op:youngPerson-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Test_Product_3@All_Encompassing@service">
