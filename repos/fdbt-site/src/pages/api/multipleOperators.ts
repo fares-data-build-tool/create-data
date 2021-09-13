@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { redirectToError, redirectTo } from './apiUtils';
+import { redirectToError, redirectTo } from '../../utils/apiUtils';
 import { OPERATOR_ATTRIBUTE } from '../../constants/attributes';
 import { updateSessionAttribute, regenerateSession } from '../../utils/sessions';
 import { globalSettingsEnabled } from '../../constants/featureFlag';

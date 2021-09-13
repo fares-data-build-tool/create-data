@@ -195,7 +195,9 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
             <p
               className="govuk-body"
             >
-              You currently have no saved groups
+              <em>
+                You currently have no saved groups
+              </em>
             </p>
           </div>
         </div>

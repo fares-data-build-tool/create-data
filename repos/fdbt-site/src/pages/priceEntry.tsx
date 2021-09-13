@@ -7,7 +7,7 @@ import CsrfForm from '../components/CsrfForm';
 import { ErrorInfo, NextPageContextWithSession, FaresInformation } from '../interfaces';
 import { isInputCheck } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
-import { removeAllWhiteSpace } from './api/apiUtils/validator';
+import { removeAllWhiteSpace } from '../utils/apiUtils/validator';
 
 const title = 'Price Entry - Create Fares Data Service';
 const description = 'Price Entry page of the Create Fares Data Service';

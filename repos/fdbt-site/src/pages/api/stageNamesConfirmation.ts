@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession } from '../../interfaces/index';
-import { redirectTo, redirectToError } from './apiUtils';
+import { redirectTo, redirectToError } from '../../utils/apiUtils';
 
 export default (_req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {

@@ -1,5 +1,5 @@
 import fareConfirmation from '../../../src/pages/api/fareConfirmation';
-import * as apiUtils from '../../../src/pages/api/apiUtils';
+import * as apiUtils from '../../../src/utils/apiUtils';
 import { getMockRequestAndResponse, mockSchemOpIdToken } from '../../testData/mockData';
 import { OPERATOR_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
 

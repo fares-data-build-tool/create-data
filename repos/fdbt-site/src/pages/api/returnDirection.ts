@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { getUuidFromSession, redirectTo, redirectToError } from './apiUtils/index';
+import { getUuidFromSession, redirectTo, redirectToError } from '../../utils/apiUtils/index';
 import { JOURNEY_ATTRIBUTE } from '../../constants/attributes';
 import { inboundErrorId, outboundErrorId } from '../returnDirection';
 import { updateSessionAttribute } from '../../utils/sessions';

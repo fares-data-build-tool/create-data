@@ -8,7 +8,7 @@ import {
 import { convertToFullPassengerType, getGroupPassengerTypeById, getPassengerTypeById } from '../../data/auroradb';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { redirectTo, redirectToError, getAndValidateNoc } from './apiUtils/index';
+import { redirectTo, redirectToError, getAndValidateNoc } from '../../utils/apiUtils/index';
 import { getPassengerTypeRedirectLocation } from './definePassengerType';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {

@@ -59,11 +59,11 @@ const ViewPassengerTypes = ({
     return (
         <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div className="govuk-grid-row" data-card-count={singlePassengerTypes.length + groupPassengerTypes.length}>
-                <div className="govuk-grid-column-one-third">
+                <div className="govuk-grid-column-one-quarter">
                     <SubNavigation />
                 </div>
 
-                <div className="govuk-grid-column-two-thirds">
+                <div className="govuk-grid-column-three-quarters">
                     <h1 className="govuk-heading-xl">Passenger types</h1>
                     <p className="govuk-body govuk-!-margin-bottom-8">
                         Define age range and required proof documents of your passengers as well as passenger groups
@@ -132,7 +132,9 @@ const NoIndividualPassengerTypes = (): ReactElement => {
     return (
         <>
             <h2 className="govuk-heading-l">Individual</h2>
-            <p className="govuk-body">You currently have no passenger types saved.</p>
+            <p className="govuk-body">
+                <em>You currently have no passenger types saved.</em>
+            </p>
         </>
     );
 };
@@ -172,7 +174,9 @@ const NoPassengerTypeGroups = (): ReactElement => {
                 Individual passengers must be created before they can be added to a group.
             </div>
 
-            <p className="govuk-body">You currently have no passenger groups saved.</p>
+            <p className="govuk-body">
+                <em>You currently have no passenger groups saved.</em>
+            </p>
         </>
     );
 };

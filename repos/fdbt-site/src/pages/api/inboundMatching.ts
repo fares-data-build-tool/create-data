@@ -1,8 +1,8 @@
 import { UNASSIGNED_INBOUND_STOPS_ATTRIBUTE } from './../../constants/attributes';
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
+import { redirectTo, redirectToError, getSelectedStages } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
-import { getMatchingFareZonesAndUnassignedStopsFromForm, isFareStageUnassigned } from './apiUtils/matching';
+import { getMatchingFareZonesAndUnassignedStopsFromForm, isFareStageUnassigned } from '../../utils/apiUtils/matching';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,

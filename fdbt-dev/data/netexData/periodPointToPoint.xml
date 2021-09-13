@@ -1106,7 +1106,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:anyone">
+                      <UserProfile version="1.0" id="op:anyone-0">
                         <Name>anyone</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                       </UserProfile>
@@ -1236,7 +1236,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@period_anyone"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-SOP@Onboard_(cash)"/>
-                <UserProfileRef version="1.0" ref="op:anyone"/>
+                <UserProfileRef version="1.0" ref="op:anyone-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@period@YpQjUw"/>
@@ -1305,7 +1305,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@period_anyone"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-SOP@Onboard_(contactless)"/>
-                <UserProfileRef version="1.0" ref="op:anyone"/>
+                <UserProfileRef version="1.0" ref="op:anyone-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@period@YpQjUw"/>

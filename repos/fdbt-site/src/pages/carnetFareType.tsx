@@ -7,7 +7,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import RadioButtons from '../components/RadioButtons';
 import { getSessionAttribute } from '../utils/sessions';
 import { CARNET_FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 import { isSchemeOperator, getCsrfToken } from '../utils';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 

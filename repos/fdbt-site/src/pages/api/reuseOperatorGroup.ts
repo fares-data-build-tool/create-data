@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { getAndValidateNoc, isSchemeOperator, redirectTo, redirectToError } from './apiUtils/index';
+import { getAndValidateNoc, isSchemeOperator, redirectTo, redirectToError } from '../../utils/apiUtils/index';
 import { getOperatorGroupsByNameAndNoc } from '../../data/auroradb';
 import {
     FARE_TYPE_ATTRIBUTE,

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 import { GlobalSettingsViewPage } from '../components/GlobalSettingsViewPage';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
-import { NextPageContextWithSession, PremadeTimeRestriction, TimeBand } from '../interfaces';
+import { NextPageContextWithSession, PremadeTimeRestriction, DbTimeBand } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 
@@ -25,12 +25,13 @@ interface TimeRestrictionProps {
     referer: string | null;
 }
 
-const formatTime = (time: string): string => (time ? `${time.substring(0, 2)}:${time.substring(2, 4)}` : '');
+const formatTime = (time: string | object): string =>
+    typeof time === 'object' ? 'Fare day end' : time ? `${time.substring(0, 2)}:${time.substring(2, 4)}` : '';
 
-const formatTimeBand = (timeBand: TimeBand): string =>
+const formatTimeBand = (timeBand: DbTimeBand): string =>
     `${formatTime(timeBand.startTime)}–${formatTime(timeBand.endTime)}`;
 
-const formatTimeBands = (timeBands: TimeBand[]): string =>
+const formatTimeBands = (timeBands: DbTimeBand[]): string =>
     timeBands.length > 0 ? timeBands.map((timeBand) => formatTimeBand(timeBand)).join(', ') : 'Valid all day';
 
 const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: string): JSX.Element => {

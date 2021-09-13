@@ -12,8 +12,9 @@ import { getMockRequestAndResponse, mockIdTokenMultiple } from '../../testData/m
 describe('defineTimeRestrictions', () => {
     const writeHeadMock = jest.fn();
 
-    afterEach(() => {
+    beforeEach(() => {
         jest.resetAllMocks();
+        jest.spyOn(auroradb, 'getFareDayEnd').mockResolvedValue('0440');
     });
 
     it('should set the TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE and redirect to fare confirmation when no errors are found', async () => {
@@ -108,6 +109,62 @@ describe('defineTimeRestrictions', () => {
                         },
                     ],
                 },
+            ],
+            errors: [],
+        });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/fareConfirmation',
+        });
+
+        expect(getTimeRestrictionByNameAndNocSpy).toBeCalledWith('My time restriction', 'HELLO');
+    });
+
+    it('should populate endTimes with fareDayEnd selected', async () => {
+        const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+        const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
+        getTimeRestrictionByNameAndNocSpy.mockImplementation().mockResolvedValue([
+            {
+                id: 1,
+                name: 'My time restriction',
+                contents: [
+                    {
+                        day: 'monday',
+                        timeBands: [
+                            { startTime: '1000', endTime: '1100' },
+                            { startTime: '1400', endTime: { fareDayEnd: true } },
+                        ],
+                    },
+                    { day: 'friday', timeBands: [{ startTime: '1400', endTime: { fareDayEnd: true } }] },
+                    { day: 'bankHoliday', timeBands: [{ startTime: '1400', endTime: '1600' }] },
+                ],
+            },
+        ]);
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                timeRestrictionChoice: 'Premade',
+                timeRestriction: 'My time restriction',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            cookieValues: {
+                idToken: mockIdTokenMultiple,
+            },
+            session: {
+                [OPERATOR_ATTRIBUTE]: { name: 'test', nocCode: 'HELLO', uuid: 'blah' },
+            },
+        });
+        await defineTimeRestrictions(req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
+            fullTimeRestrictions: [
+                {
+                    day: 'monday',
+                    timeBands: [
+                        { startTime: '1000', endTime: '1100' },
+                        { startTime: '1400', endTime: '0440' },
+                    ],
+                },
+                { day: 'friday', timeBands: [{ startTime: '1400', endTime: '0440' }] },
+                { day: 'bankHoliday', timeBands: [{ startTime: '1400', endTime: '1600' }] },
             ],
             errors: [],
         });

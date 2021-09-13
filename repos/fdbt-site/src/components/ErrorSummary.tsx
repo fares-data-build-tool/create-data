@@ -1,11 +1,11 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, PropsWithChildren } from 'react';
 import { ErrorInfo } from '../interfaces';
 
 interface ErrorSummary {
     errors: ErrorInfo[];
 }
 
-const ErrorSummary = ({ errors }: ErrorSummary): null | ReactElement => {
+const ErrorSummary = ({ errors, children }: PropsWithChildren<ErrorSummary>): null | ReactElement => {
     if (!errors || errors.length === 0) {
         return null;
     }
@@ -30,6 +30,7 @@ const ErrorSummary = ({ errors }: ErrorSummary): null | ReactElement => {
                     ))}
                 </ul>
             </div>
+            {children}
         </div>
     );
 };

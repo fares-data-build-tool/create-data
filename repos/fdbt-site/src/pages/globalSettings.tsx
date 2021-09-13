@@ -13,7 +13,7 @@ import SubNavigation from '../layout/SubNavigation';
 import { globalSettingsEnabled } from '../constants/featureFlag';
 import { getAndValidateNoc } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 
 const title = 'Operator Settings - Create Fares Data Service';
 const description = 'View and access your settings in one place.';
@@ -33,7 +33,7 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                     </div>
 
                     <div className="govuk-grid-column-three-quarters">
-                        <h1 className="govuk-heading-m">Settings overview</h1>
+                        <h1 className="govuk-heading-xl">Settings overview</h1>
                         <p className="govuk-body-m">
                             Operators may customise the following definitions relevant to their fares or choose to use
                             default settings.

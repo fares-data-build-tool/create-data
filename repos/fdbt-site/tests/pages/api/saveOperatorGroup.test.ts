@@ -8,7 +8,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import saveOperatorGroup from '../../../src/pages/api/saveOperatorGroup';
 import * as auroradb from '../../../src/data/auroradb';
-import * as index from '../../../src/pages/api/apiUtils/index';
+import * as index from '../../../src/utils/apiUtils/index';
 
 describe('saveOperatorGroup', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');

@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
-import { redirectToError, redirectTo } from './apiUtils/index';
+import { redirectToError, redirectTo } from '../../utils/apiUtils/index';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { RETURN_VALIDITY_ATTRIBUTE } from '../../constants/attributes';

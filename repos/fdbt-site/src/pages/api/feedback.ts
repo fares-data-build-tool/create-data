@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
-import { setFeedbackMailOptions, createMailTransporter } from './apiUtils/feedbackEmailer';
-import { removeExcessWhiteSpace } from './apiUtils/validator';
-import { redirectToError, redirectTo, getNocFromIdToken } from './apiUtils/index';
+import { setFeedbackMailOptions, createMailTransporter } from '../../utils/apiUtils/feedbackEmailer';
+import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
+import { redirectToError, redirectTo, getNocFromIdToken } from '../../utils/apiUtils/index';
 import { NextApiRequestWithSession, Feedback } from '../../interfaces';
 import {
     contactFeedbackQuestion,

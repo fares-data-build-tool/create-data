@@ -6,11 +6,11 @@ import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../../../src/constants/attributes
 
 const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
 const getTimeRestrictionByNameAndNocSpy = jest.spyOn(aurora, 'getTimeRestrictionByNameAndNoc');
-const insertTimeRestrictionSpy = jest.spyOn(aurora, 'insertTimeRestriction');
-insertTimeRestrictionSpy.mockResolvedValue();
+const insertTimeRestrictionSpy = jest.spyOn(aurora, 'insertTimeRestriction').mockResolvedValue();
 
-afterEach(() => {
+beforeEach(() => {
     jest.resetAllMocks();
+    jest.spyOn(aurora, 'getFareDayEnd').mockResolvedValue('1234');
 });
 
 describe('manageTimeRestriction', () => {
@@ -229,5 +229,57 @@ describe('manageTimeRestriction', () => {
             ],
             'test',
         );
+    });
+
+    it('should handle fare day end for time restrictions ', async () => {
+        const writeHeadMock = jest.fn();
+        getTimeRestrictionByNameAndNocSpy.mockResolvedValueOnce([]);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                timeRestrictionDays: ['monday', 'tuesday', 'wednesday', 'bankHoliday'],
+                startTimemonday: '0600',
+                endTimemonday: '2200',
+                startTimetuesday: ['0600', '1300'],
+                endTimetuesday: ['1200'],
+                fareDayEndtuesday: 'on',
+                startTimewednesday: '0600',
+                fareDayEndwednesday: 'on',
+                startTimethursday: '',
+                endTimethursday: '',
+                startTimefriday: '',
+                endTimefriday: '',
+                startTimesaturday: '',
+                endTimesaturday: '',
+                startTimesunday: '',
+                endTimesunday: '',
+                startTimebankHoliday: '',
+                endTimebankHoliday: '',
+                timeRestrictionName: 'test',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await manageTimeRestriction(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_TIME_RESTRICTION_ATTRIBUTE, undefined);
+        expect(insertTimeRestrictionSpy).toBeCalledWith(
+            'TEST',
+            [
+                { day: 'monday', timeBands: [{ startTime: '0600', endTime: '2200' }] },
+                {
+                    day: 'tuesday',
+                    timeBands: [
+                        { startTime: '0600', endTime: '1200' },
+                        { startTime: '1300', endTime: { fareDayEnd: true } },
+                    ],
+                },
+                { day: 'wednesday', timeBands: [{ startTime: '0600', endTime: { fareDayEnd: true } }] },
+                { day: 'bankHoliday', timeBands: [] },
+            ],
+            'test',
+        );
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/viewTimeRestrictions',
+        });
     });
 });

@@ -1,12 +1,12 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
+import { redirectTo, redirectToError, getSelectedStages } from '../../utils/apiUtils';
 import { MATCHING_ATTRIBUTE, UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE } from '../../constants/attributes';
 import { MatchingFareZones, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import {
     getFareZones,
     getMatchingFareZonesAndUnassignedStopsFromForm,
     isFareStageUnassigned,
-} from './apiUtils/matching';
+} from '../../utils/apiUtils/matching';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, BasicService, UserFareStages } from '../../interfaces';
 

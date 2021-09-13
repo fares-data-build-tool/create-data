@@ -2,43 +2,46 @@ import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
 import { TimeRestrictionDay } from 'shared/matchingJsonTypes';
 import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../../constants/attributes';
-import { getTimeRestrictionByNameAndNoc, insertTimeRestriction, updateTimeRestriction } from '../../data/auroradb';
-import { ErrorInfo, FullTimeRestriction, NextApiRequestWithSession, TimeBand } from '../../interfaces';
+import {
+    getTimeRestrictionByNameAndNoc,
+    insertTimeRestriction,
+    updateTimeRestriction,
+    getFareDayEnd,
+} from '../../data/auroradb';
+import { ErrorInfo, NextApiRequestWithSession, DbTimeRestriction, DbTimeBand } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils';
-import { isValid24hrTimeFormat, removeAllWhiteSpace, removeExcessWhiteSpace } from './apiUtils/validator';
+import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { isValid24hrTimeFormat, removeAllWhiteSpace, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
+import { toArray } from '../../utils';
 
 export const collectInputsFromRequest = (
     req: NextApiRequestWithSession,
     timeRestrictionDays: TimeRestrictionDay[],
-): FullTimeRestriction[] =>
+): DbTimeRestriction[] =>
     timeRestrictionDays.map((day) => {
-        const startTimeInputs = req.body[`startTime${day}`];
-        const endTimeInputs = req.body[`endTime${day}`];
-        if (isArray(startTimeInputs) && isArray(endTimeInputs)) {
-            const timeBands = startTimeInputs.map((startTime, index) => ({
-                startTime: removeAllWhiteSpace(startTime),
-                endTime: removeAllWhiteSpace(endTimeInputs[index]),
-            }));
+        const startTimeInputs = toArray(req.body[`startTime${day}`]);
+        const endTimeInputs = toArray(req.body[`endTime${day}`]);
+        const fareDayEnd = !!req.body[`fareDayEnd${day}`];
 
-            return {
-                day,
-                timeBands,
-            };
-        } else {
-            return {
-                day,
-                timeBands: [
-                    {
-                        startTime: removeAllWhiteSpace(startTimeInputs),
-                        endTime: removeAllWhiteSpace(endTimeInputs),
-                    },
-                ],
-            };
-        }
+        const timeBands = startTimeInputs.map((startTime, index) => ({
+            startTime: removeAllWhiteSpace(startTime),
+            endTime:
+                fareDayEnd && index === startTimeInputs.length - 1
+                    ? { fareDayEnd: true }
+                    : removeAllWhiteSpace(endTimeInputs[index]),
+        }));
+
+        return {
+            day,
+            timeBands,
+        };
     });
 
-export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTimeRestriction[]): ErrorInfo[] => {
+export const collectErrors = (
+    refinedName: string,
+    fullTimeRestrictions: DbTimeRestriction[],
+    fareDayEnd: string | undefined,
+): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
 
     if (!refinedName) {
@@ -71,7 +74,7 @@ export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTim
                 }
             }
 
-            if (timeBand.endTime && !isValid24hrTimeFormat(timeBand.endTime)) {
+            if (typeof timeBand.endTime === 'string' && timeBand.endTime && !isValid24hrTimeFormat(timeBand.endTime)) {
                 if (timeBand.endTime === '2400') {
                     errors.push({
                         errorMessage: '2400 is not a valid input. Use 0000.',
@@ -89,6 +92,7 @@ export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTim
 
             if (
                 isValid24hrTimeFormat(timeBand.startTime) &&
+                typeof timeBand.endTime === 'string' &&
                 isValid24hrTimeFormat(timeBand.endTime) &&
                 timeBand.startTime === timeBand.endTime
             ) {
@@ -106,20 +110,27 @@ export const collectErrors = (refinedName: string, fullTimeRestrictions: FullTim
                     userInput: '',
                 });
             }
+
+            if (typeof timeBand.endTime === 'object' && !fareDayEnd) {
+                errors.push({
+                    errorMessage: 'You do not have a fare day end time defined.',
+                    id: `end-time-${fullTimeRestriction.day}-${index}`,
+                });
+            }
         });
     });
 
     return errors;
 };
 
-export const removeDuplicateAndEmptyTimebands = (fullTimeRestrictions: FullTimeRestriction[]): FullTimeRestriction[] =>
+export const removeDuplicateAndEmptyTimebands = (fullTimeRestrictions: DbTimeRestriction[]): DbTimeRestriction[] =>
     fullTimeRestrictions.map((fullTimeRestriction) => {
-        const timeBands: TimeBand[] = fullTimeRestriction.timeBands.reduce((unique, o) => {
+        const timeBands: DbTimeBand[] = fullTimeRestriction.timeBands.reduce((unique, o) => {
             if (!unique.some((obj) => obj.startTime === o.startTime && obj.endTime === o.endTime)) {
                 unique.push(o);
             }
             return unique;
-        }, [] as TimeBand[]);
+        }, [] as DbTimeBand[]);
 
         const filteredTimeBands = timeBands.filter((timeBand) => timeBand.startTime || timeBand.endTime);
 
@@ -143,8 +154,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const id = req.body.id && Number(req.body.id);
         const inputs = collectInputsFromRequest(req, timeRestrictionDaysArray);
         const sanitisedInputs = removeDuplicateAndEmptyTimebands(inputs);
-        const errors = collectErrors(refinedName, sanitisedInputs);
         const noc = getAndValidateNoc(req, res);
+        const errors = collectErrors(refinedName, sanitisedInputs, await getFareDayEnd(noc));
 
         if (errors.length === 0) {
             const results = await getTimeRestrictionByNameAndNoc(refinedName, noc);

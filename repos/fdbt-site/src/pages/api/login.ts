@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
-import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from '../../utils/apiUtils';
 import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
 import { OPERATOR_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, CognitoIdToken, NextApiRequestWithSession } from '../../interfaces';
