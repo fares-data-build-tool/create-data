@@ -22,6 +22,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectToError(res, message, 'api.deletePassenger', error);
         }
     } else {
-        redirectTo(res, '/error');
+        redirectToError(res, 'Cannot perform the delete operation', 'api.deleteTimeRestriction', {
+            name: 'delete',
+            message: 'cannot delete',
+        });
     }
 };

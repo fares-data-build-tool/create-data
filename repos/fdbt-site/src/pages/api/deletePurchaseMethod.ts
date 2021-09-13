@@ -23,6 +23,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectToError(res, message, 'api.deletePurchaseMethod', error);
         }
     } else {
-        redirectTo(res, '/error');
+        redirectToError(res, 'Cannot perform the delete operation', 'api.deletePurchaseMethod', {
+            name: 'delete',
+            message: 'cannot delete',
+        });
     }
 };
