@@ -1,4 +1,8 @@
-import { UNASSIGNED_STOPS_ATTRIBUTE } from './../../../constants/attributes';
+import {
+    UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
+    UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE,
+    UNASSIGNED_STOPS_ATTRIBUTE,
+} from './../../../constants/attributes';
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import { NextApiResponse } from 'next';
@@ -248,9 +252,9 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, 'single');
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const products = getPointToPointProducts(req);
-    const unassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
+    const nonReturnUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
 
-    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo) || !unassignedStops) {
+    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo) || !nonReturnUnassignedStops) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
 
@@ -261,7 +265,11 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         ...service,
         type: 'single',
         fareZones: getFareZones(userFareStages, matchingFareZones),
-        unassignedStops,
+        unassignedStops: {
+            nonReturnUnassignedStops,
+            outboundUnassignedStops: [],
+            inboundUnassignedStops: [],
+        },
         products,
         termTime: isTermTime(req),
         operatorName: service.operatorShortName,
@@ -284,12 +292,15 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const inboundMatchingAttributeInfo = getSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE);
     const returnPeriodValidity = getSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE);
     const products = getPointToPointProducts(req);
-    const unassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
+    const outboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE);
+    const inboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE);
 
     if (
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo) ||
-        isReturnPeriodValidityWithErrors(returnPeriodValidity) || !unassignedStops
+        isReturnPeriodValidityWithErrors(returnPeriodValidity) ||
+        !outboundUnassignedStops ||
+        !inboundUnassignedStops
     ) {
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
     }
@@ -309,7 +320,11 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
                   )
                 : [],
         ...(returnPeriodValidity && { returnPeriodValidity }),
-        unassignedStops,
+        unassignedStops: {
+            nonReturnUnassignedStops: [],
+            outboundUnassignedStops,
+            inboundUnassignedStops,
+        },
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },

@@ -1,4 +1,10 @@
-import { CSV_ZONE_FILE_NAME, GS_FARE_DAY_END_ATTRIBUTE, UNASSIGNED_STOPS_ATTRIBUTE } from './../constants/attributes';
+import {
+    CSV_ZONE_FILE_NAME,
+    GS_FARE_DAY_END_ATTRIBUTE,
+    UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
+    UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE,
+    UNASSIGNED_STOPS_ATTRIBUTE,
+} from './../constants/attributes';
 import * as attributes from '../constants/attributes';
 import {
     POINT_TO_POINT_PRODUCT_ATTRIBUTE,
@@ -177,6 +183,8 @@ export interface SessionAttributeTypes {
     [GS_PURCHASE_METHOD_ATTRIBUTE]: GlobalSettingsAttribute<FromDb<SalesOfferPackage>>;
     [GS_FARE_DAY_END_ATTRIBUTE]: { errors: ErrorInfo[]; input: string } | { saved: boolean };
     [UNASSIGNED_STOPS_ATTRIBUTE]: Stop[];
+    [UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE]: Stop[];
+    [UNASSIGNED_INBOUND_STOPS_ATTRIBUTE]: Stop[];
     [GS_REFERER]: string;
     [CSV_ZONE_FILE_NAME]: string;
 }

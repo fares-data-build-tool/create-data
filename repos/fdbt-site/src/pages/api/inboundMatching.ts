@@ -1,4 +1,4 @@
-import { UNASSIGNED_STOPS_ATTRIBUTE } from './../../constants/attributes';
+import { UNASSIGNED_INBOUND_STOPS_ATTRIBUTE } from './../../constants/attributes';
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
@@ -55,9 +55,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        updateSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE, unassignedStops);
+        updateSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE, unassignedStops);
 
-        const matchingAttributeValue: InboundMatchingInfo = { inboundUserFareStages, inboundMatchingFareZones: matchingFareZones };
+        const matchingAttributeValue: InboundMatchingInfo = {
+            inboundUserFareStages,
+            inboundMatchingFareZones: matchingFareZones,
+        };
         updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeValue);
 
         const carnetFareType = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);

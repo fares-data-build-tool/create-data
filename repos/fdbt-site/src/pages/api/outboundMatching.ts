@@ -1,8 +1,12 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
-import { MATCHING_ATTRIBUTE, UNASSIGNED_STOPS_ATTRIBUTE } from '../../constants/attributes';
+import { MATCHING_ATTRIBUTE, UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE } from '../../constants/attributes';
 import { MatchingFareZones, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
-import { getFareZones, getMatchingFareZonesAndUnassignedStopsFromForm, isFareStageUnassigned } from './apiUtils/matching';
+import {
+    getFareZones,
+    getMatchingFareZonesAndUnassignedStopsFromForm,
+    isFareStageUnassigned,
+} from './apiUtils/matching';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, BasicService, UserFareStages } from '../../interfaces';
 
@@ -62,7 +66,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             matchingFareZones: matchedFareZones,
         };
 
-        updateSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE, unassignedStops);
+        updateSessionAttribute(req, UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE, unassignedStops);
         updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingValues);
         redirectTo(res, '/inboundMatching');
     } catch (error) {
