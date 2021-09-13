@@ -213,6 +213,16 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist and 
                       Edit
                     </a>
                   </li>
+                  <li
+                    className="actions__item"
+                  >
+                    <button
+                      className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                      onClick={[Function]}
+                    >
+                      Delete
+                    </button>
+                  </li>
                 </ul>
               </div>
               <CardBody
@@ -248,6 +258,16 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist and 
                       Edit
                     </a>
                   </li>
+                  <li
+                    className="actions__item"
+                  >
+                    <button
+                      className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                      onClick={[Function]}
+                    >
+                      Delete
+                    </button>
+                  </li>
                 </ul>
               </div>
               <CardBody
@@ -282,6 +302,16 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist and 
                     >
                       Edit
                     </a>
+                  </li>
+                  <li
+                    className="actions__item"
+                  >
+                    <button
+                      className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                      onClick={[Function]}
+                    >
+                      Delete
+                    </button>
                   </li>
                 </ul>
               </div>

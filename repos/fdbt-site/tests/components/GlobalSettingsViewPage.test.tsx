@@ -47,7 +47,7 @@ describe('GlobalSettingsViewPage', () => {
     it('should render correctly when entities exist and delete is enabled', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        featureFlag.globalSettingsDeleteDisabled = false;
+        featureFlag.globalSettingsDeleteEnabled = true;
 
         const tree = shallow(
             <GlobalSettingsViewPage
