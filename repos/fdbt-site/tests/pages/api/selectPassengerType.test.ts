@@ -121,6 +121,7 @@ describe('selectPassengerType', () => {
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, {
             passengerType: GROUP_PASSENGER_TYPE,
+            id: 3,
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(
             req,
@@ -156,6 +157,9 @@ describe('selectPassengerType', () => {
             Location: '/defineTimeRestrictions',
         });
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, databaseResult.passengerType);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, {
+            passengerType: 'adult',
+            id: 3,
+        });
     });
 });

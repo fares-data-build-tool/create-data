@@ -438,6 +438,7 @@ export interface MultiOperatorInfoWithErrors {
 export interface FullTimeRestrictionAttribute {
     fullTimeRestrictions: FullTimeRestriction[];
     errors: ErrorInfo[];
+    id?: number;
 }
 
 export interface TimeInput {
@@ -531,6 +532,7 @@ export interface PassengerType {
     ageRangeMax?: string;
     proof?: string;
     proofDocuments?: string[];
+    id?: number;
 }
 
 export interface PassengerTypeWithErrors {

@@ -5,7 +5,7 @@ import PassengerTypeCard from '../components/PassengerTypeCard';
 import { PASSENGER_TYPE_ATTRIBUTE } from '../constants/attributes';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import { ErrorInfo, FullGroupPassengerType, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
-import { isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
+import { isPassengerType, isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
@@ -18,6 +18,7 @@ interface PassengerTypeProps {
     csrfToken: string;
     savedGroups: FullGroupPassengerType[];
     savedPassengerTypes: SinglePassengerType[];
+    selectedId: number | null;
 }
 
 const SelectPassengerType = ({
@@ -25,6 +26,7 @@ const SelectPassengerType = ({
     csrfToken,
     savedGroups,
     savedPassengerTypes,
+    selectedId,
 }: PassengerTypeProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/selectPassengerType" method="post" csrfToken={csrfToken}>
@@ -65,7 +67,11 @@ const SelectPassengerType = ({
 
                                 <div className="card-row" id="individual-passengers">
                                     {savedPassengerTypes.map((passengerType) => (
-                                        <PassengerTypeCard contents={passengerType} key={passengerType.id.toString()} />
+                                        <PassengerTypeCard
+                                            defaultChecked={selectedId === passengerType.id}
+                                            contents={passengerType}
+                                            key={passengerType.id.toString()}
+                                        />
                                     ))}
                                 </div>
 
@@ -77,6 +83,7 @@ const SelectPassengerType = ({
                                                 <PassengerTypeCard
                                                     contents={passengerTypeGroup}
                                                     key={passengerTypeGroup.id.toString()}
+                                                    defaultChecked={selectedId === passengerTypeGroup.id}
                                                 />
                                             ))}
                                         </>
@@ -114,6 +121,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const selectedId = (isPassengerType(passengerTypeAttribute) && passengerTypeAttribute.id) || null;
 
     const errors: ErrorInfo[] =
         passengerTypeAttribute && isPassengerTypeAttributeWithErrors(passengerTypeAttribute)
@@ -121,7 +129,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             : [];
 
     return {
-        props: { errors, csrfToken, savedGroups: groupPassengerTypes, savedPassengerTypes: singlePassengerTypes },
+        props: {
+            errors,
+            csrfToken,
+            savedGroups: groupPassengerTypes,
+            savedPassengerTypes: singlePassengerTypes,
+            selectedId,
+        },
     };
 };
 
