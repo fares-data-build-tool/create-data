@@ -138,6 +138,12 @@ export interface CompanionInfo {
     proofDocuments?: string[];
 }
 
+export interface UnassignedStops {
+    nonReturnUnassignedStops: Stop[];
+    outboundUnassignedStops: Stop[];
+    inboundUnassignedStops: Stop[];
+}
+
 export interface BaseSchemeOperatorTicket extends Omit<BaseTicket, 'nocCode'> {
     schemeOperatorName: string;
     schemeOperatorRegionCode: string;
@@ -154,6 +160,7 @@ export interface BasePointToPointTicket extends BaseTicket {
     lineId: string;
     serviceDescription: string;
     products: (BaseProduct | PointToPointCarnetProductDetails)[];
+    unassignedStops: UnassignedStops;
 }
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;
