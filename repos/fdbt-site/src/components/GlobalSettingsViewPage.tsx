@@ -1,6 +1,6 @@
 import { capitalize } from 'lodash';
 import React, { FunctionComponent, ReactElement, useState } from 'react';
-import { globalSettingsDeleteDisabled } from '../../src/constants/featureFlag';
+import { globalSettingsDeleteEnabled } from '../../src/constants/featureFlag';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
@@ -73,7 +73,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
                                         </a>
                                     </li>
 
-                                    {globalSettingsDeleteDisabled && (
+                                    {globalSettingsDeleteEnabled && (
                                         <li className="actions__item">
                                             <button
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"

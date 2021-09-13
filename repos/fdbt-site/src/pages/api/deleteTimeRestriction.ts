@@ -2,12 +2,10 @@ import { NextApiResponse } from 'next';
 import { deleteTimeRestrictionByIdAndNocCode } from '../../data/auroradb';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils/index';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { globalSettingsDeleteDisabled } from '../../../src/constants/featureFlag';
+import { globalSettingsDeleteEnabled } from '../../../src/constants/featureFlag';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
-    if (globalSettingsDeleteDisabled) {
-        redirectTo(res, '/error');
-    } else {
+    if (globalSettingsDeleteEnabled) {
         try {
             const { query } = req;
 
@@ -23,5 +21,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             redirectToError(res, message, 'api.deletePassenger', error);
         }
+    } else {
+        redirectTo(res, '/error');
     }
 };

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { globalSettingsDeleteDisabled } from '../../src/constants/featureFlag';
+import { globalSettingsDeleteEnabled } from '../../src/constants/featureFlag';
 import { FullGroupPassengerType, SinglePassengerType } from '../interfaces';
 import { getProofDocumentsString, sentenceCaseString } from '../utils';
 
@@ -26,7 +26,7 @@ const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardP
                                 </a>
                             </li>
 
-                            {globalSettingsDeleteDisabled && (
+                            {globalSettingsDeleteEnabled && (
                                 <li className="actions__item">
                                     <button
                                         className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"

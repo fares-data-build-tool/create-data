@@ -2,12 +2,10 @@ import { NextApiResponse } from 'next';
 import { deleteSalesOfferPackageByNocCodeAndName } from '../../data/auroradb';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils/index';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { globalSettingsDeleteDisabled } from '../../../src/constants/featureFlag';
+import { globalSettingsDeleteEnabled } from '../../../src/constants/featureFlag';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
-    if (globalSettingsDeleteDisabled) {
-        redirectTo(res, '/error');
-    } else {
+    if (globalSettingsDeleteEnabled) {
         try {
             const { query } = req;
             const id = Number(query?.id);
@@ -24,5 +22,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             redirectToError(res, message, 'api.deletePurchaseMethod', error);
         }
+    } else {
+        redirectTo(res, '/error');
     }
 };
