@@ -74,7 +74,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
 
     if (!noc) {
-        throw new Error('No NOC found for useer.');
+        throw new Error('No NOC found for user.');
     }
 
     if (!globalSettingsEnabled && ctx.res) {
