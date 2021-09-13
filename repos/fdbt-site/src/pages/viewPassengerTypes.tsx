@@ -158,6 +158,7 @@ const IndividualPassengerTypes = ({
                         contents={singlePassengerType}
                         deleteActionHandler={deleteActionHandler}
                         key={singlePassengerType.id.toString()}
+                        defaultChecked={false}
                     />
                 ))}
             </div>
@@ -197,6 +198,7 @@ const PassengerTypeGroups = ({ deleteActionHandler, passengerTypeGroups }: Passe
                         contents={passengerTypeGroup}
                         deleteActionHandler={deleteActionHandler}
                         key={passengerTypeGroup.id}
+                        defaultChecked={false}
                     />
                 ))}
             </div>

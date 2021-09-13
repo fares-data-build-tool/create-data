@@ -84,6 +84,7 @@ describe('pages', () => {
                     csrfToken="csrf"
                     savedGroups={savedGroups}
                     savedPassengerTypes={savedPassengerTypes}
+                    selectedId={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -95,6 +96,7 @@ describe('pages', () => {
                     csrfToken="csrf"
                     savedGroups={savedGroups}
                     savedPassengerTypes={savedPassengerTypes}
+                    selectedId={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -106,6 +108,7 @@ describe('pages', () => {
                     csrfToken="csrf"
                     savedGroups={[]}
                     savedPassengerTypes={savedPassengerTypes}
+                    selectedId={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -113,7 +116,13 @@ describe('pages', () => {
 
         it('should render correctly with no saved groups and no saved passenger types', () => {
             const tree = shallow(
-                <SelectPassengerType errors={[]} csrfToken="csrf" savedGroups={[]} savedPassengerTypes={[]} />,
+                <SelectPassengerType
+                    errors={[]}
+                    csrfToken="csrf"
+                    savedGroups={[]}
+                    savedPassengerTypes={[]}
+                    selectedId={null}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
