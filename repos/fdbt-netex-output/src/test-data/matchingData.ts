@@ -120,9 +120,7 @@ export const singleTicket: SingleTicket = {
     },
     timeRestriction: [],
     unassignedStops: {
-        nonReturnUnassignedStops: [],
-        outboundUnassignedStops: [],
-        inboundUnassignedStops: [],
+        singleUnassignedStops: [],
     },
 };
 
@@ -468,7 +466,6 @@ export const returnNonCircularTicket: ReturnTicket = {
     },
     timeRestriction: [],
     unassignedStops: {
-        nonReturnUnassignedStops: [],
         outboundUnassignedStops: [],
         inboundUnassignedStops: [],
     },
@@ -820,7 +817,6 @@ export const returnNonCircularTicketWithReturnValidity: ReturnTicket = {
     },
     timeRestriction: [],
     unassignedStops: {
-        nonReturnUnassignedStops: [],
         outboundUnassignedStops: [],
         inboundUnassignedStops: [],
     },
@@ -1038,7 +1034,6 @@ export const returnCircularTicket: ReturnTicket = {
     },
     timeRestriction: [],
     unassignedStops: {
-        nonReturnUnassignedStops: [],
         outboundUnassignedStops: [],
         inboundUnassignedStops: [],
     },
@@ -5327,7 +5322,6 @@ export const pointToPointPeriodTicket: PointToPointPeriodTicket = {
         },
     ],
     unassignedStops: {
-        nonReturnUnassignedStops: [],
         outboundUnassignedStops: [],
         inboundUnassignedStops: [],
     },

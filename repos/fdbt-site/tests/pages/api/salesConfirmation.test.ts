@@ -248,9 +248,7 @@ describe('salesOfferPackages', () => {
             fareZones: [],
             termTime: true,
             unassignedStops: {
-                nonReturnUnassignedStops: [],
-                inboundUnassignedStops: [],
-                outboundUnassignedStops: [],
+                singleUnassignedStops: [],
             },
         };
         getSingleTicketJsonSpy.mockImplementation(() => {

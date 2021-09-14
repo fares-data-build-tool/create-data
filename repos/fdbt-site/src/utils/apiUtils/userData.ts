@@ -251,9 +251,9 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, 'single');
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const products = getPointToPointProducts(req);
-    const nonReturnUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
+    const singleUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
 
-    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo) || !nonReturnUnassignedStops) {
+    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo) || !singleUnassignedStops) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
 
@@ -265,9 +265,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         type: 'single',
         fareZones: getFareZones(userFareStages, matchingFareZones),
         unassignedStops: {
-            nonReturnUnassignedStops,
-            outboundUnassignedStops: [],
-            inboundUnassignedStops: [],
+            singleUnassignedStops,
         },
         products,
         termTime: isTermTime(req),
@@ -320,7 +318,6 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
                 : [],
         ...(returnPeriodValidity && { returnPeriodValidity }),
         unassignedStops: {
-            nonReturnUnassignedStops: [],
             outboundUnassignedStops,
             inboundUnassignedStops,
         },

@@ -139,9 +139,9 @@ export interface CompanionInfo {
 }
 
 export interface UnassignedStops {
-    nonReturnUnassignedStops: Stop[];
-    outboundUnassignedStops: Stop[];
-    inboundUnassignedStops: Stop[];
+    singleUnassignedStops?: Stop[];
+    outboundUnassignedStops?: Stop[];
+    inboundUnassignedStops?: Stop[];
 }
 
 export interface BaseSchemeOperatorTicket extends Omit<BaseTicket, 'nocCode'> {

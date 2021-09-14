@@ -1281,7 +1281,7 @@ export const expectedSingleTicket: SingleTicket = {
         },
     ],
     unassignedStops: {
-        nonReturnUnassignedStops: [
+        singleUnassignedStops: [
             {
                 atcoCode: 'GHI',
                 indicator: 'VWX',
@@ -1294,8 +1294,6 @@ export const expectedSingleTicket: SingleTicket = {
                 street: 'YZ!',
             },
         ],
-        outboundUnassignedStops: [],
-        inboundUnassignedStops: [],
     },
 };
 
@@ -1439,7 +1437,7 @@ export const expectedCarnetSingleTicket: SingleTicket = {
         },
     ],
     unassignedStops: {
-        nonReturnUnassignedStops: [
+        singleUnassignedStops: [
             {
                 atcoCode: 'GHI',
                 indicator: 'VWX',
@@ -1452,8 +1450,6 @@ export const expectedCarnetSingleTicket: SingleTicket = {
                 street: 'YZ!',
             },
         ],
-        outboundUnassignedStops: [],
-        inboundUnassignedStops: [],
     },
 };
 
@@ -1620,7 +1616,6 @@ export const expectedNonCircularReturnTicket: ReturnTicket = {
         },
     ],
     unassignedStops: {
-        nonReturnUnassignedStops: [],
         inboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
@@ -1817,7 +1812,6 @@ export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
         },
     ],
     unassignedStops: {
-        nonReturnUnassignedStops: [],
         inboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
@@ -1981,7 +1975,6 @@ export const expectedCircularReturnTicket: ReturnTicket = {
         },
     ],
     unassignedStops: {
-        nonReturnUnassignedStops: [],
         inboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
@@ -2180,7 +2173,6 @@ export const expectedCarnetReturnTicket: ReturnTicket = {
         },
     ],
     unassignedStops: {
-        nonReturnUnassignedStops: [],
         inboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
