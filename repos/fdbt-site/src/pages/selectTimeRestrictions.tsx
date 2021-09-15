@@ -177,7 +177,6 @@ export const getServerSideProps = async (
 
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
 
-    console.log({ timeRestrictions, selectedId });
     return { props: { csrfToken, errors, timeRestrictions, selectedId } };
 };
 
