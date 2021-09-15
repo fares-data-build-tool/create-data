@@ -651,6 +651,7 @@ export interface RadioWithoutConditionals extends BaseReactElement {
 }
 
 export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
+    disableAutoSelect?: boolean;
     dataAriaControls: string;
     inputHint: {
         id: string;

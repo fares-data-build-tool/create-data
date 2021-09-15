@@ -9,6 +9,7 @@ import { isPassengerType, isPassengerTypeAttributeWithErrors } from '../interfac
 import TwoThirdsLayout from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
+import { globalSettingsDeleteEnabled } from '../constants/featureFlag';
 
 const title = 'Select Passenger Type - Create Fares Data Service';
 const description = 'Select Passenger Type selection page of the Create Fares Data Service';
@@ -19,6 +20,7 @@ interface PassengerTypeProps {
     savedGroups: FullGroupPassengerType[];
     savedPassengerTypes: SinglePassengerType[];
     selectedId: number | null;
+    deleteEnabled: boolean;
 }
 
 const SelectPassengerType = ({
@@ -27,6 +29,7 @@ const SelectPassengerType = ({
     savedGroups,
     savedPassengerTypes,
     selectedId,
+    deleteEnabled,
 }: PassengerTypeProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/selectPassengerType" method="post" csrfToken={csrfToken}>
@@ -71,6 +74,7 @@ const SelectPassengerType = ({
                                             defaultChecked={selectedId === passengerType.id}
                                             contents={passengerType}
                                             key={passengerType.id.toString()}
+                                            deleteEnabled={deleteEnabled}
                                         />
                                     ))}
                                 </div>
@@ -84,6 +88,7 @@ const SelectPassengerType = ({
                                                     contents={passengerTypeGroup}
                                                     key={passengerTypeGroup.id.toString()}
                                                     defaultChecked={selectedId === passengerTypeGroup.id}
+                                                    deleteEnabled={deleteEnabled}
                                                 />
                                             ))}
                                         </>
@@ -135,6 +140,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             savedGroups: groupPassengerTypes,
             savedPassengerTypes: singlePassengerTypes,
             selectedId,
+            deleteEnabled: globalSettingsDeleteEnabled,
         },
     };
 };

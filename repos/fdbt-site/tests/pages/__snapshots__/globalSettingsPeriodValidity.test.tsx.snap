@@ -69,6 +69,7 @@ exports[`pages periodValidity should render correctly 1`] = `
                 },
                 Object {
                   "dataAriaControls": "period-validity-end-of-service-required-conditional",
+                  "disableAutoSelect": true,
                   "id": "period-end-of-service",
                   "inputErrors": Array [],
                   "inputHint": Object {
@@ -194,6 +195,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
                 },
                 Object {
                   "dataAriaControls": "period-validity-end-of-service-required-conditional",
+                  "disableAutoSelect": true,
                   "id": "period-end-of-service",
                   "inputErrors": Array [],
                   "inputHint": Object {

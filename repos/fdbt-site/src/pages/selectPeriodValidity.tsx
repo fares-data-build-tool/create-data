@@ -50,6 +50,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioCo
             },
             {
                 id: 'period-end-of-service',
+                disableAutoSelect: true,
                 name: 'periodValid',
                 value: 'fareDayEnd',
                 dataAriaControls: 'period-validity-end-of-service-required-conditional',

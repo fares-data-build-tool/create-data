@@ -1,7 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import { GlobalSettingsViewPage } from '../../src/components/GlobalSettingsViewPage';
-import * as featureFlag from '../../src/constants/featureFlag';
 
 const CardBody = ({ entity: { id, name } }: { entity: { id: number; name: string } }) => (
     <h1>
@@ -20,6 +19,7 @@ describe('GlobalSettingsViewPage', () => {
                 description="my description"
                 entityDescription="my entity description"
                 CardBody={CardBody}
+                deleteEnabled={false}
             />,
         );
         expect(tree).toMatchSnapshot();
@@ -39,16 +39,13 @@ describe('GlobalSettingsViewPage', () => {
                 description="my description"
                 entityDescription="my entity description"
                 CardBody={CardBody}
+                deleteEnabled={false}
             />,
         );
         expect(tree).toMatchSnapshot();
     });
 
     it('should render correctly when entities exist and delete is enabled', () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        featureFlag.globalSettingsDeleteEnabled = true;
-
         const tree = shallow(
             <GlobalSettingsViewPage
                 csrfToken={''}
@@ -62,6 +59,7 @@ describe('GlobalSettingsViewPage', () => {
                 description="my description"
                 entityDescription="my entity description"
                 CardBody={CardBody}
+                deleteEnabled={true}
             />,
         );
 

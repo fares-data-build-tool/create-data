@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { globalSettingsDeleteEnabled } from '../../src/constants/featureFlag';
 import { FullGroupPassengerType, SinglePassengerType } from '../interfaces';
 import { getProofDocumentsString, sentenceCaseString } from '../utils';
 
@@ -7,9 +6,15 @@ interface PassengerTypeCardProps {
     contents: FullGroupPassengerType | SinglePassengerType;
     deleteActionHandler?: (id: number, name: string, isGroup: boolean) => void;
     defaultChecked: boolean;
+    deleteEnabled: boolean;
 }
 
-const PassengerTypeCard = ({ contents, deleteActionHandler, defaultChecked }: PassengerTypeCardProps): ReactElement => {
+const PassengerTypeCard = ({
+    contents,
+    deleteActionHandler,
+    defaultChecked,
+    deleteEnabled,
+}: PassengerTypeCardProps): ReactElement => {
     const { name, id } = contents;
     const isGroup = 'groupPassengerType' in contents;
     return (
@@ -27,7 +32,7 @@ const PassengerTypeCard = ({ contents, deleteActionHandler, defaultChecked }: Pa
                                 </a>
                             </li>
 
-                            {globalSettingsDeleteEnabled && (
+                            {deleteEnabled && (
                                 <li className="actions__item">
                                     <button
                                         className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
