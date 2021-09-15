@@ -237,7 +237,6 @@ export const randomlyChooseProductPeriodValidity = (): void => {
         case 3:
             cy.log('End of service day');
             clickElementById('period-end-of-service');
-            getElementById('product-end-time').type('2100');
             break;
         default:
             throwInvalidRandomSelectorError();
