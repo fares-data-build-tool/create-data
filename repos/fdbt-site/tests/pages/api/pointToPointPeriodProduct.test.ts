@@ -99,7 +99,7 @@ describe('pointToPointPeriodProduct', () => {
 
         expect(updateAttributeSpy).toHaveBeenCalledWith(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE, productInput);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/periodValidity',
+            Location: '/selectPeriodValidity',
         });
     });
 
@@ -123,7 +123,7 @@ describe('pointToPointPeriodProduct', () => {
 
         expect(updateAttributeSpy).toHaveBeenCalledWith(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE, productInput);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/periodValidity',
+            Location: '/selectPeriodValidity',
         });
     });
 });

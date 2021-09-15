@@ -66,7 +66,7 @@ exports[`pages selectPurchaseMethods should render an error when an error messag
       className="govuk-button govuk-button--secondary create-new-sop-button"
       data-module="govuk-button"
       draggable="false"
-      href="/salesOfferPackages"
+      href="/viewPurchaseMethods"
       id="create-new-button"
       role="button"
     >
@@ -364,7 +364,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
       className="govuk-button govuk-button--secondary create-new-sop-button"
       data-module="govuk-button"
       draggable="false"
-      href="/salesOfferPackages"
+      href="/viewPurchaseMethods"
       id="create-new-button"
       role="button"
     >
@@ -476,7 +476,7 @@ exports[`pages selectPurchaseMethods should render correctly with no purchase me
       className="govuk-button govuk-button--secondary create-new-sop-button"
       data-module="govuk-button"
       draggable="false"
-      href="/salesOfferPackages"
+      href="/viewPurchaseMethods"
       id="create-new-button"
       role="button"
     >
