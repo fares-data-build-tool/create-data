@@ -80,7 +80,7 @@ const ViewPassengerTypes = ({
                         )}
 
                         <a
-                            className="govuk-button govuk-button govuk-!-margin-top-5"
+                            className="govuk-button govuk-button"
                             data-module="govuk-button"
                             href="/managePassengerTypes"
                         >
