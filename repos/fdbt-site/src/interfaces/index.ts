@@ -572,6 +572,13 @@ export interface Service {
     service: string;
 }
 
+export interface MyFaresService {
+    serviceDescription: string;
+    lineName: string;
+    startDate: string;
+    endDate: string;
+}
+
 export interface ServiceWithErrors {
     errors: ErrorInfo[];
 }

@@ -26,7 +26,13 @@ interface GlobalSettingsProps {
 const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps): ReactElement => {
     return (
         <>
-            <BaseLayout title={title} description={description} showNavigation referer={referer}>
+            <BaseLayout
+                title={title}
+                description={description}
+                showNavigation
+                referer={referer}
+                activePage="operatorSettings"
+            >
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
                         <SubNavigation />

@@ -20,6 +20,7 @@ interface LayoutProps {
     showNavigation?: boolean;
     hideHelp?: boolean;
     referer?: string | null;
+    activePage?: string;
 }
 
 export const BaseLayout = ({
@@ -31,6 +32,7 @@ export const BaseLayout = ({
     showNavigation,
     hideHelp,
     referer,
+    activePage,
 }: PropsWithChildren<LayoutProps>): ReactElement => {
     const [showBanner, setShowBanner] = useState(false);
 
@@ -56,7 +58,8 @@ export const BaseLayout = ({
 
             <PhaseBanner />
 
-            {showNavigation && <Navigation />}
+            {showNavigation && <Navigation activePage={activePage ?? ''} />}
+
             {referer && <GlobalSettingReturnHeader />}
 
             <div className="govuk-width-container">
