@@ -1,6 +1,5 @@
 import { capitalize } from 'lodash';
 import React, { FunctionComponent, ReactElement, useState } from 'react';
-import { globalSettingsDeleteEnabled } from '../../src/constants/featureFlag';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
@@ -15,6 +14,7 @@ interface GlobalSettingsViewPageProps<T extends Entity> {
     description: string;
     entityDescription: string;
     CardBody: FunctionComponent<{ entity: T }>;
+    deleteEnabled: boolean;
 }
 
 export const GlobalSettingsViewPage = <T extends Entity>({
@@ -25,6 +25,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
     description,
     entityDescription,
     CardBody,
+    deleteEnabled,
 }: GlobalSettingsViewPageProps<T>): ReactElement => {
     const entityUrl = entityDescription
         .split(' ')
@@ -73,7 +74,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
                                         </a>
                                     </li>
 
-                                    {globalSettingsDeleteEnabled && (
+                                    {deleteEnabled && (
                                         <li className="actions__item">
                                             <button
                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"

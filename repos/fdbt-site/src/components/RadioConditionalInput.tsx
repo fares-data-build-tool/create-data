@@ -382,7 +382,7 @@ const renderConditionalRadioButton = (
     return (
         <div key={radio.id}>
             <div className="govuk-radios__item">
-                {radio.inputErrors.length > 0 || conditionalRadioInputDefaultExists(radio)
+                {radio.inputErrors.length > 0 || (conditionalRadioInputDefaultExists(radio) && !radio.disableAutoSelect)
                     ? checkedRadioInput
                     : uncheckedRadioInput}
                 {radioLabel}
