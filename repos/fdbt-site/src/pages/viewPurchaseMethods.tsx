@@ -7,6 +7,7 @@ import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { sopTicketFormatConverter } from './salesConfirmation';
 import { formatSOPArray } from './selectSalesOfferPackage';
+import { globalSettingsDeleteEnabled } from '../constants/featureFlag';
 
 const title = 'Purchase methods';
 const description =
@@ -16,9 +17,15 @@ interface PurchaseMethodProps {
     csrfToken: string;
     purchaseMethods: FromDb<SalesOfferPackage>[];
     referer: string | null;
+    deleteEnabled: boolean;
 }
 
-const ViewPurchaseMethods = ({ purchaseMethods, referer, csrfToken }: PurchaseMethodProps): ReactElement => {
+const ViewPurchaseMethods = ({
+    purchaseMethods,
+    referer,
+    csrfToken,
+    deleteEnabled,
+}: PurchaseMethodProps): ReactElement => {
     return (
         <>
             <GlobalSettingsViewPage
@@ -29,6 +36,7 @@ const ViewPurchaseMethods = ({ purchaseMethods, referer, csrfToken }: PurchaseMe
                 title={title}
                 description={description}
                 CardBody={PurchaseMethodCardBody}
+                deleteEnabled={deleteEnabled}
             />
         </>
     );
@@ -59,7 +67,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const purchaseMethods = await getSalesOfferPackagesByNocCode(nationalOperatorCode);
 
-    return { props: { purchaseMethods: purchaseMethods, referer: extractGlobalSettingsReferer(ctx), csrfToken } };
+    return {
+        props: {
+            purchaseMethods: purchaseMethods,
+            referer: extractGlobalSettingsReferer(ctx),
+            csrfToken,
+            deleteEnabled: globalSettingsDeleteEnabled,
+        },
+    };
 };
 
 export default ViewPurchaseMethods;

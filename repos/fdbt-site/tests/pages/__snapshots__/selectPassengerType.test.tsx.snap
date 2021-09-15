@@ -164,6 +164,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
               }
             }
             defaultChecked={false}
+            deleteEnabled={false}
             key="3"
           />
           <PassengerTypeCard
@@ -180,6 +181,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
               }
             }
             defaultChecked={false}
+            deleteEnabled={false}
             key="2"
           />
         </div>
@@ -305,6 +307,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            deleteEnabled={false}
             key="3"
           />
           <PassengerTypeCard
@@ -321,6 +324,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            deleteEnabled={false}
             key="2"
           />
         </div>
@@ -364,6 +368,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={true}
+            deleteEnabled={false}
             key="1"
           />
           <PassengerTypeCard
@@ -389,6 +394,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            deleteEnabled={false}
             key="4"
           />
         </div>
@@ -508,6 +514,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            deleteEnabled={false}
             key="3"
           />
           <PassengerTypeCard
@@ -524,6 +531,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            deleteEnabled={false}
             key="2"
           />
         </div>
@@ -567,6 +575,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            deleteEnabled={false}
             key="1"
           />
           <PassengerTypeCard
@@ -592,6 +601,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            deleteEnabled={false}
             key="4"
           />
         </div>

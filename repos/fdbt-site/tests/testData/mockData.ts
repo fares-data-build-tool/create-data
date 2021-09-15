@@ -3795,6 +3795,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
             id: 'period-end-of-service',
             name: 'periodValid',
             value: 'fareDayEnd',
+            disableAutoSelect: true,
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'End of service day',
             radioButtonHint: {
@@ -3853,6 +3854,7 @@ export const mockSelectPeriodValidityFieldset: RadioConditionalInputFieldset = {
             id: 'period-end-of-service',
             name: 'periodValid',
             value: 'fareDayEnd',
+            disableAutoSelect: true,
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
@@ -3912,6 +3914,8 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
             id: 'period-end-of-service',
             name: 'periodValid',
             value: 'fareDayEnd',
+
+            disableAutoSelect: true,
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'End of service day',
             radioButtonHint: {
@@ -3975,6 +3979,8 @@ export const mockSelectPeriodValidityFieldsetWithErrors: RadioConditionalInputFi
             id: 'period-end-of-service',
             name: 'periodValid',
             value: 'fareDayEnd',
+
+            disableAutoSelect: true,
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
@@ -4039,6 +4045,8 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
             id: 'period-end-of-service',
             name: 'periodValid',
             value: 'fareDayEnd',
+
+            disableAutoSelect: true,
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'End of service day',
             radioButtonHint: {
@@ -4102,6 +4110,8 @@ export const mockSelectPeriodValidityFieldsetWithInputErrors: RadioConditionalIn
             id: 'period-end-of-service',
             name: 'periodValid',
             value: 'fareDayEnd',
+
+            disableAutoSelect: true,
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {

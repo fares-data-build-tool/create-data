@@ -4,6 +4,7 @@ import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import { NextPageContextWithSession, PremadeTimeRestriction, DbTimeBand } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
+import { globalSettingsDeleteEnabled } from '../constants/featureFlag';
 
 const title = 'Time restrictions';
 const description = 'Define certain days and time periods that your tickets can be used within.';
@@ -23,6 +24,7 @@ interface TimeRestrictionProps {
     csrfToken: string;
     timeRestrictions: PremadeTimeRestriction[];
     referer: string | null;
+    deleteEnabled: boolean;
 }
 
 const formatTime = (time: string | object): string =>
@@ -43,7 +45,12 @@ const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: stri
     );
 };
 
-const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRestrictionProps): ReactElement => {
+const ViewTimeRestrictions = ({
+    timeRestrictions,
+    referer,
+    csrfToken,
+    deleteEnabled,
+}: TimeRestrictionProps): ReactElement => {
     return (
         <>
             <GlobalSettingsViewPage
@@ -54,6 +61,7 @@ const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRest
                 title={title}
                 description={description}
                 CardBody={TimeRestrictionCardBody}
+                deleteEnabled={deleteEnabled}
             />
         </>
     );
@@ -89,7 +97,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
 
-    return { props: { timeRestrictions, referer: extractGlobalSettingsReferer(ctx), csrfToken } };
+    return {
+        props: {
+            timeRestrictions,
+            referer: extractGlobalSettingsReferer(ctx),
+            csrfToken,
+            deleteEnabled: globalSettingsDeleteEnabled,
+        },
+    };
 };
 
 export default ViewTimeRestrictions;
