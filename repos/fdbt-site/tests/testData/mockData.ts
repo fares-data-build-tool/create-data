@@ -1280,6 +1280,21 @@ export const expectedSingleTicket: SingleTicket = {
             prices: [],
         },
     ],
+    unassignedStops: {
+        singleUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedCarnetSingleTicket: SingleTicket = {
@@ -1421,6 +1436,21 @@ export const expectedCarnetSingleTicket: SingleTicket = {
             prices: [],
         },
     ],
+    unassignedStops: {
+        singleUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedNonCircularReturnTicket: ReturnTicket = {
@@ -1585,6 +1615,34 @@ export const expectedNonCircularReturnTicket: ReturnTicket = {
             ],
         },
     ],
+    unassignedStops: {
+        inboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+        outboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
@@ -1753,6 +1811,34 @@ export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
             ],
         },
     ],
+    unassignedStops: {
+        inboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+        outboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedCircularReturnTicket: ReturnTicket = {
@@ -1888,6 +1974,34 @@ export const expectedCircularReturnTicket: ReturnTicket = {
             prices: [],
         },
     ],
+    unassignedStops: {
+        inboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+        outboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedCarnetReturnTicket: ReturnTicket = {
@@ -2058,6 +2172,34 @@ export const expectedCarnetReturnTicket: ReturnTicket = {
             ],
         },
     ],
+    unassignedStops: {
+        inboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+        outboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicket = {

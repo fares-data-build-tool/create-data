@@ -119,6 +119,9 @@ export const singleTicket: SingleTicket = {
         endDate: '2020-12-17T09:30:46.0Z',
     },
     timeRestriction: [],
+    unassignedStops: {
+        singleUnassignedStops: [],
+    },
 };
 
 export const returnNonCircularTicket: ReturnTicket = {
@@ -462,6 +465,10 @@ export const returnNonCircularTicket: ReturnTicket = {
         endDate: '2020-12-17T09:30:46.0Z',
     },
     timeRestriction: [],
+    unassignedStops: {
+        outboundUnassignedStops: [],
+        inboundUnassignedStops: [],
+    },
 };
 
 export const returnNonCircularTicketWithReturnValidity: ReturnTicket = {
@@ -809,6 +816,10 @@ export const returnNonCircularTicketWithReturnValidity: ReturnTicket = {
         endDate: '2030-12-17T09:30:46.0Z',
     },
     timeRestriction: [],
+    unassignedStops: {
+        outboundUnassignedStops: [],
+        inboundUnassignedStops: [],
+    },
 };
 
 export const returnCircularTicket: ReturnTicket = {
@@ -1022,6 +1033,10 @@ export const returnCircularTicket: ReturnTicket = {
         endDate: '2030-12-17T09:30:46.0Z',
     },
     timeRestriction: [],
+    unassignedStops: {
+        outboundUnassignedStops: [],
+        inboundUnassignedStops: [],
+    },
 };
 
 export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
@@ -5306,6 +5321,10 @@ export const pointToPointPeriodTicket: PointToPointPeriodTicket = {
             productValidity: '24hr',
         },
     ],
+    unassignedStops: {
+        outboundUnassignedStops: [],
+        inboundUnassignedStops: [],
+    },
 };
 
 export const fareZonesWithoutStopIndicator: FareZone[] = [

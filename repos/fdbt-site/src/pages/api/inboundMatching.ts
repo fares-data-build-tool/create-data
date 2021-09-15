@@ -1,7 +1,8 @@
+import { UNASSIGNED_INBOUND_STOPS_ATTRIBUTE } from './../../constants/attributes';
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
-import { getMatchingFareZonesFromForm, isFareStageUnassigned } from '../../utils/apiUtils/matching';
+import { getMatchingFareZonesAndUnassignedStopsFromForm, isFareStageUnassigned } from '../../utils/apiUtils/matching';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
@@ -20,13 +21,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const inboundUserFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
 
-        const inboundMatchingFareZones = getMatchingFareZonesFromForm(req);
+        const parsedInputs = getMatchingFareZonesAndUnassignedStopsFromForm(req);
+        const { matchingFareZones, unassignedStops } = parsedInputs;
 
         // Deleting these keys from the object in order to facilitate looping through the fare stage values in the body
         delete req.body.service;
         delete req.body.userfarestages;
 
-        if (!Object.keys(inboundMatchingFareZones).find((fareZone) => fareZone !== 'notApplicable')) {
+        if (!Object.keys(matchingFareZones).find((fareZone) => fareZone !== 'notApplicable')) {
             const selectedStagesList: string[][] = getSelectedStages(req);
             const matchingAttributeError: MatchingWithErrors = {
                 error: 'No fare stages have been assigned, assign each fare stage to a stop',
@@ -37,8 +39,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/inboundMatching');
             return;
         } else if (
-            isFareStageUnassigned(inboundUserFareStages, inboundMatchingFareZones) &&
-            inboundMatchingFareZones !== {} &&
+            isFareStageUnassigned(inboundUserFareStages, matchingFareZones) &&
+            matchingFareZones !== {} &&
             !overrideWarning
         ) {
             const selectedStagesList: string[][] = getSelectedStages(req);
@@ -53,7 +55,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        const matchingAttributeValue: InboundMatchingInfo = { inboundUserFareStages, inboundMatchingFareZones };
+        updateSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE, unassignedStops);
+
+        const matchingAttributeValue: InboundMatchingInfo = {
+            inboundUserFareStages,
+            inboundMatchingFareZones: matchingFareZones,
+        };
         updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeValue);
 
         const carnetFareType = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);

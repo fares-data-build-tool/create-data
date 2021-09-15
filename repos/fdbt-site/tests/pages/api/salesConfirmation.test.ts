@@ -247,6 +247,9 @@ describe('salesOfferPackages', () => {
             products: [],
             fareZones: [],
             termTime: true,
+            unassignedStops: {
+                singleUnassignedStops: [],
+            },
         };
         getSingleTicketJsonSpy.mockImplementation(() => {
             return exampleUserJson;
