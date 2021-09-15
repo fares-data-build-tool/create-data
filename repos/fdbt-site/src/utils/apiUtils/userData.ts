@@ -6,10 +6,10 @@ import {
     PeriodMultipleServicesTicket,
     TicketType,
     SchemeOperatorMultiServiceTicket,
-} from '../../../../shared/matchingJsonTypes';
-import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from '.';
+} from '../../../shared/matchingJsonTypes';
+import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from './index';
 
-import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants';
+import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../constants';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -31,9 +31,12 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
-} from '../../../constants/attributes';
-import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
-import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
+    UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
+    UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE,
+    UNASSIGNED_STOPS_ATTRIBUTE,
+} from '../../constants/attributes';
+import { batchGetStopsByAtcoCode } from '../../data/auroradb';
+import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import {
     BaseProduct,
     BaseTicket,
@@ -61,8 +64,8 @@ import {
     Ticket,
     TicketPeriod,
     TicketPeriodWithInput,
-} from '../../../interfaces';
-import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
+} from '../../interfaces';
+import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import {
     isFareType,
     isPassengerType,
@@ -72,13 +75,13 @@ import {
     isTicketPeriodAttributeWithInput,
     isWithErrors,
     isTicketRepresentation,
-} from '../../../interfaces/typeGuards';
+} from '../../interfaces/typeGuards';
 
-import logger from '../../../utils/logger';
-import { getSessionAttribute } from '../../../utils/sessions';
-import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
-import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
-import { isServiceListAttributeWithErrors } from '../../serviceList';
+import logger from '../logger';
+import { getSessionAttribute } from '../sessions';
+import { isFareZoneAttributeWithErrors } from '../../pages/csvZoneUpload';
+import { isReturnPeriodValidityWithErrors } from '../../pages/returnValidity';
+import { isServiceListAttributeWithErrors } from '../../pages/serviceList';
 import { getFareZones } from './matching';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
@@ -119,11 +122,12 @@ export const getProductsAndSalesOfferPackages = (
     return productSOPList;
 };
 
-export const putUserDataInS3 = async (data: Ticket, uuid: string): Promise<void> => {
+export const putUserDataInS3 = async (data: Ticket, uuid: string, nocCode: string): Promise<string> => {
     const s3Data = { ...data };
-    const filePath = `${'nocCode' in s3Data ? s3Data.nocCode : ''}/${s3Data.type}/${uuid}_${Date.now()}.json`;
+    const filePath = `${nocCode}/${s3Data.type}/${uuid}_${Date.now()}.json`;
 
     await putStringInS3(MATCHING_DATA_BUCKET_NAME, filePath, JSON.stringify(s3Data), 'application/json; charset=utf-8');
+    return filePath;
 };
 
 const getTicketPeriod = (ticketPeriodWithInput: TicketPeriodWithInput): TicketPeriod => ({
@@ -247,8 +251,9 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, 'single');
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const products = getPointToPointProducts(req);
+    const singleUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
 
-    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo)) {
+    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo) || !singleUnassignedStops) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
 
@@ -259,6 +264,9 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         ...service,
         type: 'single',
         fareZones: getFareZones(userFareStages, matchingFareZones),
+        unassignedStops: {
+            singleUnassignedStops,
+        },
         products,
         termTime: isTermTime(req),
         operatorName: service.operatorShortName,
@@ -281,11 +289,15 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const inboundMatchingAttributeInfo = getSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE);
     const returnPeriodValidity = getSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE);
     const products = getPointToPointProducts(req);
+    const outboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE);
+    const inboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE);
 
     if (
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo) ||
-        isReturnPeriodValidityWithErrors(returnPeriodValidity)
+        isReturnPeriodValidityWithErrors(returnPeriodValidity) ||
+        !outboundUnassignedStops ||
+        !inboundUnassignedStops
     ) {
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
     }
@@ -305,6 +317,10 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
                   )
                 : [],
         ...(returnPeriodValidity && { returnPeriodValidity }),
+        unassignedStops: {
+            outboundUnassignedStops,
+            inboundUnassignedStops,
+        },
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },

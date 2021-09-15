@@ -23,7 +23,7 @@ import { isFareType } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { removeAllWhiteSpace } from './api/apiUtils/validator';
+import { removeAllWhiteSpace } from '../utils/apiUtils/validator';
 import { PurchaseMethodCardBody } from './viewPurchaseMethods';
 
 const pageTitle = 'Select Purchase Methods - Create Fares Data Service';
@@ -32,7 +32,7 @@ const pageDescription = 'Purchase Methods selection page of the Create Fares Dat
 export interface PurchaseMethodsProps {
     selected?: { [key: string]: SalesOfferPackage[] };
     products: ProductInfo[];
-    salesOfferPackagesList: FromDb<SalesOfferPackage>[];
+    purchaseMethodsList: FromDb<SalesOfferPackage>[];
     errors: ErrorInfo[];
     csrfToken: string;
 }
@@ -41,7 +41,7 @@ export const formatSOPArray = (stringArray: string[]): string =>
     stringArray.map((string) => sentenceCaseString(string)).join(', ');
 
 const generateCheckbox = (
-    salesOfferPackagesList: FromDb<SalesOfferPackage>[],
+    purchaseMethodsList: FromDb<SalesOfferPackage>[],
     productName: string,
     selectedDefault: { [key: string]: SalesOfferPackage[] } | undefined,
     defaultPrice: string,
@@ -51,7 +51,7 @@ const generateCheckbox = (
 
     return (
         <div className="card-row">
-            {salesOfferPackagesList.map((offer, index) => {
+            {purchaseMethodsList.map((offer, index) => {
                 const { name } = offer;
 
                 const productNameIds = removeAllWhiteSpace(productName);
@@ -121,7 +121,7 @@ const generateCheckbox = (
 };
 
 const createSalesOffer = (
-    salesOfferPackagesList: FromDb<SalesOfferPackage>[],
+    purchaseMethodsList: FromDb<SalesOfferPackage>[],
     products: ProductInfo[],
     selected: { [key: string]: SalesOfferPackage[] } | undefined,
     errors: ErrorInfo[],
@@ -142,10 +142,18 @@ const createSalesOffer = (
                         errorId={`product-${removeAllWhiteSpace(productName)}-checkbox-0`}
                         errorClass=""
                     >
-                        <div className="govuk-checkboxes">
-                            {generateCheckbox(salesOfferPackagesList, productName, selected, productPrice, errors)}
-                            <input type="hidden" name={`product-${productName}`} />
-                        </div>
+                        {purchaseMethodsList.length === 0 ? (
+                            <>
+                                <span className="govuk-body">
+                                    <i>You currently have no saved purchase methods</i>
+                                </span>
+                            </>
+                        ) : (
+                            <div className="govuk-checkboxes">
+                                {generateCheckbox(purchaseMethodsList, productName, selected, productPrice, errors)}
+                                <input type="hidden" name={`product-${productName}`} />
+                            </div>
+                        )}
                     </FormElementWrapper>
                 </fieldset>
             </FormGroupWrapper>
@@ -155,7 +163,7 @@ const createSalesOffer = (
 const SelectPurchaseMethods = ({
     selected,
     products,
-    salesOfferPackagesList,
+    purchaseMethodsList,
     csrfToken,
     errors,
 }: PurchaseMethodsProps): ReactElement => {
@@ -182,7 +190,7 @@ const SelectPurchaseMethods = ({
                             Don&apos;t worry you can navigate back to this page when you are finished.
                         </strong>
                     </div>
-                    {createSalesOffer(salesOfferPackagesList, products, selected, errors)}
+                    {createSalesOffer(purchaseMethodsList, products, selected, errors)}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                     <a
                         href={globalSettingsEnabled ? '/viewPurchaseMethods' : '/salesOfferPackages'}
@@ -208,7 +216,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectPurchaseMethods page');
     }
 
-    const salesOfferPackagesList: SalesOfferPackage[] = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
+    const purchaseMethodsList: SalesOfferPackage[] = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
@@ -251,7 +259,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             ...(selected && { selected: selected }),
             products,
-            salesOfferPackagesList: salesOfferPackagesList as FromDb<SalesOfferPackage>[],
+            purchaseMethodsList: purchaseMethodsList as FromDb<SalesOfferPackage>[],
             errors,
             csrfToken,
         },

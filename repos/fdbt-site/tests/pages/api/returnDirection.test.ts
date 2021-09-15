@@ -1,4 +1,4 @@
-import * as apiUtils from '../../../src/pages/api/apiUtils/index';
+import * as apiUtils from '../../../src/utils/apiUtils/index';
 import returnDirection from '../../../src/pages/api/returnDirection';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 

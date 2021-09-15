@@ -88,14 +88,14 @@ export const getProfileRef = (
     return {
         UserProfileRef: {
             version: '1.0',
-            ref: `op:${ticket.passengerType}`,
+            ref: `op:${ticket.passengerType}-0`,
         },
     };
 };
 
-export const getUserProfile = (user: User | GroupCompanion): NetexObject => ({
+export const getUserProfile = (user: User | GroupCompanion, index: number): NetexObject => ({
     version: '1.0',
-    id: `op:${user.passengerType}`,
+    id: `op:${user.passengerType}-${index}`,
     Name: { $t: user.passengerType },
     TypeOfConcessionRef: {
         version: 'fxc:v1.0',
@@ -134,12 +134,12 @@ export const getGroupElement = (groupDefinition: GroupDefinition): NetexObject =
                         $t: groupDefinition.maxPeople,
                     },
                     companionProfiles: {
-                        CompanionProfile: groupDefinition.companions.map(companion => ({
+                        CompanionProfile: groupDefinition.companions.map((companion, index) => ({
                             version: '1.0',
-                            id: `op:companion@${companion.passengerType}`,
+                            id: `op:companion@${companion.passengerType}-${index}`,
                             UserProfileRef: {
                                 version: '1.0',
-                                ref: `op:${companion.passengerType}`,
+                                ref: `op:${companion.passengerType}-${index}`,
                             },
                             MinimumNumberOfPersons: {
                                 $t: companion.minNumber || null,

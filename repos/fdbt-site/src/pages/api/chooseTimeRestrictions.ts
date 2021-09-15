@@ -1,9 +1,9 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
 import { getTimeRestrictionByNameAndNoc, insertTimeRestriction } from '../../data/auroradb';
-import { removeAllWhiteSpace, removeExcessWhiteSpace, isValid24hrTimeFormat } from './apiUtils/validator';
+import { removeAllWhiteSpace, removeExcessWhiteSpace, isValid24hrTimeFormat } from '../../utils/apiUtils/validator';
 import { NextApiRequestWithSession, TimeRestriction, ErrorInfo, FullTimeRestriction, TimeBand } from '../../interfaces';
-import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
+import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
 import { TimeRestrictionDay } from 'shared/matchingJsonTypes';

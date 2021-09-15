@@ -1,9 +1,10 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 import { GlobalSettingsViewPage } from '../components/GlobalSettingsViewPage';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
-import { NextPageContextWithSession, PremadeTimeRestriction, TimeBand } from '../interfaces';
+import { NextPageContextWithSession, PremadeTimeRestriction, DbTimeBand } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
+import { globalSettingsDeleteEnabled } from '../constants/featureFlag';
 
 const title = 'Time restrictions';
 const description = 'Define certain days and time periods that your tickets can be used within.';
@@ -23,14 +24,16 @@ interface TimeRestrictionProps {
     csrfToken: string;
     timeRestrictions: PremadeTimeRestriction[];
     referer: string | null;
+    deleteEnabled: boolean;
 }
 
-const formatTime = (time: string): string => (time ? `${time.substring(0, 2)}:${time.substring(2, 4)}` : '');
+const formatTime = (time: string | object): string =>
+    typeof time === 'object' ? 'Fare day end' : time ? `${time.substring(0, 2)}:${time.substring(2, 4)}` : '';
 
-const formatTimeBand = (timeBand: TimeBand): string =>
+const formatTimeBand = (timeBand: DbTimeBand): string =>
     `${formatTime(timeBand.startTime)}–${formatTime(timeBand.endTime)}`;
 
-const formatTimeBands = (timeBands: TimeBand[]): string =>
+const formatTimeBands = (timeBands: DbTimeBand[]): string =>
     timeBands.length > 0 ? timeBands.map((timeBand) => formatTimeBand(timeBand)).join(', ') : 'Valid all day';
 
 const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: string): JSX.Element => {
@@ -42,7 +45,12 @@ const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: stri
     );
 };
 
-const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRestrictionProps): ReactElement => {
+const ViewTimeRestrictions = ({
+    timeRestrictions,
+    referer,
+    csrfToken,
+    deleteEnabled,
+}: TimeRestrictionProps): ReactElement => {
     return (
         <>
             <GlobalSettingsViewPage
@@ -53,6 +61,7 @@ const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRest
                 title={title}
                 description={description}
                 CardBody={TimeRestrictionCardBody}
+                deleteEnabled={deleteEnabled}
             />
         </>
     );
@@ -88,7 +97,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
 
-    return { props: { timeRestrictions, referer: extractGlobalSettingsReferer(ctx), csrfToken } };
+    return {
+        props: {
+            timeRestrictions,
+            referer: extractGlobalSettingsReferer(ctx),
+            csrfToken,
+            deleteEnabled: globalSettingsDeleteEnabled,
+        },
+    };
 };
 
 export default ViewTimeRestrictions;

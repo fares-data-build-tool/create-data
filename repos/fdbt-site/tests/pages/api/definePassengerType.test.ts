@@ -221,7 +221,7 @@ describe('definePassengerType', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, mockPassengerTypeDetails);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/defineTimeRestrictions',
+            Location: '/selectTimeRestrictions',
         });
     });
 

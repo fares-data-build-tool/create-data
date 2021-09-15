@@ -3,18 +3,18 @@ import zxcvbn from 'zxcvbn';
 import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { decode } from 'jsonwebtoken';
-import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../../../constants';
+import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../../constants';
 import {
     OPERATOR_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
-} from '../../../constants/attributes';
-import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession, SchoolFareTypeAttribute } from '../../../interfaces';
-import { globalSignOut } from '../../../data/cognito';
-import logger from '../../../utils/logger';
-import { destroySession, getSessionAttribute, updateSessionAttribute } from '../../../utils/sessions';
-import { isFareType } from '../../../interfaces/typeGuards';
+} from '../../constants/attributes';
+import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession, SchoolFareTypeAttribute } from '../../interfaces';
+import { globalSignOut } from '../../data/cognito';
+import logger from '../logger';
+import { destroySession, getSessionAttribute, updateSessionAttribute } from '../sessions';
+import { isFareType } from '../../interfaces/typeGuards';
 
 export const setCookieOnResponseObject = (
     cookieName: string,
@@ -65,7 +65,7 @@ export const redirectToError = (
     context: string,
     error: Error,
 ): void => {
-    logger.error(error.toString(), { context, message, error: error.stack?.toString() });
+    logger.error(message, { context, error: error.stack });
     redirectTo(res, '/error');
 };
 

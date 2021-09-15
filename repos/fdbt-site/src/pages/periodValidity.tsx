@@ -50,7 +50,8 @@ export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset 
             {
                 id: 'period-end-of-service',
                 name: 'periodValid',
-                value: 'endOfServiceDay',
+                value: 'fareDayEnd',
+                disableAutoSelect: true,
                 dataAriaControls: 'period-validity-end-of-service-required-conditional',
                 label: 'End of service day',
                 radioButtonHint: {

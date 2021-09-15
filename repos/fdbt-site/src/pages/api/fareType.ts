@@ -1,6 +1,6 @@
 import camelCase from 'lodash/camelCase';
 import { NextApiResponse } from 'next';
-import { redirectToError, redirectTo } from './apiUtils/index';
+import { redirectToError, redirectTo } from '../../utils/apiUtils/index';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';

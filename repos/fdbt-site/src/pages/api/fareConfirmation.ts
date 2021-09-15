@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { redirectToError, redirectOnFareType, isSchemeOperator, redirectTo } from './apiUtils';
+import { redirectToError, redirectOnFareType, isSchemeOperator, redirectTo } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, FareType } from '../../interfaces';
 import { getSessionAttribute } from '../../utils/sessions';
 import { FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';

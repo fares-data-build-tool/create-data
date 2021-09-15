@@ -8,7 +8,7 @@ import {
 import { convertToFullPassengerType, getGroupPassengerTypeById, getPassengerTypeById } from '../../data/auroradb';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { redirectTo, redirectToError, getAndValidateNoc } from './apiUtils/index';
+import { redirectTo, redirectToError, getAndValidateNoc } from '../../utils/apiUtils/index';
 import { getPassengerTypeRedirectLocation } from './definePassengerType';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -24,26 +24,31 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        const databaseCheck = await getPassengerTypeById(selectedPassengerType, nocCode);
-        const groupDataBaseCheck = await getGroupPassengerTypeById(selectedPassengerType, nocCode);
+        const dbIndividual = await getPassengerTypeById(selectedPassengerType, nocCode);
+        const dbGroup = await getGroupPassengerTypeById(selectedPassengerType, nocCode);
 
-        if (!databaseCheck && !groupDataBaseCheck) {
+        if (dbGroup) {
+            const fullGroup = await convertToFullPassengerType(dbGroup, nocCode);
+            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {
+                passengerType: GROUP_PASSENGER_TYPE,
+                id: dbGroup.id,
+            });
+            updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, fullGroup.groupPassengerType.companions);
+
+            updateSessionAttribute(req, GROUP_SIZE_ATTRIBUTE, {
+                maxGroupSize: dbGroup.groupPassengerType.maxGroupSize,
+            });
+        } else if (dbIndividual) {
+            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {
+                ...dbIndividual.passengerType,
+                id: dbIndividual.id,
+            });
+        } else {
             updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {
                 errors,
             });
             redirectTo(res, '/selectPassengerType');
             return;
-        }
-        if (groupDataBaseCheck) {
-            const fullGroup = await convertToFullPassengerType(groupDataBaseCheck, nocCode);
-            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType: GROUP_PASSENGER_TYPE });
-            updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, fullGroup.groupPassengerType.companions);
-
-            updateSessionAttribute(req, GROUP_SIZE_ATTRIBUTE, {
-                maxGroupSize: groupDataBaseCheck.groupPassengerType.maxGroupSize,
-            });
-        } else {
-            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, databaseCheck?.passengerType);
         }
 
         redirectTo(res, getPassengerTypeRedirectLocation(req));

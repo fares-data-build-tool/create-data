@@ -310,13 +310,13 @@
                       <GroupTicket id="op:group" version="1.0">
                         <MaximumNumberOfPersons>5</MaximumNumberOfPersons>
                         <companionProfiles>
-                          <CompanionProfile version="1.0" id="op:companion@adult">
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                          <CompanionProfile version="1.0" id="op:companion@adult-0">
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                             <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
                             <MaximumNumberOfPersons>2</MaximumNumberOfPersons>
                           </CompanionProfile>
-                          <CompanionProfile version="1.0" id="op:companion@child">
-                            <UserProfileRef version="1.0" ref="op:child"/>
+                          <CompanionProfile version="1.0" id="op:companion@child-1">
+                            <UserProfileRef version="1.0" ref="op:child-1"/>
                             <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
                             <MaximumNumberOfPersons>3</MaximumNumberOfPersons>
                           </CompanionProfile>
@@ -515,14 +515,14 @@
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@eligibility@adult">
+                <FareStructureElement version="1.0" id="op:Tariff@eligibility@adult-0">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@adult" version="1.0" order="0">
+                  <GenericParameterAssignment id="op:Tariff@adult-0" version="1.0" order="0">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:adult">
+                      <UserProfile version="1.0" id="op:adult-0">
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                         <MinimumAge>18</MinimumAge>
@@ -531,14 +531,14 @@
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@eligibility@child">
+                <FareStructureElement version="1.0" id="op:Tariff@eligibility@child-1">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@child" version="1.0" order="0">
+                  <GenericParameterAssignment id="op:Tariff@child-1" version="1.0" order="0">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:child">
+                      <UserProfile version="1.0" id="op:child-1">
                         <Name>child</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
                         <MinimumAge>5</MinimumAge>

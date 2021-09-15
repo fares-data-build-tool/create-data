@@ -12,8 +12,8 @@ import { SessionAttributeTypes } from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import salesConfirmation from '../../../src/pages/api/salesConfirmation';
 import * as session from '../../../src/utils/sessions';
-import * as userData from '../../../src/pages/api/apiUtils/userData';
-import * as index from '../../../src/pages/api/apiUtils/index';
+import * as userData from '../../../src/utils/apiUtils/userData';
+import * as index from '../../../src/utils/apiUtils/index';
 
 describe('salesOfferPackages', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
@@ -30,7 +30,7 @@ describe('salesOfferPackages', () => {
         jest.resetAllMocks();
     });
 
-    it('does not update the product date attribute if both start and end date are already on it', () => {
+    it('does not update the product date attribute if both start and end date are already on it', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
@@ -41,7 +41,7 @@ describe('salesOfferPackages', () => {
             },
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             startDate: 'test start date',
@@ -49,7 +49,7 @@ describe('salesOfferPackages', () => {
         });
     });
 
-    it('updates the start product date attribute if the start date is missing', () => {
+    it('updates the start product date attribute if the start date is missing', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
@@ -59,7 +59,7 @@ describe('salesOfferPackages', () => {
             },
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             startDate: expect.stringContaining(todaysDate),
@@ -67,7 +67,7 @@ describe('salesOfferPackages', () => {
         });
     });
 
-    it('updates the end product date attribute if the end date is missing', () => {
+    it('updates the end product date attribute if the end date is missing', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
@@ -77,7 +77,7 @@ describe('salesOfferPackages', () => {
             },
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             startDate: 'test start date',
@@ -85,19 +85,19 @@ describe('salesOfferPackages', () => {
         });
     });
 
-    it('gets scheme operator json for a scheme operator', () => {
+    it('gets scheme operator json for a scheme operator', async () => {
         const isSchemeOperatorSpy = jest.spyOn(index, 'isSchemeOperator');
         isSchemeOperatorSpy.mockImplementation(() => true);
         const { req, res } = getMockRequestAndResponse({
             body: {},
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(getSchemeOperatorTicketJsonSpy).toBeCalledWith(req, res);
     });
 
-    it('gets single json for a single ticket', () => {
+    it('gets single json for a single ticket', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
@@ -105,12 +105,12 @@ describe('salesOfferPackages', () => {
             },
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(getSingleTicketJsonSpy).toBeCalledWith(req, res);
     });
 
-    it('gets return json for a return ticket', () => {
+    it('gets return json for a return ticket', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
@@ -118,12 +118,12 @@ describe('salesOfferPackages', () => {
             },
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(getReturnTicketJsonSpy).toBeCalledWith(req, res);
     });
 
-    it('gets geoZone json for a period geoZone ticket', () => {
+    it('gets geoZone json for a period geoZone ticket', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
@@ -134,12 +134,12 @@ describe('salesOfferPackages', () => {
             },
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(getGeoZoneTicketJsonSpy).toBeCalledWith(req, res);
     });
 
-    it('gets geoZone json for a multi operator geoZone ticket', () => {
+    it('gets geoZone json for a multi operator geoZone ticket', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
@@ -150,12 +150,12 @@ describe('salesOfferPackages', () => {
             },
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(getGeoZoneTicketJsonSpy).toBeCalledWith(req, res);
     });
 
-    it('gets multiService json for a period multiService ticket', () => {
+    it('gets multiService json for a period multiService ticket', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
@@ -166,12 +166,12 @@ describe('salesOfferPackages', () => {
             },
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(getMultipleServicesTicketJsonSpy).toBeCalledWith(req, res);
     });
 
-    it('gets multiService json for a multi operator multiService ticket', () => {
+    it('gets multiService json for a multi operator multiService ticket', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
@@ -182,12 +182,12 @@ describe('salesOfferPackages', () => {
             },
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(getMultipleServicesTicketJsonSpy).toBeCalledWith(req, res);
     });
 
-    it('gets flatFare json for a flatFare multiple services ticket', () => {
+    it('gets flatFare json for a flatFare multiple services ticket', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
@@ -198,12 +198,12 @@ describe('salesOfferPackages', () => {
             },
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(getMultipleServicesTicketJsonSpy).toBeCalledWith(req, res);
     });
 
-    it('gets flatFare json for a flatFare geoZone ticket', () => {
+    it('gets flatFare json for a flatFare geoZone ticket', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
@@ -214,15 +214,16 @@ describe('salesOfferPackages', () => {
             },
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(getGeoZoneTicketJsonSpy).toBeCalledWith(req, res);
     });
 
-    it('creates a group definition for a group ticket and adds to user json object', () => {
+    it('creates a group definition for a group ticket and adds to user json object', async () => {
         const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
         getFareTypeFromFromAttributesSpy.mockImplementation(() => 'single');
         const putUserDataInS3Spy = jest.spyOn(userData, 'putUserDataInS3');
+        putUserDataInS3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
         const exampleUserJson: SingleTicket = {
             nocCode: 'TEST',
             type: 'single',
@@ -246,6 +247,9 @@ describe('salesOfferPackages', () => {
             products: [],
             fareZones: [],
             termTime: true,
+            unassignedStops: {
+                singleUnassignedStops: [],
+            },
         };
         getSingleTicketJsonSpy.mockImplementation(() => {
             return exampleUserJson;
@@ -265,7 +269,7 @@ describe('salesOfferPackages', () => {
             } as unknown as SessionAttributeTypes,
         });
 
-        salesConfirmation(req, res);
+        await salesConfirmation(req, res);
 
         expect(putUserDataInS3Spy).toBeCalledWith(
             {
@@ -278,6 +282,7 @@ describe('salesOfferPackages', () => {
                 },
             },
             expect.any(String),
+            'TEST',
         );
     });
 });

@@ -13,7 +13,7 @@ import TwoThirdsLayout from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils/index';
 import logger from '../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 
 const title = 'Fare Type - Create Fares Data Service ';
 const description = 'Fare Type selection page of the Create Fares Data Service';

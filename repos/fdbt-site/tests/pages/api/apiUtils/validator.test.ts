@@ -3,7 +3,7 @@ import {
     isCurrency,
     removeAllWhiteSpace,
     isValid24hrTimeFormat,
-} from '../../../../src/pages/api/apiUtils/validator';
+} from '../../../../src/utils/apiUtils/validator';
 
 describe('validator', () => {
     describe('removeExcessWhiteSpace', () => {

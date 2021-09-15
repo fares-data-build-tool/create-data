@@ -24,7 +24,7 @@ describe('multipleOperators', () => {
             nocCode: 'TEST',
         });
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/fareType',
+            Location: '/home',
         });
     });
 

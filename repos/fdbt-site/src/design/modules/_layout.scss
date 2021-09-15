@@ -332,7 +332,11 @@ svg:not(:root) {
 
     .govuk-form-group {
         margin-bottom: 0;
-        max-width: 230px;
+    }
+
+    .item {
+        margin-top: auto;
+        margin-left: govuk-spacing(4);
     }
 }
 

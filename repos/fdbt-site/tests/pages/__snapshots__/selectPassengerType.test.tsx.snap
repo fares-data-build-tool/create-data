@@ -163,6 +163,8 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
                 },
               }
             }
+            defaultChecked={false}
+            deleteEnabled={false}
             key="3"
           />
           <PassengerTypeCard
@@ -178,6 +180,8 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
                 },
               }
             }
+            defaultChecked={false}
+            deleteEnabled={false}
             key="2"
           />
         </div>
@@ -195,7 +199,9 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
             <p
               className="govuk-body"
             >
-              You currently have no saved groups
+              <em>
+                You currently have no saved groups
+              </em>
             </p>
           </div>
         </div>
@@ -300,6 +306,8 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 },
               }
             }
+            defaultChecked={false}
+            deleteEnabled={false}
             key="3"
           />
           <PassengerTypeCard
@@ -315,6 +323,8 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 },
               }
             }
+            defaultChecked={false}
+            deleteEnabled={false}
             key="2"
           />
         </div>
@@ -357,6 +367,8 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "name": "family",
               }
             }
+            defaultChecked={true}
+            deleteEnabled={false}
             key="1"
           />
           <PassengerTypeCard
@@ -381,6 +393,8 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "name": "couple",
               }
             }
+            defaultChecked={false}
+            deleteEnabled={false}
             key="4"
           />
         </div>
@@ -499,6 +513,8 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 },
               }
             }
+            defaultChecked={false}
+            deleteEnabled={false}
             key="3"
           />
           <PassengerTypeCard
@@ -514,6 +530,8 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 },
               }
             }
+            defaultChecked={false}
+            deleteEnabled={false}
             key="2"
           />
         </div>
@@ -556,6 +574,8 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "name": "family",
               }
             }
+            defaultChecked={false}
+            deleteEnabled={false}
             key="1"
           />
           <PassengerTypeCard
@@ -580,6 +600,8 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "name": "couple",
               }
             }
+            defaultChecked={false}
+            deleteEnabled={false}
             key="4"
           />
         </div>

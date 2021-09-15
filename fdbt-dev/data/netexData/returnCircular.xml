@@ -547,7 +547,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:student">
+                      <UserProfile version="1.0" id="op:student-0">
                         <Name>student</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:student"/>
                         <MinimumAge>12</MinimumAge>
@@ -751,7 +751,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@return_student"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@return_student-SOP@Onboard_(cash)"/>
-                <UserProfileRef version="1.0" ref="op:student"/>
+                <UserProfileRef version="1.0" ref="op:student-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
@@ -1080,7 +1080,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@return_student"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@return_student-SOP@Onboard_(contactless)"/>
-                <UserProfileRef version="1.0" ref="op:student"/>
+                <UserProfileRef version="1.0" ref="op:student-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
@@ -1409,7 +1409,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@return_student"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@return_student-SOP@Online_(smart_card)"/>
-                <UserProfileRef version="1.0" ref="op:student"/>
+                <UserProfileRef version="1.0" ref="op:student-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
@@ -1738,7 +1738,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@return_student"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@return_student-SOP@Mobile_App"/>
-                <UserProfileRef version="1.0" ref="op:student"/>
+                <UserProfileRef version="1.0" ref="op:student-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
@@ -2067,7 +2067,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@return_student"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@return_student-SOP@All_Encompassing"/>
-                <UserProfileRef version="1.0" ref="op:student"/>
+                <UserProfileRef version="1.0" ref="op:student-0"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>

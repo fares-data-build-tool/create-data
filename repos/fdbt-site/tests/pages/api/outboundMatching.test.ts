@@ -1,31 +1,10 @@
+import { UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE } from './../../../src/constants/attributes';
 import outboundMatching from '../../../src/pages/api/outboundMatching';
 import { getMockRequestAndResponse, service, mockMatchingUserFareStages } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import { MatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
 import { MATCHING_ATTRIBUTE } from '../../../src/constants/attributes';
-
-const selectedOptions = {
-    option0: [
-        'Acomb Green Lane',
-        '{"stop":{"stopName":"Yoden Way - Chapel Hill Road","naptanCode":"duratdmj","atcoCode":"13003521G","localityCode":"E0045956","localityName":"Peterlee","indicator":"W-bound","street":"Yodan Way","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Acomb Green Lane"}',
-    ],
-    option1: [
-        'Mattison Way',
-        '{"stop":{"stopName":"Yoden Way","naptanCode":"duratdmt","atcoCode":"13003522F","localityCode":"E0010183","localityName":"Horden","indicator":"SW-bound","street":"Yoden Way","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Mattison Way"}',
-    ],
-    option2: [
-        'Holl Bank/Beech Ave',
-        '{"stop":{"stopName":"Surtees Rd-Edenhill Rd","naptanCode":"durapgdw","atcoCode":"13003219H","localityCode":"E0045956","localityName":"Peterlee","indicator":"NW-bound","street":"Surtees Road","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Holl Bank/Beech Ave"}',
-    ],
-    option3: [
-        'Blossom Street',
-        '{"stop":{"stopName":"Bus Station","naptanCode":"duratdma","atcoCode":"13003519H","localityCode":"E0045956","localityName":"Peterlee","indicator":"H","street":"Bede Way","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Blossom Street"}',
-    ],
-    option4: [
-        'Piccadilly (York)',
-        '{"stop":{"stopName":"Kell Road","naptanCode":"duraptwp","atcoCode":"13003345D","localityCode":"E0010183","localityName":"Horden","indicator":"SE-bound","street":"Kell Road","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Piccadilly (York)"}',
-    ],
-};
+import { selections, selectedOptionsWithAnUnassignedStop } from './matching.test';
 
 describe('Outbound Matching API', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
@@ -43,7 +22,7 @@ describe('Outbound Matching API', () => {
         };
         const { req, res } = getMockRequestAndResponse({
             body: {
-                ...selectedOptions,
+                ...selections,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
@@ -52,6 +31,39 @@ describe('Outbound Matching API', () => {
         outboundMatching(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, expectedMatchingInfo);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE, []);
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/inboundMatching' });
+    });
+
+    it('adds the unassigned stops to the outbound session attribute', () => {
+        const expectedMatchingInfo: MatchingInfo = {
+            service: expect.any(Object),
+            userFareStages: expect.any(Object),
+            matchingFareZones: expect.any(Object),
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                ...selectedOptionsWithAnUnassignedStop,
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStages),
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        outboundMatching(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, expectedMatchingInfo);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE, [
+            {
+                atcoCode: '2590B0207',
+                indicator: 'opp',
+                localityCode: 'E0035271',
+                localityName: 'Anchorsholme',
+                naptanCode: 'blpadpdg',
+                parentLocalityName: 'Cleveleys',
+                stopName: 'Cresswood Avenue',
+                street: 'Anchorsholme Lane East',
+            },
+        ]);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/inboundMatching' });
     });
 
@@ -62,8 +74,10 @@ describe('Outbound Matching API', () => {
         };
         const { req, res } = getMockRequestAndResponse({
             body: {
-                option0: '',
-                option1: '',
+                option0:
+                    '{"stopName":"Cresswood Avenue","naptanCode":"blpadpdg","atcoCode":"2590B0207","localityCode":"E0035271","localityName":"Anchorsholme","parentLocalityName":"Cleveleys","indicator":"opp","street":"Anchorsholme Lane East"}',
+                option1:
+                    '{"stopName":"North Drive","naptanCode":"blpagjmj","atcoCode":"2590B0487","localityCode":"E0035271","localityName":"Anchorsholme","parentLocalityName":"Cleveleys","indicator":"adj","street":"North Drive"}',
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
@@ -84,7 +98,8 @@ describe('Outbound Matching API', () => {
         };
         const { req, res } = getMockRequestAndResponse({
             body: {
-                option0: '',
+                option0:
+                    '{"stopName":"Cresswood Avenue","naptanCode":"blpadpdg","atcoCode":"2590B0207","localityCode":"E0035271","localityName":"Anchorsholme","parentLocalityName":"Cleveleys","indicator":"opp","street":"Anchorsholme Lane East"}',
                 option1: [
                     'Acomb Green Lane',
                     '{"stop":{"stopName":"Yoden Way - Chapel Hill Road","naptanCode":"duratdmj","atcoCode":"13003521G","localityCode":"E0045956","localityName":"Peterlee","indicator":"W-bound","street":"Yodan Way","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Acomb Green Lane"}',
@@ -104,7 +119,7 @@ describe('Outbound Matching API', () => {
 
     it('redirects back to error page if no user data in body', () => {
         const { req, res } = getMockRequestAndResponse({
-            body: { ...selectedOptions, service: JSON.stringify(service), userfarestages: '' },
+            body: { ...selections, service: JSON.stringify(service), userfarestages: '' },
             mockWriteHeadFn: writeHeadMock,
         });
 
@@ -117,7 +132,7 @@ describe('Outbound Matching API', () => {
     it('redirects back to error page if no service info in body', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                ...selectedOptions,
+                ...selections,
                 service: '',
                 userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },

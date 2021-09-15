@@ -1,5 +1,5 @@
 import * as aurora from '../../../src/data/auroradb';
-import * as utils from '../../../src/pages/api/apiUtils/index';
+import * as utils from '../../../src/utils/apiUtils/index';
 import * as session from '../../../src/utils/sessions';
 import { GS_FARE_DAY_END_ATTRIBUTE } from '../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';

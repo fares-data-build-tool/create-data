@@ -525,11 +525,11 @@
                 <FareStructureElement version="1.0" id="op:Tariff@eligibility@adult">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@adult" version="1.0" order="0">
+                  <GenericParameterAssignment id="op:Tariff@adult-0" version="1.0" order="0">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:adult">
+                      <UserProfile version="1.0" id="op:adult-0">
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                         <MinimumAge>18</MinimumAge>
@@ -998,7 +998,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_1@Onboard_(cash)@zone">
@@ -1033,7 +1033,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_1@Onboard_(contactless)@zone">
@@ -1068,7 +1068,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_1@Online_(smart_card)@zone">
@@ -1103,7 +1103,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_1@Mobile_App@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_1@Mobile_App@zone">
@@ -1138,7 +1138,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_2@Onboard_(cash)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_2@Onboard_(cash)@zone">
@@ -1173,7 +1173,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_2@Onboard_(contactless)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_2@Onboard_(contactless)@zone">
@@ -1208,7 +1208,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_2@Online_(smart_card)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_2@Online_(smart_card)@zone">
@@ -1243,7 +1243,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_2@Mobile_App@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_2@Mobile_App@zone">
@@ -1278,7 +1278,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_3@Onboard_(contactless)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_3@Onboard_(contactless)@zone">
@@ -1313,7 +1313,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_3@Online_(smart_card)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_3@Online_(smart_card)@zone">
@@ -1348,7 +1348,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_3@Mobile_App@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_3@Mobile_App@zone">
@@ -1383,7 +1383,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_3@All_Encompassing@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_3@All_Encompassing@zone">
@@ -1418,7 +1418,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_4@Onboard_(cash)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_4@Onboard_(cash)@zone">
@@ -1453,7 +1453,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_4@Onboard_(contactless)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_4@Onboard_(contactless)@zone">
@@ -1488,7 +1488,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_5@onboard_sales_offer_package@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_5@onboard_sales_offer_package@zone">
@@ -1523,7 +1523,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_5@mobile_app_offer_package@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_5@mobile_app_offer_package@zone">
@@ -1558,7 +1558,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Product_5@online_offer_package@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Product_5@online_offer_package@zone">

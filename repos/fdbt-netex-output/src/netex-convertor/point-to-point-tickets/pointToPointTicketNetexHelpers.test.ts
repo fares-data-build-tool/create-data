@@ -456,7 +456,7 @@ describe('Netex Helpers', () => {
                     },
                     Name: { $t: expect.any(String) },
                 };
-                const actualUserProfile = getUserProfile(ticket as User);
+                const actualUserProfile = getUserProfile(ticket as User, 0);
                 expect(actualUserProfile).toEqual(expectedUserProfile);
             },
         );
@@ -488,7 +488,7 @@ describe('Netex Helpers', () => {
                     proof: 'Yes',
                     proofDocuments: ['Membership Card'],
                 };
-                const actualUserProfile = getUserProfile(ticketWithAgeRangeAndProof as User);
+                const actualUserProfile = getUserProfile(ticketWithAgeRangeAndProof as User, 0);
                 expect(actualUserProfile).toEqual(expectedUserProfile);
             },
         );
@@ -521,7 +521,7 @@ describe('Netex Helpers', () => {
                     ageRange: 'Yes',
                     ageRangeMin: '18',
                 };
-                const actualUserProfile = getUserProfile(ticketWithAgeRange as User);
+                const actualUserProfile = getUserProfile(ticketWithAgeRange as User, 0);
                 expect(actualUserProfile).toEqual(expectedUserProfile);
             },
         );

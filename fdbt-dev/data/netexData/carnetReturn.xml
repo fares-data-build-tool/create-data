@@ -641,7 +641,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:child">
+                      <UserProfile version="1.0" id="op:child-0">
                         <Name>child</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
                         <MaximumAge>14</MaximumAge>
@@ -850,7 +850,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@return_child"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@return_child-SOP@Onboard_(cash)"/>
-                <UserProfileRef version="1.0" ref="op:child"/>
+                <UserProfileRef version="1.0" ref="op:child-0"/>
                 <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@2"/>
               </pricesFor>
               <usedIn>
@@ -1180,7 +1180,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@return_child"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@return_child-SOP@Onboard_(contactless)"/>
-                <UserProfileRef version="1.0" ref="op:child"/>
+                <UserProfileRef version="1.0" ref="op:child-0"/>
                 <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@2"/>
               </pricesFor>
               <usedIn>
@@ -1510,7 +1510,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@return_child"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@return_child-SOP@Online_(smart_card)"/>
-                <UserProfileRef version="1.0" ref="op:child"/>
+                <UserProfileRef version="1.0" ref="op:child-0"/>
                 <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@2"/>
               </pricesFor>
               <usedIn>
@@ -1840,7 +1840,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@return_child"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@return_child-SOP@Mobile_App"/>
-                <UserProfileRef version="1.0" ref="op:child"/>
+                <UserProfileRef version="1.0" ref="op:child-0"/>
                 <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@2"/>
               </pricesFor>
               <usedIn>
@@ -2170,7 +2170,7 @@
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@return_child"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@return_child-SOP@All_Encompassing"/>
-                <UserProfileRef version="1.0" ref="op:child"/>
+                <UserProfileRef version="1.0" ref="op:child-0"/>
                 <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@2"/>
               </pricesFor>
               <usedIn>

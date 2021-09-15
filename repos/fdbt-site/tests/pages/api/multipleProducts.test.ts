@@ -16,7 +16,7 @@ import {
     invalidDurationTypeProducts,
     multipleProductsWithErrors,
 } from '../../testData/mockData';
-import * as apiUtils from '../../../src/pages/api/apiUtils';
+import * as apiUtils from '../../../src/utils/apiUtils';
 import {
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -93,7 +93,7 @@ describe('multipleProducts', () => {
                 multipleProductDurationInput1: '54',
                 multipleProductDurationUnitsInput1: 'week',
             },
-            { Location: '/periodValidity' },
+            { Location: '/selectPeriodValidity' },
             'period',
         ],
 
@@ -201,7 +201,7 @@ describe('multipleProducts', () => {
                 carnetExpiryDurationInput1: '10',
                 carnetExpiryUnitInput1: 'week',
             },
-            { Location: '/periodValidity' },
+            { Location: '/selectPeriodValidity' },
         ],
     ];
 
@@ -251,7 +251,7 @@ describe('multipleProducts', () => {
 
         jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         multipleProduct(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/periodValidity' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/selectPeriodValidity' });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
             products: [
                 {

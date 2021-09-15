@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { MULTI_OP_TXC_SOURCE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { redirectToError, redirectTo } from './apiUtils/index';
+import { redirectToError, redirectTo } from '../../utils/apiUtils/index';
 import { NextApiRequestWithSession } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {

@@ -117,10 +117,11 @@ describe('selectPassengerType', () => {
         await selectPassengerType(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/defineTimeRestrictions',
+            Location: '/selectTimeRestrictions',
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, {
             passengerType: GROUP_PASSENGER_TYPE,
+            id: 3,
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(
             req,
@@ -153,9 +154,12 @@ describe('selectPassengerType', () => {
         await selectPassengerType(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/defineTimeRestrictions',
+            Location: '/selectTimeRestrictions',
         });
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, databaseResult.passengerType);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, {
+            passengerType: 'adult',
+            id: 3,
+        });
     });
 });

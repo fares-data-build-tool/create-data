@@ -2,10 +2,10 @@ import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
 import { globalSettingsEnabled } from '../../constants/featureFlag';
 import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
-import { getTimeRestrictionByNameAndNoc } from '../../data/auroradb';
+import { getTimeRestrictionByNameAndNoc, getFareDayEnd } from '../../data/auroradb';
 import { NextApiRequestWithSession, TimeRestriction, TimeRestrictionsDefinitionWithErrors } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
+import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -51,10 +51,37 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 );
             }
 
+            const fareDayEnd = await getFareDayEnd(noc);
+
+            const dbTimeRestriction = results[0];
+            const timeRestrictions = dbTimeRestriction.contents.map((timeRestriction) => ({
+                ...timeRestriction,
+                timeBands: timeRestriction.timeBands.map((timeBand) => {
+                    let endTime: string;
+                    if (typeof timeBand.endTime === 'string') {
+                        endTime = timeBand.endTime;
+                    } else {
+                        if (!fareDayEnd) {
+                            throw new Error('No fare day end set for time restriction');
+                        }
+
+                        endTime = fareDayEnd;
+                    }
+
+                    return {
+                        ...timeBand,
+                        endTime: endTime,
+                    };
+                }),
+            }));
+
             updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
-                fullTimeRestrictions: results[0].contents,
+                fullTimeRestrictions: timeRestrictions,
                 errors: [],
+                id: dbTimeRestriction.id,
             });
+
+            updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, undefined);
 
             redirectTo(res, '/fareConfirmation');
             return;

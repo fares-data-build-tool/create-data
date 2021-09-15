@@ -6,7 +6,6 @@ import { FromDb } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
     CompanionInfo,
-    FullTimeRestriction,
     GroupPassengerType,
     Operator,
     OperatorGroup,
@@ -20,6 +19,7 @@ import {
     GroupPassengerTypeDb,
     GroupPassengerTypeReference,
     FullGroupPassengerType,
+    DbTimeRestriction,
 } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -116,7 +116,7 @@ export const replaceInternalNocCode = (nocCode: string): string => {
 
 let connectionPool: Pool;
 
-const executeQuery = async <T>(query: string, values: (string | boolean | number)[]): Promise<T> => {
+const executeQuery = async <T>(query: string, values: (string | boolean | number | Date)[]): Promise<T> => {
     if (!connectionPool) {
         connectionPool = getAuroraDBClient();
     }
@@ -593,7 +593,7 @@ export const getOperatorGroupsByNameAndNoc = async (name: string, nocCode: strin
 
 export const insertTimeRestriction = async (
     nocCode: string,
-    timeRestriction: FullTimeRestriction[],
+    timeRestriction: DbTimeRestriction[],
     name: string,
 ): Promise<void> => {
     logger.info('', {
@@ -618,7 +618,7 @@ export const insertTimeRestriction = async (
 export const updateTimeRestriction = async (
     id: number,
     nocCode: string,
-    timeRestriction: FullTimeRestriction[],
+    timeRestriction: DbTimeRestriction[],
     name: string,
 ): Promise<void> => {
     logger.info('', {
@@ -1251,5 +1251,29 @@ export const upsertFareDayEnd = async (nocCode: string, fareDayEnd: string): Pro
         }
     } catch (error) {
         throw new Error(`Could not insert passenger type into the passengerType table. ${error}`);
+    }
+};
+
+export const insertProducts = async (
+    nocCode: string,
+    matchingJsonLink: string,
+    dateModified: Date,
+    fareType: string,
+    lineId: string | undefined,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'inserting products for given noc and fareType',
+        noc: nocCode,
+        fareType,
+    });
+
+    const insertQuery = `INSERT INTO products 
+    (nocCode, matchingJsonLink, dateModified, fareType, lineId) 
+    VALUES (?, ?, ?, ?, ?)`;
+    try {
+        await executeQuery(insertQuery, [nocCode, matchingJsonLink, dateModified, fareType, lineId || '']);
+    } catch (error) {
+        throw new Error(`Could not insert products into the products table. ${error.stack}`);
     }
 };

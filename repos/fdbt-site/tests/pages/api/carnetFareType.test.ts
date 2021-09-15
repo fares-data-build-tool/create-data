@@ -7,6 +7,7 @@ import {
     CARNET_FARE_TYPE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import { ErrorInfo } from '../../../src/interfaces';
+import { globalSettingsEnabled } from '../../../src/constants/featureFlag';
 
 describe('fareType', () => {
     const writeHeadMock = jest.fn();
@@ -34,11 +35,13 @@ describe('fareType', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, {
             fareType: req.body.fareType,
         });
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, {
-            passengerType: 'schoolPupil',
-        });
+        if (!globalSettingsEnabled) {
+            expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, {
+                passengerType: 'schoolPupil',
+            });
+        }
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/definePassengerType',
+            Location: '/selectPassengerType',
         });
     });
 
@@ -52,7 +55,7 @@ describe('fareType', () => {
             fareType: req.body.fareType,
         });
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/passengerType',
+            Location: '/selectPassengerType',
         });
     });
 

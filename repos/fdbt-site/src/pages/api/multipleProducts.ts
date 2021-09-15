@@ -1,4 +1,5 @@
 import { NextApiResponse } from 'next';
+import { globalSettingsEnabled } from '../../../src/constants/featureFlag';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -9,7 +10,7 @@ import {
 import { ErrorInfo, MultiProduct, MultiProductWithErrors, NextApiRequestWithSession } from '../../interfaces';
 import { isFareTypeAttributeWithErrors } from '../../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { redirectTo, redirectToError } from './apiUtils';
+import { redirectTo, redirectToError } from '../../utils/apiUtils';
 
 import {
     checkDurationIsValid,
@@ -17,7 +18,7 @@ import {
     checkPriceIsValid,
     checkProductNameIsValid,
     removeExcessWhiteSpace,
-} from './apiUtils/validator';
+} from '../../utils/apiUtils/validator';
 
 export const isValidInputDuration = (durationInput: string, carnet: boolean): boolean => {
     const allowedUnits = ['day', 'week', 'month', 'year', 'hour'];
@@ -311,7 +312,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products: multipleProducts });
-        redirectTo(res, isFlatFare ? '/ticketConfirmation' : '/periodValidity');
+        redirectTo(
+            res,
+            isFlatFare ? '/ticketConfirmation' : globalSettingsEnabled ? '/selectPeriodValidity' : '/periodValidity',
+        );
     } catch (error) {
         const message = 'There was a problem inputting the product name, price and/or duration:';
         redirectToError(res, message, 'api.multipleProducts', error);

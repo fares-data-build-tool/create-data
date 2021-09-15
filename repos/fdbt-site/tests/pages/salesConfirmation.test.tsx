@@ -178,12 +178,12 @@ describe('pages', () => {
             expect(result).toStrictEqual([
                 {
                     content: 'my way of selling tickets',
-                    href: 'selectSalesOfferPackage',
+                    href: 'selectPurchaseMethods',
                     name: 'Sales offer package 1 - A sales offer package',
                 },
                 {
                     content: 'another way of selling tickets',
-                    href: 'selectSalesOfferPackage',
+                    href: 'selectPurchaseMethods',
                     name: 'Sales offer package 2 - Another sales offer package',
                 },
                 {
@@ -257,7 +257,7 @@ describe('pages', () => {
             expect(result).toStrictEqual([
                 {
                     content: 'Product one',
-                    href: 'selectSalesOfferPackage',
+                    href: 'selectPurchaseMethods',
                     name: 'Product',
                 },
                 {
@@ -267,12 +267,12 @@ describe('pages', () => {
                         'Payment method(s): Cash',
                         'Ticket formats: Paper ticket',
                     ],
-                    href: 'selectSalesOfferPackage',
+                    href: 'selectPurchaseMethods',
                     name: 'Sales offer package',
                 },
                 {
                     content: 'Another one',
-                    href: 'selectSalesOfferPackage',
+                    href: 'selectPurchaseMethods',
                     name: 'Product',
                 },
                 {
@@ -283,7 +283,7 @@ describe('pages', () => {
                         'Payment method(s): Cash',
                         'Ticket formats: Paper ticket',
                     ],
-                    href: 'selectSalesOfferPackage',
+                    href: 'selectPurchaseMethods',
                     name: 'Sales offer package',
                 },
                 {
@@ -294,7 +294,7 @@ describe('pages', () => {
                         'Payment method(s): Mobile device',
                         'Ticket formats: Mobile app',
                     ],
-                    href: 'selectSalesOfferPackage',
+                    href: 'selectPurchaseMethods',
                     name: 'Sales offer package',
                 },
                 {

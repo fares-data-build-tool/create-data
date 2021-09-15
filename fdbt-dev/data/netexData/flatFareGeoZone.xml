@@ -273,11 +273,11 @@
                 <FareStructureElement version="1.0" id="op:Tariff@eligibility@adult">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@adult" version="1.0" order="0">
+                  <GenericParameterAssignment id="op:Tariff@adult-0" version="1.0" order="0">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:adult">
+                      <UserProfile version="1.0" id="op:adult-0">
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                         <MinimumAge>18</MinimumAge>
@@ -378,7 +378,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:JTest00@Onboard_(cash)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <DistanceMatrixElementPrice version="1.0" id="op:JTest00@Onboard_(cash)@adult">
@@ -411,7 +411,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:JTest00@Onboard_(contactless)@adult@zone@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
                             <DistanceMatrixElementPrice version="1.0" id="op:JTest00@Onboard_(contactless)@adult">

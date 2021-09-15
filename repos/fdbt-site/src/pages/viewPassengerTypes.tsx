@@ -10,6 +10,7 @@ import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { updateSessionAttribute } from '../utils/sessions';
+import { globalSettingsDeleteEnabled } from '../constants/featureFlag';
 
 const title = 'Passenger Types - Create Fares Data Service';
 const description = 'View and edit your passenger types.';
@@ -19,6 +20,7 @@ interface PassengerTypeProps {
     singlePassengerTypes: SinglePassengerType[];
     groupPassengerTypes: FullGroupPassengerType[];
     referer: string | null;
+    deleteEnabled: boolean;
 }
 
 const ViewPassengerTypes = ({
@@ -26,6 +28,7 @@ const ViewPassengerTypes = ({
     groupPassengerTypes,
     csrfToken,
     referer,
+    deleteEnabled,
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         passengerTypeName: string;
@@ -59,11 +62,11 @@ const ViewPassengerTypes = ({
     return (
         <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div className="govuk-grid-row" data-card-count={singlePassengerTypes.length + groupPassengerTypes.length}>
-                <div className="govuk-grid-column-one-third">
+                <div className="govuk-grid-column-one-quarter">
                     <SubNavigation />
                 </div>
 
-                <div className="govuk-grid-column-two-thirds">
+                <div className="govuk-grid-column-three-quarters">
                     <h1 className="govuk-heading-xl">Passenger types</h1>
                     <p className="govuk-body govuk-!-margin-bottom-8">
                         Define age range and required proof documents of your passengers as well as passenger groups
@@ -76,11 +79,12 @@ const ViewPassengerTypes = ({
                             <IndividualPassengerTypes
                                 singlePassengerTypes={singlePassengerTypes}
                                 deleteActionHandler={deleteActionHandler}
+                                deleteEnabled={deleteEnabled}
                             />
                         )}
 
                         <a
-                            className="govuk-button govuk-button govuk-!-margin-top-5"
+                            className="govuk-button govuk-button"
                             data-module="govuk-button"
                             href="/managePassengerTypes"
                         >
@@ -95,6 +99,7 @@ const ViewPassengerTypes = ({
                             <PassengerTypeGroups
                                 deleteActionHandler={deleteActionHandler}
                                 passengerTypeGroups={groupPassengerTypes}
+                                deleteEnabled={deleteEnabled}
                             />
                         )}
 
@@ -132,7 +137,9 @@ const NoIndividualPassengerTypes = (): ReactElement => {
     return (
         <>
             <h2 className="govuk-heading-l">Individual</h2>
-            <p className="govuk-body">You currently have no passenger types saved.</p>
+            <p className="govuk-body">
+                <em>You currently have no passenger types saved.</em>
+            </p>
         </>
     );
 };
@@ -140,11 +147,13 @@ const NoIndividualPassengerTypes = (): ReactElement => {
 interface IndividualPassengerTypesProps {
     singlePassengerTypes: SinglePassengerType[];
     deleteActionHandler: (id: number, name: string, isGroup: boolean) => void;
+    deleteEnabled: boolean;
 }
 
 const IndividualPassengerTypes = ({
     singlePassengerTypes,
     deleteActionHandler,
+    deleteEnabled,
 }: IndividualPassengerTypesProps): ReactElement => {
     return (
         <>
@@ -156,6 +165,8 @@ const IndividualPassengerTypes = ({
                         contents={singlePassengerType}
                         deleteActionHandler={deleteActionHandler}
                         key={singlePassengerType.id.toString()}
+                        defaultChecked={false}
+                        deleteEnabled={deleteEnabled}
                     />
                 ))}
             </div>
@@ -172,7 +183,9 @@ const NoPassengerTypeGroups = (): ReactElement => {
                 Individual passengers must be created before they can be added to a group.
             </div>
 
-            <p className="govuk-body">You currently have no passenger groups saved.</p>
+            <p className="govuk-body">
+                <em>You currently have no passenger groups saved.</em>
+            </p>
         </>
     );
 };
@@ -180,9 +193,14 @@ const NoPassengerTypeGroups = (): ReactElement => {
 interface PassengerTypeGroupProps {
     deleteActionHandler: (id: number, name: string, isGroup: boolean) => void;
     passengerTypeGroups: FullGroupPassengerType[];
+    deleteEnabled: boolean;
 }
 
-const PassengerTypeGroups = ({ deleteActionHandler, passengerTypeGroups }: PassengerTypeGroupProps): ReactElement => {
+const PassengerTypeGroups = ({
+    deleteActionHandler,
+    passengerTypeGroups,
+    deleteEnabled,
+}: PassengerTypeGroupProps): ReactElement => {
     return (
         <>
             <h2 className="govuk-heading-l">Groups</h2>
@@ -193,6 +211,8 @@ const PassengerTypeGroups = ({ deleteActionHandler, passengerTypeGroups }: Passe
                         contents={passengerTypeGroup}
                         deleteActionHandler={deleteActionHandler}
                         key={passengerTypeGroup.id}
+                        defaultChecked={false}
+                        deleteEnabled={deleteEnabled}
                     />
                 ))}
             </div>
@@ -215,6 +235,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             singlePassengerTypes: singlePassengerTypes,
             groupPassengerTypes,
             referer: extractGlobalSettingsReferer(ctx),
+            deleteEnabled: globalSettingsDeleteEnabled,
         },
     };
 };

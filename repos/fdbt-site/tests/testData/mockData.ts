@@ -1280,6 +1280,21 @@ export const expectedSingleTicket: SingleTicket = {
             prices: [],
         },
     ],
+    unassignedStops: {
+        singleUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedCarnetSingleTicket: SingleTicket = {
@@ -1421,6 +1436,21 @@ export const expectedCarnetSingleTicket: SingleTicket = {
             prices: [],
         },
     ],
+    unassignedStops: {
+        singleUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedNonCircularReturnTicket: ReturnTicket = {
@@ -1585,6 +1615,34 @@ export const expectedNonCircularReturnTicket: ReturnTicket = {
             ],
         },
     ],
+    unassignedStops: {
+        inboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+        outboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
@@ -1753,6 +1811,34 @@ export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
             ],
         },
     ],
+    unassignedStops: {
+        inboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+        outboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedCircularReturnTicket: ReturnTicket = {
@@ -1888,6 +1974,34 @@ export const expectedCircularReturnTicket: ReturnTicket = {
             prices: [],
         },
     ],
+    unassignedStops: {
+        inboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+        outboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedCarnetReturnTicket: ReturnTicket = {
@@ -2058,6 +2172,34 @@ export const expectedCarnetReturnTicket: ReturnTicket = {
             ],
         },
     ],
+    unassignedStops: {
+        inboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+        outboundUnassignedStops: [
+            {
+                atcoCode: 'GHI',
+                indicator: 'VWX',
+                localityCode: 'JKL',
+                localityName: 'MNO',
+                naptanCode: 'DEF',
+                parentLocalityName: 'PQR',
+                qualifierName: 'STU',
+                stopName: 'ABC',
+                street: 'YZ!',
+            },
+        ],
+    },
 };
 
 export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicket = {
@@ -2310,7 +2452,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productName: 'Weekly Ticket',
                 productPrice: '50',
                 productDuration: '5 weeks',
-                productValidity: 'endOfServiceDay',
+                productValidity: 'fareDayEnd',
                 productEndTime: '1900',
                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                 carnetDetails: undefined,
@@ -2319,7 +2461,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productName: 'Day Ticket',
                 productPrice: '2.50',
                 productDuration: '1 year',
-                productValidity: 'endOfServiceDay',
+                productValidity: 'fareDayEnd',
                 productEndTime: '1900',
                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                 carnetDetails: undefined,
@@ -2328,7 +2470,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productName: 'Monthly Ticket',
                 productPrice: '200',
                 productDuration: '28 months',
-                productValidity: 'endOfServiceDay',
+                productValidity: 'fareDayEnd',
                 productEndTime: '1900',
                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                 carnetDetails: undefined,
@@ -2965,7 +3107,7 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorG
             productDuration: '5 weeks',
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productValidity: 'endOfServiceDay',
+            productValidity: 'fareDayEnd',
             productEndTime: '1900',
             salesOfferPackages: [
                 {
@@ -2988,7 +3130,7 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorG
             productDuration: '1 month',
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productValidity: 'endOfServiceDay',
+            productValidity: 'fareDayEnd',
             productEndTime: '1900',
             salesOfferPackages: [
                 {
@@ -3012,7 +3154,7 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorG
             productEndTime: '1900',
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productValidity: 'endOfServiceDay',
+            productValidity: 'fareDayEnd',
             salesOfferPackages: [
                 {
                     description: '',
@@ -3652,7 +3794,8 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
         {
             id: 'period-end-of-service',
             name: 'periodValid',
-            value: 'endOfServiceDay',
+            value: 'fareDayEnd',
+            disableAutoSelect: true,
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'End of service day',
             radioButtonHint: {
@@ -3672,6 +3815,66 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                     name: 'productEndTime',
                     label: 'End time',
                     defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [],
+};
+
+export const mockSelectPeriodValidityFieldset: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'period-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'period-end-calendar',
+            name: 'periodValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'period-end-calendar-hint',
+                content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+            },
+        },
+        {
+            id: 'period-twenty-four-hours',
+            name: 'periodValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period from purchase',
+            radioButtonHint: {
+                id: 'period-twenty-four-hours-hint',
+                content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
+            },
+        },
+        {
+            id: 'period-end-of-service',
+            name: 'periodValid',
+            value: 'fareDayEnd',
+            disableAutoSelect: true,
+            dataAriaControls: 'period-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'period-end-of-service-hint',
+                content:
+                    'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                    disabled: true,
                 },
             ],
             inputErrors: [],
@@ -3710,7 +3913,9 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
         {
             id: 'period-end-of-service',
             name: 'periodValid',
-            value: 'endOfServiceDay',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'End of service day',
             radioButtonHint: {
@@ -3730,6 +3935,72 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                     name: 'productEndTime',
                     label: 'End time',
                     defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [
+        {
+            errorMessage: 'Choose one of the validity options',
+            id: 'period-end-calendar',
+        },
+    ],
+};
+
+export const mockSelectPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'period-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'period-end-calendar',
+            name: 'periodValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'period-end-calendar-hint',
+                content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+            },
+        },
+        {
+            id: 'period-twenty-four-hours',
+            name: 'periodValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period from purchase',
+            radioButtonHint: {
+                id: 'period-twenty-four-hours-hint',
+                content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
+            },
+        },
+        {
+            id: 'period-end-of-service',
+            name: 'periodValid',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
+            dataAriaControls: 'period-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'period-end-of-service-hint',
+                content:
+                    'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                    disabled: true,
                 },
             ],
             inputErrors: [],
@@ -3773,7 +4044,9 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
         {
             id: 'period-end-of-service',
             name: 'periodValid',
-            value: 'endOfServiceDay',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
             dataAriaControls: 'period-validity-end-of-service-required-conditional',
             label: 'End of service day',
             radioButtonHint: {
@@ -3793,6 +4066,72 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                     name: 'productEndTime',
                     label: 'End time',
                     defaultValue: '',
+                },
+            ],
+            inputErrors: [
+                {
+                    errorMessage: 'Specify an end time for service day',
+                    id: 'product-end-time',
+                },
+            ],
+        },
+    ],
+    radioError: [],
+};
+
+export const mockSelectPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'period-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'period-end-calendar',
+            name: 'periodValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'period-end-calendar-hint',
+                content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+            },
+        },
+        {
+            id: 'period-twenty-four-hours',
+            name: 'periodValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period from purchase',
+            radioButtonHint: {
+                id: 'period-twenty-four-hours-hint',
+                content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
+            },
+        },
+        {
+            id: 'period-end-of-service',
+            name: 'periodValid',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
+            dataAriaControls: 'period-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'period-end-of-service-hint',
+                content:
+                    'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                    disabled: true,
                 },
             ],
             inputErrors: [

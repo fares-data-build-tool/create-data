@@ -47,7 +47,7 @@ const defaultSalesOfferPackageFour: FromDb<SalesOfferPackage> = {
 
 describe('pages', () => {
     const selectSalesOfferPackagePropsInfoNoError: PurchaseMethodsProps = {
-        salesOfferPackagesList: [
+        purchaseMethodsList: [
             defaultSalesOfferPackageOne,
             defaultSalesOfferPackageTwo,
             defaultSalesOfferPackageThree,
@@ -60,7 +60,7 @@ describe('pages', () => {
 
     const selectSalesOfferPackagePropsInfoWithError: PurchaseMethodsProps = {
         products: [],
-        salesOfferPackagesList: [
+        purchaseMethodsList: [
             defaultSalesOfferPackageOne,
             defaultSalesOfferPackageTwo,
             defaultSalesOfferPackageThree,
@@ -74,8 +74,30 @@ describe('pages', () => {
         it('should render correctly', () => {
             const tree = shallow(
                 <SelectPurchaseMethods
-                    salesOfferPackagesList={selectSalesOfferPackagePropsInfoNoError.salesOfferPackagesList}
-                    products={[]}
+                    purchaseMethodsList={selectSalesOfferPackagePropsInfoNoError.purchaseMethodsList}
+                    products={[
+                        {
+                            productName: 'Great Product',
+                            productPrice: '22',
+                        },
+                    ]}
+                    errors={selectSalesOfferPackagePropsInfoNoError.errors}
+                    csrfToken=""
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly with no purchase methods', () => {
+            const tree = shallow(
+                <SelectPurchaseMethods
+                    purchaseMethodsList={[]}
+                    products={[
+                        {
+                            productName: 'Great Product',
+                            productPrice: '22',
+                        },
+                    ]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
                 />,
@@ -86,7 +108,7 @@ describe('pages', () => {
         it('should render an error when an error message is passed through to props', () => {
             const tree = shallow(
                 <SelectPurchaseMethods
-                    salesOfferPackagesList={selectSalesOfferPackagePropsInfoWithError.salesOfferPackagesList}
+                    purchaseMethodsList={selectSalesOfferPackagePropsInfoWithError.purchaseMethodsList}
                     products={[]}
                     errors={selectSalesOfferPackagePropsInfoWithError.errors}
                     csrfToken=""
@@ -151,7 +173,7 @@ describe('pages', () => {
                         : ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length;
                     expect(result.props.errors.length).toBe(0);
                     expect(result.props.products.length).toBe(expectedProductNamesLength);
-                    expect(result.props.salesOfferPackagesList).toEqual(expectedSalesOfferPackageList);
+                    expect(result.props.purchaseMethodsList).toEqual(expectedSalesOfferPackageList);
                 },
             );
 

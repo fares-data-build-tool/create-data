@@ -1,8 +1,8 @@
 import Cookies from 'cookies';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as csvZoneUpload from '../../../src/pages/api/csvZoneUpload';
-import * as fileUpload from '../../../src/pages/api/apiUtils/fileUpload';
-import * as virusCheck from '../../../src/pages/api/apiUtils/virusScan';
+import * as fileUpload from '../../../src/utils/apiUtils/fileUpload';
+import * as virusCheck from '../../../src/utils/apiUtils/virusScan';
 import * as csvData from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
 import * as sessions from '../../../src/utils/sessions';

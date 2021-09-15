@@ -20,7 +20,7 @@ import {
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 import SwitchDataSource from '../components/SwitchDataSource';
 
 const pageTitle = 'Multiple Operators Service List - Create Fares Data Service';

@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, oneYearInSeconds } from '../../constants';
 import { NextApiRequestWithSession, CookiePolicy } from '../../interfaces';
-import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject } from '../../utils/apiUtils';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {

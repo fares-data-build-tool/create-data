@@ -1,0 +1,239 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages periodValidity should render correctly 1`] = `
+<TwoThirdsLayout
+  description="Period Validity selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Period Validity - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/periodValidity"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="period-validity-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="period-validity-page-heading"
+          >
+            When does the product expire?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="period-validity-hint"
+        >
+          We need to know the time that this product would be valid until
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": Any<String>,
+                "hidden": true,
+                "id": "period-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "id": "period-end-calendar",
+                  "label": " At the end of a calendar day",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry",
+                    "id": "period-end-calendar-hint",
+                  },
+                  "value": "endOfCalendarDay",
+                },
+                Object {
+                  "id": "period-twenty-four-hours",
+                  "label": "At the end of a 24 hour period from purchase",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry",
+                    "id": "period-twenty-four-hours-hint",
+                  },
+                  "value": "24hr",
+                },
+                Object {
+                  "dataAriaControls": "period-validity-end-of-service-required-conditional",
+                  "disableAutoSelect": true,
+                  "id": "period-end-of-service",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
+                    "content": "You can update your fare day end in operator settings",
+                    "hidden": true,
+                    "id": "product-end-time-hint",
+                  },
+                  "inputType": "text",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "disabled": true,
+                      "id": "product-end-time",
+                      "label": "End time",
+                      "name": "productEndTime",
+                    },
+                  ],
+                  "label": "Fare day end",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry",
+                    "id": "period-end-of-service-hint",
+                  },
+                  "value": "fareDayEnd",
+                },
+              ],
+            }
+          }
+          key="period-validity"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages periodValidity should render error messaging when errors are passed 1`] = `
+<TwoThirdsLayout
+  description="Period Validity selection page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose an option regarding your period ticket validity",
+        "id": "period-validity-error",
+      },
+    ]
+  }
+  title="Period Validity - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/periodValidity"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose an option regarding your period ticket validity",
+            "id": "period-validity-error",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="period-validity-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="period-validity-page-heading"
+          >
+            When does the product expire?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="period-validity-hint"
+        >
+          We need to know the time that this product would be valid until
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": Any<String>,
+                "hidden": true,
+                "id": "period-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "id": "period-end-calendar",
+                  "label": " At the end of a calendar day",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry",
+                    "id": "period-end-calendar-hint",
+                  },
+                  "value": "endOfCalendarDay",
+                },
+                Object {
+                  "id": "period-twenty-four-hours",
+                  "label": "At the end of a 24 hour period from purchase",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry",
+                    "id": "period-twenty-four-hours-hint",
+                  },
+                  "value": "24hr",
+                },
+                Object {
+                  "dataAriaControls": "period-validity-end-of-service-required-conditional",
+                  "disableAutoSelect": true,
+                  "id": "period-end-of-service",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
+                    "content": "You can update your fare day end in operator settings",
+                    "hidden": true,
+                    "id": "product-end-time-hint",
+                  },
+                  "inputType": "text",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "disabled": true,
+                      "id": "product-end-time",
+                      "label": "End time",
+                      "name": "productEndTime",
+                    },
+                  ],
+                  "label": "Fare day end",
+                  "name": "periodValid",
+                  "radioButtonHint": Object {
+                    "content": "For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry",
+                    "id": "period-end-of-service-hint",
+                  },
+                  "value": "fareDayEnd",
+                },
+              ],
+            }
+          }
+          key="period-validity"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;

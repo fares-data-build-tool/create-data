@@ -12,12 +12,12 @@ exports[`pages view passenger types should render correctly when groups and indi
     data-card-count={2}
   >
     <div
-      className="govuk-grid-column-one-third"
+      className="govuk-grid-column-one-quarter"
     >
       <SubNavigation />
     </div>
     <div
-      className="govuk-grid-column-two-thirds"
+      className="govuk-grid-column-three-quarters"
     >
       <h1
         className="govuk-heading-xl"
@@ -32,6 +32,7 @@ exports[`pages view passenger types should render correctly when groups and indi
       <div>
         <IndividualPassengerTypes
           deleteActionHandler={[Function]}
+          deleteEnabled={false}
           singlePassengerTypes={
             Array [
               Object {
@@ -50,7 +51,7 @@ exports[`pages view passenger types should render correctly when groups and indi
           }
         />
         <a
-          className="govuk-button govuk-button govuk-!-margin-top-5"
+          className="govuk-button govuk-button"
           data-module="govuk-button"
           href="/managePassengerTypes"
         >
@@ -62,6 +63,7 @@ exports[`pages view passenger types should render correctly when groups and indi
       >
         <PassengerTypeGroups
           deleteActionHandler={[Function]}
+          deleteEnabled={false}
           passengerTypeGroups={
             Array [
               Object {
@@ -115,12 +117,12 @@ exports[`pages view passenger types should render correctly when no individual o
     data-card-count={0}
   >
     <div
-      className="govuk-grid-column-one-third"
+      className="govuk-grid-column-one-quarter"
     >
       <SubNavigation />
     </div>
     <div
-      className="govuk-grid-column-two-thirds"
+      className="govuk-grid-column-three-quarters"
     >
       <h1
         className="govuk-heading-xl"
@@ -135,7 +137,7 @@ exports[`pages view passenger types should render correctly when no individual o
       <div>
         <NoIndividualPassengerTypes />
         <a
-          className="govuk-button govuk-button govuk-!-margin-top-5"
+          className="govuk-button govuk-button"
           data-module="govuk-button"
           href="/managePassengerTypes"
         >
@@ -164,12 +166,12 @@ exports[`pages view passenger types should render correctly when only individual
     data-card-count={1}
   >
     <div
-      className="govuk-grid-column-one-third"
+      className="govuk-grid-column-one-quarter"
     >
       <SubNavigation />
     </div>
     <div
-      className="govuk-grid-column-two-thirds"
+      className="govuk-grid-column-three-quarters"
     >
       <h1
         className="govuk-heading-xl"
@@ -184,6 +186,7 @@ exports[`pages view passenger types should render correctly when only individual
       <div>
         <IndividualPassengerTypes
           deleteActionHandler={[Function]}
+          deleteEnabled={false}
           singlePassengerTypes={
             Array [
               Object {
@@ -202,7 +205,7 @@ exports[`pages view passenger types should render correctly when only individual
           }
         />
         <a
-          className="govuk-button govuk-button govuk-!-margin-top-5"
+          className="govuk-button govuk-button"
           data-module="govuk-button"
           href="/managePassengerTypes"
         >
@@ -238,12 +241,12 @@ exports[`pages view passenger types should render correctly when only passenger 
     data-card-count={1}
   >
     <div
-      className="govuk-grid-column-one-third"
+      className="govuk-grid-column-one-quarter"
     >
       <SubNavigation />
     </div>
     <div
-      className="govuk-grid-column-two-thirds"
+      className="govuk-grid-column-three-quarters"
     >
       <h1
         className="govuk-heading-xl"
@@ -258,7 +261,7 @@ exports[`pages view passenger types should render correctly when only passenger 
       <div>
         <NoIndividualPassengerTypes />
         <a
-          className="govuk-button govuk-button govuk-!-margin-top-5"
+          className="govuk-button govuk-button"
           data-module="govuk-button"
           href="/managePassengerTypes"
         >
@@ -270,6 +273,7 @@ exports[`pages view passenger types should render correctly when only passenger 
       >
         <PassengerTypeGroups
           deleteActionHandler={[Function]}
+          deleteEnabled={false}
           passengerTypeGroups={
             Array [
               Object {

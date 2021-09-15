@@ -5,9 +5,16 @@ import { getProofDocumentsString, sentenceCaseString } from '../utils';
 interface PassengerTypeCardProps {
     contents: FullGroupPassengerType | SinglePassengerType;
     deleteActionHandler?: (id: number, name: string, isGroup: boolean) => void;
+    defaultChecked: boolean;
+    deleteEnabled: boolean;
 }
 
-const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardProps): ReactElement => {
+const PassengerTypeCard = ({
+    contents,
+    deleteActionHandler,
+    defaultChecked,
+    deleteEnabled,
+}: PassengerTypeCardProps): ReactElement => {
     const { name, id } = contents;
     const isGroup = 'groupPassengerType' in contents;
     return (
@@ -25,14 +32,16 @@ const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardP
                                 </a>
                             </li>
 
-                            <li className="actions__item">
-                                <button
-                                    className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                    onClick={() => deleteActionHandler(id, name, isGroup)}
-                                >
-                                    Delete
-                                </button>
-                            </li>
+                            {deleteEnabled && (
+                                <li className="actions__item">
+                                    <button
+                                        className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                                        onClick={() => deleteActionHandler(id, name, isGroup)}
+                                    >
+                                        Delete
+                                    </button>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 ) : (
@@ -45,6 +54,7 @@ const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardP
                                 type="radio"
                                 value={id}
                                 aria-label={name}
+                                defaultChecked={defaultChecked}
                             />
                             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                             <label className="govuk-label govuk-radios__label" />

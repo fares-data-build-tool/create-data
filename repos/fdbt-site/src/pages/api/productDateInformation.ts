@@ -4,7 +4,7 @@ import moment from 'moment';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession, ProductDateInformation } from '../../interfaces';
-import { redirectTo, redirectToError } from './apiUtils';
+import { redirectTo, redirectToError } from '../../utils/apiUtils';
 
 export const combinedDateSchema = yup.object({
     endDate: yup.date().min(yup.ref('startDate'), 'The end date must be after the start date'),

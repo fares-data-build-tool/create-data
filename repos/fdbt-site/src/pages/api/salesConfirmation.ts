@@ -1,5 +1,7 @@
+import { globalSettingsEnabled } from './../../constants/featureFlag';
 import moment from 'moment';
 import { NextApiResponse } from 'next';
+import { insertProducts } from '../../data/auroradb';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
@@ -13,12 +15,13 @@ import { isPassengerType, isTicketRepresentation } from '../../interfaces/typeGu
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 import {
+    getAndValidateNoc,
     getFareTypeFromFromAttributes,
     getUuidFromSession,
     isSchemeOperator,
     redirectTo,
     redirectToError,
-} from './apiUtils';
+} from '../../utils/apiUtils';
 import {
     adjustSchemeOperatorJson,
     getGeoZoneTicketJson,
@@ -29,7 +32,7 @@ import {
     getSchemeOperatorTicketJson,
     getSingleTicketJson,
     putUserDataInS3,
-} from './apiUtils/userData';
+} from '../../utils/apiUtils/userData';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -107,8 +110,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
 
             userDataJson.carnet = carnetAttribute;
-
-            await putUserDataInS3(userDataJson, uuid);
+            const noc = getAndValidateNoc(req, res);
+            const filePath = await putUserDataInS3(userDataJson, uuid, noc);
+            if (globalSettingsEnabled) {
+                const dateTime = moment().toDate();
+                const lineId: string | undefined = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
+                await insertProducts(noc, filePath, dateTime, userDataJson.type, lineId);
+            }
 
             redirectTo(res, '/thankyou');
         }

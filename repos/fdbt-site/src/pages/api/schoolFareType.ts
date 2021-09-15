@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { redirectToError, redirectTo } from './apiUtils/index';
+import { redirectToError, redirectTo } from '../../utils/apiUtils/index';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';

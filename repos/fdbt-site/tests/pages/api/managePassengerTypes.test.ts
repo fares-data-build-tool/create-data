@@ -1,5 +1,5 @@
 import * as aurora from '../../../src/data/auroradb';
-import * as utils from '../../../src/pages/api/apiUtils/index';
+import * as utils from '../../../src/utils/apiUtils/index';
 import * as session from '../../../src/utils/sessions';
 import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../../../src/constants/attributes';
 import managePassengerTypes from '../../../src/pages/api/managePassengerTypes';

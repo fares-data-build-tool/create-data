@@ -267,11 +267,11 @@
                 <FareStructureElement version="1.0" id="op:Tariff@eligibility@child">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@child" version="1.0" order="0">
+                  <GenericParameterAssignment id="op:Tariff@child-0" version="1.0" order="0">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
                     <limitations>
-                      <UserProfile version="1.0" id="op:child">
+                      <UserProfile version="1.0" id="op:child-0">
                         <Name>child</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
                       </UserProfile>
@@ -392,7 +392,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:test@Purchase_method@child@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:child"/>
+                            <UserProfileRef version="1.0" ref="op:child-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:test@Purchase_method@service">
@@ -424,7 +424,7 @@
                       <includes>
                         <FareTable version="1.0" id="op:Jacob_Ellis@Purchase_method@child@service@nested@prices">
                           <limitations>
-                            <UserProfileRef version="1.0" ref="op:child"/>
+                            <UserProfileRef version="1.0" ref="op:child-0"/>
                           </limitations>
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:Jacob_Ellis@Purchase_method@service">

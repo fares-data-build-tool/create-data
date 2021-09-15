@@ -5,9 +5,9 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE } from '../../constants/attributes';
 import { USER_DATA_BUCKET_NAME } from '../../constants';
 
-import { getUuidFromSession, redirectToError, redirectTo } from './apiUtils';
+import { getUuidFromSession, redirectToError, redirectTo } from '../../utils/apiUtils';
 import { putStringInS3 } from '../../data/s3';
-import { removeAllWhiteSpace } from './apiUtils/validator';
+import { removeAllWhiteSpace } from '../../utils/apiUtils/validator';
 import { isJourney } from '../../interfaces/typeGuards';
 import {
     FaresInformation,

@@ -8,7 +8,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { REUSE_OPERATOR_GROUP_ATTRIBUTE } from '../constants/attributes';
 import { getAndValidateNoc, getCsrfToken, getErrorsByIds } from '../utils';
 import { getOperatorGroupsByNoc } from '../data/auroradb';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 
 const title = 'Reuse Operator Group - Create Fares Data Service';
 const description = 'Reuse Operator Group page of the Create Fares Data Service';

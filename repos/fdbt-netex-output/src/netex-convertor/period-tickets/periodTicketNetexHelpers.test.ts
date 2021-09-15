@@ -1,5 +1,4 @@
 import { GeoZoneTicket, SchemeOperator } from '../../types';
-
 import * as netexHelpers from './periodTicketNetexHelpers';
 import { getGroupOfLinesList, getGroupOfOperators, getOrganisations } from './periodTicketNetexHelpers';
 import {

@@ -1,13 +1,14 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, useRef } from 'react';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../constants/attributes';
-import { getTimeRestrictionById } from '../data/auroradb';
-import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction, TimeInput } from '../interfaces';
+import { getTimeRestrictionById, getFareDayEnd } from '../data/auroradb';
+import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction, TimeInput, DbTimeInput } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import { getGlobalSettingsManageProps, GlobalSettingsManageProps } from '../utils/globalSettings';
 import { getSessionAttribute } from '../utils/sessions';
+import { getAndValidateNoc } from '../utils';
 
 const title = 'Manage Time Restrictions - Create Fares Data Service';
 const description = 'Manage Time Restrictions page of the Create Fares Data Service';
@@ -47,14 +48,30 @@ const days = [
     },
 ];
 
-type ManageTimeRestrictionProps = GlobalSettingsManageProps<PremadeTimeRestriction>;
+type ManageTimeRestrictionProps = GlobalSettingsManageProps<PremadeTimeRestriction> & {
+    fareDayEnd: string | null;
+};
 
 const findCorrectTimeRestrictionDay = (day: string, inputs?: PremadeTimeRestriction) => {
     return inputs?.contents.find((timeRestrictionDay) => timeRestrictionDay.day === day);
 };
 
-const findCorrectDefaultValue = (inputs: TimeInput[], day: string, inputIndex: number): string =>
-    inputs.find((input, index) => input.day === day && input.timeInput && index === inputIndex)?.timeInput ?? '';
+const findCorrectDefaultValue = (
+    inputs: DbTimeInput[],
+    day: string,
+    inputIndex: number,
+    fareDayEnd?: string | null,
+): string => {
+    const value =
+        inputs.find((input, index) => input.day === day && input.timeInput && index === inputIndex)?.timeInput ?? '';
+    return (typeof value === 'object' ? fareDayEnd : value) ?? '';
+};
+
+const isFareDayEnd = (inputs: DbTimeInput[], day: string, inputIndex: number): boolean => {
+    const value =
+        inputs.find((input, index) => input.day === day && input.timeInput && index === inputIndex)?.timeInput ?? '';
+    return typeof value === 'object';
+};
 
 const hasError = (errors: ErrorInfo[], name: string) => {
     if (errors.filter((e) => e.id === name).length > 0) {
@@ -69,6 +86,7 @@ const ManageTimeRestriction = ({
     errors = [],
     inputs,
     editMode,
+    fareDayEnd,
 }: ManageTimeRestrictionProps): ReactElement => {
     const defaultState: { [key: string]: number } = {};
 
@@ -92,10 +110,13 @@ const ManageTimeRestriction = ({
         }
     };
 
-    const getTimeRestrictionRows = (day: string, inputs?: PremadeTimeRestriction): JSX.Element[] => {
+    const getTimeRestrictionRows = (
+        day: string,
+        inputs?: PremadeTimeRestriction,
+    ): [JSX.Element[], (val: boolean) => void] => {
         const rows = [];
         const startTimeInputs: TimeInput[] = [];
-        const endTimeInputs: TimeInput[] = [];
+        const endTimeInputs: DbTimeInput[] = [];
         const dayCounters: {
             day: string;
             counter: number;
@@ -122,9 +143,14 @@ const ManageTimeRestriction = ({
             defaultState[dayCounter.day] = dayCounter.counter;
         });
 
-        for (let i = 0; i < dayRowCount[day]; i += 1) {
+        const [useFareDayEnd, setUseFareDayEnd] = useState(isFareDayEnd(endTimeInputs, day, endTimeInputs.length - 1));
+        const endTimeRef = useRef<HTMLInputElement>(null);
+
+        const length = dayRowCount[day];
+        for (let i = 0; i < length; i += 1) {
             const matchedError = errors.find((error) => error.id.includes(`-time-${day}-${i}`));
 
+            const lastRow = i === length - 1;
             rows.push(
                 <div className="global-settings-time-restriction-row" key={i}>
                     {matchedError ? <p className="govuk-error-message">{matchedError.errorMessage}</p> : null}
@@ -155,20 +181,47 @@ const ManageTimeRestriction = ({
                                     className={`govuk-input govuk-input--width-5 ${
                                         matchedError?.id === `end-time-${day}-${i}` && `govuk-input--error`
                                     }`}
+                                    disabled={lastRow && useFareDayEnd}
                                     id={`end-time-${day}-${i}`}
                                     name={`endTime${day}`}
                                     aria-describedby="time-restrictions-hint"
                                     type="text"
-                                    defaultValue={findCorrectDefaultValue(endTimeInputs, day, i)}
+                                    ref={lastRow ? endTimeRef : undefined}
+                                    defaultValue={findCorrectDefaultValue(endTimeInputs, day, i, fareDayEnd)}
                                 />
                             </>
                         </div>
+                        {lastRow && (
+                            <>
+                                <span className="govuk-label item">OR </span>
+
+                                <div className="govuk-checkboxes__item item">
+                                    <input
+                                        className="govuk-checkboxes__input"
+                                        name={`fareDayEnd${day}`}
+                                        type="checkbox"
+                                        id="use-fare-day-end"
+                                        onChange={(e) => {
+                                            setUseFareDayEnd(e.currentTarget.checked);
+                                            if (endTimeRef.current) {
+                                                endTimeRef.current.value =
+                                                    (e.currentTarget.checked && fareDayEnd) || '';
+                                            }
+                                        }}
+                                        checked={useFareDayEnd}
+                                    />
+                                    <label className="govuk-label govuk-checkboxes__label" htmlFor="use-fare-day-end">
+                                        Use fare day end
+                                    </label>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>,
             );
         }
 
-        return rows;
+        return [rows, setUseFareDayEnd];
     };
 
     return (
@@ -203,8 +256,12 @@ const ManageTimeRestriction = ({
                                 errorClass="govuk-checkboxes--error"
                             >
                                 <div className="govuk-checkboxes" data-module="govuk-checkboxes">
-                                    {days.map(
-                                        (day, index): ReactElement => (
+                                    {days.map((day, index): ReactElement => {
+                                        const [timeRestrictionRows, setUseFareDayEnd] = getTimeRestrictionRows(
+                                            day.id,
+                                            inputs,
+                                        );
+                                        return (
                                             <div key={day.id}>
                                                 <div className="govuk-checkboxes__item" key={day.id}>
                                                     <input
@@ -235,13 +292,18 @@ const ManageTimeRestriction = ({
                                                                 ) && `govuk-form-group--error`
                                                             }`}
                                                         >
-                                                            {getTimeRestrictionRows(day.id, inputs)}
+                                                            {timeRestrictionRows}
                                                         </div>
+                                                    </fieldset>
+                                                    <div className="flex-container govuk-!-margin-bottom-4">
                                                         <button
                                                             id={`add-another-button-${day.id}`}
                                                             type="button"
-                                                            className="govuk-button govuk-button--secondary govuk-!-margin-left-3 time-restrictions-button-placement"
-                                                            onClick={(): void => addTimeRestrictionRow(day.id)}
+                                                            className="govuk-button govuk-button--secondary time-restrictions-button-placement"
+                                                            onClick={(): void => {
+                                                                addTimeRestrictionRow(day.id);
+                                                                setUseFareDayEnd(false);
+                                                            }}
                                                         >
                                                             Add another
                                                         </button>
@@ -250,16 +312,19 @@ const ManageTimeRestriction = ({
                                                                 id={`add-another-button-${day.id}`}
                                                                 type="button"
                                                                 className="govuk-button govuk-button--warning govuk-!-margin-left-3 time-restrictions-button-placement"
-                                                                onClick={(): void => deleteTimeRestrictionRow(day.id)}
+                                                                onClick={(): void => {
+                                                                    deleteTimeRestrictionRow(day.id);
+                                                                    setUseFareDayEnd(false);
+                                                                }}
                                                             >
                                                                 Delete last row
                                                             </button>
                                                         )}
-                                                    </fieldset>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        ),
-                                    )}
+                                        );
+                                    })}
                                 </div>
                             </FormElementWrapper>
                         </fieldset>
@@ -309,11 +374,15 @@ const ManageTimeRestriction = ({
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: ManageTimeRestrictionProps }> => {
-    return getGlobalSettingsManageProps(
+    const gsProps = await getGlobalSettingsManageProps(
         ctx,
         getTimeRestrictionById,
         getSessionAttribute(ctx.req, GS_TIME_RESTRICTION_ATTRIBUTE),
     );
+
+    return {
+        props: { ...gsProps.props, fareDayEnd: (await getFareDayEnd(getAndValidateNoc(ctx))) || null },
+    };
 };
 
 export default ManageTimeRestriction;

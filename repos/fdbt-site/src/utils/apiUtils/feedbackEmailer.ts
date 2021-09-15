@@ -1,8 +1,8 @@
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import AWS from 'aws-sdk';
-import { SERVICE_EMAIL_ADDRESS, STAGE } from '../../../constants/index';
-import { Feedback } from '../../../interfaces';
+import { SERVICE_EMAIL_ADDRESS, STAGE } from '../../constants';
+import { Feedback } from '../../interfaces';
 
 export const buildFeedbackContent = (feedbackQuestions: Feedback[]): string => {
     const questionsAndAnswers = feedbackQuestions.map((question) => {
