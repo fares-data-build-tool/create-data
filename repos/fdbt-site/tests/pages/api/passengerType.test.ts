@@ -165,7 +165,7 @@ describe('passengerType', () => {
         await passengerType(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/defineTimeRestrictions',
+            Location: '/selectTimeRestrictions',
         });
         expect(spyGetPassengerTypeByNameAndNocCode).toBeCalledWith('TEST', 'child', false);
     });

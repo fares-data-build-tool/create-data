@@ -16,7 +16,7 @@ describe('selectSalesOfferPackage', () => {
         selectSalesOfferPackages(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/selectSalesOfferPackage',
+            Location: '/selectPurchaseMethods',
         });
     });
 
@@ -31,7 +31,7 @@ describe('selectSalesOfferPackage', () => {
         selectSalesOfferPackages(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/selectSalesOfferPackage',
+            Location: '/selectPurchaseMethods',
         });
     });
 

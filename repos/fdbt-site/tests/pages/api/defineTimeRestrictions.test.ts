@@ -191,7 +191,7 @@ describe('defineTimeRestrictions', () => {
             errors: [{ errorMessage: 'Choose one of the premade time restrictions', id: 'time-restriction' }],
         });
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/defineTimeRestrictions',
+            Location: '/selectTimeRestrictions',
         });
     });
 });
