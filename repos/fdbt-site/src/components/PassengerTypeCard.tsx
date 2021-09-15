@@ -6,9 +6,10 @@ import { getProofDocumentsString, sentenceCaseString } from '../utils';
 interface PassengerTypeCardProps {
     contents: FullGroupPassengerType | SinglePassengerType;
     deleteActionHandler?: (id: number, name: string, isGroup: boolean) => void;
+    defaultChecked: boolean;
 }
 
-const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardProps): ReactElement => {
+const PassengerTypeCard = ({ contents, deleteActionHandler, defaultChecked }: PassengerTypeCardProps): ReactElement => {
     const { name, id } = contents;
     const isGroup = 'groupPassengerType' in contents;
     return (
@@ -48,6 +49,7 @@ const PassengerTypeCard = ({ contents, deleteActionHandler }: PassengerTypeCardP
                                 type="radio"
                                 value={id}
                                 aria-label={name}
+                                defaultChecked={defaultChecked}
                             />
                             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                             <label className="govuk-label govuk-radios__label" />

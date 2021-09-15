@@ -111,6 +111,7 @@ describe('defineTimeRestrictions', () => {
                 },
             ],
             errors: [],
+            id: 1,
         });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/fareConfirmation',
@@ -167,6 +168,7 @@ describe('defineTimeRestrictions', () => {
                 { day: 'bankHoliday', timeBands: [{ startTime: '1400', endTime: '1600' }] },
             ],
             errors: [],
+            id: 1,
         });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/fareConfirmation',

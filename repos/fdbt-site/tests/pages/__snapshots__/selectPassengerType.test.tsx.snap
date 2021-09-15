@@ -163,6 +163,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
                 },
               }
             }
+            defaultChecked={false}
             key="3"
           />
           <PassengerTypeCard
@@ -178,6 +179,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
                 },
               }
             }
+            defaultChecked={false}
             key="2"
           />
         </div>
@@ -302,6 +304,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 },
               }
             }
+            defaultChecked={false}
             key="3"
           />
           <PassengerTypeCard
@@ -317,6 +320,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 },
               }
             }
+            defaultChecked={false}
             key="2"
           />
         </div>
@@ -359,6 +363,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "name": "family",
               }
             }
+            defaultChecked={true}
             key="1"
           />
           <PassengerTypeCard
@@ -383,6 +388,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "name": "couple",
               }
             }
+            defaultChecked={false}
             key="4"
           />
         </div>
@@ -501,6 +507,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 },
               }
             }
+            defaultChecked={false}
             key="3"
           />
           <PassengerTypeCard
@@ -516,6 +523,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 },
               }
             }
+            defaultChecked={false}
             key="2"
           />
         </div>
@@ -558,6 +566,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "name": "family",
               }
             }
+            defaultChecked={false}
             key="1"
           />
           <PassengerTypeCard
@@ -582,6 +591,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "name": "couple",
               }
             }
+            defaultChecked={false}
             key="4"
           />
         </div>

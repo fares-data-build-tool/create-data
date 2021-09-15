@@ -6,8 +6,8 @@ import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import { TimeRestrictionCardBody } from './viewTimeRestrictions';
-import { getSessionAttribute } from 'src/utils/sessions';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from 'src/constants/attributes';
+import { getSessionAttribute } from '../utils/sessions';
+import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants/attributes';
 
 const title = 'Define Time Restrictions - Create Fares Data Service';
 const description = 'Define Time Restrictions page of the Create Fares Data Service';
@@ -16,9 +16,15 @@ interface SelectTimeRestrictionsProps {
     csrfToken: string;
     errors: ErrorInfo[];
     timeRestrictions: PremadeTimeRestriction[];
+    selectedId: number | null;
 }
 
-const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectTimeRestrictionsProps): ReactElement => {
+const SelectTimeRestrictions = ({
+    csrfToken,
+    errors,
+    timeRestrictions,
+    selectedId,
+}: SelectTimeRestrictionsProps): ReactElement => {
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             <ErrorSummary errors={errors} />
@@ -57,7 +63,9 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                                         type="radio"
                                         value="Premade"
                                         data-aria-controls="conditional-time-restriction"
-                                        defaultChecked={errors.some((error) => error.id === 'time-restriction')}
+                                        defaultChecked={
+                                            errors.some((error) => error.id === 'time-restriction') || !!selectedId
+                                        }
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">
                                         Yes
@@ -71,7 +79,11 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
                                     <div className="govuk-form-group card-row">
                                         {timeRestrictions.length ? (
                                             timeRestrictions.map((item) => (
-                                                <TimeRestrictionCard key={item.id} timeRestriction={item} />
+                                                <TimeRestrictionCard
+                                                    key={item.id}
+                                                    timeRestriction={item}
+                                                    selectedId={selectedId}
+                                                />
                                             ))
                                         ) : (
                                             <p className="govuk-body govuk-error-message">
@@ -116,7 +128,13 @@ const SelectTimeRestrictions = ({ csrfToken, errors, timeRestrictions }: SelectT
     );
 };
 
-const TimeRestrictionCard = ({ timeRestriction }: { timeRestriction: PremadeTimeRestriction }): ReactElement => {
+const TimeRestrictionCard = ({
+    timeRestriction,
+    selectedId,
+}: {
+    timeRestriction: PremadeTimeRestriction;
+    selectedId: number | null;
+}): ReactElement => {
     return (
         <div className="card">
             <div className="card__body time-restriction">
@@ -129,6 +147,7 @@ const TimeRestrictionCard = ({ timeRestriction }: { timeRestriction: PremadeTime
                             type="radio"
                             value={timeRestriction.name}
                             aria-label={timeRestriction.name}
+                            defaultChecked={selectedId === timeRestriction.id}
                         />
                         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                         <label className="govuk-label govuk-radios__label" />
@@ -148,6 +167,7 @@ export const getServerSideProps = async (
     let errors: ErrorInfo[] = [];
 
     const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const selectedId = getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE)?.id ?? null;
 
     if (timeRestrictionsDefinition && 'errors' in timeRestrictionsDefinition) {
         errors = timeRestrictionsDefinition.errors;
@@ -157,7 +177,7 @@ export const getServerSideProps = async (
 
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
 
-    return { props: { csrfToken, errors, timeRestrictions } };
+    return { props: { csrfToken, errors, timeRestrictions, selectedId } };
 };
 
 export default SelectTimeRestrictions;

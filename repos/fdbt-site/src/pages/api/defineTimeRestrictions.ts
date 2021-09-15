@@ -53,7 +53,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             const fareDayEnd = await getFareDayEnd(noc);
 
-            const timeRestrictions = results[0].contents.map((timeRestriction) => ({
+            const dbTimeRestriction = results[0];
+            const timeRestrictions = dbTimeRestriction.contents.map((timeRestriction) => ({
                 ...timeRestriction,
                 timeBands: timeRestriction.timeBands.map((timeBand) => {
                     let endTime: string;
@@ -77,7 +78,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
                 fullTimeRestrictions: timeRestrictions,
                 errors: [],
+                id: dbTimeRestriction.id,
             });
+
+            updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, undefined);
 
             redirectTo(res, '/fareConfirmation');
             return;
