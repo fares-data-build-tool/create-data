@@ -32,6 +32,7 @@ before(() => {
 
 const addTestFareDayEnd = (): void => {
     clickElementById('fare-day-end-input').clear().type('2323');
+    clickElementByText('Save');
 };
 
 const addTestPassengerTypes = (): void => {
