@@ -363,7 +363,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "name": "family",
               }
             }
-            defaultChecked={false}
+            defaultChecked={true}
             key="1"
           />
           <PassengerTypeCard

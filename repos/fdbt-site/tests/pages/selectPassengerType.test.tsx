@@ -84,7 +84,7 @@ describe('pages', () => {
                     csrfToken="csrf"
                     savedGroups={savedGroups}
                     savedPassengerTypes={savedPassengerTypes}
-                    selectedId={null}
+                    selectedId={1}
                 />,
             );
             expect(tree).toMatchSnapshot();
