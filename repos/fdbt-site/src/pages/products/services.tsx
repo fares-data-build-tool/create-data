@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { MyFaresService, NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
-import { getServicesByNoc } from '../../data/auroradb';
+import { getBodsServicesByNoc } from '../../data/auroradb';
 import { getAndValidateNoc, getUnixTimestampFromBritishFormattedDate } from '../../utils';
 import { myFaresEnabled } from '../../constants/featureFlag';
 
@@ -87,7 +87,7 @@ const getTag = (startDate: string, endDate: string) => {
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServicesProps }> => {
-    const services = await getServicesByNoc(getAndValidateNoc(ctx));
+    const services = await getBodsServicesByNoc(getAndValidateNoc(ctx));
 
     return { props: { services: services, myFaresEnabled } };
 };

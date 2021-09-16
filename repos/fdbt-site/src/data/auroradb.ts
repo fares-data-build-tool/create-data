@@ -159,7 +159,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
     }
 };
 
-export const getServicesByNoc = async (nationalOperatorCode: string): Promise<MyFaresService[]> => {
+export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promise<MyFaresService[]> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 
     logger.info('', {
