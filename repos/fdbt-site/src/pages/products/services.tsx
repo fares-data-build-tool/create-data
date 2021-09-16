@@ -3,18 +3,27 @@ import { MyFaresService, NextPageContextWithSession } from '../../interfaces/ind
 import { BaseLayout } from '../../layout/Layout';
 import { getServicesByNoc } from '../../data/auroradb';
 import { getAndValidateNoc, getUnixTimestampFromBritishFormattedDate } from '../../utils';
+import { myFaresEnabled } from '../../constants/featureFlag';
 
 const title = 'Services - Create Fares Data Service';
 const description = 'View and access your services in one place.';
 
 interface ServicesProps {
     services: MyFaresService[];
+    myFaresEnabled: boolean;
 }
 
-const Services = ({ services }: ServicesProps): ReactElement => {
+const Services = ({ services, myFaresEnabled }: ServicesProps): ReactElement => {
     return (
         <>
-            <BaseLayout title={title} description={description} showNavigation referer={''} activePage="services">
+            <BaseLayout
+                title={title}
+                description={description}
+                showNavigation
+                referer={''}
+                activePage="services"
+                myFaresEnabled={myFaresEnabled}
+            >
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Services</h1>
@@ -80,7 +89,7 @@ const getTag = (startDate: string, endDate: string) => {
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServicesProps }> => {
     const services = await getServicesByNoc(getAndValidateNoc(ctx));
 
-    return { props: { services: services } };
+    return { props: { services: services, myFaresEnabled } };
 };
 
 export default Services;

@@ -2,24 +2,27 @@ import React, { ReactElement } from 'react';
 
 interface NavigationProps {
     activePage: string;
+    myFaresEnabled: boolean;
 }
 
-const Navigation = ({ activePage }: NavigationProps): ReactElement => (
+const Navigation = ({ activePage, myFaresEnabled }: NavigationProps): ReactElement => (
     <nav className="app-navigation govuk-clearfix">
         <ul className="app-navigation__list app-width-container">
-            <li
-                className={`app-navigation__list-item ${
-                    activePage === 'services' ? 'app-navigation__list-item--current' : ''
-                }`}
-            >
-                <a
-                    className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
-                    href="/products/services"
-                    data-topnav="Operator settings"
+            {myFaresEnabled && (
+                <li
+                    className={`app-navigation__list-item ${
+                        activePage === 'services' ? 'app-navigation__list-item--current' : ''
+                    }`}
                 >
-                    Services
-                </a>
-            </li>
+                    <a
+                        className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
+                        href="/products/services"
+                        data-topnav="Operator settings"
+                    >
+                        Services
+                    </a>
+                </li>
+            )}
 
             <li
                 className={`app-navigation__list-item ${

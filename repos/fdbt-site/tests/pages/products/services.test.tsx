@@ -1,16 +1,29 @@
 import { shallow } from 'enzyme';
-import * as react from 'react';
-import { singlepassengertype } from '../../src/interfaces';
-import viewpassengertypes from '../../src/pages/viewpassengertypes';
+import Services from '../../../src/pages/products/services';
+import * as React from 'react';
+import { MyFaresService } from 'src/interfaces';
 
-describe('pages', () => {
+describe('myfares pages', () => {
     describe('services', () => {
-        it('should render correctly when no individual or group passenger types', () => {
-            const tree = shallow(
-                <viewpassengertypes singlepassengertypes={[]} grouppassengertypes={[]} csrftoken={''} referer={null} />,
-            );
+        it('should render correctly when no services present', () => {
+            const tree = shallow(<Services services={[]} myFaresEnabled={false} />);
 
-            expect(tree).tomatchsnapshot();
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly when services present', () => {
+            const services = [
+                {
+                    serviceDescription: 'Awesome service',
+                    lineName: '1',
+                    startDate: '1/1/2021',
+                    endDate: '16/9/2021',
+                },
+            ] as MyFaresService[];
+
+            const tree = shallow(<Services services={services} myFaresEnabled={false} />);
+
+            expect(tree).toMatchSnapshot();
         });
     });
 });

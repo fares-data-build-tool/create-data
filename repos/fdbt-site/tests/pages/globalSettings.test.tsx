@@ -12,7 +12,9 @@ describe('pages', () => {
                 purchaseMethodsCount: 7,
                 fareDayEndSet: true,
             };
-            const tree = shallow(<GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" />);
+            const tree = shallow(
+                <GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" myFaresEnabled={false} />,
+            );
             expect(tree).toMatchSnapshot();
         });
     });

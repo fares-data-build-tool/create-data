@@ -4,7 +4,7 @@ import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import { NextPageContextWithSession, PremadeTimeRestriction, DbTimeBand } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
-import { globalSettingsDeleteEnabled } from '../constants/featureFlag';
+import { globalSettingsDeleteEnabled, myFaresEnabled } from '../constants/featureFlag';
 
 const title = 'Time restrictions';
 const description = 'Define certain days and time periods that your tickets can be used within.';
@@ -25,6 +25,7 @@ interface TimeRestrictionProps {
     timeRestrictions: PremadeTimeRestriction[];
     referer: string | null;
     deleteEnabled: boolean;
+    myFaresEnabled: boolean;
 }
 
 const formatTime = (time: string | object): string =>
@@ -50,6 +51,7 @@ const ViewTimeRestrictions = ({
     referer,
     csrfToken,
     deleteEnabled,
+    myFaresEnabled,
 }: TimeRestrictionProps): ReactElement => {
     return (
         <>
@@ -61,7 +63,9 @@ const ViewTimeRestrictions = ({
                 title={title}
                 description={description}
                 CardBody={TimeRestrictionCardBody}
+                activePage="operatorSettings"
                 deleteEnabled={deleteEnabled}
+                myFaresEnabled={myFaresEnabled}
             />
         </>
     );
@@ -103,6 +107,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             referer: extractGlobalSettingsReferer(ctx),
             csrfToken,
             deleteEnabled: globalSettingsDeleteEnabled,
+            myFaresEnabled: myFaresEnabled,
         },
     };
 };

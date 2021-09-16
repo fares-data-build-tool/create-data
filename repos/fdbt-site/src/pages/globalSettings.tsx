@@ -14,6 +14,7 @@ import { globalSettingsEnabled } from '../constants/featureFlag';
 import { getAndValidateNoc } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { redirectTo } from '../utils/apiUtils';
+import { myFaresEnabled } from '../constants/featureFlag';
 
 const title = 'Operator Settings - Create Fares Data Service';
 const description = 'View and access your settings in one place.';
@@ -21,9 +22,10 @@ const description = 'View and access your settings in one place.';
 interface GlobalSettingsProps {
     globalSettingsCounts: GlobalSettingsCounts;
     referer: string | null;
+    myFaresEnabled: boolean;
 }
 
-const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps): ReactElement => {
+const GlobalSettings = ({ globalSettingsCounts, referer, myFaresEnabled }: GlobalSettingsProps): ReactElement => {
     return (
         <>
             <BaseLayout
@@ -32,6 +34,7 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                 showNavigation
                 referer={referer}
                 activePage="operatorSettings"
+                myFaresEnabled={myFaresEnabled}
             >
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
@@ -102,7 +105,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         fareDayEndSet: !!fareDayEnd,
     };
 
-    return { props: { globalSettingsCounts, referer } };
+    return { props: { globalSettingsCounts, referer, myFaresEnabled } };
 };
 
 export default GlobalSettings;
