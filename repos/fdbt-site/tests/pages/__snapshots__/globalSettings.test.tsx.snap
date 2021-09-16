@@ -3,7 +3,6 @@
 exports[`pages globalSettings should render correctly 1`] = `
 <Fragment>
   <BaseLayout
-    activePage="operatorSettings"
     description="View and access your settings in one place."
     myFaresEnabled={false}
     referer="hello"

@@ -3,10 +3,8 @@
 exports[`myfares pages services should render correctly when no services present 1`] = `
 <Fragment>
   <BaseLayout
-    activePage="services"
     description="View and access your services in one place."
-    myFaresEnabled={false}
-    referer=""
+    myFaresEnabled={true}
     showNavigation={true}
     title="Services - Create Fares Data Service"
   >
@@ -69,10 +67,8 @@ exports[`myfares pages services should render correctly when no services present
 exports[`myfares pages services should render correctly when services present 1`] = `
 <Fragment>
   <BaseLayout
-    activePage="services"
     description="View and access your services in one place."
-    myFaresEnabled={false}
-    referer=""
+    myFaresEnabled={true}
     showNavigation={true}
     title="Services - Create Fares Data Service"
   >
@@ -127,7 +123,7 @@ exports[`myfares pages services should render correctly when services present 1`
           >
             <tr
               className="govuk-table__row"
-              key="1"
+              key="0"
             >
               <td
                 className="govuk-table__cell"

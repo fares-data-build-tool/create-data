@@ -20,7 +20,6 @@ interface LayoutProps {
     showNavigation?: boolean;
     hideHelp?: boolean;
     referer?: string | null;
-    activePage?: string;
     myFaresEnabled?: boolean;
 }
 
@@ -33,7 +32,6 @@ export const BaseLayout = ({
     showNavigation,
     hideHelp,
     referer,
-    activePage,
     myFaresEnabled,
 }: PropsWithChildren<LayoutProps>): ReactElement => {
     const [showBanner, setShowBanner] = useState(false);
@@ -60,7 +58,7 @@ export const BaseLayout = ({
 
             <PhaseBanner />
 
-            {showNavigation && <Navigation activePage={activePage ?? ''} myFaresEnabled={myFaresEnabled ?? false} />}
+            {showNavigation && <Navigation myFaresEnabled={myFaresEnabled ?? false} />}
 
             {referer && <GlobalSettingReturnHeader />}
 

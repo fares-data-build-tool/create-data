@@ -39,7 +39,6 @@ const ViewPurchaseMethods = ({
                 description={description}
                 CardBody={PurchaseMethodCardBody}
                 deleteEnabled={deleteEnabled}
-                activePage="operatorSettings"
                 myFaresEnabled={myFaresEnabled}
             />
         </>

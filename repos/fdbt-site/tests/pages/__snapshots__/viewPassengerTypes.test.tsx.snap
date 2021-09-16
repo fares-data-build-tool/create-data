@@ -2,7 +2,6 @@
 
 exports[`pages view passenger types should render correctly when groups and individual passenger types 1`] = `
 <BaseLayout
-  activePage="operatorSettings"
   description="View and edit your passenger types."
   myFaresEnabled={false}
   referer="hello"
@@ -109,7 +108,6 @@ exports[`pages view passenger types should render correctly when groups and indi
 
 exports[`pages view passenger types should render correctly when no individual or group passenger types 1`] = `
 <BaseLayout
-  activePage="operatorSettings"
   description="View and edit your passenger types."
   myFaresEnabled={false}
   referer={null}
@@ -160,7 +158,6 @@ exports[`pages view passenger types should render correctly when no individual o
 
 exports[`pages view passenger types should render correctly when only individual passenger types 1`] = `
 <BaseLayout
-  activePage="operatorSettings"
   description="View and edit your passenger types."
   myFaresEnabled={false}
   referer="hello"
@@ -237,7 +234,6 @@ exports[`pages view passenger types should render correctly when only individual
 
 exports[`pages view passenger types should render correctly when only passenger type groups 1`] = `
 <BaseLayout
-  activePage="operatorSettings"
   description="View and edit your passenger types."
   myFaresEnabled={false}
   referer={null}

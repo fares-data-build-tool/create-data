@@ -33,7 +33,6 @@ const GlobalSettings = ({ globalSettingsCounts, referer, myFaresEnabled }: Globa
                 description={description}
                 showNavigation
                 referer={referer}
-                activePage="operatorSettings"
                 myFaresEnabled={myFaresEnabled}
             >
                 <div className="govuk-grid-row">

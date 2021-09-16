@@ -6,7 +6,7 @@ import { MyFaresService } from 'src/interfaces';
 describe('myfares pages', () => {
     describe('services', () => {
         it('should render correctly when no services present', () => {
-            const tree = shallow(<Services services={[]} myFaresEnabled={false} />);
+            const tree = shallow(<Services services={[]} myFaresEnabled={true} />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -21,7 +21,7 @@ describe('myfares pages', () => {
                 },
             ] as MyFaresService[];
 
-            const tree = shallow(<Services services={services} myFaresEnabled={false} />);
+            const tree = shallow(<Services services={services} myFaresEnabled={true} />);
 
             expect(tree).toMatchSnapshot();
         });

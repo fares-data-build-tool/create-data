@@ -17,19 +17,12 @@ interface ServicesProps {
 const Services = ({ services, myFaresEnabled }: ServicesProps): ReactElement => {
     return (
         <>
-            <BaseLayout
-                title={title}
-                description={description}
-                showNavigation
-                referer={''}
-                activePage="services"
-                myFaresEnabled={myFaresEnabled}
-            >
+            <BaseLayout title={title} description={description} showNavigation myFaresEnabled={myFaresEnabled}>
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Services</h1>
 
-                        {ServicesTable(services)}
+                        {servicesTable(services)}
                     </div>
                 </div>
             </BaseLayout>
@@ -37,7 +30,7 @@ const Services = ({ services, myFaresEnabled }: ServicesProps): ReactElement => 
     );
 };
 
-const ServicesTable = (services: MyFaresService[]): ReactElement => {
+const servicesTable = (services: MyFaresService[]): ReactElement => {
     return (
         <table className="govuk-table">
             <thead className="govuk-table__head">
@@ -58,8 +51,8 @@ const ServicesTable = (services: MyFaresService[]): ReactElement => {
             </thead>
 
             <tbody className="govuk-table__body">
-                {services.map((service) => (
-                    <tr key={service.lineName} className="govuk-table__row">
+                {services.map((service, index) => (
+                    <tr key={index} className="govuk-table__row">
                         <td className="govuk-table__cell">
                             {service.lineName} - {service.serviceDescription}
                         </td>

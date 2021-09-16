@@ -63,7 +63,6 @@ const ViewTimeRestrictions = ({
                 title={title}
                 description={description}
                 CardBody={TimeRestrictionCardBody}
-                activePage="operatorSettings"
                 deleteEnabled={deleteEnabled}
                 myFaresEnabled={myFaresEnabled}
             />

@@ -67,7 +67,6 @@ const ViewPassengerTypes = ({
             description={description}
             showNavigation
             referer={referer}
-            activePage="operatorSettings"
             myFaresEnabled={myFaresEnabled}
         >
             <div className="govuk-grid-row" data-card-count={singlePassengerTypes.length + groupPassengerTypes.length}>
