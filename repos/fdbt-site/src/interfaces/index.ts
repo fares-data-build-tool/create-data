@@ -573,10 +573,23 @@ export interface Service {
 }
 
 export interface MyFaresService {
-    serviceDescription: string;
+    lineId: string;
+    origin: string;
+    destination: string;
     lineName: string;
     startDate: string;
     endDate: string;
+}
+
+export interface MyFaresProduct {
+    lineId: string;
+    matchingJsonLink: string;
+    startDate: string;
+    endDate: string;
+}
+
+export interface MyFaresServiceWithProducts extends MyFaresService {
+    products: number;
 }
 
 export interface ServiceWithErrors {
