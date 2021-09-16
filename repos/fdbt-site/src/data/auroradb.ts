@@ -173,7 +173,7 @@ export const getServicesByNoc = async (nationalOperatorCode: string): Promise<My
             SELECT lineName, serviceDescription, startDate, endDate
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = 'bods'
-            ORDER BY lineName;
+            ORDER BY CAST(lineName AS UNSIGNED), lineName;
         `;
 
         const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter]);
