@@ -2,8 +2,9 @@ import React, { ReactElement } from 'react';
 import { MyFaresService, NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
 import { getBodsServicesByNoc } from '../../data/auroradb';
-import { getAndValidateNoc, getUnixTimestampFromBritishFormattedDate } from '../../utils';
+import { getAndValidateNoc } from '../../utils';
 import { myFaresEnabled } from '../../constants/featureFlag';
+import moment from 'moment';
 
 const title = 'Services - Create Fares Data Service';
 const description = 'View and access your services in one place.';
@@ -74,8 +75,8 @@ const ServicesTable = (services: MyFaresService[]): ReactElement => {
 
 const getTag = (startDate: string, endDate: string) => {
     const today = new Date().setHours(0, 0, 0, 0);
-    const startDateAsUnixTime = getUnixTimestampFromBritishFormattedDate(startDate);
-    const endDateAsUnixTime = getUnixTimestampFromBritishFormattedDate(endDate);
+    const startDateAsUnixTime = moment(startDate, 'DD/MM/YYYY').valueOf();
+    const endDateAsUnixTime = moment(endDate, 'DD/MM/YYYY').valueOf();
 
     if (startDateAsUnixTime <= today && endDateAsUnixTime >= today) {
         return <strong className="govuk-tag govuk-tag--turquoise">Active</strong>;

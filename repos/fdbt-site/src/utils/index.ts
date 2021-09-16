@@ -166,14 +166,6 @@ export const getAndValidateNoc = (ctx: NextPageContextWithSession): string => {
     throw new Error('invalid NOC set');
 };
 
-export const getUnixTimestampFromBritishFormattedDate = (date: string): number => {
-    const splitDate = date.split('/');
-
-    const unixTime = new Date(parseInt(splitDate[2]), parseInt(splitDate[1]), parseInt(splitDate[0])).valueOf();
-
-    return unixTime;
-};
-
 export const getSchemeOpRegionFromIdToken = (ctx: NextPageContext): string | null =>
     getAttributeFromIdToken(ctx, 'custom:schemeRegionCode');
 
