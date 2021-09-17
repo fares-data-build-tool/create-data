@@ -20,6 +20,7 @@ import {
     GroupPassengerTypeReference,
     FullGroupPassengerType,
     DbTimeRestriction,
+    MyFaresService,
 } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -151,6 +152,38 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
                 origin: item.origin,
                 destination: item.destination,
                 serviceCode: item.serviceCode,
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promise<MyFaresService[]> => {
+    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
+
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for given national operator code',
+        noc: nationalOperatorCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT lineName, serviceDescription, startDate, endDate
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND dataSource = 'bods'
+            ORDER BY CAST(lineName AS UNSIGNED), lineName;
+        `;
+
+        const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter]);
+
+        return (
+            queryResults.map((item) => ({
+                serviceDescription: item.serviceDescription,
+                lineName: item.lineName,
+                startDate: convertDateFormat(item.startDate),
+                endDate: convertDateFormat(item.endDate),
             })) || []
         );
     } catch (error) {
