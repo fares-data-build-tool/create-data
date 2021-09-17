@@ -146,9 +146,9 @@ exports[`myfares pages services should render correctly when services present 1`
                 className="govuk-table__cell"
               >
                 <strong
-                  className="govuk-tag govuk-tag--turquoise"
+                  className="govuk-tag govuk-tag--red"
                 >
-                  Active
+                  Expired
                 </strong>
               </td>
             </tr>

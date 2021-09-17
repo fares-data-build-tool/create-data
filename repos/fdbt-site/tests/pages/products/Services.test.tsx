@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import Services from '../../../src/pages/products/services';
+import Services from '../../../src/pages/products/Services';
 import * as React from 'react';
 import { MyFaresService } from 'src/interfaces';
 
