@@ -21,6 +21,7 @@ import {
     FullGroupPassengerType,
     DbTimeRestriction,
     MyFaresService,
+    MyFaresProduct,
 } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -170,7 +171,7 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
 
     try {
         const queryInput = `
-            SELECT lineName, serviceDescription, startDate, endDate
+            SELECT lineName, lineId, origin, destination, startDate, endDate
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = 'bods'
             ORDER BY CAST(lineName AS UNSIGNED), lineName;
@@ -180,10 +181,12 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
 
         return (
             queryResults.map((item) => ({
-                serviceDescription: item.serviceDescription,
+                origin: item.origin,
+                destination: item.destination,
                 lineName: item.lineName,
                 startDate: convertDateFormat(item.startDate),
                 endDate: convertDateFormat(item.endDate),
+                lineId: item.lineId,
             })) || []
         );
     } catch (error) {
@@ -1293,6 +1296,8 @@ export const insertProducts = async (
     dateModified: Date,
     fareType: string,
     lineId: string | undefined,
+    startDate: string,
+    endDate: string,
 ): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1302,11 +1307,42 @@ export const insertProducts = async (
     });
 
     const insertQuery = `INSERT INTO products 
-    (nocCode, matchingJsonLink, dateModified, fareType, lineId) 
-    VALUES (?, ?, ?, ?, ?)`;
+    (nocCode, matchingJsonLink, dateModified, fareType, lineId, startDate, endDate) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)`;
     try {
-        await executeQuery(insertQuery, [nocCode, matchingJsonLink, dateModified, fareType, lineId || '']);
+        await executeQuery(insertQuery, [
+            nocCode,
+            matchingJsonLink,
+            dateModified,
+            fareType,
+            lineId || '',
+            startDate,
+            endDate,
+        ]);
     } catch (error) {
         throw new Error(`Could not insert products into the products table. ${error.stack}`);
+    }
+};
+
+export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresProduct[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting point to point products for given noc',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT lineId, matchingJsonLink, startDate, endDate
+            FROM products
+            WHERE lineId <> ''
+        `;
+
+        return await executeQuery<{ lineId: string; matchingJsonLink: string; startDate: string; endDate: string }[]>(
+            queryInput,
+            [],
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve fare day end by nocCode from AuroraDB: ${error.stack}`);
     }
 };

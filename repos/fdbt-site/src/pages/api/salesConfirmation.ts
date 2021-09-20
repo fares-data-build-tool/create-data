@@ -1,4 +1,4 @@
-import { globalSettingsEnabled } from './../../constants/featureFlag';
+import { saveProductsEnabled } from './../../constants/featureFlag';
 import moment from 'moment';
 import { NextApiResponse } from 'next';
 import { insertProducts } from '../../data/auroradb';
@@ -9,6 +9,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { NextApiRequestWithSession, Ticket, TicketPeriodWithInput } from '../../interfaces';
 import { isPassengerType, isTicketRepresentation } from '../../interfaces/typeGuards';
@@ -96,6 +97,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
             const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
             const carnetAttribute = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
+            const dataFormat = getSessionAttribute(req, TXC_SOURCE_ATTRIBUTE)?.source;
 
             if (
                 sessionGroup &&
@@ -112,10 +114,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson.carnet = carnetAttribute;
             const noc = getAndValidateNoc(req, res);
             const filePath = await putUserDataInS3(userDataJson, uuid, noc);
-            if (globalSettingsEnabled) {
+            if (saveProductsEnabled && dataFormat !== 'tnds') {
+                const { startDate, endDate } = userDataJson.ticketPeriod;
+                if (!startDate || !endDate) {
+                    throw new Error('Start or end date could not be found.');
+                }
                 const dateTime = moment().toDate();
                 const lineId: string | undefined = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
-                await insertProducts(noc, filePath, dateTime, userDataJson.type, lineId);
+                await insertProducts(noc, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);
             }
 
             redirectTo(res, '/thankyou');
