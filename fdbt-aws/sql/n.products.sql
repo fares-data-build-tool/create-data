@@ -7,8 +7,8 @@ CREATE TABLE products(
     `lineId` varchar(100) NOT NULL,
     `dateModified` datetime NOT NULL,
     `fareType` varchar(20) NOT NULL,
-    `startDate` date NOT NULL,
-    `endDate` date NOT NULL,
+    `startDate` datetime NOT NULL,
+    `endDate` datetime NOT NULL,
     INDEX idx_nocCode (nocCode),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;

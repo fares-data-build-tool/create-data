@@ -104,10 +104,7 @@ export const showProductAgainstService = (
     const momentServiceStartDate = moment(serviceStartDate, 'DD/MM/YYYY').valueOf();
     const momentServiceEndDate = moment(serviceEndDate, 'DD/MM/YYYY').valueOf();
 
-    if (momentProductEndDate < momentServiceStartDate || momentServiceEndDate < momentProductStartDate) {
-        return false;
-    }
-    return true;
+    return momentProductEndDate >= momentServiceStartDate && momentServiceEndDate >= momentProductStartDate;
 };
 
 export const matchProductsToServices = (
