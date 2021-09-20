@@ -113,22 +113,24 @@ export const showProductAgainstService = (
 export const matchProductsToServices = (
     services: MyFaresService[],
     products: MyFaresProduct[],
-): MyFaresServiceWithProducts[] =>
-    services.map((service) => {
-        const productsToAdd: MyFaresProduct[] = [];
-        products.forEach((product) => {
-            if (
-                product.lineId === service.lineId &&
-                showProductAgainstService(product.startDate, product.endDate, service.startDate, service.endDate)
-            ) {
-                productsToAdd.push(product);
-            }
-        });
-        return {
-            ...service,
-            products: productsToAdd.length,
-        };
-    });
+): MyFaresServiceWithProducts[] => {
+    const productsByLine = products.reduce((map, product) => {
+        const serviceByLine = map.get(product.lineId) ?? [];
+        serviceByLine.push(product);
+        map.set(product.lineId, serviceByLine);
+        return map;
+    }, new Map<string, MyFaresProduct[]>());
+
+    return services.map((service) => ({
+        ...service,
+        products:
+            productsByLine
+                .get(service.lineId)
+                ?.filter((product) =>
+                    showProductAgainstService(product.startDate, product.endDate, service.startDate, service.endDate),
+                ).length ?? 0,
+    }));
+};
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServicesProps }> => {
     const noc = getAndValidateNoc(ctx);

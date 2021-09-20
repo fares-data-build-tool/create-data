@@ -1338,10 +1338,10 @@ export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresP
             WHERE lineId <> ''
         `;
 
-        const queryResults = await executeQuery<
-            { lineId: string; matchingJsonLink: string; startDate: string; endDate: string }[]
-        >(queryInput, []);
-        return queryResults;
+        return await executeQuery<{ lineId: string; matchingJsonLink: string; startDate: string; endDate: string }[]>(
+            queryInput,
+            [],
+        );
     } catch (error) {
         throw new Error(`Could not retrieve fare day end by nocCode from AuroraDB: ${error.stack}`);
     }
