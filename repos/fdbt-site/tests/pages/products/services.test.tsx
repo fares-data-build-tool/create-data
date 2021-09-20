@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import Services, { showProductAgainstService } from '../../../src/pages/products/services';
 import * as React from 'react';
-import { MyFaresServiceWithProducts } from 'src/interfaces';
+import { MyFaresServiceWithProductCount } from '../../../src/interfaces';
 
 describe('myfares pages', () => {
     describe('services', () => {
@@ -12,7 +12,7 @@ describe('myfares pages', () => {
         });
 
         it('should render correctly when services present', () => {
-            const services: MyFaresServiceWithProducts[] = [
+            const services: MyFaresServiceWithProductCount[] = [
                 {
                     origin: 'Leeds',
                     destination: 'Manchester',
@@ -30,7 +30,7 @@ describe('myfares pages', () => {
         });
 
         it('should render correctly when services present and products ', () => {
-            const services: MyFaresServiceWithProducts[] = [
+            const services: MyFaresServiceWithProductCount[] = [
                 {
                     origin: 'Leeds',
                     destination: 'Manchester',

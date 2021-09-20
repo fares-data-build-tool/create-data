@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import {
     MyFaresProduct,
     MyFaresService,
-    MyFaresServiceWithProducts,
+    MyFaresServiceWithProductCount,
     NextPageContextWithSession,
 } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
@@ -15,7 +15,7 @@ const title = 'Services - Create Fares Data Service';
 const description = 'View and access your services in one place.';
 
 interface ServicesProps {
-    servicesAndProducts: MyFaresServiceWithProducts[];
+    servicesAndProducts: MyFaresServiceWithProductCount[];
     myFaresEnabled: boolean;
 }
 
@@ -35,7 +35,7 @@ const Services = ({ servicesAndProducts, myFaresEnabled }: ServicesProps): React
     );
 };
 
-const ServicesTable = (services: MyFaresServiceWithProducts[]): ReactElement => {
+const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement => {
     return (
         <table className="govuk-table">
             <thead className="govuk-table__head">
@@ -110,7 +110,7 @@ export const showProductAgainstService = (
 export const matchProductsToServices = (
     services: MyFaresService[],
     products: MyFaresProduct[],
-): MyFaresServiceWithProducts[] => {
+): MyFaresServiceWithProductCount[] => {
     const productsByLine = products.reduce((map, product) => {
         const serviceByLine = map.get(product.lineId) ?? [];
         serviceByLine.push(product);

@@ -588,7 +588,7 @@ export interface MyFaresProduct {
     endDate: string;
 }
 
-export interface MyFaresServiceWithProducts extends MyFaresService {
+export interface MyFaresServiceWithProductCount extends MyFaresService {
     products: number;
 }
 
