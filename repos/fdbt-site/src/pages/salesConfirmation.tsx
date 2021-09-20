@@ -15,7 +15,6 @@ import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
-import { redirectTo } from '../utils/apiUtils';
 import { ticketFormatsList } from './salesOfferPackages';
 import { formatSOPArray } from './selectSalesOfferPackage';
 import { globalSettingsEnabled } from '../constants/featureFlag';
@@ -129,10 +128,6 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
         !isArray(salesOfferPackageInfo) ||
         isTicketPeriodAttributeWithErrors(ticketDatingInfo)
     ) {
-        if (ctx.res) {
-            redirectTo(ctx.res, '/home');
-        }
-
         throw new Error('User has reached confirmation page with incorrect sales info.');
     }
 

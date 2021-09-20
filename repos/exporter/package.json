@@ -1,0 +1,41 @@
+{
+  "name": "exporter",
+  "version": "0.1.0",
+  "bin": {
+    "exporter": "bin/exporter.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "test:ci": "CI=true jest",
+    "cdk": "cdk",
+    "lint": "eslint . --ext .ts"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.122.0",
+    "@types/aws-lambda": "^8.10.83",
+    "@types/jest": "^26.0.10",
+    "@types/node": "10.17.27",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.1",
+    "aws-cdk": "1.122.0",
+    "esbuild": "^0.12.28",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^26.4.2",
+    "prettier": "^2.4.1",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-lambda": "^1.122.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.122.0",
+    "@aws-cdk/aws-s3": "^1.122.0",
+    "@aws-cdk/core": "1.122.0",
+    "source-map-support": "^0.5.16"
+  }
+}
