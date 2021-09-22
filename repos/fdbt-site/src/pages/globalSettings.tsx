@@ -6,6 +6,7 @@ import {
     getSalesOfferPackagesByNocCode,
     getTimeRestrictionByNocCode,
     getFareDayEnd,
+    getOperatorDetails,
 } from '../data/auroradb';
 import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
@@ -71,6 +72,12 @@ const GlobalSettings = ({ globalSettingsCounts, referer, myFaresEnabled }: Globa
                             description="If your fare day extends past midnight, define its end time"
                             count={globalSettingsCounts.fareDayEndSet}
                         />
+                        <SettingOverview
+                            href="/manageOperatorDetails"
+                            name="Operator details"
+                            description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
+                            count={globalSettingsCounts.operatorDetailsSet}
+                        />
                     </div>
                 </div>
             </BaseLayout>
@@ -96,12 +103,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const savedTimeRestrictions = await getTimeRestrictionByNocCode(noc);
     const purchaseMethodsCount = await getSalesOfferPackagesByNocCode(noc);
     const fareDayEnd = await getFareDayEnd(noc);
+    const operatorDetails = await getOperatorDetails(noc);
 
     const globalSettingsCounts: GlobalSettingsCounts = {
         passengerTypesCount: savedPassengerTypes.length + savedGroupPassengerTypes.length,
         timeRestrictionsCount: savedTimeRestrictions.length,
         purchaseMethodsCount: purchaseMethodsCount.length,
         fareDayEndSet: !!fareDayEnd,
+        operatorDetailsSet: !!operatorDetails,
     };
 
     return { props: { globalSettingsCounts, referer, myFaresEnabled } };

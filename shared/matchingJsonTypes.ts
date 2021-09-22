@@ -297,3 +297,14 @@ export interface Stop {
     indicator?: string;
     street?: string;
 }
+
+export interface OperatorDetails {
+    operatorName: string;
+    contactNumber: string;
+    email: string;
+    url: string;
+    street: string;
+    town: string;
+    county: string;
+    postcode: string;
+}

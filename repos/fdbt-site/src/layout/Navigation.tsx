@@ -32,6 +32,7 @@ const Navigation = ({ myFaresEnabled }: NavigationProps): ReactElement => (
                         'viewPurchaseMethods',
                         'viewTimeRestrictions',
                         'manageFareDayEnd',
+                        'manageOperatorDetails',
                     ])
                         ? 'app-navigation__list-item--current'
                         : ''

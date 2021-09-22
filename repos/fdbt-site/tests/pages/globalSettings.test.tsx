@@ -11,6 +11,7 @@ describe('pages', () => {
                 timeRestrictionsCount: 3,
                 purchaseMethodsCount: 7,
                 fareDayEndSet: true,
+                operatorDetailsSet: true,
             };
             const tree = shallow(
                 <GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" myFaresEnabled={false} />,

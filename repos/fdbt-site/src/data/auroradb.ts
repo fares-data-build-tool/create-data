@@ -2,7 +2,7 @@ import awsParamStore from 'aws-param-store';
 import dateFormat from 'dateformat';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
-import { FromDb } from '../../shared/matchingJsonTypes';
+import { FromDb, OperatorDetails } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
     CompanionInfo,
@@ -1286,7 +1286,7 @@ export const upsertFareDayEnd = async (nocCode: string, fareDayEnd: string): Pro
             await executeQuery(insertQuery, [fareDayEnd, nocCode]);
         }
     } catch (error) {
-        throw new Error(`Could not insert passenger type into the passengerType table. ${error}`);
+        throw new Error(`Could not insert fare day end into the fareDayEnd table. ${error}`);
     }
 };
 
@@ -1324,6 +1324,91 @@ export const insertProducts = async (
     }
 };
 
+export const getOperatorDetailsFromNocTable = async (nocCode: string): Promise<OperatorDetails | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving operator details from nocPublicName table for given nocCode',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT DISTINCT nocTable.operatorPublicName AS operatorName, nocPublicName.fareEnq AS contactNumber, nocPublicName.ttrteEnq AS email, nocPublicName.website AS url, nocPublicName.complEnq AS street
+            FROM nocTable
+            JOIN nocPublicName ON nocTable.pubNmId = nocPublicName.pubNmId
+            WHERE nocTable.nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<
+            {
+                operatorName: string;
+                contactNumber: string;
+                email: string;
+                url: string;
+                street: string;
+            }[]
+        >(queryInput, [nocCode]);
+
+        return queryResults[0]
+            ? {
+                  ...queryResults[0],
+                  town: '',
+                  county: '',
+                  postcode: '',
+              }
+            : undefined;
+    } catch (error) {
+        throw new Error(
+            `Could not retrieve operator details from nocPublicName by nocCode from AuroraDB: ${error.stack}`,
+        );
+    }
+};
+
+export const getOperatorDetails = async (nocCode: string): Promise<OperatorDetails | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving operator details for given nocCode',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT contents
+            FROM operatorDetails
+            WHERE nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode]);
+        return queryResults[0] ? (JSON.parse(queryResults[0].contents) as OperatorDetails) : undefined;
+    } catch (error) {
+        throw new Error(`Could not retrieve operator details by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const upsertOperatorDetails = async (nocCode: string, operatorDetails: OperatorDetails): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'upserting operator details',
+        nocCode,
+    });
+
+    try {
+        const updateQuery = `UPDATE operatorDetails
+                             SET contents = ?
+                             WHERE nocCode = ?`;
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [JSON.stringify(operatorDetails), nocCode]);
+        if (meta.affectedRows > 1) {
+            throw Error(`Updated too many rows when updating fare day end ${meta}`);
+        } else if (meta.affectedRows === 0) {
+            const insertQuery = `INSERT INTO operatorDetails (contents, nocCode) VALUES (?, ?)`;
+
+            await executeQuery(insertQuery, [JSON.stringify(operatorDetails), nocCode]);
+        }
+    } catch (error) {
+        throw new Error(`Could not insert operator details into the operatorDetails table. ${error}`);
+    }
+};
+
 export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresProduct[]> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1332,7 +1417,7 @@ export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresP
     });
 
     try {
-        const queryInput = `
+        const queryInput = `      
             SELECT lineId, matchingJsonLink, startDate, endDate
             FROM products
             WHERE lineId <> ''

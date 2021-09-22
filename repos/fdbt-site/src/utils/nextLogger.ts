@@ -29,7 +29,7 @@ const getMessage = (obj: AnyError): string => {
     if (obj instanceof Error) {
         return obj.stack ?? obj.message;
     }
-    if (obj.length === 1) {
+    if (obj?.length === 1) {
         return obj[0];
     }
     return typeof obj === 'string' ? obj : JSON.stringify(obj);

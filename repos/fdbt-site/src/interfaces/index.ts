@@ -205,6 +205,7 @@ export interface GlobalSettingsCounts {
     purchaseMethodsCount: number;
     timeRestrictionsCount: number;
     fareDayEndSet: boolean;
+    operatorDetailsSet: boolean;
 }
 
 export interface PassengerAttributes {
