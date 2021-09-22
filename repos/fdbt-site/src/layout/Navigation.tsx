@@ -24,6 +24,22 @@ const Navigation = ({ myFaresEnabled }: NavigationProps): ReactElement => (
                 </li>
             )}
 
+            {myFaresEnabled && (
+                <li
+                    className={`app-navigation__list-item ${
+                        isActivePage(['products/otherProducts']) ? 'app-navigation__list-item--current' : ''
+                    }`}
+                >
+                    <a
+                        className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
+                        href="/products/otherProducts"
+                        data-topnav="Other Products"
+                    >
+                        Other products
+                    </a>
+                </li>
+            )}
+
             <li
                 className={`app-navigation__list-item ${
                     isActivePage([

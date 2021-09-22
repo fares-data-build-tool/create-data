@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
 import { Portal } from 'react-portal';
+import { myFaresEnabled } from 'src/constants/featureFlag';
 
 import favicon from '../assets/images/favicon.ico';
 import Help from '../components/Help';
@@ -23,6 +24,17 @@ interface LayoutProps {
     myFaresEnabled?: boolean;
 }
 
+interface MyFaresLayoutProps {
+    title: string;
+    description: string;
+    currentUrl: string;
+    errors?: ErrorInfo[];
+    hideCookieBanner?: boolean;
+    showNavigation?: boolean;
+    hideHelp?: boolean;
+    referer?: string | null;
+}
+
 export const BaseLayout = ({
     title,
     description,
@@ -34,6 +46,53 @@ export const BaseLayout = ({
     referer,
     myFaresEnabled,
 }: PropsWithChildren<LayoutProps>): ReactElement => {
+    const [showBanner, setShowBanner] = useState(false);
+
+    useEffect(() => {
+        setShowBanner(true);
+    });
+
+    return (
+        <>
+            <Head>
+                <link rel="shortcut icon" href={favicon} />
+                <title>{buildTitle(errors, title || 'Create Fares Data')}</title>
+                <meta name="description" content={description || 'Create Fares Data'} />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta charSet="utf-8" />
+            </Head>
+
+            {!hideCookieBanner && showBanner && (
+                <Portal node={document && document.getElementById('js-cookie-banner')}>
+                    <CookieBanner />
+                </Portal>
+            )}
+
+            <PhaseBanner />
+
+            {showNavigation && <Navigation myFaresEnabled={myFaresEnabled ?? false} />}
+
+            {referer && <GlobalSettingReturnHeader />}
+
+            <div className="govuk-width-container">
+                <main className="govuk-main-wrapper">{children}</main>
+                {!hideHelp && <Help />}
+            </div>
+            <Footer />
+        </>
+    );
+};
+
+export const MyFaresLayout = ({
+    title,
+    description,
+    errors = [],
+    children,
+    hideCookieBanner,
+    showNavigation,
+    hideHelp,
+    referer,
+}: PropsWithChildren<MyFaresLayoutProps>): ReactElement => {
     const [showBanner, setShowBanner] = useState(false);
 
     useEffect(() => {
