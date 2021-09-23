@@ -574,6 +574,7 @@ export interface Service {
 }
 
 export interface MyFaresService {
+    id: string;
     lineId: string;
     origin: string;
     destination: string;
@@ -591,6 +592,13 @@ export interface MyFaresProduct {
 
 export interface MyFaresServiceWithProductCount extends MyFaresService {
     products: number;
+}
+
+export interface MyFaresPointToPointProduct {
+    productDescription: string;
+    validity: string;
+    startDate: string;
+    endDate: string;
 }
 
 export interface ServiceWithErrors {

@@ -116,7 +116,7 @@ const ManageOperatorDetails = ({
                                         >
                                             <input
                                                 className={`govuk-input govuk-input--width-20 govuk-!-margin-right-4`}
-                                                id={`${details.inputId}-input`}
+                                                id={`${details.inputId}`}
                                                 name={details.inputId}
                                                 aria-describedby="operator-details-text"
                                                 type="text"
