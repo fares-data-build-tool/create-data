@@ -38,7 +38,6 @@ describe('pages', () => {
                 { id: 'county', errorMessage: 'County is required' },
                 { id: 'postcode', errorMessage: 'Postcode is required' },
                 { id: 'contactNumber', errorMessage: 'At least one of contact number, email or URL are required' },
-                { id: 'postcode', errorMessage: 'Provide a valid postcode' },
             ];
 
             const tree = shallow(

@@ -164,7 +164,6 @@ export const getServerSideProps = async (
               };
 
     const errors = attribute && 'input' in attribute ? attribute.errors : [];
-    console.log(errors);
     const saved = attribute && 'saved' in attribute && attribute.saved;
     if (saved) {
         // only want the saved banner to display once
