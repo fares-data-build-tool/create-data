@@ -32,13 +32,12 @@ describe('pages', () => {
 
         it('should render error state if error', () => {
             const errors = [
-                { id: 'operatorName', errorMessage: 'All fields are mandatory' },
-                { id: 'street', errorMessage: 'All fields are mandatory' },
-                { id: 'town', errorMessage: 'All fields are mandatory' },
-                { id: 'county', errorMessage: 'All fields are mandatory' },
-                { id: 'contactNumber', errorMessage: 'Provide a valid phone number' },
-                { id: 'email', errorMessage: 'Provide a valid email' },
-                { id: 'url', errorMessage: 'Provide a valid URL' },
+                { id: 'operatorName', errorMessage: 'Operator name is required' },
+                { id: 'street', errorMessage: 'Street is required' },
+                { id: 'town', errorMessage: 'Town is required' },
+                { id: 'county', errorMessage: 'County is required' },
+                { id: 'postcode', errorMessage: 'Postcode is required' },
+                { id: 'contactNumber', errorMessage: 'At least one of contact number, email or URL are required' },
                 { id: 'postcode', errorMessage: 'Provide a valid postcode' },
             ];
 

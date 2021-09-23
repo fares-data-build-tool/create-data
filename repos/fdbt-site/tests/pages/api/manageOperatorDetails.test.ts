@@ -23,10 +23,10 @@ describe('manageOperatorDetails', () => {
 
     afterEach(jest.resetAllMocks);
 
-    it('should error when fields are empty', async () => {
+    it('should error when mandatory fields are empty', async () => {
         const input = {
             operatorName: '',
-            contactNumber: '',
+            contactNumber: '01234 567890',
             email: '',
             url: '',
             street: '',
@@ -44,18 +44,35 @@ describe('manageOperatorDetails', () => {
 
         const attributeValue = {
             errors: [
-                { id: 'operatorName', errorMessage: 'All fields are mandatory' },
-                { id: 'contactNumber', errorMessage: 'All fields are mandatory' },
-                { id: 'email', errorMessage: 'All fields are mandatory' },
-                { id: 'url', errorMessage: 'All fields are mandatory' },
-                { id: 'street', errorMessage: 'All fields are mandatory' },
-                { id: 'town', errorMessage: 'All fields are mandatory' },
-                { id: 'county', errorMessage: 'All fields are mandatory' },
-                { id: 'postcode', errorMessage: 'All fields are mandatory' },
-                { id: 'contactNumber', errorMessage: 'Provide a valid phone number' },
-                { id: 'email', errorMessage: 'Provide a valid email' },
-                { id: 'url', errorMessage: 'Provide a valid URL' },
+                { id: 'operatorName', errorMessage: 'Operator name is required' },
+                { id: 'street', errorMessage: 'Street is required' },
+                { id: 'town', errorMessage: 'Town is required' },
+                { id: 'county', errorMessage: 'County is required' },
                 { id: 'postcode', errorMessage: 'Provide a valid postcode' },
+            ],
+            input,
+        };
+
+        await manageOperatorDetails(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_OPERATOR_DETAILS_ATTRIBUTE, attributeValue);
+
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/manageOperatorDetails' });
+    });
+
+    it('should error when no contact details are provided', async () => {
+        const input = { ...testData, contactNumber: '', email: '', url: '' };
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: input,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        const attributeValue = {
+            errors: [
+                { id: 'contactNumber', errorMessage: 'At least one of contact number, email or URL are required' },
             ],
             input,
         };
@@ -154,9 +171,11 @@ describe('manageOperatorDetails', () => {
     it('should upsert operator details and set saved if valid', async () => {
         jest.spyOn(utils, 'getAndValidateNoc').mockReturnValue('mynoc');
 
+        const input = { ...testData, email: '', url: '' };
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
-            body: testData,
+            body: input,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
@@ -167,7 +186,7 @@ describe('manageOperatorDetails', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GS_OPERATOR_DETAILS_ATTRIBUTE, attributeValue);
 
-        expect(upsertOperatorDetailsSpy).toBeCalledWith('mynoc', testData);
+        expect(upsertOperatorDetailsSpy).toBeCalledWith('mynoc', input);
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/manageOperatorDetails' });
     });

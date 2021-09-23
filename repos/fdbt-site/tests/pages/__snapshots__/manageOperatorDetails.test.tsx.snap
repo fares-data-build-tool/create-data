@@ -351,32 +351,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
           errors={
             Array [
               Object {
-                "errorMessage": "All fields are mandatory",
+                "errorMessage": "Operator name is required",
                 "id": "operatorName",
               },
               Object {
-                "errorMessage": "All fields are mandatory",
+                "errorMessage": "Street is required",
                 "id": "street",
               },
               Object {
-                "errorMessage": "All fields are mandatory",
+                "errorMessage": "Town is required",
                 "id": "town",
               },
               Object {
-                "errorMessage": "All fields are mandatory",
+                "errorMessage": "County is required",
                 "id": "county",
               },
               Object {
-                "errorMessage": "Provide a valid phone number",
+                "errorMessage": "Postcode is required",
+                "id": "postcode",
+              },
+              Object {
+                "errorMessage": "At least one of contact number, email or URL are required",
                 "id": "contactNumber",
-              },
-              Object {
-                "errorMessage": "Provide a valid email",
-                "id": "email",
-              },
-              Object {
-                "errorMessage": "Provide a valid URL",
-                "id": "url",
               },
               Object {
                 "errorMessage": "Provide a valid postcode",
@@ -410,32 +406,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
             errors={
               Array [
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Operator name is required",
                   "id": "operatorName",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Street is required",
                   "id": "street",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Town is required",
                   "id": "town",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "County is required",
                   "id": "county",
                 },
                 Object {
-                  "errorMessage": "Provide a valid phone number",
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
                   "id": "contactNumber",
-                },
-                Object {
-                  "errorMessage": "Provide a valid email",
-                  "id": "email",
-                },
-                Object {
-                  "errorMessage": "Provide a valid URL",
-                  "id": "url",
                 },
                 Object {
                   "errorMessage": "Provide a valid postcode",
@@ -460,32 +452,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
                 errors={
                   Array [
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Operator name is required",
                       "id": "operatorName",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Street is required",
                       "id": "street",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Town is required",
                       "id": "town",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "County is required",
                       "id": "county",
                     },
                     Object {
-                      "errorMessage": "Provide a valid phone number",
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
                       "id": "contactNumber",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid email",
-                      "id": "email",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid URL",
-                      "id": "url",
                     },
                     Object {
                       "errorMessage": "Provide a valid postcode",
@@ -514,32 +502,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
             errors={
               Array [
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Operator name is required",
                   "id": "operatorName",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Street is required",
                   "id": "street",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Town is required",
                   "id": "town",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "County is required",
                   "id": "county",
                 },
                 Object {
-                  "errorMessage": "Provide a valid phone number",
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
                   "id": "contactNumber",
-                },
-                Object {
-                  "errorMessage": "Provide a valid email",
-                  "id": "email",
-                },
-                Object {
-                  "errorMessage": "Provide a valid URL",
-                  "id": "url",
                 },
                 Object {
                   "errorMessage": "Provide a valid postcode",
@@ -564,32 +548,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
                 errors={
                   Array [
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Operator name is required",
                       "id": "operatorName",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Street is required",
                       "id": "street",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Town is required",
                       "id": "town",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "County is required",
                       "id": "county",
                     },
                     Object {
-                      "errorMessage": "Provide a valid phone number",
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
                       "id": "contactNumber",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid email",
-                      "id": "email",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid URL",
-                      "id": "url",
                     },
                     Object {
                       "errorMessage": "Provide a valid postcode",
@@ -618,32 +598,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
             errors={
               Array [
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Operator name is required",
                   "id": "operatorName",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Street is required",
                   "id": "street",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Town is required",
                   "id": "town",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "County is required",
                   "id": "county",
                 },
                 Object {
-                  "errorMessage": "Provide a valid phone number",
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
                   "id": "contactNumber",
-                },
-                Object {
-                  "errorMessage": "Provide a valid email",
-                  "id": "email",
-                },
-                Object {
-                  "errorMessage": "Provide a valid URL",
-                  "id": "url",
                 },
                 Object {
                   "errorMessage": "Provide a valid postcode",
@@ -668,32 +644,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
                 errors={
                   Array [
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Operator name is required",
                       "id": "operatorName",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Street is required",
                       "id": "street",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Town is required",
                       "id": "town",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "County is required",
                       "id": "county",
                     },
                     Object {
-                      "errorMessage": "Provide a valid phone number",
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
                       "id": "contactNumber",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid email",
-                      "id": "email",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid URL",
-                      "id": "url",
                     },
                     Object {
                       "errorMessage": "Provide a valid postcode",
@@ -722,32 +694,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
             errors={
               Array [
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Operator name is required",
                   "id": "operatorName",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Street is required",
                   "id": "street",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Town is required",
                   "id": "town",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "County is required",
                   "id": "county",
                 },
                 Object {
-                  "errorMessage": "Provide a valid phone number",
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
                   "id": "contactNumber",
-                },
-                Object {
-                  "errorMessage": "Provide a valid email",
-                  "id": "email",
-                },
-                Object {
-                  "errorMessage": "Provide a valid URL",
-                  "id": "url",
                 },
                 Object {
                   "errorMessage": "Provide a valid postcode",
@@ -772,32 +740,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
                 errors={
                   Array [
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Operator name is required",
                       "id": "operatorName",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Street is required",
                       "id": "street",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Town is required",
                       "id": "town",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "County is required",
                       "id": "county",
                     },
                     Object {
-                      "errorMessage": "Provide a valid phone number",
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
                       "id": "contactNumber",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid email",
-                      "id": "email",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid URL",
-                      "id": "url",
                     },
                     Object {
                       "errorMessage": "Provide a valid postcode",
@@ -826,32 +790,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
             errors={
               Array [
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Operator name is required",
                   "id": "operatorName",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Street is required",
                   "id": "street",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Town is required",
                   "id": "town",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "County is required",
                   "id": "county",
                 },
                 Object {
-                  "errorMessage": "Provide a valid phone number",
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
                   "id": "contactNumber",
-                },
-                Object {
-                  "errorMessage": "Provide a valid email",
-                  "id": "email",
-                },
-                Object {
-                  "errorMessage": "Provide a valid URL",
-                  "id": "url",
                 },
                 Object {
                   "errorMessage": "Provide a valid postcode",
@@ -876,32 +836,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
                 errors={
                   Array [
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Operator name is required",
                       "id": "operatorName",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Street is required",
                       "id": "street",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Town is required",
                       "id": "town",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "County is required",
                       "id": "county",
                     },
                     Object {
-                      "errorMessage": "Provide a valid phone number",
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
                       "id": "contactNumber",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid email",
-                      "id": "email",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid URL",
-                      "id": "url",
                     },
                     Object {
                       "errorMessage": "Provide a valid postcode",
@@ -930,32 +886,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
             errors={
               Array [
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Operator name is required",
                   "id": "operatorName",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Street is required",
                   "id": "street",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Town is required",
                   "id": "town",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "County is required",
                   "id": "county",
                 },
                 Object {
-                  "errorMessage": "Provide a valid phone number",
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
                   "id": "contactNumber",
-                },
-                Object {
-                  "errorMessage": "Provide a valid email",
-                  "id": "email",
-                },
-                Object {
-                  "errorMessage": "Provide a valid URL",
-                  "id": "url",
                 },
                 Object {
                   "errorMessage": "Provide a valid postcode",
@@ -980,32 +932,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
                 errors={
                   Array [
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Operator name is required",
                       "id": "operatorName",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Street is required",
                       "id": "street",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Town is required",
                       "id": "town",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "County is required",
                       "id": "county",
                     },
                     Object {
-                      "errorMessage": "Provide a valid phone number",
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
                       "id": "contactNumber",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid email",
-                      "id": "email",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid URL",
-                      "id": "url",
                     },
                     Object {
                       "errorMessage": "Provide a valid postcode",
@@ -1034,32 +982,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
             errors={
               Array [
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Operator name is required",
                   "id": "operatorName",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Street is required",
                   "id": "street",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Town is required",
                   "id": "town",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "County is required",
                   "id": "county",
                 },
                 Object {
-                  "errorMessage": "Provide a valid phone number",
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
                   "id": "contactNumber",
-                },
-                Object {
-                  "errorMessage": "Provide a valid email",
-                  "id": "email",
-                },
-                Object {
-                  "errorMessage": "Provide a valid URL",
-                  "id": "url",
                 },
                 Object {
                   "errorMessage": "Provide a valid postcode",
@@ -1084,32 +1028,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
                 errors={
                   Array [
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Operator name is required",
                       "id": "operatorName",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Street is required",
                       "id": "street",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Town is required",
                       "id": "town",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "County is required",
                       "id": "county",
                     },
                     Object {
-                      "errorMessage": "Provide a valid phone number",
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
                       "id": "contactNumber",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid email",
-                      "id": "email",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid URL",
-                      "id": "url",
                     },
                     Object {
                       "errorMessage": "Provide a valid postcode",
@@ -1138,32 +1078,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
             errors={
               Array [
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Operator name is required",
                   "id": "operatorName",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Street is required",
                   "id": "street",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "Town is required",
                   "id": "town",
                 },
                 Object {
-                  "errorMessage": "All fields are mandatory",
+                  "errorMessage": "County is required",
                   "id": "county",
                 },
                 Object {
-                  "errorMessage": "Provide a valid phone number",
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
                   "id": "contactNumber",
-                },
-                Object {
-                  "errorMessage": "Provide a valid email",
-                  "id": "email",
-                },
-                Object {
-                  "errorMessage": "Provide a valid URL",
-                  "id": "url",
                 },
                 Object {
                   "errorMessage": "Provide a valid postcode",
@@ -1188,32 +1124,28 @@ exports[`pages manage operator details should render error state if error 1`] = 
                 errors={
                   Array [
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Operator name is required",
                       "id": "operatorName",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Street is required",
                       "id": "street",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "Town is required",
                       "id": "town",
                     },
                     Object {
-                      "errorMessage": "All fields are mandatory",
+                      "errorMessage": "County is required",
                       "id": "county",
                     },
                     Object {
-                      "errorMessage": "Provide a valid phone number",
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
                       "id": "contactNumber",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid email",
-                      "id": "email",
-                    },
-                    Object {
-                      "errorMessage": "Provide a valid URL",
-                      "id": "url",
                     },
                     Object {
                       "errorMessage": "Provide a valid postcode",
