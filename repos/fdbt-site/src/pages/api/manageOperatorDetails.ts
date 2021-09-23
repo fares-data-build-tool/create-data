@@ -17,7 +17,10 @@ export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => 
         }));
 
     Object.entries(operatorDetails)
-        .filter((entry) => ['operatorName', 'street', 'town', 'county'].includes(entry[0]) && entry[1].length < 1)
+        .filter(
+            (entry) =>
+                ['operatorName', 'street', 'town', 'county', 'postcode'].includes(entry[0]) && entry[1].length < 1,
+        )
         .forEach((entry) =>
             errors.push({ id: entry[0], errorMessage: upperFirst(`${lowerCase(entry[0])} is required`) }),
         );
@@ -42,7 +45,7 @@ export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => 
         errors.push({ id: 'url', errorMessage: 'Provide a valid URL' });
     }
 
-    if (!/^[a-zA-Z0-9]+ [a-zA-Z0-9]+$/.exec(operatorDetails.postcode)) {
+    if (operatorDetails.postcode && !/^[a-zA-Z0-9]+ [a-zA-Z0-9]+$/.exec(operatorDetails.postcode)) {
         errors.push({ id: 'postcode', errorMessage: 'Provide a valid postcode' });
     }
 

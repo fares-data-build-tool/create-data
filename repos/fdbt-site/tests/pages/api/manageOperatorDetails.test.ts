@@ -48,7 +48,7 @@ describe('manageOperatorDetails', () => {
                 { id: 'street', errorMessage: 'Street is required' },
                 { id: 'town', errorMessage: 'Town is required' },
                 { id: 'county', errorMessage: 'County is required' },
-                { id: 'postcode', errorMessage: 'Provide a valid postcode' },
+                { id: 'postcode', errorMessage: 'Postcode is required' },
             ],
             input,
         };
