@@ -62,7 +62,9 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                 {services.map((service, index) => (
                     <tr key={index} className="govuk-table__row">
                         <td className="govuk-table__cell">
-                            {service.lineName} - {service.origin} to {service.destination}
+                            <a href={`/products/pointToPointProducts?serviceId=${service.id}`}>
+                                {service.lineName} - {service.origin} to {service.destination}
+                            </a>
                         </td>
                         <td className="govuk-table__cell">{service.products}</td>
                         <td className="govuk-table__cell">{service.startDate}</td>
@@ -75,14 +77,14 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
     );
 };
 
-const getTag = (startDate: string, endDate: string): JSX.Element => {
-    const today = new Date().setHours(0, 0, 0, 0);
-    const startDateAsUnixTime = moment(startDate, 'DD/MM/YYYY').valueOf();
-    const endDateAsUnixTime = moment(endDate, 'DD/MM/YYYY').valueOf();
+export const getTag = (startDate: string, endDate: string): JSX.Element => {
+    const today = moment.utc().startOf('day').valueOf();
+    const startDateAsUnixTime = moment.utc(startDate, 'DD/MM/YYYY').valueOf();
+    const endDateAsUnixTime = moment.utc(endDate, 'DD/MM/YYYY').valueOf();
 
     if (startDateAsUnixTime <= today && endDateAsUnixTime >= today) {
         return <strong className="govuk-tag govuk-tag--turquoise">Active</strong>;
-    } else if (startDateAsUnixTime >= today) {
+    } else if (startDateAsUnixTime > today) {
         return <strong className="govuk-tag govuk-tag--blue">Pending</strong>;
     } else {
         return <strong className="govuk-tag govuk-tag--red">Expired</strong>;

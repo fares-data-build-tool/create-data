@@ -140,11 +140,15 @@ exports[`myfares pages services should render correctly when services present 1`
               <td
                 className="govuk-table__cell"
               >
-                1
-                 - 
-                Leeds
-                 to 
-                Manchester
+                <a
+                  href="/products/pointToPointProducts?serviceId=01"
+                >
+                  1
+                   - 
+                  Leeds
+                   to 
+                  Manchester
+                </a>
               </td>
               <td
                 className="govuk-table__cell"
@@ -249,11 +253,15 @@ exports[`myfares pages services should render correctly when services present an
               <td
                 className="govuk-table__cell"
               >
-                1
-                 - 
-                Leeds
-                 to 
-                Manchester
+                <a
+                  href="/products/pointToPointProducts?serviceId=01"
+                >
+                  1
+                   - 
+                  Leeds
+                   to 
+                  Manchester
+                </a>
               </td>
               <td
                 className="govuk-table__cell"

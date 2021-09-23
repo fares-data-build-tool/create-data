@@ -14,6 +14,7 @@ describe('myfares pages', () => {
         it('should render correctly when services present', () => {
             const services: MyFaresServiceWithProductCount[] = [
                 {
+                    id: '01',
                     origin: 'Leeds',
                     destination: 'Manchester',
                     lineId: 'wefawefa',
@@ -32,6 +33,7 @@ describe('myfares pages', () => {
         it('should render correctly when services present and products ', () => {
             const services: MyFaresServiceWithProductCount[] = [
                 {
+                    id: '01',
                     origin: 'Leeds',
                     destination: 'Manchester',
                     lineId: 'wefawefa',
