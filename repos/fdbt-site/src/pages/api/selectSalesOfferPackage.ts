@@ -22,33 +22,46 @@ const pricePrefix = 'price-';
 
 export const sanitiseReqBody = (req: NextApiRequestWithSession): SanitisedBodyAndErrors => {
     const sanitisedBody: { [key: string]: SalesOfferPackage[] } = {};
+    const keys = Object.keys(req.body);
 
     const errors: ErrorInfo[] = [];
     Object.entries(req.body).forEach((item) => {
         const [key, value]: [string, unknown] = item;
 
-        if (key.startsWith(productPrefix)) {
-            if (value && Array.isArray(value)) {
-                sanitisedBody[key.substring(productPrefix.length)] = value
-                    .filter((a) => a)
-                    .map((it) => JSON.parse(it) as SalesOfferPackage);
+        if (!key.startsWith('0')) {
+            return;
+        }
+
+        const id = key.split('-')[0];
+
+        if (key.startsWith(`${id}-${productPrefix}`)) {
+            if (value) {
+                if (Array.isArray(value)) {
+                    sanitisedBody[key.substring(productPrefix.length + id.length + 1)] = value
+                        .filter((a) => a)
+                        .map((it) => JSON.parse(it) as SalesOfferPackage);
+                } else if (!Array.isArray(value)) {
+                    sanitisedBody[key.substring(productPrefix.length + id.length + 1)] = [
+                        JSON.parse(value as string) as SalesOfferPackage,
+                    ];
+                }
             } else {
+                const keyWithIdRemoved = key.split(`${id}-`)[1];
                 errors.push({
                     errorMessage: 'Choose at least one sales offer package from the options',
-                    id: `${removeAllWhiteSpace(key)}-checkbox-0`,
+                    id: `${removeAllWhiteSpace(keyWithIdRemoved)}-checkbox-0`,
                 });
             }
-        } else if (key.startsWith(pricePrefix) && typeof value === 'string') {
+        } else if (key.startsWith(`${id}-${pricePrefix}`) && typeof value === 'string') {
             const price = removeExcessWhiteSpace(value);
-
-            const productName = Object.keys(sanitisedBody).find((productName) =>
-                key.startsWith(pricePrefix + productName),
-            );
+            const productKey = keys.find((key) => {
+                return key.includes(`${id}-product-`);
+            }) as string;
+            const productName = productKey.split(`${id}-product-`)[1];
             if (!productName) {
                 throw new Error(`Unknown product name passed for sop price ${key}:${value}`);
             }
-            const sopName = key.substring(`${pricePrefix}${productName}-`.length);
-
+            const sopName = key.substring(`${id}-${pricePrefix}${productName}-`.length);
             const sop = sanitisedBody[productName].find((sop) => sop.name === sopName);
             if (!sop) {
                 throw new Error(`Unknown sop passed for sop price ${key}:${value}`);

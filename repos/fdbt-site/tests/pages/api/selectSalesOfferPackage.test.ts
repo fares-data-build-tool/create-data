@@ -9,7 +9,7 @@ describe('selectSalesOfferPackage', () => {
     it('redirects back to /selectSalesOfferPackages if there are no sales offer packages selected, single product', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                'product-TestProduct': '',
+                '00000-product-TestProduct': '',
             },
         });
 
@@ -23,8 +23,8 @@ describe('selectSalesOfferPackage', () => {
     it('redirects back to /selectSalesOfferPackages if there are no sales offer packages selected, multiple product', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                'product-TestProduct': '',
-                'product-SecondTestProduct': '',
+                '00000-product-TestProduct': '',
+                '00001-product-SecondTestProduct': '',
             },
         });
 
@@ -39,7 +39,7 @@ describe('selectSalesOfferPackage', () => {
         const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
         const { req, res } = getMockRequestAndResponse({
             body: {
-                'product-TestProduct': [
+                '00000-product-TestProduct': [
                     '{"name":"Onboard (cash)","description":"","purchaseLocations":["onBoard"],"paymentMethods":["cash"],"ticketFormats":["paperTicket"]}',
                     '',
                 ],
@@ -73,7 +73,7 @@ describe('selectSalesOfferPackage', () => {
         const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
         const { req, res } = getMockRequestAndResponse({
             body: {
-                'product-TestProduct': [
+                '00000-product-TestProduct': [
                     '{"name":"Onboard (cash)","description":"","purchaseLocations":["onBoard"],"paymentMethods":["cash"],"ticketFormats":["paperTicket"]}',
                     '',
                 ],
@@ -134,7 +134,7 @@ describe('selectSalesOfferPackage', () => {
         it('fills an error array if the user has not selected a SOP for each product', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
-                    'product-TestProduct': '',
+                    '00000-product-TestProduct': '',
                 },
             });
             const result = sanitiseReqBody(req);
@@ -149,7 +149,7 @@ describe('selectSalesOfferPackage', () => {
         it('returns an object with a string matching the SalesOfferPackage object structure', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
-                    'product-TestProduct': [
+                    '00000-product-TestProduct': [
                         '{"name":"Onboard (cash)","description":"","purchaseLocations":["onBoard"],"paymentMethods":["cash"],"ticketFormats":["paperTicket"]}',
                         '',
                     ],
