@@ -21,9 +21,6 @@ const OtherProducts = ({ otherProducts, myFaresEnabled }: OtherProductsProps): R
                     <div className="govuk-grid-column-full">
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Other products</h1>
-                            <a className="govuk-button govuk-button--secondary" href="/fareType">
-                                Create new
-                            </a>
                         </div>
                         <OtherProductsTable otherProducts={otherProducts} />
                     </div>
