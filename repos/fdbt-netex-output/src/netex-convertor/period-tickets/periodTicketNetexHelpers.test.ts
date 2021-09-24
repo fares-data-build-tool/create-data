@@ -210,7 +210,7 @@ describe('periodTicketNetexHelpers', () => {
 
             const linesList = netexHelpers.getLinesList(
                 periodMultipleServicesTicket,
-                opData.website,
+                opData.url,
                 multiOperatorList,
             );
 
@@ -611,12 +611,15 @@ describe('periodTicketNetexHelpers', () => {
             const mockSchemeOperatorInfo: SchemeOperator = {
                 schemeOperatorName: 'Some Random Bus Co',
                 schemeOperatorRegionCode: 'Y',
-                website: '',
-                ttrteEnq: '',
+                url: '',
+                email: '',
                 opId: 'Some Random Bus Co-Y',
                 vosaPsvLicenseName: '',
-                fareEnq: '',
-                complEnq: '',
+                contactNumber: '',
+                street: '',
+                town: '',
+                postcode: '',
+                county: '',
                 mode: 'bus',
             };
             const result = getOrganisations(multiOperatorList, mockSchemeOperatorInfo);

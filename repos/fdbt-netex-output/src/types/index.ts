@@ -28,7 +28,7 @@ export interface CoreData {
     opIdNocFormat: string;
     nocCodeFormat: string;
     currentDate: Date;
-    website: string;
+    url: string;
     brandingId: string;
     operatorIdentifier: string;
     baseOperatorInfo: (Operator | SchemeOperator)[];
@@ -42,29 +42,46 @@ export interface CoreData {
     isCarnet: boolean;
 }
 
+export interface OperatorDetails {
+    operatorName: string;
+    contactNumber: string;
+    email: string;
+    url: string;
+    street: string;
+    town: string;
+    county: string;
+    postcode: string;
+}
+
 // Reference Data (from NOC, TNDS, NaPTAN datasets)
 
 export interface Operator {
     nocCode: string;
-    website: string;
-    ttrteEnq: string;
-    operatorPublicName: string;
+    url: string;
+    email: string;
+    operatorName: string;
     opId: string;
     vosaPsvLicenseName: string;
-    fareEnq: string;
-    complEnq: string;
+    contactNumber: string;
+    street: string;
+    town: string;
+    county: string;
+    postcode: string;
     mode: string;
 }
 
 export interface SchemeOperator {
     schemeOperatorName: string;
     schemeOperatorRegionCode: string;
-    website: string;
-    ttrteEnq: string;
+    url: string;
+    email: string;
     opId: string;
     vosaPsvLicenseName: string;
-    fareEnq: string;
-    complEnq: string;
+    contactNumber: string;
+    street: string;
+    town: string;
+    county: string;
+    postcode: string;
     mode: string;
 }
 
@@ -192,7 +209,9 @@ export const isReturnTicket = (ticket: Ticket): ticket is ReturnTicket | PointTo
 export const isSingleTicket = (ticket: Ticket): ticket is SingleTicket =>
     (ticket as SingleTicket).fareZones !== undefined && (ticket as SingleTicket).fareZones.length > 0;
 
-export const isGeoZoneTicket = (ticket: Ticket): ticket is GeoZoneTicket | FlatFareGeoZoneTicket | SchemeOperatorGeoZoneTicket =>
+export const isGeoZoneTicket = (
+    ticket: Ticket,
+): ticket is GeoZoneTicket | FlatFareGeoZoneTicket | SchemeOperatorGeoZoneTicket =>
     'zoneName' in ticket && !('selectedServices' in ticket);
 
 export const isMultiServiceTicket = (ticket: Ticket): ticket is PeriodMultipleServicesTicket =>
@@ -221,9 +240,7 @@ export const isMultiOperatorMultipleServicesTicket = (ticket: Ticket): ticket is
     (ticket as MultiOperatorMultipleServicesTicket).additionalOperators.length > 0 &&
     'selectedServices' in ticket;
 
-export const isSchemeOperatorTicket = (
-    data: Ticket,
-): data is SchemeOperatorTicket =>
+export const isSchemeOperatorTicket = (data: Ticket): data is SchemeOperatorTicket =>
     (data as BaseSchemeOperatorTicket).schemeOperatorName !== undefined &&
     (data as BaseSchemeOperatorTicket).schemeOperatorRegionCode !== undefined;
 
@@ -233,9 +250,10 @@ export const isPeriodGeoZoneTicket = (ticket: Ticket): ticket is PeriodGeoZoneTi
 export const isSchemeOperatorGeoZoneTicket = (data: Ticket): data is SchemeOperatorGeoZoneTicket =>
     isSchemeOperatorTicket(data) && (data as SchemeOperatorGeoZoneTicket).zoneName !== undefined;
 
-export const isSchemeOperatorFlatFareTicket = (data: Ticket): data is SchemeOperatorFlatFareTicket | SchemeOperatorMultiServiceTicket =>
+export const isSchemeOperatorFlatFareTicket = (
+    data: Ticket,
+): data is SchemeOperatorFlatFareTicket | SchemeOperatorMultiServiceTicket =>
     isSchemeOperatorTicket(data) && (data as SchemeOperatorFlatFareTicket).additionalOperators !== undefined;
-
 
 export const isProductDetails = (
     product: ProductDetails | FlatFareProductDetails | PointToPointCarnetProductDetails | BaseProduct,
@@ -416,8 +434,11 @@ export type {
     BaseSchemeOperatorTicket,
     SingleTicket,
     PointToPointTicket,
-    Ticket, SchemeOperatorGeoZoneTicket,
-    SchemeOperatorFlatFareTicket, MultiOperatorGeoZoneTicket, GeoZoneTicket
+    Ticket,
+    SchemeOperatorGeoZoneTicket,
+    SchemeOperatorFlatFareTicket,
+    MultiOperatorGeoZoneTicket,
+    GeoZoneTicket,
 };
 
 export const assertNever = (never: never): never => {

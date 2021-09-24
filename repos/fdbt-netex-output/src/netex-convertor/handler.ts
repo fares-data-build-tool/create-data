@@ -5,6 +5,7 @@ import * as db from '../data/auroradb';
 import * as s3 from '../data/s3';
 import { isSchemeOperatorTicket, Ticket } from '../types/index';
 import netexGenerator from './netexGenerator';
+import { Operator } from '../../src/types/index';
 
 export const xsl = `
     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -57,10 +58,6 @@ export const buildNocList = (ticket: Ticket): string[] => {
         nocs.push(...ticket.additionalOperators.map(op => op.nocCode));
     }
 
-    if ('nocCode' in ticket) {
-        nocs.push(ticket.nocCode);
-    }
-
     return nocs;
 };
 
@@ -72,10 +69,59 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
         const { type } = ticket;
 
-        console.info(`NeTEx generation starting for type ${type}...`);
+        // noc of logged in user
+        let baseNoc = '';
+
+        // let schemeCode = '';
+
+        // let blah2: Operator = {
+        //     opId: '',
+        //     mode: '',
+        //     vosaPsvLicenseName: '',
+        //     nocCode: '',
+        //     operatorName: '',
+        //     contactNumber: '',
+        //     email: '',
+        //     url: '',
+        //     street: '',
+        //     town: '',
+        //     county: '',
+        //     postcode: '',
+        // };
+
+        // the operator of the currently logged in user
+        // is known as the 'base operator'
+        let operatorData: Operator[] = [];
+
+        // 1. get the national operator code (noc) for the base operator
+        if ('nocCode' in ticket) {
+            baseNoc = ticket.nocCode;
+
+            // 2. check operatorDetails table in database to see if noc has a record
+            const details = await db.getOperatorDetailsByNoc(baseNoc);
+
+            const operatorDetails = await db.getOperatorDataByNocCode([baseNoc]);
+
+            operatorData.push({ ...operatorDetails[0], ...details });
+        }
+
+        // else {
+        //     // we've got a scheme
+        //     schemeCode = `${ticket.schemeOperatorName.substr(0, 5)}${ticket.schemeOperatorRegionCode}`.toUpperCase();
+
+        //     const schemeDetails = await db.getOperatorDetailsByNoc(schemeCode);
+
+        //     blah2 = { ...schemeDetails, opId: '', mode: '', vosaPsvLicenseName: '', nocCode: schemeCode };
+        // }
 
         const nocs: string[] = buildNocList(ticket);
-        const operatorData = await db.getOperatorDataByNocCode(nocs);
+
+        console.log(nocs);
+
+        if (nocs.length > 0) {
+            operatorData = operatorData.concat(await db.getOperatorDataByNocCode(nocs));
+        }
+
         const netexGen = netexGenerator(ticket, operatorData);
         const generatedNetex = await netexGen.generate();
         const fileName = generateFileName(s3FileName);

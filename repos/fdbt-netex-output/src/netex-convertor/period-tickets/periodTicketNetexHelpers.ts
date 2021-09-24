@@ -53,12 +53,15 @@ import {
 export const getBaseSchemeOperatorInfo = (userPeriodTicket: BaseSchemeOperatorTicket): SchemeOperator => ({
     schemeOperatorName: userPeriodTicket.schemeOperatorName,
     schemeOperatorRegionCode: userPeriodTicket.schemeOperatorRegionCode,
-    website: '',
-    ttrteEnq: '',
+    url: '',
+    email: '',
     opId: `${userPeriodTicket.schemeOperatorName}-${userPeriodTicket.schemeOperatorRegionCode}-opId`,
     vosaPsvLicenseName: '',
-    fareEnq: '',
-    complEnq: '',
+    contactNumber: '',
+    street: '',
+    town: '',
+    county: '',
+    postcode: '',
     mode: 'bus',
 });
 
@@ -115,7 +118,7 @@ export const getLinesList = (
                 id: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
                 Name: { $t: `Line ${service.lineName}` },
                 Description: { $t: service.serviceDescription },
-                Url: { $t: currentOperator ? getCleanWebsite(currentOperator.website) : '' },
+                Url: { $t: currentOperator ? getCleanWebsite(currentOperator.url) : '' },
                 PublicCode: { $t: service.lineName },
                 PrivateCode: service.lineId
                     ? {
@@ -793,31 +796,41 @@ export const getOrganisations = (
             $t: operator.nocCode,
         },
         Name: {
-            $t: operator.operatorPublicName,
+            $t: operator.operatorName,
         },
         ShortName: {
-            $t: operator.operatorPublicName,
+            $t: operator.operatorName,
         },
         TradingName: {
             $t: operator.vosaPsvLicenseName,
         },
         ContactDetails: {
             Phone: {
-                $t: operator.fareEnq,
+                $t: operator.contactNumber,
             },
             Url: {
-                $t: getCleanWebsite(operator.website),
+                $t: getCleanWebsite(operator.url),
             },
         },
         Address: {
             Street: {
-                $t: operator.complEnq,
+                $t: operator.street,
+            },
+            Town: {
+                $t: operator.town,
+            },
+            PostCode: {
+                $t: operator.postcode,
+            },
+            PostalRegion: {
+                $t: operator.county,
             },
         },
         PrimaryMode: {
             $t: getNetexMode(operator.mode),
         },
     }));
+
     if (baseOperatorInfo) {
         organisations.push({
             version: '1.0',
@@ -836,15 +849,24 @@ export const getOrganisations = (
             },
             ContactDetails: {
                 Phone: {
-                    $t: baseOperatorInfo.fareEnq,
+                    $t: baseOperatorInfo.contactNumber,
                 },
                 Url: {
-                    $t: baseOperatorInfo.website,
+                    $t: baseOperatorInfo.url,
                 },
             },
             Address: {
                 Street: {
-                    $t: baseOperatorInfo.complEnq,
+                    $t: baseOperatorInfo.street,
+                },
+                Town: {
+                    $t: baseOperatorInfo.town,
+                },
+                PostCode: {
+                    $t: baseOperatorInfo.postcode,
+                },
+                PostalRegion: {
+                    $t: baseOperatorInfo.county,
                 },
             },
             PrimaryMode: {
@@ -852,6 +874,7 @@ export const getOrganisations = (
             },
         });
     }
+
     return organisations;
 };
 
@@ -871,7 +894,7 @@ export const getGroupOfOperators = (operatorData: Operator[]): GroupOfOperators 
     const members = operatorData.map(operator => ({
         version: '1.0',
         ref: `noc:${operator.nocCode}`,
-        $t: operator.operatorPublicName,
+        $t: operator.operatorName,
     }));
 
     group.GroupOfOperators.members.OperatorRef = members;
