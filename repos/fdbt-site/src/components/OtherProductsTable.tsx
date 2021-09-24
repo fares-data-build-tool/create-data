@@ -25,9 +25,6 @@ const ServicesTable = ({ otherProducts }: OtherProductsTableProps): ReactElement
                         Product description
                     </th>
                     <th scope="col" className="govuk-table__header">
-                        Passenger type
-                    </th>
-                    <th scope="col" className="govuk-table__header">
                         Type
                     </th>
                     <th scope="col" className="govuk-table__header">
@@ -37,7 +34,7 @@ const ServicesTable = ({ otherProducts }: OtherProductsTableProps): ReactElement
                         Quantity
                     </th>
                     <th scope="col" className="govuk-table__header">
-                        Start date
+                        Passenger type
                     </th>
                     <th scope="col" className="govuk-table__header">
                         End date
@@ -51,15 +48,12 @@ const ServicesTable = ({ otherProducts }: OtherProductsTableProps): ReactElement
                 {otherProducts.map((product) => (
                     <tr className="govuk-table__row">
                         <td className="govuk-table__cell">{product.productDescription}</td>
-                        <td className="govuk-table__cell">{product.passengerType}</td>
                         <td className="govuk-table__cell">
                             {product.type} {product.carnet ? '- Carnet' : ''}
                         </td>
                         <td className="govuk-table__cell">{product.duration}</td>
                         <td className="govuk-table__cell">{product.quantity}</td>
-                        <td className="govuk-table__cell" style={{ width: '125px' }}>
-                            {product.startDate}
-                        </td>
+                        <td className="govuk-table__cell">{product.passengerType}</td>
                         <td className="govuk-table__cell" style={{ width: '125px' }}>
                             {product.endDate}
                         </td>

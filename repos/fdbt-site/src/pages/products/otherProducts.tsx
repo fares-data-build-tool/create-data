@@ -1,25 +1,22 @@
 import React, { ReactElement } from 'react';
 import OtherProductsTable from '../../components/OtherProductsTable';
 import { HackDayProduct, NextPageContextWithSession } from '../../interfaces/index';
-import { MyFaresLayout } from '../../layout/Layout';
+import { BaseLayout, MyFaresLayout } from '../../layout/Layout';
+import { myFaresEnabled } from '../../constants/featureFlag';
+
 
 const title = 'Other Products - Create Fares Data Service';
 const description = 'View and access your other products in one place.';
 
 interface OtherProductsProps {
     otherProducts: HackDayProduct[];
+    myFaresEnabled: boolean;
 }
 
-const OtherProducts = ({ otherProducts }: OtherProductsProps): ReactElement => {
+const OtherProducts = ({ otherProducts, myFaresEnabled }: OtherProductsProps): ReactElement => {
     return (
         <>
-            <MyFaresLayout
-                title={title}
-                description={description}
-                showNavigation
-                referer={''}
-                currentUrl={'otherProducts'}
-            >
+            <BaseLayout title={title} description={description} showNavigation myFaresEnabled={myFaresEnabled}>
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -31,7 +28,7 @@ const OtherProducts = ({ otherProducts }: OtherProductsProps): ReactElement => {
                         <OtherProductsTable otherProducts={otherProducts} />
                     </div>
                 </div>
-            </MyFaresLayout>
+            </BaseLayout>
         </>
     );
 };
@@ -150,7 +147,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         },
     ];
 
-    return { props: { otherProducts } };
+    return { props: { otherProducts, myFaresEnabled } };
 };
 
 export default OtherProducts;
