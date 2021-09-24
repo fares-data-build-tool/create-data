@@ -72,6 +72,18 @@ export type Ticket =
     | PointToPointPeriodTicket
     | PeriodHybridTicket;
 
+export type TicketWithIds =
+    | WithIds<PointToPointTicket>
+    | WithIds<GeoZoneTicket>
+    | WithIds<PeriodMultipleServicesTicket>
+    | WithIds<FlatFareTicket>
+    | WithIds<SchemeOperatorGeoZoneTicket>
+    | WithIds<SchemeOperatorFlatFareTicket>
+    | WithIds<SchemeOperatorMultiServiceTicket>
+    | WithIds<MultiOperatorGeoZoneTicket>
+    | WithIds<PointToPointPeriodTicket>
+    | WithIds<PeriodHybridTicket>;
+
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 
 export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
@@ -121,6 +133,11 @@ export interface BaseTicket<T extends TicketType = TicketType> {
     groupDefinition?: GroupDefinition;
     carnet?: boolean;
 }
+
+export type WithIds<T> = Omit<
+    T,
+    'passengerType' | 'ageRange' | 'ageRangeMin' | 'ageRangeMax' | 'proof' | 'proofDocuments'
+> & { passengerType: { id: number } };
 
 export interface GroupDefinition {
     maxPeople: string;

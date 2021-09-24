@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import { S3 } from 'aws-sdk';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import {
     USER_DATA_BUCKET_NAME,
@@ -10,8 +10,8 @@ import { BaseTicket, UserFareStages, UserFareZone } from '../interfaces';
 import { MatchingFareZones } from '../interfaces/matchingInterface';
 import logger from '../utils/logger';
 
-const getS3Client = (): AWS.S3 => {
-    let options: AWS.S3.ClientConfiguration = {
+const getS3Client = (): S3 => {
+    let options: S3.ClientConfiguration = {
         region: 'eu-west-2',
     };
 
@@ -24,7 +24,7 @@ const getS3Client = (): AWS.S3 => {
         };
     }
 
-    return new AWS.S3(options);
+    return new S3(options);
 };
 
 const s3 = getS3Client();

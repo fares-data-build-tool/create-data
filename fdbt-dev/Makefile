@@ -209,6 +209,7 @@ create-local-buckets:
 	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-matching-data-dev
 	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-netex-data-dev
 	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-unvalidated-netex-data-dev
+	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-products-data-dev
 
 create-local-dynamodb-table:
 	EDGE_PORT=4569 awslocal dynamodb create-table --attribute-definitions AttributeName=id,AttributeType=S --table-name sessions --key-schema AttributeName=id,KeyType=HASH --billing-mode PAY_PER_REQUEST

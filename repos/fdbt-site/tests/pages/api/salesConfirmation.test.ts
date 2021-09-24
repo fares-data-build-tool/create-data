@@ -14,6 +14,7 @@ import salesConfirmation from '../../../src/pages/api/salesConfirmation';
 import * as session from '../../../src/utils/sessions';
 import * as userData from '../../../src/utils/apiUtils/userData';
 import * as index from '../../../src/utils/apiUtils/index';
+import { WithIds } from '../../../shared/matchingJsonTypes';
 
 describe('salesOfferPackages', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
@@ -26,7 +27,8 @@ describe('salesOfferPackages', () => {
     const todaysDate = moment().toISOString().substr(0, 10);
     const hundredYearsDate = moment().add(100, 'y').toISOString().substr(0, 10);
 
-    afterEach(() => {
+    beforeEach(() => {
+        process.env.STAGE = 'dev';
         jest.resetAllMocks();
     });
 
@@ -222,17 +224,12 @@ describe('salesOfferPackages', () => {
     it('creates a group definition for a group ticket and adds to user json object', async () => {
         const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
         getFareTypeFromFromAttributesSpy.mockImplementation(() => 'single');
-        const putUserDataInS3Spy = jest.spyOn(userData, 'putUserDataInS3');
+        const putUserDataInS3Spy = jest.spyOn(userData, 'putUserDataInProductsBucket');
         putUserDataInS3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
-        const exampleUserJson: SingleTicket = {
+        const exampleUserJson: WithIds<SingleTicket> = {
             nocCode: 'TEST',
             type: 'single',
-            passengerType: 'adult',
-            ageRange: 'string',
-            ageRangeMin: 'string',
-            ageRangeMax: 'string',
-            proof: 'string',
-            proofDocuments: [],
+            passengerType: { id: 1 },
             email: 'string',
             uuid: 'string',
             timeRestriction: [],
