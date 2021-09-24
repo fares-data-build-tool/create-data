@@ -95,9 +95,9 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          # TODO - Vulnerability not yet patched in serverless-plugin-typescript
+          # TODO - Vulnerability not yet patched in serverless-plugin-typescript, and AWS CDK
           command: |
-            npx audit-ci --moderate -a 1751
+            npx audit-ci --moderate -a 1751 -a 1784
 
   test:
     parameters:

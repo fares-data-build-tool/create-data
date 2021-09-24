@@ -2,6 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { ReactElement } from 'react';
+import { SinglePassengerType } from '../../shared/dbTypes';
 import {
     BaseProduct,
     CarnetDetails,
@@ -357,24 +358,6 @@ export interface GroupPassengerTypeReference {
     companions: CompanionReference[];
 }
 
-export interface GroupPassengerType {
-    name: string;
-    maxGroupSize: string;
-    companions: CompanionInfo[];
-}
-
-export interface FullGroupPassengerType {
-    id: number;
-    name: string;
-    groupPassengerType: GroupPassengerType;
-}
-
-export interface SinglePassengerType {
-    id: number;
-    name: string;
-    passengerType: PassengerType;
-}
-
 export interface TimeRestriction {
     startTime?: string;
     endTime?: string;
@@ -524,16 +507,6 @@ export interface MultiProductWithErrors extends MultiProduct {
     productCarnetQuantityError?: string;
     productCarnetExpiryDurationError?: string;
     productCarnetExpiryUnitsError?: string;
-}
-
-export interface PassengerType {
-    passengerType: string;
-    ageRange?: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proof?: string;
-    proofDocuments?: string[];
-    id?: number;
 }
 
 export interface PassengerTypeWithErrors {
@@ -758,3 +731,10 @@ export type {
 } from '../../shared/matchingJsonTypes';
 
 export { ExpiryUnit, CarnetExpiryUnit } from '../../shared/matchingJsonTypes';
+
+export type {
+    FullGroupPassengerType,
+    SinglePassengerType,
+    PassengerType,
+    GroupPassengerType,
+} from '../../shared/dbTypes';
