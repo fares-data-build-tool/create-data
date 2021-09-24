@@ -174,7 +174,7 @@ export const getServerSideProps = async (
     if (schemeOp && operatorDetails.operatorName === '') {
         if (
             !errors.find((error) => {
-                error.errorMessage ===
+                return error.errorMessage ===
                     'Before you can create any fare information, you must provide the information below';
             })
         ) {
