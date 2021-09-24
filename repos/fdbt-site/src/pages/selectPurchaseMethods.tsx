@@ -53,7 +53,7 @@ const generateCheckbox = (
     return (
         <div className="card-row">
             {purchaseMethodsList.map((offer, innerIndex) => {
-                const index = `0${outerIndex}00${innerIndex}`;
+                const index = `^${outerIndex}^${innerIndex}`;
                 const { name } = offer;
 
                 const productNameIds = removeAllWhiteSpace(productName);
