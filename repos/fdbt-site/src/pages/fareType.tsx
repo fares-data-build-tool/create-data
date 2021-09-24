@@ -6,7 +6,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import RadioButtons from '../components/RadioButtons';
 import { INTERNAL_NOC } from '../constants';
 import { FARE_TYPE_ATTRIBUTE, GS_REFERER, OPERATOR_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../constants/attributes';
-import { getAllServicesByNocCode } from '../data/auroradb';
+import { getAllServicesByNocCode, getOperatorDetails } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession, RadioOption } from '../interfaces';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
@@ -174,6 +174,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     if (schemeOp) {
         updateSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE, { fareType: 'multiOperator' });
+        const operatorDetails = await getOperatorDetails(nocCode);
+        if (!operatorDetails && ctx.res) {
+            updateSessionAttribute(ctx.req, GS_REFERER, 'fareType');
+            redirectTo(ctx.res, '/manageOperatorDetails');
+        }
     }
 
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);

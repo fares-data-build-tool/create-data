@@ -8,9 +8,13 @@ export const extractGlobalSettingsReferer = (ctx: NextPageContextWithSession): s
     const refererPage = path?.[path.length - 1];
     if (
         refererPage &&
-        ['selectPassengerType', 'selectTimeRestrictions', 'selectPurchaseMethods', 'selectPeriodValidity'].includes(
-            refererPage,
-        )
+        [
+            'selectPassengerType',
+            'selectTimeRestrictions',
+            'selectPurchaseMethods',
+            'selectPeriodValidity',
+            'fareType',
+        ].includes(refererPage)
     ) {
         updateSessionAttribute(ctx.req, GS_REFERER, refererPage);
     }
