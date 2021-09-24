@@ -172,10 +172,18 @@ export const getServerSideProps = async (
     }
 
     if (schemeOp && operatorDetails.operatorName === '') {
-        errors.splice(0, 0, {
-            errorMessage: 'Before you can create any fare information, you must provide the information below',
-            id: 'operatorName-input',
-        });
+        if (
+            !errors.find(
+                (error) =>
+                    error.errorMessage ===
+                    'Before you can create any fare information, you must provide the information below',
+            )
+        ) {
+            errors.splice(0, 0, {
+                errorMessage: 'Before you can create any fare information, you must provide the information below',
+                id: 'operatorName-input',
+            });
+        }
     }
 
     return {
