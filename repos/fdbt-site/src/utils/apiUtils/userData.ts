@@ -6,10 +6,11 @@ import {
     PeriodMultipleServicesTicket,
     TicketType,
     SchemeOperatorMultiServiceTicket,
+    WithIds,
 } from '../../../shared/matchingJsonTypes';
 import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from './index';
 
-import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../constants';
+import { ID_TOKEN_COOKIE, PRODUCTS_DATA_BUCKET_NAME } from '../../constants';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -122,11 +123,14 @@ export const getProductsAndSalesOfferPackages = (
     return productSOPList;
 };
 
-export const putUserDataInS3 = async (data: Ticket, uuid: string, nocCode: string): Promise<string> => {
-    const s3Data = { ...data };
-    const filePath = `${nocCode}/${s3Data.type}/${uuid}_${Date.now()}.json`;
+export const putUserDataInProductsBucket = async (
+    data: WithIds<Ticket>,
+    uuid: string,
+    nocCode: string,
+): Promise<string> => {
+    const filePath = `${nocCode}/${data.type}/${uuid}_${Date.now()}.json`;
 
-    await putStringInS3(MATCHING_DATA_BUCKET_NAME, filePath, JSON.stringify(s3Data), 'application/json; charset=utf-8');
+    await putStringInS3(PRODUCTS_DATA_BUCKET_NAME, filePath, JSON.stringify(data), 'application/json; charset=utf-8');
     return filePath;
 };
 
@@ -139,7 +143,7 @@ export const getBaseTicketAttributes = <T extends TicketType>(
     req: NextApiRequestWithSession,
     res: NextApiResponse,
     ticketType: T,
-): BaseTicket<T> => {
+): WithIds<BaseTicket<T>> => {
     const cookies = new Cookies(req, res);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
@@ -158,8 +162,17 @@ export const getBaseTicketAttributes = <T extends TicketType>(
         !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !uuid ||
-        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute)
+        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute) ||
+        !passengerTypeAttribute.id
     ) {
+        logger.error('Invalid attributes', {
+            fareTypeAttribute,
+            passengerTypeAttribute,
+            schoolFareTypeAttribute,
+            idToken,
+            uuid,
+            ticketPeriodAttribute,
+        });
         throw new Error(`Could not create ${ticketType} ticket json. BaseTicket attributes could not be found.`);
     }
 
@@ -171,7 +184,7 @@ export const getBaseTicketAttributes = <T extends TicketType>(
         type: (fareType === 'schoolService' && schoolFareTypeAttribute?.schoolFareType
             ? schoolFareTypeAttribute?.schoolFareType
             : fareType) as T,
-        ...passengerTypeAttribute,
+        passengerType: { id: passengerTypeAttribute.id },
         email,
         uuid,
         timeRestriction:
@@ -186,7 +199,7 @@ export const getBasePeriodTicketAttributes = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
     ticketType: 'period' | 'multiOperator',
-): BasePeriodTicket => {
+): WithIds<BasePeriodTicket> => {
     const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
 
     const baseTicketAttributes = getBaseTicketAttributes(req, res, ticketType);
@@ -243,12 +256,12 @@ const getPointToPointProducts = (req: NextApiRequestWithSession): PointToPointPr
     ];
 };
 
-export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): SingleTicket => {
+export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): WithIds<SingleTicket> => {
     const isMatchingInfo = (
         matchingAttributeInfo: MatchingInfo | MatchingWithErrors,
     ): matchingAttributeInfo is MatchingInfo => (matchingAttributeInfo as MatchingInfo)?.service !== null;
 
-    const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, 'single');
+    const baseTicketAttributes = getBaseTicketAttributes(req, res, 'single');
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const products = getPointToPointProducts(req);
     const singleUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
@@ -274,7 +287,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     };
 };
 
-export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): ReturnTicket => {
+export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): WithIds<ReturnTicket> => {
     const isMatchingInfo = (
         matchingAttributeInfo: MatchingInfo | MatchingWithErrors,
     ): matchingAttributeInfo is MatchingInfo => (matchingAttributeInfo as MatchingInfo)?.service !== null;
@@ -283,7 +296,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     ): inboundMatchingAttributeInfo is InboundMatchingInfo =>
         (inboundMatchingAttributeInfo as InboundMatchingInfo)?.inboundUserFareStages !== null;
 
-    const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, 'return');
+    const baseTicketAttributes = getBaseTicketAttributes(req, res, 'return');
 
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const inboundMatchingAttributeInfo = getSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE);
@@ -330,8 +343,8 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
 export const getGeoZoneTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): Promise<GeoZoneTicket> => {
-    const basePeriodTicketAttributes: BasePeriodTicket = getBasePeriodTicketAttributes(req, res, 'period');
+): Promise<WithIds<GeoZoneTicket>> => {
+    const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'period');
 
     const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
     const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
@@ -365,8 +378,8 @@ export const getGeoZoneTicketJson = async (
 export const getMultipleServicesTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): PeriodMultipleServicesTicket | MultiOperatorMultipleServicesTicket => {
-    const basePeriodTicketAttributes: BasePeriodTicket = getBasePeriodTicketAttributes(req, res, 'period');
+): WithIds<PeriodMultipleServicesTicket> | WithIds<MultiOperatorMultipleServicesTicket> => {
+    const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'period');
 
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
 
@@ -407,7 +420,7 @@ export const getMultipleServicesTicketJson = (
 export const getHybridTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): Promise<PeriodHybridTicket> => {
+): Promise<WithIds<PeriodHybridTicket>> => {
     const geoZone = await getGeoZoneTicketJson(req, res);
     const multipleServices = getMultipleServicesTicketJson(req, res);
     return { ...geoZone, ...multipleServices };
@@ -416,7 +429,7 @@ export const getHybridTicketJson = async (
 export const getPointToPointPeriodJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): PointToPointPeriodTicket => {
+): WithIds<PointToPointPeriodTicket> => {
     const userDataJson = getReturnTicketJson(req, res);
     const pointToPointProduct = getSessionAttribute(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
     if (!pointToPointProduct || isWithErrors(pointToPointProduct)) {
@@ -448,7 +461,7 @@ export const getPointToPointPeriodJson = (
 export const getSchemeOperatorTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): BaseSchemeOperatorTicket => {
+): WithIds<BaseSchemeOperatorTicket> => {
     const cookies = new Cookies(req, res);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
@@ -463,8 +476,16 @@ export const getSchemeOperatorTicketJson = (
         !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !uuid ||
-        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute)
+        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute) ||
+        !passengerTypeAttribute.id
     ) {
+        logger.error('Invalid attributes', {
+            fareTypeAttribute,
+            passengerTypeAttribute,
+            idToken,
+            uuid,
+            ticketPeriodAttribute,
+        });
         throw new Error('Could not create scheme operator ticket json. BaseTicket attributes could not be found.');
     }
     const { fareType } = fareTypeAttribute;
@@ -477,7 +498,7 @@ export const getSchemeOperatorTicketJson = (
         schemeOperatorName,
         schemeOperatorRegionCode,
         type: fareType,
-        ...passengerTypeAttribute,
+        passengerType: { id: passengerTypeAttribute.id },
         email,
         uuid,
         timeRestriction:
@@ -491,8 +512,12 @@ export const getSchemeOperatorTicketJson = (
 export const adjustSchemeOperatorJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-    matchingJson: BaseSchemeOperatorTicket,
-): Promise<SchemeOperatorFlatFareTicket | SchemeOperatorGeoZoneTicket | SchemeOperatorMultiServiceTicket> => {
+    matchingJson: WithIds<BaseSchemeOperatorTicket>,
+): Promise<
+    | WithIds<SchemeOperatorFlatFareTicket>
+    | WithIds<SchemeOperatorGeoZoneTicket>
+    | WithIds<SchemeOperatorMultiServiceTicket>
+> => {
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
 
     if (isSalesOfferPackageWithErrors(salesOfferPackages) || !salesOfferPackages) {
@@ -540,7 +565,7 @@ export const adjustSchemeOperatorJson = async (
             ...matchingJson,
             products: productsAndSops,
             additionalOperators: additionalOperatorsInfo.additionalOperators,
-        } as SchemeOperatorMultiServiceTicket;
+        } as WithIds<SchemeOperatorMultiServiceTicket>;
     }
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);

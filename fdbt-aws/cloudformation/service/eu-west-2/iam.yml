@@ -179,6 +179,7 @@ Resources:
                 Resource:
                   - !Sub arn:aws:s3:::fdbt-user-data-${Stage}/*
                   - !Sub arn:aws:s3:::fdbt-matching-data-${Stage}/*
+                  - !Sub arn:aws:s3:::fdbt-products-data-${Stage}/*
               - Effect: Allow
                 Action:
                   - "s3:PutObject"
@@ -231,6 +232,12 @@ Resources:
                   - ses:SendRawEmail
                 Resource:
                   - "*"
+              - Effect: Allow
+                Action:
+                  - "lambda:invokeAsync"
+                  - "lambda:invokeFunction"
+                Resource:
+                  - !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:exporter-${Stage}
           PolicyName: ecs-site-task-policy
 
   EcsSiteScalingRole:

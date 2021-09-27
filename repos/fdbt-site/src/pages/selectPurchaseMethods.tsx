@@ -46,12 +46,14 @@ const generateCheckbox = (
     selectedDefault: { [key: string]: SalesOfferPackage[] } | undefined,
     defaultPrice: string,
     errors: ErrorInfo[],
+    outerIndex: number,
 ): ReactElement => {
     const [selected, setSelected] = useState(selectedDefault);
 
     return (
         <div className="card-row">
-            {purchaseMethodsList.map((offer, index) => {
+            {purchaseMethodsList.map((offer, innerIndex) => {
+                const index = `^${outerIndex}^${innerIndex}`;
                 const { name } = offer;
 
                 const productNameIds = removeAllWhiteSpace(productName);
@@ -74,8 +76,8 @@ const generateCheckbox = (
                             <div className="govuk-checkboxes__item card__selector">
                                 <input
                                     className="govuk-checkboxes__input"
-                                    id={`product-${productNameIds}-checkbox-${index}`}
-                                    name={`product-${productName}`}
+                                    id={`product-${productNameIds}-checkbox-${innerIndex}`}
+                                    name={`${index}-product-${productName}`}
                                     type="checkbox"
                                     value={JSON.stringify(offer)}
                                     defaultChecked={!!selectedOffer}
@@ -84,7 +86,7 @@ const generateCheckbox = (
                                 {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                                 <label
                                     className="govuk-label govuk-checkboxes__label"
-                                    htmlFor={`product-${productNameIds}-checkbox-${index}`}
+                                    htmlFor={`product-${productNameIds}-checkbox-${innerIndex}`}
                                 />
                             </div>
 
@@ -95,17 +97,17 @@ const generateCheckbox = (
                                         <span className="govuk-currency-input__inner__unit">£</span>
                                         <FormElementWrapper
                                             errors={errors}
-                                            errorId={`price-${productNameIds}-${index}`}
+                                            errorId={`price-${productNameIds}-${innerIndex}`}
                                             errorClass="govuk-input--error"
                                             hideText
                                             addFormGroupError={false}
                                         >
                                             <input
                                                 className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
-                                                name={`price-${productName}-${offer.name}`}
+                                                name={`${index}-price-${productName}-${offer.name}`}
                                                 data-non-numeric
                                                 type="text"
-                                                id={`price-${productNameIds}-${index}`}
+                                                id={`price-${productNameIds}-${innerIndex}`}
                                                 defaultValue={selectedOffer?.price || defaultPrice}
                                             />
                                         </FormElementWrapper>
@@ -126,7 +128,7 @@ const createSalesOffer = (
     selected: { [key: string]: SalesOfferPackage[] } | undefined,
     errors: ErrorInfo[],
 ): ReactElement[] =>
-    products.map(({ productName, productPrice }) => (
+    products.map(({ productName, productPrice }, index) => (
         <div className="sop-option" key={productName}>
             <FormGroupWrapper
                 errorIds={[`product-${removeAllWhiteSpace(productName)}-checkbox-0`]}
@@ -150,7 +152,14 @@ const createSalesOffer = (
                             </>
                         ) : (
                             <div className="govuk-checkboxes">
-                                {generateCheckbox(purchaseMethodsList, productName, selected, productPrice, errors)}
+                                {generateCheckbox(
+                                    purchaseMethodsList,
+                                    productName,
+                                    selected,
+                                    productPrice,
+                                    errors,
+                                    index,
+                                )}
                                 <input type="hidden" name={`product-${productName}`} />
                             </div>
                         )}

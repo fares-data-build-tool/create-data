@@ -124,7 +124,7 @@ describe('pages', () => {
 
             getMatchingDataObjectSpy = jest.spyOn(s3, 'getMatchingDataObject').mockImplementation(() =>
                 Promise.resolve({
-                    Body: JSON.stringify(expectedSingleTicket),
+                    Body: JSON.stringify({ ...expectedSingleTicket, passengerType: 'Adult' }),
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 } as any),
             );

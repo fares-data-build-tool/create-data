@@ -6,7 +6,7 @@ import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { GS_OPERATOR_DETAILS_ATTRIBUTE } from '../constants/attributes';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils';
 import { getOperatorDetails, getOperatorDetailsFromNocTable } from '../data/auroradb';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import SubNavigation from '../layout/SubNavigation';
@@ -116,7 +116,7 @@ const ManageOperatorDetails = ({
                                         >
                                             <input
                                                 className={`govuk-input govuk-input--width-20 govuk-!-margin-right-4`}
-                                                id={`${details.inputId}-input`}
+                                                id={`${details.inputId}`}
                                                 name={details.inputId}
                                                 aria-describedby="operator-details-text"
                                                 type="text"
@@ -147,6 +147,7 @@ export const getServerSideProps = async (
 ): Promise<{ props: ManageOperatorDetailsProps }> => {
     const attribute = getSessionAttribute(ctx.req, GS_OPERATOR_DETAILS_ATTRIBUTE);
     const noc = getAndValidateNoc(ctx);
+    const schemeOp = isSchemeOperator(ctx);
 
     const operatorDetails =
         attribute && 'input' in attribute
@@ -168,6 +169,21 @@ export const getServerSideProps = async (
     if (saved) {
         // only want the saved banner to display once
         updateSessionAttribute(ctx.req, GS_OPERATOR_DETAILS_ATTRIBUTE, undefined);
+    }
+
+    if (schemeOp && operatorDetails.operatorName === '') {
+        if (
+            !errors.find(
+                (error) =>
+                    error.errorMessage ===
+                    'Before you can create any fare information, you must provide the information below',
+            )
+        ) {
+            errors.splice(0, 0, {
+                errorMessage: 'Before you can create any fare information, you must provide the information below',
+                id: 'operatorName-input',
+            });
+        }
     }
 
     return {
