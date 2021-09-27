@@ -20,6 +20,8 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
-    indent: ['error', 4]
+    indent: [0],
+    'func-style': [2, 'expression'],
+    curly: [2, 'all'],
   },
 };

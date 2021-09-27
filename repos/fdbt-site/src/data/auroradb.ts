@@ -171,7 +171,7 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
 
     try {
         const queryInput = `
-            SELECT lineName, lineId, origin, destination, startDate, endDate
+            SELECT id, lineName, lineId, origin, destination, startDate, endDate
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = 'bods'
             ORDER BY CAST(lineName AS UNSIGNED), lineName;
@@ -181,6 +181,7 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
 
         return (
             queryResults.map((item) => ({
+                id: item.id,
                 origin: item.origin,
                 destination: item.destination,
                 lineName: item.lineName,
@@ -191,6 +192,45 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
         );
     } catch (error) {
         throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getBodsServiceByNocAndId = async (
+    nationalOperatorCode: string,
+    serviceId: string,
+): Promise<MyFaresService> => {
+    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
+
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for given national operator code and serviceId',
+        nationalOperatorCode,
+        serviceId,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, lineName, lineId, origin, destination, startDate, endDate
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND id = ? AND dataSource = 'bods';
+        `;
+
+        const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter, serviceId]);
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one service to be returned, ${queryResults.length} results recevied.`);
+        }
+        // Is it better to JSON.parse this and overwrite the start end and end date via spreading the rest?
+        return {
+            id: queryResults[0].id,
+            origin: queryResults[0].origin,
+            destination: queryResults[0].destination,
+            lineName: queryResults[0].lineName,
+            startDate: convertDateFormat(queryResults[0].startDate),
+            endDate: convertDateFormat(queryResults[0].endDate),
+            lineId: queryResults[0].lineId,
+        };
+    } catch (error) {
+        throw new Error(`Could not retrieve individual service from AuroraDB: ${error.stack}`);
     }
 };
 
@@ -1423,12 +1463,43 @@ export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresP
             SELECT lineId, matchingJsonLink, startDate, endDate
             FROM products
             WHERE lineId <> ''
+            AND nocCode = ?
         `;
 
         return await executeQuery<{ lineId: string; matchingJsonLink: string; startDate: string; endDate: string }[]>(
             queryInput,
-            [],
+            [nocCode],
         );
+    } catch (error) {
+        throw new Error(`Could not retrieve fare day end by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getPointToPointProductsByLineId = async (nocCode: string, lineId: string): Promise<MyFaresProduct[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting point to point products for given noc and lineId',
+        nocCode,
+        lineId,
+    });
+
+    try {
+        const queryInput = `
+            SELECT lineId, matchingJsonLink, startDate, endDate
+            FROM products
+            WHERE lineId = ?
+            AND nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<
+            { lineId: string; matchingJsonLink: string; startDate: string; endDate: string }[]
+        >(queryInput, [lineId, nocCode]);
+
+        return queryResults.map((result) => ({
+            ...result,
+            startDate: convertDateFormat(result.startDate),
+            endDate: convertDateFormat(result.endDate),
+        }));
     } catch (error) {
         throw new Error(`Could not retrieve fare day end by nocCode from AuroraDB: ${error.stack}`);
     }

@@ -107,13 +107,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } catch (error) {
             const meta = {
                 context: 'api.register',
-                message: 'registration failed',
+                msg: 'registration failed',
             };
 
             if (error.name === 'NotAuthorizedException') {
                 logger.warn(error, meta);
             } else {
-                logger.error(error, meta);
+                logger.error(error, { meta, errorName: error.name });
             }
 
             inputChecks.push({

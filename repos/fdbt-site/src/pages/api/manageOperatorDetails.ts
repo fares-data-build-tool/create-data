@@ -1,35 +1,60 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getAndValidateNoc, checkEmailValid } from '../../utils/apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { GS_OPERATOR_DETAILS_ATTRIBUTE } from '../../constants/attributes';
 import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { upsertOperatorDetails } from '../../data/auroradb';
-import { OperatorDetails } from 'shared/matchingJsonTypes';
+import { OperatorDetails } from '../../../shared/matchingJsonTypes';
+import { lowerCase, upperFirst } from 'lodash';
+
+export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => {
+    const errors = Object.entries(operatorDetails)
+        .filter((entry) => entry[1].length > 200)
+        .map((entry) => ({
+            id: entry[0],
+            errorMessage: upperFirst(`${lowerCase(entry[0])} cannot exceed 200 characters`),
+        }));
+
+    Object.entries(operatorDetails)
+        .filter(
+            (entry) =>
+                ['operatorName', 'street', 'town', 'county', 'postcode'].includes(entry[0]) && entry[1].length < 1,
+        )
+        .forEach((entry) =>
+            errors.push({ id: entry[0], errorMessage: upperFirst(`${lowerCase(entry[0])} is required`) }),
+        );
+
+    if (
+        Object.entries(operatorDetails).filter(
+            (entry) => ['contactNumber', 'email', 'url'].includes(entry[0]) && entry[1].length > 0,
+        ).length < 1
+    ) {
+        errors.push({ id: 'contactNumber', errorMessage: 'At least one of contact number, email or URL are required' });
+    }
+
+    if (operatorDetails.contactNumber && !/^[0-9+() ]+$/.exec(operatorDetails.contactNumber)) {
+        errors.push({ id: 'contactNumber', errorMessage: 'Provide a valid phone number' });
+    }
+
+    if (operatorDetails.email && !checkEmailValid(operatorDetails.email)) {
+        errors.push({ id: 'email', errorMessage: 'Provide a valid email' });
+    }
+
+    if (operatorDetails.url && !/^[^ ]+$/.exec(operatorDetails.url)) {
+        errors.push({ id: 'url', errorMessage: 'Provide a valid URL' });
+    }
+
+    if (operatorDetails.postcode && !/^[a-zA-Z0-9]+ [a-zA-Z0-9]+$/.exec(operatorDetails.postcode)) {
+        errors.push({ id: 'postcode', errorMessage: 'Provide a valid postcode' });
+    }
+
+    return errors;
+};
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const operatorName = req.body.operatorName;
-        const contactNumber = req.body.contactNumber;
-        const email = req.body.email;
-        const url = req.body.url;
-        const street = req.body.street;
-        const town = req.body.town;
-        const county = req.body.county;
-        const postcode = req.body.postcode;
-
-        if (
-            typeof operatorName !== 'string' ||
-            typeof contactNumber !== 'string' ||
-            typeof email !== 'string' ||
-            typeof url !== 'string' ||
-            typeof street !== 'string' ||
-            typeof town !== 'string' ||
-            typeof county !== 'string' ||
-            typeof postcode !== 'string'
-        ) {
-            throw Error('one of the parameters is not a string!');
-        }
+        const { operatorName, contactNumber, email, url, street, town, county, postcode } = req.body;
 
         const trimmedOperatorDetails: OperatorDetails = {
             operatorName: removeExcessWhiteSpace(operatorName),
@@ -42,25 +67,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             postcode: removeExcessWhiteSpace(postcode),
         };
 
-        const errors = Object.entries(trimmedOperatorDetails)
-            .filter((entry) => entry[1].length < 1)
-            .map((entry) => ({ id: entry[0], errorMessage: 'All fields are mandatory' }));
-
-        if (!/^[0-9+() ]+$/.exec(contactNumber)) {
-            errors.push({ id: 'contactNumber', errorMessage: 'Provide a valid phone number' });
-        }
-
-        if (!checkEmailValid(email)) {
-            errors.push({ id: 'email', errorMessage: 'Provide a valid email' });
-        }
-
-        if (!/^[^ ]+$/.exec(url)) {
-            errors.push({ id: 'url', errorMessage: 'Provide a valid URL' });
-        }
-
-        if (!/^[a-zA-Z0-9]+ [a-zA-Z0-9]+$/.exec(postcode)) {
-            errors.push({ id: 'postcode', errorMessage: 'Provide a valid postcode' });
-        }
+        const errors = collectErrors(trimmedOperatorDetails);
 
         if (errors.length > 0) {
             updateSessionAttribute(req, GS_OPERATOR_DETAILS_ATTRIBUTE, {

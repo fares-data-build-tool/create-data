@@ -24,12 +24,7 @@
     "rootDir": "./",
     "jsx": "preserve",
     "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "src/*": [
-        "./src/*"
-      ]
-    }
+    "baseUrl": "."
   },
   "include": [
     "server",
