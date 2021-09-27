@@ -1,7 +1,7 @@
 import * as cdk from '@aws-cdk/core';
 import { Fn } from '@aws-cdk/core';
 import { Bucket } from '@aws-cdk/aws-s3';
-import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
+import { NodejsFunction, SourceMapMode } from '@aws-cdk/aws-lambda-nodejs';
 import { PolicyStatement } from '@aws-cdk/aws-iam';
 import { SecurityGroup, Subnet, Vpc } from '@aws-cdk/aws-ec2';
 
@@ -46,6 +46,10 @@ export class ExporterStack extends cdk.Stack {
                     Subnet.fromSubnetId(this, 'vpc-subnet-a', Fn.importValue(`${stage}:PrivateSubnetA`)),
                     Subnet.fromSubnetId(this, 'vpc-subnet-b', Fn.importValue(`${stage}:PrivateSubnetB`)),
                 ],
+            },
+            bundling: {
+                sourceMap: true,
+                sourceMapMode: SourceMapMode.DEFAULT,
             },
         });
 
