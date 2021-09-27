@@ -1,15 +1,17 @@
 import React, { ReactElement } from 'react';
 import OtherProductsTable from '../../components/OtherProductsTable';
-import { HackDayProduct, NextPageContextWithSession } from '../../interfaces/index';
-import { BaseLayout, MyFaresLayout } from '../../layout/Layout';
+import { MyFaresOtherFaresProduct, MyFaresOtherProduct, NextPageContextWithSession } from '../../interfaces/index';
+import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled } from '../../constants/featureFlag';
-
+import { getAndValidateNoc } from '../../utils';
+import { getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
+import { getProductsMatchingJson } from '../../data/s3';
 
 const title = 'Other Products - Create Fares Data Service';
 const description = 'View and access your other products in one place.';
 
 interface OtherProductsProps {
-    otherProducts: HackDayProduct[];
+    otherProducts: MyFaresOtherFaresProduct[];
     myFaresEnabled: boolean;
 }
 
@@ -31,118 +33,44 @@ const OtherProducts = ({ otherProducts, myFaresEnabled }: OtherProductsProps): R
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: OtherProductsProps }> => {
-    const otherProducts: HackDayProduct[] = [
-        {
-            productDescription: 'Day Saver',
-            type: 'Period',
-            duration: '1 Day',
-            carnet: false,
-            quantity: 1,
-            passengerType: 'Adult',
-            startDate: '2021-01-01',
-            endDate: '2021-12-31',
-        },
-        {
-            productDescription: 'Week Saver',
-            type: 'Period',
-            duration: '1 Week',
-            carnet: false,
-            quantity: 1,
-            passengerType: 'Adult',
-            startDate: '2021-01-01',
-            endDate: '2021-12-31',
-        },
-        {
-            productDescription: 'Day Saver',
-            type: 'Period',
-            duration: '1 Day',
-            carnet: false,
-            quantity: 1,
-            passengerType: 'Cat',
-            startDate: '2021-01-01',
-            endDate: '2021-12-31',
-        },
-        {
-            productDescription: 'Week Saver',
-            type: 'Period',
-            duration: '1 Week',
-            carnet: false,
-            quantity: 1,
-            passengerType: 'Cat',
-            startDate: '2021-01-01',
-            endDate: '2021-12-31',
-        },
-        {
-            productDescription: 'Day Saver',
-            type: 'Period',
-            duration: '1 Day',
-            carnet: false,
-            quantity: 1,
-            passengerType: 'Adult',
-            startDate: '2022-01-01',
-            endDate: '2022-12-31',
-        },
-        {
-            productDescription: 'Week Saver',
-            type: 'Period',
-            duration: '1 Week',
-            carnet: false,
-            quantity: 1,
-            passengerType: 'Adult',
-            startDate: '2022-01-01',
-            endDate: '2022-12-31',
-        },
-        {
-            productDescription: 'Cat Saver',
-            type: 'Period',
-            duration: '1 Day',
-            carnet: false,
-            quantity: 1,
-            passengerType: 'Cat',
-            startDate: '2021-01-01',
-            endDate: '2021-12-31',
-        },
-        {
-            productDescription: 'Cat Saver',
-            type: 'Period',
-            duration: '1 Week',
-            carnet: false,
-            quantity: 1,
-            passengerType: 'Cat',
-            startDate: '2022-01-01',
-            endDate: '2022-12-31',
-        },
-        {
-            productDescription: 'Flattie',
-            type: 'Flat Fare',
-            duration: '1 trip',
-            carnet: false,
-            quantity: 1,
-            passengerType: 'Student',
-            startDate: '2020-01-01',
-            endDate: '2021-12-09',
-        },
-        {
-            productDescription: 'Parrot Multi',
-            type: 'Multiple Operator',
-            duration: '1 Week',
-            carnet: false,
-            quantity: 1,
-            passengerType: 'Parrot',
-            startDate: '2021-01-01',
-            endDate: '2021-12-31',
-        },
-        {
-            productDescription: 'Zebra Express',
-            type: 'Period',
-            duration: '1 Day',
-            carnet: true,
-            quantity: 10,
-            passengerType: 'Zebra Herd',
-            startDate: '2021-01-01',
-            endDate: '2021-06-31',
-        },
-    ];
+    const noc = getAndValidateNoc(ctx);
+    const otherProductsFromDb: MyFaresOtherProduct[] = await getOtherProductsByNoc(noc);
+    console.log(otherProductsFromDb);
+    const otherProducts: MyFaresOtherFaresProduct[] = (
+        await Promise.all(
+            otherProductsFromDb.map(async (product) => {
+                const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
+                if ('products' in matchingJson) {
+                    return Promise.all(
+                        matchingJson.products?.map(async (innerProduct) => {
+                            const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
+                            const duration =
+                                'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
+                            const quantity =
+                                ('carnetDetails' in innerProduct ? innerProduct.carnetDetails?.quantity : '1') || '1';
+                            const type = matchingJson.type;
+                            const passengerType =
+                                (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.passengerType
+                                    .passengerType || '';
+                            const startDate = matchingJson.ticketPeriod.startDate || '';
+                            const endDate = matchingJson.ticketPeriod.endDate || '';
+                            return {
+                                productDescription,
+                                type,
+                                duration,
+                                quantity,
+                                passengerType,
+                                startDate,
+                                endDate,
+                                carnet: 'carnetDetails' in innerProduct,
+                            };
+                        }),
+                    );
+                }
+                return [];
+            }),
+        )
+    ).flat();
 
     return { props: { otherProducts, myFaresEnabled } };
 };

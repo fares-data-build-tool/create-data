@@ -110,9 +110,12 @@ export const getServerSideProps = async (
     const formattedProducts = await Promise.all(
         productsToDisplay.map(async (product) => {
             const matchingJson = await getMatchingJson(product.matchingJsonLink);
-            const productDescription = `${upperFirst(matchingJson.passengerType)} - ${matchingJson.type} ${
+            let productDescription = `${upperFirst(matchingJson.passengerType)} - ${matchingJson.type} ${
                 matchingJson.carnet ? '(carnet)' : ''
             }`;
+            if (matchingJson.type === 'period' && 'products' in matchingJson) {
+                productDescription = matchingJson.products[0].productName;
+            }
             let validity = 'No restrictions';
             if (matchingJson.timeRestriction.length > 0) {
                 const daysValid = matchingJson.timeRestriction.map((restriction) =>

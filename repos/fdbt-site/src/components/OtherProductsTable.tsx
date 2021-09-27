@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
-import { HackDayProduct } from '../interfaces';
+import { MyFaresOtherFaresProduct } from 'src/interfaces';
 
 interface OtherProductsTableProps {
-    otherProducts: HackDayProduct[];
+    otherProducts: MyFaresOtherFaresProduct[];
 }
 
-const getTag = (startDate: string, endDate: string) => {
+const getTag = (startDate: string, endDate: string): JSX.Element | null => {
     const today = new Date().setHours(0, 0, 0, 0);
     if (Date.parse(startDate) <= today && Date.parse(endDate) >= today) {
         return <strong className="govuk-tag govuk-tag--turquoise">Active</strong>;
@@ -14,6 +14,8 @@ const getTag = (startDate: string, endDate: string) => {
     } else if (today > Date.parse(endDate)) {
         return <strong className="govuk-tag govuk-tag--red">Expired</strong>;
     }
+
+    return null;
 };
 
 const ServicesTable = ({ otherProducts }: OtherProductsTableProps): ReactElement => {
@@ -37,6 +39,9 @@ const ServicesTable = ({ otherProducts }: OtherProductsTableProps): ReactElement
                         Passenger type
                     </th>
                     <th scope="col" className="govuk-table__header">
+                        Start date
+                    </th>
+                    <th scope="col" className="govuk-table__header">
                         End date
                     </th>
                     <th scope="col" className="govuk-table__header">
@@ -55,6 +60,9 @@ const ServicesTable = ({ otherProducts }: OtherProductsTableProps): ReactElement
                         <td className="govuk-table__cell">{product.quantity}</td>
                         <td className="govuk-table__cell">{product.passengerType}</td>
                         <td className="govuk-table__cell" style={{ width: '125px' }}>
+                            {product.startDate}
+                        </td>
+                        <td className="govuk-table__cell" style={{ width: '125px' }}>
                             {product.endDate}
                         </td>
                         <td className="govuk-table__cell" style={{ width: '125px' }}>
@@ -68,6 +76,3 @@ const ServicesTable = ({ otherProducts }: OtherProductsTableProps): ReactElement
 };
 
 export default ServicesTable;
-function moment() {
-    throw new Error('Function not implemented.');
-}

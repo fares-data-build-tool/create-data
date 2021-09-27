@@ -563,6 +563,8 @@ export interface MyFaresProduct {
     endDate: string;
 }
 
+export interface MyFaresOtherProduct extends Omit<MyFaresProduct, 'lineId'> {}
+
 export interface MyFaresServiceWithProductCount extends MyFaresService {
     products: number;
 }
@@ -572,6 +574,17 @@ export interface MyFaresPointToPointProduct {
     validity: string;
     startDate: string;
     endDate: string;
+}
+
+export interface MyFaresOtherFaresProduct {
+    productDescription: string;
+    type: string;
+    duration: string;
+    quantity: string;
+    passengerType: string;
+    startDate: string;
+    endDate: string;
+    carnet: boolean;
 }
 
 export interface ServiceWithErrors {
