@@ -55,7 +55,7 @@ export const buildNocList = (ticket: Ticket): string[] => {
     }
 
     if ('additionalOperators' in ticket) {
-        nocs.push(...ticket.additionalOperators.map(op => op.nocCode));
+        nocs.push(...ticket.additionalOperators.map((op) => op.nocCode));
     }
 
     return nocs;
@@ -74,23 +74,6 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
 
         // let schemeCode = '';
 
-        // let blah2: Operator = {
-        //     opId: '',
-        //     mode: '',
-        //     vosaPsvLicenseName: '',
-        //     nocCode: '',
-        //     operatorName: '',
-        //     contactNumber: '',
-        //     email: '',
-        //     url: '',
-        //     street: '',
-        //     town: '',
-        //     county: '',
-        //     postcode: '',
-        // };
-
-        // the operator of the currently logged in user
-        // is known as the 'base operator'
         let operatorData: Operator[] = [];
 
         // 1. get the national operator code (noc) for the base operator
@@ -115,8 +98,6 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         // }
 
         const nocs: string[] = buildNocList(ticket);
-
-        console.log(nocs);
 
         if (nocs.length > 0) {
             operatorData = operatorData.concat(await db.getOperatorDataByNocCode(nocs));
