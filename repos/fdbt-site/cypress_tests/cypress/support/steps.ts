@@ -13,7 +13,6 @@ import {
     submitButtonClick,
     completeProductDateInformationPage,
     getRandomNumber,
-    assertElementNotVisibleById,
     completeSalesOfferPackagesForMultipleProducts,
     completeMultipleProducts,
     completeOperatorSearch,
@@ -26,7 +25,6 @@ export const defineUserTypeAndTimeRestrictions = (): void => {
     randomlyDetermineUserType();
     randomlyDecideTimeRestrictions();
 
-    cy.log('clicking continue on /fareConfirmation page');
     continueButtonClick();
 };
 
@@ -224,7 +222,6 @@ export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPer
         continueButtonClick();
     }
 
-    cy.log('should be ticket confirmation continue btn');
     continueButtonClick();
 };
 
