@@ -751,6 +751,9 @@ workflows:
           name: exporter deployed to prod
           requires:
             - deploy-exporter-to-prod
+          filters:
+            tags:
+              only: /^v.*/
       - slack-notify:
           <<: *slack-fail-post-step
           name: exporter deployed to preprod
