@@ -12,7 +12,7 @@
         "build_name": "build-name",
         "exclude": [],
         "parallels": "5",
-        "cypress_version": "6",
+        "cypress_version": "7",
         "npm_dependencies": {
             "@cypress/webpack-preprocessor": "^5.7.0",
             "@typescript-eslint/eslint-plugin": "^2.33.0",

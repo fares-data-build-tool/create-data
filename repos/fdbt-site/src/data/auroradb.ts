@@ -2,7 +2,7 @@ import awsParamStore from 'aws-param-store';
 import dateFormat from 'dateformat';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
-import { FromDb } from '../../shared/matchingJsonTypes';
+import { FromDb, OperatorDetails } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
     CompanionInfo,
@@ -20,6 +20,8 @@ import {
     GroupPassengerTypeReference,
     FullGroupPassengerType,
     DbTimeRestriction,
+    MyFaresService,
+    MyFaresProduct,
 } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -155,6 +157,80 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
         );
     } catch (error) {
         throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promise<MyFaresService[]> => {
+    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
+
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for given national operator code',
+        noc: nationalOperatorCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, lineName, lineId, origin, destination, startDate, endDate
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND dataSource = 'bods'
+            ORDER BY CAST(lineName AS UNSIGNED), lineName;
+        `;
+
+        const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter]);
+
+        return (
+            queryResults.map((item) => ({
+                id: item.id,
+                origin: item.origin,
+                destination: item.destination,
+                lineName: item.lineName,
+                startDate: convertDateFormat(item.startDate),
+                endDate: convertDateFormat(item.endDate),
+                lineId: item.lineId,
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getBodsServiceByNocAndId = async (
+    nationalOperatorCode: string,
+    serviceId: string,
+): Promise<MyFaresService> => {
+    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
+
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for given national operator code and serviceId',
+        nationalOperatorCode,
+        serviceId,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, lineName, lineId, origin, destination, startDate, endDate
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND id = ? AND dataSource = 'bods';
+        `;
+
+        const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter, serviceId]);
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one service to be returned, ${queryResults.length} results recevied.`);
+        }
+        // Is it better to JSON.parse this and overwrite the start end and end date via spreading the rest?
+        return {
+            id: queryResults[0].id,
+            origin: queryResults[0].origin,
+            destination: queryResults[0].destination,
+            lineName: queryResults[0].lineName,
+            startDate: convertDateFormat(queryResults[0].startDate),
+            endDate: convertDateFormat(queryResults[0].endDate),
+            lineId: queryResults[0].lineId,
+        };
+    } catch (error) {
+        throw new Error(`Could not retrieve individual service from AuroraDB: ${error.stack}`);
     }
 };
 
@@ -1250,7 +1326,7 @@ export const upsertFareDayEnd = async (nocCode: string, fareDayEnd: string): Pro
             await executeQuery(insertQuery, [fareDayEnd, nocCode]);
         }
     } catch (error) {
-        throw new Error(`Could not insert passenger type into the passengerType table. ${error}`);
+        throw new Error(`Could not insert fare day end into the fareDayEnd table. ${error}`);
     }
 };
 
@@ -1260,6 +1336,8 @@ export const insertProducts = async (
     dateModified: Date,
     fareType: string,
     lineId: string | undefined,
+    startDate: string,
+    endDate: string,
 ): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1269,11 +1347,158 @@ export const insertProducts = async (
     });
 
     const insertQuery = `INSERT INTO products 
-    (nocCode, matchingJsonLink, dateModified, fareType, lineId) 
-    VALUES (?, ?, ?, ?, ?)`;
+    (nocCode, matchingJsonLink, dateModified, fareType, lineId, startDate, endDate) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)`;
     try {
-        await executeQuery(insertQuery, [nocCode, matchingJsonLink, dateModified, fareType, lineId || '']);
+        await executeQuery(insertQuery, [
+            nocCode,
+            matchingJsonLink,
+            dateModified,
+            fareType,
+            lineId || '',
+            startDate,
+            endDate,
+        ]);
     } catch (error) {
         throw new Error(`Could not insert products into the products table. ${error.stack}`);
+    }
+};
+
+export const getOperatorDetailsFromNocTable = async (nocCode: string): Promise<OperatorDetails | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving operator details from nocPublicName table for given nocCode',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT DISTINCT nocTable.operatorPublicName AS operatorName, nocPublicName.fareEnq AS contactNumber, nocPublicName.ttrteEnq AS email, nocPublicName.website AS url, nocPublicName.complEnq AS street
+            FROM nocTable
+            JOIN nocPublicName ON nocTable.pubNmId = nocPublicName.pubNmId
+            WHERE nocTable.nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<
+            {
+                operatorName: string;
+                contactNumber: string;
+                email: string;
+                url: string;
+                street: string;
+            }[]
+        >(queryInput, [nocCode]);
+
+        return queryResults[0]
+            ? {
+                  ...queryResults[0],
+                  town: '',
+                  county: '',
+                  postcode: '',
+              }
+            : undefined;
+    } catch (error) {
+        throw new Error(
+            `Could not retrieve operator details from nocPublicName by nocCode from AuroraDB: ${error.stack}`,
+        );
+    }
+};
+
+export const getOperatorDetails = async (nocCode: string): Promise<OperatorDetails | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving operator details for given nocCode',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT contents
+            FROM operatorDetails
+            WHERE nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode]);
+        return queryResults[0] ? (JSON.parse(queryResults[0].contents) as OperatorDetails) : undefined;
+    } catch (error) {
+        throw new Error(`Could not retrieve operator details by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const upsertOperatorDetails = async (nocCode: string, operatorDetails: OperatorDetails): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'upserting operator details',
+        nocCode,
+    });
+
+    try {
+        const updateQuery = `UPDATE operatorDetails
+                             SET contents = ?
+                             WHERE nocCode = ?`;
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [JSON.stringify(operatorDetails), nocCode]);
+        if (meta.affectedRows > 1) {
+            throw Error(`Updated too many rows when updating fare day end ${meta}`);
+        } else if (meta.affectedRows === 0) {
+            const insertQuery = `INSERT INTO operatorDetails (contents, nocCode) VALUES (?, ?)`;
+
+            await executeQuery(insertQuery, [JSON.stringify(operatorDetails), nocCode]);
+        }
+    } catch (error) {
+        throw new Error(`Could not insert operator details into the operatorDetails table. ${error}`);
+    }
+};
+
+export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresProduct[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting point to point products for given noc',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `      
+            SELECT lineId, matchingJsonLink, startDate, endDate
+            FROM products
+            WHERE lineId <> ''
+            AND nocCode = ?
+        `;
+
+        return await executeQuery<{ lineId: string; matchingJsonLink: string; startDate: string; endDate: string }[]>(
+            queryInput,
+            [nocCode],
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve fare day end by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getPointToPointProductsByLineId = async (nocCode: string, lineId: string): Promise<MyFaresProduct[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting point to point products for given noc and lineId',
+        nocCode,
+        lineId,
+    });
+
+    try {
+        const queryInput = `
+            SELECT lineId, matchingJsonLink, startDate, endDate
+            FROM products
+            WHERE lineId = ?
+            AND nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<
+            { lineId: string; matchingJsonLink: string; startDate: string; endDate: string }[]
+        >(queryInput, [lineId, nocCode]);
+
+        return queryResults.map((result) => ({
+            ...result,
+            startDate: convertDateFormat(result.startDate),
+            endDate: convertDateFormat(result.endDate),
+        }));
+    } catch (error) {
+        throw new Error(`Could not retrieve fare day end by nocCode from AuroraDB: ${error.stack}`);
     }
 };

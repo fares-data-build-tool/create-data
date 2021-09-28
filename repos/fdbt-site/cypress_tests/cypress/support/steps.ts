@@ -222,7 +222,6 @@ export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPer
     }
 
     continueButtonClick();
-    continueButtonClick();
 };
 
 export const completeSalesPages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {

@@ -9,7 +9,7 @@ describe('selectSalesOfferPackage', () => {
     it('redirects back to /selectSalesOfferPackages if there are no sales offer packages selected, single product', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                'product-TestProduct': '',
+                '^0000-product-TestProduct': '',
             },
         });
 
@@ -23,8 +23,8 @@ describe('selectSalesOfferPackage', () => {
     it('redirects back to /selectSalesOfferPackages if there are no sales offer packages selected, multiple product', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                'product-TestProduct': '',
-                'product-SecondTestProduct': '',
+                '^0000-product-TestProduct': '',
+                '^0001-product-SecondTestProduct': '',
             },
         });
 
@@ -39,44 +39,15 @@ describe('selectSalesOfferPackage', () => {
         const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
         const { req, res } = getMockRequestAndResponse({
             body: {
-                'product-TestProduct': [
-                    '{"name":"Onboard (cash)","description":"","purchaseLocations":["onBoard"],"paymentMethods":["cash"],"ticketFormats":["paperTicket"]}',
-                    '',
-                ],
-            },
-            session: {
-                [MULTIPLE_PRODUCT_ATTRIBUTE]: {
-                    products: [],
-                },
-            },
-        });
-
-        selectSalesOfferPackages(req, res);
-
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, SALES_OFFER_PACKAGES_ATTRIBUTE, [
-            {
-                name: 'Onboard (cash)',
-                description: '',
-                purchaseLocations: ['onBoard'],
-                paymentMethods: ['cash'],
-                ticketFormats: ['paperTicket'],
-            },
-        ]);
-
-        expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/productDateInformation',
-        });
-        updateSessionAttributeSpy.mockRestore();
-    });
-
-    it('redirects to /productDateInformation if there are sales offer packages selected, and updates SalesOfferPackage Attribute differently if there are multiple products', () => {
-        const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                'product-TestProduct': [
-                    '{"name":"Onboard (cash)","description":"","purchaseLocations":["onBoard"],"paymentMethods":["cash"],"ticketFormats":["paperTicket"]}',
-                    '',
-                ],
+                'product-Weekly Ticket':
+                    '{"id":1,"name":"Adult","description":"","purchaseLocations":["mobileDevice"],"paymentMethods":["mobilePhone"],"ticketFormats":["paperTicket","smartCard"]}',
+                'price-Weekly Ticket-Adult': '22',
+                'product-Day Ticket':
+                    '{"id":1,"name":"Adult","description":"","purchaseLocations":["mobileDevice"],"paymentMethods":["mobilePhone"],"ticketFormats":["paperTicket","smartCard"]}',
+                'price-Day Ticket-Adult': '22',
+                'product-Monthly Ticket':
+                    '{"id":1,"name":"Adult","description":"","purchaseLocations":["mobileDevice"],"paymentMethods":["mobilePhone"],"ticketFormats":["paperTicket","smartCard"]}',
+                'price-Monthly Ticket-Adult': '22',
             },
             session: {
                 [MULTIPLE_PRODUCT_ATTRIBUTE]: {
@@ -111,14 +82,41 @@ describe('selectSalesOfferPackage', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, SALES_OFFER_PACKAGES_ATTRIBUTE, [
             {
-                productName: 'TestProduct',
+                productName: 'Weekly Ticket',
                 salesOfferPackages: [
                     {
                         description: '',
-                        name: 'Onboard (cash)',
-                        paymentMethods: ['cash'],
-                        purchaseLocations: ['onBoard'],
-                        ticketFormats: ['paperTicket'],
+                        id: 1,
+                        name: 'Adult',
+                        paymentMethods: ['mobilePhone'],
+                        purchaseLocations: ['mobileDevice'],
+                        ticketFormats: ['paperTicket', 'smartCard'],
+                    },
+                ],
+            },
+            {
+                productName: 'Day Ticket',
+                salesOfferPackages: [
+                    {
+                        description: '',
+                        id: 1,
+                        name: 'Adult',
+                        paymentMethods: ['mobilePhone'],
+                        purchaseLocations: ['mobileDevice'],
+                        ticketFormats: ['paperTicket', 'smartCard'],
+                    },
+                ],
+            },
+            {
+                productName: 'Monthly Ticket',
+                salesOfferPackages: [
+                    {
+                        description: '',
+                        id: 1,
+                        name: 'Adult',
+                        paymentMethods: ['mobilePhone'],
+                        purchaseLocations: ['mobileDevice'],
+                        ticketFormats: ['paperTicket', 'smartCard'],
                     },
                 ],
             },
@@ -134,10 +132,10 @@ describe('selectSalesOfferPackage', () => {
         it('fills an error array if the user has not selected a SOP for each product', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
-                    'product-TestProduct': '',
+                    '^0000-product-TestProduct': '',
                 },
             });
-            const result = sanitiseReqBody(req);
+            const result = sanitiseReqBody(req, [{ productName: 'TestProduct' }]);
             expect(result.errors).toStrictEqual([
                 {
                     errorMessage: 'Choose at least one sales offer package from the options',
@@ -149,31 +147,33 @@ describe('selectSalesOfferPackage', () => {
         it('returns an object with a string matching the SalesOfferPackage object structure', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
-                    'product-TestProduct': [
-                        '{"name":"Onboard (cash)","description":"","purchaseLocations":["onBoard"],"paymentMethods":["cash"],"ticketFormats":["paperTicket"]}',
-                        '',
-                    ],
+                    'product-TestProduct':
+                        '{"id":1,"name":"Adult","description":"","purchaseLocations":["mobileDevice"],"paymentMethods":["mobilePhone"],"ticketFormats":["paperTicket","smartCard"]}',
+                    'price-First product-Adult': '22',
                 },
             });
-            const result = sanitiseReqBody(req);
+
+            const result = sanitiseReqBody(req, [{ productName: 'TestProduct' }]);
             expect(result.errors.length).toBe(0);
             expect(result.sanitisedBody).toStrictEqual({
                 TestProduct: [
                     {
-                        name: 'Onboard (cash)',
+                        id: 1,
+                        name: 'Adult',
                         description: '',
-                        purchaseLocations: ['onBoard'],
-                        paymentMethods: ['cash'],
-                        ticketFormats: ['paperTicket'],
+                        purchaseLocations: ['mobileDevice'],
+                        paymentMethods: ['mobilePhone'],
+                        ticketFormats: ['paperTicket', 'smartCard'],
                     },
                 ],
             });
             expect(result.sanitisedBody.TestProduct[0]).toEqual({
-                name: 'Onboard (cash)',
+                id: 1,
+                name: 'Adult',
                 description: '',
-                purchaseLocations: ['onBoard'],
-                paymentMethods: ['cash'],
-                ticketFormats: ['paperTicket'],
+                purchaseLocations: ['mobileDevice'],
+                paymentMethods: ['mobilePhone'],
+                ticketFormats: ['paperTicket', 'smartCard'],
             });
         });
     });

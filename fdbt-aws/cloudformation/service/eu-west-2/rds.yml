@@ -41,15 +41,6 @@ Parameters:
     Type: "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>"
     Default: "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
 
-  QualysActivationId:
-    Type: String
-
-  QualysCustomerId:
-    Type: String
-
-  TaniumServerList:
-    Type: String
-
 Conditions:
   IsProd: !Equals [!Ref Stage, "prod"]
 
@@ -197,32 +188,6 @@ Resources:
                 Value: Bastion
               - Key: Bastion
                 Value: "true"
-        UserData:
-          Fn::Base64: !Sub |
-            #!/bin/bash
-
-            sudo su
-
-            aws s3 cp s3://cfd-shared-content/Linux_RPM_QualysCloudAgent.x86_64.rpm /tmp
-            aws s3 cp s3://cfd-shared-content/TaniumClient-7.4.2.2073-1.amzn2.x86_64.rpm /tmp
-            aws s3 cp s3://cfd-shared-content/tanium-init.dat /tmp
-
-            rpm -ivh /tmp/Linux_RPM_QualysCloudAgent.x86_64.rpm
-            /usr/local/qualys/cloud-agent/bin/qualys-cloud-agent.sh ActivationId=${QualysActivationId} CustomerId=${QualysCustomerId} ProviderName=AWS
-
-            rpm -i /tmp/TaniumClient-7.4.2.2073-1.amzn2.x86_64.rpm
-
-            cd /opt/Tanium/TaniumClient/
-
-            ./TaniumClient config set ServerNameList ${TaniumServerList}
-            ./TaniumClient config set LogVerbosityLevel 1
-            ./TaniumClient config set ServerPort 443
-            ./TaniumClient config set ListenPort 17472
-            ./TaniumClient config set Resolver nslookup
-
-            cp -a /tmp/tanium-init.dat /opt/Tanium/TaniumClient/
-
-            service taniumclient start
 
   BastionAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup

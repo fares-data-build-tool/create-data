@@ -57,7 +57,13 @@ describe('pages', () => {
     describe('view time restrictions', () => {
         it('should render correctly when no time restrictions', () => {
             const tree = shallow(
-                <ViewTimeRestrictions csrfToken={''} timeRestrictions={[]} referer={null} deleteEnabled={false} />,
+                <ViewTimeRestrictions
+                    csrfToken={''}
+                    timeRestrictions={[]}
+                    referer={null}
+                    deleteEnabled={false}
+                    myFaresEnabled={false}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -69,6 +75,7 @@ describe('pages', () => {
                     timeRestrictions={timeRestrictions}
                     referer={'hello'}
                     deleteEnabled={false}
+                    myFaresEnabled={false}
                 />,
             );
             expect(tree).toMatchSnapshot();

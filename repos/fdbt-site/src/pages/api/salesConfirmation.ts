@@ -1,4 +1,4 @@
-import { globalSettingsEnabled } from './../../constants/featureFlag';
+import { saveProductsEnabled, myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import moment from 'moment';
 import { NextApiResponse } from 'next';
 import { insertProducts } from '../../data/auroradb';
@@ -9,8 +9,9 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
 } from '../../constants/attributes';
-import { NextApiRequestWithSession, Ticket, TicketPeriodWithInput } from '../../interfaces';
+import { NextApiRequestWithSession, TicketPeriodWithInput } from '../../interfaces';
 import { isPassengerType, isTicketRepresentation } from '../../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
@@ -31,8 +32,10 @@ import {
     getPointToPointPeriodJson,
     getSchemeOperatorTicketJson,
     getSingleTicketJson,
-    putUserDataInS3,
+    putUserDataInProductsBucket,
 } from '../../utils/apiUtils/userData';
+import { TicketWithIds } from '../../../shared/matchingJsonTypes';
+import { triggerExport } from '../../utils/apiUtils/export';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -58,7 +61,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const uuid = getUuidFromSession(req);
 
-        let userDataJson: Ticket | undefined;
+        let userDataJson: TicketWithIds | undefined;
 
         if (isSchemeOperator(req, res)) {
             const baseSchemeOperatorJson = getSchemeOperatorTicketJson(req, res);
@@ -96,6 +99,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
             const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
             const carnetAttribute = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
+            const dataFormat = getSessionAttribute(req, TXC_SOURCE_ATTRIBUTE)?.source;
 
             if (
                 sessionGroup &&
@@ -111,11 +115,20 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             userDataJson.carnet = carnetAttribute;
             const noc = getAndValidateNoc(req, res);
-            const filePath = await putUserDataInS3(userDataJson, uuid, noc);
-            if (globalSettingsEnabled) {
+            const filePath = await putUserDataInProductsBucket(userDataJson, uuid, noc);
+            if (saveProductsEnabled && dataFormat !== 'tnds') {
+                const { startDate, endDate } = userDataJson.ticketPeriod;
+                if (!startDate || !endDate) {
+                    throw new Error('Start or end date could not be found.');
+                }
                 const dateTime = moment().toDate();
-                const lineId: string | undefined = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
-                await insertProducts(noc, filePath, dateTime, userDataJson.type, lineId);
+                const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
+                await insertProducts(noc, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);
+            }
+
+            if (!myFaresEnabled || !exportEnabled) {
+                // if my fares or export isn't enabled we want to trigger the export lambda for a single
+                await triggerExport({ noc, paths: [filePath] });
             }
 
             redirectTo(res, '/thankyou');

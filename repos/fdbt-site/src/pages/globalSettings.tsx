@@ -6,6 +6,7 @@ import {
     getSalesOfferPackagesByNocCode,
     getTimeRestrictionByNocCode,
     getFareDayEnd,
+    getOperatorDetails,
 } from '../data/auroradb';
 import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
@@ -14,6 +15,7 @@ import { globalSettingsEnabled } from '../constants/featureFlag';
 import { getAndValidateNoc } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { redirectTo } from '../utils/apiUtils';
+import { myFaresEnabled } from '../constants/featureFlag';
 
 const title = 'Operator Settings - Create Fares Data Service';
 const description = 'View and access your settings in one place.';
@@ -21,12 +23,19 @@ const description = 'View and access your settings in one place.';
 interface GlobalSettingsProps {
     globalSettingsCounts: GlobalSettingsCounts;
     referer: string | null;
+    myFaresEnabled: boolean;
 }
 
-const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps): ReactElement => {
+const GlobalSettings = ({ globalSettingsCounts, referer, myFaresEnabled }: GlobalSettingsProps): ReactElement => {
     return (
         <>
-            <BaseLayout title={title} description={description} showNavigation referer={referer}>
+            <BaseLayout
+                title={title}
+                description={description}
+                showNavigation
+                referer={referer}
+                myFaresEnabled={myFaresEnabled}
+            >
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
                         <SubNavigation />
@@ -63,6 +72,12 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             description="If your fare day extends past midnight, define its end time"
                             count={globalSettingsCounts.fareDayEndSet}
                         />
+                        <SettingOverview
+                            href="/manageOperatorDetails"
+                            name="Operator details"
+                            description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
+                            count={globalSettingsCounts.operatorDetailsSet}
+                        />
                     </div>
                 </div>
             </BaseLayout>
@@ -88,15 +103,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const savedTimeRestrictions = await getTimeRestrictionByNocCode(noc);
     const purchaseMethodsCount = await getSalesOfferPackagesByNocCode(noc);
     const fareDayEnd = await getFareDayEnd(noc);
+    const operatorDetails = await getOperatorDetails(noc);
 
     const globalSettingsCounts: GlobalSettingsCounts = {
         passengerTypesCount: savedPassengerTypes.length + savedGroupPassengerTypes.length,
         timeRestrictionsCount: savedTimeRestrictions.length,
         purchaseMethodsCount: purchaseMethodsCount.length,
         fareDayEndSet: !!fareDayEnd,
+        operatorDetailsSet: !!operatorDetails,
     };
 
-    return { props: { globalSettingsCounts, referer } };
+    return { props: { globalSettingsCounts, referer, myFaresEnabled } };
 };
 
 export default GlobalSettings;

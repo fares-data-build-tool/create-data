@@ -1,0 +1,1440 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages manage operator details should render correctly 1`] = `
+<BaseLayout
+  description="Manage Operator Details End page of the Create Fares Data Service"
+  myFaresEnabled={true}
+  referer={null}
+  showNavigation={true}
+  title="Manage Operator Details - Create Fares Data Service"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-one-quarter"
+      >
+        <SubNavigation />
+      </div>
+      <div
+        className="govuk-grid-column-three-quarters"
+      >
+        <ErrorSummary
+          errors={Array []}
+        />
+        <h1
+          className="govuk-heading-xl"
+        >
+          Operator Details
+        </h1>
+        <p
+          className="govuk-body govuk-!-margin-bottom-4"
+          id="operator-details-text"
+        >
+          This information will be included in your fares data and therefore may be presented to passengers
+        </p>
+        <CsrfForm
+          action="/api/manageOperatorDetails"
+          csrfToken=""
+          method="post"
+        >
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "operatorName",
+              ]
+            }
+            errors={Array []}
+            key="operatorName"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="operatorName"
+              >
+                Operator name
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="operatorName"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test Operator"
+                  id="operatorName"
+                  name="operatorName"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "contactNumber",
+              ]
+            }
+            errors={Array []}
+            key="contactNumber"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="contactNumber"
+              >
+                Contact number
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="contactNumber"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="01234 567 890"
+                  id="contactNumber"
+                  name="contactNumber"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "email",
+              ]
+            }
+            errors={Array []}
+            key="email"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="email"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="test@example.com"
+                  id="email"
+                  name="email"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "url",
+              ]
+            }
+            errors={Array []}
+            key="url"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="url"
+              >
+                URL
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="url"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="www.example.com"
+                  id="url"
+                  name="url"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "street",
+              ]
+            }
+            errors={Array []}
+            key="street"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="street"
+              >
+                Street
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="street"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test Street"
+                  id="street"
+                  name="street"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "town",
+              ]
+            }
+            errors={Array []}
+            key="town"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="town"
+              >
+                Town
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="town"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test Town"
+                  id="town"
+                  name="town"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "county",
+              ]
+            }
+            errors={Array []}
+            key="county"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="county"
+              >
+                County
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="county"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test County"
+                  id="county"
+                  name="county"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "postcode",
+              ]
+            }
+            errors={Array []}
+            key="postcode"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="postcode"
+              >
+                Postcode
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="postcode"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="AB1 2CD"
+                  id="postcode"
+                  name="postcode"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <input
+            className="govuk-button"
+            type="submit"
+            value="Save"
+          />
+        </CsrfForm>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages manage operator details should render error state if error 1`] = `
+<BaseLayout
+  description="Manage Operator Details End page of the Create Fares Data Service"
+  myFaresEnabled={false}
+  referer={null}
+  showNavigation={true}
+  title="Manage Operator Details - Create Fares Data Service"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-one-quarter"
+      >
+        <SubNavigation />
+      </div>
+      <div
+        className="govuk-grid-column-three-quarters"
+      >
+        <ErrorSummary
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Operator name is required",
+                "id": "operatorName",
+              },
+              Object {
+                "errorMessage": "Street is required",
+                "id": "street",
+              },
+              Object {
+                "errorMessage": "Town is required",
+                "id": "town",
+              },
+              Object {
+                "errorMessage": "County is required",
+                "id": "county",
+              },
+              Object {
+                "errorMessage": "Postcode is required",
+                "id": "postcode",
+              },
+              Object {
+                "errorMessage": "At least one of contact number, email or URL are required",
+                "id": "contactNumber",
+              },
+            ]
+          }
+        />
+        <h1
+          className="govuk-heading-xl"
+        >
+          Operator Details
+        </h1>
+        <p
+          className="govuk-body govuk-!-margin-bottom-4"
+          id="operator-details-text"
+        >
+          This information will be included in your fares data and therefore may be presented to passengers
+        </p>
+        <CsrfForm
+          action="/api/manageOperatorDetails"
+          csrfToken=""
+          method="post"
+        >
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "operatorName",
+              ]
+            }
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Operator name is required",
+                  "id": "operatorName",
+                },
+                Object {
+                  "errorMessage": "Street is required",
+                  "id": "street",
+                },
+                Object {
+                  "errorMessage": "Town is required",
+                  "id": "town",
+                },
+                Object {
+                  "errorMessage": "County is required",
+                  "id": "county",
+                },
+                Object {
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
+                  "id": "contactNumber",
+                },
+              ]
+            }
+            key="operatorName"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="operatorName"
+              >
+                Operator name
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="operatorName"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Operator name is required",
+                      "id": "operatorName",
+                    },
+                    Object {
+                      "errorMessage": "Street is required",
+                      "id": "street",
+                    },
+                    Object {
+                      "errorMessage": "Town is required",
+                      "id": "town",
+                    },
+                    Object {
+                      "errorMessage": "County is required",
+                      "id": "county",
+                    },
+                    Object {
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
+                      "id": "contactNumber",
+                    },
+                  ]
+                }
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test Operator"
+                  id="operatorName"
+                  name="operatorName"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "contactNumber",
+              ]
+            }
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Operator name is required",
+                  "id": "operatorName",
+                },
+                Object {
+                  "errorMessage": "Street is required",
+                  "id": "street",
+                },
+                Object {
+                  "errorMessage": "Town is required",
+                  "id": "town",
+                },
+                Object {
+                  "errorMessage": "County is required",
+                  "id": "county",
+                },
+                Object {
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
+                  "id": "contactNumber",
+                },
+              ]
+            }
+            key="contactNumber"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="contactNumber"
+              >
+                Contact number
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="contactNumber"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Operator name is required",
+                      "id": "operatorName",
+                    },
+                    Object {
+                      "errorMessage": "Street is required",
+                      "id": "street",
+                    },
+                    Object {
+                      "errorMessage": "Town is required",
+                      "id": "town",
+                    },
+                    Object {
+                      "errorMessage": "County is required",
+                      "id": "county",
+                    },
+                    Object {
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
+                      "id": "contactNumber",
+                    },
+                  ]
+                }
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="01234 567 890"
+                  id="contactNumber"
+                  name="contactNumber"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "email",
+              ]
+            }
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Operator name is required",
+                  "id": "operatorName",
+                },
+                Object {
+                  "errorMessage": "Street is required",
+                  "id": "street",
+                },
+                Object {
+                  "errorMessage": "Town is required",
+                  "id": "town",
+                },
+                Object {
+                  "errorMessage": "County is required",
+                  "id": "county",
+                },
+                Object {
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
+                  "id": "contactNumber",
+                },
+              ]
+            }
+            key="email"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="email"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Operator name is required",
+                      "id": "operatorName",
+                    },
+                    Object {
+                      "errorMessage": "Street is required",
+                      "id": "street",
+                    },
+                    Object {
+                      "errorMessage": "Town is required",
+                      "id": "town",
+                    },
+                    Object {
+                      "errorMessage": "County is required",
+                      "id": "county",
+                    },
+                    Object {
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
+                      "id": "contactNumber",
+                    },
+                  ]
+                }
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="test@example.com"
+                  id="email"
+                  name="email"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "url",
+              ]
+            }
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Operator name is required",
+                  "id": "operatorName",
+                },
+                Object {
+                  "errorMessage": "Street is required",
+                  "id": "street",
+                },
+                Object {
+                  "errorMessage": "Town is required",
+                  "id": "town",
+                },
+                Object {
+                  "errorMessage": "County is required",
+                  "id": "county",
+                },
+                Object {
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
+                  "id": "contactNumber",
+                },
+              ]
+            }
+            key="url"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="url"
+              >
+                URL
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="url"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Operator name is required",
+                      "id": "operatorName",
+                    },
+                    Object {
+                      "errorMessage": "Street is required",
+                      "id": "street",
+                    },
+                    Object {
+                      "errorMessage": "Town is required",
+                      "id": "town",
+                    },
+                    Object {
+                      "errorMessage": "County is required",
+                      "id": "county",
+                    },
+                    Object {
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
+                      "id": "contactNumber",
+                    },
+                  ]
+                }
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="www.example.com"
+                  id="url"
+                  name="url"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "street",
+              ]
+            }
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Operator name is required",
+                  "id": "operatorName",
+                },
+                Object {
+                  "errorMessage": "Street is required",
+                  "id": "street",
+                },
+                Object {
+                  "errorMessage": "Town is required",
+                  "id": "town",
+                },
+                Object {
+                  "errorMessage": "County is required",
+                  "id": "county",
+                },
+                Object {
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
+                  "id": "contactNumber",
+                },
+              ]
+            }
+            key="street"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="street"
+              >
+                Street
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="street"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Operator name is required",
+                      "id": "operatorName",
+                    },
+                    Object {
+                      "errorMessage": "Street is required",
+                      "id": "street",
+                    },
+                    Object {
+                      "errorMessage": "Town is required",
+                      "id": "town",
+                    },
+                    Object {
+                      "errorMessage": "County is required",
+                      "id": "county",
+                    },
+                    Object {
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
+                      "id": "contactNumber",
+                    },
+                  ]
+                }
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test Street"
+                  id="street"
+                  name="street"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "town",
+              ]
+            }
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Operator name is required",
+                  "id": "operatorName",
+                },
+                Object {
+                  "errorMessage": "Street is required",
+                  "id": "street",
+                },
+                Object {
+                  "errorMessage": "Town is required",
+                  "id": "town",
+                },
+                Object {
+                  "errorMessage": "County is required",
+                  "id": "county",
+                },
+                Object {
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
+                  "id": "contactNumber",
+                },
+              ]
+            }
+            key="town"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="town"
+              >
+                Town
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="town"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Operator name is required",
+                      "id": "operatorName",
+                    },
+                    Object {
+                      "errorMessage": "Street is required",
+                      "id": "street",
+                    },
+                    Object {
+                      "errorMessage": "Town is required",
+                      "id": "town",
+                    },
+                    Object {
+                      "errorMessage": "County is required",
+                      "id": "county",
+                    },
+                    Object {
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
+                      "id": "contactNumber",
+                    },
+                  ]
+                }
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test Town"
+                  id="town"
+                  name="town"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "county",
+              ]
+            }
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Operator name is required",
+                  "id": "operatorName",
+                },
+                Object {
+                  "errorMessage": "Street is required",
+                  "id": "street",
+                },
+                Object {
+                  "errorMessage": "Town is required",
+                  "id": "town",
+                },
+                Object {
+                  "errorMessage": "County is required",
+                  "id": "county",
+                },
+                Object {
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
+                  "id": "contactNumber",
+                },
+              ]
+            }
+            key="county"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="county"
+              >
+                County
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="county"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Operator name is required",
+                      "id": "operatorName",
+                    },
+                    Object {
+                      "errorMessage": "Street is required",
+                      "id": "street",
+                    },
+                    Object {
+                      "errorMessage": "Town is required",
+                      "id": "town",
+                    },
+                    Object {
+                      "errorMessage": "County is required",
+                      "id": "county",
+                    },
+                    Object {
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
+                      "id": "contactNumber",
+                    },
+                  ]
+                }
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test County"
+                  id="county"
+                  name="county"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "postcode",
+              ]
+            }
+            errors={
+              Array [
+                Object {
+                  "errorMessage": "Operator name is required",
+                  "id": "operatorName",
+                },
+                Object {
+                  "errorMessage": "Street is required",
+                  "id": "street",
+                },
+                Object {
+                  "errorMessage": "Town is required",
+                  "id": "town",
+                },
+                Object {
+                  "errorMessage": "County is required",
+                  "id": "county",
+                },
+                Object {
+                  "errorMessage": "Postcode is required",
+                  "id": "postcode",
+                },
+                Object {
+                  "errorMessage": "At least one of contact number, email or URL are required",
+                  "id": "contactNumber",
+                },
+              ]
+            }
+            key="postcode"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="postcode"
+              >
+                Postcode
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="postcode"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Operator name is required",
+                      "id": "operatorName",
+                    },
+                    Object {
+                      "errorMessage": "Street is required",
+                      "id": "street",
+                    },
+                    Object {
+                      "errorMessage": "Town is required",
+                      "id": "town",
+                    },
+                    Object {
+                      "errorMessage": "County is required",
+                      "id": "county",
+                    },
+                    Object {
+                      "errorMessage": "Postcode is required",
+                      "id": "postcode",
+                    },
+                    Object {
+                      "errorMessage": "At least one of contact number, email or URL are required",
+                      "id": "contactNumber",
+                    },
+                  ]
+                }
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="AB1 2CD"
+                  id="postcode"
+                  name="postcode"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <input
+            className="govuk-button"
+            type="submit"
+            value="Save"
+          />
+        </CsrfForm>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages manage operator details should render popup if saved 1`] = `
+<BaseLayout
+  description="Manage Operator Details End page of the Create Fares Data Service"
+  myFaresEnabled={false}
+  referer={null}
+  showNavigation={true}
+  title="Manage Operator Details - Create Fares Data Service"
+>
+  <div
+    className="govuk-width-container"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-one-quarter"
+      >
+        <SubNavigation />
+      </div>
+      <div
+        className="govuk-grid-column-three-quarters"
+      >
+        <ErrorSummary
+          errors={Array []}
+        />
+        <h1
+          className="govuk-heading-xl"
+        >
+          Operator Details
+        </h1>
+        <p
+          className="govuk-body govuk-!-margin-bottom-4"
+          id="operator-details-text"
+        >
+          This information will be included in your fares data and therefore may be presented to passengers
+        </p>
+        <CsrfForm
+          action="/api/manageOperatorDetails"
+          csrfToken=""
+          method="post"
+        >
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "operatorName",
+              ]
+            }
+            errors={Array []}
+            key="operatorName"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="operatorName"
+              >
+                Operator name
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="operatorName"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test Operator"
+                  id="operatorName"
+                  name="operatorName"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "contactNumber",
+              ]
+            }
+            errors={Array []}
+            key="contactNumber"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="contactNumber"
+              >
+                Contact number
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="contactNumber"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="01234 567 890"
+                  id="contactNumber"
+                  name="contactNumber"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "email",
+              ]
+            }
+            errors={Array []}
+            key="email"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="email"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="test@example.com"
+                  id="email"
+                  name="email"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "url",
+              ]
+            }
+            errors={Array []}
+            key="url"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="url"
+              >
+                URL
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="url"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="www.example.com"
+                  id="url"
+                  name="url"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "street",
+              ]
+            }
+            errors={Array []}
+            key="street"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="street"
+              >
+                Street
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="street"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test Street"
+                  id="street"
+                  name="street"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "town",
+              ]
+            }
+            errors={Array []}
+            key="town"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="town"
+              >
+                Town
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="town"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test Town"
+                  id="town"
+                  name="town"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "county",
+              ]
+            }
+            errors={Array []}
+            key="county"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="county"
+              >
+                County
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="county"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="Test County"
+                  id="county"
+                  name="county"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <FormGroupWrapper
+            errorIds={
+              Array [
+                "postcode",
+              ]
+            }
+            errors={Array []}
+            key="postcode"
+          >
+            <fieldset
+              className="govuk-fieldset"
+            >
+              <label
+                className="govuk-label govuk-!-font-weight-bold"
+                htmlFor="postcode"
+              >
+                Postcode
+              </label>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="postcode"
+                errors={Array []}
+              >
+                <input
+                  aria-describedby="operator-details-text"
+                  className="govuk-input govuk-input--width-20 govuk-!-margin-right-4"
+                  defaultValue="AB1 2CD"
+                  id="postcode"
+                  name="postcode"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </fieldset>
+          </FormGroupWrapper>
+          <input
+            className="govuk-button"
+            type="submit"
+            value="Save"
+          />
+          <InfoPopup
+            okActionHandler={[Function]}
+            text="You have saved your operator details."
+            title="Success"
+          />
+        </CsrfForm>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;

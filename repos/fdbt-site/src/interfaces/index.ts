@@ -2,6 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { ReactElement } from 'react';
+import { SinglePassengerType } from '../../shared/dbTypes';
 import {
     BaseProduct,
     CarnetDetails,
@@ -205,6 +206,7 @@ export interface GlobalSettingsCounts {
     purchaseMethodsCount: number;
     timeRestrictionsCount: number;
     fareDayEndSet: boolean;
+    operatorDetailsSet: boolean;
 }
 
 export interface PassengerAttributes {
@@ -354,24 +356,6 @@ export interface GroupPassengerTypeReference {
     name: string;
     maxGroupSize: string;
     companions: CompanionReference[];
-}
-
-export interface GroupPassengerType {
-    name: string;
-    maxGroupSize: string;
-    companions: CompanionInfo[];
-}
-
-export interface FullGroupPassengerType {
-    id: number;
-    name: string;
-    groupPassengerType: GroupPassengerType;
-}
-
-export interface SinglePassengerType {
-    id: number;
-    name: string;
-    passengerType: PassengerType;
 }
 
 export interface TimeRestriction {
@@ -525,16 +509,6 @@ export interface MultiProductWithErrors extends MultiProduct {
     productCarnetExpiryUnitsError?: string;
 }
 
-export interface PassengerType {
-    passengerType: string;
-    ageRange?: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proof?: string;
-    proofDocuments?: string[];
-    id?: number;
-}
-
 export interface PassengerTypeWithErrors {
     errors: ErrorInfo[];
 }
@@ -570,6 +544,34 @@ export interface SelectSalesOfferPackageWithError {
 
 export interface Service {
     service: string;
+}
+
+export interface MyFaresService {
+    id: string;
+    lineId: string;
+    origin: string;
+    destination: string;
+    lineName: string;
+    startDate: string;
+    endDate: string;
+}
+
+export interface MyFaresProduct {
+    lineId: string;
+    matchingJsonLink: string;
+    startDate: string;
+    endDate: string;
+}
+
+export interface MyFaresServiceWithProductCount extends MyFaresService {
+    products: number;
+}
+
+export interface MyFaresPointToPointProduct {
+    productDescription: string;
+    validity: string;
+    startDate: string;
+    endDate: string;
 }
 
 export interface ServiceWithErrors {
@@ -729,3 +731,10 @@ export type {
 } from '../../shared/matchingJsonTypes';
 
 export { ExpiryUnit, CarnetExpiryUnit } from '../../shared/matchingJsonTypes';
+
+export type {
+    FullGroupPassengerType,
+    SinglePassengerType,
+    PassengerType,
+    GroupPassengerType,
+} from '../../shared/dbTypes';

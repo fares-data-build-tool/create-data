@@ -28,6 +28,9 @@ parameters:
   fdbt-site:
     type: boolean
     default: false
+  exporter:
+    type: boolean
+    default: false
 
 executors:
   node:
@@ -92,9 +95,9 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          # TODO - Vulnerability not yet patched in serverless-plugin-typescript
+          # TODO - Vulnerability not yet patched in serverless-plugin-typescript, and AWS CDK
           command: |
-            npx audit-ci --moderate -a 1751
+            npx audit-ci --moderate -a 1751 -a 1784
 
   test:
     parameters:
@@ -222,6 +225,24 @@ jobs:
             echo "Deploying..."
             sudo npm i -g serverless@2.35.0
             export SLS_DEBUG="*" && sls deploy --stage=prod
+            echo "Finished deploy"
+
+  #  exporter
+
+  deploy-exporter:
+    parameters:
+      environment:
+        type: string
+    docker:
+      - image: circleci/node:14
+    working_directory: ~/project/repos/exporter
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: |
+            echo "Deploying..."
+            export STAGE=<< parameters.environment >> && node_modules/.bin/cdk deploy --require-approval never --ci --no-color
             echo "Finished deploy"
 
   audit-netex-validator:
@@ -627,6 +648,119 @@ workflows:
           requires:
             - deploy-netex-output-resources-to-test
             - deploy-netex-validator-to-test
+
+  exporter:
+    when: << pipeline.parameters.exporter >>
+    jobs:
+      - checkout-repo:
+          <<: *slack-fail-post-step
+          filters:
+            tags:
+              only: /^v.*/
+
+      - audit:
+          <<: *slack-fail-post-step
+          package_name: exporter
+          requires:
+            - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
+
+      - build:
+          <<: *slack-fail-post-step
+          package_name: exporter
+          requires:
+            - checkout-repo
+          filters:
+            tags:
+              only: /^v.*/
+
+      - test:
+          <<: *slack-fail-post-step
+          package_name: exporter
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+
+      - lint:
+          <<: *slack-fail-post-step
+          package_name: exporter
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+
+      - deploy-exporter:
+          <<: *slack-fail-post-step
+          environment: test
+          name: deploy-exporter-to-test
+          requires:
+            - test
+            - lint
+            - audit
+          context: tfn-fdbt-test
+          filters:
+            branches:
+              only:
+                - develop
+
+      - deploy-exporter:
+          <<: *slack-fail-post-step
+          environment: preprod
+          name: deploy-exporter-to-preprod
+          requires:
+            - test
+            - lint
+          context: tfn-fdbt-preprod
+          filters:
+            branches:
+              only:
+                - master
+
+      - deploy-exporter:
+          <<: *slack-fail-post-step
+          environment: prod
+          name: deploy-exporter-to-prod
+          requires:
+            - hold-prod-deployment-exporter
+          context: tfn-fdbt-prod
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - hold-prod-deployment-exporter:
+          <<: *slack-fail-post-step
+          requires:
+            - test
+            - lint
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+          type: approval
+
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: exporter deployed to prod
+          requires:
+            - deploy-exporter-to-prod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: exporter deployed to preprod
+          requires:
+            - deploy-exporter-to-preprod
+      - slack-notify:
+          <<: *slack-fail-post-step
+          name: exporter deployed to test
+          requires:
+            - deploy-exporter-to-test
 
   fdbt-site:
     when: << pipeline.parameters.fdbt-site >>

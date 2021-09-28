@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { isArray, upperFirst } from 'lodash';
 import moment from 'moment';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE } from '../constants/attributes';
+import { SALES_OFFER_PACKAGES_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
 import {
     NextPageContextWithSession,
     SalesOfferPackage,
@@ -15,10 +15,10 @@ import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
-import { redirectTo } from '../utils/apiUtils';
 import { ticketFormatsList } from './salesOfferPackages';
 import { formatSOPArray } from './selectSalesOfferPackage';
 import { globalSettingsEnabled } from '../constants/featureFlag';
+import { redirectTo } from '../utils/apiUtils';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
@@ -120,6 +120,10 @@ const SalesConfirmation = ({ csrfToken, salesOfferPackages, ticketDating }: Sale
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SalesConfirmationProps } => {
+    const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+    if (!fareTypeAttribute && ctx.res) {
+        redirectTo(ctx.res, '/home');
+    }
     const csrfToken = getCsrfToken(ctx);
     const salesOfferPackageInfo = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const ticketDatingInfo = getSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
@@ -129,10 +133,6 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
         !isArray(salesOfferPackageInfo) ||
         isTicketPeriodAttributeWithErrors(ticketDatingInfo)
     ) {
-        if (ctx.res) {
-            redirectTo(ctx.res, '/home');
-        }
-
         throw new Error('User has reached confirmation page with incorrect sales info.');
     }
 

@@ -3,12 +3,13 @@ import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import React from 'react';
 import {
-    FlatFareTicket,
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
     PointToPointPeriodTicket,
     FlatFareGeoZoneTicket,
     SchemeOperatorMultiServiceTicket,
+    WithIds,
+    FlatFareMultipleServices,
 } from '../../shared/matchingJsonTypes';
 import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
@@ -117,7 +118,7 @@ export const getMockRequestAndResponse = ({
         [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
         [SERVICE_ATTRIBUTE]: { service: 'X01#NW_05_BLAC_12A_1' },
         [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'csv' },
-        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
+        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult', id: 9 },
         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
         [DURATION_VALID_ATTRIBUTE]: { amount: '2', duration: 'day', errors: [] },
         [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'geoZone' },
@@ -1147,12 +1148,12 @@ const mockFullTimeRestriction: FullTimeRestriction[] = [
     },
 ];
 
-export const expectedSingleTicket: SingleTicket = {
+export const expectedSingleTicket: WithIds<SingleTicket> = {
     type: 'single',
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     operatorName: 'DCC',
     termTime: true,
     serviceDescription: 'Worthing - Seaham - Crawley',
@@ -1297,12 +1298,12 @@ export const expectedSingleTicket: SingleTicket = {
     },
 };
 
-export const expectedCarnetSingleTicket: SingleTicket = {
+export const expectedCarnetSingleTicket: WithIds<SingleTicket> = {
     type: 'single',
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     operatorName: 'DCC',
     termTime: true,
     serviceDescription: 'Worthing - Seaham - Crawley',
@@ -1453,9 +1454,9 @@ export const expectedCarnetSingleTicket: SingleTicket = {
     },
 };
 
-export const expectedNonCircularReturnTicket: ReturnTicket = {
+export const expectedNonCircularReturnTicket: WithIds<ReturnTicket> = {
     type: 'return',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
@@ -1645,9 +1646,9 @@ export const expectedNonCircularReturnTicket: ReturnTicket = {
     },
 };
 
-export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
+export const expectedPointToPointPeriodTicket: WithIds<PointToPointPeriodTicket> = {
     type: 'period',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
@@ -1841,11 +1842,11 @@ export const expectedPointToPointPeriodTicket: PointToPointPeriodTicket = {
     },
 };
 
-export const expectedCircularReturnTicket: ReturnTicket = {
+export const expectedCircularReturnTicket: WithIds<ReturnTicket> = {
     type: 'return',
     lineName: '215',
     lineId: 'q2gv2ve',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     nocCode: 'DCCL',
     operatorName: 'DCC',
     serviceDescription: 'Worthing - Seaham - Crawley',
@@ -2004,9 +2005,9 @@ export const expectedCircularReturnTicket: ReturnTicket = {
     },
 };
 
-export const expectedCarnetReturnTicket: ReturnTicket = {
+export const expectedCarnetReturnTicket: WithIds<ReturnTicket> = {
     type: 'return',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
@@ -2202,7 +2203,7 @@ export const expectedCarnetReturnTicket: ReturnTicket = {
     },
 };
 
-export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicket = {
+export const expectedPeriodGeoZoneTicketWithMultipleProducts: WithIds<PeriodGeoZoneTicket> = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
@@ -2210,7 +2211,7 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
     email: 'test@example.com',
     zoneName: 'Green Lane Shops',
     stops: zoneStops,
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
@@ -2247,7 +2248,7 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
     ],
 };
 
-export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperatorGeoZoneTicket = {
+export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: WithIds<MultiOperatorGeoZoneTicket> = {
     operatorName: 'test',
     type: 'multiOperator',
     nocCode: 'TEST',
@@ -2255,7 +2256,7 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
     email: 'test@example.com',
     zoneName: 'Green Lane Shops',
     stops: zoneStops,
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
@@ -2293,13 +2294,13 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
     additionalNocs: ['MCTR', 'WBTR', 'BLAC'],
 };
 
-export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMultipleServicesTicket = {
+export const expectedPeriodMultipleServicesTicketWithMultipleProducts: WithIds<PeriodMultipleServicesTicket> = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     termTime: false,
     timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
@@ -2357,13 +2358,13 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
     ],
 };
 
-export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: PeriodMultipleServicesTicket = {
+export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: WithIds<PeriodMultipleServicesTicket> = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     termTime: false,
     timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
@@ -2433,14 +2434,14 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Per
     ],
 };
 
-export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators: MultiOperatorMultipleServicesTicket =
+export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators: WithIds<MultiOperatorMultipleServicesTicket> =
     {
         operatorName: 'test',
         type: 'multiOperator',
         nocCode: 'TEST',
         uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
         email: 'test@example.com',
-        passengerType: 'Adult',
+        passengerType: { id: 9 },
         termTime: false,
         timeRestriction: mockFullTimeRestriction,
         ticketPeriod: {
@@ -2581,9 +2582,9 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
         ],
     };
 
-export const expectedFlatFareTicket: FlatFareTicket = {
+export const expectedFlatFareTicket: WithIds<FlatFareGeoZoneTicket> | WithIds<FlatFareMultipleServices> = {
     operatorName: 'test',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     type: 'flatFare',
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
@@ -2626,9 +2627,9 @@ export const expectedFlatFareTicket: FlatFareTicket = {
     timeRestriction: [],
 };
 
-export const expectedFlatFareGeoZoneTicket: FlatFareGeoZoneTicket = {
+export const expectedFlatFareGeoZoneTicket: WithIds<FlatFareGeoZoneTicket> = {
     operatorName: 'test',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     type: 'flatFare',
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
@@ -2649,14 +2650,16 @@ export const expectedFlatFareGeoZoneTicket: FlatFareGeoZoneTicket = {
     timeRestriction: [],
 };
 
-export const expectedSchemeOperatorTicket = (type: BaseSchemeOperatorTicket['type']): BaseSchemeOperatorTicket => {
+export const expectedSchemeOperatorTicket = (
+    type: BaseSchemeOperatorTicket['type'],
+): WithIds<BaseSchemeOperatorTicket> => {
     return {
         schemeOperatorName: 'SCHEME_OPERATOR',
         schemeOperatorRegionCode: 'SCHEME_REGION',
         type,
         uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
         email: 'test@example.com',
-        passengerType: 'Adult',
+        passengerType: { id: 9 },
         timeRestriction: mockFullTimeRestriction,
         ticketPeriod: {
             startDate: '2020-12-17T09:30:46.0Z',
@@ -2665,13 +2668,13 @@ export const expectedSchemeOperatorTicket = (type: BaseSchemeOperatorTicket['typ
     };
 };
 
-export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: SchemeOperatorFlatFareTicket = {
+export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: WithIds<SchemeOperatorFlatFareTicket> = {
     schemeOperatorName: expect.any(String),
     schemeOperatorRegionCode: expect.any(String),
     type: 'flatFare',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
@@ -2796,13 +2799,13 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: SchemeOperator
     ],
 };
 
-export const expectedSchemeOperatorMultiServicesTicket: SchemeOperatorMultiServiceTicket = {
+export const expectedSchemeOperatorMultiServicesTicket: WithIds<SchemeOperatorMultiServiceTicket> = {
     schemeOperatorName: 'SCHEME_OPERATOR',
     schemeOperatorRegionCode: 'SCHEME_REGION',
     type: 'period',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
@@ -2936,14 +2939,14 @@ export const expectedSchemeOperatorMultiServicesTicket: SchemeOperatorMultiServi
     ],
 };
 
-export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: SchemeOperatorGeoZoneTicket = {
+export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: WithIds<SchemeOperatorGeoZoneTicket> = {
     schemeOperatorName: expect.any(String),
     schemeOperatorRegionCode: expect.any(String),
     additionalNocs: ['MCTR', 'WBTR', 'BLAC'],
     type: 'period',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
-    passengerType: 'Adult',
+    passengerType: { id: 9 },
     timeRestriction: mockFullTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',

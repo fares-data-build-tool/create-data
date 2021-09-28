@@ -15,6 +15,7 @@ interface GlobalSettingsViewPageProps<T extends Entity> {
     entityDescription: string;
     CardBody: FunctionComponent<{ entity: T }>;
     deleteEnabled: boolean;
+    myFaresEnabled: boolean;
 }
 
 export const GlobalSettingsViewPage = <T extends Entity>({
@@ -26,6 +27,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
     entityDescription,
     CardBody,
     deleteEnabled,
+    myFaresEnabled,
 }: GlobalSettingsViewPageProps<T>): ReactElement => {
     const entityUrl = entityDescription
         .split(' ')
@@ -102,7 +104,13 @@ export const GlobalSettingsViewPage = <T extends Entity>({
     );
 
     return (
-        <BaseLayout title={title} description={description} showNavigation referer={referer}>
+        <BaseLayout
+            title={title}
+            description={description}
+            showNavigation
+            referer={referer}
+            myFaresEnabled={myFaresEnabled}
+        >
             <div className="govuk-width-container" data-card-count={entities.length}>
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">

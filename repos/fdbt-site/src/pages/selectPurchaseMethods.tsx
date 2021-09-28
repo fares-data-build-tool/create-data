@@ -102,10 +102,10 @@ const generateCheckbox = (
                                         >
                                             <input
                                                 className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
-                                                name={`price-${productName}-${offer.name}`}
+                                                name={`price-${productName}-${offer.id}`}
                                                 data-non-numeric
                                                 type="text"
-                                                id={`price-${productNameIds}-${index}`}
+                                                id={`price-${productNameIds}-${offer.id}`}
                                                 defaultValue={selectedOffer?.price || defaultPrice}
                                             />
                                         </FormElementWrapper>
@@ -151,7 +151,6 @@ const createSalesOffer = (
                         ) : (
                             <div className="govuk-checkboxes">
                                 {generateCheckbox(purchaseMethodsList, productName, selected, productPrice, errors)}
-                                <input type="hidden" name={`product-${productName}`} />
                             </div>
                         )}
                     </FormElementWrapper>

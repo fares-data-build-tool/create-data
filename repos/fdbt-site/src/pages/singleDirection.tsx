@@ -52,9 +52,11 @@ const SingleDirection = ({
                     <span className="govuk-hint" id="direction-operator-linename-passenger-type-hint">
                         {operator} - {lineName} - {upperFirst(passengerType)}
                     </span>
-                    <span className="govuk-hint" id="direction-journey-description-hint">
-                        {`Journey: ${service.serviceDescription}`}
-                    </span>
+                    {service.serviceDescription ? (
+                        <span className="govuk-hint" id="direction-journey-description-hint">
+                            {`Journey: ${service.serviceDescription}`}
+                        </span>
+                    ) : null}
                     <DirectionDropdown
                         selectName="directionJourneyPattern"
                         selectNameID="direction-journey-pattern"
