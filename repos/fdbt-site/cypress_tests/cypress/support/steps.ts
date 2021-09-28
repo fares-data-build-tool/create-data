@@ -25,6 +25,8 @@ import {
 export const defineUserTypeAndTimeRestrictions = (): void => {
     randomlyDetermineUserType();
     randomlyDecideTimeRestrictions();
+
+    cy.log('clicking continue on /fareConfirmation page');
     continueButtonClick();
 };
 
@@ -211,7 +213,6 @@ export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPer
     if (isPeriod) {
         completePointToPointPeriodProductDetail();
     } else {
-        assertElementNotVisibleById('return-validity-defined-conditional');
         if (getRandomNumber(0, 1) === 0) {
             clickElementById('return-validity-not-defined');
         } else {
@@ -219,8 +220,11 @@ export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPer
             getElementById('return-validity-amount').type(getRandomNumber(1, 100).toString());
             selectRandomOptionFromDropDown('return-validity-units');
         }
+
+        continueButtonClick();
     }
 
+    cy.log('should be ticket confirmation continue btn');
     continueButtonClick();
 };
 
