@@ -86,16 +86,17 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const operatorDetails = await db.getOperatorDataByNocCode([baseNoc]);
 
             operatorData.push({ ...operatorDetails[0], ...details });
+        } else {
+            console.log('we are a scheme!!!!!');
+
+            // we've got a scheme
+            // const schemeCode = `${ticket.schemeOperatorName.substr(0, 5)}${
+            //     ticket.schemeOperatorRegionCode
+            // }`.toUpperCase();
+
+            // const schemeDetails = await db.getOperatorDetailsByNoc(schemeCode);
+            // operatorData.push({ ...schemeDetails, opId: '', mode: '', vosaPsvLicenseName: '', nocCode: schemeCode });
         }
-
-        // else {
-        //     // we've got a scheme
-        //     schemeCode = `${ticket.schemeOperatorName.substr(0, 5)}${ticket.schemeOperatorRegionCode}`.toUpperCase();
-
-        //     const schemeDetails = await db.getOperatorDetailsByNoc(schemeCode);
-
-        //     blah2 = { ...schemeDetails, opId: '', mode: '', vosaPsvLicenseName: '', nocCode: schemeCode };
-        // }
 
         const nocs: string[] = buildNocList(ticket);
 
