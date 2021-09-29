@@ -22,6 +22,7 @@ import {
     DbTimeRestriction,
     MyFaresService,
     MyFaresProduct,
+    MyFaresOtherProduct,
 } from '../interfaces';
 import logger from '../utils/logger';
 
@@ -104,8 +105,8 @@ export const getAuroraDBClient = (): Pool => {
     return client;
 };
 
-export const convertDateFormat = (startDate: string): string => {
-    return dateFormat(startDate, 'dd/mm/yyyy');
+export const convertDateFormat = (date: string): string => {
+    return dateFormat(date, 'dd/mm/yyyy');
 };
 
 export const replaceInternalNocCode = (nocCode: string): string => {
@@ -1469,7 +1470,7 @@ export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresP
             [nocCode],
         );
     } catch (error) {
-        throw new Error(`Could not retrieve fare day end by nocCode from AuroraDB: ${error.stack}`);
+        throw new Error(`Could not retrieve point to point products by nocCode from AuroraDB: ${error.stack}`);
     }
 };
 
@@ -1499,6 +1500,38 @@ export const getPointToPointProductsByLineId = async (nocCode: string, lineId: s
             endDate: convertDateFormat(result.endDate),
         }));
     } catch (error) {
-        throw new Error(`Could not retrieve fare day end by nocCode from AuroraDB: ${error.stack}`);
+        throw new Error(
+            `Could not retrieve point to point products by lineId and nocCode from AuroraDB: ${error.stack}`,
+        );
+    }
+};
+
+export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOtherProduct[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting point to point products for given noc and lineId',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT matchingJsonLink, startDate, endDate
+            FROM products
+            WHERE lineId = ''
+            AND nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<{ matchingJsonLink: string; startDate: string; endDate: string }[]>(
+            queryInput,
+            [nocCode],
+        );
+
+        return queryResults.map((result) => ({
+            ...result,
+            startDate: convertDateFormat(result.startDate),
+            endDate: convertDateFormat(result.endDate),
+        }));
+    } catch (error) {
+        throw new Error(`Could not retrieve other products by nocCode from AuroraDB: ${error.stack}`);
     }
 };
