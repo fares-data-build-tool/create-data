@@ -11,6 +11,7 @@ import {
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { checkPriceIsValid, removeAllWhiteSpace, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
+import { toArray } from '../../utils';
 
 interface SanitisedBodyAndErrors {
     sanitisedBody: { [key: string]: SalesOfferPackage[] };
@@ -20,64 +21,47 @@ interface SanitisedBodyAndErrors {
 const productPrefix = 'product-';
 const pricePrefix = 'price-';
 
-export const sanitiseReqBody = (req: NextApiRequestWithSession): SanitisedBodyAndErrors => {
-    const sanitisedBody: { [key: string]: SalesOfferPackage[] } = {};
-    const keys = Object.keys(req.body);
-
+export const sanitiseReqBody = (
+    req: NextApiRequestWithSession,
+    products: { productName: string }[],
+): SanitisedBodyAndErrors => {
     const errors: ErrorInfo[] = [];
-    Object.entries(req.body).forEach((item) => {
-        const [key, value]: [string, unknown] = item;
 
-        if (!key.startsWith('^')) {
-            return;
+    const sanitisedBody = products.reduce((sanitisedBody, product) => {
+        const sopInput = req.body[`${productPrefix}${product.productName}`];
+
+        if (!sopInput) {
+            errors.push({
+                errorMessage: 'Choose at least one sales offer package from the options',
+                id: `${productPrefix}${removeAllWhiteSpace(product.productName)}-checkbox-0`,
+            });
+            return sanitisedBody;
         }
 
-        const id = key.split('-')[0];
+        const sops = toArray(sopInput).map((sop) => JSON.parse(sop) as SalesOfferPackage);
 
-        if (key.startsWith(`${id}-${productPrefix}`)) {
-            if (!value) {
-                const keyWithIdRemoved = key.replace(`${id}-`, '');
-                errors.push({
-                    errorMessage: 'Choose at least one sales offer package from the options',
-                    id: `${removeAllWhiteSpace(keyWithIdRemoved)}-checkbox-0`,
-                });
-            } else if (Array.isArray(value)) {
-                sanitisedBody[key.substring(productPrefix.length + id.length + 1)] = value
-                    .filter((a) => a)
-                    .map((it) => JSON.parse(it) as SalesOfferPackage);
-            } else if (typeof value === 'string') {
-                sanitisedBody[key.substring(productPrefix.length + id.length + 1)] = [
-                    JSON.parse(value) as SalesOfferPackage,
-                ];
+        const sopsWithPrices = sops.map((sop) => {
+            const priceInput = req.body[`${pricePrefix}${product.productName}-${sop.id}`];
+            if (priceInput === undefined) {
+                return sop;
             }
-        } else if (key.startsWith(`${id}-${pricePrefix}`) && typeof value === 'string') {
-            const price = removeExcessWhiteSpace(value);
-            const productKey = keys.find((key) => {
-                return key.startsWith(`${id}-product-`);
-            });
-            const productName = productKey?.replace(`${id}-product-`, '');
-            if (!productName) {
-                throw new Error(`Unknown product name passed for sop price ${key}:${value}`);
-            }
-            const sopName = key.substring(`${id}-${pricePrefix}${productName}-`.length);
-            const sop = sanitisedBody[productName].find((sop) => sop.name === sopName);
-            if (!sop) {
-                throw new Error(`Unknown sop passed for sop price ${key}:${value}`);
-            }
-
+            const price = removeExcessWhiteSpace(priceInput);
             const priceError = checkPriceIsValid(price);
             if (priceError) {
                 errors.push({
                     errorMessage: priceError,
-                    id: `price-${removeAllWhiteSpace(productName)}-${removeAllWhiteSpace(sopName)}`,
+                    id: `price-${removeAllWhiteSpace(product.productName)}-${sop.id}`,
                 });
             }
+            return {
+                ...sop,
+                price,
+            };
+        });
 
-            sop.price = price;
-        } else {
-            throw new Error(`Unknown property passed for sop ${key}:${value}`);
-        }
-    });
+        sanitisedBody[product.productName] = sopsWithPrices;
+        return sanitisedBody;
+    }, {} as { [key: string]: SalesOfferPackage[] });
 
     return {
         sanitisedBody,
@@ -87,7 +71,12 @@ export const sanitiseReqBody = (req: NextApiRequestWithSession): SanitisedBodyAn
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        const { sanitisedBody, errors } = sanitiseReqBody(req);
+        const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
+        const products = multipleProductAttribute
+            ? multipleProductAttribute.products
+            : [{ productName: 'product', productPrice: '' }];
+
+        const { sanitisedBody, errors } = sanitiseReqBody(req, products);
 
         if (errors.length > 0) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
@@ -103,21 +92,20 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
-        const products = multipleProductAttribute ? multipleProductAttribute.products : [];
-
-        if (products.length === 0) {
-            const salesOfferPackages: SalesOfferPackage[] = Object.entries(sanitisedBody)[0][1];
+        if (!multipleProductAttribute) {
+            const salesOfferPackages: SalesOfferPackage[] = sanitisedBody['product'];
 
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackages);
         } else {
-            const keys: string[] = Object.keys(sanitisedBody);
-            const productsAndSalesOfferPackages: ProductWithSalesOfferPackages[] = keys.map((objectKey) => {
-                return {
-                    productName: objectKey,
-                    salesOfferPackages: sanitisedBody[objectKey],
-                };
-            });
+            const productNameKeys: string[] = Object.keys(sanitisedBody);
+            const productsAndSalesOfferPackages: ProductWithSalesOfferPackages[] = productNameKeys.map(
+                (productNameKey) => {
+                    return {
+                        productName: productNameKey,
+                        salesOfferPackages: sanitisedBody[productNameKey],
+                    };
+                },
+            );
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, productsAndSalesOfferPackages);
         }
         redirectTo(res, '/productDateInformation');

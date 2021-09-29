@@ -13,7 +13,7 @@
     "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.123.0",
+    "@aws-cdk/assert": "1.124.0",
     "@types/aws-lambda": "^8.10.83",
     "@types/jest": "^27.0.2",
     "@types/node": "16.9.4",
@@ -32,12 +32,16 @@
     "typescript": "~4.4.3"
   },
   "dependencies": {
-    "@aws-cdk/aws-ec2": "1.123.0",
-    "@aws-cdk/aws-iam": "^1.123.0",
-    "@aws-cdk/aws-lambda": "^1.123.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.123.0",
-    "@aws-cdk/aws-s3": "^1.123.0",
-    "@aws-cdk/core": "1.123.0",
+    "@aws-cdk/aws-ec2": "1.124.0",
+    "@aws-cdk/aws-iam": "1.124.0",
+    "@aws-cdk/aws-lambda": "1.124.0",
+    "@aws-cdk/aws-lambda-nodejs": "1.124.0",
+    "@aws-cdk/aws-s3": "1.124.0",
+    "@aws-cdk/aws-sns": "1.124.0",
+    "@aws-cdk/aws-cloudwatch-actions": "1.124.0",
+    "@aws-cdk/core": "1.124.0",
+    "@aws-cdk/aws-events": "1.124.0",
+    "@aws-cdk/aws-events-targets": "1.124.0",
     "aws-sdk": "^2.991.0",
     "mysql2": "^2.3.0",
     "source-map-support": "^0.5.20"
