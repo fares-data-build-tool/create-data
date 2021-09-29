@@ -79,16 +79,15 @@ exports[`myfares pages pointToPointProducts should render correctly when no prod
           </thead>
           <tbody
             className="govuk-table__body"
-          >
-            <span
-              className="govuk-body"
-            >
-              <i>
-                You currently have no products against this service
-              </i>
-            </span>
-          </tbody>
+          />
         </table>
+        <span
+          className="govuk-body"
+        >
+          <i>
+            You currently have no products against this service
+          </i>
+        </span>
       </div>
     </div>
   </BaseLayout>

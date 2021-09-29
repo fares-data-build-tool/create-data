@@ -1,3 +1,4 @@
+import { TicketWithIds } from '../../shared/matchingJsonTypes';
 import { S3 } from 'aws-sdk';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import {
@@ -5,8 +6,9 @@ import {
     RAW_USER_DATA_BUCKET_NAME,
     NETEX_BUCKET_NAME,
     MATCHING_DATA_BUCKET_NAME,
+    PRODUCTS_DATA_BUCKET_NAME,
 } from '../constants';
-import { BaseTicket, UserFareStages, UserFareZone } from '../interfaces';
+import { Ticket, UserFareStages, UserFareZone } from '../interfaces';
 import { MatchingFareZones } from '../interfaces/matchingInterface';
 import logger from '../utils/logger';
 
@@ -51,7 +53,7 @@ export const getUserFareStages = async (uuid: string): Promise<UserFareStages> =
     }
 };
 
-export const getMatchingJson = async (path: string): Promise<BaseTicket> => {
+export const getMatchingJson = async (path: string): Promise<Ticket> => {
     const params = {
         Bucket: MATCHING_DATA_BUCKET_NAME,
         Key: path,
@@ -67,9 +69,31 @@ export const getMatchingJson = async (path: string): Promise<BaseTicket> => {
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
-        return JSON.parse(dataAsString) as BaseTicket;
+        return JSON.parse(dataAsString) as Ticket;
     } catch (error) {
         throw new Error(`Could not retrieve matching JSON from S3: ${error.stack}`);
+    }
+};
+
+export const getProductsMatchingJson = async (path: string): Promise<TicketWithIds> => {
+    const params = {
+        Bucket: PRODUCTS_DATA_BUCKET_NAME,
+        Key: path,
+    };
+
+    try {
+        logger.info('', {
+            context: 'data.s3',
+            message: 'retrieving products matching json from S3',
+            path,
+        });
+
+        const response = await s3.getObject(params).promise();
+        const dataAsString = response.Body?.toString('utf-8') ?? '';
+
+        return JSON.parse(dataAsString) as TicketWithIds;
+    } catch (error) {
+        throw new Error(`Could not retrieve products matching JSON from S3: ${error.stack}`);
     }
 };
 
