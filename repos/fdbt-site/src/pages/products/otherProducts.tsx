@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
-import OtherProductsTable from '../../components/OtherProductsTable';
 import { MyFaresOtherFaresProduct, MyFaresOtherProduct, NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled } from '../../constants/featureFlag';
-import { getAndValidateNoc } from '../../utils';
+import { getAndValidateNoc, sentenceCaseString } from '../../utils';
 import { getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
+import { getTag } from '../products/services';
 
 const title = 'Other Products - Create Fares Data Service';
 const description = 'View and access your other products in one place.';
@@ -24,10 +24,68 @@ const OtherProducts = ({ otherProducts, myFaresEnabled }: OtherProductsProps): R
                         <div>
                             <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Other products</h1>
                         </div>
-                        <OtherProductsTable otherProducts={otherProducts} />
+                        {otherProductsTable(otherProducts)}
                     </div>
                 </div>
             </BaseLayout>
+        </>
+    );
+};
+
+const otherProductsTable = (otherProducts: MyFaresOtherFaresProduct[]): ReactElement => {
+    return (
+        <>
+            <table className="govuk-table">
+                <thead className="govuk-table__head">
+                    <tr className="govuk-table__row">
+                        <th scope="col" className="govuk-table__header">
+                            Product description
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Type
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Duration
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Quantity
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Passenger type
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Start date
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            End date
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Product status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody className="govuk-table__body">
+                    {otherProducts.length > 0
+                        ? otherProducts.map((product, index) => (
+                              <tr className="govuk-table__row" key={`product-${index}`}>
+                                  <td className="govuk-table__cell">{product.productDescription}</td>
+                                  <td className="govuk-table__cell">{sentenceCaseString(product.type)}</td>
+                                  <td className="govuk-table__cell">{product.duration}</td>
+                                  <td className="govuk-table__cell">{product.quantity}</td>
+                                  <td className="govuk-table__cell">{sentenceCaseString(product.passengerType)}</td>
+                                  <td className="govuk-table__cell">{product.startDate}</td>
+                                  <td className="govuk-table__cell">{product.endDate}</td>
+                                  <td className="govuk-table__cell">{getTag(product.startDate, product.endDate)}</td>
+                              </tr>
+                          ))
+                        : null}
+                </tbody>
+            </table>
+            {otherProducts.length === 0 ? (
+                <span className="govuk-body">
+                    <i>You currently have no multi-service products</i>
+                </span>
+            ) : null}
         </>
     );
 };
@@ -49,10 +107,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                                 ('carnetDetails' in innerProduct ? innerProduct.carnetDetails?.quantity : '1') || '1';
                             const type = matchingJson.type;
                             const passengerType =
-                                (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.passengerType
-                                    .passengerType || '';
-                            const startDate = product.startDate || '';
-                            const endDate = product.endDate || '';
+                                (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name || '';
+                            const startDate = product.startDate;
+                            const endDate = product.endDate;
                             return {
                                 productDescription,
                                 type,

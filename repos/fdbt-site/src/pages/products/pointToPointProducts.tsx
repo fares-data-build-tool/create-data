@@ -44,45 +44,48 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
 
 const PointToPointProductsTable = (products: MyFaresPointToPointProduct[]): ReactElement => {
     return (
-        <table className="govuk-table">
-            <thead className="govuk-table__head">
-                <tr className="govuk-table__row">
-                    <th scope="col" className="govuk-table__header">
-                        Product description
-                    </th>
-                    <th scope="col" className="govuk-table__header">
-                        Validity
-                    </th>
-                    <th scope="col" className="govuk-table__header">
-                        Start date
-                    </th>
-                    <th scope="col" className="govuk-table__header">
-                        End date
-                    </th>
-                    <th scope="col" className="govuk-table__header">
-                        Product status
-                    </th>
-                </tr>
-            </thead>
+        <>
+            <table className="govuk-table">
+                <thead className="govuk-table__head">
+                    <tr className="govuk-table__row">
+                        <th scope="col" className="govuk-table__header">
+                            Product description
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Validity
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Start date
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            End date
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Product status
+                        </th>
+                    </tr>
+                </thead>
 
-            <tbody className="govuk-table__body">
-                {products.length > 0 ? (
-                    products.map((product, index) => (
-                        <tr key={index} className="govuk-table__row">
-                            <td className="govuk-table__cell">{product.productDescription}</td>
-                            <td className="govuk-table__cell">{product.validity}</td>
-                            <td className="govuk-table__cell">{product.startDate}</td>
-                            <td className="govuk-table__cell">{product.endDate}</td>
-                            <td className="govuk-table__cell">{getTag(product.startDate, product.endDate)}</td>
-                        </tr>
-                    ))
-                ) : (
-                    <span className="govuk-body">
-                        <i>You currently have no products against this service</i>
-                    </span>
-                )}
-            </tbody>
-        </table>
+                <tbody className="govuk-table__body">
+                    {products.length > 0
+                        ? products.map((product, index) => (
+                              <tr key={index} className="govuk-table__row">
+                                  <td className="govuk-table__cell">{product.productDescription}</td>
+                                  <td className="govuk-table__cell">{product.validity}</td>
+                                  <td className="govuk-table__cell">{product.startDate}</td>
+                                  <td className="govuk-table__cell">{product.endDate}</td>
+                                  <td className="govuk-table__cell">{getTag(product.startDate, product.endDate)}</td>
+                              </tr>
+                          ))
+                        : null}
+                </tbody>
+            </table>
+            {products.length === 0 ? (
+                <span className="govuk-body">
+                    <i>You currently have no products against this service</i>
+                </span>
+            ) : null}
+        </>
     );
 };
 
@@ -110,12 +113,12 @@ export const getServerSideProps = async (
     const formattedProducts = await Promise.all(
         productsToDisplay.map(async (product) => {
             const matchingJson = await getMatchingJson(product.matchingJsonLink);
-            let productDescription = `${upperFirst(matchingJson.passengerType)} - ${matchingJson.type} ${
-                matchingJson.carnet ? '(carnet)' : ''
-            }`;
-            if (matchingJson.type === 'period' && 'products' in matchingJson) {
-                productDescription = matchingJson.products[0].productName;
-            }
+            const productDescription =
+                matchingJson.type === 'period' && 'products' in matchingJson
+                    ? matchingJson.products[0].productName
+                    : `${upperFirst(matchingJson.passengerType)} - ${matchingJson.type} ${
+                          matchingJson.carnet ? '(carnet)' : ''
+                      }`;
             let validity = 'No restrictions';
             if (matchingJson.timeRestriction.length > 0) {
                 const daysValid = matchingJson.timeRestriction.map((restriction) =>
