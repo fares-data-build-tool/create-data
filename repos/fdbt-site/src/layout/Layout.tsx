@@ -1,8 +1,7 @@
 import Head from 'next/head';
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
 import { Portal } from 'react-portal';
-import { myFaresEnabled } from 'src/constants/featureFlag';
-
+import { myFaresEnabled } from '../constants/featureFlag';
 import favicon from '../assets/images/favicon.ico';
 import Help from '../components/Help';
 import { ErrorInfo } from '../interfaces';

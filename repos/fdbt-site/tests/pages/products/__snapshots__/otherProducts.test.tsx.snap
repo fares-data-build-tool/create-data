@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`myfares pages otherProducts should render correctly when no non-Point-to-Point products exist 1`] = `
+<Fragment>
+  <BaseLayout
+    description="View and access your other products in one place."
+    myFaresEnabled={true}
+    showNavigation={true}
+    title="Other Products - Create Fares Data Service"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <div>
+          <h1
+            className="govuk-heading-xl govuk-!-margin-bottom-3"
+          >
+            Other products
+          </h1>
+        </div>
+        <ServicesTable
+          otherProducts={Array []}
+        />
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`myfares pages otherProducts should render correctly when some non-Point-to-Point products exist 1`] = `
+<Fragment>
+  <BaseLayout
+    description="View and access your other products in one place."
+    myFaresEnabled={true}
+    showNavigation={true}
+    title="Other Products - Create Fares Data Service"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <div>
+          <h1
+            className="govuk-heading-xl govuk-!-margin-bottom-3"
+          >
+            Other products
+          </h1>
+        </div>
+        <ServicesTable
+          otherProducts={
+            Array [
+              Object {
+                "carnet": false,
+                "duration": "1 trip",
+                "endDate": "02/09/2090",
+                "passengerType": "infant",
+                "productDescription": "First product",
+                "quantity": "1",
+                "startDate": "11/04/2020",
+                "type": "flatFare",
+              },
+              Object {
+                "carnet": true,
+                "duration": "3 days",
+                "endDate": "02/09/2023",
+                "passengerType": "infant",
+                "productDescription": "The greatest product eveer!",
+                "quantity": "20",
+                "startDate": "11/12/2021",
+                "type": "period",
+              },
+              Object {
+                "carnet": false,
+                "duration": "3 days",
+                "endDate": "02/09/2023",
+                "passengerType": "adult",
+                "productDescription": "The greatest product eveer!",
+                "quantity": "1",
+                "startDate": "11/12/2021",
+                "type": "period",
+              },
+            ]
+          }
+        />
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;

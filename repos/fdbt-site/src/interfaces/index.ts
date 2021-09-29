@@ -563,7 +563,7 @@ export interface MyFaresProduct {
     endDate: string;
 }
 
-export interface MyFaresOtherProduct extends Omit<MyFaresProduct, 'lineId'> {}
+export type MyFaresOtherProduct = Omit<MyFaresProduct, 'lineId'>;
 
 export interface MyFaresServiceWithProductCount extends MyFaresService {
     products: number;

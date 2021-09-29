@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
-import { MyFaresOtherFaresProduct } from 'src/interfaces';
+import { MyFaresOtherFaresProduct } from '../interfaces';
+import { sentenceCaseString } from '../utils';
 
 interface OtherProductsTableProps {
     otherProducts: MyFaresOtherFaresProduct[];
@@ -50,26 +51,24 @@ const ServicesTable = ({ otherProducts }: OtherProductsTableProps): ReactElement
                 </tr>
             </thead>
             <tbody className="govuk-table__body">
-                {otherProducts.map((product) => (
-                    <tr className="govuk-table__row">
-                        <td className="govuk-table__cell">{product.productDescription}</td>
-                        <td className="govuk-table__cell">
-                            {product.type} {product.carnet ? '- Carnet' : ''}
-                        </td>
-                        <td className="govuk-table__cell">{product.duration}</td>
-                        <td className="govuk-table__cell">{product.quantity}</td>
-                        <td className="govuk-table__cell">{product.passengerType}</td>
-                        <td className="govuk-table__cell" style={{ width: '125px' }}>
-                            {product.startDate}
-                        </td>
-                        <td className="govuk-table__cell" style={{ width: '125px' }}>
-                            {product.endDate}
-                        </td>
-                        <td className="govuk-table__cell" style={{ width: '125px' }}>
-                            {getTag(product.startDate, product.endDate)}
-                        </td>
-                    </tr>
-                ))}
+                {otherProducts.length > 0 ? (
+                    otherProducts.map((product, index) => (
+                        <tr className="govuk-table__row" key={`product-${index}`}>
+                            <td className="govuk-table__cell">{product.productDescription}</td>
+                            <td className="govuk-table__cell">{sentenceCaseString(product.type)}</td>
+                            <td className="govuk-table__cell">{product.duration}</td>
+                            <td className="govuk-table__cell">{product.quantity}</td>
+                            <td className="govuk-table__cell">{sentenceCaseString(product.passengerType)}</td>
+                            <td className="govuk-table__cell">{product.startDate}</td>
+                            <td className="govuk-table__cell">{product.endDate}</td>
+                            <td className="govuk-table__cell">{getTag(product.startDate, product.endDate)}</td>
+                        </tr>
+                    ))
+                ) : (
+                    <span className="govuk-body">
+                        <i>You currently have no non-Point-to-Point products</i>
+                    </span>
+                )}
             </tbody>
         </table>
     );

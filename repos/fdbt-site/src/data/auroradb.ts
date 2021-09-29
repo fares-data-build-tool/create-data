@@ -105,8 +105,8 @@ export const getAuroraDBClient = (): Pool => {
     return client;
 };
 
-export const convertDateFormat = (startDate: string): string => {
-    return dateFormat(startDate, 'dd/mm/yyyy');
+export const convertDateFormat = (date: string): string => {
+    return dateFormat(date, 'dd/mm/yyyy');
 };
 
 export const replaceInternalNocCode = (nocCode: string): string => {
@@ -1500,7 +1500,9 @@ export const getPointToPointProductsByLineId = async (nocCode: string, lineId: s
             endDate: convertDateFormat(result.endDate),
         }));
     } catch (error) {
-        throw new Error(`Could not retrieve point to point products by lineId and nocCode from AuroraDB: ${error.stack}`);
+        throw new Error(
+            `Could not retrieve point to point products by lineId and nocCode from AuroraDB: ${error.stack}`,
+        );
     }
 };
 
@@ -1519,9 +1521,10 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
             AND nocCode = ?
         `;
 
-        const queryResults = await executeQuery<
-            { matchingJsonLink: string; startDate: string; endDate: string }[]
-        >(queryInput, [nocCode]);
+        const queryResults = await executeQuery<{ matchingJsonLink: string; startDate: string; endDate: string }[]>(
+            queryInput,
+            [nocCode],
+        );
 
         return queryResults.map((result) => ({
             ...result,

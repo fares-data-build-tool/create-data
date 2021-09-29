@@ -21,7 +21,7 @@ const OtherProducts = ({ otherProducts, myFaresEnabled }: OtherProductsProps): R
             <BaseLayout title={title} description={description} showNavigation myFaresEnabled={myFaresEnabled}>
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <div>
                             <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Other products</h1>
                         </div>
                         <OtherProductsTable otherProducts={otherProducts} />
@@ -35,7 +35,6 @@ const OtherProducts = ({ otherProducts, myFaresEnabled }: OtherProductsProps): R
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: OtherProductsProps }> => {
     const noc = getAndValidateNoc(ctx);
     const otherProductsFromDb: MyFaresOtherProduct[] = await getOtherProductsByNoc(noc);
-    console.log(otherProductsFromDb);
     const otherProducts: MyFaresOtherFaresProduct[] = (
         await Promise.all(
             otherProductsFromDb.map(async (product) => {
@@ -52,8 +51,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                             const passengerType =
                                 (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.passengerType
                                     .passengerType || '';
-                            const startDate = matchingJson.ticketPeriod.startDate || '';
-                            const endDate = matchingJson.ticketPeriod.endDate || '';
+                            const startDate = product.startDate || '';
+                            const endDate = product.endDate || '';
                             return {
                                 productDescription,
                                 type,
@@ -62,7 +61,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                                 passengerType,
                                 startDate,
                                 endDate,
-                                carnet: 'carnetDetails' in innerProduct,
+                                carnet: 'carnetDetails' in innerProduct && !!innerProduct.carnetDetails,
                             };
                         }),
                     );
