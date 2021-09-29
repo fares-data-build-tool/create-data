@@ -1,4 +1,4 @@
-import { clickElementById, clickElementByText, getElementById, getHomePage } from './helpers';
+import { clickElementById, clickElementByText, getHomePage } from './helpers';
 import { enterPassengerTypeDetails, addGroupPassengerType } from './passengerTypes';
 import { addPurchaseMethod } from './purchaseMethods';
 import { addTimeRestriction } from './timeRestrictions';
@@ -27,12 +27,27 @@ before(() => {
     addTestTimeRestrictions();
     clickElementByText('Fare day end');
     addTestFareDayEnd();
+    clickElementByText('Operator details');
+    addTestOperatorDetails();
     cy.log('Global Settings set up for scheme');
 });
+
+const addTestOperatorDetails = (): void => {
+    clickElementById('operatorName').clear().type('Easy A to B');
+    clickElementById('contactNumber').clear().type('01492 451 652');
+    clickElementById('email').clear().type('info@easyab.co.uk');
+    clickElementById('url').clear().type('https://easyab.co.uk');
+    clickElementById('street').clear().type('123 Some Road');
+    clickElementById('town').clear().type('Awesomeville');
+    clickElementById('county').clear().type('Home County');
+    clickElementById('postcode').clear().type('AW23 8LE');
+    clickElementByText('Save');
+};
 
 const addTestFareDayEnd = (): void => {
     clickElementById('fare-day-end-input').clear().type('2323');
     clickElementByText('Save');
+    clickElementByText('Ok');
 };
 
 const addTestPassengerTypes = (): void => {

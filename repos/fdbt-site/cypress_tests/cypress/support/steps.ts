@@ -13,7 +13,6 @@ import {
     submitButtonClick,
     completeProductDateInformationPage,
     getRandomNumber,
-    assertElementNotVisibleById,
     completeSalesOfferPackagesForMultipleProducts,
     completeMultipleProducts,
     completeOperatorSearch,
@@ -25,6 +24,7 @@ import {
 export const defineUserTypeAndTimeRestrictions = (): void => {
     randomlyDetermineUserType();
     randomlyDecideTimeRestrictions();
+
     continueButtonClick();
 };
 
@@ -211,7 +211,6 @@ export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPer
     if (isPeriod) {
         completePointToPointPeriodProductDetail();
     } else {
-        assertElementNotVisibleById('return-validity-defined-conditional');
         if (getRandomNumber(0, 1) === 0) {
             clickElementById('return-validity-not-defined');
         } else {
@@ -219,6 +218,8 @@ export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPer
             getElementById('return-validity-amount').type(getRandomNumber(1, 100).toString());
             selectRandomOptionFromDropDown('return-validity-units');
         }
+
+        continueButtonClick();
     }
 
     continueButtonClick();
