@@ -189,8 +189,8 @@ export const getBaseTicketAttributes = <T extends TicketType>(
         uuid,
         timeRestriction:
             fullTimeRestriction && fullTimeRestriction.fullTimeRestrictions.length > 0
-                ? fullTimeRestriction.fullTimeRestrictions
-                : [],
+                ? { id: fullTimeRestriction.id }
+                : {},
         ticketPeriod: getTicketPeriod(ticketPeriodAttribute),
     };
 };
