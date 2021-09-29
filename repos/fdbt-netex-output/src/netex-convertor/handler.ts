@@ -90,12 +90,21 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             console.log('we are a scheme!!!!!');
 
             // we've got a scheme
-            // const schemeCode = `${ticket.schemeOperatorName.substr(0, 5)}${
-            //     ticket.schemeOperatorRegionCode
-            // }`.toUpperCase();
+            const schemeCode = `${ticket.schemeOperatorName.substr(0, 5)}${
+                ticket.schemeOperatorRegionCode
+            }`.toUpperCase();
 
-            // const schemeDetails = await db.getOperatorDetailsByNoc(schemeCode);
-            // operatorData.push({ ...schemeDetails, opId: '', mode: '', vosaPsvLicenseName: '', nocCode: schemeCode });
+            const schemeDetails = await db.getOperatorDetailsByNoc(schemeCode);
+
+            if (schemeDetails) {
+                operatorData.push({
+                    ...schemeDetails,
+                    opId: '',
+                    mode: '',
+                    vosaPsvLicenseName: '',
+                    nocCode: schemeCode,
+                });
+            }
         }
 
         const nocs: string[] = buildNocList(ticket);
