@@ -80,3 +80,49 @@ export const getPassengerTypeById = async (passengerId: number, noc: string): Pr
         passengerType: JSON.parse(contents) as PassengerType,
     };
 };
+
+export interface DbTimeRestriction {
+    day: TimeRestrictionDay;
+    timeBands: DbTimeBand[];
+}
+
+export interface DbTimeBand {
+    startTime: string;
+    endTime: string | { fareDayEnd: boolean };
+}
+
+export type TimeRestrictionDay =
+    | 'monday'
+    | 'tuesday'
+    | 'wednesday'
+    | 'thursday'
+    | 'friday'
+    | 'saturday'
+    | 'sunday'
+    | 'bankHoliday';
+
+export const getTimeRestrictionsByIdAndNoc = async (timeRestrictionId: number, noc: string): Promise<DbTimeRestriction[]> => {
+    try {
+        const queryInput = `
+            SELECT contents
+            FROM timeRestriction
+            WHERE nocCode = ?
+            AND id = ?
+        `;
+
+        const queryResults = await executeQuery<
+            {
+                id: number;
+                nocCode: string;
+                name: string;
+                contents: string;
+            }[]
+        >(queryInput, [noc, timeRestrictionId]);
+
+        return queryResults.map((item) => {
+            return JSON.parse(item.contents) as DbTimeRestriction;
+        });
+    } catch (error) {
+        throw new Error(`Could not retrieve time restriction by nocCode from AuroraDB: ${error.stack}`);
+    }
+};

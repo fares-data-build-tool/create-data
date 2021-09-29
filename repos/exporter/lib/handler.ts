@@ -1,7 +1,7 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
 import { WithIds, BaseTicket, TicketWithIds } from '../shared/matchingJsonTypes';
-import { getPassengerTypeById } from './database';
+import { getPassengerTypeById, getTimeRestrictionsByIdAndNoc } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
 
@@ -43,7 +43,9 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
                     ? { passengerType: 'group' }
                     : (await getPassengerTypeById(productData.passengerType.id, noc)).passengerType;
 
-            const ticket: BaseTicket = { ...productData, ...passengerType };
+            const timeRestriction = productData.timeRestriction && 'id' in productData.timeRestriction ? await getTimeRestrictionsByIdAndNoc(productData.timeRestriction.id, noc) : [];
+
+            const ticket: BaseTicket = { ...productData, ...passengerType, ...timeRestriction };
 
             await s3.putObject({ Key: path, Bucket: MATCHING_DATA_BUCKET, Body: JSON.stringify(ticket) }).promise();
         }),
