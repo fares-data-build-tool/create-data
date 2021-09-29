@@ -87,8 +87,6 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
 
             operatorData.push({ ...operatorDetails[0], ...details });
         } else {
-            console.log('we are a scheme!!!!!');
-
             // we've got a scheme
             const schemeCode = `${ticket.schemeOperatorName.substr(0, 5)}${
                 ticket.schemeOperatorRegionCode
