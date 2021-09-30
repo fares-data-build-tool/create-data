@@ -50,12 +50,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
 
             if (!isStartDateEmpty) {
-                startDate = moment([startDateYear, startDateMonth - 1, startDateDay, '00', '01']);
+                startDate = moment.utc([startDateYear, startDateMonth - 1, startDateDay]);
             }
 
             if (!isEndDateEmpty) {
-                endDate = moment([endDateYear, endDateMonth - 1, endDateDay, '23', '59']);
+                endDate = moment.utc([endDateYear, endDateMonth - 1, endDateDay]).endOf('day');
             }
+            console.log(startDate, endDate);
 
             if (startDate && !startDate.isValid() && !isStartDateEmpty) {
                 errors.push({ errorMessage: 'Start date must be a real date', id: 'start-date-day' });
@@ -109,7 +110,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
 
             const dateInfo = {
-                startDate: startDate?.add(1, 'hours').toISOString(),
+                startDate: startDate?.toISOString(),
                 endDate: endDate?.toISOString(),
                 dateInput,
             };

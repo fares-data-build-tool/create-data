@@ -6,8 +6,8 @@
   "uuid": "WBTR64d9b36b",
   "timeRestriction": [],
   "ticketPeriod": {
-    "startDate": "2021-07-06T11:20:52.549Z",
-    "endDate": "2121-07-06T11:20:52.549Z"
+    "startDate": "2021-07-06T00:00:00.000Z",
+    "endDate": "2121-07-06T23:59:59.999Z"
   },
   "operatorName": "Test Operator",
   "products": [
