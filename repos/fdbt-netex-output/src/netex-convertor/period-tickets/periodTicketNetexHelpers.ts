@@ -8,6 +8,8 @@ import {
     SchemeOperatorGeoZoneTicket,
 } from '../../../shared/matchingJsonTypes';
 
+import * as db from '../../data/auroradb';
+
 import {
     DistributionAssignment,
     GeoZoneTicket,
@@ -50,20 +52,38 @@ import {
     replaceIWBusCoNocCode,
 } from '../sharedHelpers';
 
-export const getBaseSchemeOperatorInfo = (userPeriodTicket: BaseSchemeOperatorTicket): SchemeOperator => ({
-    schemeOperatorName: userPeriodTicket.schemeOperatorName,
-    schemeOperatorRegionCode: userPeriodTicket.schemeOperatorRegionCode,
-    url: '',
-    email: '',
-    opId: `${userPeriodTicket.schemeOperatorName}-${userPeriodTicket.schemeOperatorRegionCode}-opId`,
-    vosaPsvLicenseName: '',
-    contactNumber: '',
-    street: '',
-    town: '',
-    county: '',
-    postcode: '',
-    mode: 'bus',
-});
+export const getBaseSchemeOperatorInfo = async (userPeriodTicket: BaseSchemeOperatorTicket): Promise<SchemeOperator> => {
+    const schemeOperator: SchemeOperator = {
+        schemeOperatorName: userPeriodTicket.schemeOperatorName,
+        schemeOperatorRegionCode: userPeriodTicket.schemeOperatorRegionCode,
+        url: '',
+        email: '',
+        opId: `${userPeriodTicket.schemeOperatorName}-${userPeriodTicket.schemeOperatorRegionCode}-opId`,
+        vosaPsvLicenseName: '',
+        contactNumber: '',
+        street: '',
+        town: '',
+        county: '',
+        postcode: '',
+        mode: 'bus',
+    };
+
+    const schemeCode = `${userPeriodTicket.schemeOperatorName.substr(0, 5)}${userPeriodTicket.schemeOperatorRegionCode}`.toUpperCase();
+    
+    const schemeDetails = await db.getOperatorDetailsByNoc(schemeCode);
+
+    if (schemeDetails) {
+        schemeOperator.email = schemeDetails.email;
+        schemeOperator.url = schemeDetails.url;
+        schemeOperator.street = schemeDetails.street;
+        schemeOperator.town = schemeDetails.town;
+        schemeOperator.postcode = schemeDetails.postcode;
+        schemeOperator.contactNumber = schemeDetails.contactNumber;
+        schemeOperator.county = schemeDetails.county;
+    }
+
+    return schemeOperator;
+};
 
 export const getScheduledStopPointsList = (stops: Stop[]): ScheduledStopPoint[] =>
     stops.map((stop: Stop) => ({
