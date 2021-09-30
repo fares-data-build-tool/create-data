@@ -1,5 +1,5 @@
 {
-  "schemeOperatorName": "IWBuses",
+  "schemeOperatorName": "IW Buses",
   "schemeOperatorRegionCode": "Y",
   "additionalNocs": ["WBTR", "DCCL", "HCTY"],
   "type": "period",

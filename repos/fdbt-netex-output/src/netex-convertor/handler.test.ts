@@ -8,10 +8,8 @@ import {
     periodGeoZoneTicketWithNoType,
     schemeOperatorGeoZoneTicket,
     schemeOperatorFlatFareTicket,
-    returnNonCircularTicket,
     multiOperatorGeoZoneTicket,
     multiOperatorMultiServiceTicket,
-    pointToPointPeriodTicket,
 } from '../test-data/matchingData';
 import mockS3Event from './test-data/mockS3Event';
 import * as s3 from '../data/s3';
@@ -355,44 +353,23 @@ describe('netexConvertorHandler', () => {
 });
 
 describe('buildNocList', () => {
-    it('should return an array of nocs for a single ticket', () => {
-        const result = buildNocList(singleTicket);
-        expect(result).toStrictEqual(['MCTR']);
-    });
-    it('should return an array of nocs for a return ticket', () => {
-        const result = buildNocList(returnNonCircularTicket);
-        expect(result).toStrictEqual(['PBLT']);
-    });
-    it('should return an array of nocs for a period geozone ticket', () => {
-        const result = buildNocList(periodGeoZoneTicket);
-        expect(result).toStrictEqual(['BLAC']);
-    });
-    it('should return an array of nocs for a period multiple services ticket', () => {
-        const result = buildNocList(periodMultipleServicesTicket);
-        expect(result).toStrictEqual(['PBLT']);
-    });
-    it('should return an array of nocs for a flat fare ticket', () => {
-        const result = buildNocList(flatFareTicket);
-        expect(result).toStrictEqual(['WBTR']);
-    });
     it('should return an array of nocs for a scheme operator geozone ticket', () => {
         const result = buildNocList(schemeOperatorGeoZoneTicket);
         expect(result).toStrictEqual(['WBTR', 'DCCL', 'HCTY']);
     });
+
     it('should return an array of nocs for a scheme operator flat fare ticket', () => {
         const result = buildNocList(schemeOperatorFlatFareTicket);
         expect(result).toStrictEqual(['WBTR', 'DCCL']);
     });
+
     it('should return an array of nocs for a multi operator geo zone ticket', () => {
         const result = buildNocList(multiOperatorGeoZoneTicket);
-        expect(result).toStrictEqual(['WBTR', 'DCCL', 'HHR', 'BLAC']);
+        expect(result).toStrictEqual(['WBTR', 'DCCL', 'HHR']);
     });
+
     it('should return an array of nocs for a multi operator multi service ticket', () => {
         const result = buildNocList(multiOperatorMultiServiceTicket);
-        expect(result).toStrictEqual(['WBTR', 'DCCL', 'BLAC']);
-    });
-    it('should return an array of nocs for a point to point period ticket', () => {
-        const result = buildNocList(pointToPointPeriodTicket);
-        expect(result).toStrictEqual(['BLAC']);
+        expect(result).toStrictEqual(['WBTR', 'DCCL']);
     });
 });

@@ -23,8 +23,21 @@ describe('generateAll', () => {
     const fileNames: string[] = fs.readdirSync(matchingDataPath);
 
     it.each(fileNames)('should generate identical xml for %s', async fileName => {
+        // noc of logged in user
+        let baseNoc = '';
+
         const ticket = JSON.parse(await fs.promises.readFile(`${matchingDataPath}${fileName}`, 'utf-8'));
+
+        if ('nocCode' in ticket) {
+            baseNoc = ticket.nocCode;
+        }
+
         const nocs: string[] = buildNocList(ticket);
+
+        if (baseNoc) {
+            nocs.push(baseNoc);
+        }
+
         const operatorData: Operator[] = nocs.map(noc => ({
             nocCode: noc,
             opId: '135742',
