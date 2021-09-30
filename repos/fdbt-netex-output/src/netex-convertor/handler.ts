@@ -92,7 +92,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             operatorData = operatorData.concat(await db.getOperatorDataByNocCode(nocs));
         }
 
-        const netexGen = netexGenerator(ticket, operatorData);
+        const netexGen = await netexGenerator(ticket, operatorData);
         const generatedNetex = await netexGen.generate();
         const fileName = generateFileName(s3FileName);
 

@@ -53,8 +53,8 @@ import {
     NetexObject,
 } from './sharedHelpers';
 
-const netexGenerator = (ticket: Ticket, operatorData: Operator[]): { generate: Function } => {
-    const coreData = getCoreData(operatorData, ticket);
+const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise<{ generate: Function }> => {
+    const coreData = await getCoreData(operatorData, ticket);
     const baseOperatorInfo = coreData.baseOperatorInfo[0];
     const ticketIdentifier: string = coreData.placeholderGroupOfProductsName
         ? coreData.placeholderGroupOfProductsName

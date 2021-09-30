@@ -241,9 +241,9 @@ export const replaceIWBusCoNocCode = (nocCode: string): string => {
     return nocCode;
 };
 
-export const getCoreData = (operators: Operator[], ticket: Ticket): CoreData => {
+export const getCoreData = async (operators: Operator[], ticket: Ticket): Promise<CoreData> => {
     const baseOperatorInfo = isSchemeOperatorTicket(ticket)
-        ? getBaseSchemeOperatorInfo(ticket)
+        ? await getBaseSchemeOperatorInfo(ticket)
         : operators.find(operator => operator.nocCode === replaceIWBusCoNocCode(ticket.nocCode));
 
     const operatorIdentifier = isSchemeOperatorTicket(ticket)
