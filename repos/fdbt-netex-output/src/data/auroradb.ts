@@ -67,7 +67,7 @@ export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Oper
         const substitution = cleansedNocs.map(() => '?').join(',');
 
         const queryInput = `
-            SELECT DISTINCT nocTable.nocCode, nocTable.opId, nocTable.vosaPsvLicenseName, nocTable.operatorPublicName,
+            SELECT DISTINCT nocTable.nocCode, nocTable.opId, nocTable.vosaPsvLicenseName, nocTable.operatorPublicName as operatorName,
             nocPublicName.website AS url, nocPublicName.ttrteEnq AS email, nocPublicName.fareEnq AS contactNumber, nocPublicName.complEnq AS street, nocLine.mode FROM nocTable
             JOIN nocPublicName ON nocTable.pubNmId = nocPublicName.pubNmId
             JOIN nocLine ON nocTable.nocCode = nocLine.nocCode

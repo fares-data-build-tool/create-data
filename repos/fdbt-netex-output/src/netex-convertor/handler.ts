@@ -68,7 +68,6 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         const ticket = await s3.fetchDataFromS3<Ticket>(event);
         s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
         const { type } = ticket;
-        let baseNoc = '';
 
         console.info(`NeTEx generation starting for type ${type}...`);
         
@@ -76,7 +75,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
 
         // get the national operator code (noc) for the base operator
         if ('nocCode' in ticket) {
-            baseNoc = ticket.nocCode;
+            const baseNoc = ticket.nocCode;
 
             // check operatorDetails table in database to see if noc has a record
             const details = await db.getOperatorDetailsByNoc(baseNoc);
@@ -106,6 +105,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         const nocs: string[] = buildNocList(ticket);
 
         if (nocs.length > 0) {
+            operatorData.push(...await db.getOperatorDataByNocCode(nocs));
             operatorData = operatorData.concat(await db.getOperatorDataByNocCode(nocs));
         }
 
