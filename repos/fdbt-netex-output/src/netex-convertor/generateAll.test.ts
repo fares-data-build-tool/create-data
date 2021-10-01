@@ -3,6 +3,7 @@ import { Operator } from '../types';
 import { buildNocList, xsl } from './handler';
 import netexGenerator from './netexGenerator';
 import libxslt from 'libxslt';
+import * as db from '../data/auroradb';
 
 describe('generateAll', () => {
     jest.spyOn(global.Date, 'now').mockImplementation(() => 1625753009685);
@@ -18,6 +19,8 @@ describe('generateAll', () => {
         if (!fs.existsSync(generatedNetexPath)) {
             fs.mkdirSync(generatedNetexPath);
         }
+
+        jest.spyOn(db, 'getOperatorDetailsByNoc').mockResolvedValue(undefined);
     });
 
     const fileNames: string[] = fs.readdirSync(matchingDataPath);
