@@ -55,7 +55,7 @@ export const buildNocList = (ticket: Ticket): string[] => {
     }
 
     if ('additionalOperators' in ticket) {
-        nocs.push(...ticket.additionalOperators.map((op) => op.nocCode));
+        nocs.push(...ticket.additionalOperators.map(op => op.nocCode));
     }
 
     return nocs;
@@ -70,8 +70,8 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         const { type } = ticket;
 
         console.info(`NeTEx generation starting for type ${type}...`);
-        
-        let operatorData: Operator[] = [];
+
+        const operatorData: Operator[] = [];
 
         // get the national operator code (noc) for the base operator
         if ('nocCode' in ticket) {
@@ -88,7 +88,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         const nocs: string[] = buildNocList(ticket);
 
         if (nocs.length > 0) {
-            operatorData.push(...await db.getOperatorDataByNocCode(nocs));
+            operatorData.push(...(await db.getOperatorDataByNocCode(nocs)));
         }
 
         const netexGen = await netexGenerator(ticket, operatorData);

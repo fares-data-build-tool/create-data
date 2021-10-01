@@ -54,7 +54,9 @@ import {
     replaceIWBusCoNocCode,
 } from '../sharedHelpers';
 
-export const getBaseSchemeOperatorInfo = async (userPeriodTicket: BaseSchemeOperatorTicket): Promise<SchemeOperator> => {
+export const getBaseSchemeOperatorInfo = async (
+    userPeriodTicket: BaseSchemeOperatorTicket,
+): Promise<SchemeOperator> => {
     const schemeOperator: SchemeOperator = {
         schemeOperatorName: userPeriodTicket.schemeOperatorName,
         schemeOperatorRegionCode: userPeriodTicket.schemeOperatorRegionCode,
@@ -67,11 +69,13 @@ export const getBaseSchemeOperatorInfo = async (userPeriodTicket: BaseSchemeOper
         mode: 'bus',
     };
 
-    const schemeCode = `${userPeriodTicket.schemeOperatorName.substr(0, 5)}${userPeriodTicket.schemeOperatorRegionCode}`.toUpperCase();
-    
+    const schemeCode = `${userPeriodTicket.schemeOperatorName.substr(0, 5)}${
+        userPeriodTicket.schemeOperatorRegionCode
+    }`.toUpperCase();
+
     const schemeDetails = await db.getOperatorDetailsByNoc(schemeCode);
 
-    return {...schemeOperator, ...schemeDetails};
+    return { ...schemeOperator, ...schemeDetails };
 };
 
 export const getScheduledStopPointsList = (stops: Stop[]): ScheduledStopPoint[] =>
@@ -799,7 +803,6 @@ export const getOrganisations = (
     baseOperatorInfo?: SchemeOperatorWithExpandedAddress,
 ): NetexOrganisationOperator[] => {
     const organisations = operatorData.map(operator => {
-
         const blah = {
             version: '1.0',
             id: `noc:${operator.nocCode}`,
@@ -827,16 +830,20 @@ export const getOrganisations = (
                 Street: {
                     $t: operator.street,
                 },
-                ...("postcode" in operator ? ({
-                    Town: { $t: operator.town }, PostCode: { $t: operator.postcode }, PostalRegion: { $t: operator.county }
-                }) : undefined)
+                ...('postcode' in operator
+                    ? {
+                          Town: { $t: operator.town },
+                          PostCode: { $t: operator.postcode },
+                          PostalRegion: { $t: operator.county },
+                      }
+                    : undefined),
             },
             PrimaryMode: {
                 $t: getNetexMode(operator.mode),
             },
         };
 
-        return blah
+        return blah;
     });
 
     if (baseOperatorInfo) {
@@ -867,9 +874,13 @@ export const getOrganisations = (
                 Street: {
                     $t: baseOperatorInfo.street,
                 },
-                ...("postcode" in baseOperatorInfo ? ({
-                    Town: { $t: baseOperatorInfo.town }, PostCode: { $t: baseOperatorInfo.postcode }, PostalRegion: { $t: baseOperatorInfo.county }
-                }) : undefined)
+                ...('postcode' in baseOperatorInfo
+                    ? {
+                          Town: { $t: baseOperatorInfo.town },
+                          PostCode: { $t: baseOperatorInfo.postcode },
+                          PostalRegion: { $t: baseOperatorInfo.county },
+                      }
+                    : undefined),
             },
             PrimaryMode: {
                 $t: getNetexMode(baseOperatorInfo.mode),

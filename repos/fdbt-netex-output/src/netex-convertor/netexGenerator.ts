@@ -199,7 +199,8 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = coreData.url;
             resourceFrameToUpdate.organisations.Operator.Address.Street.$t = baseOperatorInfo.street;
             resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = getNetexMode(baseOperatorInfo.mode);
-            resourceFrameToUpdate.organisations.Operator.CustomerServiceContactDetails.Email.$t = baseOperatorInfo.email;
+            resourceFrameToUpdate.organisations.Operator.CustomerServiceContactDetails.Email.$t =
+                baseOperatorInfo.email;
         }
 
         return resourceFrameToUpdate;
