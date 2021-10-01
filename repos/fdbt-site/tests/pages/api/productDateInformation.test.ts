@@ -226,7 +226,7 @@ describe('productDataInformation', () => {
         });
     });
 
-    it.only('it should only set the start date when start date only entered and redirect to confirmation page', async () => {
+    it('it should only set the start date when start date only entered and redirect to confirmation page', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
