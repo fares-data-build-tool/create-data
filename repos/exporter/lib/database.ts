@@ -1,6 +1,6 @@
 import { createPool, Pool } from 'mysql2/promise';
 import { SSM } from 'aws-sdk';
-import { PassengerType, SinglePassengerType } from '../shared/dbTypes';
+import { DbTimeRestriction, PassengerType, SinglePassengerType } from '../shared/dbTypes';
 
 const ssm = new SSM({ region: 'eu-west-2' });
 
@@ -81,48 +81,38 @@ export const getPassengerTypeById = async (passengerId: number, noc: string): Pr
     };
 };
 
-export interface DbTimeRestriction {
-    day: TimeRestrictionDay;
-    timeBands: DbTimeBand[];
-}
-
-export interface DbTimeBand {
-    startTime: string;
-    endTime: string | { fareDayEnd: boolean };
-}
-
-export type TimeRestrictionDay =
-    | 'monday'
-    | 'tuesday'
-    | 'wednesday'
-    | 'thursday'
-    | 'friday'
-    | 'saturday'
-    | 'sunday'
-    | 'bankHoliday';
-
-export const getTimeRestrictionsByIdAndNoc = async (timeRestrictionId: number, noc: string): Promise<DbTimeRestriction[]> => {
-    try {
-        const queryInput = `
+export const getTimeRestrictionsByIdAndNoc = async (
+    timeRestrictionId: number,
+    noc: string,
+): Promise<DbTimeRestriction[]> => {
+    const queryInput = `
             SELECT contents
             FROM timeRestriction
             WHERE nocCode = ?
             AND id = ?
         `;
 
-        const queryResults = await executeQuery<
-            {
-                id: number;
-                nocCode: string;
-                name: string;
-                contents: string;
-            }[]
-        >(queryInput, [noc, timeRestrictionId]);
+    const queryResults = await executeQuery<
+        {
+            contents: string;
+        }[]
+    >(queryInput, [noc, timeRestrictionId]);
 
-        return queryResults.map((item) => {
-            return JSON.parse(item.contents) as DbTimeRestriction;
-        });
-    } catch (error) {
-        throw new Error(`Could not retrieve time restriction by nocCode from AuroraDB: ${error.stack}`);
-    }
+    return JSON.parse(queryResults[0].contents) as DbTimeRestriction[];
+};
+
+export const getFareDayEnd = async (noc: string): Promise<string | undefined> => {
+    const queryInput = `
+            SELECT time
+            FROM fareDayEnd
+            WHERE nocCode = ?
+        `;
+
+    const queryResults = await executeQuery<
+        {
+            time: string;
+        }[]
+    >(queryInput, [noc]);
+
+    return queryResults[0]?.time;
 };

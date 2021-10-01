@@ -1162,6 +1162,7 @@ describe('userData', () => {
                             },
                         ],
                         errors: [],
+                        id: 2,
                     },
                 },
             });
@@ -1494,6 +1495,7 @@ describe('userData', () => {
                             },
                         ],
                         errors: [],
+                        id: 2,
                     },
                     [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                         products: [

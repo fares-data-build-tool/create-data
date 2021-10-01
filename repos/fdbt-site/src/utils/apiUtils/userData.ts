@@ -187,10 +187,7 @@ export const getBaseTicketAttributes = <T extends TicketType>(
         passengerType: { id: passengerTypeAttribute.id },
         email,
         uuid,
-        timeRestriction:
-            fullTimeRestriction && fullTimeRestriction.fullTimeRestrictions.length > 0
-                ? { id: fullTimeRestriction.id }
-                : {},
+        timeRestriction: fullTimeRestriction?.id ? { id: fullTimeRestriction.id } : undefined,
         ticketPeriod: getTicketPeriod(ticketPeriodAttribute),
     };
 };
@@ -501,10 +498,7 @@ export const getSchemeOperatorTicketJson = (
         passengerType: { id: passengerTypeAttribute.id },
         email,
         uuid,
-        timeRestriction:
-            fullTimeRestriction && fullTimeRestriction.fullTimeRestrictions.length > 0
-                ? fullTimeRestriction.fullTimeRestrictions
-                : [],
+        timeRestriction: fullTimeRestriction?.id ? { id: fullTimeRestriction.id } : undefined,
         ticketPeriod: getTicketPeriod(ticketPeriodAttribute),
     };
 };

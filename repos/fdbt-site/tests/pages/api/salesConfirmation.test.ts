@@ -232,7 +232,7 @@ describe('salesOfferPackages', () => {
             passengerType: { id: 1 },
             email: 'string',
             uuid: 'string',
-            timeRestriction: [],
+            timeRestriction: { id: 2 },
             ticketPeriod: {
                 startDate: 'now',
                 endDate: 'a year later',

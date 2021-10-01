@@ -1159,7 +1159,7 @@ export const expectedSingleTicket: WithIds<SingleTicket> = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -1309,7 +1309,7 @@ export const expectedCarnetSingleTicket: WithIds<SingleTicket> = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -1464,7 +1464,7 @@ export const expectedNonCircularReturnTicket: WithIds<ReturnTicket> = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -1656,7 +1656,7 @@ export const expectedPointToPointPeriodTicket: WithIds<PointToPointPeriodTicket>
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -1852,7 +1852,7 @@ export const expectedCircularReturnTicket: WithIds<ReturnTicket> = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2015,7 +2015,7 @@ export const expectedCarnetReturnTicket: WithIds<ReturnTicket> = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2212,7 +2212,7 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: WithIds<PeriodGeoZ
     zoneName: 'Green Lane Shops',
     stops: zoneStops,
     passengerType: { id: 9 },
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2257,7 +2257,7 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: WithIds<Mul
     zoneName: 'Green Lane Shops',
     stops: zoneStops,
     passengerType: { id: 9 },
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2302,7 +2302,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: WithIds<P
     email: 'test@example.com',
     passengerType: { id: 9 },
     termTime: false,
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2366,7 +2366,7 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Wit
     email: 'test@example.com',
     passengerType: { id: 9 },
     termTime: false,
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2443,7 +2443,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
         email: 'test@example.com',
         passengerType: { id: 9 },
         termTime: false,
-        timeRestriction: mockFullTimeRestriction,
+        timeRestriction: { id: 2 },
         ticketPeriod: {
             startDate: '2020-12-17T09:30:46.0Z',
             endDate: '2020-12-18T09:30:46.0Z',
@@ -2624,7 +2624,6 @@ export const expectedFlatFareTicket: WithIds<FlatFareGeoZoneTicket> | WithIds<Fl
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
-    timeRestriction: [],
 };
 
 export const expectedFlatFareGeoZoneTicket: WithIds<FlatFareGeoZoneTicket> = {
@@ -2647,7 +2646,6 @@ export const expectedFlatFareGeoZoneTicket: WithIds<FlatFareGeoZoneTicket> = {
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageThree],
         },
     ],
-    timeRestriction: [],
 };
 
 export const expectedSchemeOperatorTicket = (
@@ -2660,7 +2658,7 @@ export const expectedSchemeOperatorTicket = (
         uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
         email: 'test@example.com',
         passengerType: { id: 9 },
-        timeRestriction: mockFullTimeRestriction,
+        timeRestriction: { id: 2 },
         ticketPeriod: {
             startDate: '2020-12-17T09:30:46.0Z',
             endDate: '2020-12-18T09:30:46.0Z',
@@ -2675,7 +2673,7 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: WithIds<Scheme
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     passengerType: { id: 9 },
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2806,7 +2804,7 @@ export const expectedSchemeOperatorMultiServicesTicket: WithIds<SchemeOperatorMu
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     passengerType: { id: 9 },
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -2947,7 +2945,7 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: WithIds<SchemeO
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     passengerType: { id: 9 },
-    timeRestriction: mockFullTimeRestriction,
+    timeRestriction: { id: 2 },
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
@@ -3107,6 +3105,7 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: WithIds<SchemeO
     ],
     products: [
         {
+            carnetDetails: undefined,
             productDuration: '5 weeks',
             productName: 'Weekly Ticket',
             productPrice: '50',
@@ -3130,6 +3129,7 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: WithIds<SchemeO
             ],
         },
         {
+            carnetDetails: undefined,
             productDuration: '1 month',
             productName: 'Day Ticket',
             productPrice: '2.50',
@@ -3153,6 +3153,7 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: WithIds<SchemeO
             ],
         },
         {
+            carnetDetails: undefined,
             productDuration: '28 years',
             productEndTime: '1900',
             productName: 'Monthly Ticket',
@@ -5240,6 +5241,7 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
 export const mockFullTimeRestrictionAttribute: FullTimeRestrictionAttribute = {
     fullTimeRestrictions: mockFullTimeRestriction,
     errors: [],
+    id: 2,
 };
 
 export const mockFieldSetForSaveOperatorGroup: RadioConditionalInputFieldset = {
