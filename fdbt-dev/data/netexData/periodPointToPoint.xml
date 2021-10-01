@@ -1013,8 +1013,8 @@
             <Tariff version="1.0" id="Tariff@period@YpQjUw">
               <validityConditions>
                 <ValidBetween>
-                  <FromDate>2011-01-01T01:01:00.000Z</FromDate>
-                  <ToDate>2022-02-02T23:59:00.000Z</ToDate>
+                  <FromDate>2011-01-01T00:00:00.000Z</FromDate>
+                  <ToDate>2022-02-02T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
               <Name>Blackpool Transport - BLAC_products - Fares for Period ticket</Name>

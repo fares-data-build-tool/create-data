@@ -159,7 +159,7 @@
             <Tariff version="1.0" id="op:Tariff@Test_Scheme_Op-SE_products">
               <validityConditions>
                 <ValidBetween>
-                  <FromDate>2011-01-01T01:01:00.000Z</FromDate>
+                  <FromDate>2011-01-01T00:00:00.000Z</FromDate>
                   <ToDate>2022-02-02T23:59:00.000Z</ToDate>
                 </ValidBetween>
               </validityConditions>
