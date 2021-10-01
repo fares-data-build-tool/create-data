@@ -35,7 +35,7 @@
     }
   ],
   "ticketPeriod": {
-    "startDate": "2011-01-01T01:01:00.000Z",
+    "startDate": "2011-01-01T00:00:00.000Z",
     "endDate": "2022-02-02T23:59:00.000Z"
   },
   "products": [
