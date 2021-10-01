@@ -1,9 +1,10 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
-import { WithIds, BaseTicket, TimeBand, FullTimeRestriction } from '../shared/matchingJsonTypes';
+import { WithIds, BaseTicket, FullTimeRestriction } from '../shared/matchingJsonTypes';
 import { getFareDayEnd, getPassengerTypeById, getTimeRestrictionsByIdAndNoc } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
+import { DbTimeRestriction } from '../shared/dbTypes';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -49,26 +50,28 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
 
             const fareDayEnd = await getFareDayEnd(noc);
 
-            const timeRestrictionWithUpdatedFareDayEnds: FullTimeRestriction[] = timeRestriction.map((timeRestriction) => ({
-                ...timeRestriction,
-                timeBands: timeRestriction.timeBands.map((timeBand) => {
-                    let endTime: string;
-                    if (typeof timeBand.endTime === 'string') {
-                        endTime = timeBand.endTime;
-                    } else {
-                        if (!fareDayEnd) {
-                            throw new Error('No fare day end set for time restriction');
+            const timeRestrictionWithUpdatedFareDayEnds: FullTimeRestriction[] = timeRestriction.map(
+                (timeRestriction: DbTimeRestriction) => ({
+                    ...timeRestriction,
+                    timeBands: timeRestriction.timeBands.map((timeBand) => {
+                        let endTime: string;
+                        if (typeof timeBand.endTime === 'string') {
+                            endTime = timeBand.endTime;
+                        } else {
+                            if (!fareDayEnd) {
+                                throw new Error('No fare day end set for time restriction');
+                            }
+
+                            endTime = fareDayEnd;
                         }
 
-                        endTime = fareDayEnd;
-                    }
-
-                    return {
-                        ...timeBand,
-                        endTime: endTime,
-                    };
+                        return {
+                            ...timeBand,
+                            endTime: endTime,
+                        };
+                    }),
                 }),
-            }));
+            );
 
             const ticket: BaseTicket = {
                 ...productData,

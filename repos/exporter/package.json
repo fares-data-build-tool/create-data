@@ -10,7 +10,7 @@
     "test": "jest",
     "test:ci": "CI=true jest",
     "cdk": "cdk",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts --max-warnings 0"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.124.0",
