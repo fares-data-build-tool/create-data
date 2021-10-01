@@ -63,6 +63,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         let userDataJson: TicketWithIds | undefined;
 
+        const ticketRepresentation = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
+        const ticketType = isTicketRepresentation(ticketRepresentation) ? ticketRepresentation.name : '';
+
         if (isSchemeOperator(req, res)) {
             const baseSchemeOperatorJson = getSchemeOperatorTicketJson(req, res);
             userDataJson = await adjustSchemeOperatorJson(req, res, baseSchemeOperatorJson);
@@ -71,9 +74,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
         } else if (fareType === 'period' || fareType === 'multiOperator' || fareType === 'flatFare') {
-            const ticketRepresentation = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
-            const ticketType = isTicketRepresentation(ticketRepresentation) ? ticketRepresentation.name : '';
-
             switch (ticketType) {
                 case 'geoZone':
                     userDataJson = await getGeoZoneTicketJson(req, res);
@@ -116,7 +116,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson.carnet = carnetAttribute;
             const noc = getAndValidateNoc(req, res);
             const filePath = await putUserDataInProductsBucket(userDataJson, uuid, noc);
-            if (saveProductsEnabled && dataFormat !== 'tnds') {
+            if (saveProductsEnabled && (ticketType === 'geoZone' || dataFormat !== 'tnds')) {
                 const { startDate, endDate } = userDataJson.ticketPeriod;
                 if (!startDate || !endDate) {
                     throw new Error('Start or end date could not be found.');

@@ -146,7 +146,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     if (!dataSourceAttribute) {
         updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
-            source: hasBodsServices && !hasTndsServices ? 'bods' : 'tnds',
+            source: hasBodsServices ? 'bods' : 'tnds',
             hasBods: hasBodsServices,
             hasTnds: hasTndsServices,
         });
