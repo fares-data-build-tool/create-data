@@ -198,8 +198,8 @@
             <Tariff version="1.0" id="op:Tariff@WBTR_products">
               <validityConditions>
                 <ValidBetween>
-                  <FromDate>2010-03-04T01:01:00.000Z</FromDate>
-                  <ToDate>2121-06-30T11:42:28.605Z</ToDate>
+                  <FromDate>2010-03-04T00:00:00.000Z</FromDate>
+                  <ToDate>2121-06-30T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
               <Name>Test Operator - WBTR_products - Fares for Period ticket</Name>
