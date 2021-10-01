@@ -56,7 +56,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (!isEndDateEmpty) {
                 endDate = moment.utc([endDateYear, endDateMonth - 1, endDateDay]).endOf('day');
             }
-            console.log(startDate, endDate);
 
             if (startDate && !startDate.isValid() && !isStartDateEmpty) {
                 errors.push({ errorMessage: 'Start date must be a real date', id: 'start-date-day' });
