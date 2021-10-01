@@ -803,7 +803,7 @@ export const getOrganisations = (
     baseOperatorInfo?: SchemeOperatorWithExpandedAddress,
 ): NetexOrganisationOperator[] => {
     const organisations = operatorData.map(operator => {
-        const blah = {
+        const organisationOperator = {
             version: '1.0',
             id: `noc:${operator.nocCode}`,
             PublicCode: {
@@ -843,7 +843,7 @@ export const getOrganisations = (
             },
         };
 
-        return blah;
+        return organisationOperator;
     });
 
     if (baseOperatorInfo) {
