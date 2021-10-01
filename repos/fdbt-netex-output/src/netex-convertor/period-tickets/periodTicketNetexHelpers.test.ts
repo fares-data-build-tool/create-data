@@ -568,7 +568,7 @@ describe('periodTicketNetexHelpers', () => {
             const result = getOrganisations(multiOperatorList);
             expect(result).toStrictEqual([
                 {
-                    Address: { Street: { $t: '334' }, PostCode: { $t: '' }, PostalRegion: { $t: '' }, Town: { $t: '' } },
+                    Address: { Street: { $t: '334' } },
                     ContactDetails: { Phone: { $t: 'SSSS' }, Url: { $t: 'www.unittest.com' } },
                     Name: { $t: 'Test Buses' },
                     PrimaryMode: { $t: 'bus' },
@@ -579,7 +579,7 @@ describe('periodTicketNetexHelpers', () => {
                     version: '1.0',
                 },
                 {
-                    Address: { Street: { $t: '445' }, PostCode: { $t: '' }, PostalRegion: { $t: '' }, Town: { $t: '' } },
+                    Address: { Street: { $t: '445' } },
                     ContactDetails: { Phone: { $t: 'DDDD' }, Url: { $t: 'www.besttest.com' } },
                     Name: { $t: 'Super Buses' },
                     PrimaryMode: { $t: 'bus' },
@@ -590,7 +590,7 @@ describe('periodTicketNetexHelpers', () => {
                     version: '1.0',
                 },
                 {
-                    Address: { Street: { $t: '556' }, PostCode: { $t: '' }, PostalRegion: { $t: '' }, Town: { $t: '' } },
+                    Address: { Street: { $t: '556' } },
                     ContactDetails: { Phone: { $t: 'QQQQQ' }, Url: { $t: 'www.anothertest.com' } },
                     Name: { $t: 'Another Buses' },
                     PrimaryMode: { $t: 'bus' },
@@ -613,15 +613,12 @@ describe('periodTicketNetexHelpers', () => {
                 vosaPsvLicenseName: '',
                 contactNumber: '',
                 street: '',
-                town: '',
-                postcode: '',
-                county: '',
                 mode: 'bus',
             };
             const result = getOrganisations(multiOperatorList, mockSchemeOperatorInfo);
             expect(result).toStrictEqual([
                 {
-                    Address: { Street: { $t: '334' }, PostCode: { $t: '' }, PostalRegion: { $t: '' }, Town: { $t: '' } },
+                    Address: { Street: { $t: '334' } },
                     ContactDetails: { Phone: { $t: 'SSSS' }, Url: { $t: 'www.unittest.com' } },
                     Name: { $t: 'Test Buses' },
                     PrimaryMode: { $t: 'bus' },
@@ -632,7 +629,7 @@ describe('periodTicketNetexHelpers', () => {
                     version: '1.0',
                 },
                 {
-                    Address: { Street: { $t: '445' }, PostCode: { $t: '' }, PostalRegion: { $t: '' }, Town: { $t: '' } },
+                    Address: { Street: { $t: '445' } },
                     ContactDetails: { Phone: { $t: 'DDDD' }, Url: { $t: 'www.besttest.com' } },
                     Name: { $t: 'Super Buses' },
                     PrimaryMode: { $t: 'bus' },
@@ -643,7 +640,7 @@ describe('periodTicketNetexHelpers', () => {
                     version: '1.0',
                 },
                 {
-                    Address: { Street: { $t: '556' }, PostCode: { $t: '' }, PostalRegion: { $t: '' }, Town: { $t: '' } },
+                    Address: { Street: { $t: '556' } },
                     ContactDetails: { Phone: { $t: 'QQQQQ' }, Url: { $t: 'www.anothertest.com' } },
                     Name: { $t: 'Another Buses' },
                     PrimaryMode: { $t: 'bus' },
@@ -654,7 +651,7 @@ describe('periodTicketNetexHelpers', () => {
                     version: '1.0',
                 },
                 {
-                    Address: { Street: { $t: '' }, PostCode: { $t: '' }, PostalRegion: { $t: '' }, Town: { $t: '' } },
+                    Address: { Street: { $t: '' } },
                     ContactDetails: { Phone: { $t: '' }, Url: { $t: '' } },
                     Name: { $t: 'Some Random Bus Co' },
                     PrimaryMode: { $t: 'bus' },

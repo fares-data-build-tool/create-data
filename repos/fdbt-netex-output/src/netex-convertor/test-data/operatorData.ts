@@ -25,9 +25,6 @@ export const multiOperatorList: Operator[] = [
         vosaPsvLicenseName: 'CCD',
         contactNumber: 'SSSS',
         street: '334',
-        town: '',
-        postcode: '',
-        county: '',
         mode: 'test',
     },
     {
@@ -39,9 +36,6 @@ export const multiOperatorList: Operator[] = [
         vosaPsvLicenseName: 'CVD',
         contactNumber: 'DDDD',
         street: '445',
-        town: '',
-        postcode: '',
-        county: '',
         mode: 'bus',
     },
     {
@@ -53,9 +47,6 @@ export const multiOperatorList: Operator[] = [
         vosaPsvLicenseName: 'CCQ',
         contactNumber: 'QQQQQ',
         street: '556',
-        town: '',
-        postcode: '',
-        county: '',
         mode: 'bus',
     },
 ];

@@ -53,7 +53,7 @@ describe('generateAll', () => {
             mode: 'Bus',
         }));
 
-        const netexGen = netexGenerator(ticket, operatorData);
+        const netexGen = await netexGenerator(ticket, operatorData);
         const generatedNetex = await netexGen.generate();
         const parsedXsl = libxslt.parse(xsl);
         const transformedNetex = parsedXsl.apply(generatedNetex);

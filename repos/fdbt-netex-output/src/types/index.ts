@@ -56,19 +56,18 @@ export interface OperatorDetails {
 // Reference Data (from NOC, TNDS, NaPTAN datasets)
 
 export interface Operator {
-    nocCode: string; // *
+    nocCode: string;
     url: string;
     email: string;
     operatorName: string;
-    opId: string; // *
-    vosaPsvLicenseName: string; // *
+    opId: string;
+    vosaPsvLicenseName: string;
     contactNumber: string;
     street: string;
-    town: string;
-    county: string;
-    postcode: string;
-    mode: string; // *
+    mode: string;
 }
+
+export type OperatorWithExpandedAddress = Operator | (OperatorDetails & Operator)
 
 export interface SchemeOperator {
     schemeOperatorName: string;
@@ -79,11 +78,10 @@ export interface SchemeOperator {
     vosaPsvLicenseName: string;
     contactNumber: string;
     street: string;
-    town: string;
-    county: string;
-    postcode: string;
     mode: string;
 }
+
+export type SchemeOperatorWithExpandedAddress = SchemeOperator | (SchemeOperator & OperatorDetails)
 
 export interface Service {
     description: string;

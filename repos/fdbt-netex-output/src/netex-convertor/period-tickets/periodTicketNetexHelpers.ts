@@ -38,6 +38,8 @@ import {
     Ticket,
     TopographicProjectionRef,
     User,
+    OperatorWithExpandedAddress,
+    SchemeOperatorWithExpandedAddress,
 } from '../../types';
 
 import {
@@ -62,9 +64,6 @@ export const getBaseSchemeOperatorInfo = async (userPeriodTicket: BaseSchemeOper
         vosaPsvLicenseName: '',
         contactNumber: '',
         street: '',
-        town: '',
-        county: '',
-        postcode: '',
         mode: 'bus',
     };
 
@@ -72,17 +71,7 @@ export const getBaseSchemeOperatorInfo = async (userPeriodTicket: BaseSchemeOper
     
     const schemeDetails = await db.getOperatorDetailsByNoc(schemeCode);
 
-    if (schemeDetails) {
-        schemeOperator.email = schemeDetails.email;
-        schemeOperator.url = schemeDetails.url;
-        schemeOperator.street = schemeDetails.street;
-        schemeOperator.town = schemeDetails.town;
-        schemeOperator.postcode = schemeDetails.postcode;
-        schemeOperator.contactNumber = schemeDetails.contactNumber;
-        schemeOperator.county = schemeDetails.county;
-    }
-
-    return schemeOperator;
+    return {...schemeOperator, ...schemeDetails};
 };
 
 export const getScheduledStopPointsList = (stops: Stop[]): ScheduledStopPoint[] =>
@@ -806,50 +795,49 @@ export const getPeriodConditionsElement = (
 };
 
 export const getOrganisations = (
-    operatorData: Operator[],
-    baseOperatorInfo?: SchemeOperator,
+    operatorData: OperatorWithExpandedAddress[],
+    baseOperatorInfo?: SchemeOperatorWithExpandedAddress,
 ): NetexOrganisationOperator[] => {
-    const organisations = operatorData.map(operator => ({
-        version: '1.0',
-        id: `noc:${operator.nocCode}`,
-        PublicCode: {
-            $t: operator.nocCode,
-        },
-        Name: {
-            $t: operator.operatorName,
-        },
-        ShortName: {
-            $t: operator.operatorName,
-        },
-        TradingName: {
-            $t: operator.vosaPsvLicenseName,
-        },
-        ContactDetails: {
-            Phone: {
-                $t: operator.contactNumber,
+    const organisations = operatorData.map(operator => {
+
+        const blah = {
+            version: '1.0',
+            id: `noc:${operator.nocCode}`,
+            PublicCode: {
+                $t: operator.nocCode,
             },
-            Url: {
-                $t: getCleanWebsite(operator.url),
+            Name: {
+                $t: operator.operatorName,
             },
-        },
-        Address: {
-            Street: {
-                $t: operator.street,
+            ShortName: {
+                $t: operator.operatorName,
             },
-            Town: {
-                $t: operator.town,
+            TradingName: {
+                $t: operator.vosaPsvLicenseName,
             },
-            PostCode: {
-                $t: operator.postcode,
+            ContactDetails: {
+                Phone: {
+                    $t: operator.contactNumber,
+                },
+                Url: {
+                    $t: getCleanWebsite(operator.url),
+                },
             },
-            PostalRegion: {
-                $t: operator.county,
+            Address: {
+                Street: {
+                    $t: operator.street,
+                },
+                ...("postcode" in operator ? ({
+                    Town: { $t: operator.town }, PostCode: { $t: operator.postcode }, PostalRegion: { $t: operator.county }
+                }) : undefined)
             },
-        },
-        PrimaryMode: {
-            $t: getNetexMode(operator.mode),
-        },
-    }));
+            PrimaryMode: {
+                $t: getNetexMode(operator.mode),
+            },
+        };
+
+        return blah
+    });
 
     if (baseOperatorInfo) {
         organisations.push({
@@ -879,15 +867,9 @@ export const getOrganisations = (
                 Street: {
                     $t: baseOperatorInfo.street,
                 },
-                Town: {
-                    $t: baseOperatorInfo.town,
-                },
-                PostCode: {
-                    $t: baseOperatorInfo.postcode,
-                },
-                PostalRegion: {
-                    $t: baseOperatorInfo.county,
-                },
+                ...("postcode" in baseOperatorInfo ? ({
+                    Town: { $t: baseOperatorInfo.town }, PostCode: { $t: baseOperatorInfo.postcode }, PostalRegion: { $t: baseOperatorInfo.county }
+                }) : undefined)
             },
             PrimaryMode: {
                 $t: getNetexMode(baseOperatorInfo.mode),

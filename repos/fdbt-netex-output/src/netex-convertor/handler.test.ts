@@ -62,7 +62,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the pointToPointTicketNetexGenerator when a user uploads info for a single ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(singleTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -70,7 +70,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the periodTicketNetexGenerator when a user uploads info for a geozone period ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(periodGeoZoneTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -78,7 +78,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the periodTicketNetexGenerator when a user uploads info for a multiple services period ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(periodMultipleServicesTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -86,7 +86,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the periodTicketNetexGenerator when a user uploads info for a flat fare ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(flatFareTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the periodTicketNetexGenerator when a user uploads info for scheme operator geozone ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(schemeOperatorGeoZoneTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -102,7 +102,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the periodTicketNetexGenerator when a user uploads info for scheme operator flat fare ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(schemeOperatorFlatFareTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
