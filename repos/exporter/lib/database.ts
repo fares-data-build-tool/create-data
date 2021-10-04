@@ -3,6 +3,7 @@ import { SSM } from 'aws-sdk';
 import {
     GroupPassengerTypeDb,
     GroupPassengerTypeReference,
+    DbTimeRestriction,
     PassengerType,
     SinglePassengerType,
 } from '../shared/dbTypes';
@@ -86,6 +87,42 @@ export const getPassengerTypeById = async (passengerId: number, noc: string): Pr
     };
 };
 
+export const getTimeRestrictionsByIdAndNoc = async (
+    timeRestrictionId: number,
+    noc: string,
+): Promise<DbTimeRestriction[]> => {
+    const queryInput = `
+            SELECT contents
+            FROM timeRestriction
+            WHERE nocCode = ?
+            AND id = ?
+        `;
+
+    const queryResults = await executeQuery<
+        {
+            contents: string;
+        }[]
+    >(queryInput, [noc, timeRestrictionId]);
+
+    return JSON.parse(queryResults[0].contents) as DbTimeRestriction[];
+};
+
+export const getFareDayEnd = async (noc: string): Promise<string | undefined> => {
+    const queryInput = `
+            SELECT time
+            FROM fareDayEnd
+            WHERE nocCode = ?
+        `;
+
+    const queryResults = await executeQuery<
+        {
+            time: string;
+        }[]
+    >(queryInput, [noc]);
+
+    return queryResults[0]?.time;
+};
+
 export const getGroupDefinitionByPassengerId = async (
     passengerId: number,
     noc: string,
@@ -101,4 +138,3 @@ export const getGroupDefinitionByPassengerId = async (
         name,
         groupPassengerType: parsedContents,
     };
-};

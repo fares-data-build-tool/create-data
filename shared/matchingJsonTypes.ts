@@ -136,8 +136,8 @@ export interface BaseTicket<T extends TicketType = TicketType> {
 
 export type WithIds<T> = Omit<
     T,
-    'passengerType' | 'ageRange' | 'ageRangeMin' | 'ageRangeMax' | 'proof' | 'proofDocuments'
-> & { passengerType: { id: number } };
+    'passengerType' | 'ageRange' | 'ageRangeMin' | 'ageRangeMax' | 'proof' | 'proofDocuments' | 'timeRestriction'
+> & { passengerType: { id: number }; timeRestriction?: { id: number } };
 
 export interface GroupDefinition {
     maxPeople: string;
@@ -153,6 +153,11 @@ export interface CompanionInfo {
     ageRangeMin?: string;
     ageRangeMax?: string;
     proofDocuments?: string[];
+}
+
+export interface DbTimeBand {
+    startTime: string;
+    endTime: string | { fareDayEnd: boolean };
 }
 
 export interface UnassignedStops {

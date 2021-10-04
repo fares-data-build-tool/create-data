@@ -1,6 +1,6 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
-import { TimeRestrictionDay } from 'shared/matchingJsonTypes';
+import { DbTimeBand, TimeRestrictionDay } from 'shared/matchingJsonTypes';
 import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../../constants/attributes';
 import {
     getTimeRestrictionByNameAndNoc,
@@ -8,11 +8,12 @@ import {
     updateTimeRestriction,
     getFareDayEnd,
 } from '../../data/auroradb';
-import { ErrorInfo, NextApiRequestWithSession, DbTimeRestriction, DbTimeBand } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
 import { isValid24hrTimeFormat, removeAllWhiteSpace, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { toArray } from '../../utils';
+import { DbTimeRestriction } from 'shared/dbTypes';
 
 export const collectInputsFromRequest = (
     req: NextApiRequestWithSession,

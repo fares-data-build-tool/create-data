@@ -3,7 +3,7 @@ import { MyFaresOtherFaresProduct, MyFaresOtherProduct, NextPageContextWithSessi
 import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled } from '../../constants/featureFlag';
 import { getAndValidateNoc, sentenceCaseString } from '../../utils';
-import { getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
+import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import { getTag } from '../products/services';
 
@@ -107,7 +107,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                                 ('carnetDetails' in innerProduct ? innerProduct.carnetDetails?.quantity : '1') || '1';
                             const type = matchingJson.type;
                             const passengerType =
-                                (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name || '';
+                                (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
+                                (await getGroupPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
+                                '';
                             const startDate = product.startDate;
                             const endDate = product.endDate;
                             return {
