@@ -73,6 +73,13 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
                 }),
             );
 
+            // check if ticket is period ticket
+            // if it is, check if periodValid == fareDayEnd
+            // if it is, set value of productEndTime to fareDayEnd from above
+            //
+
+            // ticket.type
+
             const ticket: BaseTicket = {
                 ...productData,
                 ...passengerType,

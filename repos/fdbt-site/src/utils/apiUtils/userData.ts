@@ -113,7 +113,6 @@ export const getProductsAndSalesOfferPackages = (
                   }`
                 : undefined,
             productValidity: periodExpiryAttributeInfo?.productValidity,
-            productEndTime: periodExpiryAttributeInfo?.productEndTime,
             carnetDetails: 'carnetDetails' in matchedProduct ? matchedProduct.carnetDetails : undefined,
             salesOfferPackages: sopInfo.salesOfferPackages,
         };
