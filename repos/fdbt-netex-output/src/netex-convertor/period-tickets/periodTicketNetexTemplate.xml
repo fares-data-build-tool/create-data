@@ -126,9 +126,6 @@
                             <OrganisationType>operator</OrganisationType>
                             <Address>
                                 <Street></Street>
-                                <Town></Town>
-                                <PostCode></PostCode>
-                                <PostalRegion></PostalRegion>
                             </Address>
 							<PrimaryMode></PrimaryMode>
                             <CustomerServiceContactDetails>
