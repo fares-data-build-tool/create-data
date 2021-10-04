@@ -9,9 +9,6 @@ export const operatorData = {
     vosaPsvLicenseName: 'ABC Ltd',
     contactNumber: 'info@abc.com',
     street: 'info@abc.com',
-    town: '',
-    postcode: '',
-    county: '',
     mode: 'bus',
 };
 
