@@ -135,8 +135,8 @@
             <Tariff version="1.0" id="op:Tariff@WBTR_products">
               <validityConditions>
                 <ValidBetween>
-                  <FromDate>2021-07-06T11:20:52.549Z</FromDate>
-                  <ToDate>2121-07-06T11:20:52.549Z</ToDate>
+                  <FromDate>2021-07-06T00:00:00.000Z</FromDate>
+                  <ToDate>2121-07-06T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
               <Name>Test Operator - WBTR_products - Fares for Flat Fare ticket</Name>

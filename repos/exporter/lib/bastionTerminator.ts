@@ -1,5 +1,4 @@
 import { Handler } from 'aws-lambda';
-import { ExportLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
 import { EC2 } from 'aws-sdk';
 

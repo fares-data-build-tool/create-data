@@ -18,8 +18,8 @@
     }
   ],
   "ticketPeriod": {
-    "startDate": "2021-08-05T00:01:00.000Z",
-    "endDate": "2021-10-01T22:59:00.000Z"
+    "startDate": "2021-08-05T00:00:00.000Z",
+    "endDate": "2021-10-01T23:59:59.999Z"
   },
   "operatorName": "Test Operator",
   "products": [

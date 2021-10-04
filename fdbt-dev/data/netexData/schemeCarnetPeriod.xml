@@ -205,8 +205,8 @@
             <Tariff version="1.0" id="op:Tariff@Test_Scheme_Op-SE_products">
               <validityConditions>
                 <ValidBetween>
-                  <FromDate>2021-06-25T11:07:22.713Z</FromDate>
-                  <ToDate>2121-06-25T11:07:22.713Z</ToDate>
+                  <FromDate>2021-06-25T00:00:00.000Z</FromDate>
+                  <ToDate>2121-06-25T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
               <Name>Test Scheme Op - Test Scheme Op-SE_products - Fares for Period ticket</Name>

@@ -151,8 +151,8 @@ describe('productDataInformation', () => {
         await productDateInformation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
-            startDate: expect.any(String),
-            endDate: expect.any(String),
+            startDate: '2020-12-12T00:00:00.000Z',
+            endDate: '2020-12-15T23:59:59.999Z',
             dateInput: {
                 startDateDay: '12',
                 startDateMonth: '12',
@@ -210,7 +210,7 @@ describe('productDataInformation', () => {
         await productDateInformation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
-            endDate: expect.any(String),
+            endDate: '4020-11-04T23:59:59.999Z',
             dateInput: {
                 startDateDay: '',
                 startDateMonth: '',
@@ -244,7 +244,7 @@ describe('productDataInformation', () => {
         await productDateInformation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
-            startDate: expect.any(String),
+            startDate: '2021-08-06T00:00:00.000Z',
             dateInput: {
                 startDateDay: '06',
                 startDateMonth: '08',

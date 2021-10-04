@@ -7,8 +7,8 @@
   "uuid": "TESTSE94be5fbd",
   "timeRestriction": [],
   "ticketPeriod": {
-    "startDate": "2021-06-25T11:07:22.713Z",
-    "endDate": "2121-06-25T11:07:22.713Z"
+    "startDate": "2021-06-25T00:00:00.000Z",
+    "endDate": "2121-06-25T23:59:59.999Z"
   },
   "products": [
     {
