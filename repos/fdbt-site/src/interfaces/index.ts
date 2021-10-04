@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { ReactElement } from 'react';
-import { SinglePassengerType } from '../../shared/dbTypes';
+import { DbTimeRestriction, SinglePassengerType } from '../../shared/dbTypes';
 import {
     BaseProduct,
     CarnetDetails,
@@ -16,7 +16,6 @@ import {
     SalesOfferPackage,
     SelectedService,
     TicketType,
-    TimeRestrictionDay,
 } from '../../shared/matchingJsonTypes';
 
 // Session Attributes and Cookies
@@ -257,16 +256,6 @@ export interface PremadeTimeRestriction {
     id: number;
     name: string;
     contents: DbTimeRestriction[];
-}
-
-export interface DbTimeBand {
-    startTime: string;
-    endTime: string | { fareDayEnd: boolean };
-}
-
-export interface DbTimeRestriction {
-    day: TimeRestrictionDay;
-    timeBands: DbTimeBand[];
 }
 
 export interface DbTimeInput {
@@ -563,6 +552,8 @@ export interface MyFaresProduct {
     endDate: string;
 }
 
+export type MyFaresOtherProduct = Omit<MyFaresProduct, 'lineId'>;
+
 export interface MyFaresServiceWithProductCount extends MyFaresService {
     products: number;
 }
@@ -572,6 +563,17 @@ export interface MyFaresPointToPointProduct {
     validity: string;
     startDate: string;
     endDate: string;
+}
+
+export interface MyFaresOtherFaresProduct {
+    productDescription: string;
+    type: string;
+    duration: string;
+    quantity: string;
+    passengerType: string;
+    startDate: string;
+    endDate: string;
+    carnet: boolean;
 }
 
 export interface ServiceWithErrors {

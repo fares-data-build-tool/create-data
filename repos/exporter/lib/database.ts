@@ -1,6 +1,6 @@
 import { createPool, Pool } from 'mysql2/promise';
 import { SSM } from 'aws-sdk';
-import { PassengerType, SinglePassengerType } from '../shared/dbTypes';
+import { DbTimeRestriction, PassengerType, SinglePassengerType } from '../shared/dbTypes';
 
 const ssm = new SSM({ region: 'eu-west-2' });
 
@@ -79,4 +79,40 @@ export const getPassengerTypeById = async (passengerId: number, noc: string): Pr
         name,
         passengerType: JSON.parse(contents) as PassengerType,
     };
+};
+
+export const getTimeRestrictionsByIdAndNoc = async (
+    timeRestrictionId: number,
+    noc: string,
+): Promise<DbTimeRestriction[]> => {
+    const queryInput = `
+            SELECT contents
+            FROM timeRestriction
+            WHERE nocCode = ?
+            AND id = ?
+        `;
+
+    const queryResults = await executeQuery<
+        {
+            contents: string;
+        }[]
+    >(queryInput, [noc, timeRestrictionId]);
+
+    return JSON.parse(queryResults[0].contents) as DbTimeRestriction[];
+};
+
+export const getFareDayEnd = async (noc: string): Promise<string | undefined> => {
+    const queryInput = `
+            SELECT time
+            FROM fareDayEnd
+            WHERE nocCode = ?
+        `;
+
+    const queryResults = await executeQuery<
+        {
+            time: string;
+        }[]
+    >(queryInput, [noc]);
+
+    return queryResults[0]?.time;
 };

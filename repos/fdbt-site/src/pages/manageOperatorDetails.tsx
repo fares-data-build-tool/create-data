@@ -181,7 +181,7 @@ export const getServerSideProps = async (
         ) {
             errors.splice(0, 0, {
                 errorMessage: 'Before you can create any fare information, you must provide the information below',
-                id: 'operatorName-input',
+                id: 'operatorName',
             });
         }
     }

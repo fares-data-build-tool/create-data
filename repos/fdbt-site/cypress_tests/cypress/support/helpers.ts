@@ -339,6 +339,7 @@ export const completeSalesOfferPackagesForMultipleProducts = (
     for (let i = 0; i < numberOfProducts; i += 1) {
         const productName = `${encodeId(multiProductNamePrefix)}${i + 1}`;
         const idPrefix = `product-${productName}-checkbox-`;
+
         cy.get('.govuk-checkboxes__input').then(($elements) => {
             const numberOfSalesOfferPackages = $elements.length / numberOfProducts;
             const randomSalesOfferPackageIndex = getRandomNumber(0, numberOfSalesOfferPackages - 1);

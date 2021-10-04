@@ -1,9 +1,10 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
-import { WithIds, BaseTicket, TicketWithIds } from '../shared/matchingJsonTypes';
-import { getPassengerTypeById } from './database';
+import { WithIds, BaseTicket, FullTimeRestriction } from '../shared/matchingJsonTypes';
+import { getFareDayEnd, getPassengerTypeById, getTimeRestrictionsByIdAndNoc } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
+import { DbTimeRestriction } from '../shared/dbTypes';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -43,7 +44,40 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
                     ? { passengerType: 'group' }
                     : (await getPassengerTypeById(productData.passengerType.id, noc)).passengerType;
 
-            const ticket: BaseTicket = { ...productData, ...passengerType };
+            const timeRestriction = productData.timeRestriction
+                ? await getTimeRestrictionsByIdAndNoc(productData.timeRestriction.id, noc)
+                : [];
+
+            const fareDayEnd = await getFareDayEnd(noc);
+
+            const timeRestrictionWithUpdatedFareDayEnds: FullTimeRestriction[] = timeRestriction.map(
+                (timeRestriction: DbTimeRestriction) => ({
+                    ...timeRestriction,
+                    timeBands: timeRestriction.timeBands.map((timeBand) => {
+                        let endTime: string;
+                        if (typeof timeBand.endTime === 'string') {
+                            endTime = timeBand.endTime;
+                        } else {
+                            if (!fareDayEnd) {
+                                throw new Error('No fare day end set for time restriction');
+                            }
+
+                            endTime = fareDayEnd;
+                        }
+
+                        return {
+                            ...timeBand,
+                            endTime: endTime,
+                        };
+                    }),
+                }),
+            );
+
+            const ticket: BaseTicket = {
+                ...productData,
+                ...passengerType,
+                timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
+            };
 
             await s3.putObject({ Key: path, Bucket: MATCHING_DATA_BUCKET, Body: JSON.stringify(ticket) }).promise();
         }),

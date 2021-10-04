@@ -1,4 +1,4 @@
-import { CompanionInfo } from './matchingJsonTypes';
+import { CompanionInfo, DbTimeBand, TimeRestrictionDay } from './matchingJsonTypes';
 
 export interface FullGroupPassengerType {
     id: number;
@@ -26,4 +26,9 @@ export interface GroupPassengerType {
     name: string;
     maxGroupSize: string;
     companions: CompanionInfo[];
+}
+
+export interface DbTimeRestriction {
+    day: TimeRestrictionDay;
+    timeBands: DbTimeBand[];
 }

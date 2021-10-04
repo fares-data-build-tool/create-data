@@ -15,6 +15,7 @@ describe('The flat fare carnet product journey', () => {
         completeSalesPages(3, 'Flat fare carnet ');
         isUuidStringValid();
     });
+
     it('completes successfully for geoZone', () => {
         selectCarnetFareType('flatFare');
         defineUserTypeAndTimeRestrictions();

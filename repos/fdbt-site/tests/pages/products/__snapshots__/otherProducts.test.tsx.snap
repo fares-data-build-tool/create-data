@@ -1,0 +1,336 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`myfares pages otherProducts should render correctly when no non-Point-to-Point products exist 1`] = `
+<Fragment>
+  <BaseLayout
+    description="View and access your other products in one place."
+    myFaresEnabled={true}
+    showNavigation={true}
+    title="Other Products - Create Fares Data Service"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <div>
+          <h1
+            className="govuk-heading-xl govuk-!-margin-bottom-3"
+          >
+            Other products
+          </h1>
+        </div>
+        <table
+          className="govuk-table"
+        >
+          <thead
+            className="govuk-table__head"
+          >
+            <tr
+              className="govuk-table__row"
+            >
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Product description
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Type
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Duration
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Quantity
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Passenger type
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Start date
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                End date
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Product status
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            className="govuk-table__body"
+          />
+        </table>
+        <span
+          className="govuk-body"
+        >
+          <i>
+            You currently have no multi-service products
+          </i>
+        </span>
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`myfares pages otherProducts should render correctly when some non-Point-to-Point products exist 1`] = `
+<Fragment>
+  <BaseLayout
+    description="View and access your other products in one place."
+    myFaresEnabled={true}
+    showNavigation={true}
+    title="Other Products - Create Fares Data Service"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <div>
+          <h1
+            className="govuk-heading-xl govuk-!-margin-bottom-3"
+          >
+            Other products
+          </h1>
+        </div>
+        <table
+          className="govuk-table"
+        >
+          <thead
+            className="govuk-table__head"
+          >
+            <tr
+              className="govuk-table__row"
+            >
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Product description
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Type
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Duration
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Quantity
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Passenger type
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Start date
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                End date
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Product status
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            className="govuk-table__body"
+          >
+            <tr
+              className="govuk-table__row"
+              key="product-0"
+            >
+              <td
+                className="govuk-table__cell"
+              >
+                First product
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                Flat fare
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                1 trip
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                1
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                Infant
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                11/04/2020
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                02/09/2090
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <strong
+                  className="govuk-tag govuk-tag--turquoise"
+                >
+                  Active
+                </strong>
+              </td>
+            </tr>
+            <tr
+              className="govuk-table__row"
+              key="product-1"
+            >
+              <td
+                className="govuk-table__cell"
+              >
+                The greatest product eveer!
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                Period
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                3 days
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                20
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                Infant
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                11/12/2021
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                02/09/2023
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <strong
+                  className="govuk-tag govuk-tag--blue"
+                >
+                  Pending
+                </strong>
+              </td>
+            </tr>
+            <tr
+              className="govuk-table__row"
+              key="product-2"
+            >
+              <td
+                className="govuk-table__cell"
+              >
+                The greatest product eveer!
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                Period
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                3 days
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                1
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                Adult
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                11/12/2021
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                02/09/2023
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <strong
+                  className="govuk-tag govuk-tag--blue"
+                >
+                  Pending
+                </strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;

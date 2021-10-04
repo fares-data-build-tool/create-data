@@ -25,8 +25,8 @@
     }
   ],
   "ticketPeriod": {
-    "startDate": "2011-01-01T01:01:00.000Z",
-    "endDate": "2022-02-02T23:59:00.000Z"
+    "startDate": "2011-01-01T00:00:00.000Z",
+    "endDate": "2022-02-02T23:59:59.999Z"
   },
   "lineName": "2",
   "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients",
