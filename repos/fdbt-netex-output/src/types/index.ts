@@ -31,7 +31,7 @@ export interface CoreData {
     url: string;
     brandingId: string;
     operatorIdentifier: string;
-    baseOperatorInfo: (Operator | SchemeOperator)[];
+    baseOperatorInfo: (OperatorWithExpandedAddress | SchemeOperatorWithExpandedAddress)[];
     placeholderGroupOfProductsName: string;
     ticketUserConcat: string;
     operatorPublicNameLineNameFormat: string;

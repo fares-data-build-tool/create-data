@@ -56,7 +56,7 @@ import {
 
 export const getBaseSchemeOperatorInfo = async (
     userPeriodTicket: BaseSchemeOperatorTicket,
-): Promise<SchemeOperator> => {
+): Promise<SchemeOperatorWithExpandedAddress> => {
     const schemeOperator: SchemeOperator = {
         schemeOperatorName: userPeriodTicket.schemeOperatorName,
         schemeOperatorRegionCode: userPeriodTicket.schemeOperatorRegionCode,
