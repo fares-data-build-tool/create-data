@@ -340,24 +340,6 @@ export interface PassengerDetails {
     proof?: string[];
 }
 
-export interface GroupPassengerTypeDb {
-    id: number;
-    name: string;
-    groupPassengerType: GroupPassengerTypeReference;
-}
-
-export interface CompanionReference {
-    id: number;
-    minNumber?: string;
-    maxNumber: string;
-}
-
-export interface GroupPassengerTypeReference {
-    name: string;
-    maxGroupSize: string;
-    companions: CompanionReference[];
-}
-
 export interface TimeRestriction {
     startTime?: string;
     endTime?: string;
@@ -750,4 +732,7 @@ export type {
     SinglePassengerType,
     PassengerType,
     GroupPassengerType,
+    GroupPassengerTypeDb,
+    CompanionReference,
+    GroupPassengerTypeReference,
 } from '../../shared/dbTypes';

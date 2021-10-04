@@ -27,3 +27,21 @@ export interface GroupPassengerType {
     maxGroupSize: string;
     companions: CompanionInfo[];
 }
+
+export interface GroupPassengerTypeDb {
+    id: number;
+    name: string;
+    groupPassengerType: GroupPassengerTypeReference;
+}
+
+export interface CompanionReference {
+    id: number;
+    minNumber?: string;
+    maxNumber: string;
+}
+
+export interface GroupPassengerTypeReference {
+    name: string;
+    maxGroupSize: string;
+    companions: CompanionReference[];
+}

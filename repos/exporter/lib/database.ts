@@ -1,6 +1,11 @@
 import { createPool, Pool } from 'mysql2/promise';
 import { SSM } from 'aws-sdk';
-import { PassengerType, SinglePassengerType } from '../shared/dbTypes';
+import {
+    GroupPassengerTypeDb,
+    GroupPassengerTypeReference,
+    PassengerType,
+    SinglePassengerType,
+} from '../shared/dbTypes';
 
 const ssm = new SSM({ region: 'eu-west-2' });
 
@@ -78,5 +83,22 @@ export const getPassengerTypeById = async (passengerId: number, noc: string): Pr
         id,
         name,
         passengerType: JSON.parse(contents) as PassengerType,
+    };
+};
+
+export const getGroupDefinitionByPassengerId = async (
+    passengerId: number,
+    noc: string,
+): Promise<GroupPassengerTypeDb> => {
+    const result = await retrievePassengerTypeById(passengerId, noc, true);
+
+    const { id, name, contents } = result;
+
+    const parsedContents = JSON.parse(contents) as GroupPassengerTypeReference;
+
+    return {
+        id,
+        name,
+        groupPassengerType: parsedContents,
     };
 };
