@@ -1,11 +1,10 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
 import { WithIds, BaseTicket, FullTimeRestriction, BasePeriodTicket } from '../shared/matchingJsonTypes';
-import { getFareDayEnd, getPassengerTypeById, getTimeRestrictionsByIdAndNoc } from './database';
+import { getFareDayEnd, getGroupDefinition, getPassengerTypeById, getTimeRestrictionsByIdAndNoc } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
 import { DbTimeRestriction } from '../shared/dbTypes';
-import { isPeriodTicket } from '../../fdbt-site/src/interfaces/typeGuards';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -39,11 +38,15 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
             }
 
             const baseTicket = JSON.parse(object.Body.toString('utf-8')) as WithIds<BaseTicket>;
+            const singleOrGroupPassengerType = await getPassengerTypeById(baseTicket.passengerType.id, noc);
 
-            const passengerType =
-                'groupDefinition' in baseTicket && baseTicket.groupDefinition
-                    ? { passengerType: 'group' }
-                    : (await getPassengerTypeById(baseTicket.passengerType.id, noc)).passengerType;
+            let passengerType, groupDefinition;
+            if ('groupPassengerType' in singleOrGroupPassengerType) {
+                passengerType = { passengerType: 'group' };
+                groupDefinition = await getGroupDefinition(singleOrGroupPassengerType.groupPassengerType, noc);
+            } else {
+                passengerType = singleOrGroupPassengerType.passengerType;
+            }
 
             const timeRestriction = baseTicket.timeRestriction
                 ? await getTimeRestrictionsByIdAndNoc(baseTicket.timeRestriction.id, noc)
@@ -83,6 +86,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
             const ticket: BaseTicket = {
                 ...baseTicket,
                 ...passengerType,
+                groupDefinition,
                 timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
             };
 

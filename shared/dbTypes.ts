@@ -28,6 +28,24 @@ export interface GroupPassengerType {
     companions: CompanionInfo[];
 }
 
+export interface GroupPassengerTypeDb {
+    id: number;
+    name: string;
+    groupPassengerType: GroupPassengerTypeReference;
+}
+
+export interface CompanionReference {
+    id: number;
+    minNumber?: string;
+    maxNumber: string;
+}
+
+export interface GroupPassengerTypeReference {
+    name: string;
+    maxGroupSize: string;
+    companions: CompanionReference[];
+}
+
 export interface DbTimeRestriction {
     day: TimeRestrictionDay;
     timeBands: DbTimeBand[];
