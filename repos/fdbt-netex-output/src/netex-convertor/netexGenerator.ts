@@ -53,8 +53,8 @@ import {
     NetexObject,
 } from './sharedHelpers';
 
-const netexGenerator = (ticket: Ticket, operatorData: Operator[]): { generate: Function } => {
-    const coreData = getCoreData(operatorData, ticket);
+const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise<{ generate: Function }> => {
+    const coreData = await getCoreData(operatorData, ticket);
     const baseOperatorInfo = coreData.baseOperatorInfo[0];
     const ticketIdentifier: string = coreData.placeholderGroupOfProductsName
         ? coreData.placeholderGroupOfProductsName
@@ -136,6 +136,7 @@ const netexGenerator = (ticket: Ticket, operatorData: Operator[]): { generate: F
         const compositeFrameToUpdate = { ...compositeFrame };
         const { nocCode } = baseOperatorInfo as Operator;
         const { lineIdName, ticketType } = coreData;
+
         if (isPointToPointTicket(ticket)) {
             compositeFrameToUpdate.id = `epd:UK:${nocCode}:CompositeFrame_UK_PI_LINE_FARE_OFFER:Trip@${coreData.lineIdName}:op`;
             compositeFrameToUpdate.Name.$t = `Fares for ${lineIdName}`;
@@ -162,8 +163,8 @@ const netexGenerator = (ticket: Ticket, operatorData: Operator[]): { generate: F
         resourceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ResourceFrame_UK_PI_COMMON${`:${
             !isPointToPointTicket(ticket) ? `${coreData.operatorIdentifier}:` : ''
         }`}op`;
-        resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = coreData.website;
-        resourceFrameToUpdate.dataSources.DataSource.Email.$t = baseOperatorInfo.ttrteEnq;
+        resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = coreData.url;
+        resourceFrameToUpdate.dataSources.DataSource.Email.$t = baseOperatorInfo.email;
 
         resourceFrameToUpdate.responsibilitySets.ResponsibilitySet[0].roles.ResponsibilityRoleAssignment.ResponsibleOrganisationRef.ref =
             coreData.nocCodeFormat;
@@ -176,7 +177,7 @@ const netexGenerator = (ticket: Ticket, operatorData: Operator[]): { generate: F
 
         resourceFrameToUpdate.typesOfValue.ValueSet.values.Branding.id = coreData.brandingId;
         resourceFrameToUpdate.typesOfValue.ValueSet.values.Branding.Name.$t = coreData.operatorName;
-        resourceFrameToUpdate.typesOfValue.ValueSet.values.Branding.Url.$t = coreData.website;
+        resourceFrameToUpdate.typesOfValue.ValueSet.values.Branding.Url.$t = coreData.url;
 
         if (
             isSchemeOperatorTicket(ticket) ||
@@ -195,12 +196,23 @@ const netexGenerator = (ticket: Ticket, operatorData: Operator[]): { generate: F
             resourceFrameToUpdate.organisations.Operator.Name.$t = coreData.operatorName;
             resourceFrameToUpdate.organisations.Operator.ShortName.$t = coreData.operatorName;
             resourceFrameToUpdate.organisations.Operator.TradingName.$t = baseOperatorInfo.vosaPsvLicenseName;
-            resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = baseOperatorInfo.fareEnq;
-            resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = coreData.website;
-            resourceFrameToUpdate.organisations.Operator.Address.Street.$t = baseOperatorInfo.complEnq;
-            resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = getNetexMode(baseOperatorInfo.mode);
+            resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = baseOperatorInfo.contactNumber;
+            resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = coreData.url;
+            (resourceFrameToUpdate.organisations.Operator.Address = {
+                Street: {
+                    $t: baseOperatorInfo.street,
+                },
+                ...('postcode' in baseOperatorInfo
+                    ? {
+                          Town: { $t: baseOperatorInfo.town },
+                          PostCode: { $t: baseOperatorInfo.postcode },
+                          PostalRegion: { $t: baseOperatorInfo.county },
+                      }
+                    : undefined),
+            }),
+                (resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = getNetexMode(baseOperatorInfo.mode));
             resourceFrameToUpdate.organisations.Operator.CustomerServiceContactDetails.Email.$t =
-                baseOperatorInfo.ttrteEnq;
+                baseOperatorInfo.email;
         }
 
         return resourceFrameToUpdate;
@@ -210,7 +222,7 @@ const netexGenerator = (ticket: Ticket, operatorData: Operator[]): { generate: F
         const serviceFrameToUpdate = { ...serviceFrame };
         if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket) || isHybridTicket(ticket)) {
             serviceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ServiceFrame_UK_PI_NETWORK:${coreData.placeholderGroupOfProductsName}:op`;
-            const lines = getLinesList(ticket, coreData.website, operatorData);
+            const lines = getLinesList(ticket, coreData.url, operatorData);
             serviceFrameToUpdate.lines.Line = lines;
             serviceFrameToUpdate.groupsOfLines.GroupOfLines = getGroupOfLinesList(
                 coreData.operatorIdentifier,
