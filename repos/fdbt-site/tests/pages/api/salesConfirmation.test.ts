@@ -2,10 +2,10 @@ import moment from 'moment';
 import {
     PRODUCT_DATE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import { TicketPeriodWithInput } from '../../../src/interfaces';
 import { SessionAttributeTypes } from '../../../src/utils/sessions';

@@ -1,6 +1,13 @@
 import { createPool, Pool } from 'mysql2/promise';
 import { SSM } from 'aws-sdk';
-import { DbTimeRestriction, PassengerType, SinglePassengerType } from '../shared/dbTypes';
+import {
+    GroupPassengerTypeDb,
+    GroupPassengerTypeReference,
+    DbTimeRestriction,
+    PassengerType,
+    SinglePassengerType,
+} from '../shared/dbTypes';
+import { GroupDefinition, CompanionInfo } from '../shared/matchingJsonTypes';
 
 const ssm = new SSM({ region: 'eu-west-2' });
 
@@ -43,24 +50,22 @@ const executeQuery = async <T>(query: string, values: (string | boolean | number
 const retrievePassengerTypeById = async (
     id: number,
     noc: string,
-    isGroup: boolean,
 ): Promise<{
     id: number;
     name: string;
     contents: string;
+    isGroup: boolean;
 }> => {
     const queryInput = `
-            SELECT id, name, contents
+            SELECT id, name, contents, isGroup
             FROM passengerType
             WHERE id = ? 
-            AND nocCode = ?
-            AND isGroup = ?`;
+            AND nocCode = ?`;
 
-    const queryResults = await executeQuery<{ id: number; name: string; contents: string }[]>(queryInput, [
-        id,
-        noc,
-        isGroup,
-    ]);
+    const queryResults = await executeQuery<{ id: number; name: string; contents: string; isGroup: boolean }[]>(
+        queryInput,
+        [id, noc],
+    );
 
     if (queryResults.length > 1) {
         throw new Error("Didn't expect more than one passenger type with the same id");
@@ -69,17 +74,50 @@ const retrievePassengerTypeById = async (
     return queryResults[0];
 };
 
-export const getPassengerTypeById = async (passengerId: number, noc: string): Promise<SinglePassengerType> => {
-    const result = await retrievePassengerTypeById(passengerId, noc, false);
+export const getPassengerTypeById = async (
+    passengerId: number,
+    noc: string,
+): Promise<SinglePassengerType | GroupPassengerTypeDb> => {
+    const result = await retrievePassengerTypeById(passengerId, noc);
 
-    const { id, name, contents } = result;
+    const { id, name, contents, isGroup } = result;
 
-    return {
-        id,
-        name,
-        passengerType: JSON.parse(contents) as PassengerType,
-    };
+    return isGroup
+        ? {
+              id,
+              name,
+              groupPassengerType: JSON.parse(contents) as GroupPassengerTypeReference,
+          }
+        : {
+              id,
+              name,
+              passengerType: JSON.parse(contents) as PassengerType,
+          };
 };
+
+export const getCompanions = async (
+    passengerType: GroupPassengerTypeReference,
+    noc: string,
+): Promise<CompanionInfo[]> =>
+    await Promise.all(
+        passengerType.companions.map(async (companion) => {
+            const result = await retrievePassengerTypeById(companion.id, noc);
+            const passengerType = JSON.parse(result.contents) as PassengerType;
+            return {
+                ...passengerType,
+                minNumber: companion.minNumber,
+                maxNumber: companion.maxNumber,
+            };
+        }),
+    );
+
+export const getGroupDefinition = async (
+    passengerType: GroupPassengerTypeReference,
+    noc: string,
+): Promise<GroupDefinition> => ({
+    maxPeople: passengerType.maxGroupSize,
+    companions: await getCompanions(passengerType, noc),
+});
 
 export const getTimeRestrictionsByIdAndNoc = async (
     timeRestrictionId: number,
