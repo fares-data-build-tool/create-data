@@ -2,19 +2,14 @@ import moment from 'moment';
 import {
     PRODUCT_DATE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
-    GROUP_PASSENGER_INFO_ATTRIBUTE,
-    GROUP_SIZE_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
-import { SingleTicket, TicketPeriodWithInput } from '../../../src/interfaces';
-import { SessionAttributeTypes } from '../../../src/utils/sessions';
+import { TicketPeriodWithInput } from '../../../src/interfaces';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import salesConfirmation from '../../../src/pages/api/salesConfirmation';
 import * as session from '../../../src/utils/sessions';
 import * as userData from '../../../src/utils/apiUtils/userData';
 import * as index from '../../../src/utils/apiUtils/index';
-import { WithIds } from '../../../shared/matchingJsonTypes';
 
 describe('salesOfferPackages', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
@@ -219,61 +214,5 @@ describe('salesOfferPackages', () => {
         await salesConfirmation(req, res);
 
         expect(getGeoZoneTicketJsonSpy).toBeCalledWith(req, res);
-    });
-
-    it('creates a group definition for a group ticket and adds to user json object', async () => {
-        const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
-        getFareTypeFromFromAttributesSpy.mockImplementation(() => 'single');
-        const putUserDataInS3Spy = jest.spyOn(userData, 'putUserDataInProductsBucket');
-        putUserDataInS3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
-        const exampleUserJson: WithIds<SingleTicket> = {
-            nocCode: 'TEST',
-            type: 'single',
-            passengerType: { id: 1 },
-            email: 'string',
-            uuid: 'string',
-            timeRestriction: { id: 2 },
-            ticketPeriod: {
-                startDate: 'now',
-                endDate: 'a year later',
-            },
-            operatorName: 'string',
-            lineName: 'string',
-            lineId: '3h3vb32ik',
-            serviceDescription: 'string',
-            products: [],
-            fareZones: [],
-            termTime: true,
-            unassignedStops: {
-                singleUnassignedStops: [],
-            },
-        };
-        getSingleTicketJsonSpy.mockImplementation(() => {
-            return exampleUserJson;
-        });
-        const { req, res } = getMockRequestAndResponse({
-            body: {},
-            session: {
-                [GROUP_PASSENGER_INFO_ATTRIBUTE]: {
-                    thing: 'test thing',
-                },
-                [GROUP_SIZE_ATTRIBUTE]: {
-                    thing: 'another test thing',
-                },
-                [PASSENGER_TYPE_ATTRIBUTE]: {
-                    passengerType: 'group',
-                },
-            } as unknown as SessionAttributeTypes,
-        });
-
-        await salesConfirmation(req, res);
-
-        expect(putUserDataInS3Spy).toBeCalledWith(
-            {
-                ...exampleUserJson,
-            },
-            expect.any(String),
-            'TEST',
-        );
     });
 });

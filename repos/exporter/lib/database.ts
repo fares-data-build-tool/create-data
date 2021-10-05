@@ -95,6 +95,30 @@ export const getPassengerTypeById = async (
           };
 };
 
+export const getCompanions = async (
+    passengerType: GroupPassengerTypeReference,
+    noc: string,
+): Promise<CompanionInfo[]> =>
+    await Promise.all(
+        passengerType.companions.map(async (companion) => {
+            const result = await retrievePassengerTypeById(companion.id, noc);
+            const passengerType = JSON.parse(result.contents) as PassengerType;
+            return {
+                ...passengerType,
+                minNumber: companion.minNumber,
+                maxNumber: companion.maxNumber,
+            };
+        }),
+    );
+
+export const getGroupDefinition = async (
+    passengerType: GroupPassengerTypeReference,
+    noc: string,
+): Promise<GroupDefinition> => ({
+    maxPeople: passengerType.maxGroupSize,
+    companions: await getCompanions(passengerType, noc),
+});
+
 export const getTimeRestrictionsByIdAndNoc = async (
     timeRestrictionId: number,
     noc: string,
@@ -129,32 +153,4 @@ export const getFareDayEnd = async (noc: string): Promise<string | undefined> =>
     >(queryInput, [noc]);
 
     return queryResults[0]?.time;
-};
-
-export const getCompanions = async (
-    passengerType: GroupPassengerTypeReference,
-    noc: string,
-): Promise<CompanionInfo[]> =>
-    await Promise.all(
-        passengerType.companions.map(async (companion) => {
-            const result = await retrievePassengerTypeById(companion.id, noc);
-            const passengerType = JSON.parse(result.contents) as PassengerType;
-            return {
-                ...passengerType,
-                minNumber: companion.minNumber,
-                maxNumber: companion.maxNumber,
-            };
-        }),
-    );
-
-export const getGroupDefinition = async (
-    passengerType: GroupPassengerTypeReference,
-    noc: string,
-): Promise<GroupDefinition> => {
-    const companions = await getCompanions(passengerType, noc);
-
-    return {
-        maxPeople: passengerType.maxGroupSize,
-        companions,
-    };
 };

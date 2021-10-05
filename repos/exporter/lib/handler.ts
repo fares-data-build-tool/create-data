@@ -38,10 +38,9 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
             }
 
             const productData = JSON.parse(object.Body.toString('utf-8')) as WithIds<BaseTicket>;
-
             const singleOrGroupPassengerType = await getPassengerTypeById(productData.passengerType.id, noc);
-            let passengerType, groupDefinition;
 
+            let passengerType, groupDefinition;
             if ('groupPassengerType' in singleOrGroupPassengerType) {
                 passengerType = { passengerType: 'group' };
                 groupDefinition = await getGroupDefinition(singleOrGroupPassengerType.groupPassengerType, noc);
