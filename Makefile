@@ -19,6 +19,7 @@ install: ## Install all node modules
 	${NVM_INITIATE} cd ${FDBT_ROOT}/repos/fdbt-site/cypress_tests && nvm use && npm i
 	${NVM_INITIATE} cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/retrievers && nvm use && npm i
 	${NVM_INITIATE} cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/uploaders && nvm use && npm i
+	${NVM_INITIATE} cd ${FDBT_ROOT}/repos/exporter && nvm use && npm i
 	pip3 install \
     -r ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/retrievers/requirements.txt \
     -r ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/uploaders/requirements.txt \
