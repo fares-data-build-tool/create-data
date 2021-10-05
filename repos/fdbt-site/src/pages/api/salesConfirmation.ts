@@ -1,7 +1,6 @@
-import { saveProductsEnabled, myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
+import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import moment from 'moment';
 import { NextApiResponse } from 'next';
-import { insertProducts } from '../../data/auroradb';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
@@ -30,6 +29,8 @@ import {
     getSchemeOperatorTicketJson,
     getSingleTicketJson,
     putUserDataInProductsBucket,
+    splitUserDataJsonByProducts,
+    insertDataToProductsBucketAndProductsTable,
 } from '../../utils/apiUtils/userData';
 import { TicketWithIds } from '../../../shared/matchingJsonTypes';
 import { triggerExport } from '../../utils/apiUtils/export';
@@ -97,15 +98,21 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             userDataJson.carnet = carnetAttribute;
             const noc = getAndValidateNoc(req, res);
-            const filePath = await putUserDataInProductsBucket(userDataJson, uuid, noc);
-            if (saveProductsEnabled && (ticketType === 'geoZone' || dataFormat !== 'tnds')) {
-                const { startDate, endDate } = userDataJson.ticketPeriod;
-                if (!startDate || !endDate) {
-                    throw new Error('Start or end date could not be found.');
-                }
-                const dateTime = moment().toDate();
-                const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
-                await insertProducts(noc, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);
+            let filePath = '';
+            if (userDataJson.products.length > 1) {
+                const splitUserDataJson = splitUserDataJsonByProducts(userDataJson);
+                splitUserDataJson.map(async (splitJson) => {
+                    await insertDataToProductsBucketAndProductsTable(splitJson, noc, uuid, ticketType, dataFormat);
+                });
+                filePath = await putUserDataInProductsBucket(userDataJson, uuid, noc);
+            } else {
+                filePath = await insertDataToProductsBucketAndProductsTable(
+                    userDataJson,
+                    noc,
+                    uuid,
+                    ticketType,
+                    dataFormat,
+                );
             }
 
             if (!myFaresEnabled || !exportEnabled) {
