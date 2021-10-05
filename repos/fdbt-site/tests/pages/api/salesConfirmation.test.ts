@@ -226,8 +226,6 @@ describe('salesConfirmation', () => {
     });
 
     it('creates a group definition for a group ticket with one product and adds to user json object', async () => {
-        const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
-        getFareTypeFromFromAttributesSpy.mockImplementation(() => 'single');
         const putUserDataInS3Spy = jest.spyOn(userData, 'putUserDataInProductsBucket');
         putUserDataInS3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
         const insertDataToProductsBucketAndProductsTableSpy = jest.spyOn(
@@ -250,6 +248,7 @@ describe('salesConfirmation', () => {
                 [PASSENGER_TYPE_ATTRIBUTE]: {
                     passengerType: 'group',
                 },
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
             } as unknown as SessionAttributeTypes,
         });
 
