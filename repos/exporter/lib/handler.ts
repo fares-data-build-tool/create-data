@@ -1,10 +1,11 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
-import { WithIds, BaseTicket, FullTimeRestriction } from '../shared/matchingJsonTypes';
+import { WithIds, BaseTicket, FullTimeRestriction, BasePeriodTicket } from '../shared/matchingJsonTypes';
 import { getFareDayEnd, getPassengerTypeById, getTimeRestrictionsByIdAndNoc } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
 import { DbTimeRestriction } from '../shared/dbTypes';
+import { isPeriodTicket } from '../../fdbt-site/src/interfaces/typeGuards';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -37,15 +38,15 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
                 throw new Error(`body was not present [${path}]`);
             }
 
-            const productData = JSON.parse(object.Body.toString('utf-8')) as WithIds<BaseTicket>;
+            const baseTicket = JSON.parse(object.Body.toString('utf-8')) as WithIds<BaseTicket>;
 
             const passengerType =
-                'groupDefinition' in productData && productData.groupDefinition
+                'groupDefinition' in baseTicket && baseTicket.groupDefinition
                     ? { passengerType: 'group' }
-                    : (await getPassengerTypeById(productData.passengerType.id, noc)).passengerType;
+                    : (await getPassengerTypeById(baseTicket.passengerType.id, noc)).passengerType;
 
-            const timeRestriction = productData.timeRestriction
-                ? await getTimeRestrictionsByIdAndNoc(productData.timeRestriction.id, noc)
+            const timeRestriction = baseTicket.timeRestriction
+                ? await getTimeRestrictionsByIdAndNoc(baseTicket.timeRestriction.id, noc)
                 : [];
 
             const fareDayEnd = await getFareDayEnd(noc);
@@ -73,15 +74,14 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
                 }),
             );
 
-            // check if ticket is period ticket
-            // if it is, check if periodValid == fareDayEnd
-            // if it is, set value of productEndTime to fareDayEnd from above
-            //
-
-            // ticket.type
+            if (isBasePeriodTicket(baseTicket)) {
+                if (baseTicket.products[0].productValidity === 'fareDayEnd') {
+                    baseTicket.fareDayEnd = fareDayEnd;
+                }
+            }
 
             const ticket: BaseTicket = {
-                ...productData,
+                ...baseTicket,
                 ...passengerType,
                 timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
             };
@@ -92,3 +92,6 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
 
     console.log(`done ${paths.toString()}`);
 };
+
+export const isBasePeriodTicket = (ticket: WithIds<BaseTicket>): ticket is WithIds<BasePeriodTicket> =>
+    'fareDayEnd' in ticket;
