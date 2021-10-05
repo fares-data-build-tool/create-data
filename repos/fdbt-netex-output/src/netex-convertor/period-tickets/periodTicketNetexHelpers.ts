@@ -8,6 +8,8 @@ import {
     SchemeOperatorGeoZoneTicket,
 } from '../../../shared/matchingJsonTypes';
 
+import * as db from '../../data/auroradb';
+
 import {
     DistributionAssignment,
     GeoZoneTicket,
@@ -36,6 +38,8 @@ import {
     Ticket,
     TopographicProjectionRef,
     User,
+    OperatorWithExpandedAddress,
+    SchemeOperatorWithExpandedAddress,
 } from '../../types';
 
 import {
@@ -50,17 +54,29 @@ import {
     replaceIWBusCoNocCode,
 } from '../sharedHelpers';
 
-export const getBaseSchemeOperatorInfo = (userPeriodTicket: BaseSchemeOperatorTicket): SchemeOperator => ({
-    schemeOperatorName: userPeriodTicket.schemeOperatorName,
-    schemeOperatorRegionCode: userPeriodTicket.schemeOperatorRegionCode,
-    website: '',
-    ttrteEnq: '',
-    opId: `${userPeriodTicket.schemeOperatorName}-${userPeriodTicket.schemeOperatorRegionCode}-opId`,
-    vosaPsvLicenseName: '',
-    fareEnq: '',
-    complEnq: '',
-    mode: 'bus',
-});
+export const getBaseSchemeOperatorInfo = async (
+    userPeriodTicket: BaseSchemeOperatorTicket,
+): Promise<SchemeOperatorWithExpandedAddress> => {
+    const schemeOperator: SchemeOperator = {
+        schemeOperatorName: userPeriodTicket.schemeOperatorName,
+        schemeOperatorRegionCode: userPeriodTicket.schemeOperatorRegionCode,
+        url: '',
+        email: '',
+        opId: `${userPeriodTicket.schemeOperatorName}-${userPeriodTicket.schemeOperatorRegionCode}-opId`,
+        vosaPsvLicenseName: '',
+        contactNumber: '',
+        street: '',
+        mode: 'bus',
+    };
+
+    const schemeCode = `${userPeriodTicket.schemeOperatorName.substr(0, 5)}${
+        userPeriodTicket.schemeOperatorRegionCode
+    }`.toUpperCase();
+
+    const schemeDetails = await db.getOperatorDetailsByNoc(schemeCode);
+
+    return { ...schemeOperator, ...schemeDetails };
+};
 
 export const getScheduledStopPointsList = (stops: Stop[]): ScheduledStopPoint[] =>
     stops.map((stop: Stop) => ({
@@ -115,7 +131,7 @@ export const getLinesList = (
                 id: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
                 Name: { $t: `Line ${service.lineName}` },
                 Description: { $t: service.serviceDescription },
-                Url: { $t: currentOperator ? getCleanWebsite(currentOperator.website) : '' },
+                Url: { $t: currentOperator ? getCleanWebsite(currentOperator.url) : '' },
                 PublicCode: { $t: service.lineName },
                 PrivateCode: service.lineId
                     ? {
@@ -783,41 +799,53 @@ export const getPeriodConditionsElement = (
 };
 
 export const getOrganisations = (
-    operatorData: Operator[],
-    baseOperatorInfo?: SchemeOperator,
+    operatorData: OperatorWithExpandedAddress[],
+    baseOperatorInfo?: SchemeOperatorWithExpandedAddress,
 ): NetexOrganisationOperator[] => {
-    const organisations = operatorData.map(operator => ({
-        version: '1.0',
-        id: `noc:${operator.nocCode}`,
-        PublicCode: {
-            $t: operator.nocCode,
-        },
-        Name: {
-            $t: operator.operatorPublicName,
-        },
-        ShortName: {
-            $t: operator.operatorPublicName,
-        },
-        TradingName: {
-            $t: operator.vosaPsvLicenseName,
-        },
-        ContactDetails: {
-            Phone: {
-                $t: operator.fareEnq,
+    const organisations = operatorData.map(operator => {
+        const organisationOperator = {
+            version: '1.0',
+            id: `noc:${operator.nocCode}`,
+            PublicCode: {
+                $t: operator.nocCode,
             },
-            Url: {
-                $t: getCleanWebsite(operator.website),
+            Name: {
+                $t: operator.operatorName,
             },
-        },
-        Address: {
-            Street: {
-                $t: operator.complEnq,
+            ShortName: {
+                $t: operator.operatorName,
             },
-        },
-        PrimaryMode: {
-            $t: getNetexMode(operator.mode),
-        },
-    }));
+            TradingName: {
+                $t: operator.vosaPsvLicenseName,
+            },
+            ContactDetails: {
+                Phone: {
+                    $t: operator.contactNumber,
+                },
+                Url: {
+                    $t: getCleanWebsite(operator.url),
+                },
+            },
+            Address: {
+                Street: {
+                    $t: operator.street,
+                },
+                ...('postcode' in operator
+                    ? {
+                          Town: { $t: operator.town },
+                          PostCode: { $t: operator.postcode },
+                          PostalRegion: { $t: operator.county },
+                      }
+                    : undefined),
+            },
+            PrimaryMode: {
+                $t: getNetexMode(operator.mode),
+            },
+        };
+
+        return organisationOperator;
+    });
+
     if (baseOperatorInfo) {
         organisations.push({
             version: '1.0',
@@ -836,22 +864,30 @@ export const getOrganisations = (
             },
             ContactDetails: {
                 Phone: {
-                    $t: baseOperatorInfo.fareEnq,
+                    $t: baseOperatorInfo.contactNumber,
                 },
                 Url: {
-                    $t: baseOperatorInfo.website,
+                    $t: baseOperatorInfo.url,
                 },
             },
             Address: {
                 Street: {
-                    $t: baseOperatorInfo.complEnq,
+                    $t: baseOperatorInfo.street,
                 },
+                ...('postcode' in baseOperatorInfo
+                    ? {
+                          Town: { $t: baseOperatorInfo.town },
+                          PostCode: { $t: baseOperatorInfo.postcode },
+                          PostalRegion: { $t: baseOperatorInfo.county },
+                      }
+                    : undefined),
             },
             PrimaryMode: {
                 $t: getNetexMode(baseOperatorInfo.mode),
             },
         });
     }
+
     return organisations;
 };
 
@@ -871,7 +907,7 @@ export const getGroupOfOperators = (operatorData: Operator[]): GroupOfOperators 
     const members = operatorData.map(operator => ({
         version: '1.0',
         ref: `noc:${operator.nocCode}`,
-        $t: operator.operatorPublicName,
+        $t: operator.operatorName,
     }));
 
     group.GroupOfOperators.members.OperatorRef = members;

@@ -241,9 +241,9 @@ export const replaceIWBusCoNocCode = (nocCode: string): string => {
     return nocCode;
 };
 
-export const getCoreData = (operators: Operator[], ticket: Ticket): CoreData => {
+export const getCoreData = async (operators: Operator[], ticket: Ticket): Promise<CoreData> => {
     const baseOperatorInfo = isSchemeOperatorTicket(ticket)
-        ? getBaseSchemeOperatorInfo(ticket)
+        ? await getBaseSchemeOperatorInfo(ticket)
         : operators.find(operator => operator.nocCode === replaceIWBusCoNocCode(ticket.nocCode));
 
     const operatorIdentifier = isSchemeOperatorTicket(ticket)
@@ -262,15 +262,15 @@ export const getCoreData = (operators: Operator[], ticket: Ticket): CoreData => 
         opIdNocFormat: `noc:${baseOperatorInfo.opId}`,
         nocCodeFormat,
         currentDate: new Date(Date.now()),
-        website: getCleanWebsite(baseOperatorInfo.website),
+        url: getCleanWebsite(baseOperatorInfo.url),
         brandingId: `op:${operatorIdentifier}@brand`,
         operatorIdentifier,
         baseOperatorInfo: [baseOperatorInfo],
         placeholderGroupOfProductsName: isPointToPointTicket(ticket) ? '' : `${operatorIdentifier}_products`,
         ticketUserConcat: `${ticket.type}_${ticket.passengerType}`,
         operatorPublicNameLineNameFormat:
-            'lineName' in ticket && 'operatorPublicName' in baseOperatorInfo
-                ? `${baseOperatorInfo.operatorPublicName} ${ticket.lineName}`
+            'lineName' in ticket && 'operatorName' in baseOperatorInfo
+                ? `${baseOperatorInfo.operatorName} ${ticket.lineName}`
                 : '',
         nocCodeLineNameFormat: 'lineName' in ticket ? `${operatorIdentifier}_${ticket.lineName}` : '',
         lineIdName:
