@@ -13,8 +13,8 @@
         {
           "name": "Onboard (cash)",
           "description": "Purchasable on board the bus, with cash, as a paper ticket.",
-          "purchaseLocations": ["onBoard","postal","agency"],
-          "paymentMethods": ["contactlessTravelCard","cash"],
+          "purchaseLocations": ["onBoard", "postal", "agency"],
+          "paymentMethods": ["contactlessTravelCard", "cash"],
           "ticketFormats": ["paperTicket"]
         },
         {
