@@ -1191,22 +1191,20 @@ export const convertToFullPassengerType = async (
     groupPassengerType: {
         ...group.groupPassengerType,
         companions: await Promise.all(
-            group.groupPassengerType.companions.map(
-                async (companion): Promise<CompanionInfo> => {
-                    const individual = await getPassengerTypeById(companion.id, nocCode);
-                    if (!individual) {
-                        throw new Error(`no passenger type found for companion id [${companion.id}]`);
-                    }
-                    return {
-                        minNumber: companion.minNumber,
-                        maxNumber: companion.maxNumber,
-                        ...individual.passengerType,
-                        passengerType: individual.passengerType.passengerType,
-                        name: individual.name,
-                        id: individual.id,
-                    };
-                },
-            ),
+            group.groupPassengerType.companions.map(async (companion): Promise<CompanionInfo> => {
+                const individual = await getPassengerTypeById(companion.id, nocCode);
+                if (!individual) {
+                    throw new Error(`no passenger type found for companion id [${companion.id}]`);
+                }
+                return {
+                    minNumber: companion.minNumber,
+                    maxNumber: companion.maxNumber,
+                    ...individual.passengerType,
+                    passengerType: individual.passengerType.passengerType,
+                    name: individual.name,
+                    id: individual.id,
+                };
+            }),
         ),
     },
 });
