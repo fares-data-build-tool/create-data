@@ -198,20 +198,19 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             resourceFrameToUpdate.organisations.Operator.TradingName.$t = baseOperatorInfo.vosaPsvLicenseName;
             resourceFrameToUpdate.organisations.Operator.ContactDetails.Phone.$t = baseOperatorInfo.contactNumber;
             resourceFrameToUpdate.organisations.Operator.ContactDetails.Url.$t = coreData.url;
-            resourceFrameToUpdate.organisations.Operator.Address = {
+            (resourceFrameToUpdate.organisations.Operator.Address = {
                 Street: {
                     $t: baseOperatorInfo.street,
                 },
-                ...('postcode' in baseOperatorInfo 
+                ...('postcode' in baseOperatorInfo
                     ? {
                           Town: { $t: baseOperatorInfo.town },
                           PostCode: { $t: baseOperatorInfo.postcode },
                           PostalRegion: { $t: baseOperatorInfo.county },
                       }
                     : undefined),
-            },
-
-            resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = getNetexMode(baseOperatorInfo.mode);
+            }),
+                (resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = getNetexMode(baseOperatorInfo.mode));
             resourceFrameToUpdate.organisations.Operator.CustomerServiceContactDetails.Email.$t =
                 baseOperatorInfo.email;
         }
