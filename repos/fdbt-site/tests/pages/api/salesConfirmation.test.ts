@@ -271,12 +271,6 @@ describe('salesOfferPackages', () => {
         expect(putUserDataInS3Spy).toBeCalledWith(
             {
                 ...exampleUserJson,
-                groupDefinition: {
-                    companions: {
-                        thing: 'test thing',
-                    },
-                    maxPeople: undefined,
-                },
             },
             expect.any(String),
             'TEST',

@@ -1,7 +1,7 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
 import { WithIds, BaseTicket, FullTimeRestriction } from '../shared/matchingJsonTypes';
-import { getFareDayEnd, getPassengerTypeById, getTimeRestrictionsByIdAndNoc } from './database';
+import { getFareDayEnd, getGroupDefinition, getPassengerTypeById, getTimeRestrictionsByIdAndNoc } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
 import { DbTimeRestriction } from '../shared/dbTypes';
@@ -39,10 +39,15 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
 
             const productData = JSON.parse(object.Body.toString('utf-8')) as WithIds<BaseTicket>;
 
-            const passengerType =
-                'groupDefinition' in productData && productData.groupDefinition
-                    ? { passengerType: 'group' }
-                    : (await getPassengerTypeById(productData.passengerType.id, noc)).passengerType;
+            const singleOrGroupPassengerType = await getPassengerTypeById(productData.passengerType.id, noc);
+            let passengerType, groupDefinition;
+
+            if ('groupPassengerType' in singleOrGroupPassengerType) {
+                passengerType = { passengerType: 'group' };
+                groupDefinition = await getGroupDefinition(singleOrGroupPassengerType.groupPassengerType, noc);
+            } else {
+                passengerType = singleOrGroupPassengerType.passengerType;
+            }
 
             const timeRestriction = productData.timeRestriction
                 ? await getTimeRestrictionsByIdAndNoc(productData.timeRestriction.id, noc)
@@ -76,6 +81,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
             const ticket: BaseTicket = {
                 ...productData,
                 ...passengerType,
+                groupDefinition,
                 timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
             };
 
