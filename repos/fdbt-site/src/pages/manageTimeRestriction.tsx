@@ -9,9 +9,13 @@ import TwoThirdsLayout from '../layout/Layout';
 import { getGlobalSettingsManageProps, GlobalSettingsManageProps } from '../utils/globalSettings';
 import { getSessionAttribute } from '../utils/sessions';
 import { getAndValidateNoc } from '../utils';
+import InformationSummary from '../components/InformationSummary';
 
 const title = 'Manage Time Restrictions - Create Fares Data Service';
 const description = 'Manage Time Restrictions page of the Create Fares Data Service';
+
+const editingInformationText =
+    'Editing and saving new changes will be applied to all fares using this time restriction.';
 
 const days = [
     {
@@ -228,6 +232,9 @@ const ManageTimeRestriction = ({
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/manageTimeRestriction" method="post" csrfToken={csrfToken}>
                 <>
+                    {editMode && errors.length === 0 ? (
+                        <InformationSummary informationText={editingInformationText} />
+                    ) : null}
                     <ErrorSummary errors={errors} />
 
                     <h1 className="govuk-heading-l" id="manage-time-restriction-page-heading">

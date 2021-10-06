@@ -12,6 +12,20 @@ describe('pages', () => {
             expect(tree).toMatchSnapshot();
         });
 
+        it('should render correctly in edit mode', () => {
+            const inputs = {
+                id: 0,
+                name: 'test',
+                ticketFormats: ['blah'],
+                paymentMethods: ['blob'],
+                purchaseLocations: ['baz'],
+            };
+
+            const tree = shallow(<ManagePurchaseMethod csrfToken={''} errors={[]} inputs={inputs} editMode />);
+
+            expect(tree).toMatchSnapshot();
+        });
+
         it('should render error state on purchase method form group when error', () => {
             const errors = [{ id: 'purchase-method-name', errorMessage: 'You must select at least one day.' }];
 
