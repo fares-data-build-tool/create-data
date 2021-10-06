@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
+import InformationSummary from '../components/InformationSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
 import { getPassengerTypeById } from '../data/auroradb';
@@ -11,6 +12,8 @@ import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Manage Passenger Types - Create Fares Data Service';
 const description = 'Manage Passenger Type page of the Create Fares Data Service';
+
+const editingInformationText = 'Editing and saving new changes will be applied to all fares using this passenger type.';
 
 type ManagePassengerTypesProps = GlobalSettingsManageProps<SinglePassengerType>;
 
@@ -31,6 +34,9 @@ const ManagePassengerTypes = ({
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/managePassengerTypes" method="post" csrfToken={csrfToken}>
                 <>
+                    {editMode && errors.length === 0 ? (
+                        <InformationSummary informationText={editingInformationText} />
+                    ) : null}
                     <ErrorSummary errors={errors} />
 
                     <input type="hidden" name="id" value={id} />

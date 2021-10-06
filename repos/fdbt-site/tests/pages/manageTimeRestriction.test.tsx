@@ -19,6 +19,25 @@ describe('pages', () => {
             expect(tree).toMatchSnapshot();
         });
 
+        it('should render correctly in edit mode', () => {
+            const inputs: PremadeTimeRestriction = {
+                id: 0,
+                name: 'test',
+                contents: [
+                    { day: 'monday', timeBands: [{ startTime: '2200', endTime: '2300' }] },
+                    { day: 'tuesday', timeBands: [{ startTime: '0100', endTime: '2400' }] },
+                    { day: 'wednesday', timeBands: [{ startTime: '1200', endTime: '1200' }] },
+                    { day: 'thursday', timeBands: [{ startTime: '-1', endTime: '' }] },
+                ],
+            };
+
+            const tree = shallow(
+                <ManageTimeRestriction csrfToken={''} errors={[]} inputs={inputs} editMode fareDayEnd={'1234'} />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
         it('should render error state on time restriction form group when no days are selected', () => {
             const errors = [{ id: 'time-restriction-days', errorMessage: 'You must select at least one day.' }];
 

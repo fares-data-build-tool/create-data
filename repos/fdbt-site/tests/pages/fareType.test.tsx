@@ -82,15 +82,6 @@ describe('pages', () => {
                 expect(actualProps).toEqual(expectedProps);
             });
 
-            it('should redirect to /noServices when the chosen NOC has no services', async () => {
-                (getAllServicesByNocCode as jest.Mock).mockResolvedValue([]);
-                const mockContext = getMockContext({
-                    mockWriteHeadFn: writeHeadMock,
-                });
-                await getServerSideProps(mockContext);
-                expect(writeHeadMock).toBeCalledWith(302, { Location: '/noServices' });
-            });
-
             it('should redirect to /manageOperatorDetails if the user is a scheme operator and does not have their operator details set', async () => {
                 (getOperatorDetails as jest.Mock).mockResolvedValue(undefined);
                 const mockContext = getMockContext({
