@@ -5459,7 +5459,6 @@ export const mockDataSplitOutProducts = [
             {
                 carnetDetails: undefined,
                 productDuration: '5 weeks',
-                productEndTime: '',
                 productName: 'Weekly Ticket',
                 productPrice: '50',
                 productValidity: '24hr',
@@ -5649,7 +5648,6 @@ export const mockDataSplitOutProducts = [
             {
                 carnetDetails: undefined,
                 productDuration: '1 year',
-                productEndTime: '',
                 productName: 'Day Ticket',
                 productPrice: '2.50',
                 productValidity: '24hr',
@@ -5839,7 +5837,6 @@ export const mockDataSplitOutProducts = [
             {
                 carnetDetails: undefined,
                 productDuration: '28 months',
-                productEndTime: '',
                 productName: 'Monthly Ticket',
                 productPrice: '200',
                 productValidity: '24hr',
