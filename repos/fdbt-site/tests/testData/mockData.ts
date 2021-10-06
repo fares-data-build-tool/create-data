@@ -1091,7 +1091,6 @@ export const expectedProductDetailsArray: ProductDetails[] = [
         productName: 'Product',
         productPrice: '2.99',
         productDuration: '1 day',
-        productEndTime: '',
         productValidity: '24hr',
         salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
     },
@@ -1099,7 +1098,6 @@ export const expectedProductDetailsArray: ProductDetails[] = [
         productName: 'Product Two',
         productPrice: '7.99',
         productDuration: '7 days',
-        productEndTime: '',
         productValidity: '24hr',
         salesOfferPackages: [defaultSalesOfferPackageTwo],
     },
@@ -1667,7 +1665,6 @@ export const expectedPointToPointPeriodTicket: WithIds<PointToPointPeriodTicket>
             productName: 'My product',
             productDuration: '7 weeks',
             productValidity: '24hr',
-            productEndTime: '',
         },
     ] as PointToPointPeriodTicket['products'],
     inboundFareZones: [
@@ -2223,7 +2220,6 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: WithIds<PeriodGeoZ
             productPrice: '50',
             productDuration: '5 weeks',
             productValidity: '24hr',
-            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2232,7 +2228,6 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: WithIds<PeriodGeoZ
             productPrice: '2.50',
             productDuration: '1 year',
             productValidity: '24hr',
-            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2241,7 +2236,6 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: WithIds<PeriodGeoZ
             productPrice: '200',
             productDuration: '28 months',
             productValidity: '24hr',
-            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2268,7 +2262,6 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: WithIds<Mul
             productPrice: '50',
             productDuration: '5 weeks',
             productValidity: '24hr',
-            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2277,7 +2270,6 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: WithIds<Mul
             productPrice: '2.50',
             productDuration: '1 year',
             productValidity: '24hr',
-            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2286,7 +2278,6 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: WithIds<Mul
             productPrice: '200',
             productDuration: '28 months',
             productValidity: '24hr',
-            productEndTime: '',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
             carnetDetails: undefined,
         },
@@ -2454,7 +2445,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productPrice: '50',
                 productDuration: '5 weeks',
                 productValidity: 'fareDayEnd',
-                productEndTime: '1900',
                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                 carnetDetails: undefined,
             },
@@ -2463,7 +2453,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productPrice: '2.50',
                 productDuration: '1 year',
                 productValidity: 'fareDayEnd',
-                productEndTime: '1900',
                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                 carnetDetails: undefined,
             },
@@ -2472,7 +2461,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productPrice: '200',
                 productDuration: '28 months',
                 productValidity: 'fareDayEnd',
-                productEndTime: '1900',
                 salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
                 carnetDetails: undefined,
             },
@@ -2814,7 +2802,6 @@ export const expectedSchemeOperatorMultiServicesTicket: WithIds<SchemeOperatorMu
             productName: 'product one',
             productPrice: '5.00',
             productDuration: '2 weeks',
-            productEndTime: '',
             productValidity: '24hr',
             salesOfferPackages: [
                 {
@@ -2832,7 +2819,6 @@ export const expectedSchemeOperatorMultiServicesTicket: WithIds<SchemeOperatorMu
             productName: 'product two',
             productPrice: '5.02',
             productDuration: '5 days',
-            productEndTime: '',
             productValidity: '24hr',
             salesOfferPackages: [
                 {
@@ -3110,7 +3096,6 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: WithIds<SchemeO
             productName: 'Weekly Ticket',
             productPrice: '50',
             productValidity: 'fareDayEnd',
-            productEndTime: '1900',
             salesOfferPackages: [
                 {
                     description: '',
@@ -3134,7 +3119,6 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: WithIds<SchemeO
             productName: 'Day Ticket',
             productPrice: '2.50',
             productValidity: 'fareDayEnd',
-            productEndTime: '1900',
             salesOfferPackages: [
                 {
                     description: '',
@@ -3155,7 +3139,6 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: WithIds<SchemeO
         {
             carnetDetails: undefined,
             productDuration: '28 years',
-            productEndTime: '1900',
             productName: 'Monthly Ticket',
             productPrice: '200',
             productValidity: 'fareDayEnd',
@@ -5476,7 +5459,6 @@ export const mockDataSplitOutProducts = [
             {
                 carnetDetails: undefined,
                 productDuration: '5 weeks',
-                productEndTime: '',
                 productName: 'Weekly Ticket',
                 productPrice: '50',
                 productValidity: '24hr',
@@ -5666,7 +5648,6 @@ export const mockDataSplitOutProducts = [
             {
                 carnetDetails: undefined,
                 productDuration: '1 year',
-                productEndTime: '',
                 productName: 'Day Ticket',
                 productPrice: '2.50',
                 productValidity: '24hr',
@@ -5856,7 +5837,6 @@ export const mockDataSplitOutProducts = [
             {
                 carnetDetails: undefined,
                 productDuration: '28 months',
-                productEndTime: '',
                 productName: 'Monthly Ticket',
                 productPrice: '200',
                 productValidity: '24hr',

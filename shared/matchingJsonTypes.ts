@@ -16,6 +16,7 @@ export interface PeriodGeoZoneTicket extends BasePeriodTicket {
 export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator'> {
     operatorName: string;
     products: ProductDetails[];
+    fareDayEnd?: string;
 }
 
 export interface SelectedService {
@@ -215,7 +216,6 @@ export interface ProductDetails extends BaseProduct {
     productPrice: string;
     productDuration: string;
     productValidity: string;
-    productEndTime?: string;
     carnetDetails?: CarnetDetails;
 }
 
