@@ -98,4 +98,4 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
 };
 
 export const isBasePeriodTicket = (ticket: WithIds<BaseTicket>): ticket is WithIds<BasePeriodTicket> =>
-    'fareDayEnd' in ticket;
+    !!(ticket as WithIds<BasePeriodTicket>)?.products?.[0]?.productValidity;
