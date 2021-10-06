@@ -105,4 +105,22 @@ describe('fareType', () => {
             Location: '/selectPassengerType',
         });
     });
+
+    it('should clear the session if fareType is provided', () => {
+        const regenerateSessionSpy = jest.spyOn(sessions, 'regenerateSession');
+        const { req, res } = getMockRequestAndResponse({
+            body: { fareType: 'carnetFlatFare' },
+        });
+        fareType(req, res);
+        expect(regenerateSessionSpy).toBeCalledTimes(1);
+    });
+
+    it('should not clear the session if fareType is not provided', () => {
+        const regenerateSessionSpy = jest.spyOn(sessions, 'regenerateSession');
+        const { req, res } = getMockRequestAndResponse({
+            body: {},
+        });
+        fareType(req, res);
+        expect(regenerateSessionSpy).toBeCalledTimes(0);
+    });
 });
