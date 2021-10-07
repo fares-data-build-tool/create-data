@@ -119,7 +119,7 @@ export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
 }
 
 export interface BaseTicket<T extends TicketType = TicketType> {
-    nocCode: string;
+    nocCode?: string;
     type: T;
     passengerType: string;
     ageRange?: string;
@@ -135,7 +135,15 @@ export interface BaseTicket<T extends TicketType = TicketType> {
     carnet?: boolean;
 }
 
-export type WithIds<T> = Omit<
+export type WithIds<T extends { products: object[] }> = WithBaseIds<
+    Omit<T, 'products'> & {
+        products: (Omit<T['products'][0], 'salesOfferPackages'> & {
+            salesOfferPackages: { id: number; price: string | undefined }[];
+        })[];
+    }
+>;
+
+export type WithBaseIds<T> = Omit<
     T,
     'passengerType' | 'ageRange' | 'ageRangeMin' | 'ageRangeMax' | 'proof' | 'proofDocuments' | 'timeRestriction'
 > & { passengerType: { id: number }; timeRestriction?: { id: number } };

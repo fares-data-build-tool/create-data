@@ -218,7 +218,7 @@ export const getBodsServiceByNocAndId = async (
 
         const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter, serviceId]);
         if (queryResults.length !== 1) {
-            throw new Error(`Expected one service to be returned, ${queryResults.length} results recevied.`);
+            throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
         }
         // Is it better to JSON.parse this and overwrite the start end and end date via spreading the rest?
         return {

@@ -29,6 +29,7 @@ const pageTitle = 'Select Sales Offer Package - Create Fares Data Service';
 const pageDescription = 'Sales Offer Package selection page of the Create Fares Data Service';
 
 export const defaultSalesOfferPackageOne: SalesOfferPackage = {
+    id: 1,
     name: 'Onboard (cash)',
     description: '',
     purchaseLocations: ['onBoard'],
@@ -37,6 +38,7 @@ export const defaultSalesOfferPackageOne: SalesOfferPackage = {
 };
 
 export const defaultSalesOfferPackageTwo: SalesOfferPackage = {
+    id: 2,
     name: 'Onboard (contactless)',
     description: '',
     purchaseLocations: ['onBoard'],
@@ -45,6 +47,7 @@ export const defaultSalesOfferPackageTwo: SalesOfferPackage = {
 };
 
 export const defaultSalesOfferPackageThree: SalesOfferPackage = {
+    id: 3,
     name: 'Online (smart card)',
     description: '',
     purchaseLocations: ['online'],

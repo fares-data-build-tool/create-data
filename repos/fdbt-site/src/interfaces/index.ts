@@ -6,7 +6,6 @@ import { DbTimeRestriction, SinglePassengerType } from '../../shared/dbTypes';
 import {
     BaseProduct,
     CarnetDetails,
-    CarnetProductInfo,
     CompanionInfo,
     ExpiryUnit,
     FullTimeRestriction,
@@ -45,10 +44,6 @@ export interface ProductInfo {
     productName: string;
     productPrice: string;
     carnetDetails?: CarnetDetails;
-}
-
-export interface PointToPointProductInfoWithSOP extends CarnetProductInfo {
-    salesOfferPackages: SalesOfferPackage[];
 }
 
 export interface ProductInfoWithErrors extends ProductInfo {

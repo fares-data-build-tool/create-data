@@ -6,8 +6,9 @@ import {
     DbTimeRestriction,
     PassengerType,
     SinglePassengerType,
+    RawSalesOfferPackage,
 } from '../shared/dbTypes';
-import { GroupDefinition, CompanionInfo } from '../shared/matchingJsonTypes';
+import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
 
 const ssm = new SSM({ region: 'eu-west-2' });
 
@@ -93,6 +94,30 @@ export const getPassengerTypeById = async (
               name,
               passengerType: JSON.parse(contents) as PassengerType,
           };
+};
+
+export const getSalesOfferPackageById = async (
+    id: number,
+    nocCode: string,
+): Promise<FromDb<SalesOfferPackage> | undefined> => {
+    const queryInput = `
+            SELECT id, name, purchaseLocations, paymentMethods, ticketFormats
+            FROM salesOfferPackage
+            WHERE nocCode = ? AND id = ?
+        `;
+
+    const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode, id]);
+    const item = queryResults[0];
+
+    return (
+        item && {
+            id: item.id,
+            name: item.name,
+            purchaseLocations: item.purchaseLocations.split(','),
+            paymentMethods: item.paymentMethods.split(','),
+            ticketFormats: item.ticketFormats.split(','),
+        }
+    );
 };
 
 export const getCompanions = async (

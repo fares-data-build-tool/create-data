@@ -1,7 +1,7 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
-import { WithIds, BaseTicket, FullTimeRestriction, BasePeriodTicket } from '../shared/matchingJsonTypes';
-import { getFareDayEnd, getGroupDefinition, getPassengerTypeById, getTimeRestrictionsByIdAndNoc } from './database';
+import { WithIds, BaseTicket, FullTimeRestriction, WithBaseIds, TicketWithIds, BasePeriodTicket } from '../shared/matchingJsonTypes';
+import { getFareDayEnd, getPassengerTypeById, getTimeRestrictionsByIdAndNoc, getGroupDefinition } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
 import { DbTimeRestriction } from '../shared/dbTypes';
@@ -37,7 +37,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
                 throw new Error(`body was not present [${path}]`);
             }
 
-            const baseTicket = JSON.parse(object.Body.toString('utf-8')) as WithIds<BaseTicket>;
+            const baseTicket = JSON.parse(object.Body.toString('utf-8')) as TicketWithIds;
             const singleOrGroupPassengerType = await getPassengerTypeById(baseTicket.passengerType.id, noc);
 
             let passengerType, groupDefinition;
@@ -47,6 +47,8 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
             } else {
                 passengerType = singleOrGroupPassengerType.passengerType;
             }
+            const purchaseMethodIds = baseTicket.products.flatMap((product) =>
+                product.salesOfferPackages.map((sop) => sop.id),);
 
             const timeRestriction = baseTicket.timeRestriction
                 ? await getTimeRestrictionsByIdAndNoc(baseTicket.timeRestriction.id, noc)
