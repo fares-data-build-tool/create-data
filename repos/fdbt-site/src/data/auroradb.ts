@@ -25,6 +25,7 @@ import {
     MyFaresOtherProduct,
 } from '../interfaces';
 import logger from '../utils/logger';
+import { RawSalesOfferPackage } from '../../shared/dbTypes';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -53,15 +54,6 @@ interface NaptanInfo {
 interface NaptanAtcoCodes {
     naptanCode: string;
     atcoCode: string;
-}
-
-interface RawSalesOfferPackage {
-    name: string;
-    description: string;
-    id: number;
-    purchaseLocations: string;
-    paymentMethods: string;
-    ticketFormats: string;
 }
 
 interface RawTimeRestriction {

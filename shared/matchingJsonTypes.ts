@@ -119,7 +119,7 @@ export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
 }
 
 export interface BaseTicket<T extends TicketType = TicketType> {
-    nocCode?: string;
+    nocCode: string;
     type: T;
     passengerType: string;
     ageRange?: string;
