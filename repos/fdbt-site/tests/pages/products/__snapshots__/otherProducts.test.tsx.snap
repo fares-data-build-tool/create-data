@@ -15,7 +15,7 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
         className="govuk-grid-column-full"
       >
         <div
-          className="govuk-flex govuk-flex-justify-space-between"
+          className="dft-flex dft-flex-justify-space-between"
         >
           <h1
             className="govuk-heading-xl govuk-!-margin-bottom-3"
@@ -121,7 +121,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
         className="govuk-grid-column-full"
       >
         <div
-          className="govuk-flex govuk-flex-justify-space-between"
+          className="dft-flex dft-flex-justify-space-between"
         >
           <h1
             className="govuk-heading-xl govuk-!-margin-bottom-3"

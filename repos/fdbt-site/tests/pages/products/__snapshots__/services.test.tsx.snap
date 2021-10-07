@@ -15,7 +15,7 @@ exports[`myfares pages services should render correctly when no services present
         className="govuk-grid-column-full"
       >
         <div
-          className="govuk-flex govuk-flex-justify-space-between"
+          className="dft-flex dft-flex-justify-space-between"
         >
           <h1
             className="govuk-heading-xl govuk-!-margin-bottom-3"
@@ -96,7 +96,7 @@ exports[`myfares pages services should render correctly when services present 1`
         className="govuk-grid-column-full"
       >
         <div
-          className="govuk-flex govuk-flex-justify-space-between"
+          className="dft-flex dft-flex-justify-space-between"
         >
           <h1
             className="govuk-heading-xl govuk-!-margin-bottom-3"
@@ -220,7 +220,7 @@ exports[`myfares pages services should render correctly when services present an
         className="govuk-grid-column-full"
       >
         <div
-          className="govuk-flex govuk-flex-justify-space-between"
+          className="dft-flex dft-flex-justify-space-between"
         >
           <h1
             className="govuk-heading-xl govuk-!-margin-bottom-3"
