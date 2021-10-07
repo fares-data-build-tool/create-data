@@ -5,15 +5,23 @@ import ManagePassengerTypes from '../../src/pages/managePassengerTypes';
 describe('pages', () => {
     describe('manage passenger types', () => {
         it('should render correctly', () => {
+            const tree = shallow(
+                <ManagePassengerTypes editMode={false} csrfToken={''} errors={[]} inputs={undefined} />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly in edit mode', () => {
             const inputs = {
-                id: 0,
-                name: '',
+                id: 3,
+                name: 'best adult',
                 passengerType: {
                     passengerType: 'adult',
                 },
             };
 
-            const tree = shallow(<ManagePassengerTypes editMode={false} csrfToken={''} errors={[]} inputs={inputs} />);
+            const tree = shallow(<ManagePassengerTypes editMode csrfToken={''} errors={[]} inputs={inputs} />);
 
             expect(tree).toMatchSnapshot();
         });

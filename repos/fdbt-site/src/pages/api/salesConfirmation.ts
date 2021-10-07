@@ -101,8 +101,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             let filePath = '';
             if (userDataJson.products.length > 1) {
                 const splitUserDataJson = splitUserDataJsonByProducts(userDataJson);
-                splitUserDataJson.map(async (splitJson) => {
-                    await insertDataToProductsBucketAndProductsTable(splitJson, noc, uuid, ticketType, dataFormat);
+                splitUserDataJson.map(async (splitJson, index) => {
+                    await insertDataToProductsBucketAndProductsTable(
+                        splitJson,
+                        noc,
+                        `${uuid}_${index}`,
+                        ticketType,
+                        dataFormat,
+                    );
                 });
                 filePath = await putUserDataInProductsBucket(userDataJson, uuid, noc);
             } else {

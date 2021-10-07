@@ -382,6 +382,9 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
     csrfToken=""
     method="post"
   >
+    <InformationSummary
+      informationText="Editing and saving new changes will be applied to all fares using this passenger group."
+    />
     <ErrorSummary
       errors={Array []}
     />
