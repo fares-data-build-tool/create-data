@@ -1,4 +1,5 @@
 import awsParamStore from 'aws-param-store';
+import { String } from 'aws-sdk/clients/acm';
 import dateFormat from 'dateformat';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
@@ -1182,6 +1183,34 @@ export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string):
     }
 };
 
+export const getPassengerTypeNameByNocAndId = async (nocCode: string, id: string): Promise<string> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving passenger type name for given noc and id',
+        nocCode,
+        id,
+    });
+
+    try {
+        const queryInput = `
+            SELECT name
+            FROM passengerType
+            WHERE nocCode = ?
+            AND id = ?
+        `;
+
+        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
+
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
+        }
+
+        return queryResults[0].name;
+    } catch (error) {
+        throw new Error(`Could not retrieve passenger type name by noc and id from AuroraDB: ${error}`);
+    }
+};
+
 export const convertToFullPassengerType = async (
     group: GroupPassengerTypeDb,
     nocCode: string,
@@ -1509,7 +1538,7 @@ export const getPointToPointProductsByLineId = async (nocCode: string, lineId: s
 export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOtherProduct[]> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'getting point to point products for given noc and lineId',
+        message: 'getting other products for given noc',
         nocCode,
     });
 
@@ -1531,6 +1560,34 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
             startDate: convertDateFormat(result.startDate),
             endDate: convertDateFormat(result.endDate),
         }));
+    } catch (error) {
+        throw new Error(`Could not retrieve other products by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getProductMatchingJsonLinkByProductId = async (nocCode: string, productId: string): Promise<String> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting product matching json link for given noc and productId',
+        nocCode,
+        productId,
+    });
+
+    try {
+        const queryInput = `
+            SELECT matchingJsonLink
+            FROM products
+            WHERE id = ?
+            AND nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<{ matchingJsonLink: string }[]>(queryInput, [productId, nocCode]);
+
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
+        }
+
+        return queryResults[0].matchingJsonLink;
     } catch (error) {
         throw new Error(`Could not retrieve other products by nocCode from AuroraDB: ${error.stack}`);
     }
