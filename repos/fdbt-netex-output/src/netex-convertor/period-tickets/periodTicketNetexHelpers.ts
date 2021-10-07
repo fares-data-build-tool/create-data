@@ -490,7 +490,7 @@ export const getSalesOfferPackageList = (
                 Name: {
                     $t: `${product.productName} - ${userPeriodTicket.passengerType} - ${salesOfferPackage.name}`,
                 },
-                Description: { $t: `${salesOfferPackage.description}` },
+                Description: { $t: `${salesOfferPackage.description ?? ''}` },
                 distributionAssignments: { DistributionAssignment: buildDistributionAssignments() },
                 salesOfferPackageElements: { SalesOfferPackageElement: buildSalesOfferPackageElements() },
             };
