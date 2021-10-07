@@ -96,28 +96,22 @@ export const getPassengerTypeById = async (
           };
 };
 
-export const getSalesOfferPackageById = async (
-    id: number,
-    nocCode: string,
-): Promise<FromDb<SalesOfferPackage> | undefined> => {
+export const getSalesOfferPackagesByNoc = async (nocCode: string): Promise<FromDb<SalesOfferPackage>[]> => {
     const queryInput = `
             SELECT id, name, purchaseLocations, paymentMethods, ticketFormats
             FROM salesOfferPackage
-            WHERE nocCode = ? AND id = ?
+            WHERE nocCode = ?
         `;
 
-    const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode, id]);
-    const item = queryResults[0];
+    const queryResults: RawSalesOfferPackage[] = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode]);
 
-    return (
-        item && {
-            id: item.id,
-            name: item.name,
-            purchaseLocations: item.purchaseLocations.split(','),
-            paymentMethods: item.paymentMethods.split(','),
-            ticketFormats: item.ticketFormats.split(','),
-        }
-    );
+    return queryResults.map((item) => ({
+        id: item.id,
+        name: item.name,
+        purchaseLocations: item.purchaseLocations.split(','),
+        paymentMethods: item.paymentMethods.split(','),
+        ticketFormats: item.ticketFormats.split(','),
+    }));
 };
 
 export const getCompanions = async (

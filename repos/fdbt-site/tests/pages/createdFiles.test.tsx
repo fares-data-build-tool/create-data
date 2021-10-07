@@ -1,10 +1,11 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { PeriodGeoZoneTicket } from 'shared/matchingJsonTypes';
+import { PeriodGeoZoneTicket, SingleTicket } from 'shared/matchingJsonTypes';
 import * as s3 from '../../src/data/s3';
 import { S3NetexFile } from '../../src/interfaces';
 import CreatedFiles, { buildName, getServerSideProps } from '../../src/pages/createdFiles';
 import { expectedSingleTicket, getMockContext } from '../testData/mockData';
+import { defaultSalesOfferPackages } from '../../src/pages/selectSalesOfferPackage';
 
 jest.mock('../../src/data/s3.ts');
 
@@ -122,9 +123,21 @@ describe('pages', () => {
                 ]),
             );
 
+            const ticket: SingleTicket = {
+                ...expectedSingleTicket,
+                passengerType: 'Adult',
+                timeRestriction: [],
+                products: [
+                    {
+                        ...expectedSingleTicket.products[0],
+                        salesOfferPackages: defaultSalesOfferPackages,
+                    },
+                ],
+            };
+
             getMatchingDataObjectSpy = jest.spyOn(s3, 'getMatchingDataObject').mockImplementation(() =>
                 Promise.resolve({
-                    Body: JSON.stringify({ ...expectedSingleTicket, passengerType: 'Adult' }),
+                    Body: JSON.stringify(ticket),
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 } as any),
             );
