@@ -28,6 +28,14 @@ export interface GroupPassengerType {
     companions: CompanionInfo[];
 }
 
+export interface RawSalesOfferPackage {
+    name: string;
+    description: string;
+    id: number;
+    purchaseLocations: string;
+    paymentMethods: string;
+    ticketFormats: string;
+}
 export interface GroupPassengerTypeDb {
     id: number;
     name: string;

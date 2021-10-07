@@ -135,9 +135,24 @@ export interface BaseTicket<T extends TicketType = TicketType> {
     carnet?: boolean;
 }
 
-export type WithIds<T> = Omit<
+export type WithIds<T extends { products: BaseProduct[] }> = WithBaseIds<
+    Omit<T, 'products'> & {
+        products: (Omit<T['products'][0], 'salesOfferPackages'> & {
+            salesOfferPackages: { id: number; price: string | undefined }[];
+        })[];
+    }
+>;
+
+export type WithBaseIds<T> = Omit<
     T,
-    'passengerType' | 'ageRange' | 'ageRangeMin' | 'ageRangeMax' | 'proof' | 'proofDocuments' | 'timeRestriction'
+    | 'passengerType'
+    | 'ageRange'
+    | 'ageRangeMin'
+    | 'ageRangeMax'
+    | 'proof'
+    | 'proofDocuments'
+    | 'timeRestriction'
+    | 'fareDayEnd'
 > & { passengerType: { id: number }; timeRestriction?: { id: number } };
 
 export interface GroupDefinition {

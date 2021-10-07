@@ -1415,6 +1415,7 @@ describe('userData', () => {
                             salesOfferPackages: [
                                 {
                                     name: 'Onboard (cash)',
+                                    id: 1,
                                     description: '',
                                     purchaseLocations: ['onBoard'],
                                     paymentMethods: ['cash'],
@@ -1427,6 +1428,7 @@ describe('userData', () => {
                             salesOfferPackages: [
                                 {
                                     name: 'Onboard (contactless)',
+                                    id: 2,
                                     description: '',
                                     purchaseLocations: ['onBoard'],
                                     paymentMethods: ['contactlessPaymentCard'],
@@ -1434,6 +1436,7 @@ describe('userData', () => {
                                 },
                                 {
                                     name: 'Online (smart card)',
+                                    id: 3,
                                     description: '',
                                     purchaseLocations: ['online'],
                                     paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
@@ -1535,6 +1538,7 @@ describe('userData', () => {
                             salesOfferPackages: [
                                 {
                                     name: 'Onboard (cash)',
+                                    id: 1,
                                     description: '',
                                     purchaseLocations: ['onBoard'],
                                     paymentMethods: ['cash'],
@@ -1548,6 +1552,7 @@ describe('userData', () => {
                             salesOfferPackages: [
                                 {
                                     name: 'Onboard (contactless)',
+                                    id: 2,
                                     description: '',
                                     purchaseLocations: ['onBoard'],
                                     paymentMethods: ['contactlessPaymentCard'],
@@ -1556,6 +1561,7 @@ describe('userData', () => {
                                 },
                                 {
                                     name: 'Online (smart card)',
+                                    id: 3,
                                     description: '',
                                     purchaseLocations: ['online'],
                                     paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
