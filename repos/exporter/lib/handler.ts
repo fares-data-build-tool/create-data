@@ -1,6 +1,13 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
-import { WithIds, BaseTicket, FullTimeRestriction, WithBaseIds, TicketWithIds, BasePeriodTicket } from '../shared/matchingJsonTypes';
+import {
+    WithIds,
+    BaseTicket,
+    FullTimeRestriction,
+    WithBaseIds,
+    TicketWithIds,
+    BasePeriodTicket,
+} from '../shared/matchingJsonTypes';
 import { getFareDayEnd, getPassengerTypeById, getTimeRestrictionsByIdAndNoc, getGroupDefinition } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
@@ -48,7 +55,8 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
                 passengerType = singleOrGroupPassengerType.passengerType;
             }
             const purchaseMethodIds = baseTicket.products.flatMap((product) =>
-                product.salesOfferPackages.map((sop) => sop.id),);
+                product.salesOfferPackages.map((sop) => sop.id),
+            );
 
             const timeRestriction = baseTicket.timeRestriction
                 ? await getTimeRestrictionsByIdAndNoc(baseTicket.timeRestriction.id, noc)
@@ -99,5 +107,5 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
     console.log(`done ${paths.toString()}`);
 };
 
-export const isBasePeriodTicket = (ticket: WithIds<BaseTicket>): ticket is WithIds<BasePeriodTicket> =>
+export const isBasePeriodTicket = (ticket: WithBaseIds<BaseTicket>): ticket is WithBaseIds<BasePeriodTicket> =>
     !!(ticket as WithIds<BasePeriodTicket>)?.products?.[0]?.productValidity;
