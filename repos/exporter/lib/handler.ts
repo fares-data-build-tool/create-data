@@ -8,6 +8,7 @@ import {
     WithIds,
     BasePeriodTicket,
     ProductDetails,
+    BaseSchemeOperatorTicket,
 } from '../shared/matchingJsonTypes';
 import {
     getFareDayEnd,
@@ -107,7 +108,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
             const setFareDayEnd =
                 isBasePeriodTicket(ticketWithIds) && ticketWithIds.products[0].productValidity === 'fareDayEnd';
 
-            const baseTicket: BaseTicket = {
+            const baseTicket: BaseTicket | BaseSchemeOperatorTicket = {
                 ...ticketWithIds,
                 ...passengerType,
                 groupDefinition,
