@@ -16,7 +16,7 @@ ENV NODE_ENV production
 
 WORKDIR /home/node/app
 
-COPY ./repos/fdbt-site/package*.json ./repos/fdbt-site/start_clamav.sh ./
+COPY ./repos/fdbt-site/package*.json ./repos/fdbt-site/start_clamav.sh ./repos/fdbt-site/next.config.js ./
 COPY ./repos/fdbt-site/supervisord.conf /etc/supervisor/
 
 RUN apk update && apk upgrade && \

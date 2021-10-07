@@ -7,7 +7,7 @@ run: ## Run everything locally
 	cd fdbt-dev && $(MAKE) dev
 
 up: ## Run just the docker containers so the site can be run separately to debug
-	cd fdbt-dev && $(MAKE) docker-down
+	cd fdbt-dev && $(MAKE) docker-up
 
 down: ## Bring down docker containers
 	cd fdbt-dev && $(MAKE) docker-down
