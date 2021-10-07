@@ -6,9 +6,14 @@ import {
     NextPageContextWithSession,
 } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
-import { getBodsServiceByNocAndId, getPointToPointProductsByLineId } from '../../data/auroradb';
-import { getMatchingJson } from '../../data/s3';
-import { getAndValidateNoc, sentenceCaseString } from '../../utils';
+import {
+    getBodsServiceByNocAndId,
+    getPassengerTypeNameById,
+    getPointToPointProductsByLineId,
+    getTimeRestrictionById,
+} from '../../data/auroradb';
+import { getProductsMatchingJson } from '../../data/s3';
+import { getAndValidateNoc } from '../../utils';
 import moment from 'moment';
 import { isArray, upperFirst } from 'lodash';
 import { getTag } from './services';
@@ -52,7 +57,7 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[]): Reac
                             Product description
                         </th>
                         <th scope="col" className="govuk-table__header">
-                            Validity
+                            Time restriction
                         </th>
                         <th scope="col" className="govuk-table__header">
                             Start date
@@ -104,36 +109,45 @@ export const getServerSideProps = async (
 ): Promise<{ props: PointToPointProductsProps }> => {
     const noc = getAndValidateNoc(ctx);
     const serviceId = ctx.query?.serviceId;
+
     if (!serviceId || isArray(serviceId)) {
         throw new Error('Unable to find line name to show products for.');
     }
+
     const service = await getBodsServiceByNocAndId(noc, serviceId);
     const products = await getPointToPointProductsByLineId(noc, service.lineId);
     const productsToDisplay = filterProductsNotToDisplay(service, products);
+
     const formattedProducts = await Promise.all(
         productsToDisplay.map(async (product) => {
-            const matchingJson = await getMatchingJson(product.matchingJsonLink);
+            const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
+
+            const passengerTypeName = await getPassengerTypeNameById(matchingJson.passengerType.id, noc);
+
             const productDescription =
                 matchingJson.type === 'period' && 'products' in matchingJson
                     ? matchingJson.products[0].productName
-                    : `${upperFirst(matchingJson.passengerType)} - ${matchingJson.type} ${
-                          matchingJson.carnet ? '(carnet)' : ''
-                      }`;
-            let validity = 'No restrictions';
-            if (matchingJson.timeRestriction.length > 0) {
-                const daysValid = matchingJson.timeRestriction.map((restriction) =>
-                    sentenceCaseString(restriction.day),
-                );
-                validity = daysValid.join(', ');
+                    : `${upperFirst(passengerTypeName)} ${matchingJson.carnet ? '(carnet)' : ''}`;
+
+            let timeRestriction = 'No restrictions';
+
+            if (matchingJson.timeRestriction !== undefined) {
+                const timeRestrictionFromDb = await getTimeRestrictionById(matchingJson.timeRestriction.id, noc);
+
+                if (timeRestrictionFromDb !== undefined) {
+                    timeRestriction = timeRestrictionFromDb.name;
+                }
             }
+
             return {
                 productDescription,
                 startDate: product.startDate,
                 endDate: product.endDate,
-                validity,
+                validity: timeRestriction,
             };
         }),
     );
+
     return { props: { products: formattedProducts, service } };
 };
 
