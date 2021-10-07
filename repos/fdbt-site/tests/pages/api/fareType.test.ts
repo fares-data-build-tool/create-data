@@ -1,6 +1,8 @@
+import { TXC_SOURCE_ATTRIBUTE } from './../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import fareType from '../../../src/pages/api/fareType';
 import * as sessions from '../../../src/utils/sessions';
+import * as aurora from '../../../src/data/auroradb';
 import {
     FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
@@ -9,20 +11,55 @@ import {
 import { ErrorInfo } from '../../../src/interfaces';
 import { globalSettingsEnabled } from '../../../src/constants/featureFlag';
 
+const services = [
+    {
+        lineName: '123',
+        lineId: '3h3vb32ik',
+        startDate: '05/02/2020',
+        description: 'IW Bus Service 123',
+        serviceCode: 'NW_05_BLAC_123_1',
+        origin: 'Manchester',
+        destination: 'Leeds',
+        dataSource: 'tnds',
+    },
+    {
+        lineName: 'X1',
+        lineId: '3h3vb32ik',
+        startDate: '06/02/2020',
+        description: 'Big Blue Bus Service X1',
+        serviceCode: 'NW_05_BLAC_X1_1',
+        origin: 'Bolton',
+        destination: 'Wigan',
+        dataSource: 'bods',
+    },
+    {
+        lineName: 'Infinity Line',
+        lineId: '3h3vb32ik',
+        startDate: '07/02/2020',
+        description: 'This is some kind of bus service',
+        serviceCode: 'WY_13_IWBT_07_1',
+        origin: 'Manchester',
+        destination: 'York',
+        dataSource: 'tnds',
+    },
+];
+
 describe('fareType', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+    const checkForServicesSpy = jest.spyOn(aurora, 'getAllServicesByNocCode');
 
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /definePassengerType when schoolService is selected', () => {
+    it('should return 302 redirect to /definePassengerType when schoolService is selected', async () => {
+        checkForServicesSpy.mockResolvedValue(services);
         const { req, res } = getMockRequestAndResponse({
             body: { fareType: 'schoolService' },
             mockWriteHeadFn: writeHeadMock,
         });
-        fareType(req, res);
+        await fareType(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, {
             fareType: req.body.fareType,
         });
@@ -36,12 +73,13 @@ describe('fareType', () => {
         });
     });
 
-    it('should return 302 redirect to /passengerType when any option other than schoolService is selected', () => {
+    it('should return 302 redirect to /passengerType when any option other than schoolService is selected', async () => {
+        checkForServicesSpy.mockResolvedValue(services);
         const { req, res } = getMockRequestAndResponse({
             body: { fareType: 'single' },
             mockWriteHeadFn: writeHeadMock,
         });
-        fareType(req, res);
+        await fareType(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, {
             fareType: req.body.fareType,
         });
@@ -50,7 +88,7 @@ describe('fareType', () => {
         });
     });
 
-    it('should return 302 redirect to /fareType with errors when no option is selected', () => {
+    it('should return 302 redirect to /fareType with errors when no option is selected', async () => {
         const mockError: ErrorInfo[] = [
             { id: 'radio-option-single', errorMessage: 'Choose a fare type from the options' },
         ];
@@ -58,7 +96,7 @@ describe('fareType', () => {
             body: {},
             mockWriteHeadFn: writeHeadMock,
         });
-        fareType(req, res);
+        await fareType(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, {
             errors: mockError,
         });
@@ -67,12 +105,13 @@ describe('fareType', () => {
         });
     });
 
-    it('should return 302 redirect to /carnetFareType when carnet is selected, set carnet to true, and clear the fareType attribute', () => {
+    it('should return 302 redirect to /carnetFareType when carnet is selected, set carnet to true, and clear the fareType attribute', async () => {
+        checkForServicesSpy.mockResolvedValue(services);
         const { req, res } = getMockRequestAndResponse({
             body: { fareType: 'carnet' },
             mockWriteHeadFn: writeHeadMock,
         });
-        fareType(req, res);
+        await fareType(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, undefined);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -80,12 +119,13 @@ describe('fareType', () => {
         });
     });
 
-    it('should return 302 redirect to /passengerType when carnetPeriod is selected, set carnet to true, and set the fareType attribute to period', () => {
+    it('should return 302 redirect to /passengerType when carnetPeriod is selected, set carnet to true, and set the fareType attribute to period', async () => {
+        checkForServicesSpy.mockResolvedValue(services);
         const { req, res } = getMockRequestAndResponse({
             body: { fareType: 'carnetPeriod' },
             mockWriteHeadFn: writeHeadMock,
         });
-        fareType(req, res);
+        await fareType(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, { fareType: 'period' });
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -93,14 +133,45 @@ describe('fareType', () => {
         });
     });
 
-    it('should return 302 redirect to /passengerType when carnet is selected, set carnet to true, and set the fareType attribute to flatFare', () => {
+    it('should return 302 redirect to /passengerType when carnet is selected, set carnet to true, and set the fareType attribute to flatFare', async () => {
+        checkForServicesSpy.mockResolvedValue(services);
         const { req, res } = getMockRequestAndResponse({
             body: { fareType: 'carnetFlatFare' },
             mockWriteHeadFn: writeHeadMock,
         });
-        fareType(req, res);
+        await fareType(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, { fareType: 'flatFare' });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/selectPassengerType',
+        });
+    });
+
+    it('should return 302 redirect to /noServices when the db call returns no services', async () => {
+        checkForServicesSpy.mockResolvedValue([]);
+        const { req, res } = getMockRequestAndResponse({
+            body: { fareType: 'carnetFlatFare' },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await fareType(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledTimes(0);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/noServices',
+        });
+    });
+
+    it('should update the txc attribute when some services are returned', async () => {
+        checkForServicesSpy.mockResolvedValue(services);
+        const { req, res } = getMockRequestAndResponse({
+            body: { fareType: 'carnetFlatFare' },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await fareType(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, TXC_SOURCE_ATTRIBUTE, {
+            source: 'bods',
+            hasBods: true,
+            hasTnds: true,
+        });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectPassengerType',
         });

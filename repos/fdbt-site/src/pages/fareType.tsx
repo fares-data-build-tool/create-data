@@ -5,8 +5,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import RadioButtons from '../components/RadioButtons';
 import { INTERNAL_NOC } from '../constants';
-import { FARE_TYPE_ATTRIBUTE, GS_REFERER, OPERATOR_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../constants/attributes';
-import { getAllServicesByNocCode, getOperatorDetails } from '../data/auroradb';
+import { FARE_TYPE_ATTRIBUTE, GS_REFERER, OPERATOR_ATTRIBUTE } from '../constants/attributes';
+import { getOperatorDetails } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession, RadioOption } from '../interfaces';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
@@ -130,27 +130,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
     const schemeOp = isSchemeOperator(ctx);
     const nocCode = getAndValidateNoc(ctx);
-    const services = await getAllServicesByNocCode(nocCode);
-    const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
-    const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
-
-    if (!schemeOp && services.length === 0) {
-        if (ctx.res) {
-            redirectTo(ctx.res, '/noServices');
-        } else {
-            throw new Error(`No services found for NOC Code: ${nocCode}`);
-        }
-    }
-
-    const dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
-
-    if (!dataSourceAttribute) {
-        updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
-            source: hasBodsServices ? 'bods' : 'tnds',
-            hasBods: hasBodsServices,
-            hasTnds: hasTndsServices,
-        });
-    }
 
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 

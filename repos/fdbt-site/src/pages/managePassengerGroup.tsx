@@ -1,5 +1,6 @@
 import upperFirst from 'lodash/upperFirst';
 import React, { ReactElement } from 'react';
+import InformationSummary from '../components/InformationSummary';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -13,6 +14,9 @@ import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Manage Passenger Group - Create Fares Data Service';
 const description = 'Manage Passenger Group page of the Create Fares Data Service';
+
+const editingInformationText =
+    'Editing and saving new changes will be applied to all fares using this passenger group.';
 
 interface ManagePassengerGroupProps extends GlobalSettingsManageProps<GroupPassengerTypeDb> {
     passengers: SinglePassengerType[];
@@ -40,6 +44,9 @@ const ManagePassengerGroup = ({
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/managePassengerGroup" method="post" csrfToken={csrfToken}>
                 <>
+                    {editMode && errors.length === 0 ? (
+                        <InformationSummary informationText={editingInformationText} />
+                    ) : null}
                     <ErrorSummary errors={errors} />
                     <input type="hidden" name="groupId" value={inputs?.id} />
                     <h1 className="govuk-heading-xl" id="group-page-heading">

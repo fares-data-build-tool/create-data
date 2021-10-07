@@ -95,9 +95,8 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          # TODO - Vulnerability not yet patched in serverless-plugin-typescript, and AWS CDK
           command: |
-            npx audit-ci --moderate -a 1751 -a 1784 -a 1791 -a 5267 -a 5197
+            npx audit-ci --moderate -a 1002373 -a 1002475 -a 1002581 -a 1002401
 
   test:
     parameters:
@@ -261,7 +260,7 @@ jobs:
             sudo apt-get install -y nodejs
             pip install safety
             cd src/netex-validator
-            npx audit-ci --moderate -a 5197
+            npx audit-ci --moderate -a 1002373 -a 1002475 -a 1002581 -a 1002401
             safety check -r requirements.txt
 
   deploy-netex-validator-to-test:
@@ -342,7 +341,7 @@ jobs:
             sudo apt-get install -y nodejs
             pip install safety
             cd src/uploaders
-            npx audit-ci --moderate -a 5197
+            npx audit-ci --moderate -a 1002373 -a 1002475 -a 1002581 -a 1002401
             safety check -r requirements.txt
             safety check -r requirements.test.txt
 
@@ -424,7 +423,7 @@ jobs:
             sudo apt-get install -y nodejs
             pip install safety
             cd src/retrievers
-            npx audit-ci --moderate -a 5197
+            npx audit-ci --moderate -a 1002373 -a 1002475 -a 1002581 -a 1002401
             safety check -r requirements.txt
 
   deploy-reference-data-retrievers-to-test:

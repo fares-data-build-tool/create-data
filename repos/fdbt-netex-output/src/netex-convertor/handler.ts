@@ -5,6 +5,7 @@ import * as db from '../data/auroradb';
 import * as s3 from '../data/s3';
 import { isSchemeOperatorTicket, Ticket } from '../types/index';
 import netexGenerator from './netexGenerator';
+import { Operator } from '../../src/types/index';
 
 export const xsl = `
     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -57,10 +58,6 @@ export const buildNocList = (ticket: Ticket): string[] => {
         nocs.push(...ticket.additionalOperators.map(op => op.nocCode));
     }
 
-    if ('nocCode' in ticket) {
-        nocs.push(ticket.nocCode);
-    }
-
     return nocs;
 };
 
@@ -74,9 +71,27 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
 
         console.info(`NeTEx generation starting for type ${type}...`);
 
+        const operatorData: Operator[] = [];
+
+        // get the national operator code (noc) for the base operator
+        if ('nocCode' in ticket) {
+            const baseNoc = ticket.nocCode;
+
+            // check operatorDetails table in database to see if noc has a record
+            const details = await db.getOperatorDetailsByNoc(baseNoc);
+
+            const operatorDetails = await db.getOperatorDataByNocCode([baseNoc]);
+
+            operatorData.push({ ...operatorDetails[0], ...details });
+        }
+
         const nocs: string[] = buildNocList(ticket);
-        const operatorData = await db.getOperatorDataByNocCode(nocs);
-        const netexGen = netexGenerator(ticket, operatorData);
+
+        if (nocs.length > 0) {
+            operatorData.push(...(await db.getOperatorDataByNocCode(nocs)));
+        }
+
+        const netexGen = await netexGenerator(ticket, operatorData);
         const generatedNetex = await netexGen.generate();
         const fileName = generateFileName(s3FileName);
 

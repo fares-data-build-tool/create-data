@@ -8,10 +8,8 @@ import {
     periodGeoZoneTicketWithNoType,
     schemeOperatorGeoZoneTicket,
     schemeOperatorFlatFareTicket,
-    returnNonCircularTicket,
     multiOperatorGeoZoneTicket,
     multiOperatorMultiServiceTicket,
-    pointToPointPeriodTicket,
 } from '../test-data/matchingData';
 import mockS3Event from './test-data/mockS3Event';
 import * as s3 from '../data/s3';
@@ -42,13 +40,13 @@ describe('netexConvertorHandler', () => {
             Promise.resolve([
                 {
                     nocCode: 'TEST',
-                    website: 'www.unittest.com',
-                    ttrteEnq: 'aaaaaa',
-                    operatorPublicName: 'Test Buses',
+                    url: 'www.unittest.com',
+                    email: 'aaaaaa',
+                    operatorName: 'Test Buses',
                     opId: '7Z',
                     vosaPsvLicenseName: 'CCD',
-                    fareEnq: 'SSSS',
-                    complEnq: '334',
+                    contactNumber: 'SSSS',
+                    street: '334',
                     mode: 'test',
                 },
             ]),
@@ -61,7 +59,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the pointToPointTicketNetexGenerator when a user uploads info for a single ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(singleTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -69,7 +67,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the periodTicketNetexGenerator when a user uploads info for a geozone period ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(periodGeoZoneTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -77,7 +75,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the periodTicketNetexGenerator when a user uploads info for a multiple services period ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(periodMultipleServicesTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -85,7 +83,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the periodTicketNetexGenerator when a user uploads info for a flat fare ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(flatFareTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -93,7 +91,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the periodTicketNetexGenerator when a user uploads info for scheme operator geozone ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(schemeOperatorGeoZoneTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -101,7 +99,7 @@ describe('netexConvertorHandler', () => {
 
     it('should call the periodTicketNetexGenerator when a user uploads info for scheme operator flat fare ticket', async () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockImplementation(() => ({ generate: (): void => {} }));
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(schemeOperatorFlatFareTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -119,13 +117,13 @@ describe('netexConvertorHandler', () => {
             Promise.resolve([
                 {
                     nocCode: 'MCTR',
-                    website: 'www.unittest.com',
-                    ttrteEnq: 'aaaaaa',
-                    operatorPublicName: 'Test Buses',
+                    url: 'www.unittest.com',
+                    email: 'aaaaaa',
+                    operatorName: 'Test Buses',
                     opId: '7Z',
                     vosaPsvLicenseName: 'CCD',
-                    fareEnq: 'SSSS',
-                    complEnq: '334',
+                    contactNumber: 'SSSS',
+                    street: '334',
                     mode: 'test',
                 },
             ]),
@@ -143,13 +141,13 @@ describe('netexConvertorHandler', () => {
             Promise.resolve([
                 {
                     nocCode: 'WBTR',
-                    website: 'www.unittest.com',
-                    ttrteEnq: 'aaaaaa',
-                    operatorPublicName: 'Test Buses',
+                    url: 'www.unittest.com',
+                    email: 'aaaaaa',
+                    operatorName: 'Test Buses',
                     opId: '7Z',
                     vosaPsvLicenseName: 'CCD',
-                    fareEnq: 'SSSS',
-                    complEnq: '334',
+                    contactNumber: 'SSSS',
+                    street: '334',
                     mode: 'test',
                 },
             ]),
@@ -166,13 +164,13 @@ describe('netexConvertorHandler', () => {
             Promise.resolve([
                 {
                     nocCode: 'PBLT',
-                    website: 'www.unittest.com',
-                    ttrteEnq: 'aaaaaa',
-                    operatorPublicName: 'Test Buses',
+                    url: 'www.unittest.com',
+                    email: 'aaaaaa',
+                    operatorName: 'Test Buses',
                     opId: '7Z',
                     vosaPsvLicenseName: 'CCD',
-                    fareEnq: 'SSSS',
-                    complEnq: '334',
+                    contactNumber: 'SSSS',
+                    street: '334',
                     mode: 'test',
                 },
             ]),
@@ -189,13 +187,13 @@ describe('netexConvertorHandler', () => {
             Promise.resolve([
                 {
                     nocCode: 'BLAC',
-                    website: 'www.unittest.com',
-                    ttrteEnq: 'aaaaaa',
-                    operatorPublicName: 'Test Buses',
+                    url: 'www.unittest.com',
+                    email: 'aaaaaa',
+                    operatorName: 'Test Buses',
                     opId: '7Z',
                     vosaPsvLicenseName: 'CCD',
-                    fareEnq: 'SSSS',
-                    complEnq: '334',
+                    contactNumber: 'SSSS',
+                    street: '334',
                     mode: 'test',
                 },
             ]),
@@ -212,13 +210,13 @@ describe('netexConvertorHandler', () => {
             Promise.resolve([
                 {
                     nocCode: 'IW_Buses-Y',
-                    website: 'www.unittest.com',
-                    ttrteEnq: 'aaaaaa',
-                    operatorPublicName: 'Test Buses',
+                    url: 'www.unittest.com',
+                    email: 'aaaaaa',
+                    operatorName: 'Test Buses',
                     opId: '7Z',
                     vosaPsvLicenseName: 'CCD',
-                    fareEnq: 'SSSS',
-                    complEnq: '334',
+                    contactNumber: 'SSSS',
+                    street: '334',
                     mode: 'test',
                 },
             ]),
@@ -235,13 +233,13 @@ describe('netexConvertorHandler', () => {
             Promise.resolve([
                 {
                     nocCode: 'IW_Buses-Y',
-                    website: 'www.unittest.com',
-                    ttrteEnq: 'aaaaaa',
-                    operatorPublicName: 'Test Buses',
+                    url: 'www.unittest.com',
+                    email: 'aaaaaa',
+                    operatorName: 'Test Buses',
                     opId: '7Z',
                     vosaPsvLicenseName: 'CCD',
-                    fareEnq: 'SSSS',
-                    complEnq: '334',
+                    contactNumber: 'SSSS',
+                    street: '334',
                     mode: 'test',
                 },
             ]),
@@ -258,13 +256,13 @@ describe('netexConvertorHandler', () => {
             Promise.resolve([
                 {
                     nocCode: 'IW_Buses-Y',
-                    website: 'www.unittest.com',
-                    ttrteEnq: 'aaaaaa',
-                    operatorPublicName: 'Test Buses',
+                    url: 'www.unittest.com',
+                    email: 'aaaaaa',
+                    operatorName: 'Test Buses',
                     opId: '7Z',
                     vosaPsvLicenseName: 'CCD',
-                    fareEnq: 'SSSS',
-                    complEnq: '334',
+                    contactNumber: 'SSSS',
+                    street: '334',
                     mode: 'test',
                 },
             ]),
@@ -291,13 +289,13 @@ describe('netexConvertorHandler', () => {
             Promise.resolve([
                 {
                     nocCode: 'MCTR',
-                    website: 'www.unittest.com',
-                    ttrteEnq: 'aaaaaa',
-                    operatorPublicName: 'Test Buses',
+                    url: 'www.unittest.com',
+                    email: 'aaaaaa',
+                    operatorName: 'Test Buses',
                     opId: '7Z',
                     vosaPsvLicenseName: 'CCD',
-                    fareEnq: 'SSSS',
-                    complEnq: '334',
+                    contactNumber: 'SSSS',
+                    street: '334',
                     mode: 'test',
                 },
             ]),
@@ -328,44 +326,23 @@ describe('netexConvertorHandler', () => {
 });
 
 describe('buildNocList', () => {
-    it('should return an array of nocs for a single ticket', () => {
-        const result = buildNocList(singleTicket);
-        expect(result).toStrictEqual(['MCTR']);
-    });
-    it('should return an array of nocs for a return ticket', () => {
-        const result = buildNocList(returnNonCircularTicket);
-        expect(result).toStrictEqual(['PBLT']);
-    });
-    it('should return an array of nocs for a period geozone ticket', () => {
-        const result = buildNocList(periodGeoZoneTicket);
-        expect(result).toStrictEqual(['BLAC']);
-    });
-    it('should return an array of nocs for a period multiple services ticket', () => {
-        const result = buildNocList(periodMultipleServicesTicket);
-        expect(result).toStrictEqual(['PBLT']);
-    });
-    it('should return an array of nocs for a flat fare ticket', () => {
-        const result = buildNocList(flatFareTicket);
-        expect(result).toStrictEqual(['WBTR']);
-    });
     it('should return an array of nocs for a scheme operator geozone ticket', () => {
         const result = buildNocList(schemeOperatorGeoZoneTicket);
         expect(result).toStrictEqual(['WBTR', 'DCCL', 'HCTY']);
     });
+
     it('should return an array of nocs for a scheme operator flat fare ticket', () => {
         const result = buildNocList(schemeOperatorFlatFareTicket);
         expect(result).toStrictEqual(['WBTR', 'DCCL']);
     });
+
     it('should return an array of nocs for a multi operator geo zone ticket', () => {
         const result = buildNocList(multiOperatorGeoZoneTicket);
-        expect(result).toStrictEqual(['WBTR', 'DCCL', 'HHR', 'BLAC']);
+        expect(result).toStrictEqual(['WBTR', 'DCCL', 'HHR']);
     });
+
     it('should return an array of nocs for a multi operator multi service ticket', () => {
         const result = buildNocList(multiOperatorMultiServiceTicket);
-        expect(result).toStrictEqual(['WBTR', 'DCCL', 'BLAC']);
-    });
-    it('should return an array of nocs for a point to point period ticket', () => {
-        const result = buildNocList(pointToPointPeriodTicket);
-        expect(result).toStrictEqual(['BLAC']);
+        expect(result).toStrictEqual(['WBTR', 'DCCL']);
     });
 });

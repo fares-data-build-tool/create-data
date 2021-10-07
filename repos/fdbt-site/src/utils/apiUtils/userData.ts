@@ -7,6 +7,7 @@ import {
     TicketType,
     SchemeOperatorMultiServiceTicket,
     WithIds,
+    TicketWithIds,
 } from '../../../shared/matchingJsonTypes';
 import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from './index';
 
@@ -36,7 +37,7 @@ import {
     UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
 } from '../../constants/attributes';
-import { batchGetStopsByAtcoCode } from '../../data/auroradb';
+import { batchGetStopsByAtcoCode, insertProducts } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import {
     BaseProduct,
@@ -84,6 +85,8 @@ import { isFareZoneAttributeWithErrors } from '../../pages/csvZoneUpload';
 import { isReturnPeriodValidityWithErrors } from '../../pages/returnValidity';
 import { isServiceListAttributeWithErrors } from '../../pages/serviceList';
 import { getFareZones } from './matching';
+import { saveProductsEnabled } from '../../constants/featureFlag';
+import moment from 'moment';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
@@ -113,7 +116,6 @@ export const getProductsAndSalesOfferPackages = (
                   }`
                 : undefined,
             productValidity: periodExpiryAttributeInfo?.productValidity,
-            productEndTime: periodExpiryAttributeInfo?.productEndTime,
             carnetDetails: 'carnetDetails' in matchedProduct ? matchedProduct.carnetDetails : undefined,
             salesOfferPackages: sopInfo.salesOfferPackages,
         };
@@ -602,4 +604,33 @@ export const adjustSchemeOperatorJson = async (
         stops: zoneStops,
         additionalNocs,
     };
+};
+
+export const splitUserDataJsonByProducts = (userDataJson: TicketWithIds): TicketWithIds[] => {
+    return userDataJson.products.map((product) => {
+        return {
+            ...userDataJson,
+            products: [product],
+        } as TicketWithIds;
+    });
+};
+
+export const insertDataToProductsBucketAndProductsTable = async (
+    userDataJson: TicketWithIds,
+    nocCode: string,
+    uuid: string,
+    ticketType: string,
+    dataFormat: 'tnds' | 'bods' | undefined,
+): Promise<string> => {
+    const filePath = await putUserDataInProductsBucket(userDataJson, uuid, nocCode);
+    if (saveProductsEnabled && (ticketType === 'geoZone' || dataFormat !== 'tnds')) {
+        const { startDate, endDate } = userDataJson.ticketPeriod;
+        if (!startDate || !endDate) {
+            throw new Error('Start or end date could not be found.');
+        }
+        const dateTime = moment().toDate();
+        const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
+        await insertProducts(nocCode, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);
+    }
+    return filePath;
 };

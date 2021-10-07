@@ -2,21 +2,25 @@ import moment from 'moment';
 import {
     PRODUCT_DATE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
-import { SingleTicket, TicketPeriodWithInput } from '../../../src/interfaces';
+import { TicketPeriodWithInput } from '../../../src/interfaces';
 import { SessionAttributeTypes } from '../../../src/utils/sessions';
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import {
+    expectedPeriodGeoZoneTicketWithMultipleProducts,
+    expectedSingleTicket,
+    getMockRequestAndResponse,
+    mockDataSplitOutProducts,
+} from '../../testData/mockData';
 import salesConfirmation from '../../../src/pages/api/salesConfirmation';
 import * as session from '../../../src/utils/sessions';
 import * as userData from '../../../src/utils/apiUtils/userData';
 import * as index from '../../../src/utils/apiUtils/index';
-import { WithIds } from '../../../shared/matchingJsonTypes';
 
-describe('salesOfferPackages', () => {
+describe('salesConfirmation', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
     const getSchemeOperatorTicketJsonSpy = jest.spyOn(userData, 'getSchemeOperatorTicketJson');
     const getSingleTicketJsonSpy = jest.spyOn(userData, 'getSingleTicketJson');
@@ -129,7 +133,7 @@ describe('salesOfferPackages', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             session: {
-                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
                 [TICKET_REPRESENTATION_ATTRIBUTE]: {
                     name: 'geoZone',
                 },
@@ -221,35 +225,16 @@ describe('salesOfferPackages', () => {
         expect(getGeoZoneTicketJsonSpy).toBeCalledWith(req, res);
     });
 
-    it('creates a group definition for a group ticket and adds to user json object', async () => {
-        const getFareTypeFromFromAttributesSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
-        getFareTypeFromFromAttributesSpy.mockImplementation(() => 'single');
+    it('creates a group definition for a group ticket with one product and adds to user json object', async () => {
         const putUserDataInS3Spy = jest.spyOn(userData, 'putUserDataInProductsBucket');
         putUserDataInS3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
-        const exampleUserJson: WithIds<SingleTicket> = {
-            nocCode: 'TEST',
-            type: 'single',
-            passengerType: { id: 1 },
-            email: 'string',
-            uuid: 'string',
-            timeRestriction: { id: 2 },
-            ticketPeriod: {
-                startDate: 'now',
-                endDate: 'a year later',
-            },
-            operatorName: 'string',
-            lineName: 'string',
-            lineId: '3h3vb32ik',
-            serviceDescription: 'string',
-            products: [],
-            fareZones: [],
-            termTime: true,
-            unassignedStops: {
-                singleUnassignedStops: [],
-            },
-        };
+        const insertDataToProductsBucketAndProductsTableSpy = jest.spyOn(
+            userData,
+            'insertDataToProductsBucketAndProductsTable',
+        );
+        insertDataToProductsBucketAndProductsTableSpy.mockImplementationOnce(() => Promise.resolve('pathOne'));
         getSingleTicketJsonSpy.mockImplementation(() => {
-            return exampleUserJson;
+            return expectedSingleTicket;
         });
         const { req, res } = getMockRequestAndResponse({
             body: {},
@@ -263,23 +248,46 @@ describe('salesOfferPackages', () => {
                 [PASSENGER_TYPE_ATTRIBUTE]: {
                     passengerType: 'group',
                 },
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
             } as unknown as SessionAttributeTypes,
         });
 
         await salesConfirmation(req, res);
 
-        expect(putUserDataInS3Spy).toBeCalledWith(
-            {
-                ...exampleUserJson,
-                groupDefinition: {
-                    companions: {
-                        thing: 'test thing',
-                    },
-                    maxPeople: undefined,
+        expect(insertDataToProductsBucketAndProductsTableSpy).toBeCalledWith(
+            expectedSingleTicket,
+            'TEST',
+            '1e0459b3-082e-4e70-89db-96e8ae173e10',
+            'geoZone',
+            undefined,
+        );
+    });
+
+    it('creates multiple matching jsons for a matching json with multiple products, and adds them individually to the products table and bucket', async () => {
+        const putUserDataInS3Spy = jest.spyOn(userData, 'putUserDataInProductsBucket');
+        const splitUserDataJsonByProductsSpy = jest.spyOn(userData, 'splitUserDataJsonByProducts');
+        putUserDataInS3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
+        const insertDataToProductsBucketAndProductsTableSpy = jest.spyOn(
+            userData,
+            'insertDataToProductsBucketAndProductsTable',
+        );
+        getGeoZoneTicketJsonSpy.mockResolvedValue(expectedPeriodGeoZoneTicketWithMultipleProducts);
+        const { req, res } = getMockRequestAndResponse({
+            body: {},
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'geoZone',
                 },
             },
-            expect.any(String),
-            'TEST',
-        );
+        });
+
+        await salesConfirmation(req, res);
+
+        expect(splitUserDataJsonByProductsSpy.mock.results[0].value[0]).toEqual(mockDataSplitOutProducts[0]);
+        expect(splitUserDataJsonByProductsSpy.mock.results[0].value[1]).toEqual(mockDataSplitOutProducts[1]);
+        expect(splitUserDataJsonByProductsSpy.mock.results[0].value[2]).toEqual(mockDataSplitOutProducts[2]);
+
+        expect(insertDataToProductsBucketAndProductsTableSpy).toBeCalledTimes(3);
     });
 });

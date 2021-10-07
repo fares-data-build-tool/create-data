@@ -1,18 +1,14 @@
-import { saveProductsEnabled, myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
+import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import moment from 'moment';
 import { NextApiResponse } from 'next';
-import { insertProducts } from '../../data/auroradb';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
-    GROUP_PASSENGER_INFO_ATTRIBUTE,
-    GROUP_SIZE_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { NextApiRequestWithSession, TicketPeriodWithInput } from '../../interfaces';
-import { isPassengerType, isTicketRepresentation } from '../../interfaces/typeGuards';
+import { isTicketRepresentation } from '../../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 import {
@@ -33,6 +29,8 @@ import {
     getSchemeOperatorTicketJson,
     getSingleTicketJson,
     putUserDataInProductsBucket,
+    splitUserDataJsonByProducts,
+    insertDataToProductsBucketAndProductsTable,
 } from '../../utils/apiUtils/userData';
 import { TicketWithIds } from '../../../shared/matchingJsonTypes';
 import { triggerExport } from '../../utils/apiUtils/export';
@@ -95,35 +93,26 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (userDataJson) {
-            const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
-            const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
-            const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
             const carnetAttribute = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
             const dataFormat = getSessionAttribute(req, TXC_SOURCE_ATTRIBUTE)?.source;
 
-            if (
-                sessionGroup &&
-                groupSize &&
-                isPassengerType(passengerTypeAttribute) &&
-                passengerTypeAttribute.passengerType === 'group'
-            ) {
-                userDataJson.groupDefinition = {
-                    maxPeople: groupSize.maxGroupSize,
-                    companions: sessionGroup,
-                };
-            }
-
             userDataJson.carnet = carnetAttribute;
             const noc = getAndValidateNoc(req, res);
-            const filePath = await putUserDataInProductsBucket(userDataJson, uuid, noc);
-            if (saveProductsEnabled && (ticketType === 'geoZone' || dataFormat !== 'tnds')) {
-                const { startDate, endDate } = userDataJson.ticketPeriod;
-                if (!startDate || !endDate) {
-                    throw new Error('Start or end date could not be found.');
-                }
-                const dateTime = moment().toDate();
-                const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
-                await insertProducts(noc, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);
+            let filePath = '';
+            if (userDataJson.products.length > 1) {
+                const splitUserDataJson = splitUserDataJsonByProducts(userDataJson);
+                splitUserDataJson.map(async (splitJson) => {
+                    await insertDataToProductsBucketAndProductsTable(splitJson, noc, uuid, ticketType, dataFormat);
+                });
+                filePath = await putUserDataInProductsBucket(userDataJson, uuid, noc);
+            } else {
+                filePath = await insertDataToProductsBucketAndProductsTable(
+                    userDataJson,
+                    noc,
+                    uuid,
+                    ticketType,
+                    dataFormat,
+                );
             }
 
             if (!myFaresEnabled || !exportEnabled) {
