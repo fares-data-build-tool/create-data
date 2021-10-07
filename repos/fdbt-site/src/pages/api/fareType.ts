@@ -1,16 +1,39 @@
 import camelCase from 'lodash/camelCase';
 import { NextApiResponse } from 'next';
-import { redirectToError, redirectTo } from '../../utils/apiUtils/index';
+import { redirectToError, redirectTo, getAndValidateNoc, isSchemeOperator } from '../../utils/apiUtils/index';
 import { regenerateSession, updateSessionAttribute } from '../../utils/sessions';
-import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+} from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { globalSettingsEnabled } from '../../constants/featureFlag';
+import { getAllServicesByNocCode } from '../../data/auroradb';
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const { fareType } = req.body;
         if (fareType) {
             regenerateSession(req);
+            const schemeOp = isSchemeOperator(req, res);
+            const nocCode = getAndValidateNoc(req, res);
+            const services = await getAllServicesByNocCode(nocCode);
+            const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
+            const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
+
+            if (!schemeOp && services.length === 0) {
+                redirectTo(res, '/noServices');
+                return;
+            }
+
+            updateSessionAttribute(req, TXC_SOURCE_ATTRIBUTE, {
+                source: hasBodsServices ? 'bods' : 'tnds',
+                hasBods: hasBodsServices,
+                hasTnds: hasTndsServices,
+            });
+
             if (
                 typeof fareType === 'string' &&
                 (fareType === 'carnet' || fareType === 'carnetPeriod' || fareType === 'carnetFlatFare')

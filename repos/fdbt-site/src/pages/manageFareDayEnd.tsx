@@ -12,9 +12,12 @@ import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import SubNavigation from '../layout/SubNavigation';
 import InfoPopup from '../components/InfoPopup';
 import { myFaresEnabled } from '../constants/featureFlag';
+import InformationSummary from '../components/InformationSummary';
 
 const title = 'Manage Fare Day End - Create Fares Data Service';
 const description = 'Manage Fare Day End page of the Create Fares Data Service';
+
+const editingInformationText = 'Editing and saving new changes will be applied to all fares using your fare day end.';
 
 export const fareDayEndInputId = 'fare-day-end-input';
 
@@ -52,6 +55,9 @@ const ManageFareDayEnd = ({
                     </div>
 
                     <div className="govuk-grid-column-three-quarters">
+                        {fareDayEnd && errors.length === 0 ? (
+                            <InformationSummary informationText={editingInformationText} />
+                        ) : null}
                         <ErrorSummary errors={errors} />
 
                         <h1 className="govuk-heading-xl">Fare day end</h1>

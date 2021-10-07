@@ -11,9 +11,13 @@ import { sentenceCaseString } from '../utils';
 import { FromDb, SalesOfferPackage } from '../../shared/matchingJsonTypes';
 import { GlobalSettingsManageProps, getGlobalSettingsManageProps } from '../utils/globalSettings';
 import { getSalesOfferPackageById } from '../data/auroradb';
+import InformationSummary from '../components/InformationSummary';
 
 const title = 'Manage Purchase Methods - Create Fares Data Service';
 const description = 'Manage Purchase Methods page of the Create Fares Data Service';
+
+const editingInformationText =
+    'Editing and saving new changes will be applied to all fares using this purchase method.';
 
 // DistributionChannelType
 export const purchaseLocationsList = {
@@ -53,9 +57,10 @@ export const valuesMap: { [key: string]: string } = {
     contactlessTravelCard: 'Contactless SmartCard (e.g Oyster)',
 };
 
-const SalesOfferPackages = ({ inputs, csrfToken, errors, editMode }: ManagePurchaseMethodsProps): ReactElement => {
+const ManagePurchaseMethod = ({ inputs, csrfToken, errors, editMode }: ManagePurchaseMethodsProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description}>
+            {editMode && errors.length === 0 ? <InformationSummary informationText={editingInformationText} /> : null}
             <ErrorSummary errors={errors} />
 
             <div className="govuk-grid-row">
@@ -265,4 +270,4 @@ export const getServerSideProps = async (
     );
 };
 
-export default SalesOfferPackages;
+export default ManagePurchaseMethod;
