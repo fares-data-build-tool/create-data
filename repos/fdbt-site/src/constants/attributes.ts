@@ -104,8 +104,6 @@ export const GS_FARE_DAY_END_ATTRIBUTE = 'fdbt-global-settings-fare-day-end';
 
 export const UNASSIGNED_STOPS_ATTRIBUTE = 'fdbt-unassigned-stops';
 
-export const UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE = 'fdbt-unassigned-outbound-stops';
-
 export const UNASSIGNED_INBOUND_STOPS_ATTRIBUTE = 'fdbt-unassigned-inbound-stops';
 
 export const GS_REFERER = 'fdbt-global-settings-referer';
