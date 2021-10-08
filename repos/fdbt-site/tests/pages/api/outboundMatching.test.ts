@@ -1,4 +1,4 @@
-import { UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE } from './../../../src/constants/attributes';
+import { UNASSIGNED_STOPS_ATTRIBUTE } from '../../../src/constants/attributes';
 import outboundMatching from '../../../src/pages/api/outboundMatching';
 import { getMockRequestAndResponse, service, mockMatchingUserFareStages } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
@@ -31,7 +31,7 @@ describe('Outbound Matching API', () => {
         outboundMatching(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, expectedMatchingInfo);
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE, []);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, UNASSIGNED_STOPS_ATTRIBUTE, []);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/inboundMatching' });
     });
 
@@ -52,7 +52,7 @@ describe('Outbound Matching API', () => {
         outboundMatching(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, expectedMatchingInfo);
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE, [
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, UNASSIGNED_STOPS_ATTRIBUTE, [
             {
                 atcoCode: '2590B0207',
                 indicator: 'opp',

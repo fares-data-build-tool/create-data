@@ -1,8 +1,4 @@
-import {
-    UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE,
-    UNASSIGNED_STOPS_ATTRIBUTE,
-    UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
-} from './../../../../src/constants/attributes';
+import { UNASSIGNED_STOPS_ATTRIBUTE, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE } from './../../../../src/constants/attributes';
 import { TicketType } from '../../../../shared/matchingJsonTypes';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
@@ -296,7 +292,7 @@ describe('userData', () => {
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
-                    [UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE]: [
+                    [UNASSIGNED_STOPS_ATTRIBUTE]: [
                         {
                             stopName: 'ABC',
                             naptanCode: 'DEF',
@@ -353,7 +349,7 @@ describe('userData', () => {
                     },
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
-                    [UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE]: [
+                    [UNASSIGNED_STOPS_ATTRIBUTE]: [
                         {
                             stopName: 'ABC',
                             naptanCode: 'DEF',
@@ -420,7 +416,7 @@ describe('userData', () => {
                             expiryUnit: CarnetExpiryUnit.NO_EXPIRY,
                         },
                     },
-                    [UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE]: [
+                    [UNASSIGNED_STOPS_ATTRIBUTE]: [
                         {
                             stopName: 'ABC',
                             naptanCode: 'DEF',
@@ -495,7 +491,7 @@ describe('userData', () => {
                         productValidity: '24hr',
                         productEndTime: '',
                     },
-                    [UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE]: [
+                    [UNASSIGNED_STOPS_ATTRIBUTE]: [
                         {
                             stopName: 'ABC',
                             naptanCode: 'DEF',
