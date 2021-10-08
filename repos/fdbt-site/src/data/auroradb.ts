@@ -1235,61 +1235,61 @@ export const getPassengerTypeNameByNocAndId = async (nocCode: string, id: string
     }
 };
 
-export const getTimeRestrictionNameByNocAndId = async (nocCode: string, id: string): Promise<string> => {
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving passenger type name for given noc and id',
-        nocCode,
-        id,
-    });
+// export const getTimeRestrictionNameByNocAndId = async (nocCode: string, id: string): Promise<string> => {
+//     logger.info('', {
+//         context: 'data.auroradb',
+//         message: 'retrieving passenger type name for given noc and id',
+//         nocCode,
+//         id,
+//     });
 
-    try {
-        const queryInput = `
-            SELECT name
-            FROM timeRestriction
-            WHERE nocCode = ?
-            AND id = ?
-        `;
+//     try {
+//         const queryInput = `
+//             SELECT name
+//             FROM timeRestriction
+//             WHERE nocCode = ?
+//             AND id = ?
+//         `;
 
-        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
+//         const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
 
-        if (queryResults.length !== 1) {
-            throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
-        }
+//         if (queryResults.length !== 1) {
+//             throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
+//         }
 
-        return queryResults[0].name;
-    } catch (error) {
-        throw new Error(`Could not retrieve timeRestriction name by noc and id from AuroraDB: ${error}`);
-    }
-};
+//         return queryResults[0].name;
+//     } catch (error) {
+//         throw new Error(`Could not retrieve timeRestriction name by noc and id from AuroraDB: ${error}`);
+//     }
+// };
 
-export const getPurchaseMethodsNameByNocAndId = async (nocCode: string, id: string): Promise<string> => {
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving passenger type name for given noc and id',
-        nocCode,
-        id,
-    });
+// export const getPurchaseMethodsNameByNocAndId = async (nocCode: string, id: string): Promise<string> => {
+//     logger.info('', {
+//         context: 'data.auroradb',
+//         message: 'retrieving passenger type name for given noc and id',
+//         nocCode,
+//         id,
+//     });
 
-    try {
-        const queryInput = `
-            SELECT name
-            FROM passengerType
-            WHERE nocCode = ?
-            AND id = ?
-        `;
+//     try {
+//         const queryInput = `
+//             SELECT name
+//             FROM passengerType
+//             WHERE nocCode = ?
+//             AND id = ?
+//         `;
 
-        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
+//         const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
 
-        if (queryResults.length !== 1) {
-            throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
-        }
+//         if (queryResults.length !== 1) {
+//             throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
+//         }
 
-        return queryResults[0].name;
-    } catch (error) {
-        throw new Error(`Could not retrieve passenger type name by noc and id from AuroraDB: ${error}`);
-    }
-};
+//         return queryResults[0].name;
+//     } catch (error) {
+//         throw new Error(`Could not retrieve passenger type name by noc and id from AuroraDB: ${error}`);
+//     }
+// };
 
 export const convertToFullPassengerType = async (
     group: GroupPassengerTypeDb,
@@ -1568,16 +1568,13 @@ export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresP
 
     try {
         const queryInput = `      
-            SELECT lineId, matchingJsonLink, startDate, endDate
+            SELECT id, lineId, matchingJsonLink, startDate, endDate
             FROM products
             WHERE lineId <> ''
             AND nocCode = ?
         `;
 
-        return await executeQuery<{ lineId: string; matchingJsonLink: string; startDate: string; endDate: string }[]>(
-            queryInput,
-            [nocCode],
-        );
+        return await executeQuery<MyFaresProduct[]>(queryInput, [nocCode]);
     } catch (error) {
         throw new Error(`Could not retrieve point to point products by nocCode from AuroraDB: ${error.stack}`);
     }
@@ -1593,15 +1590,13 @@ export const getPointToPointProductsByLineId = async (nocCode: string, lineId: s
 
     try {
         const queryInput = `
-            SELECT lineId, matchingJsonLink, startDate, endDate
+            SELECT id, lineId, matchingJsonLink, startDate, endDate
             FROM products
             WHERE lineId = ?
             AND nocCode = ?
         `;
 
-        const queryResults = await executeQuery<
-            { lineId: string; matchingJsonLink: string; startDate: string; endDate: string }[]
-        >(queryInput, [lineId, nocCode]);
+        const queryResults = await executeQuery<MyFaresProduct[]>(queryInput, [lineId, nocCode]);
 
         return queryResults.map((result) => ({
             ...result,
@@ -1624,16 +1619,13 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
 
     try {
         const queryInput = `
-            SELECT matchingJsonLink, startDate, endDate
+            SELECT id, matchingJsonLink, startDate, endDate
             FROM products
             WHERE lineId = ''
             AND nocCode = ?
         `;
 
-        const queryResults = await executeQuery<{ matchingJsonLink: string; startDate: string; endDate: string }[]>(
-            queryInput,
-            [nocCode],
-        );
+        const queryResults = await executeQuery<MyFaresOtherProduct[]>(queryInput, [nocCode]);
 
         return queryResults.map((result) => ({
             ...result,

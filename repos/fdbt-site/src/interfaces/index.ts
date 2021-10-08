@@ -523,6 +523,7 @@ export interface MyFaresService {
 }
 
 export interface MyFaresProduct {
+    id: number;
     lineId: string;
     matchingJsonLink: string;
     startDate: string;
@@ -536,6 +537,7 @@ export interface MyFaresServiceWithProductCount extends MyFaresService {
 }
 
 export interface MyFaresPointToPointProduct {
+    id: number;
     productDescription: string;
     validity: string;
     startDate: string;

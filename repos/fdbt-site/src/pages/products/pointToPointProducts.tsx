@@ -75,7 +75,11 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[]): Reac
                     {products.length > 0
                         ? products.map((product, index) => (
                               <tr key={index} className="govuk-table__row">
-                                  <td className="govuk-table__cell">{product.productDescription}</td>
+                                  <td className="govuk-table__cell">
+                                      <a href={`/products/productDetails?productId=${product.id}`}>
+                                          {product.productDescription}
+                                      </a>
+                                  </td>
                                   <td className="govuk-table__cell">{product.validity}</td>
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
@@ -142,6 +146,7 @@ export const getServerSideProps = async (
                 startDate: product.startDate,
                 endDate: product.endDate,
                 validity: timeRestriction,
+                id: product.id,
             };
         }),
     );
