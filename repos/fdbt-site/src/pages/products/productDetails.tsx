@@ -45,7 +45,10 @@ const ProductDetails = ({ ticket }: ProductDetailsProps): ReactElement => (
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ProductDetailsProps }> => {
     const noc = getAndValidateNoc(ctx);
-    const productId = ctx.query?.productId as string;
+    const productId = ctx.query?.productId;
+    if (typeof productId !== 'string') {
+        throw new Error(`Product ID is set as ${productId}`);
+    }
     const matchingJsonLink = await getProductMatchingJsonLinkByProductId(noc, productId);
     const ticket = await getProductsMatchingJson(matchingJsonLink);
     const passengerType = getPassengerTypeNameByNocAndId(noc, ticket.passengerType.id.toString());

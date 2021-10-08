@@ -1211,6 +1211,62 @@ export const getPassengerTypeNameByNocAndId = async (nocCode: string, id: string
     }
 };
 
+export const getTimeRestrictionNameByNocAndId = async (nocCode: string, id: string): Promise<string> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving passenger type name for given noc and id',
+        nocCode,
+        id,
+    });
+
+    try {
+        const queryInput = `
+            SELECT name
+            FROM timeRestriction
+            WHERE nocCode = ?
+            AND id = ?
+        `;
+
+        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
+
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
+        }
+
+        return queryResults[0].name;
+    } catch (error) {
+        throw new Error(`Could not retrieve timeRestriction name by noc and id from AuroraDB: ${error}`);
+    }
+};
+
+export const getPurchaseMethodsNameByNocAndId = async (nocCode: string, id: string): Promise<string> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving passenger type name for given noc and id',
+        nocCode,
+        id,
+    });
+
+    try {
+        const queryInput = `
+            SELECT name
+            FROM passengerType
+            WHERE nocCode = ?
+            AND id = ?
+        `;
+
+        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
+
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
+        }
+
+        return queryResults[0].name;
+    } catch (error) {
+        throw new Error(`Could not retrieve passenger type name by noc and id from AuroraDB: ${error}`);
+    }
+};
+
 export const convertToFullPassengerType = async (
     group: GroupPassengerTypeDb,
     nocCode: string,
