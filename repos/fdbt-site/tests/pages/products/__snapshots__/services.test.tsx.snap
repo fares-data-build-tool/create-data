@@ -14,11 +14,22 @@ exports[`myfares pages services should render correctly when no services present
       <div
         className="govuk-grid-column-full"
       >
-        <h1
-          className="govuk-heading-xl govuk-!-margin-bottom-3"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          Services
-        </h1>
+          <h1
+            className="govuk-heading-xl govuk-!-margin-bottom-3"
+          >
+            Services
+          </h1>
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/fareType"
+          >
+            Create new product
+          </a>
+        </div>
         <table
           className="govuk-table"
         >
@@ -84,11 +95,22 @@ exports[`myfares pages services should render correctly when services present 1`
       <div
         className="govuk-grid-column-full"
       >
-        <h1
-          className="govuk-heading-xl govuk-!-margin-bottom-3"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          Services
-        </h1>
+          <h1
+            className="govuk-heading-xl govuk-!-margin-bottom-3"
+          >
+            Services
+          </h1>
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/fareType"
+          >
+            Create new product
+          </a>
+        </div>
         <table
           className="govuk-table"
         >
@@ -197,11 +219,22 @@ exports[`myfares pages services should render correctly when services present an
       <div
         className="govuk-grid-column-full"
       >
-        <h1
-          className="govuk-heading-xl govuk-!-margin-bottom-3"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          Services
-        </h1>
+          <h1
+            className="govuk-heading-xl govuk-!-margin-bottom-3"
+          >
+            Services
+          </h1>
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/fareType"
+          >
+            Create new product
+          </a>
+        </div>
         <table
           className="govuk-table"
         >

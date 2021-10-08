@@ -26,6 +26,7 @@ import {
     MyFaresOtherProduct,
 } from '../interfaces';
 import logger from '../utils/logger';
+import { RawSalesOfferPackage } from '../../shared/dbTypes';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -54,15 +55,6 @@ interface NaptanInfo {
 interface NaptanAtcoCodes {
     naptanCode: string;
     atcoCode: string;
-}
-
-interface RawSalesOfferPackage {
-    name: string;
-    description: string;
-    id: number;
-    purchaseLocations: string;
-    paymentMethods: string;
-    ticketFormats: string;
 }
 
 interface RawTimeRestriction {
@@ -219,7 +211,7 @@ export const getBodsServiceByNocAndId = async (
 
         const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter, serviceId]);
         if (queryResults.length !== 1) {
-            throw new Error(`Expected one service to be returned, ${queryResults.length} results recevied.`);
+            throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
         }
         // Is it better to JSON.parse this and overwrite the start end and end date via spreading the rest?
         return {
@@ -748,10 +740,7 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
     }
 };
 
-export const getTimeRestrictionById = async (
-    id: number,
-    nocCode: string,
-): Promise<PremadeTimeRestriction | undefined> => {
+export const getTimeRestrictionById = async (id: number, nocCode: string): Promise<PremadeTimeRestriction> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving time restriction for given id',
@@ -765,9 +754,15 @@ export const getTimeRestrictionById = async (
             WHERE nocCode = ? AND id = ?
         `;
 
-        const queryResult = (await executeQuery<RawTimeRestriction[]>(queryInput, [nocCode, id]))[0];
+        const queryResult = await executeQuery<RawTimeRestriction[]>(queryInput, [nocCode, id]);
 
-        return queryResult && { ...queryResult, contents: JSON.parse(queryResult.contents) };
+        if (queryResult.length !== 1) {
+            throw new Error(
+                `Could not find time restriction with id: ${id} or more than one time restriction was returned`,
+            );
+        }
+
+        return { ...queryResult[0], contents: JSON.parse(queryResult[0].contents) };
     } catch (error) {
         throw new Error(`Could not retrieve time restriction by nocCode from AuroraDB: ${error.stack}`);
     }
@@ -1037,6 +1032,35 @@ export const getPassengerTypeById = async (
         name,
         passengerType: JSON.parse(contents) as PassengerType,
     };
+};
+
+export const getPassengerTypeNameById = async (id: number, noc: string): Promise<string> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving passenger type name for a given id',
+        id,
+        noc,
+    });
+
+    try {
+        const queryInput = `
+            SELECT name
+            FROM passengerType
+            WHERE id = ? 
+            AND nocCode = ?`;
+
+        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [id, noc]);
+
+        if (queryResults.length !== 1) {
+            throw new Error(
+                `Could not find a passenger type with id: ${id}, or more than one passenger type was returned`,
+            );
+        }
+
+        return queryResults[0].name;
+    } catch (error) {
+        throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
+    }
 };
 
 export const getGroupPassengerTypeById = async (

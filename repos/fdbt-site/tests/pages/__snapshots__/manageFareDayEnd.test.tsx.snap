@@ -22,6 +22,9 @@ exports[`pages manage passenger types should render correctly 1`] = `
       <div
         className="govuk-grid-column-three-quarters"
       >
+        <InformationSummary
+          informationText="Editing and saving new changes will be applied to all fares using your fare day end."
+        />
         <ErrorSummary
           errors={Array []}
         />
@@ -213,6 +216,9 @@ exports[`pages manage passenger types should render popup if saved 1`] = `
       <div
         className="govuk-grid-column-three-quarters"
       >
+        <InformationSummary
+          informationText="Editing and saving new changes will be applied to all fares using your fare day end."
+        />
         <ErrorSummary
           errors={Array []}
         />

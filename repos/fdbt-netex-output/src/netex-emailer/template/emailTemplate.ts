@@ -28,7 +28,7 @@ const emailTemplate = (
     return `<!DOCTYPE html>
         <html lang="en">
           <head>
-            <title>Fares Data Build Tool</title>
+            <title>Create Fares Data service</title>
           </head>
           <body class="govuk-template-body">
             <div id="main">
@@ -67,7 +67,7 @@ const emailTemplate = (
                         style="color: #ffffff;display: inline-block; margin-bottom: 10px; font-size: 25px; font-weight: 700; text-decoration: none; line-height: 2.5;"
                         href="/"
                         id="title_link"
-                        >Fares Data Build Tool</a
+                        >Create Fares Data service</a
                       >
                     </div>
                   </div>

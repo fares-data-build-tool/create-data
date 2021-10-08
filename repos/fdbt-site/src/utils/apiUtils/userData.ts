@@ -7,6 +7,8 @@ import {
     TicketType,
     SchemeOperatorMultiServiceTicket,
     WithIds,
+    PointToPointTicket,
+    WithBaseIds,
     TicketWithIds,
 } from '../../../shared/matchingJsonTypes';
 import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from './index';
@@ -34,13 +36,11 @@ import {
     TERM_TIME_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
-    UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
 } from '../../constants/attributes';
 import { batchGetStopsByAtcoCode, insertProducts } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import {
-    BaseProduct,
     BaseTicket,
     CognitoIdToken,
     GeoZoneTicket,
@@ -52,8 +52,6 @@ import {
     PeriodHybridTicket,
     PointToPointPeriodProduct,
     PointToPointPeriodTicket,
-    PointToPointProductInfoWithSOP,
-    ProductDetails,
     ProductWithSalesOfferPackages,
     ReturnTicket,
     SalesOfferPackage,
@@ -93,21 +91,32 @@ export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     return !!termTimeAttribute && (termTimeAttribute as TermTimeAttribute).termTime;
 };
 
-export const getProductsAndSalesOfferPackages = (
+export const getProductsAndSalesOfferPackages = <T extends { products: { salesOfferPackages: { id: number }[] }[] }>(
     salesOfferPackagesInfo: ProductWithSalesOfferPackages[],
     multipleProductAttribute: { products: (MultiProduct | PointToPointPeriodProduct)[] },
     periodExpiryAttributeInfo: PeriodExpiry | undefined,
-): ProductDetails[] => {
-    const productSOPList: ProductDetails[] = [];
-
-    salesOfferPackagesInfo.forEach((sopInfo) => {
+): T['products'] =>
+    salesOfferPackagesInfo.map((sopInfo) => {
         const matchedProduct = multipleProductAttribute.products.find(
             (product) => product.productName === sopInfo.productName,
         );
+
         if (!matchedProduct) {
             throw new Error('No products could be found that matched the sales offer packages');
         }
-        const productDetailsItem = {
+
+        const salesOfferPackages = sopInfo.salesOfferPackages.map((salesOfferPackage) => {
+            if (!salesOfferPackage.id) {
+                throw new Error('Got a sop without an ID: ' + salesOfferPackage.name);
+            }
+
+            return {
+                id: salesOfferPackage.id,
+                price: salesOfferPackage.price,
+            };
+        });
+
+        return {
             productName: matchedProduct.productName,
             productPrice: 'productPrice' in matchedProduct ? matchedProduct.productPrice : undefined,
             productDuration: matchedProduct.productDuration
@@ -117,13 +126,9 @@ export const getProductsAndSalesOfferPackages = (
                 : undefined,
             productValidity: periodExpiryAttributeInfo?.productValidity,
             carnetDetails: 'carnetDetails' in matchedProduct ? matchedProduct.carnetDetails : undefined,
-            salesOfferPackages: sopInfo.salesOfferPackages,
-        };
-        productSOPList.push(productDetailsItem as ProductDetails);
+            salesOfferPackages: salesOfferPackages,
+        } as T['products'][0];
     });
-
-    return productSOPList;
-};
 
 export const putUserDataInProductsBucket = async (
     data: WithIds<Ticket>,
@@ -145,7 +150,7 @@ export const getBaseTicketAttributes = <T extends TicketType>(
     req: NextApiRequestWithSession,
     res: NextApiResponse,
     ticketType: T,
-): WithIds<BaseTicket<T>> => {
+): WithBaseIds<BaseTicket<T>> => {
     const cookies = new Cookies(req, res);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
@@ -226,7 +231,7 @@ export const getBasePeriodTicketAttributes = (
 
     const { name } = operatorAttribute;
 
-    const productDetailsList: ProductDetails[] = getProductsAndSalesOfferPackages(
+    const productDetailsList = getProductsAndSalesOfferPackages<WithIds<BasePeriodTicket>>(
         salesOfferPackages,
         multipleProductAttribute,
         periodExpiryAttributeInfo,
@@ -239,7 +244,7 @@ export const getBasePeriodTicketAttributes = (
     };
 };
 
-const getPointToPointProducts = (req: NextApiRequestWithSession): PointToPointProductInfoWithSOP[] | BaseProduct[] => {
+const getPointToPointProducts = (req: NextApiRequestWithSession): WithIds<PointToPointTicket>['products'] => {
     const carnetProductDetail = getSessionAttribute(req, CARNET_PRODUCT_DETAILS_ATTRIBUTE);
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
 
@@ -250,7 +255,13 @@ const getPointToPointProducts = (req: NextApiRequestWithSession): PointToPointPr
     return [
         {
             ...carnetProductDetail,
-            salesOfferPackages,
+            salesOfferPackages: salesOfferPackages.map((sop) => {
+                if (!sop.id) {
+                    throw new Error('Got a sop without an ID: ' + sop.name);
+                }
+
+                return { id: sop.id, price: sop.price };
+            }),
         },
     ];
 };
@@ -301,7 +312,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const inboundMatchingAttributeInfo = getSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE);
     const returnPeriodValidity = getSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE);
     const products = getPointToPointProducts(req);
-    const outboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE);
+    const outboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
     const inboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE);
 
     if (
@@ -311,6 +322,12 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         !outboundUnassignedStops ||
         !inboundUnassignedStops
     ) {
+        logger.error('session objects', {
+            matchingAttributeInfo,
+            returnPeriodValidity,
+            outboundUnassignedStops,
+            inboundUnassignedStops,
+        });
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
     }
 
@@ -444,7 +461,7 @@ export const getPointToPointPeriodJson = (
         throw new Error(`Invalid sales offer packages: ${salesOfferPackages}`);
     }
 
-    const products = getProductsAndSalesOfferPackages(
+    const products = getProductsAndSalesOfferPackages<WithIds<PointToPointPeriodTicket>>(
         [{ ...pointToPointProduct, salesOfferPackages }],
         { products: [pointToPointProduct] },
         periodExpiryAttributeInfo,
@@ -453,14 +470,14 @@ export const getPointToPointPeriodJson = (
     return {
         ...userDataJson,
         type: 'period',
-        products: products as PointToPointPeriodTicket['products'],
+        products: products,
     };
 };
 
 export const getSchemeOperatorTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): WithIds<BaseSchemeOperatorTicket> => {
+): WithBaseIds<BaseSchemeOperatorTicket> => {
     const cookies = new Cookies(req, res);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
@@ -508,7 +525,7 @@ export const getSchemeOperatorTicketJson = (
 export const adjustSchemeOperatorJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-    matchingJson: WithIds<BaseSchemeOperatorTicket>,
+    matchingJson: WithBaseIds<BaseSchemeOperatorTicket>,
 ): Promise<
     | WithIds<SchemeOperatorFlatFareTicket>
     | WithIds<SchemeOperatorGeoZoneTicket>
@@ -541,7 +558,7 @@ export const adjustSchemeOperatorJson = async (
             throw new Error('Period expiry contained errors');
         }
 
-        const productsAndSops = getProductsAndSalesOfferPackages(
+        const productsAndSops = getProductsAndSalesOfferPackages<WithIds<SchemeOperatorMultiServiceTicket>>(
             salesOfferPackages,
             multipleProductsAttribute,
             periodExpiryAttributeInfo,
@@ -551,17 +568,14 @@ export const adjustSchemeOperatorJson = async (
             req,
             MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
         ) as MultiOperatorInfo[];
-        const additionalOperatorsInfo = {
+        return {
+            ...(matchingJson as WithIds<SchemeOperatorFlatFareTicket> | WithIds<SchemeOperatorMultiServiceTicket>),
+            products: productsAndSops,
             additionalOperators: multipleOperatorsServices.map((operator) => ({
                 nocCode: operator.nocCode,
                 selectedServices: operator.services,
             })),
         };
-        return {
-            ...matchingJson,
-            products: productsAndSops,
-            additionalOperators: additionalOperatorsInfo.additionalOperators,
-        } as WithIds<SchemeOperatorMultiServiceTicket>;
     }
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
@@ -583,7 +597,7 @@ export const adjustSchemeOperatorJson = async (
         throw new Error('Could not create ticket json. Required values not found.');
     }
 
-    const productDetailsList = getProductsAndSalesOfferPackages(
+    const productDetailsList = getProductsAndSalesOfferPackages<WithIds<SchemeOperatorGeoZoneTicket>>(
         salesOfferPackages,
         multipleProductAttribute,
         periodExpiryAttributeInfo,

@@ -7,7 +7,7 @@ run: ## Run everything locally
 	cd fdbt-dev && $(MAKE) dev
 
 up: ## Run just the docker containers so the site can be run separately to debug
-	cd fdbt-dev && $(MAKE) docker-down
+	cd fdbt-dev && $(MAKE) docker-up
 
 down: ## Bring down docker containers
 	cd fdbt-dev && $(MAKE) docker-down
@@ -32,6 +32,7 @@ audit-fix: ## Fix all npm audit issues
 	${NVM_INITIATE} cd ${FDBT_ROOT}/repos/fdbt-site/cypress_tests && nvm use && npm audit fix
 	${NVM_INITIATE} cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/retrievers && nvm use && npm audit fix
 	${NVM_INITIATE} cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/uploaders && nvm use && npm audit fix
+	${NVM_INITIATE} cd ${FDBT_ROOT}/repos/exporter && nvm use && npm audit fix
 
 cypress: ## Open cypress console to run UI tests
 	cd repos/fdbt-site && $(MAKE) open-cypress

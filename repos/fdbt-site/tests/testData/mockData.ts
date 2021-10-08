@@ -10,6 +10,7 @@ import {
     SchemeOperatorMultiServiceTicket,
     WithIds,
     FlatFareMultipleServices,
+    WithBaseIds,
 } from '../../shared/matchingJsonTypes';
 import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
@@ -40,7 +41,6 @@ import {
     MultiProduct,
     MultiProductWithErrors,
     NextPageContextWithSession,
-    ProductDetails,
     RadioConditionalInputFieldset,
     RadioWithConditionalInputs,
     RawService,
@@ -59,11 +59,7 @@ import {
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
 
-import {
-    defaultSalesOfferPackageOne,
-    defaultSalesOfferPackageThree,
-    defaultSalesOfferPackageTwo,
-} from '../../src/pages/selectSalesOfferPackage';
+import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../src/pages/selectSalesOfferPackage';
 import { SessionAttributeTypes } from '../../src/utils/sessions';
 
 interface GetMockContextInput {
@@ -1086,20 +1082,34 @@ export const expectedSalesOfferPackageArray: SalesOfferPackage[] = [
     },
 ];
 
-export const expectedProductDetailsArray: ProductDetails[] = [
+export const expectedProductDetailsArray = [
     {
         productName: 'Product',
         productPrice: '2.99',
         productDuration: '1 day',
         productValidity: '24hr',
-        salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        salesOfferPackages: [
+            {
+                id: 1,
+                price: undefined,
+            },
+            {
+                id: 2,
+                price: undefined,
+            },
+        ],
     },
     {
         productName: 'Product Two',
         productPrice: '7.99',
         productDuration: '7 days',
         productValidity: '24hr',
-        salesOfferPackages: [defaultSalesOfferPackageTwo],
+        salesOfferPackages: [
+            {
+                id: 2,
+                price: undefined,
+            },
+        ],
     },
 ];
 
@@ -1164,7 +1174,16 @@ export const expectedSingleTicket: WithIds<SingleTicket> = {
     },
     products: [
         {
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
         },
     ],
     fareZones: [
@@ -1320,9 +1339,18 @@ export const expectedCarnetSingleTicket: WithIds<SingleTicket> = {
                 expiryUnit: CarnetExpiryUnit.DAY,
                 quantity: '5',
             },
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
         },
-    ],
+    ] as unknown as WithIds<SingleTicket>['products'],
     fareZones: [
         {
             name: 'Acomb Green Lane',
@@ -1469,7 +1497,16 @@ export const expectedNonCircularReturnTicket: WithIds<ReturnTicket> = {
     },
     products: [
         {
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
         },
     ],
     inboundFareZones: [
@@ -1661,12 +1698,21 @@ export const expectedPointToPointPeriodTicket: WithIds<PointToPointPeriodTicket>
     },
     products: [
         {
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             productName: 'My product',
             productDuration: '7 weeks',
             productValidity: '24hr',
         },
-    ] as PointToPointPeriodTicket['products'],
+    ] as WithIds<PointToPointPeriodTicket>['products'],
     inboundFareZones: [
         {
             name: 'Acomb Green Lane',
@@ -1856,7 +1902,16 @@ export const expectedCircularReturnTicket: WithIds<ReturnTicket> = {
     },
     products: [
         {
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
         },
     ],
     inboundFareZones: [],
@@ -2025,9 +2080,18 @@ export const expectedCarnetReturnTicket: WithIds<ReturnTicket> = {
                 expiryTime: '',
                 expiryUnit: CarnetExpiryUnit.NO_EXPIRY,
             },
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
         },
-    ],
+    ] as unknown as WithIds<SingleTicket>['products'],
     inboundFareZones: [
         {
             name: 'Acomb Green Lane',
@@ -2220,7 +2284,16 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: WithIds<PeriodGeoZ
             productPrice: '50',
             productDuration: '5 weeks',
             productValidity: '24hr',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: undefined,
         },
         {
@@ -2228,7 +2301,16 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: WithIds<PeriodGeoZ
             productPrice: '2.50',
             productDuration: '1 year',
             productValidity: '24hr',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: undefined,
         },
         {
@@ -2236,7 +2318,16 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: WithIds<PeriodGeoZ
             productPrice: '200',
             productDuration: '28 months',
             productValidity: '24hr',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: undefined,
         },
     ],
@@ -2262,7 +2353,16 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: WithIds<Mul
             productPrice: '50',
             productDuration: '5 weeks',
             productValidity: '24hr',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: undefined,
         },
         {
@@ -2270,7 +2370,16 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: WithIds<Mul
             productPrice: '2.50',
             productDuration: '1 year',
             productValidity: '24hr',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: undefined,
         },
         {
@@ -2278,7 +2387,16 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: WithIds<Mul
             productPrice: '200',
             productDuration: '28 months',
             productValidity: '24hr',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: undefined,
         },
     ],
@@ -2304,7 +2422,16 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: WithIds<P
             productPrice: '50',
             productDuration: '5 weeks',
             productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: undefined,
         },
         {
@@ -2312,7 +2439,16 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: WithIds<P
             productPrice: '2.50',
             productDuration: '1 year',
             productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: undefined,
         },
         {
@@ -2320,7 +2456,16 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: WithIds<P
             productPrice: '200',
             productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: undefined,
         },
     ],
@@ -2368,7 +2513,16 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Wit
             productPrice: '50',
             productDuration: '5 weeks',
             productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: {
                 quantity: '10',
                 expiryTime: '15',
@@ -2380,7 +2534,16 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Wit
             productPrice: '2.50',
             productDuration: '1 year',
             productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: {
                 quantity: '15',
                 expiryTime: '10',
@@ -2392,7 +2555,16 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Wit
             productPrice: '200',
             productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
             carnetDetails: {
                 quantity: '30',
                 expiryTime: '10',
@@ -2445,7 +2617,16 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productPrice: '50',
                 productDuration: '5 weeks',
                 productValidity: 'fareDayEnd',
-                salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
                 carnetDetails: undefined,
             },
             {
@@ -2453,7 +2634,16 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productPrice: '2.50',
                 productDuration: '1 year',
                 productValidity: 'fareDayEnd',
-                salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
                 carnetDetails: undefined,
             },
             {
@@ -2461,7 +2651,16 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                 productPrice: '200',
                 productDuration: '28 months',
                 productValidity: 'fareDayEnd',
-                salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
                 carnetDetails: undefined,
             },
         ],
@@ -2586,7 +2785,16 @@ export const expectedFlatFareTicket: WithIds<FlatFareGeoZoneTicket> | WithIds<Fl
         {
             productName: 'Weekly Rider',
             productPrice: '7',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
         },
     ],
     selectedServices: [
@@ -2631,14 +2839,23 @@ export const expectedFlatFareGeoZoneTicket: WithIds<FlatFareGeoZoneTicket> = {
         {
             productName: 'Flat fare with geo zone',
             productPrice: '7',
-            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageThree],
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 3,
+                    price: undefined,
+                },
+            ],
         },
     ],
 };
 
 export const expectedSchemeOperatorTicket = (
     type: BaseSchemeOperatorTicket['type'],
-): WithIds<BaseSchemeOperatorTicket> => {
+): WithBaseIds<BaseSchemeOperatorTicket> => {
     return {
         schemeOperatorName: 'SCHEME_OPERATOR',
         schemeOperatorRegionCode: 'SCHEME_REGION',
@@ -2672,11 +2889,8 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: WithIds<Scheme
             productPrice: '50',
             salesOfferPackages: [
                 {
-                    description: '',
-                    name: 'Onboard (cash)',
-                    paymentMethods: ['cash'],
-                    purchaseLocations: ['onBoard'],
-                    ticketFormats: ['paperTicket'],
+                    id: 1,
+                    price: undefined,
                 },
             ],
             carnetDetails: undefined,
@@ -2686,18 +2900,12 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicket: WithIds<Scheme
             productPrice: '502',
             salesOfferPackages: [
                 {
-                    name: 'Onboard (contactless)',
-                    description: '',
-                    purchaseLocations: ['onBoard'],
-                    paymentMethods: ['contactlessPaymentCard'],
-                    ticketFormats: ['paperTicket'],
+                    id: 2,
+                    price: undefined,
                 },
                 {
-                    name: 'Online (smart card)',
-                    description: '',
-                    purchaseLocations: ['online'],
-                    paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
-                    ticketFormats: ['smartCard'],
+                    id: 3,
+                    price: undefined,
                 },
             ],
             carnetDetails: undefined,
@@ -2805,11 +3013,7 @@ export const expectedSchemeOperatorMultiServicesTicket: WithIds<SchemeOperatorMu
             productValidity: '24hr',
             salesOfferPackages: [
                 {
-                    description: '',
-                    name: 'Onboard (cash)',
-                    paymentMethods: ['cash'],
-                    purchaseLocations: ['onBoard'],
-                    ticketFormats: ['paperTicket'],
+                    id: 1,
                     price: '4.99',
                 },
             ],
@@ -2822,19 +3026,11 @@ export const expectedSchemeOperatorMultiServicesTicket: WithIds<SchemeOperatorMu
             productValidity: '24hr',
             salesOfferPackages: [
                 {
-                    name: 'Onboard (contactless)',
-                    description: '',
-                    purchaseLocations: ['onBoard'],
-                    paymentMethods: ['contactlessPaymentCard'],
-                    ticketFormats: ['paperTicket'],
+                    id: 2,
                     price: '5.99',
                 },
                 {
-                    name: 'Online (smart card)',
-                    description: '',
-                    purchaseLocations: ['online'],
-                    paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
-                    ticketFormats: ['smartCard'],
+                    id: 3,
                     price: '6.99',
                 },
             ],
@@ -3098,18 +3294,12 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: WithIds<SchemeO
             productValidity: 'fareDayEnd',
             salesOfferPackages: [
                 {
-                    description: '',
-                    name: 'Onboard (cash)',
-                    paymentMethods: ['cash'],
-                    purchaseLocations: ['onBoard'],
-                    ticketFormats: ['paperTicket'],
+                    id: 1,
+                    price: undefined,
                 },
                 {
-                    description: '',
-                    name: 'Onboard (contactless)',
-                    paymentMethods: ['contactlessPaymentCard'],
-                    purchaseLocations: ['onBoard'],
-                    ticketFormats: ['paperTicket'],
+                    id: 2,
+                    price: undefined,
                 },
             ],
         },
@@ -3121,18 +3311,12 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: WithIds<SchemeO
             productValidity: 'fareDayEnd',
             salesOfferPackages: [
                 {
-                    description: '',
-                    name: 'Onboard (cash)',
-                    paymentMethods: ['cash'],
-                    purchaseLocations: ['onBoard'],
-                    ticketFormats: ['paperTicket'],
+                    id: 1,
+                    price: undefined,
                 },
                 {
-                    description: '',
-                    name: 'Onboard (contactless)',
-                    paymentMethods: ['contactlessPaymentCard'],
-                    purchaseLocations: ['onBoard'],
-                    ticketFormats: ['paperTicket'],
+                    id: 2,
+                    price: undefined,
                 },
             ],
         },
@@ -3144,18 +3328,12 @@ export const expectedSchemeOperatorTicketAfterGeoZoneAdjustment: WithIds<SchemeO
             productValidity: 'fareDayEnd',
             salesOfferPackages: [
                 {
-                    description: '',
-                    name: 'Onboard (cash)',
-                    paymentMethods: ['cash'],
-                    purchaseLocations: ['onBoard'],
-                    ticketFormats: ['paperTicket'],
+                    id: 1,
+                    price: undefined,
                 },
                 {
-                    description: '',
-                    name: 'Onboard (contactless)',
-                    paymentMethods: ['contactlessPaymentCard'],
-                    purchaseLocations: ['onBoard'],
-                    ticketFormats: ['paperTicket'],
+                    id: 2,
+                    price: undefined,
                 },
             ],
         },
@@ -5464,18 +5642,12 @@ export const mockDataSplitOutProducts = [
                 productValidity: '24hr',
                 salesOfferPackages: [
                     {
-                        description: '',
-                        name: 'Onboard (cash)',
-                        paymentMethods: ['cash'],
-                        purchaseLocations: ['onBoard'],
-                        ticketFormats: ['paperTicket'],
+                        id: 1,
+                        price: undefined,
                     },
                     {
-                        description: '',
-                        name: 'Onboard (contactless)',
-                        paymentMethods: ['contactlessPaymentCard'],
-                        purchaseLocations: ['onBoard'],
-                        ticketFormats: ['paperTicket'],
+                        id: 2,
+                        price: undefined,
                     },
                 ],
             },
@@ -5653,18 +5825,12 @@ export const mockDataSplitOutProducts = [
                 productValidity: '24hr',
                 salesOfferPackages: [
                     {
-                        description: '',
-                        name: 'Onboard (cash)',
-                        paymentMethods: ['cash'],
-                        purchaseLocations: ['onBoard'],
-                        ticketFormats: ['paperTicket'],
+                        id: 1,
+                        price: undefined,
                     },
                     {
-                        description: '',
-                        name: 'Onboard (contactless)',
-                        paymentMethods: ['contactlessPaymentCard'],
-                        purchaseLocations: ['onBoard'],
-                        ticketFormats: ['paperTicket'],
+                        id: 2,
+                        price: undefined,
                     },
                 ],
             },
@@ -5842,18 +6008,12 @@ export const mockDataSplitOutProducts = [
                 productValidity: '24hr',
                 salesOfferPackages: [
                     {
-                        description: '',
-                        name: 'Onboard (cash)',
-                        paymentMethods: ['cash'],
-                        purchaseLocations: ['onBoard'],
-                        ticketFormats: ['paperTicket'],
+                        id: 1,
+                        price: undefined,
                     },
                     {
-                        description: '',
-                        name: 'Onboard (contactless)',
-                        paymentMethods: ['contactlessPaymentCard'],
-                        purchaseLocations: ['onBoard'],
-                        ticketFormats: ['paperTicket'],
+                        id: 2,
+                        price: undefined,
                     },
                 ],
             },

@@ -1,6 +1,6 @@
 # fdbt-dev
 
-This repo facilitates the development of the Fares Data Build Tool by providing scripts to launch the site and surrounding dev infra, which are brought up by a single docker compose file. A Makefile and a series of bash scripts provide an easy way for developers to bring up the environment, run tests, reset the data etc.
+This repo facilitates the development of the Create Fares Data service by providing scripts to launch the site and surrounding dev infra, which are brought up by a single docker compose file. A Makefile and a series of bash scripts provide an easy way for developers to bring up the environment, run tests, reset the data etc.
 
 ## Requirements
 
@@ -24,7 +24,7 @@ In order to use the scripts in this repo, the FDBT repos need to be in a particu
 │   └── fdbt-netex-output
 ```
 
-## Running the Fares Data Build Tool
+## Running the Create Fares Data service
 
 | Var                         | Description                                                                                                                          |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |

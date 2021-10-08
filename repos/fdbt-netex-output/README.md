@@ -1,4 +1,4 @@
-# Fares Data Build Tool NeTEx Output
+# Create Fares Data service NeTEx Output
 
 [![CircleCI](https://circleci.com/gh/fares-data-build-tool/fdbt-netex-output.svg?style=svg)](https://circleci.com/gh/fares-data-build-tool/fdbt-netex-output)
 

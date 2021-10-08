@@ -1119,6 +1119,1129 @@ exports[`pages manage time restriction should render correctly 1`] = `
 </TwoThirdsLayout>
 `;
 
+exports[`pages manage time restriction should render correctly in edit mode 1`] = `
+<TwoThirdsLayout
+  description="Manage Time Restrictions page of the Create Fares Data Service"
+  errors={Array []}
+  title="Manage Time Restrictions - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/manageTimeRestriction"
+    csrfToken=""
+    method="post"
+  >
+    <InformationSummary
+      informationText="Editing and saving new changes will be applied to all fares using this time restriction."
+    />
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="manage-time-restriction-page-heading"
+    >
+      Provide time restriction details
+    </h1>
+    <span
+      className="govuk-hint"
+      id="manage-time-restriction-hint"
+    >
+      Select the days of the week that the tickets are valid for. If applicable, enter the times at which your tickets start and end. If they are valid at all times, select the day and leave the time blank. You cannot enter an end time without a start time.
+    </span>
+    <div
+      className="govuk-inset-text"
+      id="manage-time-restriction-inset-hint"
+    >
+      Enter times in 24hr format. For example 0900 is 9am, 1730 is 5:30pm.
+    </div>
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="time-restriction-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="time-restriction-heading"
+          >
+            Select the days of the week that are applicable
+          </h1>
+        </legend>
+        <input
+          name="id"
+          type="hidden"
+          value={0}
+        />
+        <FormElementWrapper
+          errorClass="govuk-checkboxes--error"
+          errorId="time-restriction-days"
+          errors={Array []}
+        >
+          <div
+            className="govuk-checkboxes"
+            data-module="govuk-checkboxes"
+          >
+            <div
+              key="monday"
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="monday"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-0"
+                  defaultChecked={true}
+                  id="time-restriction-day-0"
+                  name="timeRestrictionDays"
+                  type="checkbox"
+                  value="monday"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="time-restriction-day-0"
+                >
+                  Monday
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-0"
+              >
+                <fieldset
+                  className="govuk-fieldset flex-container time-restrictions-table"
+                >
+                  <div
+                    className="govuk-form-group false"
+                  >
+                    <div
+                      className="global-settings-time-restriction-row"
+                      key="0"
+                    >
+                      <div
+                        className="govuk-form-group"
+                      >
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="start-time-monday-0"
+                          >
+                            Start time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              monday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 govuk-!-margin-right-4 false"
+                            defaultValue="2200"
+                            id="start-time-monday-0"
+                            name="startTimemonday"
+                            type="text"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="end-time-monday-0"
+                          >
+                            End time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              monday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 false"
+                            defaultValue="2300"
+                            disabled={false}
+                            id="end-time-monday-0"
+                            name="endTimemonday"
+                            type="text"
+                          />
+                        </div>
+                        <span
+                          className="govuk-label item"
+                        >
+                          OR 
+                        </span>
+                        <div
+                          className="govuk-checkboxes__item item"
+                        >
+                          <input
+                            checked={false}
+                            className="govuk-checkboxes__input"
+                            id="use-fare-day-end"
+                            name="fareDayEndmonday"
+                            onChange={[Function]}
+                            type="checkbox"
+                          />
+                          <label
+                            className="govuk-label govuk-checkboxes__label"
+                            htmlFor="use-fare-day-end"
+                          >
+                            Use fare day end
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div
+                  className="flex-container govuk-!-margin-bottom-4"
+                >
+                  <button
+                    className="govuk-button govuk-button--secondary time-restrictions-button-placement"
+                    id="add-another-button-monday"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Add another
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              key="tuesday"
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="tuesday"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-1"
+                  defaultChecked={true}
+                  id="time-restriction-day-1"
+                  name="timeRestrictionDays"
+                  type="checkbox"
+                  value="tuesday"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="time-restriction-day-1"
+                >
+                  Tuesday
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-1"
+              >
+                <fieldset
+                  className="govuk-fieldset flex-container time-restrictions-table"
+                >
+                  <div
+                    className="govuk-form-group false"
+                  >
+                    <div
+                      className="global-settings-time-restriction-row"
+                      key="0"
+                    >
+                      <div
+                        className="govuk-form-group"
+                      >
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="start-time-tuesday-0"
+                          >
+                            Start time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              tuesday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 govuk-!-margin-right-4 false"
+                            defaultValue="0100"
+                            id="start-time-tuesday-0"
+                            name="startTimetuesday"
+                            type="text"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="end-time-tuesday-0"
+                          >
+                            End time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              tuesday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 false"
+                            defaultValue="2400"
+                            disabled={false}
+                            id="end-time-tuesday-0"
+                            name="endTimetuesday"
+                            type="text"
+                          />
+                        </div>
+                        <span
+                          className="govuk-label item"
+                        >
+                          OR 
+                        </span>
+                        <div
+                          className="govuk-checkboxes__item item"
+                        >
+                          <input
+                            checked={false}
+                            className="govuk-checkboxes__input"
+                            id="use-fare-day-end"
+                            name="fareDayEndtuesday"
+                            onChange={[Function]}
+                            type="checkbox"
+                          />
+                          <label
+                            className="govuk-label govuk-checkboxes__label"
+                            htmlFor="use-fare-day-end"
+                          >
+                            Use fare day end
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div
+                  className="flex-container govuk-!-margin-bottom-4"
+                >
+                  <button
+                    className="govuk-button govuk-button--secondary time-restrictions-button-placement"
+                    id="add-another-button-tuesday"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Add another
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              key="wednesday"
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="wednesday"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-2"
+                  defaultChecked={true}
+                  id="time-restriction-day-2"
+                  name="timeRestrictionDays"
+                  type="checkbox"
+                  value="wednesday"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="time-restriction-day-2"
+                >
+                  Wednesday
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-2"
+              >
+                <fieldset
+                  className="govuk-fieldset flex-container time-restrictions-table"
+                >
+                  <div
+                    className="govuk-form-group false"
+                  >
+                    <div
+                      className="global-settings-time-restriction-row"
+                      key="0"
+                    >
+                      <div
+                        className="govuk-form-group"
+                      >
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="start-time-wednesday-0"
+                          >
+                            Start time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              wednesday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 govuk-!-margin-right-4 false"
+                            defaultValue="1200"
+                            id="start-time-wednesday-0"
+                            name="startTimewednesday"
+                            type="text"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="end-time-wednesday-0"
+                          >
+                            End time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              wednesday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 false"
+                            defaultValue="1200"
+                            disabled={false}
+                            id="end-time-wednesday-0"
+                            name="endTimewednesday"
+                            type="text"
+                          />
+                        </div>
+                        <span
+                          className="govuk-label item"
+                        >
+                          OR 
+                        </span>
+                        <div
+                          className="govuk-checkboxes__item item"
+                        >
+                          <input
+                            checked={false}
+                            className="govuk-checkboxes__input"
+                            id="use-fare-day-end"
+                            name="fareDayEndwednesday"
+                            onChange={[Function]}
+                            type="checkbox"
+                          />
+                          <label
+                            className="govuk-label govuk-checkboxes__label"
+                            htmlFor="use-fare-day-end"
+                          >
+                            Use fare day end
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div
+                  className="flex-container govuk-!-margin-bottom-4"
+                >
+                  <button
+                    className="govuk-button govuk-button--secondary time-restrictions-button-placement"
+                    id="add-another-button-wednesday"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Add another
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              key="thursday"
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="thursday"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-3"
+                  defaultChecked={true}
+                  id="time-restriction-day-3"
+                  name="timeRestrictionDays"
+                  type="checkbox"
+                  value="thursday"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="time-restriction-day-3"
+                >
+                  Thursday
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-3"
+              >
+                <fieldset
+                  className="govuk-fieldset flex-container time-restrictions-table"
+                >
+                  <div
+                    className="govuk-form-group false"
+                  >
+                    <div
+                      className="global-settings-time-restriction-row"
+                      key="0"
+                    >
+                      <div
+                        className="govuk-form-group"
+                      >
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="start-time-thursday-0"
+                          >
+                            Start time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              thursday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 govuk-!-margin-right-4 false"
+                            defaultValue="-1"
+                            id="start-time-thursday-0"
+                            name="startTimethursday"
+                            type="text"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="end-time-thursday-0"
+                          >
+                            End time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              thursday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 false"
+                            defaultValue=""
+                            disabled={false}
+                            id="end-time-thursday-0"
+                            name="endTimethursday"
+                            type="text"
+                          />
+                        </div>
+                        <span
+                          className="govuk-label item"
+                        >
+                          OR 
+                        </span>
+                        <div
+                          className="govuk-checkboxes__item item"
+                        >
+                          <input
+                            checked={false}
+                            className="govuk-checkboxes__input"
+                            id="use-fare-day-end"
+                            name="fareDayEndthursday"
+                            onChange={[Function]}
+                            type="checkbox"
+                          />
+                          <label
+                            className="govuk-label govuk-checkboxes__label"
+                            htmlFor="use-fare-day-end"
+                          >
+                            Use fare day end
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div
+                  className="flex-container govuk-!-margin-bottom-4"
+                >
+                  <button
+                    className="govuk-button govuk-button--secondary time-restrictions-button-placement"
+                    id="add-another-button-thursday"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Add another
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              key="friday"
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="friday"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-4"
+                  defaultChecked={false}
+                  id="time-restriction-day-4"
+                  name="timeRestrictionDays"
+                  type="checkbox"
+                  value="friday"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="time-restriction-day-4"
+                >
+                  Friday
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-4"
+              >
+                <fieldset
+                  className="govuk-fieldset flex-container time-restrictions-table"
+                >
+                  <div
+                    className="govuk-form-group false"
+                  >
+                    <div
+                      className="global-settings-time-restriction-row"
+                      key="0"
+                    >
+                      <div
+                        className="govuk-form-group"
+                      >
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="start-time-friday-0"
+                          >
+                            Start time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              friday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 govuk-!-margin-right-4 false"
+                            defaultValue=""
+                            id="start-time-friday-0"
+                            name="startTimefriday"
+                            type="text"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="end-time-friday-0"
+                          >
+                            End time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              friday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 false"
+                            defaultValue=""
+                            disabled={false}
+                            id="end-time-friday-0"
+                            name="endTimefriday"
+                            type="text"
+                          />
+                        </div>
+                        <span
+                          className="govuk-label item"
+                        >
+                          OR 
+                        </span>
+                        <div
+                          className="govuk-checkboxes__item item"
+                        >
+                          <input
+                            checked={false}
+                            className="govuk-checkboxes__input"
+                            id="use-fare-day-end"
+                            name="fareDayEndfriday"
+                            onChange={[Function]}
+                            type="checkbox"
+                          />
+                          <label
+                            className="govuk-label govuk-checkboxes__label"
+                            htmlFor="use-fare-day-end"
+                          >
+                            Use fare day end
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div
+                  className="flex-container govuk-!-margin-bottom-4"
+                >
+                  <button
+                    className="govuk-button govuk-button--secondary time-restrictions-button-placement"
+                    id="add-another-button-friday"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Add another
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              key="saturday"
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="saturday"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-5"
+                  defaultChecked={false}
+                  id="time-restriction-day-5"
+                  name="timeRestrictionDays"
+                  type="checkbox"
+                  value="saturday"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="time-restriction-day-5"
+                >
+                  Saturday
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-5"
+              >
+                <fieldset
+                  className="govuk-fieldset flex-container time-restrictions-table"
+                >
+                  <div
+                    className="govuk-form-group false"
+                  >
+                    <div
+                      className="global-settings-time-restriction-row"
+                      key="0"
+                    >
+                      <div
+                        className="govuk-form-group"
+                      >
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="start-time-saturday-0"
+                          >
+                            Start time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              saturday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 govuk-!-margin-right-4 false"
+                            defaultValue=""
+                            id="start-time-saturday-0"
+                            name="startTimesaturday"
+                            type="text"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="end-time-saturday-0"
+                          >
+                            End time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              saturday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 false"
+                            defaultValue=""
+                            disabled={false}
+                            id="end-time-saturday-0"
+                            name="endTimesaturday"
+                            type="text"
+                          />
+                        </div>
+                        <span
+                          className="govuk-label item"
+                        >
+                          OR 
+                        </span>
+                        <div
+                          className="govuk-checkboxes__item item"
+                        >
+                          <input
+                            checked={false}
+                            className="govuk-checkboxes__input"
+                            id="use-fare-day-end"
+                            name="fareDayEndsaturday"
+                            onChange={[Function]}
+                            type="checkbox"
+                          />
+                          <label
+                            className="govuk-label govuk-checkboxes__label"
+                            htmlFor="use-fare-day-end"
+                          >
+                            Use fare day end
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div
+                  className="flex-container govuk-!-margin-bottom-4"
+                >
+                  <button
+                    className="govuk-button govuk-button--secondary time-restrictions-button-placement"
+                    id="add-another-button-saturday"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Add another
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              key="sunday"
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="sunday"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-6"
+                  defaultChecked={false}
+                  id="time-restriction-day-6"
+                  name="timeRestrictionDays"
+                  type="checkbox"
+                  value="sunday"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="time-restriction-day-6"
+                >
+                  Sunday
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-6"
+              >
+                <fieldset
+                  className="govuk-fieldset flex-container time-restrictions-table"
+                >
+                  <div
+                    className="govuk-form-group false"
+                  >
+                    <div
+                      className="global-settings-time-restriction-row"
+                      key="0"
+                    >
+                      <div
+                        className="govuk-form-group"
+                      >
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="start-time-sunday-0"
+                          >
+                            Start time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              sunday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 govuk-!-margin-right-4 false"
+                            defaultValue=""
+                            id="start-time-sunday-0"
+                            name="startTimesunday"
+                            type="text"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="end-time-sunday-0"
+                          >
+                            End time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              sunday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 false"
+                            defaultValue=""
+                            disabled={false}
+                            id="end-time-sunday-0"
+                            name="endTimesunday"
+                            type="text"
+                          />
+                        </div>
+                        <span
+                          className="govuk-label item"
+                        >
+                          OR 
+                        </span>
+                        <div
+                          className="govuk-checkboxes__item item"
+                        >
+                          <input
+                            checked={false}
+                            className="govuk-checkboxes__input"
+                            id="use-fare-day-end"
+                            name="fareDayEndsunday"
+                            onChange={[Function]}
+                            type="checkbox"
+                          />
+                          <label
+                            className="govuk-label govuk-checkboxes__label"
+                            htmlFor="use-fare-day-end"
+                          >
+                            Use fare day end
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div
+                  className="flex-container govuk-!-margin-bottom-4"
+                >
+                  <button
+                    className="govuk-button govuk-button--secondary time-restrictions-button-placement"
+                    id="add-another-button-sunday"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Add another
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              key="bankHoliday"
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="bankHoliday"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  data-aria-controls="conditional-input-7"
+                  defaultChecked={false}
+                  id="time-restriction-day-7"
+                  name="timeRestrictionDays"
+                  type="checkbox"
+                  value="bankHoliday"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="time-restriction-day-7"
+                >
+                  Bank holiday
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+                id="conditional-input-7"
+              >
+                <fieldset
+                  className="govuk-fieldset flex-container time-restrictions-table"
+                >
+                  <div
+                    className="govuk-form-group false"
+                  >
+                    <div
+                      className="global-settings-time-restriction-row"
+                      key="0"
+                    >
+                      <div
+                        className="govuk-form-group"
+                      >
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="start-time-bankHoliday-0"
+                          >
+                            Start time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              bankHoliday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 govuk-!-margin-right-4 false"
+                            defaultValue=""
+                            id="start-time-bankHoliday-0"
+                            name="startTimebankHoliday"
+                            type="text"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            className="govuk-label"
+                            htmlFor="end-time-bankHoliday-0"
+                          >
+                            End time 
+                            <span
+                              className="govuk-visually-hidden"
+                            >
+                              for 
+                              bankHoliday
+                            </span>
+                          </label>
+                          <input
+                            aria-describedby="time-restrictions-hint"
+                            className="govuk-input govuk-input--width-5 false"
+                            defaultValue=""
+                            disabled={false}
+                            id="end-time-bankHoliday-0"
+                            name="endTimebankHoliday"
+                            type="text"
+                          />
+                        </div>
+                        <span
+                          className="govuk-label item"
+                        >
+                          OR 
+                        </span>
+                        <div
+                          className="govuk-checkboxes__item item"
+                        >
+                          <input
+                            checked={false}
+                            className="govuk-checkboxes__input"
+                            id="use-fare-day-end"
+                            name="fareDayEndbankHoliday"
+                            onChange={[Function]}
+                            type="checkbox"
+                          />
+                          <label
+                            className="govuk-label govuk-checkboxes__label"
+                            htmlFor="use-fare-day-end"
+                          >
+                            Use fare day end
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div
+                  className="flex-container govuk-!-margin-bottom-4"
+                >
+                  <button
+                    className="govuk-button govuk-button--secondary time-restrictions-button-placement"
+                    id="add-another-button-bankHoliday"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Add another
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <div
+      className="govuk-form-group"
+      id="time-restriction-name"
+    >
+      <label
+        htmlFor="time-restriction-name"
+      >
+        <h1
+          className="govuk-heading-m"
+          id="time-restriction-name-heading"
+        >
+          Provide a name for your time restriction
+        </h1>
+      </label>
+      <p
+        className="govuk-hint"
+        id="group-name-hint"
+      >
+        50 characters maximum
+      </p>
+      <FormElementWrapper
+        errorClass="govuk-input--error"
+        errorId="time-restriction-name"
+        errors={Array []}
+      >
+        <input
+          className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+          defaultValue="test"
+          id="time-restriction-name"
+          maxLength={50}
+          name="timeRestrictionName"
+          type="text"
+        />
+      </FormElementWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Update time restriction"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
 exports[`pages manage time restriction should render error state on day restrictions when invalid inputs are provided 1`] = `
 <TwoThirdsLayout
   description="Manage Time Restrictions page of the Create Fares Data Service"

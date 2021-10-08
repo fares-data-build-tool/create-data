@@ -6,8 +6,9 @@ import {
     DbTimeRestriction,
     PassengerType,
     SinglePassengerType,
+    RawSalesOfferPackage,
 } from '../shared/dbTypes';
-import { GroupDefinition, CompanionInfo } from '../shared/matchingJsonTypes';
+import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
 
 const ssm = new SSM({ region: 'eu-west-2' });
 
@@ -67,8 +68,8 @@ const retrievePassengerTypeById = async (
         [id, noc],
     );
 
-    if (queryResults.length > 1) {
-        throw new Error("Didn't expect more than one passenger type with the same id");
+    if (queryResults.length !== 1) {
+        throw new Error(`Didn't get one passenger type with the id [${id}]`);
     }
 
     return queryResults[0];
@@ -93,6 +94,24 @@ export const getPassengerTypeById = async (
               name,
               passengerType: JSON.parse(contents) as PassengerType,
           };
+};
+
+export const getSalesOfferPackagesByNoc = async (nocCode: string): Promise<FromDb<SalesOfferPackage>[]> => {
+    const queryInput = `
+            SELECT id, name, purchaseLocations, paymentMethods, ticketFormats
+            FROM salesOfferPackage
+            WHERE nocCode = ?
+        `;
+
+    const queryResults: RawSalesOfferPackage[] = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode]);
+
+    return queryResults.map((item) => ({
+        id: item.id,
+        name: item.name,
+        purchaseLocations: item.purchaseLocations.split(','),
+        paymentMethods: item.paymentMethods.split(','),
+        ticketFormats: item.ticketFormats.split(','),
+    }));
 };
 
 export const getCompanions = async (

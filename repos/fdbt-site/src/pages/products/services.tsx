@@ -25,7 +25,13 @@ const Services = ({ servicesAndProducts, myFaresEnabled }: ServicesProps): React
             <BaseLayout title={title} description={description} showNavigation myFaresEnabled={myFaresEnabled}>
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
-                        <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Services</h1>
+                        <div className="dft-flex dft-flex-justify-space-between">
+                            <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Services</h1>
+
+                            <a href="/fareType" className="govuk-button" data-module="govuk-button">
+                                Create new product
+                            </a>
+                        </div>
 
                         {ServicesTable(servicesAndProducts)}
                     </div>

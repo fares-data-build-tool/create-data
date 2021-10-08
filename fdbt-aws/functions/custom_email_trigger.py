@@ -5,7 +5,7 @@ import datetime
 def handler(event, context):
     if event['triggerSource'] == "CustomMessage_AdminCreateUser":
         register_link = os.getenv('REGISTRATION_LINK')
-        event['response']['emailSubject'] = "Register for the Fares Data Build Tool"
+        event['response']['emailSubject'] = "Register for the Create Fares Data service"
         event['response']['emailMessage'] = template_register(
             event['request']['usernameParameter'],
             event['request']['codeParameter'],
@@ -30,8 +30,8 @@ def handler(event, context):
 
 def template_register(username, key, register_link):
     template = f"""<div style="font-family: Arial, sans-serif; padding-left: 30px">
-                       <h1>Create account - Fares Data Build Tool</h1>
-                       <p>To create an account to access the Fares Data Build Tool click the link below:</p>
+                       <h1>Create account - Create Fares Data service</h1>
+                       <p>To create an account to access the Create Fares Data service click the link below:</p>
                        <a href="{register_link}?key={key}">Link to registration</a>
                        <p>The link is valid for 72 hours for the following email address {username}.</p>
                    </div>"""
@@ -41,8 +41,8 @@ def template_register(username, key, register_link):
 
 def template_forgotten_password(email, code, password_link, ts):
     email_body = f"""<div style="font-family: Arial, sans-serif; padding-left: 30px">
-                       <h1>Recover Password - Fares Data Build Tool</h1>
-                       <p>To recover your password for the Fares Data Build Tool click on the link below:</p>
+                       <h1>Recover Password - Create Fares Data service</h1>
+                       <p>To recover your password for the Create Fares Data service click on the link below:</p>
                        <a href="{password_link}?key={code}&user_name={email}&expiry={ts}">Link to reset password</a>
                        <p>The link is valid for 24 hours from the time it was requested.</p>
                        <p>If this wasn't you, please get in touch via the <a href="https://fares-data.dft.gov.uk/contact">contact page</a>.</p>
@@ -52,7 +52,7 @@ def template_forgotten_password(email, code, password_link, ts):
 
 
 def get_base_template(message_body):
-    base_template = f"""<!DOCTYPE html> <html lang="en"><head><title>Fares Data Build Tool</title></head>
+    base_template = f"""<!DOCTYPE html> <html lang="en"><head><title>Create Fares Data service</title></head>
                              <body class="govuk-template-body">
                                <div id="main">
                                  <div>
@@ -85,7 +85,7 @@ def get_base_template(message_body):
                                          <a style="color: #ffffff;display: inline-block; margin-bottom: 10px; font-size: 25px; font-weight: 700; text-decoration: none; line-height: 2.5;"
                                            href="/"
                                            id="title_link"
-                                           >Fares Data Build Tool</a
+                                           >Create Fares Data service</a
                                          >
                                        </div>
                                      </div>
