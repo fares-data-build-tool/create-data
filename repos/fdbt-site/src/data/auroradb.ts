@@ -739,10 +739,7 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
     }
 };
 
-export const getTimeRestrictionById = async (
-    id: number,
-    nocCode: string,
-): Promise<PremadeTimeRestriction | undefined> => {
+export const getTimeRestrictionById = async (id: number, nocCode: string): Promise<PremadeTimeRestriction> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving time restriction for given id',
@@ -756,9 +753,15 @@ export const getTimeRestrictionById = async (
             WHERE nocCode = ? AND id = ?
         `;
 
-        const queryResult = (await executeQuery<RawTimeRestriction[]>(queryInput, [nocCode, id]))[0];
+        const queryResult = await executeQuery<RawTimeRestriction[]>(queryInput, [nocCode, id]);
 
-        return queryResult && { ...queryResult, contents: JSON.parse(queryResult.contents) };
+        if (queryResult.length !== 1) {
+            throw new Error(
+                `Could not find time restriction with id: ${id} or more than one time restriction was returned`,
+            );
+        }
+
+        return { ...queryResult[0], contents: JSON.parse(queryResult[0].contents) };
     } catch (error) {
         throw new Error(`Could not retrieve time restriction by nocCode from AuroraDB: ${error.stack}`);
     }

@@ -15,7 +15,7 @@ import {
 import { getProductsMatchingJson } from '../../data/s3';
 import { getAndValidateNoc } from '../../utils';
 import moment from 'moment';
-import { isArray, upperFirst } from 'lodash';
+import { isArray } from 'lodash';
 import { getTag } from './services';
 
 const title = 'Point To Point Products - Create Fares Data Service';
@@ -127,16 +127,14 @@ export const getServerSideProps = async (
             const productDescription =
                 matchingJson.type === 'period' && 'products' in matchingJson
                     ? matchingJson.products[0].productName
-                    : `${upperFirst(passengerTypeName)} ${matchingJson.carnet ? '(carnet)' : ''}`;
+                    : `${passengerTypeName} - ${matchingJson.type} ${matchingJson.carnet ? '(carnet)' : ''}`;
 
             let timeRestriction = 'No restrictions';
 
-            if (matchingJson.timeRestriction !== undefined) {
+            if (matchingJson.timeRestriction) {
                 const timeRestrictionFromDb = await getTimeRestrictionById(matchingJson.timeRestriction.id, noc);
 
-                if (timeRestrictionFromDb !== undefined) {
-                    timeRestriction = timeRestrictionFromDb.name;
-                }
+                timeRestriction = timeRestrictionFromDb.name;
             }
 
             return {
