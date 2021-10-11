@@ -6,8 +6,7 @@ import {
     DIRECTION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
-import { getSessionAttribute, updateSessionAttribute, getRequiredSessionAttribute } from '../../utils/sessions';
-import { isFareType } from '../../interfaces/typeGuards';
+import { updateSessionAttribute, getRequiredSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { masterStopListEnabled } from '../../constants/featureFlag';
 import { getServiceByIdAndDataSource } from '../../data/auroradb';
@@ -31,24 +30,35 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             service: `${service.lineName}#${service.startDate}`,
             id: serviceId,
         });
-        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        const fareTypeAttribute = getRequiredSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        const isReturn = 'fareType' in fareTypeAttribute && ['period', 'return'].includes(fareTypeAttribute.fareType);
 
         if (masterStopListEnabled && dataSource === 'bods') {
-            const directions = service.journeyPatterns.reduce((set, pattern) => {
-                set.add(pattern.direction);
-                return set;
-            }, new Set<string>());
+            const directions = Array.from(
+                service.journeyPatterns.reduce((set, pattern) => {
+                    set.add(pattern.direction);
+                    return set;
+                }, new Set<string>()),
+            );
 
-            if (directions.size === 1) {
-                updateSessionAttribute(req, DIRECTION_ATTRIBUTE, { direction: directions.values().next().value });
+            if (directions.length === 1) {
+                updateSessionAttribute(req, DIRECTION_ATTRIBUTE, { direction: directions[0] });
                 redirectTo(res, '/inputMethod');
             } else {
+                if (isReturn) {
+                    const direction = directions.find((it) => ['outbound', 'clockwise'].includes(it));
+                    const inboundDirection = directions.find((it) => ['inbound', 'antiClockwise'].includes(it));
+
+                    if (directions.length !== 2 || !direction || !inboundDirection) {
+                        throw new Error(`expected an inbound and outbound directions but got ${directions}`);
+                    }
+
+                    updateSessionAttribute(req, DIRECTION_ATTRIBUTE, { direction, inboundDirection });
+                }
+
                 redirectTo(res, '/direction');
             }
-        } else if (
-            isFareType(fareTypeAttribute) &&
-            (fareTypeAttribute.fareType === 'return' || fareTypeAttribute.fareType === 'period')
-        ) {
+        } else if (isReturn) {
             redirectTo(res, '/returnDirection');
         } else {
             redirectTo(res, '/singleDirection');

@@ -19,19 +19,19 @@ describe('managePurchaseMethod', () => {
         getSpy.mockResolvedValue([]);
     });
 
-    it('redirects back to /managePurchaseMethod if there are no options selected', () => {
+    it('redirects back to /managePurchaseMethod if there are no options selected', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
         });
 
-        managePurchaseMethod(req, res);
+        await managePurchaseMethod(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/managePurchaseMethod',
         });
     });
 
-    it('redirects back to /managePurchaseMethod if only one purchaseLocations is selected', () => {
+    it('redirects back to /managePurchaseMethod if only one purchaseLocations is selected', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 purchaseLocations: 'OnBoard',
@@ -57,7 +57,7 @@ describe('managePurchaseMethod', () => {
             ],
         };
 
-        managePurchaseMethod(req, res);
+        await managePurchaseMethod(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -69,7 +69,7 @@ describe('managePurchaseMethod', () => {
         });
     });
 
-    it('redirects back to /managePurchaseMethod if only one paymentMethods is selected', () => {
+    it('redirects back to /managePurchaseMethod if only one paymentMethods is selected', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 paymentMethods: 'Cash',
@@ -95,7 +95,7 @@ describe('managePurchaseMethod', () => {
             ],
         };
 
-        managePurchaseMethod(req, res);
+        await managePurchaseMethod(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -107,7 +107,7 @@ describe('managePurchaseMethod', () => {
         });
     });
 
-    it('redirects back to /managePurchaseMethod if only one ticketFormats is selected', () => {
+    it('redirects back to /managePurchaseMethod if only one ticketFormats is selected', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 ticketFormats: 'Paper Ticket',
@@ -133,7 +133,7 @@ describe('managePurchaseMethod', () => {
             ],
         };
 
-        managePurchaseMethod(req, res);
+        await managePurchaseMethod(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -145,7 +145,7 @@ describe('managePurchaseMethod', () => {
         });
     });
 
-    it('redirects back to /managePurchaseMethod if one selection is missing', () => {
+    it('redirects back to /managePurchaseMethod if one selection is missing', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 purchaseLocations: ['OnBoard', 'Online Account'],
@@ -168,7 +168,7 @@ describe('managePurchaseMethod', () => {
             ],
         };
 
-        managePurchaseMethod(req, res);
+        await managePurchaseMethod(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -180,7 +180,7 @@ describe('managePurchaseMethod', () => {
         });
     });
 
-    it('redirects back to /managePurchaseMethod if no name', () => {
+    it('redirects back to /managePurchaseMethod if no name', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 paymentMethods: ['Cash'],
@@ -203,7 +203,7 @@ describe('managePurchaseMethod', () => {
             ],
         };
 
-        managePurchaseMethod(req, res);
+        await managePurchaseMethod(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
