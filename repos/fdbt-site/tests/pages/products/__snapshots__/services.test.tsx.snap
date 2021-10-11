@@ -27,7 +27,7 @@ exports[`myfares pages services should render correctly when no services present
             data-module="govuk-button"
             href="/fareType"
           >
-            Create new
+            Create new product
           </a>
         </div>
         <table
@@ -108,7 +108,7 @@ exports[`myfares pages services should render correctly when services present 1`
             data-module="govuk-button"
             href="/fareType"
           >
-            Create new
+            Create new product
           </a>
         </div>
         <table
@@ -232,7 +232,7 @@ exports[`myfares pages services should render correctly when services present an
             data-module="govuk-button"
             href="/fareType"
           >
-            Create new
+            Create new product
           </a>
         </div>
         <table

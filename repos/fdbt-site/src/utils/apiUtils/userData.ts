@@ -36,7 +36,6 @@ import {
     TERM_TIME_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
-    UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
 } from '../../constants/attributes';
 import { batchGetStopsByAtcoCode, insertProducts } from '../../data/auroradb';
@@ -313,7 +312,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const inboundMatchingAttributeInfo = getSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE);
     const returnPeriodValidity = getSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE);
     const products = getPointToPointProducts(req);
-    const outboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_OUTBOUND_STOPS_ATTRIBUTE);
+    const outboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
     const inboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE);
 
     if (
@@ -323,6 +322,12 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         !outboundUnassignedStops ||
         !inboundUnassignedStops
     ) {
+        logger.error('session objects', {
+            matchingAttributeInfo,
+            returnPeriodValidity,
+            outboundUnassignedStops,
+            inboundUnassignedStops,
+        });
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
     }
 

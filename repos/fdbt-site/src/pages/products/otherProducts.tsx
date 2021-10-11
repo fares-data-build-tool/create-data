@@ -25,7 +25,7 @@ const OtherProducts = ({ otherProducts, myFaresEnabled }: OtherProductsProps): R
                             <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Other products</h1>
 
                             <a href="/fareType" className="govuk-button" data-module="govuk-button">
-                                Create new
+                                Create new product
                             </a>
                         </div>
 

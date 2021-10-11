@@ -1,8 +1,8 @@
-# Fares Data Build Tool Reference Data Service
+# Create Fares Data service Reference Data Service
 
 [![CircleCI](https://circleci.com/gh/fares-data-build-tool/fdbt-reference-data-service.svg?style=svg)](https://circleci.com/gh/fares-data-build-tool/fdbt-reference-data-service)
 
-Code for the lambdas responible for retrieving the reference data for the Fares Data Build Tool and uploading it to a MySQL Database. This includes NaPTAN, NOC, TNDS and BODS data.
+Code for the lambdas responible for retrieving the reference data for the Create Fares Data service and uploading it to a MySQL Database. This includes NaPTAN, NOC, TNDS and BODS data.
 
 The code is separated into Retrievers and Uploaders.
 

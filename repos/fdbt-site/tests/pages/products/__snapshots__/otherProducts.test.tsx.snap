@@ -27,7 +27,7 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
             data-module="govuk-button"
             href="/fareType"
           >
-            Create new
+            Create new product
           </a>
         </div>
         <table
@@ -133,7 +133,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
             data-module="govuk-button"
             href="/fareType"
           >
-            Create new
+            Create new product
           </a>
         </div>
         <table

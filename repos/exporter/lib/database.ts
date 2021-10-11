@@ -68,8 +68,8 @@ const retrievePassengerTypeById = async (
         [id, noc],
     );
 
-    if (queryResults.length > 1) {
-        throw new Error("Didn't expect more than one passenger type with the same id");
+    if (queryResults.length !== 1) {
+        throw new Error(`Didn't get one passenger type with the id [${id}]`);
     }
 
     return queryResults[0];

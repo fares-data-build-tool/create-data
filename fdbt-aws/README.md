@@ -2,7 +2,7 @@
 
 This repo contains the following:
 
-- The CloudFormation templates necessary to deploy the Fares Data Build Tool in AWS
+- The CloudFormation templates necessary to deploy the Create Fares Data service in AWS
 - The SQL to create the necessary tables in RDS
 - Some helper scripts to assume roles into the accounts and to tunnel through to the database using the bastion host
 
