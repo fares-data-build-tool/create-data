@@ -472,10 +472,10 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<F
     }
 };
 
-export const getSalesOfferPackageById = async (
+export const getSalesOfferPackageByIdAndNoc = async (
     id: number,
     nocCode: string,
-): Promise<FromDb<SalesOfferPackage> | undefined> => {
+): Promise<FromDb<SalesOfferPackage>> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving sales offer package for given id',
@@ -491,17 +491,20 @@ export const getSalesOfferPackageById = async (
         `;
 
         const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode, id]);
+
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one product to be returned, ${queryResults.length} results received.`);
+        }
+
         const item = queryResults[0];
 
-        return (
-            item && {
-                id: item.id,
-                name: item.name,
-                purchaseLocations: item.purchaseLocations.split(','),
-                paymentMethods: item.paymentMethods.split(','),
-                ticketFormats: item.ticketFormats.split(','),
-            }
-        );
+        return {
+            id: item.id,
+            name: item.name,
+            purchaseLocations: item.purchaseLocations.split(','),
+            paymentMethods: item.paymentMethods.split(','),
+            ticketFormats: item.ticketFormats.split(','),
+        };
     } catch (error) {
         throw new Error(`Could not retrieve sales offer packages from AuroraDB: ${error.stack}`);
     }
@@ -740,7 +743,7 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
     }
 };
 
-export const getTimeRestrictionById = async (id: number, nocCode: string): Promise<PremadeTimeRestriction> => {
+export const getTimeRestrictionByIdAndNoc = async (id: number, nocCode: string): Promise<PremadeTimeRestriction> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving time restriction for given id',
@@ -1207,7 +1210,7 @@ export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string):
     }
 };
 
-export const getPassengerTypeNameByNocAndId = async (nocCode: string, id: string): Promise<string> => {
+export const getPassengerTypeNameByIdAndNoc = async (id: number, nocCode: string): Promise<string> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving passenger type name for given noc and id',
@@ -1232,62 +1235,6 @@ export const getPassengerTypeNameByNocAndId = async (nocCode: string, id: string
         return queryResults[0].name;
     } catch (error) {
         throw new Error(`Could not retrieve passenger type name by noc and id from AuroraDB: ${error}`);
-    }
-};
-
-export const getTimeRestrictionNameByNocAndId = async (nocCode: string, id: string): Promise<string> => {
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving time restriction name for given noc and id',
-        nocCode,
-        id,
-    });
-
-    try {
-        const queryInput = `
-            SELECT name
-            FROM timeRestriction
-            WHERE nocCode = ?
-            AND id = ?
-        `;
-
-        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
-
-        if (queryResults.length !== 1) {
-            throw new Error(`Expected one product to be returned, ${queryResults.length} results received.`);
-        }
-
-        return queryResults[0].name;
-    } catch (error) {
-        throw new Error(`Could not retrieve timeRestriction name by noc and id from AuroraDB: ${error}`);
-    }
-};
-
-export const getPurchaseMethodsNameByNocAndId = async (nocCode: string, id: string): Promise<string> => {
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving purchase method(s) name for given noc and id',
-        nocCode,
-        id,
-    });
-
-    try {
-        const queryInput = `
-            SELECT paymentMethods
-            FROM salesOfferPackage
-            WHERE nocCode = ?
-            AND id = ?
-        `;
-
-        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
-
-        if (queryResults.length !== 1) {
-            throw new Error(`Expected one product to be returned, ${queryResults.length} results received.`);
-        }
-
-        return queryResults[0].name;
-    } catch (error) {
-        throw new Error(`Could not retrieve purchase method(s) name by noc and id from AuroraDB: ${error}`);
     }
 };
 

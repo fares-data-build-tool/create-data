@@ -1,0 +1,676 @@
+{
+    "nocCode": "BLAC",
+    "type": "single",
+    "passengerType": { "id": 1 },
+    "email": "test@example.com",
+    "uuid": "BLACb8a91107",
+    "timeRestriction": { "id": 1 },
+    "ticketPeriod": { "startDate": "2021-10-11T14:09:11.577Z", "endDate": "2121-10-11T14:09:11.577Z" },
+    "lineName": "1",
+    "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade",
+    "lineId": "4YyoI0",
+    "fareZones": [
+        {
+            "name": "Shott Drive",
+            "stops": [
+                {
+                    "stopName": "Market Street",
+                    "naptanCode": "blpajgag",
+                    "atcoCode": "2590B0901",
+                    "localityCode": "E0054826",
+                    "localityName": "Blackpool Town Centre",
+                    "parentLocalityName": "Blackpool",
+                    "indicator": "Stop MA1",
+                    "street": "Market Street",
+                    "qualifierName": ""
+                }
+            ],
+            "prices": [
+                { "price": "1.00", "fareZones": ["The Stag pub"] },
+                { "price": "1.10", "fareZones": ["Frederick Drive"] }
+            ]
+        },
+        {
+            "name": "The Stag pub",
+            "stops": [
+                {
+                    "stopName": "Bank Hey Street",
+                    "naptanCode": "blpadjmt",
+                    "atcoCode": "2590B0128",
+                    "localityCode": "N0079382",
+                    "localityName": "Promenade",
+                    "parentLocalityName": "Blackpool",
+                    "indicator": "Stop 2",
+                    "street": "Bank Hey Street",
+                    "qualifierName": ""
+                }
+            ],
+            "prices": [{ "price": "1.10", "fareZones": ["Frederick Drive"] }]
+        },
+        {
+            "name": "Frederick Drive",
+            "stops": [
+                {
+                    "stopName": "Central Coach Station",
+                    "naptanCode": "blpagwat",
+                    "atcoCode": "2590B0677",
+                    "localityCode": "E0054826",
+                    "localityName": "Blackpool Town Centre",
+                    "parentLocalityName": "Blackpool",
+                    "indicator": "opp",
+                    "street": "Central Drive",
+                    "qualifierName": ""
+                }
+            ],
+            "prices": []
+        }
+    ],
+    "unassignedStops": {
+        "singleUnassignedStops": [
+            {
+                "stopName": "Chapel Street",
+                "naptanCode": "blpagjwp",
+                "atcoCode": "2590B0516",
+                "localityCode": "N0079370",
+                "localityName": "Central",
+                "parentLocalityName": "Blackpool",
+                "indicator": "by",
+                "street": "Central Drive"
+            },
+            {
+                "stopName": "Gymnasium",
+                "naptanCode": "blpadjpd",
+                "atcoCode": "2590B0131",
+                "localityCode": "N0079370",
+                "localityName": "Central",
+                "parentLocalityName": "Blackpool",
+                "indicator": "by",
+                "street": "Grasmere Road"
+            },
+            {
+                "stopName": "Revoe School",
+                "naptanCode": "blpadjpg",
+                "atcoCode": "2590B0132",
+                "localityCode": "N0079371",
+                "localityName": "Ansdell",
+                "parentLocalityName": "Blackpool",
+                "indicator": "opp",
+                "street": "Grasmere Road"
+            },
+            {
+                "stopName": "Condor Square",
+                "naptanCode": "blpadjpj",
+                "atcoCode": "2590B0133",
+                "localityCode": "N0079371",
+                "localityName": "Ansdell",
+                "parentLocalityName": "Blackpool",
+                "indicator": "by",
+                "street": "Ansdell Road"
+            },
+            {
+                "stopName": "Bloomfield Hotel",
+                "naptanCode": "blpadjpm",
+                "atcoCode": "2590B0134",
+                "localityCode": "E0035294",
+                "localityName": "Bloomfield",
+                "parentLocalityName": "Blackpool",
+                "indicator": "o/s",
+                "street": "Ansdell Road"
+            },
+            {
+                "stopName": "Cunliffe Road",
+                "naptanCode": "blpadjpt",
+                "atcoCode": "2590B0135",
+                "localityCode": "N0079371",
+                "localityName": "Ansdell",
+                "parentLocalityName": "Blackpool",
+                "indicator": "by",
+                "street": "Ansdell Road"
+            },
+            {
+                "stopName": "Brun Grove",
+                "naptanCode": "blpadjpw",
+                "atcoCode": "2590B0136",
+                "localityCode": "N0079373",
+                "localityName": "Spen Corner",
+                "parentLocalityName": "Blackpool",
+                "indicator": "by",
+                "street": "Ansdell Road"
+            },
+            {
+                "stopName": "Spen Corner",
+                "naptanCode": "blpadjta",
+                "atcoCode": "2590B0137",
+                "localityCode": "N0079373",
+                "localityName": "Spen Corner",
+                "parentLocalityName": "Blackpool",
+                "indicator": "by",
+                "street": "Hawes Side Lane"
+            },
+            {
+                "stopName": "Hemingway",
+                "naptanCode": "blpadjtd",
+                "atcoCode": "2590B0138",
+                "localityCode": "E0035278",
+                "localityName": "Marton",
+                "parentLocalityName": "Blackpool",
+                "indicator": "opp",
+                "street": "Hawes Side Lane"
+            },
+            {
+                "stopName": "Ellesmere Road",
+                "naptanCode": "blpadjtg",
+                "atcoCode": "2590B0139",
+                "localityCode": "N0079374",
+                "localityName": "Daggers Hall",
+                "parentLocalityName": "Blackpool",
+                "indicator": "opp",
+                "street": "Hawes Side Lane"
+            },
+            {
+                "stopName": "Powell Avenue",
+                "naptanCode": "blpamjwm",
+                "atcoCode": "2590BTA01300",
+                "localityCode": "N0079374",
+                "localityName": "Daggers Hall",
+                "parentLocalityName": "Blackpool",
+                "indicator": "opp",
+                "street": "Hawe Side Lane"
+            },
+            {
+                "stopName": "Pedders Lane",
+                "naptanCode": "blpagdgt",
+                "atcoCode": "2590B0419",
+                "localityCode": "E0035277",
+                "localityName": "Highfield",
+                "parentLocalityName": "Blackpool",
+                "indicator": "by",
+                "street": "Hawes Side Lane"
+            },
+            {
+                "stopName": "Burgess Avenue",
+                "naptanCode": "blpagdgw",
+                "atcoCode": "2590B0420",
+                "localityCode": "E0035279",
+                "localityName": "Hawes Side",
+                "parentLocalityName": "Blackpool",
+                "indicator": "opp",
+                "street": "Hawes Side Lane"
+            },
+            {
+                "stopName": "Highfield Hotel",
+                "naptanCode": "blpagdja",
+                "atcoCode": "2590B0421",
+                "localityCode": "E0035277",
+                "localityName": "Highfield",
+                "parentLocalityName": "Blackpool",
+                "indicator": "o/s",
+                "street": "Common Edge Road"
+            },
+            {
+                "stopName": "Hampshire Place",
+                "naptanCode": "blpagdjd",
+                "atcoCode": "2590B0422",
+                "localityCode": "E0035277",
+                "localityName": "Highfield",
+                "parentLocalityName": "Blackpool",
+                "indicator": "opp",
+                "street": "Common Edge Road"
+            },
+            {
+                "stopName": "Willowbank Avenue",
+                "naptanCode": "blpagdjg",
+                "atcoCode": "2590B0423",
+                "localityCode": "E0035277",
+                "localityName": "Highfield",
+                "parentLocalityName": "Blackpool",
+                "indicator": "by",
+                "street": "Common Edge Road"
+            },
+            {
+                "stopName": "Squires Gate Lane",
+                "naptanCode": "blpagdjm",
+                "atcoCode": "2590B0424",
+                "localityCode": "E0035277",
+                "localityName": "Highfield",
+                "parentLocalityName": "Blackpool",
+                "indicator": "by",
+                "street": "Common Edge Road"
+            },
+            {
+                "stopName": "Ecclesgate Road",
+                "naptanCode": "blpagdjp",
+                "atcoCode": "2590B0425",
+                "localityCode": "N0079383",
+                "localityName": "Boundary",
+                "parentLocalityName": "Blackpool",
+                "indicator": "by",
+                "street": "Common Edge Road"
+            },
+            {
+                "stopName": "The Shovels",
+                "naptanCode": "blpagdjt",
+                "atcoCode": "2590B0426",
+                "localityCode": "N0079383",
+                "localityName": "Boundary",
+                "parentLocalityName": "Blackpool",
+                "indicator": "o/s",
+                "street": "Common Edge Road"
+            },
+            {
+                "stopName": "Borough Boundary",
+                "naptanCode": "blpagdjw",
+                "atcoCode": "2590B0427",
+                "localityCode": "N0079383",
+                "localityName": "Boundary",
+                "parentLocalityName": "Blackpool",
+                "indicator": "by",
+                "street": "Common Edge Road"
+            },
+            {
+                "stopName": "Queensway Court",
+                "naptanCode": "lanjdwgw",
+                "atcoCode": "2500B0428",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Kilnhouse Lane"
+            },
+            {
+                "stopName": "Kilnhouse Lane",
+                "naptanCode": "lanjdmap",
+                "atcoCode": "2500B0429",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Derwent Road"
+            },
+            {
+                "stopName": "Spring Gardens",
+                "naptanCode": "lanjgwjd",
+                "atcoCode": "2500B0430",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Hoyles Avenue"
+            },
+            {
+                "stopName": "Bowness Avenue",
+                "naptanCode": "lanjamwj",
+                "atcoCode": "2500B0431",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Bowness Avenue"
+            },
+            {
+                "stopName": "Formby Road",
+                "naptanCode": "langjmpm",
+                "atcoCode": "2500IMG390",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Blackpool Road North"
+            },
+            {
+                "stopName": "Leach Crescent",
+                "naptanCode": "langjmpd",
+                "atcoCode": "2500IMG387",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Leach Lane"
+            },
+            {
+                "stopName": "Dawson Road",
+                "naptanCode": "lanjgadj",
+                "atcoCode": "2500B0433",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Leach Lane"
+            },
+            {
+                "stopName": "Co-op",
+                "naptanCode": "lanjdtmj",
+                "atcoCode": "2500BTA01082",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Heeley Road"
+            },
+            {
+                "stopName": "Grasmere Road",
+                "naptanCode": "lanjdtmp",
+                "atcoCode": "2500B0435",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Heeley Road"
+            },
+            {
+                "stopName": "Links Hotel",
+                "naptanCode": "lanjdtpa",
+                "atcoCode": "2500B0436",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Heeley Road"
+            },
+            {
+                "stopName": "St David's Road North",
+                "naptanCode": "lanjdtpg",
+                "atcoCode": "2500B0437",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Heeley Road"
+            },
+            {
+                "stopName": "Cross Street",
+                "naptanCode": "lanjmapd",
+                "atcoCode": "2500B0438",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "St David's Road North"
+            },
+            {
+                "stopName": "Fleet Street",
+                "naptanCode": "lanjmapg",
+                "atcoCode": "2500B0439",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "St David's Road North"
+            },
+            {
+                "stopName": "Sandhurst Avenue",
+                "naptanCode": "lanjmapm",
+                "atcoCode": "2500B0440",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "St David's Road North"
+            },
+            {
+                "stopName": "St Annes Road East",
+                "naptanCode": "lanjmapt",
+                "atcoCode": "2500B0441",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "St David's Road North"
+            },
+            {
+                "stopName": "Square",
+                "naptanCode": "lanjapmd",
+                "atcoCode": "2500B0287",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "Stop 7",
+                "street": "St Annes Square"
+            },
+            {
+                "stopName": "Square",
+                "naptanCode": "lanjamwp",
+                "atcoCode": "2500B0347",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "Stand 6",
+                "street": "Clifton Drive"
+            },
+            {
+                "stopName": "East Bank Road",
+                "naptanCode": "lanjdgmt",
+                "atcoCode": "2500B0348",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Clifton Drive South"
+            },
+            {
+                "stopName": "St Thomas Church",
+                "naptanCode": "lanjdjdj",
+                "atcoCode": "2500B0349",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "o/s",
+                "street": "Clifton Drive"
+            },
+            {
+                "stopName": "York Road",
+                "naptanCode": "lanjdjdw",
+                "atcoCode": "2500B0350",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Clifton Drive"
+            },
+            {
+                "stopName": "Osborne Road",
+                "naptanCode": "lanjdjat",
+                "atcoCode": "2500B0351",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Clifton Drive South"
+            },
+            {
+                "stopName": "Denford Avenue",
+                "naptanCode": "lanjdgmj",
+                "atcoCode": "2500B0352",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Clifton Drive"
+            },
+            {
+                "stopName": "Queens Manor",
+                "naptanCode": "lanjdjaw",
+                "atcoCode": "2500B0353",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Clifton Drive South"
+            },
+            {
+                "stopName": "Clifton Hospital",
+                "naptanCode": "lanjdgmd",
+                "atcoCode": "2500B0354",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Clifton Drive"
+            },
+            {
+                "stopName": "King Edward VII School",
+                "naptanCode": "lanjdgpm",
+                "atcoCode": "2500B0355",
+                "localityCode": "E0015845",
+                "localityName": "St Annes",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Clifton Drive"
+            },
+            {
+                "stopName": "Eddington Road",
+                "naptanCode": "lanjdgpa",
+                "atcoCode": "2500B0356",
+                "localityCode": "E0015834",
+                "localityName": "Fairhaven",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Clifton Drive"
+            },
+            {
+                "stopName": "Lake Road North",
+                "naptanCode": "lanjdgpw",
+                "atcoCode": "2500B0357",
+                "localityCode": "E0015834",
+                "localityName": "Fairhaven",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Clifton Drive"
+            },
+            {
+                "stopName": "Fairhaven Hotel",
+                "naptanCode": "lanjdgpg",
+                "atcoCode": "2500B0358",
+                "localityCode": "E0015834",
+                "localityName": "Fairhaven",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Clifton Drive"
+            },
+            {
+                "stopName": "South Footbridge",
+                "naptanCode": "lanjatgd",
+                "atcoCode": "2500B0359",
+                "localityCode": "E0015834",
+                "localityName": "Fairhaven",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Ansdell Road South"
+            },
+            {
+                "stopName": "Willows Ave",
+                "naptanCode": "lanjawpj",
+                "atcoCode": "2500B0360",
+                "localityCode": "E0015834",
+                "localityName": "Fairhaven",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Cambridge Avenue"
+            },
+            {
+                "stopName": "Elms Ave",
+                "naptanCode": "lanjdapw",
+                "atcoCode": "2500B0266",
+                "localityCode": "E0057506",
+                "localityName": "Lytham",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Church Road"
+            },
+            {
+                "stopName": "Seafield Road",
+                "naptanCode": "lanjdawg",
+                "atcoCode": "2500B0267",
+                "localityCode": "E0057506",
+                "localityName": "Lytham",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Church Road"
+            },
+            {
+                "stopName": "Lowther Terrace",
+                "naptanCode": "lanjdatj",
+                "atcoCode": "2500B0268",
+                "localityCode": "E0057506",
+                "localityName": "Lytham",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Church Road"
+            },
+            {
+                "stopName": "The County",
+                "naptanCode": "lanjamdg",
+                "atcoCode": "2500B0269",
+                "localityCode": "E0057506",
+                "localityName": "Lytham",
+                "parentLocalityName": "",
+                "indicator": "o/s",
+                "street": "Church Road"
+            },
+            {
+                "stopName": "Square",
+                "naptanCode": "lanjdjmd",
+                "atcoCode": "2500B0534",
+                "localityCode": "E0057506",
+                "localityName": "Lytham",
+                "parentLocalityName": "",
+                "indicator": "Stand 1",
+                "street": "Clifton Street"
+            },
+            {
+                "stopName": "Station Rd",
+                "naptanCode": "lanjdjmg",
+                "atcoCode": "2500B0535",
+                "localityCode": "E0057506",
+                "localityName": "Lytham",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Clifton Street"
+            },
+            {
+                "stopName": "Brookfield Terrace",
+                "naptanCode": "langjtmw",
+                "atcoCode": "2500IMG660",
+                "localityCode": "E0057506",
+                "localityName": "Lytham",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Mythop Road"
+            },
+            {
+                "stopName": "The Glades",
+                "naptanCode": "langjtpa",
+                "atcoCode": "2500IMG661",
+                "localityCode": "E0057506",
+                "localityName": "Lytham",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "The Glades"
+            },
+            {
+                "stopName": "Fairsnape Road",
+                "naptanCode": "langjtpd",
+                "atcoCode": "2500IMG663",
+                "localityCode": "E0015858",
+                "localityName": "Saltcotes",
+                "parentLocalityName": "",
+                "indicator": "opp",
+                "street": "Mythop Road"
+            },
+            {
+                "stopName": "Saltcotes Road",
+                "naptanCode": "lanjgdat",
+                "atcoCode": "2500B0449",
+                "localityCode": "E0015858",
+                "localityName": "Saltcotes",
+                "parentLocalityName": "",
+                "indicator": "by",
+                "street": "Saltcotes Road"
+            }
+        ]
+    },
+    "products": [{ "salesOfferPackages": [{ "id": 1 }, { "id": 2 }] }],
+    "termTime": false,
+    "operatorName": "Blackpool Transport",
+    "carnet": false
+}

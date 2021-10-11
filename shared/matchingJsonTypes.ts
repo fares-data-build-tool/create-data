@@ -135,7 +135,7 @@ export interface BaseTicket<T extends TicketType = TicketType> {
     carnet?: boolean;
 }
 
-export type WithIds<T extends { products: BaseProduct[] }> = WithBaseIds<
+export type WithIds<T extends Ticket> = WithBaseIds<
     Omit<T, 'products'> & {
         products: (Omit<T['products'][0], 'salesOfferPackages'> & {
             salesOfferPackages: { id: number; price: string | undefined }[];
@@ -260,6 +260,7 @@ export interface TicketPeriod {
 }
 
 export interface BaseProduct {
+    productName?: string;
     salesOfferPackages: SalesOfferPackage[];
 }
 

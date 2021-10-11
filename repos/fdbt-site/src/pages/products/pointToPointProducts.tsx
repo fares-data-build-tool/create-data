@@ -8,9 +8,9 @@ import {
 import { BaseLayout } from '../../layout/Layout';
 import {
     getBodsServiceByNocAndId,
-    getPassengerTypeNameById,
+    getPassengerTypeNameByIdAndNoc,
     getPointToPointProductsByLineId,
-    getTimeRestrictionById,
+    getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import { getAndValidateNoc } from '../../utils';
@@ -126,7 +126,7 @@ export const getServerSideProps = async (
         productsToDisplay.map(async (product) => {
             const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
 
-            const passengerTypeName = await getPassengerTypeNameById(matchingJson.passengerType.id, noc);
+            const passengerTypeName = await getPassengerTypeNameByIdAndNoc(matchingJson.passengerType.id, noc);
 
             const productDescription =
                 matchingJson.type === 'period' && 'products' in matchingJson
@@ -136,7 +136,7 @@ export const getServerSideProps = async (
             let timeRestriction = 'No restrictions';
 
             if (matchingJson.timeRestriction) {
-                const timeRestrictionFromDb = await getTimeRestrictionById(matchingJson.timeRestriction.id, noc);
+                const timeRestrictionFromDb = await getTimeRestrictionByIdAndNoc(matchingJson.timeRestriction.id, noc);
 
                 timeRestriction = timeRestrictionFromDb.name;
             }
