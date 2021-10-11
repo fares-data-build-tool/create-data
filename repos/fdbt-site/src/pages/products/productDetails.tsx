@@ -1,7 +1,12 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { getAndValidateNoc } from '../../utils';
-import { getPassengerTypeNameByNocAndId, getProductMatchingJsonLinkByProductId } from '../../data/auroradb';
+import {
+    getPassengerTypeNameByNocAndId,
+    getProductMatchingJsonLinkByProductId,
+    getPurchaseMethodsNameByNocAndId,
+    getTimeRestrictionNameByNocAndId,
+} from '../../data/auroradb';
 import { NextPageContextWithSession } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
 import { getProductsMatchingJson } from 'src/data/s3';
@@ -16,6 +21,10 @@ interface ProductDetailsProps {
 
 const ProductDetails = ({ ticket }: ProductDetailsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
+        <h1 className="govuk-heading-l">Product Name Here</h1>
+        <div id="contact-hint" className="govuk-hint">
+            Product status: <strong className="govuk-tag govuk-tag--blue">Pending</strong>
+        </div>
         {/* {confirmationElements.map((element) => {
         const content = isArray(element.content) ? element.content : [element.content];
         return (
@@ -52,9 +61,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const matchingJsonLink = await getProductMatchingJsonLinkByProductId(noc, productId);
     const ticket = await getProductsMatchingJson(matchingJsonLink);
     const passengerType = getPassengerTypeNameByNocAndId(noc, ticket.passengerType.id.toString());
-    // const timeRestriction;
-    // const purchaseMethods;
+    // const timeRestriction = getTimeRestrictionNameByNocAndId(noc, ticket.timeRestriction.id.toString());
+    // const purchaseMethods = getPurchaseMethodsNameByNocAndId(
+    //     noc,
+    //     ticket.products[0].salesOfferPackages[0].id.toString(),
+    // );
     console.log(passengerType);
+    // console.log(timeRestriction);
+    // console.log(purchaseMethods);
 
     return {
         props: { ticket },
