@@ -5,3 +5,12 @@
 .dft-flex-justify-space-between {
     justify-content: space-between;
 }
+
+/* table helpers */
+.dft-table-wrap-anywhere {
+    overflow-wrap: anywhere;
+}
+
+.dft-table-fixed-width-cell {
+    width: 240px;
+}

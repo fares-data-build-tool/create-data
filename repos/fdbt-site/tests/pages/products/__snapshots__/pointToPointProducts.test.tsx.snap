@@ -179,12 +179,12 @@ exports[`myfares pages pointToPointProducts should render correctly when product
               key="0"
             >
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell"
               >
                 Adult - single
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell"
               >
                 Monday, Tuesday
               </td>
