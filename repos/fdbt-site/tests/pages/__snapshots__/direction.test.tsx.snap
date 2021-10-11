@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages direction should render correctly 1`] = `
+<TwoThirdsLayout
+  description="Single Direction selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Single Direction - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/direction"
+    csrfToken="csrf"
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <h1
+        className="govuk-heading-l"
+        id="single-direction-page-heading"
+      >
+        Select a journey direction
+      </h1>
+      <label
+        className="govuk-label govuk-visually-hidden"
+        htmlFor="select-direction"
+      >
+        Journey direction
+      </label>
+      <FormElementWrapper
+        errorClass="govuk-select--error"
+        errorId="select-direction"
+        errors={Array []}
+      >
+        <select
+          className="govuk-select"
+          id="select-direction"
+          name="direction"
+        >
+          <option
+            disabled={true}
+            value=""
+          >
+            Select One
+          </option>
+          <option
+            className="journey-option"
+            key="outbound"
+            value="outbound"
+          >
+            Outbound
+          </option>
+          <option
+            className="journey-option"
+            key="inbound"
+            value="inbound"
+          >
+            Inbound
+          </option>
+        </select>
+      </FormElementWrapper>
+      <br />
+      <span
+        className="govuk-hint hint-text"
+        id="traveline-sub-hint"
+      >
+        If you have route variations within your fares triangle, you are only required to upload one complete triangle that includes all of the potential stops
+      </span>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;

@@ -6,7 +6,7 @@ import {
     OPERATOR_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { getServiceByNocCodeLineNameAndDataSource, batchGetStopsByAtcoCode } from '../data/auroradb';
+import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../data/auroradb';
 import { getUserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
@@ -74,7 +74,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const [selectedStartPoint, selectedEndPoint] =
         (journeyAttribute && journeyAttribute.inboundJourney && journeyAttribute.inboundJourney.split('#')) || [];
     const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
-    const service = await getServiceByNocCodeLineNameAndDataSource(nocCode, lineName, dataSource);
+    const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, dataSource);
     const userFareStages = await getUserFareStages(operatorAttribute.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
     const masterStopList = getMasterStopList(relevantJourneys);

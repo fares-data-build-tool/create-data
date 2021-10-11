@@ -25,12 +25,12 @@ jest.mock('../../src/data/s3.ts');
 
 describe('Inbound Matching Page', () => {
     let wrapper: ShallowWrapper;
-    let getServiceByNocCodeLineNameAndDataSourceSpy = jest.spyOn(auroradb, 'getServiceByNocCodeLineNameAndDataSource');
+    let getServiceByNocCodeLineNameAndDataSourceSpy = jest.spyOn(auroradb, 'getServiceByIdAndDataSource');
     let batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
     let getUserFareStagesSpy = jest.spyOn(s3, 'getUserFareStages');
 
     beforeEach(() => {
-        getServiceByNocCodeLineNameAndDataSourceSpy = jest.spyOn(auroradb, 'getServiceByNocCodeLineNameAndDataSource');
+        getServiceByNocCodeLineNameAndDataSourceSpy = jest.spyOn(auroradb, 'getServiceByIdAndDataSource');
         batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
         getUserFareStagesSpy = jest.spyOn(s3, 'getUserFareStages');
 

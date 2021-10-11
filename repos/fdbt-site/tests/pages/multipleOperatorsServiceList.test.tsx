@@ -15,6 +15,7 @@ describe('pages', () => {
     describe('multipleOperatorsServiceList', () => {
         const mockServiceList: ServicesInfo[] = [
             {
+                id: 11,
                 lineName: '123',
                 lineId: '3h3vb32ik',
                 startDate: '05/02/2020',
@@ -23,6 +24,7 @@ describe('pages', () => {
                 checked: false,
             },
             {
+                id: 12,
                 lineName: 'X1',
                 lineId: '3h3vb32ik',
                 startDate: '06/02/2020',
@@ -31,6 +33,7 @@ describe('pages', () => {
                 checked: false,
             },
             {
+                id: 13,
                 lineName: 'Infinity Line',
                 lineId: '3h3vb32ik',
                 startDate: '07/02/2020',
@@ -49,6 +52,7 @@ describe('pages', () => {
 
         const mockServices: ServiceType[] = [
             {
+                id: 11,
                 lineName: '123',
                 lineId: '3h3vb32ik',
                 startDate: '05/02/2020',
@@ -59,6 +63,7 @@ describe('pages', () => {
                 dataSource: 'tnds',
             },
             {
+                id: 12,
                 lineName: 'X1',
                 lineId: '3h3vb32ik',
                 startDate: '06/02/2020',
@@ -69,6 +74,7 @@ describe('pages', () => {
                 dataSource: 'tnds',
             },
             {
+                id: 13,
                 lineName: 'Infinity Line',
                 lineId: '3h3vb32ik',
                 startDate: '07/02/2020',
