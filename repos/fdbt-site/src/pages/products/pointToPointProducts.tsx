@@ -75,8 +75,12 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[]): Reac
                     {products.length > 0
                         ? products.map((product, index) => (
                               <tr key={index} className="govuk-table__row">
-                                  <td className="govuk-table__cell">{product.productDescription}</td>
-                                  <td className="govuk-table__cell">{product.validity}</td>
+                                  <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell">
+                                      {product.productDescription}
+                                  </td>
+                                  <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell">
+                                      {product.validity}
+                                  </td>
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
                                   <td className="govuk-table__cell">{getTag(product.startDate, product.endDate)}</td>
