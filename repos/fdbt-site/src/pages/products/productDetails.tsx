@@ -7,7 +7,7 @@ import {
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
-import { ConfirmationElement, NextPageContextWithSession } from '../../interfaces';
+import { ProductDetailsElement, NextPageContextWithSession } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
 import { getProductsMatchingJson } from 'src/data/s3';
 import { TicketWithIds } from 'shared/matchingJsonTypes';
@@ -23,7 +23,7 @@ interface ProductDetailsProps {
     passengerType: string;
     timeRestriction: string;
     formattedPurchaseMethods: string;
-    confirmationElements: ConfirmationElement[];
+    productDetailsElements: ProductDetailsElement[];
 }
 
 const ProductDetails = ({
@@ -31,15 +31,15 @@ const ProductDetails = ({
     passengerType,
     timeRestriction,
     formattedPurchaseMethods,
-    confirmationElements,
+    productDetailsElements,
 }: ProductDetailsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <h1 className="govuk-heading-l">Product Name Here</h1>
         <div id="contact-hint" className="govuk-hint">
             Product status: <strong className="govuk-tag govuk-tag--blue">Pending</strong>
         </div>
-        {confirmationElements.map((element) => {
-            const content = isArray(element.content) ? element.content : [element.content]; //changed back from element.content as string[];
+        {productDetailsElements.map((element) => {
+            const content = isArray(element.content) ? element.content : [element.content];
             return (
                 <React.Fragment key={passengerType}>
                     <dl className="govuk-summary-list">
@@ -82,54 +82,60 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     );
     const formattedPurchaseMethods = purchaseMethods.join(', ');
 
-    const confirmationElements: ConfirmationElement[] = [];
+    const productDetailsElements: ProductDetailsElement[] = [];
 
     if (ticket.products[0].productName) {
-        confirmationElements.push({ name: 'Product name', content: ticket.products[0].productName });
+        productDetailsElements.push({ name: 'Product name', content: ticket.products[0].productName });
     }
     if ('serviceDescription' in ticket) {
-        confirmationElements.push({ name: 'Service', content: ticket.serviceDescription });
+        productDetailsElements.push({ name: 'Service', content: ticket.serviceDescription });
     }
 
-    confirmationElements.push({ name: 'Passenger type', content: passengerType });
-    confirmationElements.push({ name: 'Time restriction', content: timeRestriction });
+    productDetailsElements.push({ name: 'Passenger type', content: passengerType });
+    productDetailsElements.push({ name: 'Time restriction', content: timeRestriction });
 
     if ('termTime' in ticket) {
-        confirmationElements.push({ name: 'Only valid during term time', content: 'Yes' }); //ticket.termTime is a boolean
+        productDetailsElements.push({ name: 'Only valid during term time', content: ticket.termTime ? 'Yes' : 'No' }); //ticket.termTime is a boolean
     }
 
     // if ('carnetDetails' in ticket.products[0]){
-    //     confirmationElements.push({ name: 'Quantity in bundle', content: ticket.products[0].carnetDetails.quantity });
-    //     confirmationElements.push({ name: 'Carnet expiry', content: `${ticket.products[0].carnetDetails.expiryTime} ${ticket.products[0].carnetDetails.expiryUnit}(s)` });
+    //     productDetailsElements.push({ name: 'Quantity in bundle', content: ticket.products[0].carnetDetails.quantity });
+    //     productDetailsElements.push({ name: 'Carnet expiry', content: `${ticket.products[0].carnetDetails.expiryTime} ${ticket.products[0].carnetDetails.expiryUnit}(s)` });
     // }
 
     if ('returnPeriodValidity' in ticket) {
-        confirmationElements.push({
+        productDetailsElements.push({
             name: 'Return ticket validity',
             content: `${ticket.returnPeriodValidity?.amount} ${ticket.returnPeriodValidity?.typeOfDuration}(s)`,
         });
     }
 
     // if ('productDuration' in ticket.products[0]){
-    //     confirmationElements.push({ name: 'Period duration', content: ticket.products[0].productDuration});
-    //     confirmationElements.push({ name: 'Period duration', content: ticket.products[0].productDuration });
+    //     productDetailsElements.push({ name: 'Period duration', content: ticket.products[0].productDuration});
+    //     productDetailsElements.push({ name: 'Period duration', content: ticket.products[0].productDuration });
     // }
 
-    confirmationElements.push({ name: 'Product expiry', content: timeRestriction });
-    confirmationElements.push({ name: 'Purchase methods', content: formattedPurchaseMethods });
+    productDetailsElements.push({ name: 'Product expiry', content: timeRestriction });
+    productDetailsElements.push({ name: 'Purchase methods', content: formattedPurchaseMethods });
 
     if (ticket.ticketPeriod.startDate) {
-        confirmationElements.push({ name: 'Start date', content: ticket.ticketPeriod.startDate });
+        productDetailsElements.push({ name: 'Start date', content: ticket.ticketPeriod.startDate });
     }
     if (ticket.ticketPeriod.endDate) {
-        confirmationElements.push({ name: 'End date', content: ticket.ticketPeriod.endDate });
+        productDetailsElements.push({ name: 'End date', content: ticket.ticketPeriod.endDate });
     }
 
     console.log('AARON-LOG');
     console.log(ticket);
 
     return {
-        props: { ticket, passengerType, timeRestriction, formattedPurchaseMethods, confirmationElements },
+        props: {
+            ticket,
+            passengerType,
+            timeRestriction,
+            formattedPurchaseMethods,
+            productDetailsElements,
+        },
     };
 };
 
