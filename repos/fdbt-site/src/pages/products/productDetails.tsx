@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { getAndValidateNoc } from '../../utils';
 import {
+    convertDateFormat,
     getPassengerTypeNameByIdAndNoc,
     getProductMatchingJsonLinkByProductId,
     getSalesOfferPackageByIdAndNoc,
@@ -14,11 +15,14 @@ import { TicketWithIds } from 'shared/matchingJsonTypes';
 import salesOfferPackages from '../api/salesOfferPackages';
 import service from '../api/service';
 import isArray from 'lodash/isArray';
+import { getTag } from './services';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
 
 interface ProductDetailsProps {
+    endDate: string;
+    startDate: string;
     ticket: TicketWithIds;
     passengerType: string;
     timeRestriction: string;
@@ -27,6 +31,8 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails = ({
+    startDate,
+    endDate,
     ticket,
     passengerType,
     timeRestriction,
@@ -36,7 +42,7 @@ const ProductDetails = ({
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <h1 className="govuk-heading-l">Product Name Here</h1>
         <div id="contact-hint" className="govuk-hint">
-            Product status: <strong className="govuk-tag govuk-tag--blue">Pending</strong>
+            Product status: <strong className="govuk-table__cell">{getTag(startDate, endDate)}</strong>
         </div>
         {productDetailsElements.map((element) => {
             const content = isArray(element.content) ? element.content : [element.content];
@@ -118,18 +124,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     productDetailsElements.push({ name: 'Product expiry', content: timeRestriction });
     productDetailsElements.push({ name: 'Purchase methods', content: formattedPurchaseMethods });
 
-    if (ticket.ticketPeriod.startDate) {
-        productDetailsElements.push({ name: 'Start date', content: ticket.ticketPeriod.startDate });
+    if (!ticket.ticketPeriod.startDate || !ticket.ticketPeriod.endDate) {
+        throw new Error('startdate and enddate are expected but not found');
     }
-    if (ticket.ticketPeriod.endDate) {
-        productDetailsElements.push({ name: 'End date', content: ticket.ticketPeriod.endDate });
-    }
+    const startDate = ticket.ticketPeriod.startDate;
+    productDetailsElements.push({ name: 'Start date', content: convertDateFormat(startDate) });
+    const endDate = ticket.ticketPeriod.endDate;
+    productDetailsElements.push({ name: 'End date', content: convertDateFormat(endDate) });
 
     console.log('AARON-LOG');
     console.log(ticket);
 
     return {
         props: {
+            startDate,
+            endDate,
             ticket,
             passengerType,
             timeRestriction,
