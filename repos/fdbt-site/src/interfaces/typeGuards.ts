@@ -10,7 +10,6 @@ import {
     InputCheck,
     InputMethodInfo,
     Journey,
-    JourneyWithErrors,
     MultiOperatorInfo,
     MultiOperatorInfoWithErrors,
     MultipleOperatorsAttribute,
@@ -33,6 +32,7 @@ import {
     TicketRepresentationAttribute,
     TicketRepresentationAttributeWithErrors,
     WithErrors,
+    Errors,
 } from '.';
 import { validFareTypes } from '../constants';
 
@@ -81,7 +81,7 @@ export const isService = (service: Service | ServiceWithErrors | undefined): ser
     return service !== undefined && (service as Service).service !== undefined;
 };
 
-export const isJourney = (journey: Journey | JourneyWithErrors | undefined): journey is Journey => {
+export const isJourney = (journey: Journey | Errors | undefined): journey is Journey => {
     return (
         journey !== undefined &&
         ((journey as Journey).directionJourneyPattern !== undefined ||

@@ -1,40 +1,40 @@
 import { NextApiResponse } from 'next';
-import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/attributes';
-import { getUuidFromSession, redirectToError, redirectTo } from '../../utils/apiUtils/index';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType } from '../../interfaces/typeGuards';
+import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../constants/attributes';
+import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
+import { updateSessionAttribute, getRequiredSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { masterStopListEnabled } from '../../constants/featureFlag';
+import { getServiceByIdAndDataSource } from '../../data/auroradb';
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const { service } = req.body;
+        const serviceId = Number.parseInt(req.body.serviceId);
 
-        if (!service) {
+        if (!Number.isInteger(serviceId)) {
             const errors: ErrorInfo[] = [{ id: 'service', errorMessage: 'Choose a service from the options' }];
             updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors });
             redirectTo(res, '/service');
             return;
         }
 
-        const uuid = getUuidFromSession(req);
+        const dataSource = getRequiredSessionAttribute(req, TXC_SOURCE_ATTRIBUTE).source;
 
-        if (!uuid) {
-            throw new Error('No UUID found');
-        }
+        const service = await getServiceByIdAndDataSource(getAndValidateNoc(req, res), serviceId, dataSource);
 
-        updateSessionAttribute(req, SERVICE_ATTRIBUTE, { service });
+        updateSessionAttribute(req, SERVICE_ATTRIBUTE, {
+            service: `${service.lineName}#${service.startDate}`,
+            id: serviceId,
+        });
+        const fareTypeAttribute = getRequiredSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        const isReturn = 'fareType' in fareTypeAttribute && ['period', 'return'].includes(fareTypeAttribute.fareType);
 
-        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-
-        if (
-            (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'return') ||
-            (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period')
-        ) {
+        if (masterStopListEnabled && dataSource === 'bods') {
+            redirectTo(res, '/direction');
+        } else if (isReturn) {
             redirectTo(res, '/returnDirection');
-            return;
+        } else {
+            redirectTo(res, '/singleDirection');
         }
-
-        redirectTo(res, '/singleDirection');
     } catch (error) {
         const message = 'There was a problem selecting the service:';
         redirectToError(res, message, 'api.service', error);

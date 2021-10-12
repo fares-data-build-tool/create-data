@@ -1,5 +1,5 @@
 import * as apiUtils from '../../../src/utils/apiUtils/index';
-import direction from '../../../src/pages/api/singleDirection';
+import direction from '../../../src/pages/api/direction';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('direction', () => {
@@ -9,22 +9,22 @@ describe('direction', () => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /singleDirection (i.e. itself) when there is no request body', () => {
+    it('should return 302 redirect to /direction (i.e. itself) when there is no direction', () => {
         const { req, res } = getMockRequestAndResponse({
-            body: null,
+            body: {},
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
         jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         direction(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/singleDirection',
+            Location: '/direction',
         });
     });
 
     it('should return 302 redirect to /inputMethod when request body is present and fareType is single', () => {
         const { req, res } = getMockRequestAndResponse({
-            body: { directionJourneyPattern: 'test_journey' },
+            body: { direction: 'outbound' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });

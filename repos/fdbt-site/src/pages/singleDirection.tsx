@@ -8,15 +8,15 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { getServiceByNocCodeLineNameAndDataSource } from '../data/auroradb';
+import { getServiceByIdAndDataSource } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { ErrorInfo, NextPageContextWithSession, ServiceDB, RawService, TxcSourceAttribute } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, ServiceDB, RawService } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isJourney, isPassengerType, isService } from '../interfaces/typeGuards';
-import { getSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 
 const title = 'Single Direction - Create Fares Data Service';
 const description = 'Single Direction selection page of the Create Fares Data Service';
@@ -105,8 +105,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const lineName = serviceAttribute.service.split('#')[0];
-    const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
-    const rawService: RawService = await getServiceByNocCodeLineNameAndDataSource(nocCode, lineName, dataSource);
+    const dataSource = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE).source;
+    const rawService: RawService = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, dataSource);
     const service: ServiceDB = {
         ...rawService,
         journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawService.journeyPatterns),

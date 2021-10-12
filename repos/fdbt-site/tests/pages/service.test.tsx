@@ -10,6 +10,7 @@ jest.mock('../../src/data/auroradb');
 
 const mockServices: ServiceType[] = [
     {
+        id: 11,
         lineName: '123',
         lineId: '3h3vb32ik',
         startDate: '05/02/2020',
@@ -19,6 +20,7 @@ const mockServices: ServiceType[] = [
         serviceCode: 'NW_05_BLAC_123_1',
     },
     {
+        id: 12,
         lineName: 'X1',
         lineId: '3h3vb32ik',
         startDate: '06/02/2020',
@@ -27,6 +29,7 @@ const mockServices: ServiceType[] = [
         serviceCode: 'NW_05_BLAC_X1_1',
     },
     {
+        id: 13,
         lineName: 'Infinity Line',
         lineId: '3h3vb32ik',
         startDate: '07/02/2020',
@@ -162,6 +165,7 @@ describe('pages', () => {
                     passengerType: 'Adult',
                     services: [
                         {
+                            id: 11,
                             lineName: '123',
                             lineId: '3h3vb32ik',
                             startDate: '05/02/2020',
@@ -171,6 +175,7 @@ describe('pages', () => {
                             serviceCode: 'NW_05_BLAC_123_1',
                         },
                         {
+                            id: 12,
                             lineName: 'X1',
                             lineId: '3h3vb32ik',
                             startDate: '06/02/2020',
@@ -179,6 +184,7 @@ describe('pages', () => {
                             serviceCode: 'NW_05_BLAC_X1_1',
                         },
                         {
+                            id: 13,
                             lineName: 'Infinity Line',
                             lineId: '3h3vb32ik',
                             startDate: '07/02/2020',
@@ -261,16 +267,6 @@ describe('pages', () => {
             await expect(getServerSideProps(ctx)).rejects.toThrow(
                 'Could not render the service selection page. Necessary attributes not found.',
             );
-        });
-
-        it('throws an error if txc source attribute not set', async () => {
-            const ctx = getMockContext({
-                session: {
-                    [TXC_SOURCE_ATTRIBUTE]: undefined,
-                },
-            });
-
-            await expect(getServerSideProps(ctx)).rejects.toThrow('Data source attribute not found');
         });
     });
 });
