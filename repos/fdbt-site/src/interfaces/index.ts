@@ -612,7 +612,7 @@ export interface RawJourneyPattern {
 export interface ConfirmationElement {
     name: string;
     content: string | string[];
-    href: string;
+    href?: string;
 }
 
 export interface RadioOption {
