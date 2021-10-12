@@ -23,7 +23,6 @@ describe('direction', () => {
     });
 
     it('should return 302 redirect to /inputMethod when request body is present and fareType is single', () => {
-        jest.spyOn(apiUtils, 'getUuidFromSession').mockReturnValue('testUuid');
         const { req, res } = getMockRequestAndResponse({
             body: { directionJourneyPattern: 'test_journey' },
             uuid: {},

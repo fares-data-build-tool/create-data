@@ -45,28 +45,6 @@ describe('service', () => {
         });
     });
 
-    it('should return 302 redirect to /inputMethod when there is a bods service selected with one direction', async () => {
-        const writeHeadMock = jest.fn();
-        const { req, res } = getMockRequestAndResponse({
-            body: { serviceId: '123' },
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-            session: {
-                [TXC_SOURCE_ATTRIBUTE]: { source: 'bods', hasTnds: true, hasBods: true },
-            },
-        });
-
-        jest.spyOn(auroradb, 'getServiceByIdAndDataSource').mockResolvedValue({
-            ...mockRawService,
-            journeyPatterns: [mockRawService.journeyPatterns[0]],
-        });
-
-        await service(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/inputMethod',
-        });
-    });
-
     it('should return 302 redirect to /singleDirection when there is a tnds service selected', async () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({

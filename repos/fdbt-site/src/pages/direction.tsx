@@ -1,15 +1,16 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { SERVICE_ATTRIBUTE, DIRECTION_ATTRIBUTE } from '../constants/attributes';
+import { SERVICE_ATTRIBUTE, DIRECTION_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
 import { getServiceByIdAndDataSource } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isService } from '../interfaces/typeGuards';
-import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { redirectTo } from '../utils/apiUtils';
+import { removeExcessWhiteSpace } from '../utils/apiUtils/validator';
 
 const title = 'Single Direction - Create Fares Data Service';
 const description = 'Single Direction selection page of the Create Fares Data Service';
@@ -17,10 +18,20 @@ const description = 'Single Direction selection page of the Create Fares Data Se
 interface SingleDirectionProps {
     errors: ErrorInfo[];
     csrfToken: string;
-    directions: string[];
+    direction: string;
+    directionDesc: string;
+    inboundDirection: string;
+    inboundDirectionDesc: string;
 }
 
-const Direction = ({ errors, csrfToken, directions }: SingleDirectionProps): ReactElement => (
+const Direction = ({
+    errors,
+    csrfToken,
+    direction,
+    directionDesc,
+    inboundDirection,
+    inboundDirectionDesc,
+}: SingleDirectionProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/direction" method="post" csrfToken={csrfToken}>
             <ErrorSummary errors={errors} />
@@ -36,11 +47,12 @@ const Direction = ({ errors, csrfToken, directions }: SingleDirectionProps): Rea
                         <option value="" disabled>
                             Select One
                         </option>
-                        {directions.map((direction) => (
-                            <option key={direction} value={direction} className="journey-option">
-                                {sentenceCaseString(direction)}
-                            </option>
-                        ))}
+                        <option key={direction} value={direction} className="journey-option">
+                            {directionDesc} - {sentenceCaseString(direction)}
+                        </option>
+                        <option key={inboundDirection} value={inboundDirection} className="journey-option">
+                            {inboundDirectionDesc} - {sentenceCaseString(inboundDirection)}
+                        </option>
                     </select>
                 </FormElementWrapper>
                 <br />
@@ -54,7 +66,9 @@ const Direction = ({ errors, csrfToken, directions }: SingleDirectionProps): Rea
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SingleDirectionProps }> => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: SingleDirectionProps } | undefined> => {
     const csrfToken = getCsrfToken(ctx);
 
     const directionAttribute = getSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE);
@@ -74,16 +88,37 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }, new Set<string>()),
     );
 
+    const direction = directions.find((it) => ['outbound', 'clockwise'].includes(it));
+    const inboundDirection = directions.find((it) => ['inbound', 'antiClockwise'].includes(it));
+
     if (directions.length === 1) {
         updateSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE, { direction: directions[0] });
         redirectTo(ctx.res, '/inputMethod');
+        return;
+    }
+
+    if (directions.length !== 2 || !direction || !inboundDirection) {
+        throw new Error(
+            `expected an inbound and outbound directions but got ${directions} for ${service.serviceDescription}`,
+        );
+    }
+
+    const fareTypeAttribute = getRequiredSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+    const isReturn = 'fareType' in fareTypeAttribute && ['period', 'return'].includes(fareTypeAttribute.fareType);
+    if (isReturn) {
+        updateSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE, { direction, inboundDirection });
+        redirectTo(ctx.res, '/inputMethod');
+        return;
     }
 
     return {
         props: {
             errors: (directionAttribute && 'errors' in directionAttribute && directionAttribute.errors) || [],
             csrfToken,
-            directions,
+            direction,
+            directionDesc: removeExcessWhiteSpace(service.serviceDescription),
+            inboundDirection,
+            inboundDirectionDesc: removeExcessWhiteSpace(service.serviceDescription).split(' - ').reverse().join(' - '),
         },
     };
 };

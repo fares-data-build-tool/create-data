@@ -50,6 +50,8 @@ exports[`pages direction should render correctly 1`] = `
             key="outbound"
             value="outbound"
           >
+            hello
+             - 
             Outbound
           </option>
           <option
@@ -57,6 +59,8 @@ exports[`pages direction should render correctly 1`] = `
             key="inbound"
             value="inbound"
           >
+            world
+             - 
             Inbound
           </option>
         </select>
