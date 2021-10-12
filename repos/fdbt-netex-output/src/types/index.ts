@@ -67,7 +67,7 @@ export interface Operator {
     mode: string;
 }
 
-export type OperatorWithExpandedAddress = Operator | (OperatorDetails & Operator)
+export type OperatorWithExpandedAddress = Operator | (OperatorDetails & Operator);
 
 export interface SchemeOperator {
     schemeOperatorName: string;
@@ -81,7 +81,7 @@ export interface SchemeOperator {
     mode: string;
 }
 
-export type SchemeOperatorWithExpandedAddress = SchemeOperator | (SchemeOperator & OperatorDetails)
+export type SchemeOperatorWithExpandedAddress = SchemeOperator | (SchemeOperator & OperatorDetails);
 
 export interface Service {
     description: string;

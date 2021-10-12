@@ -43,7 +43,10 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
     }));
 
 export const getPriceGroups = (matchingData: PointToPointTicket | PointToPointPeriodTicket): {}[] => {
-    const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
+    const fareZones = isReturnTicket(matchingData)
+        ? matchingData.outboundFareZones.concat(matchingData.inboundFareZones)
+        : matchingData.fareZones;
+
     const priceGroups = getUniquePriceGroups(fareZones).map(price => ({
         version: '1.0',
         id: `price_band_${price}`,
@@ -308,7 +311,9 @@ export const getFareTables = (
     matchingData: PointToPointTicket | PointToPointPeriodTicket,
     lineIdName: string,
 ): NetexObject[] => {
-    const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
+    const fareZones = isReturnTicket(matchingData)
+        ? matchingData.outboundFareZones.concat(matchingData.inboundFareZones)
+        : matchingData.fareZones;
     const ticketUserConcat = `${matchingData.type}_${matchingData.passengerType}`;
 
     return matchingData.products[0].salesOfferPackages.map(salesOfferPackage => {
@@ -385,7 +390,7 @@ export const getLinesElement = (
         Name: { $t: `O/D pairs for ${lineName}` },
         distanceMatrixElements: {
             DistanceMatrixElement: getDistanceMatrixElements(
-                isReturnTicket(ticket) ? ticket.outboundFareZones : ticket.fareZones,
+                isReturnTicket(ticket) ? ticket.outboundFareZones.concat(ticket.inboundFareZones) : ticket.fareZones,
             ),
         },
         GenericParameterAssignment: {
