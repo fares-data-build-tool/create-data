@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
-import { getServiceByNocCodeLineNameAndDataSource, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
+import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { getMockContext, mockRawService, mockRawServiceWithDuplicates, mockService } from '../testData/mockData';
 import ReturnDirection, { getServerSideProps } from '../../src/pages/returnDirection';
 import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../src/constants/attributes';
@@ -15,7 +15,7 @@ describe('pages', () => {
         ];
 
         beforeEach(() => {
-            (getServiceByNocCodeLineNameAndDataSource as jest.Mock).mockImplementation(() => mockRawService);
+            (getServiceByIdAndDataSource as jest.Mock).mockImplementation(() => mockRawService);
             (batchGetStopsByAtcoCode as jest.Mock).mockImplementation(() => [{ localityName: '' }]);
         });
 
@@ -72,9 +72,7 @@ describe('pages', () => {
 
         describe('getServerSideProps', () => {
             it('returns operator value and list of services when operator attribute exists with NOCCode', async () => {
-                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(
-                    () => mockRawService,
-                ));
+                (({ ...getServiceByIdAndDataSource } as jest.Mock).mockImplementation(() => mockRawService));
 
                 const ctx = getMockContext({
                     session: {
@@ -99,7 +97,7 @@ describe('pages', () => {
             });
 
             it('removes journeys that have the same start and end points before rendering', async () => {
-                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(
+                (({ ...getServiceByIdAndDataSource } as jest.Mock).mockImplementation(
                     () => mockRawServiceWithDuplicates,
                 ));
 
@@ -126,9 +124,7 @@ describe('pages', () => {
             });
 
             it('throws an error if no journey patterns can be found', async () => {
-                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(() =>
-                    Promise.resolve(null),
-                ));
+                (({ ...getServiceByIdAndDataSource } as jest.Mock).mockImplementation(() => Promise.resolve(null)));
                 const ctx = getMockContext({
                     session: {
                         [TXC_SOURCE_ATTRIBUTE]: {
@@ -172,16 +168,6 @@ describe('pages', () => {
                 });
 
                 await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
-            });
-
-            it('throws an error if txc source attribute not set', async () => {
-                const ctx = getMockContext({
-                    session: {
-                        [TXC_SOURCE_ATTRIBUTE]: undefined,
-                    },
-                });
-
-                await expect(getServerSideProps(ctx)).rejects.toThrow("Cannot read property 'source' of undefined");
             });
         });
     });

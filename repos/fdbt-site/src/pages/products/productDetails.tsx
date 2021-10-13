@@ -16,6 +16,7 @@ import salesOfferPackages from '../api/salesOfferPackages';
 import service from '../api/service';
 import isArray from 'lodash/isArray';
 import { getTag } from './services';
+import { getFullTicketFromTicketWithIds } from 'src/utils/globalSettings';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -70,41 +71,38 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const matchingJsonLink = await getProductMatchingJsonLinkByProductId(noc, productId);
-    const ticket = await getProductsMatchingJson(matchingJsonLink);
+    const ticketWithIds = await getProductsMatchingJson(matchingJsonLink);
+    const ticket = await getFullTicketFromTicketWithIds(ticketWithIds, noc);
 
-    const passengerType = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
-    const timeRestriction = ticket.timeRestriction
-        ? (await getTimeRestrictionByIdAndNoc(ticket.timeRestriction.id, noc)).name
+    const timeRestriction = ticketWithIds.timeRestriction
+        ? (await getTimeRestrictionByIdAndNoc(ticketWithIds.timeRestriction.id, noc)).name
         : 'N/A';
-
-    const purchaseMethods = await Promise.all(
-        ticket.products[0].salesOfferPackages.map(async (salesOfferPackage) => {
-            const sop = await getSalesOfferPackageByIdAndNoc(salesOfferPackage.id, noc);
-            return sop.name;
-        }),
-    );
-    const formattedPurchaseMethods = purchaseMethods.join(', ');
 
     const productDetailsElements: ProductDetailsElement[] = [];
 
-    if (ticket.products[0].productName) {
-        productDetailsElements.push({ name: 'Product name', content: ticket.products[0].productName });
+    const product = ticket.products[0];
+    if ('productName' in product) {
+        productDetailsElements.push({ name: 'Product name', content: product.productName });
     }
     if ('serviceDescription' in ticket) {
         productDetailsElements.push({ name: 'Service', content: ticket.serviceDescription });
     }
 
-    productDetailsElements.push({ name: 'Passenger type', content: passengerType });
+    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticketWithIds.passengerType.id, noc);
+    productDetailsElements.push({ name: 'Passenger type', content: passengerTypeName });
     productDetailsElements.push({ name: 'Time restriction', content: timeRestriction });
 
     if ('termTime' in ticket) {
-        productDetailsElements.push({ name: 'Only valid during term time', content: ticket.termTime ? 'Yes' : 'No' }); //ticket.termTime is a boolean
+        productDetailsElements.push({ name: 'Only valid during term time', content: ticket.termTime ? 'Yes' : 'No' });
     }
 
-    // if ('carnetDetails' in ticket.products[0]){
-    //     productDetailsElements.push({ name: 'Quantity in bundle', content: ticket.products[0].carnetDetails.quantity });
-    //     productDetailsElements.push({ name: 'Carnet expiry', content: `${ticket.products[0].carnetDetails.expiryTime} ${ticket.products[0].carnetDetails.expiryUnit}(s)` });
-    // }
+    if ('carnetDetails' in product) {
+        productDetailsElements.push({ name: 'Quantity in bundle', content: product.carnetDetails.quantity });
+        productDetailsElements.push({
+            name: 'Carnet expiry',
+            content: `${product.carnetDetails.expiryTime} ${product.carnetDetails.expiryUnit}(s)`,
+        });
+    }
 
     if ('returnPeriodValidity' in ticket) {
         productDetailsElements.push({
@@ -113,9 +111,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
-    // if ('productDuration' in ticket.products[0]){
-    //     productDetailsElements.push({ name: 'Period duration', content: ticket.products[0].productDuration});
-    //     productDetailsElements.push({ name: 'Period duration', content: ticket.products[0].productDuration });
+    // if ('productDuration' in product){
+    //     productDetailsElements.push({ name: 'Period duration', content: product.productDuration});
+    //     productDetailsElements.push({ name: 'Period duration', content: product.productDuration });
     // }
 
     productDetailsElements.push({ name: 'Product expiry', content: timeRestriction });

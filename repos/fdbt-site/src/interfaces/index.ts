@@ -60,13 +60,18 @@ export interface InputMethodInfo {
     inputMethod: string;
 }
 
-export interface Journey extends JourneyWithErrors {
+export interface Journey extends Errors {
     directionJourneyPattern?: string;
     inboundJourney?: string;
     outboundJourney?: string;
 }
 
-export interface JourneyWithErrors {
+export interface Direction {
+    direction: string;
+    inboundDirection?: string;
+}
+
+export interface Errors {
     errors?: ErrorInfo[];
 }
 
@@ -509,6 +514,7 @@ export interface SelectSalesOfferPackageWithError {
 }
 
 export interface Service {
+    id: number;
     service: string;
 }
 
@@ -560,6 +566,7 @@ export interface ServiceWithErrors {
 }
 
 export interface ServiceType {
+    id: number;
     lineName: string;
     lineId: string;
     startDate: string;
@@ -579,6 +586,8 @@ export interface ServiceDB {
     operatorShortName: string;
     journeyPatterns: JourneyPattern[];
     lineId: string;
+    lineName: string;
+    startDate: string;
 }
 
 export interface RawService {
@@ -586,6 +595,8 @@ export interface RawService {
     operatorShortName: string;
     journeyPatterns: RawJourneyPattern[];
     lineId: string;
+    lineName: string;
+    startDate: string;
 }
 
 export interface JourneyPattern {
@@ -605,6 +616,7 @@ export interface RawJourneyPattern {
         stopPointRef: string;
         commonName: string;
     }[];
+    direction: string;
 }
 
 // Components

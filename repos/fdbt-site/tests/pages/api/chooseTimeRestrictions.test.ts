@@ -325,12 +325,12 @@ describe('chooseTimeRestrictions', () => {
         });
     });
 
-    it('should update the session attribute and redirect to /fareConfirmation on valid input', () => {
+    it('should update the session attribute and redirect to /fareConfirmation on valid input', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: { startTimemonday: '0900', endTimemonday: '1400' },
             session: { [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: { validDays: ['monday'] } },
         });
-        chooseTimeRestrictions(req, res);
+        await chooseTimeRestrictions(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
             fullTimeRestrictions: [{ day: 'monday', timeBands: [{ startTime: '0900', endTime: '1400' }] }],
             errors: [],
@@ -338,7 +338,7 @@ describe('chooseTimeRestrictions', () => {
         expect(res.writeHead).toBeCalledWith(302, { Location: '/fareConfirmation' });
     });
 
-    it('should update the session attribute with errors and redirect to itself (i.e. /chooseTimeRestrictions) on invalid input', () => {
+    it('should update the session attribute with errors and redirect to itself (i.e. /chooseTimeRestrictions) on invalid input', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: { startTimemonday: 'invalid', endTimemonday: '2600' },
             session: { [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: { validDays: ['monday'] } },
@@ -355,7 +355,7 @@ describe('chooseTimeRestrictions', () => {
                 userInput: expect.any(String),
             },
         ];
-        chooseTimeRestrictions(req, res);
+        await chooseTimeRestrictions(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
             fullTimeRestrictions: [{ day: 'monday', timeBands: [{ startTime: 'invalid', endTime: '2600' }] }],
             errors: mockErrors,

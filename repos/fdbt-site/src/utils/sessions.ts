@@ -3,6 +3,7 @@ import {
     GS_FARE_DAY_END_ATTRIBUTE,
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
+    DIRECTION_ATTRIBUTE,
 } from './../constants/attributes';
 import * as attributes from '../constants/attributes';
 import {
@@ -81,7 +82,6 @@ import {
     InputCheck,
     InputMethodInfo,
     Journey,
-    JourneyWithErrors,
     MultiOperatorInfo,
     MultiOperatorInfoWithErrors,
     MultipleOperatorsAttribute,
@@ -122,6 +122,8 @@ import {
     GlobalSettingsAttribute,
     GroupPassengerTypeDb,
     PremadeTimeRestriction,
+    Direction,
+    Errors,
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -158,7 +160,8 @@ export interface SessionAttributeTypes {
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
-    [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
+    [JOURNEY_ATTRIBUTE]: Journey | Errors;
+    [DIRECTION_ATTRIBUTE]: Direction | Errors;
     [TICKET_REPRESENTATION_ATTRIBUTE]: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
@@ -193,6 +196,19 @@ export interface SessionAttributeTypes {
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
     ? SessionAttributeTypes[T]
     : string;
+
+export const getRequiredSessionAttribute = <T extends keyof SessionAttributeTypes>(
+    req: IncomingMessageWithSession,
+    attributeName: T,
+): SessionAttributeTypes[T] => {
+    const attribute = getSessionAttribute(req, attributeName);
+
+    if (!attribute) {
+        throw new Error(`Attribute was not found ${attributeName}`);
+    }
+
+    return attribute;
+};
 
 export const getSessionAttribute = <T extends keyof SessionAttributeTypes>(
     req: IncomingMessageWithSession,

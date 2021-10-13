@@ -32,6 +32,7 @@ interface ServiceQueryData {
     operatorShortName: string;
     serviceDescription: string;
     lineName: string;
+    startDate: string;
     lineId: string;
     fromAtcoCode: string;
     toAtcoCode: string;
@@ -39,6 +40,7 @@ interface ServiceQueryData {
     toCommonName: string;
     journeyPatternId: string;
     order: string;
+    direction: string;
 }
 
 interface NaptanInfo {
@@ -130,7 +132,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
 
     try {
         const queryInput = `
-            SELECT lineName, lineId, startDate, serviceDescription AS description, origin, destination, serviceCode
+            SELECT id, lineName, lineId, startDate, serviceDescription AS description, origin, destination, serviceCode
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = ? AND (endDate IS NULL OR CURDATE() <= endDate)
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
@@ -140,13 +142,8 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
 
         return (
             queryResults.map((item) => ({
-                lineName: item.lineName,
-                lineId: item.lineId,
+                ...item,
                 startDate: convertDateFormat(item.startDate),
-                description: item.description,
-                origin: item.origin,
-                destination: item.destination,
-                serviceCode: item.serviceCode,
             })) || []
         );
     } catch (error) {
@@ -238,7 +235,7 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
 
     try {
         const queryInput = `
-            SELECT lineName, lineId, startDate, serviceDescription AS description, serviceCode, dataSource
+            SELECT id, lineName, lineId, startDate, serviceDescription AS description, serviceCode, dataSource
             FROM txcOperatorLine
             WHERE nocCode = ?
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
@@ -248,12 +245,8 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
 
         return (
             queryResults.map((item) => ({
-                lineName: item.lineName,
-                lineId: item.lineId,
+                ...item,
                 startDate: convertDateFormat(item.startDate),
-                description: item.description,
-                serviceCode: item.serviceCode,
-                dataSource: item.dataSource,
             })) || []
         );
     } catch (error) {
@@ -371,9 +364,9 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
     }
 };
 
-export const getServiceByNocCodeLineNameAndDataSource = async (
+export const getServiceByIdAndDataSource = async (
     nocCode: string,
-    lineName: string,
+    id: number,
     dataSource: string,
 ): Promise<RawService> => {
     const nocCodeParameter = replaceInternalNocCode(nocCode);
@@ -381,24 +374,24 @@ export const getServiceByNocCodeLineNameAndDataSource = async (
         context: 'data.auroradb',
         message: 'retrieving service info for given noc and line name',
         noc: nocCode,
-        lineName,
+        id,
     });
 
     const serviceQuery = `
-        SELECT os.operatorShortName, os.serviceDescription, os.lineName, os.lineId, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName
+        SELECT os.operatorShortName, os.serviceDescription, os.lineName, os.lineId, os.startDate, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction
         FROM txcOperatorLine AS os
         JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
         JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
         LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode
         LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode
-        WHERE os.nocCode = ? AND os.lineName = ? AND os.dataSource = ?
+        WHERE os.nocCode = ? AND os.id = ? AND os.dataSource = ?
         ORDER BY pl.journeyPatternId ASC, pl.orderInSequence
     `;
 
     let queryResult: ServiceQueryData[];
 
     try {
-        queryResult = await executeQuery(serviceQuery, [nocCodeParameter, lineName, dataSource]);
+        queryResult = await executeQuery(serviceQuery, [nocCodeParameter, id, dataSource]);
     } catch (error) {
         throw new Error(`Could not get journey patterns from Aurora DB: ${error.stack}`);
     }
@@ -416,6 +409,7 @@ export const getServiceByNocCodeLineNameAndDataSource = async (
         });
 
         return {
+            direction: filteredJourney[0].direction,
             orderedStopPoints: [
                 {
                     stopPointRef: filteredJourney[0].fromAtcoCode,
@@ -430,7 +424,7 @@ export const getServiceByNocCodeLineNameAndDataSource = async (
     });
 
     if (!service || rawPatternService.length === 0) {
-        throw new Error(`No journey patterns found for nocCode: ${nocCodeParameter}, lineName: ${lineName}`);
+        throw new Error(`No journey patterns found for nocCode: ${nocCodeParameter}, id: ${id}`);
     }
 
     return {
@@ -438,6 +432,8 @@ export const getServiceByNocCodeLineNameAndDataSource = async (
         operatorShortName: service.operatorShortName,
         journeyPatterns: rawPatternService,
         lineId: service.lineId,
+        lineName: service.lineName,
+        startDate: convertDateFormat(service.startDate),
     };
 };
 

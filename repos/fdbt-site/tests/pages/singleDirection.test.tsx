@@ -2,7 +2,7 @@ import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 
 import SingleDirection, { getServerSideProps } from '../../src/pages/singleDirection';
-import { getServiceByNocCodeLineNameAndDataSource, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
+import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { mockRawService, mockService, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
 import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../src/constants/attributes';
 
@@ -11,7 +11,7 @@ jest.mock('../../src/data/auroradb.ts');
 describe('pages', () => {
     describe('singleDirection', () => {
         beforeEach(() => {
-            (getServiceByNocCodeLineNameAndDataSource as jest.Mock).mockImplementation(() => mockRawService);
+            (getServiceByIdAndDataSource as jest.Mock).mockImplementation(() => mockRawService);
             (batchGetStopsByAtcoCode as jest.Mock).mockImplementation(() => [{ localityName: '' }]);
         });
 
@@ -69,9 +69,7 @@ describe('pages', () => {
 
         describe('getServerSideProps', () => {
             it('returns operator value and list of services when operator attribute exists with NOCCode', async () => {
-                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(
-                    () => mockRawService,
-                ));
+                (({ ...getServiceByIdAndDataSource } as jest.Mock).mockImplementation(() => mockRawService));
 
                 const ctx = getMockContext({
                     session: {
@@ -89,7 +87,7 @@ describe('pages', () => {
             });
 
             it('removes journeys that have the same start and end points before rendering', async () => {
-                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(
+                (({ ...getServiceByIdAndDataSource } as jest.Mock).mockImplementation(
                     () => mockRawServiceWithDuplicates,
                 ));
 
@@ -108,9 +106,7 @@ describe('pages', () => {
             });
 
             it('throws an error if no journey patterns can be found', async () => {
-                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(() =>
-                    Promise.resolve(null),
-                ));
+                (({ ...getServiceByIdAndDataSource } as jest.Mock).mockImplementation(() => Promise.resolve(null)));
                 const ctx = getMockContext();
 
                 await expect(getServerSideProps(ctx)).rejects.toThrow();
