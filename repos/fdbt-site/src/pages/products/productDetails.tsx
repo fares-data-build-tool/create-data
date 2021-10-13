@@ -33,10 +33,7 @@ interface ProductDetailsProps {
 const ProductDetails = ({
     startDate,
     endDate,
-    ticket,
     passengerType,
-    timeRestriction,
-    formattedPurchaseMethods,
     productDetailsElements,
 }: ProductDetailsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
@@ -69,7 +66,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const productId = ctx.query?.productId;
 
     if (typeof productId !== 'string') {
-        throw new Error(`Product ID is set as ${productId}`);
+        throw new Error(`Expected string type for productID, received: ${productId}`);
     }
 
     const matchingJsonLink = await getProductMatchingJsonLinkByProductId(noc, productId);

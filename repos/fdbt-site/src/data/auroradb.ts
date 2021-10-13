@@ -4,7 +4,7 @@ import dateFormat from 'dateformat';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
 import { DbTimeRestriction } from 'shared/dbTypes';
-import { FromDb, OperatorDetails } from '../../shared/matchingJsonTypes';
+import { FromDb, GroupDefinition, OperatorDetails } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
     CompanionInfo,
@@ -1130,6 +1130,81 @@ const retrievePassengerTypeById = async (
         throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
     }
 };
+
+const retrieveSingleOrGroupPassengerTypeById = async (
+    id: number,
+    noc: string,
+): Promise<{
+    id: number;
+    name: string;
+    contents: string;
+    isGroup: boolean;
+}> => {
+    const queryInput = `
+            SELECT id, name, contents, isGroup
+            FROM passengerType
+            WHERE id = ? 
+            AND nocCode = ?`;
+
+    const queryResults = await executeQuery<{ id: number; name: string; contents: string; isGroup: boolean }[]>(
+        queryInput,
+        [id, noc],
+    );
+
+    if (queryResults.length !== 1) {
+        throw new Error(`Didn't get one passenger type with the id [${id}]`);
+    }
+
+    return queryResults[0];
+};
+
+export const getSingleOrGroupPassengerTypeById = async (
+    passengerId: number,
+    noc: string,
+): Promise<SinglePassengerType | GroupPassengerTypeDb> => {
+    const result = await retrieveSingleOrGroupPassengerTypeById(passengerId, noc);
+
+    const { id, name, contents, isGroup } = result;
+
+    return isGroup
+        ? {
+              id,
+              name,
+              groupPassengerType: JSON.parse(contents) as GroupPassengerTypeReference,
+          }
+        : {
+              id,
+              name,
+              passengerType: JSON.parse(contents) as PassengerType,
+          };
+};
+
+export const getCompanions = async (
+    passengerType: GroupPassengerTypeReference,
+    noc: string,
+): Promise<CompanionInfo[]> =>
+    await Promise.all(
+        passengerType.companions.map(async (companion) => {
+            const result = await retrievePassengerTypeById(companion.id, noc, false);
+            if (!result) {
+                throw new Error(`Didn't get one passenger type with the id [${companion.id}]`);
+            }
+            const passengerType = JSON.parse(result.contents) as PassengerType;
+            return {
+                ...passengerType,
+                minNumber: companion.minNumber,
+                maxNumber: companion.maxNumber,
+            };
+        }),
+    );
+
+export const getGroupDefinition = async (
+    passengerType: GroupPassengerTypeReference,
+    noc: string,
+): Promise<GroupDefinition> => ({
+    maxPeople: passengerType.maxGroupSize,
+    companions: await getCompanions(passengerType, noc),
+});
 
 interface SavedPassengerType {
     group: GroupPassengerType;

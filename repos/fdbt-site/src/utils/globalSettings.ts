@@ -1,3 +1,5 @@
+import { TicketWithIds } from 'shared/matchingJsonTypes';
+import { getGroupDefinition, getSingleOrGroupPassengerTypeById } from 'src/data/auroradb';
 import { GS_REFERER } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from './index';
@@ -60,4 +62,74 @@ export const getGlobalSettingsManageProps = async <T extends { id: number }>(
             ...(inputs && { inputs }),
         },
     };
+};
+
+export const getFullTicketFromTicketWithIds = async (ticketWithIds: TicketWithIds, noc: string) => {
+    const singleOrGroupPassengerType = await getSingleOrGroupPassengerTypeById(ticketWithIds.passengerType.id, noc);
+
+    let passengerType, groupDefinition;
+    if ('groupPassengerType' in singleOrGroupPassengerType) {
+        passengerType = { passengerType: 'group' };
+        groupDefinition = await getGroupDefinition(singleOrGroupPassengerType.groupPassengerType, noc);
+    } else {
+        passengerType = singleOrGroupPassengerType.passengerType;
+    }
+
+    const allSops = await getSalesOfferPackagesByNoc(noc);
+
+    const fullProducts = ticketWithIds.products.map((product) => ({
+        ...product,
+        salesOfferPackages: product.salesOfferPackages.map((sopWithIds) => {
+            const sop = allSops.find((it) => it.id === sopWithIds.id);
+            if (!sop) {
+                throw new Error(`No sop found for id [${sopWithIds.id}]`);
+            }
+            return { ...sop, price: sopWithIds.price };
+        }),
+    }));
+
+    const timeRestriction = ticketWithIds.timeRestriction
+        ? await getTimeRestrictionsByIdAndNoc(ticketWithIds.timeRestriction.id, noc)
+        : [];
+
+    const fareDayEnd = await getFareDayEnd(noc);
+
+    const timeRestrictionWithUpdatedFareDayEnds: FullTimeRestriction[] = timeRestriction.map(
+        (timeRestriction: DbTimeRestriction) => ({
+            ...timeRestriction,
+            timeBands: timeRestriction.timeBands.map((timeBand) => {
+                let endTime: string;
+                if (typeof timeBand.endTime === 'string') {
+                    endTime = timeBand.endTime;
+                } else {
+                    if (!fareDayEnd) {
+                        throw new Error('No fare day end set for time restriction');
+                    }
+
+                    endTime = fareDayEnd;
+                }
+
+                return {
+                    ...timeBand,
+                    endTime: endTime,
+                };
+            }),
+        }),
+    );
+
+    const setFareDayEnd =
+        isBasePeriodTicket(ticketWithIds) && ticketWithIds.products[0].productValidity === 'fareDayEnd';
+
+    const baseTicket: BaseTicket | BaseSchemeOperatorTicket = {
+        ...ticketWithIds,
+        ...passengerType,
+        groupDefinition,
+        timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
+    };
+
+    const fullTicket: Ticket = {
+        ...baseTicket,
+        products: fullProducts,
+        fareDayEnd: setFareDayEnd ? fareDayEnd : undefined,
+    } as Ticket;
 };
