@@ -1,10 +1,19 @@
-import { TicketWithIds } from 'shared/matchingJsonTypes';
+import { DbTimeRestriction } from 'shared/dbTypes';
 import {
+    BaseSchemeOperatorTicket,
+    BaseTicket,
+    FullTimeRestriction,
+    Ticket,
+    TicketWithIds,
+} from 'shared/matchingJsonTypes';
+import {
+    getFareDayEnd,
     getGroupDefinition,
     getSalesOfferPackagesByNocCode,
     getSingleOrGroupPassengerTypeById,
     getTimeRestrictionByIdAndNoc,
 } from 'src/data/auroradb';
+import { isBasePeriodTicket } from 'src/interfaces/typeGuards';
 import { GS_REFERER } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from './index';
@@ -69,7 +78,7 @@ export const getGlobalSettingsManageProps = async <T extends { id: number }>(
     };
 };
 
-export const getFullTicketFromTicketWithIds = async (ticketWithIds: TicketWithIds, noc: string) => {
+export const getFullTicketFromTicketWithIds = async (ticketWithIds: TicketWithIds, noc: string): Promise<Ticket> => {
     const singleOrGroupPassengerType = await getSingleOrGroupPassengerTypeById(ticketWithIds.passengerType.id, noc);
 
     let passengerType, groupDefinition;
@@ -91,7 +100,7 @@ export const getFullTicketFromTicketWithIds = async (ticketWithIds: TicketWithId
             }
             return { ...sop, price: sopWithIds.price };
         }),
-    })); SOUND ISSUES ONE SECOND
+    }));
 
     const timeRestriction = ticketWithIds.timeRestriction
         ? await (
@@ -134,7 +143,7 @@ export const getFullTicketFromTicketWithIds = async (ticketWithIds: TicketWithId
         timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
     };
 
-    const fullTicket: Ticket = {
+    return {
         ...baseTicket,
         products: fullProducts,
         fareDayEnd: setFareDayEnd ? fareDayEnd : undefined,
