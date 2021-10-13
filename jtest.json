@@ -1,0 +1,1567 @@
+{
+  "nocCode": "BLAC",
+  "type": "return",
+  "passengerType": { "id": 1 },
+  "email": "test@example.com",
+  "uuid": "BLAC321749d7",
+  "timeRestriction": { "id": 1 },
+  "ticketPeriod": {
+    "startDate": "2020-04-07T00:00:00.000Z",
+    "endDate": "2021-10-13T23:59:59.999Z"
+  },
+  "lineName": "17",
+  "serviceDescription": "BLACKPOOL - ST ANNES - LYTHAM",
+  "lineId": "vySmf0",
+  "outboundFareZones": [
+    {
+      "name": "Shott Drive",
+      "stops": [
+        {
+          "stopName": "Tesco",
+          "naptanCode": "blpamjtd",
+          "atcoCode": "2590BTA01290",
+          "localityCode": "E0035290",
+          "localityName": "Mereside",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Clifton Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        { "price": "1.00", "fareZones": ["The Stag pub"] },
+        { "price": "1.10", "fareZones": ["Frederick Drive"] }
+      ]
+    },
+    {
+      "name": "The Stag pub",
+      "stops": [
+        {
+          "stopName": "Branstree Road",
+          "naptanCode": "blpadmaj",
+          "atcoCode": "2590B0153",
+          "localityCode": "E0035290",
+          "localityName": "Mereside",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Langdale Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [{ "price": "1.10", "fareZones": ["Frederick Drive"] }]
+    },
+    {
+      "name": "Frederick Drive",
+      "stops": [
+        {
+          "stopName": "Windmill",
+          "naptanCode": "blpadmam",
+          "atcoCode": "2590B0154",
+          "localityCode": "E0035290",
+          "localityName": "Mereside",
+          "parentLocalityName": "Blackpool",
+          "indicator": "opp",
+          "street": "Langdale Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": []
+    }
+  ],
+  "inboundFareZones": [
+    {
+      "name": "Shott Drive",
+      "stops": [
+        {
+          "stopName": "Park Terminus",
+          "naptanCode": "lanjajgp",
+          "atcoCode": "2500B0720",
+          "localityCode": "E0057533",
+          "localityName": "Cleveleys Park",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "opp",
+          "street": "Cleveleys Park Terminus",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        { "price": "1.00", "fareZones": ["The Stag pub"] },
+        { "price": "1.10", "fareZones": ["Frederick Drive"] }
+      ]
+    },
+    {
+      "name": "The Stag pub",
+      "stops": [
+        {
+          "stopName": "Newcastle Avenue",
+          "naptanCode": "lanjgmdm",
+          "atcoCode": "2500B0721",
+          "localityCode": "E0057533",
+          "localityName": "Cleveleys Park",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "opp",
+          "street": "Northumberland Avenue",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [{ "price": "1.10", "fareZones": ["Frederick Drive"] }]
+    },
+    {
+      "name": "Frederick Drive",
+      "stops": [
+        {
+          "stopName": "Belford Avenue",
+          "naptanCode": "lanjgmda",
+          "atcoCode": "2500B0722",
+          "localityCode": "E0057533",
+          "localityName": "Cleveleys Park",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "by",
+          "street": "Northumberland Avenue",
+          "qualifierName": ""
+        }
+      ],
+      "prices": []
+    }
+  ],
+  "returnPeriodValidity": { "amount": "3", "typeOfDuration": "day" },
+  "unassignedStops": {
+    "outboundUnassignedStops": [
+      {
+        "stopName": "Langdale Road Shops",
+        "naptanCode": "blpadmap",
+        "atcoCode": "2590B0155",
+        "localityCode": "E0035290",
+        "localityName": "Mereside",
+        "parentLocalityName": "Blackpool",
+        "indicator": "o/s",
+        "street": "Langdale Road"
+      },
+      {
+        "stopName": "Birkside Way",
+        "naptanCode": "blpadmat",
+        "atcoCode": "2590B0156",
+        "localityCode": "E0035290",
+        "localityName": "Mereside",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Langdale Road"
+      },
+      {
+        "stopName": "Borrowdale Avenue",
+        "naptanCode": "blpadmaw",
+        "atcoCode": "2590B0157",
+        "localityCode": "E0035290",
+        "localityName": "Mereside",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Langdale Road"
+      },
+      {
+        "stopName": "Langdale Road",
+        "naptanCode": "blpadmda",
+        "atcoCode": "2590B0158",
+        "localityCode": "E0035290",
+        "localityName": "Mereside",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Clifton Road"
+      },
+      {
+        "stopName": "Cherry Tree Road North",
+        "naptanCode": "blpadmdg",
+        "atcoCode": "2590B0159",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Cherry Tree Road"
+      },
+      {
+        "stopName": "Cherry Tree Road",
+        "naptanCode": "blpajdpa",
+        "atcoCode": "2590B0849",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Penrose Avenue"
+      },
+      {
+        "stopName": "Elaine Avenue",
+        "naptanCode": "blpajdpd",
+        "atcoCode": "2590B0850",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Penrose Avenue"
+      },
+      {
+        "stopName": "Baines School",
+        "naptanCode": "blpajdpg",
+        "atcoCode": "2590B0851",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "o/s",
+        "street": "Penrose Avenue"
+      },
+      {
+        "stopName": "Vicarage Lane",
+        "naptanCode": "blpajdpj",
+        "atcoCode": "2590B0852",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Penrose Avenue"
+      },
+      {
+        "stopName": "Angers Hill Road",
+        "naptanCode": "blpajdpm",
+        "atcoCode": "2590B0853",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Vicarage Lane"
+      },
+      {
+        "stopName": "Laurel Avenue",
+        "naptanCode": "blpagwaw",
+        "atcoCode": "2590B0680",
+        "localityCode": "N0079371",
+        "localityName": "Ansdell",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Cunliffe Road",
+        "naptanCode": "blpagwda",
+        "atcoCode": "2590B0681",
+        "localityCode": "N0079371",
+        "localityName": "Ansdell",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Somerset Avenue",
+        "naptanCode": "blpagwdg",
+        "atcoCode": "2590B0682",
+        "localityCode": "N0079371",
+        "localityName": "Ansdell",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Lune Grove",
+        "naptanCode": "blpagwdj",
+        "atcoCode": "2590B0683",
+        "localityCode": "N0079370",
+        "localityName": "Central",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Blenheim Avenue",
+        "naptanCode": "blpagwdm",
+        "atcoCode": "2590B0684",
+        "localityCode": "N0079370",
+        "localityName": "Central",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Palatine Road",
+        "naptanCode": "blpagwdp",
+        "atcoCode": "2590B0685",
+        "localityCode": "N0079370",
+        "localityName": "Central",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Hornby Road",
+        "naptanCode": "blpagwdt",
+        "atcoCode": "2590B0686",
+        "localityCode": "N0079370",
+        "localityName": "Central",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Church Street",
+        "naptanCode": "blpagwdw",
+        "atcoCode": "2590B0687",
+        "localityCode": "N0079370",
+        "localityName": "Central",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Dickson Road",
+        "naptanCode": "blpagtpg",
+        "atcoCode": "2590B0659",
+        "localityCode": "E0054826",
+        "localityName": "Blackpool Town Centre",
+        "parentLocalityName": "Blackpool",
+        "indicator": "Stop D1",
+        "street": "Dickson Road"
+      },
+      {
+        "stopName": "Mount Street",
+        "naptanCode": "blpadapd",
+        "atcoCode": "2590B0031",
+        "localityCode": "N0079366",
+        "localityName": "Egerton Square",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Dickson Road"
+      },
+      {
+        "stopName": "Egerton Square",
+        "naptanCode": "blpadapg",
+        "atcoCode": "2590B0032",
+        "localityCode": "N0079366",
+        "localityName": "Egerton Square",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Egerton Road"
+      },
+      {
+        "stopName": "Cheltenham Road",
+        "naptanCode": "blpadapj",
+        "atcoCode": "2590B0033",
+        "localityCode": "E0035276",
+        "localityName": "Claremont",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Egerton Road"
+      },
+      {
+        "stopName": "Sherbourne Road",
+        "naptanCode": "blpadapm",
+        "atcoCode": "2590B0034",
+        "localityCode": "E0035276",
+        "localityName": "Claremont",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Cheltenham Road"
+      },
+      {
+        "stopName": "Carshalton Road",
+        "naptanCode": "blpadapt",
+        "atcoCode": "2590B0035",
+        "localityCode": "E0035276",
+        "localityName": "Claremont",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Sherbourne Road"
+      },
+      {
+        "stopName": "Gynn Square",
+        "naptanCode": "blpadapw",
+        "atcoCode": "2590B0036",
+        "localityCode": "N0079382",
+        "localityName": "Promenade",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Dickson Road"
+      },
+      {
+        "stopName": "Gynn Gardens",
+        "naptanCode": "blpadata",
+        "atcoCode": "2590B0037",
+        "localityCode": "N0079382",
+        "localityName": "Promenade",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Warbreck Hill Road"
+      },
+      {
+        "stopName": "Empress Drive",
+        "naptanCode": "blpadatd",
+        "atcoCode": "2590B0038",
+        "localityCode": "E0035292",
+        "localityName": "North Shore",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Carlin Gate",
+        "naptanCode": "blpadatg",
+        "atcoCode": "2590B0039",
+        "localityCode": "E0035292",
+        "localityName": "North Shore",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Lowther Avenue",
+        "naptanCode": "blpadatj",
+        "atcoCode": "2590B0040",
+        "localityCode": "E0035292",
+        "localityName": "North Shore",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Pembroke Avenue",
+        "naptanCode": "blpadatm",
+        "atcoCode": "2590B0041",
+        "localityCode": "E0035292",
+        "localityName": "North Shore",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Cranleigh Avenue",
+        "naptanCode": "blpadatp",
+        "atcoCode": "2590B0042",
+        "localityCode": "E0035292",
+        "localityName": "North Shore",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Bispham Hotel",
+        "naptanCode": "blpadatw",
+        "atcoCode": "2590B0043",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "o/s",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Fire Station",
+        "naptanCode": "blpadawa",
+        "atcoCode": "2590B0044",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "o/s",
+        "street": "Red Bank Road"
+      },
+      {
+        "stopName": "Roundabout",
+        "naptanCode": "blpadawd",
+        "atcoCode": "2590B0045",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Red Bank Road"
+      },
+      {
+        "stopName": "Bispham Village",
+        "naptanCode": "blpadmpm",
+        "atcoCode": "2590B0182",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Red Bank Road"
+      },
+      {
+        "stopName": "Ingthorpe Avenue",
+        "naptanCode": "blpadmpt",
+        "atcoCode": "2590B0183",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Ingthorpe Avenue"
+      },
+      {
+        "stopName": "Ashfield Road",
+        "naptanCode": "blpagjpw",
+        "atcoCode": "2590B0497",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "adj",
+        "street": "Briarwood Drive"
+      },
+      {
+        "stopName": "Pinewood Avenue",
+        "naptanCode": "blpagjta",
+        "atcoCode": "2590B0498",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Briarwood Drive"
+      },
+      {
+        "stopName": "Kincraig Road",
+        "naptanCode": "blpagjtd",
+        "atcoCode": "2590B0499",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Briarwood Drive"
+      },
+      {
+        "stopName": "Beattock Place",
+        "naptanCode": "blpagjtg",
+        "atcoCode": "2590B0500",
+        "localityCode": "N0079360",
+        "localityName": "Kincraig Estate",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Kincraig Road"
+      },
+      {
+        "stopName": "Kincraig Place",
+        "naptanCode": "blpagjtj",
+        "atcoCode": "2590B0501",
+        "localityCode": "N0079360",
+        "localityName": "Kincraig Estate",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Kincraig Road"
+      },
+      {
+        "stopName": "Blackpool and Fylde College",
+        "naptanCode": "blpadmtj",
+        "atcoCode": "2590B0188",
+        "localityCode": "E0035300",
+        "localityName": "Whiteholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "o/s",
+        "street": "Ashfield Road"
+      },
+      {
+        "stopName": "Whiteholme Road",
+        "naptanCode": "blpadmtm",
+        "atcoCode": "2590B0189",
+        "localityCode": "E0035300",
+        "localityName": "Whiteholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Ashfield Road"
+      },
+      {
+        "stopName": "Halford Place",
+        "naptanCode": "blpadmtp",
+        "atcoCode": "2590B0190",
+        "localityCode": "E0035300",
+        "localityName": "Whiteholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Ashfield Road"
+      },
+      {
+        "stopName": "Melbourne Avenue",
+        "naptanCode": "blpadmtw",
+        "atcoCode": "2590B0191",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Sevenoaks Drive"
+      },
+      {
+        "stopName": "Canberra Close",
+        "naptanCode": "blpagwgj",
+        "atcoCode": "2590B0703",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Melbourne Avenue"
+      },
+      {
+        "stopName": "The Spinney",
+        "naptanCode": "blpagwgm",
+        "atcoCode": "2590B0704",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Melbourne Avenue"
+      },
+      {
+        "stopName": "Lockhurst Avenue",
+        "naptanCode": "blpagwgp",
+        "atcoCode": "2590B0705",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Wood Green Drive"
+      },
+      {
+        "stopName": "Grassington Place",
+        "naptanCode": "blpadmwd",
+        "atcoCode": "2590B0193",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Sevenoaks Drive"
+      },
+      {
+        "stopName": "Epsom Road",
+        "naptanCode": "blpagwgt",
+        "atcoCode": "2590B0706",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Eastpines Drive"
+      },
+      {
+        "stopName": "Eastpines Drive",
+        "naptanCode": "blpagwgw",
+        "atcoCode": "2590B0707",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Eastpines Drive"
+      },
+      {
+        "stopName": "Eastpines Drive Shops",
+        "naptanCode": "blpagwja",
+        "atcoCode": "2590B0708",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Seabrook Drive"
+      },
+      {
+        "stopName": "Vermont Grove",
+        "naptanCode": "blpagwjd",
+        "atcoCode": "2590B0709",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Seabrook Drive"
+      },
+      {
+        "stopName": "Seabrook Drive",
+        "naptanCode": "blpagwjg",
+        "atcoCode": "2590B0710",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Greenfield Road"
+      },
+      {
+        "stopName": "Brookdale Avenue",
+        "naptanCode": "blpagwjm",
+        "atcoCode": "2590B0711",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Greenfield Road"
+      },
+      {
+        "stopName": "All Saints Church",
+        "naptanCode": "blpagjma",
+        "atcoCode": "2590B0484",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "North Drive"
+      },
+      {
+        "stopName": "Luton Road",
+        "naptanCode": "blpagjmd",
+        "atcoCode": "2590B0485",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "North Drive"
+      },
+      {
+        "stopName": "North Drive",
+        "naptanCode": "blpagjmg",
+        "atcoCode": "2590B0486",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "North Drive"
+      },
+      {
+        "stopName": "Cresswood Avenue",
+        "naptanCode": "blpadmwp",
+        "atcoCode": "2590B0197",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Anchorsholme Lane East"
+      },
+      {
+        "stopName": "Anchorsholme Lane Shops",
+        "naptanCode": "blpadmwt",
+        "atcoCode": "2590B0198",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "o/s",
+        "street": "Anchorsholme Lane"
+      },
+      {
+        "stopName": "Anchorsholme Lane",
+        "naptanCode": "blpajgtw",
+        "atcoCode": "2590B1040",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Fleetwood Road"
+      },
+      {
+        "stopName": "Lauderdale Avenue",
+        "naptanCode": "blpadpad",
+        "atcoCode": "2590B0199",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Fleetwood Road"
+      },
+      {
+        "stopName": "Crescent",
+        "naptanCode": "lanjdgjp",
+        "atcoCode": "2500B0200",
+        "localityCode": "E0016545",
+        "localityName": "Cleveleys",
+        "parentLocalityName": "",
+        "indicator": "by",
+        "street": "Crescent West"
+      },
+      {
+        "stopName": "Victoria Square",
+        "naptanCode": "lanjajgd",
+        "atcoCode": "2500BTA01195",
+        "localityCode": "E0016545",
+        "localityName": "Cleveleys",
+        "parentLocalityName": "",
+        "indicator": "Stop A",
+        "street": "Rossall Road"
+      },
+      {
+        "stopName": "Rossall Road",
+        "naptanCode": "langjwdj",
+        "atcoCode": "2500IMG698",
+        "localityCode": "E0016545",
+        "localityName": "Cleveleys",
+        "parentLocalityName": "",
+        "indicator": "by",
+        "street": "Rossall Road"
+      },
+      {
+        "stopName": "Dorset Avenue",
+        "naptanCode": "lanawgaw",
+        "atcoCode": "2500324",
+        "localityCode": "E0016545",
+        "localityName": "Cleveleys",
+        "parentLocalityName": "",
+        "indicator": "by",
+        "street": "Cumberland Avenue"
+      },
+      {
+        "stopName": "Westmorland Avenue",
+        "naptanCode": "lanjdgjm",
+        "atcoCode": "2500B0717",
+        "localityCode": "E0057533",
+        "localityName": "Cleveleys Park",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Cleveleys Avenue"
+      },
+      {
+        "stopName": "The Sandpiper",
+        "naptanCode": "lanjdgjg",
+        "atcoCode": "2500B0718",
+        "localityCode": "E0057533",
+        "localityName": "Cleveleys Park",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Cleveleys Avenue"
+      },
+      {
+        "stopName": "Blyth Avenue",
+        "naptanCode": "lanjgmdg",
+        "atcoCode": "2500B0719",
+        "localityCode": "E0057533",
+        "localityName": "Cleveleys Park",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Northumberland Avenue"
+      },
+      {
+        "stopName": "Park Terminus",
+        "naptanCode": "lanjajgp",
+        "atcoCode": "2500B0720",
+        "localityCode": "E0057533",
+        "localityName": "Cleveleys Park",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Cleveleys Park Terminus"
+      }
+    ],
+    "inboundUnassignedStops": [
+      {
+        "stopName": "Croasdale Avenue",
+        "naptanCode": "lanjgmdj",
+        "atcoCode": "2500B0723",
+        "localityCode": "E0057533",
+        "localityName": "Cleveleys Park",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Northumberland Avenue"
+      },
+      {
+        "stopName": "Halton Avenue",
+        "naptanCode": "lanjdjwt",
+        "atcoCode": "2500B0724",
+        "localityCode": "E0057533",
+        "localityName": "Cleveleys Park",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Cumberland Avenue"
+      },
+      {
+        "stopName": "Lincoln Avenue",
+        "naptanCode": "lanjdmad",
+        "atcoCode": "2500B0725",
+        "localityCode": "E0057533",
+        "localityName": "Cleveleys Park",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Cumberland Avenue"
+      },
+      {
+        "stopName": "Dorset Avenue",
+        "naptanCode": "lanjtjpa",
+        "atcoCode": "2500LAA15855",
+        "localityCode": "E0016545",
+        "localityName": "Cleveleys",
+        "parentLocalityName": "",
+        "indicator": "opp",
+        "street": "Cumberland Avenue"
+      },
+      {
+        "stopName": "Rossall Road",
+        "naptanCode": "langjwgd",
+        "atcoCode": "2500IMG703",
+        "localityCode": "E0016545",
+        "localityName": "Cleveleys",
+        "parentLocalityName": "",
+        "indicator": "by",
+        "street": "Rossall Road"
+      },
+      {
+        "stopName": "Rossall Road",
+        "naptanCode": "lanjgtma",
+        "atcoCode": "2500B0738",
+        "localityCode": "E0016545",
+        "localityName": "Cleveleys",
+        "parentLocalityName": "",
+        "indicator": "by",
+        "street": "Rossall Road"
+      },
+      {
+        "stopName": "Victoria Square",
+        "naptanCode": "lanjdgjt",
+        "atcoCode": "2500B0204",
+        "localityCode": "E0016545",
+        "localityName": "Cleveleys",
+        "parentLocalityName": "",
+        "indicator": "Stop D",
+        "street": "Cleveleys Crescent"
+      },
+      {
+        "stopName": "Lauderdale Avenue",
+        "naptanCode": "blpadpaw",
+        "atcoCode": "2590B0205",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Kelso Avenue"
+      },
+      {
+        "stopName": "Anchorsholme Lane Shops",
+        "naptanCode": "blpadpda",
+        "atcoCode": "2590B0206",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Anchorsholme Lane"
+      },
+      {
+        "stopName": "Cresswood Avenue",
+        "naptanCode": "blpadpdg",
+        "atcoCode": "2590B0207",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Anchorsholme Lane East"
+      },
+      {
+        "stopName": "North Drive",
+        "naptanCode": "blpagjmj",
+        "atcoCode": "2590B0487",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "adj",
+        "street": "North Drive"
+      },
+      {
+        "stopName": "Luton Road",
+        "naptanCode": "blpagjmp",
+        "atcoCode": "2590B0488",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "North Drive"
+      },
+      {
+        "stopName": "All Saints Church",
+        "naptanCode": "blpagjmt",
+        "atcoCode": "2590B0489",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "o/s",
+        "street": "North Drive"
+      },
+      {
+        "stopName": "Brookdale Avenue",
+        "naptanCode": "blpagwtg",
+        "atcoCode": "2590B0741",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Greenfield Road"
+      },
+      {
+        "stopName": "Seabrook Drive",
+        "naptanCode": "blpagwtj",
+        "atcoCode": "2590B0742",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Greenfield Road"
+      },
+      {
+        "stopName": "Vermont Grove",
+        "naptanCode": "blpagwtm",
+        "atcoCode": "2590B0743",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Seabrook Drive"
+      },
+      {
+        "stopName": "Eastpines Drive Shops",
+        "naptanCode": "blpagwtp",
+        "atcoCode": "2590B0744",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Seabrook Drive"
+      },
+      {
+        "stopName": "Eastpines Drive",
+        "naptanCode": "blpagwtw",
+        "atcoCode": "2590B0745",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Eastpines Drive"
+      },
+      {
+        "stopName": "Epsom Road",
+        "naptanCode": "blpajada",
+        "atcoCode": "2590B0746",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Eastpines Drive"
+      },
+      {
+        "stopName": "Grassington Place",
+        "naptanCode": "blpadpdt",
+        "atcoCode": "2590B0211",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Sevenoaks Drive"
+      },
+      {
+        "stopName": "Lockhurst Avenue",
+        "naptanCode": "blpajadg",
+        "atcoCode": "2590B0747",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Wood Green Drive"
+      },
+      {
+        "stopName": "The Spinney",
+        "naptanCode": "blpajadj",
+        "atcoCode": "2590B0748",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Melbourne Avenue"
+      },
+      {
+        "stopName": "Canberra Close",
+        "naptanCode": "blpajadm",
+        "atcoCode": "2590B0749",
+        "localityCode": "E0035271",
+        "localityName": "Anchorsholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "by",
+        "street": "Melbourne Avenue"
+      },
+      {
+        "stopName": "Halford Place",
+        "naptanCode": "blpadpgd",
+        "atcoCode": "2590B0214",
+        "localityCode": "E0035300",
+        "localityName": "Whiteholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Ashfield Road"
+      },
+      {
+        "stopName": "Whiteholme Road",
+        "naptanCode": "blpadpgj",
+        "atcoCode": "2590B0215",
+        "localityCode": "E0035300",
+        "localityName": "Whiteholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Ashfield Road"
+      },
+      {
+        "stopName": "Blackpool and Fylde College",
+        "naptanCode": "blpadpgm",
+        "atcoCode": "2590B0216",
+        "localityCode": "E0035300",
+        "localityName": "Whiteholme",
+        "parentLocalityName": "Cleveleys",
+        "indicator": "opp",
+        "street": "Ashfield Road"
+      },
+      {
+        "stopName": "Kincraig Place",
+        "naptanCode": "blpagjtm",
+        "atcoCode": "2590B0506",
+        "localityCode": "N0079360",
+        "localityName": "Kincraig Estate",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Kincraig Road"
+      },
+      {
+        "stopName": "Beattock Place",
+        "naptanCode": "blpagjtp",
+        "atcoCode": "2590B0507",
+        "localityCode": "N0079360",
+        "localityName": "Kincraig Estate",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Kincraig Road"
+      },
+      {
+        "stopName": "Kincraig Road",
+        "naptanCode": "blpagjtw",
+        "atcoCode": "2590B0508",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "adj",
+        "street": "Briarwood Drive"
+      },
+      {
+        "stopName": "Pinewood Avenue",
+        "naptanCode": "blpagjwa",
+        "atcoCode": "2590B0509",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Briarwood Drive"
+      },
+      {
+        "stopName": "Ashfield Road",
+        "naptanCode": "blpagjwd",
+        "atcoCode": "2590B0510",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Briarwood Drive"
+      },
+      {
+        "stopName": "Ingthorpe Avenue",
+        "naptanCode": "blpadpja",
+        "atcoCode": "2590B0220",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Ingthorpe Avenue"
+      },
+      {
+        "stopName": "Bispham Village",
+        "naptanCode": "blpadpjd",
+        "atcoCode": "2590B0221",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Red Bank Road"
+      },
+      {
+        "stopName": "Red Bank Road Roundabout",
+        "naptanCode": "blpadgdw",
+        "atcoCode": "2590B0065",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Red Bank Road"
+      },
+      {
+        "stopName": "Fire Station",
+        "naptanCode": "blpadgja",
+        "atcoCode": "2590B0066",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Red Bank Road"
+      },
+      {
+        "stopName": "Bispham Hotel",
+        "naptanCode": "blpadgjd",
+        "atcoCode": "2590B0067",
+        "localityCode": "E0035272",
+        "localityName": "Bispham",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Cranleigh Avenue",
+        "naptanCode": "blpadgjg",
+        "atcoCode": "2590B0068",
+        "localityCode": "E0035292",
+        "localityName": "North Shore",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Pembroke Avenue",
+        "naptanCode": "blpadgjm",
+        "atcoCode": "2590B0069",
+        "localityCode": "E0035292",
+        "localityName": "North Shore",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Lowther Avenue",
+        "naptanCode": "blpadgjp",
+        "atcoCode": "2590B0070",
+        "localityCode": "E0035292",
+        "localityName": "North Shore",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Carlin Gate",
+        "naptanCode": "blpadgjt",
+        "atcoCode": "2590B0071",
+        "localityCode": "E0035292",
+        "localityName": "North Shore",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Empress Drive",
+        "naptanCode": "blpadgjw",
+        "atcoCode": "2590B0072",
+        "localityCode": "E0035292",
+        "localityName": "North Shore",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Warbreck Drive"
+      },
+      {
+        "stopName": "Warbreck Hill",
+        "naptanCode": "blpadgma",
+        "atcoCode": "2590B0073",
+        "localityCode": "E0035292",
+        "localityName": "North Shore",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Warbreck Hill Road"
+      },
+      {
+        "stopName": "Gynn Square",
+        "naptanCode": "blpadgmd",
+        "atcoCode": "2590B0074",
+        "localityCode": "N0079382",
+        "localityName": "Promenade",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Dickson Road"
+      },
+      {
+        "stopName": "Ormond Avenue",
+        "naptanCode": "blpajgaj",
+        "atcoCode": "2590B0902",
+        "localityCode": "N0079382",
+        "localityName": "Promenade",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Warley Road"
+      },
+      {
+        "stopName": "Warley Road",
+        "naptanCode": "blpadgmg",
+        "atcoCode": "2590B0075",
+        "localityCode": "E0035276",
+        "localityName": "Claremont",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Westminster Road"
+      },
+      {
+        "stopName": "Claremont School",
+        "naptanCode": "blpadgmj",
+        "atcoCode": "2590B0076",
+        "localityCode": "E0035276",
+        "localityName": "Claremont",
+        "parentLocalityName": "Blackpool",
+        "indicator": "o/s",
+        "street": "Westminster Road"
+      },
+      {
+        "stopName": "Ashburton Road",
+        "naptanCode": "blpadgam",
+        "atcoCode": "2590B0055",
+        "localityCode": "E0035276",
+        "localityName": "Claremont",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Sherbourne Road"
+      },
+      {
+        "stopName": "Egerton Square",
+        "naptanCode": "blpadgap",
+        "atcoCode": "2590B0056",
+        "localityCode": "E0035276",
+        "localityName": "Claremont",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Ashburton Road"
+      },
+      {
+        "stopName": "Mount Street",
+        "naptanCode": "blpadgmp",
+        "atcoCode": "2590B0077",
+        "localityCode": "N0079366",
+        "localityName": "Egerton Square",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Dickson Road"
+      },
+      {
+        "stopName": "Queen Street",
+        "naptanCode": "blpadapa",
+        "atcoCode": "2590B0030",
+        "localityCode": "E0054826",
+        "localityName": "Blackpool Town Centre",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Dickson Road"
+      },
+      {
+        "stopName": "Church Street",
+        "naptanCode": "blpajaga",
+        "atcoCode": "2590B0765",
+        "localityCode": "N0079370",
+        "localityName": "Central",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Hornby Road",
+        "naptanCode": "blpajagd",
+        "atcoCode": "2590B0766",
+        "localityCode": "N0079370",
+        "localityName": "Central",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Palatine Road",
+        "naptanCode": "blpajagj",
+        "atcoCode": "2590B0767",
+        "localityCode": "N0079370",
+        "localityName": "Central",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Blenheim Avenue",
+        "naptanCode": "blpajagm",
+        "atcoCode": "2590B0768",
+        "localityCode": "N0079370",
+        "localityName": "Central",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Westmorland Avenue",
+        "naptanCode": "blpajagp",
+        "atcoCode": "2590B0769",
+        "localityCode": "N0079370",
+        "localityName": "Central",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Somerset Avenue",
+        "naptanCode": "blpajagt",
+        "atcoCode": "2590B0770",
+        "localityCode": "N0079371",
+        "localityName": "Ansdell",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Cunliffe Road",
+        "naptanCode": "blpajagw",
+        "atcoCode": "2590B0771",
+        "localityCode": "N0079371",
+        "localityName": "Ansdell",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Bloomfield Road",
+        "naptanCode": "blpajaja",
+        "atcoCode": "2590B0772",
+        "localityCode": "N0079371",
+        "localityName": "Ansdell",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Laurel Avenue",
+        "naptanCode": "blpajajd",
+        "atcoCode": "2590B0773",
+        "localityCode": "N0079371",
+        "localityName": "Ansdell",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Park Road"
+      },
+      {
+        "stopName": "Angers Hill Road",
+        "naptanCode": "blpajdpt",
+        "atcoCode": "2590B0854",
+        "localityCode": "N0079372",
+        "localityName": "Oxford Square",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Vicarage Lane"
+      },
+      {
+        "stopName": "Vicarage Lane",
+        "naptanCode": "blpajdpw",
+        "atcoCode": "2590B0855",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Penrose Avenue"
+      },
+      {
+        "stopName": "Baines School",
+        "naptanCode": "blpajdta",
+        "atcoCode": "2590B0856",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Penrose Avenue"
+      },
+      {
+        "stopName": "Elaine Avenue",
+        "naptanCode": "blpajdtd",
+        "atcoCode": "2590B0857",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Penrose Avenue"
+      },
+      {
+        "stopName": "Cherry Tree Road",
+        "naptanCode": "blpajdtg",
+        "atcoCode": "2590B0858",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Penrose Avenue"
+      },
+      {
+        "stopName": "Penrose Avenue",
+        "naptanCode": "blpajajm",
+        "atcoCode": "2590B0778",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Cherry Tree Road North"
+      },
+      {
+        "stopName": "Cherry Tree Road North",
+        "naptanCode": "blpadjwd",
+        "atcoCode": "2590B0145",
+        "localityCode": "E0035278",
+        "localityName": "Marton",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Cherry Tree Road"
+      },
+      {
+        "stopName": "Clifton Road",
+        "naptanCode": "blpadjwg",
+        "atcoCode": "2590B0146",
+        "localityCode": "E0035290",
+        "localityName": "Mereside",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Langdale Road"
+      },
+      {
+        "stopName": "Borrowdale Avenue",
+        "naptanCode": "blpadjwj",
+        "atcoCode": "2590B0147",
+        "localityCode": "E0035290",
+        "localityName": "Mereside",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Langdale Road"
+      },
+      {
+        "stopName": "Birkside Way",
+        "naptanCode": "blpadjwm",
+        "atcoCode": "2590B0148",
+        "localityCode": "E0035290",
+        "localityName": "Mereside",
+        "parentLocalityName": "Blackpool",
+        "indicator": "opp",
+        "street": "Langdale Road"
+      },
+      {
+        "stopName": "Langdale Road Shops",
+        "naptanCode": "blpadjwp",
+        "atcoCode": "2590B0149",
+        "localityCode": "E0035290",
+        "localityName": "Mereside",
+        "parentLocalityName": "Blackpool",
+        "indicator": "o/s",
+        "street": "Langdale Road"
+      },
+      {
+        "stopName": "Windmill",
+        "naptanCode": "blpadjwt",
+        "atcoCode": "2590B0150",
+        "localityCode": "E0035290",
+        "localityName": "Mereside",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Langdale Road"
+      },
+      {
+        "stopName": "Branstree Road",
+        "naptanCode": "blpadmad",
+        "atcoCode": "2590B0151",
+        "localityCode": "E0035290",
+        "localityName": "Mereside",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Langdale Road"
+      },
+      {
+        "stopName": "Tesco",
+        "naptanCode": "blpamjtd",
+        "atcoCode": "2590BTA01290",
+        "localityCode": "E0035290",
+        "localityName": "Mereside",
+        "parentLocalityName": "Blackpool",
+        "indicator": "by",
+        "street": "Clifton Road"
+      }
+    ]
+  },
+  "products": [{ "salesOfferPackages": [{ "id": 1 }] }],
+  "operatorName": "Blackpool Transport",
+  "carnet": false
+}

@@ -93,7 +93,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 : 'LINE';
         publicationRequestToUpdate.topics.NetworkFrameTopic.TypeOfFrameRef.ref = `fxc:UK:DFT:TypeOfFrame_UK_PI_${ticketTypeInsert}_FARE_OFFER:FXCP`;
 
-        const productRefs = ticket.products.flatMap(product =>
+        const productRefs = ticket.products.flatMap((product) =>
             'productName' in product && !isPointToPointTicket(ticket)
                 ? {
                       version: '1.0',
@@ -251,7 +251,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 const scheduledStopPointList: ScheduledStopPoints[] = outboundStops.concat(inboundStops);
                 serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = [
                     ...new Set(scheduledStopPointList.map(({ id }) => id)),
-                ].map(e => scheduledStopPointList.find(({ id }) => id === e));
+                ].map((e) => scheduledStopPointList.find(({ id }) => id === e));
             } else {
                 serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = getPointToPointScheduledStopPointsList(
                     ticket.fareZones,
@@ -305,7 +305,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
             const fareZones: FareZoneList[] = inbound.concat(outbound);
 
-            zoneFareFrameToUpdate.fareZones.FareZone = [...new Set(fareZones.map(({ id }) => id))].map(e =>
+            zoneFareFrameToUpdate.fareZones.FareZone = [...new Set(fareZones.map(({ id }) => id))].map((e) =>
                 fareZones.find(({ id }) => id === e),
             );
         }
@@ -368,6 +368,8 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 fareStructuresElements,
             );
 
+            console.log(JSON.stringify(ticket.products[0]));
+            console.log(JSON.stringify(coreData.ticketUserConcat));
             priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = buildSalesOfferPackages(
                 ticket.products[0],
                 coreData.ticketUserConcat,
