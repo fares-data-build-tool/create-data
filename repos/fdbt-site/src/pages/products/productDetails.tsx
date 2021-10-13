@@ -1,19 +1,14 @@
-import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { getAndValidateNoc } from '../../utils';
 import {
     convertDateFormat,
     getPassengerTypeNameByIdAndNoc,
     getProductMatchingJsonLinkByProductId,
-    getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
 import { getProductsMatchingJson } from 'src/data/s3';
-import { TicketWithIds } from 'shared/matchingJsonTypes';
-import salesOfferPackages from '../api/salesOfferPackages';
-import service from '../api/service';
 import isArray from 'lodash/isArray';
 import { getTag } from './services';
 import { getFullTicketFromTicketWithIds } from 'src/utils/globalSettings';
@@ -24,19 +19,10 @@ const description = 'Product Details page of the Create Fares Data Service';
 interface ProductDetailsProps {
     endDate: string;
     startDate: string;
-    ticket: TicketWithIds;
-    passengerType: string;
-    timeRestriction: string;
-    formattedPurchaseMethods: string;
     productDetailsElements: ProductDetailsElement[];
 }
 
-const ProductDetails = ({
-    startDate,
-    endDate,
-    passengerType,
-    productDetailsElements,
-}: ProductDetailsProps): ReactElement => (
+const ProductDetails = ({ startDate, endDate, productDetailsElements }: ProductDetailsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <h1 className="govuk-heading-l">Product Name Here</h1>
         <div id="contact-hint" className="govuk-hint">
@@ -45,18 +31,16 @@ const ProductDetails = ({
         {productDetailsElements.map((element) => {
             const content = isArray(element.content) ? element.content : [element.content];
             return (
-                <React.Fragment key={passengerType}>
-                    <dl className="govuk-summary-list">
-                        <div className="govuk-summary-list__row" key={element.name}>
-                            <dt className="govuk-summary-list__key">{element.name}</dt>
-                            <dd className="govuk-summary-list__value">
-                                {content.map((item) => (
-                                    <div key={item}>{item}</div>
-                                ))}
-                            </dd>
-                        </div>
-                    </dl>
-                </React.Fragment>
+                <dl className="govuk-summary-list">
+                    <div className="govuk-summary-list__row" key={element.name}>
+                        <dt className="govuk-summary-list__key">{element.name}</dt>
+                        <dd className="govuk-summary-list__value">
+                            {content.map((item) => (
+                                <div key={item}>{item}</div>
+                            ))}
+                        </dd>
+                    </div>
+                </dl>
             );
         })}
     </TwoThirdsLayout>
@@ -96,7 +80,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         productDetailsElements.push({ name: 'Only valid during term time', content: ticket.termTime ? 'Yes' : 'No' });
     }
 
-    if ('carnetDetails' in product) {
+    if ('carnetDetails' in product && product.carnetDetails) {
         productDetailsElements.push({ name: 'Quantity in bundle', content: product.carnetDetails.quantity });
         productDetailsElements.push({
             name: 'Carnet expiry',
@@ -111,33 +95,36 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
-    // if ('productDuration' in product){
-    //     productDetailsElements.push({ name: 'Period duration', content: product.productDuration});
-    //     productDetailsElements.push({ name: 'Period duration', content: product.productDuration });
-    // }
+    if ('productDuration' in product) {
+        productDetailsElements.push({ name: 'Period duration', content: product.productDuration });
+    }
 
-    productDetailsElements.push({ name: 'Product expiry', content: timeRestriction });
-    productDetailsElements.push({ name: 'Purchase methods', content: formattedPurchaseMethods });
+    if ('productValidity' in product && product.productValidity) {
+        productDetailsElements.push({ name: 'Product expiry', content: product.productValidity });
+    }
+
+    productDetailsElements.push({
+        name: 'Purchase methods',
+        content: product.salesOfferPackages.map((sop) => sop.name),
+    });
 
     if (!ticket.ticketPeriod.startDate || !ticket.ticketPeriod.endDate) {
         throw new Error('startdate and enddate are expected but not found');
     }
+
     const startDate = ticket.ticketPeriod.startDate;
-    productDetailsElements.push({ name: 'Start date', content: convertDateFormat(startDate) });
     const endDate = ticket.ticketPeriod.endDate;
+    productDetailsElements.push({ name: 'Start date', content: convertDateFormat(startDate) });
     productDetailsElements.push({ name: 'End date', content: convertDateFormat(endDate) });
 
-    console.log('AARON-LOG');
-    console.log(ticket);
+    console.log(productDetailsElements);
+
+    // const productName =
 
     return {
         props: {
             startDate,
             endDate,
-            ticket,
-            passengerType,
-            timeRestriction,
-            formattedPurchaseMethods,
             productDetailsElements,
         },
     };
