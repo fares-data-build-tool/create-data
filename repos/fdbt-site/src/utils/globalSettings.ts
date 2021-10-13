@@ -1,5 +1,10 @@
 import { TicketWithIds } from 'shared/matchingJsonTypes';
-import { getGroupDefinition, getSingleOrGroupPassengerTypeById } from 'src/data/auroradb';
+import {
+    getGroupDefinition,
+    getSalesOfferPackagesByNocCode,
+    getSingleOrGroupPassengerTypeById,
+    getTimeRestrictionByIdAndNoc,
+} from 'src/data/auroradb';
 import { GS_REFERER } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from './index';
@@ -75,7 +80,7 @@ export const getFullTicketFromTicketWithIds = async (ticketWithIds: TicketWithId
         passengerType = singleOrGroupPassengerType.passengerType;
     }
 
-    const allSops = await getSalesOfferPackagesByNoc(noc);
+    const allSops = await getSalesOfferPackagesByNocCode(noc);
 
     const fullProducts = ticketWithIds.products.map((product) => ({
         ...product,
@@ -86,10 +91,12 @@ export const getFullTicketFromTicketWithIds = async (ticketWithIds: TicketWithId
             }
             return { ...sop, price: sopWithIds.price };
         }),
-    }));
+    })); SOUND ISSUES ONE SECOND
 
     const timeRestriction = ticketWithIds.timeRestriction
-        ? await getTimeRestrictionsByIdAndNoc(ticketWithIds.timeRestriction.id, noc)
+        ? await (
+              await getTimeRestrictionByIdAndNoc(ticketWithIds.timeRestriction.id, noc)
+          ).contents
         : [];
 
     const fareDayEnd = await getFareDayEnd(noc);
