@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { getAndValidateNoc } from '../../utils';
+import { getAndValidateNoc, sentenceCaseString } from '../../utils';
 import {
     convertDateFormat,
     getPassengerTypeNameByIdAndNoc,
@@ -17,14 +17,20 @@ const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
 
 interface ProductDetailsProps {
+    productName: string;
     endDate: string;
     startDate: string;
     productDetailsElements: ProductDetailsElement[];
 }
 
-const ProductDetails = ({ startDate, endDate, productDetailsElements }: ProductDetailsProps): ReactElement => (
+const ProductDetails = ({
+    productName,
+    startDate,
+    endDate,
+    productDetailsElements,
+}: ProductDetailsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
-        <h1 className="govuk-heading-l">Product Name Here</h1>
+        <h1 className="govuk-heading-l">{productName}</h1>
         <div id="contact-hint" className="govuk-hint">
             Product status: <strong className="govuk-table__cell">{getTag(startDate, endDate)}</strong>
         </div>
@@ -64,10 +70,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const productDetailsElements: ProductDetailsElement[] = [];
 
-    const product = ticket.products[0];
-    if ('productName' in product) {
-        productDetailsElements.push({ name: 'Product name', content: product.productName });
-    }
     if ('serviceDescription' in ticket) {
         productDetailsElements.push({ name: 'Service', content: ticket.serviceDescription });
     }
@@ -80,6 +82,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         productDetailsElements.push({ name: 'Only valid during term time', content: ticket.termTime ? 'Yes' : 'No' });
     }
 
+    const product = ticket.products[0];
     if ('carnetDetails' in product && product.carnetDetails) {
         productDetailsElements.push({ name: 'Quantity in bundle', content: product.carnetDetails.quantity });
         productDetailsElements.push({
@@ -119,10 +122,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     console.log(productDetailsElements);
 
-    // const productName =
+    const productName =
+        'productName' in product
+            ? product.productName
+            : `${sentenceCaseString(passengerTypeName)} - ${sentenceCaseString(ticket.type)}`;
 
     return {
         props: {
+            productName,
             startDate,
             endDate,
             productDetailsElements,
