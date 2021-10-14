@@ -6,4 +6,4 @@ export const globalSettingsDeleteEnabled = devOrTest;
 export const myFaresEnabled = devOrTest;
 export const saveProductsEnabled = true;
 export const exportEnabled = false;
-export const masterStopListEnabled = dev;
+export const masterStopListEnabled = false;

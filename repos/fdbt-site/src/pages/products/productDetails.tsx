@@ -74,6 +74,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         productDetailsElements.push({ name: 'Service', content: ticket.serviceDescription });
     }
 
+    if ('journeyDirection' in ticket && ticket.journeyDirection) {
+        productDetailsElements.push({ name: 'Journey direction', content: ticket.journeyDirection });
+    }
+
     const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticketWithIds.passengerType.id, noc);
     productDetailsElements.push({ name: 'Passenger type', content: passengerTypeName });
     productDetailsElements.push({ name: 'Time restriction', content: timeRestriction });
@@ -119,8 +123,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const endDate = ticket.ticketPeriod.endDate;
     productDetailsElements.push({ name: 'Start date', content: convertDateFormat(startDate) });
     productDetailsElements.push({ name: 'End date', content: convertDateFormat(endDate) });
-
-    console.log(productDetailsElements);
 
     const productName =
         'productName' in product
