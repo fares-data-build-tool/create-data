@@ -36,6 +36,7 @@ describe('register', () => {
         getAllServicesByNocCodeSpy.mockImplementation(() =>
             Promise.resolve([
                 {
+                    id: 11,
                     lineName: '2AC',
                     lineId: '3h3vb32ik',
                     startDate: '01012020',
@@ -325,6 +326,7 @@ describe('nocsWithNoServices', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve([
                     {
+                        id: 11,
                         lineName: '2AC',
                         lineId: '3h3vb32ik',
                         startDate: '01012020',
@@ -344,6 +346,7 @@ describe('nocsWithNoServices', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve([
                     {
+                        id: 11,
                         lineName: '2AC',
                         lineId: '3h3vb32ik',
                         startDate: '01012020',
@@ -355,6 +358,7 @@ describe('nocsWithNoServices', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve([
                     {
+                        id: 11,
                         lineName: '2AD',
                         lineId: '3h3vb32ik',
                         startDate: '03012020',

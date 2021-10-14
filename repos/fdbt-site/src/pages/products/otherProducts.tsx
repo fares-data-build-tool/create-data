@@ -73,11 +73,15 @@ const otherProductsTable = (otherProducts: MyFaresOtherFaresProduct[]): ReactEle
                     {otherProducts.length > 0
                         ? otherProducts.map((product, index) => (
                               <tr className="govuk-table__row" key={`product-${index}`}>
-                                  <td className="govuk-table__cell">{product.productDescription}</td>
+                                  <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width">
+                                      {product.productDescription}
+                                  </td>
                                   <td className="govuk-table__cell">{sentenceCaseString(product.type)}</td>
                                   <td className="govuk-table__cell">{product.duration}</td>
                                   <td className="govuk-table__cell">{product.quantity}</td>
-                                  <td className="govuk-table__cell">{sentenceCaseString(product.passengerType)}</td>
+                                  <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width">
+                                      {sentenceCaseString(product.passengerType)}
+                                  </td>
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
                                   <td className="govuk-table__cell">{getTag(product.startDate, product.endDate)}</td>

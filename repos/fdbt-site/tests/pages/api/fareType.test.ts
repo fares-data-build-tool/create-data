@@ -13,6 +13,7 @@ import { globalSettingsEnabled } from '../../../src/constants/featureFlag';
 
 const services = [
     {
+        id: 11,
         lineName: '123',
         lineId: '3h3vb32ik',
         startDate: '05/02/2020',
@@ -23,6 +24,7 @@ const services = [
         dataSource: 'tnds',
     },
     {
+        id: 12,
         lineName: 'X1',
         lineId: '3h3vb32ik',
         startDate: '06/02/2020',
@@ -33,6 +35,7 @@ const services = [
         dataSource: 'bods',
     },
     {
+        id: 13,
         lineName: 'Infinity Line',
         lineId: '3h3vb32ik',
         startDate: '07/02/2020',

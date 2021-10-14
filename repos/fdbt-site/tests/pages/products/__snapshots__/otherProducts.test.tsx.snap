@@ -203,7 +203,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               key="product-0"
             >
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
               >
                 First product
               </td>
@@ -223,7 +223,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 1
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
               >
                 Infant
               </td>
@@ -252,7 +252,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               key="product-1"
             >
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
               >
                 The greatest product eveer!
               </td>
@@ -272,7 +272,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 20
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
               >
                 Infant
               </td>
@@ -301,7 +301,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               key="product-2"
             >
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
               >
                 The greatest product eveer!
               </td>
@@ -321,7 +321,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 1
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
               >
                 Adult
               </td>
