@@ -7,7 +7,6 @@ describe('pages', () => {
         it('should render correctly for non school single tickets', () => {
             const tree = shallow(
                 <FareConfirmation
-                    globalSettingsEnabled
                     fareType="single"
                     carnet={false}
                     passengerType={{
@@ -45,7 +44,6 @@ describe('pages', () => {
         it('should render correctly for a carnet ticket', () => {
             const tree = shallow(
                 <FareConfirmation
-                    globalSettingsEnabled
                     fareType="single"
                     carnet
                     passengerType={{
@@ -83,7 +81,6 @@ describe('pages', () => {
         it('should render correctly for a ticket with a premade time restriction', () => {
             const tree = shallow(
                 <FareConfirmation
-                    globalSettingsEnabled
                     fareType="single"
                     carnet={false}
                     passengerType={{
@@ -121,7 +118,6 @@ describe('pages', () => {
         it('should render correctly for group tickets', () => {
             const tree = shallow(
                 <FareConfirmation
-                    globalSettingsEnabled
                     fareType="single"
                     carnet={false}
                     passengerType={{
@@ -129,6 +125,7 @@ describe('pages', () => {
                     }}
                     groupPassengerInfo={[
                         {
+                            id: 1,
                             passengerType: 'adult',
                             minNumber: '1',
                             maxNumber: '1',
@@ -136,6 +133,7 @@ describe('pages', () => {
                             ageRangeMax: '65',
                         },
                         {
+                            id: 2,
                             passengerType: 'child',
                             minNumber: '1',
                             maxNumber: '1',
@@ -173,7 +171,6 @@ describe('pages', () => {
         it('should render correctly for school tickets', () => {
             const tree = shallow(
                 <FareConfirmation
-                    globalSettingsEnabled
                     fareType="schoolService"
                     carnet={false}
                     passengerType={{
@@ -225,34 +222,33 @@ describe('pages', () => {
                         },
                     ],
                     '',
-                    false,
                 );
                 expect(result).toStrictEqual([
                     { content: 'Return', href: 'fareType', name: 'Fare type' },
-                    { content: 'Adult', href: 'passengerType', name: 'Passenger type' },
+                    { content: 'Adult', href: 'selectPassengerType', name: 'Passenger type' },
                     {
                         content: 'Minimum age: 18 Maximum age: 100',
-                        href: 'definePassengerType',
+                        href: 'selectPassengerType',
                         name: 'Passenger information - age range',
                     },
                     {
                         content: 'Membership card',
-                        href: 'definePassengerType',
+                        href: 'selectPassengerType',
                         name: 'Passenger information - proof documents',
                     },
                     {
                         content: 'Start time: 0900 End time: 1600',
-                        href: 'defineTimeRestrictions',
+                        href: 'selectTimeRestrictions',
                         name: 'Time restrictions - Wednesday',
                     },
                     {
                         content: 'Start time: N/A End time: 1600',
-                        href: 'defineTimeRestrictions',
+                        href: 'selectTimeRestrictions',
                         name: 'Time restrictions - Thursday',
                     },
                     {
                         content: 'Start time: N/A End time: N/A',
-                        href: 'defineTimeRestrictions',
+                        href: 'selectTimeRestrictions',
                         name: 'Time restrictions - Friday',
                     },
                 ]);
@@ -288,34 +284,33 @@ describe('pages', () => {
                         },
                     ],
                     'Time restriction',
-                    false,
                 );
                 expect(result).toStrictEqual([
                     { content: 'Return', href: 'fareType', name: 'Fare type' },
-                    { content: 'Adult', href: 'passengerType', name: 'Passenger type' },
+                    { content: 'Adult', href: 'selectPassengerType', name: 'Passenger type' },
                     {
                         content: 'Minimum age: 18 Maximum age: 100',
-                        href: 'definePassengerType',
+                        href: 'selectPassengerType',
                         name: 'Passenger information - age range',
                     },
                     {
                         content: 'Membership card',
-                        href: 'definePassengerType',
+                        href: 'selectPassengerType',
                         name: 'Passenger information - proof documents',
                     },
                     {
                         content: 'Start time: 0900 End time: 1600',
-                        href: 'defineTimeRestrictions',
+                        href: 'selectTimeRestrictions',
                         name: 'Time restrictions - Wednesday',
                     },
                     {
                         content: 'Start time: N/A End time: 1600',
-                        href: 'defineTimeRestrictions',
+                        href: 'selectTimeRestrictions',
                         name: 'Time restrictions - Thursday',
                     },
                     {
                         content: 'Start time: N/A End time: N/A',
-                        href: 'defineTimeRestrictions',
+                        href: 'selectTimeRestrictions',
                         name: 'Time restrictions - Friday',
                     },
                     {
@@ -342,7 +337,6 @@ describe('pages', () => {
                     'true',
                     [],
                     '',
-                    true,
                 );
                 expect(result).toStrictEqual([
                     { content: 'School service', href: 'fareType', name: 'Fare type' },

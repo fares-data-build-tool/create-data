@@ -1,5 +1,6 @@
 import { NextApiResponse } from 'next';
 import {
+    FARE_TYPE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
@@ -8,10 +9,9 @@ import {
 } from '../../constants/attributes';
 import { GROUP_PASSENGER_TYPE, GROUP_REUSE_PASSENGER_TYPE, PASSENGER_TYPES_WITH_GROUP } from '../../constants/index';
 import { getPassengerTypeByNameAndNocCode } from '../../data/auroradb';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, FareType, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
-import { getPassengerTypeRedirectLocation } from './definePassengerType';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -61,7 +61,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const storedPassengerType = await getPassengerTypeByNameAndNocCode(noc, passengerType, false);
             if (storedPassengerType) {
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, storedPassengerType);
-                redirectTo(res, getPassengerTypeRedirectLocation(req));
+
+                const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
+
+                const redirectLocation = fareType === 'schoolService' ? '/termTime' : '/selectTimeRestrictions';
+
+                redirectTo(res, redirectLocation);
                 return;
             }
 

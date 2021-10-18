@@ -11,10 +11,8 @@ import {
 import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
-import { globalSettingsEnabled } from '../constants/featureFlag';
 import { getAndValidateNoc } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
-import { redirectTo } from '../utils/apiUtils';
 import { myFaresEnabled } from '../constants/featureFlag';
 
 const title = 'Operator Settings - Create Fares Data Service';
@@ -90,10 +88,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     if (!noc) {
         throw new Error('No NOC found for user.');
-    }
-
-    if (!globalSettingsEnabled && ctx.res) {
-        redirectTo(ctx.res, '/home');
     }
 
     const referer = extractGlobalSettingsReferer(ctx);

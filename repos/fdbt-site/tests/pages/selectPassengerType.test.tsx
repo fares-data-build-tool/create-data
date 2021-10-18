@@ -13,6 +13,7 @@ describe('pages', () => {
                 maxGroupSize: '3',
                 companions: [
                     {
+                        id: 1,
                         name: 'adult',
                         passengerType: 'adult',
                         minNumber: '1',
@@ -22,6 +23,7 @@ describe('pages', () => {
                         proofDocuments: [],
                     },
                     {
+                        id: 2,
                         name: 'kid',
                         passengerType: 'child',
                         minNumber: '1',
@@ -41,6 +43,7 @@ describe('pages', () => {
                 maxGroupSize: '2',
                 companions: [
                     {
+                        id: 1,
                         name: 'adult',
                         passengerType: 'adult',
                         minNumber: '2',

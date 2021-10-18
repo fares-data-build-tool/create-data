@@ -9,8 +9,8 @@ import { TimeRestrictionCardBody } from './viewTimeRestrictions';
 import { getSessionAttribute } from '../utils/sessions';
 import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants/attributes';
 
-const title = 'Define Time Restrictions - Create Fares Data Service';
-const description = 'Define Time Restrictions page of the Create Fares Data Service';
+const title = 'Select Time Restrictions - Create Fares Data Service';
+const description = 'Select Time Restrictions page of the Create Fares Data Service';
 
 interface SelectTimeRestrictionsProps {
     csrfToken: string;

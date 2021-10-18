@@ -344,6 +344,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                     Object {
                       "ageRangeMax": "75",
                       "ageRangeMin": "18",
+                      "id": 1,
                       "maxNumber": "2",
                       "minNumber": "1",
                       "name": "adult",
@@ -353,6 +354,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                     Object {
                       "ageRangeMax": "17",
                       "ageRangeMin": "5",
+                      "id": 2,
                       "maxNumber": "2",
                       "minNumber": "1",
                       "name": "kid",
@@ -379,6 +381,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                     Object {
                       "ageRangeMax": "75",
                       "ageRangeMin": "18",
+                      "id": 1,
                       "maxNumber": "2",
                       "minNumber": "2",
                       "name": "adult",
@@ -551,6 +554,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                     Object {
                       "ageRangeMax": "75",
                       "ageRangeMin": "18",
+                      "id": 1,
                       "maxNumber": "2",
                       "minNumber": "1",
                       "name": "adult",
@@ -560,6 +564,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                     Object {
                       "ageRangeMax": "17",
                       "ageRangeMin": "5",
+                      "id": 2,
                       "maxNumber": "2",
                       "minNumber": "1",
                       "name": "kid",
@@ -586,6 +591,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                     Object {
                       "ageRangeMax": "75",
                       "ageRangeMin": "18",
+                      "id": 1,
                       "maxNumber": "2",
                       "minNumber": "2",
                       "name": "adult",

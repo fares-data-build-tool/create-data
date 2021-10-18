@@ -1,6 +1,5 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
-import { globalSettingsEnabled } from '../../constants/featureFlag';
 import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
 import { getTimeRestrictionByNameAndNoc, getFareDayEnd } from '../../data/auroradb';
 import { NextApiRequestWithSession, TimeRestriction, TimeRestrictionsDefinitionWithErrors } from '../../interfaces';
@@ -24,11 +23,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     timeRestrictionsDefinitionWithErrors,
                 );
 
-                if (globalSettingsEnabled) {
-                    redirectTo(res, '/selectTimeRestrictions');
-                } else {
-                    redirectTo(res, '/defineTimeRestrictions');
-                }
+                redirectTo(res, '/selectTimeRestrictions');
 
                 return;
             }
@@ -100,11 +95,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinitionWithErrors);
 
-            if (globalSettingsEnabled) {
-                redirectTo(res, '/selectTimeRestrictions');
-            } else {
-                redirectTo(res, '/defineTimeRestrictions');
-            }
+            redirectTo(res, '/selectTimeRestrictions');
 
             return;
         }

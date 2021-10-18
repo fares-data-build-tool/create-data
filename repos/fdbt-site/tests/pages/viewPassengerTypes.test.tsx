@@ -48,11 +48,13 @@ describe('pages', () => {
 
         it('should render correctly when only passenger type groups', () => {
             const adultCompanion = {
+                id: 1,
                 passengerType: 'adult',
                 maxNumber: '2',
             };
 
             const childCompanion = {
+                id: 2,
                 passengerType: 'child',
                 minNumber: '0',
                 maxNumber: '1',
@@ -100,11 +102,13 @@ describe('pages', () => {
             ];
 
             const adultCompanion = {
+                id: 1,
                 passengerType: 'adult',
                 maxNumber: '2',
             };
 
             const childCompanion = {
+                id: 2,
                 passengerType: 'child',
                 maxNumber: '1',
                 ageRangeMin: '4',

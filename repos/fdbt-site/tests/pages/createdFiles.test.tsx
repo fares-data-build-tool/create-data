@@ -5,7 +5,6 @@ import * as s3 from '../../src/data/s3';
 import { S3NetexFile } from '../../src/interfaces';
 import CreatedFiles, { buildName, getServerSideProps } from '../../src/pages/createdFiles';
 import { expectedSingleTicket, getMockContext } from '../testData/mockData';
-import { defaultSalesOfferPackages } from '../../src/pages/selectSalesOfferPackage';
 
 jest.mock('../../src/data/s3.ts');
 
@@ -130,7 +129,40 @@ describe('pages', () => {
                 products: [
                     {
                         ...expectedSingleTicket.products[0],
-                        salesOfferPackages: defaultSalesOfferPackages,
+                        salesOfferPackages: [
+                            {
+                                id: 1,
+                                name: 'Onboard (cash)',
+                                description: '',
+                                purchaseLocations: ['onBoard'],
+                                paymentMethods: ['cash'],
+                                ticketFormats: ['paperTicket'],
+                            },
+                            {
+                                id: 2,
+                                name: 'Onboard (contactless)',
+                                description: '',
+                                purchaseLocations: ['onBoard'],
+                                paymentMethods: ['contactlessPaymentCard'],
+                                ticketFormats: ['paperTicket'],
+                            },
+                            {
+                                id: 3,
+                                name: 'Online (smart card)',
+                                description: '',
+                                purchaseLocations: ['online'],
+                                paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
+                                ticketFormats: ['smartCard'],
+                            },
+                            {
+                                id: 4,
+                                name: 'Mobile App',
+                                description: '',
+                                purchaseLocations: ['mobileDevice'],
+                                paymentMethods: ['debitCard', 'creditCard', 'mobilePhone', 'directDebit'],
+                                ticketFormats: ['mobileApp'],
+                            },
+                        ],
                     },
                 ],
             };
