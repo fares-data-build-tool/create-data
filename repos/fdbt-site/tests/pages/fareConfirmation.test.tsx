@@ -10,6 +10,7 @@ describe('pages', () => {
                     fareType="single"
                     carnet={false}
                     passengerType={{
+                        id: 2,
                         passengerType: 'adult',
                         ageRange: 'yes',
                         ageRangeMin: '18',
@@ -47,6 +48,7 @@ describe('pages', () => {
                     fareType="single"
                     carnet
                     passengerType={{
+                        id: 2,
                         passengerType: 'adult',
                         ageRange: 'yes',
                         ageRangeMin: '18',
@@ -84,6 +86,7 @@ describe('pages', () => {
                     fareType="single"
                     carnet={false}
                     passengerType={{
+                        id: 2,
                         passengerType: 'adult',
                         ageRange: 'yes',
                         ageRangeMin: '18',
@@ -121,6 +124,7 @@ describe('pages', () => {
                     fareType="single"
                     carnet={false}
                     passengerType={{
+                        id: 4,
                         passengerType: 'group',
                     }}
                     groupPassengerInfo={[
@@ -174,6 +178,7 @@ describe('pages', () => {
                     fareType="schoolService"
                     carnet={false}
                     passengerType={{
+                        id: 2,
                         passengerType: 'schoolPupil',
                         ageRange: 'yes',
                         ageRangeMax: '18',
@@ -197,6 +202,7 @@ describe('pages', () => {
                     'return',
                     false,
                     {
+                        id: 2,
                         passengerType: 'adult',
                         ageRange: 'yes',
                         ageRangeMin: '18',
@@ -259,6 +265,7 @@ describe('pages', () => {
                     'return',
                     false,
                     {
+                        id: 2,
                         passengerType: 'adult',
                         ageRange: 'yes',
                         ageRangeMin: '18',
@@ -326,6 +333,7 @@ describe('pages', () => {
                     'schoolService',
                     false,
                     {
+                        id: 2,
                         passengerType: 'schoolPupil',
                         ageRange: 'yes',
                         ageRangeMax: '18',

@@ -42,6 +42,7 @@ exports[`pages view passenger types should render correctly when groups and indi
                 "passengerType": Object {
                   "ageRangeMax": "16",
                   "ageRangeMin": "5",
+                  "id": 1,
                   "passengerType": "child",
                   "proofDocuments": Array [
                     "studentCard",
@@ -200,6 +201,7 @@ exports[`pages view passenger types should render correctly when only individual
                 "passengerType": Object {
                   "ageRangeMax": "16",
                   "ageRangeMin": "5",
+                  "id": 1,
                   "passengerType": "child",
                   "proofDocuments": Array [
                     "studentCard",

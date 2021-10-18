@@ -143,6 +143,7 @@ describe('selectPassengerType', () => {
             id: 3,
             name: 'Adult',
             passengerType: {
+                id: 3,
                 passengerType: 'adult',
             },
         };

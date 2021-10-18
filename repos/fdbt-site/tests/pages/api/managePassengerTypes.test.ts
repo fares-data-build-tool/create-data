@@ -58,6 +58,7 @@ describe('managePassengerTypes', () => {
                 id: 1,
                 name: '',
                 passengerType: {
+                    id: 1,
                     passengerType: 'Adult',
                     ageRangeMin: '18',
                     ageRangeMax: '65',
@@ -99,6 +100,7 @@ describe('managePassengerTypes', () => {
                 id: 1,
                 name: '',
                 passengerType: {
+                    id: 1,
                     passengerType: 'Adult',
                     ageRangeMin: '18',
                     ageRangeMax: '65',
@@ -140,6 +142,7 @@ describe('managePassengerTypes', () => {
                 id: 1,
                 name: 'ThisIsSomeVeryLongNameThatIsUnlikleyButYouNeverKnow,Right?',
                 passengerType: {
+                    id: 1,
                     passengerType: 'Adult',
                     ageRangeMin: '18',
                     ageRangeMax: '65',
@@ -185,6 +188,7 @@ describe('managePassengerTypes', () => {
                 id: 1,
                 name: 'Adults',
                 passengerType: {
+                    id: 1,
                     passengerType: 'Adult',
                     ageRangeMin: '151',
                     ageRangeMax: '161',
@@ -230,6 +234,7 @@ describe('managePassengerTypes', () => {
                     ageRangeMin: '19',
                     ageRangeMax: '18',
                     proofDocuments: [],
+                    id: 1,
                 },
             },
         };
@@ -246,6 +251,7 @@ describe('managePassengerTypes', () => {
             id: 1,
             name: 'Adults',
             passengerType: {
+                id: 4,
                 passengerType: 'Adult',
                 ageRangeMin: '19',
                 ageRangeMax: '18',
@@ -282,6 +288,7 @@ describe('managePassengerTypes', () => {
                     ageRangeMin: '18',
                     ageRangeMax: '65',
                     proofDocuments: [],
+                    id: 2,
                 },
             },
         };
@@ -316,6 +323,7 @@ describe('managePassengerTypes', () => {
                 ageRangeMin: '18',
                 ageRangeMax: '65',
                 proofDocuments: [],
+                id: 1,
             },
         };
 
@@ -350,6 +358,7 @@ describe('managePassengerTypes', () => {
             ageRangeMin: '18',
             ageRangeMax: '65',
             proofDocuments: [],
+            id: '',
         };
 
         const attributeValue = undefined;

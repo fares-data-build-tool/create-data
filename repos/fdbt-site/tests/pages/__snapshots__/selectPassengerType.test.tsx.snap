@@ -158,6 +158,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
                 "passengerType": Object {
                   "ageRangeMax": "75",
                   "ageRangeMin": "18",
+                  "id": 3,
                   "passengerType": "adult",
                   "proofDocuments": Array [],
                 },
@@ -175,6 +176,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
                 "passengerType": Object {
                   "ageRangeMax": "17",
                   "ageRangeMin": "5",
+                  "id": 2,
                   "passengerType": "child",
                   "proofDocuments": Array [],
                 },
@@ -301,6 +303,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "passengerType": Object {
                   "ageRangeMax": "75",
                   "ageRangeMin": "18",
+                  "id": 3,
                   "passengerType": "adult",
                   "proofDocuments": Array [],
                 },
@@ -318,6 +321,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "passengerType": Object {
                   "ageRangeMax": "17",
                   "ageRangeMin": "5",
+                  "id": 2,
                   "passengerType": "child",
                   "proofDocuments": Array [],
                 },
@@ -511,6 +515,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "passengerType": Object {
                   "ageRangeMax": "75",
                   "ageRangeMin": "18",
+                  "id": 3,
                   "passengerType": "adult",
                   "proofDocuments": Array [],
                 },
@@ -528,6 +533,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
                 "passengerType": Object {
                   "ageRangeMax": "17",
                   "ageRangeMin": "5",
+                  "id": 2,
                   "passengerType": "child",
                   "proofDocuments": Array [],
                 },

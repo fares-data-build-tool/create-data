@@ -25,6 +25,7 @@ describe('pages', () => {
                 id: 1,
                 name: 'Regular Child',
                 passengerType: {
+                    id: 1,
                     passengerType: 'child',
                     ageRangeMin: '5',
                     ageRangeMax: '16',
@@ -93,6 +94,7 @@ describe('pages', () => {
                     id: 1,
                     name: 'Regular Child',
                     passengerType: {
+                        id: 1,
                         passengerType: 'child',
                         ageRangeMin: '5',
                         ageRangeMax: '16',
