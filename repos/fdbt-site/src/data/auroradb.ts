@@ -1,6 +1,5 @@
 import awsParamStore from 'aws-param-store';
 import { String } from 'aws-sdk/clients/acm';
-import dateFormat from 'dateformat';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
 import { DbTimeRestriction } from 'shared/dbTypes';
@@ -27,6 +26,7 @@ import {
 } from '../interfaces';
 import logger from '../utils/logger';
 import { RawSalesOfferPackage } from '../../shared/dbTypes';
+import { convertDateFormat } from '../utils';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -98,10 +98,6 @@ export const getAuroraDBClient = (): Pool => {
     }
 
     return client;
-};
-
-export const convertDateFormat = (date: string): string => {
-    return dateFormat(date, 'dd/mm/yyyy');
 };
 
 export const replaceInternalNocCode = (nocCode: string): string => {

@@ -1,17 +1,16 @@
 import React, { ReactElement } from 'react';
-import { getAndValidateNoc, sentenceCaseString } from '../../utils';
+import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
 import {
-    convertDateFormat,
     getPassengerTypeNameByIdAndNoc,
     getProductMatchingJsonLinkByProductId,
+    getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
-import { getProductsMatchingJson } from 'src/data/s3';
 import isArray from 'lodash/isArray';
 import { getTag } from './services';
-import { getFullTicketFromTicketWithIds } from 'src/utils/globalSettings';
+import { getProductsMatchingJson } from '../../data/s3';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -61,26 +60,28 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const matchingJsonLink = await getProductMatchingJsonLinkByProductId(noc, productId);
-    const ticketWithIds = await getProductsMatchingJson(matchingJsonLink);
-    const ticket = await getFullTicketFromTicketWithIds(ticketWithIds, noc);
+    const ticket = await getProductsMatchingJson(matchingJsonLink);
 
     const productDetailsElements: ProductDetailsElement[] = [];
 
     if ('serviceDescription' in ticket) {
-        productDetailsElements.push({ name: 'Service', content: `${ticket.lineName} - ${ticket.serviceDescription}` });
+        productDetailsElements.push({
+            name: 'Service',
+            content: `${ticket.lineName} - ${ticket.serviceDescription}`,
+        });
     }
 
     if ('journeyDirection' in ticket && ticket.journeyDirection) {
         productDetailsElements.push({ name: 'Journey direction', content: ticket.journeyDirection });
     }
 
-    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticketWithIds.passengerType.id, noc);
+    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
     productDetailsElements.push({ name: 'Passenger type', content: passengerTypeName });
 
     const isSchoolTicket = 'termTime' in ticket && ticket.termTime;
     if (!isSchoolTicket) {
-        const timeRestriction = ticketWithIds.timeRestriction
-            ? (await getTimeRestrictionByIdAndNoc(ticketWithIds.timeRestriction.id, noc)).name
+        const timeRestriction = ticket.timeRestriction
+            ? (await getTimeRestrictionByIdAndNoc(ticket.timeRestriction.id, noc)).name
             : 'N/A';
         productDetailsElements.push({ name: 'Time restriction', content: timeRestriction });
     }
@@ -118,7 +119,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     productDetailsElements.push({
         name: 'Purchase methods',
-        content: product.salesOfferPackages.map((sop) => sop.name),
+        content: await Promise.all(
+            product.salesOfferPackages.map(async (sop) => {
+                const fullSop = await getSalesOfferPackageByIdAndNoc(sop.id, noc);
+                return fullSop.name;
+            }),
+        ),
     });
 
     if (!ticket.ticketPeriod.startDate || !ticket.ticketPeriod.endDate) {
@@ -134,8 +140,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         'productName' in product
             ? product.productName
             : isSchoolTicket
-            ? `${sentenceCaseString(passengerTypeName)} - ${sentenceCaseString(ticket.type)} (school)`
-            : `${sentenceCaseString(passengerTypeName)} - ${sentenceCaseString(ticket.type)}`;
+            ? `${passengerTypeName} - ${sentenceCaseString(ticket.type)} (school)`
+            : `${passengerTypeName} - ${sentenceCaseString(ticket.type)}`;
+
+    console.log(productDetailsElements);
 
     return {
         props: {

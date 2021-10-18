@@ -181,7 +181,11 @@ exports[`myfares pages pointToPointProducts should render correctly when product
               <td
                 className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell"
               >
-                Adult - single
+                <a
+                  href="/products/productDetails?productId=1"
+                >
+                  Adult - single
+                </a>
               </td>
               <td
                 className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell"

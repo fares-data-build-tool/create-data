@@ -24,6 +24,7 @@ import {
     Stop,
     ResponseWithLocals,
 } from '../interfaces';
+import dateFormat from 'dateformat';
 
 export const getProofDocumentsString = (documents: string[]): string =>
     documents.map((document) => sentenceCaseString(document)).join(', ');
@@ -228,4 +229,8 @@ export const chunk = <T>(array: T[], size: number): T[][] => {
         chunks.push(copy.splice(0, size));
     }
     return chunks;
+};
+
+export const convertDateFormat = (date: string): string => {
+    return dateFormat(date, 'dd/mm/yyyy');
 };
