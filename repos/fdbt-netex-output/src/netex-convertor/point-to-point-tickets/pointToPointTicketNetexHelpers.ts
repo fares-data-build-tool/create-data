@@ -309,9 +309,7 @@ export const getFareTables = (
     matchingData: PointToPointTicket | PointToPointPeriodTicket,
     lineIdName: string,
 ): NetexObject[] => {
-    const fareZones = isReturnTicket(matchingData)
-        ? matchingData.outboundFareZones.concat(matchingData.inboundFareZones)
-        : matchingData.fareZones;
+    const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
     const ticketUserConcat = `${matchingData.type}_${matchingData.passengerType}`;
 
     return matchingData.products[0].salesOfferPackages.map(salesOfferPackage => {
