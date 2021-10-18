@@ -330,7 +330,13 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         } else {
             const combinedFareZones = combineFareZones(ticket.outboundFareZones, ticket.inboundFareZones);
 
+            console.log(`combined fare zones are:`);
+            console.log(JSON.stringify(combinedFareZones));
+
             const fareZoneList = getFareZoneList(combinedFareZones);
+
+            console.log('after calling fare zone list');
+            console.log(JSON.stringify(fareZoneList));
 
             zoneFareFrameToUpdate.fareZones.FareZone = fareZoneList;
         }
