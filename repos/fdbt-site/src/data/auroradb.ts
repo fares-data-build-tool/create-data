@@ -1,9 +1,8 @@
 import awsParamStore from 'aws-param-store';
-import { String } from 'aws-sdk/clients/acm';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
 import { DbTimeRestriction } from 'shared/dbTypes';
-import { FromDb, GroupDefinition, OperatorDetails } from '../../shared/matchingJsonTypes';
+import { FromDb, OperatorDetails } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
     CompanionInfo,
@@ -470,8 +469,8 @@ export const getSalesOfferPackageByIdAndNoc = async (
 ): Promise<FromDb<SalesOfferPackage>> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving sales offer package for given id',
-        noc: nocCode,
+        message: 'retrieving sales offer package for given id and noc',
+        nocCode,
         id,
     });
 
@@ -485,7 +484,7 @@ export const getSalesOfferPackageByIdAndNoc = async (
         const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode, id]);
 
         if (queryResults.length !== 1) {
-            throw new Error(`Expected one product to be returned, ${queryResults.length} results received.`);
+            throw new Error(`Expected one sop to be returned, ${queryResults.length} results received.`);
         }
 
         const item = queryResults[0];
@@ -738,8 +737,9 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
 export const getTimeRestrictionByIdAndNoc = async (id: number, nocCode: string): Promise<PremadeTimeRestriction> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving time restriction for given id',
+        message: 'retrieving time restriction for given id and noc',
         nocCode,
+        id,
     });
 
     try {
@@ -1123,81 +1123,6 @@ const retrievePassengerTypeById = async (
     }
 };
 
-const retrieveSingleOrGroupPassengerTypeById = async (
-    id: number,
-    noc: string,
-): Promise<{
-    id: number;
-    name: string;
-    contents: string;
-    isGroup: boolean;
-}> => {
-    const queryInput = `
-            SELECT id, name, contents, isGroup
-            FROM passengerType
-            WHERE id = ? 
-            AND nocCode = ?`;
-
-    const queryResults = await executeQuery<{ id: number; name: string; contents: string; isGroup: boolean }[]>(
-        queryInput,
-        [id, noc],
-    );
-
-    if (queryResults.length !== 1) {
-        throw new Error(`Didn't get one passenger type with the id [${id}]`);
-    }
-
-    return queryResults[0];
-};
-
-export const getSingleOrGroupPassengerTypeById = async (
-    passengerId: number,
-    noc: string,
-): Promise<SinglePassengerType | GroupPassengerTypeDb> => {
-    const result = await retrieveSingleOrGroupPassengerTypeById(passengerId, noc);
-
-    const { id, name, contents, isGroup } = result;
-
-    return isGroup
-        ? {
-              id,
-              name,
-              groupPassengerType: JSON.parse(contents) as GroupPassengerTypeReference,
-          }
-        : {
-              id,
-              name,
-              passengerType: JSON.parse(contents) as PassengerType,
-          };
-};
-
-export const getCompanions = async (
-    passengerType: GroupPassengerTypeReference,
-    noc: string,
-): Promise<CompanionInfo[]> =>
-    await Promise.all(
-        passengerType.companions.map(async (companion) => {
-            const result = await retrievePassengerTypeById(companion.id, noc, false);
-            if (!result) {
-                throw new Error(`Didn't get one passenger type with the id [${companion.id}]`);
-            }
-            const passengerType = JSON.parse(result.contents) as PassengerType;
-            return {
-                ...passengerType,
-                minNumber: companion.minNumber,
-                maxNumber: companion.maxNumber,
-            };
-        }),
-    );
-
-export const getGroupDefinition = async (
-    passengerType: GroupPassengerTypeReference,
-    noc: string,
-): Promise<GroupDefinition> => ({
-    maxPeople: passengerType.maxGroupSize,
-    companions: await getCompanions(passengerType, noc),
-});
-
 interface SavedPassengerType {
     group: GroupPassengerType;
     single: SinglePassengerType;
@@ -1296,7 +1221,7 @@ export const getPassengerTypeNameByIdAndNoc = async (id: number, nocCode: string
         const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
 
         if (queryResults.length !== 1) {
-            throw new Error(`Expected one product to be returned, ${queryResults.length} results received.`);
+            throw new Error(`Expected one passengerType name to be returned, ${queryResults.length} results received.`);
         }
 
         return queryResults[0].name;
@@ -1651,7 +1576,7 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
     }
 };
 
-export const getProductMatchingJsonLinkByProductId = async (nocCode: string, productId: string): Promise<String> => {
+export const getProductMatchingJsonLinkByProductId = async (nocCode: string, productId: string): Promise<string> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'getting product matching json link for given noc and productId',
@@ -1675,6 +1600,6 @@ export const getProductMatchingJsonLinkByProductId = async (nocCode: string, pro
 
         return queryResults[0].matchingJsonLink;
     } catch (error) {
-        throw new Error(`Could not retrieve other products by nocCode from AuroraDB: ${error.stack}`);
+        throw new Error(`Could not retrieve product matchingJsonLinks by nocCode from AuroraDB: ${error.stack}`);
     }
 };

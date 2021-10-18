@@ -84,9 +84,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ? (await getTimeRestrictionByIdAndNoc(ticket.timeRestriction.id, noc)).name
             : 'N/A';
         productDetailsElements.push({ name: 'Time restriction', content: timeRestriction });
-    }
-
-    if (isSchoolTicket) {
+    } else {
         productDetailsElements.push({ name: 'Only valid during term time', content: 'Yes' });
     }
 
@@ -102,10 +100,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
-    if ('returnPeriodValidity' in ticket) {
+    if ('returnPeriodValidity' in ticket && ticket.returnPeriodValidity) {
         productDetailsElements.push({
             name: 'Return ticket validity',
-            content: `${ticket.returnPeriodValidity?.amount} ${ticket.returnPeriodValidity?.typeOfDuration}(s)`,
+            content: `${ticket.returnPeriodValidity.amount} ${ticket.returnPeriodValidity.typeOfDuration}(s)`,
         });
     }
 
@@ -128,7 +126,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     });
 
     if (!ticket.ticketPeriod.startDate || !ticket.ticketPeriod.endDate) {
-        throw new Error('startdate and enddate are expected but not found');
+        throw new Error('startDate and endDate are expected but not found');
     }
 
     const startDate = convertDateFormat(ticket.ticketPeriod.startDate);
