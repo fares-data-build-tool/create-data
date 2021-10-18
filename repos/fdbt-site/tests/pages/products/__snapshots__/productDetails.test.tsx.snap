@@ -24,6 +24,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   </div>
   <dl
     className="govuk-summary-list"
+    key="Service"
   >
     <div
       className="govuk-summary-list__row"
@@ -47,6 +48,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   </dl>
   <dl
     className="govuk-summary-list"
+    key="Passenger type"
   >
     <div
       className="govuk-summary-list__row"
@@ -70,6 +72,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   </dl>
   <dl
     className="govuk-summary-list"
+    key="Time restriction"
   >
     <div
       className="govuk-summary-list__row"
@@ -93,6 +96,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   </dl>
   <dl
     className="govuk-summary-list"
+    key="Quantity in bundle"
   >
     <div
       className="govuk-summary-list__row"
@@ -116,6 +120,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   </dl>
   <dl
     className="govuk-summary-list"
+    key="Carnet expiry"
   >
     <div
       className="govuk-summary-list__row"
@@ -139,6 +144,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   </dl>
   <dl
     className="govuk-summary-list"
+    key="Purchase methods"
   >
     <div
       className="govuk-summary-list__row"
@@ -167,6 +173,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   </dl>
   <dl
     className="govuk-summary-list"
+    key="Start date"
   >
     <div
       className="govuk-summary-list__row"
@@ -190,6 +197,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   </dl>
   <dl
     className="govuk-summary-list"
+    key="End date"
   >
     <div
       className="govuk-summary-list__row"

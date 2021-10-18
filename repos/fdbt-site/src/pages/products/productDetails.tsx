@@ -36,7 +36,7 @@ const ProductDetails = ({
         {productDetailsElements.map((element) => {
             const content = isArray(element.content) ? element.content : [element.content];
             return (
-                <dl className="govuk-summary-list">
+                <dl className="govuk-summary-list" key={element.name}>
                     <div className="govuk-summary-list__row" key={element.name}>
                         <dt className="govuk-summary-list__key">{element.name}</dt>
                         <dd className="govuk-summary-list__value">
@@ -142,8 +142,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             : isSchoolTicket
             ? `${passengerTypeName} - ${sentenceCaseString(ticket.type)} (school)`
             : `${passengerTypeName} - ${sentenceCaseString(ticket.type)}`;
-
-    console.log(productDetailsElements);
 
     return {
         props: {
