@@ -59,11 +59,7 @@ describe('generateAll', () => {
         const netexGen = await netexGenerator(ticket, operatorData);
         const generatedNetex = await netexGen.generate();
         const parsedXsl = libxslt.parse(xsl);
-        console.log('parsed the xsl');
-        console.log(JSON.stringify(parsedXsl));
-        console.log(JSON.stringify(generatedNetex));
         const transformedNetex = parsedXsl.apply(generatedNetex);
-        console.log('transformed the netex');
 
         const xmlFileName = `${fileName.split('.')[0]}.xml`;
         await fs.promises.writeFile(`${generatedNetexPath}${xmlFileName}`, transformedNetex);
