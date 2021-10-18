@@ -25,7 +25,7 @@ describe('generateAll', () => {
 
     const fileNames: string[] = fs.readdirSync(matchingDataPath);
 
-    it.each(fileNames)('should generate identical xml for %s', async (fileName) => {
+    it.each(fileNames)('should generate identical xml for %s', async fileName => {
         // noc of logged in user
         let baseNoc = '';
 
@@ -41,7 +41,7 @@ describe('generateAll', () => {
             nocs.push(baseNoc);
         }
 
-        const operatorData: Operator[] = nocs.map((noc) => ({
+        const operatorData: Operator[] = nocs.map(noc => ({
             nocCode: noc,
             opId: '135742',
             vosaPsvLicenseName: 'Blackpool Transport Services Ltd',
