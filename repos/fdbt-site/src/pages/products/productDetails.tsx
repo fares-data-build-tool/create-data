@@ -32,7 +32,7 @@ const ProductDetails = ({
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <h1 className="govuk-heading-l">{productName}</h1>
         <div id="contact-hint" className="govuk-hint">
-            Product status: <strong className="govuk-table__cell">{getTag(startDate, endDate)}</strong>
+            Product status: {getTag(startDate, endDate)}
         </div>
         {productDetailsElements.map((element) => {
             const content = isArray(element.content) ? element.content : [element.content];
@@ -64,14 +64,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const ticketWithIds = await getProductsMatchingJson(matchingJsonLink);
     const ticket = await getFullTicketFromTicketWithIds(ticketWithIds, noc);
 
-    const timeRestriction = ticketWithIds.timeRestriction
-        ? (await getTimeRestrictionByIdAndNoc(ticketWithIds.timeRestriction.id, noc)).name
-        : 'N/A';
-
     const productDetailsElements: ProductDetailsElement[] = [];
 
     if ('serviceDescription' in ticket) {
-        productDetailsElements.push({ name: 'Service', content: ticket.serviceDescription });
+        productDetailsElements.push({ name: 'Service', content: `${ticket.lineName} - ${ticket.serviceDescription}` });
     }
 
     if ('journeyDirection' in ticket && ticket.journeyDirection) {
@@ -80,10 +76,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticketWithIds.passengerType.id, noc);
     productDetailsElements.push({ name: 'Passenger type', content: passengerTypeName });
-    productDetailsElements.push({ name: 'Time restriction', content: timeRestriction });
 
-    if ('termTime' in ticket) {
-        productDetailsElements.push({ name: 'Only valid during term time', content: ticket.termTime ? 'Yes' : 'No' });
+    const isSchoolTicket = 'termTime' in ticket && ticket.termTime;
+    if (!isSchoolTicket) {
+        const timeRestriction = ticketWithIds.timeRestriction
+            ? (await getTimeRestrictionByIdAndNoc(ticketWithIds.timeRestriction.id, noc)).name
+            : 'N/A';
+        productDetailsElements.push({ name: 'Time restriction', content: timeRestriction });
+    }
+
+    if (isSchoolTicket) {
+        productDetailsElements.push({ name: 'Only valid during term time', content: 'Yes' });
     }
 
     const product = ticket.products[0];
@@ -91,7 +94,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         productDetailsElements.push({ name: 'Quantity in bundle', content: product.carnetDetails.quantity });
         productDetailsElements.push({
             name: 'Carnet expiry',
-            content: `${product.carnetDetails.expiryTime} ${product.carnetDetails.expiryUnit}(s)`,
+            content:
+                product.carnetDetails.expiryUnit === 'no expiry'
+                    ? 'No expiry'
+                    : `${product.carnetDetails.expiryTime} ${product.carnetDetails.expiryUnit}(s)`,
         });
     }
 
@@ -119,14 +125,16 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('startdate and enddate are expected but not found');
     }
 
-    const startDate = ticket.ticketPeriod.startDate;
-    const endDate = ticket.ticketPeriod.endDate;
-    productDetailsElements.push({ name: 'Start date', content: convertDateFormat(startDate) });
-    productDetailsElements.push({ name: 'End date', content: convertDateFormat(endDate) });
+    const startDate = convertDateFormat(ticket.ticketPeriod.startDate);
+    const endDate = convertDateFormat(ticket.ticketPeriod.endDate);
+    productDetailsElements.push({ name: 'Start date', content: startDate });
+    productDetailsElements.push({ name: 'End date', content: endDate });
 
     const productName =
         'productName' in product
             ? product.productName
+            : isSchoolTicket
+            ? `${sentenceCaseString(passengerTypeName)} - ${sentenceCaseString(ticket.type)} (school)`
             : `${sentenceCaseString(passengerTypeName)} - ${sentenceCaseString(ticket.type)}`;
 
     return {
