@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { getUuidFromSession, redirectTo, redirectToError } from '../../utils/apiUtils/index';
+import { redirectTo, redirectToError } from '../../utils/apiUtils/index';
 import { JOURNEY_ATTRIBUTE } from '../../constants/attributes';
 import { inboundErrorId, outboundErrorId } from '../returnDirection';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -10,12 +10,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const { inboundJourney, outboundJourney } = req.body;
 
         if (inboundJourney && outboundJourney) {
-            const uuid = getUuidFromSession(req);
-
-            if (!uuid) {
-                throw new Error('No UUID found');
-            }
-
             updateSessionAttribute(req, JOURNEY_ATTRIBUTE, { inboundJourney, outboundJourney });
             redirectTo(res, '/inputMethod');
         } else {

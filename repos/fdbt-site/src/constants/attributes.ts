@@ -14,6 +14,8 @@ export const SERVICE_ATTRIBUTE = 'fdbt-service';
 
 export const JOURNEY_ATTRIBUTE = 'fdbt-journey';
 
+export const DIRECTION_ATTRIBUTE = 'fdbt-direction';
+
 export const FARE_STAGES_ATTRIBUTE = 'fdbt-fare-stages';
 
 export const STAGE_NAMES_ATTRIBUTE = 'fdbt-stage-names';

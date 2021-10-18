@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any,react/display-name */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import React from 'react';
@@ -244,6 +244,7 @@ export const getMockContext = ({
         req,
         pathname: '',
         query,
+        // eslint-disable-next-line react/display-name
         AppTree: () => React.createElement('div'),
     };
 
@@ -403,8 +404,11 @@ export const mockOutboundMatchingFaresZones: MatchingFareZones = {
 export const mockRawService: RawService = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
+    lineName: '17',
+    startDate: '2021-10-11T13:40:49+00:00',
     journeyPatterns: [
         {
+            direction: 'outbound',
             orderedStopPoints: [
                 {
                     stopPointRef: '13003921A',
@@ -466,6 +470,7 @@ export const mockRawService: RawService = {
             ],
         },
         {
+            direction: 'inbound',
             orderedStopPoints: [
                 {
                     stopPointRef: '13003655B',
@@ -526,8 +531,11 @@ export const mockRawService: RawService = {
 export const mockRawServiceWithDuplicates: RawService = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
+    lineName: '17',
+    startDate: '2021-10-11T13:40:49+00:00',
     journeyPatterns: [
         {
+            direction: 'outbound',
             orderedStopPoints: [
                 {
                     stopPointRef: '13003921A',
@@ -589,6 +597,7 @@ export const mockRawServiceWithDuplicates: RawService = {
             ],
         },
         {
+            direction: 'outbound',
             orderedStopPoints: [
                 {
                     stopPointRef: '13003655B',
@@ -643,6 +652,7 @@ export const mockRawServiceWithDuplicates: RawService = {
             ],
         },
         {
+            direction: 'inbound',
             orderedStopPoints: [
                 {
                     stopPointRef: '13003655B',
@@ -952,6 +962,8 @@ export const service: BasicService = {
 export const mockService: ServiceDB = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
+    lineName: '17',
+    startDate: '2021-10-11T13:40:49+00:00',
     journeyPatterns: [
         {
             startPoint: { Display: 'Estate (Hail and Ride) N/B', Id: '13003921A' },

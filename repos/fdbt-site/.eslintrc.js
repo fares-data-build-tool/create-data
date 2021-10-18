@@ -68,7 +68,6 @@ module.exports = {
         '@typescript-eslint/restrict-template-expressions': 'off',
         '@typescript-eslint/restrict-plus-operands': 'off',
         '@typescript-eslint/ban-types': 'off',
-        '@typescript-eslint/no-floating-promises': 'off',
 
         '@typescript-eslint/no-unused-expressions': ['error'],
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
@@ -83,7 +82,7 @@ module.exports = {
         'func-style': [2, 'expression'],
         curly: [2, 'all'],
         '@typescript-eslint/unbound-method': 0,
-        'react/forbid-dom-props': ["error", { "forbid": ["style"] }]
+        'react/forbid-dom-props': ["error", { "forbid": ["style"] }],
     },
     settings: {
         react: {

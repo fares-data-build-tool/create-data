@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { batchGetStopsByAtcoCode, getServiceByNocCodeLineNameAndDataSource } from '../data/auroradb';
+import { batchGetStopsByAtcoCode, getServiceByIdAndDataSource } from '../data/auroradb';
 import {
     JOURNEY_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
@@ -74,7 +74,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const [selectedStartPoint, selectedEndPoint] =
         (journeyAttribute && journeyAttribute.outboundJourney && journeyAttribute.outboundJourney.split('#')) || [];
     const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
-    const service = await getServiceByNocCodeLineNameAndDataSource(nocCode, lineName, dataSource);
+    const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, dataSource);
     const userFareStages = await getUserFareStages(operatorAttribute.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
     const masterStopList = getMasterStopList(relevantJourneys);

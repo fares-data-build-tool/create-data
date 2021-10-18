@@ -73,7 +73,7 @@ const setStaticRoutes = (server: Express): void => {
     );
 };
 
-(async (): Promise<void> => {
+void (async (): Promise<void> => {
     try {
         await app.prepare();
         const server = express();

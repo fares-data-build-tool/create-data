@@ -14,7 +14,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
-import { getSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 import { redirectTo } from '../utils/apiUtils';
 import SwitchDataSource from '../components/SwitchDataSource';
 
@@ -53,16 +53,12 @@ const Service = ({
                 <ErrorSummary errors={error} />
                 <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
                     <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-select--error">
-                        <select className="govuk-select" id="service" name="service" defaultValue="">
+                        <select className="govuk-select" id="service" name="serviceId" defaultValue="">
                             <option value="" disabled>
                                 Select One
                             </option>
                             {services.map((service) => (
-                                <option
-                                    key={`${service.lineName}#${service.startDate}`}
-                                    value={`${service.lineName}#${service.startDate}`}
-                                    className="service-option"
-                                >
+                                <option key={`${service.id}`} value={`${service.id}`} className="service-option">
                                     {dataSourceAttribute.source === 'tnds'
                                         ? `${service.lineName} - Start date ${service.startDate}`
                                         : `${service.lineName} ${service.origin || 'N/A'} - ${
@@ -112,11 +108,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('Could not render the service selection page. Necessary attributes not found.');
     }
 
-    const dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
-    if (!dataSourceAttribute) {
-        throw new Error('Data source attribute not found');
-    }
-    const services = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute?.source);
+    const dataSourceAttribute = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
+    const services = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
     if (services.length === 0) {
         if (ctx.res) {
