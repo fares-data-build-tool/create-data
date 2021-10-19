@@ -8,7 +8,7 @@ import {
 import { BaseLayout } from '../../layout/Layout';
 import {
     getBodsServiceByNocAndId,
-    getPassengerTypeNameByIdAndNoc,
+    getPassengerTypeNameById,
     getPointToPointProductsByLineId,
     getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
@@ -128,7 +128,7 @@ export const getServerSideProps = async (
         productsToDisplay.map(async (product) => {
             const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
 
-            const passengerTypeName = await getPassengerTypeNameByIdAndNoc(matchingJson.passengerType.id, noc);
+            const passengerTypeName = await getPassengerTypeNameById(matchingJson.passengerType.id, noc);
 
             const productDescription =
                 matchingJson.type === 'period' && 'products' in matchingJson

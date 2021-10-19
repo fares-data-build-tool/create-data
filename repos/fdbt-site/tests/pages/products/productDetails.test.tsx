@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import {
-    getPassengerTypeNameByIdAndNoc,
+    getPassengerTypeNameById,
     getProductMatchingJsonLinkByProductId,
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
@@ -45,7 +45,7 @@ describe('myfares pages', () => {
     describe('getServerSideProps', () => {
         beforeEach(() => {
             (getProductMatchingJsonLinkByProductId as jest.Mock).mockResolvedValueOnce('path');
-            (getPassengerTypeNameByIdAndNoc as jest.Mock).mockResolvedValue('Test Passenger Type');
+            (getPassengerTypeNameById as jest.Mock).mockResolvedValue('Test Passenger Type');
 
             (getSalesOfferPackageByIdAndNoc as jest.Mock).mockResolvedValueOnce({
                 name: 'SOP 1',

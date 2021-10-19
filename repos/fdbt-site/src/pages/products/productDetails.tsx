@@ -1,14 +1,13 @@
 import React, { ReactElement } from 'react';
-import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
+import { convertDateFormat, getAndValidateNoc, sentenceCaseString, toArray } from '../../utils';
 import {
-    getPassengerTypeNameByIdAndNoc,
+    getPassengerTypeNameById,
     getProductMatchingJsonLinkByProductId,
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
-import isArray from 'lodash/isArray';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
 
@@ -34,7 +33,7 @@ const ProductDetails = ({
             Product status: {getTag(startDate, endDate)}
         </div>
         {productDetailsElements.map((element) => {
-            const content = isArray(element.content) ? element.content : [element.content];
+            const content = toArray(element.content);
             return (
                 <dl className="govuk-summary-list" key={element.name}>
                     <div className="govuk-summary-list__row" key={element.name}>
@@ -75,7 +74,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         productDetailsElements.push({ name: 'Journey direction', content: ticket.journeyDirection });
     }
 
-    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
+    const passengerTypeName = await getPassengerTypeNameById(ticket.passengerType.id, noc);
     productDetailsElements.push({ name: 'Passenger type', content: passengerTypeName });
 
     const isSchoolTicket = 'termTime' in ticket && ticket.termTime;

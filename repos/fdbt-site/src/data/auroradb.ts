@@ -1202,34 +1202,6 @@ export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string):
     }
 };
 
-export const getPassengerTypeNameByIdAndNoc = async (id: number, nocCode: string): Promise<string> => {
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving passenger type name for given noc and id',
-        nocCode,
-        id,
-    });
-
-    try {
-        const queryInput = `
-            SELECT name
-            FROM passengerType
-            WHERE nocCode = ?
-            AND id = ?
-        `;
-
-        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
-
-        if (queryResults.length !== 1) {
-            throw new Error(`Expected one passengerType name to be returned, ${queryResults.length} results received.`);
-        }
-
-        return queryResults[0].name;
-    } catch (error) {
-        throw new Error(`Could not retrieve passenger type name by noc and id from AuroraDB: ${error}`);
-    }
-};
-
 export const convertToFullPassengerType = async (
     group: GroupPassengerTypeDb,
     nocCode: string,
