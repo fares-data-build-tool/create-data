@@ -50,19 +50,24 @@ exports[`pages home page should render correctly 1`] = `
         <h2
           className="govuk-heading-s"
         >
+          <strong
+            className="govuk-tag new-tag"
+          >
+            new
+          </strong>
           Operator settings
         </h2>
         <p
           className="govuk-body"
         >
-          For updating your account settings.
+          Operator settings is where operators can define and save settings specific to a National Operator Code (NOC), such as passenger types, time restrictions and more. We recommend completing this section before creating your fares data.
         </p>
         <a
           className="govuk-link govuk-!-font-size-19"
-          href="/account"
+          href="/globalSettings"
           id="account-link"
         >
-          My account settings
+          Define and manage settings
         </a>
       </div>
       <div

@@ -8,8 +8,8 @@ import {
     SalesOfferPackageInfoWithErrors,
 } from '../../interfaces';
 import { SOP_INFO_ATTRIBUTE } from '../../constants/attributes';
-import { purchaseLocationsList, paymentMethodsList, ticketFormatsList } from '../salesOfferPackages';
 import { toArray } from '../../utils';
+import { paymentMethodsList, purchaseLocationsList, ticketFormatsList } from '../managePurchaseMethod';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const errors: ErrorInfo[] = [];

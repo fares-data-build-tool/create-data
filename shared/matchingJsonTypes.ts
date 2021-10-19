@@ -48,7 +48,7 @@ export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
 export type FlatFareTicket = FlatFareGeoZoneTicket | FlatFareMultipleServices;
 
 export interface SalesOfferPackage {
-    id?: number;
+    id: number;
     name: string;
     description?: string;
     purchaseLocations: string[];
@@ -162,7 +162,7 @@ export interface GroupDefinition {
 }
 
 export interface CompanionInfo {
-    id?: number;
+    id: number;
     name?: string;
     passengerType: string;
     minNumber?: string;

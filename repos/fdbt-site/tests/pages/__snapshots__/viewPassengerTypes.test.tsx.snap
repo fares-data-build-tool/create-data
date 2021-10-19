@@ -42,6 +42,7 @@ exports[`pages view passenger types should render correctly when groups and indi
                 "passengerType": Object {
                   "ageRangeMax": "16",
                   "ageRangeMin": "5",
+                  "id": 1,
                   "passengerType": "child",
                   "proofDocuments": Array [
                     "studentCard",
@@ -71,12 +72,14 @@ exports[`pages view passenger types should render correctly when groups and indi
                 "groupPassengerType": Object {
                   "companions": Array [
                     Object {
+                      "id": 1,
                       "maxNumber": "2",
                       "passengerType": "adult",
                     },
                     Object {
                       "ageRangeMax": "16",
                       "ageRangeMin": "4",
+                      "id": 2,
                       "maxNumber": "1",
                       "passengerType": "child",
                       "proofDocuments": Array [
@@ -198,6 +201,7 @@ exports[`pages view passenger types should render correctly when only individual
                 "passengerType": Object {
                   "ageRangeMax": "16",
                   "ageRangeMin": "5",
+                  "id": 1,
                   "passengerType": "child",
                   "proofDocuments": Array [
                     "studentCard",
@@ -284,12 +288,14 @@ exports[`pages view passenger types should render correctly when only passenger 
                 "groupPassengerType": Object {
                   "companions": Array [
                     Object {
+                      "id": 1,
                       "maxNumber": "2",
                       "passengerType": "adult",
                     },
                     Object {
                       "ageRangeMax": "16",
                       "ageRangeMin": "4",
+                      "id": 2,
                       "maxNumber": "1",
                       "minNumber": "0",
                       "passengerType": "child",

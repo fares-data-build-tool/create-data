@@ -450,6 +450,7 @@ describe('Shared Helpers', () => {
                 },
                 salesOfferPackages: [
                     {
+                        id: 1,
                         name: 'Onboard (cash)',
                         description: 'Purchasable on board the bus, with cash, as a paper ticket.',
                         purchaseLocations: ['onBoard'],
@@ -476,6 +477,7 @@ describe('Shared Helpers', () => {
                 productName: 'Product 1',
                 salesOfferPackages: [
                     {
+                        id: 1,
                         name: 'Onboard (cash)',
                         description: 'Purchasable on board the bus, with cash, as a paper ticket.',
                         purchaseLocations: ['onBoard'],

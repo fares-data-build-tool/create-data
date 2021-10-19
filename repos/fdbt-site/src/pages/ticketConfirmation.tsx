@@ -48,7 +48,6 @@ import { isFareType, isPeriodExpiry, isWithErrors } from '../interfaces/typeGuar
 import TwoThirdsLayout from '../layout/Layout';
 import { getCsrfToken, sentenceCaseString } from '../utils';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { globalSettingsEnabled } from '../../src/constants/featureFlag';
 
 const title = 'Ticket Confirmation - Create Fares Data Service';
 const description = 'Ticket Confirmation page of the Create Fares Data Service';
@@ -355,7 +354,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             content: `${sentenceCaseString(periodExpiryAttribute.productValidity)}${
                 periodExpiryAttribute.productEndTime ? ` - ${periodExpiryAttribute.productEndTime}` : ''
             }`,
-            href: globalSettingsEnabled ? 'selectPeriodValidity' : 'periodValidity',
+            href: 'selectPeriodValidity',
         });
     }
 

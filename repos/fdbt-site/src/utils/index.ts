@@ -13,6 +13,7 @@ import {
     COOKIE_PREFERENCES_COOKIE,
     CSRF_COOKIE,
     EXPRESS_SESSION_COOKIE,
+    purchaseMethodsValuesMap,
 } from '../constants';
 import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { getSessionAttribute } from './sessions';
@@ -83,6 +84,9 @@ export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
         }
     });
 };
+
+export const formatSOPArray = (stringArray: string[]): string =>
+    stringArray.map((string) => purchaseMethodsValuesMap[string] || sentenceCaseString(string)).join(', ');
 
 export const getHost = (req: IncomingMessage | undefined): string => {
     if (!req) {
