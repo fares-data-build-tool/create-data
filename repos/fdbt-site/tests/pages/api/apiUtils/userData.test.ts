@@ -45,11 +45,6 @@ import {
     isTermTime,
 } from '../../../../src/utils/apiUtils/userData';
 import {
-    defaultSalesOfferPackageOne,
-    defaultSalesOfferPackageThree,
-    defaultSalesOfferPackageTwo,
-} from '../../../../src/pages/selectSalesOfferPackage';
-import {
     expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts,
     expectedCarnetReturnTicket,
     expectedCarnetSingleTicket,
@@ -128,11 +123,37 @@ describe('userData', () => {
             const productSops = [
                 {
                     productName: 'Product',
-                    salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                    salesOfferPackages: [
+                        {
+                            id: 1,
+                            name: 'Onboard (cash)',
+                            description: '',
+                            purchaseLocations: ['onBoard'],
+                            paymentMethods: ['cash'],
+                            ticketFormats: ['paperTicket'],
+                        },
+                        {
+                            id: 2,
+                            name: 'Onboard (contactless)',
+                            description: '',
+                            purchaseLocations: ['onBoard'],
+                            paymentMethods: ['contactlessPaymentCard'],
+                            ticketFormats: ['paperTicket'],
+                        },
+                    ],
                 },
                 {
                     productName: 'Product Two',
-                    salesOfferPackages: [defaultSalesOfferPackageTwo],
+                    salesOfferPackages: [
+                        {
+                            id: 2,
+                            name: 'Onboard (contactless)',
+                            description: '',
+                            purchaseLocations: ['onBoard'],
+                            paymentMethods: ['contactlessPaymentCard'],
+                            ticketFormats: ['paperTicket'],
+                        },
+                    ],
                 },
             ];
             const validity: PeriodExpiry = { productValidity: '24hr', productEndTime: '' };
@@ -601,15 +622,66 @@ describe('userData', () => {
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Day Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Monthly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                     ],
                     [PRODUCT_DATE_ATTRIBUTE]: {
@@ -678,15 +750,66 @@ describe('userData', () => {
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Day Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Monthly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                     ],
                     [PRODUCT_DATE_ATTRIBUTE]: {
@@ -764,15 +887,66 @@ describe('userData', () => {
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Day Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Monthly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                     ],
                     [PRODUCT_DATE_ATTRIBUTE]: {
@@ -830,15 +1004,66 @@ describe('userData', () => {
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Day Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Monthly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                     ],
                     [PRODUCT_DATE_ATTRIBUTE]: {
@@ -969,7 +1194,24 @@ describe('userData', () => {
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Rider',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                     ],
                 },
@@ -1012,7 +1254,24 @@ describe('userData', () => {
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Flat fare with geo zone',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageThree],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 3,
+                                    name: 'Online (smart card)',
+                                    description: '',
+                                    purchaseLocations: ['online'],
+                                    paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
+                                    ticketFormats: ['smartCard'],
+                                },
+                            ],
                         },
                     ],
                 },
@@ -1094,15 +1353,66 @@ describe('userData', () => {
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Day Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Monthly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                     ],
                     [PRODUCT_DATE_ATTRIBUTE]: {
@@ -1238,15 +1548,66 @@ describe('userData', () => {
                     [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
                         {
                             productName: 'Weekly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Day Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                         {
                             productName: 'Monthly Ticket',
-                            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Onboard (contactless)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['contactlessPaymentCard'],
+                                    ticketFormats: ['paperTicket'],
+                                },
+                            ],
                         },
                     ],
                     [PRODUCT_DATE_ATTRIBUTE]: {

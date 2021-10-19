@@ -5,11 +5,11 @@ import Home from '../../src/pages/home';
 describe('pages', () => {
     describe('home page', () => {
         it('should render correctly', () => {
-            const tree = shallow(<Home multipleOperators globalSettingsEnabled={false} />);
+            const tree = shallow(<Home multipleOperators />);
             expect(tree).toMatchSnapshot();
         });
         it('should render correctly with no multiple operators', () => {
-            const tree = shallow(<Home multipleOperators={false} globalSettingsEnabled={true} />);
+            const tree = shallow(<Home multipleOperators={false} />);
             expect(tree).toMatchSnapshot();
         });
     });

@@ -57,9 +57,6 @@ import {
 } from '../../src/interfaces';
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
-import { TextInputFieldset } from '../../src/pages/definePassengerType';
-
-import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../src/pages/selectSalesOfferPackage';
 import { SessionAttributeTypes } from '../../src/utils/sessions';
 
 interface GetMockContextInput {
@@ -182,7 +179,24 @@ export const getMockRequestAndResponse = ({
                 },
             ],
         },
-        [SALES_OFFER_PACKAGES_ATTRIBUTE]: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+            {
+                id: 1,
+                name: 'Onboard (cash)',
+                description: '',
+                purchaseLocations: ['onBoard'],
+                paymentMethods: ['cash'],
+                ticketFormats: ['paperTicket'],
+            },
+            {
+                id: 2,
+                name: 'Onboard (contactless)',
+                description: '',
+                purchaseLocations: ['onBoard'],
+                paymentMethods: ['contactlessPaymentCard'],
+                ticketFormats: ['paperTicket'],
+            },
+        ],
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         destroy: (): void => {},
         ...session,
@@ -1079,6 +1093,7 @@ export const mockMatchingUserFareStages: UserFareStages = {
 
 export const expectedSalesOfferPackageArray: SalesOfferPackage[] = [
     {
+        id: 1,
         name: 'Onboard (cash)',
         description: 'Purchasable on board the bus, with cash, as a paper ticket.',
         purchaseLocations: ['onBoard'],
@@ -1086,6 +1101,7 @@ export const expectedSalesOfferPackageArray: SalesOfferPackage[] = [
         ticketFormats: ['paperTicket'],
     },
     {
+        id: 2,
         name: 'Onboard (contactless)',
         description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
         purchaseLocations: ['onBoard'],
@@ -4769,131 +4785,6 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
         radioError: [],
     },
 ];
-
-export const mockAdultDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioConditionalInputFieldset[] = [
-    {
-        heading: {
-            id: 'define-passenger-age-range',
-            content: expect.any(String),
-        },
-        radios: [
-            {
-                id: 'age-range-required',
-                name: 'ageRange',
-                value: 'Yes',
-                dataAriaControls: 'age-range-required-conditional',
-                label: 'Yes',
-                inputHint: {
-                    id: 'define-passenger-age-range-hint',
-                    content: 'Enter a minimum and/or maximum age for this passenger type.',
-                },
-                inputType: 'text',
-                inputs: [
-                    {
-                        id: 'age-range-min',
-                        name: 'ageRangeMin',
-                        label: 'Minimum Age (if applicable)',
-                        defaultValue: '',
-                    },
-                    {
-                        id: 'age-range-max',
-                        name: 'ageRangeMax',
-                        label: 'Maximum Age (if applicable)',
-                        defaultValue: '',
-                    },
-                ],
-                inputErrors: [
-                    {
-                        errorMessage: 'Enter a minimum or maximum age',
-                        id: 'age-range-min',
-                    },
-                    {
-                        errorMessage: 'Enter a minimum or maximum age',
-                        id: 'age-range-max',
-                    },
-                ],
-            },
-            {
-                id: 'age-range-not-required',
-                name: 'ageRange',
-                value: 'No',
-                label: 'No',
-            },
-        ],
-        radioError: [],
-    },
-];
-
-export const mockPassengerTypeRadioAndInputErrors: ErrorInfo[] = [
-    {
-        userInput: '',
-        errorMessage: 'Choose one of the options below',
-        id: 'define-passenger-proof',
-    },
-    {
-        userInput: '',
-        errorMessage: 'Enter a minimum or maximum age',
-        id: 'age-range-min',
-    },
-    {
-        userInput: '',
-        errorMessage: 'Enter a minimum or maximum age',
-        id: 'age-range-max',
-    },
-];
-
-export const mockNumberOfPassengerTypeFieldset: TextInputFieldset = {
-    heading: {
-        id: 'number-of-passenger-type-heading',
-        content: 'How many child passengers can be in the group?',
-    },
-    inputs: [
-        {
-            id: 'min-number-of-passengers',
-            name: 'minNumber',
-            label: 'Minimum (optional)',
-            defaultValue: '',
-        },
-        {
-            id: 'max-number-of-passengers',
-            name: 'maxNumber',
-            label: 'Maximum (required)',
-            defaultValue: '',
-        },
-    ],
-    inputErrors: [],
-};
-
-export const mockNumberOfPassengerTypeFieldsetWithErrors: TextInputFieldset = {
-    heading: {
-        id: 'number-of-passenger-type-heading',
-        content: 'How many child passengers can be in the group?',
-    },
-    inputs: [
-        {
-            id: 'min-number-of-passengers',
-            name: 'minNumber',
-            label: 'Minimum (optional)',
-            defaultValue: '',
-        },
-        {
-            id: 'max-number-of-passengers',
-            name: 'maxNumber',
-            label: 'Maximum (required)',
-            defaultValue: '',
-        },
-    ],
-    inputErrors: [
-        {
-            id: 'min-number-of-passengers',
-            errorMessage: 'Enter a number between 1 and 30',
-        },
-        {
-            id: 'max-number-of-passengers',
-            errorMessage: 'Enter a number between 1 and 30',
-        },
-    ],
-};
 
 export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[] = [
     {

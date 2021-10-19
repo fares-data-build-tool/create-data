@@ -3,10 +3,9 @@ import { FromDb, SalesOfferPackage } from '../../shared/matchingJsonTypes';
 import { GlobalSettingsViewPage } from '../components/GlobalSettingsViewPage';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { NextPageContextWithSession } from '../interfaces';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { formatSOPArray, getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { sopTicketFormatConverter } from './salesConfirmation';
-import { formatSOPArray } from './selectSalesOfferPackage';
 import { globalSettingsDeleteEnabled, myFaresEnabled } from '../constants/featureFlag';
 
 const title = 'Purchase methods';
