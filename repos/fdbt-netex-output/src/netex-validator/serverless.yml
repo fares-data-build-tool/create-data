@@ -48,6 +48,7 @@ provider:
 
 plugins:
   - serverless-python-requirements
+  - serverless-plugin-log-retention
 
 custom:
   pythonRequirements:
@@ -57,6 +58,8 @@ custom:
       dev: arn:aws:sns:us-east-1:000000000000:AlertsTopic
       other:
         Fn::ImportValue: !Sub ${self:provider.stage}:SlackAlertsTopicArn
+  logRetentionInDays: 180
+
 package:
   include:
     - xsd/*
