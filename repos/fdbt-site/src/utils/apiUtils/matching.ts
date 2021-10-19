@@ -83,8 +83,6 @@ export const sortingWithoutSequenceNumbers = (journeyPatterns: RawJourneyPattern
         ),
     );
 
-    console.log(graph);
-
     return toposort(graph);
 };
 
