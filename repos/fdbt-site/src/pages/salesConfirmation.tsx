@@ -14,11 +14,9 @@ import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
-import { getCsrfToken } from '../utils';
-import { ticketFormatsList } from './salesOfferPackages';
-import { formatSOPArray } from './selectSalesOfferPackage';
-import { globalSettingsEnabled } from '../constants/featureFlag';
+import { formatSOPArray, getCsrfToken } from '../utils';
 import { redirectTo } from '../utils/apiUtils';
+import { ticketFormatsList } from './managePurchaseMethod';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
@@ -55,7 +53,7 @@ export const buildSalesConfirmationElements = (
             confirmationElements.push({
                 name: 'Product',
                 content: upperFirst(product.productName),
-                href: globalSettingsEnabled ? 'selectPurchaseMethods' : 'selectSalesOfferPackage',
+                href: 'selectPurchaseMethods',
             });
             product.salesOfferPackages.forEach((sop) => {
                 confirmationElements.push({
@@ -67,7 +65,7 @@ export const buildSalesConfirmationElements = (
                         `Payment method(s): ${formatSOPArray(sop.paymentMethods)}`,
                         `Ticket formats: ${sopTicketFormatConverter(sop.ticketFormats)}`,
                     ],
-                    href: globalSettingsEnabled ? 'selectPurchaseMethods' : 'selectSalesOfferPackage',
+                    href: 'selectPurchaseMethods',
                 });
             });
         });
@@ -76,7 +74,7 @@ export const buildSalesConfirmationElements = (
             confirmationElements.push({
                 name: `Sales offer package ${index + 1} - ${sop.name}`,
                 content: sop.description || sop.name,
-                href: globalSettingsEnabled ? 'selectPurchaseMethods' : 'selectSalesOfferPackage',
+                href: 'selectPurchaseMethods',
             });
         });
     }

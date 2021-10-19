@@ -13,6 +13,7 @@ describe('pages', () => {
                 maxGroupSize: '3',
                 companions: [
                     {
+                        id: 1,
                         name: 'adult',
                         passengerType: 'adult',
                         minNumber: '1',
@@ -22,6 +23,7 @@ describe('pages', () => {
                         proofDocuments: [],
                     },
                     {
+                        id: 2,
                         name: 'kid',
                         passengerType: 'child',
                         minNumber: '1',
@@ -41,6 +43,7 @@ describe('pages', () => {
                 maxGroupSize: '2',
                 companions: [
                     {
+                        id: 1,
                         name: 'adult',
                         passengerType: 'adult',
                         minNumber: '2',
@@ -58,6 +61,7 @@ describe('pages', () => {
             id: 3,
             name: 'adult',
             passengerType: {
+                id: 3,
                 passengerType: 'adult',
                 ageRangeMin: '18',
                 ageRangeMax: '75',
@@ -68,6 +72,7 @@ describe('pages', () => {
             name: 'kid',
             id: 2,
             passengerType: {
+                id: 2,
                 passengerType: 'child',
                 ageRangeMin: '5',
                 ageRangeMax: '17',

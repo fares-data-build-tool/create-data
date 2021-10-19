@@ -1,5 +1,4 @@
 import { NextApiResponse } from 'next';
-import { globalSettingsEnabled } from '../../../src/constants/featureFlag';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -312,10 +311,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products: multipleProducts });
-        redirectTo(
-            res,
-            isFlatFare ? '/ticketConfirmation' : globalSettingsEnabled ? '/selectPeriodValidity' : '/periodValidity',
-        );
+        redirectTo(res, isFlatFare ? '/ticketConfirmation' : '/selectPeriodValidity');
     } catch (error) {
         const message = 'There was a problem inputting the product name, price and/or duration:';
         redirectToError(res, message, 'api.multipleProducts', error);

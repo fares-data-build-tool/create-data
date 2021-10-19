@@ -241,6 +241,7 @@ describe('managePassengerGroup', () => {
                     maxGroupSize: '3',
                     companions: [
                         {
+                            id: 1,
                             name: 'adult',
                             passengerType: 'adult',
                             minNumber: '2',
@@ -473,6 +474,7 @@ describe('managePassengerGroup', () => {
                     maxGroupSize: '3',
                     companions: [
                         {
+                            id: 1,
                             name: 'adult',
                             passengerType: 'adult',
                             minNumber: '2',

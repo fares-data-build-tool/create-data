@@ -1,9 +1,9 @@
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectTo } from '../../utils/apiUtils/index';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
-import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
+import { FARE_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { globalSettingsEnabled } from '../../constants/featureFlag';
+import { isFareType } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -12,20 +12,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!carnet) {
             updateSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
         }
-        if (fareType) {
+        if (fareType && isFareType({ fareType })) {
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 fareType,
             });
 
-            if (globalSettingsEnabled) {
-                redirectTo(res, '/selectPassengerType');
-            } else if (fareType === 'schoolService') {
-                updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType: 'schoolPupil' });
-                redirectTo(res, '/definePassengerType');
-                return;
-            } else {
-                redirectTo(res, '/passengerType');
-            }
+            redirectTo(res, '/selectPassengerType');
         } else {
             const errors: ErrorInfo[] = [
                 { id: 'fare-type-single', errorMessage: 'Choose a carnet fare type from the options' },
