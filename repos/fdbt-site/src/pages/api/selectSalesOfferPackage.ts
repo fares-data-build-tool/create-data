@@ -1,5 +1,4 @@
 import { NextApiResponse } from 'next';
-import { globalSettingsEnabled } from '../../constants/featureFlag';
 import { MULTIPLE_PRODUCT_ATTRIBUTE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../../constants/attributes';
 import {
     ErrorInfo,
@@ -84,11 +83,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 selected: sanitisedBody,
             };
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
-            if (globalSettingsEnabled) {
-                redirectTo(res, '/selectPurchaseMethods');
-                return;
-            }
-            redirectTo(res, `/selectSalesOfferPackage`);
+            redirectTo(res, '/selectPurchaseMethods');
             return;
         }
 

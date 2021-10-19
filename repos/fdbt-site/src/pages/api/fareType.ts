@@ -2,14 +2,8 @@ import camelCase from 'lodash/camelCase';
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectTo, getAndValidateNoc, isSchemeOperator } from '../../utils/apiUtils/index';
 import { regenerateSession, updateSessionAttribute } from '../../utils/sessions';
-import {
-    FARE_TYPE_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
-    CARNET_FARE_TYPE_ATTRIBUTE,
-    TXC_SOURCE_ATTRIBUTE,
-} from '../../constants/attributes';
+import { FARE_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { globalSettingsEnabled } from '../../constants/featureFlag';
 import { getAllServicesByNocCode } from '../../data/auroradb';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -46,11 +40,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
                 const reformedFareType = camelCase(fareType.split('carnet')[1]) as 'flatFare' | 'period';
                 updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, { fareType: reformedFareType });
-                if (globalSettingsEnabled) {
-                    redirectTo(res, '/selectPassengerType');
-                } else {
-                    redirectTo(res, '/passengerType');
-                }
+                redirectTo(res, '/selectPassengerType');
+
                 return;
             }
             updateSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE, false);
@@ -58,15 +49,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 fareType,
             });
 
-            if (globalSettingsEnabled) {
-                redirectTo(res, '/selectPassengerType');
-            } else if (fareType === 'schoolService') {
-                updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType: 'schoolPupil' });
-                redirectTo(res, '/definePassengerType');
-                return;
-            } else {
-                redirectTo(res, '/passengerType');
-            }
+            redirectTo(res, '/selectPassengerType');
         } else {
             const errors: ErrorInfo[] = [
                 { id: 'radio-option-single', errorMessage: 'Choose a fare type from the options' },
