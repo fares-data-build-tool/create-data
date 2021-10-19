@@ -386,8 +386,8 @@ export const getLinesElement = (
         Name: { $t: `O/D pairs for ${lineName}` },
         distanceMatrixElements: {
             DistanceMatrixElement: isReturnTicket(ticket)
-                ? getDistanceMatrixElements(ticket.outboundFareZones)
-                : ticket.fareZones,
+                ? getDistanceMatrixElements(ticket.outboundFareZones.concat(ticket.inboundFareZones))
+                : getDistanceMatrixElements(ticket.fareZones),
         },
         GenericParameterAssignment: {
             version: '1.0',

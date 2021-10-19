@@ -1142,6 +1142,27 @@
                       <StartTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
                       <EndTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
                     </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Shott_Drive+The_Stag_pub">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.00"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Shott_Drive+Frederick_Drive">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="The_Stag_pub+Frederick_Drive">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
+                    </DistanceMatrixElement>
                   </distanceMatrixElements>
                   <GenericParameterAssignment version="1.0" order="01" id="Tariff@period@lines">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
@@ -1302,30 +1323,12 @@
                 <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c2@The_Stag_pub" order="2">
                   <Name>The Stag pub</Name>
                 </FareTableColumn>
-                <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c3@Frederick_Drive" order="3">
-                  <Name>Frederick Drive</Name>
-                </FareTableColumn>
-                <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c4@Shott_Drive" order="4">
-                  <Name>Shott Drive</Name>
-                </FareTableColumn>
-                <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c5@The_Stag_pub" order="5">
-                  <Name>The Stag pub</Name>
-                </FareTableColumn>
               </columns>
               <rows>
                 <FareTableRow version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r1@Frederick_Drive" order="1">
                   <Name>Frederick Drive</Name>
                 </FareTableRow>
                 <FareTableRow version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r2@The_Stag_pub" order="2">
-                  <Name>The Stag pub</Name>
-                </FareTableRow>
-                <FareTableRow version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r3@Shott_Drive" order="3">
-                  <Name>Shott Drive</Name>
-                </FareTableRow>
-                <FareTableRow version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r4@Frederick_Drive" order="4">
-                  <Name>Frederick Drive</Name>
-                </FareTableRow>
-                <FareTableRow version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r5@The_Stag_pub" order="5">
                   <Name>The Stag pub</Name>
                 </FareTableRow>
               </rows>
@@ -1340,7 +1343,7 @@
                         <DistanceMatrixElementRef version="1.0" ref="Shott_Drive+The_Stag_pub"/>
                       </DistanceMatrixElementPrice>
                       <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c1@Shott_Drive"/>
-                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r5@The_Stag_pub"/>
+                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r2@The_Stag_pub"/>
                     </Cell>
                     <Cell version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@Shott_Drive" order="2">
                       <DistanceMatrixElementPrice version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@Shott_Drive+Frederick_Drive">
@@ -1348,7 +1351,7 @@
                         <DistanceMatrixElementRef version="1.0" ref="Shott_Drive+Frederick_Drive"/>
                       </DistanceMatrixElementPrice>
                       <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c1@Shott_Drive"/>
-                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r4@Frederick_Drive"/>
+                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r1@Frederick_Drive"/>
                     </Cell>
                   </cells>
                 </FareTable>
@@ -1362,46 +1365,6 @@
                         <DistanceMatrixElementRef version="1.0" ref="The_Stag_pub+Frederick_Drive"/>
                       </DistanceMatrixElementPrice>
                       <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c2@The_Stag_pub"/>
-                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r4@Frederick_Drive"/>
-                    </Cell>
-                  </cells>
-                </FareTable>
-                <FareTable id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c3@Frederick_Drive" version="1.0">
-                  <Name>Frederick Drive</Name>
-                  <Description>Column 3</Description>
-                </FareTable>
-                <FareTable id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c4@Shott_Drive" version="1.0">
-                  <Name>Shott Drive</Name>
-                  <Description>Column 4</Description>
-                  <cells>
-                    <Cell version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@Shott_Drive" order="1">
-                      <DistanceMatrixElementPrice version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@Shott_Drive+The_Stag_pub">
-                        <GeographicalIntervalPriceRef version="1.0" ref="price_band_1.00@anyone"/>
-                        <DistanceMatrixElementRef version="1.0" ref="Shott_Drive+The_Stag_pub"/>
-                      </DistanceMatrixElementPrice>
-                      <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c4@Shott_Drive"/>
-                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r2@The_Stag_pub"/>
-                    </Cell>
-                    <Cell version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@Shott_Drive" order="2">
-                      <DistanceMatrixElementPrice version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@Shott_Drive+Frederick_Drive">
-                        <GeographicalIntervalPriceRef version="1.0" ref="price_band_1.10@anyone"/>
-                        <DistanceMatrixElementRef version="1.0" ref="Shott_Drive+Frederick_Drive"/>
-                      </DistanceMatrixElementPrice>
-                      <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c4@Shott_Drive"/>
-                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r1@Frederick_Drive"/>
-                    </Cell>
-                  </cells>
-                </FareTable>
-                <FareTable id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c5@The_Stag_pub" version="1.0">
-                  <Name>The Stag pub</Name>
-                  <Description>Column 5</Description>
-                  <cells>
-                    <Cell version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@The_Stag_pub" order="1">
-                      <DistanceMatrixElementPrice version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@The_Stag_pub+Frederick_Drive">
-                        <GeographicalIntervalPriceRef version="1.0" ref="price_band_1.10@anyone"/>
-                        <DistanceMatrixElementRef version="1.0" ref="The_Stag_pub+Frederick_Drive"/>
-                      </DistanceMatrixElementPrice>
-                      <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c5@The_Stag_pub"/>
                       <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@r1@Frederick_Drive"/>
                     </Cell>
                   </cells>
@@ -1429,30 +1392,12 @@
                 <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c2@The_Stag_pub" order="2">
                   <Name>The Stag pub</Name>
                 </FareTableColumn>
-                <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c3@Frederick_Drive" order="3">
-                  <Name>Frederick Drive</Name>
-                </FareTableColumn>
-                <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c4@Shott_Drive" order="4">
-                  <Name>Shott Drive</Name>
-                </FareTableColumn>
-                <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c5@The_Stag_pub" order="5">
-                  <Name>The Stag pub</Name>
-                </FareTableColumn>
               </columns>
               <rows>
                 <FareTableRow version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r1@Frederick_Drive" order="1">
                   <Name>Frederick Drive</Name>
                 </FareTableRow>
                 <FareTableRow version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r2@The_Stag_pub" order="2">
-                  <Name>The Stag pub</Name>
-                </FareTableRow>
-                <FareTableRow version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r3@Shott_Drive" order="3">
-                  <Name>Shott Drive</Name>
-                </FareTableRow>
-                <FareTableRow version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r4@Frederick_Drive" order="4">
-                  <Name>Frederick Drive</Name>
-                </FareTableRow>
-                <FareTableRow version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r5@The_Stag_pub" order="5">
                   <Name>The Stag pub</Name>
                 </FareTableRow>
               </rows>
@@ -1467,7 +1412,7 @@
                         <DistanceMatrixElementRef version="1.0" ref="Shott_Drive+The_Stag_pub"/>
                       </DistanceMatrixElementPrice>
                       <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c1@Shott_Drive"/>
-                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r5@The_Stag_pub"/>
+                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r2@The_Stag_pub"/>
                     </Cell>
                     <Cell version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@Shott_Drive" order="2">
                       <DistanceMatrixElementPrice version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@Shott_Drive+Frederick_Drive">
@@ -1475,7 +1420,7 @@
                         <DistanceMatrixElementRef version="1.0" ref="Shott_Drive+Frederick_Drive"/>
                       </DistanceMatrixElementPrice>
                       <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c1@Shott_Drive"/>
-                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r4@Frederick_Drive"/>
+                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r1@Frederick_Drive"/>
                     </Cell>
                   </cells>
                 </FareTable>
@@ -1489,46 +1434,6 @@
                         <DistanceMatrixElementRef version="1.0" ref="The_Stag_pub+Frederick_Drive"/>
                       </DistanceMatrixElementPrice>
                       <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c2@The_Stag_pub"/>
-                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r4@Frederick_Drive"/>
-                    </Cell>
-                  </cells>
-                </FareTable>
-                <FareTable id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c3@Frederick_Drive" version="1.0">
-                  <Name>Frederick Drive</Name>
-                  <Description>Column 3</Description>
-                </FareTable>
-                <FareTable id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c4@Shott_Drive" version="1.0">
-                  <Name>Shott Drive</Name>
-                  <Description>Column 4</Description>
-                  <cells>
-                    <Cell version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@Shott_Drive" order="1">
-                      <DistanceMatrixElementPrice version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@Shott_Drive+The_Stag_pub">
-                        <GeographicalIntervalPriceRef version="1.0" ref="price_band_1.00@anyone"/>
-                        <DistanceMatrixElementRef version="1.0" ref="Shott_Drive+The_Stag_pub"/>
-                      </DistanceMatrixElementPrice>
-                      <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c4@Shott_Drive"/>
-                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r2@The_Stag_pub"/>
-                    </Cell>
-                    <Cell version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@Shott_Drive" order="2">
-                      <DistanceMatrixElementPrice version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@Shott_Drive+Frederick_Drive">
-                        <GeographicalIntervalPriceRef version="1.0" ref="price_band_1.10@anyone"/>
-                        <DistanceMatrixElementRef version="1.0" ref="Shott_Drive+Frederick_Drive"/>
-                      </DistanceMatrixElementPrice>
-                      <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c4@Shott_Drive"/>
-                      <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r1@Frederick_Drive"/>
-                    </Cell>
-                  </cells>
-                </FareTable>
-                <FareTable id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c5@The_Stag_pub" version="1.0">
-                  <Name>The Stag pub</Name>
-                  <Description>Column 5</Description>
-                  <cells>
-                    <Cell version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@The_Stag_pub" order="1">
-                      <DistanceMatrixElementPrice version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@The_Stag_pub+Frederick_Drive">
-                        <GeographicalIntervalPriceRef version="1.0" ref="price_band_1.10@anyone"/>
-                        <DistanceMatrixElementRef version="1.0" ref="The_Stag_pub+Frederick_Drive"/>
-                      </DistanceMatrixElementPrice>
-                      <ColumnRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c5@The_Stag_pub"/>
                       <RowRef versionRef="1" ref="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@r1@Frederick_Drive"/>
                     </Cell>
                   </cells>
