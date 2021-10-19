@@ -551,6 +551,7 @@ export interface MyFaresPointToPointProduct {
 }
 
 export interface MyFaresOtherFaresProduct {
+    id: number;
     productDescription: string;
     type: string;
     duration: string;

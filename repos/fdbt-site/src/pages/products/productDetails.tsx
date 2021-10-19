@@ -64,6 +64,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const productDetailsElements: ProductDetailsElement[] = [];
 
+    if ('selectedServices' in ticket) {
+        productDetailsElements.push({
+            name: 'Services',
+            content: await Promise.all(
+                ticket.selectedServices.map(async (service) => {
+                    return `${service.lineName} - ${service.serviceDescription}`;
+                }),
+            ),
+        });
+    }
+
     if ('serviceDescription' in ticket) {
         productDetailsElements.push({
             name: 'Service',
@@ -77,6 +88,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
     productDetailsElements.push({ name: 'Passenger type', content: passengerTypeName });
+
+    if ('zoneName' in ticket) {
+        productDetailsElements.push({ name: 'Zone', content: ticket.zoneName });
+    }
 
     const isSchoolTicket = 'termTime' in ticket && ticket.termTime;
     if (!isSchoolTicket) {
@@ -120,7 +135,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         content: await Promise.all(
             product.salesOfferPackages.map(async (sop) => {
                 const fullSop = await getSalesOfferPackageByIdAndNoc(sop.id, noc);
-                return fullSop.name;
+                let content = fullSop.name;
+                if (sop.price) {
+                    content = `${fullSop.name} - £${sop.price}`;
+                }
+                return content;
             }),
         ),
     });
@@ -140,6 +159,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             : isSchoolTicket
             ? `${passengerTypeName} - ${sentenceCaseString(ticket.type)} (school)`
             : `${passengerTypeName} - ${sentenceCaseString(ticket.type)}`;
+
+    console.log(ticket);
 
     return {
         props: {

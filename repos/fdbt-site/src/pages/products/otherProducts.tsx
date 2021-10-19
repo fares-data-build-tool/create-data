@@ -74,7 +74,9 @@ const otherProductsTable = (otherProducts: MyFaresOtherFaresProduct[]): ReactEle
                         ? otherProducts.map((product, index) => (
                               <tr className="govuk-table__row" key={`product-${index}`}>
                                   <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width">
-                                      {product.productDescription}
+                                      <a href={`/products/productDetails?productId=${product.id}`}>
+                                          {product.productDescription}
+                                      </a>
                                   </td>
                                   <td className="govuk-table__cell">{sentenceCaseString(product.type)}</td>
                                   <td className="govuk-table__cell">{product.duration}</td>
@@ -121,6 +123,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                                 '';
                             const startDate = product.startDate;
                             const endDate = product.endDate;
+                            const id = product.id;
                             return {
                                 productDescription,
                                 type,
@@ -129,6 +132,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                                 passengerType,
                                 startDate,
                                 endDate,
+                                id,
                                 carnet: 'carnetDetails' in innerProduct && !!innerProduct.carnetDetails,
                             };
                         }),
