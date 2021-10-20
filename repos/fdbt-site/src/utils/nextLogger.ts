@@ -37,7 +37,7 @@ const getMessage = (obj: AnyError): string => {
 
 type AnyError = (Error & { [key: string]: unknown }) | string[] | string;
 
-const consoleMethods: (keyof Console)[] = ['log', 'debug', 'info', 'warn', 'error'];
+const consoleMethods: ('log' | 'debug' | 'info' | 'warn' | 'error')[] = ['log', 'debug', 'info', 'warn', 'error'];
 
 consoleMethods.forEach((method) => {
     // eslint-disable-next-line no-console

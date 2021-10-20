@@ -4,11 +4,10 @@ import Papa from 'papaparse';
 import { putDataInS3 } from '../../data/s3';
 import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
 import { redirectToError, redirectTo, getUuidFromSession } from '../../utils/apiUtils';
-import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE } from '../../constants/attributes';
+import { INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE, DIRECTION_ATTRIBUTE } from '../../constants/attributes';
 import { getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isJourney } from '../../interfaces/typeGuards';
 
 const errorId = 'csv-upload';
 
@@ -235,9 +234,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'csv' });
             updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
 
-            const journeyAttribute = getSessionAttribute(req, JOURNEY_ATTRIBUTE);
+            const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
 
-            if (isJourney(journeyAttribute) && journeyAttribute?.outboundJourney) {
+            if (directionAttribute && 'inboundDirection' in directionAttribute && directionAttribute.inboundDirection) {
                 redirectTo(res, '/outboundMatching');
                 return;
             }

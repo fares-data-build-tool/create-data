@@ -24,7 +24,8 @@
     "rootDir": "./",
     "jsx": "preserve",
     "sourceMap": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "useUnknownInCatchVariables": false,
   },
   "include": [
     "server",

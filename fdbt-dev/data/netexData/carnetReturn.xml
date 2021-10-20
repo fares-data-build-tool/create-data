@@ -284,48 +284,58 @@
             <FareZone version="1.0" id="fs@Shott_Drive">
               <Name>Shott Drive</Name>
               <members>
+                <ScheduledStopPointRef ref="atco:2500B0636" version="any">Bibby Drive, Staining</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2590B0658" version="any">Central Library, Blackpool</ScheduledStopPointRef>
               </members>
             </FareZone>
             <FareZone version="1.0" id="fs@The_Stag_pub">
               <Name>The Stag pub</Name>
               <members>
+                <ScheduledStopPointRef ref="atco:2500B0637" version="any">Meadow Park, Staining</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0007" version="any">Milton Avenue, Kingscote</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2590BTA01313" version="any">Talbot Road, Blackpool Town Centre</ScheduledStopPointRef>
               </members>
             </FareZone>
             <FareZone version="1.0" id="fs@Frederick_Drive">
               <Name>Frederick Drive</Name>
               <members>
+                <ScheduledStopPointRef ref="atco:2500B0638" version="any">Primary School, Staining</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2590BTA01318" version="any">Hospital Entrance, Victoria Hospital</ScheduledStopPointRef>
               </members>
             </FareZone>
             <FareZone version="1.0" id="fs@Red_Lane">
               <Name>Red Lane</Name>
               <members>
+                <ScheduledStopPointRef ref="atco:2500LAA16042" version="any">Moons Farm, Newton</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2590B0009" version="any">Lakeway, St Walburgas</ScheduledStopPointRef>
               </members>
             </FareZone>
             <FareZone version="1.0" id="fs@Rail_Station">
               <Name>Rail Station</Name>
               <members>
+                <ScheduledStopPointRef ref="atco:2500B0640" version="any">Newton Hall Holiday Centre, Normoss</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0024" version="any">Collingwood Avenue, Layton</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2590BTA01109" version="any">Layton Rd, Layton</ScheduledStopPointRef>
               </members>
             </FareZone>
             <FareZone version="1.0" id="fs@Redtree_Street">
               <Name>Redtree Street</Name>
               <members>
+                <ScheduledStopPointRef ref="atco:2500B0641" version="any">Shaftesbury Avenue, Normoss</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2500IMG437" version="any">Newton Hall Holiday Centre, Newton</ScheduledStopPointRef>
               </members>
             </FareZone>
             <FareZone version="1.0" id="fs@Park_Lane">
               <Name>Park Lane</Name>
               <members>
+                <ScheduledStopPointRef ref="atco:2500B0639" version="any">The Newton Arms, Normoss</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2500B0635" version="any">Bibby Drive, Staining</ScheduledStopPointRef>
               </members>
             </FareZone>
             <FareZone version="1.0" id="fs@Daws_Bank/Plough_Ave">
               <Name>Daws Bank/Plough Ave</Name>
               <members>
+                <ScheduledStopPointRef ref="atco:2500B0017" version="any">Staining Road End, Normoss</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2590B0014" version="any">Bathurst Avenue, Grange Park</ScheduledStopPointRef>
               </members>
             </FareZone>
@@ -430,6 +440,202 @@
                 <FareStructureElement version="1.0" id="Tariff@return@lines">
                   <Name>O/D pairs for 19</Name>
                   <distanceMatrixElements>
+                    <DistanceMatrixElement version="1.0" id="Shott_Drive+The_Stag_pub">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Shott_Drive+Frederick_Drive">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Shott_Drive+Red_Lane">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Red_Lane"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Shott_Drive+Rail_Station">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Rail_Station"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Shott_Drive+Redtree_Street">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Redtree_Street"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Shott_Drive+Park_Lane">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Park_Lane"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Shott_Drive+Daws_Bank/Plough_Ave">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Daws_Bank/Plough_Ave"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="The_Stag_pub+Frederick_Drive">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="The_Stag_pub+Red_Lane">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Red_Lane"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="The_Stag_pub+Rail_Station">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Rail_Station"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="The_Stag_pub+Redtree_Street">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Redtree_Street"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="The_Stag_pub+Park_Lane">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Park_Lane"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="The_Stag_pub+Daws_Bank/Plough_Ave">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Daws_Bank/Plough_Ave"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Frederick_Drive+Red_Lane">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Red_Lane"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Frederick_Drive+Rail_Station">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Rail_Station"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Frederick_Drive+Redtree_Street">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Redtree_Street"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Frederick_Drive+Park_Lane">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Park_Lane"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Frederick_Drive+Daws_Bank/Plough_Ave">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Daws_Bank/Plough_Ave"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Red_Lane+Rail_Station">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Red_Lane"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Rail_Station"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Red_Lane+Redtree_Street">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Red_Lane"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Redtree_Street"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Red_Lane+Park_Lane">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Red_Lane"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Park_Lane"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Red_Lane+Daws_Bank/Plough_Ave">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.70"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Red_Lane"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Daws_Bank/Plough_Ave"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Rail_Station+Redtree_Street">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.00"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Rail_Station"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Redtree_Street"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Rail_Station+Park_Lane">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.00"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Rail_Station"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Park_Lane"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Rail_Station+Daws_Bank/Plough_Ave">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.00"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Rail_Station"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Daws_Bank/Plough_Ave"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Redtree_Street+Park_Lane">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.00"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Redtree_Street"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Park_Lane"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Redtree_Street+Daws_Bank/Plough_Ave">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.00"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Redtree_Street"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Daws_Bank/Plough_Ave"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Park_Lane+Daws_Bank/Plough_Ave">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.00"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Park_Lane"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Daws_Bank/Plough_Ave"/>
+                    </DistanceMatrixElement>
                     <DistanceMatrixElement version="1.0" id="Shott_Drive+The_Stag_pub">
                       <priceGroups>
                         <PriceGroupRef version="1.0" ref="price_band_1.10"/>

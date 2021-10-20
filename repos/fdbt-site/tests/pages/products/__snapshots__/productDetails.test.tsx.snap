@@ -1,0 +1,223 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`myfares pages productDetails should render correctly 1`] = `
+<TwoThirdsLayout
+  description="Product Details page of the Create Fares Data Service"
+  errors={Array []}
+  title="Product Details - Create Fares Data Service"
+>
+  <h1
+    className="govuk-heading-l"
+  >
+    Carnet Return Test
+  </h1>
+  <div
+    className="govuk-hint"
+    id="contact-hint"
+  >
+    Product status: 
+    <strong
+      className="govuk-tag govuk-tag--turquoise"
+    >
+      Active
+    </strong>
+  </div>
+  <dl
+    className="govuk-summary-list"
+    key="Service"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Service"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Service
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          key="19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)"
+        >
+          19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)
+        </div>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Passenger type"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Passenger type"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Passenger type
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          key="Adult Test"
+        >
+          Adult Test
+        </div>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Time restriction"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Time restriction"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Time restriction
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          key="N/A"
+        >
+          N/A
+        </div>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Quantity in bundle"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Quantity in bundle"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Quantity in bundle
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          key="2"
+        >
+          2
+        </div>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Carnet expiry"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Carnet expiry"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Carnet expiry
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          key="22 year(s)"
+        >
+          22 year(s)
+        </div>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Purchase methods"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Purchase methods"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Purchase methods
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          key="SOP Test 1"
+        >
+          SOP Test 1
+        </div>
+        <div
+          key="SOP Test 2"
+        >
+          SOP Test 2
+        </div>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Start date"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Start date"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Start date
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          key="18/10/2021"
+        >
+          18/10/2021
+        </div>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="End date"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="End date"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        End date
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          key="18/10/2121"
+        >
+          18/10/2121
+        </div>
+      </dd>
+    </div>
+  </dl>
+</TwoThirdsLayout>
+`;

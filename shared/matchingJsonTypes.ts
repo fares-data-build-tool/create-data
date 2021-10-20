@@ -74,7 +74,8 @@ export type Ticket =
     | PeriodHybridTicket;
 
 export type TicketWithIds =
-    | WithIds<PointToPointTicket>
+    | WithIds<SingleTicket>
+    | WithIds<ReturnTicket>
     | WithIds<GeoZoneTicket>
     | WithIds<PeriodMultipleServicesTicket>
     | WithIds<FlatFareTicket>
@@ -207,6 +208,7 @@ export interface SingleTicket extends BasePointToPointTicket {
     type: 'single';
     fareZones: FareZone[];
     termTime: boolean;
+    journeyDirection?: 'Inbound' | 'Outbound' | 'Clockwise' | 'Anti-Clockwise';
 }
 
 export interface ReturnTicket extends BasePointToPointTicket {
