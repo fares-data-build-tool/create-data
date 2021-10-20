@@ -374,6 +374,34 @@ export const getFareTables = (
     });
 };
 
+/**
+ * This method will combine `ticket.outboundFareZones` and `ticket.inboundFareZones`
+ * by finding unique fare zones between inbound and outbound also combine their unique stops
+ *
+ * @param outbound an array of outbound fare zones.
+ * @param inbound an array of inbound fare zones.
+ *
+ * @returns a new array combining the inbound and outbound without duplication of fare zones or their stops.
+ */
+export const combineFareZones = (outbound: FareZone[], inbound: FareZone[]): FareZone[] => {
+    const combinedFareZones = [...outbound];
+
+    inbound.forEach(zone => {
+        const outboundZone = combinedFareZones.find(x => x.name == zone.name);
+        if (!outboundZone) {
+            combinedFareZones.push(zone);
+        } else {
+            zone.stops.forEach(stop => {
+                if (!outboundZone.stops.some(s => s.naptanCode === stop.naptanCode)) {
+                    outboundZone.stops.push(stop);
+                }
+            });
+        }
+    });
+
+    return combinedFareZones;
+};
+
 export const getLinesElement = (
     ticket: PointToPointTicket | PointToPointPeriodTicket,
     lineName: string,
@@ -386,7 +414,7 @@ export const getLinesElement = (
         Name: { $t: `O/D pairs for ${lineName}` },
         distanceMatrixElements: {
             DistanceMatrixElement: isReturnTicket(ticket)
-                ? getDistanceMatrixElements(ticket.outboundFareZones.concat(ticket.inboundFareZones))
+                ? getDistanceMatrixElements(combineFareZones(ticket.outboundFareZones, ticket.inboundFareZones))
                 : getDistanceMatrixElements(ticket.fareZones),
         },
         GenericParameterAssignment: {
