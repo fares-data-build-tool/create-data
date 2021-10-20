@@ -2,7 +2,6 @@ import { startCase } from 'lodash';
 import { PointToPointPeriodTicket } from '../../shared/matchingJsonTypes';
 import {
     isBaseSchemeOperatorInfo,
-    FareZone,
     isGeoZoneTicket,
     isHybridTicket,
     isMultiOperatorGeoZoneTicket,
@@ -41,6 +40,7 @@ import {
     getPointToPointScheduledStopPointsList,
     getPreassignedFareProduct,
     getPriceGroups,
+    combineFareZones,
 } from './point-to-point-tickets/pointToPointTicketNetexHelpers';
 import {
     convertJsonToXml,
@@ -287,34 +287,6 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         }
 
         return null;
-    };
-
-    /**
-     * This method will combine `ticket.outboundFareZones` and `ticket.inboundFareZones`
-     * by finding unique fare zones between inbound and outbound also combine their unique stops
-     *
-     * @param outbound an array of outbound fare zones.
-     * @param inbound an array of inbound fare zones.
-     *
-     * @returns a new array combining the inbound and outbound without duplication of fare zones or their stops.
-     */
-    const combineFareZones = (outbound: FareZone[], inbound: FareZone[]): FareZone[] => {
-        const combinedFareZones = [...outbound];
-
-        inbound.forEach(zone => {
-            const outboundZone = combinedFareZones.find(x => x.name == zone.name);
-            if (!outboundZone) {
-                combinedFareZones.push(zone);
-            } else {
-                zone.stops.forEach(stop => {
-                    if (!outboundZone.stops.some(s => s.naptanCode === stop.naptanCode)) {
-                        outboundZone.stops.push(stop);
-                    }
-                });
-            }
-        });
-
-        return combinedFareZones;
     };
 
     // This method is called for all point-to-point-type tickets instead of 'updateNetworkFareFrame'.

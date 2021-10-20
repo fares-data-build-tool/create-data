@@ -1142,27 +1142,6 @@
                       <StartTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
                       <EndTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
                     </DistanceMatrixElement>
-                    <DistanceMatrixElement version="1.0" id="Shott_Drive+The_Stag_pub">
-                      <priceGroups>
-                        <PriceGroupRef version="1.0" ref="price_band_1.00"/>
-                      </priceGroups>
-                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
-                      <EndTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
-                    </DistanceMatrixElement>
-                    <DistanceMatrixElement version="1.0" id="Shott_Drive+Frederick_Drive">
-                      <priceGroups>
-                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
-                      </priceGroups>
-                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
-                      <EndTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
-                    </DistanceMatrixElement>
-                    <DistanceMatrixElement version="1.0" id="The_Stag_pub+Frederick_Drive">
-                      <priceGroups>
-                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
-                      </priceGroups>
-                      <StartTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
-                      <EndTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
-                    </DistanceMatrixElement>
                   </distanceMatrixElements>
                   <GenericParameterAssignment version="1.0" order="01" id="Tariff@period@lines">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
