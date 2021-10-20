@@ -529,6 +529,7 @@ export interface MyFaresService {
 }
 
 export interface MyFaresProduct {
+    id: number;
     lineId: string;
     matchingJsonLink: string;
     startDate: string;
@@ -542,6 +543,7 @@ export interface MyFaresServiceWithProductCount extends MyFaresService {
 }
 
 export interface MyFaresPointToPointProduct {
+    id: number;
     productDescription: string;
     validity: string;
     startDate: string;
@@ -623,6 +625,11 @@ export interface ConfirmationElement {
     name: string;
     content: string | string[];
     href: string;
+}
+
+export interface ProductDetailsElement {
+    name: string;
+    content: string | string[];
 }
 
 export interface RadioOption {

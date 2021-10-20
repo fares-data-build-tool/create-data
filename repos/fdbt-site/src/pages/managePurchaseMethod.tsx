@@ -10,7 +10,7 @@ import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementW
 import { sentenceCaseString } from '../utils';
 import { FromDb, SalesOfferPackage } from '../../shared/matchingJsonTypes';
 import { GlobalSettingsManageProps, getGlobalSettingsManageProps } from '../utils/globalSettings';
-import { getSalesOfferPackageById } from '../data/auroradb';
+import { getSalesOfferPackageByIdAndNoc } from '../data/auroradb';
 import InformationSummary from '../components/InformationSummary';
 
 const title = 'Manage Purchase Methods - Create Fares Data Service';
@@ -265,7 +265,7 @@ export const getServerSideProps = async (
 ): Promise<{ props: ManagePurchaseMethodsProps }> => {
     return await getGlobalSettingsManageProps<FromDb<SalesOfferPackage>>(
         ctx,
-        getSalesOfferPackageById,
+        getSalesOfferPackageByIdAndNoc,
         getSessionAttribute(ctx.req, GS_PURCHASE_METHOD_ATTRIBUTE),
     );
 };
