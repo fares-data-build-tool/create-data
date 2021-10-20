@@ -44,6 +44,7 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
 
 export const getPriceGroups = (matchingData: PointToPointTicket | PointToPointPeriodTicket): {}[] => {
     const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
+
     const priceGroups = getUniquePriceGroups(fareZones).map(price => ({
         version: '1.0',
         id: `price_band_${price}`,
@@ -384,9 +385,9 @@ export const getLinesElement = (
         id: `Tariff@${typeOfPointToPoint}@lines`,
         Name: { $t: `O/D pairs for ${lineName}` },
         distanceMatrixElements: {
-            DistanceMatrixElement: getDistanceMatrixElements(
-                isReturnTicket(ticket) ? ticket.outboundFareZones : ticket.fareZones,
-            ),
+            DistanceMatrixElement: isReturnTicket(ticket)
+                ? getDistanceMatrixElements(ticket.outboundFareZones.concat(ticket.inboundFareZones))
+                : getDistanceMatrixElements(ticket.fareZones),
         },
         GenericParameterAssignment: {
             version: '1.0',

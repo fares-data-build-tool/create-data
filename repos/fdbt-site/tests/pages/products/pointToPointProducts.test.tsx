@@ -37,6 +37,7 @@ describe('myfares pages', () => {
                     }}
                     products={[
                         {
+                            id: 1,
                             productDescription: 'Adult - single',
                             validity: 'Monday, Tuesday',
                             startDate: '05/04/2020',
@@ -63,24 +64,28 @@ describe('myfares pages', () => {
                 },
                 [
                     {
+                        id: 1,
                         lineId: 'wefawefa',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2018',
                         endDate: '10/04/2019',
                     },
                     {
+                        id: 2,
                         lineId: 'wefawefa',
                         matchingJsonLink: '/path/to/json',
                         startDate: '01/01/2021',
                         endDate: '04/04/2021',
                     },
                     {
+                        id: 3,
                         lineId: 'wefawefa',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2020',
                         endDate: '10/04/2020',
                     },
                     {
+                        id: 4,
                         lineId: 'wefawefa',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2020',
@@ -91,6 +96,7 @@ describe('myfares pages', () => {
             expect(result).toEqual([
                 {
                     endDate: '04/04/2021',
+                    id: 2,
                     lineId: 'wefawefa',
                     matchingJsonLink: '/path/to/json',
                     startDate: '01/01/2021',
@@ -110,24 +116,28 @@ describe('myfares pages', () => {
                 },
                 [
                     {
+                        id: 1,
                         lineId: 'blah1',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2012',
                         endDate: '10/04/2012',
                     },
                     {
+                        id: 2,
                         lineId: 'blah2',
                         matchingJsonLink: '/path/to/json',
                         startDate: '01/01/2014',
                         endDate: '04/04/2015',
                     },
                     {
+                        id: 3,
                         lineId: 'blah3',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2022',
                         endDate: '10/04/2022',
                     },
                     {
+                        id: 4,
                         lineId: 'blah4',
                         matchingJsonLink: '/path/to/json',
                         startDate: '12/12/2021',

@@ -10,7 +10,7 @@ import {
     getBodsServiceByNocAndId,
     getPassengerTypeNameById,
     getPointToPointProductsByLineId,
-    getTimeRestrictionById,
+    getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import { getAndValidateNoc } from '../../utils';
@@ -76,7 +76,9 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[]): Reac
                         ? products.map((product, index) => (
                               <tr key={index} className="govuk-table__row">
                                   <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell">
-                                      {product.productDescription}
+                                      <a href={`/products/productDetails?productId=${product.id}`}>
+                                          {product.productDescription}
+                                      </a>
                                   </td>
                                   <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell">
                                       {product.validity}
@@ -136,7 +138,7 @@ export const getServerSideProps = async (
             let timeRestriction = 'No restrictions';
 
             if (matchingJson.timeRestriction) {
-                const timeRestrictionFromDb = await getTimeRestrictionById(matchingJson.timeRestriction.id, noc);
+                const timeRestrictionFromDb = await getTimeRestrictionByIdAndNoc(matchingJson.timeRestriction.id, noc);
 
                 timeRestriction = timeRestrictionFromDb.name;
             }
@@ -146,6 +148,7 @@ export const getServerSideProps = async (
                 startDate: product.startDate,
                 endDate: product.endDate,
                 validity: timeRestriction,
+                id: product.id,
             };
         }),
     );
