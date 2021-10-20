@@ -942,18 +942,69 @@
             <FareZone version="1.0" id="fs@Shott_Drive">
               <Name>Shott Drive</Name>
               <members>
+                <ScheduledStopPointRef ref="atco:250014868" version="any">Bold Street, Fleetwood</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2590B0080" version="any">Corporation Street C04, Blackpool Town Centre</ScheduledStopPointRef>
               </members>
             </FareZone>
             <FareZone version="1.0" id="fs@The_Stag_pub">
               <Name>The Stag pub</Name>
               <members>
+                <ScheduledStopPointRef ref="atco:25001680" version="any">Albert Square, Fleetwood</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2590BTA01313" version="any">Talbot Road, Blackpool Town Centre</ScheduledStopPointRef>
               </members>
             </FareZone>
             <FareZone version="1.0" id="fs@Frederick_Drive">
               <Name>Frederick Drive</Name>
               <members>
+                <ScheduledStopPointRef ref="atco:2500DCL2158" version="any">St Marys Church, Fleetwood</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG2" version="any">Mount Street, Fleetwood</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500BTA01077" version="any">Elm Street, Fleetwood</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:250011593" version="any">Birch Street, Fleetwood</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:25002161" version="any">Agnew Road, Fleetwood</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:25001664" version="any">Aldi Poulton Road, Fleetwood</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:25001687" version="any">Queens Hotel, Fleetwood</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG726" version="any">Westview, Fleetwood</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500LAA16315" version="any">Health Village, Broadwater</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:250011603" version="any">Flakefleet School, Broadwater</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500DCL2165" version="any">Flakefleet Avenue, Broadwater</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG767" version="any">Interchange, Broadwater</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:250020148" version="any">Jameson Road, Broadwater</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG746" version="any">Broadwater Caravan Park, Broadwater</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:250020149" version="any">Cala Gran, Broadwater</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG745" version="any">Venture Road, Broadwater</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500LAA16543" version="any">Iron Horse, Burn Naze</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG518" version="any">Bourne Poacher, Burn Naze</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:250014447" version="any">Springfield Drive, Burn Naze</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG510" version="any">Reta Drive, Burn Naze</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:250020137" version="any">Trunnah Church, Trunnah</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:250013370" version="any">Gardeners Arms, Thornton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500DCL155" version="any">Marsh Mill, Trunnah</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG615" version="any">Four Lane Ends, Thornton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:250013379" version="any">Neville Drive, Thornton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500BTA01078" version="any">Newton Grove, Norcross</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500LAA07546" version="any">New Lane, Rington</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500LAA07544" version="any">Arundel Drive, Rington</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG466" version="any">Castle Gardens, Carleton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG465" version="any">Greenheys Ave, Carleton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG464" version="any">Tudor Close, Carleton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500IMG463" version="any">Crematorium, Carleton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500DCL150" version="any">Meadow Crescent, Carleton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:250020144" version="any">Fairway, Carleton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:250010642" version="any">Blackpool Sixth Form College, Carleton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2500B0104" version="any">Aspire Academy, Carleton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0105" version="any">Poulton Old Road, Boundary Park</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0416" version="any">Petrol Station, Boundary Park</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0116" version="any">Rodwell Walk, Wades Farm</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0117" version="any">Meyler Avenue, North Shore</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0118" version="any">Mansfield Road, Layton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0119" version="any">Layton Institute, Layton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0342" version="any">Layton Square, Layton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0343" version="any">Rossall Road, Layton</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0344" version="any">Devonshire Road, Central</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0345" version="any">Greenhill, Central</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0346" version="any">Buchanan Street, Central</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0763" version="any">Talbot Road, Blackpool Town Centre</ScheduledStopPointRef>
+                <ScheduledStopPointRef ref="atco:2590B0080" version="any">Corporation Street C04, Blackpool Town Centre</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2590B0315" version="any">Buchanan Street, Central</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2590B0316" version="any">Spencer Court, Central</ScheduledStopPointRef>
                 <ScheduledStopPointRef ref="atco:2590B0317" version="any">Devonshire Road, Layton</ScheduledStopPointRef>
@@ -1070,6 +1121,27 @@
                 <FareStructureElement version="1.0" id="Tariff@period@lines">
                   <Name>O/D pairs for 2</Name>
                   <distanceMatrixElements>
+                    <DistanceMatrixElement version="1.0" id="Shott_Drive+The_Stag_pub">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.00"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="Shott_Drive+Frederick_Drive">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@Shott_Drive"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
+                    </DistanceMatrixElement>
+                    <DistanceMatrixElement version="1.0" id="The_Stag_pub+Frederick_Drive">
+                      <priceGroups>
+                        <PriceGroupRef version="1.0" ref="price_band_1.10"/>
+                      </priceGroups>
+                      <StartTariffZoneRef version="1.0" ref="fs@The_Stag_pub"/>
+                      <EndTariffZoneRef version="1.0" ref="fs@Frederick_Drive"/>
+                    </DistanceMatrixElement>
                     <DistanceMatrixElement version="1.0" id="Shott_Drive+The_Stag_pub">
                       <priceGroups>
                         <PriceGroupRef version="1.0" ref="price_band_1.00"/>
