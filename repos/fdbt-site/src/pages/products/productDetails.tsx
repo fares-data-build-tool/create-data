@@ -66,12 +66,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     if ('selectedServices' in ticket) {
         productDetailsElements.push({
-            name: 'Services',
-            content: await Promise.all(
-                ticket.selectedServices.map(async (service) => {
-                    return `${service.lineName} - ${service.serviceDescription}`;
-                }),
-            ),
+            name: `${noc} Services`,
+            content: await (
+                await Promise.all(
+                    ticket.selectedServices.map(async (service) => {
+                        return service.lineName;
+                    }),
+                )
+            ).join(', '),
         });
     }
 
@@ -103,6 +105,24 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         productDetailsElements.push({ name: 'Only valid during term time', content: 'Yes' });
     }
 
+    if ('additionalNocs' in ticket) {
+        productDetailsElements.push({
+            name: `Multi Operator Group`,
+            content: `${noc}, ${ticket.additionalNocs.join(', ')}`,
+        });
+    }
+
+    if ('additionalOperators' in ticket) {
+        ticket.additionalOperators.forEach((additionalOperator) => {
+            productDetailsElements.push({
+                name: `${additionalOperator.nocCode} Services`,
+                content: additionalOperator.selectedServices
+                    .map((selectedService) => selectedService.lineName)
+                    .join(', '),
+            });
+        });
+    }
+
     const product = ticket.products[0];
     if ('carnetDetails' in product && product.carnetDetails) {
         productDetailsElements.push({ name: 'Quantity in bundle', content: product.carnetDetails.quantity });
@@ -127,7 +147,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     if ('productValidity' in product && product.productValidity) {
-        productDetailsElements.push({ name: 'Product expiry', content: product.productValidity });
+        productDetailsElements.push({ name: 'Product expiry', content: sentenceCaseString(product.productValidity) });
     }
 
     productDetailsElements.push({

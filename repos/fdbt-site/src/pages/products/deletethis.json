@@ -1,578 +1,68 @@
-{
-    "nocCode": "BLAC",
-    "type": "multiOperator",
-    "passengerType": { "id": 2 },
-    "email": "test@example.com",
-    "uuid": "BLAC26cdf7fa",
-    "ticketPeriod": { "startDate": "2021-10-19T16:00:45.201Z", "endDate": "2121-10-19T16:00:45.201Z" },
-    "operatorName": "Test Operator",
-    "products": [
-        {
-            "productName": "Cypress product 3",
-            "productPrice": "12",
-            "productDuration": "22 months",
-            "productValidity": "24hr",
-            "salesOfferPackages": [{ "id": 1, "price": "12" }]
-        }
-    ],
-    "selectedServices": [
-        {
-            "lineName": "1",
-            "lineId": "4YyoI0",
-            "serviceCode": "NW_05_BLAC_1_1",
-            "startDate": "05/04/2020",
-            "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade"
-        },
-        {
-            "lineName": "2C",
-            "lineId": "null",
-            "serviceCode": "NW_05_BLAC_2C_1",
-            "startDate": "05/04/2020",
-            "serviceDescription": "KNOTT END - POULTON - BLACKPOOL"
-        },
-        {
-            "lineName": "4",
-            "lineId": "dPWnHm",
-            "serviceCode": "NW_05_BLAC_4_1",
-            "startDate": "05/04/2020",
-            "serviceDescription": "CLEVELEYS - MERESIDE via Blackpool"
-        },
-        {
-            "lineName": "17",
-            "lineId": "vySmf0",
-            "serviceCode": "NW_05_BLAC_17_1",
-            "startDate": "05/04/2020",
-            "serviceDescription": "BLACKPOOL - ST ANNES - LYTHAM"
-        }
-    ],
-    "additionalOperators": [
-        {
-            "nocCode": "PBLT",
-            "selectedServices": [
-                {
-                    "lineName": "2",
-                    "lineId": "tK1Ypq",
-                    "serviceCode": "NW_05_PBLT_2_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "CLITHEROE - CLITHEROE via Low Moor"
-                },
-                {
-                    "lineName": "3",
-                    "lineId": "lDJRAS",
-                    "serviceCode": "NW_05_PBLT_3_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "CLITHEROE - CLITHEROE via Pimlico, Chatburn, Pimlico"
-                },
-                {
-                    "lineName": "5",
-                    "lineId": "A2EHwY",
-                    "serviceCode": "NW_05_PBLT_5_3",
-                    "startDate": "02/01/2020",
-                    "serviceDescription": "ORMSKIRK - TOWN GREEN CIRCULAR"
-                },
-                {
-                    "lineName": "5",
-                    "lineId": "rsQPxH",
-                    "serviceCode": "NW_05_PBLT_5_1",
-                    "startDate": "04/01/2020",
-                    "serviceDescription": "ASDA - PRESTON"
-                },
-                {
-                    "lineName": "5",
-                    "lineId": "hvJZlD",
-                    "serviceCode": "NW_05_PBLT_5_2",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "CHIPPING - CLITHEROE via Knowle Green, Hurst Green, Barrow Brook"
-                },
-                {
-                    "lineName": "6",
-                    "lineId": "QEKjCa",
-                    "serviceCode": "NW_05_PBLT_6_2",
-                    "startDate": "02/01/2020",
-                    "serviceDescription": "ORMSKIRK - SCOTT ESTATE CIRCULAR"
-                },
-                {
-                    "lineName": "6",
-                    "lineId": "TLzdt9",
-                    "serviceCode": "NW_05_PBLT_6_1",
-                    "startDate": "30/03/2020",
-                    "serviceDescription": "PRESTON - PRESTON via Deepdale, Fulwood Barracks"
-                },
-                {
-                    "lineName": "8",
-                    "lineId": "J762Cw",
-                    "serviceCode": "NW_05_PBLT_8_1",
-                    "startDate": "30/03/2020",
-                    "serviceDescription": "PRESTON - PRESTON via Ribbleton Lane"
-                },
-                {
-                    "lineName": "15",
-                    "lineId": "lJMhmE",
-                    "serviceCode": "NW_05_PBLT_15_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "PRESTON - BROUGHTON via Longsands, ASDA, Royal Preston Hospital, Wychnor"
-                },
-                {
-                    "lineName": "16",
-                    "lineId": "rKup6F",
-                    "serviceCode": "NW_05_PBLT_16_1",
-                    "startDate": "29/03/2020",
-                    "serviceDescription": "PRESTON - PRESTON via New Hall Lane"
-                },
-                {
-                    "lineName": "19",
-                    "lineId": "2DFpsa",
-                    "serviceCode": "NW_05_PBLT_19_1",
-                    "startDate": "30/03/2020",
-                    "serviceDescription": "PRESTON - PRESTON via Deepdale, Sharoe Green Lane"
-                },
-                {
-                    "lineName": "23",
-                    "lineId": "nfAAUt",
-                    "serviceCode": "NW_05_PBLT_23_1",
-                    "startDate": "30/03/2020",
-                    "serviceDescription": "PRESTON - PRESTON via Plunginton Road, Black Bull Lane"
-                },
-                {
-                    "lineName": "25",
-                    "lineId": "qEZ9Yp",
-                    "serviceCode": "NW_05_PBLT_25_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "CLITHEROE - BLACKBURN via Langho, Lammack, St.Marys College"
-                },
-                {
-                    "lineName": "25A",
-                    "lineId": "6vtFUm",
-                    "serviceCode": "NW_05_PBLT_25A_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "MELLOR BROOK - BLACKBURN via Lammack, St.Marys College"
-                },
-                {
-                    "lineName": "31",
-                    "lineId": "CLbGqD",
-                    "serviceCode": "NW_05_PBLT_31_1",
-                    "startDate": "30/03/2020",
-                    "serviceDescription": "PRESTON - PRESTON via Brook Street, Lane Ends"
-                },
-                {
-                    "lineName": "35",
-                    "lineId": "NOfjDJ",
-                    "serviceCode": "NW_05_PBLT_35_1",
-                    "startDate": "30/03/2020",
-                    "serviceDescription": "PRESTON - PRESTON via Fylde Road, Lane Ends"
-                },
-                {
-                    "lineName": "44",
-                    "lineId": "7wabu9",
-                    "serviceCode": "NW_05_PBLT_44_1",
-                    "startDate": "30/03/2020",
-                    "serviceDescription": "PRESTON - PRESTON via University, Eldon Street, Lane Ends, Hoyles Lane"
-                },
-                {
-                    "lineName": "45",
-                    "lineId": "H7p1vx",
-                    "serviceCode": "NW_05_PBLT_45_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "PRESTON - BLACKBURN via Fulwood, RPH, Goosnargh, Whittingham, Salesbury, Wilpshire"
-                },
-                {
-                    "lineName": "75",
-                    "lineId": "yLmh4x",
-                    "serviceCode": "NW_05_PBLT_75_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "FLEETWOOD - PRESTON via Thornton, Singleton, Weeton, Newton, Riversway"
-                },
-                {
-                    "lineName": "89",
-                    "lineId": "mJq8BR",
-                    "serviceCode": "NW_05_PBLT_89_1",
-                    "startDate": "30/03/2020",
-                    "serviceDescription": "PRESTON - PRESTON via Park and Ride Portway, Riversway"
-                },
-                {
-                    "lineName": "112",
-                    "lineId": "Pg5jfF",
-                    "serviceCode": "NW_05_PBLT_112_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "PRESTON - MOSS SIDE via Frenchwood, Walton le Dale, Walton Summit, Clayton Green, Runshaw College, Midge Hall"
-                },
-                {
-                    "lineName": "114",
-                    "lineId": "gGKoEf",
-                    "serviceCode": "NW_05_PBLT_114_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "CHORLEY - PRESTON via Eaves Lane, Chorley Hospital, Whittle le Woods, Clayton Green, Farington Moss, Broadgate"
-                },
-                {
-                    "lineName": "119",
-                    "lineId": "egasoI",
-                    "serviceCode": "NW_05_PBLT_119_1",
-                    "startDate": "04/04/2016",
-                    "serviceDescription": "PRESTON - PRESTON COLLEGE"
-                },
-                {
-                    "lineName": "122",
-                    "lineId": "MxHdQl",
-                    "serviceCode": "NW_05_PBLT_122_1",
-                    "startDate": "04/04/2016",
-                    "serviceDescription": "FULWOOD HIGH SCHOOL - PRESTON BUS STATION"
-                },
-                {
-                    "lineName": "312",
-                    "lineId": "Z1mdfd",
-                    "serviceCode": "NW_05_PBLT_312_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "SKELMERSDALE - WRIGHTINGTON via Tanhouse, Hall Green"
-                },
-                {
-                    "lineName": "313",
-                    "lineId": "mXY9yR",
-                    "serviceCode": "NW_05_PBLT_313_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "BURSCOUGH - SKELMERSDALE via Newburgh, Birch Green"
-                },
-                {
-                    "lineName": "337",
-                    "lineId": "2ez6bM",
-                    "serviceCode": "NW_05_PBLT_337_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "CHORLEY - ORMSKIRK via Lower Burgh, Charnock Richard, Mawdesley, Parbold"
-                },
-                {
-                    "lineName": "347",
-                    "lineId": "xjyzCc",
-                    "serviceCode": "NW_05_PBLT_347_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "CHORLEY - SOUTHPORT via Gillibrands Park, Charnock Richard, Mawdesley, Rufford"
-                },
-                {
-                    "lineName": "400",
-                    "lineId": "MrQSXJ",
-                    "serviceCode": "NW_05_PBLT_400_1",
-                    "startDate": "08/09/2014",
-                    "serviceDescription": "FLEETWOOD - MYERSCOUGH COLLEGE via Cleveleys, Blackpool, Poulton"
-                },
-                {
-                    "lineName": "401",
-                    "lineId": "tldT1N",
-                    "serviceCode": "NW_05_PBLT_401_1",
-                    "startDate": "03/09/2018",
-                    "serviceDescription": "MYERSCOUGH COLLEGE - BARTON GRANGE CENTRE - MYERSCOUGH COLLEGE"
-                },
-                {
-                    "lineName": "433",
-                    "lineId": "35njy1",
-                    "serviceCode": "NW_05_PBLT_433_1",
-                    "startDate": "21/10/2013",
-                    "serviceDescription": "PRESTON RAILWAY STN - MYERSCOUGH COLLEGE"
-                },
-                {
-                    "lineName": "576",
-                    "lineId": "bbJ0Jz",
-                    "serviceCode": "NW_05_PBLT_576_1",
-                    "startDate": "03/09/2008",
-                    "serviceDescription": "FRIARGATE - CORPUS CHRISTI RCHS"
-                },
-                {
-                    "lineName": "656",
-                    "lineId": "1ohklL",
-                    "serviceCode": "NW_05_PBLT_656_1",
-                    "startDate": "09/01/2017",
-                    "serviceDescription": "BROADGATE - LEA - ASHTON - ARCHBISHOP TEMPLE HS"
-                },
-                {
-                    "lineName": "663",
-                    "lineId": "Celdst",
-                    "serviceCode": "NW_05_PBLT_663_1",
-                    "startDate": "16/09/2019",
-                    "serviceDescription": "HOLME SLACK - GAMULL LANE - BROOKFIELD - FULWOOD ACADEMY"
-                },
-                {
-                    "lineName": "664",
-                    "lineId": "klHUY0",
-                    "serviceCode": "NW_05_PBLT_664_1",
-                    "startDate": "03/09/2018",
-                    "serviceDescription": "NEW HALL LANE - FULWOOD ACADEMY via Brookfield"
-                },
-                {
-                    "lineName": "680",
-                    "lineId": "0Mj9Uk",
-                    "serviceCode": "NW_05_PBLT_680_1",
-                    "startDate": "03/09/2019",
-                    "serviceDescription": "HESKETH BANK - MUCH HOOLE - PENWORTHAM GIRLS HIGH SCHOOL"
-                },
-                {
-                    "lineName": "698",
-                    "lineId": "j8WvmR",
-                    "serviceCode": "NW_05_PBLT_698_1",
-                    "startDate": "24/02/2020",
-                    "serviceDescription": "WALTON PARK - PENWORTHAM ALL HALLOWS RCHS"
-                },
-                {
-                    "lineName": "731",
-                    "lineId": "NGvu3h",
-                    "serviceCode": "NW_05_PBLT_731_1",
-                    "startDate": "05/09/2018",
-                    "serviceDescription": "WALMER BRIDGE - PENWORTHAM ALL HALLOWS RCHS"
-                },
-                {
-                    "lineName": "853",
-                    "lineId": "moEMZC",
-                    "serviceCode": "NW_05_PBLT_853_1",
-                    "startDate": "12/09/2016",
-                    "serviceDescription": "ST ANNES -  MYERSCOUGH COLLEGE"
-                },
-                {
-                    "lineName": "959",
-                    "lineId": "DtzgR9",
-                    "serviceCode": "NW_05_PBLT_959_1",
-                    "startDate": "09/02/2012",
-                    "serviceDescription": "MILLER ROAD - CORPUS CHRISTI"
-                },
-                {
-                    "lineName": "960",
-                    "lineId": "AL0iw9",
-                    "serviceCode": "NW_05_PBLT_960_1",
-                    "startDate": "09/02/2012",
-                    "serviceDescription": "MILLER ROAD - CORPUS CHRISTI"
-                },
-                {
-                    "lineName": "961",
-                    "lineId": "w36xse",
-                    "serviceCode": "NW_05_PBLT_961_1",
-                    "startDate": "09/02/2012",
-                    "serviceDescription": "MOOR NOOK - CORPUS CHRISTI"
-                },
-                {
-                    "lineName": "962",
-                    "lineId": "6hh4Qe",
-                    "serviceCode": "NW_05_PBLT_962_1",
-                    "startDate": "09/02/2012",
-                    "serviceDescription": "FARRINGDON PARK - CORPUS CHRISTI"
-                },
-                {
-                    "lineName": "963",
-                    "lineId": "M4lj50",
-                    "serviceCode": "NW_05_PBLT_963_1",
-                    "startDate": "04/01/2012",
-                    "serviceDescription": "GAMULL LANE - CITY CENTRE - CORPUS CHRISTI"
-                },
-                {
-                    "lineName": "995",
-                    "lineId": "rQrd1b",
-                    "serviceCode": "NW_05_PBLT_995_1",
-                    "startDate": "08/09/2014",
-                    "serviceDescription": "CLITHEROE - WHALLEY - LONGRIDGE - MYERSCOUGH COLLEGE"
-                }
-            ]
-        },
-        {
-            "nocCode": "NWBT",
-            "selectedServices": [
-                {
-                    "lineName": "4",
-                    "lineId": "DnmNdy",
-                    "serviceCode": "NW_05_NWBT_4_1",
-                    "startDate": "02/01/2020",
-                    "serviceDescription": "CLITHEROE - PEEL PARK CIRCULAR via Claremont Ave, Standen Rd, Langshaw Dr, Turner St, Victoria St"
-                },
-                {
-                    "lineName": "15",
-                    "lineId": "rLjpBT",
-                    "serviceCode": "NW_05_NWBT_15_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "BURNLEY - BURNLEY via Rose Hill Road, Moorland Road"
-                },
-                {
-                    "lineName": "15A",
-                    "lineId": "02SfpM",
-                    "serviceCode": "NW_05_NWBT_15A_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "BURNLEY - BURNLEY via Branch Road, Moorland Road"
-                },
-                {
-                    "lineName": "64",
-                    "lineId": "xqpVTa",
-                    "serviceCode": "NW_05_NWBT_64_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "BURNLEY - CLITHEROE via Sycamore Avenue, Lowerhouse, Slade Lane, Whalley"
-                },
-                {
-                    "lineName": "65",
-                    "lineId": "M0L2FP",
-                    "serviceCode": "NW_05_NWBT_65_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "BURNLEY - NELSON via Sycamore Avenue, Lowerhouse, Slade Lane, Higham, Barrowford"
-                },
-                {
-                    "lineName": "66",
-                    "lineId": "Fogdsu",
-                    "serviceCode": "NW_05_NWBT_66_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "CLITHEROE - NELSON via Waddington, West Bradford, Grindleton, Downham, Newchurch"
-                },
-                {
-                    "lineName": "67",
-                    "lineId": "BptR81",
-                    "serviceCode": "NW_05_NWBT_67_1",
-                    "startDate": "28/03/2020",
-                    "serviceDescription": "CLITHEROE - NELSON via Waddington, West Bradford, Grindleton, Downham, Blacko"
-                },
-                {
-                    "lineName": "500",
-                    "lineId": "HAvazj",
-                    "serviceCode": "NW_05_NWBT_500_1",
-                    "startDate": "06/06/2018",
-                    "serviceDescription": "ACCRINGTON - RISHTON - GREAT HARWOOD - BILLINGTON ST AUGUSTINES"
-                },
-                {
-                    "lineName": "530",
-                    "lineId": "Jv9Eu9",
-                    "serviceCode": "NW_05_NWBT_530_1",
-                    "startDate": "04/06/2018",
-                    "serviceDescription": "Accrington - Billington St Augustines Rchs"
-                },
-                {
-                    "lineName": "531",
-                    "lineId": "wHtA52",
-                    "serviceCode": "NW_05_NWBT_531_1",
-                    "startDate": "04/06/2018",
-                    "serviceDescription": "CHURCH - RISHTON - BILLINGTON ST AUGUSTINES"
-                },
-                {
-                    "lineName": "547",
-                    "lineId": "GWrq6Q",
-                    "serviceCode": "NW_05_NWBT_547_1",
-                    "startDate": "04/06/2018",
-                    "serviceDescription": "RISHTON - BILLINGTON ST AUGUSTINES"
-                },
-                {
-                    "lineName": "867",
-                    "lineId": "cCTjmg",
-                    "serviceCode": "NW_05_NWBT_867_1",
-                    "startDate": "18/04/2017",
-                    "serviceDescription": "RISHTON - MOUNT CARMEL RCHS via St Christophers CEHS & Accrington"
-                },
-                {
-                    "lineName": "869",
-                    "lineId": "oLb9ud",
-                    "serviceCode": "NW_05_NWBT_869_1",
-                    "startDate": "04/09/2018",
-                    "serviceDescription": "ACCRINGTON MOUNT CARMEL - OSWALDTWISTLE - INTACK"
-                },
-                {
-                    "lineName": "870",
-                    "lineId": "c0XKK6",
-                    "serviceCode": "NW_05_NWBT_870_1",
-                    "startDate": "04/06/2018",
-                    "serviceDescription": "GREAT HARWOOD - BILLINGTON ST AUGUSTINES"
-                },
-                {
-                    "lineName": "882",
-                    "lineId": "79vwzj",
-                    "serviceCode": "NW_05_NWBT_882_1",
-                    "startDate": "05/09/2017",
-                    "serviceDescription": "HUNCOAT - HOLLINS TECHNOLOGY COLLEGE"
-                },
-                {
-                    "lineName": "888",
-                    "lineId": "R24DWg",
-                    "serviceCode": "NW_05_NWBT_888_1",
-                    "startDate": "05/09/2019",
-                    "serviceDescription": "Hapton - Huncoat - Billington St Augustines HS"
-                },
-                {
-                    "lineName": "891",
-                    "lineId": "g4mEtw",
-                    "serviceCode": "NW_05_NWBT_891_1",
-                    "startDate": "03/09/2019",
-                    "serviceDescription": "HIGHERFORD - FENCE - PADIHAM - SIMONSTONE - CLITHEROE RIBBLESDALE CHS"
-                },
-                {
-                    "lineName": "907",
-                    "lineId": "hR84vo",
-                    "serviceCode": "NW_05_NWBT_907_1",
-                    "startDate": "03/09/2019",
-                    "serviceDescription": "Cliviger - Worsthorne - Burnley - Padiham - Hapton - St Christopher''s, Accr"
-                }
-            ]
-        },
-        {
-            "nocCode": "HCTY",
-            "selectedServices": [
-                {
-                    "lineName": "13",
-                    "lineId": "1i6yCd",
-                    "serviceCode": "YYBO013",
-                    "startDate": "05/04/2020",
-                    "serviceDescription": "Copmanthorpe - City - Haxby"
-                },
-                {
-                    "lineName": "16",
-                    "lineId": "66ISb8",
-                    "serviceCode": "YYBO016",
-                    "startDate": "05/12/2019",
-                    "serviceDescription": "York - Acomb"
-                },
-                {
-                    "lineName": "64",
-                    "lineId": "TyvOiX",
-                    "serviceCode": "YWBO064",
-                    "startDate": "23/03/2020",
-                    "serviceDescription": "Leeds - Aberford"
-                },
-                {
-                    "lineName": "412",
-                    "lineId": "MCvDxb",
-                    "serviceCode": "YWAO412",
-                    "startDate": "25/11/2018",
-                    "serviceDescription": "York - Wetherby"
-                },
-                {
-                    "lineName": "PH1",
-                    "lineId": "VS8g8X",
-                    "serviceCode": "YWAP0H1",
-                    "startDate": "02/09/2019",
-                    "serviceDescription": "Arthington - Prince Henry Grammar School"
-                },
-                {
-                    "lineName": "PH2",
-                    "lineId": "rWiQAg",
-                    "serviceCode": "YWAP0H2",
-                    "startDate": "02/09/2019",
-                    "serviceDescription": "Lawnswood - Prince Henry Grammar School"
-                },
-                {
-                    "lineName": "PH5",
-                    "lineId": "IiOHE9",
-                    "serviceCode": "YWAP0H5",
-                    "startDate": "02/09/2019",
-                    "serviceDescription": "Bramhope - Prince Henry Grammar School"
-                },
-                {
-                    "lineName": "X12",
-                    "lineId": "Whj7ZH",
-                    "serviceCode": "YNAX012",
-                    "startDate": "01/04/2020",
-                    "serviceDescription": "Harrogate - Duchy Road Circular"
-                },
-                {
-                    "lineName": "X52",
-                    "lineId": "jsrErQ",
-                    "serviceCode": "YWAX052",
-                    "startDate": "30/03/2020",
-                    "serviceDescription": "Harrogate - Ilkley"
-                },
-                {
-                    "lineName": "X64",
-                    "lineId": "ZgvsrC",
-                    "serviceCode": "YWAX064",
-                    "startDate": "30/10/2017",
-                    "serviceDescription": "Aberford Old Cafe - Garforth Academy"
-                }
-            ]
-        }
-    ],
-    "termTime": false,
-    "carnet": false
-}
+[
+    {
+        "productDescription": "product 1",
+        "type": "period",
+        "duration": "20 days",
+        "quantity": "1",
+        "passengerType": "Big People",
+        "startDate": "21/10/2021",
+        "endDate": "21/10/2121",
+        "id": 1,
+        "carnet": false
+    },
+    {
+        "productDescription": "Scheme product 1",
+        "type": "period",
+        "duration": "20 months",
+        "quantity": "1",
+        "passengerType": "Big People",
+        "startDate": "21/10/2021",
+        "endDate": "21/10/2121",
+        "id": 2,
+        "carnet": false
+    },
+    {
+        "productDescription": "Scheme product 3",
+        "type": "period",
+        "duration": "22 days",
+        "quantity": "1",
+        "passengerType": "Big People",
+        "startDate": "21/10/2021",
+        "endDate": "21/10/2121",
+        "id": 3,
+        "carnet": false
+    },
+    {
+        "productDescription": "Scheme product 5",
+        "type": "period",
+        "duration": "24 days",
+        "quantity": "1",
+        "passengerType": "Big People",
+        "startDate": "21/10/2021",
+        "endDate": "21/10/2121",
+        "id": 4,
+        "carnet": false
+    },
+    {
+        "productDescription": "Scheme product 2",
+        "type": "period",
+        "duration": "21 weeks",
+        "quantity": "1",
+        "passengerType": "Big People",
+        "startDate": "21/10/2021",
+        "endDate": "21/10/2121",
+        "id": 5,
+        "carnet": false
+    },
+    {
+        "productDescription": "Scheme product 4",
+        "type": "period",
+        "duration": "23 hours",
+        "quantity": "1",
+        "passengerType": "Big People",
+        "startDate": "21/10/2021",
+        "endDate": "21/10/2121",
+        "id": 6,
+        "carnet": false
+    }
+]
