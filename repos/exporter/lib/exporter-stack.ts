@@ -67,6 +67,36 @@ export class ExporterStack extends cdk.Stack {
         productsBucket.grantRead(exporterFunction);
         matchingDataBucket.grantWrite(exporterFunction);
 
+        const atcoCodeCheckerFunction = new NodejsFunction(this, `atco-code-checker-${stage}`, {
+            functionName: `atco-code-checker-${stage}`,
+            entry: './lib/atcoCheckerHandler.ts',
+            environment: {
+                PRODUCTS_BUCKET: productsBucket.bucketName,
+                MATCHING_DATA_BUCKET: matchingDataBucket.bucketName,
+                RDS_HOST: Fn.importValue(`${stage}:RdsClusterInternalEndpoint`),
+                STAGE: stage,
+            },
+            securityGroups: [
+                SecurityGroup.fromSecurityGroupId(
+                    this,
+                    'security-group',
+                    Fn.importValue(`${stage}:ReferenceDataUploaderLambdaSG`),
+                ),
+            ],
+            vpc: Vpc.fromLookup(this, 'vpc', { vpcName: `fdbt-vpc-${stage}` }),
+            vpcSubnets: {
+                subnets: [
+                    Subnet.fromSubnetId(this, 'vpc-subnet-a', Fn.importValue(`${stage}:PrivateSubnetA`)),
+                    Subnet.fromSubnetId(this, 'vpc-subnet-b', Fn.importValue(`${stage}:PrivateSubnetB`)),
+                ],
+            },
+            bundling: {
+                sourceMap: true,
+                sourceMapMode: SourceMapMode.DEFAULT,
+            },
+            timeout: Duration.minutes(5),
+        });
+
         const bastionTerminatorFunction = new NodejsFunction(this, `bastion-terminator-${stage}`, {
             functionName: `bastion-terminator-${stage}`,
             entry: './lib/bastionTerminator.ts',
