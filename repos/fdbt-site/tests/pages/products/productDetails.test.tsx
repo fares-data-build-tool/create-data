@@ -10,6 +10,8 @@ import { getProductsMatchingJson } from '../../../src/data/s3';
 import ProductDetails, { getServerSideProps } from '../../../src/pages/products/productDetails';
 import {
     expectedCarnetReturnTicket,
+    expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
+    expectedPeriodGeoZoneTicketWithMultipleProducts,
     expectedPointToPointPeriodTicket,
     expectedSingleTicket,
     getMockContext,
@@ -92,7 +94,7 @@ describe('myfares pages', () => {
                         { name: 'Passenger type', content: 'Test Passenger Type' },
                         { name: 'Time restriction', content: 'Test Time Restriction' },
                         { name: 'Period duration', content: '7 weeks' },
-                        { name: 'Product expiry', content: '24hr' },
+                        { name: 'Product expiry', content: '24 hr' },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
                         { name: 'Start date', content: '17/12/2020' },
                         { name: 'End date', content: '18/12/2020' },
@@ -119,6 +121,55 @@ describe('myfares pages', () => {
                         { name: 'Quantity in bundle', content: '10' },
                         { name: 'Carnet expiry', content: 'No expiry' },
                         { name: 'Return ticket validity', content: '3 month(s)' },
+                        { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
+                        { name: 'Start date', content: '17/12/2020' },
+                        { name: 'End date', content: '18/12/2020' },
+                    ],
+                },
+            });
+        });
+
+        it('correctly returns the elements which should be displayed on the page for a Period GeoZone', async () => {
+            (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
+                ...expectedPeriodGeoZoneTicketWithMultipleProducts,
+            });
+            const ctx = getMockContext({ query: { productId: '1' } });
+            expect(await getServerSideProps(ctx)).toStrictEqual({
+                props: {
+                    productName: 'Weekly Ticket',
+                    startDate: '17/12/2020',
+                    endDate: '18/12/2020',
+                    productDetailsElements: [
+                        { name: 'Passenger type', content: 'Test Passenger Type' },
+                        { name: 'Zone', content: 'Green Lane Shops' },
+                        { name: 'Time restriction', content: 'Test Time Restriction' },
+                        { name: 'Period duration', content: '5 weeks' },
+                        { name: 'Product expiry', content: '24 hr' },
+                        { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
+                        { name: 'Start date', content: '17/12/2020' },
+                        { name: 'End date', content: '18/12/2020' },
+                    ],
+                },
+            });
+        });
+
+        it('correctly returns the elements which should be displayed on the page for a Period GeoZone', async () => {
+            (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
+                ...expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
+            });
+            const ctx = getMockContext({ query: { productId: '1' } });
+            expect(await getServerSideProps(ctx)).toStrictEqual({
+                props: {
+                    productName: 'Weekly Ticket',
+                    startDate: '17/12/2020',
+                    endDate: '18/12/2020',
+                    productDetailsElements: [
+                        { name: 'Passenger type', content: 'Test Passenger Type' },
+                        { name: 'Zone', content: 'Green Lane Shops' },
+                        { name: 'Time restriction', content: 'Test Time Restriction' },
+                        { name: 'Multi Operator Group', content: 'TEST, MCTR, WBTR, BLAC' },
+                        { name: 'Period duration', content: '5 weeks' },
+                        { name: 'Product expiry', content: '24 hr' },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
                         { name: 'Start date', content: '17/12/2020' },
                         { name: 'End date', content: '18/12/2020' },
