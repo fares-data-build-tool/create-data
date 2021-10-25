@@ -1,7 +1,7 @@
 import awsParamStore from 'aws-param-store';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
-import { DbTimeRestriction } from 'shared/dbTypes';
+import { DbTimeRestriction, MyFaresProduct, RawJourneyPattern, RawService, ServiceQueryData } from 'shared/dbTypes';
 import { FromDb, OperatorDetails } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
@@ -11,7 +11,6 @@ import {
     OperatorGroup,
     PassengerType,
     PremadeTimeRestriction,
-    RawService,
     SalesOfferPackage,
     ServiceType,
     SinglePassengerType,
@@ -20,30 +19,11 @@ import {
     GroupPassengerTypeReference,
     FullGroupPassengerType,
     MyFaresService,
-    MyFaresProduct,
     MyFaresOtherProduct,
-    RawJourneyPattern,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { RawSalesOfferPackage } from '../../shared/dbTypes';
 import { convertDateFormat } from '../utils';
-
-interface ServiceQueryData {
-    operatorShortName: string;
-    serviceDescription: string;
-    lineName: string;
-    startDate: string;
-    lineId: string;
-    fromAtcoCode: string;
-    toAtcoCode: string;
-    fromCommonName: string;
-    toCommonName: string;
-    journeyPatternId: string;
-    order: string;
-    direction: string;
-    fromSequenceNumber: number;
-    toSequenceNumber: number;
-}
 
 interface NaptanInfo {
     commonName: string;

@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { ReactElement } from 'react';
-import { DbTimeRestriction, SinglePassengerType } from '../../shared/dbTypes';
+import { DbTimeRestriction, MyFaresProduct, SinglePassengerType } from '../../shared/dbTypes';
 import {
     BaseProduct,
     CarnetDetails,
@@ -517,14 +517,6 @@ export interface MyFaresService {
     endDate: string;
 }
 
-export interface MyFaresProduct {
-    id: number;
-    lineId: string;
-    matchingJsonLink: string;
-    startDate: string;
-    endDate: string;
-}
-
 export type MyFaresOtherProduct = Omit<MyFaresProduct, 'lineId'>;
 
 export interface MyFaresServiceWithProductCount extends MyFaresService {
@@ -579,15 +571,6 @@ export interface ServiceDB {
     startDate: string;
 }
 
-export interface RawService {
-    serviceDescription: string;
-    operatorShortName: string;
-    journeyPatterns: RawJourneyPattern[];
-    lineId: string;
-    lineName: string;
-    startDate: string;
-}
-
 export interface JourneyPattern {
     startPoint: {
         Id: string;
@@ -598,16 +581,6 @@ export interface JourneyPattern {
         Display: string;
     };
     stopList: string[];
-}
-
-export type StopPoint = {
-    stopPointRef: string;
-    commonName: string;
-    sequenceNumber?: number;
-};
-export interface RawJourneyPattern {
-    orderedStopPoints: StopPoint[];
-    direction: string;
 }
 
 // Components

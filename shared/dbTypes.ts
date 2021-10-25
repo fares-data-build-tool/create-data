@@ -22,6 +22,51 @@ export interface PassengerType {
     id: number;
 }
 
+export interface MyFaresProduct {
+    id: number;
+    lineId: string;
+    matchingJsonLink: string;
+    startDate: string;
+    endDate: string;
+}
+
+export interface ServiceQueryData {
+    operatorShortName: string;
+    serviceDescription: string;
+    lineName: string;
+    startDate: string;
+    lineId: string;
+    fromAtcoCode: string;
+    toAtcoCode: string;
+    fromCommonName: string;
+    toCommonName: string;
+    journeyPatternId: string;
+    order: string;
+    direction: string;
+    fromSequenceNumber: number;
+    toSequenceNumber: number;
+}
+
+export type StopPoint = {
+    stopPointRef: string;
+    commonName: string;
+    sequenceNumber?: number;
+}
+
+export interface RawJourneyPattern {
+    orderedStopPoints: StopPoint[];
+    direction: string;
+}
+
+export interface RawService {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: RawJourneyPattern[];
+    lineId: string;
+    lineName: string;
+    startDate: string;
+}
+
 export interface GroupPassengerType {
     name: string;
     maxGroupSize: string;

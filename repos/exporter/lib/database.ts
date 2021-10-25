@@ -7,8 +7,25 @@ import {
     PassengerType,
     SinglePassengerType,
     RawSalesOfferPackage,
+    RawService,
+    ServiceQueryData,
+    RawJourneyPattern,
+    MyFaresProduct,
 } from '../shared/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
+import dateFormat from 'dateformat';
+
+export const convertDateFormat = (date: string): string => {
+    return dateFormat(date, 'dd/mm/yyyy');
+};
+
+const replaceInternalNocCode = (nocCode: string): string => {
+    if (nocCode === 'IWBusCo') {
+        return 'WBTR';
+    }
+
+    return nocCode;
+};
 
 const ssm = new SSM({ region: 'eu-west-2' });
 
@@ -172,4 +189,108 @@ export const getFareDayEnd = async (noc: string): Promise<string | undefined> =>
     >(queryInput, [noc]);
 
     return queryResults[0]?.time;
+};
+
+export const getServiceByIdAndDataSource = async (
+    nocCode: string,
+    id: number,
+    dataSource: string,
+): Promise<RawService> => {
+    const nocCodeParameter = replaceInternalNocCode(nocCode);
+
+    const serviceQuery = `
+        SELECT os.operatorShortName, os.serviceDescription, os.lineName, os.lineId, os.startDate, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction
+        FROM txcOperatorLine AS os
+        JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
+        JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
+        LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode
+        LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode
+        WHERE os.nocCode = ? AND os.id = ? AND os.dataSource = ?
+        ORDER BY pl.journeyPatternId ASC, pl.orderInSequence
+    `;
+
+    let queryResult: ServiceQueryData[];
+
+    try {
+        queryResult = await executeQuery(serviceQuery, [nocCodeParameter, id, dataSource]);
+    } catch (error) {
+        throw new Error(`Could not get journey patterns from Aurora DB: ${error.stack}`);
+    }
+
+    const service = queryResult[0];
+
+    // allows to get the unique journey's for the operator e.g. [1,2,3]
+    const uniqueJourneyPatterns = queryResult
+        .map((item) => item.journeyPatternId)
+        .filter((value, index, self) => self.indexOf(value) === index);
+
+    const rawPatternService: RawJourneyPattern[] = uniqueJourneyPatterns.map((journey) => {
+        const filteredJourney = queryResult.filter((item) => {
+            return item.journeyPatternId === journey;
+        });
+
+        return {
+            direction: filteredJourney[0].direction,
+            orderedStopPoints: [
+                {
+                    stopPointRef: filteredJourney[0].fromAtcoCode,
+                    commonName: filteredJourney[0].fromCommonName,
+                    sequenceNumber: filteredJourney[0].fromSequenceNumber,
+                },
+                ...filteredJourney.map((data: ServiceQueryData) => ({
+                    stopPointRef: data.toAtcoCode,
+                    commonName: data.toCommonName,
+                    sequenceNumber: data.toSequenceNumber,
+                })),
+            ],
+        };
+    });
+
+    if (!service || rawPatternService.length === 0) {
+        throw new Error(`No journey patterns found for nocCode: ${nocCodeParameter}, id: ${id}`);
+    }
+
+    return {
+        serviceDescription: service.serviceDescription,
+        operatorShortName: service.operatorShortName,
+        journeyPatterns: rawPatternService,
+        lineId: service.lineId,
+        lineName: service.lineName,
+        startDate: convertDateFormat(service.startDate),
+    };
+};
+
+export const getPointToPointProducts = async (): Promise<MyFaresProduct[]> => {
+    const queryInput = `      
+            SELECT id, lineId, matchingJsonLink, startDate, endDate
+            FROM products
+            WHERE lineId <> ''
+        `;
+    return await executeQuery<MyFaresProduct[]>(queryInput, []);
+};
+
+export const getBodsServiceIdByNocAndId = async (
+    nationalOperatorCode: string,
+    serviceId: string,
+): Promise<{ id: string }> => {
+    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
+
+    try {
+        const queryInput = `
+            SELECT id
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND id = ? AND dataSource = 'bods';
+        `;
+
+        const queryResults = await executeQuery<{ id: string }[]>(queryInput, [nocCodeParameter, serviceId]);
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
+        }
+        // Is it better to JSON.parse this and overwrite the start end and end date via spreading the rest?
+        return {
+            id: queryResults[0].id,
+        };
+    } catch (error) {
+        throw new Error(`Could not retrieve individual service from AuroraDB: ${error.stack}`);
+    }
 };

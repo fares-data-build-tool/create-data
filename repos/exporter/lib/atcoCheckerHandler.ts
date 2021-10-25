@@ -9,17 +9,13 @@ import {
     BasePeriodTicket,
     ProductDetails,
     BaseSchemeOperatorTicket,
+    ReturnTicket,
+    SingleTicket,
+    PointToPointPeriodTicket,
 } from '../shared/matchingJsonTypes';
-import {
-    getFareDayEnd,
-    getPassengerTypeById,
-    getTimeRestrictionsByIdAndNoc,
-    getGroupDefinition,
-    getSalesOfferPackagesByNoc,
-} from './database';
+import { getBodsServiceIdByNocAndId, getPointToPointProducts, getServiceByIdAndDataSource } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
-import { DbTimeRestriction } from '../shared/dbTypes';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -35,12 +31,27 @@ const s3: S3 = new S3(
 );
 
 const PRODUCTS_BUCKET = process.env.PRODUCTS_BUCKET;
-const MATCHING_DATA_BUCKET = process.env.MATCHING_DATA_BUCKET;
 
 export const handler: Handler<ExportLambdaBody> = async () => {
     console.log('triggered atco checker lambda...');
 
-};
+    if (!PRODUCTS_BUCKET) {
+        throw new Error('Need to set PRODUCTS_BUCKET env variable');
+    }
 
-export const isBasePeriodTicket = (ticket: WithIds<Ticket>): ticket is WithIds<BasePeriodTicket> =>
-    !!(ticket.products[0] as ProductDetails)?.productValidity;
+    const pointToPointProducts = await getPointToPointProducts();
+    pointToPointProducts.map(async (ptpp) => {
+        const path = ptpp.matchingJsonLink;
+        const object = await s3.getObject({ Key: path, Bucket: PRODUCTS_BUCKET }).promise();
+        if (!object.Body) {
+            throw new Error(`body was not present [${path}]`);
+        }
+        const pointToPointTicket = JSON.parse(object.Body.toString('utf-8')) as
+            | WithIds<SingleTicket>
+            | WithIds<ReturnTicket>
+            | WithIds<PointToPointPeriodTicket>;
+        const { nocCode, lineId } = pointToPointTicket;
+        const serviceId = await getBodsServiceIdByNocAndId(nocCode, lineId);
+        const service = await getServiceByIdAndDataSource(pointToPointTicket.nocCode, Number(serviceId.id), 'bods');
+    });
+};
