@@ -8,6 +8,7 @@ import * as aurora from '../../../src/data/auroradb';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { GROUP_PASSENGER_TYPE } from '../../../src/constants';
+import { FullGroupPassengerType } from '../../../shared/dbTypes';
 
 describe('selectPassengerType', () => {
     const writeHeadMock = jest.fn();
@@ -54,7 +55,7 @@ describe('selectPassengerType', () => {
     });
 
     it('should return 302 redirect to /defineTimeRestrictions when the passenger selected is a group and the selected group information added to session', async () => {
-        const groupDbResult = {
+        const groupDbResult: FullGroupPassengerType = {
             id: 3,
             name: 'family group',
             groupPassengerType: {
@@ -65,11 +66,13 @@ describe('selectPassengerType', () => {
                         id: 1,
                         minNumber: '1',
                         maxNumber: '2',
+                        passengerType: 'adult',
                     },
                     {
                         id: 2,
                         minNumber: '1',
                         maxNumber: '2',
+                        passengerType: 'child',
                     },
                 ],
             },
@@ -85,6 +88,7 @@ describe('selectPassengerType', () => {
                 maxGroupSize: '3',
                 companions: [
                     {
+                        id: 1,
                         name: 'adult',
                         passengerType: 'adult',
                         minNumber: '1',
@@ -94,6 +98,7 @@ describe('selectPassengerType', () => {
                         proofDocuments: [],
                     },
                     {
+                        id: 2,
                         name: 'kid',
                         passengerType: 'child',
                         minNumber: '1',
@@ -138,6 +143,7 @@ describe('selectPassengerType', () => {
             id: 3,
             name: 'Adult',
             passengerType: {
+                id: 3,
                 passengerType: 'adult',
             },
         };

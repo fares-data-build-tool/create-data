@@ -1,7 +1,6 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import managePurchaseMethod from '../../../src/pages/api/managePurchaseMethod';
 import * as session from '../../../src/utils/sessions';
-import { GlobalSettingsAttribute } from '../../../src/interfaces';
 import { GS_PURCHASE_METHOD_ATTRIBUTE } from '../../../src/constants/attributes';
 import { SalesOfferPackage, FromDb } from '../../../shared/matchingJsonTypes';
 import * as db from '../../../src/data/auroradb';
@@ -14,7 +13,7 @@ const getSpy = jest.spyOn(db, 'getSalesOfferPackagesByNocCode');
 describe('managePurchaseMethod', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
 
-    afterEach(() => {
+    beforeEach(() => {
         jest.resetAllMocks();
         getSpy.mockResolvedValue([]);
     });
@@ -38,7 +37,7 @@ describe('managePurchaseMethod', () => {
                 name: 'a name',
             },
         });
-        const expectedSessionAttributeCall: GlobalSettingsAttribute<SalesOfferPackage> = {
+        const expectedSessionAttributeCall = {
             inputs: {
                 purchaseLocations: ['OnBoard'],
                 ticketFormats: [],
@@ -48,11 +47,11 @@ describe('managePurchaseMethod', () => {
             errors: [
                 {
                     id: 'checkbox-0-cash',
-                    errorMessage: expect.any(String),
+                    errorMessage: 'Select at least one option for how tickets can be paid for',
                 },
                 {
                     id: 'checkbox-0-paper-ticket',
-                    errorMessage: expect.any(String),
+                    errorMessage: 'Select at least one option for the ticket format',
                 },
             ],
         };
@@ -76,7 +75,7 @@ describe('managePurchaseMethod', () => {
                 name: 'a name',
             },
         });
-        const expectedSessionAttributeCall: GlobalSettingsAttribute<SalesOfferPackage> = {
+        const expectedSessionAttributeCall = {
             inputs: {
                 purchaseLocations: [],
                 ticketFormats: [],
@@ -86,11 +85,11 @@ describe('managePurchaseMethod', () => {
             errors: [
                 {
                     id: 'checkbox-0-on-board',
-                    errorMessage: expect.any(String),
+                    errorMessage: 'Select at least one option for where the ticket can be sold',
                 },
                 {
                     id: 'checkbox-0-paper-ticket',
-                    errorMessage: expect.any(String),
+                    errorMessage: 'Select at least one option for the ticket format',
                 },
             ],
         };
@@ -114,7 +113,7 @@ describe('managePurchaseMethod', () => {
                 name: 'a name',
             },
         });
-        const expectedSessionAttributeCall: GlobalSettingsAttribute<SalesOfferPackage> = {
+        const expectedSessionAttributeCall = {
             inputs: {
                 purchaseLocations: [],
                 ticketFormats: ['Paper Ticket'],
@@ -124,11 +123,11 @@ describe('managePurchaseMethod', () => {
             errors: [
                 {
                     id: 'checkbox-0-on-board',
-                    errorMessage: expect.any(String),
+                    errorMessage: 'Select at least one option for where the ticket can be sold',
                 },
                 {
                     id: 'checkbox-0-cash',
-                    errorMessage: expect.any(String),
+                    errorMessage: 'Select at least one option for how tickets can be paid for',
                 },
             ],
         };
@@ -153,7 +152,7 @@ describe('managePurchaseMethod', () => {
                 name: 'a name',
             },
         });
-        const expectedSessionAttributeCall: GlobalSettingsAttribute<SalesOfferPackage> = {
+        const expectedSessionAttributeCall = {
             inputs: {
                 purchaseLocations: ['OnBoard', 'Online Account'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
@@ -163,7 +162,7 @@ describe('managePurchaseMethod', () => {
             errors: [
                 {
                     id: 'checkbox-0-cash',
-                    errorMessage: expect.any(String),
+                    errorMessage: 'Select at least one option for how tickets can be paid for',
                 },
             ],
         };
@@ -188,7 +187,7 @@ describe('managePurchaseMethod', () => {
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
             },
         });
-        const expectedSessionAttributeCall: GlobalSettingsAttribute<SalesOfferPackage> = {
+        const expectedSessionAttributeCall = {
             inputs: {
                 purchaseLocations: ['OnBoard', 'Online Account'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
@@ -198,7 +197,7 @@ describe('managePurchaseMethod', () => {
             errors: [
                 {
                     id: 'purchase-method-name',
-                    errorMessage: expect.any(String),
+                    errorMessage: 'Name must be provided',
                 },
             ],
         };
@@ -226,7 +225,7 @@ describe('managePurchaseMethod', () => {
                 name: 'my name',
             },
         });
-        const expectedSessionAttributeCall: GlobalSettingsAttribute<SalesOfferPackage> = {
+        const expectedSessionAttributeCall = {
             inputs: {
                 purchaseLocations: ['OnBoard', 'Online Account'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
@@ -236,7 +235,7 @@ describe('managePurchaseMethod', () => {
             errors: [
                 {
                     id: 'purchase-method-name',
-                    errorMessage: expect.any(String),
+                    errorMessage: 'You already have a purchase method named my name. Choose another name.',
                 },
             ],
         };
@@ -263,7 +262,7 @@ describe('managePurchaseMethod', () => {
             },
         });
 
-        const expected: SalesOfferPackage = {
+        const expected = {
             purchaseLocations: ['OnBoard', 'Online Account'],
             ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
             paymentMethods: ['Cash'],

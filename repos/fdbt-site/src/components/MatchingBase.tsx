@@ -13,7 +13,7 @@ interface MatchingBaseProps {
     stops: Stop[];
     service: BasicService;
     error: string;
-    warning: boolean;
+    warning?: boolean;
     selectedFareStages: string[][];
     title: string;
     description: string;

@@ -130,6 +130,7 @@ describe('pages', () => {
                 async (fareType, _ticketType, multipleProducts) => {
                     const mockSalesOfferPackages: SalesOfferPackage[] = [
                         {
+                            id: 1,
                             name: 'IW Bus Co - Package 1',
                             description: 'On bus - Cash - Paper Ticket',
                             purchaseLocations: ['On bus'],
@@ -137,6 +138,7 @@ describe('pages', () => {
                             ticketFormats: ['Paper ticket'],
                         },
                         {
+                            id: 2,
                             name: 'IW Bus Co - Package 2',
                             description: 'Online App - Card via App - eTicket',
                             purchaseLocations: ['Online App'],
@@ -144,6 +146,7 @@ describe('pages', () => {
                             ticketFormats: ['eTicket'],
                         },
                         {
+                            id: 3,
                             name: 'IW Bus Co - Package 3',
                             description: 'Ticket Machine - Card - Pass',
                             purchaseLocations: ['Ticket Machine'],

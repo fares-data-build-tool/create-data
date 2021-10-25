@@ -15,6 +15,7 @@ describe('pages', () => {
                             id: 1,
                             name: 'Normal adult',
                             passengerType: {
+                                id: 1,
                                 passengerType: 'adult',
                                 proofDocuments: [],
                                 ageRangeMin: '18',
@@ -25,6 +26,7 @@ describe('pages', () => {
                             id: 2,
                             name: 'Normal child',
                             passengerType: {
+                                id: 2,
                                 passengerType: 'child',
                                 proofDocuments: [],
                                 ageRangeMin: '5',
@@ -73,6 +75,7 @@ describe('pages', () => {
                             id: 1,
                             name: 'Regular Senior',
                             passengerType: {
+                                id: 1,
                                 passengerType: 'senior',
                                 ageRangeMin: '',
                                 ageRangeMax: '',
@@ -83,6 +86,7 @@ describe('pages', () => {
                             id: 2,
                             name: 'Regular infant',
                             passengerType: {
+                                id: 2,
                                 passengerType: 'infant',
                                 ageRangeMin: '1',
                                 ageRangeMax: '3',
@@ -125,6 +129,7 @@ describe('pages', () => {
                             id: 1,
                             name: 'Regular Senior',
                             passengerType: {
+                                id: 1,
                                 passengerType: 'senior',
                                 ageRangeMin: '',
                                 ageRangeMax: '',
@@ -135,6 +140,7 @@ describe('pages', () => {
                             id: 2,
                             name: 'Regular infant',
                             passengerType: {
+                                id: 2,
                                 passengerType: 'infant',
                                 ageRangeMin: '1',
                                 ageRangeMax: '3',
@@ -192,6 +198,7 @@ describe('pages', () => {
                             id: 1,
                             name: 'Regular Senior',
                             passengerType: {
+                                id: 1,
                                 passengerType: 'senior',
                                 ageRangeMin: '',
                                 ageRangeMax: '',
@@ -202,6 +209,7 @@ describe('pages', () => {
                             id: 2,
                             name: 'Regular infant',
                             passengerType: {
+                                id: 2,
                                 passengerType: 'infant',
                                 ageRangeMin: '1',
                                 ageRangeMax: '3',

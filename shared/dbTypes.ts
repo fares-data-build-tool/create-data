@@ -19,7 +19,7 @@ export interface PassengerType {
     ageRangeMax?: string;
     proof?: string;
     proofDocuments?: string[];
-    id?: number;
+    id: number;
 }
 
 export interface GroupPassengerType {

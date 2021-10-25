@@ -173,7 +173,7 @@ const completePointToPointPeriodProductDetail = (): void => {
 
 export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void => {
     completeServicePage();
-    selectRandomOptionFromDropDown('direction-journey-pattern');
+    selectRandomOptionFromDropDown('select-direction');
     continueButtonClick();
     completeFareTrianglePages(csvUpload);
     completeMatchingPage();
@@ -185,21 +185,8 @@ export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void
     continueButtonClick();
 };
 
-export const completePointToPointPeriodReturnPages = (csvUpload: boolean): void => {
-    completeServicePage();
-    selectRandomOptionFromDropDown('outbound-journey');
-    selectRandomOptionFromDropDown('inbound-journey');
-    continueButtonClick();
-    completeFareTrianglePages(csvUpload);
-    completeMatchingPage();
-    completeMatchingPage();
-};
-
 export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPeriod: boolean): void => {
     completeServicePage();
-    selectRandomOptionFromDropDown('outbound-journey');
-    selectRandomOptionFromDropDown('inbound-journey');
-    continueButtonClick();
     completeFareTrianglePages(csvUpload);
     completeMatchingPage();
     completeMatchingPage();
