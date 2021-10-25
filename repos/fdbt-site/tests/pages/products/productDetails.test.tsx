@@ -153,7 +153,7 @@ describe('myfares pages', () => {
             });
         });
 
-        it('correctly returns the elements which should be displayed on the page for a Period GeoZone', async () => {
+        it('correctly returns the elements which should be displayed on the page for a Multi Operator GeoZone Ticket with Multiple Products', async () => {
             (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
                 ...expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
             });
