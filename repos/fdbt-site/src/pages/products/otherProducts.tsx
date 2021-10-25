@@ -121,9 +121,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                                 (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
                                 (await getGroupPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
                                 '';
-                            const startDate = product.startDate;
-                            const endDate = product.endDate;
-                            const id = product.id;
+                            const { startDate, endDate, id } = product;
                             return {
                                 productDescription,
                                 type,
