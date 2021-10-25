@@ -69,7 +69,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             content: (
                 await Promise.all(
                     ticket.selectedServices.map(async (service) => {
-                        return await service.lineName;
+                        return service.lineName;
                     }),
                 )
             ).join(', '),
