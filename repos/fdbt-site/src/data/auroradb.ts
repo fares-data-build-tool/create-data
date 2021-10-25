@@ -1034,6 +1034,35 @@ export const getPassengerTypeById = async (
     };
 };
 
+export const getPassengerTypeNameByIdAndNoc = async (id: number, noc: string): Promise<string> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving passenger type name for a given id',
+        id,
+        noc,
+    });
+
+    try {
+        const queryInput = `
+            SELECT name
+            FROM passengerType
+            WHERE id = ? 
+            AND nocCode = ?`;
+
+        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [id, noc]);
+
+        if (queryResults.length !== 1) {
+            throw new Error(
+                `Could not find a passenger type with id: ${id}, or more than one passenger type was returned`,
+            );
+        }
+
+        return queryResults[0].name;
+    } catch (error) {
+        throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
+    }
+};
+
 export const getGroupPassengerTypeById = async (
     passengerId: number,
     noc: string,
@@ -1175,34 +1204,6 @@ export const getGroupPassengerTypesFromGlobalSettings = async (nocCode: string):
         return Promise.all(dbGroups.map((group) => convertToFullPassengerType(group, nocCode)));
     } catch (error) {
         throw new Error(`Could not retrieve group passenger type by nocCode from AuroraDB: ${error}`);
-    }
-};
-
-export const getPassengerTypeNameByIdAndNoc = async (id: number, nocCode: string): Promise<string> => {
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving passenger type name for given noc and id',
-        nocCode,
-        id,
-    });
-
-    try {
-        const queryInput = `
-            SELECT name
-            FROM passengerType
-            WHERE nocCode = ?
-            AND id = ?
-        `;
-
-        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [nocCode, id]);
-
-        if (queryResults.length !== 1) {
-            throw new Error(`Expected one passengerType name to be returned, ${queryResults.length} results received.`);
-        }
-
-        return queryResults[0].name;
-    } catch (error) {
-        throw new Error(`Could not retrieve passenger type name by noc and id from AuroraDB: ${error}`);
     }
 };
 
