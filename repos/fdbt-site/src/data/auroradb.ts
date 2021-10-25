@@ -1034,7 +1034,7 @@ export const getPassengerTypeById = async (
     };
 };
 
-export const getPassengerTypeNameById = async (id: number, noc: string): Promise<string> => {
+export const getPassengerTypeNameByIdAndNoc = async (id: number, noc: string): Promise<string> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving passenger type name for a given id',

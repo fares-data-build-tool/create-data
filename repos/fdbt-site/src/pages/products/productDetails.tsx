@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import { convertDateFormat, getAndValidateNoc, sentenceCaseString, toArray } from '../../utils';
+import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
 import {
-    getPassengerTypeNameById,
+    getPassengerTypeNameByIdAndNoc,
     getProductMatchingJsonLinkByProductId,
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
@@ -33,13 +33,12 @@ const ProductDetails = ({
             Product status: {getTag(startDate, endDate)}
         </div>
         {productDetailsElements.map((element) => {
-            const content = toArray(element.content);
             return (
                 <dl className="govuk-summary-list" key={element.name}>
                     <div className="govuk-summary-list__row" key={element.name}>
                         <dt className="govuk-summary-list__key">{element.name}</dt>
                         <dd className="govuk-summary-list__value">
-                            {content.map((item) => (
+                            {element.content.map((item) => (
                                 <div key={item}>{item}</div>
                             ))}
                         </dd>
@@ -63,55 +62,93 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const productDetailsElements: ProductDetailsElement[] = [];
 
+    if ('selectedServices' in ticket) {
+        productDetailsElements.push({
+            name: `${noc} Services`,
+            content: [
+                (
+                    await Promise.all(
+                        ticket.selectedServices.map((service) => {
+                            return service.lineName;
+                        }),
+                    )
+                ).join(', '),
+            ],
+        });
+    }
+
     if ('serviceDescription' in ticket) {
         productDetailsElements.push({
             name: 'Service',
-            content: `${ticket.lineName} - ${ticket.serviceDescription}`,
+            content: [`${ticket.lineName} - ${ticket.serviceDescription}`],
         });
     }
 
     if ('journeyDirection' in ticket && ticket.journeyDirection) {
-        productDetailsElements.push({ name: 'Journey direction', content: ticket.journeyDirection });
+        productDetailsElements.push({ name: 'Journey direction', content: [ticket.journeyDirection] });
     }
 
-    const passengerTypeName = await getPassengerTypeNameById(ticket.passengerType.id, noc);
-    productDetailsElements.push({ name: 'Passenger type', content: passengerTypeName });
+    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
+    productDetailsElements.push({ name: 'Passenger type', content: [passengerTypeName] });
+
+    if ('zoneName' in ticket) {
+        productDetailsElements.push({ name: 'Zone', content: [ticket.zoneName] });
+    }
 
     const isSchoolTicket = 'termTime' in ticket && ticket.termTime;
     if (!isSchoolTicket) {
         const timeRestriction = ticket.timeRestriction
             ? (await getTimeRestrictionByIdAndNoc(ticket.timeRestriction.id, noc)).name
             : 'N/A';
-        productDetailsElements.push({ name: 'Time restriction', content: timeRestriction });
+        productDetailsElements.push({ name: 'Time restriction', content: [timeRestriction] });
     } else {
-        productDetailsElements.push({ name: 'Only valid during term time', content: 'Yes' });
+        productDetailsElements.push({ name: 'Only valid during term time', content: ['Yes'] });
+    }
+
+    if ('additionalNocs' in ticket) {
+        productDetailsElements.push({
+            name: `Multi Operator Group`,
+            content: [`${noc}, ${ticket.additionalNocs.join(', ')}`],
+        });
+    }
+
+    if ('additionalOperators' in ticket) {
+        ticket.additionalOperators.forEach((additionalOperator) => {
+            productDetailsElements.push({
+                name: `${additionalOperator.nocCode} Services`,
+                content: [
+                    additionalOperator.selectedServices.map((selectedService) => selectedService.lineName).join(', '),
+                ],
+            });
+        });
     }
 
     const product = ticket.products[0];
     if ('carnetDetails' in product && product.carnetDetails) {
-        productDetailsElements.push({ name: 'Quantity in bundle', content: product.carnetDetails.quantity });
+        productDetailsElements.push({ name: 'Quantity in bundle', content: [product.carnetDetails.quantity] });
         productDetailsElements.push({
             name: 'Carnet expiry',
-            content:
+            content: [
                 product.carnetDetails.expiryUnit === 'no expiry'
                     ? 'No expiry'
                     : `${product.carnetDetails.expiryTime} ${product.carnetDetails.expiryUnit}(s)`,
+            ],
         });
     }
 
     if ('returnPeriodValidity' in ticket && ticket.returnPeriodValidity) {
         productDetailsElements.push({
             name: 'Return ticket validity',
-            content: `${ticket.returnPeriodValidity.amount} ${ticket.returnPeriodValidity.typeOfDuration}(s)`,
+            content: [`${ticket.returnPeriodValidity.amount} ${ticket.returnPeriodValidity.typeOfDuration}(s)`],
         });
     }
 
     if ('productDuration' in product) {
-        productDetailsElements.push({ name: 'Period duration', content: product.productDuration });
+        productDetailsElements.push({ name: 'Period duration', content: [product.productDuration] });
     }
 
     if ('productValidity' in product && product.productValidity) {
-        productDetailsElements.push({ name: 'Product expiry', content: product.productValidity });
+        productDetailsElements.push({ name: 'Product expiry', content: [sentenceCaseString(product.productValidity)] });
     }
 
     productDetailsElements.push({
@@ -119,7 +156,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         content: await Promise.all(
             product.salesOfferPackages.map(async (sop) => {
                 const fullSop = await getSalesOfferPackageByIdAndNoc(sop.id, noc);
-                return fullSop.name;
+                let content = fullSop.name;
+                if (sop.price) {
+                    content = `${fullSop.name} - £${sop.price}`;
+                }
+                return content;
             }),
         ),
     });
@@ -130,8 +171,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const startDate = convertDateFormat(ticket.ticketPeriod.startDate);
     const endDate = convertDateFormat(ticket.ticketPeriod.endDate);
-    productDetailsElements.push({ name: 'Start date', content: startDate });
-    productDetailsElements.push({ name: 'End date', content: endDate });
+    productDetailsElements.push({ name: 'Start date', content: [startDate] });
+    productDetailsElements.push({ name: 'End date', content: [endDate] });
 
     const productName =
         'productName' in product
