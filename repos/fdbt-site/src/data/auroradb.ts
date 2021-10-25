@@ -1034,35 +1034,6 @@ export const getPassengerTypeById = async (
     };
 };
 
-export const getPassengerTypeNameById = async (id: number, noc: string): Promise<string> => {
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving passenger type name for a given id',
-        id,
-        noc,
-    });
-
-    try {
-        const queryInput = `
-            SELECT name
-            FROM passengerType
-            WHERE id = ? 
-            AND nocCode = ?`;
-
-        const queryResults = await executeQuery<{ name: string }[]>(queryInput, [id, noc]);
-
-        if (queryResults.length !== 1) {
-            throw new Error(
-                `Could not find a passenger type with id: ${id}, or more than one passenger type was returned`,
-            );
-        }
-
-        return queryResults[0].name;
-    } catch (error) {
-        throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
-    }
-};
-
 export const getGroupPassengerTypeById = async (
     passengerId: number,
     noc: string,

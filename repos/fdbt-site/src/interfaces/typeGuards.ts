@@ -171,6 +171,3 @@ export const isProductInfo = (
 export const isPeriodExpiry = (
     periodExpiryAttribute: PeriodExpiry | ErrorInfo[] | undefined,
 ): periodExpiryAttribute is PeriodExpiry => !!periodExpiryAttribute && 'productValidity' in periodExpiryAttribute;
-
-export const isBasePeriodTicket = (ticket: WithIds<Ticket>): ticket is WithIds<BasePeriodTicket> =>
-    !!(ticket.products[0] as ProductDetails)?.productValidity;
