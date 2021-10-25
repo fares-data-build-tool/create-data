@@ -142,7 +142,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             }),
         )
     ).flat();
-    console.log(otherProducts);
 
     return { props: { otherProducts, myFaresEnabled } };
 };

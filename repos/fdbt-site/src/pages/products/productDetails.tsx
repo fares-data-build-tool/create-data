@@ -67,7 +67,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if ('selectedServices' in ticket) {
         productDetailsElements.push({
             name: `${noc} Services`,
-            content: await (
+            content: (
                 await Promise.all(
                     ticket.selectedServices.map(async (service) => {
                         return service.lineName;
