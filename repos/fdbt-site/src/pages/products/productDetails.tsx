@@ -68,7 +68,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             name: `${noc} Services`,
             content: (
                 await Promise.all(
-                    ticket.selectedServices.map(async (service) => {
+                    await ticket.selectedServices.map(async (service) => {
                         return service.lineName;
                     }),
                 )
