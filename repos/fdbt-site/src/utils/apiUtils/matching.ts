@@ -77,13 +77,21 @@ export const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFa
     userFareStages.fareStages.some((stage) => !matchingFareZones[stage.stageName]);
 
 export const sortingWithoutSequenceNumbers = (journeyPatterns: RawJourneyPattern[]): string[] => {
-    const graph = journeyPatterns.flatMap((journeyPattern) =>
-        journeyPattern.orderedStopPoints.flatMap<[string, string]>((stop, index, arr) =>
-            arr[index - 1] ? [[arr[index - 1].stopPointRef, stop.stopPointRef]] : [],
-        ),
-    );
+    try {
+        const graph = journeyPatterns.flatMap((journeyPattern) =>
+            journeyPattern.orderedStopPoints.flatMap<[string, string]>((stop, index, arr) =>
+                arr[index - 1] && arr[index].stopPointRef !== arr[index - 1].stopPointRef
+                    ? [[arr[index - 1].stopPointRef, stop.stopPointRef]]
+                    : [],
+            ),
+        );
 
-    return toposort(graph);
+        return toposort(graph);
+    } catch (error) {
+        logger.error('failed to toposort', { error: error.stack, journeyPatterns: journeyPatterns });
+
+        return journeyPatterns.flatMap((x) => x.orderedStopPoints).map((x) => x.stopPointRef);
+    }
 };
 
 const validateSequenceNumbers = (stops: StopPoint[]): stops is (StopPoint & { sequenceNumber: number })[] => {
