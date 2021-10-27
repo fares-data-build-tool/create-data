@@ -270,7 +270,13 @@ def check_txc_line_exists(cursor, operator, service, line, data_source, cloudwat
         noc_code,
         start_date,
         end_date,
+        operator_short_name,
+        inbound_direction_description,
+        outbound_direction_description,
+        service_description,
         service_code,
+        origin,
+        destination
     ) = extract_data_for_txc_operator_service_table(operator, service, line)
 
     query = f"""
