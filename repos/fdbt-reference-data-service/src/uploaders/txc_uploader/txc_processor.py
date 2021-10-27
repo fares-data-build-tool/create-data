@@ -55,13 +55,13 @@ def get_lines_for_service(service):
     return make_list(service['Lines']['Line'])
 
 
-def extract_data_for_txc_operator_service_table(operator, service):
+def extract_data_for_txc_operator_service_table(operator, service, line):
     noc_code = operator['NationalOperatorCode']
     start_date = service['OperatingPeriod']['StartDate']
     end_date = service['OperatingPeriod']['EndDate'] if 'EndDate' in service['OperatingPeriod'] else None
     operator_short_name = operator['OperatorShortName']
-    inbound_direction_description = operator['InboundDescription']['Description']
-    outbound_direction_description = operator['OutboundDescription']['Description']
+    inbound_direction_description = line['InboundDescription']['Description'] if 'InboundDescription' in line else ''
+    outbound_direction_description = line['OutboundDescription']['Description'] if 'OutboundDescription' in line else ''
     service_description = service['Description'] if 'Description' in service else ''
     service_code = service['ServiceCode'] if 'ServiceCode' in service else None
     standard_service = service['StandardService'] if 'StandardService' in service else None
@@ -223,7 +223,7 @@ def insert_into_txc_operator_service_table(cursor, operator, service, line, regi
         service_code,
         origin,
         destination
-    ) = extract_data_for_txc_operator_service_table(operator, service)
+    ) = extract_data_for_txc_operator_service_table(operator, service, line)
 
     query = f"""INSERT INTO txcOperatorLine (nocCode, lineName, lineId, startDate, endDate, operatorShortName, inboundDirectionDescription, outboundDirectionDescription, serviceDescription, serviceCode, regionCode, dataSource, origin, destination)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
@@ -271,7 +271,7 @@ def check_txc_line_exists(cursor, operator, service, line, data_source, cloudwat
         start_date,
         end_date,
         service_code,
-    ) = extract_data_for_txc_operator_service_table(operator, service)
+    ) = extract_data_for_txc_operator_service_table(operator, service, line)
 
     query = f"""
         SELECT id FROM txcOperatorLine

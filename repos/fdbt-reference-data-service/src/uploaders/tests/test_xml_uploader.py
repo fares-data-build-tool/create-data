@@ -31,12 +31,13 @@ class TestDatabaseInsertQuerying:
 class TestDataCollectionFunctionality:
     def test_extract_data_for_txc_operator_service_table(self):
         expected_operator_and_service_info = (
-            'ANWE', '2018-01-28', '2099-12-31', 'ANW', 'Macclesfield - Upton Priory Circular', 'NW_01_ANW_4_1', 'Macclesfield', 'Macclesfield')
+            'ANWE', '2018-01-28', '2099-12-31', 'ANW', 'The Pike - Evesham Country Park', 'Evesham Country Park - The Pike', 'Macclesfield - Upton Priory Circular', 'NW_01_ANW_4_1', 'Macclesfield', 'Macclesfield')
         operator = mock_data_dict['TransXChange']['Operators']['Operator']
         service = mock_data_dict['TransXChange']['Services']['Service']
+        line = service['Lines']['Line']
 
         assert extract_data_for_txc_operator_service_table(
-            operator, service) == expected_operator_and_service_info
+            operator, service, line) == expected_operator_and_service_info
 
     def test_collect_journey_pattern_section_refs_and_info(self):
         mock_raw_journey_patterns = mock_data_dict['TransXChange'][
