@@ -1,4 +1,8 @@
-import { UNASSIGNED_STOPS_ATTRIBUTE, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE } from './../../../../src/constants/attributes';
+import {
+    UNASSIGNED_STOPS_ATTRIBUTE,
+    UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
+    DIRECTION_ATTRIBUTE,
+} from './../../../../src/constants/attributes';
 import { TicketType } from '../../../../shared/matchingJsonTypes';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
@@ -226,6 +230,9 @@ describe('userData', () => {
                             street: 'YZ!',
                         },
                     ],
+                    [DIRECTION_ATTRIBUTE]: {
+                        direction: 'inbound',
+                    },
                 },
             });
             const result = getSingleTicketJson(req, res);
@@ -277,6 +284,9 @@ describe('userData', () => {
                             street: 'YZ!',
                         },
                     ],
+                    [DIRECTION_ATTRIBUTE]: {
+                        direction: 'inbound',
+                    },
                 },
             });
             const result = getSingleTicketJson(req, res);

@@ -16,6 +16,8 @@ CREATE TABLE txcOperatorLine(
     `destination` varchar(255) DEFAULT NULL,
     `lineId` varchar(255) DEFAULT NULL,
     `endDate` date DEFAULT NULL,
+    `inboundDirectionDescription` varchar(255) DEFAULT NULL,
+    `outboundDirectionDescription` varchar(255) DEFAULT NULL,
     INDEX idx_nocCode (nocCode),
     INDEX idx_lineName (lineName),
     INDEX idx_startDate (startDate),

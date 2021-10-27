@@ -1,6 +1,8 @@
 import React, { ReactElement } from 'react';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
 import {
+    getBodsServiceByNocAndId,
+    getBodsServiceDirectionDescriptionsByNocAndLineName,
     getPassengerTypeNameByIdAndNoc,
     getProductMatchingJsonLinkByProductId,
     getSalesOfferPackageByIdAndNoc,
@@ -10,6 +12,7 @@ import { ProductDetailsElement, NextPageContextWithSession } from '../../interfa
 import TwoThirdsLayout from '../../layout/Layout';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
+import isArray from 'lodash/isArray';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -52,6 +55,7 @@ const ProductDetails = ({
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ProductDetailsProps }> => {
     const noc = getAndValidateNoc(ctx);
     const productId = ctx.query?.productId;
+    const serviceId = ctx.query?.serviceId;
 
     if (typeof productId !== 'string') {
         throw new Error(`Expected string type for productID, received: ${productId}`);
@@ -64,7 +68,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     if ('selectedServices' in ticket) {
         productDetailsElements.push({
-            name: `${noc} Services`,
+            name: 'additionalNocs' in ticket || 'additionalOperators' in ticket ? `${noc} Services` : 'Services',
             content: [
                 (
                     await Promise.all(
@@ -77,15 +81,32 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
-    if ('serviceDescription' in ticket) {
+    if (serviceId) {
+        if (isArray(serviceId)) {
+            throw new Error('Received more than one serviceId');
+        }
+        const pointToPointService = await getBodsServiceByNocAndId(noc, serviceId);
         productDetailsElements.push({
             name: 'Service',
-            content: [`${ticket.lineName} - ${ticket.serviceDescription}`],
+            content: [
+                `${pointToPointService.lineName} - ${pointToPointService.origin} to ${pointToPointService.destination}`,
+            ],
         });
     }
 
     if ('journeyDirection' in ticket && ticket.journeyDirection) {
-        productDetailsElements.push({ name: 'Journey direction', content: [ticket.journeyDirection] });
+        const { inboundDirectionDescription, outboundDirectionDescription } =
+            await getBodsServiceDirectionDescriptionsByNocAndLineName(noc, ticket.lineName);
+        productDetailsElements.push({
+            name: 'Journey direction',
+            content: [
+                `${sentenceCaseString(ticket.journeyDirection)} - ${
+                    ticket.journeyDirection === 'inbound' || ticket.journeyDirection === 'clockwise'
+                        ? inboundDirectionDescription
+                        : outboundDirectionDescription
+                }`,
+            ],
+        });
     }
 
     const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
