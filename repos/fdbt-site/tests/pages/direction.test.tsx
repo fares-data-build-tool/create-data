@@ -31,10 +31,16 @@ describe('pages', () => {
         });
 
         describe('getServerSideProps', () => {
-            it('returns correct values fpr props', async () => {
+            it('returns correct values for props', async () => {
                 (({ ...getServiceByIdAndDataSource } as jest.Mock).mockImplementation(() => mockRawService));
 
-                const ctx = getMockContext();
+                const ctx = getMockContext({
+                    body: { serviceId: '123' },
+                    uuid: {},
+                    session: {
+                        [TXC_SOURCE_ATTRIBUTE]: { source: 'tnds', hasTnds: true, hasBods: true },
+                    },
+                });
 
                 const result = await getServerSideProps(ctx);
 
