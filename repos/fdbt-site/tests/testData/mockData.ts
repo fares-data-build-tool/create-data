@@ -420,6 +420,8 @@ export const mockRawService: RawService = {
     operatorShortName: 'HCTY',
     lineName: '17',
     startDate: '2021-10-11T13:40:49+00:00',
+    inboundDirectionDescription: 'this way',
+    outboundDirectionDescription: 'another way',
     journeyPatterns: [
         {
             direction: 'outbound',
@@ -547,6 +549,8 @@ export const mockRawServiceWithDuplicates: RawService = {
     operatorShortName: 'HCTY',
     lineName: '17',
     startDate: '2021-10-11T13:40:49+00:00',
+    inboundDirectionDescription: 'this way',
+    outboundDirectionDescription: 'another way',
     journeyPatterns: [
         {
             direction: 'outbound',
@@ -1189,6 +1193,7 @@ export const expectedSingleTicket: WithIds<SingleTicket> = {
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
+    journeyDirection: 'inbound',
     passengerType: { id: 9 },
     operatorName: 'DCC',
     termTime: true,
@@ -1348,6 +1353,7 @@ export const expectedCarnetSingleTicket: WithIds<SingleTicket> = {
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
+    journeyDirection: 'inbound',
     passengerType: { id: 9 },
     operatorName: 'DCC',
     termTime: true,
