@@ -39,7 +39,7 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
                             Service status: {getTag(service.startDate, service.endDate)}
                         </h1>
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">Products</h1>
-                        {PointToPointProductsTable(products)}
+                        {PointToPointProductsTable(products, service)}
                     </div>
                 </div>
             </BaseLayout>
@@ -47,7 +47,7 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
     );
 };
 
-const PointToPointProductsTable = (products: MyFaresPointToPointProduct[]): ReactElement => {
+const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], service: MyFaresService): ReactElement => {
     return (
         <>
             <table className="govuk-table">
@@ -76,7 +76,9 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[]): Reac
                         ? products.map((product, index) => (
                               <tr key={index} className="govuk-table__row">
                                   <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell">
-                                      <a href={`/products/productDetails?productId=${product.id}`}>
+                                      <a
+                                          href={`/products/productDetails?productId=${product.id}&serviceId=${service.id}`}
+                                      >
                                           {product.productDescription}
                                       </a>
                                   </td>
