@@ -256,7 +256,7 @@ export const getBodsServiceDirectionDescriptionsByNocAndLineName = async (
             outboundDirectionDescription: queryResults[0].outboundDirectionDescription,
         };
     } catch (error) {
-        throw new Error(`Could not retrieve individual service from AuroraDB: ${error.stack}`);
+        throw new Error(`Could not retrieve individual service direction descriptions from AuroraDB: ${error.stack}`);
     }
 };
 
