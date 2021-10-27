@@ -114,9 +114,9 @@ export const getServerSideProps = async (
             errors: (directionAttribute && 'errors' in directionAttribute && directionAttribute.errors) || [],
             csrfToken,
             direction,
-            directionDesc: removeExcessWhiteSpace(service.serviceDescription),
+            directionDesc: removeExcessWhiteSpace(service.outboundDirectionDescription),
             inboundDirection,
-            inboundDirectionDesc: removeExcessWhiteSpace(service.serviceDescription).split(' - ').reverse().join(' - '),
+            inboundDirectionDesc: removeExcessWhiteSpace(service.inboundDirectionDescription),
         },
     };
 };
