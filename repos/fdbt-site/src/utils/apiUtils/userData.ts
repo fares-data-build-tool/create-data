@@ -37,6 +37,7 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
+    DIRECTION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { batchGetStopsByAtcoCode, insertProducts } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
@@ -64,6 +65,7 @@ import {
     Ticket,
     TicketPeriod,
     TicketPeriodWithInput,
+    Direction,
 } from '../../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import {
@@ -275,8 +277,15 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const products = getPointToPointProducts(req);
     const singleUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
+    const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
 
-    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo) || !singleUnassignedStops) {
+    if (
+        !matchingAttributeInfo ||
+        !isMatchingInfo(matchingAttributeInfo) ||
+        !singleUnassignedStops ||
+        !directionAttribute ||
+        'errors' in directionAttribute
+    ) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
 
@@ -294,6 +303,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         termTime: isTermTime(req),
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
+        journeyDirection: (directionAttribute as Direction).direction,
     };
 };
 

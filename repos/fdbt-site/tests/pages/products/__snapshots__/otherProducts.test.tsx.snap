@@ -205,7 +205,11 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               <td
                 className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
               >
-                First product
+                <a
+                  href="/products/productDetails?productId=1"
+                >
+                  First product
+                </a>
               </td>
               <td
                 className="govuk-table__cell"
@@ -254,7 +258,11 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               <td
                 className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
               >
-                The greatest product eveer!
+                <a
+                  href="/products/productDetails?productId=2"
+                >
+                  The greatest product eveer!
+                </a>
               </td>
               <td
                 className="govuk-table__cell"
@@ -303,7 +311,11 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               <td
                 className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
               >
-                The greatest product eveer!
+                <a
+                  href="/products/productDetails?productId=3"
+                >
+                  The greatest product eveer!
+                </a>
               </td>
               <td
                 className="govuk-table__cell"

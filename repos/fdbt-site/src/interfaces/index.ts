@@ -540,6 +540,7 @@ export interface MyFaresPointToPointProduct {
 }
 
 export interface MyFaresOtherFaresProduct {
+    id: number;
     productDescription: string;
     type: string;
     duration: string;
@@ -586,6 +587,8 @@ export interface RawService {
     lineId: string;
     lineName: string;
     startDate: string;
+    inboundDirectionDescription: string;
+    outboundDirectionDescription: string;
 }
 
 export interface JourneyPattern {
@@ -620,7 +623,7 @@ export interface ConfirmationElement {
 
 export interface ProductDetailsElement {
     name: string;
-    content: string | string[];
+    content: string[];
 }
 
 export interface RadioOption {
