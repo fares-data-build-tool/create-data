@@ -106,6 +106,7 @@ export const handler: Handler<ExportLambdaBody> = async () => {
 };
 
 const getSingleTicketsMismatchedServiceIds = async (pointToPointTicket: WithIds<SingleTicket>): Promise<number[]> => {
+    // all stops from the matching JSON
     const atcoCodesOfKnownStops: string[] = [];
 
     pointToPointTicket.fareZones.forEach((fareZone) => {
@@ -120,18 +121,40 @@ const getSingleTicketsMismatchedServiceIds = async (pointToPointTicket: WithIds<
         });
     }
 
+    // by this point, atcoCodesOfKnownStops is populated.
+
     const { journeyDirection, lineId, nocCode } = pointToPointTicket;
 
     const directionsAndStops = await getDirectionAndStopsByLineIdAndNoc(lineId, nocCode);
 
-    directionsAndStops.forEach(oneDirectionsAndStops => {
-        const allthestops = [oneDirectionsAndStops.fromAtcoCode, oneDirectionsAndStops.toAtcoCode];
-        oneDirectionsAndStops.serviceId
-    })
+    const theStopsMatchingTheJourneyDirectionOnOurTicket = directionsAndStops.filter(
+        (directionsAndStopsItem) => directionsAndStopsItem.direction === journeyDirection,
+    );
+
+    // split by service id?, where result is a dictionary<key = serviceId, value = array of stop ids>
+    // const dictionary
+    // iterate over each service Id
+    // check that array of stop ids is equal to the array of stops on our matching json
+    // to compare the arrays, strip out duplicates, sort it, then check that they are equal.
+
+    let mismatchDetected = false;
+
+    if (theStopsMatchingTheJourneyDirectionOnOurTicket.length !== atcoCodesOfKnownStops.length) {
+        // they are not the same length
+        mismatchDetected = true;
+    }
+
+    // if the length matches, then we check and see if the same stops exists in each list.
+
+
+
+    // directionsAndStops.forEach(oneDirectionsAndStops => {
+    //     const allthestops = [oneDirectionsAndStops.fromAtcoCode, oneDirectionsAndStops.toAtcoCode];
+    //     oneDirectionsAndStops.serviceId
+    // })
 
     // product id 7 service 4
     // service 4 v1
     // service 4 v2
     // v3
-
 };
