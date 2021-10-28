@@ -45,6 +45,8 @@ export interface ServiceQueryData {
     direction: string;
     fromSequenceNumber: number;
     toSequenceNumber: number;
+    inboundDirectionDescription: string;
+    outboundDirectionDescription: string;
 }
 
 export type StopPoint = {
@@ -65,6 +67,8 @@ export interface RawService {
     lineId: string;
     lineName: string;
     startDate: string;
+    inboundDirectionDescription: string;
+    outboundDirectionDescription: string;
 }
 
 export interface GroupPassengerType {
@@ -102,4 +106,11 @@ export interface GroupPassengerTypeReference {
 export interface DbTimeRestriction {
     day: TimeRestrictionDay;
     timeBands: DbTimeBand[];
+}
+
+export interface DirectionAndStops {
+    fromAtcoCode: string;
+    toAtcoCode: string;
+    direction: string;
+    serviceId: string;
 }

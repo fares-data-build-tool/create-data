@@ -203,6 +203,41 @@ export const getBodsServiceByNocAndId = async (
     }
 };
 
+export const getBodsServiceDirectionDescriptionsByNocAndLineName = async (
+    nationalOperatorCode: string,
+    lineName: string,
+): Promise<{ inboundDirectionDescription: string; outboundDirectionDescription: string }> => {
+    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
+
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for given national operator code and lineName',
+        nationalOperatorCode,
+        lineName,
+    });
+
+    try {
+        const queryInput = `
+            SELECT inboundDirectionDescription, outboundDirectionDescription
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND lineName = ? AND dataSource = 'bods';
+        `;
+
+        const queryResults = await executeQuery<
+            { inboundDirectionDescription: string; outboundDirectionDescription: string }[]
+        >(queryInput, [nocCodeParameter, lineName]);
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
+        }
+        return {
+            inboundDirectionDescription: queryResults[0].inboundDirectionDescription,
+            outboundDirectionDescription: queryResults[0].outboundDirectionDescription,
+        };
+    } catch (error) {
+        throw new Error(`Could not retrieve individual service direction descriptions from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
@@ -356,7 +391,7 @@ export const getServiceByIdAndDataSource = async (
     });
 
     const serviceQuery = `
-        SELECT os.operatorShortName, os.serviceDescription, os.lineName, os.lineId, os.startDate, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction
+        SELECT os.operatorShortName, os.serviceDescription, os.inboundDirectionDescription, os.outboundDirectionDescription, os.lineName, os.lineId, os.startDate, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction
         FROM txcOperatorLine AS os
         JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
         JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
@@ -414,6 +449,8 @@ export const getServiceByIdAndDataSource = async (
         lineId: service.lineId,
         lineName: service.lineName,
         startDate: convertDateFormat(service.startDate),
+        inboundDirectionDescription: service.inboundDirectionDescription,
+        outboundDirectionDescription: service.outboundDirectionDescription,
     };
 };
 
@@ -1014,7 +1051,7 @@ export const getPassengerTypeById = async (
     };
 };
 
-export const getPassengerTypeNameById = async (id: number, noc: string): Promise<string> => {
+export const getPassengerTypeNameByIdAndNoc = async (id: number, noc: string): Promise<string> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving passenger type name for a given id',

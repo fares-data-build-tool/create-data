@@ -1,6 +1,11 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { SERVICE_ATTRIBUTE, DIRECTION_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
+import {
+    SERVICE_ATTRIBUTE,
+    DIRECTION_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+} from '../constants/attributes';
 import { getServiceByIdAndDataSource } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
@@ -73,14 +78,14 @@ export const getServerSideProps = async (
 
     const directionAttribute = getSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
-
+    const dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
 
-    if (!isService(serviceAttribute) || !nocCode || !ctx.res) {
+    if (!isService(serviceAttribute) || !nocCode || !ctx.res || !dataSourceAttribute) {
         throw new Error('Necessary attributes not found to show direction page');
     }
 
-    const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, 'bods');
+    const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, dataSourceAttribute.source);
     const directions = Array.from(
         service.journeyPatterns.reduce((set, pattern) => {
             set.add(pattern.direction);
@@ -114,9 +119,9 @@ export const getServerSideProps = async (
             errors: (directionAttribute && 'errors' in directionAttribute && directionAttribute.errors) || [],
             csrfToken,
             direction,
-            directionDesc: removeExcessWhiteSpace(service.serviceDescription),
+            directionDesc: removeExcessWhiteSpace(service.outboundDirectionDescription),
             inboundDirection,
-            inboundDirectionDesc: removeExcessWhiteSpace(service.serviceDescription).split(' - ').reverse().join(' - '),
+            inboundDirectionDesc: removeExcessWhiteSpace(service.inboundDirectionDescription),
         },
     };
 };

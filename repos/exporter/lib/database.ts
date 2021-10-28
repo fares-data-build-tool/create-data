@@ -11,8 +11,9 @@ import {
     ServiceQueryData,
     RawJourneyPattern,
     MyFaresProduct,
+    DirectionAndStops,
 } from '../shared/dbTypes';
-import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
+import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage, TicketPeriod } from '../shared/matchingJsonTypes';
 import dateFormat from 'dateformat';
 
 export const convertDateFormat = (date: string): string => {
@@ -199,7 +200,7 @@ export const getServiceByIdAndDataSource = async (
     const nocCodeParameter = replaceInternalNocCode(nocCode);
 
     const serviceQuery = `
-        SELECT os.operatorShortName, os.serviceDescription, os.lineName, os.lineId, os.startDate, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction
+        SELECT os.operatorShortName, os.serviceDescription, os.lineName, os.lineId, os.startDate, os.inboundDirectionDescription, os.outboundDirectionDescription, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction
         FROM txcOperatorLine AS os
         JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
         JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
@@ -213,7 +214,7 @@ export const getServiceByIdAndDataSource = async (
 
     try {
         queryResult = await executeQuery(serviceQuery, [nocCodeParameter, id, dataSource]);
-    } catch (error) {
+    } catch (error: any) {
         throw new Error(`Could not get journey patterns from Aurora DB: ${error.stack}`);
     }
 
@@ -257,21 +258,31 @@ export const getServiceByIdAndDataSource = async (
         lineId: service.lineId,
         lineName: service.lineName,
         startDate: convertDateFormat(service.startDate),
+        inboundDirectionDescription: service.inboundDirectionDescription,
+        outboundDirectionDescription: service.outboundDirectionDescription,
     };
 };
 
-export const getPointToPointProducts = async (): Promise<MyFaresProduct[]> => {
+export const getPointToPointProducts = async (): Promise<
+    {
+        id: number;
+        lineId: string;
+        matchingJsonLink: string;
+        startDate: string;
+        endDate: string;
+    }[]
+> => {
     const queryInput = `      
             SELECT id, lineId, matchingJsonLink, startDate, endDate
             FROM products
             WHERE lineId <> ''
         `;
-    return await executeQuery<MyFaresProduct[]>(queryInput, []);
+    return await executeQuery(queryInput, []);
 };
 
 export const getBodsServiceIdByNocAndId = async (
     nationalOperatorCode: string,
-    serviceId: string,
+    lineId: string,
 ): Promise<{ id: string }> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 
@@ -279,18 +290,36 @@ export const getBodsServiceIdByNocAndId = async (
         const queryInput = `
             SELECT id
             FROM txcOperatorLine
-            WHERE nocCode = ? AND id = ? AND dataSource = 'bods';
+            WHERE nocCode = ? AND lineId = ? AND dataSource = 'bods';
         `;
 
-        const queryResults = await executeQuery<{ id: string }[]>(queryInput, [nocCodeParameter, serviceId]);
+        const queryResults = await executeQuery<{ id: string }[]>(queryInput, [nocCodeParameter, lineId]);
         if (queryResults.length !== 1) {
             throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
         }
-        // Is it better to JSON.parse this and overwrite the start end and end date via spreading the rest?
         return {
             id: queryResults[0].id,
         };
-    } catch (error) {
+    } catch (error: any) {
         throw new Error(`Could not retrieve individual service from AuroraDB: ${error.stack}`);
     }
+};
+
+export const getDirectionAndStopsByLineIdAndNoc = async (lineId: string, noc: string): Promise<DirectionAndStops[]> => {
+    const nocCodeParameter = replaceInternalNocCode(noc);
+
+    const serviceQuery = `
+        SELECT DISTINCT pl.fromAtcoCode, pl.toAtcoCode, ps.direction, os.id as serviceId
+        FROM txcOperatorLine AS os
+        JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
+        JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
+        WHERE os.nocCode = ? AND os.lineId = ? AND os.dataSource = 'bods'
+    `;
+
+    try {
+        return await executeQuery(serviceQuery, [nocCodeParameter, lineId]);
+    } catch (error: any) {
+        throw new Error(`Could not get journey patterns from Aurora DB: ${error.stack}`);
+    }
+
 };

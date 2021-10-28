@@ -177,10 +177,14 @@ export interface DbTimeBand {
     endTime: string | { fareDayEnd: boolean };
 }
 
+export interface UnassignedStop {
+    atcoCode: string;
+}
+
 export interface UnassignedStops {
-    singleUnassignedStops?: Stop[];
-    outboundUnassignedStops?: Stop[];
-    inboundUnassignedStops?: Stop[];
+    singleUnassignedStops?: UnassignedStop[];
+    outboundUnassignedStops?: UnassignedStop[];
+    inboundUnassignedStops?: UnassignedStop[];
 }
 
 export interface BaseSchemeOperatorTicket extends Omit<BaseTicket, 'nocCode'> {
@@ -208,7 +212,7 @@ export interface SingleTicket extends BasePointToPointTicket {
     type: 'single';
     fareZones: FareZone[];
     termTime: boolean;
-    journeyDirection?: 'Inbound' | 'Outbound' | 'Clockwise' | 'Anti-Clockwise';
+    journeyDirection: string;
 }
 
 export interface ReturnTicket extends BasePointToPointTicket {

@@ -17,16 +17,19 @@ jest.mock('../../../src/data/s3');
 (getOtherProductsByNoc as jest.Mock).mockResolvedValue([
     {
         matchingJsonLink: 'path',
+        id: 1,
         startDate: 'a date',
         endDate: 'another date',
     },
     {
         matchingJsonLink: 'path2',
+        id: 2,
         startDate: 'a date2',
         endDate: 'another date2',
     },
     {
         matchingJsonLink: 'path3',
+        id: 3,
         startDate: 'a date3',
         endDate: 'another date3',
     },
@@ -60,6 +63,7 @@ const testProducts: MyFaresOtherFaresProduct[] = [
     {
         productDescription: 'First product',
         type: 'flatFare',
+        id: 1,
         duration: '1 trip',
         quantity: '1',
         passengerType: 'infant',
@@ -70,6 +74,7 @@ const testProducts: MyFaresOtherFaresProduct[] = [
     {
         productDescription: 'The greatest product eveer!',
         type: 'period',
+        id: 2,
         duration: '3 days',
         quantity: '20',
         passengerType: 'infant',
@@ -80,6 +85,7 @@ const testProducts: MyFaresOtherFaresProduct[] = [
     {
         productDescription: 'The greatest product eveer!',
         type: 'period',
+        id: 3,
         duration: '3 days',
         quantity: '1',
         passengerType: 'adult',
@@ -115,6 +121,7 @@ describe('myfares pages', () => {
                         {
                             carnet: false,
                             duration: '5 weeks',
+                            id: 1,
                             endDate: 'another date',
                             passengerType: 'My best passenger',
                             productDescription: 'Weekly Ticket',
@@ -125,6 +132,7 @@ describe('myfares pages', () => {
                         {
                             carnet: false,
                             duration: '1 year',
+                            id: 1,
                             endDate: 'another date',
                             passengerType: 'My other passenger',
                             productDescription: 'Day Ticket',
@@ -135,6 +143,7 @@ describe('myfares pages', () => {
                         {
                             carnet: false,
                             duration: '28 months',
+                            id: 1,
                             endDate: 'another date',
                             passengerType: 'My last passenger',
                             productDescription: 'Monthly Ticket',
@@ -145,6 +154,7 @@ describe('myfares pages', () => {
                         {
                             carnet: false,
                             duration: '5 weeks',
+                            id: 2,
                             endDate: 'another date2',
                             passengerType: '',
                             productDescription: 'Weekly Ticket',
@@ -156,6 +166,7 @@ describe('myfares pages', () => {
                             carnet: false,
                             duration: '1 year',
                             endDate: 'another date2',
+                            id: 2,
                             passengerType: '',
                             productDescription: 'Day Ticket',
                             quantity: '1',
@@ -167,6 +178,7 @@ describe('myfares pages', () => {
                             duration: '28 months',
                             endDate: 'another date2',
                             passengerType: '',
+                            id: 2,
                             productDescription: 'Monthly Ticket',
                             quantity: '1',
                             startDate: 'a date2',
@@ -175,6 +187,7 @@ describe('myfares pages', () => {
                         {
                             carnet: false,
                             duration: '5 weeks',
+                            id: 3,
                             endDate: 'another date3',
                             passengerType: '',
                             productDescription: 'Weekly Ticket',
@@ -185,6 +198,7 @@ describe('myfares pages', () => {
                         {
                             carnet: false,
                             duration: '1 year',
+                            id: 3,
                             endDate: 'another date3',
                             passengerType: '',
                             productDescription: 'Day Ticket',
@@ -195,6 +209,7 @@ describe('myfares pages', () => {
                         {
                             carnet: false,
                             duration: '28 months',
+                            id: 3,
                             endDate: 'another date3',
                             passengerType: '',
                             productDescription: 'Monthly Ticket',
