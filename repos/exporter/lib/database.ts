@@ -192,77 +192,6 @@ export const getFareDayEnd = async (noc: string): Promise<string | undefined> =>
     return queryResults[0]?.time;
 };
 
-export const getServiceByIdAndDataSource = async (
-    nocCode: string,
-    id: number,
-    dataSource: string,
-): Promise<RawService> => {
-    const nocCodeParameter = replaceInternalNocCode(nocCode);
-
-    const serviceQuery = `
-        SELECT os.operatorShortName, os.serviceDescription, os.lineName, os.lineId, os.startDate, os.inboundDirectionDescription, os.outboundDirectionDescription, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction
-        FROM txcOperatorLine AS os
-        JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
-        JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
-        LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode
-        LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode
-        WHERE os.nocCode = ? AND os.id = ? AND os.dataSource = ?
-        ORDER BY pl.journeyPatternId ASC, pl.orderInSequence
-    `;
-
-    let queryResult: ServiceQueryData[];
-
-    try {
-        queryResult = await executeQuery(serviceQuery, [nocCodeParameter, id, dataSource]);
-    } catch (error: any) {
-        throw new Error(`Could not get journey patterns from Aurora DB: ${error.stack}`);
-    }
-
-    const service = queryResult[0];
-
-    // allows to get the unique journey's for the operator e.g. [1,2,3]
-    const uniqueJourneyPatterns = queryResult
-        .map((item) => item.journeyPatternId)
-        .filter((value, index, self) => self.indexOf(value) === index);
-
-    const rawPatternService: RawJourneyPattern[] = uniqueJourneyPatterns.map((journey) => {
-        const filteredJourney = queryResult.filter((item) => {
-            return item.journeyPatternId === journey;
-        });
-
-        return {
-            direction: filteredJourney[0].direction,
-            orderedStopPoints: [
-                {
-                    stopPointRef: filteredJourney[0].fromAtcoCode,
-                    commonName: filteredJourney[0].fromCommonName,
-                    sequenceNumber: filteredJourney[0].fromSequenceNumber,
-                },
-                ...filteredJourney.map((data: ServiceQueryData) => ({
-                    stopPointRef: data.toAtcoCode,
-                    commonName: data.toCommonName,
-                    sequenceNumber: data.toSequenceNumber,
-                })),
-            ],
-        };
-    });
-
-    if (!service || rawPatternService.length === 0) {
-        throw new Error(`No journey patterns found for nocCode: ${nocCodeParameter}, id: ${id}`);
-    }
-
-    return {
-        serviceDescription: service.serviceDescription,
-        operatorShortName: service.operatorShortName,
-        journeyPatterns: rawPatternService,
-        lineId: service.lineId,
-        lineName: service.lineName,
-        startDate: convertDateFormat(service.startDate),
-        inboundDirectionDescription: service.inboundDirectionDescription,
-        outboundDirectionDescription: service.outboundDirectionDescription,
-    };
-};
-
 export const getPointToPointProducts = async (): Promise<
     {
         id: number;
@@ -278,31 +207,6 @@ export const getPointToPointProducts = async (): Promise<
             WHERE lineId <> ''
         `;
     return await executeQuery(queryInput, []);
-};
-
-export const getBodsServiceIdByNocAndId = async (
-    nationalOperatorCode: string,
-    lineId: string,
-): Promise<{ id: string }> => {
-    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
-
-    try {
-        const queryInput = `
-            SELECT id
-            FROM txcOperatorLine
-            WHERE nocCode = ? AND lineId = ? AND dataSource = 'bods';
-        `;
-
-        const queryResults = await executeQuery<{ id: string }[]>(queryInput, [nocCodeParameter, lineId]);
-        if (queryResults.length !== 1) {
-            throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
-        }
-        return {
-            id: queryResults[0].id,
-        };
-    } catch (error: any) {
-        throw new Error(`Could not retrieve individual service from AuroraDB: ${error.stack}`);
-    }
 };
 
 export const getDirectionAndStopsByLineIdAndNoc = async (lineId: string, noc: string): Promise<DirectionAndStops[]> => {

@@ -1,19 +1,7 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
-import {
-    BaseTicket,
-    FullTimeRestriction,
-    TicketWithIds,
-    Ticket,
-    WithIds,
-    BasePeriodTicket,
-    ProductDetails,
-    BaseSchemeOperatorTicket,
-    ReturnTicket,
-    SingleTicket,
-    PointToPointPeriodTicket,
-} from '../shared/matchingJsonTypes';
-import { getBodsServiceIdByNocAndId, getDirectionAndStopsByLineIdAndNoc, getPointToPointProducts, getServiceByIdAndDataSource } from './database';
+import { WithIds, ReturnTicket, SingleTicket, PointToPointPeriodTicket } from '../shared/matchingJsonTypes';
+import { getDirectionAndStopsByLineIdAndNoc, getPointToPointProducts } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
 
@@ -44,7 +32,7 @@ export const handler: Handler<ExportLambdaBody> = async () => {
     // change loop to OG for loop
     // for a single, make sure comparison is only done between fareZones + unassigned against whichever direction from service
     // for a non-single, make sure multiple comparisons are done between their stuff
-    // combine DB calls into one which gets 
+    // combine DB calls into one which gets
 
     pointToPointProducts.forEach(async (ptpp) => {
         const path = ptpp.matchingJsonLink;
@@ -62,8 +50,13 @@ export const handler: Handler<ExportLambdaBody> = async () => {
 
         const atcoCodesOfKnownStops: string[] = [];
 
+        // check to see if single ticket
         if ('fareZones' in pointToPointTicket) {
-            const mismatchedServiceIds = getSingleTicketsMismatchedServiceIds(pointToPointTicket, ptpp.startDate, ptpp.endDate);
+            const mismatchedServiceIds = getSingleTicketsMismatchedServiceIds(
+                pointToPointTicket,
+                ptpp.startDate,
+                ptpp.endDate,
+            );
             pointToPointTicket.fareZones.forEach((fareZone) => {
                 fareZone.stops.forEach((stop) => {
                     atcoCodesOfKnownStops.push(stop.atcoCode);
@@ -106,16 +99,13 @@ export const handler: Handler<ExportLambdaBody> = async () => {
             journeyDirection = pointToPointTicket.journeyDirection;
         }
 
-        const serviceIds = (await getBodsServiceIdByNocAndId(nocCode, lineId));
-        const service = await getServiceByIdAndDataSource(pointToPointTicket.nocCode, Number(serviceId), 'bods');
-
         const atcoMismatch = false;
 
-        const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === journeyDirection);
+        // const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === journeyDirection);
     });
 };
 
-const getSingleTicketsMismatchedServiceIds = async (pointToPointTicket: WithIds<SingleTicket>, startDate: string, endDate: string ): Promise<number[]> => {
+const getSingleTicketsMismatchedServiceIds = async (pointToPointTicket: WithIds<SingleTicket>): Promise<number[]> => {
     const atcoCodesOfKnownStops: string[] = [];
 
     pointToPointTicket.fareZones.forEach((fareZone) => {
@@ -133,5 +123,15 @@ const getSingleTicketsMismatchedServiceIds = async (pointToPointTicket: WithIds<
     const { journeyDirection, lineId, nocCode } = pointToPointTicket;
 
     const directionsAndStops = await getDirectionAndStopsByLineIdAndNoc(lineId, nocCode);
-        
+
+    directionsAndStops.forEach(oneDirectionsAndStops => {
+        const allthestops = [oneDirectionsAndStops.fromAtcoCode, oneDirectionsAndStops.toAtcoCode];
+        oneDirectionsAndStops.serviceId
+    })
+
+    // product id 7 service 4
+    // service 4 v1
+    // service 4 v2
+    // v3
+
 };
