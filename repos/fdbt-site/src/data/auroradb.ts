@@ -41,8 +41,8 @@ interface ServiceQueryData {
     journeyPatternId: string;
     order: string;
     direction: string;
-    fromSequenceNumber: number;
-    toSequenceNumber: number;
+    fromSequenceNumber: string;
+    toSequenceNumber: string;
     inboundDirectionDescription: string;
     outboundDirectionDescription: string;
 }
@@ -413,7 +413,7 @@ export const getServiceByIdAndDataSource = async (
     });
 
     const serviceQuery = `
-        SELECT os.operatorShortName, os.serviceDescription, os.inboundDirectionDescription, os.outboundDirectionDescription, os.lineName, os.lineId, os.startDate, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction
+        SELECT os.operatorShortName, os.serviceDescription, os.inboundDirectionDescription, os.outboundDirectionDescription, os.lineName, os.lineId, os.startDate, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction, pl.fromSequenceNumber, pl.toSequenceNumber
         FROM txcOperatorLine AS os
         JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
         JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
@@ -438,6 +438,11 @@ export const getServiceByIdAndDataSource = async (
         .map((item) => item.journeyPatternId)
         .filter((value, index, self) => self.indexOf(value) === index);
 
+    const parseSequenceNumber = (sequenceNumber: string | undefined) => {
+        const parsedSequenceNumber = Number(sequenceNumber);
+        return Number.isInteger(parsedSequenceNumber) ? parsedSequenceNumber : undefined;
+    };
+
     const rawPatternService: RawJourneyPattern[] = uniqueJourneyPatterns.map((journey) => {
         const filteredJourney = queryResult.filter((item) => {
             return item.journeyPatternId === journey;
@@ -449,12 +454,12 @@ export const getServiceByIdAndDataSource = async (
                 {
                     stopPointRef: filteredJourney[0].fromAtcoCode,
                     commonName: filteredJourney[0].fromCommonName,
-                    sequenceNumber: filteredJourney[0].fromSequenceNumber,
+                    sequenceNumber: parseSequenceNumber(filteredJourney[0].fromSequenceNumber),
                 },
                 ...filteredJourney.map((data: ServiceQueryData) => ({
                     stopPointRef: data.toAtcoCode,
                     commonName: data.toCommonName,
-                    sequenceNumber: data.toSequenceNumber,
+                    sequenceNumber: parseSequenceNumber(data.toSequenceNumber),
                 })),
             ],
         };
