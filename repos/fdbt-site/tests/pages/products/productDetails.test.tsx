@@ -147,8 +147,8 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
-                        { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Zone', content: ['Green Lane Shops'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Period duration', content: ['5 weeks'] },
                         { name: 'Product expiry', content: ['24 hr'] },
@@ -171,8 +171,8 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
-                        { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Zone', content: ['Green Lane Shops'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Multi Operator Group', content: ['TEST, MCTR, WBTR, BLAC'] },
                         { name: 'Period duration', content: ['5 weeks'] },
