@@ -36,7 +36,9 @@ export const handler: Handler<ExportLambdaBody> = async () => {
 
     pointToPointProducts.forEach(async (ptpp) => {
         const path = ptpp.matchingJsonLink;
+
         const object = await s3.getObject({ Key: path, Bucket: PRODUCTS_BUCKET }).promise();
+
         if (!object.Body) {
             throw new Error(`body was not present [${path}]`);
         }
@@ -57,6 +59,7 @@ export const handler: Handler<ExportLambdaBody> = async () => {
                 ptpp.startDate,
                 ptpp.endDate,
             );
+
             pointToPointTicket.fareZones.forEach((fareZone) => {
                 fareZone.stops.forEach((stop) => {
                     atcoCodesOfKnownStops.push(stop.atcoCode);
@@ -68,6 +71,7 @@ export const handler: Handler<ExportLambdaBody> = async () => {
                     atcoCodesOfKnownStops.push(stop.atcoCode);
                 });
             });
+
             pointToPointTicket.outboundFareZones.forEach((fareZone) => {
                 fareZone.stops.forEach((stop) => {
                     atcoCodesOfKnownStops.push(stop.atcoCode);
@@ -145,8 +149,6 @@ const getSingleTicketsMismatchedServiceIds = async (pointToPointTicket: WithIds<
     }
 
     // if the length matches, then we check and see if the same stops exists in each list.
-
-
 
     // directionsAndStops.forEach(oneDirectionsAndStops => {
     //     const allthestops = [oneDirectionsAndStops.fromAtcoCode, oneDirectionsAndStops.toAtcoCode];
