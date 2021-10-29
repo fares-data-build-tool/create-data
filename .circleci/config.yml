@@ -245,7 +245,7 @@ audit-netex-validator:
             pip install safety
             cd src/netex-validator
             safety check -r requirements.txt
-  
+
   deploy-netex-validator-to-test:
     parameters:
       package_name:
