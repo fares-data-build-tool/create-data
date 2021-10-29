@@ -230,7 +230,7 @@ jobs:
             export STAGE=<< parameters.environment >> && node_modules/.bin/cdk deploy --require-approval never --ci --no-color
             echo "Finished deploy"
 
-audit-netex-validator:
+  audit-netex-validator:
     parameters:
       package_name:
         type: string
