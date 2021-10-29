@@ -135,7 +135,7 @@ export const getServerSideProps = async (
             const productDescription =
                 'products' in matchingJson && 'productName' in matchingJson.products[0]
                     ? matchingJson.products[0].productName
-                    : `${passengerTypeName} - ${matchingJson.type}`;
+                    : `${passengerTypeName} - ${matchingJson.type} ${'termTime' in matchingJson ? '(school)' : ''}`;
 
             let timeRestriction = 'No restrictions';
 
