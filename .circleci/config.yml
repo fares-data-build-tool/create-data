@@ -84,20 +84,6 @@ jobs:
           paths:
             - "./repos/<< parameters.package_name >>/node_modules"
 
-  audit:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            npx audit-ci --moderate -a 1002373 -a 1002475 -a 1002581 -a 1002401
-
   test:
     parameters:
       package_name:
@@ -244,7 +230,7 @@ jobs:
             export STAGE=<< parameters.environment >> && node_modules/.bin/cdk deploy --require-approval never --ci --no-color
             echo "Finished deploy"
 
-  audit-netex-validator:
+audit-netex-validator:
     parameters:
       package_name:
         type: string
@@ -256,13 +242,10 @@ jobs:
           at: ~/project
       - run:
           command: |
-            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-            sudo apt-get install -y nodejs
             pip install safety
             cd src/netex-validator
-            npx audit-ci --moderate -a 1002373 -a 1002475 -a 1002581 -a 1002401
             safety check -r requirements.txt
-
+  
   deploy-netex-validator-to-test:
     parameters:
       package_name:
@@ -337,11 +320,8 @@ jobs:
           at: ~/project
       - run:
           command: |
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt-get install -y nodejs
             pip install safety
             cd src/uploaders
-            npx audit-ci --moderate -a 1002373 -a 1002475 -a 1002581 -a 1002401
             safety check -r requirements.txt
             safety check -r requirements.test.txt
 
@@ -419,13 +399,9 @@ jobs:
           at: ~/project
       - run:
           command: |
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt-get install -y nodejs
             pip install safety
             cd src/retrievers
-            npx audit-ci --moderate -a 1002373 -a 1002475 -a 1002581 -a 1002401
             safety check -r requirements.txt
-
   deploy-reference-data-retrievers-to-test:
     docker:
       - image: circleci/python:3.8
@@ -501,15 +477,6 @@ workflows:
             tags:
               only: /^v.*/
 
-      - audit:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          requires:
-            - checkout-repo
-          filters:
-            tags:
-              only: /^v.*/
-
       - audit-netex-validator:
           <<: *slack-fail-post-step
           package_name: fdbt-netex-output
@@ -557,7 +524,7 @@ workflows:
           <<: *slack-fail-post-step
           package_name: fdbt-netex-output
           requires:
-            - audit
+            - checkout-repo
           filters:
             tags:
               only: /^v.*/
@@ -657,15 +624,6 @@ workflows:
             tags:
               only: /^v.*/
 
-      - audit:
-          <<: *slack-fail-post-step
-          package_name: exporter
-          requires:
-            - checkout-repo
-          filters:
-            tags:
-              only: /^v.*/
-
       - build:
           <<: *slack-fail-post-step
           package_name: exporter
@@ -700,7 +658,6 @@ workflows:
           requires:
             - test
             - lint
-            - audit
           context: tfn-fdbt-test
           filters:
             branches:
@@ -773,15 +730,6 @@ workflows:
             tags:
               only: /^v.*/
 
-      - audit:
-          <<: *slack-fail-post-step
-          package_name: fdbt-site
-          requires:
-            - checkout-repo
-          filters:
-            tags:
-              only: /^v.*/
-
       - build:
           <<: *slack-fail-post-step
           package_name: fdbt-site
@@ -821,7 +769,6 @@ workflows:
       - aws-ecr/build-and-push-image:
           <<: *slack-fail-post-step
           requires:
-            - audit
             - test
             - lint
           repo: "${SITE_ECR_REPO}"
