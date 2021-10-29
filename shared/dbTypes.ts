@@ -53,7 +53,7 @@ export type StopPoint = {
     stopPointRef: string;
     commonName: string;
     sequenceNumber?: number;
-}
+};
 
 export interface RawJourneyPattern {
     orderedStopPoints: StopPoint[];

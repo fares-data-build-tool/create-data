@@ -1,7 +1,7 @@
 import awsParamStore from 'aws-param-store';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
-import { DbTimeRestriction, MyFaresProduct, RawJourneyPattern, RawService, ServiceQueryData } from 'shared/dbTypes';
+import { DbTimeRestriction } from 'shared/dbTypes';
 import { FromDb, OperatorDetails } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
@@ -22,8 +22,27 @@ import {
     MyFaresOtherProduct,
 } from '../interfaces';
 import logger from '../utils/logger';
-import { RawSalesOfferPackage } from '../../shared/dbTypes';
+import { RawSalesOfferPackage, RawService, MyFaresProduct, RawJourneyPattern } from '../../shared/dbTypes';
 import { convertDateFormat } from '../utils';
+
+interface ServiceQueryData {
+    operatorShortName: string;
+    serviceDescription: string;
+    lineName: string;
+    startDate: string;
+    lineId: string;
+    fromAtcoCode: string;
+    toAtcoCode: string;
+    fromCommonName: string;
+    toCommonName: string;
+    journeyPatternId: string;
+    order: string;
+    direction: string;
+    fromSequenceNumber: string;
+    toSequenceNumber: string;
+    inboundDirectionDescription: string;
+    outboundDirectionDescription: string;
+}
 
 interface NaptanInfo {
     commonName: string;
@@ -391,7 +410,7 @@ export const getServiceByIdAndDataSource = async (
     });
 
     const serviceQuery = `
-        SELECT os.operatorShortName, os.serviceDescription, os.inboundDirectionDescription, os.outboundDirectionDescription, os.lineName, os.lineId, os.startDate, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction
+        SELECT os.operatorShortName, os.serviceDescription, os.inboundDirectionDescription, os.outboundDirectionDescription, os.lineName, os.lineId, os.startDate, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction, pl.fromSequenceNumber, pl.toSequenceNumber
         FROM txcOperatorLine AS os
         JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
         JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
@@ -416,6 +435,11 @@ export const getServiceByIdAndDataSource = async (
         .map((item) => item.journeyPatternId)
         .filter((value, index, self) => self.indexOf(value) === index);
 
+    const parseSequenceNumber = (sequenceNumber: string | undefined) => {
+        const parsedSequenceNumber = Number(sequenceNumber);
+        return Number.isInteger(parsedSequenceNumber) ? parsedSequenceNumber : undefined;
+    };
+
     const rawPatternService: RawJourneyPattern[] = uniqueJourneyPatterns.map((journey) => {
         const filteredJourney = queryResult.filter((item) => {
             return item.journeyPatternId === journey;
@@ -427,12 +451,12 @@ export const getServiceByIdAndDataSource = async (
                 {
                     stopPointRef: filteredJourney[0].fromAtcoCode,
                     commonName: filteredJourney[0].fromCommonName,
-                    sequenceNumber: filteredJourney[0].fromSequenceNumber,
+                    sequenceNumber: parseSequenceNumber(filteredJourney[0].fromSequenceNumber),
                 },
                 ...filteredJourney.map((data: ServiceQueryData) => ({
                     stopPointRef: data.toAtcoCode,
                     commonName: data.toCommonName,
-                    sequenceNumber: data.toSequenceNumber,
+                    sequenceNumber: parseSequenceNumber(data.toSequenceNumber),
                 })),
             ],
         };

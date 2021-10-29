@@ -133,9 +133,9 @@ export const getServerSideProps = async (
             const passengerTypeName = await getPassengerTypeNameByIdAndNoc(matchingJson.passengerType.id, noc);
 
             const productDescription =
-                matchingJson.type === 'period' && 'products' in matchingJson
+                'products' in matchingJson && 'productName' in matchingJson.products[0]
                     ? matchingJson.products[0].productName
-                    : `${passengerTypeName} - ${matchingJson.type} ${matchingJson.carnet ? '(carnet)' : ''}`;
+                    : `${passengerTypeName} - ${matchingJson.type} ${'termTime' in matchingJson ? '(school)' : ''}`;
 
             let timeRestriction = 'No restrictions';
 

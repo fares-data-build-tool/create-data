@@ -103,17 +103,14 @@ export const sortingWithoutSequenceNumbers = (journeyPatterns: RawJourneyPattern
 
 const validateSequenceNumbers = (stops: StopPoint[]): stops is (StopPoint & { sequenceNumber: number })[] => {
     const sequenceToStop = new Map<number, StopPoint>();
-    return (
-        !stops.some((stop) => {
-            if (!stop.sequenceNumber) {
-                return true;
-            }
-            const stopA = sequenceToStop.get(stop.sequenceNumber);
-            sequenceToStop.set(stop.sequenceNumber, stop);
-            return stopA && stop.stopPointRef !== stopA.stopPointRef;
-        }) &&
-        !stops.some((stop, index) => stops.findIndex((stopA) => stop.stopPointRef === stopA.stopPointRef) === index)
-    );
+    return !stops.some((stop) => {
+        if (!stop.sequenceNumber) {
+            return true;
+        }
+        const stopA = sequenceToStop.get(stop.sequenceNumber);
+        sequenceToStop.set(stop.sequenceNumber, stop);
+        return stopA && stop.stopPointRef !== stopA.stopPointRef;
+    });
 };
 
 export const getMatchingProps = async (
@@ -127,7 +124,7 @@ export const getMatchingProps = async (
     const csrfToken = getCsrfToken(ctx);
 
     if (!operatorAttribute?.uuid || !isService(serviceAttribute) || !('direction' in directionAttribute) || !nocCode) {
-        logger.info('missing attributes', {});
+        logger.info('missing attributes', { operatorAttribute, serviceAttribute, directionAttribute, nocCode });
         throw new Error('Necessary attributes not found to show matching page');
     }
 
@@ -139,13 +136,16 @@ export const getMatchingProps = async (
     const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === directionAttribute.direction);
     const stops = journeyPatterns
         .flatMap((it) => it.orderedStopPoints)
-        .filter((stop, index, self) => self.indexOf(stop) === index);
+        .filter(
+            (stop, index, self) =>
+                self.findIndex(
+                    (other) => stop.stopPointRef === other.stopPointRef && stop.sequenceNumber === other.sequenceNumber,
+                ) === index,
+        );
 
-    const masterStopList = (
-        validateSequenceNumbers(stops)
-            ? stops.sort((stop) => stop.sequenceNumber).map((it) => it.stopPointRef)
-            : sortingWithoutSequenceNumbers(journeyPatterns)
-    ).filter((stop, index, self) => self.indexOf(stop) === index);
+    const masterStopList = validateSequenceNumbers(stops)
+        ? stops.sort((stop, other) => stop.sequenceNumber - other.sequenceNumber).map((it) => it.stopPointRef)
+        : sortingWithoutSequenceNumbers(journeyPatterns);
 
     if (masterStopList.length === 0) {
         throw new Error(
@@ -153,7 +153,9 @@ export const getMatchingProps = async (
         );
     }
 
-    const naptanInfo = await batchGetStopsByAtcoCode(masterStopList);
+    const naptanInfo = await batchGetStopsByAtcoCode(
+        masterStopList.filter((stop, index, self) => self.indexOf(stop) === index),
+    );
     const orderedStops = masterStopList
         .map((atco) => naptanInfo.find((s) => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
