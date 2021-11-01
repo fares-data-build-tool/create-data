@@ -17,9 +17,3 @@ CREATE TABLE txcJourneyPatternLink(
 ) ENGINE = InnoDB CHARACTER SET = utf8;
 
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-
-ALTER TABLE txcJourneyPatternLink
-    ADD fromSequenceNumber varchar(50) DEFAULT NULL;
-
-ALTER TABLE txcJourneyPatternLink
-    ADD toSequenceNumber varchar(50) DEFAULT NULL;

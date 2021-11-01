@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
 import {
     getBodsServiceByNocAndId,
-    getBodsServiceDirectionDescriptionsByNocAndLineName,
     getPassengerTypeNameByIdAndNoc,
     getProductMatchingJsonLinkByProductId,
     getSalesOfferPackageByIdAndNoc,
@@ -95,18 +94,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     if ('journeyDirection' in ticket && ticket.journeyDirection) {
-        const { inboundDirectionDescription, outboundDirectionDescription } =
-            await getBodsServiceDirectionDescriptionsByNocAndLineName(noc, ticket.lineName);
-        productDetailsElements.push({
-            name: 'Journey direction',
-            content: [
-                `${sentenceCaseString(ticket.journeyDirection)} - ${
-                    ticket.journeyDirection === 'inbound' || ticket.journeyDirection === 'clockwise'
-                        ? inboundDirectionDescription
-                        : outboundDirectionDescription
-                }`,
-            ],
-        });
+        productDetailsElements.push({ name: 'Journey direction', content: [ticket.journeyDirection] });
     }
 
     if ('zoneName' in ticket) {

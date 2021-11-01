@@ -2,12 +2,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import isEmpty from 'lodash/isEmpty';
 
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { INPUT_METHOD_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE, DIRECTION_ATTRIBUTE } from '../../constants/attributes';
+import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE } from '../../constants/attributes';
 import { USER_DATA_BUCKET_NAME } from '../../constants';
 
 import { getUuidFromSession, redirectToError, redirectTo } from '../../utils/apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { removeAllWhiteSpace } from '../../utils/apiUtils/validator';
+import { isJourney } from '../../interfaces/typeGuards';
 import {
     FaresInformation,
     FaresInput,
@@ -125,9 +126,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'manual' });
 
-        const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
+        const journeyAttribute = getSessionAttribute(req, JOURNEY_ATTRIBUTE);
 
-        if (directionAttribute && 'inboundDirection' in directionAttribute && directionAttribute.inboundDirection) {
+        if (isJourney(journeyAttribute) && journeyAttribute?.outboundJourney) {
             redirectTo(res, '/outboundMatching');
             return;
         }

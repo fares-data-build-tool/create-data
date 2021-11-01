@@ -39,7 +39,6 @@ export const singleTicket: SingleTicket = {
         },
     ],
     lineName: '237',
-    journeyDirection: 'outbound',
     lineId: 'PK1146649_RJ011_Outbound',
     nocCode: 'MCTR',
     termTime: true,

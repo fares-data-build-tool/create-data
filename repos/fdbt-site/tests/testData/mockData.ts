@@ -420,8 +420,6 @@ export const mockRawService: RawService = {
     operatorShortName: 'HCTY',
     lineName: '17',
     startDate: '2021-10-11T13:40:49+00:00',
-    inboundDirectionDescription: 'this way',
-    outboundDirectionDescription: 'another way',
     journeyPatterns: [
         {
             direction: 'outbound',
@@ -549,67 +547,65 @@ export const mockRawServiceWithDuplicates: RawService = {
     operatorShortName: 'HCTY',
     lineName: '17',
     startDate: '2021-10-11T13:40:49+00:00',
-    inboundDirectionDescription: 'this way',
-    outboundDirectionDescription: 'another way',
     journeyPatterns: [
         {
             direction: 'outbound',
             orderedStopPoints: [
                 {
-                    stopPointRef: 'A',
+                    stopPointRef: '13003921A',
                     commonName: 'Estate (Hail and Ride) N/B',
                 },
                 {
-                    stopPointRef: 'B',
+                    stopPointRef: '13003305E',
                     commonName: 'Westlea shops S/B',
                 },
                 {
-                    stopPointRef: 'C',
+                    stopPointRef: '13003306B',
                     commonName: 'Mount Pleasant NE/B',
                 },
                 {
-                    stopPointRef: 'D',
+                    stopPointRef: '13003618B',
                     commonName: 'The Avenue/Essex Crescent NE/B',
                 },
                 {
-                    stopPointRef: 'E',
+                    stopPointRef: '13003622B',
                     commonName: 'The Avenue Shops NE/B',
                 },
                 {
-                    stopPointRef: 'F',
+                    stopPointRef: '13003923B',
                     commonName: 'Kingston Avenue Hail and Ride NE/B',
                 },
                 {
-                    stopPointRef: 'G',
+                    stopPointRef: '13003939H',
                     commonName: 'Laurel Avenue NW/B',
                 },
-                { stopPointRef: 'H', commonName: 'Park E/B' },
+                { stopPointRef: '13003625C', commonName: 'Park E/B' },
                 {
-                    stopPointRef: 'I',
+                    stopPointRef: '13003612D',
                     commonName: 'New Strangford Road SE/B',
                 },
                 {
-                    stopPointRef: 'J',
+                    stopPointRef: '13003611B',
                     commonName: 'New Tempest Road (York House) NE/B',
                 },
                 {
-                    stopPointRef: 'K',
+                    stopPointRef: '13003609E',
                     commonName: 'Vane Terrace/Castlereagh S/B',
                 },
                 {
-                    stopPointRef: 'L',
+                    stopPointRef: '13003661E',
                     commonName: 'Sophia Street S/B',
                 },
                 {
-                    stopPointRef: 'M',
+                    stopPointRef: '13003949C',
                     commonName: 'Viceroy Street E/B',
                 },
                 {
-                    stopPointRef: 'N',
+                    stopPointRef: '13003635B',
                     commonName: 'Adolphus Place NE/B',
                 },
                 {
-                    stopPointRef: 'O',
+                    stopPointRef: '13003655B',
                     commonName: 'Interchange Stand B',
                 },
             ],
@@ -618,53 +614,53 @@ export const mockRawServiceWithDuplicates: RawService = {
             direction: 'outbound',
             orderedStopPoints: [
                 {
-                    stopPointRef: 'A',
+                    stopPointRef: '13003655B',
                     commonName: 'Interchange Stand B',
                 },
                 {
-                    stopPointRef: 'B',
+                    stopPointRef: '13003654G',
                     commonName: 'North Railway Street W/B',
                 },
                 {
-                    stopPointRef: '1',
+                    stopPointRef: '13003609A',
                     commonName: 'Vane Terrace/Castlereagh N/B',
                 },
                 {
-                    stopPointRef: '2',
+                    stopPointRef: '13003611F',
                     commonName: 'New Tempest Road (York House) SW/B',
                 },
                 {
-                    stopPointRef: '3',
+                    stopPointRef: '13003612H',
                     commonName: 'New Strangford Road NW/B',
                 },
-                { stopPointRef: '4', commonName: 'Park W/B' },
+                { stopPointRef: '13003625G', commonName: 'Park W/B' },
                 {
-                    stopPointRef: '5',
+                    stopPointRef: '13003939D',
                     commonName: 'Laurel Avenue SE/B',
                 },
                 {
-                    stopPointRef: '6',
+                    stopPointRef: '13003923F',
                     commonName: 'Kingston Avenue Hail and Ride SW/B',
                 },
                 {
-                    stopPointRef: '7',
+                    stopPointRef: '13003622F',
                     commonName: 'The Avenue Shops SW/B',
                 },
-                { stopPointRef: '8', commonName: 'The Lawns SW/B' },
+                { stopPointRef: '13003621F', commonName: 'The Lawns SW/B' },
                 {
-                    stopPointRef: '9',
+                    stopPointRef: '13003618F',
                     commonName: 'The Avenue/Essex Crescent SW/B',
                 },
                 {
-                    stopPointRef: '10',
+                    stopPointRef: '13003306A',
                     commonName: 'Mount Pleasant N/B',
                 },
                 {
-                    stopPointRef: '11',
+                    stopPointRef: '13003305A',
                     commonName: 'Westlea shops N/B',
                 },
                 {
-                    stopPointRef: 'O',
+                    stopPointRef: '13003921A',
                     commonName: 'Estate (Hail and Ride) N/B',
                 },
             ],
@@ -1193,7 +1189,6 @@ export const expectedSingleTicket: WithIds<SingleTicket> = {
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
-    journeyDirection: 'inbound',
     passengerType: { id: 9 },
     operatorName: 'DCC',
     termTime: true,
@@ -1353,7 +1348,6 @@ export const expectedCarnetSingleTicket: WithIds<SingleTicket> = {
     lineName: '215',
     lineId: 'q2gv2ve',
     nocCode: 'DCCL',
-    journeyDirection: 'inbound',
     passengerType: { id: 9 },
     operatorName: 'DCC',
     termTime: true,

@@ -31,26 +31,20 @@ describe('pages', () => {
         });
 
         describe('getServerSideProps', () => {
-            it('returns correct values for props', async () => {
+            it('returns correct values fpr props', async () => {
                 (({ ...getServiceByIdAndDataSource } as jest.Mock).mockImplementation(() => mockRawService));
 
-                const ctx = getMockContext({
-                    body: { serviceId: '123' },
-                    uuid: {},
-                    session: {
-                        [TXC_SOURCE_ATTRIBUTE]: { source: 'tnds', hasTnds: true, hasBods: true },
-                    },
-                });
+                const ctx = getMockContext();
 
                 const result = await getServerSideProps(ctx);
 
-                expect('props' in result && result.props).toEqual({
+                expect(result?.props).toEqual({
                     csrfToken: '',
                     direction: 'outbound',
-                    directionDesc: 'another way',
+                    directionDesc: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
                     errors: [],
                     inboundDirection: 'inbound',
-                    inboundDirectionDesc: 'this way',
+                    inboundDirectionDesc: 'Estate (Hail and Ride) N/B,Westlea - Interchange Stand B,Seaham',
                 });
             });
 
@@ -70,11 +64,9 @@ describe('pages', () => {
                     journeyPatterns: [mockRawService.journeyPatterns[0]],
                 });
 
-                expect(await getServerSideProps(ctx)).toEqual({
-                    redirect: {
-                        destination: '/inputMethod',
-                        permanent: false,
-                    },
+                await getServerSideProps(ctx);
+                expect(writeHeadMock).toBeCalledWith(302, {
+                    Location: '/inputMethod',
                 });
             });
         });

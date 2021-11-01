@@ -1,8 +1,9 @@
 import { NextApiResponse } from 'next';
-import { SERVICE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../constants/attributes';
+import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { updateSessionAttribute, getRequiredSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { masterStopListEnabled } from '../../constants/featureFlag';
 import { getServiceByIdAndDataSource } from '../../data/auroradb';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -24,8 +25,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             service: `${service.lineName}#${service.startDate}`,
             id: serviceId,
         });
+        const fareTypeAttribute = getRequiredSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        const isReturn = 'fareType' in fareTypeAttribute && ['period', 'return'].includes(fareTypeAttribute.fareType);
 
-        redirectTo(res, '/direction');
+        if (masterStopListEnabled && dataSource === 'bods') {
+            redirectTo(res, '/direction');
+        } else if (isReturn) {
+            redirectTo(res, '/returnDirection');
+        } else {
+            redirectTo(res, '/singleDirection');
+        }
     } catch (error) {
         const message = 'There was a problem selecting the service:';
         redirectToError(res, message, 'api.service', error);
