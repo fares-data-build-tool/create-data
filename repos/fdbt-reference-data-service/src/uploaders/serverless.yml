@@ -66,6 +66,7 @@ provider:
 plugins:
     - serverless-python-requirements
     - serverless-plugin-aws-alerts
+    - serverless-plugin-log-retention
 
 custom:
     pythonRequirements:
@@ -94,6 +95,7 @@ custom:
         definitions:
             functionDuration:
                 period: 900
+    logRetentionInDays: 180
 
 functions:
     CsvUploader:

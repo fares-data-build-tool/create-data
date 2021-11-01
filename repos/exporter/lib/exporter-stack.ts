@@ -58,6 +58,7 @@ export class ExporterStack extends cdk.Stack {
                 sourceMapMode: SourceMapMode.DEFAULT,
             },
             timeout: Duration.minutes(5),
+            logRetention: 180,
         });
 
         this.addAlarmsToLambda(stage, exporterFunction, `exporter-${stage}`);
@@ -75,6 +76,7 @@ export class ExporterStack extends cdk.Stack {
                 sourceMapMode: SourceMapMode.DEFAULT,
             },
             timeout: Duration.minutes(1),
+            logRetention: 180,
         });
 
         this.addAlarmsToLambda(stage, bastionTerminatorFunction, `bastion-terminator-${stage}`);
