@@ -110,11 +110,9 @@ def process_journey_pattern_sections(journey_pattern_section_refs, raw_journey_p
                     journey_pattern_timing_link = {
                         'from_atco_code': link_from['StopPointRef'],
                         'from_timing_status': link_from.get('TimingStatus', None),
-                        'from_sequence_number': link_from.get('@SequenceNumber'),
                         'to_atco_code': link_to['StopPointRef'],
                         'to_timing_status': link_to.get('TimingStatus', None),
-                        'run_time': raw_journey_pattern_timing_link.get('RunTime', None),
-                        'to_sequence_number': link_to.get('@SequenceNumber'),
+                        'run_time': raw_journey_pattern_timing_link.get('RunTime', None)
                     }
 
                     journey_pattern_timing_links.append(
@@ -194,17 +192,15 @@ def insert_into_txc_journey_pattern_link_table(cursor, links, journey_pattern_id
             journey_pattern_id,
             link['from_atco_code'],
             link['from_timing_status'],
-            link['from_sequence_number'],
             link['to_atco_code'],
             link['to_timing_status'],
-            link['to_sequence_number'],
             link['run_time'],
             order
         ) for order, link in enumerate(links)
     ]
 
-    query = f"""INSERT INTO txcJourneyPatternLink (journeyPatternId, fromAtcoCode, fromTimingStatus, fromSequenceNumber,
-        toAtcoCode, toTimingStatus, toSequenceNumber, runtime, orderInSequence) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    query = f"""INSERT INTO txcJourneyPatternLink (journeyPatternId, fromAtcoCode, fromTimingStatus, 
+        toAtcoCode, toTimingStatus, runtime, orderInSequence) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
     cursor.executemany(query, values)
 
@@ -292,7 +288,7 @@ def check_txc_line_exists(cursor, operator, service, line, data_source, cloudwat
     )
     result = cursor.fetchone()
     operator_service_id = result[0] if result and len(result) > 0 else None
-
+    
     if operator_service_id:
         logger.info(f"Existing line found - '{noc_code}' - '{line_name}' - '{service_code}' - '{start_date}' - '{data_source}'")
 
@@ -360,7 +356,7 @@ def write_to_database(data_dict, region_code, data_source, key, db_connection, l
                         if not operator_service_id:
                             valid_noc = False
                             break
-
+                        
                         iterate_through_journey_patterns_and_run_insert_queries(
                             cursor, data_dict, operator_service_id, service
                         )

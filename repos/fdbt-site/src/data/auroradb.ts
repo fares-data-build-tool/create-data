@@ -22,7 +22,6 @@ import {
     MyFaresService,
     MyFaresProduct,
     MyFaresOtherProduct,
-    RawJourneyPattern,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { RawSalesOfferPackage } from '../../shared/dbTypes';
@@ -41,8 +40,6 @@ interface ServiceQueryData {
     journeyPatternId: string;
     order: string;
     direction: string;
-    fromSequenceNumber: number;
-    toSequenceNumber: number;
 }
 
 interface NaptanInfo {
@@ -401,7 +398,7 @@ export const getServiceByIdAndDataSource = async (
         .map((item) => item.journeyPatternId)
         .filter((value, index, self) => self.indexOf(value) === index);
 
-    const rawPatternService: RawJourneyPattern[] = uniqueJourneyPatterns.map((journey) => {
+    const rawPatternService = uniqueJourneyPatterns.map((journey) => {
         const filteredJourney = queryResult.filter((item) => {
             return item.journeyPatternId === journey;
         });
@@ -412,12 +409,10 @@ export const getServiceByIdAndDataSource = async (
                 {
                     stopPointRef: filteredJourney[0].fromAtcoCode,
                     commonName: filteredJourney[0].fromCommonName,
-                    sequenceNumber: filteredJourney[0].fromSequenceNumber,
                 },
                 ...filteredJourney.map((data: ServiceQueryData) => ({
                     stopPointRef: data.toAtcoCode,
                     commonName: data.toCommonName,
-                    sequenceNumber: data.toSequenceNumber,
                 })),
             ],
         };

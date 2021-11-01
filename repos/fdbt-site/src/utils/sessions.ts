@@ -23,6 +23,7 @@ import {
     GROUP_SIZE_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
     MULTI_OP_TXC_SOURCE_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
@@ -80,6 +81,7 @@ import {
     IncomingMessageWithSession,
     InputCheck,
     InputMethodInfo,
+    Journey,
     MultiOperatorInfo,
     MultiOperatorInfoWithErrors,
     MultipleOperatorsAttribute,
@@ -158,6 +160,7 @@ export interface SessionAttributeTypes {
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
+    [JOURNEY_ATTRIBUTE]: Journey | Errors;
     [DIRECTION_ATTRIBUTE]: Direction | Errors;
     [TICKET_REPRESENTATION_ATTRIBUTE]: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;

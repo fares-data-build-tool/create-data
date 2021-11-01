@@ -173,7 +173,7 @@ const completePointToPointPeriodProductDetail = (): void => {
 
 export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void => {
     completeServicePage();
-    selectRandomOptionFromDropDown('select-direction');
+    selectRandomOptionFromDropDown('direction-journey-pattern');
     continueButtonClick();
     completeFareTrianglePages(csvUpload);
     completeMatchingPage();

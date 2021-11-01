@@ -4,6 +4,7 @@ import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
@@ -15,7 +16,6 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
-    DIRECTION_ATTRIBUTE,
 } from '../../src/constants/attributes';
 import { ConfirmationElement, MultiOperatorInfo, Operator } from '../../src/interfaces';
 import TicketConfirmation, {
@@ -88,6 +88,10 @@ describe('pages', () => {
                             inboundUserFareStages: userFareStages,
                             inboundMatchingFareZones: mockMatchingFaresZones,
                         },
+                        [JOURNEY_ATTRIBUTE]: {
+                            inboundJourney: '2590B0080#250014868',
+                            outboundJourney: '250014868#2590B0080',
+                        },
                         [RETURN_VALIDITY_ATTRIBUTE]: {
                             amount: '5',
                             typeOfDuration: 'day',
@@ -96,10 +100,6 @@ describe('pages', () => {
                             source: 'bods',
                             hasBods: true,
                             hasTnds: true,
-                        },
-                        [DIRECTION_ATTRIBUTE]: {
-                            direction: 'outbound',
-                            inboundDirection: 'inbound',
                         },
                     },
                 });
@@ -119,13 +119,11 @@ describe('pages', () => {
                             userFareStages,
                             matchingFareZones: mockMatchingFaresZones,
                         },
+                        [JOURNEY_ATTRIBUTE]: { directionJourneyPattern: '0690WNA02857#0690WNA02856' },
                         [TXC_SOURCE_ATTRIBUTE]: {
                             source: 'bods',
                             hasBods: true,
                             hasTnds: true,
-                        },
-                        [DIRECTION_ATTRIBUTE]: {
-                            direction: 'outbound',
                         },
                     },
                 });
