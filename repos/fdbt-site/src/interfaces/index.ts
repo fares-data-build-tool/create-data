@@ -514,7 +514,7 @@ export interface MyFaresService {
     destination: string;
     lineName: string;
     startDate: string;
-    endDate: string;
+    endDate: string | undefined;
 }
 
 export interface MyFaresProduct {

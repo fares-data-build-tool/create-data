@@ -177,7 +177,7 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
                 destination: item.destination,
                 lineName: item.lineName,
                 startDate: convertDateFormat(item.startDate),
-                endDate: convertDateFormat(item.endDate),
+                endDate: item.endDate ? convertDateFormat(item.endDate) : undefined,
                 lineId: item.lineId,
             })) || []
         );
@@ -217,7 +217,7 @@ export const getBodsServiceByNocAndId = async (
             destination: queryResults[0].destination,
             lineName: queryResults[0].lineName,
             startDate: convertDateFormat(queryResults[0].startDate),
-            endDate: convertDateFormat(queryResults[0].endDate),
+            endDate: queryResults[0].endDate ? convertDateFormat(queryResults[0].endDate) : undefined,
             lineId: queryResults[0].lineId,
         };
     } catch (error) {

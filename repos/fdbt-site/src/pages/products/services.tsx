@@ -83,12 +83,12 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
     );
 };
 
-export const getTag = (startDate: string, endDate: string): JSX.Element => {
+export const getTag = (startDate: string, endDate: string | undefined): JSX.Element => {
     const today = moment.utc().startOf('day').valueOf();
     const startDateAsUnixTime = moment.utc(startDate, 'DD/MM/YYYY').valueOf();
-    const endDateAsUnixTime = moment.utc(endDate, 'DD/MM/YYYY').valueOf();
+    const endDateAsUnixTime = endDate ? moment.utc(endDate, 'DD/MM/YYYY').valueOf() : undefined;
 
-    if (startDateAsUnixTime <= today && endDateAsUnixTime >= today) {
+    if (startDateAsUnixTime <= today && (!endDateAsUnixTime || endDateAsUnixTime >= today)) {
         return <strong className="govuk-tag govuk-tag--turquoise">Active</strong>;
     } else if (startDateAsUnixTime > today) {
         return <strong className="govuk-tag govuk-tag--blue">Pending</strong>;
@@ -110,9 +110,12 @@ export const showProductAgainstService = (
     const momentProductStartDate = moment(productStartDate).valueOf();
     const momentProductEndDate = moment(productEndDate).valueOf();
     const momentServiceStartDate = moment(serviceStartDate, 'DD/MM/YYYY').valueOf();
-    const momentServiceEndDate = moment(serviceEndDate, 'DD/MM/YYYY').valueOf();
+    const momentServiceEndDate = serviceEndDate ? moment(serviceEndDate, 'DD/MM/YYYY').valueOf() : undefined;
 
-    return momentProductEndDate >= momentServiceStartDate && momentServiceEndDate >= momentProductStartDate;
+    return (
+        momentProductEndDate >= momentServiceStartDate &&
+        (!momentServiceEndDate || momentServiceEndDate >= momentProductStartDate)
+    );
 };
 
 export const matchProductsToServices = (
