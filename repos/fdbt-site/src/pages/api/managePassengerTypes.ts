@@ -91,6 +91,7 @@ const formatRequestBody = async (
         id,
         name: trimmedName,
         passengerType: {
+            id,
             passengerType: type,
             ageRangeMin: ageRangeMin,
             ageRangeMax: ageRangeMax,

@@ -3,7 +3,7 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../constants/attributes';
-import { getTimeRestrictionById, getFareDayEnd } from '../data/auroradb';
+import { getTimeRestrictionByIdAndNoc, getFareDayEnd } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction, TimeInput, DbTimeInput } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import { getGlobalSettingsManageProps, GlobalSettingsManageProps } from '../utils/globalSettings';
@@ -383,7 +383,7 @@ export const getServerSideProps = async (
 ): Promise<{ props: ManageTimeRestrictionProps }> => {
     const gsProps = await getGlobalSettingsManageProps(
         ctx,
-        getTimeRestrictionById,
+        getTimeRestrictionByIdAndNoc,
         getSessionAttribute(ctx.req, GS_TIME_RESTRICTION_ATTRIBUTE),
     );
 

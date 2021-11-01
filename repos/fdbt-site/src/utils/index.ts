@@ -13,6 +13,7 @@ import {
     COOKIE_PREFERENCES_COOKIE,
     CSRF_COOKIE,
     EXPRESS_SESSION_COOKIE,
+    purchaseMethodsValuesMap,
 } from '../constants';
 import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { getSessionAttribute } from './sessions';
@@ -24,6 +25,7 @@ import {
     Stop,
     ResponseWithLocals,
 } from '../interfaces';
+import dateFormat from 'dateformat';
 
 export const getProofDocumentsString = (documents: string[]): string =>
     documents.map((document) => sentenceCaseString(document)).join(', ');
@@ -82,6 +84,9 @@ export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
         }
     });
 };
+
+export const formatSOPArray = (stringArray: string[]): string =>
+    stringArray.map((string) => purchaseMethodsValuesMap[string] || sentenceCaseString(string)).join(', ');
 
 export const getHost = (req: IncomingMessage | undefined): string => {
     if (!req) {
@@ -228,4 +233,8 @@ export const chunk = <T>(array: T[], size: number): T[][] => {
         chunks.push(copy.splice(0, size));
     }
     return chunks;
+};
+
+export const convertDateFormat = (date: string): string => {
+    return dateFormat(date, 'dd/mm/yyyy');
 };

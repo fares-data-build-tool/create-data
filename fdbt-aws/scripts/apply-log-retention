@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for log_group_name in $(aws logs describe-log-groups | jq -r '.logGroups | .[] | .logGroupName')
+do
+    aws logs put-retention-policy --log-group-name $log_group_name --retention-in-days 180 
+done

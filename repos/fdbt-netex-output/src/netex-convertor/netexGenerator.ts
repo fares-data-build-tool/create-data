@@ -1,7 +1,6 @@
 import { startCase } from 'lodash';
 import { PointToPointPeriodTicket } from '../../shared/matchingJsonTypes';
 import {
-    FareZoneList,
     isBaseSchemeOperatorInfo,
     isGeoZoneTicket,
     isHybridTicket,
@@ -41,6 +40,7 @@ import {
     getPointToPointScheduledStopPointsList,
     getPreassignedFareProduct,
     getPriceGroups,
+    combineFareZones,
 } from './point-to-point-tickets/pointToPointTicketNetexHelpers';
 import {
     convertJsonToXml,
@@ -300,14 +300,11 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         if (ticket.type === 'single') {
             zoneFareFrameToUpdate.fareZones.FareZone = getFareZoneList(ticket.fareZones);
         } else {
-            const outbound = getFareZoneList(ticket.outboundFareZones);
-            const inbound = getFareZoneList(ticket.inboundFareZones);
+            const combinedFareZones = combineFareZones(ticket.outboundFareZones, ticket.inboundFareZones);
 
-            const fareZones: FareZoneList[] = inbound.concat(outbound);
+            const fareZoneList = getFareZoneList(combinedFareZones);
 
-            zoneFareFrameToUpdate.fareZones.FareZone = [...new Set(fareZones.map(({ id }) => id))].map(e =>
-                fareZones.find(({ id }) => id === e),
-            );
+            zoneFareFrameToUpdate.fareZones.FareZone = fareZoneList;
         }
 
         return zoneFareFrameToUpdate;

@@ -8,9 +8,9 @@ import {
 import { BaseLayout } from '../../layout/Layout';
 import {
     getBodsServiceByNocAndId,
-    getPassengerTypeNameById,
+    getPassengerTypeNameByIdAndNoc,
     getPointToPointProductsByLineId,
-    getTimeRestrictionById,
+    getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import { getAndValidateNoc } from '../../utils';
@@ -39,7 +39,7 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
                             Service status: {getTag(service.startDate, service.endDate)}
                         </h1>
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">Products</h1>
-                        {PointToPointProductsTable(products)}
+                        {PointToPointProductsTable(products, service)}
                     </div>
                 </div>
             </BaseLayout>
@@ -47,7 +47,7 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
     );
 };
 
-const PointToPointProductsTable = (products: MyFaresPointToPointProduct[]): ReactElement => {
+const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], service: MyFaresService): ReactElement => {
     return (
         <>
             <table className="govuk-table">
@@ -76,7 +76,11 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[]): Reac
                         ? products.map((product, index) => (
                               <tr key={index} className="govuk-table__row">
                                   <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell">
-                                      {product.productDescription}
+                                      <a
+                                          href={`/products/productDetails?productId=${product.id}&serviceId=${service.id}`}
+                                      >
+                                          {product.productDescription}
+                                      </a>
                                   </td>
                                   <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell">
                                       {product.validity}
@@ -126,17 +130,17 @@ export const getServerSideProps = async (
         productsToDisplay.map(async (product) => {
             const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
 
-            const passengerTypeName = await getPassengerTypeNameById(matchingJson.passengerType.id, noc);
+            const passengerTypeName = await getPassengerTypeNameByIdAndNoc(matchingJson.passengerType.id, noc);
 
             const productDescription =
-                matchingJson.type === 'period' && 'products' in matchingJson
+                'products' in matchingJson && 'productName' in matchingJson.products[0]
                     ? matchingJson.products[0].productName
-                    : `${passengerTypeName} - ${matchingJson.type} ${matchingJson.carnet ? '(carnet)' : ''}`;
+                    : `${passengerTypeName} - ${matchingJson.type} ${'termTime' in matchingJson ? '(school)' : ''}`;
 
             let timeRestriction = 'No restrictions';
 
             if (matchingJson.timeRestriction) {
-                const timeRestrictionFromDb = await getTimeRestrictionById(matchingJson.timeRestriction.id, noc);
+                const timeRestrictionFromDb = await getTimeRestrictionByIdAndNoc(matchingJson.timeRestriction.id, noc);
 
                 timeRestriction = timeRestrictionFromDb.name;
             }
@@ -146,6 +150,7 @@ export const getServerSideProps = async (
                 startDate: product.startDate,
                 endDate: product.endDate,
                 validity: timeRestriction,
+                id: product.id,
             };
         }),
     );

@@ -16,6 +16,7 @@ describe('pages', () => {
                 <SalesConfirmation
                     salesOfferPackages={[
                         {
+                            id: 1,
                             name: 'A sales offer package',
                             description: 'my way of selling tickets',
                             purchaseLocations: ['at stop', 'website'],
@@ -144,6 +145,7 @@ describe('pages', () => {
             const result = buildSalesConfirmationElements(
                 [
                     {
+                        id: 1,
                         name: 'A sales offer package',
                         description: 'my way of selling tickets',
                         purchaseLocations: ['at stop', 'website'],
@@ -151,6 +153,7 @@ describe('pages', () => {
                         ticketFormats: ['paper'],
                     },
                     {
+                        id: 2,
                         name: 'Another sales offer package',
                         description: 'another way of selling tickets',
                         purchaseLocations: ['in station', 'phone'],
@@ -207,6 +210,7 @@ describe('pages', () => {
                         productName: 'product one',
                         salesOfferPackages: [
                             {
+                                id: 1,
                                 name: 'A sales offer package',
                                 description: 'my way of selling tickets',
                                 purchaseLocations: ['at stop', 'website'],
@@ -219,6 +223,7 @@ describe('pages', () => {
                         productName: 'another one',
                         salesOfferPackages: [
                             {
+                                id: 1,
                                 name: 'A sales offer package',
                                 description: 'my way of selling tickets',
                                 purchaseLocations: ['at stop', 'website'],
@@ -227,6 +232,7 @@ describe('pages', () => {
                                 price: '1.99',
                             },
                             {
+                                id: 2,
                                 name: 'Another sales offer package',
                                 description: 'another way of selling tickets',
                                 purchaseLocations: ['in station', 'phone'],

@@ -22,6 +22,7 @@ export const singleTicket: SingleTicket = {
         {
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -129,6 +130,7 @@ export const returnNonCircularTicket: ReturnTicket = {
         {
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -142,6 +144,7 @@ export const returnNonCircularTicket: ReturnTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -476,6 +479,7 @@ export const returnNonCircularTicketWithReturnValidity: ReturnTicket = {
         {
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -489,6 +493,7 @@ export const returnNonCircularTicketWithReturnValidity: ReturnTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -827,6 +832,7 @@ export const returnCircularTicket: ReturnTicket = {
         {
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -840,6 +846,7 @@ export const returnCircularTicket: ReturnTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1049,6 +1056,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
         {
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1062,6 +1070,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1077,6 +1086,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
         {
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1090,6 +1100,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1105,6 +1116,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
         {
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1118,6 +1130,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1133,6 +1146,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
         {
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1146,6 +1160,7 @@ export const periodGeoZoneTicket: PeriodGeoZoneTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1368,6 +1383,7 @@ export const carnetPeriodGeoZoneTicket: PeriodGeoZoneTicket = {
             },
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1381,6 +1397,7 @@ export const carnetPeriodGeoZoneTicket: PeriodGeoZoneTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1401,6 +1418,7 @@ export const carnetPeriodGeoZoneTicket: PeriodGeoZoneTicket = {
             },
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1414,6 +1432,7 @@ export const carnetPeriodGeoZoneTicket: PeriodGeoZoneTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1434,6 +1453,7 @@ export const carnetPeriodGeoZoneTicket: PeriodGeoZoneTicket = {
             },
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1447,6 +1467,7 @@ export const carnetPeriodGeoZoneTicket: PeriodGeoZoneTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1467,6 +1488,7 @@ export const carnetPeriodGeoZoneTicket: PeriodGeoZoneTicket = {
             },
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1480,6 +1502,7 @@ export const carnetPeriodGeoZoneTicket: PeriodGeoZoneTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1548,6 +1571,7 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
         {
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1561,6 +1585,7 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1576,6 +1601,7 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
         {
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1589,6 +1615,7 @@ export const periodMultipleServicesTicket: PeriodMultipleServicesTicket = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1862,6 +1889,7 @@ export const carnetPeriodMultipleServicesTicket: PeriodMultipleServicesTicket = 
             },
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1875,6 +1903,7 @@ export const carnetPeriodMultipleServicesTicket: PeriodMultipleServicesTicket = 
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1895,6 +1924,7 @@ export const carnetPeriodMultipleServicesTicket: PeriodMultipleServicesTicket = 
             },
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1908,6 +1938,7 @@ export const carnetPeriodMultipleServicesTicket: PeriodMultipleServicesTicket = 
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -1985,6 +2016,7 @@ export const flatFareTicket: FlatFareMultipleServices = {
         {
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'sales offer package 1',
                     description: 'the sales offer package I provide',
                     purchaseLocations: [
@@ -1998,6 +2030,7 @@ export const flatFareTicket: FlatFareMultipleServices = {
                     ticketFormats: ['e ticket', 'paper ticket', 'pass'],
                 },
                 {
+                    id: 2,
                     name: 'sales offer package 2',
                     description: 'another sales offer package I provide',
                     purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
@@ -2632,6 +2665,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: 'Purchasable on board the bus, with cash, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -2639,6 +2673,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -2646,6 +2681,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 3,
                     name: 'Online (smart card)',
                     description:
                         'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
@@ -2654,6 +2690,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['smartCard'],
                 },
                 {
+                    id: 4,
                     name: 'Mobile App',
                     description:
                         'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
@@ -2670,6 +2707,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: 'Purchasable on board the bus, with cash, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -2677,6 +2715,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -2684,6 +2723,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 3,
                     name: 'Online (smart card)',
                     description:
                         'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
@@ -2692,6 +2732,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['smartCard'],
                 },
                 {
+                    id: 4,
                     name: 'Mobile App',
                     description:
                         'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
@@ -2708,6 +2749,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (contactless)',
                     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -2715,6 +2757,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Online (smart card)',
                     description:
                         'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
@@ -2723,6 +2766,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['smartCard'],
                 },
                 {
+                    id: 3,
                     name: 'Mobile App',
                     description:
                         'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
@@ -2731,6 +2775,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['mobileApp'],
                 },
                 {
+                    id: 4,
                     name: 'All Encompassing',
                     description: 'All currently available options selected',
                     purchaseLocations: ['onBoard', 'online', 'mobileDevice'],
@@ -2746,6 +2791,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: 'Purchasable on board the bus, with cash, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -2753,6 +2799,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -2768,6 +2815,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'onboard sales offer package',
                     description: 'this sales offer package explains how to buy the ticket onboard',
                     purchaseLocations: ['onBoard'],
@@ -2775,6 +2823,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'mobile app offer package',
                     description: 'this sales offer package explains how to buy the ticket on a mobile app',
                     purchaseLocations: ['mobileDevice'],
@@ -2782,6 +2831,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
                     ticketFormats: ['mobileApp'],
                 },
                 {
+                    id: 3,
                     name: 'online offer package',
                     description: 'this sales offer package explains how to buy the ticket on a mobile app',
                     purchaseLocations: ['online'],
@@ -2997,6 +3047,7 @@ export const schemeOperatorFlatFareTicket: SchemeOperatorFlatFareTicket = {
             productPrice: '14',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: 'Purchasable on board the bus, with cash, as a paper ticket.',
                     purchaseLocations: ['onBoard', 'postal', 'agency'],
@@ -3004,6 +3055,7 @@ export const schemeOperatorFlatFareTicket: SchemeOperatorFlatFareTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3011,6 +3063,7 @@ export const schemeOperatorFlatFareTicket: SchemeOperatorFlatFareTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 3,
                     name: 'Online (smart card)',
                     description:
                         'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
@@ -3019,6 +3072,7 @@ export const schemeOperatorFlatFareTicket: SchemeOperatorFlatFareTicket = {
                     ticketFormats: ['smartCard'],
                 },
                 {
+                    id: 4,
                     name: 'Mobile App',
                     description:
                         'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
@@ -3027,6 +3081,7 @@ export const schemeOperatorFlatFareTicket: SchemeOperatorFlatFareTicket = {
                     ticketFormats: ['mobileApp'],
                 },
                 {
+                    id: 5,
                     name: 'All Encompassing',
                     description: 'All currently available options selected',
                     purchaseLocations: ['onBoard', 'online', 'mobileDevice'],
@@ -3034,6 +3089,7 @@ export const schemeOperatorFlatFareTicket: SchemeOperatorFlatFareTicket = {
                     ticketFormats: ['paperTicket', 'mobileApp', 'smartCard'],
                 },
                 {
+                    id: 6,
                     name: 'School Service Payment Methods',
                     description: 'Additional payment methods provided for school service tickets',
                     purchaseLocations: ['online', 'mobileDevice'],
@@ -3141,6 +3197,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: 'Purchasable on board the bus, with cash, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3148,6 +3205,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3155,6 +3213,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 3,
                     name: 'Online (smart card)',
                     description:
                         'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
@@ -3163,6 +3222,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['smartCard'],
                 },
                 {
+                    id: 4,
                     name: 'Mobile App',
                     description:
                         'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
@@ -3179,6 +3239,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: 'Purchasable on board the bus, with cash, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3186,6 +3247,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3193,6 +3255,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 3,
                     name: 'Online (smart card)',
                     description:
                         'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
@@ -3201,6 +3264,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['smartCard'],
                 },
                 {
+                    id: 4,
                     name: 'Mobile App',
                     description:
                         'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
@@ -3217,6 +3281,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (contactless)',
                     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3224,6 +3289,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Online (smart card)',
                     description:
                         'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
@@ -3232,6 +3298,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['smartCard'],
                 },
                 {
+                    id: 3,
                     name: 'Mobile App',
                     description:
                         'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
@@ -3240,6 +3307,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['mobileApp'],
                 },
                 {
+                    id: 4,
                     name: 'All Encompassing',
                     description: 'All currently available options selected',
                     purchaseLocations: ['onBoard', 'online', 'mobileDevice'],
@@ -3255,6 +3323,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: 'Purchasable on board the bus, with cash, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3262,6 +3331,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3277,6 +3347,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'onboard sales offer package',
                     description: 'this sales offer package explains how to buy the ticket onboard',
                     purchaseLocations: ['onBoard'],
@@ -3284,6 +3355,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'mobile app offer package',
                     description: 'this sales offer package explains how to buy the ticket on a mobile app',
                     purchaseLocations: ['mobileDevice'],
@@ -3291,6 +3363,7 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
                     ticketFormats: ['mobileApp'],
                 },
                 {
+                    id: 3,
                     name: 'online offer package',
                     description: 'this sales offer package explains how to buy the ticket on a mobile app',
                     purchaseLocations: ['online'],
@@ -3580,6 +3653,7 @@ export const multiOperatorMultiServiceTicket: MultiOperatorMultipleServicesTicke
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Online (smart card)',
                     description:
                         'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
@@ -3588,6 +3662,7 @@ export const multiOperatorMultiServiceTicket: MultiOperatorMultipleServicesTicke
                     ticketFormats: ['smartCard'],
                 },
                 {
+                    id: 2,
                     name: 'Mobile App',
                     description:
                         'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
@@ -3604,6 +3679,7 @@ export const multiOperatorMultiServiceTicket: MultiOperatorMultipleServicesTicke
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: 'Purchasable on board the bus, with cash, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3611,6 +3687,7 @@ export const multiOperatorMultiServiceTicket: MultiOperatorMultipleServicesTicke
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3626,6 +3703,7 @@ export const multiOperatorMultiServiceTicket: MultiOperatorMultipleServicesTicke
             productValidity: '24hr',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: 'Purchasable on board the bus, with cash, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3633,6 +3711,7 @@ export const multiOperatorMultiServiceTicket: MultiOperatorMultipleServicesTicke
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
                     purchaseLocations: ['onBoard'],
@@ -3640,6 +3719,7 @@ export const multiOperatorMultiServiceTicket: MultiOperatorMultipleServicesTicke
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 3,
                     name: 'Online (smart card)',
                     description:
                         'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
@@ -3648,6 +3728,7 @@ export const multiOperatorMultiServiceTicket: MultiOperatorMultipleServicesTicke
                     ticketFormats: ['smartCard'],
                 },
                 {
+                    id: 4,
                     name: 'Mobile App',
                     description:
                         'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
@@ -3656,6 +3737,7 @@ export const multiOperatorMultiServiceTicket: MultiOperatorMultipleServicesTicke
                     ticketFormats: ['mobileApp'],
                 },
                 {
+                    id: 5,
                     name: 'All Encompassing',
                     description: 'All currently available options selected',
                     purchaseLocations: ['onBoard', 'online', 'mobileDevice'],
@@ -3797,6 +3879,7 @@ export const hybridPeriodTicket: HybridPeriodTicket = {
             productValidity: 'fareDayEnd',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: '',
                     purchaseLocations: ['onBoard'],
@@ -3804,6 +3887,7 @@ export const hybridPeriodTicket: HybridPeriodTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: '',
                     purchaseLocations: ['onBoard'],
@@ -3819,6 +3903,7 @@ export const hybridPeriodTicket: HybridPeriodTicket = {
             productValidity: 'fareDayEnd',
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: '',
                     purchaseLocations: ['onBoard'],
@@ -3826,6 +3911,7 @@ export const hybridPeriodTicket: HybridPeriodTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: '',
                     purchaseLocations: ['onBoard'],
@@ -5304,6 +5390,7 @@ export const pointToPointPeriodTicket: PointToPointPeriodTicket = {
             productDurationUnits: ExpiryUnit.WEEK,
             salesOfferPackages: [
                 {
+                    id: 1,
                     name: 'Onboard (cash)',
                     description: '',
                     purchaseLocations: ['onBoard'],
@@ -5311,6 +5398,7 @@ export const pointToPointPeriodTicket: PointToPointPeriodTicket = {
                     ticketFormats: ['paperTicket'],
                 },
                 {
+                    id: 2,
                     name: 'Onboard (contactless)',
                     description: '',
                     purchaseLocations: ['onBoard'],

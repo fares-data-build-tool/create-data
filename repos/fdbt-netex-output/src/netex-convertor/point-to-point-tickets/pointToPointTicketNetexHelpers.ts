@@ -44,6 +44,7 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
 
 export const getPriceGroups = (matchingData: PointToPointTicket | PointToPointPeriodTicket): {}[] => {
     const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
+
     const priceGroups = getUniquePriceGroups(fareZones).map(price => ({
         version: '1.0',
         id: `price_band_${price}`,
@@ -373,6 +374,34 @@ export const getFareTables = (
     });
 };
 
+/**
+ * This method will combine `ticket.outboundFareZones` and `ticket.inboundFareZones`
+ * by finding unique fare zones between inbound and outbound also combine their unique stops
+ *
+ * @param outbound an array of outbound fare zones.
+ * @param inbound an array of inbound fare zones.
+ *
+ * @returns a new array combining the inbound and outbound without duplication of fare zones or their stops.
+ */
+export const combineFareZones = (outbound: FareZone[], inbound: FareZone[]): FareZone[] => {
+    const combinedFareZones = [...outbound];
+
+    inbound.forEach(zone => {
+        const outboundZone = combinedFareZones.find(x => x.name == zone.name);
+        if (!outboundZone) {
+            combinedFareZones.push(zone);
+        } else {
+            zone.stops.forEach(stop => {
+                if (!outboundZone.stops.some(s => s.naptanCode === stop.naptanCode)) {
+                    outboundZone.stops.push(stop);
+                }
+            });
+        }
+    });
+
+    return combinedFareZones;
+};
+
 export const getLinesElement = (
     ticket: PointToPointTicket | PointToPointPeriodTicket,
     lineName: string,
@@ -384,9 +413,9 @@ export const getLinesElement = (
         id: `Tariff@${typeOfPointToPoint}@lines`,
         Name: { $t: `O/D pairs for ${lineName}` },
         distanceMatrixElements: {
-            DistanceMatrixElement: getDistanceMatrixElements(
-                isReturnTicket(ticket) ? ticket.outboundFareZones : ticket.fareZones,
-            ),
+            DistanceMatrixElement: isReturnTicket(ticket)
+                ? getDistanceMatrixElements(combineFareZones(ticket.outboundFareZones, ticket.inboundFareZones))
+                : getDistanceMatrixElements(ticket.fareZones),
         },
         GenericParameterAssignment: {
             version: '1.0',
