@@ -208,7 +208,7 @@ export interface SingleTicket extends BasePointToPointTicket {
     type: 'single';
     fareZones: FareZone[];
     termTime: boolean;
-    journeyDirection: string;
+    journeyDirection?: 'Inbound' | 'Outbound' | 'Clockwise' | 'Anti-Clockwise';
 }
 
 export interface ReturnTicket extends BasePointToPointTicket {

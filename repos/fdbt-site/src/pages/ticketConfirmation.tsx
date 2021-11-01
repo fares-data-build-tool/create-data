@@ -7,6 +7,7 @@ import CsrfForm from '../components/CsrfForm';
 import {
     FARE_TYPE_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
@@ -22,12 +23,12 @@ import {
     TXC_SOURCE_ATTRIBUTE,
     POINT_TO_POINT_PRODUCT_ATTRIBUTE,
     CSV_ZONE_FILE_NAME,
-    DIRECTION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CarnetDetails,
     CarnetExpiryUnit,
     ConfirmationElement,
+    Journey,
     MultiOperatorInfo,
     MultipleOperatorsAttribute,
     MultipleProductAttribute,
@@ -46,7 +47,7 @@ import { InboundMatchingInfo, MatchingFareZones, MatchingInfo } from '../interfa
 import { isFareType, isPeriodExpiry, isWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
 import { getCsrfToken, sentenceCaseString } from '../utils';
-import { getSessionAttribute, updateSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Ticket Confirmation - Create Fares Data Service';
 const description = 'Ticket Confirmation page of the Create Fares Data Service';
@@ -137,8 +138,11 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
     const confirmationElements: ConfirmationElement[] = [];
 
     const { service } = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE) as Service;
+    const { inboundJourney } = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE) as Journey;
+    const { outboundJourney } = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE) as Journey;
     const validity = getSessionAttribute(ctx.req, RETURN_VALIDITY_ATTRIBUTE) as ReturnPeriodValidity;
 
+    const circular = !outboundJourney && !inboundJourney;
     const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
 
     confirmationElements.push(
@@ -154,12 +158,7 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
         },
     );
 
-    const direction = getRequiredSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE);
-    if (!('direction' in direction)) {
-        throw new Error(`direction attribute is incorrect ${direction}`);
-    }
-
-    if (direction.inboundDirection) {
+    if (!circular) {
         const outboundMatchingFareZones = (getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE) as MatchingInfo)
             .matchingFareZones;
         const { inboundMatchingFareZones } = getSessionAttribute(
@@ -184,7 +183,7 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
                 href: 'inboundMatching',
             });
         });
-    } else {
+    } else if (circular) {
         const nonCircularMatchedFareStages = buildMatchedFareStages(
             (getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE) as MatchingInfo).matchingFareZones,
         );

@@ -45,15 +45,14 @@ def lambda_handler(event, context):
     try:
         download_from_s3_and_write_to_db(s3_client, cloudwatch_client, bucket, key, file_path, db_connection, logger)
 
-    except Exception as e:
-        logger.error(
-            "ERROR! Failed to write contents of '{}' to database, error: {}.".format(key, e)
-        )
-        raise e
-
-    finally:
         if os.path.exists(file_path):
             os.remove(file_path)
             logger.info("Removing File {}".format(file_path))
         else:
             logger.warn("File {} does not exist.".format(file_path))
+
+    except Exception as e:
+        logger.error(
+            "ERROR! Failed to write contents of '{}' to database, error: {}.".format(key, e)
+        )
+        raise e

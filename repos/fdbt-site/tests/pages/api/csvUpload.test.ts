@@ -9,7 +9,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import logger from '../../../src/utils/logger';
 import { containsDuplicateFareStages } from '../../../src/pages/api/csvUpload';
 import { ErrorInfo } from '../../../src/interfaces';
-import { CSV_UPLOAD_ATTRIBUTE, DIRECTION_ATTRIBUTE } from '../../../src/constants/attributes';
+import { CSV_UPLOAD_ATTRIBUTE, JOURNEY_ATTRIBUTE } from '../../../src/constants/attributes';
 
 jest.spyOn(s3, 'putDataInS3');
 
@@ -320,9 +320,8 @@ describe('csvUpload', () => {
             body: null,
             uuid: {},
             session: {
-                [DIRECTION_ATTRIBUTE]: {
-                    direction: 'outbound',
-                    inboundDirection: 'inbound',
+                [JOURNEY_ATTRIBUTE]: {
+                    outboundJourney: '13003921A#13003655B',
                 },
             },
         });
@@ -363,9 +362,8 @@ describe('csvUpload', () => {
             body: null,
             uuid: {},
             session: {
-                [DIRECTION_ATTRIBUTE]: {
-                    direction: 'outbound',
-                    inboundDirection: 'inbound',
+                [JOURNEY_ATTRIBUTE]: {
+                    outboundJourney: '13003921A#13003655B',
                 },
             },
         });

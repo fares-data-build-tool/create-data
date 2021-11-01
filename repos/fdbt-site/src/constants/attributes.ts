@@ -12,6 +12,8 @@ export const MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE = 'fdbt-manage-passenger-typ
 
 export const SERVICE_ATTRIBUTE = 'fdbt-service';
 
+export const JOURNEY_ATTRIBUTE = 'fdbt-journey';
+
 export const DIRECTION_ATTRIBUTE = 'fdbt-direction';
 
 export const FARE_STAGES_ATTRIBUTE = 'fdbt-fare-stages';
