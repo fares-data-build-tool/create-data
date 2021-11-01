@@ -73,7 +73,6 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
-                        { name: 'Service', content: ['215 - Worthing - Seaham - Crawley'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Only valid during term time', content: ['Yes'] },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
