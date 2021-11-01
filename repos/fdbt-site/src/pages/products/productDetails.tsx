@@ -109,12 +109,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
-    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
-    productDetailsElements.push({ name: 'Passenger type', content: [passengerTypeName] });
-
     if ('zoneName' in ticket) {
         productDetailsElements.push({ name: 'Zone', content: [ticket.zoneName] });
     }
+
+    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
+    productDetailsElements.push({ name: 'Passenger type', content: [passengerTypeName] });
 
     const isSchoolTicket = 'termTime' in ticket && ticket.termTime;
     if (!isSchoolTicket) {
