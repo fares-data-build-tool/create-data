@@ -226,7 +226,7 @@ def insert_into_txc_operator_service_table(cursor, operator, service, line, regi
     ) = extract_data_for_txc_operator_service_table(operator, service, line)
 
     query = f"""INSERT INTO txcOperatorLine (nocCode, lineName, lineId, startDate, endDate, operatorShortName, inboundDirectionDescription, outboundDirectionDescription, serviceDescription, serviceCode, regionCode, dataSource, origin, destination)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
     line_id = line.get('@id', '')
     line_name = line.get('LineName', '')
