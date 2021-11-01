@@ -41,10 +41,10 @@ describe('pages', () => {
                 expect('props' in result && result.props).toEqual({
                     csrfToken: '',
                     direction: 'outbound',
-                    directionDesc: 'another way',
+                    directionDesc: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
                     errors: [],
                     inboundDirection: 'inbound',
-                    inboundDirectionDesc: 'this way',
+                    inboundDirectionDesc: 'Estate (Hail and Ride) N/B,Westlea - Interchange Stand B,Seaham',
                 });
             });
 

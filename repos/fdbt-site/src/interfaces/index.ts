@@ -587,8 +587,6 @@ export interface RawService {
     lineId: string;
     lineName: string;
     startDate: string;
-    inboundDirectionDescription: string;
-    outboundDirectionDescription: string;
 }
 
 export interface JourneyPattern {
