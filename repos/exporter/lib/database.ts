@@ -7,18 +7,9 @@ import {
     PassengerType,
     SinglePassengerType,
     RawSalesOfferPackage,
-    RawService,
-    ServiceQueryData,
-    RawJourneyPattern,
-    MyFaresProduct,
     DirectionAndStops,
 } from '../shared/dbTypes';
-import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage, TicketPeriod } from '../shared/matchingJsonTypes';
-import dateFormat from 'dateformat';
-
-export const convertDateFormat = (date: string): string => {
-    return dateFormat(date, 'dd/mm/yyyy');
-};
+import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
 
 const replaceInternalNocCode = (nocCode: string): string => {
     if (nocCode === 'IWBusCo') {
@@ -222,8 +213,45 @@ export const getDirectionAndStopsByLineIdAndNoc = async (lineId: string, noc: st
 
     try {
         return await executeQuery(serviceQuery, [nocCodeParameter, lineId]);
-    } catch (error: any) {
+    } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         throw new Error(`Could not get journey patterns from Aurora DB: ${error.stack}`);
     }
+};
 
+declare interface ResultSetHeader {
+    constructor: {
+        name: 'ResultSetHeader';
+    };
+    affectedRows: number;
+    fieldCount: number;
+    info: string;
+    insertId: number;
+    serverStatus: number;
+    warningStatus: number;
+}
+
+export const saveIdsOfServicesRequiringAttentionInTheDb = async (
+    productId: number,
+    idsOfServicesRequiringAttention: string[],
+): Promise<void> => {
+    const idsAsACommaSeparatedString = idsOfServicesRequiringAttention.join();
+
+    const updateQuery = `UPDATE products
+                         SET servicesRequiringAttention = ?
+                         WHERE id = ?`;
+
+    const meta = await executeQuery<ResultSetHeader>(updateQuery, [idsAsACommaSeparatedString, productId]);
+
+    if (meta.affectedRows > 1) {
+        throw Error(
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            `Updated too many rows when updating the servicesRequiringAttention column on products table. ${meta}`,
+        );
+    } else if (meta.affectedRows === 0) {
+        throw Error(
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            `Nothing was updated when attempting to update the servicesRequiringAttention column on products table. ${meta}`,
+        );
+    }
 };

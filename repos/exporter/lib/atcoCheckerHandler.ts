@@ -1,9 +1,13 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
 import { WithIds, ReturnTicket, SingleTicket, PointToPointPeriodTicket } from '../shared/matchingJsonTypes';
-import { getDirectionAndStopsByLineIdAndNoc, getPointToPointProducts } from './database';
+import {
+    saveIdsOfServicesRequiringAttentionInTheDb,
+    getDirectionAndStopsByLineIdAndNoc,
+    getPointToPointProducts,
+} from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
-import 'source-map-support/register';
+import { DirectionAndStops } from '../shared/dbTypes';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -27,15 +31,22 @@ export const handler: Handler<ExportLambdaBody> = async () => {
         throw new Error('Need to set PRODUCTS_BUCKET env variable');
     }
 
-    const pointToPointProducts = await getPointToPointProducts();
+    const pointToPointProducts: {
+        id: number;
+        lineId: string;
+        matchingJsonLink: string;
+        startDate: string;
+        endDate: string;
+    }[] = await getPointToPointProducts();
 
     // change loop to OG for loop
     // for a single, make sure comparison is only done between fareZones + unassigned against whichever direction from service
     // for a non-single, make sure multiple comparisons are done between their stuff
     // combine DB calls into one which gets
-
-    pointToPointProducts.forEach(async (ptpp) => {
-        const path = ptpp.matchingJsonLink;
+    for (let i = 0; i < pointToPointProducts.length; i++) {
+        const pointToPointProduct = pointToPointProducts[i];
+        const productId: number = pointToPointProduct.id;
+        const path = pointToPointProduct.matchingJsonLink;
 
         const object = await s3.getObject({ Key: path, Bucket: PRODUCTS_BUCKET }).promise();
 
@@ -48,70 +59,41 @@ export const handler: Handler<ExportLambdaBody> = async () => {
             | WithIds<ReturnTicket>
             | WithIds<PointToPointPeriodTicket>;
 
-        const { nocCode, lineId, unassignedStops } = pointToPointTicket;
-
-        const atcoCodesOfKnownStops: string[] = [];
+        // const { nocCode, lineId, unassignedStops } = pointToPointTicket;
+        // const atcoCodesOfKnownStops: string[] = [];
 
         // check to see if single ticket
         if ('fareZones' in pointToPointTicket) {
-            const mismatchedServiceIds = getSingleTicketsMismatchedServiceIds(
+            const idsOfServicesRequiringAttention: string[] = await getIdsOfServicesRequiringAttentionForSingles(
                 pointToPointTicket,
-                ptpp.startDate,
-                ptpp.endDate,
             );
 
-            pointToPointTicket.fareZones.forEach((fareZone) => {
-                fareZone.stops.forEach((stop) => {
-                    atcoCodesOfKnownStops.push(stop.atcoCode);
-                });
-            });
+            await saveIdsOfServicesRequiringAttentionInTheDb(productId, idsOfServicesRequiringAttention);
         } else if ('inboundFareZones' in pointToPointTicket && 'outboundFareZones' in pointToPointTicket) {
-            pointToPointTicket.inboundFareZones.forEach((fareZone) => {
-                fareZone.stops.forEach((stop) => {
-                    atcoCodesOfKnownStops.push(stop.atcoCode);
-                });
-            });
+            // we have a return ticket
+            const idsOfServicesRequiringAttention: string[] = await getIdsOfServicesRequiringAttentionForReturns(
+                pointToPointTicket,
+            );
 
-            pointToPointTicket.outboundFareZones.forEach((fareZone) => {
-                fareZone.stops.forEach((stop) => {
-                    atcoCodesOfKnownStops.push(stop.atcoCode);
-                });
-            });
+            await saveIdsOfServicesRequiringAttentionInTheDb(productId, idsOfServicesRequiringAttention);
         }
-
-        if (unassignedStops.inboundUnassignedStops) {
-            unassignedStops.inboundUnassignedStops.forEach((stop) => {
-                atcoCodesOfKnownStops.push(stop.atcoCode);
-            });
-        }
-
-        if (unassignedStops.outboundUnassignedStops) {
-            unassignedStops.outboundUnassignedStops.forEach((stop) => {
-                atcoCodesOfKnownStops.push(stop.atcoCode);
-            });
-        }
-
-        if (unassignedStops.singleUnassignedStops) {
-            unassignedStops.singleUnassignedStops.forEach((stop) => {
-                atcoCodesOfKnownStops.push(stop.atcoCode);
-            });
-        }
-
-        let journeyDirection = '';
-
-        if ('journeyDirection' in pointToPointTicket) {
-            journeyDirection = pointToPointTicket.journeyDirection;
-        }
-
-        const atcoMismatch = false;
-
-        // const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === journeyDirection);
-    });
+    }
 };
 
-const getSingleTicketsMismatchedServiceIds = async (pointToPointTicket: WithIds<SingleTicket>): Promise<number[]> => {
+/**
+ * For single tickets; gets a list of ids for the serices that require
+ * attention because of a change on the stops relating to the service.
+ *
+ * @param {pointToPointTicket} the matching json for single ticket.
+ *
+ * @returns {Promise<string[]>} a string array containing the ids of the
+ * services that require attention.
+ */
+const getIdsOfServicesRequiringAttentionForSingles = async (
+    pointToPointTicket: WithIds<SingleTicket>,
+): Promise<string[]> => {
     // all stops from the matching JSON
-    const atcoCodesOfKnownStops: string[] = [];
+    let atcoCodesOfKnownStops: string[] = [];
 
     pointToPointTicket.fareZones.forEach((fareZone) => {
         fareZone.stops.forEach((stop) => {
@@ -135,28 +117,177 @@ const getSingleTicketsMismatchedServiceIds = async (pointToPointTicket: WithIds<
         (directionsAndStopsItem) => directionsAndStopsItem.direction === journeyDirection,
     );
 
-    // split by service id?, where result is a dictionary<key = serviceId, value = array of stop ids>
-    // const dictionary
-    // iterate over each service Id
-    // check that array of stop ids is equal to the array of stops on our matching json
-    // to compare the arrays, strip out duplicates, sort it, then check that they are equal.
+    // split by service id and build a hashmap (dictionary) where the key is
+    // the service id and the value is the array of stops
+    const serviceAndStopsFromFeed = buildAHashmapSplitOnServiceId(theStopsMatchingTheJourneyDirectionOnOurTicket);
 
-    let mismatchDetected = false;
+    // sort the stops and remove duplicates for each service
+    const serviceAndSortedUniqueStopsFromFeed = sortAndRemoveDuplicateStops(serviceAndStopsFromFeed);
 
-    if (theStopsMatchingTheJourneyDirectionOnOurTicket.length !== atcoCodesOfKnownStops.length) {
-        // they are not the same length
-        mismatchDetected = true;
+    // on our matching json stops, sort the stops and remove duplicates
+    atcoCodesOfKnownStops = [...new Set(atcoCodesOfKnownStops.sort())];
+
+    const servicesRequiringAttention = [];
+
+    for (const key in serviceAndSortedUniqueStopsFromFeed) {
+        const serviceId = key;
+        const stops = serviceAndSortedUniqueStopsFromFeed[serviceId];
+
+        if (JSON.stringify(stops) !== JSON.stringify(atcoCodesOfKnownStops)) {
+            console.log(`The stops on ${serviceId} require attention.`);
+            servicesRequiringAttention.push(serviceId);
+        }
     }
 
-    // if the length matches, then we check and see if the same stops exists in each list.
+    return servicesRequiringAttention;
+};
 
-    // directionsAndStops.forEach(oneDirectionsAndStops => {
-    //     const allthestops = [oneDirectionsAndStops.fromAtcoCode, oneDirectionsAndStops.toAtcoCode];
-    //     oneDirectionsAndStops.serviceId
-    // })
+/**
+ * For return tickets; gets a list of ids for the serices that attention
+ * because of a change on the stops relating to the service.
+ *
+ * @param {pointToPointTicket} the matching json for single ticket.
+ *
+ * @returns {Promise<string[]>} a string array containing the ids of the
+ * services that require attention.
+ */
+const getIdsOfServicesRequiringAttentionForReturns = async (
+    pointToPointTicket: WithIds<ReturnTicket> | WithIds<PointToPointPeriodTicket>,
+): Promise<string[]> => {
+    let knownOutboundStops: string[] = [];
+    let knownInboundStops: string[] = [];
 
-    // product id 7 service 4
-    // service 4 v1
-    // service 4 v2
-    // v3
+    const outboundFareZones = pointToPointTicket.outboundFareZones;
+
+    const inboundFareZones = pointToPointTicket.inboundFareZones;
+
+    outboundFareZones.forEach((fareZone) => {
+        fareZone.stops.forEach((stop) => {
+            knownOutboundStops.push(stop.atcoCode);
+        });
+    });
+
+    inboundFareZones.forEach((fareZone) => {
+        fareZone.stops.forEach((stop) => {
+            knownInboundStops.push(stop.atcoCode);
+        });
+    });
+
+    if (pointToPointTicket.unassignedStops.outboundUnassignedStops) {
+        pointToPointTicket.unassignedStops.outboundUnassignedStops.forEach((stop) => {
+            knownOutboundStops.push(stop.atcoCode);
+        });
+    }
+
+    if (pointToPointTicket.unassignedStops.inboundUnassignedStops) {
+        pointToPointTicket.unassignedStops.inboundUnassignedStops.forEach((stop) => {
+            knownInboundStops.push(stop.atcoCode);
+        });
+    }
+
+    // by this point, we have all the inbound and outbound stops on our matching json
+
+    const { lineId, nocCode } = pointToPointTicket;
+
+    const directionsAndStops = await getDirectionAndStopsByLineIdAndNoc(lineId, nocCode);
+
+    const outboundStopsFromFeed = directionsAndStops.filter((x) => x.direction === 'outbound');
+
+    const inboundStopsFromFeed = directionsAndStops.filter((x) => x.direction === 'inbound');
+
+    // for outbound stops, split by service id and build a hashmap (dictionary) where the key is
+    // the service id and the value is the array of stops
+    const outboundServiceAndStopsFromFeed = buildAHashmapSplitOnServiceId(outboundStopsFromFeed);
+
+    // for inbound stops, split by service id and build a hashmap (dictionary) where the key is
+    // the service id and the value is the array of stops
+    const inboundServiceAndStopsFromFeed = buildAHashmapSplitOnServiceId(inboundStopsFromFeed);
+
+    // sort the stops and remove duplicates for each service
+    const outboundServiceAndSortedUniqueStopsFromFeed = sortAndRemoveDuplicateStops(outboundServiceAndStopsFromFeed);
+
+    // sort the stops and remove duplicates for each service
+    const inboundServiceAndSortedUniqueStopsFromFeed = sortAndRemoveDuplicateStops(inboundServiceAndStopsFromFeed);
+
+    // our outbound matching json stops, sort the stops and remove duplicates
+    knownOutboundStops = [...new Set(knownOutboundStops.sort())];
+
+    // our inbound matching json stops, sort the stops and remove duplicates
+    knownInboundStops = [...new Set(knownInboundStops.sort())];
+
+    const outboundServicesRequiringAttention = [];
+    const inboundServicesRequiringAttention = [];
+
+    for (const key in outboundServiceAndSortedUniqueStopsFromFeed) {
+        const serviceId = key;
+        const stops = outboundServiceAndSortedUniqueStopsFromFeed[serviceId];
+
+        if (JSON.stringify(stops) !== JSON.stringify(knownOutboundStops)) {
+            console.log(`The stops on ${serviceId} require attention.`);
+            outboundServicesRequiringAttention.push(serviceId);
+        }
+    }
+
+    for (const key in inboundServiceAndSortedUniqueStopsFromFeed) {
+        const serviceId = key;
+        const stops = inboundServiceAndSortedUniqueStopsFromFeed[serviceId];
+
+        if (JSON.stringify(stops) !== JSON.stringify(knownInboundStops)) {
+            console.log(`The stops on ${serviceId} require attention.`);
+            inboundServicesRequiringAttention.push(serviceId);
+        }
+    }
+
+    return outboundServicesRequiringAttention.concat(inboundServicesRequiringAttention);
+};
+
+/**
+ * Builds and returns a hasmap (dictionary) where the service id is the key
+ * and the stops array is the value.
+ *
+ * @param {DirectionAndStops[]} directionsAndStopsArray
+ *
+ * @returns {{ [key: string]: string[] }} a hashmap (dictionary) with service id
+ * as the key and the stops array as the value
+ */
+const buildAHashmapSplitOnServiceId = (directionsAndStopsArray: DirectionAndStops[]): { [key: string]: string[] } => {
+    const dictionary: { [key: string]: string[] } = {};
+
+    directionsAndStopsArray.forEach((directionsAndStopsItem: DirectionAndStops) => {
+        const key = directionsAndStopsItem.serviceId;
+
+        const value: string[] | undefined = dictionary[key];
+
+        if (value !== undefined) {
+            // we already have that serviceId as key
+            value.push(directionsAndStopsItem.fromAtcoCode);
+            value.push(directionsAndStopsItem.toAtcoCode);
+        } else {
+            dictionary[key] = [directionsAndStopsItem.fromAtcoCode, directionsAndStopsItem.toAtcoCode];
+        }
+    });
+
+    return dictionary;
+};
+
+/**
+ * Sorts and remove duplicates stops from the stops array for each service id
+ *
+ * @param {serviceAndStopsDictionary} a hashmap (dictionary) with service id
+ *
+ * @returns {{ [key: string]: string[] }} a hashmap (dictionary) with service id
+ * as the key and unique and sorted stops array as the value
+ */
+const sortAndRemoveDuplicateStops = (serviceAndStopsDictionary: {
+    [key: string]: string[];
+}): { [key: string]: string[] } => {
+    for (const key in serviceAndStopsDictionary) {
+        const stopsArray = serviceAndStopsDictionary[key];
+
+        const sortedStopsArray = stopsArray.sort();
+
+        serviceAndStopsDictionary[key] = [...new Set(sortedStopsArray)];
+    }
+
+    return serviceAndStopsDictionary;
 };
