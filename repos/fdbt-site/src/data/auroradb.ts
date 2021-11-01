@@ -103,7 +103,6 @@ export const replaceInternalNocCode = (nocCode: string): string => {
     if (nocCode === INTERNAL_NOC) {
         return 'WBTR';
     }
-
     return nocCode;
 };
 

@@ -32,7 +32,6 @@ const Services = ({ servicesAndProducts, myFaresEnabled }: ServicesProps): React
                                 Create new product
                             </a>
                         </div>
-
                         {ServicesTable(servicesAndProducts)}
                     </div>
                 </div>
@@ -49,16 +48,18 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                     <th scope="col" className="govuk-table__header">
                         Service description
                     </th>
-                    <th scope="col" className="govuk-table__header">
+                    <th scope="col" className="govuk-table__header dft-text-align-centre">
                         Active products
                     </th>
-                    <th scope="col" className="govuk-table__header">
-                        Start date
+                    <th scope="col" className="govuk-table__header dft-text-align-centre">
+                        Start
+                        <br /> date
                     </th>
-                    <th scope="col" className="govuk-table__header">
-                        End date
+                    <th scope="col" className="govuk-table__header dft-text-align-centre">
+                        End <br />
+                        date
                     </th>
-                    <th scope="col" className="govuk-table__header">
+                    <th scope="col" className="govuk-table__header dft-text-align-centre">
                         Service status
                     </th>
                 </tr>
@@ -72,10 +73,12 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                                 {service.lineName} - {service.origin} to {service.destination}
                             </a>
                         </td>
-                        <td className="govuk-table__cell">{service.products}</td>
-                        <td className="govuk-table__cell">{service.startDate}</td>
-                        <td className="govuk-table__cell">{service.endDate}</td>
-                        <td className="govuk-table__cell">{getTag(service.startDate, service.endDate)}</td>
+                        <td className="govuk-table__cell dft-text-align-centre">{service.products}</td>
+                        <td className="govuk-table__cell dft-text-align-centre">{service.startDate}</td>
+                        <td className="govuk-table__cell dft-text-align-centre">{service.endDate || '-'}</td>
+                        <td className="govuk-table__cell dft-text-align-centre">
+                            {getTag(service.startDate, service.endDate)}
+                        </td>
                     </tr>
                 ))}
             </tbody>
@@ -105,7 +108,7 @@ export const showProductAgainstService = (
     // 05/04/2020 format
     serviceStartDate: string,
     // 05/04/2020 format
-    serviceEndDate: string,
+    serviceEndDate: string | undefined,
 ): boolean => {
     const momentProductStartDate = moment(productStartDate).valueOf();
     const momentProductEndDate = moment(productEndDate).valueOf();
@@ -129,15 +132,27 @@ export const matchProductsToServices = (
         return map;
     }, new Map<string, MyFaresProduct[]>());
 
-    return services.map((service) => ({
-        ...service,
-        products:
-            productsByLine
-                .get(service.lineId)
-                ?.filter((product) =>
-                    showProductAgainstService(product.startDate, product.endDate, service.startDate, service.endDate),
-                ).length ?? 0,
-    }));
+    return services.map((service) => {
+        const serviceWithEndDatesSwapped = {
+            ...service,
+            endDate: service.endDate || '',
+        };
+
+        return {
+            ...serviceWithEndDatesSwapped,
+            products:
+                productsByLine
+                    .get(service.lineId)
+                    ?.filter((product) =>
+                        showProductAgainstService(
+                            product.startDate,
+                            product.endDate,
+                            service.startDate,
+                            service.endDate,
+                        ),
+                    ).length ?? 0,
+        };
+    });
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServicesProps }> => {
