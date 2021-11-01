@@ -38,7 +38,7 @@ describe('pages', () => {
 
                 const result = await getServerSideProps(ctx);
 
-                expect('props' in result && result.props).toEqual({
+                expect(result?.props).toEqual({
                     csrfToken: '',
                     direction: 'outbound',
                     directionDesc: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
@@ -64,11 +64,9 @@ describe('pages', () => {
                     journeyPatterns: [mockRawService.journeyPatterns[0]],
                 });
 
-                expect(await getServerSideProps(ctx)).toEqual({
-                    redirect: {
-                        destination: '/inputMethod',
-                        permanent: false,
-                    },
+                await getServerSideProps(ctx);
+                expect(writeHeadMock).toBeCalledWith(302, {
+                    Location: '/inputMethod',
                 });
             });
         });

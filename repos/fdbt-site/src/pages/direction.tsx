@@ -9,8 +9,8 @@ import CsrfForm from '../components/CsrfForm';
 import { isService } from '../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
+import { redirectTo } from '../utils/apiUtils';
 import { removeExcessWhiteSpace } from '../utils/apiUtils/validator';
-import { GetServerSidePropsResult } from 'next';
 
 const title = 'Single Direction - Create Fares Data Service';
 const description = 'Single Direction selection page of the Create Fares Data Service';
@@ -68,7 +68,7 @@ const Direction = ({
 
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
-): Promise<GetServerSidePropsResult<SingleDirectionProps>> => {
+): Promise<{ props: SingleDirectionProps } | undefined> => {
     const csrfToken = getCsrfToken(ctx);
 
     const directionAttribute = getSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE);
@@ -93,7 +93,8 @@ export const getServerSideProps = async (
 
     if (directions.length === 1) {
         updateSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE, { direction: directions[0] });
-        return { redirect: { destination: '/inputMethod', permanent: false } };
+        redirectTo(ctx.res, '/inputMethod');
+        return;
     }
 
     if (directions.length !== 2 || !direction || !inboundDirection) {
@@ -106,7 +107,8 @@ export const getServerSideProps = async (
     const isReturn = 'fareType' in fareTypeAttribute && ['period', 'return'].includes(fareTypeAttribute.fareType);
     if (isReturn) {
         updateSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE, { direction, inboundDirection });
-        return { redirect: { destination: '/inputMethod', permanent: false } };
+        redirectTo(ctx.res, '/inputMethod');
+        return;
     }
 
     return {
