@@ -235,7 +235,7 @@ export const getNetexMode = (mode: string): string => {
 
 export const replaceIWBusCoNocCode = (nocCode: string): string => {
     if (nocCode === 'IWBusCo') {
-        return 'WBTR';
+        return 'BLAC';
     }
 
     return nocCode;
