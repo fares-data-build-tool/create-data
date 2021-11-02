@@ -9,11 +9,7 @@ import { redirectTo } from '../utils/apiUtils';
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
 
-interface HomeProps {
-    multipleOperators: boolean;
-}
-
-const Home = ({ multipleOperators }: HomeProps): ReactElement => (
+const Home = (): ReactElement => (
     <BaseLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Create fares data</h1>
         <div className="govuk-grid-row">
@@ -24,11 +20,7 @@ const Home = ({ multipleOperators }: HomeProps): ReactElement => (
                         For bus operators running commercial bus services in England, and local authorities that need to
                         create or access NeTEx data for the services they operate.
                     </p>
-                    <a
-                        href={multipleOperators ? '/multipleOperators' : '/fareType'}
-                        className="govuk-link govuk-!-font-size-19"
-                        id="faretype-link"
-                    >
+                    <a href={'/fareType'} className="govuk-link govuk-!-font-size-19" id="faretype-link">
                         Create NeTEx data for your fares
                     </a>
                     <br />
@@ -75,7 +67,7 @@ const Home = ({ multipleOperators }: HomeProps): ReactElement => (
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: {} } => {
     const multipleOperators = checkIfMultipleOperators(ctx);
 
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
@@ -86,9 +78,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ho
     }
 
     return {
-        props: {
-            multipleOperators: multipleOperators,
-        },
+        props: {},
     };
 };
 

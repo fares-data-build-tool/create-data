@@ -101,7 +101,7 @@ export const getAuroraDBClient = (): Pool => {
 
 export const replaceInternalNocCode = (nocCode: string): string => {
     if (nocCode === INTERNAL_NOC) {
-        return 'WBTR';
+        return 'BLAC';
     }
 
     return nocCode;
