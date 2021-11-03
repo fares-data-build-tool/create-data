@@ -1,6 +1,7 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import {
+    getBodsServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
     getProductMatchingJsonLinkByProductId,
     getSalesOfferPackageByIdAndNoc,
@@ -25,6 +26,7 @@ describe('myfares pages', () => {
         it('should render correctly', () => {
             const tree = shallow(
                 <ProductDetails
+                    backHref={'/products/pointToPointProducts?serviceId=1'}
                     productName={'Carnet Return Test'}
                     startDate={'18/10/2021'}
                     endDate={'18/10/2121'}
@@ -49,6 +51,15 @@ describe('myfares pages', () => {
     });
     describe('getServerSideProps', () => {
         beforeEach(() => {
+            (getBodsServiceByNocAndId as jest.Mock).mockResolvedValueOnce({
+                id: '2',
+                lineId: '1',
+                origin: 'Test Origin',
+                destination: 'Test Destination',
+                lineName: 'Test Line Name',
+                startDate: 'A date',
+                endDate: 'Another date',
+            });
             (getProductMatchingJsonLinkByProductId as jest.Mock).mockResolvedValueOnce('path');
             (getPassengerTypeNameByIdAndNoc as jest.Mock).mockResolvedValue('Test Passenger Type');
 
@@ -66,13 +77,15 @@ describe('myfares pages', () => {
 
         it('correctly returns the elements which should be displayed on the page for a school single ticket', async () => {
             (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedSingleTicket);
-            const ctx = getMockContext({ query: { productId: '1' } });
+            const ctx = getMockContext({ query: { productId: '1', serviceId: '2' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: `/products/pointToPointProducts?serviceId=2`,
                     productName: 'Test Passenger Type - Single (school)',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
+                        { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Only valid during term time', content: ['Yes'] },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
@@ -85,13 +98,15 @@ describe('myfares pages', () => {
 
         it('correctly returns the elements which should be displayed on the page for a point to point period ticket', async () => {
             (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedPointToPointPeriodTicket);
-            const ctx = getMockContext({ query: { productId: '1' } });
+            const ctx = getMockContext({ query: { productId: '1', serviceId: '2' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: `/products/pointToPointProducts?serviceId=2`,
                     productName: 'My product',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
+                        { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Period duration', content: ['7 weeks'] },
@@ -112,6 +127,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: `/products/otherProducts`,
                     productName: 'Test Return Product',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
@@ -136,6 +152,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: `/products/otherProducts`,
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
@@ -160,6 +177,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: `/products/otherProducts`,
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',

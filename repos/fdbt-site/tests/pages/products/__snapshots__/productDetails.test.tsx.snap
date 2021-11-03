@@ -6,6 +6,9 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   errors={Array []}
   title="Product Details - Create Fares Data Service"
 >
+  <BackButton
+    href="/products/pointToPointProducts?serviceId=1"
+  />
   <h1
     className="govuk-heading-l"
   >
