@@ -79,7 +79,7 @@ export class ExporterStack extends cdk.Stack {
             securityGroups: [
                 SecurityGroup.fromSecurityGroupId(
                     this,
-                    'security-group',
+                    'atco-code-checker-security-group',
                     Fn.importValue(`${stage}:ReferenceDataUploaderLambdaSG`),
                 ),
             ],
