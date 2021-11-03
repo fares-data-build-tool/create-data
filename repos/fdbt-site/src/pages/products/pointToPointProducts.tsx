@@ -110,7 +110,7 @@ export const filterProductsNotToDisplay = (service: MyFaresService, products: My
         const productEndDate = moment.utc(product.endDate, 'DD/MM/YYYY').valueOf();
         return productEndDate >= serviceStartDate && productStartDate <= serviceEndDate;
     });
-};  
+};
 
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
