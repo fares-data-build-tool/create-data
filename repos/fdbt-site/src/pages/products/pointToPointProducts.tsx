@@ -13,7 +13,7 @@ import {
     getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
-import { getAndValidateNoc } from '../../utils';
+import { convertDateFormat, getAndValidateNoc } from '../../utils';
 import moment from 'moment';
 import { isArray } from 'lodash';
 import { getTag } from './services';
@@ -110,7 +110,7 @@ export const filterProductsNotToDisplay = (service: MyFaresService, products: My
         const productEndDate = moment.utc(product.endDate, 'DD/MM/YYYY').valueOf();
         return productEndDate >= serviceStartDate && productStartDate <= serviceEndDate;
     });
-};
+};  
 
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
@@ -145,10 +145,17 @@ export const getServerSideProps = async (
                 timeRestriction = timeRestrictionFromDb.name;
             }
 
+            const startDate = matchingJson.ticketPeriod.startDate
+                ? convertDateFormat(matchingJson.ticketPeriod.startDate)
+                : '-';
+            const endDate = matchingJson.ticketPeriod.endDate
+                ? convertDateFormat(matchingJson.ticketPeriod.endDate)
+                : '-';
+
             return {
                 productDescription,
-                startDate: product.startDate,
-                endDate: product.endDate,
+                startDate,
+                endDate,
                 validity: timeRestriction,
                 id: product.id,
             };
