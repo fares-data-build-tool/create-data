@@ -495,7 +495,7 @@ workflows:
           filters:
             branches:
               only:
-                - develop
+                - msl
 
       - deploy-netex-validator-to-preprod:
           <<: *slack-fail-post-step
@@ -557,7 +557,7 @@ workflows:
           filters:
             branches:
               only:
-                - develop
+                - msl
 
       - deploy-netex-output-resources-to-preprod:
           <<: *slack-fail-post-step
@@ -662,7 +662,7 @@ workflows:
           filters:
             branches:
               only:
-                - develop
+                - msl
 
       - deploy-exporter:
           <<: *slack-fail-post-step
@@ -781,7 +781,7 @@ workflows:
               only: /^v.*/
             branches:
               only:
-                - develop
+                - msl
                 - master
 
       - aws-ecs/deploy-service-update:
@@ -796,7 +796,7 @@ workflows:
           verify-revision-is-deployed: true
           filters:
             branches:
-              only: develop
+              only: msl
 
       - run-ui-tests:
           <<: *slack-fail-post-step
@@ -806,7 +806,7 @@ workflows:
           context: tfn-fdbt-automation-test
           filters:
             branches:
-              only: develop
+              only: msl
 
       - aws-ecs/deploy-service-update:
           <<: *slack-fail-post-step
@@ -901,7 +901,7 @@ workflows:
           context: tfn-fdbt-test
           filters:
             branches:
-              only: develop
+              only: msl
 
       - deploy-reference-data-retrievers-to-preprod:
           <<: *slack-fail-post-step
@@ -946,7 +946,7 @@ workflows:
           context: tfn-fdbt-test
           filters:
             branches:
-              only: develop
+              only: msl
 
       - deploy-reference-data-uploaders-to-preprod:
           <<: *slack-fail-post-step
