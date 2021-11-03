@@ -57,6 +57,7 @@ describe('Inbound Matching Page', () => {
                 csrfToken=""
             />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 

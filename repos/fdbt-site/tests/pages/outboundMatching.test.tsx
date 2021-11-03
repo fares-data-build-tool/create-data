@@ -45,7 +45,7 @@ describe('OutboundMatching Page', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('should render with warning', () => {
+    it.only('should render with warning', () => {
         wrapper = shallow(
             <OutboundMatching
                 userFareStages={userFareStages}
@@ -57,6 +57,7 @@ describe('OutboundMatching Page', () => {
                 csrfToken=""
             />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 

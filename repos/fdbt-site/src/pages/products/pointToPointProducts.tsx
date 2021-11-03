@@ -1,10 +1,6 @@
 import React, { ReactElement } from 'react';
-import {
-    MyFaresPointToPointProduct,
-    MyFaresProduct,
-    MyFaresService,
-    NextPageContextWithSession,
-} from '../../interfaces/index';
+import { MyFaresPointToPointProduct, MyFaresService, NextPageContextWithSession } from '../../interfaces/index';
+import { MyFaresProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import {
     getBodsServiceByNocAndId,
