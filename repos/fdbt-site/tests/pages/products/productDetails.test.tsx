@@ -13,6 +13,7 @@ import {
     expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
     expectedPointToPointPeriodTicket,
+    expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
     expectedSingleTicket,
     getMockContext,
 } from '../../testData/mockData';
@@ -168,6 +169,30 @@ describe('myfares pages', () => {
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Multi Operator Group', content: ['TEST, MCTR, WBTR, BLAC'] },
+                        { name: 'Period duration', content: ['5 weeks'] },
+                        { name: 'Product expiry', content: ['24 hr'] },
+                        { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
+                        { name: 'Start date', content: ['17/12/2020'] },
+                        { name: 'End date', content: ['18/12/2020'] },
+                    ],
+                },
+            });
+        });
+        it('correctly returns the elements which should be displayed on the page for a scheme flat fare', async () => {
+            (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
+                ...expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
+            });
+            const ctx = getMockContext({ query: { productId: '1' } });
+            expect(await getServerSideProps(ctx)).toStrictEqual({
+                props: {
+                    productName: 'Weekly Ticket',
+                    startDate: '17/12/2020',
+                    endDate: '18/12/2020',
+                    productDetailsElements: [
+                        { name: 'Passenger type', content: ['Test Passenger Type'] },
+                        { name: 'Time restriction', content: ['Test Time Restriction'] },
+                        { name: 'WBTR Services', content: ['343, 444, 543'] },
+                        { name: 'BLAC Services', content: ['63, 64, 65'] },
                         { name: 'Period duration', content: ['5 weeks'] },
                         { name: 'Product expiry', content: ['24 hr'] },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
