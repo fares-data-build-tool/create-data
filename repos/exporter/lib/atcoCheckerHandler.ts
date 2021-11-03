@@ -39,10 +39,6 @@ export const handler: Handler<ExportLambdaBody> = async () => {
         endDate: string;
     }[] = await getPointToPointProducts();
 
-    // change loop to OG for loop
-    // for a single, make sure comparison is only done between fareZones + unassigned against whichever direction from service
-    // for a non-single, make sure multiple comparisons are done between their stuff
-    // combine DB calls into one which gets
     for (let i = 0; i < pointToPointProducts.length; i++) {
         const pointToPointProduct = pointToPointProducts[i];
         const productId: number = pointToPointProduct.id;
@@ -58,9 +54,6 @@ export const handler: Handler<ExportLambdaBody> = async () => {
             | WithIds<SingleTicket>
             | WithIds<ReturnTicket>
             | WithIds<PointToPointPeriodTicket>;
-
-        // const { nocCode, lineId, unassignedStops } = pointToPointTicket;
-        // const atcoCodesOfKnownStops: string[] = [];
 
         // check to see if single ticket
         if ('fareZones' in pointToPointTicket) {
