@@ -84,7 +84,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
-    let backHref;
+    let backHref = '/products/otherProducts';
     if (serviceId) {
         if (isArray(serviceId)) {
             throw new Error('Received more than one serviceId');
@@ -97,8 +97,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ],
         });
         backHref = `/products/pointToPointProducts?serviceId=${serviceId}`;
-    } else {
-        backHref = '/products/otherProducts';
     }
 
     if ('journeyDirection' in ticket && ticket.journeyDirection) {
