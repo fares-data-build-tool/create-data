@@ -132,27 +132,16 @@ export const matchProductsToServices = (
         return map;
     }, new Map<string, MyFaresProduct[]>());
 
-    return services.map((service) => {
-        const serviceWithEndDatesSwapped = {
-            ...service,
-            endDate: service.endDate || '',
-        };
-
-        return {
-            ...serviceWithEndDatesSwapped,
-            products:
-                productsByLine
-                    .get(service.lineId)
-                    ?.filter((product) =>
-                        showProductAgainstService(
-                            product.startDate,
-                            product.endDate,
-                            service.startDate,
-                            service.endDate,
-                        ),
-                    ).length ?? 0,
-        };
-    });
+    return services.map((service) => ({
+        ...service,
+        endDate: service.endDate || '',
+        products:
+            productsByLine
+                .get(service.lineId)
+                ?.filter((product) =>
+                    showProductAgainstService(product.startDate, product.endDate, service.startDate, service.endDate),
+                ).length ?? 0,
+    }));
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServicesProps }> => {
