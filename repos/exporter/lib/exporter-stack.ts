@@ -97,6 +97,8 @@ export class ExporterStack extends cdk.Stack {
             timeout: Duration.minutes(5),
         });
 
+        this.addAlarmsToLambda(stage, atcoCodeCheckerFunction, `atcoCodeCheckerFunction-${stage}`);
+
         const bastionTerminatorFunction = new NodejsFunction(this, `bastion-terminator-${stage}`, {
             functionName: `bastion-terminator-${stage}`,
             entry: './lib/bastionTerminator.ts',
