@@ -45,7 +45,7 @@ describe('OutboundMatching Page', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it.only('should render with warning', () => {
+    it('should render with warning', () => {
         wrapper = shallow(
             <OutboundMatching
                 userFareStages={userFareStages}
