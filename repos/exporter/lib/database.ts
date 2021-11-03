@@ -213,8 +213,8 @@ export const getDirectionAndStopsByLineIdAndNoc = async (lineId: string, noc: st
 
     try {
         return await executeQuery(serviceQuery, [nocCodeParameter, lineId]);
-    } catch (error:any) {
-        throw new Error(`Could not get journey patterns from Aurora DB: ${error.stack}`);
+    } catch (error) {
+        throw new Error(`Could not get journey patterns from Aurora DB.`);
     }
 };
 
