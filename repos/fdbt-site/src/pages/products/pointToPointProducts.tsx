@@ -4,7 +4,7 @@ import {
     MyFaresProduct,
     MyFaresService,
     NextPageContextWithSession,
-} from '../../interfaces/index';
+} from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import {
     getBodsServiceByNocAndId,
@@ -86,7 +86,7 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], servi
                                       {product.validity}
                                   </td>
                                   <td className="govuk-table__cell">{product.startDate}</td>
-                                  <td className="govuk-table__cell">{product.endDate}</td>
+                                  <td className="govuk-table__cell">{product.endDate ?? '-'}</td>
                                   <td className="govuk-table__cell">{getTag(product.startDate, product.endDate)}</td>
                               </tr>
                           ))
@@ -107,8 +107,8 @@ export const filterProductsNotToDisplay = (service: MyFaresService, products: My
     const serviceEndDate = moment.utc(service.endDate, 'DD/MM/YYYY').valueOf();
     return products.filter((product) => {
         const productStartDate = moment.utc(product.startDate, 'DD/MM/YYYY').valueOf();
-        const productEndDate = moment.utc(product.endDate, 'DD/MM/YYYY').valueOf();
-        return productEndDate >= serviceStartDate && productStartDate <= serviceEndDate;
+        const productEndDate = product.endDate && moment.utc(product.endDate, 'DD/MM/YYYY').valueOf();
+        return (!productEndDate || productEndDate >= serviceStartDate) && productStartDate <= serviceEndDate;
     });
 };
 
@@ -145,19 +145,15 @@ export const getServerSideProps = async (
                 timeRestriction = timeRestrictionFromDb.name;
             }
 
-            const startDate = matchingJson.ticketPeriod.startDate
-                ? convertDateFormat(matchingJson.ticketPeriod.startDate)
-                : '-';
-            const endDate = matchingJson.ticketPeriod.endDate
-                ? convertDateFormat(matchingJson.ticketPeriod.endDate)
-                : '-';
+            const startDate = convertDateFormat(matchingJson.ticketPeriod.startDate);
+            const endDate = matchingJson.ticketPeriod.endDate && convertDateFormat(matchingJson.ticketPeriod.endDate);
 
             return {
                 productDescription,
                 startDate,
-                endDate,
                 validity: timeRestriction,
                 id: product.id,
+                ...(endDate && { endDate }),
             };
         }),
     );

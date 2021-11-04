@@ -257,7 +257,7 @@ export interface FullTimeRestriction {
 }
 
 export interface TicketPeriod {
-    startDate?: string;
+    startDate: string;
     endDate?: string;
 }
 
