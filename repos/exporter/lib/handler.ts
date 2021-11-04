@@ -37,7 +37,7 @@ const s3: S3 = new S3(
 const PRODUCTS_BUCKET = process.env.PRODUCTS_BUCKET;
 const MATCHING_DATA_BUCKET = process.env.MATCHING_DATA_BUCKET;
 
-export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
+export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPrefix }) => {
     // populate the values from global settings using the IDs and write to matching data bucket
     console.log(`triggered export lambda... ${paths.toString()} noc: ${noc}`);
 
@@ -121,7 +121,12 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc }) => {
                 fareDayEnd: setFareDayEnd ? fareDayEnd : undefined,
             } as Ticket;
 
-            await s3.putObject({ Key: path, Bucket: MATCHING_DATA_BUCKET, Body: JSON.stringify(fullTicket) }).promise();
+            const sections = path.split('/');
+            const destPath = exportPrefix ? `${noc}/exports/${exportPrefix}/${sections[sections.length - 1]}` : path;
+
+            await s3
+                .putObject({ Key: destPath, Bucket: MATCHING_DATA_BUCKET, Body: JSON.stringify(fullTicket) })
+                .promise();
         }),
     );
 
