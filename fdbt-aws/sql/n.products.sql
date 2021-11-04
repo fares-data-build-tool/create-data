@@ -9,7 +9,7 @@ CREATE TABLE products(
     `fareType` varchar(20) NOT NULL,
     `startDate` datetime NOT NULL,
     `endDate` datetime NOT NULL,
-    `servicesRequiringAttention` varchar(1000),
+    `servicesRequiringAttention` varchar(65535),
     INDEX idx_nocCode (nocCode),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
