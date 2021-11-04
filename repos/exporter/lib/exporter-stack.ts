@@ -30,6 +30,14 @@ export class ExporterStack extends cdk.Stack {
             `fdbt-matching-data-${stage}`,
         );
 
+        const vpc = Vpc.fromLookup(this, 'vpc', { vpcName: `fdbt-vpc-${stage}` });
+        const vpcSubnets = {
+            subnets: [
+                Subnet.fromSubnetId(this, 'vpc-subnet-a', Fn.importValue(`${stage}:PrivateSubnetA`)),
+                Subnet.fromSubnetId(this, 'vpc-subnet-b', Fn.importValue(`${stage}:PrivateSubnetB`)),
+            ],
+        };
+
         const exporterFunction = new NodejsFunction(this, `exporter-${stage}`, {
             functionName: `exporter-${stage}`,
             entry: './lib/handler.ts',
@@ -46,13 +54,8 @@ export class ExporterStack extends cdk.Stack {
                     Fn.importValue(`${stage}:ReferenceDataUploaderLambdaSG`),
                 ),
             ],
-            vpc: Vpc.fromLookup(this, 'vpc', { vpcName: `fdbt-vpc-${stage}` }),
-            vpcSubnets: {
-                subnets: [
-                    Subnet.fromSubnetId(this, 'vpc-subnet-a', Fn.importValue(`${stage}:PrivateSubnetA`)),
-                    Subnet.fromSubnetId(this, 'vpc-subnet-b', Fn.importValue(`${stage}:PrivateSubnetB`)),
-                ],
-            },
+            vpc: vpc,
+            vpcSubnets: vpcSubnets,
             bundling: {
                 sourceMap: true,
                 sourceMapMode: SourceMapMode.DEFAULT,
@@ -83,13 +86,8 @@ export class ExporterStack extends cdk.Stack {
                     Fn.importValue(`${stage}:ReferenceDataUploaderLambdaSG`),
                 ),
             ],
-            vpc: Vpc.fromLookup(this, 'vpc', { vpcName: `fdbt-vpc-${stage}` }),
-            vpcSubnets: {
-                subnets: [
-                    Subnet.fromSubnetId(this, 'vpc-subnet-a', Fn.importValue(`${stage}:PrivateSubnetA`)),
-                    Subnet.fromSubnetId(this, 'vpc-subnet-b', Fn.importValue(`${stage}:PrivateSubnetB`)),
-                ],
-            },
+            vpc: vpc,
+            vpcSubnets: vpcSubnets,
             bundling: {
                 sourceMap: true,
                 sourceMapMode: SourceMapMode.DEFAULT,

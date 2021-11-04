@@ -6,11 +6,13 @@ process.env.STAGE = 'dev';
 
 test('Empty Stack', () => {
     const app = new cdk.App();
-    // WHEN
+
+    // when
     const stack = new Exporter.ExporterStack(app, 'MyTestStack', {
         env: { account: '123456789012', region: 'eu-west-2' },
     });
-    // THEN
+
+    // then
     expectCDK(stack).to(
         matchTemplate(
             {
