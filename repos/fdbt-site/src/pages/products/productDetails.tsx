@@ -197,7 +197,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ? `${passengerTypeName} - ${sentenceCaseString(ticket.type)} (school)`
             : `${passengerTypeName} - ${sentenceCaseString(ticket.type)}`;
 
-    console.log(ticket);
     return {
         props: {
             productName,
