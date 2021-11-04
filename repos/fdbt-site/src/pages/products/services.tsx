@@ -83,12 +83,12 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
     );
 };
 
-export const getTag = (startDate: string, endDate: string): JSX.Element => {
+export const getTag = (startDate: string, endDate: string | undefined): JSX.Element => {
     const today = moment.utc().startOf('day').valueOf();
     const startDateAsUnixTime = moment.utc(startDate, 'DD/MM/YYYY').valueOf();
-    const endDateAsUnixTime = moment.utc(endDate, 'DD/MM/YYYY').valueOf();
+    const endDateAsUnixTime = endDate && moment.utc(endDate, 'DD/MM/YYYY').valueOf();
 
-    if (startDateAsUnixTime <= today && endDateAsUnixTime >= today) {
+    if (startDateAsUnixTime <= today && (!endDateAsUnixTime || endDateAsUnixTime >= today)) {
         return <strong className="govuk-tag govuk-tag--turquoise">Active</strong>;
     } else if (startDateAsUnixTime > today) {
         return <strong className="govuk-tag govuk-tag--blue">Pending</strong>;
@@ -101,18 +101,21 @@ export const showProductAgainstService = (
     // 2021-09-15T23:00:00.000Z format
     productStartDate: string,
     // 2021-09-15T23:00:00.000Z format
-    productEndDate: string,
+    productEndDate: string | undefined,
     // 05/04/2020 format
     serviceStartDate: string,
     // 05/04/2020 format
     serviceEndDate: string,
 ): boolean => {
     const momentProductStartDate = moment(productStartDate).valueOf();
-    const momentProductEndDate = moment(productEndDate).valueOf();
+    const momentProductEndDate = productEndDate && moment(productEndDate).valueOf();
     const momentServiceStartDate = moment(serviceStartDate, 'DD/MM/YYYY').valueOf();
     const momentServiceEndDate = moment(serviceEndDate, 'DD/MM/YYYY').valueOf();
 
-    return momentProductEndDate >= momentServiceStartDate && momentServiceEndDate >= momentProductStartDate;
+    return (
+        (!momentProductEndDate || momentProductEndDate >= momentServiceStartDate) &&
+        momentServiceEndDate >= momentProductStartDate
+    );
 };
 
 export const matchProductsToServices = (

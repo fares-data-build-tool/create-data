@@ -18,7 +18,7 @@ const description = 'Product Details page of the Create Fares Data Service';
 
 interface ProductDetailsProps {
     productName: string;
-    endDate: string;
+    endDate?: string;
     startDate: string;
     productDetailsElements: ProductDetailsElement[];
 }
@@ -174,14 +174,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         ),
     });
 
-    if (!ticket.ticketPeriod.startDate || !ticket.ticketPeriod.endDate) {
-        throw new Error('startDate and endDate are expected but not found');
-    }
-
     const startDate = convertDateFormat(ticket.ticketPeriod.startDate);
-    const endDate = convertDateFormat(ticket.ticketPeriod.endDate);
+    const endDate = ticket.ticketPeriod.endDate ? convertDateFormat(ticket.ticketPeriod.endDate) : undefined;
     productDetailsElements.push({ name: 'Start date', content: [startDate] });
-    productDetailsElements.push({ name: 'End date', content: [endDate] });
+    productDetailsElements.push({ name: 'End date', content: [endDate ?? '-'] });
 
     const productName =
         'productName' in product
@@ -194,7 +190,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             productName,
             startDate,
-            endDate,
+            ...(endDate && { endDate }),
             productDetailsElements,
         },
     };

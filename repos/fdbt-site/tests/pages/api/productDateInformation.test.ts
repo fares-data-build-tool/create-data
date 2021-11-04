@@ -185,40 +185,10 @@ describe('productDataInformation', () => {
 
         await productDateInformation(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, undefined);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/salesConfirmation',
-        });
-    });
-
-    it('it should only set the end date when end date only entered and redirect to confirmation page', async () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
-            body: {
-                startDateDay: '',
-                startDateMonth: '',
-                startDateYear: '',
-                endDateDay: '04',
-                endDateMonth: '11',
-                endDateYear: '4020',
-                productDates: 'Yes',
-            },
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        await productDateInformation(req, res);
-
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
-            endDate: '4020-11-04T23:59:59.000Z',
-            dateInput: {
-                startDateDay: '',
-                startDateMonth: '',
-                startDateYear: '',
-                endDateDay: '04',
-                endDateMonth: '11',
-                endDateYear: '4020',
-            },
+            dateInput: expect.any(Object),
+            endDate: undefined,
+            startDate: '2021-11-04T00:00:00.000Z',
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {
