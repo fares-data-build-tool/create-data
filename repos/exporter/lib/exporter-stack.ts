@@ -94,7 +94,7 @@ export class ExporterStack extends cdk.Stack {
                 sourceMap: true,
                 sourceMapMode: SourceMapMode.DEFAULT,
             },
-            timeout: Duration.minutes(5),
+            timeout: Duration.minutes(15),
         });
 
         this.addAlarmsToLambda(stage, atcoCodeCheckerFunction, `atcoCodeCheckerFunction-${stage}`);
