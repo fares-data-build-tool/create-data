@@ -216,7 +216,7 @@ describe('myfares pages', () => {
                         { name: 'Zone', content: ['Green Lane Shops'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
-                        { name: 'Multi Operator Group', content: ['TEST, MCTR, WBTR, BLAC'] },
+                        { name: 'Multi Operator Group', content: ['MCTR, WBTR, BLAC'] },
                         { name: 'Period duration', content: ['5 weeks'] },
                         { name: 'Product expiry', content: ['Fare day end'] },
                         { name: 'Purchase methods', content: ['SOP 2', 'SOP 1'] },
