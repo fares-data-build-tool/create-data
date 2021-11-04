@@ -204,6 +204,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: '/products/otherProducts',
                     productName: 'product one',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
@@ -227,6 +228,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: '/products/otherProducts',
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
