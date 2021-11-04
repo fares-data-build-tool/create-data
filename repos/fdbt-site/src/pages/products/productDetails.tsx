@@ -121,10 +121,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     if ('additionalNocs' in ticket) {
-        productDetailsElements.push({
-            name: `Multi Operator Group`,
-            content: [`${noc}, ${ticket.additionalNocs.join(', ')}`],
-        });
+        if ('schemeOperatorName' in ticket) {
+            productDetailsElements.push({
+                name: `Multi Operator Group`,
+                content: [ticket.additionalNocs.join(', ')],
+            });
+        } else {
+            productDetailsElements.push({
+                name: `Multi Operator Group`,
+                content: [`${noc}, ${ticket.additionalNocs.join(', ')}`],
+            });
+        }
     }
 
     if ('additionalOperators' in ticket) {
