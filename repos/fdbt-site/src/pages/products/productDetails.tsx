@@ -12,11 +12,13 @@ import TwoThirdsLayout from '../../layout/Layout';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
 import isArray from 'lodash/isArray';
+import BackButton from '../../components/BackButton';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
 
 interface ProductDetailsProps {
+    backHref: string;
     productName: string;
     endDate?: string;
     startDate: string;
@@ -24,12 +26,14 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails = ({
+    backHref,
     productName,
     startDate,
     endDate,
     productDetailsElements,
 }: ProductDetailsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
+        <BackButton href={backHref} />
         <h1 className="govuk-heading-l">{productName}</h1>
         <div id="contact-hint" className="govuk-hint">
             Product status: {getTag(startDate, endDate)}
@@ -80,6 +84,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
+    let backHref = '/products/otherProducts';
     if (serviceId) {
         if (isArray(serviceId)) {
             throw new Error('Received more than one serviceId');
@@ -91,6 +96,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 `${pointToPointService.lineName} - ${pointToPointService.origin} to ${pointToPointService.destination}`,
             ],
         });
+        backHref = `/products/pointToPointProducts?serviceId=${serviceId}`;
     }
 
     if ('journeyDirection' in ticket && ticket.journeyDirection) {
@@ -188,6 +194,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     return {
         props: {
+            backHref,
             productName,
             startDate,
             ...(endDate && { endDate }),

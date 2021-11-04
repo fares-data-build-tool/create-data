@@ -17,6 +17,7 @@ import { convertDateFormat, getAndValidateNoc } from '../../utils';
 import moment from 'moment';
 import { isArray } from 'lodash';
 import { getTag } from './services';
+import BackButton from '../../components/BackButton';
 
 const title = 'Point To Point Products - Create Fares Data Service';
 const description = 'View and access your point to point products in one place.';
@@ -30,6 +31,7 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
     return (
         <>
             <BaseLayout title={title} description={description}>
+                <BackButton href="/products/services" />
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">
