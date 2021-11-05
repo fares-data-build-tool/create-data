@@ -54,7 +54,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
 
             if (!isEndDateEmpty) {
-                endDate = moment.utc([endDateYear, endDateMonth - 1, endDateDay]).endOf('day');
+                endDate = moment.utc([endDateYear, endDateMonth - 1, endDateDay, 23, 59, 59]);
             }
 
             if (startDate && !startDate.isValid() && !isStartDateEmpty) {
@@ -107,19 +107,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     return;
                 }
             }
-
-            const dateInfo = {
-                startDate: startDate?.toISOString(),
-                endDate: endDate?.toISOString(),
-                dateInput,
-            };
-
-            updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, dateInfo);
-
-            redirectTo(res, '/salesConfirmation');
-            return;
         }
-        updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, undefined);
+
+        updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
+            startDate: startDate?.toISOString() ?? moment.utc().startOf('day').toISOString(),
+            endDate: endDate?.toISOString(),
+            dateInput,
+        });
+
         redirectTo(res, '/salesConfirmation');
     } catch (error) {
         const message = 'There was a problem in the productDateInformation API.';

@@ -1,15 +1,13 @@
 import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
-import moment from 'moment';
 import { NextApiResponse } from 'next';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
-    PRODUCT_DATE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../../constants/attributes';
-import { NextApiRequestWithSession, TicketPeriodWithInput } from '../../interfaces';
+import { NextApiRequestWithSession } from '../../interfaces';
 import { isTicketRepresentation } from '../../interfaces/typeGuards';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute } from '../../utils/sessions';
 
 import {
     getAndValidateNoc,
@@ -38,24 +36,6 @@ import { triggerExport } from '../../utils/apiUtils/export';
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const fareType = getFareTypeFromFromAttributes(req);
-
-        const productDating = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE) as TicketPeriodWithInput | undefined;
-
-        updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
-            startDate: productDating && productDating.startDate ? productDating.startDate : moment().toISOString(),
-            endDate:
-                productDating && productDating.endDate ? productDating.endDate : moment().add(100, 'y').toISOString(),
-            dateInput: productDating
-                ? productDating.dateInput
-                : {
-                      startDateDay: '',
-                      startDateMonth: '',
-                      startDateYear: '',
-                      endDateDay: '',
-                      endDateMonth: '',
-                      endDateYear: '',
-                  },
-        });
 
         const uuid = getUuidFromSession(req);
 

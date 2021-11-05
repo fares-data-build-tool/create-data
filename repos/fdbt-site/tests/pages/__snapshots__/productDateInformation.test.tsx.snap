@@ -37,7 +37,7 @@ exports[`pages productDateInformation it should render errors correctly when rad
           className="govuk-hint"
           id="product-dating-hint"
         >
-          If not supplied, your start date will default to today and your end date will default to 100 years from today
+          If not supplied, your start date will default to today and your product will not have an end date
         </span>
         <RadioConditionalInput
           fieldset={
@@ -129,7 +129,7 @@ exports[`pages productDateInformation it should render the product date informat
           className="govuk-hint"
           id="product-dating-hint"
         >
-          If not supplied, your start date will default to today and your end date will default to 100 years from today
+          If not supplied, your start date will default to today and your product will not have an end date
         </span>
         <RadioConditionalInput
           fieldset={

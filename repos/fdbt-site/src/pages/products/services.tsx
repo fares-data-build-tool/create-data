@@ -104,19 +104,19 @@ export const showProductAgainstService = (
     // 2021-09-15T23:00:00.000Z format
     productStartDate: string,
     // 2021-09-15T23:00:00.000Z format
-    productEndDate: string,
+    productEndDate: string | undefined,
     // 05/04/2020 format
     serviceStartDate: string,
     // 05/04/2020 format
     serviceEndDate: string | undefined,
 ): boolean => {
     const momentProductStartDate = moment(productStartDate).valueOf();
-    const momentProductEndDate = moment(productEndDate).valueOf();
+    const momentProductEndDate = productEndDate && moment(productEndDate).valueOf();
     const momentServiceStartDate = moment(serviceStartDate, 'DD/MM/YYYY').valueOf();
     const momentServiceEndDate = serviceEndDate ? moment(serviceEndDate, 'DD/MM/YYYY').valueOf() : undefined;
 
     return (
-        momentProductEndDate >= momentServiceStartDate &&
+        (!momentProductEndDate || momentProductEndDate >= momentServiceStartDate) &&
         (!momentServiceEndDate || momentServiceEndDate >= momentProductStartDate)
     );
 };

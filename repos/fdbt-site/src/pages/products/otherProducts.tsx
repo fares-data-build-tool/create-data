@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { MyFaresOtherFaresProduct, MyFaresOtherProduct, NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled } from '../../constants/featureFlag';
-import { getAndValidateNoc, sentenceCaseString } from '../../utils';
+import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
 import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import { getTag } from '../products/services';
@@ -121,7 +121,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                                 (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
                                 (await getGroupPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
                                 '';
-                            const { startDate, endDate, id } = product;
+                            const { id } = product;
+
+                            const startDate = matchingJson.ticketPeriod.startDate
+                                ? convertDateFormat(matchingJson.ticketPeriod.startDate)
+                                : '-';
+                            const endDate = matchingJson.ticketPeriod.endDate
+                                ? convertDateFormat(matchingJson.ticketPeriod.endDate)
+                                : '-';
                             return {
                                 productDescription,
                                 type,
