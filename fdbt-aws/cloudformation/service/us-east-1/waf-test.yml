@@ -1,18 +1,56 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: CloudFormation template for WAF resources in PreProd and Prod
+Description: CloudFormation template for WAF resources in Test
 
 Parameters:
   Stage:
     Type: String
     AllowedValues:
-      - preprod
-      - prod
+      - test
 
   ProductName:
     Type: String
     Default: fdbt
 
+  IwIpSetList:
+    Type: CommaDelimitedList
+    Default: ""
+
+  CiIpSetList:
+    Type: CommaDelimitedList
+    Default: ""
+
+  PersonalUserIpSetList:
+    Type: CommaDelimitedList
+    Default: ""
+
 Resources:
+  IwIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Description: IP Set for Infinity Works office
+      Name: IwIpSet
+      Scope: CLOUDFRONT
+      IPAddressVersion: IPV4
+      Addresses: !Ref IwIpSetList
+
+  CiIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Description: IP Set for CI
+      Name: CiIpSet
+      Scope: CLOUDFRONT
+      IPAddressVersion: IPV4
+      Addresses: !Ref CiIpSetList
+
+  PersonalUserIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Description: Personal IPs for IW and DFT users of the tool
+      Name: PersonalUserIpSet
+      Scope: CLOUDFRONT
+      IPAddressVersion: IPV4
+      Addresses: !Ref PersonalUserIpSetList
+
   SiteAccessAcl:
     Type: AWS::WAFv2::WebACL
     Properties:
@@ -20,7 +58,7 @@ Resources:
       Scope: CLOUDFRONT
       Description: Restricts access to site
       DefaultAction:
-        Allow: {}
+        Block: {}
       VisibilityConfig:
         SampledRequestsEnabled: true
         CloudWatchMetricsEnabled: true
@@ -34,7 +72,7 @@ Resources:
                 - SizeConstraintStatement:
                     FieldToMatch:
                       Body: {}
-                    ComparisonOperator: GT
+                    ComparisonOperator: LT
                     Size: 8192
                     TextTransformations:
                       - Priority: 0
@@ -50,7 +88,7 @@ Resources:
                             Type: NONE
                         PositionalConstraint: STARTS_WITH
           Action:
-            Block: {}
+            Allow: {}
           VisibilityConfig:
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true
@@ -74,14 +112,47 @@ Resources:
               VendorName: AWS
               Name: AWSManagedRulesCommonRuleSet
               ExcludedRules:
-                - Name: SizeRestrictions_BODY # handled by BodySizeRestriction
-                - Name: NoUserAgent_HEADER # allow Cypress tests to run
+                - SizeRestrictions_BODY # handled by BodySizeRestriction
+                - NoUserAgent_HEADER # allow Cypress tests to run
           OverrideAction:
             None: {}
           VisibilityConfig:
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true
             MetricName: AWS-AWSManagedRulesCommonRuleSet
+        - Name: AllowIw
+          Action:
+            Allow: {}
+          Priority: 10
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowIwRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt IwIpSet.Arn
+        - Name: AllowCi
+          Action:
+            Allow: {}
+          Priority: 11
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowCiRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt CiIpSet.Arn
+        - Name: AllowPersonalUserIP
+          Action:
+            Allow: {}
+          Priority: 12
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AllowPersonalUserIPRuleMetric
+          Statement:
+            IPSetReferenceStatement:
+              Arn: !GetAtt PersonalUserIpSet.Arn
 
 Outputs:
   WafAclArn:
