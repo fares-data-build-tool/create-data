@@ -1,6 +1,11 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { SERVICE_ATTRIBUTE, DIRECTION_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
+import {
+    SERVICE_ATTRIBUTE,
+    DIRECTION_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+} from '../constants/attributes';
 import { getServiceByIdAndDataSource } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
@@ -9,8 +14,8 @@ import CsrfForm from '../components/CsrfForm';
 import { isService } from '../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { redirectTo } from '../utils/apiUtils';
 import { removeExcessWhiteSpace } from '../utils/apiUtils/validator';
+import { GetServerSidePropsResult } from 'next';
 
 const title = 'Single Direction - Create Fares Data Service';
 const description = 'Single Direction selection page of the Create Fares Data Service';
@@ -68,19 +73,19 @@ const Direction = ({
 
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
-): Promise<{ props: SingleDirectionProps } | undefined> => {
+): Promise<GetServerSidePropsResult<SingleDirectionProps>> => {
     const csrfToken = getCsrfToken(ctx);
 
     const directionAttribute = getSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
-
+    const dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
 
-    if (!isService(serviceAttribute) || !nocCode || !ctx.res) {
+    if (!isService(serviceAttribute) || !nocCode || !ctx.res || !dataSourceAttribute) {
         throw new Error('Necessary attributes not found to show direction page');
     }
 
-    const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, 'bods');
+    const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, dataSourceAttribute.source);
     const directions = Array.from(
         service.journeyPatterns.reduce((set, pattern) => {
             set.add(pattern.direction);
@@ -93,8 +98,7 @@ export const getServerSideProps = async (
 
     if (directions.length === 1) {
         updateSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE, { direction: directions[0] });
-        redirectTo(ctx.res, '/inputMethod');
-        return;
+        return { redirect: { destination: '/inputMethod', permanent: false } };
     }
 
     if (directions.length !== 2 || !direction || !inboundDirection) {
@@ -107,8 +111,7 @@ export const getServerSideProps = async (
     const isReturn = 'fareType' in fareTypeAttribute && ['period', 'return'].includes(fareTypeAttribute.fareType);
     if (isReturn) {
         updateSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE, { direction, inboundDirection });
-        redirectTo(ctx.res, '/inputMethod');
-        return;
+        return { redirect: { destination: '/inputMethod', permanent: false } };
     }
 
     return {
@@ -116,9 +119,9 @@ export const getServerSideProps = async (
             errors: (directionAttribute && 'errors' in directionAttribute && directionAttribute.errors) || [],
             csrfToken,
             direction,
-            directionDesc: removeExcessWhiteSpace(service.serviceDescription),
+            directionDesc: removeExcessWhiteSpace(service.outboundDirectionDescription),
             inboundDirection,
-            inboundDirectionDesc: removeExcessWhiteSpace(service.serviceDescription).split(' - ').reverse().join(' - '),
+            inboundDirectionDesc: removeExcessWhiteSpace(service.inboundDirectionDescription),
         },
     };
 };
