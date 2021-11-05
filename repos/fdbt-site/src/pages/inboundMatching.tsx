@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
 import { INBOUND_MATCHING_ATTRIBUTE } from '../constants/attributes';
 import MatchingBase from '../components/MatchingBase';
-import { NextPageContextWithSession } from '../interfaces';
+import { BasicService, NextPageContextWithSession, Stop, UserFareStages } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
-import { MatchingProps } from './matching';
 import { getMatchingProps } from '../utils/apiUtils/matching';
 
 const heading = 'Inbound - Match stops to fare stages';
@@ -13,6 +12,17 @@ const hintText = 'Select a fare stage for each stop on the inbound journey.';
 const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
 const apiEndpoint = '/api/inboundMatching';
 
+interface InboundMatchingProps {
+    userFareStages: UserFareStages;
+    stops: Stop[];
+    service: BasicService;
+    error: string;
+    warning?: boolean;
+    selectedFareStages: string[][];
+    unusedStage: boolean;
+    csrfToken: string;
+}
+
 const InboundMatching = ({
     userFareStages,
     stops,
@@ -21,7 +31,8 @@ const InboundMatching = ({
     warning,
     csrfToken,
     selectedFareStages,
-}: MatchingProps): ReactElement => (
+    unusedStage,
+}: InboundMatchingProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
         stops={stops}
@@ -35,14 +46,15 @@ const InboundMatching = ({
         hintText={hintText}
         travelineHintText={travelineHintText}
         apiEndpoint={apiEndpoint}
+        unusedStage={unusedStage}
         csrfToken={csrfToken}
     />
 );
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: InboundMatchingProps }> => {
     const matchingAttribute = getSessionAttribute(ctx.req, INBOUND_MATCHING_ATTRIBUTE);
-
-    return await getMatchingProps(ctx, matchingAttribute);
+    const unusedStage = !!ctx.query.unusedStage;
+    return { props: { ...(await getMatchingProps(ctx, matchingAttribute)).props, unusedStage } };
 };
 
 export default InboundMatching;

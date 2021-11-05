@@ -1,4 +1,8 @@
-import { UNASSIGNED_INBOUND_STOPS_ATTRIBUTE } from './../../constants/attributes';
+import {
+    UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
+    MATCHING_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+} from './../../constants/attributes';
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
@@ -8,7 +12,7 @@ import {
     INBOUND_MATCHING_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { getRequiredSessionAttribute, getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { MatchingWithErrors, InboundMatchingInfo } from '../../interfaces/matchingInterface';
 import { isFareType } from '../../interfaces/typeGuards';
 
@@ -53,6 +57,28 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/inboundMatching');
 
             return;
+        } else {
+            const outboundMatchingUserFareStages = getRequiredSessionAttribute(req, MATCHING_ATTRIBUTE);
+            const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
+            if (
+                !operatorAttribute ||
+                !('uuid' in operatorAttribute) ||
+                !operatorAttribute.uuid ||
+                !('userFareStages' in outboundMatchingUserFareStages)
+            ) {
+                throw new Error('Necessary attributes were not found in session');
+            }
+            const allUsedFareStages = outboundMatchingUserFareStages.userFareStages.fareStages.concat(
+                inboundUserFareStages.fareStages,
+            );
+            if (isFareStageUnassigned({ fareStages: allUsedFareStages }, matchingFareZones)) {
+                const selectedStagesList: string[][] = getSelectedStages(req);
+                const matchingAttributeError = {
+                    selectedFareStages: selectedStagesList,
+                };
+                updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeError);
+                redirectTo(res, '/inboundMatching?unusedStage=true');
+            }
         }
 
         updateSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE, unassignedStops);
