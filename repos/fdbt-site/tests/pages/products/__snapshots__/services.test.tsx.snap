@@ -46,25 +46,29 @@ exports[`myfares pages services should render correctly when no services present
                 Service description
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
                 Active products
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
-                Start date
+                Start
+                <br />
+                 date
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
-                End date
+                End 
+                <br />
+                date
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
                 Service status
@@ -127,25 +131,29 @@ exports[`myfares pages services should render correctly when services present 1`
                 Service description
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
                 Active products
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
-                Start date
+                Start
+                <br />
+                 date
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
-                End date
+                End 
+                <br />
+                date
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
                 Service status
@@ -173,22 +181,22 @@ exports[`myfares pages services should render correctly when services present 1`
                 </a>
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-text-align-centre"
               >
                 0
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-text-align-centre"
               >
                 1/1/2021
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-text-align-centre"
               >
                 16/9/2021
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-text-align-centre"
               >
                 <strong
                   className="govuk-tag govuk-tag--red"
@@ -251,25 +259,29 @@ exports[`myfares pages services should render correctly when services present an
                 Service description
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
                 Active products
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
-                Start date
+                Start
+                <br />
+                 date
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
-                End date
+                End 
+                <br />
+                date
               </th>
               <th
-                className="govuk-table__header"
+                className="govuk-table__header dft-text-align-centre"
                 scope="col"
               >
                 Service status
@@ -297,22 +309,22 @@ exports[`myfares pages services should render correctly when services present an
                 </a>
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-text-align-centre"
               >
                 2
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-text-align-centre"
               >
                 1/1/2021
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-text-align-centre"
               >
                 16/9/2021
               </td>
               <td
-                className="govuk-table__cell"
+                className="govuk-table__cell dft-text-align-centre"
               >
                 <strong
                   className="govuk-tag govuk-tag--red"
