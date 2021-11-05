@@ -24,22 +24,8 @@ describe('pages', () => {
                             ticketFormats: ['paper'],
                         },
                     ]}
-                    ticketDating={{
-                        productDates: {
-                            startDate: '2017-03-13T18:00:00+00:00',
-                            endDate: '2057-03-13T18:00:00+00:00',
-                            dateInput: {
-                                startDateDay: '13',
-                                startDateMonth: '03',
-                                startDateYear: '2017',
-                                endDateDay: '13',
-                                endDateMonth: '03',
-                                endDateYear: '2057',
-                            },
-                        },
-                        endDefault: true,
-                        startDefault: true,
-                    }}
+                    startDate="2017-03-13T18:00:00+00:00"
+                    endDate="2057-03-13T18:00:00+00:00"
                     csrfToken=""
                 />,
             );
@@ -72,68 +58,8 @@ describe('pages', () => {
             });
             const expectedProps = {
                 ...baseExpectedProps,
-                ticketDating: {
-                    productDates: { startDate: mockStartDate, endDate: mockEndDate, dateInput: mockDateInput },
-                    startDefault: false,
-                    endDefault: false,
-                },
-            };
-            const actualProps = getServerSideProps(ctx);
-            expect(actualProps.props).toEqual(expectedProps);
-        });
-
-        it('should set the start date and end date as defaults when the user has entered neither', () => {
-            const ctx = getMockContext();
-            const expectedProps = {
-                ...baseExpectedProps,
-                ticketDating: {
-                    productDates: {
-                        startDate: expect.any(String),
-                        endDate: expect.any(String),
-                        dateInput: {
-                            startDateDay: '',
-                            startDateMonth: '',
-                            startDateYear: '',
-                            endDateDay: '',
-                            endDateMonth: '',
-                            endDateYear: '',
-                        },
-                    },
-                    startDefault: true,
-                    endDefault: true,
-                },
-            };
-            const actualProps = getServerSideProps(ctx);
-            expect(actualProps.props).toEqual(expectedProps);
-        });
-
-        it('should extract the start date and default the end date when the user has only entered the start date', () => {
-            const ctx = getMockContext({
-                session: { [PRODUCT_DATE_ATTRIBUTE]: { startDate: mockStartDate } },
-            });
-            const expectedProps = {
-                ...baseExpectedProps,
-                ticketDating: {
-                    productDates: { startDate: mockStartDate, endDate: expect.any(String) },
-                    startDefault: false,
-                    endDefault: true,
-                },
-            };
-            const actualProps = getServerSideProps(ctx);
-            expect(actualProps.props).toEqual(expectedProps);
-        });
-
-        it('should extract the end date and default the start date when the user has only entered the end date', () => {
-            const ctx = getMockContext({
-                session: { [PRODUCT_DATE_ATTRIBUTE]: { endDate: mockEndDate } },
-            });
-            const expectedProps = {
-                ...baseExpectedProps,
-                ticketDating: {
-                    productDates: { startDate: expect.any(String), endDate: mockEndDate },
-                    startDefault: true,
-                    endDefault: false,
-                },
+                startDate: mockStartDate,
+                endDate: mockEndDate,
             };
             const actualProps = getServerSideProps(ctx);
             expect(actualProps.props).toEqual(expectedProps);
@@ -161,22 +87,8 @@ describe('pages', () => {
                         ticketFormats: ['phone'],
                     },
                 ],
-                {
-                    productDates: {
-                        startDate: moment().toISOString(),
-                        endDate: moment().add(100, 'years').toISOString(),
-                        dateInput: {
-                            startDateDay: '',
-                            startDateMonth: '',
-                            startDateYear: '',
-                            endDateDay: '',
-                            endDateMonth: '',
-                            endDateYear: '',
-                        },
-                    },
-                    endDefault: true,
-                    startDefault: true,
-                },
+                moment().toISOString(),
+                moment().add(100, 'years').toISOString(),
             );
             expect(result).toStrictEqual([
                 {
@@ -192,12 +104,12 @@ describe('pages', () => {
                 {
                     content: moment().format('DD-MM-YYYY'),
                     href: 'productDateInformation',
-                    name: 'Ticket start date (default)',
+                    name: 'Ticket start date',
                 },
                 {
                     content: moment().add(100, 'years').format('DD-MM-YYYY'),
                     href: 'productDateInformation',
-                    name: 'Ticket end date (default)',
+                    name: 'Ticket end date',
                 },
             ]);
         });
@@ -243,22 +155,8 @@ describe('pages', () => {
                         ],
                     },
                 ],
-                {
-                    productDates: {
-                        startDate: now.toISOString(),
-                        endDate: now.add(100, 'years').toISOString(),
-                        dateInput: {
-                            startDateDay: '',
-                            startDateMonth: '',
-                            startDateYear: '',
-                            endDateDay: '',
-                            endDateMonth: '',
-                            endDateYear: '',
-                        },
-                    },
-                    endDefault: true,
-                    startDefault: true,
-                },
+                now.toISOString(),
+                now.add(100, 'years').toISOString(),
             );
             expect(result).toStrictEqual([
                 {
@@ -306,12 +204,12 @@ describe('pages', () => {
                 {
                     content: '20-06-2021',
                     href: 'productDateInformation',
-                    name: 'Ticket start date (default)',
+                    name: 'Ticket start date',
                 },
                 {
                     content: '20-06-2121',
                     href: 'productDateInformation',
-                    name: 'Ticket end date (default)',
+                    name: 'Ticket end date',
                 },
             ]);
         });

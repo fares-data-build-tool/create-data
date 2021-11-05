@@ -17,7 +17,7 @@ import { getCsrfToken, getErrorsByIds } from '../utils';
 const title = 'Product Date Information - Create Fares Data Service';
 const description = 'Product Date Information page of the Create Fares Data Service';
 const productDatingHintText =
-    'If not supplied, your start date will default to today and your end date will default to 100 years from today';
+    'If not supplied, your start date will default to today and your product will not have an end date';
 
 interface ProductDateInformationProps {
     errors: ErrorInfo[];

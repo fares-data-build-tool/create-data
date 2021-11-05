@@ -172,13 +172,9 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
 
         return (
             queryResults.map((item) => ({
-                id: item.id,
-                origin: item.origin,
-                destination: item.destination,
-                lineName: item.lineName,
+                ...item,
                 startDate: convertDateFormat(item.startDate),
                 endDate: convertDateFormat(item.endDate),
-                lineId: item.lineId,
             })) || []
         );
     } catch (error) {
@@ -1407,7 +1403,7 @@ export const insertProducts = async (
     fareType: string,
     lineId: string | undefined,
     startDate: string,
-    endDate: string,
+    endDate?: string,
 ): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1427,7 +1423,7 @@ export const insertProducts = async (
             fareType,
             lineId || '',
             startDate,
-            endDate,
+            endDate || '',
         ]);
     } catch (error) {
         throw new Error(`Could not insert products into the products table. ${error.stack}`);
@@ -1561,7 +1557,7 @@ export const getPointToPointProductsByLineId = async (nocCode: string, lineId: s
         return queryResults.map((result) => ({
             ...result,
             startDate: convertDateFormat(result.startDate),
-            endDate: convertDateFormat(result.endDate),
+            endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
         }));
     } catch (error) {
         throw new Error(
@@ -1590,7 +1586,7 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
         return queryResults.map((result) => ({
             ...result,
             startDate: convertDateFormat(result.startDate),
-            endDate: convertDateFormat(result.endDate),
+            endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
         }));
     } catch (error) {
         throw new Error(`Could not retrieve other products by nocCode from AuroraDB: ${error.stack}`);

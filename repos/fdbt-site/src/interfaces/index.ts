@@ -358,7 +358,7 @@ export interface SalesOfferPackageWithErrors extends SalesOfferPackage {
 }
 
 export interface TicketPeriod {
-    startDate?: string;
+    startDate: string;
     endDate?: string;
 }
 
@@ -522,7 +522,7 @@ export interface MyFaresProduct {
     lineId: string;
     matchingJsonLink: string;
     startDate: string;
-    endDate: string;
+    endDate?: string;
 }
 
 export type MyFaresOtherProduct = Omit<MyFaresProduct, 'lineId'>;
@@ -536,7 +536,7 @@ export interface MyFaresPointToPointProduct {
     productDescription: string;
     validity: string;
     startDate: string;
-    endDate: string;
+    endDate?: string;
 }
 
 export interface MyFaresOtherFaresProduct {
@@ -547,7 +547,7 @@ export interface MyFaresOtherFaresProduct {
     quantity: string;
     passengerType: string;
     startDate: string;
-    endDate: string;
+    endDate?: string;
     carnet: boolean;
 }
 

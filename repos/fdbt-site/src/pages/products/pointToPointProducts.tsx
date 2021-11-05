@@ -4,7 +4,7 @@ import {
     MyFaresProduct,
     MyFaresService,
     NextPageContextWithSession,
-} from '../../interfaces/index';
+} from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import {
     getBodsServiceByNocAndId,
@@ -17,6 +17,7 @@ import { convertDateFormat, getAndValidateNoc } from '../../utils';
 import moment from 'moment';
 import { isArray } from 'lodash';
 import { getTag } from './services';
+import BackButton from '../../components/BackButton';
 
 const title = 'Point To Point Products - Create Fares Data Service';
 const description = 'View and access your point to point products in one place.';
@@ -30,6 +31,7 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
     return (
         <>
             <BaseLayout title={title} description={description}>
+                <BackButton href="/products/services" />
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">
@@ -86,7 +88,7 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], servi
                                       {product.validity}
                                   </td>
                                   <td className="govuk-table__cell">{product.startDate}</td>
-                                  <td className="govuk-table__cell">{product.endDate}</td>
+                                  <td className="govuk-table__cell">{product.endDate ?? '-'}</td>
                                   <td className="govuk-table__cell">{getTag(product.startDate, product.endDate)}</td>
                               </tr>
                           ))
@@ -107,8 +109,8 @@ export const filterProductsNotToDisplay = (service: MyFaresService, products: My
     const serviceEndDate = moment.utc(service.endDate, 'DD/MM/YYYY').valueOf();
     return products.filter((product) => {
         const productStartDate = moment.utc(product.startDate, 'DD/MM/YYYY').valueOf();
-        const productEndDate = moment.utc(product.endDate, 'DD/MM/YYYY').valueOf();
-        return productEndDate >= serviceStartDate && productStartDate <= serviceEndDate;
+        const productEndDate = product.endDate && moment.utc(product.endDate, 'DD/MM/YYYY').valueOf();
+        return (!productEndDate || productEndDate >= serviceStartDate) && productStartDate <= serviceEndDate;
     });
 };
 
@@ -145,19 +147,15 @@ export const getServerSideProps = async (
                 timeRestriction = timeRestrictionFromDb.name;
             }
 
-            const startDate = matchingJson.ticketPeriod.startDate
-                ? convertDateFormat(matchingJson.ticketPeriod.startDate)
-                : '-';
-            const endDate = matchingJson.ticketPeriod.endDate
-                ? convertDateFormat(matchingJson.ticketPeriod.endDate)
-                : '-';
+            const startDate = convertDateFormat(matchingJson.ticketPeriod.startDate);
+            const endDate = matchingJson.ticketPeriod.endDate && convertDateFormat(matchingJson.ticketPeriod.endDate);
 
             return {
                 productDescription,
                 startDate,
-                endDate,
                 validity: timeRestriction,
                 id: product.id,
+                ...(endDate && { endDate }),
             };
         }),
     );
