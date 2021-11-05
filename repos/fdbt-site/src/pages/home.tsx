@@ -32,8 +32,16 @@ const Home = (): ReactElement => (
                 <div className="govuk-!-margin-top-7">
                     <h2 className="govuk-heading-s">
                         <strong className="govuk-tag new-tag">new</strong>
-                        Operator settings
+                        Manage fares
                     </h2>
+                    <p className="govuk-body">View and manage all of your products and services in one place.</p>
+
+                    <a href={'/products/services'} className="govuk-link govuk-!-font-size-19" id="account-link">
+                        {'View and manage fares'}
+                    </a>
+                </div>
+                <div className="govuk-!-margin-top-7">
+                    <h2 className="govuk-heading-s">Operator settings</h2>
                     <p className="govuk-body">
                         Operator settings is where operators can define and save settings specific to a National
                         Operator Code (NOC), such as passenger types, time restrictions and more. We recommend

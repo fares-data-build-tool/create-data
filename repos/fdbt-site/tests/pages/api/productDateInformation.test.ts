@@ -188,7 +188,7 @@ describe('productDataInformation', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             dateInput: expect.any(Object),
             endDate: undefined,
-            startDate: '2021-11-04T00:00:00.000Z',
+            startDate: '2021-11-05T00:00:00.000Z',
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {
