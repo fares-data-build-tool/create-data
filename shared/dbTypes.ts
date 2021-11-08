@@ -28,7 +28,21 @@ export interface MyFaresProduct {
     matchingJsonLink: string;
     startDate: string;
     endDate: string;
+    servicesRequiringAttention: string[];
 }
+
+export interface MyFaresProduct {
+    id: number;
+    lineId: string;
+    matchingJsonLink: string;
+    startDate: string;
+    endDate: string;
+    servicesRequiringAttention: string[];
+}
+
+export type RawMyFaresProduct = Omit<MyFaresProduct, 'servicesRequiringAttention'> & {
+    servicesRequiringAttention: string;
+};
 
 export interface ServiceQueryData {
     operatorShortName: string;

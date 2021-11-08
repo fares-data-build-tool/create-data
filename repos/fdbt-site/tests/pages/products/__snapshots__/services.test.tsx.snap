@@ -191,7 +191,7 @@ exports[`myfares pages services should render correctly when services present 1`
                 className="govuk-table__cell"
               >
                 <strong
-                  className="govuk-tag govuk-tag--red"
+                  className="govuk-tag govuk-tag--red dft-table-tag"
                 >
                   Expired
                 </strong>
@@ -315,7 +315,7 @@ exports[`myfares pages services should render correctly when services present an
                 className="govuk-table__cell"
               >
                 <strong
-                  className="govuk-tag govuk-tag--red"
+                  className="govuk-tag govuk-tag--red dft-table-tag"
                 >
                   Expired
                 </strong>

@@ -14,3 +14,12 @@
 .dft-table-fixed-width-cell {
     width: 240px;
 }
+
+.dft-table-tag {
+    display: block;
+    text-align: center;
+
+    &:last-of-type {
+        margin: 0.5rem 0 0 0;
+    }
+}

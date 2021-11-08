@@ -22,6 +22,7 @@ describe('myfares pages', () => {
                     startDate: '1/1/2021',
                     endDate: '16/9/2021',
                     products: 0,
+                    requiresAttention: false,
                 },
             ];
 
@@ -41,6 +42,7 @@ describe('myfares pages', () => {
                     startDate: '1/1/2021',
                     endDate: '16/9/2021',
                     products: 2,
+                    requiresAttention: false,
                 },
             ];
 

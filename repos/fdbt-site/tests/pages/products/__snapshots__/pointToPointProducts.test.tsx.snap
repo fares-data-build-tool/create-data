@@ -26,7 +26,7 @@ exports[`myfares pages pointToPointProducts should render correctly when no prod
         >
           Service status: 
           <strong
-            className="govuk-tag govuk-tag--red"
+            className="govuk-tag govuk-tag--red dft-table-tag"
           >
             Expired
           </strong>
@@ -120,7 +120,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
         >
           Service status: 
           <strong
-            className="govuk-tag govuk-tag--red"
+            className="govuk-tag govuk-tag--red dft-table-tag"
           >
             Expired
           </strong>
@@ -206,7 +206,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 className="govuk-table__cell"
               >
                 <strong
-                  className="govuk-tag govuk-tag--red"
+                  className="govuk-tag govuk-tag--red dft-table-tag"
                 >
                   Expired
                 </strong>

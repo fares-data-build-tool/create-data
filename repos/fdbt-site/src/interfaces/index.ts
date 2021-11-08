@@ -521,6 +521,7 @@ export type MyFaresOtherProduct = Omit<MyFaresProduct, 'lineId'>;
 
 export interface MyFaresServiceWithProductCount extends MyFaresService {
     products: number;
+    requiresAttention: boolean;
 }
 
 export interface MyFaresPointToPointProduct {

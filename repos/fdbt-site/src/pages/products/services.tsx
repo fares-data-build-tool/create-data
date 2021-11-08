@@ -71,7 +71,10 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                         <td className="govuk-table__cell">{service.products}</td>
                         <td className="govuk-table__cell">{service.startDate}</td>
                         <td className="govuk-table__cell">{service.endDate}</td>
-                        <td className="govuk-table__cell">{getTag(service.startDate, service.endDate)}</td>
+                        <td className="govuk-table__cell">
+                            {getTag(service.startDate, service.endDate)}
+                            {service.requiresAttention === true ? getTheRequiresAttentionTag() : ''}
+                        </td>
                     </tr>
                 ))}
             </tbody>
@@ -85,12 +88,16 @@ export const getTag = (startDate: string, endDate: string): JSX.Element => {
     const endDateAsUnixTime = moment.utc(endDate, 'DD/MM/YYYY').valueOf();
 
     if (startDateAsUnixTime <= today && endDateAsUnixTime >= today) {
-        return <strong className="govuk-tag govuk-tag--turquoise">Active</strong>;
+        return <strong className="govuk-tag govuk-tag--turquoise dft-table-tag">Active</strong>;
     } else if (startDateAsUnixTime > today) {
-        return <strong className="govuk-tag govuk-tag--blue">Pending</strong>;
+        return <strong className="govuk-tag govuk-tag--blue dft-table-tag">Pending</strong>;
     } else {
-        return <strong className="govuk-tag govuk-tag--red">Expired</strong>;
+        return <strong className="govuk-tag govuk-tag--red dft-table-tag">Expired</strong>;
     }
+};
+
+const getTheRequiresAttentionTag = (): JSX.Element => {
+    return <strong className="govuk-tag govuk-tag--yellow dft-table-tag">NEEDS ATTENTION</strong>;
 };
 
 export const showProductAgainstService = (
@@ -122,15 +129,24 @@ export const matchProductsToServices = (
         return map;
     }, new Map<string, MyFaresProduct[]>());
 
-    return services.map((service) => ({
-        ...service,
-        products:
-            productsByLine
-                .get(service.lineId)
-                ?.filter((product) =>
-                    showProductAgainstService(product.startDate, product.endDate, service.startDate, service.endDate),
-                ).length ?? 0,
-    }));
+    return services.map((service) => {
+        const filteredProducts = productsByLine
+            .get(service.lineId)
+            ?.filter((product) =>
+                showProductAgainstService(product.startDate, product.endDate, service.startDate, service.endDate),
+            );
+
+        return {
+            ...service,
+            products: filteredProducts === undefined ? 0 : filteredProducts.length,
+            requiresAttention:
+                filteredProducts === undefined
+                    ? false
+                    : filteredProducts.some((element) =>
+                          element.servicesRequiringAttention?.some((serviceId) => serviceId === service.id.toString()),
+                      ),
+        };
+    });
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServicesProps }> => {
