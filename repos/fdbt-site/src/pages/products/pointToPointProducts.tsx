@@ -106,11 +106,14 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], servi
 
 export const filterProductsNotToDisplay = (service: MyFaresService, products: MyFaresProduct[]): MyFaresProduct[] => {
     const serviceStartDate = moment.utc(service.startDate, 'DD/MM/YYYY').valueOf();
-    const serviceEndDate = moment.utc(service.endDate, 'DD/MM/YYYY').valueOf();
+    const serviceEndDate = service.endDate ? moment.utc(service.endDate, 'DD/MM/YYYY').valueOf() : undefined;
     return products.filter((product) => {
         const productStartDate = moment.utc(product.startDate, 'DD/MM/YYYY').valueOf();
         const productEndDate = product.endDate && moment.utc(product.endDate, 'DD/MM/YYYY').valueOf();
-        return (!productEndDate || productEndDate >= serviceStartDate) && productStartDate <= serviceEndDate;
+        return (
+            (!productEndDate || productEndDate >= serviceStartDate) &&
+            (!serviceEndDate || productStartDate <= serviceEndDate)
+        );
     });
 };
 
@@ -160,7 +163,7 @@ export const getServerSideProps = async (
         }),
     );
 
-    return { props: { products: formattedProducts, service } };
+    return { props: { products: formattedProducts, service: { ...service, endDate: service.endDate || '' } } };
 };
 
 export default PointToPointProducts;

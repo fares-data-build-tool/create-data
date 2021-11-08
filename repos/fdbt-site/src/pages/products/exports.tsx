@@ -48,7 +48,11 @@ const Exports = ({ exports, csrf }: GlobalSettingsProps): ReactElement => {
                                 {exports.map((exportDetails) => (
                                     <tr className="govuk-table__row" key={exportDetails.name}>
                                         <td className="govuk-table__cell">
-                                            {exportDetails.signedUrl ? <a href={exportDetails.signedUrl}>{exportDetails.name}</a> : exportDetails.name}
+                                            {exportDetails.signedUrl ? (
+                                                <a href={exportDetails.signedUrl}>{exportDetails.name}</a>
+                                            ) : (
+                                                exportDetails.name
+                                            )}
                                         </td>
                                         <td className="govuk-table__cell">
                                             {exportDetails.netexCount} / {exportDetails.matchingDataCount}

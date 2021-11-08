@@ -58,7 +58,7 @@ export const getFieldsets = (errors: ErrorInfo[], dates: ProductDateInformation)
                         defaultValue: `${dates.endDateDay}#${dates.endDateMonth}#${dates.endDateYear}`,
                     },
                 ],
-                inputErrors: getErrorsByIds(['start-date-day', 'end-date-day'], errors),
+                inputErrors: getErrorsByIds(['start-date-day', 'end-date-day', 'product-dates-required'], errors),
             },
             {
                 id: 'product-dates-information-not-required',

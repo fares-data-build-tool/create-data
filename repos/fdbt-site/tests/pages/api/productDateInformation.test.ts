@@ -2,6 +2,7 @@ import productDateInformation from '../../../src/pages/api/productDateInformatio
 import * as sessions from '../../../src/utils/sessions';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
+import moment from 'moment';
 
 describe('productDataInformation', () => {
     const writeHeadMock = jest.fn();
@@ -43,8 +44,10 @@ describe('productDataInformation', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             errors: [
-                { errorMessage: 'Enter a start date', id: 'start-date-day' },
-                { errorMessage: 'Enter an end date', id: 'end-date-day' },
+                {
+                    errorMessage: 'Enter a start date and/or end date',
+                    id: 'product-dates-required',
+                },
             ],
             dates: {
                 startDateDay: '',
@@ -188,7 +191,7 @@ describe('productDataInformation', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             dateInput: expect.any(Object),
             endDate: undefined,
-            startDate: '2021-11-04T00:00:00.000Z',
+            startDate: moment().startOf('day').toISOString(),
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {

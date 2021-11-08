@@ -1,7 +1,7 @@
 import * as s3 from '../../../src/data/s3';
 import priceEntry, { inputsValidityCheck } from '../../../src/pages/api/priceEntry';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { JOURNEY_ATTRIBUTE } from '../../../src/constants/attributes';
+import { DIRECTION_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('priceEntry', () => {
     describe('API validation of number of price inputs', () => {
@@ -81,8 +81,9 @@ describe('priceEntry', () => {
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
                 session: {
-                    [JOURNEY_ATTRIBUTE]: {
-                        outboundJourney: '13003921A',
+                    [DIRECTION_ATTRIBUTE]: {
+                        direction: 'outbound',
+                        inboundDirection: 'inbound',
                     },
                 },
             });
