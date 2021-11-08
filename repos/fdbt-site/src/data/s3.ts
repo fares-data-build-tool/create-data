@@ -11,6 +11,8 @@ import {
 import { Ticket, UserFareStages, UserFareZone } from '../interfaces';
 import { MatchingFareZones } from '../interfaces/matchingInterface';
 import logger from '../utils/logger';
+import { PassThrough } from 'stream';
+import archiver, { Archiver } from 'archiver';
 
 const getS3Client = (): S3 => {
     let options: S3.ClientConfiguration = {
@@ -240,4 +242,77 @@ export const retrieveNetexForNocs = async (nocList: string[]): Promise<AWS.S3.Ob
     } catch (error) {
         throw new Error(`Failed to retrieve NeTEx from NOCs, ${error.stack}`);
     }
+};
+
+export const retrieveAndZipExportedNetexForNoc = async (noc: string, exportName: string): Promise<string> => {
+    const prefix = `${noc}/zips/${exportName}/`;
+    const zipResponse = await s3
+        .listObjectsV2({
+            Bucket: NETEX_BUCKET_NAME,
+            Prefix: prefix,
+        })
+        .promise();
+
+    const zips = zipResponse.Contents?.length;
+    const zipKey = `${prefix}/${exportName}.zip`;
+
+    if (!zips) {
+        const response = await s3
+            .listObjectsV2({
+                Bucket: NETEX_BUCKET_NAME,
+                Prefix: `${noc}/exports/${exportName}/`,
+            })
+            .promise();
+
+        const allFiles = response.Contents?.map((it) => it.Key || '') ?? [];
+
+        await zipFiles(allFiles, zipKey);
+    }
+
+    return zipKey;
+};
+
+export const zipFiles = async (allFiles: string[], zipKey: string): Promise<void> => {
+    const s3 = getS3Client();
+
+    const archive: Archiver = archiver('zip', {
+        zlib: { level: 9 }, // Sets the compression level.
+    });
+
+    const pass = new PassThrough();
+    archive.pipe(pass);
+
+    await Promise.all(
+        allFiles.map(async (it) => {
+            const obj = await s3.getObject({ Bucket: NETEX_BUCKET_NAME, Key: it }).promise();
+            if (obj.Body) {
+                archive.append(obj.Body as string, { name: it.split('/')[it.split('/').length - 1] });
+            }
+        }),
+    );
+
+    await archive.finalize();
+    await s3.upload({ Bucket: NETEX_BUCKET_NAME, Key: zipKey, Body: pass }).promise();
+};
+
+export const getS3FolderCount = async (bucketName: string, path: string): Promise<number> => {
+    const response = await s3
+        .listObjectsV2({
+            Bucket: bucketName,
+            Prefix: path,
+            Delimiter: '/',
+        })
+        .promise();
+    return (response.CommonPrefixes?.length ?? 0) + (response.Contents?.length ?? 0);
+};
+
+export const getS3Exports = async (noc: string): Promise<string[]> => {
+    const response = await s3
+        .listObjectsV2({
+            Bucket: MATCHING_DATA_BUCKET_NAME,
+            Prefix: `${noc}/exports/`,
+            Delimiter: '/',
+        })
+        .promise();
+    return response.CommonPrefixes?.flatMap((prefix) => prefix.Prefix ?? []) || [];
 };

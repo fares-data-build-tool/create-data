@@ -1620,3 +1620,23 @@ export const getProductMatchingJsonLinkByProductId = async (nocCode: string, pro
         throw new Error(`Could not retrieve product matchingJsonLinks by nocCode from AuroraDB: ${error.stack}`);
     }
 };
+
+export const getAllProducts = async (nocCode: string): Promise<{ matchingJsonLink: string }[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting products for given noc and fareType',
+        noc: nocCode,
+    });
+
+    const query = `
+            SELECT matchingJsonLink
+            FROM products
+            WHERE nocCode = ?
+        `;
+
+    try {
+        return await executeQuery<{ matchingJsonLink: string }[]>(query, [nocCode]);
+    } catch (error) {
+        throw new Error(`Could not fetch products from the products table. ${error.stack}`);
+    }
+};
