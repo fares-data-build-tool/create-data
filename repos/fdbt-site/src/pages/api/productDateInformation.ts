@@ -43,10 +43,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const isEndDateEmpty = isDatesFieldEmpty(endDateDay, endDateMonth, endDateYear);
 
             if (isStartDateEmpty && isEndDateEmpty) {
-                errors.push(
-                    { errorMessage: 'Enter a start date', id: 'start-date-day' },
-                    { errorMessage: 'Enter an end date', id: 'end-date-day' },
-                );
+                errors.push({ errorMessage: 'Enter a start date and/or end date', id: 'product-dates-required' });
             }
 
             if (!isStartDateEmpty) {
