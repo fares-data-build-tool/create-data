@@ -50,32 +50,6 @@ exports[`pages home page should render correctly 1`] = `
         <h2
           className="govuk-heading-s"
         >
-          <strong
-            className="govuk-tag new-tag"
-          >
-            new
-          </strong>
-          Manage fares
-        </h2>
-        <p
-          className="govuk-body"
-        >
-          View and manage all of your products and services in one place.
-        </p>
-        <a
-          className="govuk-link govuk-!-font-size-19"
-          href="/products/services"
-          id="account-link"
-        >
-          View and manage fares
-        </a>
-      </div>
-      <div
-        className="govuk-!-margin-top-7"
-      >
-        <h2
-          className="govuk-heading-s"
-        >
           Operator settings
         </h2>
         <p

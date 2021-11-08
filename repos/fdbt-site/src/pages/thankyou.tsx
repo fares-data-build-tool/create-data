@@ -51,16 +51,6 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
             Add another fare
         </a>
         <a
-            href="/products/services"
-            role="button"
-            draggable="false"
-            className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
-            data-module="govuk-button"
-            aria-label="View and manage fares"
-        >
-            View and manage fares
-        </a>
-        <a
             href="https://publish.bus-data.dft.gov.uk/"
             role="button"
             draggable="false"
