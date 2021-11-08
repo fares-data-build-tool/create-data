@@ -1646,6 +1646,16 @@
       <Lines>
         <Line id="l_4_ANW">
           <LineName>4</LineName>
+          <InboundDescription>
+            <Origin>The Pike</Origin>
+            <Destination>Evesham Country Park</Destination>
+            <Description>The Pike - Evesham Country Park</Description>
+          </InboundDescription>
+          <OutboundDescription>
+            <Origin>Evesham Country Park</Origin>
+            <Destination>The Pike</Destination>
+            <Description>Evesham Country Park - The Pike</Description>
+          </OutboundDescription>
         </Line>
       </Lines>
       <OperatingPeriod>

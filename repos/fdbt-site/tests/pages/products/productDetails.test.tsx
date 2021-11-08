@@ -1,6 +1,7 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import {
+    getBodsServiceDirectionDescriptionsByNocAndLineName,
     getBodsServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
     getProductMatchingJsonLinkByProductId,
@@ -75,6 +76,11 @@ describe('myfares pages', () => {
             (getTimeRestrictionByIdAndNoc as jest.Mock).mockResolvedValue({
                 name: 'Test Time Restriction',
             });
+
+            (getBodsServiceDirectionDescriptionsByNocAndLineName as jest.Mock).mockResolvedValue({
+                inboundDirectionDescription: 'this way',
+                outboundDirectionDescription: 'another way',
+            });
         });
 
         it('correctly returns the elements which should be displayed on the page for a school single ticket', async () => {
@@ -88,6 +94,7 @@ describe('myfares pages', () => {
                     endDate: '18/12/2020',
                     productDetailsElements: [
                         { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
+                        { name: 'Journey direction', content: ['Inbound - this way'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Only valid during term time', content: ['Yes'] },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
