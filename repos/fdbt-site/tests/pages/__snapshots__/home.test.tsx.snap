@@ -50,11 +50,6 @@ exports[`pages home page should render correctly 1`] = `
         <h2
           className="govuk-heading-s"
         >
-          <strong
-            className="govuk-tag new-tag"
-          >
-            new
-          </strong>
           Operator settings
         </h2>
         <p
