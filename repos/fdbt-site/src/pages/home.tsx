@@ -9,7 +9,6 @@ import { myFaresEnabled } from '../constants/featureFlag';
 
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
-console.log(`myFaresEnabled: ${myFaresEnabled}`);
 
 interface HomeProps {
     myFaresEnabled: boolean;
