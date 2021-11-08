@@ -9,19 +9,19 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     const noc = getAndValidateNoc(req, res);
     const products = await getAllProducts(noc);
 
-    const parts = new Date().toISOString().split('T');
-    const dateStr = parts[0] + '_' + parts[1].substr(0, 6).replace(/:/g, '');
+    const [date, time] = new Date().toISOString().split('T');
+    const currentDateTimeString = date + '_' + time.substr(0, 6).replace(/:/g, '');
 
-    const exportNameBase = `${noc}_${dateStr}`;
+    const exportNameBase = `${noc}_${currentDateTimeString}`;
     let i = 0;
     let exportName = exportNameBase;
     const exports = await getS3Exports(noc);
-    while (exports.find((it) => it === exportName)) {
+    while (exports.find((exportToCheck) => exportToCheck === exportName)) {
         i++;
         exportName = exportNameBase + '_' + i;
     }
 
-    const links = products.map((it) => it.matchingJsonLink);
+    const links = products.map((product) => product.matchingJsonLink);
 
     await triggerExport({ noc, paths: links, exportPrefix: exportName });
 

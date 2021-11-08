@@ -12,11 +12,11 @@ const title = 'Exports';
 const description = 'View and access your settings in one place.';
 
 interface GlobalSettingsProps {
-    counts: { matchingDataCount: number; name: string; netexCount: number; signedUrl: string | null }[];
+    exports: { matchingDataCount: number; name: string; netexCount: number; signedUrl: string | null }[];
     csrf: string;
 }
 
-const Exports = ({ counts, csrf }: GlobalSettingsProps): ReactElement => {
+const Exports = ({ exports, csrf }: GlobalSettingsProps): ReactElement => {
     return (
         <>
             <BaseLayout title={title} description={description} showNavigation>
@@ -45,16 +45,16 @@ const Exports = ({ counts, csrf }: GlobalSettingsProps): ReactElement => {
                                 </tr>
                             </thead>
                             <tbody className="govuk-table__body">
-                                {counts.map((it) => (
-                                    <tr className="govuk-table__row" key={it.name}>
+                                {exports.map((exportDetails) => (
+                                    <tr className="govuk-table__row" key={exportDetails.name}>
                                         <td className="govuk-table__cell">
-                                            {it.signedUrl ? <a href={it.signedUrl}>{it.name}</a> : it.name}
+                                            {exportDetails.signedUrl ? <a href={exportDetails.signedUrl}>{exportDetails.name}</a> : exportDetails.name}
                                         </td>
                                         <td className="govuk-table__cell">
-                                            {it.netexCount} / {it.matchingDataCount}
+                                            {exportDetails.netexCount} / {exportDetails.matchingDataCount}
                                         </td>
                                         <td className="govuk-table__cell">
-                                            {it.netexCount === it.matchingDataCount ? (
+                                            {exportDetails.netexCount === exportDetails.matchingDataCount ? (
                                                 <strong className="govuk-tag govuk-tag--green">Complete</strong>
                                             ) : (
                                                 <strong className="govuk-tag govuk-tag--blue">In Progress</strong>
@@ -80,7 +80,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const exportNames = await getS3Exports(noc);
 
-    const counts = await Promise.all(
+    const exports = await Promise.all(
         exportNames.map(async (it) => {
             const prefix = `${noc}/exports/${it}/`;
             const matchingDataCount = await getS3FolderCount(MATCHING_DATA_BUCKET_NAME, prefix);
@@ -99,7 +99,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }),
     );
 
-    return { props: { counts, csrf: getCsrfToken(ctx) } };
+    return { props: { exports, csrf: getCsrfToken(ctx) } };
 };
 
 export default Exports;
