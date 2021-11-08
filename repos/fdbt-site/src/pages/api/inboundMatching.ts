@@ -6,7 +6,11 @@ import {
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
-import { getMatchingFareZonesAndUnassignedStopsFromForm, isFareStageUnassigned } from '../../utils/apiUtils/matching';
+import {
+    fareStageIsUnused,
+    getMatchingFareZonesAndUnassignedStopsFromForm,
+    isFareStageUnassigned,
+} from '../../utils/apiUtils/matching';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
@@ -23,7 +27,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('No service or userfarestages info found');
         }
 
-        const inboundUserFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
+        const uploadedUserFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
 
         const parsedInputs = getMatchingFareZonesAndUnassignedStopsFromForm(req);
         const { matchingFareZones, unassignedStops } = parsedInputs;
@@ -43,7 +47,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/inboundMatching');
             return;
         } else if (
-            isFareStageUnassigned(inboundUserFareStages, matchingFareZones) &&
+            isFareStageUnassigned(uploadedUserFareStages, matchingFareZones) &&
             matchingFareZones !== {} &&
             !overrideWarning
         ) {
@@ -68,23 +72,25 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             ) {
                 throw new Error('Necessary attributes were not found in session');
             }
-            const allUsedFareStages = outboundMatchingUserFareStages.userFareStages.fareStages.concat(
-                inboundUserFareStages.fareStages,
+            const allUsedFareStageNames = Object.keys(matchingFareZones).concat(
+                Object.keys(outboundMatchingUserFareStages.matchingFareZones),
             );
-            if (isFareStageUnassigned({ fareStages: allUsedFareStages }, matchingFareZones)) {
+
+            if (fareStageIsUnused(allUsedFareStageNames, uploadedUserFareStages)) {
                 const selectedStagesList: string[][] = getSelectedStages(req);
                 const matchingAttributeError = {
                     selectedFareStages: selectedStagesList,
                 };
                 updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeError);
                 redirectTo(res, '/inboundMatching?unusedStage=true');
+                return;
             }
         }
 
         updateSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE, unassignedStops);
 
         const matchingAttributeValue: InboundMatchingInfo = {
-            inboundUserFareStages,
+            inboundUserFareStages: uploadedUserFareStages,
             inboundMatchingFareZones: matchingFareZones,
         };
         updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeValue);
@@ -105,7 +111,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         redirectTo(res, '/returnValidity');
     } catch (error) {
-        const message = 'There was a problem generating the matching JSON.';
+        const message = 'There was a problem with the inputted inbound fare stage matching info';
         redirectToError(res, message, 'api.inboundMatching', error);
     }
 };

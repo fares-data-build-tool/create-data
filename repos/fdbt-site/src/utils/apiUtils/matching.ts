@@ -76,6 +76,18 @@ export const getMatchingFareZonesAndUnassignedStopsFromForm = (
 export const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
     userFareStages.fareStages.some((stage) => !matchingFareZones[stage.stageName]);
 
+export const fareStageIsUnused = (userFareStageNames: string[], uploadedFareStages: UserFareStages): boolean => {
+    let fareStageIsUnused = false;
+
+    uploadedFareStages.fareStages.forEach((uploadedFareStage) => {
+        if (!userFareStageNames.find((stageName) => uploadedFareStage.stageName === stageName)) {
+            fareStageIsUnused = true;
+        }
+    });
+
+    return fareStageIsUnused;
+};
+
 export const sortingWithoutSequenceNumbers = (journeyPatterns: RawJourneyPattern[]): string[] => {
     try {
         const graph = journeyPatterns.flatMap((journeyPattern) =>
