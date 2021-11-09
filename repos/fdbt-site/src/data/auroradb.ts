@@ -1,7 +1,6 @@
 import awsParamStore from 'aws-param-store';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
-import { DbTimeRestriction, RawMyFaresProduct } from 'shared/dbTypes';
 import { FromDb, OperatorDetails } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
@@ -22,6 +21,8 @@ import {
 } from '../interfaces';
 import logger from '../utils/logger';
 import {
+    DbTimeRestriction,
+    RawMyFaresProduct,
     MyFaresOtherProduct,
     RawSalesOfferPackage,
     RawService,
