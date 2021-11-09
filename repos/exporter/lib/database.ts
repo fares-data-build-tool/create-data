@@ -13,7 +13,7 @@ import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../sh
 
 const replaceInternalNocCode = (nocCode: string): string => {
     if (nocCode === 'IWBusCo') {
-        return 'WBTR';
+        return 'BLAC';
     }
 
     return nocCode;

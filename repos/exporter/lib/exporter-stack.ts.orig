@@ -60,8 +60,12 @@ export class ExporterStack extends cdk.Stack {
                 sourceMap: true,
                 sourceMapMode: SourceMapMode.DEFAULT,
             },
+<<<<<<< HEAD
             timeout: Duration.minutes(15),
+=======
+            timeout: Duration.minutes(5),
             logRetention: 180,
+>>>>>>> develop
         });
 
         this.addAlarmsToLambda(stage, exporterFunction, `exporter-${stage}`);

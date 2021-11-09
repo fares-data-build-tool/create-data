@@ -79,5 +79,15 @@ describe('myfares pages', () => {
             );
             expect(result).toBeTruthy();
         });
+
+        it('correctly returns true if the product should be against the service and there is no end date', () => {
+            const result = showProductAgainstService(
+                '2019-09-15T23:00:00.000Z',
+                '2020-10-15T23:00:00.000Z',
+                '15/09/2019',
+                undefined,
+            );
+            expect(result).toBeTruthy();
+        });
     });
 });

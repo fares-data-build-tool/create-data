@@ -29,7 +29,7 @@ exports[`pages home page should render correctly 1`] = `
         </p>
         <a
           className="govuk-link govuk-!-font-size-19"
-          href="/multipleOperators"
+          href="/fareType"
           id="faretype-link"
         >
           Create NeTEx data for your fares
@@ -50,11 +50,6 @@ exports[`pages home page should render correctly 1`] = `
         <h2
           className="govuk-heading-s"
         >
-          <strong
-            className="govuk-tag new-tag"
-          >
-            new
-          </strong>
           Operator settings
         </h2>
         <p
@@ -112,7 +107,7 @@ exports[`pages home page should render correctly 1`] = `
 </BaseLayout>
 `;
 
-exports[`pages home page should render correctly with no multiple operators 1`] = `
+exports[`pages home page should render correctly with my fares enabled 1`] = `
 <BaseLayout
   description="Create Fares Data is a service that allows you to generate data in NeTEx format"
   title="Create Fares Data"
@@ -167,6 +162,27 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
           >
             new
           </strong>
+          Manage fares
+        </h2>
+        <p
+          className="govuk-body"
+        >
+          View and manage all of your products and services in one place.
+        </p>
+        <a
+          className="govuk-link govuk-!-font-size-19"
+          href="/products/services"
+          id="manage-fares-link"
+        >
+          View and manage fares
+        </a>
+      </div>
+      <div
+        className="govuk-!-margin-top-7"
+      >
+        <h2
+          className="govuk-heading-s"
+        >
           Operator settings
         </h2>
         <p

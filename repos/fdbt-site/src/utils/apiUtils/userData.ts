@@ -74,13 +74,12 @@ import {
     isPeriodExpiry,
     isSalesOfferPackages,
     isSalesOfferPackageWithErrors,
-    isTicketPeriodAttributeWithInput,
     isWithErrors,
     isTicketRepresentation,
 } from '../../interfaces/typeGuards';
 
 import logger from '../logger';
-import { getSessionAttribute } from '../sessions';
+import { getSessionAttribute, getRequiredSessionAttribute } from '../sessions';
 import { isFareZoneAttributeWithErrors } from '../../pages/csvZoneUpload';
 import { isReturnPeriodValidityWithErrors } from '../../pages/returnValidity';
 import { isServiceListAttributeWithErrors } from '../../pages/serviceList';
@@ -162,7 +161,7 @@ export const getBaseTicketAttributes = <T extends TicketType>(
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const uuid = getUuidFromSession(req);
     const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
-    const ticketPeriodAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
+    const ticketPeriodAttribute = getRequiredSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
         !nocCode ||
@@ -171,7 +170,7 @@ export const getBaseTicketAttributes = <T extends TicketType>(
         !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !uuid ||
-        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute) ||
+        !('startDate' in ticketPeriodAttribute) ||
         !passengerTypeAttribute.id
     ) {
         logger.error('Invalid attributes', {
@@ -495,14 +494,14 @@ export const getSchemeOperatorTicketJson = (
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const uuid = getUuidFromSession(req);
     const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
-    const ticketPeriodAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
+    const ticketPeriodAttribute = getRequiredSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
         !isFareType(fareTypeAttribute) ||
         !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !uuid ||
-        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute) ||
+        !('startDate' in ticketPeriodAttribute) ||
         !passengerTypeAttribute.id
     ) {
         logger.error('Invalid attributes', {
@@ -649,9 +648,6 @@ export const insertDataToProductsBucketAndProductsTable = async (
     const filePath = await putUserDataInProductsBucket(userDataJson, uuid, nocCode);
     if (saveProductsEnabled && (ticketType === 'geoZone' || dataFormat !== 'tnds')) {
         const { startDate, endDate } = userDataJson.ticketPeriod;
-        if (!startDate || !endDate) {
-            throw new Error('Start or end date could not be found.');
-        }
         const dateTime = moment().toDate();
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
         await insertProducts(nocCode, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);

@@ -36,6 +36,7 @@ const OutboundMatching = ({
         travelineHintText={travelineHintText}
         apiEndpoint={apiEndpoint}
         csrfToken={csrfToken}
+        unusedStage={false}
     />
 );
 

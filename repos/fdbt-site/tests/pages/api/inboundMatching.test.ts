@@ -1,3 +1,4 @@
+import { MATCHING_ATTRIBUTE } from './../../../src/constants/attributes';
 import inboundMatching from '../../../src/pages/api/inboundMatching';
 import { getMockRequestAndResponse, service, mockMatchingUserFareStages } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
@@ -24,6 +25,37 @@ describe('Inbound Matching API', () => {
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStages),
             },
+            session: {
+                [MATCHING_ATTRIBUTE]: {
+                    service: {
+                        lineName: '',
+                        lineId: '',
+                        nocCode: '',
+                        operatorShortName: '',
+                        serviceDescription: '',
+                    },
+                    userFareStages: {
+                        fareStages: [
+                            {
+                                stageName: '',
+                                prices: [
+                                    {
+                                        price: '',
+                                        fareZones: [],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    matchingFareZones: {
+                        thing: {
+                            name: '',
+                            stops: [],
+                            prices: [],
+                        },
+                    },
+                },
+            },
             mockWriteHeadFn: writeHeadMock,
         });
         inboundMatching(req, res);
@@ -42,6 +74,37 @@ describe('Inbound Matching API', () => {
                 ...selectedOptionsWithAnUnassignedStop,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStages),
+            },
+            session: {
+                [MATCHING_ATTRIBUTE]: {
+                    service: {
+                        lineName: '',
+                        lineId: '',
+                        nocCode: '',
+                        operatorShortName: '',
+                        serviceDescription: '',
+                    },
+                    userFareStages: {
+                        fareStages: [
+                            {
+                                stageName: '',
+                                prices: [
+                                    {
+                                        price: '',
+                                        fareZones: [],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    matchingFareZones: {
+                        thing: {
+                            name: '',
+                            stops: [],
+                            prices: [],
+                        },
+                    },
+                },
             },
             mockWriteHeadFn: writeHeadMock,
         });

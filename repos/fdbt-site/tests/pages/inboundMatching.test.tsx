@@ -33,6 +33,7 @@ describe('Inbound Matching Page', () => {
                 warning={false}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
+                unusedStage={false}
             />,
         );
     });
@@ -55,6 +56,7 @@ describe('Inbound Matching Page', () => {
                 warning={true}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
+                unusedStage={false}
             />,
         );
 
@@ -71,6 +73,7 @@ describe('Inbound Matching Page', () => {
                 warning={false}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
+                unusedStage={false}
             />,
         );
         expect(wrapper).toMatchSnapshot();
@@ -86,6 +89,7 @@ describe('Inbound Matching Page', () => {
                 warning={false}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
+                unusedStage={false}
             />,
         );
         expect(mountedWrapper.find('.farestage-select').first().find('option')).toHaveLength(10);

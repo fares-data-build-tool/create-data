@@ -2,6 +2,7 @@ import productDateInformation from '../../../src/pages/api/productDateInformatio
 import * as sessions from '../../../src/utils/sessions';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
+import moment from 'moment';
 
 describe('productDataInformation', () => {
     const writeHeadMock = jest.fn();
@@ -43,8 +44,10 @@ describe('productDataInformation', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             errors: [
-                { errorMessage: 'Enter a start date', id: 'start-date-day' },
-                { errorMessage: 'Enter an end date', id: 'end-date-day' },
+                {
+                    errorMessage: 'Enter a start date and/or end date',
+                    id: 'product-dates-required',
+                },
             ],
             dates: {
                 startDateDay: '',
@@ -152,7 +155,7 @@ describe('productDataInformation', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             startDate: '2020-12-12T00:00:00.000Z',
-            endDate: '2020-12-15T23:59:59.999Z',
+            endDate: '2020-12-15T23:59:59.000Z',
             dateInput: {
                 startDateDay: '12',
                 startDateMonth: '12',
@@ -185,40 +188,10 @@ describe('productDataInformation', () => {
 
         await productDateInformation(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, undefined);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/salesConfirmation',
-        });
-    });
-
-    it('it should only set the end date when end date only entered and redirect to confirmation page', async () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
-            body: {
-                startDateDay: '',
-                startDateMonth: '',
-                startDateYear: '',
-                endDateDay: '04',
-                endDateMonth: '11',
-                endDateYear: '4020',
-                productDates: 'Yes',
-            },
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        await productDateInformation(req, res);
-
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
-            endDate: '4020-11-04T23:59:59.999Z',
-            dateInput: {
-                startDateDay: '',
-                startDateMonth: '',
-                startDateYear: '',
-                endDateDay: '04',
-                endDateMonth: '11',
-                endDateYear: '4020',
-            },
+            dateInput: expect.any(Object),
+            endDate: undefined,
+            startDate: moment().startOf('day').toISOString(),
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {

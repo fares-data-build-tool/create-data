@@ -17,6 +17,14 @@ Parameters:
     Type: CommaDelimitedList
     Default: ""
 
+  CiIpSetList:
+    Type: CommaDelimitedList
+    Default: ""
+
+  PersonalUserIpSetList:
+    Type: CommaDelimitedList
+    Default: ""
+
 Conditions:
   IsTest: !Equals [!Ref Stage, "test"]
 
@@ -39,7 +47,7 @@ Resources:
       Name: CiIpSet
       Scope: CLOUDFRONT
       IPAddressVersion: IPV4
-      Addresses: []
+      Addresses: !Ref CiIpSetList
 
   PersonalUserIpSet:
     Type: AWS::WAFv2::IPSet
@@ -49,7 +57,7 @@ Resources:
       Name: PersonalUserIpSet
       Scope: CLOUDFRONT
       IPAddressVersion: IPV4
-      Addresses: []
+      Addresses: !Ref PersonalUserIpSetList
 
   RestrictIPAccessAcl:
     Type: AWS::WAFv2::WebACL
@@ -65,10 +73,66 @@ Resources:
         CloudWatchMetricsEnabled: true
         MetricName: RestrictAccessMetric
       Rules:
+        - Name: BodySizeRestriction
+          Priority: 0
+          Statement:
+            AndStatement:
+              Statements:
+                - SizeConstraintStatement:
+                    FieldToMatch:
+                      Body: {}
+                    ComparisonOperator: LT
+                    Size: 8192
+                    TextTransformations:
+                      - Priority: 0
+                        Type: NONE
+                - NotStatement:
+                    Statement:
+                      ByteMatchStatement:
+                        SearchString: /api/csv
+                        FieldToMatch:
+                          UriPath: {}
+                        TextTransformations:
+                          - Priority: 0
+                            Type: NONE
+                        PositionalConstraint: STARTS_WITH
+          Action:
+            Allow: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: BodySize
+        - Name: AWS-AWSManagedRulesAmazonIpReputationList
+          Priority: 1
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesAmazonIpReputationList
+          OverrideAction:
+            None: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AWS-AWSManagedRulesAmazonIpReputationList
+        - Name: AWS-AWSManagedRulesCommonRuleSet
+          Priority: 2
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesCommonRuleSet
+              ExcludedRules:
+                - SizeRestrictions_BODY # handled by BodySizeRestriction
+                - NoUserAgent_HEADER # allow Cypress tests to run
+          OverrideAction:
+            None: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AWS-AWSManagedRulesCommonRuleSet
         - Name: AllowIw
           Action:
             Allow: {}
-          Priority: 0
+          Priority: 10
           VisibilityConfig:
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true
@@ -79,7 +143,7 @@ Resources:
         - Name: AllowCi
           Action:
             Allow: {}
-          Priority: 3
+          Priority: 11
           VisibilityConfig:
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true
@@ -90,7 +154,7 @@ Resources:
         - Name: AllowPersonalUserIP
           Action:
             Allow: {}
-          Priority: 4
+          Priority: 12
           VisibilityConfig:
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true

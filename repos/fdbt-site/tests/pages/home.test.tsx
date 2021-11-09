@@ -5,11 +5,12 @@ import Home from '../../src/pages/home';
 describe('pages', () => {
     describe('home page', () => {
         it('should render correctly', () => {
-            const tree = shallow(<Home multipleOperators />);
+            const tree = shallow(<Home myFaresEnabled={false} />);
             expect(tree).toMatchSnapshot();
         });
-        it('should render correctly with no multiple operators', () => {
-            const tree = shallow(<Home multipleOperators={false} />);
+
+        it('should render correctly with my fares enabled', () => {
+            const tree = shallow(<Home myFaresEnabled={true} />);
             expect(tree).toMatchSnapshot();
         });
     });

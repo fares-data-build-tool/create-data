@@ -77,32 +77,28 @@ export const handler: Handler<ExportLambdaBody> = async () => {
  * For single tickets; gets a list of ids for the serices that require
  * attention because of a change on the stops relating to the service.
  *
- * @param {pointToPointTicket} the matching json for single ticket.
+ * @param {singleTicket} the matching json for single ticket.
  *
  * @returns {Promise<string[]>} a string array containing the ids of the
  * services that require attention.
  */
-const getIdsOfServicesRequiringAttentionForSingles = async (
-    pointToPointTicket: WithIds<SingleTicket>,
-): Promise<string[]> => {
+const getIdsOfServicesRequiringAttentionForSingles = async (singleTicket: WithIds<SingleTicket>): Promise<string[]> => {
     // all stops from the matching JSON
     let atcoCodesOfKnownStops: string[] = [];
 
-    pointToPointTicket.fareZones.forEach((fareZone) => {
-        fareZone.stops.forEach((stop) => {
-            atcoCodesOfKnownStops.push(stop.atcoCode);
-        });
-    });
+    atcoCodesOfKnownStops = singleTicket.fareZones.flatMap((fareZone) =>
+        fareZone.stops.flatMap((stop) => stop.atcoCode),
+    );
 
-    if (pointToPointTicket.unassignedStops.singleUnassignedStops) {
-        pointToPointTicket.unassignedStops.singleUnassignedStops.forEach((stop) => {
-            atcoCodesOfKnownStops.push(stop.atcoCode);
-        });
+    if (singleTicket.unassignedStops.singleUnassignedStops) {
+        atcoCodesOfKnownStops.concat(
+            singleTicket.unassignedStops.singleUnassignedStops.flatMap((stop) => stop.atcoCode),
+        );
     }
 
     // by this point, atcoCodesOfKnownStops is populated.
 
-    const { journeyDirection, lineId, nocCode } = pointToPointTicket;
+    const { journeyDirection, lineId, nocCode } = singleTicket;
 
     const directionsAndStops = await getDirectionAndStopsByLineIdAndNoc(lineId, nocCode);
 
@@ -118,7 +114,7 @@ const getIdsOfServicesRequiringAttentionForSingles = async (
     const serviceAndSortedUniqueStopsFromFeed = sortAndRemoveDuplicateStops(serviceAndStopsFromFeed);
 
     // on our matching json stops, sort the stops and remove duplicates
-    atcoCodesOfKnownStops = [...new Set(atcoCodesOfKnownStops.sort())];
+    atcoCodesOfKnownStops = [...new Set(atcoCodesOfKnownStops)].sort();
 
     const servicesRequiringAttention = [];
 
@@ -127,7 +123,7 @@ const getIdsOfServicesRequiringAttentionForSingles = async (
         const stops = serviceAndSortedUniqueStopsFromFeed[serviceId];
 
         if (JSON.stringify(stops) !== JSON.stringify(atcoCodesOfKnownStops)) {
-            console.log(`The stops on ${serviceId} require attention.`);
+            console.log('The stops require attention', { serviceId: serviceId });
             servicesRequiringAttention.push(serviceId);
         }
     }
@@ -139,20 +135,20 @@ const getIdsOfServicesRequiringAttentionForSingles = async (
  * For return tickets; gets a list of ids for the serices that attention
  * because of a change on the stops relating to the service.
  *
- * @param {pointToPointTicket} the matching json for single ticket.
+ * @param {nonSingleTicket} the matching json for single ticket.
  *
  * @returns {Promise<string[]>} a string array containing the ids of the
  * services that require attention.
  */
 const getIdsOfServicesRequiringAttentionForReturns = async (
-    pointToPointTicket: WithIds<ReturnTicket> | WithIds<PointToPointPeriodTicket>,
+    nonSingleTicket: WithIds<ReturnTicket> | WithIds<PointToPointPeriodTicket>,
 ): Promise<string[]> => {
     let knownOutboundStops: string[] = [];
     let knownInboundStops: string[] = [];
 
-    const outboundFareZones = pointToPointTicket.outboundFareZones;
+    const outboundFareZones = nonSingleTicket.outboundFareZones;
 
-    const inboundFareZones = pointToPointTicket.inboundFareZones;
+    const inboundFareZones = nonSingleTicket.inboundFareZones;
 
     outboundFareZones.forEach((fareZone) => {
         fareZone.stops.forEach((stop) => {
@@ -166,21 +162,21 @@ const getIdsOfServicesRequiringAttentionForReturns = async (
         });
     });
 
-    if (pointToPointTicket.unassignedStops.outboundUnassignedStops) {
-        pointToPointTicket.unassignedStops.outboundUnassignedStops.forEach((stop) => {
+    if (nonSingleTicket.unassignedStops.outboundUnassignedStops) {
+        nonSingleTicket.unassignedStops.outboundUnassignedStops.forEach((stop) => {
             knownOutboundStops.push(stop.atcoCode);
         });
     }
 
-    if (pointToPointTicket.unassignedStops.inboundUnassignedStops) {
-        pointToPointTicket.unassignedStops.inboundUnassignedStops.forEach((stop) => {
+    if (nonSingleTicket.unassignedStops.inboundUnassignedStops) {
+        nonSingleTicket.unassignedStops.inboundUnassignedStops.forEach((stop) => {
             knownInboundStops.push(stop.atcoCode);
         });
     }
 
     // by this point, we have all the inbound and outbound stops on our matching json
 
-    const { lineId, nocCode } = pointToPointTicket;
+    const { lineId, nocCode } = nonSingleTicket;
 
     const directionsAndStops = await getDirectionAndStopsByLineIdAndNoc(lineId, nocCode);
 
@@ -203,10 +199,10 @@ const getIdsOfServicesRequiringAttentionForReturns = async (
     const inboundServiceAndSortedUniqueStopsFromFeed = sortAndRemoveDuplicateStops(inboundServiceAndStopsFromFeed);
 
     // our outbound matching json stops, sort the stops and remove duplicates
-    knownOutboundStops = [...new Set(knownOutboundStops.sort())];
+    knownOutboundStops = [...new Set(knownOutboundStops)].sort();
 
     // our inbound matching json stops, sort the stops and remove duplicates
-    knownInboundStops = [...new Set(knownInboundStops.sort())];
+    knownInboundStops = [...new Set(knownInboundStops)].sort();
 
     const outboundServicesRequiringAttention = [];
     const inboundServicesRequiringAttention = [];
