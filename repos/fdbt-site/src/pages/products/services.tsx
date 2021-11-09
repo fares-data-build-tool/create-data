@@ -71,7 +71,7 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                         </td>
                         <td className="govuk-table__cell dft-text-align-centre">{service.products}</td>
                         <td className="govuk-table__cell dft-text-align-centre">{service.startDate}</td>
-                        <td className="govuk-table__cell dft-text-align-centre">{service.endDate}</td>
+                        <td className="govuk-table__cell dft-text-align-centre">{service.endDate || '-'}</td>
                         <td className="govuk-table__cell dft-text-align-centre">
                             {getTag(service.startDate, service.endDate)}
                             {service.requiresAttention === true ? getTheRequiresAttentionTag() : ''}
