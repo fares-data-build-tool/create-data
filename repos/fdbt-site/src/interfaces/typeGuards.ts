@@ -137,13 +137,6 @@ export const isTicketPeriodAttributeWithErrors = (
 ): productDates is TicketPeriodWithErrors =>
     productDates !== undefined && (productDates as TicketPeriodWithErrors).errors !== undefined;
 
-export const isTicketPeriodAttributeWithInput = (
-    productDates: TicketPeriodWithInput | TicketPeriodWithErrors | undefined,
-): productDates is TicketPeriodWithInput =>
-    productDates !== undefined &&
-    (productDates as TicketPeriodWithInput).startDate !== undefined &&
-    (productDates as TicketPeriodWithInput).endDate !== undefined;
-
 export const isMultipleOperatorAttributeWithErrors = (
     searchOperator: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors | undefined,
 ): searchOperator is MultipleOperatorsAttributeWithErrors =>

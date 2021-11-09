@@ -13,24 +13,28 @@ import TwoThirdsLayout from '../../layout/Layout';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
 import isArray from 'lodash/isArray';
+import BackButton from '../../components/BackButton';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
 
 interface ProductDetailsProps {
+    backHref: string;
     productName: string;
-    endDate: string;
+    endDate?: string;
     startDate: string;
     productDetailsElements: ProductDetailsElement[];
 }
 
 const ProductDetails = ({
+    backHref,
     productName,
     startDate,
     endDate,
     productDetailsElements,
 }: ProductDetailsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
+        <BackButton href={backHref} />
         <h1 className="govuk-heading-l">{productName}</h1>
         <div id="contact-hint" className="govuk-hint">
             Product status: {getTag(startDate, endDate)}
@@ -81,6 +85,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
+    let backHref = '/products/otherProducts';
     if (serviceId) {
         if (isArray(serviceId)) {
             throw new Error('Received more than one serviceId');
@@ -92,6 +97,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 `${pointToPointService.lineName} - ${pointToPointService.origin} to ${pointToPointService.destination}`,
             ],
         });
+        backHref = `/products/pointToPointProducts?serviceId=${serviceId}`;
     }
 
     if ('journeyDirection' in ticket && ticket.journeyDirection) {
@@ -109,12 +115,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
-    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
-    productDetailsElements.push({ name: 'Passenger type', content: [passengerTypeName] });
-
     if ('zoneName' in ticket) {
         productDetailsElements.push({ name: 'Zone', content: [ticket.zoneName] });
     }
+
+    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
+    productDetailsElements.push({ name: 'Passenger type', content: [passengerTypeName] });
 
     const isSchoolTicket = 'termTime' in ticket && ticket.termTime;
     if (!isSchoolTicket) {
@@ -127,10 +133,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     if ('additionalNocs' in ticket) {
-        productDetailsElements.push({
-            name: `Multi Operator Group`,
-            content: [`${noc}, ${ticket.additionalNocs.join(', ')}`],
-        });
+        if ('schemeOperatorName' in ticket) {
+            productDetailsElements.push({
+                name: `Multi Operator Group`,
+                content: [ticket.additionalNocs.join(', ')],
+            });
+        } else {
+            productDetailsElements.push({
+                name: `Multi Operator Group`,
+                content: [`${noc}, ${ticket.additionalNocs.join(', ')}`],
+            });
+        }
     }
 
     if ('additionalOperators' in ticket) {
@@ -186,14 +199,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         ),
     });
 
-    if (!ticket.ticketPeriod.startDate || !ticket.ticketPeriod.endDate) {
-        throw new Error('startDate and endDate are expected but not found');
-    }
-
     const startDate = convertDateFormat(ticket.ticketPeriod.startDate);
-    const endDate = convertDateFormat(ticket.ticketPeriod.endDate);
+    const endDate = ticket.ticketPeriod.endDate ? convertDateFormat(ticket.ticketPeriod.endDate) : undefined;
     productDetailsElements.push({ name: 'Start date', content: [startDate] });
-    productDetailsElements.push({ name: 'End date', content: [endDate] });
+    productDetailsElements.push({ name: 'End date', content: [endDate ?? '-'] });
 
     const productName =
         'productName' in product
@@ -204,9 +213,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     return {
         props: {
+            backHref,
             productName,
             startDate,
-            endDate,
+            ...(endDate && { endDate }),
             productDetailsElements,
         },
     };

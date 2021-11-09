@@ -59,6 +59,7 @@ Resources:
     Type: "AWS::Logs::LogGroup"
     Properties:
       LogGroupName: "FlowLogs"
+      RetentionInDays: 180
 
   IamRoleForFlowLogs:
     Type: "AWS::IAM::Role"

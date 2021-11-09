@@ -2,6 +2,7 @@ import { shallow } from 'enzyme';
 import * as React from 'react';
 import {
     getBodsServiceDirectionDescriptionsByNocAndLineName,
+    getBodsServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
     getProductMatchingJsonLinkByProductId,
     getSalesOfferPackageByIdAndNoc,
@@ -14,6 +15,8 @@ import {
     expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
     expectedPointToPointPeriodTicket,
+    expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
+    expectedSchemeOperatorTicketAfterGeoZoneAdjustment,
     expectedSingleTicket,
     getMockContext,
 } from '../../testData/mockData';
@@ -26,6 +29,7 @@ describe('myfares pages', () => {
         it('should render correctly', () => {
             const tree = shallow(
                 <ProductDetails
+                    backHref={'/products/pointToPointProducts?serviceId=1'}
                     productName={'Carnet Return Test'}
                     startDate={'18/10/2021'}
                     endDate={'18/10/2121'}
@@ -50,6 +54,15 @@ describe('myfares pages', () => {
     });
     describe('getServerSideProps', () => {
         beforeEach(() => {
+            (getBodsServiceByNocAndId as jest.Mock).mockResolvedValueOnce({
+                id: '2',
+                lineId: '1',
+                origin: 'Test Origin',
+                destination: 'Test Destination',
+                lineName: 'Test Line Name',
+                startDate: 'A date',
+                endDate: 'Another date',
+            });
             (getProductMatchingJsonLinkByProductId as jest.Mock).mockResolvedValueOnce('path');
             (getPassengerTypeNameByIdAndNoc as jest.Mock).mockResolvedValue('Test Passenger Type');
 
@@ -72,13 +85,15 @@ describe('myfares pages', () => {
 
         it('correctly returns the elements which should be displayed on the page for a school single ticket', async () => {
             (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedSingleTicket);
-            const ctx = getMockContext({ query: { productId: '1' } });
+            const ctx = getMockContext({ query: { productId: '1', serviceId: '2' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: `/products/pointToPointProducts?serviceId=2`,
                     productName: 'Test Passenger Type - Single (school)',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
+                        { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
                         { name: 'Journey direction', content: ['Inbound - this way'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Only valid during term time', content: ['Yes'] },
@@ -92,13 +107,15 @@ describe('myfares pages', () => {
 
         it('correctly returns the elements which should be displayed on the page for a point to point period ticket', async () => {
             (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedPointToPointPeriodTicket);
-            const ctx = getMockContext({ query: { productId: '1' } });
+            const ctx = getMockContext({ query: { productId: '1', serviceId: '2' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: `/products/pointToPointProducts?serviceId=2`,
                     productName: 'My product',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
+                        { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Period duration', content: ['7 weeks'] },
@@ -119,6 +136,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: `/products/otherProducts`,
                     productName: 'Test Return Product',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
@@ -143,12 +161,13 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: `/products/otherProducts`,
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
-                        { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Zone', content: ['Green Lane Shops'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Period duration', content: ['5 weeks'] },
                         { name: 'Product expiry', content: ['24 hr'] },
@@ -167,17 +186,67 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    backHref: `/products/otherProducts`,
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
-                        { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Zone', content: ['Green Lane Shops'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Multi Operator Group', content: ['TEST, MCTR, WBTR, BLAC'] },
                         { name: 'Period duration', content: ['5 weeks'] },
                         { name: 'Product expiry', content: ['24 hr'] },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
+                        { name: 'Start date', content: ['17/12/2020'] },
+                        { name: 'End date', content: ['18/12/2020'] },
+                    ],
+                },
+            });
+        });
+        it('correctly returns the elements which should be displayed on the page for a scheme flat fare', async () => {
+            (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
+                ...expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
+            });
+            const ctx = getMockContext({ query: { productId: '1' } });
+            expect(await getServerSideProps(ctx)).toStrictEqual({
+                props: {
+                    backHref: '/products/otherProducts',
+                    productName: 'product one',
+                    startDate: '17/12/2020',
+                    endDate: '18/12/2020',
+                    productDetailsElements: [
+                        { name: 'Passenger type', content: ['Test Passenger Type'] },
+                        { name: 'Time restriction', content: ['Test Time Restriction'] },
+                        { name: 'WBTR Services', content: ['343, 444, 543'] },
+                        { name: 'BLAC Services', content: ['100, 101, 102'] },
+                        { name: 'LEDS Services', content: ['63, 64, 65'] },
+                        { name: 'Purchase methods', content: ['SOP 1'] },
+                        { name: 'Start date', content: ['17/12/2020'] },
+                        { name: 'End date', content: ['18/12/2020'] },
+                    ],
+                },
+            });
+        });
+        it('correctly returns the elements which should be displayed on the page for a scheme geozone', async () => {
+            (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
+                ...expectedSchemeOperatorTicketAfterGeoZoneAdjustment,
+            });
+            const ctx = getMockContext({ query: { productId: '1' } });
+            expect(await getServerSideProps(ctx)).toStrictEqual({
+                props: {
+                    backHref: '/products/otherProducts',
+                    productName: 'Weekly Ticket',
+                    startDate: '17/12/2020',
+                    endDate: '18/12/2020',
+                    productDetailsElements: [
+                        { name: 'Zone', content: ['Green Lane Shops'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'] },
+                        { name: 'Time restriction', content: ['Test Time Restriction'] },
+                        { name: 'Multi Operator Group', content: ['MCTR, WBTR, BLAC'] },
+                        { name: 'Period duration', content: ['5 weeks'] },
+                        { name: 'Product expiry', content: ['Fare day end'] },
+                        { name: 'Purchase methods', content: ['SOP 2', 'SOP 1'] },
                         { name: 'Start date', content: ['17/12/2020'] },
                         { name: 'End date', content: ['18/12/2020'] },
                     ],

@@ -28,7 +28,6 @@ const Services = ({ servicesAndProducts, myFaresEnabled }: ServicesProps): React
                                 Create new product
                             </a>
                         </div>
-
                         {ServicesTable(servicesAndProducts)}
                     </div>
                 </div>
@@ -45,16 +44,18 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                     <th scope="col" className="govuk-table__header">
                         Service description
                     </th>
-                    <th scope="col" className="govuk-table__header">
+                    <th scope="col" className="govuk-table__header dft-text-align-centre">
                         Active products
                     </th>
-                    <th scope="col" className="govuk-table__header">
-                        Start date
+                    <th scope="col" className="govuk-table__header dft-text-align-centre">
+                        Start
+                        <br /> date
                     </th>
-                    <th scope="col" className="govuk-table__header">
-                        End date
+                    <th scope="col" className="govuk-table__header dft-text-align-centre">
+                        End <br />
+                        date
                     </th>
-                    <th scope="col" className="govuk-table__header">
+                    <th scope="col" className="govuk-table__header dft-text-align-centre">
                         Service status
                     </th>
                 </tr>
@@ -68,10 +69,12 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                                 {service.lineName} - {service.origin} to {service.destination}
                             </a>
                         </td>
-                        <td className="govuk-table__cell">{service.products}</td>
-                        <td className="govuk-table__cell">{service.startDate}</td>
-                        <td className="govuk-table__cell">{service.endDate}</td>
-                        <td className="govuk-table__cell">{getTag(service.startDate, service.endDate)}</td>
+                        <td className="govuk-table__cell dft-text-align-centre">{service.products}</td>
+                        <td className="govuk-table__cell dft-text-align-centre">{service.startDate}</td>
+                        <td className="govuk-table__cell dft-text-align-centre">{service.endDate || '-'}</td>
+                        <td className="govuk-table__cell dft-text-align-centre">
+                            {getTag(service.startDate, service.endDate)}
+                        </td>
                     </tr>
                 ))}
             </tbody>
@@ -79,12 +82,12 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
     );
 };
 
-export const getTag = (startDate: string, endDate: string): JSX.Element => {
+export const getTag = (startDate: string, endDate: string | undefined): JSX.Element => {
     const today = moment.utc().startOf('day').valueOf();
     const startDateAsUnixTime = moment.utc(startDate, 'DD/MM/YYYY').valueOf();
-    const endDateAsUnixTime = moment.utc(endDate, 'DD/MM/YYYY').valueOf();
+    const endDateAsUnixTime = endDate ? moment.utc(endDate, 'DD/MM/YYYY').valueOf() : undefined;
 
-    if (startDateAsUnixTime <= today && endDateAsUnixTime >= today) {
+    if (startDateAsUnixTime <= today && (!endDateAsUnixTime || endDateAsUnixTime >= today)) {
         return <strong className="govuk-tag govuk-tag--turquoise">Active</strong>;
     } else if (startDateAsUnixTime > today) {
         return <strong className="govuk-tag govuk-tag--blue">Pending</strong>;
@@ -97,18 +100,21 @@ export const showProductAgainstService = (
     // 2021-09-15T23:00:00.000Z format
     productStartDate: string,
     // 2021-09-15T23:00:00.000Z format
-    productEndDate: string,
+    productEndDate: string | undefined,
     // 05/04/2020 format
     serviceStartDate: string,
     // 05/04/2020 format
-    serviceEndDate: string,
+    serviceEndDate: string | undefined,
 ): boolean => {
     const momentProductStartDate = moment(productStartDate).valueOf();
-    const momentProductEndDate = moment(productEndDate).valueOf();
+    const momentProductEndDate = productEndDate && moment(productEndDate).valueOf();
     const momentServiceStartDate = moment(serviceStartDate, 'DD/MM/YYYY').valueOf();
-    const momentServiceEndDate = moment(serviceEndDate, 'DD/MM/YYYY').valueOf();
+    const momentServiceEndDate = serviceEndDate ? moment(serviceEndDate, 'DD/MM/YYYY').valueOf() : undefined;
 
-    return momentProductEndDate >= momentServiceStartDate && momentServiceEndDate >= momentProductStartDate;
+    return (
+        (!momentProductEndDate || momentProductEndDate >= momentServiceStartDate) &&
+        (!momentServiceEndDate || momentServiceEndDate >= momentProductStartDate)
+    );
 };
 
 export const matchProductsToServices = (
@@ -124,6 +130,7 @@ export const matchProductsToServices = (
 
     return services.map((service) => ({
         ...service,
+        endDate: service.endDate || '',
         products:
             productsByLine
                 .get(service.lineId)

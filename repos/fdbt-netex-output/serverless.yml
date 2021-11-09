@@ -164,6 +164,7 @@ resources:
 
 plugins:
   - serverless-plugin-typescript
+  - serverless-plugin-log-retention
 
 package:
   include:
@@ -177,3 +178,4 @@ custom:
       dev: arn:aws:sns:us-east-1:000000000000:AlertsTopic
       other:
         Fn::ImportValue: ${self:provider.stage}:SlackAlertsTopicArn
+  logRetentionInDays: 180

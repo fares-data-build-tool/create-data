@@ -12,7 +12,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "NODE_ENV=production lint-staged && npm run test:ci && npx audit-ci --moderate -a 1751 -a 1784"
+            "pre-commit": ". ${NVM_DIR}/nvm.sh && nvm use && NODE_ENV=production lint-staged && npm run test:ci"
         }
     },
     "lint-staged": {
@@ -59,6 +59,7 @@
         "lint-staged": "^10.0.8",
         "prettier": "^1.19.1",
         "serverless-dynamodb-local": "^0.2.40",
+        "serverless-plugin-log-retention": "^2.0.0",
         "serverless-plugin-typescript": "^2.0.0",
         "ts-jest": "^26.4.4",
         "ts-node": "^10.0.0"
