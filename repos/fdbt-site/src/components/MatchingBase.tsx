@@ -13,7 +13,7 @@ interface MatchingBaseProps {
     stops: Stop[];
     service: BasicService;
     error: string;
-    warning: boolean;
+    warning?: boolean;
     selectedFareStages: string[][];
     title: string;
     description: string;
@@ -21,6 +21,7 @@ interface MatchingBaseProps {
     travelineHintText: string;
     heading: string;
     apiEndpoint: string;
+    unusedStage: boolean;
     csrfToken: string;
 }
 
@@ -100,6 +101,7 @@ const MatchingBase = ({
     travelineHintText,
     heading,
     apiEndpoint,
+    unusedStage,
     csrfToken,
 }: MatchingBaseProps): ReactElement => {
     const errors: ErrorInfo[] = [];
@@ -187,6 +189,12 @@ const MatchingBase = ({
             errorMessage: 'One or more fare stages have not been assigned, assign each fare stage to a stop',
             id: 'option-0',
         });
+    } else if (unusedStage) {
+        errors.push({
+            errorMessage:
+                'One or more fare stages have not been used across either matching page - to correct this use the link below to navigate back to the previous matching page, or use the unused fare stage(s) on this page.',
+            id: 'option-0',
+        });
     }
 
     return (
@@ -194,6 +202,11 @@ const MatchingBase = ({
             <CsrfForm action={apiEndpoint} method="post" className="matching-page" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
+                    {unusedStage ? (
+                        <a className="govuk-button govuk-button--secondary" href="/outboundMatching">
+                            Redo my outbound matching
+                        </a>
+                    ) : null}
                     <WarningSummary
                         errors={warnings}
                         label="Check this box if you wish to proceed without assigning all fare stages, then click Continue"

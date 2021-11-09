@@ -56,6 +56,7 @@ describe('MatchingBase', () => {
                         selectedFareStages={selectedFareStages}
                         csrfToken=""
                         {...baseProps}
+                        unusedStage={false}
                     />,
                 );
                 expect(wrapper).toMatchSnapshot();
@@ -72,6 +73,7 @@ describe('MatchingBase', () => {
                         selectedFareStages={selectedFareStages}
                         csrfToken=""
                         {...baseProps}
+                        unusedStage={false}
                     />,
                 );
                 expect(wrapper).toMatchSnapshot();
@@ -100,6 +102,7 @@ describe('MatchingBase', () => {
                     csrfToken=""
                     // eslint-disable-next-line react/jsx-props-no-spreading
                     {...baseProps}
+                    unusedStage={false}
                 />,
             );
 
@@ -129,6 +132,7 @@ describe('MatchingBase', () => {
                     csrfToken=""
                     // eslint-disable-next-line react/jsx-props-no-spreading
                     {...baseProps}
+                    unusedStage={false}
                 />,
             );
 
@@ -159,6 +163,7 @@ describe('MatchingBase', () => {
                         csrfToken=""
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         {...baseProps}
+                        unusedStage={false}
                     />,
                 );
             });

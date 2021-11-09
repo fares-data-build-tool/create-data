@@ -60,12 +60,6 @@ export interface InputMethodInfo {
     inputMethod: string;
 }
 
-export interface Journey extends Errors {
-    directionJourneyPattern?: string;
-    inboundJourney?: string;
-    outboundJourney?: string;
-}
-
 export interface Direction {
     direction: string;
     inboundDirection?: string;
@@ -265,11 +259,6 @@ export interface DbTimeInput {
 
 // AWS and Reference Data (e.g. NOC, TNDS, NaPTAN datasets)
 
-export interface StopPoint {
-    stopPointRef: string;
-    commonName: string;
-}
-
 export interface S3NetexFile {
     name: string;
     noc: string | undefined;
@@ -369,7 +358,7 @@ export interface SalesOfferPackageWithErrors extends SalesOfferPackage {
 }
 
 export interface TicketPeriod {
-    startDate?: string;
+    startDate: string;
     endDate?: string;
 }
 
@@ -525,7 +514,7 @@ export interface MyFaresService {
     destination: string;
     lineName: string;
     startDate: string;
-    endDate: string;
+    endDate: string | undefined;
 }
 
 export interface MyFaresProduct {
@@ -533,7 +522,7 @@ export interface MyFaresProduct {
     lineId: string;
     matchingJsonLink: string;
     startDate: string;
-    endDate: string;
+    endDate?: string;
 }
 
 export type MyFaresOtherProduct = Omit<MyFaresProduct, 'lineId'>;
@@ -547,7 +536,7 @@ export interface MyFaresPointToPointProduct {
     productDescription: string;
     validity: string;
     startDate: string;
-    endDate: string;
+    endDate?: string;
 }
 
 export interface MyFaresOtherFaresProduct {
@@ -558,7 +547,7 @@ export interface MyFaresOtherFaresProduct {
     quantity: string;
     passengerType: string;
     startDate: string;
-    endDate: string;
+    endDate?: string;
     carnet: boolean;
 }
 
@@ -598,6 +587,8 @@ export interface RawService {
     lineId: string;
     lineName: string;
     startDate: string;
+    inboundDirectionDescription: string;
+    outboundDirectionDescription: string;
 }
 
 export interface JourneyPattern {
@@ -612,11 +603,13 @@ export interface JourneyPattern {
     stopList: string[];
 }
 
+export type StopPoint = {
+    stopPointRef: string;
+    commonName: string;
+    sequenceNumber?: number;
+};
 export interface RawJourneyPattern {
-    orderedStopPoints: {
-        stopPointRef: string;
-        commonName: string;
-    }[];
+    orderedStopPoints: StopPoint[];
     direction: string;
 }
 

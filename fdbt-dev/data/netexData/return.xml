@@ -348,7 +348,6 @@
               <validityConditions>
                 <ValidBetween>
                   <FromDate>2010-12-17T00:00:00.000Z</FromDate>
-                  <ToDate>2028-12-17T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
               <Name>Blackpool Transport - Line_19 - Fares for Return ticket</Name>

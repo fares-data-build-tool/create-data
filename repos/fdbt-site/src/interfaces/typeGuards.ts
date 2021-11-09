@@ -9,7 +9,6 @@ import {
     GeoZoneTicket,
     InputCheck,
     InputMethodInfo,
-    Journey,
     MultiOperatorInfo,
     MultiOperatorInfoWithErrors,
     MultipleOperatorsAttribute,
@@ -32,7 +31,6 @@ import {
     TicketRepresentationAttribute,
     TicketRepresentationAttributeWithErrors,
     WithErrors,
-    Errors,
 } from '.';
 import { validFareTypes } from '../constants';
 
@@ -79,16 +77,6 @@ export const isServiceAttributeWithErrors = (
 
 export const isService = (service: Service | ServiceWithErrors | undefined): service is Service => {
     return service !== undefined && (service as Service).service !== undefined;
-};
-
-export const isJourney = (journey: Journey | Errors | undefined): journey is Journey => {
-    return (
-        journey !== undefined &&
-        ((journey as Journey).directionJourneyPattern !== undefined ||
-            (journey as Journey).inboundJourney !== undefined ||
-            (journey as Journey).outboundJourney !== undefined ||
-            (journey as Journey).errors !== undefined)
-    );
 };
 
 export const isTicketRepresentationWithErrors = (
@@ -148,13 +136,6 @@ export const isTicketPeriodAttributeWithErrors = (
     productDates: TicketPeriodWithInput | TicketPeriodWithErrors | undefined,
 ): productDates is TicketPeriodWithErrors =>
     productDates !== undefined && (productDates as TicketPeriodWithErrors).errors !== undefined;
-
-export const isTicketPeriodAttributeWithInput = (
-    productDates: TicketPeriodWithInput | TicketPeriodWithErrors | undefined,
-): productDates is TicketPeriodWithInput =>
-    productDates !== undefined &&
-    (productDates as TicketPeriodWithInput).startDate !== undefined &&
-    (productDates as TicketPeriodWithInput).endDate !== undefined;
 
 export const isMultipleOperatorAttributeWithErrors = (
     searchOperator: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors | undefined,

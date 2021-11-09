@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
+import { exportEnabled } from '../constants/featureFlag';
 
 interface NavigationProps {
     myFaresEnabled: boolean;
@@ -62,6 +63,22 @@ const Navigation = ({ myFaresEnabled }: NavigationProps): ReactElement => (
                     Operator settings
                 </a>
             </li>
+
+            {exportEnabled && (
+                <li
+                    className={`app-navigation__list-item ${
+                        isActivePage(['products/exports']) ? 'app-navigation__list-item--current' : ''
+                    }`}
+                >
+                    <a
+                        className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
+                        href="/products/exports"
+                        data-topnav="Exports"
+                    >
+                        Exports
+                    </a>
+                </li>
+            )}
         </ul>
     </nav>
 );

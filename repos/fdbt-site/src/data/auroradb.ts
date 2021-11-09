@@ -22,6 +22,7 @@ import {
     MyFaresService,
     MyFaresProduct,
     MyFaresOtherProduct,
+    RawJourneyPattern,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { RawSalesOfferPackage } from '../../shared/dbTypes';
@@ -40,6 +41,10 @@ interface ServiceQueryData {
     journeyPatternId: string;
     order: string;
     direction: string;
+    fromSequenceNumber: string;
+    toSequenceNumber: string;
+    inboundDirectionDescription: string;
+    outboundDirectionDescription: string;
 }
 
 interface NaptanInfo {
@@ -103,7 +108,6 @@ export const replaceInternalNocCode = (nocCode: string): string => {
     if (nocCode === INTERNAL_NOC) {
         return 'BLAC';
     }
-
     return nocCode;
 };
 
@@ -167,12 +171,9 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
 
         return (
             queryResults.map((item) => ({
-                id: item.id,
-                origin: item.origin,
-                destination: item.destination,
-                lineName: item.lineName,
+                ...item,
                 startDate: convertDateFormat(item.startDate),
-                endDate: convertDateFormat(item.endDate),
+                endDate: item.endDate ? convertDateFormat(item.endDate) : undefined,
                 lineId: item.lineId,
             })) || []
         );
@@ -212,11 +213,46 @@ export const getBodsServiceByNocAndId = async (
             destination: queryResults[0].destination,
             lineName: queryResults[0].lineName,
             startDate: convertDateFormat(queryResults[0].startDate),
-            endDate: convertDateFormat(queryResults[0].endDate),
+            endDate: queryResults[0].endDate ? convertDateFormat(queryResults[0].endDate) : undefined,
             lineId: queryResults[0].lineId,
         };
     } catch (error) {
         throw new Error(`Could not retrieve individual service from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getBodsServiceDirectionDescriptionsByNocAndLineName = async (
+    nationalOperatorCode: string,
+    lineName: string,
+): Promise<{ inboundDirectionDescription: string; outboundDirectionDescription: string }> => {
+    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
+
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for given national operator code and lineName',
+        nationalOperatorCode,
+        lineName,
+    });
+
+    try {
+        const queryInput = `
+            SELECT inboundDirectionDescription, outboundDirectionDescription
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND lineName = ? AND dataSource = 'bods';
+        `;
+
+        const queryResults = await executeQuery<
+            { inboundDirectionDescription: string; outboundDirectionDescription: string }[]
+        >(queryInput, [nocCodeParameter, lineName]);
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
+        }
+        return {
+            inboundDirectionDescription: queryResults[0].inboundDirectionDescription,
+            outboundDirectionDescription: queryResults[0].outboundDirectionDescription,
+        };
+    } catch (error) {
+        throw new Error(`Could not retrieve individual service direction descriptions from AuroraDB: ${error.stack}`);
     }
 };
 
@@ -373,7 +409,7 @@ export const getServiceByIdAndDataSource = async (
     });
 
     const serviceQuery = `
-        SELECT os.operatorShortName, os.serviceDescription, os.lineName, os.lineId, os.startDate, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction
+        SELECT os.operatorShortName, os.serviceDescription, os.inboundDirectionDescription, os.outboundDirectionDescription, os.lineName, os.lineId, os.startDate, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName, ps.direction, pl.fromSequenceNumber, pl.toSequenceNumber
         FROM txcOperatorLine AS os
         JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
         JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
@@ -398,7 +434,12 @@ export const getServiceByIdAndDataSource = async (
         .map((item) => item.journeyPatternId)
         .filter((value, index, self) => self.indexOf(value) === index);
 
-    const rawPatternService = uniqueJourneyPatterns.map((journey) => {
+    const parseSequenceNumber = (sequenceNumber: string | undefined) => {
+        const parsedSequenceNumber = Number(sequenceNumber);
+        return Number.isInteger(parsedSequenceNumber) ? parsedSequenceNumber : undefined;
+    };
+
+    const rawPatternService: RawJourneyPattern[] = uniqueJourneyPatterns.map((journey) => {
         const filteredJourney = queryResult.filter((item) => {
             return item.journeyPatternId === journey;
         });
@@ -409,10 +450,12 @@ export const getServiceByIdAndDataSource = async (
                 {
                     stopPointRef: filteredJourney[0].fromAtcoCode,
                     commonName: filteredJourney[0].fromCommonName,
+                    sequenceNumber: parseSequenceNumber(filteredJourney[0].fromSequenceNumber),
                 },
                 ...filteredJourney.map((data: ServiceQueryData) => ({
                     stopPointRef: data.toAtcoCode,
                     commonName: data.toCommonName,
+                    sequenceNumber: parseSequenceNumber(data.toSequenceNumber),
                 })),
             ],
         };
@@ -429,6 +472,8 @@ export const getServiceByIdAndDataSource = async (
         lineId: service.lineId,
         lineName: service.lineName,
         startDate: convertDateFormat(service.startDate),
+        inboundDirectionDescription: service.inboundDirectionDescription,
+        outboundDirectionDescription: service.outboundDirectionDescription,
     };
 };
 
@@ -1358,7 +1403,7 @@ export const insertProducts = async (
     fareType: string,
     lineId: string | undefined,
     startDate: string,
-    endDate: string,
+    endDate?: string,
 ): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1378,7 +1423,7 @@ export const insertProducts = async (
             fareType,
             lineId || '',
             startDate,
-            endDate,
+            endDate || '',
         ]);
     } catch (error) {
         throw new Error(`Could not insert products into the products table. ${error.stack}`);
@@ -1512,7 +1557,7 @@ export const getPointToPointProductsByLineId = async (nocCode: string, lineId: s
         return queryResults.map((result) => ({
             ...result,
             startDate: convertDateFormat(result.startDate),
-            endDate: convertDateFormat(result.endDate),
+            endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
         }));
     } catch (error) {
         throw new Error(
@@ -1541,7 +1586,7 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
         return queryResults.map((result) => ({
             ...result,
             startDate: convertDateFormat(result.startDate),
-            endDate: convertDateFormat(result.endDate),
+            endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
         }));
     } catch (error) {
         throw new Error(`Could not retrieve other products by nocCode from AuroraDB: ${error.stack}`);
@@ -1573,5 +1618,25 @@ export const getProductMatchingJsonLinkByProductId = async (nocCode: string, pro
         return queryResults[0].matchingJsonLink;
     } catch (error) {
         throw new Error(`Could not retrieve product matchingJsonLinks by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getAllProducts = async (nocCode: string): Promise<{ matchingJsonLink: string }[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting products for given noc and fareType',
+        noc: nocCode,
+    });
+
+    const query = `
+            SELECT matchingJsonLink
+            FROM products
+            WHERE nocCode = ?
+        `;
+
+    try {
+        return await executeQuery<{ matchingJsonLink: string }[]>(query, [nocCode]);
+    } catch (error) {
+        throw new Error(`Could not fetch products from the products table. ${error.stack}`);
     }
 };

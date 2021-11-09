@@ -41,6 +41,7 @@ export default (server: Express): void => {
                     imgSrc: ["'self'", 'data:', 'https:'],
                     defaultSrc: ["'self'"],
                     connectSrc: ["'self'", 'https://www.google-analytics.com'],
+                    upgradeInsecureRequests: true,
                 },
             },
             hsts: {

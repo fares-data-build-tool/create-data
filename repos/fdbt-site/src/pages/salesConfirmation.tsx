@@ -6,13 +6,12 @@ import {
     NextPageContextWithSession,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
-    TicketPeriodWithInput,
     ConfirmationElement,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
-import { getSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import { formatSOPArray, getCsrfToken } from '../utils';
 import { redirectTo } from '../utils/apiUtils';
@@ -23,14 +22,9 @@ const description = 'Sales Confirmation page of the Create Fares Data Service';
 
 interface SalesConfirmationProps {
     salesOfferPackages: SalesOfferPackage[] | ProductWithSalesOfferPackages[];
-    ticketDating: TicketDating;
     csrfToken: string;
-}
-
-interface TicketDating {
-    productDates: TicketPeriodWithInput;
-    startDefault: boolean;
-    endDefault: boolean;
+    startDate: string;
+    endDate: string | null;
 }
 
 export const sopTicketFormatConverter = (enumerations: string[]): string => {
@@ -45,7 +39,8 @@ export const sopTicketFormatConverter = (enumerations: string[]): string => {
 
 export const buildSalesConfirmationElements = (
     salesOfferPackages: SalesOfferPackage[] | ProductWithSalesOfferPackages[],
-    ticketDating: TicketDating,
+    startDateIn: string,
+    endDateIn: string | null,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -78,32 +73,37 @@ export const buildSalesConfirmationElements = (
             });
         });
     }
-    const startDate = moment(ticketDating.productDates.startDate).format('DD-MM-YYYY');
-    const endDate = moment(ticketDating.productDates.endDate).format('DD-MM-YYYY');
+    const startDate = moment(startDateIn).format('DD-MM-YYYY');
+    const endDate = endDateIn && moment(endDateIn).format('DD-MM-YYYY');
 
     confirmationElements.push(
         {
-            name: `Ticket start date ${ticketDating.startDefault ? '(default)' : ''}`,
+            name: `Ticket start date`,
             content: startDate,
             href: 'productDateInformation',
         },
         {
-            name: `Ticket end date ${ticketDating.endDefault ? '(default)' : ''}`,
-            content: endDate,
+            name: `Ticket end date`,
+            content: endDate || '-',
             href: 'productDateInformation',
         },
     );
     return confirmationElements;
 };
 
-const SalesConfirmation = ({ csrfToken, salesOfferPackages, ticketDating }: SalesConfirmationProps): ReactElement => (
+const SalesConfirmation = ({
+    csrfToken,
+    salesOfferPackages,
+    startDate,
+    endDate,
+}: SalesConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/salesConfirmation" method="post" csrfToken={csrfToken}>
             <>
                 <h1 className="govuk-heading-l">Check your sales information answers before submitting</h1>
                 <ConfirmationTable
                     header="Sales Information"
-                    confirmationElements={buildSalesConfirmationElements(salesOfferPackages, ticketDating)}
+                    confirmationElements={buildSalesConfirmationElements(salesOfferPackages, startDate, endDate)}
                 />
                 <h2 className="govuk-heading-m">Now submit your data for NeTEx creation</h2>
 
@@ -124,7 +124,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
     }
     const csrfToken = getCsrfToken(ctx);
     const salesOfferPackageInfo = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
-    const ticketDatingInfo = getSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
+    const ticketDatingInfo = getRequiredSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
         !salesOfferPackageInfo ||
@@ -134,52 +134,11 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
         throw new Error('User has reached confirmation page with incorrect sales info.');
     }
 
-    let startDate = '';
-    let endDate = '';
-    let dateInput = {
-        startDateDay: '',
-        startDateMonth: '',
-        startDateYear: '',
-        endDateDay: '',
-        endDateMonth: '',
-        endDateYear: '',
-    };
-    let startDefault = false;
-    let endDefault = false;
-
-    if (!ticketDatingInfo) {
-        startDate = moment().add(1, 'hours').toISOString();
-        endDate = moment().add(100, 'y').toISOString();
-        startDefault = true;
-        endDefault = true;
-    } else {
-        if (ticketDatingInfo.startDate) {
-            startDate = ticketDatingInfo.startDate;
-        } else {
-            startDefault = true;
-            startDate = moment().add(1, 'hours').toISOString();
-        }
-        if (ticketDatingInfo.endDate) {
-            endDate = ticketDatingInfo.endDate;
-        } else {
-            endDefault = true;
-            endDate = moment().add(100, 'y').toISOString();
-        }
-        dateInput = ticketDatingInfo.dateInput;
-    }
-
     return {
         props: {
             salesOfferPackages: salesOfferPackageInfo,
-            ticketDating: {
-                productDates: {
-                    startDate,
-                    endDate,
-                    dateInput,
-                },
-                startDefault,
-                endDefault,
-            },
+            startDate: ticketDatingInfo.startDate,
+            endDate: ticketDatingInfo.endDate ?? null,
             csrfToken,
         },
     };

@@ -12,8 +12,6 @@ export const MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE = 'fdbt-manage-passenger-typ
 
 export const SERVICE_ATTRIBUTE = 'fdbt-service';
 
-export const JOURNEY_ATTRIBUTE = 'fdbt-journey';
-
 export const DIRECTION_ATTRIBUTE = 'fdbt-direction';
 
 export const FARE_STAGES_ATTRIBUTE = 'fdbt-fare-stages';
@@ -59,8 +57,6 @@ export const GROUP_SIZE_ATTRIBUTE = 'fdbt-group-size';
 export const GROUP_PASSENGER_TYPES_ATTRIBUTE = 'fdbt-group-passenger-types';
 
 export const GROUP_PASSENGER_INFO_ATTRIBUTE = 'fdbt-group-passenger-info';
-
-export const GROUP_DEFINITION_ATTRIBUTE = 'fdbt-group-definition';
 
 export const TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE = 'fdbt-time-restrictions-definition';
 

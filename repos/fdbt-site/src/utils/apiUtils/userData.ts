@@ -37,6 +37,7 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
+    DIRECTION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { batchGetStopsByAtcoCode, insertProducts } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
@@ -64,6 +65,7 @@ import {
     Ticket,
     TicketPeriod,
     TicketPeriodWithInput,
+    Direction,
 } from '../../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import {
@@ -72,13 +74,12 @@ import {
     isPeriodExpiry,
     isSalesOfferPackages,
     isSalesOfferPackageWithErrors,
-    isTicketPeriodAttributeWithInput,
     isWithErrors,
     isTicketRepresentation,
 } from '../../interfaces/typeGuards';
 
 import logger from '../logger';
-import { getSessionAttribute } from '../sessions';
+import { getSessionAttribute, getRequiredSessionAttribute } from '../sessions';
 import { isFareZoneAttributeWithErrors } from '../../pages/csvZoneUpload';
 import { isReturnPeriodValidityWithErrors } from '../../pages/returnValidity';
 import { isServiceListAttributeWithErrors } from '../../pages/serviceList';
@@ -160,7 +161,7 @@ export const getBaseTicketAttributes = <T extends TicketType>(
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const uuid = getUuidFromSession(req);
     const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
-    const ticketPeriodAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
+    const ticketPeriodAttribute = getRequiredSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
         !nocCode ||
@@ -169,7 +170,7 @@ export const getBaseTicketAttributes = <T extends TicketType>(
         !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !uuid ||
-        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute) ||
+        !('startDate' in ticketPeriodAttribute) ||
         !passengerTypeAttribute.id
     ) {
         logger.error('Invalid attributes', {
@@ -275,8 +276,15 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const products = getPointToPointProducts(req);
     const singleUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
+    const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
 
-    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo) || !singleUnassignedStops) {
+    if (
+        !matchingAttributeInfo ||
+        !isMatchingInfo(matchingAttributeInfo) ||
+        !singleUnassignedStops ||
+        !directionAttribute ||
+        'errors' in directionAttribute
+    ) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
 
@@ -294,6 +302,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         termTime: isTermTime(req),
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
+        journeyDirection: (directionAttribute as Direction).direction,
     };
 };
 
@@ -485,14 +494,14 @@ export const getSchemeOperatorTicketJson = (
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const uuid = getUuidFromSession(req);
     const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
-    const ticketPeriodAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
+    const ticketPeriodAttribute = getRequiredSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
         !isFareType(fareTypeAttribute) ||
         !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !uuid ||
-        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute) ||
+        !('startDate' in ticketPeriodAttribute) ||
         !passengerTypeAttribute.id
     ) {
         logger.error('Invalid attributes', {
@@ -639,9 +648,6 @@ export const insertDataToProductsBucketAndProductsTable = async (
     const filePath = await putUserDataInProductsBucket(userDataJson, uuid, nocCode);
     if (saveProductsEnabled && (ticketType === 'geoZone' || dataFormat !== 'tnds')) {
         const { startDate, endDate } = userDataJson.ticketPeriod;
-        if (!startDate || !endDate) {
-            throw new Error('Start or end date could not be found.');
-        }
         const dateTime = moment().toDate();
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
         await insertProducts(nocCode, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);

@@ -193,6 +193,7 @@ exports[`OutboundMatching Page should render correctly 1`] = `
   }
   title="Outbound Matching - Create Fares Data Service"
   travelineHintText="This data has been taken from the Traveline National Dataset and NaPTAN database."
+  unusedStage={false}
   userFareStages={
     Object {
       "fareStages": Array [
@@ -518,6 +519,7 @@ exports[`OutboundMatching Page should render with error 1`] = `
   }
   title="Outbound Matching - Create Fares Data Service"
   travelineHintText="This data has been taken from the Traveline National Dataset and NaPTAN database."
+  unusedStage={false}
   userFareStages={
     Object {
       "fareStages": Array [
@@ -843,6 +845,7 @@ exports[`OutboundMatching Page should render with warning 1`] = `
   }
   title="Outbound Matching - Create Fares Data Service"
   travelineHintText="This data has been taken from the Traveline National Dataset and NaPTAN database."
+  unusedStage={false}
   userFareStages={
     Object {
       "fareStages": Array [

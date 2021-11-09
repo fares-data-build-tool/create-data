@@ -1,19 +1,9 @@
 import React, { ReactElement } from 'react';
-import {
-    SERVICE_ATTRIBUTE,
-    JOURNEY_ATTRIBUTE,
-    INBOUND_MATCHING_ATTRIBUTE,
-    OPERATOR_ATTRIBUTE,
-    TXC_SOURCE_ATTRIBUTE,
-} from '../constants/attributes';
-import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../data/auroradb';
-import { getUserFareStages } from '../data/s3';
-import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
+import { INBOUND_MATCHING_ATTRIBUTE } from '../constants/attributes';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService, NextPageContextWithSession, Stop, UserFareStages, TxcSourceAttribute } from '../interfaces';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { BasicService, NextPageContextWithSession, Stop, UserFareStages } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
-import { isService, isJourney } from '../interfaces/typeGuards';
+import { getMatchingProps } from '../utils/apiUtils/matching';
 
 const heading = 'Inbound - Match stops to fare stages';
 const title = 'Inbound Matching - Create Fares Data Service';
@@ -22,13 +12,14 @@ const hintText = 'Select a fare stage for each stop on the inbound journey.';
 const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
 const apiEndpoint = '/api/inboundMatching';
 
-interface MatchingProps {
+interface InboundMatchingProps {
     userFareStages: UserFareStages;
     stops: Stop[];
     service: BasicService;
     error: string;
-    warning: boolean;
+    warning?: boolean;
     selectedFareStages: string[][];
+    unusedStage: boolean;
     csrfToken: string;
 }
 
@@ -40,7 +31,8 @@ const InboundMatching = ({
     warning,
     csrfToken,
     selectedFareStages,
-}: MatchingProps): ReactElement => (
+    unusedStage,
+}: InboundMatchingProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
         stops={stops}
@@ -54,67 +46,15 @@ const InboundMatching = ({
         hintText={hintText}
         travelineHintText={travelineHintText}
         apiEndpoint={apiEndpoint}
+        unusedStage={unusedStage}
         csrfToken={csrfToken}
     />
 );
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
-    const csrfToken = getCsrfToken(ctx);
-    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
-    const nocCode = getAndValidateNoc(ctx);
-
-    const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
-    const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
-
-    if (!operatorAttribute?.uuid || !isService(serviceAttribute) || !isJourney(journeyAttribute) || !nocCode) {
-        throw new Error('Necessary attributes not found to show matching page');
-    }
-
-    const lineName = serviceAttribute.service.split('#')[0];
-    const [selectedStartPoint, selectedEndPoint] =
-        (journeyAttribute && journeyAttribute.inboundJourney && journeyAttribute.inboundJourney.split('#')) || [];
-    const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
-    const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, dataSource);
-    const userFareStages = await getUserFareStages(operatorAttribute.uuid);
-    const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
-    const masterStopList = getMasterStopList(relevantJourneys);
-
-    if (masterStopList.length === 0) {
-        throw new Error(
-            `No stops found for journey: nocCode ${nocCode}, lineName: ${lineName}, startPoint: ${selectedStartPoint}, endPoint: ${selectedEndPoint}`,
-        );
-    }
-
-    const naptanInfo = await batchGetStopsByAtcoCode(masterStopList);
-    const orderedStops = masterStopList
-        .map((atco) => naptanInfo.find((s) => s.atcoCode === atco))
-        .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
-
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: InboundMatchingProps }> => {
     const matchingAttribute = getSessionAttribute(ctx.req, INBOUND_MATCHING_ATTRIBUTE);
-
-    return {
-        props: {
-            stops: orderedStops,
-            userFareStages,
-            service: {
-                lineName,
-                nocCode,
-                operatorShortName: service.operatorShortName,
-                serviceDescription: service.serviceDescription,
-                lineId: service.lineId,
-            },
-            error:
-                matchingAttribute && 'error' in matchingAttribute && matchingAttribute.error
-                    ? matchingAttribute.error
-                    : '',
-            warning: (matchingAttribute && 'warning' in matchingAttribute && matchingAttribute.warning) ?? false,
-            selectedFareStages:
-                matchingAttribute && ('error' in matchingAttribute || 'warning' in matchingAttribute)
-                    ? matchingAttribute.selectedFareStages
-                    : [],
-            csrfToken,
-        },
-    };
+    const unusedStage = !!ctx.query.unusedStage;
+    return { props: { ...(await getMatchingProps(ctx, matchingAttribute)).props, unusedStage } };
 };
 
 export default InboundMatching;

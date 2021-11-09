@@ -5,11 +5,16 @@ import { checkIfMultipleOperators } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { redirectTo } from '../utils/apiUtils';
+import { myFaresEnabled } from '../constants/featureFlag';
 
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
 
-const Home = (): ReactElement => (
+interface HomeProps {
+    myFaresEnabled: boolean;
+}
+
+const Home = ({ myFaresEnabled }: HomeProps): ReactElement => (
     <BaseLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Create fares data</h1>
         <div className="govuk-grid-row">
@@ -29,11 +34,26 @@ const Home = (): ReactElement => (
                         Download previously created NeTEx data
                     </a>
                 </div>
+                {!!myFaresEnabled ? (
+                    <div className="govuk-!-margin-top-7">
+                        <h2 className="govuk-heading-s">
+                            <strong className="govuk-tag new-tag">new</strong>
+                            Manage fares
+                        </h2>
+                        <p className="govuk-body">View and manage all of your products and services in one place.</p>
+
+                        <a
+                            href={'/products/services'}
+                            className="govuk-link govuk-!-font-size-19"
+                            id="manage-fares-link"
+                        >
+                            {'View and manage fares'}
+                        </a>
+                    </div>
+                ) : null}
+
                 <div className="govuk-!-margin-top-7">
-                    <h2 className="govuk-heading-s">
-                        <strong className="govuk-tag new-tag">new</strong>
-                        Operator settings
-                    </h2>
+                    <h2 className="govuk-heading-s">Operator settings</h2>
                     <p className="govuk-body">
                         Operator settings is where operators can define and save settings specific to a National
                         Operator Code (NOC), such as passenger types, time restrictions and more. We recommend
@@ -67,7 +87,7 @@ const Home = (): ReactElement => (
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: {} } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => {
     const multipleOperators = checkIfMultipleOperators(ctx);
 
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
@@ -78,7 +98,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: {}
     }
 
     return {
-        props: {},
+        props: { myFaresEnabled },
     };
 };
 
