@@ -8,5 +8,10 @@ describe('pages', () => {
             const tree = shallow(<Home myFaresEnabled={false} />);
             expect(tree).toMatchSnapshot();
         });
+
+        it('should render correctly with my fares enabled', () => {
+            const tree = shallow(<Home myFaresEnabled={true} />);
+            expect(tree).toMatchSnapshot();
+        });
     });
 });

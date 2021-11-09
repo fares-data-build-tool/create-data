@@ -42,7 +42,11 @@ const Home = ({ myFaresEnabled }: HomeProps): ReactElement => (
                         </h2>
                         <p className="govuk-body">View and manage all of your products and services in one place.</p>
 
-                        <a href={'/products/services'} className="govuk-link govuk-!-font-size-19" id="account-link">
+                        <a
+                            href={'/products/services'}
+                            className="govuk-link govuk-!-font-size-19"
+                            id="manage-fares-link"
+                        >
                             {'View and manage fares'}
                         </a>
                     </div>
