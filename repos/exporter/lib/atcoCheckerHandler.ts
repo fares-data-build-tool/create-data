@@ -114,7 +114,7 @@ const getIdsOfServicesRequiringAttentionForSingles = async (singleTicket: WithId
     const serviceAndSortedUniqueStopsFromFeed = sortAndRemoveDuplicateStops(serviceAndStopsFromFeed);
 
     // on our matching json stops, sort the stops and remove duplicates
-    atcoCodesOfKnownStops = [...new Set(atcoCodesOfKnownStops.sort())];
+    atcoCodesOfKnownStops = [...new Set(atcoCodesOfKnownStops)].sort();
 
     const servicesRequiringAttention = [];
 
@@ -199,10 +199,10 @@ const getIdsOfServicesRequiringAttentionForReturns = async (
     const inboundServiceAndSortedUniqueStopsFromFeed = sortAndRemoveDuplicateStops(inboundServiceAndStopsFromFeed);
 
     // our outbound matching json stops, sort the stops and remove duplicates
-    knownOutboundStops = [...new Set(knownOutboundStops.sort())];
+    knownOutboundStops = [...new Set(knownOutboundStops)].sort();
 
     // our inbound matching json stops, sort the stops and remove duplicates
-    knownInboundStops = [...new Set(knownInboundStops.sort())];
+    knownInboundStops = [...new Set(knownInboundStops)].sort();
 
     const outboundServicesRequiringAttention = [];
     const inboundServicesRequiringAttention = [];
