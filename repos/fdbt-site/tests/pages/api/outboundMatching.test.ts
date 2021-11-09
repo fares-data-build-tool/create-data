@@ -20,6 +20,7 @@ describe('Outbound Matching API', () => {
             userFareStages: expect.any(Object),
             matchingFareZones: expect.any(Object),
         };
+
         const { req, res } = getMockRequestAndResponse({
             body: {
                 ...selections,
@@ -28,6 +29,7 @@ describe('Outbound Matching API', () => {
             },
             mockWriteHeadFn: writeHeadMock,
         });
+
         outboundMatching(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, expectedMatchingInfo);
@@ -41,6 +43,7 @@ describe('Outbound Matching API', () => {
             userFareStages: expect.any(Object),
             matchingFareZones: expect.any(Object),
         };
+
         const { req, res } = getMockRequestAndResponse({
             body: {
                 ...selectedOptionsWithAnUnassignedStop,
@@ -49,21 +52,17 @@ describe('Outbound Matching API', () => {
             },
             mockWriteHeadFn: writeHeadMock,
         });
+
         outboundMatching(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, expectedMatchingInfo);
+
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, UNASSIGNED_STOPS_ATTRIBUTE, [
             {
                 atcoCode: '2590B0207',
-                indicator: 'opp',
-                localityCode: 'E0035271',
-                localityName: 'Anchorsholme',
-                naptanCode: 'blpadpdg',
-                parentLocalityName: 'Cleveleys',
-                stopName: 'Cresswood Avenue',
-                street: 'Anchorsholme Lane East',
             },
         ]);
+
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/inboundMatching' });
     });
 
@@ -96,6 +95,7 @@ describe('Outbound Matching API', () => {
             warning: true,
             selectedFareStages: expect.any(Object),
         };
+
         const { req, res } = getMockRequestAndResponse({
             body: {
                 option0:
@@ -112,6 +112,7 @@ describe('Outbound Matching API', () => {
         outboundMatching(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, expectedMatchingError);
+
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/outboundMatching',
         });

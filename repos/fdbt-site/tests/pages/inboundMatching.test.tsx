@@ -59,6 +59,7 @@ describe('Inbound Matching Page', () => {
                 unusedStage={false}
             />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 

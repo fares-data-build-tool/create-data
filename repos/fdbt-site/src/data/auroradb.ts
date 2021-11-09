@@ -11,7 +11,6 @@ import {
     OperatorGroup,
     PassengerType,
     PremadeTimeRestriction,
-    RawService,
     SalesOfferPackage,
     ServiceType,
     SinglePassengerType,
@@ -20,12 +19,15 @@ import {
     GroupPassengerTypeReference,
     FullGroupPassengerType,
     MyFaresService,
-    MyFaresProduct,
-    MyFaresOtherProduct,
-    RawJourneyPattern,
 } from '../interfaces';
 import logger from '../utils/logger';
-import { RawSalesOfferPackage } from '../../shared/dbTypes';
+import {
+    MyFaresOtherProduct,
+    RawSalesOfferPackage,
+    RawService,
+    MyFaresProduct,
+    RawJourneyPattern,
+} from '../../shared/dbTypes';
 import { convertDateFormat } from '../utils';
 
 interface ServiceQueryData {

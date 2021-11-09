@@ -114,13 +114,6 @@ describe('Inbound Matching API', () => {
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE, [
             {
                 atcoCode: '2590B0207',
-                indicator: 'opp',
-                localityCode: 'E0035271',
-                localityName: 'Anchorsholme',
-                naptanCode: 'blpadpdg',
-                parentLocalityName: 'Cleveleys',
-                stopName: 'Cresswood Avenue',
-                street: 'Anchorsholme Lane East',
             },
         ]);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/returnValidity' });

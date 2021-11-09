@@ -2,6 +2,7 @@
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import React from 'react';
+import { RawService } from 'shared/dbTypes';
 import {
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
@@ -43,7 +44,6 @@ import {
     NextPageContextWithSession,
     RadioConditionalInputFieldset,
     RadioWithConditionalInputs,
-    RawService,
     ReturnTicket,
     SalesOfferPackage,
     SchemeOperatorFlatFareTicket,
@@ -1335,14 +1335,6 @@ export const expectedSingleTicket: WithIds<SingleTicket> = {
         singleUnassignedStops: [
             {
                 atcoCode: 'GHI',
-                indicator: 'VWX',
-                localityCode: 'JKL',
-                localityName: 'MNO',
-                naptanCode: 'DEF',
-                parentLocalityName: 'PQR',
-                qualifierName: 'STU',
-                stopName: 'ABC',
-                street: 'YZ!',
             },
         ],
     },
@@ -1501,14 +1493,6 @@ export const expectedCarnetSingleTicket: WithIds<SingleTicket> = {
         singleUnassignedStops: [
             {
                 atcoCode: 'GHI',
-                indicator: 'VWX',
-                localityCode: 'JKL',
-                localityName: 'MNO',
-                naptanCode: 'DEF',
-                parentLocalityName: 'PQR',
-                qualifierName: 'STU',
-                stopName: 'ABC',
-                street: 'YZ!',
             },
         ],
     },
@@ -1689,27 +1673,11 @@ export const expectedNonCircularReturnTicket: WithIds<ReturnTicket> = {
         inboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
-                indicator: 'VWX',
-                localityCode: 'JKL',
-                localityName: 'MNO',
-                naptanCode: 'DEF',
-                parentLocalityName: 'PQR',
-                qualifierName: 'STU',
-                stopName: 'ABC',
-                street: 'YZ!',
             },
         ],
         outboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
-                indicator: 'VWX',
-                localityCode: 'JKL',
-                localityName: 'MNO',
-                naptanCode: 'DEF',
-                parentLocalityName: 'PQR',
-                qualifierName: 'STU',
-                stopName: 'ABC',
-                street: 'YZ!',
             },
         ],
     },
@@ -1893,27 +1861,11 @@ export const expectedPointToPointPeriodTicket: WithIds<PointToPointPeriodTicket>
         inboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
-                indicator: 'VWX',
-                localityCode: 'JKL',
-                localityName: 'MNO',
-                naptanCode: 'DEF',
-                parentLocalityName: 'PQR',
-                qualifierName: 'STU',
-                stopName: 'ABC',
-                street: 'YZ!',
             },
         ],
         outboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
-                indicator: 'VWX',
-                localityCode: 'JKL',
-                localityName: 'MNO',
-                naptanCode: 'DEF',
-                parentLocalityName: 'PQR',
-                qualifierName: 'STU',
-                stopName: 'ABC',
-                street: 'YZ!',
             },
         ],
     },
@@ -2065,27 +2017,11 @@ export const expectedCircularReturnTicket: WithIds<ReturnTicket> = {
         inboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
-                indicator: 'VWX',
-                localityCode: 'JKL',
-                localityName: 'MNO',
-                naptanCode: 'DEF',
-                parentLocalityName: 'PQR',
-                qualifierName: 'STU',
-                stopName: 'ABC',
-                street: 'YZ!',
             },
         ],
         outboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
-                indicator: 'VWX',
-                localityCode: 'JKL',
-                localityName: 'MNO',
-                naptanCode: 'DEF',
-                parentLocalityName: 'PQR',
-                qualifierName: 'STU',
-                stopName: 'ABC',
-                street: 'YZ!',
             },
         ],
     },
@@ -2272,27 +2208,11 @@ export const expectedCarnetReturnTicket: WithIds<ReturnTicket> = {
         inboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
-                indicator: 'VWX',
-                localityCode: 'JKL',
-                localityName: 'MNO',
-                naptanCode: 'DEF',
-                parentLocalityName: 'PQR',
-                qualifierName: 'STU',
-                stopName: 'ABC',
-                street: 'YZ!',
             },
         ],
         outboundUnassignedStops: [
             {
                 atcoCode: 'GHI',
-                indicator: 'VWX',
-                localityCode: 'JKL',
-                localityName: 'MNO',
-                naptanCode: 'DEF',
-                parentLocalityName: 'PQR',
-                qualifierName: 'STU',
-                stopName: 'ABC',
-                street: 'YZ!',
             },
         ],
     },

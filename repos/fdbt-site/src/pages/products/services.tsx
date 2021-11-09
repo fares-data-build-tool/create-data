@@ -1,10 +1,6 @@
 import React, { ReactElement } from 'react';
-import {
-    MyFaresProduct,
-    MyFaresService,
-    MyFaresServiceWithProductCount,
-    NextPageContextWithSession,
-} from '../../interfaces/index';
+import { MyFaresService, MyFaresServiceWithProductCount, NextPageContextWithSession } from '../../interfaces/index';
+import { MyFaresProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled } from '../../constants/featureFlag';
 import { getPointToPointProducts, getBodsServicesByNoc } from '../../data/auroradb';
