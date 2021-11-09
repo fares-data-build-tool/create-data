@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
-import { MyFaresOtherFaresProduct, MyFaresOtherProduct, NextPageContextWithSession } from '../../interfaces/index';
+import { MyFaresOtherFaresProduct, NextPageContextWithSession } from '../../interfaces/index';
+import { MyFaresOtherProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled } from '../../constants/featureFlag';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';

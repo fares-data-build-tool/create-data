@@ -19,10 +19,15 @@ import {
     GroupPassengerTypeReference,
     FullGroupPassengerType,
     MyFaresService,
-    MyFaresOtherProduct,
 } from '../interfaces';
 import logger from '../utils/logger';
-import { RawSalesOfferPackage, RawService, MyFaresProduct, RawJourneyPattern } from '../../shared/dbTypes';
+import {
+    MyFaresOtherProduct,
+    RawSalesOfferPackage,
+    RawService,
+    MyFaresProduct,
+    RawJourneyPattern,
+} from '../../shared/dbTypes';
 import { convertDateFormat } from '../utils';
 
 interface ServiceQueryData {

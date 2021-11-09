@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { ReactElement } from 'react';
-import { DbTimeRestriction, MyFaresProduct, SinglePassengerType } from '../../shared/dbTypes';
+import { DbTimeRestriction, SinglePassengerType } from '../../shared/dbTypes';
 import {
     BaseProduct,
     CarnetDetails,
@@ -516,16 +516,6 @@ export interface MyFaresService {
     startDate: string;
     endDate: string | undefined;
 }
-
-export interface MyFaresProduct {
-    id: number;
-    lineId: string;
-    matchingJsonLink: string;
-    startDate: string;
-    endDate?: string;
-}
-
-export type MyFaresOtherProduct = Omit<MyFaresProduct, 'lineId'>;
 
 export interface MyFaresServiceWithProductCount extends MyFaresService {
     products: number;

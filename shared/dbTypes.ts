@@ -27,8 +27,10 @@ export interface MyFaresProduct {
     lineId: string;
     matchingJsonLink: string;
     startDate: string;
-    endDate: string;
+    endDate?: string;
 }
+
+export type MyFaresOtherProduct = Omit<MyFaresProduct, 'lineId'>;
 
 export interface ServiceQueryData {
     operatorShortName: string;
