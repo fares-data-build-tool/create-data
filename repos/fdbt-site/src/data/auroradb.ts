@@ -1535,7 +1535,10 @@ export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresP
 
         return (await executeQuery<RawMyFaresProduct[]>(queryInput, [nocCode])).map((row) => ({
             ...row,
-            servicesRequiringAttention: row.servicesRequiringAttention.split(','),
+            servicesRequiringAttention:
+                row.servicesRequiringAttention === null || row.servicesRequiringAttention === undefined
+                    ? []
+                    : row.servicesRequiringAttention.split(','),
         }));
     } catch (error) {
         throw new Error(`Could not retrieve point to point products by nocCode from AuroraDB: ${error.stack}`);

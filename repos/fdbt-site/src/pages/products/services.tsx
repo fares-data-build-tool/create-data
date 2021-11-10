@@ -142,6 +142,7 @@ export const matchProductsToServices = (
 
         return {
             ...service,
+            endDate: service.endDate || '',
             products: filteredProducts === undefined ? 0 : filteredProducts.length,
             requiresAttention:
                 filteredProducts === undefined
@@ -158,6 +159,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const services = await getBodsServicesByNoc(noc);
     const products = await getPointToPointProducts(noc);
     const servicesAndProducts = matchProductsToServices(services, products);
+
     return { props: { servicesAndProducts, myFaresEnabled: myFaresEnabled } };
 };
 
