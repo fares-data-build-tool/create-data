@@ -50,6 +50,7 @@ describe('myfares pages', () => {
             expect(tree).toMatchSnapshot();
         });
     });
+
     describe('filterProductsNotToDisplay', () => {
         it('correctly returns the products which should be displayed on the page', () => {
             const result = filterProductsNotToDisplay(
@@ -108,6 +109,7 @@ describe('myfares pages', () => {
                 },
             ]);
         });
+
         it('correctly returns no products when none fall between the correct dates', () => {
             const result = filterProductsNotToDisplay(
                 {

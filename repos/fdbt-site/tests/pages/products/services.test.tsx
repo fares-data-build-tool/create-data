@@ -31,7 +31,7 @@ describe('myfares pages', () => {
             expect(tree).toMatchSnapshot();
         });
 
-        it('should render correctly when services present and products ', () => {
+        it('should render correctly when services present and products', () => {
             const services: MyFaresServiceWithProductCount[] = [
                 {
                     id: '01',
@@ -50,7 +50,28 @@ describe('myfares pages', () => {
 
             expect(tree).toMatchSnapshot();
         });
+
+        it('should render correctly when services require attention', () => {
+            const services: MyFaresServiceWithProductCount[] = [
+                {
+                    id: '01',
+                    origin: 'Leeds',
+                    destination: 'Manchester',
+                    lineId: 'wefawefa',
+                    lineName: '1',
+                    startDate: '1/1/2021',
+                    endDate: '16/9/2021',
+                    products: 2,
+                    requiresAttention: true,
+                },
+            ];
+
+            const tree = shallow(<Services servicesAndProducts={services} myFaresEnabled={true} />);
+
+            expect(tree).toMatchSnapshot();
+        });
     });
+
     describe('showProductAgainstService', () => {
         it('correctly returns false if the products expiration date is before the start date of the service', () => {
             const result = showProductAgainstService(
@@ -61,6 +82,7 @@ describe('myfares pages', () => {
             );
             expect(result).toBeFalsy();
         });
+
         it('correctly returns false if the services end date is before a products start date', () => {
             const result = showProductAgainstService(
                 '2021-09-15T23:00:00.000Z',
@@ -70,6 +92,7 @@ describe('myfares pages', () => {
             );
             expect(result).toBeFalsy();
         });
+
         it('correctly returns true if the product should be against the service', () => {
             const result = showProductAgainstService(
                 '2019-09-15T23:00:00.000Z',

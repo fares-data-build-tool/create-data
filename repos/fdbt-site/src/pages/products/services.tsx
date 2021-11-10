@@ -76,9 +76,7 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                             {getTag(service.startDate, service.endDate, true)}
                             {service.requiresAttention === true ? (
                                 <strong className="govuk-tag govuk-tag--yellow dft-table-tag">NEEDS ATTENTION</strong>
-                            ) : (
-                                ''
-                            )}
+                            ) : null}
                         </td>
                     </tr>
                 ))}
