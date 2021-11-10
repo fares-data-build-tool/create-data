@@ -20,7 +20,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   >
     Product status: 
     <strong
-      className="govuk-tag govuk-tag--turquoise dft-table-tag"
+      className="govuk-tag govuk-tag--turquoise"
     >
       Active
     </strong>
