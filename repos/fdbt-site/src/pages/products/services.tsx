@@ -74,7 +74,11 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                         <td className="govuk-table__cell dft-text-align-centre">{service.endDate || '-'}</td>
                         <td className="govuk-table__cell dft-text-align-centre">
                             {getTag(service.startDate, service.endDate)}
-                            {service.requiresAttention === true ? getTheRequiresAttentionTag() : ''}
+                            {service.requiresAttention === true ? (
+                                <strong className="govuk-tag govuk-tag--yellow dft-table-tag">NEEDS ATTENTION</strong>
+                            ) : (
+                                ''
+                            )}
                         </td>
                     </tr>
                 ))}
@@ -95,10 +99,6 @@ export const getTag = (startDate: string, endDate: string | undefined): JSX.Elem
     } else {
         return <strong className="govuk-tag govuk-tag--red dft-table-tag">Expired</strong>;
     }
-};
-
-const getTheRequiresAttentionTag = (): JSX.Element => {
-    return <strong className="govuk-tag govuk-tag--yellow dft-table-tag">NEEDS ATTENTION</strong>;
 };
 
 export const showProductAgainstService = (
