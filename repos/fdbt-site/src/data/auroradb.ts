@@ -1533,7 +1533,7 @@ export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresP
             AND nocCode = ?
         `;
 
-        return (await executeQuery<RawMyFaresProduct[]>(queryInput, [nocCode])).map((row: any) => ({
+        return (await executeQuery<RawMyFaresProduct[]>(queryInput, [nocCode])).map((row) => ({
             ...row,
             servicesRequiringAttention: row.servicesRequiringAttention.split(','),
         }));
