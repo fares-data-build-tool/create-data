@@ -56,17 +56,17 @@ def get_lines_for_service(service):
 
 
 def extract_data_for_txc_operator_service_table(operator, service, line):
-    noc_code = operator['NationalOperatorCode']
-    start_date = service['OperatingPeriod']['StartDate']
-    end_date = service['OperatingPeriod']['EndDate'] if 'EndDate' in service['OperatingPeriod'] else None
-    operator_short_name = operator['OperatorShortName']
-    inbound_direction_description = line['InboundDescription']['Description'] if 'InboundDescription' in line else ''
-    outbound_direction_description = line['OutboundDescription']['Description'] if 'OutboundDescription' in line else ''
-    service_description = service['Description'] if 'Description' in service else ''
-    service_code = service['ServiceCode'] if 'ServiceCode' in service else None
-    standard_service = service['StandardService'] if 'StandardService' in service else None
-    origin = standard_service['Origin'] if standard_service and 'Origin' in standard_service else None
-    destination = standard_service['Destination'] if standard_service and 'Destination' in standard_service else None
+    noc_code = operator.get('NationalOperatorCode')
+    start_date = service.get('OperatingPeriod').get('StartDate')
+    end_date = service.get('OperatingPeriod', {}).get('EndDate', None)
+    operator_short_name = operator.get('OperatorShortName')
+    inbound_direction_description = line.get('InboundDescription', {}).get('Description', '')
+    outbound_direction_description = line.get('OutboundDescription', {}).get('Description', '')
+    service_description = service.get('Description', '')
+    service_code = service.get('ServiceCode', None)
+    standard_service = service.get('StandardService', None)
+    origin = standard_service.get('Origin', None)
+    destination = standard_service.get('Destination', None)
 
     return noc_code, start_date, end_date, operator_short_name, inbound_direction_description, outbound_direction_description, service_description, service_code, origin, destination
 
