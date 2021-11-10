@@ -212,7 +212,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 className="govuk-table__cell"
               >
                 <strong
-                  className="govuk-tag govuk-tag--red"
+                  className="govuk-tag govuk-tag--red dft-table-tag"
                 >
                   Expired
                 </strong>

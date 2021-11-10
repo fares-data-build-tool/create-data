@@ -73,7 +73,10 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                         <td className="govuk-table__cell dft-text-align-centre">{service.startDate}</td>
                         <td className="govuk-table__cell dft-text-align-centre">{service.endDate || '-'}</td>
                         <td className="govuk-table__cell dft-text-align-centre">
-                            {getTag(service.startDate, service.endDate)}
+                            {getTag(service.startDate, service.endDate, true)}
+                            {service.requiresAttention === true ? (
+                                <strong className="govuk-tag govuk-tag--yellow dft-table-tag">NEEDS ATTENTION</strong>
+                            ) : null}
                         </td>
                     </tr>
                 ))}
@@ -82,17 +85,23 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
     );
 };
 
-export const getTag = (startDate: string, endDate: string | undefined): JSX.Element => {
+export const getTag = (startDate: string, endDate: string | undefined, isWithinATable: boolean): JSX.Element => {
     const today = moment.utc().startOf('day').valueOf();
     const startDateAsUnixTime = moment.utc(startDate, 'DD/MM/YYYY').valueOf();
     const endDateAsUnixTime = endDate ? moment.utc(endDate, 'DD/MM/YYYY').valueOf() : undefined;
 
     if (startDateAsUnixTime <= today && (!endDateAsUnixTime || endDateAsUnixTime >= today)) {
-        return <strong className="govuk-tag govuk-tag--turquoise">Active</strong>;
+        return (
+            <strong className={`govuk-tag govuk-tag--turquoise${isWithinATable ? ' dft-table-tag' : ''}`}>
+                Active
+            </strong>
+        );
     } else if (startDateAsUnixTime > today) {
-        return <strong className="govuk-tag govuk-tag--blue">Pending</strong>;
+        return (
+            <strong className={`govuk-tag govuk-tag--blue${isWithinATable ? ' dft-table-tag' : ''}`}>Pending</strong>
+        );
     } else {
-        return <strong className="govuk-tag govuk-tag--red">Expired</strong>;
+        return <strong className={`govuk-tag govuk-tag--red${isWithinATable ? ' dft-table-tag' : ''}`}>Expired</strong>;
     }
 };
 
@@ -128,16 +137,25 @@ export const matchProductsToServices = (
         return map;
     }, new Map<string, MyFaresProduct[]>());
 
-    return services.map((service) => ({
-        ...service,
-        endDate: service.endDate || '',
-        products:
-            productsByLine
-                .get(service.lineId)
-                ?.filter((product) =>
-                    showProductAgainstService(product.startDate, product.endDate, service.startDate, service.endDate),
-                ).length ?? 0,
-    }));
+    return services.map((service) => {
+        const filteredProducts = productsByLine
+            .get(service.lineId)
+            ?.filter((product) =>
+                showProductAgainstService(product.startDate, product.endDate, service.startDate, service.endDate),
+            );
+
+        return {
+            ...service,
+            endDate: service.endDate || '',
+            products: filteredProducts === undefined ? 0 : filteredProducts.length,
+            requiresAttention:
+                filteredProducts === undefined
+                    ? false
+                    : filteredProducts.some((element) =>
+                          element.servicesRequiringAttention?.some((serviceId) => serviceId === service.id.toString()),
+                      ),
+        };
+    });
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServicesProps }> => {
@@ -145,6 +163,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const services = await getBodsServicesByNoc(noc);
     const products = await getPointToPointProducts(noc);
     const servicesAndProducts = matchProductsToServices(services, products);
+
     return { props: { servicesAndProducts, myFaresEnabled: myFaresEnabled } };
 };
 

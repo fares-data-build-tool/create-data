@@ -519,6 +519,7 @@ export interface MyFaresService {
 
 export interface MyFaresServiceWithProductCount extends MyFaresService {
     products: number;
+    requiresAttention: boolean;
 }
 
 export interface MyFaresPointToPointProduct {
