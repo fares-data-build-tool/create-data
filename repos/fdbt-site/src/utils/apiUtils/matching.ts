@@ -1,5 +1,5 @@
 import { NextApiRequest } from 'next';
-import { Stop, UserFareStages, RawJourneyPattern, StopPoint, NextPageContextWithSession } from '../../interfaces';
+import { Stop, UserFareStages, NextPageContextWithSession } from '../../interfaces';
 import { MatchingFareZones, MatchingFareZonesData, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import toposort from 'toposort';
 import { MatchingProps } from '../../pages/matching';
@@ -15,6 +15,8 @@ import { isService } from '../../interfaces/typeGuards';
 import logger from '../logger';
 import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { getUserFareStages } from '../../data/s3';
+import { RawJourneyPattern, StopPoint } from '../../../shared/dbTypes';
+import { UnassignedStop } from '../../../shared/matchingJsonTypes';
 
 export const getFareZones = (
     userFareStages: UserFareStages,
@@ -38,7 +40,7 @@ export const getFareZones = (
 
 export const getMatchingFareZonesAndUnassignedStopsFromForm = (
     req: NextApiRequest,
-): { matchingFareZones: MatchingFareZones; unassignedStops: Stop[] } => {
+): { matchingFareZones: MatchingFareZones; unassignedStops: UnassignedStop[] } => {
     const matchingFareZones: MatchingFareZones = {};
     const bodyValues: string[] = Object.values(req.body);
     const unassignedStops: Stop[] = [];
@@ -70,7 +72,12 @@ export const getMatchingFareZonesAndUnassignedStopsFromForm = (
         }
     });
 
-    return { matchingFareZones, unassignedStops };
+    return {
+        matchingFareZones,
+        unassignedStops: unassignedStops.map((stop) => ({
+            atcoCode: stop.atcoCode,
+        })),
+    };
 };
 
 export const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>

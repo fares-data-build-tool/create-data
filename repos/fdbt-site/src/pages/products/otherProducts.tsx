@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
-import { MyFaresOtherFaresProduct, MyFaresOtherProduct, NextPageContextWithSession } from '../../interfaces/index';
+import { MyFaresOtherFaresProduct, NextPageContextWithSession } from '../../interfaces/index';
+import { MyFaresOtherProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled } from '../../constants/featureFlag';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
@@ -86,7 +87,9 @@ const otherProductsTable = (otherProducts: MyFaresOtherFaresProduct[]): ReactEle
                                   </td>
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
-                                  <td className="govuk-table__cell">{getTag(product.startDate, product.endDate)}</td>
+                                  <td className="govuk-table__cell">
+                                      {getTag(product.startDate, product.endDate, true)}
+                                  </td>
                               </tr>
                           ))
                         : null}

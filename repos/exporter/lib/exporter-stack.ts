@@ -30,6 +30,14 @@ export class ExporterStack extends cdk.Stack {
             `fdbt-matching-data-${stage}`,
         );
 
+        const vpc = Vpc.fromLookup(this, 'vpc', { vpcName: `fdbt-vpc-${stage}` });
+        const vpcSubnets = {
+            subnets: [
+                Subnet.fromSubnetId(this, 'vpc-subnet-a', Fn.importValue(`${stage}:PrivateSubnetA`)),
+                Subnet.fromSubnetId(this, 'vpc-subnet-b', Fn.importValue(`${stage}:PrivateSubnetB`)),
+            ],
+        };
+
         const exporterFunction = new NodejsFunction(this, `exporter-${stage}`, {
             functionName: `exporter-${stage}`,
             entry: './lib/handler.ts',
@@ -46,18 +54,13 @@ export class ExporterStack extends cdk.Stack {
                     Fn.importValue(`${stage}:ReferenceDataUploaderLambdaSG`),
                 ),
             ],
-            vpc: Vpc.fromLookup(this, 'vpc', { vpcName: `fdbt-vpc-${stage}` }),
-            vpcSubnets: {
-                subnets: [
-                    Subnet.fromSubnetId(this, 'vpc-subnet-a', Fn.importValue(`${stage}:PrivateSubnetA`)),
-                    Subnet.fromSubnetId(this, 'vpc-subnet-b', Fn.importValue(`${stage}:PrivateSubnetB`)),
-                ],
-            },
+            vpc: vpc,
+            vpcSubnets: vpcSubnets,
             bundling: {
                 sourceMap: true,
                 sourceMapMode: SourceMapMode.DEFAULT,
             },
-            timeout: Duration.minutes(5),
+            timeout: Duration.minutes(15),
             logRetention: 180,
         });
 
@@ -67,6 +70,33 @@ export class ExporterStack extends cdk.Stack {
 
         productsBucket.grantRead(exporterFunction);
         matchingDataBucket.grantWrite(exporterFunction);
+
+        const atcoCodeCheckerFunction = new NodejsFunction(this, `atco-code-checker-${stage}`, {
+            functionName: `atco-code-checker-${stage}`,
+            entry: './lib/atcoCheckerHandler.ts',
+            environment: {
+                PRODUCTS_BUCKET: productsBucket.bucketName,
+                MATCHING_DATA_BUCKET: matchingDataBucket.bucketName,
+                RDS_HOST: Fn.importValue(`${stage}:RdsClusterInternalEndpoint`),
+                STAGE: stage,
+            },
+            securityGroups: [
+                SecurityGroup.fromSecurityGroupId(
+                    this,
+                    'atco-code-checker-security-group',
+                    Fn.importValue(`${stage}:ReferenceDataUploaderLambdaSG`),
+                ),
+            ],
+            vpc: vpc,
+            vpcSubnets: vpcSubnets,
+            bundling: {
+                sourceMap: true,
+                sourceMapMode: SourceMapMode.DEFAULT,
+            },
+            timeout: Duration.minutes(15),
+        });
+
+        this.addAlarmsToLambda(stage, atcoCodeCheckerFunction, `atcoCodeCheckerFunction-${stage}`);
 
         const bastionTerminatorFunction = new NodejsFunction(this, `bastion-terminator-${stage}`, {
             functionName: `bastion-terminator-${stage}`,

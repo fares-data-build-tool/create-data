@@ -22,6 +22,62 @@ export interface PassengerType {
     id: number;
 }
 
+export interface MyFaresProduct {
+    id: number;
+    lineId: string;
+    matchingJsonLink: string;
+    startDate: string;
+    endDate?: string;
+    servicesRequiringAttention: string[];
+}
+
+export type RawMyFaresProduct = Omit<MyFaresProduct, 'servicesRequiringAttention'> & {
+    servicesRequiringAttention: string;
+};
+
+export type MyFaresOtherProduct = Omit<MyFaresProduct, 'lineId'>;
+
+export interface ServiceQueryData {
+    operatorShortName: string;
+    serviceDescription: string;
+    lineName: string;
+    startDate: string;
+    lineId: string;
+    fromAtcoCode: string;
+    toAtcoCode: string;
+    fromCommonName: string;
+    toCommonName: string;
+    journeyPatternId: string;
+    order: string;
+    direction: string;
+    fromSequenceNumber: number;
+    toSequenceNumber: number;
+    inboundDirectionDescription: string;
+    outboundDirectionDescription: string;
+}
+
+export type StopPoint = {
+    stopPointRef: string;
+    commonName: string;
+    sequenceNumber?: number;
+};
+
+export interface RawJourneyPattern {
+    orderedStopPoints: StopPoint[];
+    direction: string;
+}
+
+export interface RawService {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: RawJourneyPattern[];
+    lineId: string;
+    lineName: string;
+    startDate: string;
+    inboundDirectionDescription: string;
+    outboundDirectionDescription: string;
+}
+
 export interface GroupPassengerType {
     name: string;
     maxGroupSize: string;
@@ -57,4 +113,11 @@ export interface GroupPassengerTypeReference {
 export interface DbTimeRestriction {
     day: TimeRestrictionDay;
     timeBands: DbTimeBand[];
+}
+
+export interface DirectionAndStops {
+    fromAtcoCode: string;
+    toAtcoCode: string;
+    direction: string;
+    serviceId: string;
 }

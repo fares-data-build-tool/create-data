@@ -7,8 +7,17 @@ import {
     PassengerType,
     SinglePassengerType,
     RawSalesOfferPackage,
+    DirectionAndStops,
 } from '../shared/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
+
+const replaceInternalNocCode = (nocCode: string): string => {
+    if (nocCode === 'IWBusCo') {
+        return 'BLAC';
+    }
+
+    return nocCode;
+};
 
 const ssm = new SSM({ region: 'eu-west-2' });
 
@@ -172,4 +181,76 @@ export const getFareDayEnd = async (noc: string): Promise<string | undefined> =>
     >(queryInput, [noc]);
 
     return queryResults[0]?.time;
+};
+
+export const getPointToPointProducts = async (): Promise<
+    {
+        id: number;
+        lineId: string;
+        matchingJsonLink: string;
+        startDate: string;
+        endDate: string;
+    }[]
+> => {
+    const queryInput = `      
+            SELECT id, lineId, matchingJsonLink, startDate, endDate
+            FROM products
+            WHERE lineId <> ''
+        `;
+    return await executeQuery(queryInput, []);
+};
+
+export const getDirectionAndStopsByLineIdAndNoc = async (lineId: string, noc: string): Promise<DirectionAndStops[]> => {
+    const nocCodeParameter = replaceInternalNocCode(noc);
+
+    const serviceQuery = `
+        SELECT DISTINCT pl.fromAtcoCode, pl.toAtcoCode, ps.direction, os.id as serviceId
+        FROM txcOperatorLine AS os
+        JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
+        JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
+        WHERE os.nocCode = ? AND os.lineId = ? AND os.dataSource = 'bods'
+    `;
+
+    try {
+        return await executeQuery(serviceQuery, [nocCodeParameter, lineId]);
+    } catch (error) {
+        throw new Error(`Could not get journey patterns from Aurora DB.`);
+    }
+};
+
+declare interface ResultSetHeader {
+    constructor: {
+        name: 'ResultSetHeader';
+    };
+    affectedRows: number;
+    fieldCount: number;
+    info: string;
+    insertId: number;
+    serverStatus: number;
+    warningStatus: number;
+}
+
+export const saveIdsOfServicesRequiringAttentionInTheDb = async (
+    productId: number,
+    idsOfServicesRequiringAttention: string[],
+): Promise<void> => {
+    const idsAsACommaSeparatedString = idsOfServicesRequiringAttention.join();
+
+    const updateQuery = `UPDATE products
+                         SET servicesRequiringAttention = ?
+                         WHERE id = ?`;
+
+    const meta = await executeQuery<ResultSetHeader>(updateQuery, [idsAsACommaSeparatedString, productId]);
+
+    if (meta.affectedRows > 1) {
+        throw Error(
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            `Updated too many rows when updating the servicesRequiringAttention column on products table. ${meta}`,
+        );
+    } else if (meta.affectedRows === 0) {
+        throw Error(
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            `Nothing was updated when attempting to update the servicesRequiringAttention column on products table. ${meta}`,
+        );
+    }
 };

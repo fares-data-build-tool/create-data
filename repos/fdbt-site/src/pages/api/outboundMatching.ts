@@ -32,6 +32,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 error: 'No fare stages have been assigned, assign each fare stage to a stop',
                 selectedFareStages: selectedStagesList,
             };
+
             updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeError);
 
             redirectTo(res, '/outboundMatching');
@@ -46,6 +47,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 warning: true,
                 selectedFareStages: selectedStagesList,
             };
+
             updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeError);
 
             redirectTo(res, '/outboundMatching');

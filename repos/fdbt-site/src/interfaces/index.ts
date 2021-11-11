@@ -517,18 +517,9 @@ export interface MyFaresService {
     endDate: string | undefined;
 }
 
-export interface MyFaresProduct {
-    id: number;
-    lineId: string;
-    matchingJsonLink: string;
-    startDate: string;
-    endDate?: string;
-}
-
-export type MyFaresOtherProduct = Omit<MyFaresProduct, 'lineId'>;
-
 export interface MyFaresServiceWithProductCount extends MyFaresService {
     products: number;
+    requiresAttention: boolean;
 }
 
 export interface MyFaresPointToPointProduct {

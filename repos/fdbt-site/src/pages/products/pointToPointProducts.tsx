@@ -1,10 +1,6 @@
 import React, { ReactElement } from 'react';
-import {
-    MyFaresPointToPointProduct,
-    MyFaresProduct,
-    MyFaresService,
-    NextPageContextWithSession,
-} from '../../interfaces';
+import { MyFaresPointToPointProduct, MyFaresService, NextPageContextWithSession } from '../../interfaces/index';
+import { MyFaresProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import {
     getBodsServiceByNocAndId,
@@ -38,7 +34,7 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
                             {service.lineName} - {service.origin} to {service.destination}
                         </h1>
                         <h1 className="govuk-heading-s govuk-!-margin-bottom-8">
-                            Service status: {getTag(service.startDate, service.endDate)}
+                            Service status: {getTag(service.startDate, service.endDate, false)}
                         </h1>
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">Products</h1>
                         {PointToPointProductsTable(products, service)}
@@ -89,7 +85,9 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], servi
                                   </td>
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate ?? '-'}</td>
-                                  <td className="govuk-table__cell">{getTag(product.startDate, product.endDate)}</td>
+                                  <td className="govuk-table__cell">
+                                      {getTag(product.startDate, product.endDate, true)}
+                                  </td>
                               </tr>
                           ))
                         : null}
@@ -140,7 +138,9 @@ export const getServerSideProps = async (
             const productDescription =
                 'products' in matchingJson && 'productName' in matchingJson.products[0]
                     ? matchingJson.products[0].productName
-                    : `${passengerTypeName} - ${matchingJson.type} ${'termTime' in matchingJson ? '(school)' : ''}`;
+                    : `${passengerTypeName} - ${matchingJson.type} ${
+                          'termTime' in matchingJson && matchingJson.termTime ? '(school)' : ''
+                      }`;
 
             let timeRestriction = 'No restrictions';
 

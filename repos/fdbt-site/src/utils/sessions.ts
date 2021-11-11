@@ -125,7 +125,7 @@ import {
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
-import { FromDb, Stop, OperatorDetails } from '../../shared/matchingJsonTypes';
+import { FromDb, OperatorDetails, UnassignedStop } from '../../shared/matchingJsonTypes';
 
 export interface SessionAttributeTypes {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -183,9 +183,8 @@ export interface SessionAttributeTypes {
     [GS_PURCHASE_METHOD_ATTRIBUTE]: GlobalSettingsAttribute<FromDb<SalesOfferPackage>>;
     [GS_FARE_DAY_END_ATTRIBUTE]: { errors: ErrorInfo[]; input: string } | { saved: boolean };
     [GS_OPERATOR_DETAILS_ATTRIBUTE]: { errors: ErrorInfo[]; input: OperatorDetails } | { saved: boolean };
-    [UNASSIGNED_STOPS_ATTRIBUTE]: Stop[];
-    [UNASSIGNED_STOPS_ATTRIBUTE]: Stop[];
-    [UNASSIGNED_INBOUND_STOPS_ATTRIBUTE]: Stop[];
+    [UNASSIGNED_STOPS_ATTRIBUTE]: UnassignedStop[];
+    [UNASSIGNED_INBOUND_STOPS_ATTRIBUTE]: UnassignedStop[];
     [GS_REFERER]: string;
     [CSV_ZONE_FILE_NAME]: string;
 }
