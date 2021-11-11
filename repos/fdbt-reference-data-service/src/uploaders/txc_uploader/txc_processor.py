@@ -369,11 +369,10 @@ def write_to_database(data_dict, region_code, data_source, key, db_connection, l
                             valid_noc = False
                             break
 
-                        iterate_through_journey_patterns_and_run_insert_queries(
-                            cursor, data_dict, operator_service_id, service
-                        )
-
-                        file_has_useable_data = True
+                        if 'JourneyPattern' in service.get('StandardService') and 'JourneyPatternSections' in data_dict.get('TransXChange'):
+                            if 'JourneyPatternSection' in data_dict.get('TransXChange').get('JourneyPatternSections'):
+                                iterate_through_journey_patterns_and_run_insert_queries(cursor, data_dict, operator_service_id, service)
+                                file_has_useable_data = True
 
             if not file_has_nocs:
                 db_connection.rollback()
