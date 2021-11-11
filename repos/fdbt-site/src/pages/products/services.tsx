@@ -151,8 +151,8 @@ export const matchProductsToServices = (
             requiresAttention:
                 filteredProducts === undefined
                     ? false
-                    : filteredProducts.some((element) =>
-                          element.servicesRequiringAttention?.some((serviceId) => serviceId === service.id.toString()),
+                    : filteredProducts.some((product) =>
+                          product.servicesRequiringAttention?.some((serviceId) => serviceId === service.id.toString()),
                       ),
         };
     });

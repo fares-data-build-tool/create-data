@@ -87,6 +87,11 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], servi
                                   <td className="govuk-table__cell">{product.endDate ?? '-'}</td>
                                   <td className="govuk-table__cell">
                                       {getTag(product.startDate, product.endDate, true)}
+                                      {product.requiresAttention === true ? (
+                                          <strong className="govuk-tag govuk-tag--yellow dft-table-tag">
+                                              NEEDS ATTENTION
+                                          </strong>
+                                      ) : null}
                                   </td>
                               </tr>
                           ))
@@ -159,6 +164,8 @@ export const getServerSideProps = async (
                 validity: timeRestriction,
                 id: product.id,
                 ...(endDate && { endDate }),
+                requiresAttention:
+                    !!product.servicesRequiringAttention && product.servicesRequiringAttention.length > 0,
             };
         }),
     );
