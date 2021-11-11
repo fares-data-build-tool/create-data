@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { MyFaresService, MyFaresServiceWithProductCount, NextPageContextWithSession } from '../../interfaces/index';
 import { MyFaresProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
-import { myFaresEnabled } from '../../constants/featureFlag';
+import { exportEnabled, myFaresEnabled } from '../../constants/featureFlag';
 import { getPointToPointProducts, getBodsServicesByNoc } from '../../data/auroradb';
 import { getAndValidateNoc } from '../../utils';
 import moment from 'moment';
@@ -13,12 +13,19 @@ const description = 'View and access your services in one place.';
 interface ServicesProps {
     servicesAndProducts: MyFaresServiceWithProductCount[];
     myFaresEnabled: boolean;
+    exportEnabled: boolean;
 }
 
-const Services = ({ servicesAndProducts, myFaresEnabled }: ServicesProps): ReactElement => {
+const Services = ({ servicesAndProducts, myFaresEnabled, exportEnabled }: ServicesProps): ReactElement => {
     return (
         <>
-            <BaseLayout title={title} description={description} showNavigation myFaresEnabled={myFaresEnabled}>
+            <BaseLayout
+                title={title}
+                description={description}
+                showNavigation
+                myFaresEnabled={myFaresEnabled}
+                exportEnabled={exportEnabled}
+            >
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
@@ -145,7 +152,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const services = await getBodsServicesByNoc(noc);
     const products = await getPointToPointProducts(noc);
     const servicesAndProducts = matchProductsToServices(services, products);
-    return { props: { servicesAndProducts, myFaresEnabled: myFaresEnabled } };
+    return { props: { servicesAndProducts, myFaresEnabled: myFaresEnabled, exportEnabled: exportEnabled } };
 };
 
 export default Services;

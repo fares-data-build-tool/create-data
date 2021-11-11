@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { MyFaresOtherFaresProduct, NextPageContextWithSession } from '../../interfaces/index';
 import { MyFaresOtherProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
-import { myFaresEnabled } from '../../constants/featureFlag';
+import { exportEnabled, myFaresEnabled } from '../../constants/featureFlag';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
 import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
@@ -14,12 +14,19 @@ const description = 'View and access your other products in one place.';
 interface OtherProductsProps {
     otherProducts: MyFaresOtherFaresProduct[];
     myFaresEnabled: boolean;
+    exportEnabled: boolean;
 }
 
-const OtherProducts = ({ otherProducts, myFaresEnabled }: OtherProductsProps): ReactElement => {
+const OtherProducts = ({ otherProducts, myFaresEnabled, exportEnabled }: OtherProductsProps): ReactElement => {
     return (
         <>
-            <BaseLayout title={title} description={description} showNavigation myFaresEnabled={myFaresEnabled}>
+            <BaseLayout
+                title={title}
+                description={description}
+                showNavigation
+                myFaresEnabled={myFaresEnabled}
+                exportEnabled={exportEnabled}
+            >
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
@@ -149,7 +156,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         )
     ).flat();
 
-    return { props: { otherProducts, myFaresEnabled } };
+    return { props: { otherProducts, myFaresEnabled, exportEnabled } };
 };
 
 export default OtherProducts;
