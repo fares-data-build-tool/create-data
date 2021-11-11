@@ -1555,18 +1555,22 @@ export const getPointToPointProductsByLineId = async (nocCode: string, lineId: s
 
     try {
         const queryInput = `
-            SELECT id, lineId, matchingJsonLink, startDate, endDate
+            SELECT id, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention
             FROM products
             WHERE lineId = ?
             AND nocCode = ?
         `;
 
-        const queryResults = await executeQuery<MyFaresProduct[]>(queryInput, [lineId, nocCode]);
+        const queryResults = await executeQuery<RawMyFaresProduct[]>(queryInput, [lineId, nocCode]);
 
         return queryResults.map((result) => ({
             ...result,
             startDate: convertDateFormat(result.startDate),
             endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
+            servicesRequiringAttention:
+                result.servicesRequiringAttention === null || result.servicesRequiringAttention === undefined
+                    ? []
+                    : result.servicesRequiringAttention.split(','),
         }));
     } catch (error) {
         throw new Error(

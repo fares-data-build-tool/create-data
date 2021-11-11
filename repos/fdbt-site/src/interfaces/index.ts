@@ -528,6 +528,7 @@ export interface MyFaresPointToPointProduct {
     validity: string;
     startDate: string;
     endDate?: string;
+    requiresAttention: boolean;
 }
 
 export interface MyFaresOtherFaresProduct {

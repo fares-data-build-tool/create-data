@@ -36,6 +36,7 @@ exports[`pages direction should render correctly 1`] = `
       >
         <select
           className="govuk-select"
+          defaultValue=""
           id="select-direction"
           name="direction"
         >
