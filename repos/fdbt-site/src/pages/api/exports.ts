@@ -18,10 +18,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
 
     // 3. figure out the name of the file
-    const [date, time] = new Date().toISOString().split('T');
-    const currentDateTimeString = date + '_' + time.substr(0, 6).replace(/:/g, '');
+    const [date] = new Date().toISOString().split('T');
+    const currentDateString = date.split('-').join('');
 
-    const exportNameBase = `${noc}_${currentDateTimeString}`;
+    const exportNameBase = `${noc}${currentDateString}`;
     let i = 0;
     let exportName = exportNameBase;
     const exports = await getS3Exports(noc);
