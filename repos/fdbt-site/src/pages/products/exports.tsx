@@ -60,7 +60,8 @@ const Exports = ({
                             This will export all of your current active products and any pending products. Any products
                             flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or
                             products for expired services, will not be included in the export. Once your export is
-                            complete, it will appear in the list below and you can download this and upload it to BODS.
+                            complete, it will appear in the list below and you can download this and upload it to{' '}
+                            <a href="https://publish.bus-data.dft.gov.uk/">BODS</a>.
                         </p>
                         <table className="govuk-table">
                             <thead className="govuk-table__head">
