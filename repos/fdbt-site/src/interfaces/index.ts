@@ -33,6 +33,12 @@ export type DocumentContextWithSession = DocumentContext & {
     req: Session;
 };
 
+export enum EntityStatus {
+    Active = 1,
+    Expired,
+    Pending,
+}
+
 export type IncomingMessageWithSession = IncomingMessage & Session;
 
 export interface CookiePolicy {
@@ -569,17 +575,6 @@ export interface ServiceDB {
     lineId: string;
     lineName: string;
     startDate: string;
-}
-
-export interface RawService {
-    serviceDescription: string;
-    operatorShortName: string;
-    journeyPatterns: RawJourneyPattern[];
-    lineId: string;
-    lineName: string;
-    startDate: string;
-    inboundDirectionDescription: string;
-    outboundDirectionDescription: string;
 }
 
 export interface JourneyPattern {

@@ -21,7 +21,7 @@ const Exports = ({ exports, csrf }: GlobalSettingsProps): ReactElement => {
         <>
             <BaseLayout title={title} description={description} showNavigation>
                 <div className="govuk-grid-row">
-                    <div className="govuk-grid-column-three-quarters">
+                    <div className="govuk-grid-column-full">
                         <h1 className="govuk-heading-xl">Exports</h1>
 
                         <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
