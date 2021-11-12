@@ -100,7 +100,7 @@ const Exports = ({
                                             {exportDetails.signedUrl ? (
                                                 <a href={exportDetails.signedUrl}>Download file</a>
                                             ) : (
-                                                <a>Download file</a>
+                                                <p>Download file not ready</p>
                                             )}
                                         </td>
                                     </tr>
