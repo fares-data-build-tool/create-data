@@ -37,7 +37,7 @@ const ProductDetails = ({
         <BackButton href={backHref} />
         <h1 className="govuk-heading-l">{productName}</h1>
         <div id="contact-hint" className="govuk-hint">
-            Product status: {getTag(startDate, endDate)}
+            Product status: {getTag(startDate, endDate, false)}
         </div>
         {productDetailsElements.map((element) => {
             return (

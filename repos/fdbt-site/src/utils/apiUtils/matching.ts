@@ -15,8 +15,8 @@ import { isService } from '../../interfaces/typeGuards';
 import logger from '../logger';
 import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { getUserFareStages } from '../../data/s3';
-import { RawJourneyPattern, StopPoint } from 'shared/dbTypes';
-import { UnassignedStop } from 'shared/matchingJsonTypes';
+import { RawJourneyPattern, StopPoint } from '../../../shared/dbTypes';
+import { UnassignedStop } from '../../../shared/matchingJsonTypes';
 
 export const getFareZones = (
     userFareStages: UserFareStages,

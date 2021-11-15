@@ -23,7 +23,7 @@ describe('myfares pages', () => {
             expect(tree).toMatchSnapshot();
         });
 
-        it('should render correctly when products present against service', () => {
+        it('should render correctly when products present against service and the product requires attention', () => {
             const tree = shallow(
                 <PointToPointProducts
                     service={{
@@ -42,6 +42,35 @@ describe('myfares pages', () => {
                             validity: 'Monday, Tuesday',
                             startDate: '05/04/2020',
                             endDate: '10/04/2020',
+                            requiresAttention: true,
+                        },
+                    ]}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly when products present against service and the product does not require attention', () => {
+            const tree = shallow(
+                <PointToPointProducts
+                    service={{
+                        id: '01',
+                        origin: 'Leeds',
+                        destination: 'Manchester',
+                        lineId: 'wefawefa',
+                        lineName: '1',
+                        startDate: '1/1/2021',
+                        endDate: '16/9/2021',
+                    }}
+                    products={[
+                        {
+                            id: 1,
+                            productDescription: 'Adult - single',
+                            validity: 'Monday, Tuesday',
+                            startDate: '05/04/2020',
+                            endDate: '10/04/2020',
+                            requiresAttention: false,
                         },
                     ]}
                 />,
@@ -50,6 +79,7 @@ describe('myfares pages', () => {
             expect(tree).toMatchSnapshot();
         });
     });
+
     describe('filterProductsNotToDisplay', () => {
         it('correctly returns the products which should be displayed on the page', () => {
             const result = filterProductsNotToDisplay(
@@ -69,6 +99,7 @@ describe('myfares pages', () => {
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2018',
                         endDate: '10/04/2019',
+                        servicesRequiringAttention: [],
                     },
                     {
                         id: 2,
@@ -76,6 +107,7 @@ describe('myfares pages', () => {
                         matchingJsonLink: '/path/to/json',
                         startDate: '01/01/2021',
                         endDate: '04/04/2021',
+                        servicesRequiringAttention: [],
                     },
                     {
                         id: 3,
@@ -83,6 +115,7 @@ describe('myfares pages', () => {
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2020',
                         endDate: '10/04/2020',
+                        servicesRequiringAttention: [],
                     },
                     {
                         id: 4,
@@ -90,6 +123,7 @@ describe('myfares pages', () => {
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2020',
                         endDate: '10/04/2020',
+                        servicesRequiringAttention: [],
                     },
                 ],
             );
@@ -100,9 +134,11 @@ describe('myfares pages', () => {
                     lineId: 'wefawefa',
                     matchingJsonLink: '/path/to/json',
                     startDate: '01/01/2021',
+                    servicesRequiringAttention: [],
                 },
             ]);
         });
+
         it('correctly returns no products when none fall between the correct dates', () => {
             const result = filterProductsNotToDisplay(
                 {
@@ -121,6 +157,7 @@ describe('myfares pages', () => {
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2012',
                         endDate: '10/04/2012',
+                        servicesRequiringAttention: [],
                     },
                     {
                         id: 2,
@@ -128,6 +165,7 @@ describe('myfares pages', () => {
                         matchingJsonLink: '/path/to/json',
                         startDate: '01/01/2014',
                         endDate: '04/04/2015',
+                        servicesRequiringAttention: [],
                     },
                     {
                         id: 3,
@@ -135,6 +173,7 @@ describe('myfares pages', () => {
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2022',
                         endDate: '10/04/2022',
+                        servicesRequiringAttention: [],
                     },
                     {
                         id: 4,
@@ -142,6 +181,7 @@ describe('myfares pages', () => {
                         matchingJsonLink: '/path/to/json',
                         startDate: '12/12/2021',
                         endDate: '10/04/2023',
+                        servicesRequiringAttention: [],
                     },
                 ],
             );
