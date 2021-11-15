@@ -46,7 +46,7 @@ const Exports = ({
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
-                            <h1 className="govuk-heading-m">Export your data</h1>{' '}
+                            <h1 className="govuk-heading-xl">Export your data</h1>{' '}
                             <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
                                 {operatorHasProducts && (
                                     <button type="submit" className="govuk-button">

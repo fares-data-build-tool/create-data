@@ -19,7 +19,7 @@ exports[`pages confirmRegistration should render correctly with data 1`] = `
           className="dft-flex dft-flex-justify-space-between"
         >
           <h1
-            className="govuk-heading-m"
+            className="govuk-heading-xl"
           >
             Export your data
           </h1>
@@ -169,7 +169,7 @@ exports[`pages confirmRegistration should render correctly without data 1`] = `
           className="dft-flex dft-flex-justify-space-between"
         >
           <h1
-            className="govuk-heading-m"
+            className="govuk-heading-xl"
           >
             Export your data
           </h1>
