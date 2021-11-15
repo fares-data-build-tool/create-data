@@ -110,9 +110,11 @@ export interface DbTimeRestriction {
     timeBands: DbTimeBand[];
 }
 
-export interface DirectionAndStops {
+export interface ServiceDetails {
     fromAtcoCode: string;
     toAtcoCode: string;
     direction: string;
     serviceId: string;
+    startDate: string;
+    endDate: string | undefined;
 }

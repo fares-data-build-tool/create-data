@@ -7,9 +7,10 @@ import {
     PassengerType,
     SinglePassengerType,
     RawSalesOfferPackage,
-    DirectionAndStops,
+    ServiceDetails,
 } from '../shared/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
+import { convertDateFormat } from './utils/index';
 
 const replaceInternalNocCode = (nocCode: string): string => {
     if (nocCode === 'IWBusCo') {
@@ -200,11 +201,11 @@ export const getPointToPointProducts = async (): Promise<
     return await executeQuery(queryInput, []);
 };
 
-export const getDirectionAndStopsByLineIdAndNoc = async (lineId: string, noc: string): Promise<DirectionAndStops[]> => {
+export const getServicesByLineIdAndNoc = async (lineId: string, noc: string): Promise<ServiceDetails[]> => {
     const nocCodeParameter = replaceInternalNocCode(noc);
 
     const serviceQuery = `
-        SELECT DISTINCT pl.fromAtcoCode, pl.toAtcoCode, ps.direction, os.id as serviceId
+        SELECT DISTINCT pl.fromAtcoCode, pl.toAtcoCode, ps.direction, os.id as serviceId, os.startDate, os.endDate 
         FROM txcOperatorLine AS os
         JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
         JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
@@ -212,7 +213,12 @@ export const getDirectionAndStopsByLineIdAndNoc = async (lineId: string, noc: st
     `;
 
     try {
-        return await executeQuery(serviceQuery, [nocCodeParameter, lineId]);
+        const queryResults = await executeQuery<ServiceDetails[]>(serviceQuery, [nocCodeParameter, lineId]);
+        return queryResults.map((result) => ({
+            ...result,
+            startDate: convertDateFormat(result.startDate),
+            endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
+        }));
     } catch (error) {
         throw new Error(`Could not get journey patterns from Aurora DB.`);
     }
@@ -252,5 +258,16 @@ export const saveIdsOfServicesRequiringAttentionInTheDb = async (
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             `Nothing was updated when attempting to update the servicesRequiringAttention column on products table. ${meta}`,
         );
+    }
+};
+
+export const removeAllServicesRequiringAttentionIds = async (): Promise<void> => {
+    const serviceQuery = `UPDATE products
+                          SET servicesRequiringAttention = null`;
+
+    try {
+        await executeQuery(serviceQuery, []);
+    } catch (error) {
+        throw new Error(`Could not get journey patterns from Aurora DB.`);
     }
 };
