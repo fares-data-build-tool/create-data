@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import { exportEnabled } from '../constants/featureFlag';
 
 interface NavigationProps {
     myFaresEnabled: boolean;
+    exportEnabled: boolean;
 }
 
-const Navigation = ({ myFaresEnabled }: NavigationProps): ReactElement => (
+const Navigation = ({ myFaresEnabled, exportEnabled }: NavigationProps): ReactElement => (
     <nav className="app-navigation govuk-clearfix">
         <ul className="app-navigation__list app-width-container">
             {myFaresEnabled && (

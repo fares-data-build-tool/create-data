@@ -21,6 +21,7 @@ describe('GlobalSettingsViewPage', () => {
                 CardBody={CardBody}
                 deleteEnabled={false}
                 myFaresEnabled={false}
+                exportEnabled={false}
             />,
         );
         expect(tree).toMatchSnapshot();
@@ -42,6 +43,7 @@ describe('GlobalSettingsViewPage', () => {
                 CardBody={CardBody}
                 deleteEnabled={false}
                 myFaresEnabled={false}
+                exportEnabled={false}
             />,
         );
         expect(tree).toMatchSnapshot();
@@ -63,6 +65,7 @@ describe('GlobalSettingsViewPage', () => {
                 CardBody={CardBody}
                 deleteEnabled={true}
                 myFaresEnabled={false}
+                exportEnabled={false}
             />,
         );
 
