@@ -10,7 +10,6 @@ import {
     ServiceDetails,
 } from '../shared/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
-import { convertDateFormat } from './utils/index';
 
 const replaceInternalNocCode = (nocCode: string): string => {
     if (nocCode === 'IWBusCo') {
@@ -205,7 +204,7 @@ export const getServicesByLineIdAndNoc = async (lineId: string, noc: string): Pr
     const nocCodeParameter = replaceInternalNocCode(noc);
 
     const serviceQuery = `
-        SELECT DISTINCT pl.fromAtcoCode, pl.toAtcoCode, ps.direction, os.id as serviceId, os.startDate, os.endDate 
+        SELECT DISTINCT pl.fromAtcoCode, pl.toAtcoCode, ps.direction, os.id as serviceId
         FROM txcOperatorLine AS os
         JOIN txcJourneyPattern AS ps ON ps.operatorServiceId = os.id
         JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
@@ -213,12 +212,7 @@ export const getServicesByLineIdAndNoc = async (lineId: string, noc: string): Pr
     `;
 
     try {
-        const queryResults = await executeQuery<ServiceDetails[]>(serviceQuery, [nocCodeParameter, lineId]);
-        return queryResults.map((result) => ({
-            ...result,
-            startDate: convertDateFormat(result.startDate),
-            endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
-        }));
+        return await executeQuery(serviceQuery, [nocCodeParameter, lineId]);
     } catch (error) {
         throw new Error(`Could not get journey patterns from Aurora DB.`);
     }
@@ -272,6 +266,6 @@ export const removeAllServicesRequiringAttentionIds = async (): Promise<void> =>
     try {
         await executeQuery(serviceQuery, []);
     } catch (error) {
-        throw new Error(`Could not get journey patterns from Aurora DB.`);
+        throw new Error(`Could not update services requiring attention to null.`);
     }
 };

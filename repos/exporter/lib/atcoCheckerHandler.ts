@@ -9,7 +9,6 @@ import {
 } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
 import { ServiceDetails } from '../shared/dbTypes';
-import moment from 'moment';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -299,21 +298,4 @@ const sortAndRemoveDuplicateStops = (serviceAndStopsDictionary: {
     }
 
     return serviceAndStopsDictionary;
-};
-
-export const dateRangesOverlap = (
-    productStartDate: string,
-    productEndDate: string | undefined,
-    serviceStartDate: string,
-    serviceEndDate: string | undefined,
-): boolean => {
-    const momentProductStartDate = moment.utc(productStartDate, 'DD/MM/YYYY').valueOf();
-    const momentProductEndDate = productEndDate ? moment.utc(productEndDate, 'DD/MM/YYYY').valueOf() : undefined;
-    const momentServiceStartDate = moment.utc(serviceStartDate, 'DD/MM/YYYY').valueOf();
-    const momentServiceEndDate = serviceEndDate ? moment.utc(serviceEndDate, 'DD/MM/YYYY').valueOf() : undefined;
-
-    return (
-        (!momentProductEndDate || momentProductEndDate >= momentServiceStartDate) &&
-        (!momentServiceEndDate || momentServiceEndDate >= momentProductStartDate)
-    );
 };

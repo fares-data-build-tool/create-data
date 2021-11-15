@@ -120,6 +120,4 @@ export interface ServiceDetails {
     toAtcoCode: string;
     direction: string;
     serviceId: string;
-    startDate: string;
-    endDate: string | undefined;
 }
