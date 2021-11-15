@@ -57,7 +57,7 @@ const Exports = ({
                         </div>
                         <div className="govuk-grid-row">
                             <div className="govuk-grid-column-two-thirds">
-                                <p className="govuk-body-m govuk-!-margin-bottom-6">
+                                <p className="govuk-body-m govuk-!-margin-bottom-9">
                                     This will export all of your current active products and any pending products. Any
                                     products flagged with ‘Needs Attention’ will be exported but may not be correct.
                                     Expired products or products for expired services, will not be included in the
@@ -68,7 +68,7 @@ const Exports = ({
                             </div>
                         </div>
 
-                        <h1 className="govuk-heading-m"> Previously exported fares</h1>
+                        <h2 className="govuk-heading-m"> Previously exported fares</h2>
                         <table className="govuk-table">
                             <thead className="govuk-table__head">
                                 <tr className="govuk-table__row">
