@@ -263,9 +263,5 @@ export const removeAllServicesRequiringAttentionIds = async (): Promise<void> =>
     const serviceQuery = `UPDATE products
                           SET servicesRequiringAttention = null`;
 
-    try {
-        await executeQuery(serviceQuery, []);
-    } catch (error) {
-        throw new Error(`Could not update services requiring attention to null.`);
-    }
+    await executeQuery(serviceQuery, []);
 };
