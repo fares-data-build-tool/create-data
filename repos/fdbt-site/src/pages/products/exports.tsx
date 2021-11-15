@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContextWithSession } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
-import { exportEnabled } from '../../constants/featureFlag';
+import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
 import { getS3FolderCount, getS3Exports, retrieveAndZipExportedNetexForNoc, getNetexSignedUrl } from '../../data/s3';
 import { redirectTo } from '../../utils/apiUtils';
@@ -14,14 +14,22 @@ const description = 'View and access your settings in one place.';
 interface GlobalSettingsProps {
     exports: { matchingDataCount: number; name: string; netexCount: number; signedUrl: string | null }[];
     csrf: string;
+    myFaresEnabled: boolean;
+    exportEnabled: boolean;
 }
 
-const Exports = ({ exports, csrf }: GlobalSettingsProps): ReactElement => {
+const Exports = ({ exports, csrf, myFaresEnabled, exportEnabled }: GlobalSettingsProps): ReactElement => {
     return (
         <>
-            <BaseLayout title={title} description={description} showNavigation>
+            <BaseLayout
+                title={title}
+                description={description}
+                showNavigation
+                myFaresEnabled={myFaresEnabled}
+                exportEnabled={exportEnabled}
+            >
                 <div className="govuk-grid-row">
-                    <div className="govuk-grid-column-three-quarters">
+                    <div className="govuk-grid-column-full">
                         <h1 className="govuk-heading-xl">Exports</h1>
 
                         <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
@@ -103,7 +111,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }),
     );
 
-    return { props: { exports, csrf: getCsrfToken(ctx) } };
+    return { props: { exports, csrf: getCsrfToken(ctx), myFaresEnabled, exportEnabled } };
 };
 
 export default Exports;

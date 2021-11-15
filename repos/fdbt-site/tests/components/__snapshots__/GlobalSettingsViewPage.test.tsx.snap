@@ -3,6 +3,7 @@
 exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] = `
 <BaseLayout
   description="my description"
+  exportEnabled={false}
   myFaresEnabled={false}
   referer={null}
   showNavigation={true}
@@ -159,6 +160,7 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] 
 exports[`GlobalSettingsViewPage should render correctly when entities exist and delete is enabled 1`] = `
 <BaseLayout
   description="my description"
+  exportEnabled={false}
   myFaresEnabled={false}
   referer={null}
   showNavigation={true}
@@ -345,6 +347,7 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist and 
 exports[`GlobalSettingsViewPage should render correctly when no entities 1`] = `
 <BaseLayout
   description="my description"
+  exportEnabled={false}
   myFaresEnabled={false}
   referer={null}
   showNavigation={true}

@@ -28,6 +28,7 @@ import {
     RawService,
     MyFaresProduct,
     RawJourneyPattern,
+    DbProduct,
 } from '../../shared/dbTypes';
 import { convertDateFormat } from '../utils';
 
@@ -396,6 +397,43 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
             }`,
         );
     }
+};
+
+/**
+ * For a given national operator code and line id, the function returns a
+ * subset of information about each service.
+ *
+ *
+ * @remarks
+ * Only brings back services from `bods`.
+ *
+ *
+ * @param noc - The national operator code
+ * @param lineId - The line id of the service(s)
+ *
+ * @returns An array of RawService.
+ */
+export const getServicesByNocAndLineId = async (noc: string, lineId: string): Promise<RawService[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for a given noc and line id',
+        noc,
+        lineId,
+    });
+
+    const query = `
+      SELECT ol.id,
+             ol.startDate,
+             ol.endDate
+      FROM txcOperatorLine ol
+      WHERE ol.nocCode = ?
+        AND ol.lineId = ?;
+        AND ol.dataSource = 'bods';
+    `;
+
+    const result = await executeQuery<RawService[]>(query, [noc, lineId]);
+
+    return result;
 };
 
 export const getServiceByIdAndDataSource = async (
@@ -1634,21 +1672,28 @@ export const getProductMatchingJsonLinkByProductId = async (nocCode: string, pro
     }
 };
 
-export const getAllProducts = async (nocCode: string): Promise<{ matchingJsonLink: string }[]> => {
+/**
+ * For a given national operator code, get all the products from the database.
+ *
+ * @param noc the national operator code
+ *
+ * @returns An array of DbProduct.
+ */
+export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'getting products for given noc and fareType',
-        noc: nocCode,
+        message: 'getting products for a given noc',
+        noc: noc,
     });
 
     const query = `
-            SELECT matchingJsonLink
+            SELECT matchingJsonLink, lineId, startDate, endDate
             FROM products
             WHERE nocCode = ?
         `;
 
     try {
-        return await executeQuery<{ matchingJsonLink: string }[]>(query, [nocCode]);
+        return await executeQuery<DbProduct[]>(query, [noc]);
     } catch (error) {
         throw new Error(`Could not fetch products from the products table. ${error.stack}`);
     }
