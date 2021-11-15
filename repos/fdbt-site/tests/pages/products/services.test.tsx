@@ -46,7 +46,7 @@ describe('myfares pages', () => {
                 },
             ];
 
-            const tree = shallow(<Services servicesAndProducts={services} myFaresEnabled={true} />);
+            const tree = shallow(<Services servicesAndProducts={services} myFaresEnabled={true} exportEnabled />);
 
             expect(tree).toMatchSnapshot();
         });

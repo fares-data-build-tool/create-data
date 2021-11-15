@@ -63,24 +63,25 @@ const Exports = ({
                             complete, it will appear in the list below and you can download this and upload it to{' '}
                             <a href="https://publish.bus-data.dft.gov.uk/">BODS</a>.
                         </p>
+                        <br></br>
+                        <br></br>
+                        <h1 className="govuk-heading-m"> Previously exported fares</h1>
                         <table className="govuk-table">
                             <thead className="govuk-table__head">
                                 <tr className="govuk-table__row">
                                     <th scope="col" className="govuk-table__header">
-                                        Export Name
+                                        Export name
                                     </th>
                                     <th scope="col" className="govuk-table__header">
-                                        Export Date
+                                        Export date
                                     </th>
                                     <th scope="col" className="govuk-table__header">
-                                        Export Time
+                                        Export time
                                     </th>
                                     <th scope="col" className="govuk-table__header">
-                                        Export Status
+                                        Export status
                                     </th>
-                                    <th scope="col" className="govuk-table__header">
-                                        Download File
-                                    </th>
+                                    <th scope="col" className="govuk-table__header"></th>
                                 </tr>
                             </thead>
                             <tbody className="govuk-table__body">

@@ -348,6 +348,7 @@ exports[`myfares pages services should render correctly when services require at
 <Fragment>
   <BaseLayout
     description="View and access your services in one place."
+    exportEnabled={true}
     myFaresEnabled={true}
     showNavigation={true}
     title="Services - Create Fares Data Service"

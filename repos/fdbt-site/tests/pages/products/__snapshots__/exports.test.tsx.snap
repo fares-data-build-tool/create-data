@@ -49,6 +49,13 @@ exports[`pages confirmRegistration should render correctly with data 1`] = `
           </a>
           .
         </p>
+        <br />
+        <br />
+        <h1
+          className="govuk-heading-m"
+        >
+           Previously exported fares
+        </h1>
         <table
           className="govuk-table"
         >
@@ -62,32 +69,30 @@ exports[`pages confirmRegistration should render correctly with data 1`] = `
                 className="govuk-table__header"
                 scope="col"
               >
-                Export Name
+                Export name
               </th>
               <th
                 className="govuk-table__header"
                 scope="col"
               >
-                Export Date
+                Export date
               </th>
               <th
                 className="govuk-table__header"
                 scope="col"
               >
-                Export Time
+                Export time
               </th>
               <th
                 className="govuk-table__header"
                 scope="col"
               >
-                Export Status
+                Export status
               </th>
               <th
                 className="govuk-table__header"
                 scope="col"
-              >
-                Download File
-              </th>
+              />
             </tr>
           </thead>
           <tbody
@@ -188,6 +193,13 @@ exports[`pages confirmRegistration should render correctly without data 1`] = `
           </a>
           .
         </p>
+        <br />
+        <br />
+        <h1
+          className="govuk-heading-m"
+        >
+           Previously exported fares
+        </h1>
         <table
           className="govuk-table"
         >
@@ -201,32 +213,30 @@ exports[`pages confirmRegistration should render correctly without data 1`] = `
                 className="govuk-table__header"
                 scope="col"
               >
-                Export Name
+                Export name
               </th>
               <th
                 className="govuk-table__header"
                 scope="col"
               >
-                Export Date
+                Export date
               </th>
               <th
                 className="govuk-table__header"
                 scope="col"
               >
-                Export Time
+                Export time
               </th>
               <th
                 className="govuk-table__header"
                 scope="col"
               >
-                Export Status
+                Export status
               </th>
               <th
                 className="govuk-table__header"
                 scope="col"
-              >
-                Download File
-              </th>
+              />
             </tr>
           </thead>
           <tbody
