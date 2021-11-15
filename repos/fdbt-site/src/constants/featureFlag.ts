@@ -1,4 +1,3 @@
-// const dev = 'dev' === process.env.STAGE;
 const devOrTest = ['test', 'dev'].includes(process.env.STAGE ?? '');
 
 export const globalSettingsDeleteEnabled = devOrTest;
