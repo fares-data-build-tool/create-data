@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { FEEDBACK_LINK, INTERNAL_NOC } from '../constants';
-import { getUuidFromSession, getAttributeFromIdToken, deleteAllCookiesOnServerSide } from '../utils';
+import { getUuidFromSession, deleteAllCookiesOnServerSide, getAndValidateNoc } from '../utils';
 import { NextPageContextWithSession } from '../interfaces';
 import logger from '../utils/logger';
 import { regenerateSession } from '../utils/sessions';
@@ -58,10 +58,10 @@ const ProductCreated = (): ReactElement => (
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const uuid = getUuidFromSession(ctx);
-    const noc = getAttributeFromIdToken(ctx, 'custom:noc');
+    const noc = getAndValidateNoc(ctx);
 
     if (noc !== INTERNAL_NOC) {
-        logger.info('', { context: 'pages.thankyou', message: 'transaction complete', uuid });
+        logger.info('', { context: 'pages.productCreated', message: 'transaction complete', uuid });
     }
 
     if (ctx.req) {
