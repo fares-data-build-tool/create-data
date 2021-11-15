@@ -1,7 +1,6 @@
 import awsParamStore from 'aws-param-store';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
-import { DbTimeRestriction } from 'shared/dbTypes';
 import { FromDb, OperatorDetails } from '../../shared/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
@@ -22,6 +21,8 @@ import {
 } from '../interfaces';
 import logger from '../utils/logger';
 import {
+    DbTimeRestriction,
+    RawMyFaresProduct,
     MyFaresOtherProduct,
     RawSalesOfferPackage,
     RawService,
@@ -1526,13 +1527,19 @@ export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresP
 
     try {
         const queryInput = `      
-            SELECT id, lineId, matchingJsonLink, startDate, endDate
+            SELECT id, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention 
             FROM products
             WHERE lineId <> ''
             AND nocCode = ?
         `;
 
-        return await executeQuery<MyFaresProduct[]>(queryInput, [nocCode]);
+        return (await executeQuery<RawMyFaresProduct[]>(queryInput, [nocCode])).map((row) => ({
+            ...row,
+            servicesRequiringAttention:
+                row.servicesRequiringAttention === null || row.servicesRequiringAttention === undefined
+                    ? []
+                    : row.servicesRequiringAttention.split(','),
+        }));
     } catch (error) {
         throw new Error(`Could not retrieve point to point products by nocCode from AuroraDB: ${error.stack}`);
     }
@@ -1548,18 +1555,22 @@ export const getPointToPointProductsByLineId = async (nocCode: string, lineId: s
 
     try {
         const queryInput = `
-            SELECT id, lineId, matchingJsonLink, startDate, endDate
+            SELECT id, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention
             FROM products
             WHERE lineId = ?
             AND nocCode = ?
         `;
 
-        const queryResults = await executeQuery<MyFaresProduct[]>(queryInput, [lineId, nocCode]);
+        const queryResults = await executeQuery<RawMyFaresProduct[]>(queryInput, [lineId, nocCode]);
 
         return queryResults.map((result) => ({
             ...result,
             startDate: convertDateFormat(result.startDate),
             endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
+            servicesRequiringAttention:
+                result.servicesRequiringAttention === null || result.servicesRequiringAttention === undefined
+                    ? []
+                    : result.servicesRequiringAttention.split(','),
         }));
     } catch (error) {
         throw new Error(

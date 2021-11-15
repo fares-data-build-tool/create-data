@@ -519,6 +519,7 @@ export interface MyFaresService {
 
 export interface MyFaresServiceWithProductCount extends MyFaresService {
     products: number;
+    requiresAttention: boolean;
 }
 
 export interface MyFaresPointToPointProduct {
@@ -527,6 +528,7 @@ export interface MyFaresPointToPointProduct {
     validity: string;
     startDate: string;
     endDate?: string;
+    requiresAttention: boolean;
 }
 
 export interface MyFaresOtherFaresProduct {

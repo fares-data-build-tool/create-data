@@ -94,7 +94,9 @@ const otherProductsTable = (otherProducts: MyFaresOtherFaresProduct[]): ReactEle
                                   </td>
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
-                                  <td className="govuk-table__cell">{getTag(product.startDate, product.endDate)}</td>
+                                  <td className="govuk-table__cell">
+                                      {getTag(product.startDate, product.endDate, true)}
+                                  </td>
                               </tr>
                           ))
                         : null}
