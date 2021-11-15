@@ -55,16 +55,19 @@ const Exports = ({
                                 )}
                             </CsrfForm>
                         </div>
+                        <div className="govuk-grid-row">
+                            <div className="govuk-grid-column-two-thirds">
+                                <p className="govuk-body-m govuk-!-margin-bottom-6">
+                                    This will export all of your current active products and any pending products. Any
+                                    products flagged with ‘Needs Attention’ will be exported but may not be correct.
+                                    Expired products or products for expired services, will not be included in the
+                                    export. Once your export is complete, it will appear in the list below and you can
+                                    download this and upload it to{' '}
+                                    <a href="https://publish.bus-data.dft.gov.uk/">BODS</a>.
+                                </p>
+                            </div>
+                        </div>
 
-                        <p className="govuk-body-m dft-four-fifths-width">
-                            This will export all of your current active products and any pending products. Any products
-                            flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or
-                            products for expired services, will not be included in the export. Once your export is
-                            complete, it will appear in the list below and you can download this and upload it to{' '}
-                            <a href="https://publish.bus-data.dft.gov.uk/">BODS</a>.
-                        </p>
-                        <br></br>
-                        <br></br>
                         <h1 className="govuk-heading-m"> Previously exported fares</h1>
                         <table className="govuk-table">
                             <thead className="govuk-table__head">

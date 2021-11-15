@@ -37,20 +37,26 @@ exports[`pages confirmRegistration should render correctly with data 1`] = `
             </button>
           </CsrfForm>
         </div>
-        <p
-          className="govuk-body-m dft-four-fifths-width"
+        <div
+          className="govuk-grid-row"
         >
-          This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or products for expired services, will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
-           
-          <a
-            href="https://publish.bus-data.dft.gov.uk/"
+          <div
+            className="govuk-grid-column-two-thirds"
           >
-            BODS
-          </a>
-          .
-        </p>
-        <br />
-        <br />
+            <p
+              className="govuk-body-m govuk-!-margin-bottom-6"
+            >
+              This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or products for expired services, will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
+               
+              <a
+                href="https://publish.bus-data.dft.gov.uk/"
+              >
+                BODS
+              </a>
+              .
+            </p>
+          </div>
+        </div>
         <h1
           className="govuk-heading-m"
         >
@@ -181,20 +187,26 @@ exports[`pages confirmRegistration should render correctly without data 1`] = `
             </button>
           </CsrfForm>
         </div>
-        <p
-          className="govuk-body-m dft-four-fifths-width"
+        <div
+          className="govuk-grid-row"
         >
-          This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or products for expired services, will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
-           
-          <a
-            href="https://publish.bus-data.dft.gov.uk/"
+          <div
+            className="govuk-grid-column-two-thirds"
           >
-            BODS
-          </a>
-          .
-        </p>
-        <br />
-        <br />
+            <p
+              className="govuk-body-m govuk-!-margin-bottom-6"
+            >
+              This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or products for expired services, will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
+               
+              <a
+                href="https://publish.bus-data.dft.gov.uk/"
+              >
+                BODS
+              </a>
+              .
+            </p>
+          </div>
+        </div>
         <h1
           className="govuk-heading-m"
         >
