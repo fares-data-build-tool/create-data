@@ -14,7 +14,12 @@ describe('pages', () => {
                 operatorDetailsSet: true,
             };
             const tree = shallow(
-                <GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" myFaresEnabled={false} />,
+                <GlobalSettings
+                    globalSettingsCounts={globalSettingsCounts}
+                    referer="hello"
+                    myFaresEnabled={false}
+                    exportEnabled={false}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });

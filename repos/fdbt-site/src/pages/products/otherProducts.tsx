@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { MyFaresOtherFaresProduct, NextPageContextWithSession } from '../../interfaces/index';
 import { MyFaresOtherProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
-import { exportEnabled, myFaresEnabled } from '../../constants/featureFlag';
+import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
 import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';

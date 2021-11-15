@@ -1,8 +1,13 @@
 import React, { ReactElement } from 'react';
-import { MyFaresService, MyFaresServiceWithProductCount, NextPageContextWithSession } from '../../interfaces/index';
+import {
+    MyFaresService,
+    MyFaresServiceWithProductCount,
+    NextPageContextWithSession,
+    EntityStatus,
+} from '../../interfaces/index';
 import { MyFaresProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
-import { exportEnabled, myFaresEnabled } from '../../constants/featureFlag';
+import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import { getPointToPointProducts, getBodsServicesByNoc } from '../../data/auroradb';
 import { getAndValidateNoc } from '../../utils';
 import moment from 'moment';
@@ -92,18 +97,30 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
     );
 };
 
-export const getTag = (startDate: string, endDate: string | undefined, isWithinATable: boolean): JSX.Element => {
+export const getEntityStatus = (startDate: string, endDate: string | undefined): EntityStatus => {
     const today = moment.utc().startOf('day').valueOf();
     const startDateAsUnixTime = moment.utc(startDate, 'DD/MM/YYYY').valueOf();
     const endDateAsUnixTime = endDate ? moment.utc(endDate, 'DD/MM/YYYY').valueOf() : undefined;
 
     if (startDateAsUnixTime <= today && (!endDateAsUnixTime || endDateAsUnixTime >= today)) {
+        return EntityStatus.Active;
+    } else if (startDateAsUnixTime > today) {
+        return EntityStatus.Pending;
+    } else {
+        return EntityStatus.Expired;
+    }
+};
+
+export const getTag = (startDate: string, endDate: string | undefined, isWithinATable: boolean): JSX.Element => {
+    const status = getEntityStatus(startDate, endDate);
+
+    if (status === EntityStatus.Active) {
         return (
             <strong className={`govuk-tag govuk-tag--turquoise${isWithinATable ? ' dft-table-tag' : ''}`}>
                 Active
             </strong>
         );
-    } else if (startDateAsUnixTime > today) {
+    } else if (status === EntityStatus.Pending) {
         return (
             <strong className={`govuk-tag govuk-tag--blue${isWithinATable ? ' dft-table-tag' : ''}`}>Pending</strong>
         );
@@ -170,7 +187,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const services = await getBodsServicesByNoc(noc);
     const products = await getPointToPointProducts(noc);
     const servicesAndProducts = matchProductsToServices(services, products);
-    return { props: { servicesAndProducts, myFaresEnabled: myFaresEnabled, exportEnabled: exportEnabled } };
+
+    return { props: { servicesAndProducts, myFaresEnabled, exportEnabled } };
 };
 
 export default Services;

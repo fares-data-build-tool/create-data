@@ -19,6 +19,7 @@ describe('pages', () => {
                     referer={'hello'}
                     deleteEnabled={false}
                     myFaresEnabled={false}
+                    exportEnabled={false}
                 />,
             );
             expect(tree).toMatchSnapshot();

@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 import { NextPageContextWithSession } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
-import { exportEnabled, myFaresEnabled } from '../../constants/featureFlag';
+import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
 import { getS3FolderCount, getS3Exports, retrieveAndZipExportedNetexForNoc, getNetexSignedUrl } from '../../data/s3';
 import { redirectTo } from '../../utils/apiUtils';
 import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 import CsrfForm from '../../components/CsrfForm';
-import { getAllProducts } from '../../data/auroradb';
+import { getAllProductsByNoc as getAllProductsByNoc } from '../../data/auroradb';
 
 const title = 'Exports';
 const description = 'View and access your settings in one place.';
@@ -148,7 +148,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }),
     );
 
-    const operatorHasProducts = (await getAllProducts(noc)).length > 0;
+    const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
 
     return {
         props: {

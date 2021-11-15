@@ -35,6 +35,13 @@ export type RawMyFaresProduct = Omit<MyFaresProduct, 'servicesRequiringAttention
     servicesRequiringAttention: string;
 };
 
+export interface DbProduct {
+    matchingJsonLink: string;
+    lineId: string;
+    startDate: string;
+    endDate?: string;
+}
+
 export type MyFaresOtherProduct = Omit<MyFaresProduct, 'lineId'>;
 
 export interface ServiceQueryData {
@@ -74,6 +81,7 @@ export interface RawService {
     lineId: string;
     lineName: string;
     startDate: string;
+    endDate?: string;
     inboundDirectionDescription: string;
     outboundDirectionDescription: string;
 }
@@ -115,7 +123,7 @@ export interface DbTimeRestriction {
     timeBands: DbTimeBand[];
 }
 
-export interface DirectionAndStops {
+export interface ServiceDetails {
     fromAtcoCode: string;
     toAtcoCode: string;
     direction: string;

@@ -64,7 +64,7 @@ export class ExporterStack extends cdk.Stack {
             logRetention: 180,
         });
 
-        this.addAlarmsToLambda(stage, exporterFunction, `exporter-${stage}`);
+        this.addAlarmsToLambda(stage, exporterFunction, `exporter-${stage}`, 30000);
 
         exporterFunction.addToRolePolicy(new PolicyStatement({ actions: ['ssm:GetParameter'], resources: ['*'] }));
 
@@ -94,9 +94,19 @@ export class ExporterStack extends cdk.Stack {
                 sourceMapMode: SourceMapMode.DEFAULT,
             },
             timeout: Duration.minutes(15),
+            logRetention: 180,
         });
 
-        this.addAlarmsToLambda(stage, atcoCodeCheckerFunction, `atcoCodeCheckerFunction-${stage}`);
+        this.addAlarmsToLambda(stage, atcoCodeCheckerFunction, `atcoCodeCheckerFunction-${stage}`, 420000);
+
+        atcoCodeCheckerFunction.addToRolePolicy(
+            new PolicyStatement({ actions: ['ssm:GetParameter', 's3:GetObject'], resources: ['*'] }),
+        );
+
+        new Rule(this, `atco-code-checker-rule-${stage}`, {
+            schedule: Schedule.cron({ minute: '0', hour: '6' }), // every day at 6am
+            targets: [new LambdaFunction(atcoCodeCheckerFunction)],
+        });
 
         const bastionTerminatorFunction = new NodejsFunction(this, `bastion-terminator-${stage}`, {
             functionName: `bastion-terminator-${stage}`,
@@ -109,7 +119,7 @@ export class ExporterStack extends cdk.Stack {
             logRetention: 180,
         });
 
-        this.addAlarmsToLambda(stage, bastionTerminatorFunction, `bastion-terminator-${stage}`);
+        this.addAlarmsToLambda(stage, bastionTerminatorFunction, `bastion-terminator-${stage}`, 30000);
 
         bastionTerminatorFunction.addToRolePolicy(
             new PolicyStatement({ actions: ['ec2:TerminateInstances', 'ec2:DescribeInstances'], resources: ['*'] }),
@@ -121,7 +131,7 @@ export class ExporterStack extends cdk.Stack {
         });
     }
 
-    private addAlarmsToLambda(stage: string, lambdaFn: NodejsFunction, id: string) {
+    private addAlarmsToLambda(stage: string, lambdaFn: NodejsFunction, id: string, durationThreshold: number) {
         const alarmTopicArn = Fn.importValue(`${stage}:SlackAlertsTopicArn`);
         const alarmTopic = Topic.fromTopicArn(this, `${id}-alarm-topic-${stage}`, alarmTopicArn);
         const snsAction = new SnsAction(alarmTopic);
@@ -136,7 +146,7 @@ export class ExporterStack extends cdk.Stack {
         const durationAlarm = lambdaFn
             .metricDuration({ period: Duration.minutes(1), statistic: 'max' })
             .createAlarm(this, `${id}-duration-alarm`, {
-                threshold: 30000,
+                threshold: durationThreshold,
                 evaluationPeriods: 1,
                 treatMissingData: TreatMissingData.NOT_BREACHING,
             });
