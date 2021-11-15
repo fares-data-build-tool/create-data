@@ -7,7 +7,7 @@ import {
     PassengerType,
     SinglePassengerType,
     RawSalesOfferPackage,
-    DirectionAndStops,
+    ServiceDetails,
 } from '../shared/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
 
@@ -200,7 +200,7 @@ export const getPointToPointProducts = async (): Promise<
     return await executeQuery(queryInput, []);
 };
 
-export const getDirectionAndStopsByLineIdAndNoc = async (lineId: string, noc: string): Promise<DirectionAndStops[]> => {
+export const getServicesByLineIdAndNoc = async (lineId: string, noc: string): Promise<ServiceDetails[]> => {
     const nocCodeParameter = replaceInternalNocCode(noc);
 
     const serviceQuery = `
@@ -234,6 +234,10 @@ export const saveIdsOfServicesRequiringAttentionInTheDb = async (
     productId: number,
     idsOfServicesRequiringAttention: string[],
 ): Promise<void> => {
+    if (idsOfServicesRequiringAttention.length === 0) {
+        return;
+    }
+
     const idsAsACommaSeparatedString = idsOfServicesRequiringAttention.join();
 
     const updateQuery = `UPDATE products
@@ -253,4 +257,11 @@ export const saveIdsOfServicesRequiringAttentionInTheDb = async (
             `Nothing was updated when attempting to update the servicesRequiringAttention column on products table. ${meta}`,
         );
     }
+};
+
+export const removeAllServicesRequiringAttentionIds = async (): Promise<void> => {
+    const serviceQuery = `UPDATE products
+                          SET servicesRequiringAttention = null`;
+
+    await executeQuery(serviceQuery, []);
 };

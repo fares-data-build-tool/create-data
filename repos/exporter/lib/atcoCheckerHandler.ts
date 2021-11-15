@@ -3,11 +3,12 @@ import { S3 } from 'aws-sdk';
 import { WithIds, ReturnTicket, SingleTicket, PointToPointPeriodTicket } from '../shared/matchingJsonTypes';
 import {
     saveIdsOfServicesRequiringAttentionInTheDb,
-    getDirectionAndStopsByLineIdAndNoc,
+    getServicesByLineIdAndNoc,
     getPointToPointProducts,
+    removeAllServicesRequiringAttentionIds,
 } from './database';
 import { ExportLambdaBody } from '../shared/integrationTypes';
-import { DirectionAndStops } from '../shared/dbTypes';
+import { ServiceDetails } from '../shared/dbTypes';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -30,6 +31,8 @@ export const handler: Handler<ExportLambdaBody> = async () => {
     if (!PRODUCTS_BUCKET) {
         throw new Error('Need to set PRODUCTS_BUCKET env variable');
     }
+
+    await removeAllServicesRequiringAttentionIds();
 
     const pointToPointProducts: {
         id: number;
@@ -59,6 +62,7 @@ export const handler: Handler<ExportLambdaBody> = async () => {
         if ('fareZones' in pointToPointTicket) {
             const idsOfServicesRequiringAttention: string[] = await getIdsOfServicesRequiringAttentionForSingles(
                 pointToPointTicket,
+                productId,
             );
 
             await saveIdsOfServicesRequiringAttentionInTheDb(productId, idsOfServicesRequiringAttention);
@@ -66,6 +70,7 @@ export const handler: Handler<ExportLambdaBody> = async () => {
             // we have a return ticket
             const idsOfServicesRequiringAttention: string[] = await getIdsOfServicesRequiringAttentionForReturns(
                 pointToPointTicket,
+                productId,
             );
 
             await saveIdsOfServicesRequiringAttentionInTheDb(productId, idsOfServicesRequiringAttention);
@@ -82,7 +87,10 @@ export const handler: Handler<ExportLambdaBody> = async () => {
  * @returns {Promise<string[]>} a string array containing the ids of the
  * services that require attention.
  */
-const getIdsOfServicesRequiringAttentionForSingles = async (singleTicket: WithIds<SingleTicket>): Promise<string[]> => {
+const getIdsOfServicesRequiringAttentionForSingles = async (
+    singleTicket: WithIds<SingleTicket>,
+    productId: number,
+): Promise<string[]> => {
     // all stops from the matching JSON
     let atcoCodesOfKnownStops: string[] = [];
 
@@ -100,10 +108,10 @@ const getIdsOfServicesRequiringAttentionForSingles = async (singleTicket: WithId
 
     const { journeyDirection, lineId, nocCode } = singleTicket;
 
-    const directionsAndStops = await getDirectionAndStopsByLineIdAndNoc(lineId, nocCode);
+    const services = await getServicesByLineIdAndNoc(lineId, nocCode);
 
-    const theStopsMatchingTheJourneyDirectionOnOurTicket = directionsAndStops.filter(
-        (directionsAndStopsItem) => directionsAndStopsItem.direction === journeyDirection,
+    const theStopsMatchingTheJourneyDirectionOnOurTicket = services.filter(
+        (service) => service.direction === journeyDirection,
     );
 
     // split by service id and build a hashmap (dictionary) where the key is
@@ -123,7 +131,7 @@ const getIdsOfServicesRequiringAttentionForSingles = async (singleTicket: WithId
         const stops = serviceAndSortedUniqueStopsFromFeed[serviceId];
 
         if (JSON.stringify(stops) !== JSON.stringify(atcoCodesOfKnownStops)) {
-            console.log('The stops require attention', { serviceId: serviceId });
+            console.log('Stops require attention', { serviceId: serviceId, productId: productId });
             servicesRequiringAttention.push(serviceId);
         }
     }
@@ -142,6 +150,7 @@ const getIdsOfServicesRequiringAttentionForSingles = async (singleTicket: WithId
  */
 const getIdsOfServicesRequiringAttentionForReturns = async (
     nonSingleTicket: WithIds<ReturnTicket> | WithIds<PointToPointPeriodTicket>,
+    productId: number,
 ): Promise<string[]> => {
     let knownOutboundStops: string[] = [];
     let knownInboundStops: string[] = [];
@@ -178,11 +187,11 @@ const getIdsOfServicesRequiringAttentionForReturns = async (
 
     const { lineId, nocCode } = nonSingleTicket;
 
-    const directionsAndStops = await getDirectionAndStopsByLineIdAndNoc(lineId, nocCode);
+    const services = await getServicesByLineIdAndNoc(lineId, nocCode);
 
-    const outboundStopsFromFeed = directionsAndStops.filter((x) => x.direction === 'outbound');
+    const outboundStopsFromFeed = services.filter((service) => service.direction === 'outbound');
 
-    const inboundStopsFromFeed = directionsAndStops.filter((x) => x.direction === 'inbound');
+    const inboundStopsFromFeed = services.filter((service) => service.direction === 'inbound');
 
     // for outbound stops, split by service id and build a hashmap (dictionary) where the key is
     // the service id and the value is the array of stops
@@ -212,7 +221,10 @@ const getIdsOfServicesRequiringAttentionForReturns = async (
         const stops = outboundServiceAndSortedUniqueStopsFromFeed[serviceId];
 
         if (JSON.stringify(stops) !== JSON.stringify(knownOutboundStops)) {
-            console.log(`The stops on ${serviceId} require attention.`);
+            console.log('Stops require attention', {
+                serviceId: serviceId,
+                productId: productId,
+            });
             outboundServicesRequiringAttention.push(serviceId);
         }
     }
@@ -222,27 +234,34 @@ const getIdsOfServicesRequiringAttentionForReturns = async (
         const stops = inboundServiceAndSortedUniqueStopsFromFeed[serviceId];
 
         if (JSON.stringify(stops) !== JSON.stringify(knownInboundStops)) {
-            console.log(`The stops on ${serviceId} require attention.`);
+            console.log('Stops require attention', {
+                serviceId: serviceId,
+                productId: productId,
+            });
             inboundServicesRequiringAttention.push(serviceId);
         }
     }
 
-    return outboundServicesRequiringAttention.concat(inboundServicesRequiringAttention);
+    const uniqueServicesRequiringAttention = new Set(
+        outboundServicesRequiringAttention.concat(inboundServicesRequiringAttention),
+    );
+
+    return Array.from(uniqueServicesRequiringAttention);
 };
 
 /**
  * Builds and returns a hasmap (dictionary) where the service id is the key
  * and the stops array is the value.
  *
- * @param {DirectionAndStops[]} directionsAndStopsArray
+ * @param {ServiceDetails[]} directionsAndStopsArray
  *
  * @returns {{ [key: string]: string[] }} a hashmap (dictionary) with service id
  * as the key and the stops array as the value
  */
-const buildAHashmapSplitOnServiceId = (directionsAndStopsArray: DirectionAndStops[]): { [key: string]: string[] } => {
+const buildAHashmapSplitOnServiceId = (directionsAndStopsArray: ServiceDetails[]): { [key: string]: string[] } => {
     const dictionary: { [key: string]: string[] } = {};
 
-    directionsAndStopsArray.forEach((directionsAndStopsItem: DirectionAndStops) => {
+    directionsAndStopsArray.forEach((directionsAndStopsItem: ServiceDetails) => {
         const key = directionsAndStopsItem.serviceId;
 
         const value: string[] | undefined = dictionary[key];
