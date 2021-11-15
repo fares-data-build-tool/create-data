@@ -116,7 +116,7 @@ describe('myfares pages', () => {
 
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
-                    exportEnabled: true,
+                    exportEnabled: false,
                     myFaresEnabled: false,
                     otherProducts: [
                         {

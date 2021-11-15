@@ -25,7 +25,12 @@ interface GlobalSettingsProps {
     exportEnabled: boolean;
 }
 
-const GlobalSettings = ({ globalSettingsCounts, referer, myFaresEnabled }: GlobalSettingsProps): ReactElement => {
+const GlobalSettings = ({
+    globalSettingsCounts,
+    referer,
+    myFaresEnabled,
+    exportEnabled,
+}: GlobalSettingsProps): ReactElement => {
     return (
         <>
             <BaseLayout
