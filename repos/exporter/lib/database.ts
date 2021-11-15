@@ -240,6 +240,10 @@ export const saveIdsOfServicesRequiringAttentionInTheDb = async (
     productId: number,
     idsOfServicesRequiringAttention: string[],
 ): Promise<void> => {
+    if (idsOfServicesRequiringAttention.length === 0) {
+        return;
+    }
+
     const idsAsACommaSeparatedString = idsOfServicesRequiringAttention.join();
 
     const updateQuery = `UPDATE products
