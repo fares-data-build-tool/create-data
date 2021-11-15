@@ -19,6 +19,9 @@ parameters:
     default: true
 
   # A parameter per package
+  fdbt-admin:
+    type: boolean
+    default: false
   fdbt-netex-output:
     type: boolean
     default: false
@@ -114,8 +117,7 @@ jobs:
             echo "Linting"
             npm run lint
 
-    # fdbt-site
-
+  # fdbt-site
   run-ui-tests:
     parameters:
       package_name:
@@ -159,8 +161,7 @@ jobs:
             npm ci
             ./node_modules/.bin/tsc
 
-  #  fdbt-netex-output
-
+  # fdbt-netex-output
   deploy-netex-output-resources-to-test:
     parameters:
       package_name:
@@ -212,8 +213,7 @@ jobs:
             export SLS_DEBUG="*" && sls deploy --stage=prod
             echo "Finished deploy"
 
-  #  exporter
-
+  # exporter
   deploy-exporter:
     parameters:
       environment:
@@ -310,7 +310,6 @@ jobs:
             echo "Finished deploy"
 
   # fdbt-reference-data-service
-
   audit-reference-data-uploaders:
     docker:
       - image: circleci/python:3.8
@@ -467,7 +466,6 @@ workflows:
               only: /^v.*/
 
   # Workflows defined for each package.
-
   fdbt-netex-output:
     when: << pipeline.parameters.fdbt-netex-output >>
     jobs:
@@ -1002,3 +1000,12 @@ workflows:
           requires:
             - deploy-reference-data-uploaders-to-test
             - deploy-reference-data-retrievers-to-test
+
+  fdbt-admin:
+    when: << pipeline.parameters.fdbt-admin >>
+    jobs:
+      - checkout-repo:
+          <<: *slack-fail-post-step
+          filters:
+            tags:
+              only: /^v.*/

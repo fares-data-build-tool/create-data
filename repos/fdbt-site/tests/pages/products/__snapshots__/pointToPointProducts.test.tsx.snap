@@ -97,7 +97,7 @@ exports[`myfares pages pointToPointProducts should render correctly when no prod
 </Fragment>
 `;
 
-exports[`myfares pages pointToPointProducts should render correctly when products present against service 1`] = `
+exports[`myfares pages pointToPointProducts should render correctly when products present against service and the product does not require attention 1`] = `
 <Fragment>
   <BaseLayout
     description="View and access your point to point products in one place."
@@ -215,6 +215,140 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                   className="govuk-tag govuk-tag--red dft-table-tag"
                 >
                   Expired
+                </strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`myfares pages pointToPointProducts should render correctly when products present against service and the product requires attention 1`] = `
+<Fragment>
+  <BaseLayout
+    description="View and access your point to point products in one place."
+    title="Point To Point Products - Create Fares Data Service"
+  >
+    <BackButton
+      href="/products/services"
+    />
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <h1
+          className="govuk-heading-l govuk-!-margin-bottom-4"
+        >
+          1
+           - 
+          Leeds
+           to 
+          Manchester
+        </h1>
+        <h1
+          className="govuk-heading-s govuk-!-margin-bottom-8"
+        >
+          Service status: 
+          <strong
+            className="govuk-tag govuk-tag--red"
+          >
+            Expired
+          </strong>
+        </h1>
+        <h1
+          className="govuk-heading-l govuk-!-margin-bottom-4"
+        >
+          Products
+        </h1>
+        <table
+          className="govuk-table"
+        >
+          <thead
+            className="govuk-table__head"
+          >
+            <tr
+              className="govuk-table__row"
+            >
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Product description
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Time restriction
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Start date
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                End date
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Product status
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            className="govuk-table__body"
+          >
+            <tr
+              className="govuk-table__row"
+              key="0"
+            >
+              <td
+                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell"
+              >
+                <a
+                  href="/products/productDetails?productId=1&serviceId=01"
+                >
+                  Adult - single
+                </a>
+              </td>
+              <td
+                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell"
+              >
+                Monday, Tuesday
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                05/04/2020
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                10/04/2020
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <strong
+                  className="govuk-tag govuk-tag--red dft-table-tag"
+                >
+                  Expired
+                </strong>
+                <strong
+                  className="govuk-tag govuk-tag--yellow dft-table-tag"
+                >
+                  NEEDS ATTENTION
                 </strong>
               </td>
             </tr>

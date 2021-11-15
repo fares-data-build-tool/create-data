@@ -48,7 +48,7 @@ const Direction = ({
                     Journey direction
                 </label>
                 <FormElementWrapper errors={errors} errorId={'select-direction'} errorClass="govuk-select--error">
-                    <select className={`govuk-select`} id={'select-direction'} name={'direction'}>
+                    <select className="govuk-select" id="select-direction" name="direction" defaultValue={''}>
                         <option value="" disabled>
                             Select One
                         </option>
