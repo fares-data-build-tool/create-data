@@ -32,7 +32,7 @@ export const handler: Handler<ExportLambdaBody> = async () => {
         throw new Error('Need to set PRODUCTS_BUCKET env variable');
     }
 
-    removeAllServicesRequiringAttentionIds();
+    await removeAllServicesRequiringAttentionIds();
 
     const pointToPointProducts: {
         id: number;

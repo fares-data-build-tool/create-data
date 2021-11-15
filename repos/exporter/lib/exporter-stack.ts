@@ -9,8 +9,6 @@ import { SnsAction } from '@aws-cdk/aws-cloudwatch-actions';
 import { TreatMissingData } from '@aws-cdk/aws-cloudwatch';
 import { Rule, Schedule } from '@aws-cdk/aws-events';
 import { LambdaFunction } from '@aws-cdk/aws-events-targets';
-import * as events from '@aws-cdk/aws-events';
-import * as targets from '@aws-cdk/aws-events-targets';
 
 export class ExporterStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
