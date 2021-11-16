@@ -1,4 +1,4 @@
-import { clickElementById, continueButtonClick, isUuidStringValid } from '../../support/helpers';
+import { clickElementById, continueButtonClick, isFinished } from '../../support/helpers';
 import {
     completeFlatFareCarnet,
     completeFlatFarePages,
@@ -13,7 +13,7 @@ describe('The flat fare carnet product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeFlatFareCarnet();
         completeSalesPages(3, 'Flat fare carnet ');
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for geoZone', () => {
@@ -23,6 +23,6 @@ describe('The flat fare carnet product journey', () => {
         continueButtonClick();
         completeFlatFarePages('Flat fare carnet 1', false, true, true);
         completeSalesPages(1);
-        isUuidStringValid();
+        isFinished();
     });
 });

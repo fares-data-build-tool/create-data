@@ -1,4 +1,4 @@
-import { isUuidStringValid } from '../support/helpers';
+import { isFinished } from '../support/helpers';
 import {
     completeFlatFarePages,
     completeSalesPages,
@@ -16,7 +16,7 @@ describe('The school faretype product journey', () => {
         selectSchoolFareType('flatFare');
         completeFlatFarePages('School Flat Fare Test Product', false);
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
     it('completes successfully for school single manual upload', () => {
         selectFareType('schoolService', false);
@@ -24,7 +24,7 @@ describe('The school faretype product journey', () => {
         selectSchoolFareType('single');
         completeSinglePages(false, false);
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
     it('completes successfully for school single csv upload', () => {
         selectFareType('schoolService', false);
@@ -32,7 +32,7 @@ describe('The school faretype product journey', () => {
         selectSchoolFareType('single');
         completeSinglePages(true, false);
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
     it('completes successfully for school period', () => {
         const numberOfProducts = 5;
@@ -42,6 +42,6 @@ describe('The school faretype product journey', () => {
         selectSchoolFareType('period');
         completeSchoolPeriodMultiServicePages(numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
-        isUuidStringValid();
+        isFinished();
     });
 });

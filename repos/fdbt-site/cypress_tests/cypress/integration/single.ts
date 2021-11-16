@@ -1,4 +1,4 @@
-import { isUuidStringValid } from '../support/helpers';
+import { isFinished } from '../support/helpers';
 import {
     completeSalesPages,
     completeSinglePages,
@@ -12,7 +12,7 @@ describe('The single faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeSinglePages(true, false);
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for manual upload', () => {
@@ -20,6 +20,6 @@ describe('The single faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeSinglePages(false, false);
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 });

@@ -1,4 +1,4 @@
-import { isUuidStringValid } from '../support/helpers';
+import { isFinished } from '../support/helpers';
 import {
     completeFlatFarePages,
     completeMultiOpGeoZonePages,
@@ -13,7 +13,7 @@ describe('the scheme journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeMultiOpGeoZonePages();
         completeSalesPages();
-        isUuidStringValid(true);
+        isFinished(true);
     });
 
     it('completes successfully for geozone and multiple products', () => {
@@ -23,7 +23,7 @@ describe('the scheme journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeMultiOpGeoZonePages(false, numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
-        isUuidStringValid(true);
+        isFinished(true);
     });
 
     it('completes successfully for flat fare', () => {
@@ -31,6 +31,6 @@ describe('the scheme journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeFlatFarePages('Scheme Flat Fare Test Product', true);
         completeSalesPages();
-        isUuidStringValid(true);
+        isFinished(true);
     });
 });
