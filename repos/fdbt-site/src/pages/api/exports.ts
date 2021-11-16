@@ -36,6 +36,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     await triggerExport({ noc, paths: links, exportPrefix: exportName });
 
     redirectTo(res, '/products/exports');
+
     return;
 };
 
@@ -50,7 +51,7 @@ const getNonExpiredProducts = (products: DbProduct[]) => {
     return products.filter((product) => {
         const status = getEntityStatus(product.startDate, product.endDate);
 
-        if (status !== EntityStatus.Expired) {
+        if (status.valueOf() !== EntityStatus.Expired.valueOf()) {
             return true;
         }
 
@@ -81,7 +82,7 @@ const filterOutProductsWithNoActiveServices = async (noc: string, products: DbPr
 
             const status = getEntityStatus(startDate, endDate);
 
-            if (status === EntityStatus.Active) {
+            if (status.valueOf() === EntityStatus.Active.valueOf()) {
                 return true;
             }
 
