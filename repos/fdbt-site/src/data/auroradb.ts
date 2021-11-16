@@ -433,7 +433,11 @@ export const getServicesByNocAndLineId = async (noc: string, lineId: string): Pr
 
     const result = await executeQuery<RawService[]>(query, [noc, lineId]);
 
-    return result;
+    return result.map((result) => ({
+        ...result,
+        startDate: convertDateFormat(result.startDate),
+        endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
+    }));
 };
 
 export const getServiceByIdAndDataSource = async (
@@ -1709,7 +1713,13 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
         `;
 
     try {
-        return await executeQuery<DbProduct[]>(query, [noc]);
+        const result = await executeQuery<DbProduct[]>(query, [noc]);
+
+        return result.map((result) => ({
+            ...result,
+            startDate: convertDateFormat(result.startDate),
+            endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
+        }));
     } catch (error) {
         throw new Error(`Could not fetch products from the products table. ${error.stack}`);
     }

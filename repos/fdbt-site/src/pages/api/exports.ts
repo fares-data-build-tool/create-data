@@ -36,6 +36,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     await triggerExport({ noc, paths: links, exportPrefix: exportName });
 
     redirectTo(res, '/products/exports');
+
     return;
 };
 
