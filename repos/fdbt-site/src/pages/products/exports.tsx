@@ -12,7 +12,7 @@ const title = 'Exports';
 const description = 'View and access your settings in one place.';
 
 interface GlobalSettingsProps {
-    exports: { matchingDataCount: number; name: string; netexCount: number; signedUrl: string | null }[];
+    exports: { matchingDataCount: number; name: string; netexCount: number; signedUrl: string }[];
     csrf: string;
     myFaresEnabled: boolean;
     exportEnabled: boolean;
@@ -93,21 +93,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const exportNames = await getS3Exports(noc);
 
     const exports = await Promise.all(
-        exportNames.map(async (it) => {
-            const prefix = `${noc}/exports/${it}/`;
+        exportNames.map(async (name) => {
+            const prefix = `${noc}/exports/${name}/`;
             const matchingDataCount = await getS3FolderCount(MATCHING_DATA_BUCKET_NAME, prefix);
 
             const netexCount = await getS3FolderCount(NETEX_BUCKET_NAME, prefix);
 
             const complete = matchingDataCount === netexCount;
 
-            let signedUrl: string | null = null;
+            let signedUrl = '';
             if (complete) {
-                const zipKey = await retrieveAndZipExportedNetexForNoc(noc, it);
+                const zipKey = await retrieveAndZipExportedNetexForNoc(noc, name);
                 signedUrl = await getNetexSignedUrl(zipKey || '');
             }
 
-            return { name: it, matchingDataCount, netexCount, signedUrl };
+            return { name: name, matchingDataCount, netexCount, signedUrl };
         }),
     );
 

@@ -427,8 +427,8 @@ export const getServicesByNocAndLineId = async (noc: string, lineId: string): Pr
              ol.endDate
       FROM txcOperatorLine ol
       WHERE ol.nocCode = ?
-        AND ol.lineId = ?;
-        AND ol.dataSource = 'bods';
+      AND ol.lineId = ?
+      AND ol.dataSource = 'bods'
     `;
 
     const result = await executeQuery<RawService[]>(query, [noc, lineId]);
