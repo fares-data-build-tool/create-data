@@ -34,7 +34,7 @@ export type DocumentContextWithSession = DocumentContext & {
 };
 
 export enum EntityStatus {
-    Active = 1,
+    Active,
     Expired,
     Pending,
 }

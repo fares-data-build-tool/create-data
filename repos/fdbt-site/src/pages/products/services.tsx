@@ -114,13 +114,13 @@ export const getEntityStatus = (startDate: string, endDate: string | undefined):
 export const getTag = (startDate: string, endDate: string | undefined, isWithinATable: boolean): JSX.Element => {
     const status = getEntityStatus(startDate, endDate);
 
-    if (status.valueOf() === EntityStatus.Active.valueOf()) {
+    if (status === EntityStatus.Active) {
         return (
             <strong className={`govuk-tag govuk-tag--turquoise${isWithinATable ? ' dft-table-tag' : ''}`}>
                 Active
             </strong>
         );
-    } else if (status.valueOf() === EntityStatus.Pending.valueOf()) {
+    } else if (status === EntityStatus.Pending) {
         return (
             <strong className={`govuk-tag govuk-tag--blue${isWithinATable ? ' dft-table-tag' : ''}`}>Pending</strong>
         );

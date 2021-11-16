@@ -51,7 +51,7 @@ const getNonExpiredProducts = (products: DbProduct[]) => {
     return products.filter((product) => {
         const status = getEntityStatus(product.startDate, product.endDate);
 
-        if (status.valueOf() !== EntityStatus.Expired.valueOf()) {
+        if (status !== EntityStatus.Expired) {
             return true;
         }
 
@@ -82,7 +82,7 @@ const filterOutProductsWithNoActiveServices = async (noc: string, products: DbPr
 
             const status = getEntityStatus(startDate, endDate);
 
-            if (status.valueOf() === EntityStatus.Active.valueOf()) {
+            if (status === EntityStatus.Active) {
                 return true;
             }
 
