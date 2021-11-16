@@ -14,6 +14,7 @@ import moment from 'moment';
 import { isArray } from 'lodash';
 import { getTag } from './services';
 import BackButton from '../../components/BackButton';
+import ErrorSummary from '../../components/ErrorSummary';
 
 const title = 'Point To Point Products - Create Fares Data Service';
 const description = 'View and access your point to point products in one place.';
@@ -21,13 +22,34 @@ const description = 'View and access your point to point products in one place.'
 interface PointToPointProductsProps {
     service: MyFaresService;
     products: MyFaresPointToPointProduct[];
+    productNeedsAttention: boolean;
 }
 
-const PointToPointProducts = ({ products, service }: PointToPointProductsProps): ReactElement => {
+const findIdForError = (products: MyFaresPointToPointProduct[]): string => {
+    const firstProductNeedingAttention = products.find((product) => product.requiresAttention);
+    return `product-${firstProductNeedingAttention?.id}`;
+};
+
+const PointToPointProducts = ({
+    products,
+    service,
+    productNeedsAttention,
+}: PointToPointProductsProps): ReactElement => {
     return (
         <>
             <BaseLayout title={title} description={description}>
                 <BackButton href="/products/services" />
+                {productNeedsAttention ? (
+                    <ErrorSummary
+                        errors={[
+                            {
+                                errorMessage:
+                                    'Your service has been updated in BODS. Stops have been added and/or removed since the creation of your product(s). These products will need updating to reflect these changes.',
+                                id: findIdForError(products),
+                            },
+                        ]}
+                    />
+                ) : null}
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">
@@ -76,6 +98,7 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], servi
                                   <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell">
                                       <a
                                           href={`/products/productDetails?productId=${product.id}&serviceId=${service.id}`}
+                                          id={`product-${product.id}`}
                                       >
                                           {product.productDescription}
                                       </a>
@@ -165,12 +188,21 @@ export const getServerSideProps = async (
                 id: product.id,
                 ...(endDate && { endDate }),
                 requiresAttention:
-                    !!product.servicesRequiringAttention && product.servicesRequiringAttention.length > 0,
+                    // !!product.servicesRequiringAttention && product.servicesRequiringAttention.length > 0,
+                    true,
             };
         }),
     );
 
-    return { props: { products: formattedProducts, service: { ...service, endDate: service.endDate || '' } } };
+    const productNeedsAttention = formattedProducts.some((product) => product.requiresAttention);
+
+    return {
+        props: {
+            products: formattedProducts,
+            service: { ...service, endDate: service.endDate || '' },
+            productNeedsAttention,
+        },
+    };
 };
 
 export default PointToPointProducts;
