@@ -188,8 +188,7 @@ export const getServerSideProps = async (
                 id: product.id,
                 ...(endDate && { endDate }),
                 requiresAttention:
-                    // !!product.servicesRequiringAttention && product.servicesRequiringAttention.length > 0,
-                    true,
+                    !!product.servicesRequiringAttention && product.servicesRequiringAttention.length > 0,
             };
         }),
     );
