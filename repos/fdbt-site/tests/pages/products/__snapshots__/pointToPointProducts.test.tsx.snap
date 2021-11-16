@@ -78,6 +78,10 @@ exports[`myfares pages pointToPointProducts should render correctly when no prod
               >
                 Product status
               </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
             </tr>
           </thead>
           <tbody
@@ -175,6 +179,10 @@ exports[`myfares pages pointToPointProducts should render correctly when product
               >
                 Product status
               </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
             </tr>
           </thead>
           <tbody
@@ -216,6 +224,16 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 >
                   Expired
                 </strong>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <button
+                  className="govuk-link delete-link"
+                  onClick={[Function]}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           </tbody>
@@ -304,6 +322,10 @@ exports[`myfares pages pointToPointProducts should render correctly when product
               >
                 Product status
               </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
             </tr>
           </thead>
           <tbody
@@ -350,6 +372,16 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 >
                   NEEDS ATTENTION
                 </strong>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <button
+                  className="govuk-link delete-link"
+                  onClick={[Function]}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           </tbody>

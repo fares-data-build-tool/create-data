@@ -1,12 +1,13 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { MyFaresOtherFaresProduct, NextPageContextWithSession } from '../../interfaces/index';
 import { MyFaresOtherProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
-import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
+import { convertDateFormat, getAndValidateNoc, sentenceCaseString, getCsrfToken } from '../../utils';
 import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import { getTag } from '../products/services';
+import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 
 const title = 'Other Products - Create Fares Data Service';
 const description = 'View and access your other products in one place.';
@@ -15,9 +16,27 @@ interface OtherProductsProps {
     otherProducts: MyFaresOtherFaresProduct[];
     myFaresEnabled: boolean;
     exportEnabled: boolean;
+    csrfToken: string;
 }
 
-const OtherProducts = ({ otherProducts, myFaresEnabled, exportEnabled }: OtherProductsProps): ReactElement => {
+const OtherProducts = ({
+    otherProducts,
+    myFaresEnabled,
+    exportEnabled,
+    csrfToken,
+}: OtherProductsProps): ReactElement => {
+    const [popUpState, setPopUpState] = useState<{
+        name: string;
+        productId: number;
+    }>();
+
+    const deleteActionHandler = (productId: number, name: string): void => {
+        setPopUpState({
+            name,
+            productId,
+        });
+    };
+
     return (
         <>
             <BaseLayout
@@ -37,7 +56,19 @@ const OtherProducts = ({ otherProducts, myFaresEnabled, exportEnabled }: OtherPr
                             </a>
                         </div>
 
-                        {otherProductsTable(otherProducts)}
+                        {otherProductsTable(otherProducts, deleteActionHandler)}
+
+                        {popUpState && (
+                            <DeleteConfirmationPopup
+                                entityType=""
+                                entityName={popUpState.name}
+                                deleteUrl={buildDeleteUrl(popUpState.productId, csrfToken)}
+                                cancelActionHandler={(): void => {
+                                    setPopUpState(undefined);
+                                }}
+                                hintText="When you delete this product it will be removed from the system and will no longer be included in future exports."
+                            />
+                        )}
                     </div>
                 </div>
             </BaseLayout>
@@ -45,7 +76,14 @@ const OtherProducts = ({ otherProducts, myFaresEnabled, exportEnabled }: OtherPr
     );
 };
 
-const otherProductsTable = (otherProducts: MyFaresOtherFaresProduct[]): ReactElement => {
+export const buildDeleteUrl = (idToDelete: number, csrfToken: string): string => {
+    return `/api/deleteProduct?id=${idToDelete}&_csrf=${csrfToken}`;
+};
+
+const otherProductsTable = (
+    otherProducts: MyFaresOtherFaresProduct[],
+    deleteActionHandler: (productId: number, name: string) => void,
+): React.ReactElement => {
     return (
         <>
             <table className="govuk-table">
@@ -61,9 +99,6 @@ const otherProductsTable = (otherProducts: MyFaresOtherFaresProduct[]): ReactEle
                             Duration
                         </th>
                         <th scope="col" className="govuk-table__header">
-                            Quantity
-                        </th>
-                        <th scope="col" className="govuk-table__header">
                             Passenger type
                         </th>
                         <th scope="col" className="govuk-table__header">
@@ -75,27 +110,35 @@ const otherProductsTable = (otherProducts: MyFaresOtherFaresProduct[]): ReactEle
                         <th scope="col" className="govuk-table__header">
                             Product status
                         </th>
+                        <th scope="col" className="govuk-table__header" />
                     </tr>
                 </thead>
                 <tbody className="govuk-table__body">
                     {otherProducts.length > 0
                         ? otherProducts.map((product, index) => (
                               <tr className="govuk-table__row" key={`product-${index}`}>
-                                  <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width">
+                                  <td className="govuk-table__cell dft-table-wrap-anywhere">
                                       <a href={`/products/productDetails?productId=${product.id}`}>
                                           {product.productDescription}
                                       </a>
                                   </td>
                                   <td className="govuk-table__cell">{sentenceCaseString(product.type)}</td>
                                   <td className="govuk-table__cell">{product.duration}</td>
-                                  <td className="govuk-table__cell">{product.quantity}</td>
-                                  <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width">
+                                  <td className="govuk-table__cell dft-table-wrap-anywhere">
                                       {sentenceCaseString(product.passengerType)}
                                   </td>
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
                                   <td className="govuk-table__cell">
                                       {getTag(product.startDate, product.endDate, true)}
+                                  </td>
+                                  <td className="govuk-table__cell">
+                                      <button
+                                          className="govuk-link delete-link"
+                                          onClick={() => deleteActionHandler(product.id, product.productDescription)}
+                                      >
+                                          Delete
+                                      </button>
                                   </td>
                               </tr>
                           ))
@@ -158,7 +201,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         )
     ).flat();
 
-    return { props: { otherProducts, myFaresEnabled, exportEnabled } };
+    return { props: { otherProducts, myFaresEnabled, exportEnabled, csrfToken: getCsrfToken(ctx) } };
 };
 
 export default OtherProducts;

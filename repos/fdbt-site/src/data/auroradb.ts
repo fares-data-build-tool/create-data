@@ -1471,6 +1471,22 @@ export const insertProducts = async (
     }
 };
 
+export const deleteProductByNocCodeAndId = async (id: number, nocCode: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'deleting product for given id',
+        id,
+        nocCode,
+    });
+
+    const deleteQuery = `
+            DELETE FROM products
+            WHERE id = ?
+            AND nocCode = ?`;
+
+    await executeQuery(deleteQuery, [id, nocCode]);
+};
+
 export const getOperatorDetailsFromNocTable = async (nocCode: string): Promise<OperatorDetails | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1644,7 +1660,7 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
     }
 };
 
-export const getProductMatchingJsonLinkByProductId = async (nocCode: string, productId: string): Promise<string> => {
+export const getProductById = async (nocCode: string, productId: string): Promise<MyFaresProduct> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'getting product matching json link for given noc and productId',
@@ -1654,19 +1670,19 @@ export const getProductMatchingJsonLinkByProductId = async (nocCode: string, pro
 
     try {
         const queryInput = `
-            SELECT matchingJsonLink
+            SELECT id, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention
             FROM products
             WHERE id = ?
             AND nocCode = ?
         `;
 
-        const queryResults = await executeQuery<{ matchingJsonLink: string }[]>(queryInput, [productId, nocCode]);
+        const queryResults = await executeQuery<MyFaresProduct[]>(queryInput, [productId, nocCode]);
 
         if (queryResults.length !== 1) {
             throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
         }
 
-        return queryResults[0].matchingJsonLink;
+        return queryResults[0];
     } catch (error) {
         throw new Error(`Could not retrieve product matchingJsonLinks by nocCode from AuroraDB: ${error.stack}`);
     }

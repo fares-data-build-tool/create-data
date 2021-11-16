@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { MyFaresPointToPointProduct, MyFaresService, NextPageContextWithSession } from '../../interfaces/index';
 import { MyFaresProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
@@ -9,11 +9,13 @@ import {
     getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
-import { convertDateFormat, getAndValidateNoc } from '../../utils';
+import { convertDateFormat, getAndValidateNoc, getCsrfToken } from '../../utils';
 import moment from 'moment';
 import { isArray } from 'lodash';
 import { getTag } from './services';
 import BackButton from '../../components/BackButton';
+import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
+import { buildDeleteUrl } from './otherProducts';
 
 const title = 'Point To Point Products - Create Fares Data Service';
 const description = 'View and access your point to point products in one place.';
@@ -21,9 +23,22 @@ const description = 'View and access your point to point products in one place.'
 interface PointToPointProductsProps {
     service: MyFaresService;
     products: MyFaresPointToPointProduct[];
+    csrfToken: string;
 }
 
-const PointToPointProducts = ({ products, service }: PointToPointProductsProps): ReactElement => {
+const PointToPointProducts = ({ products, service, csrfToken }: PointToPointProductsProps): ReactElement => {
+    const [popUpState, setPopUpState] = useState<{
+        name: string;
+        productId: number;
+    }>();
+
+    const deleteActionHandler = (productId: number, name: string): void => {
+        setPopUpState({
+            name,
+            productId,
+        });
+    };
+
     return (
         <>
             <BaseLayout title={title} description={description}>
@@ -37,7 +52,19 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
                             Service status: {getTag(service.startDate, service.endDate, false)}
                         </h1>
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">Products</h1>
-                        {PointToPointProductsTable(products, service)}
+                        {PointToPointProductsTable(products, service, deleteActionHandler)}
+
+                        {popUpState && (
+                            <DeleteConfirmationPopup
+                                entityType=""
+                                entityName={popUpState.name}
+                                deleteUrl={buildDeleteUrl(popUpState.productId, csrfToken)}
+                                cancelActionHandler={(): void => {
+                                    setPopUpState(undefined);
+                                }}
+                                hintText="When you delete this product it will be removed from the system and will no longer be included in future exports."
+                            />
+                        )}
                     </div>
                 </div>
             </BaseLayout>
@@ -45,7 +72,11 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
     );
 };
 
-const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], service: MyFaresService): ReactElement => {
+const PointToPointProductsTable = (
+    products: MyFaresPointToPointProduct[],
+    service: MyFaresService,
+    deleteActionHandler: (productId: number, name: string) => void,
+): ReactElement => {
     return (
         <>
             <table className="govuk-table">
@@ -66,6 +97,7 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], servi
                         <th scope="col" className="govuk-table__header">
                             Product status
                         </th>
+                        <th scope="col" className="govuk-table__header" />
                     </tr>
                 </thead>
 
@@ -87,11 +119,19 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], servi
                                   <td className="govuk-table__cell">{product.endDate ?? '-'}</td>
                                   <td className="govuk-table__cell">
                                       {getTag(product.startDate, product.endDate, true)}
-                                      {product.requiresAttention === true ? (
+                                      {product.requiresAttention ? (
                                           <strong className="govuk-tag govuk-tag--yellow dft-table-tag">
                                               NEEDS ATTENTION
                                           </strong>
                                       ) : null}
+                                  </td>
+                                  <td className="govuk-table__cell">
+                                      <button
+                                          className="govuk-link delete-link"
+                                          onClick={() => deleteActionHandler(product.id, product.productDescription)}
+                                      >
+                                          Delete
+                                      </button>
                                   </td>
                               </tr>
                           ))
@@ -164,13 +204,18 @@ export const getServerSideProps = async (
                 validity: timeRestriction,
                 id: product.id,
                 ...(endDate && { endDate }),
-                requiresAttention:
-                    !!product.servicesRequiringAttention && product.servicesRequiringAttention.length > 0,
+                requiresAttention: product.servicesRequiringAttention?.includes(serviceId) ?? false,
             };
         }),
     );
 
-    return { props: { products: formattedProducts, service: { ...service, endDate: service.endDate || '' } } };
+    return {
+        props: {
+            products: formattedProducts,
+            service: { ...service, endDate: service.endDate || '' },
+            csrfToken: getCsrfToken(ctx),
+        },
+    };
 };
 
 export default PointToPointProducts;

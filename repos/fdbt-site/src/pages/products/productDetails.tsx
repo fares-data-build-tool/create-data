@@ -4,7 +4,7 @@ import {
     getBodsServiceByNocAndId,
     getBodsServiceDirectionDescriptionsByNocAndLineName,
     getPassengerTypeNameByIdAndNoc,
-    getProductMatchingJsonLinkByProductId,
+    getProductById,
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
@@ -12,7 +12,6 @@ import { ProductDetailsElement, NextPageContextWithSession } from '../../interfa
 import TwoThirdsLayout from '../../layout/Layout';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
-import isArray from 'lodash/isArray';
 import BackButton from '../../components/BackButton';
 
 const title = 'Product Details - Create Fares Data Service';
@@ -24,6 +23,7 @@ interface ProductDetailsProps {
     endDate?: string;
     startDate: string;
     productDetailsElements: ProductDetailsElement[];
+    requiresAttention: boolean;
 }
 
 const ProductDetails = ({
@@ -32,12 +32,16 @@ const ProductDetails = ({
     startDate,
     endDate,
     productDetailsElements,
+    requiresAttention,
 }: ProductDetailsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <BackButton href={backHref} />
         <h1 className="govuk-heading-l">{productName}</h1>
         <div id="contact-hint" className="govuk-hint">
             Product status: {getTag(startDate, endDate, false)}
+            {requiresAttention && (
+                <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">NEEDS ATTENTION</strong>
+            )}
         </div>
         {productDetailsElements.map((element) => {
             return (
@@ -65,7 +69,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error(`Expected string type for productID, received: ${productId}`);
     }
 
-    const matchingJsonLink = await getProductMatchingJsonLinkByProductId(noc, productId);
+    const { matchingJsonLink, servicesRequiringAttention } = await getProductById(noc, productId);
     const ticket = await getProductsMatchingJson(matchingJsonLink);
 
     const productDetailsElements: ProductDetailsElement[] = [];
@@ -86,9 +90,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     let backHref = '/products/otherProducts';
+    let requiresAttention = false;
     if (serviceId) {
-        if (isArray(serviceId)) {
-            throw new Error('Received more than one serviceId');
+        if (typeof serviceId !== 'string') {
+            throw new Error(`Expected string type for serviceId, received: ${serviceId}`);
         }
         const pointToPointService = await getBodsServiceByNocAndId(noc, serviceId);
         productDetailsElements.push({
@@ -98,6 +103,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ],
         });
         backHref = `/products/pointToPointProducts?serviceId=${serviceId}`;
+
+        requiresAttention = servicesRequiringAttention?.includes(serviceId) ?? false;
     }
 
     if ('journeyDirection' in ticket && ticket.journeyDirection) {
@@ -218,6 +225,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             startDate,
             ...(endDate && { endDate }),
             productDetailsElements,
+            requiresAttention,
         },
     };
 };

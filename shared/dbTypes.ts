@@ -28,7 +28,7 @@ export interface MyFaresProduct {
     matchingJsonLink: string;
     startDate: string;
     endDate?: string;
-    servicesRequiringAttention: string[];
+    servicesRequiringAttention?: string[];
 }
 
 export type RawMyFaresProduct = Omit<MyFaresProduct, 'servicesRequiringAttention'> & {

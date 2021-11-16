@@ -24,6 +24,11 @@ exports[`myfares pages productDetails should render correctly 1`] = `
     >
       Active
     </strong>
+    <strong
+      className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2"
+    >
+      NEEDS ATTENTION
+    </strong>
   </div>
   <dl
     className="govuk-summary-list"
