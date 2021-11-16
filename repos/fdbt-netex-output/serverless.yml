@@ -69,7 +69,7 @@ provider:
         Rules:
           - Id: ExpiryRule
             Status: Enabled
-            ExpirationInDays: '120'
+            ExpirationInDays: '90'
 
 functions:
   NetexConvertor:
