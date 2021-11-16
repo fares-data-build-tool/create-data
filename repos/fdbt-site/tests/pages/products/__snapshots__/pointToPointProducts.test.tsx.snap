@@ -189,6 +189,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
               >
                 <a
                   href="/products/productDetails?productId=1&serviceId=01"
+                  id="product-1"
                 >
                   Adult - single
                 </a>
@@ -234,6 +235,16 @@ exports[`myfares pages pointToPointProducts should render correctly when product
   >
     <BackButton
       href="/products/services"
+    />
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Your service has been updated in BODS. Stops have been added and/or removed since the creation of your product(s). These products will need updating to reflect these changes.",
+            "id": "product-1",
+          },
+        ]
+      }
     />
     <div
       className="govuk-grid-row"
@@ -318,6 +329,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
               >
                 <a
                   href="/products/productDetails?productId=1&serviceId=01"
+                  id="product-1"
                 >
                   Adult - single
                 </a>

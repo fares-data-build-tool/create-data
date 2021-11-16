@@ -17,6 +17,7 @@ describe('myfares pages', () => {
                         endDate: '16/9/2021',
                     }}
                     products={[]}
+                    productNeedsAttention={false}
                 />,
             );
 
@@ -45,6 +46,7 @@ describe('myfares pages', () => {
                             requiresAttention: true,
                         },
                     ]}
+                    productNeedsAttention={true}
                 />,
             );
 
@@ -73,6 +75,7 @@ describe('myfares pages', () => {
                             requiresAttention: false,
                         },
                     ]}
+                    productNeedsAttention={false}
                 />,
             );
 
