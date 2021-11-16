@@ -52,7 +52,7 @@ provider:
         Rules:
           - Id: ExpiryRule
             Status: Enabled
-            ExpirationInDays: '60'
+            ExpirationInDays: '90'
 
     netexDataBucket:
       name: fdbt-netex-data-${self:provider.stage}
