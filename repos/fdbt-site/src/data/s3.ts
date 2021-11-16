@@ -302,5 +302,10 @@ export const getS3Exports = async (noc: string): Promise<string[]> => {
             Delimiter: '/',
         })
         .promise();
-    return response.CommonPrefixes?.flatMap((prefix) => prefix.Prefix ?? []) || [];
+    return (
+        response.CommonPrefixes?.flatMap((prefix) => {
+            const partsOfName = prefix.Prefix?.split('/');
+            return partsOfName?.[partsOfName.length - 2] ?? [];
+        }) || []
+    );
 };

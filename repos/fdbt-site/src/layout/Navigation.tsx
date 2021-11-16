@@ -41,6 +41,22 @@ const Navigation = ({ myFaresEnabled, exportEnabled }: NavigationProps): ReactEl
                 </li>
             )}
 
+            {exportEnabled && (
+                <li
+                    className={`app-navigation__list-item ${
+                        isActivePage(['products/exports']) ? 'app-navigation__list-item--current' : ''
+                    }`}
+                >
+                    <a
+                        className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
+                        href="/products/exports"
+                        data-topnav="Exports"
+                    >
+                        Export your data
+                    </a>
+                </li>
+            )}
+
             <li
                 className={`app-navigation__list-item ${
                     isActivePage([
@@ -63,22 +79,6 @@ const Navigation = ({ myFaresEnabled, exportEnabled }: NavigationProps): ReactEl
                     Operator settings
                 </a>
             </li>
-
-            {exportEnabled && (
-                <li
-                    className={`app-navigation__list-item ${
-                        isActivePage(['products/exports']) ? 'app-navigation__list-item--current' : ''
-                    }`}
-                >
-                    <a
-                        className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
-                        href="/products/exports"
-                        data-topnav="Exports"
-                    >
-                        Exports
-                    </a>
-                </li>
-            )}
         </ul>
     </nav>
 );
