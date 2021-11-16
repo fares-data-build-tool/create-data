@@ -17,7 +17,7 @@ interface GlobalSettingsProps {
         matchingDataCount: number;
         name: string;
         netexCount: number;
-        signedUrl: string | null;
+        signedUrl: string;
         exportDate: string;
         exportTime: string;
     }[];
@@ -128,8 +128,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const exportNames = await getS3Exports(noc);
 
     const exports = await Promise.all(
-        exportNames.map(async (it) => {
-            const prefix = `${noc}/exports/${it}/`;
+        exportNames.map(async (name) => {
+            const prefix = `${noc}/exports/${name}/`;
             const matchingDataCount = await getS3FolderCount(MATCHING_DATA_BUCKET_NAME, prefix);
             const exportDate = '14 Sep 2021';
             const exportTime = '10:37';
@@ -138,13 +138,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
             const complete = matchingDataCount === netexCount;
 
-            let signedUrl: string | null = null;
+            let signedUrl = '';
             if (complete) {
-                const zipKey = await retrieveAndZipExportedNetexForNoc(noc, it);
+                const zipKey = await retrieveAndZipExportedNetexForNoc(noc, name);
                 signedUrl = await getNetexSignedUrl(zipKey || '');
             }
 
-            return { name: it, matchingDataCount, netexCount, signedUrl, exportDate, exportTime };
+            return { name: name, matchingDataCount, netexCount, signedUrl, exportDate, exportTime };
         }),
     );
 
