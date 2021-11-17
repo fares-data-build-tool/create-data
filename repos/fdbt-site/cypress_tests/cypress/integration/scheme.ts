@@ -31,6 +31,6 @@ describe('the scheme journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeFlatFarePages('Scheme Flat Fare Test Product', true);
         completeSalesPages();
-        isFinished();
+        isFinished(true);
     });
 });

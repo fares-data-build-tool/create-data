@@ -13,7 +13,7 @@ describe('the scheme carnet product journeys', () => {
         defineUserTypeAndTimeRestrictions();
         completeFlatFarePages('Carnet flat fare', true, true);
         completeSalesPages();
-        isFinished();
+        isFinished(true);
     });
 
     it('completes successfully for a multi product scheme period flat fare', () => {
