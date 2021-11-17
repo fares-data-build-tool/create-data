@@ -13,7 +13,7 @@ describe('the scheme carnet product journeys', () => {
         defineUserTypeAndTimeRestrictions();
         completeFlatFarePages('Carnet flat fare', true, true);
         completeSalesPages();
-        isFinished(true);
+        isFinished();
     });
 
     it('completes successfully for a multi product scheme period flat fare', () => {
@@ -23,6 +23,6 @@ describe('the scheme carnet product journeys', () => {
         defineUserTypeAndTimeRestrictions();
         completeMultiOpGeoZonePages(true, numberOfProducts, productName);
         completeSalesPages(numberOfProducts, productName);
-        isFinished(true);
+        isFinished();
     });
 });

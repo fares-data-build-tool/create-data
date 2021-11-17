@@ -13,7 +13,7 @@ describe('the scheme journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeMultiOpGeoZonePages();
         completeSalesPages();
-        isFinished(true);
+        isFinished();
     });
 
     it('completes successfully for geozone and multiple products', () => {
@@ -23,7 +23,7 @@ describe('the scheme journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeMultiOpGeoZonePages(false, numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
-        isFinished(true);
+        isFinished();
     });
 
     it('completes successfully for flat fare', () => {
@@ -31,6 +31,6 @@ describe('the scheme journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeFlatFarePages('Scheme Flat Fare Test Product', true);
         completeSalesPages();
-        isFinished(true);
+        isFinished();
     });
 });
