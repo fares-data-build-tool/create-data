@@ -132,7 +132,7 @@ export const getServerSideProps = async (
             referer: extractGlobalSettingsReferer(ctx),
             saved: !!saved,
             myFaresEnabled: myFaresEnabled,
-            exportEnabled: exportEnabled,
+            exportEnabled,
         },
     };
 };
