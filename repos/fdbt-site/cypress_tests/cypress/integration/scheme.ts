@@ -26,11 +26,11 @@ describe('the scheme journey', () => {
         isFinished();
     });
 
-    it('completes successfully for flat fare', () => {
+    it.only('completes successfully for flat fare', () => {
         selectFareType('flatFare', true);
         defineUserTypeAndTimeRestrictions();
         completeFlatFarePages('Scheme Flat Fare Test Product', true);
         completeSalesPages();
-        isFinished();
+        isFinished(true);
     });
 });
