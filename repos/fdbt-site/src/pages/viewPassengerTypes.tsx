@@ -247,7 +247,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             groupPassengerTypes,
             referer: extractGlobalSettingsReferer(ctx),
             deleteEnabled: globalSettingsDeleteEnabled,
-            myFaresEnabled: myFaresEnabled,
+            myFaresEnabled,
             exportEnabled,
         },
     };
