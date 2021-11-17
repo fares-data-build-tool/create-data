@@ -19,7 +19,7 @@ interface ThankYouProps {
 const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <div className="govuk-panel govuk-panel--confirmation">
-            <h1 className="govuk-panel__title" id="thank-you-page-heading">
+            <h1 className="govuk-panel__title" id="thank-you-page-heading" data-test-id="final-page-banner">
                 Upload complete
             </h1>
             <div className="govuk-panel__body" id="uuid-ref-number">
