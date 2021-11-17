@@ -1,4 +1,4 @@
-import { isUuidStringValid } from '../support/helpers';
+import { isFinished } from '../support/helpers';
 import {
     completeMultiOpGeoZonePages,
     completeMultiOpMultiServicePages,
@@ -13,7 +13,7 @@ describe('the multi-operator faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeMultiOpGeoZonePages();
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for geozone and multiple products', () => {
@@ -23,7 +23,7 @@ describe('the multi-operator faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeMultiOpGeoZonePages(false, numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for multi-service and a single product', () => {
@@ -31,7 +31,7 @@ describe('the multi-operator faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeMultiOpMultiServicePages();
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for multi-service and multiple products', () => {
@@ -41,6 +41,6 @@ describe('the multi-operator faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeMultiOpMultiServicePages(numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
-        isUuidStringValid();
+        isFinished();
     });
 });

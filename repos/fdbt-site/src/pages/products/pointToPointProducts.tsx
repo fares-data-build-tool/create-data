@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { MyFaresPointToPointProduct, MyFaresService, NextPageContextWithSession } from '../../interfaces/index';
 import { MyFaresProduct } from '../../../shared/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
@@ -9,11 +9,14 @@ import {
     getTimeRestrictionByIdAndNoc,
 } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
-import { convertDateFormat, getAndValidateNoc } from '../../utils';
+import { convertDateFormat, getAndValidateNoc, getCsrfToken } from '../../utils';
 import moment from 'moment';
 import { isArray } from 'lodash';
 import { getTag } from './services';
 import BackButton from '../../components/BackButton';
+import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
+import { buildDeleteUrl } from './otherProducts';
+import ErrorSummary from '../../components/ErrorSummary';
 
 const title = 'Point To Point Products - Create Fares Data Service';
 const description = 'View and access your point to point products in one place.';
@@ -21,13 +24,48 @@ const description = 'View and access your point to point products in one place.'
 interface PointToPointProductsProps {
     service: MyFaresService;
     products: MyFaresPointToPointProduct[];
+    productNeedsAttention: boolean;
+    csrfToken: string;
 }
 
-const PointToPointProducts = ({ products, service }: PointToPointProductsProps): ReactElement => {
+const findIdForError = (products: MyFaresPointToPointProduct[]): string => {
+    const firstProductNeedingAttention = products.find((product) => product.requiresAttention);
+    return `product-${firstProductNeedingAttention?.id}`;
+};
+
+const PointToPointProducts = ({
+    products,
+    service,
+    productNeedsAttention,
+    csrfToken,
+}: PointToPointProductsProps): ReactElement => {
+    const [popUpState, setPopUpState] = useState<{
+        name: string;
+        productId: number;
+    }>();
+
+    const deleteActionHandler = (productId: number, name: string): void => {
+        setPopUpState({
+            name,
+            productId,
+        });
+    };
+
     return (
         <>
             <BaseLayout title={title} description={description}>
                 <BackButton href="/products/services" />
+                {productNeedsAttention ? (
+                    <ErrorSummary
+                        errors={[
+                            {
+                                errorMessage:
+                                    'Your service has been updated in BODS. Stops have been added and/or removed since the creation of your product(s). These products will need updating to reflect these changes.',
+                                id: findIdForError(products),
+                            },
+                        ]}
+                    />
+                ) : null}
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">
@@ -37,7 +75,19 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
                             Service status: {getTag(service.startDate, service.endDate, false)}
                         </h1>
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">Products</h1>
-                        {PointToPointProductsTable(products, service)}
+                        {PointToPointProductsTable(products, service, deleteActionHandler)}
+
+                        {popUpState && (
+                            <DeleteConfirmationPopup
+                                entityType=""
+                                entityName={popUpState.name}
+                                deleteUrl={buildDeleteUrl(popUpState.productId, csrfToken)}
+                                cancelActionHandler={(): void => {
+                                    setPopUpState(undefined);
+                                }}
+                                hintText="When you delete this product it will be removed from the system and will no longer be included in future exports."
+                            />
+                        )}
                     </div>
                 </div>
             </BaseLayout>
@@ -45,7 +95,11 @@ const PointToPointProducts = ({ products, service }: PointToPointProductsProps):
     );
 };
 
-const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], service: MyFaresService): ReactElement => {
+const PointToPointProductsTable = (
+    products: MyFaresPointToPointProduct[],
+    service: MyFaresService,
+    deleteActionHandler: (productId: number, name: string) => void,
+): ReactElement => {
     return (
         <>
             <table className="govuk-table">
@@ -66,6 +120,7 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], servi
                         <th scope="col" className="govuk-table__header">
                             Product status
                         </th>
+                        <th scope="col" className="govuk-table__header" />
                     </tr>
                 </thead>
 
@@ -76,6 +131,7 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], servi
                                   <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell">
                                       <a
                                           href={`/products/productDetails?productId=${product.id}&serviceId=${service.id}`}
+                                          id={`product-${product.id}`}
                                       >
                                           {product.productDescription}
                                       </a>
@@ -87,6 +143,19 @@ const PointToPointProductsTable = (products: MyFaresPointToPointProduct[], servi
                                   <td className="govuk-table__cell">{product.endDate ?? '-'}</td>
                                   <td className="govuk-table__cell">
                                       {getTag(product.startDate, product.endDate, true)}
+                                      {product.requiresAttention ? (
+                                          <strong className="govuk-tag govuk-tag--yellow dft-table-tag">
+                                              NEEDS ATTENTION
+                                          </strong>
+                                      ) : null}
+                                  </td>
+                                  <td className="govuk-table__cell">
+                                      <button
+                                          className="govuk-link delete-link"
+                                          onClick={() => deleteActionHandler(product.id, product.productDescription)}
+                                      >
+                                          Delete
+                                      </button>
                                   </td>
                               </tr>
                           ))
@@ -159,11 +228,21 @@ export const getServerSideProps = async (
                 validity: timeRestriction,
                 id: product.id,
                 ...(endDate && { endDate }),
+                requiresAttention: product.servicesRequiringAttention?.includes(serviceId) ?? false,
             };
         }),
     );
 
-    return { props: { products: formattedProducts, service: { ...service, endDate: service.endDate || '' } } };
+    const productNeedsAttention = formattedProducts.some((product) => product.requiresAttention);
+
+    return {
+        props: {
+            products: formattedProducts,
+            service: { ...service, endDate: service.endDate || '' },
+            productNeedsAttention,
+            csrfToken: getCsrfToken(ctx),
+        },
+    };
 };
 
 export default PointToPointProducts;

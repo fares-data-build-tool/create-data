@@ -159,6 +159,7 @@ exports[`pages view time restrictions should render correctly when no time restr
     description="Define certain days and time periods that your tickets can be used within."
     entities={Array []}
     entityDescription="time restriction"
+    exportEnabled={false}
     myFaresEnabled={false}
     referer={null}
     title="Time restrictions"
@@ -225,6 +226,7 @@ exports[`pages view time restrictions should render correctly when time restrict
       ]
     }
     entityDescription="time restriction"
+    exportEnabled={false}
     myFaresEnabled={false}
     referer="hello"
     title="Time restrictions"

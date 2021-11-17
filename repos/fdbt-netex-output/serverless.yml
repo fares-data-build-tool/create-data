@@ -52,7 +52,7 @@ provider:
         Rules:
           - Id: ExpiryRule
             Status: Enabled
-            ExpirationInDays: '60'
+            ExpirationInDays: '90'
 
     netexDataBucket:
       name: fdbt-netex-data-${self:provider.stage}
@@ -65,6 +65,11 @@ provider:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
+      lifecycleConfiguration:
+        Rules:
+          - Id: ExpiryRule
+            Status: Enabled
+            ExpirationInDays: '90'
 
 functions:
   NetexConvertor:
@@ -73,6 +78,7 @@ functions:
       - s3:
           bucket: matchingDataBucket
           event: s3:ObjectCreated:*
+    reservedConcurrency: 40
     vpc:
       securityGroupIds:
         - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG

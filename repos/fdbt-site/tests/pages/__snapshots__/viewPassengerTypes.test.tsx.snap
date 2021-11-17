@@ -3,6 +3,7 @@
 exports[`pages view passenger types should render correctly when groups and individual passenger types 1`] = `
 <BaseLayout
   description="View and edit your passenger types."
+  exportEnabled={false}
   myFaresEnabled={false}
   referer="hello"
   showNavigation={true}
@@ -112,6 +113,7 @@ exports[`pages view passenger types should render correctly when groups and indi
 exports[`pages view passenger types should render correctly when no individual or group passenger types 1`] = `
 <BaseLayout
   description="View and edit your passenger types."
+  exportEnabled={false}
   myFaresEnabled={false}
   referer={null}
   showNavigation={true}
@@ -162,6 +164,7 @@ exports[`pages view passenger types should render correctly when no individual o
 exports[`pages view passenger types should render correctly when only individual passenger types 1`] = `
 <BaseLayout
   description="View and edit your passenger types."
+  exportEnabled={false}
   myFaresEnabled={false}
   referer="hello"
   showNavigation={true}
@@ -239,6 +242,7 @@ exports[`pages view passenger types should render correctly when only individual
 exports[`pages view passenger types should render correctly when only passenger type groups 1`] = `
 <BaseLayout
   description="View and edit your passenger types."
+  exportEnabled={false}
   myFaresEnabled={false}
   referer={null}
   showNavigation={true}

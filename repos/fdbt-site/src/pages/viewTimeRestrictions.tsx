@@ -4,7 +4,7 @@ import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import { NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
-import { globalSettingsDeleteEnabled, myFaresEnabled } from '../constants/featureFlag';
+import { exportEnabled, globalSettingsDeleteEnabled, myFaresEnabled } from '../constants/featureFlag';
 import { DbTimeBand } from 'shared/matchingJsonTypes';
 
 const title = 'Time restrictions';
@@ -27,6 +27,7 @@ interface TimeRestrictionProps {
     referer: string | null;
     deleteEnabled: boolean;
     myFaresEnabled: boolean;
+    exportEnabled: boolean;
 }
 
 const formatTime = (time: string | object): string =>
@@ -53,6 +54,7 @@ const ViewTimeRestrictions = ({
     csrfToken,
     deleteEnabled,
     myFaresEnabled,
+    exportEnabled,
 }: TimeRestrictionProps): ReactElement => {
     return (
         <>
@@ -66,6 +68,7 @@ const ViewTimeRestrictions = ({
                 CardBody={TimeRestrictionCardBody}
                 deleteEnabled={deleteEnabled}
                 myFaresEnabled={myFaresEnabled}
+                exportEnabled={exportEnabled}
             />
         </>
     );
@@ -108,6 +111,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             csrfToken,
             deleteEnabled: globalSettingsDeleteEnabled,
             myFaresEnabled: myFaresEnabled,
+            exportEnabled: exportEnabled,
         },
     };
 };

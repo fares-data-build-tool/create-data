@@ -7,6 +7,7 @@ describe('myfares pages', () => {
         it('should render correctly when no products against service', () => {
             const tree = shallow(
                 <PointToPointProducts
+                    csrfToken={''}
                     service={{
                         id: '01',
                         origin: 'Leeds',
@@ -17,15 +18,17 @@ describe('myfares pages', () => {
                         endDate: '16/9/2021',
                     }}
                     products={[]}
+                    productNeedsAttention={false}
                 />,
             );
 
             expect(tree).toMatchSnapshot();
         });
 
-        it('should render correctly when products present against service', () => {
+        it('should render correctly when products present against service and the product requires attention', () => {
             const tree = shallow(
                 <PointToPointProducts
+                    csrfToken={''}
                     service={{
                         id: '01',
                         origin: 'Leeds',
@@ -42,8 +45,40 @@ describe('myfares pages', () => {
                             validity: 'Monday, Tuesday',
                             startDate: '05/04/2020',
                             endDate: '10/04/2020',
+                            requiresAttention: true,
                         },
                     ]}
+                    productNeedsAttention={true}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly when products present against service and the product does not require attention', () => {
+            const tree = shallow(
+                <PointToPointProducts
+                    csrfToken={''}
+                    service={{
+                        id: '01',
+                        origin: 'Leeds',
+                        destination: 'Manchester',
+                        lineId: 'wefawefa',
+                        lineName: '1',
+                        startDate: '1/1/2021',
+                        endDate: '16/9/2021',
+                    }}
+                    products={[
+                        {
+                            id: 1,
+                            productDescription: 'Adult - single',
+                            validity: 'Monday, Tuesday',
+                            startDate: '05/04/2020',
+                            endDate: '10/04/2020',
+                            requiresAttention: false,
+                        },
+                    ]}
+                    productNeedsAttention={false}
                 />,
             );
 

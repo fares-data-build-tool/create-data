@@ -5,6 +5,7 @@ interface PopUpProps {
     entityName: string;
     deleteUrl: string;
     cancelActionHandler: React.MouseEventHandler<HTMLButtonElement>;
+    hintText?: string;
 }
 
 const DeleteConfirmationPopup = ({
@@ -12,6 +13,7 @@ const DeleteConfirmationPopup = ({
     entityName,
     deleteUrl,
     cancelActionHandler,
+    hintText,
 }: PopUpProps): ReactElement | null => (
     <div className="popup">
         <div className="popup__content">
@@ -19,7 +21,9 @@ const DeleteConfirmationPopup = ({
                 <h1 className="govuk-heading-m">Are you sure you want to delete {entityName}?</h1>
 
                 <span className="govuk-hint" id="delete-hint">
-                    When you delete, you will no longer be able to create new fares using this {entityType}.
+                    {hintText || (
+                        <>When you delete, you will no longer be able to create new fares using this {entityType}.</>
+                    )}
                 </span>
 
                 <button className="govuk-button govuk-button--secondary" onClick={cancelActionHandler}>

@@ -19,7 +19,7 @@
     display: block;
     text-align: center;
 
-    &:last-of-type {
+    &:not(:first-of-type) {
         margin: 0.5rem 0 0 0;
     }
 }

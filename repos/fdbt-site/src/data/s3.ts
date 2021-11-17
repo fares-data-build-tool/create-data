@@ -62,12 +62,6 @@ export const getMatchingJson = async (path: string): Promise<Ticket> => {
     };
 
     try {
-        logger.info('', {
-            context: 'data.s3',
-            message: 'retrieving matching json from S3',
-            path,
-        });
-
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
@@ -84,12 +78,6 @@ export const getProductsMatchingJson = async (path: string): Promise<TicketWithI
     };
 
     try {
-        logger.info('', {
-            context: 'data.s3',
-            message: 'retrieving products matching json from S3',
-            path,
-        });
-
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
@@ -314,5 +302,10 @@ export const getS3Exports = async (noc: string): Promise<string[]> => {
             Delimiter: '/',
         })
         .promise();
-    return response.CommonPrefixes?.flatMap((prefix) => prefix.Prefix ?? []) || [];
+    return (
+        response.CommonPrefixes?.flatMap((prefix) => {
+            const partsOfName = prefix.Prefix?.split('/');
+            return partsOfName?.[partsOfName.length - 2] ?? [];
+        }) || []
+    );
 };

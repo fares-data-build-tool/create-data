@@ -4,7 +4,7 @@ import {
     getBodsServiceDirectionDescriptionsByNocAndLineName,
     getBodsServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
-    getProductMatchingJsonLinkByProductId,
+    getProductById,
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
 } from '../../../src/data/auroradb';
@@ -29,6 +29,7 @@ describe('myfares pages', () => {
         it('should render correctly', () => {
             const tree = shallow(
                 <ProductDetails
+                    requiresAttention={true}
                     backHref={'/products/pointToPointProducts?serviceId=1'}
                     productName={'Carnet Return Test'}
                     startDate={'18/10/2021'}
@@ -63,7 +64,7 @@ describe('myfares pages', () => {
                 startDate: 'A date',
                 endDate: 'Another date',
             });
-            (getProductMatchingJsonLinkByProductId as jest.Mock).mockResolvedValueOnce('path');
+            (getProductById as jest.Mock).mockResolvedValueOnce('path');
             (getPassengerTypeNameByIdAndNoc as jest.Mock).mockResolvedValue('Test Passenger Type');
 
             (getSalesOfferPackageByIdAndNoc as jest.Mock).mockResolvedValueOnce({
@@ -88,6 +89,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1', serviceId: '2' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    requiresAttention: false,
                     backHref: `/products/pointToPointProducts?serviceId=2`,
                     productName: 'Test Passenger Type - Single (school)',
                     startDate: '17/12/2020',
@@ -110,6 +112,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1', serviceId: '2' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    requiresAttention: false,
                     backHref: `/products/pointToPointProducts?serviceId=2`,
                     productName: 'My product',
                     startDate: '17/12/2020',
@@ -136,6 +139,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    requiresAttention: false,
                     backHref: `/products/otherProducts`,
                     productName: 'Test Return Product',
                     startDate: '17/12/2020',
@@ -161,6 +165,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    requiresAttention: false,
                     backHref: `/products/otherProducts`,
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',
@@ -186,6 +191,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    requiresAttention: false,
                     backHref: `/products/otherProducts`,
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',
@@ -211,6 +217,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    requiresAttention: false,
                     backHref: '/products/otherProducts',
                     productName: 'product one',
                     startDate: '17/12/2020',
@@ -235,6 +242,7 @@ describe('myfares pages', () => {
             const ctx = getMockContext({ query: { productId: '1' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
+                    requiresAttention: false,
                     backHref: '/products/otherProducts',
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',

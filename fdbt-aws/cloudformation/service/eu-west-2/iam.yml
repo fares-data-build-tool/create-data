@@ -182,6 +182,13 @@ Resources:
                   - !Sub arn:aws:s3:::fdbt-products-data-${Stage}/*
               - Effect: Allow
                 Action:
+                  - "s3:ListBucket"
+                Resource:
+                  - !Sub arn:aws:s3:::fdbt-matching-data-${Stage}
+                  - !Sub arn:aws:s3:::fdbt-products-data-${Stage}
+                  - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}
+              - Effect: Allow
+                Action:
                   - "s3:PutObject"
                 Resource:
                   - !Sub arn:aws:s3:::fdbt-raw-user-data-${Stage}/*
@@ -190,11 +197,6 @@ Resources:
                   - "s3:GetObject"
                 Resource:
                   - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}/*
-              - Effect: Allow
-                Action:
-                  - "s3:ListBucket"
-                Resource:
-                  - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}
               - Effect: Allow
                 Action:
                   - "ssm:GetParameter"

@@ -56,7 +56,8 @@
     color: #0b0c0c;
 }
 @media print {
-    .govuk-link[href^="/"]::after,.app-prose-scope a[href^="/"]::after,.govuk-link[href^="http://"]::after,.app-prose-scope a[href^="http://"]::after,.govuk-link[href^="https://"]::after,.app-prose-scope a[href^="https://"]::after {
+    .govuk-link[href^="/"]::after,.app-prose-scope a[href^="/"]::after,.govuk-link[href^="http://"]::after,.app-prose-scope a[href^="http://"]::after,.govuk-link[href^="https://"]::after,.app-prose-scope a[href^="https://"]::after
+    {
         content: ' (' attr(href) ')';
         font-size: 90%;
         word-wrap: break-word;

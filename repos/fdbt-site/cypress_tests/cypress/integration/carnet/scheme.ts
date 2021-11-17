@@ -1,4 +1,4 @@
-import { isUuidStringValid } from '../../support/helpers';
+import { isFinished } from '../../support/helpers';
 import {
     completeSalesPages,
     defineUserTypeAndTimeRestrictions,
@@ -13,7 +13,7 @@ describe('the scheme carnet product journeys', () => {
         defineUserTypeAndTimeRestrictions();
         completeFlatFarePages('Carnet flat fare', true, true);
         completeSalesPages();
-        isUuidStringValid(true);
+        isFinished();
     });
 
     it('completes successfully for a multi product scheme period flat fare', () => {
@@ -23,6 +23,6 @@ describe('the scheme carnet product journeys', () => {
         defineUserTypeAndTimeRestrictions();
         completeMultiOpGeoZonePages(true, numberOfProducts, productName);
         completeSalesPages(numberOfProducts, productName);
-        isUuidStringValid(true);
+        isFinished();
     });
 });

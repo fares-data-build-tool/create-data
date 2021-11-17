@@ -28,6 +28,7 @@ import {
     RawService,
     MyFaresProduct,
     RawJourneyPattern,
+    DbProduct,
 } from '../../shared/dbTypes';
 import { convertDateFormat } from '../utils';
 
@@ -396,6 +397,47 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
             }`,
         );
     }
+};
+
+/**
+ * For a given national operator code and line id, the function returns a
+ * subset of information about each service.
+ *
+ *
+ * @remarks
+ * Only brings back services from `bods`.
+ *
+ *
+ * @param noc - The national operator code
+ * @param lineId - The line id of the service(s)
+ *
+ * @returns An array of RawService.
+ */
+export const getServicesByNocAndLineId = async (noc: string, lineId: string): Promise<RawService[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for a given noc and line id',
+        noc,
+        lineId,
+    });
+
+    const query = `
+      SELECT ol.id,
+             ol.startDate,
+             ol.endDate
+      FROM txcOperatorLine ol
+      WHERE ol.nocCode = ?
+      AND ol.lineId = ?
+      AND ol.dataSource = 'bods'
+    `;
+
+    const result = await executeQuery<RawService[]>(query, [noc, lineId]);
+
+    return result.map((result) => ({
+        ...result,
+        startDate: convertDateFormat(result.startDate),
+        endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
+    }));
 };
 
 export const getServiceByIdAndDataSource = async (
@@ -1433,6 +1475,22 @@ export const insertProducts = async (
     }
 };
 
+export const deleteProductByNocCodeAndId = async (id: number, nocCode: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'deleting product for given id',
+        id,
+        nocCode,
+    });
+
+    const deleteQuery = `
+            DELETE FROM products
+            WHERE id = ?
+            AND nocCode = ?`;
+
+    await executeQuery(deleteQuery, [id, nocCode]);
+};
+
 export const getOperatorDetailsFromNocTable = async (nocCode: string): Promise<OperatorDetails | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1555,18 +1613,22 @@ export const getPointToPointProductsByLineId = async (nocCode: string, lineId: s
 
     try {
         const queryInput = `
-            SELECT id, lineId, matchingJsonLink, startDate, endDate
+            SELECT id, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention
             FROM products
             WHERE lineId = ?
             AND nocCode = ?
         `;
 
-        const queryResults = await executeQuery<MyFaresProduct[]>(queryInput, [lineId, nocCode]);
+        const queryResults = await executeQuery<RawMyFaresProduct[]>(queryInput, [lineId, nocCode]);
 
         return queryResults.map((result) => ({
             ...result,
             startDate: convertDateFormat(result.startDate),
             endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
+            servicesRequiringAttention:
+                result.servicesRequiringAttention === null || result.servicesRequiringAttention === undefined
+                    ? []
+                    : result.servicesRequiringAttention.split(','),
         }));
     } catch (error) {
         throw new Error(
@@ -1602,7 +1664,7 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
     }
 };
 
-export const getProductMatchingJsonLinkByProductId = async (nocCode: string, productId: string): Promise<string> => {
+export const getProductById = async (nocCode: string, productId: string): Promise<MyFaresProduct> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'getting product matching json link for given noc and productId',
@@ -1612,39 +1674,52 @@ export const getProductMatchingJsonLinkByProductId = async (nocCode: string, pro
 
     try {
         const queryInput = `
-            SELECT matchingJsonLink
+            SELECT id, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention
             FROM products
             WHERE id = ?
             AND nocCode = ?
         `;
 
-        const queryResults = await executeQuery<{ matchingJsonLink: string }[]>(queryInput, [productId, nocCode]);
+        const queryResults = await executeQuery<MyFaresProduct[]>(queryInput, [productId, nocCode]);
 
         if (queryResults.length !== 1) {
             throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
         }
 
-        return queryResults[0].matchingJsonLink;
+        return queryResults[0];
     } catch (error) {
         throw new Error(`Could not retrieve product matchingJsonLinks by nocCode from AuroraDB: ${error.stack}`);
     }
 };
 
-export const getAllProducts = async (nocCode: string): Promise<{ matchingJsonLink: string }[]> => {
+/**
+ * For a given national operator code, get all the products from the database.
+ *
+ * @param noc the national operator code
+ *
+ * @returns An array of DbProduct.
+ */
+export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'getting products for given noc and fareType',
-        noc: nocCode,
+        message: 'getting products for a given noc',
+        noc: noc,
     });
 
     const query = `
-            SELECT matchingJsonLink
+            SELECT matchingJsonLink, lineId, startDate, endDate
             FROM products
             WHERE nocCode = ?
         `;
 
     try {
-        return await executeQuery<{ matchingJsonLink: string }[]>(query, [nocCode]);
+        const result = await executeQuery<DbProduct[]>(query, [noc]);
+
+        return result.map((result) => ({
+            ...result,
+            startDate: convertDateFormat(result.startDate),
+            endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
+        }));
     } catch (error) {
         throw new Error(`Could not fetch products from the products table. ${error.stack}`);
     }

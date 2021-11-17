@@ -14,6 +14,7 @@ describe('pages', () => {
                     referer={null}
                     deleteEnabled={false}
                     myFaresEnabled={false}
+                    exportEnabled={false}
                 />,
             );
 
@@ -41,6 +42,7 @@ describe('pages', () => {
                     referer={'hello'}
                     deleteEnabled={false}
                     myFaresEnabled={false}
+                    exportEnabled={false}
                 />,
             );
 
@@ -82,6 +84,7 @@ describe('pages', () => {
                     referer={null}
                     deleteEnabled={false}
                     myFaresEnabled={false}
+                    exportEnabled={false}
                 />,
             );
 
@@ -138,6 +141,7 @@ describe('pages', () => {
                     referer={'hello'}
                     deleteEnabled={false}
                     myFaresEnabled={false}
+                    exportEnabled={false}
                 />,
             );
             expect(tree).toMatchSnapshot();

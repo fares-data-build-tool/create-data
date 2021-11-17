@@ -1,4 +1,4 @@
-import { isUuidStringValid } from '../support/helpers';
+import { isFinished } from '../support/helpers';
 import {
     completeReturnPages,
     completeSalesPages,
@@ -12,7 +12,7 @@ describe('The return faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeReturnPages(true, false, false);
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for manual upload', () => {
@@ -20,6 +20,6 @@ describe('The return faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeReturnPages(false, false, false);
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 });
