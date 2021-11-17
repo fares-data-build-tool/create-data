@@ -414,6 +414,8 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
  * @returns An array of RawService.
  */
 export const getServicesByNocAndLineId = async (noc: string, lineId: string): Promise<RawService[]> => {
+    const nationalOperatorCode = replaceInternalNocCode(noc);
+
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving services for a given noc and line id',
@@ -431,7 +433,7 @@ export const getServicesByNocAndLineId = async (noc: string, lineId: string): Pr
       AND ol.dataSource = 'bods'
     `;
 
-    const result = await executeQuery<RawService[]>(query, [noc, lineId]);
+    const result = await executeQuery<RawService[]>(query, [nationalOperatorCode, lineId]);
 
     return result.map((result) => ({
         ...result,
@@ -1700,6 +1702,8 @@ export const getProductById = async (nocCode: string, productId: string): Promis
  * @returns An array of DbProduct.
  */
 export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => {
+    const nationalOperatorCode = replaceInternalNocCode(noc);
+
     logger.info('', {
         context: 'data.auroradb',
         message: 'getting products for a given noc',
@@ -1713,7 +1717,7 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
         `;
 
     try {
-        const result = await executeQuery<DbProduct[]>(query, [noc]);
+        const result = await executeQuery<DbProduct[]>(query, [nationalOperatorCode]);
 
         return result.map((result) => ({
             ...result,
