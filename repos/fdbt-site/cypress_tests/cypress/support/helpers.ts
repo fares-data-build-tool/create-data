@@ -427,18 +427,20 @@ export const completeProductDateInformationPage = (): void => {
     continueButtonClick();
 };
 
-export const isFinished = (isScheme = false): void => {
-    if (isScheme) {
-        getElementById('uuid-ref-number')
-            .invoke('text')
-            .then((rawUuid) => {
-                const uuid = rawUuid.replace('Your reference number', '');
-                expect(uuid).to.contain('TESTSE');
-                expect(uuid.length).to.equal(14);
-            });
-    } else {
-        getElementById('thank-you-page-heading').should('have.text', 'Product created');
-    }
+export const isFinished = (): void => {
+    cy.get('body').then((body) => {
+        if (body.find('uuid-ref-number').length > 0) {
+            getElementById('uuid-ref-number')
+                .invoke('text')
+                .then((rawUuid) => {
+                    const uuid = rawUuid.replace('Your reference number', '');
+                    expect(uuid).to.contain('TESTSE');
+                    expect(uuid.length).to.equal(14);
+                });
+        } else {
+            getElementById('thank-you-page-heading').should('have.text', 'Product created');
+        }
+    });
 };
 
 export const uploadFile = (elementId: string, fileName: string): void => {
