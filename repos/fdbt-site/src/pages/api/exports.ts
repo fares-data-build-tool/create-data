@@ -60,7 +60,10 @@ const getNonExpiredProducts = (products: DbProduct[]) => {
 };
 
 /**
- * Filters out products that have no active services.
+ * For products that are associated with a service, it filters out products that
+ * have no active services. Products not associated with a service stay and are
+ * not removed.
+ *
  *
  * @param noc the national operator code
  * @param products the list of non-expired products
@@ -74,23 +77,28 @@ const filterOutProductsWithNoActiveServices = async (noc: string, products: DbPr
         const product = products[i];
         const lineId = product.lineId;
 
-        const services = await getServicesByNocAndLineId(noc, lineId);
-
-        const activeServices = services.filter((service) => {
-            const startDate = service.startDate;
-            const endDate = service.endDate;
-
-            const status = getEntityStatus(startDate, endDate);
-
-            if (status === EntityStatus.Active) {
-                return true;
-            }
-
-            return false;
-        });
-
-        if (activeServices.length > 0) {
+        if (lineId === '') {
+            // we have a product that is not associated with a service
             lineIdsToKeep.push(lineId);
+        } else {
+            const services = await getServicesByNocAndLineId(noc, lineId);
+
+            const activeServices = services.filter((service) => {
+                const startDate = service.startDate;
+                const endDate = service.endDate;
+
+                const status = getEntityStatus(startDate, endDate);
+
+                if (status === EntityStatus.Active) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            if (activeServices.length > 0) {
+                lineIdsToKeep.push(lineId);
+            }
         }
     }
 
