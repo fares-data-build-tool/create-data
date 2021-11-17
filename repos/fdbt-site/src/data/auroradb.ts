@@ -1702,8 +1702,6 @@ export const getProductById = async (nocCode: string, productId: string): Promis
  * @returns An array of DbProduct.
  */
 export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => {
-    const nationalOperatorCode = replaceInternalNocCode(noc);
-
     logger.info('', {
         context: 'data.auroradb',
         message: 'getting products for a given noc',
@@ -1717,7 +1715,7 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
         `;
 
     try {
-        const result = await executeQuery<DbProduct[]>(query, [nationalOperatorCode]);
+        const result = await executeQuery<DbProduct[]>(query, [noc]);
 
         return result.map((result) => ({
             ...result,

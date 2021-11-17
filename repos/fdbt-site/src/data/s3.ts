@@ -242,7 +242,7 @@ export const retrieveAndZipExportedNetexForNoc = async (noc: string, exportName:
         .promise();
 
     const zips = zipResponse.Contents?.length;
-    const zipKey = `${prefix}/${exportName}.zip`;
+    const zipKey = `${prefix}${exportName}.zip`;
 
     if (!zips) {
         const response = await s3
@@ -268,6 +268,8 @@ export const zipFiles = async (allFiles: string[], zipKey: string): Promise<void
     });
 
     const pass = new PassThrough();
+    const s3Upload = s3.upload({ Bucket: NETEX_BUCKET_NAME, Key: zipKey, Body: pass }).promise();
+
     archive.pipe(pass);
 
     await Promise.all(
@@ -280,7 +282,7 @@ export const zipFiles = async (allFiles: string[], zipKey: string): Promise<void
     );
 
     await archive.finalize();
-    await s3.upload({ Bucket: NETEX_BUCKET_NAME, Key: zipKey, Body: pass }).promise();
+    await s3Upload;
 };
 
 export const getS3FolderCount = async (bucketName: string, path: string): Promise<number> => {
