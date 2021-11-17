@@ -427,18 +427,8 @@ export const completeProductDateInformationPage = (): void => {
     continueButtonClick();
 };
 
-export const isFinished = (usesTNDS = false): void => {
-    if (usesTNDS) {
-        getElementById('uuid-ref-number')
-            .invoke('text')
-            .then((rawUuid) => {
-                const uuid = rawUuid.replace('Your reference number', '');
-                expect(uuid).to.contain('TESTSE');
-                expect(uuid.length).to.equal(14);
-            });
-    } else {
-        getElementById('thank-you-page-heading').should('have.text', 'Product created');
-    }
+export const isFinished = (): void => {
+    getElementByDataTestId('final-page-banner').should('exist');
 };
 
 export const uploadFile = (elementId: string, fileName: string): void => {

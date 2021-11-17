@@ -12,7 +12,7 @@ const description = 'Product created page for the Create Fares Data Service';
 const ProductCreated = (): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <div className="govuk-panel govuk-panel--confirmation">
-            <h1 className="govuk-panel__title" id="thank-you-page-heading">
+            <h1 className="govuk-panel__title" id="thank-you-page-heading" data-test-id="final-page-banner">
                 Product created
             </h1>
         </div>
