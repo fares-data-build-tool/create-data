@@ -62,12 +62,6 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
                 className="govuk-table__header"
                 scope="col"
               >
-                Quantity
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
                 Passenger type
               </th>
               <th
@@ -88,6 +82,10 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
               >
                 Product status
               </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
             </tr>
           </thead>
           <tbody
@@ -169,12 +167,6 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 className="govuk-table__header"
                 scope="col"
               >
-                Quantity
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
                 Passenger type
               </th>
               <th
@@ -195,6 +187,10 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               >
                 Product status
               </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
             </tr>
           </thead>
           <tbody
@@ -205,7 +201,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               key="product-0"
             >
               <td
-                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
+                className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 <a
                   href="/products/productDetails?productId=1"
@@ -224,12 +220,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 1 trip
               </td>
               <td
-                className="govuk-table__cell"
-              >
-                1
-              </td>
-              <td
-                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
+                className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 Infant
               </td>
@@ -252,13 +243,23 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                   Active
                 </strong>
               </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <button
+                  className="govuk-link delete-link"
+                  onClick={[Function]}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
             <tr
               className="govuk-table__row"
               key="product-1"
             >
               <td
-                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
+                className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 <a
                   href="/products/productDetails?productId=2"
@@ -277,12 +278,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 3 days
               </td>
               <td
-                className="govuk-table__cell"
-              >
-                20
-              </td>
-              <td
-                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
+                className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 Infant
               </td>
@@ -305,13 +301,23 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                   Pending
                 </strong>
               </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <button
+                  className="govuk-link delete-link"
+                  onClick={[Function]}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
             <tr
               className="govuk-table__row"
               key="product-2"
             >
               <td
-                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
+                className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 <a
                   href="/products/productDetails?productId=3"
@@ -330,12 +336,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 3 days
               </td>
               <td
-                className="govuk-table__cell"
-              >
-                1
-              </td>
-              <td
-                className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width"
+                className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 Adult
               </td>
@@ -357,6 +358,16 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 >
                   Pending
                 </strong>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <button
+                  className="govuk-link delete-link"
+                  onClick={[Function]}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           </tbody>

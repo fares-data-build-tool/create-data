@@ -7,6 +7,7 @@ describe('myfares pages', () => {
         it('should render correctly when no products against service', () => {
             const tree = shallow(
                 <PointToPointProducts
+                    csrfToken={''}
                     service={{
                         id: '01',
                         origin: 'Leeds',
@@ -27,6 +28,7 @@ describe('myfares pages', () => {
         it('should render correctly when products present against service and the product requires attention', () => {
             const tree = shallow(
                 <PointToPointProducts
+                    csrfToken={''}
                     service={{
                         id: '01',
                         origin: 'Leeds',
@@ -56,6 +58,7 @@ describe('myfares pages', () => {
         it('should render correctly when products present against service and the product does not require attention', () => {
             const tree = shallow(
                 <PointToPointProducts
+                    csrfToken={''}
                     service={{
                         id: '01',
                         origin: 'Leeds',
