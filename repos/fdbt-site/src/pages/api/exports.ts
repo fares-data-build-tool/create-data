@@ -77,7 +77,7 @@ const filterOutProductsWithNoActiveServices = async (noc: string, products: DbPr
         const product = products[i];
         const lineId = product.lineId;
 
-        if (lineId === '') {
+        if (!lineId) {
             // we have a product that is not associated with a service
             lineIdsToKeep.push(lineId);
         } else {
