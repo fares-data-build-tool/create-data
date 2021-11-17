@@ -192,6 +192,7 @@ Resources:
                   - "s3:PutObject"
                 Resource:
                   - !Sub arn:aws:s3:::fdbt-raw-user-data-${Stage}/*
+                  - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}/*
               - Effect: Allow
                 Action:
                   - "s3:GetObject"
