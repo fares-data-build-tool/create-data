@@ -26,7 +26,7 @@ describe('the scheme journey', () => {
         isFinished();
     });
 
-    it.only('completes successfully for flat fare', () => {
+    it('completes successfully for flat fare', () => {
         selectFareType('flatFare', true);
         defineUserTypeAndTimeRestrictions();
         completeFlatFarePages('Scheme Flat Fare Test Product', true);
