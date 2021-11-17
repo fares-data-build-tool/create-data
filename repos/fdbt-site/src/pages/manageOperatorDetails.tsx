@@ -196,7 +196,7 @@ export const getServerSideProps = async (
             csrfToken: getCsrfToken(ctx),
             referer: extractGlobalSettingsReferer(ctx),
             saved: !!saved,
-            myFaresEnabled: myFaresEnabled,
+            myFaresEnabled,
             exportEnabled,
         },
     };
