@@ -13,6 +13,7 @@ describe('pages', () => {
                     referer={'hi'}
                     saved={false}
                     myFaresEnabled={false}
+                    exportEnabled={false}
                 />,
             );
 
@@ -30,6 +31,7 @@ describe('pages', () => {
                     referer={null}
                     saved={false}
                     myFaresEnabled={false}
+                    exportEnabled={false}
                 />,
             );
 
@@ -45,6 +47,7 @@ describe('pages', () => {
                     referer={null}
                     saved={true}
                     myFaresEnabled={false}
+                    exportEnabled={false}
                 />,
             );
 

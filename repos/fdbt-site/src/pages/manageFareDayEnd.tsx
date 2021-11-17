@@ -11,7 +11,7 @@ import { getFareDayEnd } from '../data/auroradb';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import SubNavigation from '../layout/SubNavigation';
 import InfoPopup from '../components/InfoPopup';
-import { myFaresEnabled } from '../constants/featureFlag';
+import { exportEnabled, myFaresEnabled } from '../constants/featureFlag';
 import InformationSummary from '../components/InformationSummary';
 
 const title = 'Manage Fare Day End - Create Fares Data Service';
@@ -28,6 +28,7 @@ type ManageFareDayEndProps = {
     referer: string | null;
     saved: boolean;
     myFaresEnabled: boolean;
+    exportEnabled: boolean;
 };
 
 const ManageFareDayEnd = ({
@@ -37,6 +38,7 @@ const ManageFareDayEnd = ({
     referer,
     saved,
     myFaresEnabled,
+    exportEnabled,
 }: ManageFareDayEndProps): ReactElement => {
     const [showSaved, setShowSaved] = useState(saved);
 
@@ -47,6 +49,7 @@ const ManageFareDayEnd = ({
             showNavigation
             referer={referer}
             myFaresEnabled={myFaresEnabled}
+            exportEnabled={exportEnabled}
         >
             <div className="govuk-width-container">
                 <div className="govuk-grid-row">
@@ -129,6 +132,7 @@ export const getServerSideProps = async (
             referer: extractGlobalSettingsReferer(ctx),
             saved: !!saved,
             myFaresEnabled: myFaresEnabled,
+            exportEnabled: exportEnabled,
         },
     };
 };
