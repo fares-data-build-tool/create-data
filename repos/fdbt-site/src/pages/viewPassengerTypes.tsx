@@ -248,7 +248,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             referer: extractGlobalSettingsReferer(ctx),
             deleteEnabled: globalSettingsDeleteEnabled,
             myFaresEnabled: myFaresEnabled,
-            exportEnabled: exportEnabled,
+            exportEnabled,
         },
     };
 };
