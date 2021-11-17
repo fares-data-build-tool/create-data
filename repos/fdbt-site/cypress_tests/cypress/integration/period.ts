@@ -1,4 +1,4 @@
-import { isUuidStringValid } from '../support/helpers';
+import { isFinished } from '../support/helpers';
 import {
     completePointToPointPeriodPages,
     completeHybridPages,
@@ -15,7 +15,7 @@ describe('the period faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completePeriodGeoZonePages(1);
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for geozone and multiple products', () => {
@@ -25,7 +25,7 @@ describe('the period faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completePeriodGeoZonePages(numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for multi-service and a single product', () => {
@@ -33,7 +33,7 @@ describe('the period faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completePeriodMultiServicePages();
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for multi-service and multiple products', () => {
@@ -43,7 +43,7 @@ describe('the period faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completePeriodMultiServicePages(numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for point to point period products', () => {
@@ -51,7 +51,7 @@ describe('the period faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completePointToPointPeriodPages();
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for hybrid and multiple products', () => {
@@ -61,6 +61,6 @@ describe('the period faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeHybridPages(numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
-        isUuidStringValid();
+        isFinished();
     });
 });

@@ -1,4 +1,4 @@
-import { isUuidStringValid } from '../../support/helpers';
+import { isFinished } from '../../support/helpers';
 import {
     completePeriodMultiServicePages,
     completeSalesPages,
@@ -14,6 +14,6 @@ describe('the period carnet product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completePeriodMultiServicePages(4, productNamePrefix, true);
         completeSalesPages(4, productNamePrefix);
-        isUuidStringValid();
+        isFinished();
     });
 });

@@ -1,4 +1,4 @@
-import { clickElementById, continueButtonClick, isUuidStringValid } from '../support/helpers';
+import { clickElementById, continueButtonClick, isFinished } from '../support/helpers';
 import {
     completeFlatFarePages,
     completeSalesPages,
@@ -14,7 +14,7 @@ describe('The flat fare faretype product journey', () => {
         continueButtonClick();
         completeFlatFarePages('Flat Fare Test Product', false);
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for geo zone', () => {
@@ -24,6 +24,6 @@ describe('The flat fare faretype product journey', () => {
         continueButtonClick();
         completeFlatFarePages('geo zone flat fare', false, false, true);
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 });

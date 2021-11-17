@@ -1,4 +1,4 @@
-import { isUuidStringValid } from '../../support/helpers';
+import { isFinished } from '../../support/helpers';
 import {
     completeSalesPages,
     completeSchoolPeriodMultiServicePages,
@@ -15,7 +15,7 @@ describe('The school carnet fare type product journey', () => {
         selectSchoolFareType('single');
         completeSinglePages(false, true);
         completeSalesPages();
-        isUuidStringValid();
+        isFinished();
     });
 
     it('completes successfully for school period', () => {
@@ -26,6 +26,6 @@ describe('The school carnet fare type product journey', () => {
         selectSchoolFareType('period');
         completeSchoolPeriodMultiServicePages(numberOfProducts, multiProductNamePrefix, true);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
-        isUuidStringValid();
+        isFinished();
     });
 });
