@@ -3,37 +3,29 @@ import { NextPageContextWithSession } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
-import { getS3FolderCount, getS3Exports, retrieveAndZipExportedNetexForNoc, getNetexSignedUrl } from '../../data/s3';
 import { redirectTo } from '../../utils/apiUtils';
-import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 import CsrfForm from '../../components/CsrfForm';
 import { getAllProductsByNoc as getAllProductsByNoc } from '../../data/auroradb';
+import useSWR from 'swr';
+import { Export } from '../api/getExportProgress';
 
 const title = 'Exports';
 const description = 'View and access your settings in one place.';
 
 interface GlobalSettingsProps {
-    exports: {
-        matchingDataCount: number;
-        name: string;
-        netexCount: number;
-        signedUrl: string;
-        exportDate: string;
-        exportTime: string;
-    }[];
     csrf: string;
     myFaresEnabled: boolean;
     exportEnabled: boolean;
     operatorHasProducts: boolean;
 }
 
-const Exports = ({
-    exports,
-    csrf,
-    myFaresEnabled,
-    exportEnabled,
-    operatorHasProducts,
-}: GlobalSettingsProps): ReactElement => {
+const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
+    const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).then((res) => res.json());
+
+    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 500 });
+
+    const exports: Export[] | undefined = data?.exports;
+
     return (
         <>
             <BaseLayout
@@ -76,36 +68,26 @@ const Exports = ({
                                         Export name
                                     </th>
                                     <th scope="col" className="govuk-table__header">
-                                        Export date
-                                    </th>
-                                    <th scope="col" className="govuk-table__header">
-                                        Export time
-                                    </th>
-                                    <th scope="col" className="govuk-table__header">
                                         Export status
                                     </th>
                                     <th scope="col" className="govuk-table__header"></th>
                                 </tr>
                             </thead>
                             <tbody className="govuk-table__body">
-                                {exports.map((exportDetails) => (
+                                {exports?.map((exportDetails) => (
                                     <tr className="govuk-table__row" key={exportDetails.name}>
                                         <td className="govuk-table__cell">{exportDetails.name}</td>
-                                        <td className="govuk-table__cell">{exportDetails.exportDate}</td>
-                                        <td className="govuk-table__cell">{exportDetails.exportTime}</td>
                                         <td className="govuk-table__cell">
                                             {exportDetails.netexCount === exportDetails.matchingDataCount ? (
-                                                <strong className="govuk-tag govuk-tag--green">Complete</strong>
+                                                <strong className="govuk-tag govuk-tag--green">{`EXPORT COMPLETE ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
                                             ) : (
-                                                <strong className="govuk-tag govuk-tag--blue">In Progress</strong>
+                                                <strong className="govuk-tag govuk-tag--blue">{`IN PROGRESS ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
                                             )}
                                         </td>
                                         <td className="govuk-table__cell">
                                             {exportDetails.signedUrl ? (
                                                 <a href={exportDetails.signedUrl}>Download file</a>
-                                            ) : (
-                                                <p>Download file not ready</p>
-                                            )}
+                                            ) : null}
                                         </td>
                                     </tr>
                                 ))}
@@ -125,34 +107,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         redirectTo(ctx.res, '/home');
     }
 
-    const exportNames = await getS3Exports(noc);
-
-    const exports = await Promise.all(
-        exportNames.map(async (name) => {
-            const prefix = `${noc}/exports/${name}/`;
-            const matchingDataCount = await getS3FolderCount(MATCHING_DATA_BUCKET_NAME, prefix);
-            const exportDate = '14 Sep 2021';
-            const exportTime = '10:37';
-
-            const netexCount = await getS3FolderCount(NETEX_BUCKET_NAME, prefix);
-
-            const complete = matchingDataCount === netexCount;
-
-            let signedUrl = '';
-            if (complete) {
-                const zipKey = await retrieveAndZipExportedNetexForNoc(noc, name);
-                signedUrl = await getNetexSignedUrl(zipKey || '');
-            }
-
-            return { name: name, matchingDataCount, netexCount, signedUrl, exportDate, exportTime };
-        }),
-    );
-
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
 
     return {
         props: {
-            exports,
             csrf: getCsrfToken(ctx),
             myFaresEnabled: myFaresEnabled,
             exportEnabled: exportEnabled,

@@ -19,9 +19,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
     // 3. figure out the name of the file
     const [date] = new Date().toISOString().split('T');
-    const currentDateString = date.split('-').join('');
+    const currentDateString = date.split('-').join('_');
 
-    const exportNameBase = `${noc}${currentDateString}`;
+    const exportNameBase = `${noc}_${currentDateString}`;
     let i = 0;
     let exportName = exportNameBase;
     const exports = await getS3Exports(noc);
