@@ -37,7 +37,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     signedUrl = await getNetexSignedUrl(zipKey || '');
                 }
 
-                return { name: name, matchingDataCount, netexCount, signedUrl };
+                return { name, matchingDataCount, netexCount, signedUrl };
             }),
         );
 
@@ -45,6 +45,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             exports,
         });
     } catch (error) {
-        redirectToError(res, 'There was a problem deleting the selected product', 'api.getExportProgress', error);
+        redirectToError(res, 'There was a problem getting the export progress', 'api.getExportProgress', error);
     }
 };
