@@ -16,7 +16,7 @@ on:
     branches: [develop, master]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [develop, feat/CFD-514-myfares-ui-tests]
+    branches: [develop]
   schedule:
     - cron: "24 7 * * 2"
 
