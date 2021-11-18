@@ -804,7 +804,9 @@ workflows:
           context: tfn-fdbt-automation-test
           filters:
             branches:
-              only: develop
+              only:
+                - develop
+                - feat/CFD-514-myfares-ui-tests
 
       - aws-ecs/deploy-service-update:
           <<: *slack-fail-post-step
