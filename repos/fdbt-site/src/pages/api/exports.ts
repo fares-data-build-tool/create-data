@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { getAndValidateNoc, redirectTo } from '../../utils/apiUtils';
+import { getAndValidateNoc } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, EntityStatus } from '../../interfaces';
 import { getS3Exports } from '../../data/s3';
 import { getAllProductsByNoc, getServicesByNocAndLineId } from '../../data/auroradb';
@@ -35,9 +35,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
     await triggerExport({ noc, paths: links, exportPrefix: exportName });
 
-    redirectTo(res, '/products/exports');
-
-    return;
+    res.status(204).send('');
 };
 
 /**
