@@ -493,7 +493,7 @@ workflows:
           filters:
             branches:
               only:
-                - develop
+                - fix/cfd-533-ref-data-import-error
 
       - deploy-netex-validator-to-preprod:
           <<: *slack-fail-post-step
@@ -555,7 +555,7 @@ workflows:
           filters:
             branches:
               only:
-                - develop
+                - fix/cfd-533-ref-data-import-error
 
       - deploy-netex-output-resources-to-preprod:
           <<: *slack-fail-post-step
@@ -660,7 +660,7 @@ workflows:
           filters:
             branches:
               only:
-                - develop
+                - fix/cfd-533-ref-data-import-error
 
       - deploy-exporter:
           <<: *slack-fail-post-step
@@ -779,7 +779,7 @@ workflows:
               only: /^v.*/
             branches:
               only:
-                - develop
+                - fix/cfd-533-ref-data-import-error
                 - master
 
       - aws-ecs/deploy-service-update:
@@ -794,7 +794,7 @@ workflows:
           verify-revision-is-deployed: true
           filters:
             branches:
-              only: develop
+              only: fix/cfd-533-ref-data-import-error
 
       - run-ui-tests:
           <<: *slack-fail-post-step
@@ -804,7 +804,7 @@ workflows:
           context: tfn-fdbt-automation-test
           filters:
             branches:
-              only: develop
+              only: fix/cfd-533-ref-data-import-error
 
       - aws-ecs/deploy-service-update:
           <<: *slack-fail-post-step
@@ -899,7 +899,7 @@ workflows:
           context: tfn-fdbt-test
           filters:
             branches:
-              only: develop
+              only: fix/cfd-533-ref-data-import-error
 
       - deploy-reference-data-retrievers-to-preprod:
           <<: *slack-fail-post-step
@@ -944,7 +944,7 @@ workflows:
           context: tfn-fdbt-test
           filters:
             branches:
-              only: develop
+              only: fix/cfd-533-ref-data-import-error
 
       - deploy-reference-data-uploaders-to-preprod:
           <<: *slack-fail-post-step
