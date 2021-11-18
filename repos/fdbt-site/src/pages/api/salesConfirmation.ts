@@ -105,13 +105,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 // if my fares or export isn't enabled we want to trigger the export lambda for a single
                 await triggerExport({ noc, paths: [filePath] });
             }
+
             if ((ticketType === 'geoZone' || dataFormat !== 'tnds') && exportEnabled) {
                 redirectTo(res, '/productCreated');
                 return;
             }
+
             redirectTo(res, '/thankyou');
             return;
         }
+
         return;
     } catch (error) {
         const message = 'There was a problem processing the information needed for the user data to be put in s3:';
