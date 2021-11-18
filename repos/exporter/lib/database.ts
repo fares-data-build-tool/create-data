@@ -46,7 +46,7 @@ export const getConnectionPool = async (): Promise<Pool> =>
               }),
         database: 'fdbt',
         waitForConnections: true,
-        connectionLimit: 10,
+        connectionLimit: 1,
         queueLimit: 0,
     });
 

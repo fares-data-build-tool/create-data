@@ -64,7 +64,7 @@ export class ExporterStack extends cdk.Stack {
             logRetention: 180,
         });
 
-        this.addAlarmsToLambda(stage, exporterFunction, `exporter-${stage}`, 30000);
+        this.addAlarmsToLambda(stage, exporterFunction, `exporter-${stage}`, 300000);
 
         exporterFunction.addToRolePolicy(new PolicyStatement({ actions: ['ssm:GetParameter'], resources: ['*'] }));
 
