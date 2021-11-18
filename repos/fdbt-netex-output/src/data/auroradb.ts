@@ -13,7 +13,7 @@ export const getAuroraDBClient = (): Pool => {
             password: 'password',
             database: 'fdbt',
             waitForConnections: true,
-            connectionLimit: 10,
+            connectionLimit: 1,
             queueLimit: 0,
         });
     } else {
@@ -23,7 +23,7 @@ export const getAuroraDBClient = (): Pool => {
             password: awsParamStore.getParameterSync('fdbt-rds-netex-output-password', { region: 'eu-west-2' }).Value,
             database: 'fdbt',
             waitForConnections: true,
-            connectionLimit: 10,
+            connectionLimit: 1,
             queueLimit: 0,
         });
     }
@@ -31,12 +31,9 @@ export const getAuroraDBClient = (): Pool => {
     return client;
 };
 
-let connectionPool: Pool;
+const connectionPool = getAuroraDBClient();
 
 const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
-    if (!connectionPool) {
-        connectionPool = getAuroraDBClient();
-    }
     const [rows] = await connectionPool.execute(query, values);
     return JSON.parse(JSON.stringify(rows));
 };
