@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages confirmRegistration should render correctly with data 1`] = `
+exports[`pages confirmRegistration should render correctly without data when operator has no products 1`] = `
 <Fragment>
   <BaseLayout
     description="View and access your settings in one place."
@@ -26,16 +26,9 @@ exports[`pages confirmRegistration should render correctly with data 1`] = `
            
           <CsrfForm
             action="/api/exports"
-            csrfToken="ip2IlrBL-d4B3lqI70d5y7f5GKMs2wvXRsVU"
+            csrfToken=""
             method="post"
-          >
-            <button
-              className="govuk-button"
-              type="submit"
-            >
-              Export all fares
-            </button>
-          </CsrfForm>
+          />
         </div>
         <div
           className="govuk-grid-row"
@@ -81,18 +74,6 @@ exports[`pages confirmRegistration should render correctly with data 1`] = `
                 className="govuk-table__header"
                 scope="col"
               >
-                Export date
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export time
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
                 Export status
               </th>
               <th
@@ -103,46 +84,7 @@ exports[`pages confirmRegistration should render correctly with data 1`] = `
           </thead>
           <tbody
             className="govuk-table__body"
-          >
-            <tr
-              className="govuk-table__row"
-              key="TestExport"
-            >
-              <td
-                className="govuk-table__cell"
-              >
-                TestExport
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                14 Sep 2021
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                10:37
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                <strong
-                  className="govuk-tag govuk-tag--green"
-                >
-                  Complete
-                </strong>
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                <a
-                  href="http://localhost:4572/fdbt-netex-data-dev/BLAC/zips/TestExport//TestExport.zip?AWSAccessKeyId=S3RVER&Expires=1636716236&Signature=sB9ssjS0bN72S6iydPuk43xkZZc%3D"
-                >
-                  Download file
-                </a>
-              </td>
-            </tr>
-          </tbody>
+          />
         </table>
       </div>
     </div>
@@ -150,7 +92,7 @@ exports[`pages confirmRegistration should render correctly with data 1`] = `
 </Fragment>
 `;
 
-exports[`pages confirmRegistration should render correctly without data 1`] = `
+exports[`pages confirmRegistration should render the export button correctly when operator has products 1`] = `
 <Fragment>
   <BaseLayout
     description="View and access your settings in one place."
@@ -226,18 +168,6 @@ exports[`pages confirmRegistration should render correctly without data 1`] = `
                 scope="col"
               >
                 Export name
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export date
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export time
               </th>
               <th
                 className="govuk-table__header"
