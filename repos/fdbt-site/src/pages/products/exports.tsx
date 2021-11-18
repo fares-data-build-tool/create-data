@@ -22,7 +22,7 @@ interface GlobalSettingsProps {
 const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
     const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).then((res) => res.json());
 
-    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 500 });
+    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 5000 });
 
     const exports: Export[] | undefined = data?.exports;
 
