@@ -1,6 +1,98 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages confirmRegistration should render correctly without data 1`] = `
+exports[`pages confirmRegistration should render correctly without data when operator has no products 1`] = `
+<Fragment>
+  <BaseLayout
+    description="View and access your settings in one place."
+    exportEnabled={true}
+    myFaresEnabled={true}
+    showNavigation={true}
+    title="Exports"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <div
+          className="dft-flex dft-flex-justify-space-between"
+        >
+          <h1
+            className="govuk-heading-xl"
+          >
+            Export your data
+          </h1>
+           
+          <CsrfForm
+            action="/api/exports"
+            csrfToken=""
+            method="post"
+          />
+        </div>
+        <div
+          className="govuk-grid-row"
+        >
+          <div
+            className="govuk-grid-column-two-thirds"
+          >
+            <p
+              className="govuk-body-m govuk-!-margin-bottom-9"
+            >
+              This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or products for expired services, will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
+               
+              <a
+                href="https://publish.bus-data.dft.gov.uk/"
+              >
+                BODS
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+        <h2
+          className="govuk-heading-m"
+        >
+           Previously exported fares
+        </h2>
+        <table
+          className="govuk-table"
+        >
+          <thead
+            className="govuk-table__head"
+          >
+            <tr
+              className="govuk-table__row"
+            >
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Export name
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Export status
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
+            </tr>
+          </thead>
+          <tbody
+            className="govuk-table__body"
+          />
+        </table>
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`pages confirmRegistration should render the export button correctly when operator has products 1`] = `
 <Fragment>
   <BaseLayout
     description="View and access your settings in one place."
