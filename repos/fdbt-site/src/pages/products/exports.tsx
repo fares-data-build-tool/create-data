@@ -118,7 +118,7 @@ const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: G
                                                         )
                                                     ) : exportDetails.netexCount === 0 ? (
                                                         <strong className="govuk-tag govuk-tag--blue">
-                                                            {'LOADING'}
+                                                            {`LOADING PRODUCTS (${exportDetails.matchingDataCount})`}
                                                         </strong>
                                                     ) : (
                                                         <strong className="govuk-tag govuk-tag--blue">{`IN PROGRESS ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>

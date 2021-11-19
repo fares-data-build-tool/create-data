@@ -9,7 +9,7 @@ export interface Export {
     name: string;
     matchingDataCount: number;
     netexCount: number;
-    signedUrl: string;
+    signedUrl?: string;
 }
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -33,7 +33,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 const signedUrl = complete ? await retrieveExportZip(noc, name) : undefined;
 
-                return { name, matchingDataCount, netexCount, signedUrl: signedUrl ?? '' };
+                return { name, matchingDataCount, netexCount, signedUrl };
             }),
         );
 
