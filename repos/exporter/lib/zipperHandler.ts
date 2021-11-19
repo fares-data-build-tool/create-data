@@ -2,7 +2,6 @@ import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
 import { ZipperLambdaBody } from '../shared/integrationTypes';
 import 'source-map-support/register';
-import { NETEX_BUCKET_NAME } from '../../fdbt-site/src/constants';
 import { PassThrough } from 'stream';
 import archiver, { Archiver } from 'archiver';
 
@@ -11,15 +10,13 @@ const s3: S3 = new S3({
 });
 
 const NETEX_BUCKET = process.env.NETEX_BUCKET;
-const MATCHING_DATA_BUCKET = process.env.MATCHING_DATA_BUCKET;
+if (!NETEX_BUCKET) {
+    throw new Error('Need to set NETEX_BUCKET');
+}
 
 export const handler: Handler<ZipperLambdaBody> = async ({ exportName, noc }) => {
     // populate the values from global settings using the IDs and write to matching data bucket
     console.log(`triggered zipper lambda... export: ${exportName} noc: ${noc}`);
-
-    if (!NETEX_BUCKET || !MATCHING_DATA_BUCKET) {
-        throw new Error('Need to set NETEX_BUCKET and MATCHING_DATA_BUCKET');
-    }
 
     await retrieveAndZipExportedNetexForNoc(noc, exportName);
 };
@@ -28,7 +25,7 @@ export const retrieveAndZipExportedNetexForNoc = async (noc: string, exportName:
     const prefix = `${noc}/zips/${exportName}/`;
     const zipResponse = await s3
         .listObjectsV2({
-            Bucket: NETEX_BUCKET_NAME,
+            Bucket: NETEX_BUCKET,
             Prefix: prefix,
         })
         .promise();
@@ -38,11 +35,11 @@ export const retrieveAndZipExportedNetexForNoc = async (noc: string, exportName:
 
     if (!zips) {
         // show that we have started the import
-        await s3.putObject({ Bucket: NETEX_BUCKET_NAME, Key: zipKey + '_started', Body: 'started' }).promise();
+        await s3.putObject({ Bucket: NETEX_BUCKET, Key: zipKey + '_started', Body: 'started' }).promise();
 
         const listAllNetex = await s3
             .listObjectsV2({
-                Bucket: NETEX_BUCKET_NAME,
+                Bucket: NETEX_BUCKET,
                 Prefix: `${noc}/exports/${exportName}/`,
             })
             .promise();
@@ -59,13 +56,13 @@ export const zipFiles = async (allFiles: string[], zipKey: string): Promise<void
     });
 
     const pass = new PassThrough();
-    const s3Upload = s3.upload({ Bucket: NETEX_BUCKET_NAME, Key: zipKey, Body: pass }).promise();
+    const s3Upload = s3.upload({ Bucket: NETEX_BUCKET, Key: zipKey, Body: pass }).promise();
 
     archive.pipe(pass);
 
     await Promise.all(
         allFiles.map(async (key) => {
-            const obj = await s3.getObject({ Bucket: NETEX_BUCKET_NAME, Key: key }).promise();
+            const obj = await s3.getObject({ Bucket: NETEX_BUCKET, Key: key }).promise();
             const body = obj.Body;
             if (!body) {
                 throw new Error(`No body found for key: ${key}`);

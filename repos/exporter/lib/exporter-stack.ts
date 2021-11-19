@@ -147,6 +147,8 @@ export class ExporterStack extends cdk.Stack {
             logRetention: 180,
         });
 
+        netexBucket.grantReadWrite(zipperFunction);
+
         this.addAlarmsToLambda(stage, zipperFunction, `zipper-${stage}`, 60000);
     }
 
