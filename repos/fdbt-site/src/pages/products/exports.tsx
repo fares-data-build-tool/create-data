@@ -66,7 +66,7 @@ const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: G
                         <div className="govuk-grid-row">
                             <div className="govuk-grid-column-two-thirds">
                                 {!operatorHasProducts ? (
-                                    <div className="govuk-inset-text remove-top-margin">
+                                    <div className="govuk-inset-text govuk-!-margin-top-0">
                                         Export is disabled as you have no products.
                                     </div>
                                 ) : null}

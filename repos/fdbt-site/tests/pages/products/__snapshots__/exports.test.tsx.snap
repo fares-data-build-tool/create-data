@@ -46,7 +46,7 @@ exports[`pages confirmRegistration should render correctly without data when ope
             className="govuk-grid-column-two-thirds"
           >
             <div
-              className="govuk-inset-text remove-top-margin"
+              className="govuk-inset-text govuk-!-margin-top-0"
             >
               Export is disabled as you have no products.
             </div>

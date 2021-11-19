@@ -5,7 +5,7 @@ exports[`LoadingSpinner should render the loading spinner 1`] = `
   className="spinner-wrapper"
 >
   <div
-    className="lds-spinner govuk-!-margin-bottom-4"
+    className="spinner govuk-!-margin-bottom-4"
   >
     <div />
     <div />

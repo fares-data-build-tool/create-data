@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 
 const LoadingSpinner = (): ReactElement => (
     <div className="spinner-wrapper">
-        <div className="lds-spinner govuk-!-margin-bottom-4">
+        <div className="spinner govuk-!-margin-bottom-4">
             <div />
             <div />
             <div />
