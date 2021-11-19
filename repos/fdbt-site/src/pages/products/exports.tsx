@@ -34,7 +34,7 @@ const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: G
     const [showPopup, setShowPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
 
-    const exportDisabled = !operatorHasProducts || anExportIsInProgress || buttonClicked || !exports;
+    const exportAllowed = operatorHasProducts && !anExportIsInProgress && exports && !buttonClicked;
 
     return (
         <>
@@ -52,12 +52,11 @@ const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: G
                             <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
                                 <button
                                     type="submit"
-                                    className="govuk-button"
+                                    className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
                                     onClick={() => {
                                         setShowPopup(true);
                                         setButtonClicked(true);
                                     }}
-                                    disabled={exportDisabled}
                                 >
                                     Export all fares
                                 </button>
