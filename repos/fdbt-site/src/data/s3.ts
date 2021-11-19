@@ -9,10 +9,8 @@ import {
     PRODUCTS_DATA_BUCKET_NAME,
 } from '../constants';
 import { Ticket, UserFareStages, UserFareZone } from '../interfaces';
-import { MatchingFareZones } from '../interfaces/matchingInterface';
 import logger from '../utils/logger';
-import { PassThrough } from 'stream';
-import archiver, { Archiver } from 'archiver';
+import { triggerZipper } from '../utils/apiUtils/export';
 
 const getS3Client = (): S3 => {
     let options: S3.ClientConfiguration = {
@@ -114,28 +112,6 @@ export const getCsvZoneUploadData = async (key: string): Promise<string[]> => {
     }
 };
 
-export const getOutboundMatchingFareStages = async (uuid: string): Promise<MatchingFareZones> => {
-    const params = {
-        Bucket: USER_DATA_BUCKET_NAME,
-        Key: `return/outbound/${uuid}.json`,
-    };
-
-    try {
-        logger.info('', {
-            context: 'data.s3',
-            message: 'retrieving outbound matching fare stages from S3',
-            uuid,
-        });
-
-        const response = await s3.getObject(params).promise();
-        const dataAsString = response.Body?.toString('utf-8') ?? '';
-
-        return JSON.parse(dataAsString) as MatchingFareZones;
-    } catch (error) {
-        throw new Error(`Could not retrieve outbound matching fare zones from S3: ${error.stack}`);
-    }
-};
-
 export const putStringInS3 = async (
     bucketName: string,
     key: string,
@@ -232,7 +208,7 @@ export const retrieveNetexForNocs = async (nocList: string[]): Promise<AWS.S3.Ob
     }
 };
 
-export const retrieveAndZipExportedNetexForNoc = async (noc: string, exportName: string): Promise<string> => {
+export const retrieveExportZip = async (noc: string, exportName: string): Promise<string | undefined> => {
     const prefix = `${noc}/zips/${exportName}/`;
     const zipResponse = await s3
         .listObjectsV2({
@@ -241,48 +217,18 @@ export const retrieveAndZipExportedNetexForNoc = async (noc: string, exportName:
         })
         .promise();
 
-    const zips = zipResponse.Contents?.length;
+    const zipReady = zipResponse.Contents?.some((object) => object.Key?.endsWith('.zip'));
+    const zipStarted = zipResponse.Contents?.some((object) => object.Key?.endsWith('_started'));
+
     const zipKey = `${prefix}${exportName}.zip`;
 
-    if (!zips) {
-        const response = await s3
-            .listObjectsV2({
-                Bucket: NETEX_BUCKET_NAME,
-                Prefix: `${noc}/exports/${exportName}/`,
-            })
-            .promise();
-
-        const allFiles = response.Contents?.map((it) => it.Key || '') ?? [];
-
-        await zipFiles(allFiles, zipKey);
+    if (zipReady) {
+        return await getNetexSignedUrl(zipKey);
+    } else if (!zipStarted) {
+        await triggerZipper({ noc, exportName });
     }
 
-    return zipKey;
-};
-
-export const zipFiles = async (allFiles: string[], zipKey: string): Promise<void> => {
-    const s3 = getS3Client();
-
-    const archive: Archiver = archiver('zip', {
-        zlib: { level: 9 }, // Sets the compression level.
-    });
-
-    const pass = new PassThrough();
-    const s3Upload = s3.upload({ Bucket: NETEX_BUCKET_NAME, Key: zipKey, Body: pass }).promise();
-
-    archive.pipe(pass);
-
-    await Promise.all(
-        allFiles.map(async (it) => {
-            const obj = await s3.getObject({ Bucket: NETEX_BUCKET_NAME, Key: it }).promise();
-            if (obj.Body) {
-                archive.append(obj.Body as string, { name: it.split('/')[it.split('/').length - 1] });
-            }
-        }),
-    );
-
-    await archive.finalize();
-    await s3Upload;
+    return;
 };
 
 export const getS3FolderCount = async (bucketName: string, path: string): Promise<number> => {

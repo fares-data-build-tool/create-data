@@ -42,7 +42,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "archiver": "^5.3.0",
         "aws-param-store": "^3.2.0",
         "aws-sdk": "^2.675.0",
         "babel-jest": "^27.0.2",
@@ -95,7 +94,6 @@
         "@babel/preset-env": "^7.14.5",
         "@babel/preset-react": "^7.14.5",
         "@babel/preset-typescript": "^7.14.5",
-        "@types/archiver": "^5.3.0",
         "@types/aws-param-store": "^2.1.1",
         "@types/cookie-parser": "^1.4.2",
         "@types/cookies": "^0.7.4",

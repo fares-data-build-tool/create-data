@@ -241,6 +241,7 @@ Resources:
                   - "lambda:invokeFunction"
                 Resource:
                   - !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:exporter-${Stage}
+                  - !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:zipper-${Stage}
           PolicyName: ecs-site-task-policy
 
   EcsSiteScalingRole:
