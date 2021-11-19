@@ -658,7 +658,7 @@ export const insertDataToProductsBucketAndProductsTable = async (
     return filePath;
 };
 
-export const instantlyGenerateNetexFromProduct = (ticketType: string, dataFormat: 'tnds' | 'bods' | undefined) => {
+export const instantlyGenerateNetexFromMatchingJson = (ticketType: string, dataFormat: 'tnds' | 'bods' | undefined) => {
     const instantlyGenerateNetexFromProduct = !isBodsOrGeoZoneTicket(ticketType, dataFormat);
 
     return instantlyGenerateNetexFromProduct;

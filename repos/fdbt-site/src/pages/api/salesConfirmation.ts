@@ -29,7 +29,7 @@ import {
     putUserDataInProductsBucket,
     splitUserDataJsonByProducts,
     insertDataToProductsBucketAndProductsTable,
-    instantlyGenerateNetexFromProduct,
+    instantlyGenerateNetexFromMatchingJson,
 } from '../../utils/apiUtils/userData';
 import { TicketWithIds } from '../../../shared/matchingJsonTypes';
 import { triggerExport } from '../../utils/apiUtils/export';
@@ -108,7 +108,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (!myFaresEnabled || !exportEnabled) {
                 // if my fares or export isn't enabled we want to trigger the export lambda for a single
                 await triggerExport({ noc, paths: [filePath] });
-            } else if (instantlyGenerateNetexFromProduct(ticketType, dataFormat)) {
+            } else if (instantlyGenerateNetexFromMatchingJson(ticketType, dataFormat)) {
                 await triggerExport({ noc, paths: [filePath] });
             }
 
