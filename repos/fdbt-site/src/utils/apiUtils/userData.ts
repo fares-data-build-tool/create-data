@@ -646,11 +646,14 @@ export const insertDataToProductsBucketAndProductsTable = async (
     dataFormat: 'tnds' | 'bods' | undefined,
 ): Promise<string> => {
     const filePath = await putUserDataInProductsBucket(userDataJson, uuid, nocCode);
+
     if (saveProductsEnabled && (ticketType === 'geoZone' || dataFormat !== 'tnds')) {
         const { startDate, endDate } = userDataJson.ticketPeriod;
         const dateTime = moment().toDate();
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
+
         await insertProducts(nocCode, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);
     }
+
     return filePath;
 };

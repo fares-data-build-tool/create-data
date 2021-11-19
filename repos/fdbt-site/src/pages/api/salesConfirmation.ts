@@ -79,8 +79,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson.carnet = carnetAttribute;
             const noc = getAndValidateNoc(req, res);
             let filePath = '';
+
             if (userDataJson.products.length > 1) {
                 const splitUserDataJson = splitUserDataJsonByProducts(userDataJson);
+
                 splitUserDataJson.map(async (splitJson, index) => {
                     await insertDataToProductsBucketAndProductsTable(
                         splitJson,
@@ -90,6 +92,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         dataFormat,
                     );
                 });
+
                 filePath = await putUserDataInProductsBucket(userDataJson, uuid, noc);
             } else {
                 filePath = await insertDataToProductsBucketAndProductsTable(
@@ -104,6 +107,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (!myFaresEnabled || !exportEnabled) {
                 // if my fares or export isn't enabled we want to trigger the export lambda for a single
                 await triggerExport({ noc, paths: [filePath] });
+            } else {
+                if (dataFormat !== 'bods') {
+                    await triggerExport({ noc, paths: [filePath] });
+                }
             }
 
             if ((ticketType === 'geoZone' || dataFormat !== 'tnds') && exportEnabled) {
