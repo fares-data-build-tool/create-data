@@ -28,7 +28,16 @@ exports[`pages confirmRegistration should render correctly without data when ope
             action="/api/exports"
             csrfToken=""
             method="post"
-          />
+          >
+            <button
+              className="govuk-button"
+              disabled={true}
+              onClick={[Function]}
+              type="submit"
+            >
+              Export all fares
+            </button>
+          </CsrfForm>
         </div>
         <div
           className="govuk-grid-row"
@@ -36,6 +45,11 @@ exports[`pages confirmRegistration should render correctly without data when ope
           <div
             className="govuk-grid-column-two-thirds"
           >
+            <div
+              className="govuk-inset-text govuk-!-margin-top-0"
+            >
+              Export is disabled as you have no products.
+            </div>
             <p
               className="govuk-body-m govuk-!-margin-bottom-9"
             >
@@ -51,41 +65,11 @@ exports[`pages confirmRegistration should render correctly without data when ope
           </div>
         </div>
         <h2
-          className="govuk-heading-m"
+          className="govuk-heading-m govuk-!-margin-bottom-6"
         >
-           Previously exported fares
+          Previously exported fares
         </h2>
-        <table
-          className="govuk-table"
-        >
-          <thead
-            className="govuk-table__head"
-          >
-            <tr
-              className="govuk-table__row"
-            >
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export name
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export status
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              />
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
-          />
-        </table>
+        <LoadingSpinner />
       </div>
     </div>
   </BaseLayout>
@@ -123,6 +107,8 @@ exports[`pages confirmRegistration should render the export button correctly whe
           >
             <button
               className="govuk-button"
+              disabled={true}
+              onClick={[Function]}
               type="submit"
             >
               Export all fares
@@ -150,41 +136,11 @@ exports[`pages confirmRegistration should render the export button correctly whe
           </div>
         </div>
         <h2
-          className="govuk-heading-m"
+          className="govuk-heading-m govuk-!-margin-bottom-6"
         >
-           Previously exported fares
+          Previously exported fares
         </h2>
-        <table
-          className="govuk-table"
-        >
-          <thead
-            className="govuk-table__head"
-          >
-            <tr
-              className="govuk-table__row"
-            >
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export name
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export status
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              />
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
-          />
-        </table>
+        <LoadingSpinner />
       </div>
     </div>
   </BaseLayout>

@@ -14,7 +14,7 @@ exports[`InfoPopup should render the InfoPopup 1`] = `
     </h1>
     <span
       className="govuk-hint"
-      id="delete-hint"
+      id="info-hint"
     >
       this is my text
     </span>
