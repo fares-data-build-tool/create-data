@@ -29,6 +29,7 @@ import {
     putUserDataInProductsBucket,
     splitUserDataJsonByProducts,
     insertDataToProductsBucketAndProductsTable,
+    isBodsOrGeoZoneTicket,
 } from '../../utils/apiUtils/userData';
 import { TicketWithIds } from '../../../shared/matchingJsonTypes';
 import { triggerExport } from '../../utils/apiUtils/export';
@@ -107,10 +108,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (!myFaresEnabled || !exportEnabled) {
                 // if my fares or export isn't enabled we want to trigger the export lambda for a single
                 await triggerExport({ noc, paths: [filePath] });
-            } else {
-                if (dataFormat !== 'bods') {
-                    await triggerExport({ noc, paths: [filePath] });
-                }
+            } else if (isBodsOrGeoZoneTicket(ticketType, dataFormat)) {
+                await triggerExport({ noc, paths: [filePath] });
             }
 
             if ((ticketType === 'geoZone' || dataFormat !== 'tnds') && exportEnabled) {

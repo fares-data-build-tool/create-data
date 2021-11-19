@@ -647,7 +647,7 @@ export const insertDataToProductsBucketAndProductsTable = async (
 ): Promise<string> => {
     const filePath = await putUserDataInProductsBucket(userDataJson, uuid, nocCode);
 
-    if (saveProductsEnabled && (ticketType === 'geoZone' || dataFormat !== 'tnds')) {
+    if (saveProductsEnabled && isBodsOrGeoZoneTicket(ticketType, dataFormat)) {
         const { startDate, endDate } = userDataJson.ticketPeriod;
         const dateTime = moment().toDate();
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
@@ -656,4 +656,10 @@ export const insertDataToProductsBucketAndProductsTable = async (
     }
 
     return filePath;
+};
+
+export const isBodsOrGeoZoneTicket = (ticketType: string, dataFormat: 'tnds' | 'bods' | undefined) => {
+    const isBodsOrGeoZoneTicket = ticketType === 'geoZone' || dataFormat !== 'tnds';
+
+    return isBodsOrGeoZoneTicket;
 };
