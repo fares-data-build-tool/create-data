@@ -42,7 +42,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         );
 
         res.status(200).json({
-            exports,
+            exports: exports.reverse(),
         });
     } catch (error) {
         redirectToError(res, 'There was a problem getting the export progress', 'api.getExportProgress', error);

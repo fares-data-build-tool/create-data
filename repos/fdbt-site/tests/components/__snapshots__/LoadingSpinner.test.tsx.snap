@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoadingSpinner should render the loading spinner 1`] = `
+<div
+  className="spinner-wrapper"
+>
+  <div
+    className="spinner govuk-!-margin-bottom-4"
+  >
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+  </div>
+  <span
+    className="govuk-heading-s"
+  >
+    Loading exports
+  </span>
+</div>
+`;
