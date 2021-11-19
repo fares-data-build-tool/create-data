@@ -799,8 +799,8 @@ workflows:
       - run-ui-tests:
           <<: *slack-fail-post-step
           package_name: fdbt-site
-          # requires:
-          #   - deploy-site-to-test
+          requires:
+            - deploy-site-to-test
           context: tfn-fdbt-automation-test
           filters:
             branches:

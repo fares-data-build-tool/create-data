@@ -462,6 +462,20 @@ export const completeMultipleProducts = (
     continueButtonClick();
 };
 
+export const clickRandomElementsInTable = (tableName: string, elementId: string): void => {
+    getElementByClass(tableName)
+        .find('tr')
+        .then((elm) => {
+            const numberOfServices = elm.length;
+            for (let i = 0; i < 3; i++) {
+                const randomSelector = getRandomNumber(0, numberOfServices - 1);
+                elm.get(randomSelector).setAttribute('selected', 'selected');
+                clickElementById(`${elementId}-${randomSelector}`);
+                clickElementByText('Back');
+            }
+        });
+};
+
 export const completeOperatorSearch = (isMultiService: boolean): void => {
     cy.url()
         .should('match', /\/(searchOperators|reuseOperatorGroup)$/) // This is bassicly a wait to ensure we're on the correct page

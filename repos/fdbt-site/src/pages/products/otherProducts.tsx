@@ -118,7 +118,10 @@ const otherProductsTable = (
                         ? otherProducts.map((product, index) => (
                               <tr className="govuk-table__row" key={`product-${index}`}>
                                   <td className="govuk-table__cell dft-table-wrap-anywhere">
-                                      <a href={`/products/productDetails?productId=${product.id}`}>
+                                      <a
+                                          href={`/products/productDetails?productId=${product.id}`}
+                                          id={`product-link-${index}`}
+                                      >
                                           {product.productDescription}
                                       </a>
                                   </td>
