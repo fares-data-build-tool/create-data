@@ -42,6 +42,7 @@ export interface ServiceList {
 export const setS3ObjectParams = (event: S3Event): S3ObjectParameters => {
     const s3BucketName: string = event.Records[0].s3.bucket.name;
     const s3FileName: string = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
+
     return {
         Bucket: s3BucketName,
         Key: s3FileName,
@@ -82,7 +83,21 @@ export const setMailOptions = (
 export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
     try {
         const s3ObjectParams = setS3ObjectParams(event);
-        const splitKey = s3ObjectParams.Key.split('/').pop();
+        const splitName = s3ObjectParams.Key.split('/');
+
+        // the object key is something like
+        // "BLAC/exports/BLAC_2021_11_18_1/BLAC00df319d_1633608818591.xml" or
+        // "BLAC/zips/BLAC_2021_11_18_1/BLAC_2021_11_18_1.zip"
+        // we want to know if the object is in the zips or exports folder
+        const isAnExportsOrZipsObject = splitName[1] === 'exports' || splitName[1] === 'zips';
+
+        if (isAnExportsOrZipsObject) {
+            // we do not want to send an email if the object is in the
+            // zips or exports folder
+            return;
+        }
+
+        const splitKey = splitName.pop();
         const pathToSavedNetex = `/tmp/${splitKey}`;
         const netexFile = await getFileFromS3(s3ObjectParams);
 

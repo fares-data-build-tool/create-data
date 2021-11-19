@@ -29,6 +29,7 @@ import {
     putUserDataInProductsBucket,
     splitUserDataJsonByProducts,
     insertDataToProductsBucketAndProductsTable,
+    shouldInstantlyGenerateNetexFromMatchingJson,
 } from '../../utils/apiUtils/userData';
 import { TicketWithIds } from '../../../shared/matchingJsonTypes';
 import { triggerExport } from '../../utils/apiUtils/export';
@@ -79,8 +80,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson.carnet = carnetAttribute;
             const noc = getAndValidateNoc(req, res);
             let filePath = '';
+
             if (userDataJson.products.length > 1) {
                 const splitUserDataJson = splitUserDataJsonByProducts(userDataJson);
+
                 splitUserDataJson.map(async (splitJson, index) => {
                     await insertDataToProductsBucketAndProductsTable(
                         splitJson,
@@ -90,6 +93,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         dataFormat,
                     );
                 });
+
                 filePath = await putUserDataInProductsBucket(userDataJson, uuid, noc);
             } else {
                 filePath = await insertDataToProductsBucketAndProductsTable(
@@ -101,17 +105,24 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 );
             }
 
-            if (!myFaresEnabled || !exportEnabled) {
+            if (
+                !myFaresEnabled ||
+                !exportEnabled ||
+                shouldInstantlyGenerateNetexFromMatchingJson(ticketType, dataFormat)
+            ) {
                 // if my fares or export isn't enabled we want to trigger the export lambda for a single
                 await triggerExport({ noc, paths: [filePath] });
             }
+
             if ((ticketType === 'geoZone' || dataFormat !== 'tnds') && exportEnabled) {
                 redirectTo(res, '/productCreated');
                 return;
             }
+
             redirectTo(res, '/thankyou');
             return;
         }
+
         return;
     } catch (error) {
         const message = 'There was a problem processing the information needed for the user data to be put in s3:';
