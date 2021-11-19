@@ -105,10 +105,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 );
             }
 
-            if (!myFaresEnabled || !exportEnabled) {
+            if (
+                !myFaresEnabled ||
+                !exportEnabled ||
+                shouldInstantlyGenerateNetexFromMatchingJson(ticketType, dataFormat)
+            ) {
                 // if my fares or export isn't enabled we want to trigger the export lambda for a single
-                await triggerExport({ noc, paths: [filePath] });
-            } else if (shouldInstantlyGenerateNetexFromMatchingJson(ticketType, dataFormat)) {
                 await triggerExport({ noc, paths: [filePath] });
             }
 
