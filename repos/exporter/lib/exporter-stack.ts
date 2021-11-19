@@ -62,6 +62,8 @@ export class ExporterStack extends cdk.Stack {
             },
             timeout: Duration.minutes(15),
             logRetention: 180,
+            memorySize: 2048,
+            reservedConcurrentExecutions: 5,
         });
 
         this.addAlarmsToLambda(stage, exporterFunction, `exporter-${stage}`, 300000);
@@ -145,6 +147,7 @@ export class ExporterStack extends cdk.Stack {
             },
             timeout: Duration.minutes(15),
             logRetention: 180,
+            memorySize: 2048,
         });
 
         netexBucket.grantReadWrite(zipperFunction);
