@@ -18,7 +18,9 @@ const ProductCreated = (): ReactElement => (
         </div>
         <h2 className="govuk-heading-m">What happens next</h2>
         <p className="govuk-body">Your product has now been stored in the system.</p>
-        <p className="govuk-body">To continue creating more products go to My products/services.</p>
+        <p className="govuk-body">
+            To continue creating more products go to <a href="/products/services">view and manage my fare</a>.
+        </p>
         <p className="govuk-body">
             Once you have finished creating products you can navigate to{' '}
             <a href={'/products/exports'} className="govuk-link" aria-label="Export your data">

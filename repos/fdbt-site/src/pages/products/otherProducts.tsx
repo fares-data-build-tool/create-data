@@ -169,7 +169,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                                 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
                             const quantity =
                                 ('carnetDetails' in innerProduct ? innerProduct.carnetDetails?.quantity : '1') || '1';
-                            const type = matchingJson.type;
+                            const type = `${matchingJson.type}${matchingJson.carnet ? ' carnet' : ''}`;
                             const passengerType =
                                 (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
                                 (await getGroupPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||

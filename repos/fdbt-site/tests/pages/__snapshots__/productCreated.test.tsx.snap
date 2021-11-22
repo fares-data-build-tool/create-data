@@ -29,7 +29,13 @@ exports[`pages productCreated should render correctly 1`] = `
   <p
     className="govuk-body"
   >
-    To continue creating more products go to My products/services.
+    To continue creating more products go to 
+    <a
+      href="/products/services"
+    >
+      view and manage my fare
+    </a>
+    .
   </p>
   <p
     className="govuk-body"

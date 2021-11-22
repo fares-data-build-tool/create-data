@@ -151,7 +151,7 @@ const PointToPointProductsTable = (
                                   </td>
                                   <td className="govuk-table__cell">
                                       <button
-                                          className="govuk-link delete-link"
+                                          className="govuk-link govuk-body delete-link"
                                           onClick={() => deleteActionHandler(product.id, product.productDescription)}
                                       >
                                           Delete

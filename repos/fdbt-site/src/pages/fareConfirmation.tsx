@@ -123,7 +123,7 @@ export const buildFareConfirmationElements = (
             });
         }
 
-        if (passengerType.proofDocuments) {
+        if (passengerType.proofDocuments && passengerType.proofDocuments.length > 0) {
             confirmationElements.push({
                 name: 'Passenger information - proof documents',
                 content: passengerType.proofDocuments.map((proofDoc) => sentenceCaseString(proofDoc)).join(', '),

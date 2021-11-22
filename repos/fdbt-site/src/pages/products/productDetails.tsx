@@ -74,6 +74,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const productDetailsElements: ProductDetailsElement[] = [];
 
+    if ('type' in ticket) {
+        productDetailsElements.push({
+            name: 'Fare type',
+            content: [sentenceCaseString(ticket.type)],
+        });
+    }
+
     if ('selectedServices' in ticket) {
         productDetailsElements.push({
             name: 'additionalNocs' in ticket || 'additionalOperators' in ticket ? `${noc} Services` : 'Services',
