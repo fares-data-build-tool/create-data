@@ -1,6 +1,20 @@
-import { clickElementById, clickElementByText, getHomePage } from './helpers';
+import {
+    clickElementById,
+    clickElementByText,
+    continueButtonClick,
+    getElementByClass,
+    getHomePage,
+    isFinished,
+} from './helpers';
 import { enterPassengerTypeDetails, addGroupPassengerType } from './passengerTypes';
 import { addPurchaseMethod } from './purchaseMethods';
+import {
+    completeFlatFarePages,
+    completeSalesPages,
+    completeSinglePages,
+    defineUserTypeAndTimeRestrictions,
+    selectFareType,
+} from './steps';
 import { addTimeRestriction } from './timeRestrictions';
 
 before(() => {

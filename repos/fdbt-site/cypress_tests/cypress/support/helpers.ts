@@ -1,5 +1,11 @@
 import 'cypress-file-upload';
-import { FareType } from './steps';
+import {
+    completeFlatFarePages,
+    completeSalesPages,
+    defineUserTypeAndTimeRestrictions,
+    FareType,
+    selectFareType,
+} from './steps';
 
 export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
@@ -508,4 +514,22 @@ export const completeOperatorSearch = (isMultiService: boolean): void => {
                 }
             }
         });
+};
+
+export const addFlatFareProductIfNotPresent = (): void => {
+    getHomePage();
+    clickElementById('manage-fares-link');
+    clickElementByText('Other products');
+    getElementByClass('govuk-table').then((table) => {
+        if (table.find('tr').length === 1) {
+            selectFareType('flatFare', false);
+            defineUserTypeAndTimeRestrictions();
+            clickElementById('radio-option-multipleServices');
+            continueButtonClick();
+            completeFlatFarePages('Flat Fare Test Product', false);
+            completeSalesPages();
+            isFinished();
+            cy.log('Flat fare product set up');
+        }
+    });
 };

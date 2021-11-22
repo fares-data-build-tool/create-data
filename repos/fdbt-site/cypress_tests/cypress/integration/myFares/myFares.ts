@@ -1,4 +1,10 @@
-import { clickElementById, clickElementByText, clickRandomElementsInTable, getHomePage } from '../../support/helpers';
+import {
+    addFlatFareProductIfNotPresent,
+    clickElementById,
+    clickElementByText,
+    clickRandomElementsInTable,
+    getHomePage,
+} from '../../support/helpers';
 
 describe('Able to access services in my fares', () => {
     it('Able to access service pages', () => {
@@ -16,12 +22,13 @@ describe('Able to access services in my fares', () => {
 
 describe('Able to access other products in my fares', () => {
     it('Able to access other products pages', () => {
+        addFlatFareProductIfNotPresent();
         getHomePage();
         clickElementById('manage-fares-link');
         clickElementByText('Other products');
         clickRandomElementsInTable('govuk-table__body', 'product-link');
     });
-    it('Able to access service pages via operator settings', () => {
+    it('Able to access other products pages via operator settings', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
