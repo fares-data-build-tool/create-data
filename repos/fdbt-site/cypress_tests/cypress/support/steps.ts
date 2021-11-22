@@ -45,7 +45,7 @@ export const defineSchoolUserAndTimeRestrictions = (): void => {
 };
 
 export const selectFareType = (fareType: FareType, isScheme: boolean): void => {
-    getHomePage(isScheme ? 'scheme' : 'TLCT');
+    getHomePage(isScheme ? 'scheme' : 'LNUD');
     startPageLinkClick();
     clickElementById(fareTypeToFareTypeIdMapper(fareType));
     continueButtonClick();

@@ -13,7 +13,7 @@ INSERT INTO `nocTable` (nocCode,operatorPublicName,vosaPsvLicenseName,opId,pubNm
 ,('MCTR3','Manchester Community Transport 3','Manchester Community Transport 3 Limited',137057,94719,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('NWBT','Pilkingtonbus','Boomerang Travel Ltd',135752,94554,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('PBLT','Preston Bus','Preston Bus Ltd',137430,95086,NULL,NULL,NULL,NULL,NULL,NULL)
-,('TLCT','TLC Travel Ltd','T L C Travel Ltd',137812,95662,NULL,NULL,NULL,NULL,NULL,NULL)
+,('LNUD','The Blackburn Bus Company','The Blackburn Bus Company',137812,95662,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('VISB','Vision Bus',NULL,138244,96066,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('WBTR','Warrington''s Own Buses','Warrington Borough Transport Ltd',138008,94889,NULL,NULL,NULL,NULL,NULL,NULL);
 
