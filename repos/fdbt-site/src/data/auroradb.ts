@@ -225,29 +225,29 @@ export const getBodsServiceByNocAndId = async (
     }
 };
 
-export const getBodsServiceDirectionDescriptionsByNocAndLineName = async (
+export const getBodsServiceDirectionDescriptionsByNocAndServiceId = async (
     nationalOperatorCode: string,
-    lineName: string,
+    serviceId: string,
 ): Promise<{ inboundDirectionDescription: string; outboundDirectionDescription: string }> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving services for given national operator code and lineName',
+        message: 'retrieving services for given national operator code and serviceId',
         nationalOperatorCode,
-        lineName,
+        serviceId,
     });
 
     try {
         const queryInput = `
             SELECT inboundDirectionDescription, outboundDirectionDescription
             FROM txcOperatorLine
-            WHERE nocCode = ? AND lineName = ? AND dataSource = 'bods';
+            WHERE nocCode = ? AND id = ? AND dataSource = 'bods';
         `;
 
         const queryResults = await executeQuery<
             { inboundDirectionDescription: string; outboundDirectionDescription: string }[]
-        >(queryInput, [nocCodeParameter, lineName]);
+        >(queryInput, [nocCodeParameter, serviceId]);
         if (queryResults.length !== 1) {
             throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
         }

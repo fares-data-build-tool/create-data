@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
 import {
     getBodsServiceByNocAndId,
-    getBodsServiceDirectionDescriptionsByNocAndLineName,
     getPassengerTypeNameByIdAndNoc,
     getProductById,
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
+    getBodsServiceDirectionDescriptionsByNocAndServiceId,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
@@ -105,21 +105,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         backHref = `/products/pointToPointProducts?serviceId=${serviceId}`;
 
         requiresAttention = servicesRequiringAttention?.includes(serviceId) ?? false;
-    }
 
-    if ('journeyDirection' in ticket && ticket.journeyDirection) {
-        const { inboundDirectionDescription, outboundDirectionDescription } =
-            await getBodsServiceDirectionDescriptionsByNocAndLineName(noc, ticket.lineName);
-        productDetailsElements.push({
-            name: 'Journey direction',
-            content: [
-                `${sentenceCaseString(ticket.journeyDirection)} - ${
-                    ticket.journeyDirection === 'inbound' || ticket.journeyDirection === 'clockwise'
-                        ? inboundDirectionDescription
-                        : outboundDirectionDescription
-                }`,
-            ],
-        });
+        if ('journeyDirection' in ticket && ticket.journeyDirection) {
+            const { inboundDirectionDescription, outboundDirectionDescription } =
+                await getBodsServiceDirectionDescriptionsByNocAndServiceId(noc, serviceId);
+            productDetailsElements.push({
+                name: 'Journey direction',
+                content: [
+                    `${sentenceCaseString(ticket.journeyDirection)} - ${
+                        ticket.journeyDirection === 'inbound' || ticket.journeyDirection === 'clockwise'
+                            ? inboundDirectionDescription
+                            : outboundDirectionDescription
+                    }`,
+                ],
+            });
+        }
     }
 
     if ('zoneName' in ticket) {
