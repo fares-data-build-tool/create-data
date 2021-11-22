@@ -21,8 +21,10 @@ describe('Able to access services in my fares', () => {
 });
 
 describe('Able to access other products in my fares', () => {
-    it('Able to access other products pages', () => {
+    before(() => {
         addFlatFareProductIfNotPresent();
+    });
+    it('Able to access other products pages', () => {
         getHomePage();
         clickElementById('manage-fares-link');
         clickElementByText('Other products');
