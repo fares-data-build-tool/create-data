@@ -78,7 +78,7 @@ functions:
       - s3:
           bucket: matchingDataBucket
           event: s3:ObjectCreated:*
-    reservedConcurrency: 40
+    reservedConcurrency: 30
     vpc:
       securityGroupIds:
         - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
