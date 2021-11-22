@@ -18,14 +18,6 @@ Parameters:
     Type: Number
     Default: 80
     Description: Port on which the site process is running in the container
-  SiteContainerCpu:
-    Type: Number
-    Default: 256
-    Description: How much CPU to give the site container. 1024 is 1 CPU
-  SiteContainerMemory:
-    Type: Number
-    Default: 2048
-    Description: How much memory in MiB to give the site container
   SiteDesiredCount:
     Type: Number
     Default: 1
@@ -103,8 +95,8 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     Properties:
       Family: !Sub ${ProductName}-site-${Stage}
-      Cpu: !Ref SiteContainerCpu
-      Memory: !Ref SiteContainerMemory
+      Cpu: 1024
+      Memory: 2048
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
@@ -114,8 +106,8 @@ Resources:
         Fn::ImportValue: !Sub ${Stage}:EcsSiteTaskRoleArn
       ContainerDefinitions:
         - Name: !Sub ${ProductName}-site-${Stage}
-          Cpu: !Ref SiteContainerCpu
-          Memory: !Ref SiteContainerMemory
+          Cpu: 1024
+          Memory: 2048
           Image: !Ref SiteImageUrl
           PortMappings:
             - ContainerPort: !Ref SiteContainerPort

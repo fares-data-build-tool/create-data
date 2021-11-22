@@ -11,7 +11,7 @@ const InfoPopup = ({ title, text, okActionHandler }: PopUpProps): ReactElement |
         <div className="popup__content">
             <h1 className="govuk-heading-m">{title}</h1>
 
-            <span className="govuk-hint" id="delete-hint">
+            <span className="govuk-hint" id="info-hint">
                 {text}
             </span>
 

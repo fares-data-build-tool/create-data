@@ -62,9 +62,11 @@ export class ExporterStack extends cdk.Stack {
             },
             timeout: Duration.minutes(15),
             logRetention: 180,
+            memorySize: 2048,
+            reservedConcurrentExecutions: 5,
         });
 
-        this.addAlarmsToLambda(stage, exporterFunction, `exporter-${stage}`, 30000);
+        this.addAlarmsToLambda(stage, exporterFunction, `exporter-${stage}`, 300000);
 
         exporterFunction.addToRolePolicy(new PolicyStatement({ actions: ['ssm:GetParameter'], resources: ['*'] }));
 
@@ -129,6 +131,28 @@ export class ExporterStack extends cdk.Stack {
             schedule: Schedule.cron({ weekDay: 'MON', minute: '0', hour: '6' }), // every monday at 6am
             targets: [new LambdaFunction(bastionTerminatorFunction)],
         });
+
+        const netexBucket = Bucket.fromBucketName(this, 'netex-bucket', `fdbt-netex-data-${stage}`);
+        const zipperFunction = new NodejsFunction(this, `zipper-${stage}`, {
+            functionName: `zipper-${stage}`,
+            entry: './lib/zipperHandler.ts',
+            environment: {
+                NETEX_BUCKET: netexBucket.bucketName,
+                MATCHING_DATA_BUCKET: matchingDataBucket.bucketName,
+                STAGE: stage,
+            },
+            bundling: {
+                sourceMap: true,
+                sourceMapMode: SourceMapMode.DEFAULT,
+            },
+            timeout: Duration.minutes(15),
+            logRetention: 180,
+            memorySize: 2048,
+        });
+
+        netexBucket.grantReadWrite(zipperFunction);
+
+        this.addAlarmsToLambda(stage, zipperFunction, `zipper-${stage}`, 60000);
     }
 
     private addAlarmsToLambda(stage: string, lambdaFn: NodejsFunction, id: string, durationThreshold: number) {

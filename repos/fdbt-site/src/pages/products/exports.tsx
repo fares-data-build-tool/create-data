@@ -1,39 +1,41 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { NextPageContextWithSession } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
-import { getS3FolderCount, getS3Exports, retrieveAndZipExportedNetexForNoc, getNetexSignedUrl } from '../../data/s3';
 import { redirectTo } from '../../utils/apiUtils';
-import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 import CsrfForm from '../../components/CsrfForm';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import { getAllProductsByNoc as getAllProductsByNoc } from '../../data/auroradb';
+import useSWR from 'swr';
+import { Export } from '../api/getExportProgress';
+import InfoPopup from '../../components/InfoPopup';
 
 const title = 'Exports';
 const description = 'View and access your settings in one place.';
+const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).then((res) => res.json());
 
 interface GlobalSettingsProps {
-    exports: {
-        matchingDataCount: number;
-        name: string;
-        netexCount: number;
-        signedUrl: string;
-        exportDate: string;
-        exportTime: string;
-    }[];
     csrf: string;
     myFaresEnabled: boolean;
     exportEnabled: boolean;
     operatorHasProducts: boolean;
 }
 
-const Exports = ({
-    exports,
-    csrf,
-    myFaresEnabled,
-    exportEnabled,
-    operatorHasProducts,
-}: GlobalSettingsProps): ReactElement => {
+const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
+    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 5000 });
+
+    const exports: Export[] | undefined = data?.exports;
+
+    const anExportIsInProgress: boolean = exports
+        ? exports.some((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)
+        : false;
+
+    const [showPopup, setShowPopup] = useState(false);
+    const [buttonClicked, setButtonClicked] = useState(false);
+
+    const exportAllowed = operatorHasProducts && !anExportIsInProgress && exports && !buttonClicked;
+
     return (
         <>
             <BaseLayout
@@ -48,15 +50,25 @@ const Exports = ({
                         <div className="dft-flex dft-flex-justify-space-between">
                             <h1 className="govuk-heading-xl">Export your data</h1>{' '}
                             <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
-                                {operatorHasProducts && (
-                                    <button type="submit" className="govuk-button">
-                                        Export all fares
-                                    </button>
-                                )}
+                                <button
+                                    type="submit"
+                                    className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
+                                    onClick={() => {
+                                        setShowPopup(true);
+                                        setButtonClicked(true);
+                                    }}
+                                >
+                                    Export all fares
+                                </button>
                             </CsrfForm>
                         </div>
                         <div className="govuk-grid-row">
                             <div className="govuk-grid-column-two-thirds">
+                                {!operatorHasProducts ? (
+                                    <div className="govuk-inset-text govuk-!-margin-top-0">
+                                        Export is disabled as you have no products.
+                                    </div>
+                                ) : null}
                                 <p className="govuk-body-m govuk-!-margin-bottom-9">
                                     This will export all of your current active products and any pending products. Any
                                     products flagged with ‘Needs Attention’ will be exported but may not be correct.
@@ -68,49 +80,67 @@ const Exports = ({
                             </div>
                         </div>
 
-                        <h2 className="govuk-heading-m"> Previously exported fares</h2>
-                        <table className="govuk-table">
-                            <thead className="govuk-table__head">
-                                <tr className="govuk-table__row">
-                                    <th scope="col" className="govuk-table__header">
-                                        Export name
-                                    </th>
-                                    <th scope="col" className="govuk-table__header">
-                                        Export date
-                                    </th>
-                                    <th scope="col" className="govuk-table__header">
-                                        Export time
-                                    </th>
-                                    <th scope="col" className="govuk-table__header">
-                                        Export status
-                                    </th>
-                                    <th scope="col" className="govuk-table__header"></th>
-                                </tr>
-                            </thead>
-                            <tbody className="govuk-table__body">
-                                {exports.map((exportDetails) => (
-                                    <tr className="govuk-table__row" key={exportDetails.name}>
-                                        <td className="govuk-table__cell">{exportDetails.name}</td>
-                                        <td className="govuk-table__cell">{exportDetails.exportDate}</td>
-                                        <td className="govuk-table__cell">{exportDetails.exportTime}</td>
-                                        <td className="govuk-table__cell">
-                                            {exportDetails.netexCount === exportDetails.matchingDataCount ? (
-                                                <strong className="govuk-tag govuk-tag--green">Complete</strong>
-                                            ) : (
-                                                <strong className="govuk-tag govuk-tag--blue">In Progress</strong>
-                                            )}
-                                        </td>
-                                        <td className="govuk-table__cell">
-                                            {exportDetails.signedUrl ? (
-                                                <a href={exportDetails.signedUrl}>Download file</a>
-                                            ) : (
-                                                <p>Download file not ready</p>
-                                            )}
-                                        </td>
+                        <h2 className="govuk-heading-m govuk-!-margin-bottom-6">Previously exported fares</h2>
+
+                        {!exports ? (
+                            <LoadingSpinner />
+                        ) : exports.length === 0 ? (
+                            <p className="govuk-body-m">
+                                <em>You currently have no exports</em>
+                            </p>
+                        ) : (
+                            <table className="govuk-table">
+                                <thead className="govuk-table__head">
+                                    <tr className="govuk-table__row">
+                                        <th scope="col" className="govuk-table__header">
+                                            Export name
+                                        </th>
+                                        <th scope="col" className="govuk-table__header">
+                                            Export status
+                                        </th>
+                                        <th scope="col" className="govuk-table__header"></th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <tbody className="govuk-table__body">
+                                    {exports?.map((exportDetails) => {
+                                        const complete = exportDetails.netexCount === exportDetails.matchingDataCount;
+                                        const signedUrl = exportDetails.signedUrl;
+                                        return (
+                                            <tr className="govuk-table__row" key={exportDetails.name}>
+                                                <td className="govuk-table__cell">{exportDetails.name}</td>
+                                                <td className="govuk-table__cell">
+                                                    {complete ? (
+                                                        signedUrl ? (
+                                                            <strong className="govuk-tag govuk-tag--green">{`EXPORT COMPLETE ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
+                                                        ) : (
+                                                            <strong className="govuk-tag govuk-tag--blue">{`EXPORT ZIPPING ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
+                                                        )
+                                                    ) : exportDetails.netexCount === 0 ? (
+                                                        <strong className="govuk-tag govuk-tag--blue">
+                                                            {`LOADING PRODUCTS (${exportDetails.matchingDataCount})`}
+                                                        </strong>
+                                                    ) : (
+                                                        <strong className="govuk-tag govuk-tag--blue">{`IN PROGRESS ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
+                                                    )}
+                                                </td>
+                                                <td className="govuk-table__cell">
+                                                    {signedUrl ? <a href={signedUrl}>Download file</a> : null}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        )}
+
+                        {showPopup && (
+                            <InfoPopup
+                                title="We are preparing your export"
+                                text="Your export will take a few seconds to show in the table below."
+                                okActionHandler={() => setShowPopup(false)}
+                            />
+                        )}
                     </div>
                 </div>
             </BaseLayout>
@@ -125,34 +155,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         redirectTo(ctx.res, '/home');
     }
 
-    const exportNames = await getS3Exports(noc);
-
-    const exports = await Promise.all(
-        exportNames.map(async (name) => {
-            const prefix = `${noc}/exports/${name}/`;
-            const matchingDataCount = await getS3FolderCount(MATCHING_DATA_BUCKET_NAME, prefix);
-            const exportDate = '14 Sep 2021';
-            const exportTime = '10:37';
-
-            const netexCount = await getS3FolderCount(NETEX_BUCKET_NAME, prefix);
-
-            const complete = matchingDataCount === netexCount;
-
-            let signedUrl = '';
-            if (complete) {
-                const zipKey = await retrieveAndZipExportedNetexForNoc(noc, name);
-                signedUrl = await getNetexSignedUrl(zipKey || '');
-            }
-
-            return { name: name, matchingDataCount, netexCount, signedUrl, exportDate, exportTime };
-        }),
-    );
-
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
 
     return {
         props: {
-            exports,
             csrf: getCsrfToken(ctx),
             myFaresEnabled: myFaresEnabled,
             exportEnabled: exportEnabled,

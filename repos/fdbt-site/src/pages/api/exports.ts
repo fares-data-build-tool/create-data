@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { getAndValidateNoc, redirectTo } from '../../utils/apiUtils';
+import { getAndValidateNoc } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, EntityStatus } from '../../interfaces';
 import { getS3Exports } from '../../data/s3';
 import { getAllProductsByNoc, getServicesByNocAndLineId } from '../../data/auroradb';
@@ -19,9 +19,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
     // 3. figure out the name of the file
     const [date] = new Date().toISOString().split('T');
-    const currentDateString = date.split('-').join('');
+    const currentDateString = date.split('-').join('_');
 
-    const exportNameBase = `${noc}${currentDateString}`;
+    const exportNameBase = `${noc}_${currentDateString}`;
     let i = 0;
     let exportName = exportNameBase;
     const exports = await getS3Exports(noc);
@@ -35,9 +35,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
     await triggerExport({ noc, paths: links, exportPrefix: exportName });
 
-    redirectTo(res, '/products/exports');
-
-    return;
+    res.status(204).send('');
 };
 
 /**
@@ -60,7 +58,10 @@ const getNonExpiredProducts = (products: DbProduct[]) => {
 };
 
 /**
- * Filters out products that have no active services.
+ * For products that are associated with a service, it filters out products that
+ * have no active services. Products not associated with a service stay and are
+ * not removed.
+ *
  *
  * @param noc the national operator code
  * @param products the list of non-expired products
@@ -74,23 +75,28 @@ const filterOutProductsWithNoActiveServices = async (noc: string, products: DbPr
         const product = products[i];
         const lineId = product.lineId;
 
-        const services = await getServicesByNocAndLineId(noc, lineId);
-
-        const activeServices = services.filter((service) => {
-            const startDate = service.startDate;
-            const endDate = service.endDate;
-
-            const status = getEntityStatus(startDate, endDate);
-
-            if (status === EntityStatus.Active) {
-                return true;
-            }
-
-            return false;
-        });
-
-        if (activeServices.length > 0) {
+        if (!lineId) {
+            // we have a product that is not associated with a service
             lineIdsToKeep.push(lineId);
+        } else {
+            const services = await getServicesByNocAndLineId(noc, lineId);
+
+            const activeServices = services.filter((service) => {
+                const startDate = service.startDate;
+                const endDate = service.endDate;
+
+                const status = getEntityStatus(startDate, endDate);
+
+                if (status === EntityStatus.Active) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            if (activeServices.length > 0) {
+                lineIdsToKeep.push(lineId);
+            }
         }
     }
 

@@ -19,6 +19,7 @@
     },
     "devDependencies": {
         "@aws-cdk/assert": "1.128.0",
+        "@types/archiver": "^5.1.1",
         "@types/aws-lambda": "^8.10.83",
         "@types/dateformat": "^3.0.1",
         "@types/jest": "^27.0.2",
@@ -48,6 +49,7 @@
         "@aws-cdk/aws-s3": "1.128.0",
         "@aws-cdk/aws-sns": "1.128.0",
         "@aws-cdk/core": "1.128.0",
+        "archiver": "^5.3.0",
         "aws-sdk": "^2.991.0",
         "mysql2": "^2.3.0",
         "source-map-support": "^0.5.20"

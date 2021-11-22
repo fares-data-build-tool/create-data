@@ -10,6 +10,7 @@ exports[`pages productCreated should render correctly 1`] = `
   >
     <h1
       className="govuk-panel__title"
+      data-test-id="final-page-banner"
       id="thank-you-page-heading"
     >
       Product created

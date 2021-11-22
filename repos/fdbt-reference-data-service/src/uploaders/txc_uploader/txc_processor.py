@@ -57,16 +57,16 @@ def get_lines_for_service(service):
 
 def extract_data_for_txc_operator_service_table(operator, service, line):
     noc_code = operator.get('NationalOperatorCode')
-    start_date = service.get('OperatingPeriod').get('StartDate')
-    end_date = service.get('OperatingPeriod', {}).get('EndDate', None)
+    start_date = (service.get('OperatingPeriod') or {}).get('StartDate')
+    end_date = (service.get('OperatingPeriod') or {}).get('EndDate')
     operator_short_name = operator.get('OperatorShortName')
-    inbound_direction_description = line.get('InboundDescription', {}).get('Description', '')
-    outbound_direction_description = line.get('OutboundDescription', {}).get('Description', '')
+    inbound_direction_description = (line.get('InboundDescription') or {}).get('Description', '')
+    outbound_direction_description = (line.get('OutboundDescription') or {}).get('Description', '')
     service_description = service.get('Description', '')
-    service_code = service.get('ServiceCode', None)
-    standard_service = service.get('StandardService', None)
-    origin = standard_service.get('Origin', None)
-    destination = standard_service.get('Destination', None)
+    service_code = service.get('ServiceCode')
+    standard_service = service.get('StandardService')
+    origin = standard_service.get('Origin')
+    destination = standard_service.get('Destination')
 
     return noc_code, start_date, end_date, operator_short_name, inbound_direction_description, outbound_direction_description, service_description, service_code, origin, destination
 

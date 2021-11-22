@@ -1,156 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages confirmRegistration should render correctly with data 1`] = `
-<Fragment>
-  <BaseLayout
-    description="View and access your settings in one place."
-    exportEnabled={true}
-    myFaresEnabled={true}
-    showNavigation={true}
-    title="Exports"
-  >
-    <div
-      className="govuk-grid-row"
-    >
-      <div
-        className="govuk-grid-column-full"
-      >
-        <div
-          className="dft-flex dft-flex-justify-space-between"
-        >
-          <h1
-            className="govuk-heading-xl"
-          >
-            Export your data
-          </h1>
-           
-          <CsrfForm
-            action="/api/exports"
-            csrfToken="ip2IlrBL-d4B3lqI70d5y7f5GKMs2wvXRsVU"
-            method="post"
-          >
-            <button
-              className="govuk-button"
-              type="submit"
-            >
-              Export all fares
-            </button>
-          </CsrfForm>
-        </div>
-        <div
-          className="govuk-grid-row"
-        >
-          <div
-            className="govuk-grid-column-two-thirds"
-          >
-            <p
-              className="govuk-body-m govuk-!-margin-bottom-9"
-            >
-              This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or products for expired services, will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
-               
-              <a
-                href="https://publish.bus-data.dft.gov.uk/"
-              >
-                BODS
-              </a>
-              .
-            </p>
-          </div>
-        </div>
-        <h2
-          className="govuk-heading-m"
-        >
-           Previously exported fares
-        </h2>
-        <table
-          className="govuk-table"
-        >
-          <thead
-            className="govuk-table__head"
-          >
-            <tr
-              className="govuk-table__row"
-            >
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export name
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export date
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export time
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export status
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              />
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
-          >
-            <tr
-              className="govuk-table__row"
-              key="TestExport"
-            >
-              <td
-                className="govuk-table__cell"
-              >
-                TestExport
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                14 Sep 2021
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                10:37
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                <strong
-                  className="govuk-tag govuk-tag--green"
-                >
-                  Complete
-                </strong>
-              </td>
-              <td
-                className="govuk-table__cell"
-              >
-                <a
-                  href="http://localhost:4572/fdbt-netex-data-dev/BLAC/zips/TestExport//TestExport.zip?AWSAccessKeyId=S3RVER&Expires=1636716236&Signature=sB9ssjS0bN72S6iydPuk43xkZZc%3D"
-                >
-                  Download file
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </BaseLayout>
-</Fragment>
-`;
-
-exports[`pages confirmRegistration should render correctly without data 1`] = `
+exports[`pages confirmRegistration should render correctly without data when operator has no products 1`] = `
 <Fragment>
   <BaseLayout
     description="View and access your settings in one place."
@@ -180,7 +30,83 @@ exports[`pages confirmRegistration should render correctly without data 1`] = `
             method="post"
           >
             <button
-              className="govuk-button"
+              className="govuk-button govuk-visually-hidden"
+              onClick={[Function]}
+              type="submit"
+            >
+              Export all fares
+            </button>
+          </CsrfForm>
+        </div>
+        <div
+          className="govuk-grid-row"
+        >
+          <div
+            className="govuk-grid-column-two-thirds"
+          >
+            <div
+              className="govuk-inset-text govuk-!-margin-top-0"
+            >
+              Export is disabled as you have no products.
+            </div>
+            <p
+              className="govuk-body-m govuk-!-margin-bottom-9"
+            >
+              This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or products for expired services, will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
+               
+              <a
+                href="https://publish.bus-data.dft.gov.uk/"
+              >
+                BODS
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+        <h2
+          className="govuk-heading-m govuk-!-margin-bottom-6"
+        >
+          Previously exported fares
+        </h2>
+        <LoadingSpinner />
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`pages confirmRegistration should render the export button correctly when operator has products 1`] = `
+<Fragment>
+  <BaseLayout
+    description="View and access your settings in one place."
+    exportEnabled={true}
+    myFaresEnabled={true}
+    showNavigation={true}
+    title="Exports"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <div
+          className="dft-flex dft-flex-justify-space-between"
+        >
+          <h1
+            className="govuk-heading-xl"
+          >
+            Export your data
+          </h1>
+           
+          <CsrfForm
+            action="/api/exports"
+            csrfToken=""
+            method="post"
+          >
+            <button
+              className="govuk-button govuk-visually-hidden"
+              onClick={[Function]}
               type="submit"
             >
               Export all fares
@@ -208,53 +134,11 @@ exports[`pages confirmRegistration should render correctly without data 1`] = `
           </div>
         </div>
         <h2
-          className="govuk-heading-m"
+          className="govuk-heading-m govuk-!-margin-bottom-6"
         >
-           Previously exported fares
+          Previously exported fares
         </h2>
-        <table
-          className="govuk-table"
-        >
-          <thead
-            className="govuk-table__head"
-          >
-            <tr
-              className="govuk-table__row"
-            >
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export name
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export date
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export time
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              >
-                Export status
-              </th>
-              <th
-                className="govuk-table__header"
-                scope="col"
-              />
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
-          />
-        </table>
+        <LoadingSpinner />
       </div>
     </div>
   </BaseLayout>
