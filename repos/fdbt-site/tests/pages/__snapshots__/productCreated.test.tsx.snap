@@ -33,7 +33,7 @@ exports[`pages productCreated should render correctly 1`] = `
     <a
       href="/products/services"
     >
-      view and manage my fare
+      view and manage my fares
     </a>
     .
   </p>
