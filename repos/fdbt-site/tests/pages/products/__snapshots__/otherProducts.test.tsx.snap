@@ -205,6 +205,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               >
                 <a
                   href="/products/productDetails?productId=1"
+                  id="product-link-0"
                 >
                   First product
                 </a>
@@ -263,6 +264,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               >
                 <a
                   href="/products/productDetails?productId=2"
+                  id="product-link-1"
                 >
                   The greatest product eveer!
                 </a>
@@ -321,6 +323,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               >
                 <a
                   href="/products/productDetails?productId=3"
+                  id="product-link-2"
                 >
                   The greatest product eveer!
                 </a>
