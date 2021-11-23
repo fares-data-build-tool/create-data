@@ -230,7 +230,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 className="govuk-table__cell"
               >
                 <button
-                  className="govuk-link delete-link"
+                  className="govuk-link govuk-body delete-link"
                   onClick={[Function]}
                 >
                   Delete
@@ -389,7 +389,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 className="govuk-table__cell"
               >
                 <button
-                  className="govuk-link delete-link"
+                  className="govuk-link govuk-body delete-link"
                   onClick={[Function]}
                 >
                   Delete
