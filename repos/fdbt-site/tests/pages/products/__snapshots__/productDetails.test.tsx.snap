@@ -11,12 +11,13 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   />
   <h1
     className="govuk-heading-l"
+    id="product-name"
   >
     Carnet Return Test
   </h1>
   <div
     className="govuk-hint"
-    id="contact-hint"
+    id="product-status"
   >
     Product status: 
     <strong

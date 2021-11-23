@@ -20,7 +20,6 @@ import {
     randomlyDecideTermRestrictions,
     randomlyChooseProductPeriodValidity,
     clickRandomElementInTable,
-    getElementByText,
     clickElementByText,
 } from './helpers';
 

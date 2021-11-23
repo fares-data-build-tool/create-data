@@ -52,7 +52,9 @@ const ProductDetails = ({
                         <dt className="govuk-summary-list__key">{element.name}</dt>
                         <dd className="govuk-summary-list__value">
                             {element.content.map((item) => (
-                                <div key={item}>{item}</div>
+                                <div key={item} id={element.id || undefined}>
+                                    {item}
+                                </div>
                             ))}
                         </dd>
                     </div>
@@ -80,6 +82,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         productDetailsElements.push({
             name: 'Fare type',
             content: [sentenceCaseString(ticket.type)],
+            id: 'fare-type',
         });
     }
 
