@@ -611,6 +611,7 @@ export interface ConfirmationElement {
 export interface ProductDetailsElement {
     name: string;
     content: string[];
+    id?: string;
 }
 
 export interface RadioOption {

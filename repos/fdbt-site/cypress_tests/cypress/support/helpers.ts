@@ -468,17 +468,12 @@ export const completeMultipleProducts = (
     continueButtonClick();
 };
 
-export const clickRandomElementsInTable = (tableName: string, elementId: string): void => {
+export const clickRandomElementInTable = (tableName: string, elementId: string): void => {
     getElementByClass(tableName)
         .find('tr')
         .then((elm) => {
-            const numberOfServices = elm.length;
-            for (let i = 0; i < 3; i++) {
-                const randomSelector = getRandomNumber(0, numberOfServices - 1);
-                // elm.get(randomSelector).setAttribute('selected', 'selected');
-                clickElementById(`${elementId}-${randomSelector}`);
-                clickElementByText('Back');
-            }
+            const randomSelector = getRandomNumber(0, elm.length - 1);
+            clickElementById(`${elementId}-${randomSelector}`);
         });
 };
 

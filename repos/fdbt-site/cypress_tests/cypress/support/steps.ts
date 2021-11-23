@@ -19,6 +19,9 @@ import {
     clickSomeCheckboxes,
     randomlyDecideTermRestrictions,
     randomlyChooseProductPeriodValidity,
+    clickRandomElementInTable,
+    getElementByText,
+    clickElementByText,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -299,4 +302,23 @@ export const completeMultiOpMultiServicePages = (numberOfProducts?: number, mult
     completeOperatorSearch(true);
 
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+};
+
+export const completeMyFaresPointToPointProductsPages = (): void => {
+    for (let i = 0; i < 3; i++) {
+        clickRandomElementInTable('govuk-table__body', 'service-link');
+        getElementById('service-name').should('not.be.empty');
+        getElementById('service-status').should('not.be.empty');
+        clickElementByText('Back');
+    }
+};
+
+export const completeMyFaresOtherProductsPages = (): void => {
+    for (let i = 0; i < 3; i++) {
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        getElementById('product-name').should('not.be.empty');
+        getElementById('product-status').should('not.be.empty');
+        getElementById('fare-type').should('not.be.empty');
+        clickElementByText('Back');
+    }
 };

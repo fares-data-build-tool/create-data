@@ -36,8 +36,10 @@ const ProductDetails = ({
 }: ProductDetailsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <BackButton href={backHref} />
-        <h1 className="govuk-heading-l">{productName}</h1>
-        <div id="contact-hint" className="govuk-hint">
+        <h1 className="govuk-heading-l" id="product-name">
+            {productName}
+        </h1>
+        <div id="product-status" className="govuk-hint">
             Product status: {getTag(startDate, endDate, false)}
             {requiresAttention && (
                 <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">NEEDS ATTENTION</strong>

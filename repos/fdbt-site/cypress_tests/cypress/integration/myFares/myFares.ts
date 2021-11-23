@@ -2,21 +2,22 @@ import {
     addFlatFareProductIfNotPresent,
     clickElementById,
     clickElementByText,
-    clickRandomElementsInTable,
+    clickRandomElementInTable,
     getHomePage,
 } from '../../support/helpers';
+import { completeMyFaresPointToPointProductsPages } from '../../support/steps';
 
-describe('The my fares point to point products pages', () => {
+describe.only('The my fares point to point products pages', () => {
     it('allows for navigation through the point to point products pages', () => {
         getHomePage();
         clickElementById('manage-fares-link');
-        clickRandomElementsInTable('govuk-table__body', 'service-link');
+        completeMyFaresPointToPointProductsPages();
     });
     it('allows for navigation through the point to point products pages via operator settings', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Services');
-        clickRandomElementsInTable('govuk-table__body', 'service-link');
+        completeMyFaresPointToPointProductsPages();
     });
 });
 
@@ -28,12 +29,13 @@ describe('The my fares other products pages', () => {
         getHomePage();
         clickElementById('manage-fares-link');
         clickElementByText('Other products');
-        clickRandomElementsInTable('govuk-table__body', 'product-link');
+        completeMyFaresOtherProductsPages();
+        clickRandomElementInTable('govuk-table__body', 'product-link');
     });
     it('allows for navigation through the other products pages via operator settings', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
-        clickRandomElementsInTable('govuk-table__body', 'product-link');
+        clickRandomElementInTable('govuk-table__body', 'product-link');
     });
 });
