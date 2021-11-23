@@ -36,8 +36,10 @@ const ProductDetails = ({
 }: ProductDetailsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <BackButton href={backHref} />
-        <h1 className="govuk-heading-l">{productName}</h1>
-        <div id="contact-hint" className="govuk-hint">
+        <h1 className="govuk-heading-l" id="product-name">
+            {productName}
+        </h1>
+        <div id="product-status" className="govuk-hint">
             Product status: {getTag(startDate, endDate, false)}
             {requiresAttention && (
                 <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">NEEDS ATTENTION</strong>
@@ -50,7 +52,9 @@ const ProductDetails = ({
                         <dt className="govuk-summary-list__key">{element.name}</dt>
                         <dd className="govuk-summary-list__value">
                             {element.content.map((item) => (
-                                <div key={item}>{item}</div>
+                                <div key={item} id={element.id || undefined}>
+                                    {item}
+                                </div>
                             ))}
                         </dd>
                     </div>
@@ -77,6 +81,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if ('type' in ticket) {
         productDetailsElements.push({
             name: 'Fare type',
+            id: 'fare-type',
             content: [`${sentenceCaseString(ticket.type)}${ticket.carnet ? ' (carnet)' : ''}`],
         });
     }

@@ -8,6 +8,7 @@ import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById 
 import { getProductsMatchingJson } from '../../data/s3';
 import { getTag } from '../products/services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
+import logger from '../../utils/logger';
 
 const title = 'Other Products - Create Fares Data Service';
 const description = 'View and access your other products in one place.';
@@ -118,7 +119,10 @@ const otherProductsTable = (
                         ? otherProducts.map((product, index) => (
                               <tr className="govuk-table__row" key={`product-${index}`}>
                                   <td className="govuk-table__cell dft-table-wrap-anywhere">
-                                      <a href={`/products/productDetails?productId=${product.id}`}>
+                                      <a
+                                          href={`/products/productDetails?productId=${product.id}`}
+                                          id={`product-link-${index}`}
+                                      >
                                           {product.productDescription}
                                       </a>
                                   </td>
@@ -157,6 +161,11 @@ const otherProductsTable = (
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: OtherProductsProps }> => {
     const noc = getAndValidateNoc(ctx);
     const otherProductsFromDb: MyFaresOtherProduct[] = await getOtherProductsByNoc(noc);
+
+    if (process.env.STAGE !== 'test' && otherProductsFromDb.length > 50) {
+        logger.error('User has more than 50 other products', { noc });
+    }
+
     const otherProducts: MyFaresOtherFaresProduct[] = (
         await Promise.all(
             otherProductsFromDb.map(async (product) => {
