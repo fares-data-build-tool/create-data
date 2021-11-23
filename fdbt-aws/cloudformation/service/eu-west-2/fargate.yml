@@ -18,22 +18,6 @@ Parameters:
     Type: Number
     Default: 80
     Description: Port on which the site process is running in the container
-  SiteDesiredCount:
-    Type: Number
-    Default: 1
-    Description: How many copies of the site service task to run
-  SiteMinCount:
-    Type: Number
-    Default: 1
-    Description: Min number of tasks the site can scale to
-  SiteMaxCount:
-    Type: Number
-    Default: 6
-    Description: Max number of tasks the site can scale to
-  SiteCpuTarget:
-    Type: Number
-    Default: 50
-    Description: CPU usage percentage to track for auto scaling
   MonitoringImage:
     Type: String
     Description: The monitoring docker image
@@ -95,7 +79,7 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     Properties:
       Family: !Sub ${ProductName}-site-${Stage}
-      Cpu: 1024
+      Cpu: 512
       Memory: 2048
       NetworkMode: awsvpc
       RequiresCompatibilities:
@@ -106,7 +90,7 @@ Resources:
         Fn::ImportValue: !Sub ${Stage}:EcsSiteTaskRoleArn
       ContainerDefinitions:
         - Name: !Sub ${ProductName}-site-${Stage}
-          Cpu: 1024
+          Cpu: 512
           Memory: 2048
           Image: !Ref SiteImageUrl
           PortMappings:
@@ -198,7 +182,7 @@ Resources:
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 75
-      DesiredCount: !Ref SiteDesiredCount
+      DesiredCount: 3
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
@@ -242,8 +226,8 @@ Resources:
   SiteAutoScalingTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
-      MinCapacity: !Ref SiteMinCount
-      MaxCapacity: !Ref SiteMaxCount
+      MinCapacity: 2
+      MaxCapacity: 5
       ResourceId:
         !Join ["/", [service, !Ref ECSCluster, !GetAtt SiteService.Name]]
       ScalableDimension: ecs:service:DesiredCount
@@ -261,8 +245,8 @@ Resources:
             - Schedule: "cron(0 7 ? * MON-FRI *)"
               ScheduledActionName: SiteScaleOut
               ScalableTargetAction:
-                MaxCapacity: !Ref SiteMaxCount
-                MinCapacity: !Ref SiteMinCount
+                MaxCapacity: 5
+                MinCapacity: 2
           - !Ref AWS::NoValue
 
   MonitoringAutoScalingTarget:
@@ -302,7 +286,7 @@ Resources:
           PredefinedMetricType: ECSServiceAverageCPUUtilization
         ScaleInCooldown: 60
         ScaleOutCooldown: 60
-        TargetValue: !Ref SiteCpuTarget
+        TargetValue: 50
 
   # ALB Resources
 
