@@ -81,8 +81,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if ('type' in ticket) {
         productDetailsElements.push({
             name: 'Fare type',
-            content: [sentenceCaseString(ticket.type)],
             id: 'fare-type',
+            content: [`${sentenceCaseString(ticket.type)}${ticket.carnet ? ' (carnet)' : ''}`],
         });
     }
 
