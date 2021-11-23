@@ -226,7 +226,7 @@ Resources:
   SiteAutoScalingTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
-      MinCapacity: 1
+      MinCapacity: 2
       MaxCapacity: 5
       ResourceId:
         !Join ["/", [service, !Ref ECSCluster, !GetAtt SiteService.Name]]
@@ -246,7 +246,7 @@ Resources:
               ScheduledActionName: SiteScaleOut
               ScalableTargetAction:
                 MaxCapacity: 5
-                MinCapacity: 1
+                MinCapacity: 2
           - !Ref AWS::NoValue
 
   MonitoringAutoScalingTarget:
