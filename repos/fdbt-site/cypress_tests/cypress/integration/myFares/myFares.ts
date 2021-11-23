@@ -6,13 +6,13 @@ import {
     getHomePage,
 } from '../../support/helpers';
 
-describe('Able to access services in my fares', () => {
-    it('Able to access service pages', () => {
+describe('The my fares point to point products pages', () => {
+    it('allows for navigation through the point to point products pages', () => {
         getHomePage();
         clickElementById('manage-fares-link');
         clickRandomElementsInTable('govuk-table__body', 'service-link');
     });
-    it('Able to access service pages via operator settings', () => {
+    it('allows for navigation through the point to point products pages via operator settings', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Services');
@@ -20,17 +20,17 @@ describe('Able to access services in my fares', () => {
     });
 });
 
-describe('Able to access other products in my fares', () => {
+describe('The my fares other products pages', () => {
     before(() => {
         addFlatFareProductIfNotPresent();
     });
-    it('Able to access other products pages', () => {
+    it('allows for navigation through the other products pages', () => {
         getHomePage();
         clickElementById('manage-fares-link');
         clickElementByText('Other products');
         clickRandomElementsInTable('govuk-table__body', 'product-link');
     });
-    it('Able to access other products pages via operator settings', () => {
+    it('allows for navigation through the other products pages via operator settings', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
