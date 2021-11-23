@@ -34,7 +34,7 @@ const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: G
     const [showPopup, setShowPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
 
-    const exportDisabled = !operatorHasProducts || anExportIsInProgress || buttonClicked || !exports;
+    const exportAllowed = operatorHasProducts && !anExportIsInProgress && exports && !buttonClicked;
 
     return (
         <>
@@ -52,12 +52,11 @@ const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: G
                             <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
                                 <button
                                     type="submit"
-                                    className="govuk-button"
+                                    className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
                                     onClick={() => {
                                         setShowPopup(true);
                                         setButtonClicked(true);
                                     }}
-                                    disabled={exportDisabled}
                                 >
                                     Export all fares
                                 </button>
@@ -104,25 +103,33 @@ const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: G
                                 </thead>
 
                                 <tbody className="govuk-table__body">
-                                    {exports?.map((exportDetails) => (
-                                        <tr className="govuk-table__row" key={exportDetails.name}>
-                                            <td className="govuk-table__cell">{exportDetails.name}</td>
-                                            <td className="govuk-table__cell">
-                                                {exportDetails.netexCount === exportDetails.matchingDataCount ? (
-                                                    <strong className="govuk-tag govuk-tag--green">{`EXPORT COMPLETE ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
-                                                ) : exportDetails.netexCount === 0 ? (
-                                                    <strong className="govuk-tag govuk-tag--blue">{'LOADING'}</strong>
-                                                ) : (
-                                                    <strong className="govuk-tag govuk-tag--blue">{`IN PROGRESS ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
-                                                )}
-                                            </td>
-                                            <td className="govuk-table__cell">
-                                                {exportDetails.signedUrl ? (
-                                                    <a href={exportDetails.signedUrl}>Download file</a>
-                                                ) : null}
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {exports?.map((exportDetails) => {
+                                        const complete = exportDetails.netexCount === exportDetails.matchingDataCount;
+                                        const signedUrl = exportDetails.signedUrl;
+                                        return (
+                                            <tr className="govuk-table__row" key={exportDetails.name}>
+                                                <td className="govuk-table__cell">{exportDetails.name}</td>
+                                                <td className="govuk-table__cell">
+                                                    {complete ? (
+                                                        signedUrl ? (
+                                                            <strong className="govuk-tag govuk-tag--green">{`EXPORT COMPLETE ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
+                                                        ) : (
+                                                            <strong className="govuk-tag govuk-tag--blue">{`EXPORT ZIPPING ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
+                                                        )
+                                                    ) : exportDetails.netexCount === 0 ? (
+                                                        <strong className="govuk-tag govuk-tag--blue">
+                                                            {`LOADING PRODUCTS (${exportDetails.matchingDataCount})`}
+                                                        </strong>
+                                                    ) : (
+                                                        <strong className="govuk-tag govuk-tag--blue">{`IN PROGRESS ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
+                                                    )}
+                                                </td>
+                                                <td className="govuk-table__cell">
+                                                    {signedUrl ? <a href={signedUrl}>Download file</a> : null}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         )}

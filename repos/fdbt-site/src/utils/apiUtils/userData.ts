@@ -84,7 +84,6 @@ import { isFareZoneAttributeWithErrors } from '../../pages/csvZoneUpload';
 import { isReturnPeriodValidityWithErrors } from '../../pages/returnValidity';
 import { isServiceListAttributeWithErrors } from '../../pages/serviceList';
 import { getFareZones } from './matching';
-import { saveProductsEnabled } from '../../constants/featureFlag';
 import moment from 'moment';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
@@ -646,11 +645,25 @@ export const insertDataToProductsBucketAndProductsTable = async (
     dataFormat: 'tnds' | 'bods' | undefined,
 ): Promise<string> => {
     const filePath = await putUserDataInProductsBucket(userDataJson, uuid, nocCode);
-    if (saveProductsEnabled && (ticketType === 'geoZone' || dataFormat !== 'tnds')) {
+
+    if (!shouldInstantlyGenerateNetexFromMatchingJson(ticketType, dataFormat)) {
         const { startDate, endDate } = userDataJson.ticketPeriod;
         const dateTime = moment().toDate();
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
+
         await insertProducts(nocCode, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);
     }
+
     return filePath;
+};
+
+export const shouldInstantlyGenerateNetexFromMatchingJson = (
+    ticketType: string,
+    dataFormat: 'tnds' | 'bods' | undefined,
+) => {
+    const isBodsOrGeoZoneTicket = ticketType === 'geoZone' || dataFormat !== 'tnds';
+
+    const instantlyGenerateNetexFromProduct = !isBodsOrGeoZoneTicket;
+
+    return instantlyGenerateNetexFromProduct;
 };

@@ -30,8 +30,7 @@ exports[`pages confirmRegistration should render correctly without data when ope
             method="post"
           >
             <button
-              className="govuk-button"
-              disabled={true}
+              className="govuk-button govuk-visually-hidden"
               onClick={[Function]}
               type="submit"
             >
@@ -106,8 +105,7 @@ exports[`pages confirmRegistration should render the export button correctly whe
             method="post"
           >
             <button
-              className="govuk-button"
-              disabled={true}
+              className="govuk-button govuk-visually-hidden"
               onClick={[Function]}
               type="submit"
             >

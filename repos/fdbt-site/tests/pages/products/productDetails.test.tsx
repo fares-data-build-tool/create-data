@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import {
-    getBodsServiceDirectionDescriptionsByNocAndLineName,
+    getBodsServiceDirectionDescriptionsByNocAndServiceId,
     getBodsServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
     getProductById,
@@ -78,7 +78,7 @@ describe('myfares pages', () => {
                 name: 'Test Time Restriction',
             });
 
-            (getBodsServiceDirectionDescriptionsByNocAndLineName as jest.Mock).mockResolvedValue({
+            (getBodsServiceDirectionDescriptionsByNocAndServiceId as jest.Mock).mockResolvedValue({
                 inboundDirectionDescription: 'this way',
                 outboundDirectionDescription: 'another way',
             });
@@ -95,6 +95,7 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
+                        { name: 'Fare type', content: ['Single'] },
                         { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
                         { name: 'Journey direction', content: ['Inbound - this way'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
@@ -118,6 +119,7 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
+                        { name: 'Fare type', content: ['Period'] },
                         { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
@@ -145,6 +147,7 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
+                        { name: 'Fare type', content: ['Return'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Quantity in bundle', content: ['10'] },
@@ -171,6 +174,7 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
+                        { name: 'Fare type', content: ['Period'] },
                         { name: 'Zone', content: ['Green Lane Shops'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
@@ -197,6 +201,7 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
+                        { name: 'Fare type', content: ['Multi operator'] },
                         { name: 'Zone', content: ['Green Lane Shops'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
@@ -223,6 +228,7 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
+                        { name: 'Fare type', content: ['Flat fare'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'WBTR Services', content: ['343, 444, 543'] },
@@ -248,6 +254,7 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
+                        { name: 'Fare type', content: ['Period'] },
                         { name: 'Zone', content: ['Green Lane Shops'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
