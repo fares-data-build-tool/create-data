@@ -134,6 +134,7 @@ describe('pages', () => {
                     groupPassengerInfo={[
                         {
                             id: 1,
+                            name: 'blobs',
                             passengerType: 'adult',
                             minNumber: '1',
                             maxNumber: '1',
@@ -142,6 +143,7 @@ describe('pages', () => {
                         },
                         {
                             id: 2,
+                            name: 'blobs',
                             passengerType: 'child',
                             minNumber: '1',
                             maxNumber: '1',
