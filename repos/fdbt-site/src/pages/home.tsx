@@ -20,21 +20,16 @@ const Home = ({ myFaresEnabled }: HomeProps): ReactElement => (
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
                 <div>
-                    <h2 className="govuk-heading-s">Create & download fares data</h2>
+                    <h2 className="govuk-heading-s">Create fares data</h2>
                     <p className="govuk-body">
                         For bus operators running commercial bus services in England, and local authorities that need to
-                        create or access NeTEx data for the services they operate.
+                        create NeTEx data for the services they operate.
                     </p>
                     <a href={'/fareType'} className="govuk-link govuk-!-font-size-19" id="faretype-link">
                         Create NeTEx data for your fares
                     </a>
-                    <br />
-                    <br />
-                    <a href="/createdFiles" className="govuk-link govuk-!-font-size-19" id="created-link">
-                        Download previously created NeTEx data
-                    </a>
                 </div>
-                {!!myFaresEnabled ? (
+                {myFaresEnabled ? (
                     <div className="govuk-!-margin-top-7">
                         <h2 className="govuk-heading-s">
                             <strong className="govuk-tag new-tag">new</strong>
