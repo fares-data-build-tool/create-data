@@ -20,12 +20,12 @@ exports[`pages home page should render correctly 1`] = `
         <h2
           className="govuk-heading-s"
         >
-          Create & download fares data
+          Create fares data
         </h2>
         <p
           className="govuk-body"
         >
-          For bus operators running commercial bus services in England, and local authorities that need to create or access NeTEx data for the services they operate.
+          For bus operators running commercial bus services in England, and local authorities that need to create NeTEx data for the services they operate.
         </p>
         <a
           className="govuk-link govuk-!-font-size-19"
@@ -33,15 +33,6 @@ exports[`pages home page should render correctly 1`] = `
           id="faretype-link"
         >
           Create NeTEx data for your fares
-        </a>
-        <br />
-        <br />
-        <a
-          className="govuk-link govuk-!-font-size-19"
-          href="/createdFiles"
-          id="created-link"
-        >
-          Download previously created NeTEx data
         </a>
       </div>
       <div
@@ -127,12 +118,12 @@ exports[`pages home page should render correctly with my fares enabled 1`] = `
         <h2
           className="govuk-heading-s"
         >
-          Create & download fares data
+          Create fares data
         </h2>
         <p
           className="govuk-body"
         >
-          For bus operators running commercial bus services in England, and local authorities that need to create or access NeTEx data for the services they operate.
+          For bus operators running commercial bus services in England, and local authorities that need to create NeTEx data for the services they operate.
         </p>
         <a
           className="govuk-link govuk-!-font-size-19"
@@ -140,15 +131,6 @@ exports[`pages home page should render correctly with my fares enabled 1`] = `
           id="faretype-link"
         >
           Create NeTEx data for your fares
-        </a>
-        <br />
-        <br />
-        <a
-          className="govuk-link govuk-!-font-size-19"
-          href="/createdFiles"
-          id="created-link"
-        >
-          Download previously created NeTEx data
         </a>
       </div>
       <div
