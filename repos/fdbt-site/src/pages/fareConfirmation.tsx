@@ -14,17 +14,17 @@ import {
     TermTimeAttribute,
     FullTimeRestrictionAttribute,
     ConfirmationElement,
+    PassengerType,
     SchoolFareTypeAttribute,
     CompanionInfo,
-    SinglePassengerType,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerTypeAttributeWithErrors, isFareType } from '../interfaces/typeGuards';
-import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
-import { getPassengerTypeById } from '../../src/data/auroradb';
+import { getCsrfToken, sentenceCaseString, getAndValidateNoc } from '../utils';
+import { getPassengerTypeNameByIdAndNoc } from '../data/auroradb';
 
 const title = 'Fare Confirmation - Create Fares Data Service';
 const description = 'Fare Confirmation page of the Create Fares Data Service';
@@ -32,7 +32,8 @@ const description = 'Fare Confirmation page of the Create Fares Data Service';
 interface FareConfirmationProps {
     fareType: string;
     carnet: boolean;
-    passengerType: SinglePassengerType;
+    passengerType: PassengerType;
+    passengerTypeName: string;
     groupPassengerInfo: CompanionInfo[];
     schoolFareType: string;
     termTime: string;
@@ -44,7 +45,8 @@ interface FareConfirmationProps {
 export const buildFareConfirmationElements = (
     fareType: string,
     carnet: boolean,
-    passengerType: SinglePassengerType,
+    passengerType: PassengerType,
+    passengerTypeName: string,
     groupPassengerInfo: CompanionInfo[],
     schoolFareType: string,
     termTime: string,
@@ -59,7 +61,7 @@ export const buildFareConfirmationElements = (
         },
         {
             name: 'Passenger type',
-            content: sentenceCaseString(passengerType.name),
+            content: passengerTypeName,
             href: 'selectPassengerType',
         },
     ];
@@ -72,12 +74,12 @@ export const buildFareConfirmationElements = (
         });
     }
 
-    if (passengerType.passengerType.passengerType === 'group' && groupPassengerInfo.length > 0) {
+    if (passengerType.passengerType === 'group' && groupPassengerInfo.length > 0) {
         groupPassengerInfo.forEach((passenger) => {
             const href = 'selectPassengerType';
             if (passenger.ageRangeMin || passenger.ageRangeMax) {
                 confirmationElements.push({
-                    name: `${sentenceCaseString(passenger.passengerType)} passenger - age range`,
+                    name: `${passenger.name} - age range`,
                     content: `Minimum age: ${passenger.ageRangeMin ? passenger.ageRangeMin : 'N/A'} Maximum age: ${
                         passenger.ageRangeMax ? passenger.ageRangeMax : 'N/A'
                     }`,
@@ -85,14 +87,14 @@ export const buildFareConfirmationElements = (
                 });
             } else {
                 confirmationElements.push({
-                    name: `${sentenceCaseString(passenger.passengerType)} passenger - age range`,
+                    name: `${passenger.name} - age range`,
                     content: 'N/A',
                     href,
                 });
             }
             if (passenger.proofDocuments && passenger.proofDocuments.length > 0) {
                 confirmationElements.push({
-                    name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
+                    name: `${passenger.name} - proof documents`,
                     content: passenger.proofDocuments
                         .map((proofDoc: string) => sentenceCaseString(proofDoc))
                         .join(', '),
@@ -100,7 +102,7 @@ export const buildFareConfirmationElements = (
                 });
             } else {
                 confirmationElements.push({
-                    name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
+                    name: `${passenger.name} - proof documents`,
                     content: 'N/A',
                     href,
                 });
@@ -108,13 +110,11 @@ export const buildFareConfirmationElements = (
         });
     } else {
         const href = 'selectPassengerType';
-        if (passengerType.passengerType.ageRangeMin || passengerType.passengerType.ageRangeMax) {
+        if (passengerType.ageRangeMin || passengerType.ageRangeMax) {
             confirmationElements.push({
                 name: 'Passenger information - age range',
-                content: `Minimum age: ${
-                    passengerType.passengerType.ageRangeMin ? passengerType.passengerType.ageRangeMin : 'N/A'
-                } Maximum age: ${
-                    passengerType.passengerType.ageRangeMax ? passengerType.passengerType.ageRangeMax : 'N/A'
+                content: `Minimum age: ${passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'} Maximum age: ${
+                    passengerType.ageRangeMax ? passengerType.ageRangeMax : 'N/A'
                 }`,
                 href,
             });
@@ -126,12 +126,10 @@ export const buildFareConfirmationElements = (
             });
         }
 
-        if (passengerType.passengerType.proofDocuments && passengerType.passengerType.proofDocuments.length > 0) {
+        if (passengerType.proofDocuments && passengerType.proofDocuments.length > 0) {
             confirmationElements.push({
                 name: 'Passenger information - proof documents',
-                content: passengerType.passengerType.proofDocuments
-                    .map((proofDoc) => sentenceCaseString(proofDoc))
-                    .join(', '),
+                content: passengerType.proofDocuments.map((proofDoc) => sentenceCaseString(proofDoc)).join(', '),
                 href,
             });
         } else {
@@ -194,6 +192,7 @@ const FareConfirmation = ({
     fareType,
     carnet,
     passengerType,
+    passengerTypeName,
     groupPassengerInfo,
     schoolFareType,
     termTime,
@@ -211,6 +210,7 @@ const FareConfirmation = ({
                         fareType,
                         carnet,
                         passengerType,
+                        passengerTypeName,
                         groupPassengerInfo,
                         schoolFareType,
                         termTime,
@@ -218,7 +218,6 @@ const FareConfirmation = ({
                         newTimeRestrictionCreated,
                     )}
                 />
-
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
@@ -229,7 +228,6 @@ export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: FareConfirmationProps }> => {
     const csrfToken = getCsrfToken(ctx);
-    const noc = getAndValidateNoc(ctx);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const carnetAttribute = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
     const carnet = !!carnetAttribute;
@@ -240,9 +238,7 @@ export const getServerSideProps = async (
         ctx.req,
         FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     ) as FullTimeRestrictionAttribute;
-
     const newTimeRestrictionCreated = (ctx.query?.createdTimeRestriction as string) || '';
-
     if (
         !passengerTypeAttribute ||
         isPassengerTypeAttributeWithErrors(passengerTypeAttribute) ||
@@ -254,19 +250,14 @@ export const getServerSideProps = async (
 
     const groupPassengerInfo = getSessionAttribute(ctx.req, GROUP_PASSENGER_INFO_ATTRIBUTE) || [];
 
-    const passengerType = await getPassengerTypeById(passengerTypeAttribute.id, noc);
-
-    if (passengerType === undefined) {
-        throw new Error(
-            `Could not find a passenger type with id ${passengerTypeAttribute.id} for the noc ${noc} in the database!`,
-        );
-    }
+    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(passengerTypeAttribute.id, getAndValidateNoc(ctx));
 
     return {
         props: {
             fareType: fareTypeAttribute.fareType,
             carnet,
-            passengerType: passengerType,
+            passengerType: passengerTypeAttribute,
+            passengerTypeName,
             schoolFareType: schoolFareTypeAttribute?.schoolFareType || '',
             groupPassengerInfo,
             termTime: termTimeAttribute?.termTime.toString() || '',
