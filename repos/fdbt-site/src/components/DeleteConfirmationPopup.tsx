@@ -18,7 +18,7 @@ const DeleteConfirmationPopup = ({
     <div className="popup">
         <div className="popup__content">
             <form>
-                <h1 className="govuk-heading-m">Are you sure you want to delete {entityName}?</h1>
+                <h1 className="govuk-heading-m">Are you sure you want to delete {entityName.trim()}?</h1>
 
                 <span className="govuk-hint" id="delete-hint">
                     {hintText || (

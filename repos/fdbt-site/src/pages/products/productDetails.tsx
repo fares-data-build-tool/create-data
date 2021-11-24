@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
 import {
     getBodsServiceByNocAndId,
-    getBodsServiceDirectionDescriptionsByNocAndLineName,
     getPassengerTypeNameByIdAndNoc,
     getProductById,
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
+    getBodsServiceDirectionDescriptionsByNocAndServiceId,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
@@ -36,8 +36,10 @@ const ProductDetails = ({
 }: ProductDetailsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <BackButton href={backHref} />
-        <h1 className="govuk-heading-l">{productName}</h1>
-        <div id="contact-hint" className="govuk-hint">
+        <h1 className="govuk-heading-l" id="product-name">
+            {productName}
+        </h1>
+        <div id="product-status" className="govuk-hint">
             Product status: {getTag(startDate, endDate, false)}
             {requiresAttention && (
                 <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">NEEDS ATTENTION</strong>
@@ -50,7 +52,9 @@ const ProductDetails = ({
                         <dt className="govuk-summary-list__key">{element.name}</dt>
                         <dd className="govuk-summary-list__value">
                             {element.content.map((item) => (
-                                <div key={item}>{item}</div>
+                                <div key={item} id={element.id || undefined}>
+                                    {item}
+                                </div>
                             ))}
                         </dd>
                     </div>
@@ -73,6 +77,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const ticket = await getProductsMatchingJson(matchingJsonLink);
 
     const productDetailsElements: ProductDetailsElement[] = [];
+
+    if ('type' in ticket) {
+        productDetailsElements.push({
+            name: 'Fare type',
+            id: 'fare-type',
+            content: [`${sentenceCaseString(ticket.type)}${ticket.carnet ? ' (carnet)' : ''}`],
+        });
+    }
 
     if ('selectedServices' in ticket) {
         productDetailsElements.push({
@@ -105,21 +117,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         backHref = `/products/pointToPointProducts?serviceId=${serviceId}`;
 
         requiresAttention = servicesRequiringAttention?.includes(serviceId) ?? false;
-    }
 
-    if ('journeyDirection' in ticket && ticket.journeyDirection) {
-        const { inboundDirectionDescription, outboundDirectionDescription } =
-            await getBodsServiceDirectionDescriptionsByNocAndLineName(noc, ticket.lineName);
-        productDetailsElements.push({
-            name: 'Journey direction',
-            content: [
-                `${sentenceCaseString(ticket.journeyDirection)} - ${
-                    ticket.journeyDirection === 'inbound' || ticket.journeyDirection === 'clockwise'
-                        ? inboundDirectionDescription
-                        : outboundDirectionDescription
-                }`,
-            ],
-        });
+        if ('journeyDirection' in ticket && ticket.journeyDirection) {
+            const { inboundDirectionDescription, outboundDirectionDescription } =
+                await getBodsServiceDirectionDescriptionsByNocAndServiceId(noc, serviceId);
+            productDetailsElements.push({
+                name: 'Journey direction',
+                content: [
+                    `${sentenceCaseString(ticket.journeyDirection)} - ${
+                        ticket.journeyDirection === 'inbound' || ticket.journeyDirection === 'clockwise'
+                            ? inboundDirectionDescription
+                            : outboundDirectionDescription
+                    }`,
+                ],
+            });
+        }
     }
 
     if ('zoneName' in ticket) {

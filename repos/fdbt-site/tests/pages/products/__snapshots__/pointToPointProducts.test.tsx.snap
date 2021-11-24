@@ -17,6 +17,7 @@ exports[`myfares pages pointToPointProducts should render correctly when no prod
       >
         <h1
           className="govuk-heading-l govuk-!-margin-bottom-4"
+          id="service-name"
         >
           1
            - 
@@ -26,6 +27,7 @@ exports[`myfares pages pointToPointProducts should render correctly when no prod
         </h1>
         <h1
           className="govuk-heading-s govuk-!-margin-bottom-8"
+          id="service-status"
         >
           Service status: 
           <strong
@@ -118,6 +120,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
       >
         <h1
           className="govuk-heading-l govuk-!-margin-bottom-4"
+          id="service-name"
         >
           1
            - 
@@ -127,6 +130,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
         </h1>
         <h1
           className="govuk-heading-s govuk-!-margin-bottom-8"
+          id="service-status"
         >
           Service status: 
           <strong
@@ -230,7 +234,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 className="govuk-table__cell"
               >
                 <button
-                  className="govuk-link delete-link"
+                  className="govuk-link govuk-body delete-link"
                   onClick={[Function]}
                 >
                   Delete
@@ -272,6 +276,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
       >
         <h1
           className="govuk-heading-l govuk-!-margin-bottom-4"
+          id="service-name"
         >
           1
            - 
@@ -281,6 +286,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
         </h1>
         <h1
           className="govuk-heading-s govuk-!-margin-bottom-8"
+          id="service-status"
         >
           Service status: 
           <strong
@@ -389,7 +395,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 className="govuk-table__cell"
               >
                 <button
-                  className="govuk-link delete-link"
+                  className="govuk-link govuk-body delete-link"
                   onClick={[Function]}
                 >
                   Delete

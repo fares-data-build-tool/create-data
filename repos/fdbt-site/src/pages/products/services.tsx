@@ -77,7 +77,10 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                 {services.map((service, index) => (
                     <tr key={index} className="govuk-table__row">
                         <td className="govuk-table__cell">
-                            <a href={`/products/pointToPointProducts?serviceId=${service.id}`}>
+                            <a
+                                href={`/products/pointToPointProducts?serviceId=${service.id}`}
+                                id={`service-link-${index}`}
+                            >
                                 {service.lineName} - {service.origin} to {service.destination}
                             </a>
                         </td>

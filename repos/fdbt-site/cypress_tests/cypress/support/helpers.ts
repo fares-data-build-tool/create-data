@@ -1,5 +1,11 @@
 import 'cypress-file-upload';
-import { FareType } from './steps';
+import {
+    completeFlatFarePages,
+    completeSalesPages,
+    defineUserTypeAndTimeRestrictions,
+    FareType,
+    selectFareType,
+} from './steps';
 
 export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
@@ -16,7 +22,7 @@ export const clickElementByText = (text: string): Cypress.Chainable<JQuery> => g
 
 export const getRandomNumber = (min: number, max: number): number => Cypress._.random(min, max);
 
-export const getHomePage = (noc = 'BLAC'): void => {
+export const getHomePage = (noc = 'LNUD'): void => {
     cy.clearCookies();
     cy.visit(`?disableAuth=${noc}`);
 };
@@ -462,6 +468,15 @@ export const completeMultipleProducts = (
     continueButtonClick();
 };
 
+export const clickRandomElementInTable = (tableName: string, elementId: string): void => {
+    getElementByClass(tableName)
+        .find('tr')
+        .then((elm) => {
+            const randomSelector = getRandomNumber(0, elm.length - 1);
+            clickElementById(`${elementId}-${randomSelector}`);
+        });
+};
+
 export const completeOperatorSearch = (isMultiService: boolean): void => {
     cy.url()
         .should('match', /\/(searchOperators|reuseOperatorGroup)$/) // This is bassicly a wait to ensure we're on the correct page
@@ -494,4 +509,22 @@ export const completeOperatorSearch = (isMultiService: boolean): void => {
                 }
             }
         });
+};
+
+export const addFlatFareProductIfNotPresent = (): void => {
+    getHomePage();
+    clickElementById('manage-fares-link');
+    clickElementByText('Other products');
+    getElementByClass('govuk-table').then((table) => {
+        if (table.find('tr').length === 1) {
+            selectFareType('flatFare', false);
+            defineUserTypeAndTimeRestrictions();
+            clickElementById('radio-option-multipleServices');
+            continueButtonClick();
+            completeFlatFarePages('Flat Fare Test Product', false);
+            completeSalesPages();
+            isFinished();
+            cy.log('Flat fare product set up');
+        }
+    });
 };

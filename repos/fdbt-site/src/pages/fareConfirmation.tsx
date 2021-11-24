@@ -14,16 +14,17 @@ import {
     TermTimeAttribute,
     FullTimeRestrictionAttribute,
     ConfirmationElement,
-    PassengerType,
     SchoolFareTypeAttribute,
     CompanionInfo,
+    SinglePassengerType,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerTypeAttributeWithErrors, isFareType } from '../interfaces/typeGuards';
-import { getCsrfToken, sentenceCaseString } from '../utils';
+import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
+import { getPassengerTypeById } from '../../src/data/auroradb';
 
 const title = 'Fare Confirmation - Create Fares Data Service';
 const description = 'Fare Confirmation page of the Create Fares Data Service';
@@ -31,7 +32,7 @@ const description = 'Fare Confirmation page of the Create Fares Data Service';
 interface FareConfirmationProps {
     fareType: string;
     carnet: boolean;
-    passengerType: PassengerType;
+    passengerType: SinglePassengerType;
     groupPassengerInfo: CompanionInfo[];
     schoolFareType: string;
     termTime: string;
@@ -43,7 +44,7 @@ interface FareConfirmationProps {
 export const buildFareConfirmationElements = (
     fareType: string,
     carnet: boolean,
-    passengerType: PassengerType,
+    passengerType: SinglePassengerType,
     groupPassengerInfo: CompanionInfo[],
     schoolFareType: string,
     termTime: string,
@@ -58,7 +59,7 @@ export const buildFareConfirmationElements = (
         },
         {
             name: 'Passenger type',
-            content: sentenceCaseString(passengerType.passengerType),
+            content: sentenceCaseString(passengerType.name),
             href: 'selectPassengerType',
         },
     ];
@@ -71,7 +72,7 @@ export const buildFareConfirmationElements = (
         });
     }
 
-    if (passengerType.passengerType === 'group' && groupPassengerInfo.length > 0) {
+    if (passengerType.passengerType.passengerType === 'group' && groupPassengerInfo.length > 0) {
         groupPassengerInfo.forEach((passenger) => {
             const href = 'selectPassengerType';
             if (passenger.ageRangeMin || passenger.ageRangeMax) {
@@ -107,11 +108,13 @@ export const buildFareConfirmationElements = (
         });
     } else {
         const href = 'selectPassengerType';
-        if (passengerType.ageRangeMin || passengerType.ageRangeMax) {
+        if (passengerType.passengerType.ageRangeMin || passengerType.passengerType.ageRangeMax) {
             confirmationElements.push({
                 name: 'Passenger information - age range',
-                content: `Minimum age: ${passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'} Maximum age: ${
-                    passengerType.ageRangeMax ? passengerType.ageRangeMax : 'N/A'
+                content: `Minimum age: ${
+                    passengerType.passengerType.ageRangeMin ? passengerType.passengerType.ageRangeMin : 'N/A'
+                } Maximum age: ${
+                    passengerType.passengerType.ageRangeMax ? passengerType.passengerType.ageRangeMax : 'N/A'
                 }`,
                 href,
             });
@@ -123,10 +126,12 @@ export const buildFareConfirmationElements = (
             });
         }
 
-        if (passengerType.proofDocuments) {
+        if (passengerType.passengerType.proofDocuments && passengerType.passengerType.proofDocuments.length > 0) {
             confirmationElements.push({
                 name: 'Passenger information - proof documents',
-                content: passengerType.proofDocuments.map((proofDoc) => sentenceCaseString(proofDoc)).join(', '),
+                content: passengerType.passengerType.proofDocuments
+                    .map((proofDoc) => sentenceCaseString(proofDoc))
+                    .join(', '),
                 href,
             });
         } else {
@@ -213,14 +218,18 @@ const FareConfirmation = ({
                         newTimeRestrictionCreated,
                     )}
                 />
+
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: FareConfirmationProps } => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: FareConfirmationProps }> => {
     const csrfToken = getCsrfToken(ctx);
+    const noc = getAndValidateNoc(ctx);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const carnetAttribute = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
     const carnet = !!carnetAttribute;
@@ -231,7 +240,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
         ctx.req,
         FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     ) as FullTimeRestrictionAttribute;
+
     const newTimeRestrictionCreated = (ctx.query?.createdTimeRestriction as string) || '';
+
     if (
         !passengerTypeAttribute ||
         isPassengerTypeAttributeWithErrors(passengerTypeAttribute) ||
@@ -243,11 +254,19 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
 
     const groupPassengerInfo = getSessionAttribute(ctx.req, GROUP_PASSENGER_INFO_ATTRIBUTE) || [];
 
+    const passengerType = await getPassengerTypeById(passengerTypeAttribute.id, noc);
+
+    if (passengerType === undefined) {
+        throw new Error(
+            `Could not find a passenger type with id ${passengerTypeAttribute.id} for the noc ${noc} in the database!`,
+        );
+    }
+
     return {
         props: {
             fareType: fareTypeAttribute.fareType,
             carnet,
-            passengerType: passengerTypeAttribute,
+            passengerType: passengerType,
             schoolFareType: schoolFareTypeAttribute?.schoolFareType || '',
             groupPassengerInfo,
             termTime: termTimeAttribute?.termTime.toString() || '',

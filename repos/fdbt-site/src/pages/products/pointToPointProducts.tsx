@@ -68,10 +68,10 @@ const PointToPointProducts = ({
                 ) : null}
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
-                        <h1 className="govuk-heading-l govuk-!-margin-bottom-4">
+                        <h1 className="govuk-heading-l govuk-!-margin-bottom-4" id="service-name">
                             {service.lineName} - {service.origin} to {service.destination}
                         </h1>
-                        <h1 className="govuk-heading-s govuk-!-margin-bottom-8">
+                        <h1 className="govuk-heading-s govuk-!-margin-bottom-8" id="service-status">
                             Service status: {getTag(service.startDate, service.endDate, false)}
                         </h1>
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">Products</h1>
@@ -151,7 +151,7 @@ const PointToPointProductsTable = (
                                   </td>
                                   <td className="govuk-table__cell">
                                       <button
-                                          className="govuk-link delete-link"
+                                          className="govuk-link govuk-body delete-link"
                                           onClick={() => deleteActionHandler(product.id, product.productDescription)}
                                       >
                                           Delete
