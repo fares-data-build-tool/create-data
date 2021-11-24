@@ -9,18 +9,15 @@ describe('pages', () => {
                 <FareConfirmation
                     fareType="single"
                     carnet={false}
+                    passengerTypeName="blobs"
                     passengerType={{
                         id: 2,
-                        name: 'Adults',
-                        passengerType: {
-                            id: 2,
-                            passengerType: 'adult',
-                            ageRange: 'yes',
-                            ageRangeMin: '18',
-                            ageRangeMax: '100',
-                            proof: 'yes',
-                            proofDocuments: ['membership card'],
-                        },
+                        passengerType: 'adult',
+                        ageRange: 'yes',
+                        ageRangeMin: '18',
+                        ageRangeMax: '100',
+                        proof: 'yes',
+                        proofDocuments: ['membership card'],
                     }}
                     groupPassengerInfo={[]}
                     schoolFareType=""
@@ -51,18 +48,15 @@ describe('pages', () => {
                 <FareConfirmation
                     fareType="single"
                     carnet
+                    passengerTypeName="blobs"
                     passengerType={{
                         id: 2,
-                        name: 'Adults',
-                        passengerType: {
-                            id: 2,
-                            passengerType: 'adult',
-                            ageRange: 'yes',
-                            ageRangeMin: '18',
-                            ageRangeMax: '100',
-                            proof: 'yes',
-                            proofDocuments: ['membership card'],
-                        },
+                        passengerType: 'adult',
+                        ageRange: 'yes',
+                        ageRangeMin: '18',
+                        ageRangeMax: '100',
+                        proof: 'yes',
+                        proofDocuments: ['membership card'],
                     }}
                     groupPassengerInfo={[]}
                     schoolFareType=""
@@ -93,18 +87,15 @@ describe('pages', () => {
                 <FareConfirmation
                     fareType="single"
                     carnet={false}
+                    passengerTypeName="blobs"
                     passengerType={{
                         id: 2,
-                        name: 'Adults',
-                        passengerType: {
-                            id: 2,
-                            passengerType: 'adult',
-                            ageRange: 'yes',
-                            ageRangeMin: '18',
-                            ageRangeMax: '100',
-                            proof: 'yes',
-                            proofDocuments: ['membership card'],
-                        },
+                        passengerType: 'adult',
+                        ageRange: 'yes',
+                        ageRangeMin: '18',
+                        ageRangeMax: '100',
+                        proof: 'yes',
+                        proofDocuments: ['membership card'],
                     }}
                     groupPassengerInfo={[]}
                     schoolFareType=""
@@ -135,17 +126,15 @@ describe('pages', () => {
                 <FareConfirmation
                     fareType="single"
                     carnet={false}
+                    passengerTypeName="blobs"
                     passengerType={{
                         id: 4,
-                        name: 'family group',
-                        passengerType: {
-                            id: 4,
-                            passengerType: 'group',
-                        },
+                        passengerType: 'group',
                     }}
                     groupPassengerInfo={[
                         {
                             id: 1,
+                            name: 'blobs',
                             passengerType: 'adult',
                             minNumber: '1',
                             maxNumber: '1',
@@ -154,6 +143,7 @@ describe('pages', () => {
                         },
                         {
                             id: 2,
+                            name: 'blobs',
                             passengerType: 'child',
                             minNumber: '1',
                             maxNumber: '1',
@@ -193,17 +183,14 @@ describe('pages', () => {
                 <FareConfirmation
                     fareType="schoolService"
                     carnet={false}
+                    passengerTypeName="blobs"
                     passengerType={{
                         id: 2,
-                        name: 'school',
-                        passengerType: {
-                            id: 2,
-                            passengerType: 'schoolPupil',
-                            ageRange: 'yes',
-                            ageRangeMax: '18',
-                            proof: 'yes',
-                            proofDocuments: ['Student Card'],
-                        },
+                        passengerType: 'schoolPupil',
+                        ageRange: 'yes',
+                        ageRangeMax: '18',
+                        proof: 'yes',
+                        proofDocuments: ['Student Card'],
                     }}
                     groupPassengerInfo={[]}
                     schoolFareType="single"
@@ -223,17 +210,14 @@ describe('pages', () => {
                     false,
                     {
                         id: 2,
-                        name: 'Adults',
-                        passengerType: {
-                            id: 2,
-                            passengerType: 'adult',
-                            ageRange: 'yes',
-                            ageRangeMin: '18',
-                            ageRangeMax: '100',
-                            proof: 'yes',
-                            proofDocuments: ['membership card'],
-                        },
+                        passengerType: 'adult',
+                        ageRange: 'yes',
+                        ageRangeMin: '18',
+                        ageRangeMax: '100',
+                        proof: 'yes',
+                        proofDocuments: ['membership card'],
                     },
+                    'blah',
                     [],
                     '',
                     '',
@@ -255,7 +239,7 @@ describe('pages', () => {
                 );
                 expect(result).toStrictEqual([
                     { content: 'Return', href: 'fareType', name: 'Fare type' },
-                    { content: 'Adults', href: 'selectPassengerType', name: 'Passenger type' },
+                    { content: 'blah', href: 'selectPassengerType', name: 'Passenger type' },
                     {
                         content: 'Minimum age: 18 Maximum age: 100',
                         href: 'selectPassengerType',
@@ -290,17 +274,15 @@ describe('pages', () => {
                     false,
                     {
                         id: 2,
-                        name: 'Adults',
-                        passengerType: {
-                            id: 2,
-                            passengerType: 'adult',
-                            ageRange: 'yes',
-                            ageRangeMin: '18',
-                            ageRangeMax: '100',
-                            proof: 'yes',
-                            proofDocuments: ['membership card'],
-                        },
+                        passengerType: 'adult',
+                        ageRange: 'yes',
+                        ageRangeMin: '18',
+                        ageRangeMax: '100',
+                        proof: 'yes',
+                        proofDocuments: ['membership card'],
                     },
+                    'blah',
+
                     [],
                     '',
                     '',
@@ -320,10 +302,9 @@ describe('pages', () => {
                     ],
                     'Time restriction',
                 );
-
                 expect(result).toStrictEqual([
                     { content: 'Return', href: 'fareType', name: 'Fare type' },
-                    { content: 'Adults', href: 'selectPassengerType', name: 'Passenger type' },
+                    { content: 'blah', href: 'selectPassengerType', name: 'Passenger type' },
                     {
                         content: 'Minimum age: 18 Maximum age: 100',
                         href: 'selectPassengerType',
@@ -363,16 +344,14 @@ describe('pages', () => {
                     false,
                     {
                         id: 2,
-                        name: 'School pupil',
-                        passengerType: {
-                            id: 2,
-                            passengerType: 'schoolPupil',
-                            ageRange: 'yes',
-                            ageRangeMax: '18',
-                            proof: 'yes',
-                            proofDocuments: ['Student Card'],
-                        },
+                        passengerType: 'schoolPupil',
+                        ageRange: 'yes',
+                        ageRangeMax: '18',
+                        proof: 'yes',
+                        proofDocuments: ['Student Card'],
                     },
+                    'blah',
+
                     [],
                     'single',
                     'true',
@@ -381,7 +360,7 @@ describe('pages', () => {
                 );
                 expect(result).toStrictEqual([
                     { content: 'School service', href: 'fareType', name: 'Fare type' },
-                    { content: 'School pupil', href: 'selectPassengerType', name: 'Passenger type' },
+                    { content: 'blah', href: 'selectPassengerType', name: 'Passenger type' },
                     {
                         content: 'Minimum age: N/A Maximum age: 18',
                         href: 'selectPassengerType',
