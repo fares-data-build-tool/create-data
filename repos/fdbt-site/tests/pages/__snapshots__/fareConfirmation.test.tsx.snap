@@ -30,7 +30,7 @@ exports[`pages fareConfirmation should render correctly for a carnet ticket 1`] 
             "name": "Carnet type",
           },
           Object {
-            "content": "Adult",
+            "content": "Adults",
             "href": "selectPassengerType",
             "name": "Passenger type",
           },
@@ -98,7 +98,7 @@ exports[`pages fareConfirmation should render correctly for a ticket with a prem
             "name": "Fare type",
           },
           Object {
-            "content": "Adult",
+            "content": "Adults",
             "href": "selectPassengerType",
             "name": "Passenger type",
           },
@@ -171,7 +171,7 @@ exports[`pages fareConfirmation should render correctly for group tickets 1`] = 
             "name": "Fare type",
           },
           Object {
-            "content": "Group",
+            "content": "Family group",
             "href": "selectPassengerType",
             "name": "Passenger type",
           },
@@ -254,7 +254,7 @@ exports[`pages fareConfirmation should render correctly for non school single ti
             "name": "Fare type",
           },
           Object {
-            "content": "Adult",
+            "content": "Adults",
             "href": "selectPassengerType",
             "name": "Passenger type",
           },
@@ -322,7 +322,7 @@ exports[`pages fareConfirmation should render correctly for school tickets 1`] =
             "name": "Fare type",
           },
           Object {
-            "content": "School pupil",
+            "content": "School",
             "href": "selectPassengerType",
             "name": "Passenger type",
           },
