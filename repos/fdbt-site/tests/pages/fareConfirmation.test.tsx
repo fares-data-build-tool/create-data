@@ -11,12 +11,16 @@ describe('pages', () => {
                     carnet={false}
                     passengerType={{
                         id: 2,
-                        passengerType: 'adult',
-                        ageRange: 'yes',
-                        ageRangeMin: '18',
-                        ageRangeMax: '100',
-                        proof: 'yes',
-                        proofDocuments: ['membership card'],
+                        name: 'Adults',
+                        passengerType: {
+                            id: 2,
+                            passengerType: 'adult',
+                            ageRange: 'yes',
+                            ageRangeMin: '18',
+                            ageRangeMax: '100',
+                            proof: 'yes',
+                            proofDocuments: ['membership card'],
+                        },
                     }}
                     groupPassengerInfo={[]}
                     schoolFareType=""
@@ -49,12 +53,16 @@ describe('pages', () => {
                     carnet
                     passengerType={{
                         id: 2,
-                        passengerType: 'adult',
-                        ageRange: 'yes',
-                        ageRangeMin: '18',
-                        ageRangeMax: '100',
-                        proof: 'yes',
-                        proofDocuments: ['membership card'],
+                        name: 'Adults',
+                        passengerType: {
+                            id: 2,
+                            passengerType: 'adult',
+                            ageRange: 'yes',
+                            ageRangeMin: '18',
+                            ageRangeMax: '100',
+                            proof: 'yes',
+                            proofDocuments: ['membership card'],
+                        },
                     }}
                     groupPassengerInfo={[]}
                     schoolFareType=""
@@ -87,12 +95,16 @@ describe('pages', () => {
                     carnet={false}
                     passengerType={{
                         id: 2,
-                        passengerType: 'adult',
-                        ageRange: 'yes',
-                        ageRangeMin: '18',
-                        ageRangeMax: '100',
-                        proof: 'yes',
-                        proofDocuments: ['membership card'],
+                        name: 'Adults',
+                        passengerType: {
+                            id: 2,
+                            passengerType: 'adult',
+                            ageRange: 'yes',
+                            ageRangeMin: '18',
+                            ageRangeMax: '100',
+                            proof: 'yes',
+                            proofDocuments: ['membership card'],
+                        },
                     }}
                     groupPassengerInfo={[]}
                     schoolFareType=""
@@ -125,7 +137,11 @@ describe('pages', () => {
                     carnet={false}
                     passengerType={{
                         id: 4,
-                        passengerType: 'group',
+                        name: 'family group',
+                        passengerType: {
+                            id: 4,
+                            passengerType: 'group',
+                        },
                     }}
                     groupPassengerInfo={[
                         {
@@ -179,11 +195,15 @@ describe('pages', () => {
                     carnet={false}
                     passengerType={{
                         id: 2,
-                        passengerType: 'schoolPupil',
-                        ageRange: 'yes',
-                        ageRangeMax: '18',
-                        proof: 'yes',
-                        proofDocuments: ['Student Card'],
+                        name: 'school',
+                        passengerType: {
+                            id: 2,
+                            passengerType: 'schoolPupil',
+                            ageRange: 'yes',
+                            ageRangeMax: '18',
+                            proof: 'yes',
+                            proofDocuments: ['Student Card'],
+                        },
                     }}
                     groupPassengerInfo={[]}
                     schoolFareType="single"
@@ -203,12 +223,16 @@ describe('pages', () => {
                     false,
                     {
                         id: 2,
-                        passengerType: 'adult',
-                        ageRange: 'yes',
-                        ageRangeMin: '18',
-                        ageRangeMax: '100',
-                        proof: 'yes',
-                        proofDocuments: ['membership card'],
+                        name: 'Adults',
+                        passengerType: {
+                            id: 2,
+                            passengerType: 'adult',
+                            ageRange: 'yes',
+                            ageRangeMin: '18',
+                            ageRangeMax: '100',
+                            proof: 'yes',
+                            proofDocuments: ['membership card'],
+                        },
                     },
                     [],
                     '',
@@ -231,7 +255,7 @@ describe('pages', () => {
                 );
                 expect(result).toStrictEqual([
                     { content: 'Return', href: 'fareType', name: 'Fare type' },
-                    { content: 'Adult', href: 'selectPassengerType', name: 'Passenger type' },
+                    { content: 'Adults', href: 'selectPassengerType', name: 'Passenger type' },
                     {
                         content: 'Minimum age: 18 Maximum age: 100',
                         href: 'selectPassengerType',
@@ -266,12 +290,16 @@ describe('pages', () => {
                     false,
                     {
                         id: 2,
-                        passengerType: 'adult',
-                        ageRange: 'yes',
-                        ageRangeMin: '18',
-                        ageRangeMax: '100',
-                        proof: 'yes',
-                        proofDocuments: ['membership card'],
+                        name: 'Adults',
+                        passengerType: {
+                            id: 2,
+                            passengerType: 'adult',
+                            ageRange: 'yes',
+                            ageRangeMin: '18',
+                            ageRangeMax: '100',
+                            proof: 'yes',
+                            proofDocuments: ['membership card'],
+                        },
                     },
                     [],
                     '',
@@ -292,9 +320,10 @@ describe('pages', () => {
                     ],
                     'Time restriction',
                 );
+
                 expect(result).toStrictEqual([
                     { content: 'Return', href: 'fareType', name: 'Fare type' },
-                    { content: 'Adult', href: 'selectPassengerType', name: 'Passenger type' },
+                    { content: 'Adults', href: 'selectPassengerType', name: 'Passenger type' },
                     {
                         content: 'Minimum age: 18 Maximum age: 100',
                         href: 'selectPassengerType',
@@ -334,11 +363,15 @@ describe('pages', () => {
                     false,
                     {
                         id: 2,
-                        passengerType: 'schoolPupil',
-                        ageRange: 'yes',
-                        ageRangeMax: '18',
-                        proof: 'yes',
-                        proofDocuments: ['Student Card'],
+                        name: 'School pupil',
+                        passengerType: {
+                            id: 2,
+                            passengerType: 'schoolPupil',
+                            ageRange: 'yes',
+                            ageRangeMax: '18',
+                            proof: 'yes',
+                            proofDocuments: ['Student Card'],
+                        },
                     },
                     [],
                     'single',
