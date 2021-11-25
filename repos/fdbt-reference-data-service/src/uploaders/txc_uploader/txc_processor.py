@@ -174,7 +174,7 @@ def iterate_through_journey_patterns_and_run_insert_queries(cursor, data_dict, o
 
 
 def insert_into_txc_journey_pattern_table(cursor, operator_service_id, journey_pattern_info):
-    query = f"INSERT INTO txcJourneyPattern (operatorServiceId, destinationDisplay, direction) VALUES (%s, %s, %s)"
+    query = f"INSERT INTO txcJourneyPatternNew (operatorServiceId, destinationDisplay, direction) VALUES (%s, %s, %s)"
 
     cursor.execute(
         query,
@@ -205,7 +205,7 @@ def insert_into_txc_journey_pattern_link_table(cursor, links, journey_pattern_id
         ) for order, link in enumerate(links)
     ]
 
-    query = f"""INSERT INTO txcJourneyPatternLink (journeyPatternId, fromAtcoCode, fromTimingStatus, fromSequenceNumber,
+    query = f"""INSERT INTO txcJourneyPatternLinkNew (journeyPatternId, fromAtcoCode, fromTimingStatus, fromSequenceNumber,
         toAtcoCode, toTimingStatus, toSequenceNumber, runtime, orderInSequence) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
     cursor.executemany(query, values)
@@ -225,7 +225,7 @@ def insert_into_txc_operator_service_table(cursor, operator, service, line, regi
         destination
     ) = extract_data_for_txc_operator_service_table(operator, service, line)
 
-    query = f"""INSERT INTO txcOperatorLine (nocCode, lineName, lineId, startDate, endDate, operatorShortName, inboundDirectionDescription, outboundDirectionDescription, serviceDescription, serviceCode, regionCode, dataSource, origin, destination)
+    query = f"""INSERT INTO txcOperatorLineNew (nocCode, lineName, lineId, startDate, endDate, operatorShortName, inboundDirectionDescription, outboundDirectionDescription, serviceDescription, serviceCode, regionCode, dataSource, origin, destination)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
     line_id = line.get('@id', '')
@@ -280,7 +280,7 @@ def check_txc_line_exists(cursor, operator, service, line, data_source, cloudwat
     ) = extract_data_for_txc_operator_service_table(operator, service, line)
 
     query = f"""
-        SELECT id FROM txcOperatorLine
+        SELECT id FROM txcOperatorLineNew
         WHERE nocCode = %s AND lineName = %s AND serviceCode = %s AND startDate = %s AND endDate = %s AND dataSource = %s
         LIMIT 1
     """

@@ -265,3 +265,88 @@ export const removeAllServicesRequiringAttentionIds = async (): Promise<void> =>
 
     await executeQuery(serviceQuery, []);
 };
+
+export const checkReferenceDataImportHasCompleted = async (tableName: string): Promise<void> => {
+    const queryInputForNewTable = `SELECT COUNT(1) as count
+                        FROM ?
+        `;
+
+    const newCount = await executeQuery<{ count: number }>(queryInputForNewTable, [`${tableName}New`]);
+
+    if (newCount.count === 0) {
+        throw new Error('Reference data import has failed.');
+    }
+
+    const queryInputForOldTable = `SELECT COUNT(1) as count
+                        FROM ?
+        `;
+
+    const currentCount = await executeQuery<{ count: number }>(queryInputForOldTable, [tableName]);
+
+    const percentageResult = (newCount.count / currentCount.count) * 100;
+
+    if (percentageResult < 75) {
+        throw new Error(
+            `Reference data import has not completed, as only ${percentageResult}% of yesterday's data has been imported.`,
+        );
+    }
+};
+
+export const deleteAndRenameTables = async (): Promise<void> => {
+    const renameQuery = `BEGIN TRANSACTION
+
+        DELETE TABLE IF EXISTS nocPublicNameOld;
+        DELETE TABLE IF EXISTS nocTableOld;
+        DELETE TABLE IF EXISTS nocLineOld;
+        DELETE TABLE IF EXISTS naptanStopOld;
+        DELETE TABLE IF EXISTS txcJourneyPatternLinkOld;
+        DELETE TABLE IF EXISTS txcJourneyPatternOld;
+        DELETE TABLE IF EXISTS txcOperatorLineOld;
+
+        ALTER TABLE nocPublicName
+        RENAME TO nocPublicNameOld;
+
+        ALTER TABLE nocTable
+        RENAME TO nocTableOld;
+
+        ALTER TABLE nocLine
+        RENAME TO nocLineOld;
+
+        ALTER TABLE naptanStop
+        RENAME TO naptanStopOld;
+
+        ALTER TABLE txcJourneyPatternLink
+        RENAME TO txcJourneyPatternLinkOld;
+
+        ALTER TABLE txcJourneyPattern
+        RENAME TO txcJourneyPatternOld;
+
+        ALTER TABLE txcOperatorLine
+        RENAME TO txcOperatorLineOld;
+
+        ALTER TABLE nocPublicNameNew
+        RENAME TO nocPublicName;
+
+        ALTER TABLE nocTableNew
+        RENAME TO nocTable;
+
+        ALTER TABLE nocLineNew
+        RENAME TO nocLine;
+
+        ALTER TABLE naptanStopNew
+        RENAME TO naptanStop;
+
+        ALTER TABLE txcJourneyPatternLinkNew
+        RENAME TO txcJourneyPatternLink;
+
+        ALTER TABLE txcJourneyPatternNew
+        RENAME TO txcJourneyPattern;
+
+        ALTER TABLE txcOperatorLineNew
+        RENAME TO txcOperatorLine;
+
+        COMMIT TRANSACTION; 
+`;
+
+    await executeQuery(renameQuery, []);
+};

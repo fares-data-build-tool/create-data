@@ -110,6 +110,37 @@ export class ExporterStack extends cdk.Stack {
             targets: [new LambdaFunction(atcoCodeCheckerFunction)],
         });
 
+        const tableRenameFunction = new NodejsFunction(this, `table-rename-${stage}`, {
+            functionName: `table-rename-${stage}`,
+            entry: './lib/tableRenameHandler.ts',
+            environment: {
+                RDS_HOST: Fn.importValue(`${stage}:RdsClusterInternalEndpoint`),
+                STAGE: stage,
+            },
+            securityGroups: [
+                SecurityGroup.fromSecurityGroupId(
+                    this,
+                    'table-rename-security-group',
+                    Fn.importValue(`${stage}:ReferenceDataUploaderLambdaSG`),
+                ),
+            ],
+            vpc: vpc,
+            vpcSubnets: vpcSubnets,
+            bundling: {
+                sourceMap: true,
+                sourceMapMode: SourceMapMode.DEFAULT,
+            },
+            timeout: Duration.minutes(15),
+            logRetention: 180,
+        });
+
+        this.addAlarmsToLambda(stage, tableRenameFunction, `tableRenameFunction-${stage}`, 420000);
+
+        new Rule(this, `table-rename-rule-${stage}`, {
+            schedule: Schedule.cron({ minute: '30', hour: '5' }), // every day at 5:30am
+            targets: [new LambdaFunction(tableRenameFunction)],
+        });
+
         const bastionTerminatorFunction = new NodejsFunction(this, `bastion-terminator-${stage}`, {
             functionName: `bastion-terminator-${stage}`,
             entry: './lib/bastionTerminator.ts',
