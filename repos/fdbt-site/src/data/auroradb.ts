@@ -90,7 +90,7 @@ export const getAuroraDBClient = (): Pool => {
             password: 'password',
             database: 'fdbt',
             waitForConnections: true,
-            connectionLimit: 10,
+            connectionLimit: 5,
             queueLimit: 0,
         });
     } else {
@@ -100,7 +100,7 @@ export const getAuroraDBClient = (): Pool => {
             password: awsParamStore.getParameterSync('fdbt-rds-site-password', { region: 'eu-west-2' }).Value,
             database: 'fdbt',
             waitForConnections: true,
-            connectionLimit: 10,
+            connectionLimit: 5,
             queueLimit: 0,
         });
     }

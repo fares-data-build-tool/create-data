@@ -197,6 +197,7 @@ describe('salesConfirmation', () => {
             '1e0459b3-082e-4e70-89db-96e8ae173e10',
             'geoZone',
             undefined,
+            expect.any(Object),
         );
     });
 
