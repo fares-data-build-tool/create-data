@@ -234,7 +234,7 @@ export const getServerSideProps = async (
         props: {
             products: formattedProducts,
             service: { ...service, endDate: service.endDate || '' },
-            productNeedsAttention: true,
+            productNeedsAttention,
             csrfToken: getCsrfToken(ctx),
         },
     };
