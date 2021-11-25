@@ -18,7 +18,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const dataSource = getRequiredSessionAttribute(req, TXC_SOURCE_ATTRIBUTE).source;
         const fareTypeAttribute = getRequiredSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-        const isReturn = 'fareType' in fareTypeAttribute && fareTypeAttribute.fareType === 'return';
+        const isReturn = 'fareType' in fareTypeAttribute && ['period', 'return'].includes(fareTypeAttribute.fareType);
 
         const service = await getServiceByIdAndDataSource(getAndValidateNoc(req, res), serviceId, dataSource);
         const directions = Array.from(
