@@ -190,7 +190,7 @@ export const getServerSideProps = async (
         const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
         const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
         updateSessionAttribute(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, {
-            source: hasBodsServices && !hasTndsServices ? 'bods' : 'tnds',
+            source: hasBodsServices ? 'bods' : 'tnds',
             hasBods: hasBodsServices,
             hasTnds: hasTndsServices,
         });
