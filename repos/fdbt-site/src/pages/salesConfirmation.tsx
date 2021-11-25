@@ -105,13 +105,13 @@ const SalesConfirmation = ({
                     header="Sales Information"
                     confirmationElements={buildSalesConfirmationElements(salesOfferPackages, startDate, endDate)}
                 />
-                <h2 className="govuk-heading-m">Now submit your data for NeTEx creation</h2>
+                <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
 
                 <p className="govuk-body">
                     By submitting this data you are confirming that, to the best of your knowledge, the details you are
                     providing are correct.
                 </p>
-                <input type="submit" value="Submit" id="continue-button" className="govuk-button" />
+                <input type="submit" value="Accept and submit" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
     </TwoThirdsLayout>
