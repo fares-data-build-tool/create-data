@@ -27,8 +27,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return set;
             }, new Set<string>()),
         );
+        const direction = directions.find((it) => ['outbound', 'clockwise'].includes(it));
+        const inboundDirection = directions.find((it) => ['inbound', 'antiClockwise'].includes(it));
 
-        if (directions.length === 1 && isReturn) {
+        if (isReturn && (!direction || !inboundDirection)) {
             const errors: ErrorInfo[] = [
                 {
                     id: 'service',
