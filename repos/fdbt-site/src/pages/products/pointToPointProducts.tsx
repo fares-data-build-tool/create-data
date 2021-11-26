@@ -16,7 +16,6 @@ import { getTag } from './services';
 import BackButton from '../../components/BackButton';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import { buildDeleteUrl } from './otherProducts';
-import ErrorSummary from '../../components/ErrorSummary';
 
 const title = 'Point To Point Products - Create Fares Data Service';
 const description = 'View and access your point to point products in one place.';
@@ -27,11 +26,6 @@ interface PointToPointProductsProps {
     productNeedsAttention: boolean;
     csrfToken: string;
 }
-
-const findIdForError = (products: MyFaresPointToPointProduct[]): string => {
-    const firstProductNeedingAttention = products.find((product) => product.requiresAttention);
-    return `product-${firstProductNeedingAttention?.id}`;
-};
 
 const PointToPointProducts = ({
     products,
@@ -56,15 +50,16 @@ const PointToPointProducts = ({
             <BaseLayout title={title} description={description}>
                 <BackButton href="/products/services" />
                 {productNeedsAttention ? (
-                    <ErrorSummary
-                        errors={[
-                            {
-                                errorMessage:
-                                    'Your service has been updated in BODS. Stops have been added and/or removed since the creation of your product(s). These products will need updating to reflect these changes.',
-                                id: findIdForError(products),
-                            },
-                        ]}
-                    />
+                    <div className="govuk-warning-text">
+                        <span className="govuk-warning-text__icon govuk-!-margin-top-1" aria-hidden="true">
+                            !
+                        </span>
+                        <strong className="govuk-warning-text__text">
+                            <span className="govuk-warning-text__assistive">Warning</span>
+                            Your service has been updated in BODS. Stops have been added and/or removed since the
+                            creation of your product(s). These products will need updating to reflect these changes.
+                        </strong>
+                    </div>
                 ) : null}
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
