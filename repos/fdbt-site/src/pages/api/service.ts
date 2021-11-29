@@ -34,8 +34,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const errors: ErrorInfo[] = [
                 {
                     id: 'service',
-                    errorMessage:
-                        'As your service only operates in a single direction, you cannot create a return product for this service',
+                    errorMessage: `As your service only operates in a single direction, you cannot create a return product for this service`,
+                    userInput: req.body.serviceId,
                 },
             ];
             updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors });
