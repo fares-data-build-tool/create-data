@@ -136,6 +136,10 @@ export class ExporterStack extends cdk.Stack {
 
         this.addAlarmsToLambda(stage, tableRenameFunction, `tableRenameFunction-${stage}`, 420000);
 
+        atcoCodeCheckerFunction.addToRolePolicy(
+            new PolicyStatement({ actions: ['ssm:GetParameter'], resources: ['*'] }),
+        );
+
         new Rule(this, `table-rename-rule-${stage}`, {
             schedule: Schedule.cron({ minute: '30', hour: '5' }), // every day at 5:30am
             targets: [new LambdaFunction(tableRenameFunction)],
