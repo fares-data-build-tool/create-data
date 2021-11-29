@@ -119,6 +119,17 @@ export const completeServicePage = (): void => {
     continueButtonClick();
 };
 
+export const completeDirectionPageIfReached = (): void => {
+    cy.url()
+        .should('not.match', /\/service/) // This ensures we're on the correct page
+        .then((url: string) => {
+            if (url.includes('direction')) {
+                selectRandomOptionFromDropDown('select-direction');
+                continueButtonClick();
+            }
+        });
+};
+
 const completeFareTrianglePages = (csvUpload: boolean): void => {
     clickElementById(csvUpload ? 'csv-upload' : 'manual-entry');
     continueButtonClick();
@@ -173,8 +184,7 @@ const completePointToPointPeriodProductDetail = (): void => {
 
 export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void => {
     completeServicePage();
-    selectRandomOptionFromDropDown('select-direction');
-    continueButtonClick();
+    completeDirectionPageIfReached();
     completeFareTrianglePages(csvUpload);
     completeMatchingPage();
 
