@@ -59,9 +59,7 @@ export const selectCarnetFareType = (fareType: FareType): void => {
     continueButtonClick();
 };
 
-export const selectSchoolFareType = (
-    fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
-): void => {
+export const selectSchoolFareType = (fareType: FareType): void => {
     clickElementById(fareTypeToFareTypeIdMapper(fareType));
     continueButtonClick();
     continueButtonClick();
@@ -121,6 +119,17 @@ export const completeServicePage = (): void => {
     continueButtonClick();
 };
 
+export const completeDirectionPageIfReached = (): void => {
+    cy.url()
+        .should('not.match', /\/service/) // This ensures we're on the correct page
+        .then((url: string) => {
+            if (url.includes('direction')) {
+                selectRandomOptionFromDropDown('select-direction');
+                continueButtonClick();
+            }
+        });
+};
+
 const completeFareTrianglePages = (csvUpload: boolean): void => {
     clickElementById(csvUpload ? 'csv-upload' : 'manual-entry');
     continueButtonClick();
@@ -175,8 +184,7 @@ const completePointToPointPeriodProductDetail = (): void => {
 
 export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void => {
     completeServicePage();
-    selectRandomOptionFromDropDown('select-direction');
-    continueButtonClick();
+    completeDirectionPageIfReached();
     completeFareTrianglePages(csvUpload);
     completeMatchingPage();
 

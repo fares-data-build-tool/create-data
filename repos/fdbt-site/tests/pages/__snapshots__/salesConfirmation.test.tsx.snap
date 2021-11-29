@@ -41,7 +41,7 @@ exports[`pages confirmation should render correctly 1`] = `
     <h2
       className="govuk-heading-m"
     >
-      Now submit your data for NeTEx creation
+      Now submit your data to create the product
     </h2>
     <p
       className="govuk-body"
@@ -52,7 +52,7 @@ exports[`pages confirmation should render correctly 1`] = `
       className="govuk-button"
       id="continue-button"
       type="submit"
-      value="Submit"
+      value="Accept and submit"
     />
   </CsrfForm>
 </TwoThirdsLayout>

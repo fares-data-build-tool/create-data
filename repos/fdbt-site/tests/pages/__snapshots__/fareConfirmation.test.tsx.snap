@@ -30,7 +30,7 @@ exports[`pages fareConfirmation should render correctly for a carnet ticket 1`] 
             "name": "Carnet type",
           },
           Object {
-            "content": "Adult",
+            "content": "blobs",
             "href": "selectPassengerType",
             "name": "Passenger type",
           },
@@ -98,7 +98,7 @@ exports[`pages fareConfirmation should render correctly for a ticket with a prem
             "name": "Fare type",
           },
           Object {
-            "content": "Adult",
+            "content": "blobs",
             "href": "selectPassengerType",
             "name": "Passenger type",
           },
@@ -171,29 +171,29 @@ exports[`pages fareConfirmation should render correctly for group tickets 1`] = 
             "name": "Fare type",
           },
           Object {
-            "content": "Group",
+            "content": "blobs",
             "href": "selectPassengerType",
             "name": "Passenger type",
           },
           Object {
             "content": "Minimum age: 16 Maximum age: 65",
             "href": "selectPassengerType",
-            "name": "Adult passenger - age range",
+            "name": "blobs - age range",
           },
           Object {
             "content": "N/A",
             "href": "selectPassengerType",
-            "name": "Adult passenger - proof documents",
+            "name": "blobs - proof documents",
           },
           Object {
             "content": "Minimum age: 0 Maximum age: 16",
             "href": "selectPassengerType",
-            "name": "Child passenger - age range",
+            "name": "blobs - age range",
           },
           Object {
             "content": "Identity document",
             "href": "selectPassengerType",
-            "name": "Child passenger - proof documents",
+            "name": "blobs - proof documents",
           },
           Object {
             "content": "Start time: 0900 End time: 1600",
@@ -254,7 +254,7 @@ exports[`pages fareConfirmation should render correctly for non school single ti
             "name": "Fare type",
           },
           Object {
-            "content": "Adult",
+            "content": "blobs",
             "href": "selectPassengerType",
             "name": "Passenger type",
           },
@@ -322,7 +322,7 @@ exports[`pages fareConfirmation should render correctly for school tickets 1`] =
             "name": "Fare type",
           },
           Object {
-            "content": "School pupil",
+            "content": "blobs",
             "href": "selectPassengerType",
             "name": "Passenger type",
           },

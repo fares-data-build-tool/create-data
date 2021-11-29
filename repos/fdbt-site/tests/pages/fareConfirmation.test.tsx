@@ -9,6 +9,7 @@ describe('pages', () => {
                 <FareConfirmation
                     fareType="single"
                     carnet={false}
+                    passengerTypeName="blobs"
                     passengerType={{
                         id: 2,
                         passengerType: 'adult',
@@ -47,6 +48,7 @@ describe('pages', () => {
                 <FareConfirmation
                     fareType="single"
                     carnet
+                    passengerTypeName="blobs"
                     passengerType={{
                         id: 2,
                         passengerType: 'adult',
@@ -85,6 +87,7 @@ describe('pages', () => {
                 <FareConfirmation
                     fareType="single"
                     carnet={false}
+                    passengerTypeName="blobs"
                     passengerType={{
                         id: 2,
                         passengerType: 'adult',
@@ -123,6 +126,7 @@ describe('pages', () => {
                 <FareConfirmation
                     fareType="single"
                     carnet={false}
+                    passengerTypeName="blobs"
                     passengerType={{
                         id: 4,
                         passengerType: 'group',
@@ -130,6 +134,7 @@ describe('pages', () => {
                     groupPassengerInfo={[
                         {
                             id: 1,
+                            name: 'blobs',
                             passengerType: 'adult',
                             minNumber: '1',
                             maxNumber: '1',
@@ -138,6 +143,7 @@ describe('pages', () => {
                         },
                         {
                             id: 2,
+                            name: 'blobs',
                             passengerType: 'child',
                             minNumber: '1',
                             maxNumber: '1',
@@ -177,6 +183,7 @@ describe('pages', () => {
                 <FareConfirmation
                     fareType="schoolService"
                     carnet={false}
+                    passengerTypeName="blobs"
                     passengerType={{
                         id: 2,
                         passengerType: 'schoolPupil',
@@ -210,6 +217,7 @@ describe('pages', () => {
                         proof: 'yes',
                         proofDocuments: ['membership card'],
                     },
+                    'blah',
                     [],
                     '',
                     '',
@@ -231,7 +239,7 @@ describe('pages', () => {
                 );
                 expect(result).toStrictEqual([
                     { content: 'Return', href: 'fareType', name: 'Fare type' },
-                    { content: 'Adult', href: 'selectPassengerType', name: 'Passenger type' },
+                    { content: 'blah', href: 'selectPassengerType', name: 'Passenger type' },
                     {
                         content: 'Minimum age: 18 Maximum age: 100',
                         href: 'selectPassengerType',
@@ -273,6 +281,8 @@ describe('pages', () => {
                         proof: 'yes',
                         proofDocuments: ['membership card'],
                     },
+                    'blah',
+
                     [],
                     '',
                     '',
@@ -294,7 +304,7 @@ describe('pages', () => {
                 );
                 expect(result).toStrictEqual([
                     { content: 'Return', href: 'fareType', name: 'Fare type' },
-                    { content: 'Adult', href: 'selectPassengerType', name: 'Passenger type' },
+                    { content: 'blah', href: 'selectPassengerType', name: 'Passenger type' },
                     {
                         content: 'Minimum age: 18 Maximum age: 100',
                         href: 'selectPassengerType',
@@ -340,6 +350,8 @@ describe('pages', () => {
                         proof: 'yes',
                         proofDocuments: ['Student Card'],
                     },
+                    'blah',
+
                     [],
                     'single',
                     'true',
@@ -348,7 +360,7 @@ describe('pages', () => {
                 );
                 expect(result).toStrictEqual([
                     { content: 'School service', href: 'fareType', name: 'Fare type' },
-                    { content: 'School pupil', href: 'selectPassengerType', name: 'Passenger type' },
+                    { content: 'blah', href: 'selectPassengerType', name: 'Passenger type' },
                     {
                         content: 'Minimum age: N/A Maximum age: 18',
                         href: 'selectPassengerType',

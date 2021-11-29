@@ -23,7 +23,8 @@ import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerTypeAttributeWithErrors, isFareType } from '../interfaces/typeGuards';
-import { getCsrfToken, sentenceCaseString } from '../utils';
+import { getCsrfToken, sentenceCaseString, getAndValidateNoc } from '../utils';
+import { getPassengerTypeNameByIdAndNoc } from '../data/auroradb';
 
 const title = 'Fare Confirmation - Create Fares Data Service';
 const description = 'Fare Confirmation page of the Create Fares Data Service';
@@ -32,6 +33,7 @@ interface FareConfirmationProps {
     fareType: string;
     carnet: boolean;
     passengerType: PassengerType;
+    passengerTypeName: string;
     groupPassengerInfo: CompanionInfo[];
     schoolFareType: string;
     termTime: string;
@@ -44,6 +46,7 @@ export const buildFareConfirmationElements = (
     fareType: string,
     carnet: boolean,
     passengerType: PassengerType,
+    passengerTypeName: string,
     groupPassengerInfo: CompanionInfo[],
     schoolFareType: string,
     termTime: string,
@@ -58,7 +61,7 @@ export const buildFareConfirmationElements = (
         },
         {
             name: 'Passenger type',
-            content: sentenceCaseString(passengerType.passengerType),
+            content: passengerTypeName,
             href: 'selectPassengerType',
         },
     ];
@@ -76,7 +79,7 @@ export const buildFareConfirmationElements = (
             const href = 'selectPassengerType';
             if (passenger.ageRangeMin || passenger.ageRangeMax) {
                 confirmationElements.push({
-                    name: `${sentenceCaseString(passenger.passengerType)} passenger - age range`,
+                    name: `${passenger.name} - age range`,
                     content: `Minimum age: ${passenger.ageRangeMin ? passenger.ageRangeMin : 'N/A'} Maximum age: ${
                         passenger.ageRangeMax ? passenger.ageRangeMax : 'N/A'
                     }`,
@@ -84,14 +87,14 @@ export const buildFareConfirmationElements = (
                 });
             } else {
                 confirmationElements.push({
-                    name: `${sentenceCaseString(passenger.passengerType)} passenger - age range`,
+                    name: `${passenger.name} - age range`,
                     content: 'N/A',
                     href,
                 });
             }
             if (passenger.proofDocuments && passenger.proofDocuments.length > 0) {
                 confirmationElements.push({
-                    name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
+                    name: `${passenger.name} - proof documents`,
                     content: passenger.proofDocuments
                         .map((proofDoc: string) => sentenceCaseString(proofDoc))
                         .join(', '),
@@ -99,7 +102,7 @@ export const buildFareConfirmationElements = (
                 });
             } else {
                 confirmationElements.push({
-                    name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
+                    name: `${passenger.name} - proof documents`,
                     content: 'N/A',
                     href,
                 });
@@ -189,6 +192,7 @@ const FareConfirmation = ({
     fareType,
     carnet,
     passengerType,
+    passengerTypeName,
     groupPassengerInfo,
     schoolFareType,
     termTime,
@@ -206,6 +210,7 @@ const FareConfirmation = ({
                         fareType,
                         carnet,
                         passengerType,
+                        passengerTypeName,
                         groupPassengerInfo,
                         schoolFareType,
                         termTime,
@@ -219,7 +224,9 @@ const FareConfirmation = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: FareConfirmationProps } => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: FareConfirmationProps }> => {
     const csrfToken = getCsrfToken(ctx);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const carnetAttribute = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
@@ -243,11 +250,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
 
     const groupPassengerInfo = getSessionAttribute(ctx.req, GROUP_PASSENGER_INFO_ATTRIBUTE) || [];
 
+    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(passengerTypeAttribute.id, getAndValidateNoc(ctx));
+
     return {
         props: {
             fareType: fareTypeAttribute.fareType,
             carnet,
             passengerType: passengerTypeAttribute,
+            passengerTypeName,
             schoolFareType: schoolFareTypeAttribute?.schoolFareType || '',
             groupPassengerInfo,
             termTime: termTimeAttribute?.termTime.toString() || '',
