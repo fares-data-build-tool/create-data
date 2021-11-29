@@ -136,7 +136,7 @@ export class ExporterStack extends cdk.Stack {
 
         this.addAlarmsToLambda(stage, tableRenameFunction, `tableRenameFunction-${stage}`, 420000);
 
-        atcoCodeCheckerFunction.addToRolePolicy(
+        tableRenameFunction.addToRolePolicy(
             new PolicyStatement({ actions: ['ssm:GetParameter'], resources: ['*'] }),
         );
 
