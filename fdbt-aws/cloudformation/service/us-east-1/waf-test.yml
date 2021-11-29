@@ -112,8 +112,9 @@ Resources:
               VendorName: AWS
               Name: AWSManagedRulesCommonRuleSet
               ExcludedRules:
-                - SizeRestrictions_BODY # handled by BodySizeRestriction
-                - NoUserAgent_HEADER # allow Cypress tests to run
+                - Name: SizeRestrictions_BODY # handled by BodySizeRestriction
+                - Name: NoUserAgent_HEADER # allow Cypress tests to run
+                - Name: CrossSiteScripting_BODY # blocking some legitimate requests - see CFD-571
           OverrideAction:
             None: {}
           VisibilityConfig:
