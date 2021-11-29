@@ -291,11 +291,11 @@ export const checkReferenceDataImportHasCompleted = async (tableName: string): P
         );
     }
 };
-
+// , nocTableOld, nocLineOld, naptanStopOld, txcJourneyPatternLinkOld, txcJourneyPatternOld, txcOperatorLineOld
 export const deleteAndRenameTables = async (): Promise<void> => {
     const renameQuery = `START TRANSACTION;
 
-        DROP TABLE IF EXISTS nocPublicNameOld, nocTableOld, nocLineOld, naptanStopOld, txcJourneyPatternLinkOld, txcJourneyPatternOld, txcOperatorLineOld;
+        DROP TABLE IF EXISTS nocPublicNameOld;
 
         ALTER TABLE nocPublicName
         RENAME TO nocPublicNameOld;
