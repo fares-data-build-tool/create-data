@@ -268,20 +268,20 @@ export const removeAllServicesRequiringAttentionIds = async (): Promise<void> =>
 
 export const checkReferenceDataImportHasCompleted = async (tableName: string): Promise<void> => {
     const queryInputForNewTable = `SELECT COUNT(1) as count
-                        FROM ?
+                        FROM ${tableName}New
         `;
 
-    const newCount = await executeQuery<{ count: number }>(queryInputForNewTable, [`${tableName}New`]);
+    const newCount = await executeQuery<{ count: number }>(queryInputForNewTable, []);
 
     if (newCount.count === 0) {
         throw new Error('Reference data import has failed.');
     }
 
     const queryInputForOldTable = `SELECT COUNT(1) as count
-                        FROM ?
+                        FROM ${tableName}
         `;
 
-    const currentCount = await executeQuery<{ count: number }>(queryInputForOldTable, [tableName]);
+    const currentCount = await executeQuery<{ count: number }>(queryInputForOldTable, []);
 
     const percentageResult = (newCount.count / currentCount.count) * 100;
 
