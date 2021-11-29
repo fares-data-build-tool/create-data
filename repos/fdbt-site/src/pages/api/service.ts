@@ -40,6 +40,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             ];
             updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors });
             redirectTo(res, '/service');
+            return;
         }
 
         updateSessionAttribute(req, SERVICE_ATTRIBUTE, {
@@ -48,7 +49,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         });
 
         redirectTo(res, '/direction');
-        return;
     } catch (error) {
         const message = 'There was a problem selecting the service:';
         redirectToError(res, message, 'api.service', error);
