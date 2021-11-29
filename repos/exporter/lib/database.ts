@@ -313,7 +313,7 @@ export const deleteAndRenameTables = async (): Promise<void> => {
         await connection.query('ALTER TABLE txcJourneyPatternNew RENAME TO txcJourneyPattern;');
         await connection.query('ALTER TABLE txcOperatorLineNew RENAME TO txcOperatorLine;');
         await connection.commit();
-    } catch (error: any) {
+    } catch (error) {
         await connection.rollback();
         throw error;
     } finally {
