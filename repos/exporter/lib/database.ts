@@ -291,56 +291,26 @@ export const checkReferenceDataImportHasCompleted = async (tableName: string): P
         );
     }
 };
-// , nocTableOld, nocLineOld, naptanStopOld, txcJourneyPatternLinkOld, txcJourneyPatternOld, txcOperatorLineOld
 export const deleteAndRenameTables = async (): Promise<void> => {
-    const renameQuery = `START TRANSACTION;
-
-        DROP TABLE IF EXISTS nocPublicNameOld;
-
-        ALTER TABLE nocPublicName
-        RENAME TO nocPublicNameOld;
-
-        ALTER TABLE nocTable
-        RENAME TO nocTableOld;
-
-        ALTER TABLE nocLine
-        RENAME TO nocLineOld;
-
-        ALTER TABLE naptanStop
-        RENAME TO naptanStopOld;
-
-        ALTER TABLE txcJourneyPatternLink
-        RENAME TO txcJourneyPatternLinkOld;
-
-        ALTER TABLE txcJourneyPattern
-        RENAME TO txcJourneyPatternOld;
-
-        ALTER TABLE txcOperatorLine
-        RENAME TO txcOperatorLineOld;
-
-        ALTER TABLE nocPublicNameNew
-        RENAME TO nocPublicName;
-
-        ALTER TABLE nocTableNew
-        RENAME TO nocTable;
-
-        ALTER TABLE nocLineNew
-        RENAME TO nocLine;
-
-        ALTER TABLE naptanStopNew
-        RENAME TO naptanStop;
-
-        ALTER TABLE txcJourneyPatternLinkNew
-        RENAME TO txcJourneyPatternLink;
-
-        ALTER TABLE txcJourneyPatternNew
-        RENAME TO txcJourneyPattern;
-
-        ALTER TABLE txcOperatorLineNew
-        RENAME TO txcOperatorLine;
-
-        COMMIT;
-`;
-
-    await executeQuery(renameQuery, []);
+    const connection = await (await connectionPool).getConnection();
+    await connection.execute('START TRANSACTION;');
+    await connection.execute(
+        'DROP TABLE IF EXISTS nocPublicNameOld, nocTableOld, nocLineOld, naptanStopOld, txcJourneyPatternLinkOld, txcJourneyPatternOld, txcOperatorLineOld;',
+    );
+    await connection.execute('ALTER TABLE nocPublicName RENAME TO nocPublicNameOld;');
+    await connection.execute('ALTER TABLE nocTable RENAME TO nocTableOld;');
+    await connection.execute('ALTER TABLE nocLine RENAME TO nocLineOld;');
+    await connection.execute('ALTER TABLE naptanStop RENAME TO naptanStopOld;');
+    await connection.execute('ALTER TABLE txcJourneyPatternLink RENAME TO txcJourneyPatternLinkOld;');
+    await connection.execute('ALTER TABLE txcJourneyPattern RENAME TO txcJourneyPatternOld;');
+    await connection.execute('ALTER TABLE txcOperatorLine RENAME TO txcOperatorLineOld;');
+    await connection.execute('ALTER TABLE nocPublicNameNew RENAME TO nocPublicName;');
+    await connection.execute('ALTER TABLE nocTableNew RENAME TO nocTable;');
+    await connection.execute('ALTER TABLE nocLineNew RENAME TO nocLine;');
+    await connection.execute('ALTER TABLE naptanStopNew RENAME TO naptanStop;');
+    await connection.execute('ALTER TABLE txcJourneyPatternLinkNew RENAME TO txcJourneyPatternLink;');
+    await connection.execute('ALTER TABLE txcJourneyPatternNew RENAME TO txcJourneyPattern;');
+    await connection.execute('ALTER TABLE txcOperatorLineNew RENAME TO txcOperatorLine;');
+    await connection.execute('COMMIT;');
+    connection.release();
 };
