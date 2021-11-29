@@ -42,7 +42,6 @@ exports[`pages service should render correctly when data source is bods 1`] = `
       >
         <select
           className="govuk-select"
-          defaultValue=""
           id="service"
           name="serviceId"
         >
@@ -157,7 +156,6 @@ exports[`pages service should render correctly when data source is tnds 1`] = `
       >
         <select
           className="govuk-select"
-          defaultValue=""
           id="service"
           name="serviceId"
         >
