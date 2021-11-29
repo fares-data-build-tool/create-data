@@ -185,7 +185,6 @@ const completePointToPointPeriodProductDetail = (): void => {
 export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void => {
     completeServicePage();
     completeDirectionPageIfReached();
-    continueButtonClick();
     completeFareTrianglePages(csvUpload);
     completeMatchingPage();
 
