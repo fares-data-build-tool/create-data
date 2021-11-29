@@ -40,6 +40,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             ];
             updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors });
             redirectTo(res, '/service');
+            return;
         }
 
         updateSessionAttribute(req, SERVICE_ATTRIBUTE, {
