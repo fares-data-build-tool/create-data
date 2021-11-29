@@ -293,7 +293,7 @@ export const checkReferenceDataImportHasCompleted = async (tableName: string): P
 };
 
 export const deleteAndRenameTables = async (): Promise<void> => {
-    const renameQuery = `BEGIN TRANSACTION
+    const renameQuery = `BEGIN TRANSACTION;
 
         DELETE TABLE IF EXISTS nocPublicNameOld;
         DELETE TABLE IF EXISTS nocTableOld;
@@ -345,7 +345,7 @@ export const deleteAndRenameTables = async (): Promise<void> => {
         ALTER TABLE txcOperatorLineNew
         RENAME TO txcOperatorLine;
 
-        COMMIT TRANSACTION; 
+        COMMIT;
 `;
 
     await executeQuery(renameQuery, []);
