@@ -10,6 +10,7 @@ import {
     ServiceDetails,
 } from '../shared/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
+import { getSsmValue } from './ssm';
 
 const replaceInternalNocCode = (nocCode: string): string => {
     if (nocCode === 'IWBusCo') {
@@ -18,18 +19,6 @@ const replaceInternalNocCode = (nocCode: string): string => {
 
     return nocCode;
 };
-
-const ssm = new SSM({ region: 'eu-west-2' });
-
-const getSsmValue = async (parameter: string) =>
-    (
-        await ssm
-            .getParameter({
-                Name: parameter,
-                WithDecryption: true,
-            })
-            .promise()
-    ).Parameter?.Value;
 
 export const getConnectionPool = async (): Promise<Pool> =>
     createPool({
@@ -264,59 +253,4 @@ export const removeAllServicesRequiringAttentionIds = async (): Promise<void> =>
                           SET servicesRequiringAttention = null`;
 
     await executeQuery(serviceQuery, []);
-};
-
-export const checkReferenceDataImportHasCompleted = async (tableName: string): Promise<void> => {
-    const queryInputForNewTable = `SELECT COUNT(1) as count
-                        FROM ${tableName}New
-        `;
-
-    const newCount = await executeQuery<{ count: number }>(queryInputForNewTable, []);
-
-    if (newCount.count === 0) {
-        throw new Error('Reference data import has failed.');
-    }
-
-    const queryInputForOldTable = `SELECT COUNT(1) as count
-                        FROM ${tableName}
-        `;
-
-    const currentCount = await executeQuery<{ count: number }>(queryInputForOldTable, []);
-
-    const percentageResult = (newCount.count / currentCount.count) * 100;
-
-    if (percentageResult < 75) {
-        throw new Error(
-            `Reference data import has not completed, as only ${percentageResult}% of yesterday's data has been imported.`,
-        );
-    }
-};
-export const deleteAndRenameTables = async (): Promise<void> => {
-    const connection = await (await connectionPool).getConnection();
-    try {
-        await connection.beginTransaction();
-        await connection.query(
-            'DROP TABLE IF EXISTS nocPublicNameOld, nocTableOld, nocLineOld, naptanStopOld, txcJourneyPatternLinkOld, txcJourneyPatternOld, txcOperatorLineOld;',
-        );
-        await connection.query('ALTER TABLE nocPublicName RENAME TO nocPublicNameOld;');
-        await connection.query('ALTER TABLE nocTable RENAME TO nocTableOld;');
-        await connection.query('ALTER TABLE nocLine RENAME TO nocLineOld;');
-        await connection.query('ALTER TABLE naptanStop RENAME TO naptanStopOld;');
-        await connection.query('ALTER TABLE txcJourneyPatternLink RENAME TO txcJourneyPatternLinkOld;');
-        await connection.query('ALTER TABLE txcJourneyPattern RENAME TO txcJourneyPatternOld;');
-        await connection.query('ALTER TABLE txcOperatorLine RENAME TO txcOperatorLineOld;');
-        await connection.query('ALTER TABLE nocPublicNameNew RENAME TO nocPublicName;');
-        await connection.query('ALTER TABLE nocTableNew RENAME TO nocTable;');
-        await connection.query('ALTER TABLE nocLineNew RENAME TO nocLine;');
-        await connection.query('ALTER TABLE naptanStopNew RENAME TO naptanStop;');
-        await connection.query('ALTER TABLE txcJourneyPatternLinkNew RENAME TO txcJourneyPatternLink;');
-        await connection.query('ALTER TABLE txcJourneyPatternNew RENAME TO txcJourneyPattern;');
-        await connection.query('ALTER TABLE txcOperatorLineNew RENAME TO txcOperatorLine;');
-        await connection.commit();
-    } catch (error) {
-        await connection.rollback();
-        throw error;
-    } finally {
-        connection.release();
-    }
 };

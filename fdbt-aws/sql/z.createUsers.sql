@@ -1,13 +1,13 @@
 GRANT USAGE ON fdbt.* TO 'fdbt_ref_data'@'%' IDENTIFIED BY 'password';
 DROP USER 'fdbt_ref_data'@'%';
 CREATE USER 'fdbt_ref_data'@'%' IDENTIFIED BY '<INSERT PASSWORD>';
-GRANT SELECT, INSERT, CREATE, DELETE, DROP, REFERENCES ON fdbt.* TO 'fdbt_ref_data'@'%';
+GRANT SELECT, INSERT, CREATE, ALTER, DELETE, DROP, REFERENCES ON fdbt.* TO 'fdbt_ref_data'@'%';
 GRANT LOAD FROM S3 ON *.* TO 'fdbt_ref_data'@'%';
 
 GRANT USAGE ON fdbt.* TO 'fdbt_site'@'%' IDENTIFIED BY 'password';
 DROP USER 'fdbt_site'@'%';
 CREATE USER 'fdbt_site'@'%' IDENTIFIED BY '<INSERT PASSWORD>';
-GRANT SELECT, INSERT, CREATE, DROP, ALTER ON fdbt.* TO 'fdbt_site'@'%';
+GRANT SELECT ON fdbt.* TO 'fdbt_site'@'%';
 GRANT INSERT, UPDATE, DELETE ON fdbt.salesOfferPackage TO 'fdbt_site'@'%';
 GRANT INSERT, UPDATE, DELETE ON fdbt.timeRestriction TO 'fdbt_site'@'%';
 GRANT INSERT ON fdbt.operatorGroup TO 'fdbt_site'@'%';
