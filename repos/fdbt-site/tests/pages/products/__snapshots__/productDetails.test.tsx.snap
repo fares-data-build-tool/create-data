@@ -47,11 +47,11 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <div
+        <span
           key="19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)"
         >
           19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)
-        </div>
+        </span>
       </dd>
     </div>
   </dl>
@@ -71,11 +71,11 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <div
+        <span
           key="Adult Test"
         >
           Adult Test
-        </div>
+        </span>
       </dd>
     </div>
   </dl>
@@ -95,11 +95,11 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <div
+        <span
           key="N/A"
         >
           N/A
-        </div>
+        </span>
       </dd>
     </div>
   </dl>
@@ -119,11 +119,11 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <div
+        <span
           key="2"
         >
           2
-        </div>
+        </span>
       </dd>
     </div>
   </dl>
@@ -143,11 +143,11 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <div
+        <span
           key="22 year(s)"
         >
           22 year(s)
-        </div>
+        </span>
       </dd>
     </div>
   </dl>
@@ -167,16 +167,16 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <div
+        <span
           key="SOP Test 1"
         >
           SOP Test 1
-        </div>
-        <div
+        </span>
+        <span
           key="SOP Test 2"
         >
           SOP Test 2
-        </div>
+        </span>
       </dd>
     </div>
   </dl>
@@ -196,11 +196,11 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <div
+        <span
           key="18/10/2021"
         >
           18/10/2021
-        </div>
+        </span>
       </dd>
     </div>
   </dl>
@@ -220,11 +220,11 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <div
+        <span
           key="18/10/2121"
         >
           18/10/2121
-        </div>
+        </span>
       </dd>
     </div>
   </dl>

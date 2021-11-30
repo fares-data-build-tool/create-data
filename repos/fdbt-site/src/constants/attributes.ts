@@ -2,6 +2,8 @@
 
 export const FARE_TYPE_ATTRIBUTE = 'fdbt-fare-type';
 
+export const MATCHING_JSON_ATTRIBUTE = 'fdbt-matching-json';
+
 export const CARNET_FARE_TYPE_ATTRIBUTE = 'fdbt-carnet-fare-type';
 
 export const PASSENGER_TYPE_ATTRIBUTE = 'fdbt-passenger-type';

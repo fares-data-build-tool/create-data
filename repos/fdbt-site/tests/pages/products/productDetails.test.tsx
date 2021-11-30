@@ -100,6 +100,7 @@ describe('myfares pages', () => {
                         { name: 'Journey direction', content: ['Inbound - this way'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Only valid during term time', content: ['Yes'] },
+                        { name: 'Fare triangle', content: ['You created a fare triangle'], editLink: '/csvUpload' },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
                         { name: 'Start date', content: ['17/12/2020'] },
                         { name: 'End date', content: ['18/12/2020'] },
@@ -123,6 +124,7 @@ describe('myfares pages', () => {
                         { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
+                        { name: 'Fare triangle', content: ['You created a fare triangle'], editLink: '/csvUpload' },
                         { name: 'Period duration', content: ['7 weeks'] },
                         { name: 'Product expiry', content: ['24 hr'] },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
@@ -138,7 +140,9 @@ describe('myfares pages', () => {
                 ...expectedCarnetReturnTicket,
                 returnPeriodValidity: { amount: '3', typeOfDuration: 'month' },
             });
+
             const ctx = getMockContext({ query: { productId: '1' } });
+
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
@@ -150,6 +154,7 @@ describe('myfares pages', () => {
                         { name: 'Fare type', id: 'fare-type', content: ['Return'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'] },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
+                        { name: 'Fare triangle', content: ['You created a fare triangle'], editLink: '/csvUpload' },
                         { name: 'Quantity in bundle', content: ['10'] },
                         { name: 'Carnet expiry', content: ['No expiry'] },
                         { name: 'Return ticket validity', content: ['3 month(s)'] },
