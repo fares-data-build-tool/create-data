@@ -1,5 +1,4 @@
 import { createPool, Pool } from 'mysql2/promise';
-import { SSM } from 'aws-sdk';
 import {
     GroupPassengerTypeDb,
     GroupPassengerTypeReference,
