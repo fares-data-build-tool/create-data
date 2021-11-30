@@ -13,4 +13,6 @@ export const handler: Handler<ZipperLambdaBody> = async () => {
     await checkReferenceDataImportHasCompleted('naptanStop', connection);
 
     await deleteAndRenameTables(connection);
+
+    await connection.end();
 };
