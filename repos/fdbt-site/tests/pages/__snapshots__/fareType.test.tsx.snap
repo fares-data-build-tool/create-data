@@ -72,11 +72,6 @@ exports[`pages fareType should render correctly 1`] = `
                   "value": "carnet",
                 },
                 Object {
-                  "hint": "A ticket that covers more than one operator",
-                  "label": "Multi-operator",
-                  "value": "multiOperator",
-                },
-                Object {
                   "hint": "A ticket available to pupils in full-time education",
                   "label": "School service",
                   "value": "schoolService",
@@ -270,11 +265,6 @@ exports[`pages fareType should render error messaging when errors are passed to 
                   "hint": "A bundle of pre-paid tickets",
                   "label": "Carnet ticket",
                   "value": "carnet",
-                },
-                Object {
-                  "hint": "A ticket that covers more than one operator",
-                  "label": "Multi-operator",
-                  "value": "multiOperator",
                 },
                 Object {
                   "hint": "A ticket available to pupils in full-time education",

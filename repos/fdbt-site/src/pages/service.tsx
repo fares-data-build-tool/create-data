@@ -53,7 +53,12 @@ const Service = ({
                 <ErrorSummary errors={error} />
                 <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
                     <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-select--error">
-                        <select className="govuk-select" id="service" name="serviceId" defaultValue="">
+                        <select
+                            className="govuk-select"
+                            id="service"
+                            name="serviceId"
+                            defaultValue={error.length > 0 && error[0].userInput ? error[0].userInput : undefined}
+                        >
                             <option value="" disabled>
                                 Select One
                             </option>

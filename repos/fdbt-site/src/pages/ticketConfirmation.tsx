@@ -45,7 +45,7 @@ import {
 import { InboundMatchingInfo, MatchingFareZones, MatchingInfo } from '../interfaces/matchingInterface';
 import { isFareType, isPeriodExpiry, isWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
-import { getCsrfToken, sentenceCaseString } from '../utils';
+import { getCsrfToken, sentenceCaseString, isSchemeOperator } from '../utils';
 import { getSessionAttribute, updateSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 
 const title = 'Ticket Confirmation - Create Fares Data Service';
@@ -288,7 +288,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         });
     }
 
-    if (!pointToPointPeriod && (!zone || hybrid)) {
+    if (!pointToPointPeriod && (!zone || hybrid) && !isSchemeOperator(ctx)) {
         const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
         const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
         const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;

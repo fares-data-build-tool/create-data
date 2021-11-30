@@ -7,7 +7,7 @@ import {
     selectFareType,
 } from '../support/steps';
 
-describe('the multi-operator faretype product journey', () => {
+describe.skip('the multi-operator faretype product journey', () => {
     it('completes successfully for geozone and a single product', () => {
         selectFareType('multiOperator', false);
         defineUserTypeAndTimeRestrictions();

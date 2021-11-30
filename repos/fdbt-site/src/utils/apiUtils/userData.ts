@@ -11,7 +11,7 @@ import {
     WithBaseIds,
     TicketWithIds,
 } from '../../../shared/matchingJsonTypes';
-import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie } from './index';
+import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie, isSchemeOperator } from './index';
 
 import { ID_TOKEN_COOKIE, PRODUCTS_DATA_BUCKET_NAME } from '../../constants';
 import {
@@ -643,10 +643,11 @@ export const insertDataToProductsBucketAndProductsTable = async (
     uuid: string,
     ticketType: string,
     dataFormat: 'tnds' | 'bods' | undefined,
+    ctx: { req: NextApiRequestWithSession; res: NextApiResponse },
 ): Promise<string> => {
     const filePath = await putUserDataInProductsBucket(userDataJson, uuid, nocCode);
 
-    if (!shouldInstantlyGenerateNetexFromMatchingJson(ticketType, dataFormat)) {
+    if (!shouldInstantlyGenerateNetexFromMatchingJson(ticketType, dataFormat, ctx)) {
         const { startDate, endDate } = userDataJson.ticketPeriod;
         const dateTime = moment().toDate();
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
@@ -660,10 +661,7 @@ export const insertDataToProductsBucketAndProductsTable = async (
 export const shouldInstantlyGenerateNetexFromMatchingJson = (
     ticketType: string,
     dataFormat: 'tnds' | 'bods' | undefined,
+    ctx: { req: NextApiRequestWithSession; res: NextApiResponse },
 ) => {
-    const isBodsOrGeoZoneTicket = ticketType === 'geoZone' || dataFormat !== 'tnds';
-
-    const instantlyGenerateNetexFromProduct = !isBodsOrGeoZoneTicket;
-
-    return instantlyGenerateNetexFromProduct;
+    return isSchemeOperator(ctx.req, ctx.res) || (ticketType !== 'geoZone' && dataFormat === 'tnds');
 };
