@@ -662,6 +662,6 @@ export const shouldInstantlyGenerateNetexFromMatchingJson = (
     ticketType: string,
     dataFormat: 'tnds' | 'bods' | undefined,
     ctx: { req: NextApiRequestWithSession; res: NextApiResponse },
-) => {
+): boolean => {
     return isSchemeOperator(ctx.req, ctx.res) || (ticketType !== 'geoZone' && dataFormat === 'tnds');
 };

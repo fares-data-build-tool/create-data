@@ -125,6 +125,22 @@ const validateSequenceNumbers = (stops: StopPoint[]): stops is (StopPoint & { se
     });
 };
 
+export const removeDuplicateAdjacentStops = (stops: string[]): string[] => {
+    return stops
+        .map((stop, index) => {
+            if (index === 0) {
+                return stop;
+            }
+
+            if (stop !== stops[index - 1]) {
+                return stop;
+            }
+
+            return '';
+        })
+        .filter((stop) => stop);
+};
+
 export const getMatchingProps = async (
     ctx: NextPageContextWithSession,
     matchingAttribute: MatchingWithErrors | object | undefined,
@@ -145,7 +161,9 @@ export const getMatchingProps = async (
     const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, dataSource);
     const userFareStages = await getUserFareStages(operatorAttribute.uuid);
 
+    // find journey patterns for direction (inbound or outbound)
     const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === directionAttribute.direction);
+    // get an unordered list of stop points from journey patterns, then removing any duplicates on stopPointRef and sequence number
     const stops = journeyPatterns
         .flatMap((it) => it.orderedStopPoints)
         .filter(
@@ -155,9 +173,12 @@ export const getMatchingProps = async (
                 ) === index,
         );
 
-    const masterStopList = validateSequenceNumbers(stops)
+    // building a sorted master stop list according to sequence numbers if they're there and valid
+    const sortedStopList = validateSequenceNumbers(stops)
         ? stops.sort((stop, other) => stop.sequenceNumber - other.sequenceNumber).map((it) => it.stopPointRef)
         : sortingWithoutSequenceNumbers(journeyPatterns);
+
+    const masterStopList = removeDuplicateAdjacentStops(sortedStopList);
 
     if (masterStopList.length === 0) {
         throw new Error(
@@ -165,12 +186,15 @@ export const getMatchingProps = async (
         );
     }
 
+    // filling out stop information from DB
     const naptanInfo = await batchGetStopsByAtcoCode(
         masterStopList.filter((stop, index, self) => self.indexOf(stop) === index),
     );
+    // removing any stops that aren't fully fleshed out
     const orderedStops = masterStopList
         .map((atco) => naptanInfo.find((s) => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
+
     return {
         props: {
             stops: orderedStops,
