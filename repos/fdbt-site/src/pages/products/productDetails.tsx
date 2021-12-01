@@ -92,16 +92,12 @@ const getEditableValue = (element: ProductDetailsElement) => {
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ProductDetailsProps }> => {
     const noc = getAndValidateNoc(ctx);
 
+    const serviceId = ctx.query?.serviceId;
+
     const productId = ctx.query?.productId;
 
     if (typeof productId !== 'string') {
         throw new Error(`Expected string type for productID, received: ${productId}`);
-    }
-
-    const serviceId = ctx.query?.serviceId;
-
-    if (typeof serviceId !== 'string') {
-        throw new Error(`Expected string type for serviceId, received: ${serviceId}`);
     }
 
     const { matchingJsonLink, servicesRequiringAttention } = await getProductById(noc, productId);
@@ -111,7 +107,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     // store the ticket in the session so that it can be retrieved
     // on the /csvUpload page.
     updateSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE, ticket);
-    updateSessionAttribute(ctx.req, PRODUCT_AND_SERVICE_ID_ATTRIBUTE, { productId, serviceId });
 
     const productDetailsElements: ProductDetailsElement[] = [];
 
@@ -143,6 +138,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     let requiresAttention = false;
 
     if (serviceId) {
+        if (typeof serviceId !== 'string') {
+            throw new Error(`Expected string type for serviceId, received: ${serviceId}`);
+        }
+
+        updateSessionAttribute(ctx.req, PRODUCT_AND_SERVICE_ID_ATTRIBUTE, { productId, serviceId });
+
         const pointToPointService = await getBodsServiceByNocAndId(noc, serviceId);
 
         productDetailsElements.push({

@@ -7,7 +7,6 @@ import { redirectToError, redirectTo, getUuidFromSession } from '../../utils/api
 import {
     INPUT_METHOD_ATTRIBUTE,
     CSV_UPLOAD_ATTRIBUTE,
-    DIRECTION_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     PRODUCT_AND_SERVICE_ID_ATTRIBUTE,
 } from '../../constants/attributes';
@@ -293,12 +292,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if ('inboundFareZones' in ticket && 'outboundFareZones' in ticket) {
                 const combinedFareZones = ticket.outboundFareZones.concat(ticket.inboundFareZones);
 
-                const blah = combinedFareZones.map((x) => x.name);
+                const fareZoneNames = combinedFareZones.map((x) => x.name);
 
-                const blah2 = [...new Set(blah)];
+                const uniqueFareZoneNames = [...new Set(fareZoneNames)];
 
                 // check to see if the the number of fare stages does not match
-                if (fareTriangleData.fareStages.length !== blah2.length) {
+                if (fareTriangleData.fareStages.length !== uniqueFareZoneNames.length) {
                     const errors: ErrorInfo[] = [
                         {
                             id: errorId,
@@ -315,7 +314,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 // check to see if the name of the fare stages do not match
 
                 const thereIsANameMismatch = fareTriangleData.fareStages.some((fs) => {
-                    blah2.some((fz) => fz !== fs.stageName);
+                    uniqueFareZoneNames.some((fz) => fz !== fs.stageName);
                 });
 
                 if (thereIsANameMismatch) {
