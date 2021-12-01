@@ -15,6 +15,7 @@ file_dir = '/tmp/'
 s3 = boto3.resource('s3')
 ssm = boto3.client('ssm')
 cloudwatch = boto3.client('cloudwatch')
+lambda_client = boto3.client('lambda')
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -90,7 +91,7 @@ def upload_tnds_data_to_s3():
     for file in os.listdir(file_dir):
         bucket = os.getenv('ZIPPED_BUCKET_NAME')
         content_type = 'application/zip'
-        
+
         s3.meta.client.upload_file(
             file_dir + file,
             bucket,
@@ -147,13 +148,17 @@ def upload_bods_data_to_s3(zip_file):
 
 def lambda_handler(event, context):
     try:
-        cleardown_txc_tables()
+        if os.getenv('BODS_URL') is not None:
+            cleardown_txc_tables()
+            lambda_client.invoke(FunctionName=os.getenv('TNDS_FUNCTION'),
+                                 InvocationType='Event')
+            bods_zip = get_bods_data()
+            upload_bods_data_to_s3(bods_zip)
 
-        bods_zip = get_bods_data()
-        upload_bods_data_to_s3(bods_zip)
+        if os.getenv('TNDS_FTP_HOST') is not None:
+            get_tnds_data()
+            upload_tnds_data_to_s3()
 
-        get_tnds_data()
-        upload_tnds_data_to_s3()
     except Exception as e:
         logger.error(e)
         raise e
