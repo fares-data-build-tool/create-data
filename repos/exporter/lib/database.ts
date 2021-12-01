@@ -1,5 +1,4 @@
 import { createPool, Pool } from 'mysql2/promise';
-import { SSM } from 'aws-sdk';
 import {
     GroupPassengerTypeDb,
     GroupPassengerTypeReference,
@@ -10,6 +9,7 @@ import {
     ServiceDetails,
 } from '../shared/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
+import { getSsmValue } from './ssm';
 
 const replaceInternalNocCode = (nocCode: string): string => {
     if (nocCode === 'IWBusCo') {
@@ -18,18 +18,6 @@ const replaceInternalNocCode = (nocCode: string): string => {
 
     return nocCode;
 };
-
-const ssm = new SSM({ region: 'eu-west-2' });
-
-const getSsmValue = async (parameter: string) =>
-    (
-        await ssm
-            .getParameter({
-                Name: parameter,
-                WithDecryption: true,
-            })
-            .promise()
-    ).Parameter?.Value;
 
 export const getConnectionPool = async (): Promise<Pool> =>
     createPool({

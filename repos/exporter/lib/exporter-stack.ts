@@ -1,9 +1,9 @@
 import * as cdk from '@aws-cdk/core';
 import { Fn, Duration } from '@aws-cdk/core';
-import { Bucket, BucketEncryption } from '@aws-cdk/aws-s3';
+import { Bucket, BucketEncryption, IBucket } from '@aws-cdk/aws-s3';
 import { NodejsFunction, SourceMapMode } from '@aws-cdk/aws-lambda-nodejs';
 import { PolicyStatement } from '@aws-cdk/aws-iam';
-import { SecurityGroup, Subnet, Vpc } from '@aws-cdk/aws-ec2';
+import { SecurityGroup, Subnet, Vpc, ISecurityGroup, IVpc, ISubnet } from '@aws-cdk/aws-ec2';
 import { Topic } from '@aws-cdk/aws-sns';
 import { SnsAction } from '@aws-cdk/aws-cloudwatch-actions';
 import { TreatMissingData } from '@aws-cdk/aws-cloudwatch';
@@ -11,6 +11,10 @@ import { Rule, Schedule } from '@aws-cdk/aws-events';
 import { LambdaFunction } from '@aws-cdk/aws-events-targets';
 
 export class ExporterStack extends cdk.Stack {
+    private readonly stage: string;
+    private readonly matchingDataBucket: IBucket;
+    private readonly productsBucket: IBucket;
+
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
@@ -18,42 +22,82 @@ export class ExporterStack extends cdk.Stack {
         if (!stage) {
             throw new Error('Need to set STAGE');
         }
+        this.stage = stage;
 
-        const productsBucket = new Bucket(this, `products-data-bucket-${stage}`, {
-            bucketName: `fdbt-products-data-${stage}`,
+        const vpc = Vpc.fromLookup(this, 'vpc', { vpcName: `fdbt-vpc-${this.stage}` });
+        const vpcSubnets = {
+            subnets: [
+                Subnet.fromSubnetId(this, 'vpc-subnet-a', Fn.importValue(`${this.stage}:PrivateSubnetA`)),
+                Subnet.fromSubnetId(this, 'vpc-subnet-b', Fn.importValue(`${this.stage}:PrivateSubnetB`)),
+            ],
+        };
+        const securityGroup = SecurityGroup.fromSecurityGroupId(
+            this,
+            'security-group',
+            Fn.importValue(`${this.stage}:ReferenceDataUploaderLambdaSG`),
+        );
+
+        this.productsBucket = new Bucket(this, `products-data-bucket-${this.stage}`, {
+            bucketName: `fdbt-products-data-${this.stage}`,
             encryption: BucketEncryption.KMS_MANAGED,
         });
 
-        const matchingDataBucket = Bucket.fromBucketName(
+        this.matchingDataBucket = Bucket.fromBucketName(
             this,
-            `fdbt-matching-data-${stage}`,
-            `fdbt-matching-data-${stage}`,
+            `fdbt-matching-data-${this.stage}`,
+            `fdbt-matching-data-${this.stage}`,
         );
 
-        const vpc = Vpc.fromLookup(this, 'vpc', { vpcName: `fdbt-vpc-${stage}` });
-        const vpcSubnets = {
-            subnets: [
-                Subnet.fromSubnetId(this, 'vpc-subnet-a', Fn.importValue(`${stage}:PrivateSubnetA`)),
-                Subnet.fromSubnetId(this, 'vpc-subnet-b', Fn.importValue(`${stage}:PrivateSubnetB`)),
-            ],
-        };
+        this.addNeedsAttentionLambda(securityGroup, vpc, vpcSubnets);
+        this.addReferenceDataLambdas(securityGroup, vpc, vpcSubnets);
+        this.addBastionTerminatorLambda();
+        this.addExporterLambdas(securityGroup, vpc, vpcSubnets);
+    }
 
-        const exporterFunction = new NodejsFunction(this, `exporter-${stage}`, {
-            functionName: `exporter-${stage}`,
+    private addNeedsAttentionLambda(securityGroup: ISecurityGroup, vpc: IVpc, vpcSubnets: { subnets: ISubnet[] }) {
+        const atcoCodeCheckerFunction = new NodejsFunction(this, `atco-code-checker-${this.stage}`, {
+            functionName: `atco-code-checker-${this.stage}`,
+            entry: './lib/atcoCheckerHandler.ts',
+            environment: {
+                PRODUCTS_BUCKET: this.productsBucket.bucketName,
+                MATCHING_DATA_BUCKET: this.matchingDataBucket.bucketName,
+                RDS_HOST: Fn.importValue(`${this.stage}:RdsClusterInternalEndpoint`),
+                STAGE: this.stage,
+            },
+            securityGroups: [securityGroup],
+            vpc: vpc,
+            vpcSubnets: vpcSubnets,
+            bundling: {
+                sourceMap: true,
+                sourceMapMode: SourceMapMode.DEFAULT,
+            },
+            timeout: Duration.minutes(15),
+            logRetention: 180,
+        });
+
+        this.addAlarmsToLambda(atcoCodeCheckerFunction, `atcoCodeCheckerFunction-${this.stage}`, 420000);
+
+        atcoCodeCheckerFunction.addToRolePolicy(
+            new PolicyStatement({ actions: ['ssm:GetParameter', 's3:GetObject'], resources: ['*'] }),
+        );
+
+        new Rule(this, `atco-code-checker-rule-${this.stage}`, {
+            schedule: Schedule.cron({ minute: '0', hour: '6' }), // every day at 6am
+            targets: [new LambdaFunction(atcoCodeCheckerFunction)],
+        });
+    }
+
+    private addExporterLambdas(securityGroup: ISecurityGroup, vpc: IVpc, vpcSubnets: { subnets: ISubnet[] }) {
+        const exporterFunction = new NodejsFunction(this, `exporter-${this.stage}`, {
+            functionName: `exporter-${this.stage}`,
             entry: './lib/handler.ts',
             environment: {
-                PRODUCTS_BUCKET: productsBucket.bucketName,
-                MATCHING_DATA_BUCKET: matchingDataBucket.bucketName,
-                RDS_HOST: Fn.importValue(`${stage}:RdsClusterInternalEndpoint`),
-                STAGE: stage,
+                PRODUCTS_BUCKET: this.productsBucket.bucketName,
+                MATCHING_DATA_BUCKET: this.matchingDataBucket.bucketName,
+                RDS_HOST: Fn.importValue(`${this.stage}:RdsClusterInternalEndpoint`),
+                STAGE: this.stage,
             },
-            securityGroups: [
-                SecurityGroup.fromSecurityGroupId(
-                    this,
-                    'security-group',
-                    Fn.importValue(`${stage}:ReferenceDataUploaderLambdaSG`),
-                ),
-            ],
+            securityGroups: [securityGroup],
             vpc: vpc,
             vpcSubnets: vpcSubnets,
             bundling: {
@@ -66,80 +110,21 @@ export class ExporterStack extends cdk.Stack {
             reservedConcurrentExecutions: 5,
         });
 
-        this.addAlarmsToLambda(stage, exporterFunction, `exporter-${stage}`, 300000);
+        this.addAlarmsToLambda(exporterFunction, `exporter-${this.stage}`, 300000);
 
         exporterFunction.addToRolePolicy(new PolicyStatement({ actions: ['ssm:GetParameter'], resources: ['*'] }));
 
-        productsBucket.grantRead(exporterFunction);
-        matchingDataBucket.grantWrite(exporterFunction);
+        this.productsBucket.grantRead(exporterFunction);
+        this.matchingDataBucket.grantWrite(exporterFunction);
 
-        const atcoCodeCheckerFunction = new NodejsFunction(this, `atco-code-checker-${stage}`, {
-            functionName: `atco-code-checker-${stage}`,
-            entry: './lib/atcoCheckerHandler.ts',
-            environment: {
-                PRODUCTS_BUCKET: productsBucket.bucketName,
-                MATCHING_DATA_BUCKET: matchingDataBucket.bucketName,
-                RDS_HOST: Fn.importValue(`${stage}:RdsClusterInternalEndpoint`),
-                STAGE: stage,
-            },
-            securityGroups: [
-                SecurityGroup.fromSecurityGroupId(
-                    this,
-                    'atco-code-checker-security-group',
-                    Fn.importValue(`${stage}:ReferenceDataUploaderLambdaSG`),
-                ),
-            ],
-            vpc: vpc,
-            vpcSubnets: vpcSubnets,
-            bundling: {
-                sourceMap: true,
-                sourceMapMode: SourceMapMode.DEFAULT,
-            },
-            timeout: Duration.minutes(15),
-            logRetention: 180,
-        });
-
-        this.addAlarmsToLambda(stage, atcoCodeCheckerFunction, `atcoCodeCheckerFunction-${stage}`, 420000);
-
-        atcoCodeCheckerFunction.addToRolePolicy(
-            new PolicyStatement({ actions: ['ssm:GetParameter', 's3:GetObject'], resources: ['*'] }),
-        );
-
-        new Rule(this, `atco-code-checker-rule-${stage}`, {
-            schedule: Schedule.cron({ minute: '0', hour: '6' }), // every day at 6am
-            targets: [new LambdaFunction(atcoCodeCheckerFunction)],
-        });
-
-        const bastionTerminatorFunction = new NodejsFunction(this, `bastion-terminator-${stage}`, {
-            functionName: `bastion-terminator-${stage}`,
-            entry: './lib/bastionTerminator.ts',
-            bundling: {
-                sourceMap: true,
-                sourceMapMode: SourceMapMode.DEFAULT,
-            },
-            timeout: Duration.minutes(1),
-            logRetention: 180,
-        });
-
-        this.addAlarmsToLambda(stage, bastionTerminatorFunction, `bastion-terminator-${stage}`, 30000);
-
-        bastionTerminatorFunction.addToRolePolicy(
-            new PolicyStatement({ actions: ['ec2:TerminateInstances', 'ec2:DescribeInstances'], resources: ['*'] }),
-        );
-
-        new Rule(this, `bastion-terminator-rule-${stage}`, {
-            schedule: Schedule.cron({ weekDay: 'MON', minute: '0', hour: '6' }), // every monday at 6am
-            targets: [new LambdaFunction(bastionTerminatorFunction)],
-        });
-
-        const netexBucket = Bucket.fromBucketName(this, 'netex-bucket', `fdbt-netex-data-${stage}`);
-        const zipperFunction = new NodejsFunction(this, `zipper-${stage}`, {
-            functionName: `zipper-${stage}`,
+        const netexBucket = Bucket.fromBucketName(this, 'netex-bucket', `fdbt-netex-data-${this.stage}`);
+        const zipperFunction = new NodejsFunction(this, `zipper-${this.stage}`, {
+            functionName: `zipper-${this.stage}`,
             entry: './lib/zipperHandler.ts',
             environment: {
                 NETEX_BUCKET: netexBucket.bucketName,
-                MATCHING_DATA_BUCKET: matchingDataBucket.bucketName,
-                STAGE: stage,
+                MATCHING_DATA_BUCKET: this.matchingDataBucket.bucketName,
+                STAGE: this.stage,
             },
             bundling: {
                 sourceMap: true,
@@ -152,12 +137,65 @@ export class ExporterStack extends cdk.Stack {
 
         netexBucket.grantReadWrite(zipperFunction);
 
-        this.addAlarmsToLambda(stage, zipperFunction, `zipper-${stage}`, 60000);
+        this.addAlarmsToLambda(zipperFunction, `zipper-${this.stage}`, 60000);
     }
 
-    private addAlarmsToLambda(stage: string, lambdaFn: NodejsFunction, id: string, durationThreshold: number) {
-        const alarmTopicArn = Fn.importValue(`${stage}:SlackAlertsTopicArn`);
-        const alarmTopic = Topic.fromTopicArn(this, `${id}-alarm-topic-${stage}`, alarmTopicArn);
+    private addBastionTerminatorLambda() {
+        const bastionTerminatorFunction = new NodejsFunction(this, `bastion-terminator-${this.stage}`, {
+            functionName: `bastion-terminator-${this.stage}`,
+            entry: './lib/bastionTerminator.ts',
+            bundling: {
+                sourceMap: true,
+                sourceMapMode: SourceMapMode.DEFAULT,
+            },
+            timeout: Duration.minutes(1),
+            logRetention: 180,
+        });
+
+        this.addAlarmsToLambda(bastionTerminatorFunction, `bastion-terminator-${this.stage}`, 30000);
+
+        bastionTerminatorFunction.addToRolePolicy(
+            new PolicyStatement({ actions: ['ec2:TerminateInstances', 'ec2:DescribeInstances'], resources: ['*'] }),
+        );
+
+        new Rule(this, `bastion-terminator-rule-${this.stage}`, {
+            schedule: Schedule.cron({ weekDay: 'MON', minute: '0', hour: '6' }), // every monday at 6am
+            targets: [new LambdaFunction(bastionTerminatorFunction)],
+        });
+    }
+
+    private addReferenceDataLambdas(securityGroup: ISecurityGroup, vpc: IVpc, vpcSubnets: { subnets: ISubnet[] }) {
+        const tableRenameFunction = new NodejsFunction(this, `table-rename-${this.stage}`, {
+            functionName: `table-rename-${this.stage}`,
+            entry: './lib/referenceData/tableRenameHandler.ts',
+            environment: {
+                RDS_HOST: Fn.importValue(`${this.stage}:RdsClusterInternalEndpoint`),
+                STAGE: this.stage,
+            },
+            securityGroups: [securityGroup],
+            vpc: vpc,
+            vpcSubnets: vpcSubnets,
+            bundling: {
+                sourceMap: true,
+                sourceMapMode: SourceMapMode.DEFAULT,
+            },
+            timeout: Duration.minutes(15),
+            logRetention: 180,
+        });
+
+        this.addAlarmsToLambda(tableRenameFunction, `tableRenameFunction-${this.stage}`, 420000);
+
+        tableRenameFunction.addToRolePolicy(new PolicyStatement({ actions: ['ssm:GetParameter'], resources: ['*'] }));
+
+        new Rule(this, `table-rename-rule-${this.stage}`, {
+            schedule: Schedule.cron({ minute: '30', hour: '5' }), // every day at 5:30am
+            targets: [new LambdaFunction(tableRenameFunction)],
+        });
+    }
+
+    private addAlarmsToLambda(lambdaFn: NodejsFunction, id: string, durationThreshold: number) {
+        const alarmTopicArn = Fn.importValue(`${this.stage}:SlackAlertsTopicArn`);
+        const alarmTopic = Topic.fromTopicArn(this, `${id}-alarm-topic-${this.stage}`, alarmTopicArn);
         const snsAction = new SnsAction(alarmTopic);
 
         const errorsAlarm = lambdaFn
