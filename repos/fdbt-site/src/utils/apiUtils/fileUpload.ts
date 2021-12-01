@@ -101,6 +101,7 @@ export const validateFile = (fileData: formidable.File, fileContents: string): s
 export const processFileUpload = async (formData: FileData, inputName: string): Promise<FileUploadResponse> => {
     if (!formData.fileContents || formData.fileContents === '') {
         logger.warn('', { context: 'api.utils.processFileUpload', message: 'no file attached' });
+
         return {
             fileContents: '',
             fileError: 'Select a CSV file to upload',
@@ -117,6 +118,7 @@ export const processFileUpload = async (formData: FileData, inputName: string): 
             };
         }
     }
+
     const { fileContents } = formData;
 
     const validationResult = validateFile(fileData, fileContents);

@@ -14,7 +14,7 @@ import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
 import BackButton from '../../components/BackButton';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { MATCHING_JSON_ATTRIBUTE } from '../../../src/constants/attributes';
+import { MATCHING_JSON_ATTRIBUTE, PRODUCT_AND_SERVICE_ID_ATTRIBUTE } from '../../../src/constants/attributes';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -94,10 +94,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const productId = ctx.query?.productId;
 
-    const serviceId = ctx.query?.serviceId;
-
     if (typeof productId !== 'string') {
         throw new Error(`Expected string type for productID, received: ${productId}`);
+    }
+
+    const serviceId = ctx.query?.serviceId;
+
+    if (typeof serviceId !== 'string') {
+        throw new Error(`Expected string type for serviceId, received: ${serviceId}`);
     }
 
     const { matchingJsonLink, servicesRequiringAttention } = await getProductById(noc, productId);
@@ -107,6 +111,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     // store the ticket in the session so that it can be retrieved
     // on the /csvUpload page.
     updateSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE, ticket);
+    updateSessionAttribute(ctx.req, PRODUCT_AND_SERVICE_ID_ATTRIBUTE, { productId, serviceId });
 
     const productDetailsElements: ProductDetailsElement[] = [];
 
@@ -138,10 +143,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     let requiresAttention = false;
 
     if (serviceId) {
-        if (typeof serviceId !== 'string') {
-            throw new Error(`Expected string type for serviceId, received: ${serviceId}`);
-        }
-
         const pointToPointService = await getBodsServiceByNocAndId(noc, serviceId);
 
         productDetailsElements.push({
