@@ -126,19 +126,12 @@ const validateSequenceNumbers = (stops: StopPoint[]): stops is (StopPoint & { se
 };
 
 export const removeDuplicateAdjacentStops = (stops: string[]): string[] => {
-    return stops
-        .map((stop, index) => {
-            if (index === 0) {
-                return stop;
-            }
-
-            if (stop !== stops[index - 1]) {
-                return stop;
-            }
-
-            return '';
-        })
-        .filter((stop) => stop);
+    return stops.reduce<string[]>((newStops, stop, index, stops) => {
+        if (stop !== stops[index - 1]) {
+            newStops.push(stop);
+        }
+        return newStops;
+    }, []);
 };
 
 export const getMatchingProps = async (

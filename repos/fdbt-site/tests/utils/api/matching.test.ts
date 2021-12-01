@@ -220,6 +220,12 @@ describe('matching', () => {
                 expect(result).toEqual(['stop1', 'stop2', 'stop3', 'stop4', 'stop1', 'stop2']);
             });
 
+            it('removes some stops if there are 3 next to one another in the list and identical', () => {
+                const input = ['stop1', 'stop2', 'stop3', 'stop3', 'stop3', 'stop4', 'stop1', 'stop2', 'stop2'];
+                const result = removeDuplicateAdjacentStops(input);
+                expect(result).toEqual(['stop1', 'stop2', 'stop3', 'stop4', 'stop1', 'stop2']);
+            });
+
             it('does not remove stops if they are not identical', () => {
                 const input = ['stop1', 'stop2', 'stop3', 'stop4', 'stop5', 'stop6', 'stop7', 'stop8'];
                 const result = removeDuplicateAdjacentStops(input);
