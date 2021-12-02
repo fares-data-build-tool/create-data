@@ -3,7 +3,7 @@ import uniq from 'lodash/uniq';
 import Papa from 'papaparse';
 import { putDataInS3 } from '../../data/s3';
 import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
-import { redirectToError, redirectTo, getUuidFromSession } from '../../utils/apiUtils';
+import { redirectToError, redirectTo } from '../../utils/apiUtils';
 import {
     INPUT_METHOD_ATTRIBUTE,
     CSV_UPLOAD_ATTRIBUTE,
@@ -205,6 +205,55 @@ export const faresTriangleDataMapper = (
     return mappedFareTriangle;
 };
 
+const getNamesOfFareZones = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>) => {
+    let fareZoneNames;
+
+    if ('fareZones' in ticket) {
+        fareZoneNames = ticket.fareZones.map((fz) => fz.name);
+    } else if ('inboundFareZones' in ticket && 'outboundFareZones' in ticket) {
+        const combinedFareZones = ticket.outboundFareZones.concat(ticket.inboundFareZones);
+
+        const combinedNamesOnly = combinedFareZones.map((x) => x.name);
+
+        // get rid of duplicates
+        fareZoneNames = [...new Set(combinedNamesOnly)];
+    }
+
+    return fareZoneNames;
+};
+
+const checkFareStageNames = (fareTriangleData: UserFareStages, fareZoneNames: string[]): boolean => {
+    const thereIsANameMismatch = fareTriangleData.fareStages.some((fs) => {
+        return !fareZoneNames.includes(fs.stageName);
+    });
+
+    return thereIsANameMismatch;
+};
+
+const getStageCountMismatchError = () => {
+    const errors: ErrorInfo[] = [
+        {
+            id: errorId,
+            errorMessage:
+                'The number of fare stages of your updated fares triangle do not match the one you have previously uploaded. Update your triangle, ensuring the number of fare stages match before trying to upload again',
+        },
+    ];
+
+    return errors;
+};
+
+const getNameMismatchError = () => {
+    const errors: ErrorInfo[] = [
+        {
+            id: errorId,
+            errorMessage:
+                'The name of one or more fare stages of your updated fares triangle does not match what you had have previously uploaded. Update your triangle, ensuring the names of fare stages match before trying to upload again',
+        },
+    ];
+
+    return errors;
+};
+
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE) as
@@ -243,93 +292,34 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (fileContents) {
-            const uuid = getUuidFromSession(req);
+            const uuid = ticket.uuid;
+
+            const fareZoneNames = getNamesOfFareZones(ticket);
 
             const fareTriangleData = faresTriangleDataMapper(fileContents, req, res, poundsOrPence as string);
 
-            if (!fareTriangleData) {
+            if (!fareTriangleData || !fareZoneNames) {
                 return;
             }
 
-            // for singles
-            if ('fareZones' in ticket) {
-                // check to see if the the number of fare stages does not match
-                if (fareTriangleData.fareStages.length !== ticket.fareZones.length) {
-                    const errors: ErrorInfo[] = [
-                        {
-                            id: errorId,
-                            errorMessage:
-                                'The number of fare stages of your updated fares triangle do not match the one you have previously uploaded. Update your triangle, ensuring the number of fare stages match before trying to upload again',
-                        },
-                    ];
+            let errors;
 
-                    setCsvUploadAttributeAndRedirect(req, res, errors, fields.poundsOrPence as string);
-
-                    return;
-                }
-
-                // check to see if the name of the fare stages do not match
-                const thereIsANameMismatch = fareTriangleData.fareStages.some((fs) => {
-                    ticket.fareZones.some((fz) => fz.name !== fs.stageName);
-                });
-
-                if (thereIsANameMismatch) {
-                    const errors: ErrorInfo[] = [
-                        {
-                            id: errorId,
-                            errorMessage:
-                                'The number of fare stages of your updated fares triangle do not match the one you have previously uploaded. Update your triangle, ensuring the number of fare stages match before trying to upload again',
-                        },
-                    ];
-
-                    setCsvUploadAttributeAndRedirect(req, res, errors, fields.poundsOrPence as string);
-
-                    return;
-                }
+            // check to see if the the number of fare stages does not match
+            if (fareTriangleData.fareStages.length !== fareZoneNames.length) {
+                errors = getStageCountMismatchError();
             }
 
-            // for returns
-            if ('inboundFareZones' in ticket && 'outboundFareZones' in ticket) {
-                const combinedFareZones = ticket.outboundFareZones.concat(ticket.inboundFareZones);
+            const thereIsANameMismatch = checkFareStageNames(fareTriangleData, fareZoneNames);
 
-                const fareZoneNames = combinedFareZones.map((x) => x.name);
+            if (thereIsANameMismatch) {
+                errors = getNameMismatchError();
+            }
 
-                const uniqueFareZoneNames = [...new Set(fareZoneNames)];
+            // check to see if we had errors
+            if (errors !== undefined) {
+                setCsvUploadAttributeAndRedirect(req, res, errors, fields.poundsOrPence as string);
 
-                // check to see if the the number of fare stages does not match
-                if (fareTriangleData.fareStages.length !== uniqueFareZoneNames.length) {
-                    const errors: ErrorInfo[] = [
-                        {
-                            id: errorId,
-                            errorMessage:
-                                'The number of fare stages of your updated fares triangle do not match the one you have previously uploaded. Update your triangle, ensuring the number of fare stages match before trying to upload again',
-                        },
-                    ];
-
-                    setCsvUploadAttributeAndRedirect(req, res, errors, fields.poundsOrPence as string);
-
-                    return;
-                }
-
-                // check to see if the name of the fare stages do not match
-
-                const thereIsANameMismatch = fareTriangleData.fareStages.some((fs) => {
-                    uniqueFareZoneNames.some((fz) => fz !== fs.stageName);
-                });
-
-                if (thereIsANameMismatch) {
-                    const errors: ErrorInfo[] = [
-                        {
-                            id: errorId,
-                            errorMessage:
-                                'The number of fare stages of your updated fares triangle do not match the one you have previously uploaded. Update your triangle, ensuring the number of fare stages match before trying to upload again',
-                        },
-                    ];
-
-                    setCsvUploadAttributeAndRedirect(req, res, errors, fields.poundsOrPence as string);
-
-                    return;
-                }
+                return;
             }
 
             await putDataInS3(fileContents, `${uuid}.csv`, false);
@@ -338,13 +328,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'csv' });
             updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
-
-            // const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
-
-            // if (directionAttribute && 'inboundDirection' in directionAttribute && directionAttribute.inboundDirection) {
-            //     redirectTo(res, '/outboundMatching');
-            //     return;
-            // }
 
             redirectTo(
                 res,
