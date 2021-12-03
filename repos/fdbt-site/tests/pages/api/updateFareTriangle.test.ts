@@ -4,7 +4,7 @@ import { ReturnTicket, SingleTicket, WithIds } from '../../../shared/matchingJso
 import { expectedNonCircularReturnTicket, expectedSingleTicket } from '../../testData/mockData';
 
 describe('test logic in helper functions', () => {
-    it('getNamesOfFareZones returns array of fare zone names for single tickets', async () => {
+    it('getNamesOfFareZones returns array of fare zone names for single tickets', () => {
         const ticket: WithIds<SingleTicket> = expectedSingleTicket;
         const expectedResult = [
             'Acomb Green Lane',
@@ -19,7 +19,7 @@ describe('test logic in helper functions', () => {
         expect(result).toEqual(expectedResult);
     });
 
-    it('getNamesOfFareZones returns array of fare zone names for return tickets', async () => {
+    it('getNamesOfFareZones returns array of fare zone names for return tickets', () => {
         const ticket: WithIds<ReturnTicket> = expectedNonCircularReturnTicket;
         const expectedResult = [
             'Acomb Green Lane',
@@ -34,7 +34,7 @@ describe('test logic in helper functions', () => {
         expect(result).toEqual(expectedResult);
     });
 
-    it('ensures the thereIsAFareStageNameMismatch function returns false when there is no mismatch', async () => {
+    it('ensures the thereIsAFareStageNameMismatch function returns false when there is no mismatch', () => {
         const fareTriangleData: UserFareStages = {
             fareStages: [
                 {
@@ -59,7 +59,7 @@ describe('test logic in helper functions', () => {
         expect(result).toBe(false);
     });
 
-    it('ensures the thereIsAFareStageNameMismatch function returns true when there is no mismatch', async () => {
+    it('ensures the thereIsAFareStageNameMismatch function returns true when there is no mismatch', () => {
         const fareTriangleData: UserFareStages = {
             fareStages: [
                 {

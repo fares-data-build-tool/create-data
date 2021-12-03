@@ -40,21 +40,17 @@ export const thereIsAFareStageNameMismatch = (fareTriangleData: UserFareStages, 
     return thereIsANameMismatch;
 };
 
-const stageCountMismatchError: ErrorInfo[] = [
-    {
-        id: errorId,
-        errorMessage:
-            'The number of fare stages of your updated fares triangle do not match the one you have previously uploaded. Update your triangle, ensuring the number of fare stages match before trying to upload again',
-    },
-];
+const stageCountMismatchError: ErrorInfo = {
+    id: errorId,
+    errorMessage:
+        'The number of fare stages of your updated fares triangle do not match the one you have previously uploaded. Update your triangle, ensuring the number of fare stages match before trying to upload again',
+};
 
-const nameMismatchError: ErrorInfo[] = [
-    {
-        id: errorId,
-        errorMessage:
-            'The name of one or more fare stages of your updated fares triangle does not match what you had have previously uploaded. Update your triangle, ensuring the names of fare stages match before trying to upload again',
-    },
-];
+const nameMismatchError: ErrorInfo = {
+    id: errorId,
+    errorMessage:
+        'The name of one or more fare stages of your updated fares triangle does not match what you had have previously uploaded. Update your triangle, ensuring the names of fare stages match before trying to upload again',
+};
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -104,21 +100,19 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
-            let errors;
-
-            // check to see if the the number of fare stages does not match
-            if (fareTriangleData.fareStages.length !== fareZoneNames.length) {
-                errors = stageCountMismatchError;
-            }
+            const errors: ErrorInfo[] = [];
 
             const thereIsANameMismatch = thereIsAFareStageNameMismatch(fareTriangleData, fareZoneNames);
 
-            if (thereIsANameMismatch) {
-                errors = nameMismatchError;
+            // check to see if the the number of fare stages does not match
+            if (fareTriangleData.fareStages.length !== fareZoneNames.length) {
+                errors.push(stageCountMismatchError);
+            } else if (thereIsANameMismatch) {
+                errors.push(nameMismatchError);
             }
 
             // check to see if we had errors
-            if (errors !== undefined) {
+            if (errors.length > 0) {
                 setCsvUploadAttributeAndRedirect(req, res, errors, fields.poundsOrPence as string);
 
                 return;
