@@ -15,13 +15,7 @@ import { faresTriangleDataMapper, setCsvUploadAttributeAndRedirect } from './csv
 
 const errorId = 'csv-upload';
 
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};
-
-const getNamesOfFareZones = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>) => {
+export const getNamesOfFareZones = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>) => {
     let fareZoneNames;
 
     if ('fareZones' in ticket) {
@@ -38,7 +32,7 @@ const getNamesOfFareZones = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicke
     return fareZoneNames;
 };
 
-const checkFareStageNames = (fareTriangleData: UserFareStages, fareZoneNames: string[]): boolean => {
+export const thereIsAFareStageNameMismatch = (fareTriangleData: UserFareStages, fareZoneNames: string[]): boolean => {
     const thereIsANameMismatch = fareTriangleData.fareStages.some((fs) => {
         return !fareZoneNames.includes(fs.stageName);
     });
@@ -46,29 +40,21 @@ const checkFareStageNames = (fareTriangleData: UserFareStages, fareZoneNames: st
     return thereIsANameMismatch;
 };
 
-const getStageCountMismatchError = () => {
-    const errors: ErrorInfo[] = [
-        {
-            id: errorId,
-            errorMessage:
-                'The number of fare stages of your updated fares triangle do not match the one you have previously uploaded. Update your triangle, ensuring the number of fare stages match before trying to upload again',
-        },
-    ];
+const stageCountMismatchError: ErrorInfo[] = [
+    {
+        id: errorId,
+        errorMessage:
+            'The number of fare stages of your updated fares triangle do not match the one you have previously uploaded. Update your triangle, ensuring the number of fare stages match before trying to upload again',
+    },
+];
 
-    return errors;
-};
-
-const getNameMismatchError = () => {
-    const errors: ErrorInfo[] = [
-        {
-            id: errorId,
-            errorMessage:
-                'The name of one or more fare stages of your updated fares triangle does not match what you had have previously uploaded. Update your triangle, ensuring the names of fare stages match before trying to upload again',
-        },
-    ];
-
-    return errors;
-};
+const nameMismatchError: ErrorInfo[] = [
+    {
+        id: errorId,
+        errorMessage:
+            'The name of one or more fare stages of your updated fares triangle does not match what you had have previously uploaded. Update your triangle, ensuring the names of fare stages match before trying to upload again',
+    },
+];
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -122,13 +108,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             // check to see if the the number of fare stages does not match
             if (fareTriangleData.fareStages.length !== fareZoneNames.length) {
-                errors = getStageCountMismatchError();
+                errors = stageCountMismatchError;
             }
 
-            const thereIsANameMismatch = checkFareStageNames(fareTriangleData, fareZoneNames);
+            const thereIsANameMismatch = thereIsAFareStageNameMismatch(fareTriangleData, fareZoneNames);
 
             if (thereIsANameMismatch) {
-                errors = getNameMismatchError();
+                errors = nameMismatchError;
             }
 
             // check to see if we had errors
