@@ -37,9 +37,11 @@ const UserDataUploadComponent = ({
                         <label htmlFor="csv-upload">
                             <h1 className="govuk-heading-l">{csvUploadTitle}</h1>
                         </label>
-                        <span className="govuk-hint" id="csv-upload-hint">
+
+                        <span className="govuk-hint govuk-!-margin-bottom-7" id="csv-upload-hint">
                             {csvUploadHintText}
                         </span>
+
                         {showPriceOption && (
                             <FormGroupWrapper errors={errors} errorIds={['pounds']}>
                                 <fieldset className="govuk-fieldset">
@@ -48,6 +50,7 @@ const UserDataUploadComponent = ({
                                             Are prices in pounds or pence?
                                         </h2>
                                     </legend>
+
                                     <FormElementWrapper
                                         errors={errors}
                                         errorId="pounds"
@@ -68,6 +71,7 @@ const UserDataUploadComponent = ({
                                                     Pounds, for example 2.50
                                                 </label>
                                             </div>
+
                                             <div className="govuk-radios__item">
                                                 <input
                                                     className="govuk-radios__input"
@@ -77,6 +81,7 @@ const UserDataUploadComponent = ({
                                                     value="pence"
                                                     defaultChecked={poundsOrPence === 'pence'}
                                                 />
+
                                                 <label className="govuk-label govuk-radios__label" htmlFor="pence">
                                                     Pence, for example 250
                                                 </label>

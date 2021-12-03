@@ -611,6 +611,7 @@ export interface ConfirmationElement {
 export interface ProductDetailsElement {
     name: string;
     content: string[];
+    editLink?: string;
     id?: string;
 }
 

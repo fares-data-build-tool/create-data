@@ -215,6 +215,11 @@ export interface SingleTicket extends BasePointToPointTicket {
     journeyDirection: string;
 }
 
+export interface ProductAndServiceId {
+    productId: string;
+    serviceId: string;
+}
+
 export interface ReturnTicket extends BasePointToPointTicket {
     type: 'return';
     inboundFareZones: FareZone[];
