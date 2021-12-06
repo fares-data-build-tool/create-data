@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { putDataInS3 } from '../../data/s3';
 import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
-import { redirectToError, redirectTo } from '../../utils/apiUtils';
+import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import {
     INPUT_METHOD_ATTRIBUTE,
     CSV_UPLOAD_ATTRIBUTE,
@@ -12,6 +12,8 @@ import { getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload'
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { WithIds, ReturnTicket, SingleTicket } from '../../../shared/matchingJsonTypes';
 import { faresTriangleDataMapper, setCsvUploadAttributeAndRedirect } from './csvUpload';
+import { putUserDataInProductsBucket } from 'src/utils/apiUtils/userData';
+import { getFareZones } from 'src/utils/apiUtils/matching';
 
 const errorId = 'csv-upload';
 
@@ -54,6 +56,8 @@ const nameMismatchError: ErrorInfo = {
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
+        const noc = getAndValidateNoc(req, res);
+
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE) as
             | WithIds<SingleTicket>
             | WithIds<ReturnTicket>;
@@ -118,12 +122,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
-            await putDataInS3(fileContents, `${uuid}.csv`, false);
+            // update the fare zones on the matching json
+            ticket.fareZones = getFareZones(fareTriangleData, matchingFareZones);
 
-            await putDataInS3(fareTriangleData, `${uuid}.json`, true);
-
-            updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'csv' });
-            updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
+            // put the now updated matching json into s3
+            // overriding the existing object
+            await putUserDataInProductsBucket(ticket, uuid, noc);
 
             redirectTo(
                 res,
