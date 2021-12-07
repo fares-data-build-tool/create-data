@@ -1,19 +1,14 @@
 import { NextApiResponse } from 'next';
-import { putDataInS3 } from '../../data/s3';
 import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
-import {
-    INPUT_METHOD_ATTRIBUTE,
-    CSV_UPLOAD_ATTRIBUTE,
-    MATCHING_JSON_ATTRIBUTE,
-    PRODUCT_AND_SERVICE_ID_ATTRIBUTE,
-} from '../../constants/attributes';
+import { MATCHING_JSON_ATTRIBUTE, PRODUCT_AND_SERVICE_ID_ATTRIBUTE } from '../../constants/attributes';
 import { getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute } from '../../utils/sessions';
 import { WithIds, ReturnTicket, SingleTicket } from '../../../shared/matchingJsonTypes';
 import { faresTriangleDataMapper, setCsvUploadAttributeAndRedirect } from './csvUpload';
-import { putUserDataInProductsBucket } from 'src/utils/apiUtils/userData';
-import { getFareZones } from 'src/utils/apiUtils/matching';
+import { putUserDataInProductsBucket } from '../../utils/apiUtils/userData';
+import { getFareZones } from '../../utils/apiUtils/matching';
+import { MatchingFareZones } from '../../interfaces/matchingInterface';
 
 const errorId = 'csv-upload';
 
@@ -118,12 +113,34 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             // check to see if we had errors
             if (errors.length > 0) {
                 setCsvUploadAttributeAndRedirect(req, res, errors, fields.poundsOrPence as string);
-
                 return;
             }
 
             // update the fare zones on the matching json
-            ticket.fareZones = getFareZones(fareTriangleData, matchingFareZones);
+            if ('fareZones' in ticket) {
+                ticket.fareZones = getFareZones(
+                    fareTriangleData,
+                    ticket.fareZones.reduce<MatchingFareZones>((matchingFareZones, currentFareZone) => {
+                        matchingFareZones[currentFareZone.name] = currentFareZone;
+                        return matchingFareZones;
+                    }, {}),
+                );
+            } else {
+                ticket.inboundFareZones = getFareZones(
+                    fareTriangleData,
+                    ticket.inboundFareZones.reduce<MatchingFareZones>((matchingFareZones, currentFareZone) => {
+                        matchingFareZones[currentFareZone.name] = currentFareZone;
+                        return matchingFareZones;
+                    }, {}),
+                );
+                ticket.outboundFareZones = getFareZones(
+                    fareTriangleData,
+                    ticket.outboundFareZones.reduce<MatchingFareZones>((matchingFareZones, currentFareZone) => {
+                        matchingFareZones[currentFareZone.name] = currentFareZone;
+                        return matchingFareZones;
+                    }, {}),
+                );
+            }
 
             // put the now updated matching json into s3
             // overriding the existing object
