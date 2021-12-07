@@ -39,17 +39,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
     const errors: ErrorInfo[] = csvUploadAttribute?.errors ?? [];
     const poundsOrPence = csvUploadAttribute?.poundsOrPence ?? null;
 
-    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
-
-    let csvUploadApiRoute = '/api/csvUpload';
-
-    if (ticket !== undefined) {
-        csvUploadApiRoute = '/api/updateFareTriangle';
-    }
-
     return {
         props: {
-            csvUploadApiRoute: csvUploadApiRoute,
+            csvUploadApiRoute: '/api/csvUpload',
             csvUploadTitle: 'Upload fares triangle',
             csvUploadHintText:
                 'Upload a fares triangle as a .csv or MS Excel file. Refer to the help documents section to download a help file or a fares triangle template.',

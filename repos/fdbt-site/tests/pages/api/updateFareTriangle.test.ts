@@ -3,7 +3,9 @@ import { UserFareStages } from '../../../src/interfaces/index';
 import { ReturnTicket, SingleTicket, WithIds } from '../../../shared/matchingJsonTypes';
 import { expectedNonCircularReturnTicket, expectedSingleTicket } from '../../testData/mockData';
 
-describe('test logic in helper functions', () => {
+describe('updateFareTriangle', () => {});
+
+describe('helper functions', () => {
     it('getNamesOfFareZones returns array of fare zone names for single tickets', () => {
         const ticket: WithIds<SingleTicket> = expectedSingleTicket;
         const expectedResult = [

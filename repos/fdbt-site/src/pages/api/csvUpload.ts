@@ -4,10 +4,20 @@ import Papa from 'papaparse';
 import { putDataInS3 } from '../../data/s3';
 import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
 import { redirectToError, redirectTo, getUuidFromSession } from '../../utils/apiUtils';
-import { INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE, DIRECTION_ATTRIBUTE } from '../../constants/attributes';
+import {
+    INPUT_METHOD_ATTRIBUTE,
+    CSV_UPLOAD_ATTRIBUTE,
+    DIRECTION_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+} from '../../constants/attributes';
 import { getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { ReturnTicket, SingleTicket, WithIds } from 'shared/matchingJsonTypes';
+import { getFareZones } from 'src/utils/apiUtils/matching';
+import { MatchingFareZones } from 'src/interfaces/matchingInterface';
+import { putUserDataInProductsBucketWithFilePath } from 'src/utils/apiUtils/userData';
 
 const errorId = 'csv-upload';
 
@@ -36,6 +46,7 @@ export const setCsvUploadAttributeAndRedirect = (
     poundsOrPence?: string,
 ): void => {
     updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors, poundsOrPence });
+
     redirectTo(res, '/csvUpload');
 };
 
@@ -198,15 +209,54 @@ export const faresTriangleDataMapper = (
     return mappedFareTriangle;
 };
 
+export const getNamesOfFareZones = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>) => {
+    let fareZoneNames;
+
+    if ('fareZones' in ticket) {
+        fareZoneNames = ticket.fareZones.map((fz) => fz.name);
+    } else if ('inboundFareZones' in ticket && 'outboundFareZones' in ticket) {
+        const combinedFareZones = ticket.outboundFareZones.concat(ticket.inboundFareZones);
+
+        const combinedNamesOnly = combinedFareZones.map((x) => x.name);
+
+        // get rid of duplicates
+        fareZoneNames = [...new Set(combinedNamesOnly)];
+    }
+
+    return fareZoneNames;
+};
+
+export const thereIsAFareStageNameMismatch = (fareTriangleData: UserFareStages, fareZoneNames: string[]): boolean => {
+    const thereIsANameMismatch = fareTriangleData.fareStages.some((fs) => {
+        return !fareZoneNames.includes(fs.stageName);
+    });
+
+    return thereIsANameMismatch;
+};
+
+const stageCountMismatchError: ErrorInfo = {
+    id: errorId,
+    errorMessage:
+        'The number of fare stages of your updated fares triangle do not match the one you have previously uploaded. Update your triangle, ensuring the number of fare stages match before trying to upload again',
+};
+
+const nameMismatchError: ErrorInfo = {
+    id: errorId,
+    errorMessage:
+        'The name of one or more fare stages of your updated fares triangle does not match what you had have previously uploaded. Update your triangle, ensuring the names of fare stages match before trying to upload again',
+};
+
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
+
         const { fields } = formData;
 
         if (!fields?.poundsOrPence) {
             const errors: ErrorInfo[] = [
                 { id: 'pounds', errorMessage: 'You must select whether the prices are in pounds or pence' },
             ];
+
             setCsvUploadAttributeAndRedirect(req, res, errors);
 
             return;
@@ -218,32 +268,118 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (fileError) {
             const errors: ErrorInfo[] = [{ id: errorId, errorMessage: fileError }];
+
             setCsvUploadAttributeAndRedirect(req, res, errors, fields.poundsOrPence as string);
+
             return;
         }
 
         if (fileContents) {
-            const uuid = getUuidFromSession(req);
-            await putDataInS3(fileContents, `${uuid}.csv`, false);
-            const fareTriangleData = faresTriangleDataMapper(fileContents, req, res, poundsOrPence as string);
-            if (!fareTriangleData) {
-                return;
+            const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE) as
+                | WithIds<SingleTicket>
+                | WithIds<ReturnTicket>;
+
+            const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+            // check to see if we are in edit mode
+            if (ticket !== undefined && matchingJsonMetaData !== undefined) {
+                const fareZoneNames = getNamesOfFareZones(ticket);
+
+                const fareTriangleData = faresTriangleDataMapper(fileContents, req, res, poundsOrPence as string);
+
+                if (!fareTriangleData || !fareZoneNames) {
+                    return;
+                }
+
+                const errors: ErrorInfo[] = [];
+
+                const thereIsANameMismatch = thereIsAFareStageNameMismatch(fareTriangleData, fareZoneNames);
+
+                // check to see if the the number of fare stages does not match
+                if (fareTriangleData.fareStages.length !== fareZoneNames.length) {
+                    errors.push(stageCountMismatchError);
+                } else if (thereIsANameMismatch) {
+                    errors.push(nameMismatchError);
+                }
+
+                // check to see if we had errors
+                if (errors.length > 0) {
+                    setCsvUploadAttributeAndRedirect(req, res, errors, fields.poundsOrPence as string);
+                    return;
+                }
+
+                // clear the errors from the session
+                updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
+
+                // update the fare zones on the matching json
+                if ('fareZones' in ticket) {
+                    ticket.fareZones = getFareZones(
+                        fareTriangleData,
+                        ticket.fareZones.reduce<MatchingFareZones>((matchingFareZones, currentFareZone) => {
+                            matchingFareZones[currentFareZone.name] = currentFareZone;
+                            return matchingFareZones;
+                        }, {}),
+                    );
+                } else {
+                    ticket.inboundFareZones = getFareZones(
+                        fareTriangleData,
+                        ticket.inboundFareZones.reduce<MatchingFareZones>((matchingFareZones, currentFareZone) => {
+                            matchingFareZones[currentFareZone.name] = currentFareZone;
+                            return matchingFareZones;
+                        }, {}),
+                    );
+
+                    ticket.outboundFareZones = getFareZones(
+                        fareTriangleData,
+                        ticket.outboundFareZones.reduce<MatchingFareZones>((matchingFareZones, currentFareZone) => {
+                            matchingFareZones[currentFareZone.name] = currentFareZone;
+                            return matchingFareZones;
+                        }, {}),
+                    );
+                }
+
+                // put the now updated matching json into s3
+                // overriding the existing object
+                await putUserDataInProductsBucketWithFilePath(ticket, matchingJsonMetaData.matchingJsonLink);
+
+                redirectTo(
+                    res,
+                    `/products/productDetails?productId=${matchingJsonMetaData?.productId}&serviceId=${matchingJsonMetaData?.serviceId}`,
+                );
+            } else {
+                const uuid = getUuidFromSession(req);
+
+                await putDataInS3(fileContents, `${uuid}.csv`, false);
+
+                const fareTriangleData = faresTriangleDataMapper(fileContents, req, res, poundsOrPence as string);
+
+                if (!fareTriangleData) {
+                    return;
+                }
+
+                await putDataInS3(fareTriangleData, `${uuid}.json`, true);
+
+                updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'csv' });
+
+                updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
+
+                const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
+
+                if (
+                    directionAttribute &&
+                    'inboundDirection' in directionAttribute &&
+                    directionAttribute.inboundDirection
+                ) {
+                    redirectTo(res, '/outboundMatching');
+                    return;
+                }
+
+                redirectTo(res, '/matching');
             }
-            await putDataInS3(fareTriangleData, `${uuid}.json`, true);
-
-            updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'csv' });
-            updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
-
-            const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
-
-            if (directionAttribute && 'inboundDirection' in directionAttribute && directionAttribute.inboundDirection) {
-                redirectTo(res, '/outboundMatching');
-                return;
-            }
-            redirectTo(res, '/matching');
         }
     } catch (error) {
         const message = 'There was a problem uploading the CSV:';
+
         redirectToError(res, message, 'api.csvUpload', error);
     }
 };
