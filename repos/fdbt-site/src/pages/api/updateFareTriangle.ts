@@ -10,6 +10,12 @@ import { putUserDataInProductsBucket } from '../../utils/apiUtils/userData';
 import { getFareZones } from '../../utils/apiUtils/matching';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
 
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
+
 const errorId = 'csv-upload';
 
 export const getNamesOfFareZones = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>) => {
