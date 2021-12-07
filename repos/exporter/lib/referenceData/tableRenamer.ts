@@ -19,7 +19,7 @@ export const checkReferenceDataImportHasCompleted = async (
     const [[newCount]] = (await connection.execute(queryInputForNewTable)) as [[{ count: number }], unknown];
 
     if (newCount.count === 0) {
-        throw new Error(`Reference data import has failed with zero rows in ${tableName}`);
+        throw new Error(`Reference data import has failed with zero rows in ${tableName}New`);
     }
 
     const queryInputForOldTable = `SELECT COUNT(1) as count FROM ${tableName}`;

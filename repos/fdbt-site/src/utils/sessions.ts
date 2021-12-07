@@ -7,7 +7,7 @@ import {
 } from './../constants/attributes';
 import * as attributes from '../constants/attributes';
 import {
-    PRODUCT_AND_SERVICE_ID_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     POINT_TO_POINT_PRODUCT_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
@@ -130,7 +130,7 @@ import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interf
 import {
     FromDb,
     OperatorDetails,
-    ProductAndServiceId,
+    MatchingJsonMetaData,
     TicketWithIds,
     UnassignedStop,
 } from '../../shared/matchingJsonTypes';
@@ -163,7 +163,7 @@ export interface SessionAttributeTypes {
     [NUMBER_OF_PRODUCTS_ATTRIBUTE]: number;
     [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
     [MATCHING_JSON_ATTRIBUTE]: TicketWithIds;
-    [PRODUCT_AND_SERVICE_ID_ATTRIBUTE]: ProductAndServiceId;
+    [MATCHING_JSON_META_DATA_ATTRIBUTE]: MatchingJsonMetaData;
     [PASSENGER_TYPE_ATTRIBUTE]: PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;

@@ -14,7 +14,7 @@ import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
 import BackButton from '../../components/BackButton';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { MATCHING_JSON_ATTRIBUTE, PRODUCT_AND_SERVICE_ID_ATTRIBUTE } from '../../../src/constants/attributes';
+import { MATCHING_JSON_ATTRIBUTE, MATCHING_JSON_META_DATA_ATTRIBUTE } from '../../../src/constants/attributes';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -142,7 +142,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             throw new Error(`Expected string type for serviceId, received: ${serviceId}`);
         }
 
-        updateSessionAttribute(ctx.req, PRODUCT_AND_SERVICE_ID_ATTRIBUTE, { productId, serviceId });
+        updateSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE, { productId, serviceId, matchingJsonLink });
 
         const pointToPointService = await getBodsServiceByNocAndId(noc, serviceId);
 

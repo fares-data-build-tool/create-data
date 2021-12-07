@@ -215,9 +215,10 @@ export interface SingleTicket extends BasePointToPointTicket {
     journeyDirection: string;
 }
 
-export interface ProductAndServiceId {
+export interface MatchingJsonMetaData {
     productId: string;
-    serviceId: string;
+    serviceId?: string;
+    matchingJsonLink: string;
 }
 
 export interface ReturnTicket extends BasePointToPointTicket {

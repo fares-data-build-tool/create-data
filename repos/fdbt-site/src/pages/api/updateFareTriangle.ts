@@ -1,12 +1,16 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
-import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
-import { MATCHING_JSON_ATTRIBUTE, PRODUCT_AND_SERVICE_ID_ATTRIBUTE } from '../../constants/attributes';
+import { redirectToError, redirectTo } from '../../utils/apiUtils';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    CSV_UPLOAD_ATTRIBUTE,
+} from '../../constants/attributes';
 import { getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
-import { getSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { WithIds, ReturnTicket, SingleTicket } from '../../../shared/matchingJsonTypes';
 import { faresTriangleDataMapper, setCsvUploadAttributeAndRedirect } from './csvUpload';
-import { putUserDataInProductsBucket } from '../../utils/apiUtils/userData';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 import { getFareZones } from '../../utils/apiUtils/matching';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
 
@@ -57,16 +61,14 @@ const nameMismatchError: ErrorInfo = {
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const noc = getAndValidateNoc(req, res);
-
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE) as
             | WithIds<SingleTicket>
             | WithIds<ReturnTicket>;
 
-        const productAndServiceId = getSessionAttribute(req, PRODUCT_AND_SERVICE_ID_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
-        if (ticket === undefined) {
-            throw new Error('Could not find the matching json in the session');
+        if (ticket === undefined || matchingJsonMetaData === undefined) {
+            throw new Error('Could not find the matching json or its meta data in the session');
         }
 
         const formData = await getFormData(req);
@@ -95,8 +97,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (fileContents) {
-            const uuid = ticket.uuid;
-
             const fareZoneNames = getNamesOfFareZones(ticket);
 
             const fareTriangleData = faresTriangleDataMapper(fileContents, req, res, poundsOrPence as string);
@@ -122,6 +122,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
+            // clear the errors from the session
+            updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
+
             // update the fare zones on the matching json
             if ('fareZones' in ticket) {
                 ticket.fareZones = getFareZones(
@@ -139,6 +142,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         return matchingFareZones;
                     }, {}),
                 );
+
                 ticket.outboundFareZones = getFareZones(
                     fareTriangleData,
                     ticket.outboundFareZones.reduce<MatchingFareZones>((matchingFareZones, currentFareZone) => {
@@ -150,11 +154,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             // put the now updated matching json into s3
             // overriding the existing object
-            await putUserDataInProductsBucket(ticket, uuid, noc);
+            await putUserDataInProductsBucketWithFilePath(ticket, matchingJsonMetaData.matchingJsonLink);
 
             redirectTo(
                 res,
-                `/products/productDetails?productId=${productAndServiceId?.productId}&serviceId=${productAndServiceId?.serviceId}`,
+                `/products/productDetails?productId=${matchingJsonMetaData?.productId}&serviceId=${matchingJsonMetaData?.serviceId}`,
             );
         }
     } catch (error) {

@@ -112,4 +112,4 @@ export const CSV_ZONE_FILE_NAME = 'fdbt-csv-zone-file-name';
 
 export const MATCHING_JSON_ATTRIBUTE = 'fdbt-matching-json';
 
-export const PRODUCT_AND_SERVICE_ID_ATTRIBUTE = 'fdbt-product-and-service-id';
+export const MATCHING_JSON_META_DATA_ATTRIBUTE = 'fdbt-product-and-service-id';
