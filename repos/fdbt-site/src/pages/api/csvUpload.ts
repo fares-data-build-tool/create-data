@@ -347,6 +347,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     res,
                     `/products/productDetails?productId=${matchingJsonMetaData?.productId}&serviceId=${matchingJsonMetaData?.serviceId}`,
                 );
+                return;
             } else {
                 const uuid = getUuidFromSession(req);
 
@@ -370,6 +371,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
 
                 redirectTo(res, '/matching');
+                return;
             }
         }
     } catch (error) {
