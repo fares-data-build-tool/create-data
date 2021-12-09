@@ -226,13 +226,10 @@ export const getNamesOfFareZones = (ticket: WithIds<SingleTicket> | WithIds<Retu
     return fareZoneNames;
 };
 
-export const thereIsAFareStageNameMismatch = (fareTriangleData: UserFareStages, fareZoneNames: string[]): boolean => {
-    const thereIsANameMismatch = fareTriangleData.fareStages.some((fs) => {
+export const thereIsAFareStageNameMismatch = (fareTriangleData: UserFareStages, fareZoneNames: string[]): boolean =>
+    fareTriangleData.fareStages.some((fs) => {
         return !fareZoneNames.includes(fs.stageName);
     });
-
-    return thereIsANameMismatch;
-};
 
 const stageCountMismatchError: ErrorInfo = {
     id: errorId,
