@@ -14,10 +14,10 @@ import {
 import { getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { ReturnTicket, SingleTicket, WithIds } from 'shared/matchingJsonTypes';
-import { getFareZones } from 'src/utils/apiUtils/matching';
-import { MatchingFareZones } from 'src/interfaces/matchingInterface';
-import { putUserDataInProductsBucketWithFilePath } from 'src/utils/apiUtils/userData';
+import { ReturnTicket, SingleTicket, WithIds } from '../../../shared/matchingJsonTypes';
+import { getFareZones } from '../../../src/utils/apiUtils/matching';
+import { MatchingFareZones } from '../../../src/interfaces/matchingInterface';
+import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
 
 const errorId = 'csv-upload';
 

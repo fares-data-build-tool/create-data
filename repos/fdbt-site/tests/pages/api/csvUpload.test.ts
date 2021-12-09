@@ -5,11 +5,16 @@ import * as virusCheck from '../../../src/utils/apiUtils/virusScan';
 import * as csvData from '../../testData/csvFareTriangleData';
 import * as s3 from '../../../src/data/s3';
 import * as sessions from '../../../src/utils/sessions';
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import {
+    expectedNonCircularReturnTicket,
+    expectedSingleTicket,
+    getMockRequestAndResponse,
+} from '../../testData/mockData';
 import logger from '../../../src/utils/logger';
 import { containsDuplicateFareStages } from '../../../src/pages/api/csvUpload';
-import { ErrorInfo } from '../../../src/interfaces';
+import { ErrorInfo, UserFareStages } from '../../../src/interfaces';
 import { CSV_UPLOAD_ATTRIBUTE, DIRECTION_ATTRIBUTE } from '../../../src/constants/attributes';
+import { ReturnTicket, SingleTicket, WithIds } from '../../../shared/matchingJsonTypes';
 
 jest.spyOn(s3, 'putDataInS3');
 
@@ -24,11 +29,13 @@ describe('csvUpload', () => {
 
     it('should return 302 redirect to /csvUpload with an error when the file contains duplicate fare stages', async () => {
         const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'Fare stage names cannot be the same' }];
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -57,6 +64,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, {
             errors: mockError,
             poundsOrPence: 'pence',
@@ -65,11 +73,13 @@ describe('csvUpload', () => {
 
     it('should return 302 redirect to /csvUpload when no file is attached', async () => {
         const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'Select a CSV file to upload' }];
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 2,
@@ -98,10 +108,12 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, {
             errors: mockError,
             poundsOrPence: 'pence',
         });
+
         expect(loggerSpy).toBeCalledWith('', { context: 'api.utils.processFileUpload', message: 'no file attached' });
     });
 
@@ -109,11 +121,13 @@ describe('csvUpload', () => {
         const mockError: ErrorInfo[] = [
             { id: 'csv-upload', errorMessage: 'The selected file must be smaller than 5MB' },
         ];
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999999999999999,
@@ -142,10 +156,12 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, {
             errors: mockError,
             poundsOrPence: 'pence',
         });
+
         expect(loggerSpy).toBeCalledWith('', {
             context: 'api.utils.validateFile',
             maxSize: 5242880,
@@ -158,11 +174,13 @@ describe('csvUpload', () => {
         const mockError: ErrorInfo[] = [
             { id: 'csv-upload', errorMessage: 'The selected file must be a .csv or .xlsx' },
         ];
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -191,10 +209,12 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, {
             errors: mockError,
             poundsOrPence: 'pence',
         });
+
         expect(loggerSpy).toBeCalledWith('', {
             context: 'api.utils.validateFile',
             message: 'file not of allowed type',
@@ -208,6 +228,7 @@ describe('csvUpload', () => {
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -244,6 +265,7 @@ describe('csvUpload', () => {
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -280,6 +302,7 @@ describe('csvUpload', () => {
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -326,6 +349,7 @@ describe('csvUpload', () => {
                 },
             },
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -354,6 +378,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/outboundMatching',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
     });
 
@@ -369,6 +394,7 @@ describe('csvUpload', () => {
                 },
             },
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -397,6 +423,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/outboundMatching',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
     });
 
@@ -404,11 +431,13 @@ describe('csvUpload', () => {
         const mockError: ErrorInfo[] = [
             { id: 'csv-upload', errorMessage: 'The selected file contains an invalid price' },
         ];
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -437,6 +466,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, {
             errors: mockError,
             poundsOrPence: 'pounds',
@@ -450,11 +480,13 @@ describe('csvUpload', () => {
                 errorMessage: 'The selected file contains a decimal price, all prices must be in pence',
             },
         ];
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -483,6 +515,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, {
             errors: mockError,
             poundsOrPence: 'pence',
@@ -495,6 +528,7 @@ describe('csvUpload', () => {
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -523,6 +557,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/matching',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, {
             errors: [],
         });
@@ -535,11 +570,13 @@ describe('csvUpload', () => {
                 errorMessage: 'Fare stage names must not be empty',
             },
         ];
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -568,6 +605,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, {
             errors: mockError,
             poundsOrPence: 'pence',
@@ -581,11 +619,13 @@ describe('csvUpload', () => {
                 errorMessage: 'At least one price must be set in the uploaded fares triangle',
             },
         ];
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -614,6 +654,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, {
             errors: mockError,
             poundsOrPence: 'pence',
@@ -626,6 +667,7 @@ describe('csvUpload', () => {
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -654,17 +696,21 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/matching',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
     });
 
     it('should return 302 redirect to /csvUpload with an error message if the file contains a virus', async () => {
         process.env.ENABLE_VIRUS_SCAN = '1';
+
         const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'The selected file contains a virus' }];
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
             uuid: {},
         });
+
         const file = {
             'csv-upload': {
                 size: 999,
@@ -693,6 +739,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, {
             errors: mockError,
             poundsOrPence: 'pence',
@@ -702,11 +749,96 @@ describe('csvUpload', () => {
     describe('containsDuplicateFareStages', () => {
         it('returns true if the array has duplicates', () => {
             const fareStagesNames: string[] = ['test', 'test', 'test2', 'test4'];
+
             expect(containsDuplicateFareStages(fareStagesNames)).toBeTruthy();
         });
+
         it('returns false if the array has no duplicates', () => {
             const fareStagesNames: string[] = ['test', 'test44', 'test2', 'test4'];
+
             expect(containsDuplicateFareStages(fareStagesNames)).toBeFalsy();
         });
+    });
+});
+
+describe('helper functions', () => {
+    it('getNamesOfFareZones returns array of fare zone names for single tickets', () => {
+        const ticket: WithIds<SingleTicket> = expectedSingleTicket;
+        const expectedResult = [
+            'Acomb Green Lane',
+            'Mattison Way',
+            'Holl Bank/Beech Ave',
+            'Blossom Street',
+            'Piccadilly (York)',
+        ];
+
+        const result = csvUpload.getNamesOfFareZones(ticket);
+
+        expect(result).toEqual(expectedResult);
+    });
+
+    it('getNamesOfFareZones returns array of fare zone names for return tickets', () => {
+        const ticket: WithIds<ReturnTicket> = expectedNonCircularReturnTicket;
+        const expectedResult = [
+            'Acomb Green Lane',
+            'Mattison Way',
+            'Holl Bank/Beech Ave',
+            'Blossom Street',
+            'Piccadilly (York)',
+        ];
+
+        const result = csvUpload.getNamesOfFareZones(ticket);
+
+        expect(result).toEqual(expectedResult);
+    });
+
+    it('ensures the thereIsAFareStageNameMismatch function returns false when there is no mismatch', () => {
+        const fareTriangleData: UserFareStages = {
+            fareStages: [
+                {
+                    stageName: 'Acomb Green Lane',
+                    prices: [],
+                },
+                {
+                    stageName: 'Mattison Way',
+                    prices: [],
+                },
+                {
+                    stageName: 'Holl Bank/Beech Ave',
+                    prices: [],
+                },
+            ],
+        };
+
+        const fareZoneNames = ['Acomb Green Lane', 'Mattison Way', 'Holl Bank/Beech Ave'];
+
+        const result = csvUpload.thereIsAFareStageNameMismatch(fareTriangleData, fareZoneNames);
+
+        expect(result).toBe(false);
+    });
+
+    it('ensures the thereIsAFareStageNameMismatch function returns true when there is no mismatch', () => {
+        const fareTriangleData: UserFareStages = {
+            fareStages: [
+                {
+                    stageName: 'Acomb Green Lane',
+                    prices: [],
+                },
+                {
+                    stageName: 'Teeside Avenue',
+                    prices: [],
+                },
+                {
+                    stageName: 'Holl Bank/Beech Ave',
+                    prices: [],
+                },
+            ],
+        };
+
+        const fareZoneNames = ['Acomb Green Lane', 'Mattison Way', 'Holl Bank/Beech Ave'];
+
+        const result = csvUpload.thereIsAFareStageNameMismatch(fareTriangleData, fareZoneNames);
+
+        expect(result).toBe(true);
     });
 });
