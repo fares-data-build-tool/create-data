@@ -209,7 +209,7 @@ export const faresTriangleDataMapper = (
     return mappedFareTriangle;
 };
 
-export const getNamesOfFareZones = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>) => {
+export const getNamesOfFareZones = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>): string[] | undefined => {
     let fareZoneNames;
 
     if ('fareZones' in ticket) {
@@ -275,6 +275,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (fileContents) {
+            const fareTriangleData = faresTriangleDataMapper(fileContents, req, res, poundsOrPence as string);
+
+            if (!fareTriangleData) {
+                return;
+            }
+
             const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE) as
                 | WithIds<SingleTicket>
                 | WithIds<ReturnTicket>;
@@ -285,9 +291,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (ticket !== undefined && matchingJsonMetaData !== undefined) {
                 const fareZoneNames = getNamesOfFareZones(ticket);
 
-                const fareTriangleData = faresTriangleDataMapper(fileContents, req, res, poundsOrPence as string);
-
-                if (!fareTriangleData || !fareZoneNames) {
+                if (!fareZoneNames) {
                     return;
                 }
 
@@ -350,12 +354,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 const uuid = getUuidFromSession(req);
 
                 await putDataInS3(fileContents, `${uuid}.csv`, false);
-
-                const fareTriangleData = faresTriangleDataMapper(fileContents, req, res, poundsOrPence as string);
-
-                if (!fareTriangleData) {
-                    return;
-                }
 
                 await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
