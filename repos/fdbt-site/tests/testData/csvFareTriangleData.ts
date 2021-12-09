@@ -79,6 +79,20 @@ export const decimalPricesTestCsv: string =
     '1.70,1.70,1.70,1.70,1,1.00,Rail Station (York),\n' +
     '1.70,1.70,1.70,1.70,1.00,1.00,1,Piccadilly (York)';
 
+export const mismatchedNameTestCsv: string =
+    'Acomb Red Lane,,,,\n' +
+    '1.10,Mattison Way,,,\n' +
+    '1.10,1.10,Holl Bank/Beech Ave,,\n' +
+    '1.70,1.70,1.10,Blossom Street,\n' +
+    '1.70,1.70,1.70,1.00,Piccadilly (York)';
+
+export const matchedNameTestCsv: string =
+    'Acomb Green Lane,,,,\n' +
+    '2.10,Mattison Way,,,\n' +
+    '2.10,1.10,Holl Bank/Beech Ave,,\n' +
+    '4.70,1.70,1.10,Blossom Street,\n' +
+    '6.70,1.70,1.70,2.00,Piccadilly (York)';
+
 export const emptyStageNameTestCsv: string =
     'Acomb Green Lane,,,,,,,\n' +
     '110,Mattison Way,,,,,,\n' +
