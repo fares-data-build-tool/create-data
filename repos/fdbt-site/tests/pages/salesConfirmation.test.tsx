@@ -4,6 +4,7 @@ import moment from 'moment';
 import SalesConfirmation, {
     buildSalesConfirmationElements,
     getServerSideProps,
+    SalesConfirmationProps,
     sopTicketFormatConverter,
 } from '../../src/pages/salesConfirmation';
 import { getMockContext } from '../testData/mockData';
@@ -62,7 +63,7 @@ describe('pages', () => {
                 endDate: mockEndDate,
             };
             const actualProps = getServerSideProps(ctx);
-            expect(actualProps.props).toEqual(expectedProps);
+            expect((actualProps as { props: SalesConfirmationProps }).props).toEqual(expectedProps);
         });
     });
 

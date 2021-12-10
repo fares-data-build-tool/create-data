@@ -14,13 +14,13 @@ import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import { formatSOPArray, getCsrfToken } from '../utils';
-import { redirectTo } from '../utils/apiUtils';
 import { ticketFormatsList } from './managePurchaseMethod';
+import { GetServerSidePropsResult } from 'next';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
 
-interface SalesConfirmationProps {
+export interface SalesConfirmationProps {
     salesOfferPackages: SalesOfferPackage[] | ProductWithSalesOfferPackages[];
     csrfToken: string;
     startDate: string;
@@ -117,10 +117,12 @@ const SalesConfirmation = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SalesConfirmationProps } => {
+export const getServerSideProps = (
+    ctx: NextPageContextWithSession,
+): GetServerSidePropsResult<SalesConfirmationProps> => {
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
-    if (!fareTypeAttribute && ctx.res) {
-        redirectTo(ctx.res, '/home');
+    if (!fareTypeAttribute) {
+        return { redirect: { destination: '/home', permanent: false } };
     }
     const csrfToken = getCsrfToken(ctx);
     const salesOfferPackageInfo = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);

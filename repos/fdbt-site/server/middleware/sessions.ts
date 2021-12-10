@@ -28,6 +28,8 @@ export default (server: Express): void => {
     const sessionOptions: SessionOptions = {
         cookie: {
             sameSite: true,
+            secure: process.env.NODE_ENV !== 'development',
+            httpOnly: true,
         },
         saveUninitialized: false,
         resave: false,

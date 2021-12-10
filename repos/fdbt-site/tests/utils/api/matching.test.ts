@@ -12,7 +12,11 @@ import {
     SERVICE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import * as auroradb from '../../../src/data/auroradb';
-import { getMatchingProps, sortingWithoutSequenceNumbers } from '../../../src/utils/apiUtils/matching';
+import {
+    getMatchingProps,
+    removeDuplicateAdjacentStops,
+    sortingWithoutSequenceNumbers,
+} from '../../../src/utils/apiUtils/matching';
 import * as s3 from '../../../src/data/s3';
 
 describe('matching', () => {
@@ -206,6 +210,26 @@ describe('matching', () => {
                 ]);
 
                 expect(stopPoints).toEqual(['A', 'B', '1', '2', 'C', 'D', 'E', 'F', 'X', 'Y', 'G', 'H', 'I']);
+            });
+        });
+
+        describe('removeDuplicateAdjacentStops', () => {
+            it('removes some stops if theyre next to one another in the list and identical', () => {
+                const input = ['stop1', 'stop2', 'stop3', 'stop3', 'stop4', 'stop1', 'stop2', 'stop2'];
+                const result = removeDuplicateAdjacentStops(input);
+                expect(result).toEqual(['stop1', 'stop2', 'stop3', 'stop4', 'stop1', 'stop2']);
+            });
+
+            it('removes some stops if there are 3 next to one another in the list and identical', () => {
+                const input = ['stop1', 'stop2', 'stop3', 'stop3', 'stop3', 'stop4', 'stop1', 'stop2', 'stop2'];
+                const result = removeDuplicateAdjacentStops(input);
+                expect(result).toEqual(['stop1', 'stop2', 'stop3', 'stop4', 'stop1', 'stop2']);
+            });
+
+            it('does not remove stops if they are not identical', () => {
+                const input = ['stop1', 'stop2', 'stop3', 'stop4', 'stop5', 'stop6', 'stop7', 'stop8'];
+                const result = removeDuplicateAdjacentStops(input);
+                expect(result).toEqual(['stop1', 'stop2', 'stop3', 'stop4', 'stop5', 'stop6', 'stop7', 'stop8']);
             });
         });
     });

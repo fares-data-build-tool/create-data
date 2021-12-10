@@ -138,6 +138,16 @@ export const putUserDataInProductsBucket = async (
     const filePath = `${nocCode}/${data.type}/${uuid}_${Date.now()}.json`;
 
     await putStringInS3(PRODUCTS_DATA_BUCKET_NAME, filePath, JSON.stringify(data), 'application/json; charset=utf-8');
+
+    return filePath;
+};
+
+export const putUserDataInProductsBucketWithFilePath = async (
+    data: WithIds<Ticket>,
+    filePath: string,
+): Promise<string> => {
+    await putStringInS3(PRODUCTS_DATA_BUCKET_NAME, filePath, JSON.stringify(data), 'application/json; charset=utf-8');
+
     return filePath;
 };
 
@@ -662,6 +672,6 @@ export const shouldInstantlyGenerateNetexFromMatchingJson = (
     ticketType: string,
     dataFormat: 'tnds' | 'bods' | undefined,
     ctx: { req: NextApiRequestWithSession; res: NextApiResponse },
-) => {
+): boolean => {
     return isSchemeOperator(ctx.req, ctx.res) || (ticketType !== 'geoZone' && dataFormat === 'tnds');
 };

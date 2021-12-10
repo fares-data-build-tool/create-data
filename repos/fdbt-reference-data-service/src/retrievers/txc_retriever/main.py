@@ -46,9 +46,9 @@ db_connection = pymysql.connect(rds_host, user=db_username, passwd=db_password, 
 
 queries = [
     'SET FOREIGN_KEY_CHECKS=0',
-    'TRUNCATE TABLE txcJourneyPatternLink',
-    'TRUNCATE TABLE txcJourneyPattern',
-    'TRUNCATE TABLE txcOperatorLine',
+    'CREATE TABLE txcJourneyPatternLinkNew LIKE txcJourneyPatternLink',
+    'CREATE TABLE txcJourneyPatternNew LIKE txcJourneyPattern',
+    'CREATE TABLE txcOperatorLineNew LIKE txcOperatorLine',
     'SET FOREIGN_KEY_CHECKS=1'
 ]
 
@@ -90,7 +90,7 @@ def upload_tnds_data_to_s3():
     for file in os.listdir(file_dir):
         bucket = os.getenv('ZIPPED_BUCKET_NAME')
         content_type = 'application/zip'
-        
+
         s3.meta.client.upload_file(
             file_dir + file,
             bucket,

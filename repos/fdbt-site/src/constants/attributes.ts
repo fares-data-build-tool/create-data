@@ -109,3 +109,7 @@ export const GS_REFERER = 'fdbt-global-settings-referer';
 export const GS_OPERATOR_DETAILS_ATTRIBUTE = 'fdbt-global-settings-operator-details';
 
 export const CSV_ZONE_FILE_NAME = 'fdbt-csv-zone-file-name';
+
+export const MATCHING_JSON_ATTRIBUTE = 'fdbt-matching-json';
+
+export const MATCHING_JSON_META_DATA_ATTRIBUTE = 'fdbt-matching-json-meta-data';
