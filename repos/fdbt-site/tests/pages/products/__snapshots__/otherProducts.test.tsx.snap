@@ -298,9 +298,9 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 className="govuk-table__cell"
               >
                 <strong
-                  className="govuk-tag govuk-tag--blue dft-table-tag"
+                  className="govuk-tag govuk-tag--turquoise dft-table-tag"
                 >
-                  Pending
+                  Active
                 </strong>
               </td>
               <td
@@ -357,9 +357,9 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 className="govuk-table__cell"
               >
                 <strong
-                  className="govuk-tag govuk-tag--blue dft-table-tag"
+                  className="govuk-tag govuk-tag--turquoise dft-table-tag"
                 >
-                  Pending
+                  Active
                 </strong>
               </td>
               <td

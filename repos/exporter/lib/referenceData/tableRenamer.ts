@@ -48,16 +48,23 @@ const tables = [
 export const deleteAndRenameTables = async (connection: Connection): Promise<void> => {
     try {
         await connection.beginTransaction();
+
+        await connection.query('SET FOREIGN_KEY_CHECKS=0');
+
         await connection.query(`DROP TABLE IF EXISTS ${tables.map((table) => `${table}Old`).join(', ')};`);
+
+        await connection.query('SET FOREIGN_KEY_CHECKS=1');
 
         for (const table of tables) {
             await connection.query(`ALTER TABLE ${table} RENAME TO ${table}Old;`);
+
             await connection.query(`ALTER TABLE ${table}New RENAME TO ${table};`);
         }
 
         await connection.commit();
     } catch (error) {
         await connection.rollback();
+
         throw error;
     }
 };
