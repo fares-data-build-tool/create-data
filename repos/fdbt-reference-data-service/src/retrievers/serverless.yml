@@ -26,6 +26,12 @@ provider:
                   Action:
                       - 'cloudwatch:PutMetricData'
                   Resource: '*'
+                - Effect: Allow
+                  Action:
+                    - "lambda:invokeAsync"
+                    - "lambda:invokeFunction"
+                  Resource:
+                    - !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:reference-data-service-retrievers-test-TxcRetriever*
     s3:
         txcZippedData:
             name: fdbt-txc-ref-data-zipped-${self:provider.stage}
@@ -134,16 +140,46 @@ functions:
             - name: functionInvocations
               treatMissingData: notBreaching
 
-    TxcRetriever:
+    TxcRetrieverBods:
+        handler: txc_retriever/main.lambda_handler
+        timeout: 900
+        memorySize: 3072
+        maximumRetryAttempts: 2
+        environment:
+            BODS_URL: https://data.bus-data.dft.gov.uk/timetable/download/bulk_archive
+            ZIPPED_BUCKET_NAME: fdbt-txc-ref-data-zipped-${self:provider.stage}
+            TNDS_FUNCTION: reference-data-service-retrievers-${self:provider.stage}-TxcRetrieverTnds
+            RDS_HOST:
+                Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
+        events:
+            - schedule:
+                  rate: ${self:custom.txcRetrieverSchedule.${self:provider.stage}, cron(15 2 * * ? *)}
+                  enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
+        vpc:
+            securityGroupIds:
+                - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
+            subnetIds:
+                - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetA
+                - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
+        alarms:
+            - name: functionDuration
+              threshold: 720000
+              treatMissingData: notBreaching
+            - name: functionThrottles
+              treatMissingData: notBreaching
+            - name: functionErrors
+              treatMissingData: notBreaching
+            - name: functionInvocations
+              treatMissingData: notBreaching
+
+    TxcRetrieverTnds:
         handler: txc_retriever/main.lambda_handler
         timeout: 900
         memorySize: 3072
         maximumRetryAttempts: 2
         environment:
             TNDS_FTP_HOST: ftp.tnds.basemap.co.uk
-            BODS_URL: https://data.bus-data.dft.gov.uk/timetable/download/bulk_archive
             XML_BUCKET_NAME: fdbt-txc-ref-data-${self:provider.stage}
-            ZIPPED_BUCKET_NAME: fdbt-txc-ref-data-zipped-${self:provider.stage}
             RDS_HOST:
                 Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
         events:
