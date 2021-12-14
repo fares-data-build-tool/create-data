@@ -117,35 +117,35 @@ const otherProductsTable = (
                 <tbody className="govuk-table__body">
                     {otherProducts.length > 0
                         ? otherProducts.map((product, index) => (
-                            <tr className="govuk-table__row" key={`product-${index}`}>
-                                <td className="govuk-table__cell dft-table-wrap-anywhere">
-                                    <a
-                                        href={`/products/productDetails?productId=${product.id}`}
-                                        id={`product-link-${index}`}
-                                    >
-                                        {product.productDescription}
-                                    </a>
-                                </td>
-                                <td className="govuk-table__cell">{sentenceCaseString(product.type)}</td>
-                                <td className="govuk-table__cell">{product.duration}</td>
-                                <td className="govuk-table__cell dft-table-wrap-anywhere">
-                                    {sentenceCaseString(product.passengerType)}
-                                </td>
-                                <td className="govuk-table__cell">{product.startDate}</td>
-                                <td className="govuk-table__cell">{product.endDate}</td>
-                                <td className="govuk-table__cell">
-                                    {getTag(product.startDate, product.endDate, true)}
-                                </td>
-                                <td className="govuk-table__cell">
-                                    <button
-                                        className="govuk-link delete-link"
-                                        onClick={() => deleteActionHandler(product.id, product.productDescription)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))
+                              <tr className="govuk-table__row" key={`product-${index}`}>
+                                  <td className="govuk-table__cell dft-table-wrap-anywhere">
+                                      <a
+                                          href={`/products/productDetails?productId=${product.id}`}
+                                          id={`product-link-${index}`}
+                                      >
+                                          {product.productDescription}
+                                      </a>
+                                  </td>
+                                  <td className="govuk-table__cell">{sentenceCaseString(product.type)}</td>
+                                  <td className="govuk-table__cell">{product.duration}</td>
+                                  <td className="govuk-table__cell dft-table-wrap-anywhere">
+                                      {sentenceCaseString(product.passengerType)}
+                                  </td>
+                                  <td className="govuk-table__cell">{product.startDate}</td>
+                                  <td className="govuk-table__cell">{product.endDate}</td>
+                                  <td className="govuk-table__cell">
+                                      {getTag(product.startDate, product.endDate, true)}
+                                  </td>
+                                  <td className="govuk-table__cell">
+                                      <button
+                                          className="govuk-link delete-link"
+                                          onClick={() => deleteActionHandler(product.id, product.productDescription)}
+                                      >
+                                          Delete
+                                      </button>
+                                  </td>
+                              </tr>
+                          ))
                         : null}
                 </tbody>
             </table>
@@ -163,7 +163,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const otherProductsFromDb: MyFaresOtherProduct[] = await getOtherProductsByNoc(noc);
 
     if (process.env.STAGE !== 'test' && otherProductsFromDb.length > 50) {
-        logger.info('User has more than 50 other products', { 'noc': noc, 'otherProductsCount': otherProductsFromDb.length });
+        logger.info('User has more than 50 other products', {
+            noc: noc,
+            otherProductsCount: otherProductsFromDb.length,
+        });
     }
 
     const otherProducts: MyFaresOtherFaresProduct[] = (
