@@ -163,7 +163,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const otherProductsFromDb: MyFaresOtherProduct[] = await getOtherProductsByNoc(noc);
 
     if (process.env.STAGE !== 'test' && otherProductsFromDb.length > 50) {
-        logger.error('User has more than 50 other products', { noc });
+        logger.info('User has more than 50 other products', {
+            noc: noc,
+            otherProductsCount: otherProductsFromDb.length,
+        });
     }
 
     const otherProducts: MyFaresOtherFaresProduct[] = (
