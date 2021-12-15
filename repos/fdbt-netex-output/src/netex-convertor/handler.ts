@@ -95,8 +95,6 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             operatorData.push(...(await db.getOperatorDataByNocCode(nocs)));
         }
 
-        // sort out the stops
-
         const generator = await netexGenerator(ticket, operatorData);
 
         const generatedNetex = await generator.generate();
