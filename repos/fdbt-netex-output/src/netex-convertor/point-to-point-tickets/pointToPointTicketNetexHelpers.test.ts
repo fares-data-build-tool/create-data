@@ -12,6 +12,7 @@ import {
     buildSalesOfferPackage,
     buildSalesOfferPackages,
     getPointToPointConditionsElement,
+    hasDuplicates,
 } from './pointToPointTicketNetexHelpers';
 
 describe('Netex Helpers', () => {
@@ -95,6 +96,25 @@ describe('Netex Helpers', () => {
             const id = netexHelpers.getIdName('multiple   spaces        here');
 
             expect(id).toBe('multiple_spaces_here');
+        });
+    });
+
+    describe('hasDuplicates', () => {
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
+        it('ensure true when duplicates exist', () => {
+            const arrayWithDuplicates = ['apple', 'orange', 'banana', 'pear', 'melon', 'apple'];
+
+            const result = hasDuplicates(arrayWithDuplicates);
+
+            expect(result).toBe(true);
+        });
+
+        it('ensure false when there are no duplicates', () => {
+            const arrayWithDuplicates = ['apple', 'orange', 'banana', 'pear', 'melon'];
+
+            const result = hasDuplicates(arrayWithDuplicates);
+
+            expect(result).toBe(false);
         });
     });
 
@@ -420,11 +440,11 @@ describe('Netex Helpers', () => {
                 cells: expect.objectContaining({ Cell: expect.any(Array) }),
             };
 
-            fareTables.forEach(table => {
+            fareTables.forEach((table) => {
                 expect(table).toEqual(expectedFormat);
             });
 
-            cells.forEach(cell => {
+            cells.forEach((cell) => {
                 expect(cell).toEqual(expectedCellFormat);
             });
         });
@@ -604,7 +624,9 @@ describe('Netex Helpers', () => {
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         it('creates conditions of travel fare frame with usage validity period if user provides a return validity', () => {
             const matchingDataWithReturnValidity = returnNonCircularTicketWithReturnValidity;
+
             const result = getPointToPointConditionsElement(matchingDataWithReturnValidity);
+
             expect(result.GenericParameterAssignment.limitations.UsageValidityPeriod).toStrictEqual({
                 version: '1.0',
                 id: `op:Trip@back@frequency`,
@@ -621,7 +643,9 @@ describe('Netex Helpers', () => {
 
         it('does not create conditions of travel fare frame with usage validity period if user does not provide a return validity', () => {
             const matchingDataWithoutReturnValidity = returnNonCircularTicket;
+
             const result = getPointToPointConditionsElement(matchingDataWithoutReturnValidity);
+
             expect(result.GenericParameterAssignment.limitations.UsageValidityPeriod).toBeUndefined();
         });
         /* eslint-enable @typescript-eslint/no-non-null-assertion */

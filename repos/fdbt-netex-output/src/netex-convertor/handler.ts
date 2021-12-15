@@ -55,7 +55,7 @@ export const buildNocList = (ticket: Ticket): string[] => {
     }
 
     if ('additionalOperators' in ticket) {
-        nocs.push(...ticket.additionalOperators.map(op => op.nocCode));
+        nocs.push(...ticket.additionalOperators.map((op) => op.nocCode));
     }
 
     return nocs;
@@ -63,10 +63,14 @@ export const buildNocList = (ticket: Ticket): string[] => {
 
 export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
     const { SNS_ALERTS_ARN } = process.env;
+
     let s3FileName = '';
+
     try {
         const ticket = await s3.fetchDataFromS3<Ticket>(event);
+
         s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
+
         const { type } = ticket;
 
         console.info(`NeTEx generation starting for type ${type}...`);
@@ -91,16 +95,22 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             operatorData.push(...(await db.getOperatorDataByNocCode(nocs)));
         }
 
-        const netexGen = await netexGenerator(ticket, operatorData);
-        const generatedNetex = await netexGen.generate();
+        // sort out the stops
+
+        const generator = await netexGenerator(ticket, operatorData);
+
+        const generatedNetex = await generator.generate();
+
         const fileName = generateFileName(s3FileName);
 
         await uploadToS3(generatedNetex, fileName);
 
-        // This gets logged for grafana
+        // this gets logged for grafana
         if (!('nocCode' in ticket) || ticket.nocCode !== 'IWBusCo') {
             const scheme = isSchemeOperatorTicket(ticket) ? 'scheme:' : '';
+
             const carnet = ticket.carnet ? 'carnet:' : '';
+
             console.info(`NeTEx generation complete for type ${scheme}${carnet}${type}`);
         }
     } catch (error) {
