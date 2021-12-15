@@ -29,12 +29,6 @@ export const getUniquePriceGroups = (fareZones: FareZone[]): string[] => [
 
 export const getIdName = (name: string): string => name.replace(/(\s)+/g, '_');
 
-export const existsTwiceInArray = (array: string[], element: string): boolean => {
-    const count = array.filter(item => item == element).length;
-
-    return count > 1;
-};
-
 export const hasDuplicates = (array: string[]): boolean => {
     return new Set(array).size !== array.length;
 };
