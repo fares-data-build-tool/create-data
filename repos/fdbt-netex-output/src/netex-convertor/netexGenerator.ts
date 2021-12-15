@@ -95,7 +95,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 : 'LINE';
         publicationRequestToUpdate.topics.NetworkFrameTopic.TypeOfFrameRef.ref = `fxc:UK:DFT:TypeOfFrame_UK_PI_${ticketTypeInsert}_FARE_OFFER:FXCP`;
 
-        const productRefs = ticket.products.flatMap((product) =>
+        const productRefs = ticket.products.flatMap(product =>
             'productName' in product && !isPointToPointTicket(ticket)
                 ? {
                       version: '1.0',
@@ -108,25 +108,20 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         );
 
         if (productRefs.length) {
-            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef =
-                productRefs;
+            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef = productRefs;
 
-            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.TypeOfFareProductRef =
-                {
-                    version: 'fxc:v1.0',
-                    ref: isFlatFareType(ticket)
-                        ? 'fxc:standard_product@trip@single'
-                        : 'fxc:standard_product@pass@period',
-                };
+            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.TypeOfFareProductRef = {
+                version: 'fxc:v1.0',
+                ref: isFlatFareType(ticket) ? 'fxc:standard_product@trip@single' : 'fxc:standard_product@pass@period',
+            };
         }
 
         // check if multiOperator and delete as required
         if (isMultiOperatorTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket)) {
-            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.GroupOfOperatorsRef =
-                {
-                    version: '1.0',
-                    ref: 'operators@bus',
-                };
+            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.GroupOfOperatorsRef = {
+                version: '1.0',
+                ref: 'operators@bus',
+            };
             delete publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences
                 .OperatorRef;
         } else {
@@ -262,7 +257,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
                 serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = [
                     ...new Set(scheduledStopPointList.map(({ id }) => id)),
-                ].map((e) => scheduledStopPointList.find(({ id }) => id === e));
+                ].map(e => scheduledStopPointList.find(({ id }) => id === e));
             } else {
                 // we have a single
                 serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = getPointToPointScheduledStopPointsList(
@@ -291,8 +286,9 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             networkFareFrameToUpdate.fareZones.FareZone.members.ScheduledStopPointRef = getScheduledStopPointsList(
                 ticket.stops,
             );
-            networkFareFrameToUpdate.fareZones.FareZone.projections.TopographicProjectionRef =
-                getTopographicProjectionRefList(ticket.stops);
+            networkFareFrameToUpdate.fareZones.FareZone.projections.TopographicProjectionRef = getTopographicProjectionRefList(
+                ticket.stops,
+            );
 
             return networkFareFrameToUpdate;
         }
