@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { FromDb, SalesOfferPackage } from '../../shared/matchingJsonTypes';
+import { FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
 import ViewPurchaseMethods, { PurchaseMethodCardBody } from '../../src/pages/viewPurchaseMethods';
 import { expectedSalesOfferPackageArray } from '../testData/mockData';
 

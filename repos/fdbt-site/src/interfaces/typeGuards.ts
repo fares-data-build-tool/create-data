@@ -1,4 +1,4 @@
-import { FlatFareTicket, PeriodMultipleServicesTicket, Ticket } from 'shared/matchingJsonTypes';
+import { FlatFareTicket, PeriodMultipleServicesTicket, Ticket } from 'fdbt-types/matchingJsonTypes';
 import {
     CarnetProductInfo,
     ErrorInfo,

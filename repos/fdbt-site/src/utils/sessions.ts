@@ -133,7 +133,7 @@ import {
     MatchingJsonMetaData,
     TicketWithIds,
     UnassignedStop,
-} from '../../shared/matchingJsonTypes';
+} from 'fdbt-types/matchingJsonTypes';
 
 export interface SessionAttributeTypes {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];

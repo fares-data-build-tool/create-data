@@ -5,7 +5,7 @@ import { getSalesOfferPackagesByNocCode } from '../../src/data/auroradb';
 import { SalesOfferPackage } from '../../src/interfaces';
 import { FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import SelectPurchaseMethods, { getServerSideProps, PurchaseMethodsProps } from '../../src/pages/selectPurchaseMethods';
-import { FromDb } from 'shared/matchingJsonTypes';
+import { FromDb } from 'fdbt-types/matchingJsonTypes';
 
 jest.mock('../../src/data/auroradb');
 

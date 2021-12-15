@@ -8,7 +8,7 @@ import * as aurora from '../../../src/data/auroradb';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { GROUP_PASSENGER_TYPE } from '../../../src/constants';
-import { FullGroupPassengerType } from '../../../shared/dbTypes';
+import { FullGroupPassengerType } from 'fdbt-types/dbTypes';
 
 describe('selectPassengerType', () => {
     const writeHeadMock = jest.fn();

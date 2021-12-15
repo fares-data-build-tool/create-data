@@ -5,7 +5,7 @@ import { ErrorInfo, NextApiRequestWithSession, SalesOfferPackage } from '../../i
 import { GS_PURCHASE_METHOD_ATTRIBUTE } from '../../constants/attributes';
 import { paymentMethodsList, purchaseLocationsList, ticketFormatsList } from '../managePurchaseMethod';
 import { toArray } from '../../utils';
-import { FromDb } from '../../../shared/matchingJsonTypes';
+import { FromDb } from 'fdbt-types/matchingJsonTypes';
 import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { insertSalesOfferPackage, getSalesOfferPackagesByNocCode, updateSalesOfferPackage } from '../../data/auroradb';
 

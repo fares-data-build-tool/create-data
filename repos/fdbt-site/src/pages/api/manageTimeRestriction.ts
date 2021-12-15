@@ -1,6 +1,6 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
-import { DbTimeBand, TimeRestrictionDay } from 'shared/matchingJsonTypes';
+import { DbTimeBand, TimeRestrictionDay } from 'fdbt-types/matchingJsonTypes';
 import { GS_TIME_RESTRICTION_ATTRIBUTE } from '../../constants/attributes';
 import {
     getTimeRestrictionByNameAndNoc,
@@ -13,7 +13,7 @@ import { updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
 import { isValid24hrTimeFormat, removeAllWhiteSpace, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { toArray } from '../../utils';
-import { DbTimeRestriction } from 'shared/dbTypes';
+import { DbTimeRestriction } from 'fdbt-types/dbTypes';
 
 export const collectInputsFromRequest = (
     req: NextApiRequestWithSession,

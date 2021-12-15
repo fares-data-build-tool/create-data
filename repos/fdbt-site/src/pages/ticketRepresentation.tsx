@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { TicketType } from '../../shared/matchingJsonTypes';
+import { TicketType } from 'fdbt-types/matchingJsonTypes';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';

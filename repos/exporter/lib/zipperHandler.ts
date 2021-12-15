@@ -1,6 +1,6 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
-import { ZipperLambdaBody } from '../shared/integrationTypes';
+import { ZipperLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
 import { PassThrough } from 'stream';
 import archiver, { Archiver } from 'archiver';

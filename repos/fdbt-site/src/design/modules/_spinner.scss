@@ -1,4 +1,3 @@
-
 .spinner-wrapper {
     display: flex;
     justify-content: center;
@@ -11,11 +10,11 @@
         position: relative;
         width: 80px;
         height: 80px;
-    
+
         div {
             transform-origin: 40px 40px;
             animation: spinner 1.2s linear infinite;
-    
+
             &:after {
                 content: ' ';
                 display: block;
@@ -88,7 +87,6 @@
                 animation-delay: 0s;
             }
         }
-        
     }
 }
 

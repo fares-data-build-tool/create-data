@@ -6,7 +6,7 @@ import { NextApiRequestWithSession, TimeRestriction, ErrorInfo, FullTimeRestrict
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
-import { TimeRestrictionDay } from 'shared/matchingJsonTypes';
+import { TimeRestrictionDay } from 'fdbt-types/matchingJsonTypes';
 
 export const collectInputsFromRequest = (
     req: NextApiRequestWithSession,

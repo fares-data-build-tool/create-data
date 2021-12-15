@@ -5,7 +5,7 @@ import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { GS_OPERATOR_DETAILS_ATTRIBUTE } from '../../constants/attributes';
 import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { upsertOperatorDetails } from '../../data/auroradb';
-import { OperatorDetails } from '../../../shared/matchingJsonTypes';
+import { OperatorDetails } from 'fdbt-types/matchingJsonTypes';
 import { lowerCase, upperFirst } from 'lodash';
 
 export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => {

@@ -1,4 +1,4 @@
-import { TicketWithIds } from '../../shared/matchingJsonTypes';
+import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
 import { S3 } from 'aws-sdk';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import {
