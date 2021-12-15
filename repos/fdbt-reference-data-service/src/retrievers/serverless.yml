@@ -182,10 +182,6 @@ functions:
             XML_BUCKET_NAME: fdbt-txc-ref-data-${self:provider.stage}
             RDS_HOST:
                 Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
-        events:
-            - schedule:
-                  rate: ${self:custom.txcRetrieverSchedule.${self:provider.stage}, cron(15 2 * * ? *)}
-                  enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
         vpc:
             securityGroupIds:
                 - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
