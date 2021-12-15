@@ -100,7 +100,6 @@ describe('Netex Helpers', () => {
     });
 
     describe('hasDuplicates', () => {
-        /* eslint-disable @typescript-eslint/no-non-null-assertion */
         it('ensure true when duplicates exist', () => {
             const arrayWithDuplicates = ['apple', 'orange', 'banana', 'pear', 'melon', 'apple'];
 
