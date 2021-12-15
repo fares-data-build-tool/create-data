@@ -113,6 +113,7 @@ describe('netexConvertorHandler', () => {
 
     it('should generate single fare netex with no undefined variables', async () => {
         netexGeneratorSpy.mockRestore();
+
         dbSpy.mockImplementation(() =>
             Promise.resolve([
                 {
@@ -130,8 +131,11 @@ describe('netexConvertorHandler', () => {
         );
 
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(singleTicket));
+
         await netexConvertorHandler(event);
+
         const generatedNetex: string = mockUploadNetexToS3Spy.mock.calls[0][0];
+
         expect(generatedNetex.includes('undefined')).toBeFalsy();
     });
 

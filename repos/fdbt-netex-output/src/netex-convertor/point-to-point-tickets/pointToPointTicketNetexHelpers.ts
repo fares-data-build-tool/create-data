@@ -29,8 +29,35 @@ export const getUniquePriceGroups = (fareZones: FareZone[]): string[] => [
 
 export const getIdName = (name: string): string => name.replace(/(\s)+/g, '_');
 
-export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] =>
-    getStops(fareZones).map(stop => ({
+export const hasDuplicates = (array: string[]): boolean => {
+    return new Set(array).size !== array.length;
+};
+
+export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] => {
+    let stops = getStops(fareZones);
+
+    const stopsAtcoCodes = stops.map(s => s.atcoCode);
+
+    const hasDuplicateStops = hasDuplicates(stopsAtcoCodes);
+
+    if (hasDuplicateStops) {
+        const firstFareStage = fareZones[0];
+
+        const firstStopInFirstFareStage = firstFareStage.stops[0];
+
+        const lastFareStage = fareZones[fareZones.length - 1];
+
+        const lastStopInLastFareStage = lastFareStage.stops[lastFareStage.stops.length - 1];
+
+        if (firstStopInFirstFareStage.atcoCode === lastStopInLastFareStage.atcoCode) {
+            // remove last element in the stops array
+            lastFareStage.stops.pop();
+        }
+    }
+
+    stops = getStops(fareZones);
+
+    return stops.map(stop => ({
         version: 'any',
         id: stop.atcoCode ? `atco:${stop.atcoCode}` : `naptan:${stop.naptanCode}`,
         Name: { $t: stop.stopName },
@@ -41,6 +68,7 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
             QualifierName: { $t: stop.qualifierName },
         },
     }));
+};
 
 export const getPriceGroups = (matchingData: PointToPointTicket | PointToPointPeriodTicket): {}[] => {
     const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
