@@ -222,10 +222,14 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
     const updateServiceFrame = (serviceFrame: NetexObject): NetexObject | null => {
         const serviceFrameToUpdate = { ...serviceFrame };
+
         if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket) || isHybridTicket(ticket)) {
             serviceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ServiceFrame_UK_PI_NETWORK:${coreData.placeholderGroupOfProductsName}:op`;
+
             const lines = getLinesList(ticket, coreData.url, operatorData);
+
             serviceFrameToUpdate.lines.Line = lines;
+
             serviceFrameToUpdate.groupsOfLines.GroupOfLines = getGroupOfLinesList(
                 coreData.operatorIdentifier,
                 isHybridTicket(ticket),
@@ -234,6 +238,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
             return serviceFrameToUpdate;
         }
+
         delete serviceFrameToUpdate.groupsOfLines;
 
         if ('lineName' in ticket) {
@@ -267,6 +272,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
             return serviceFrameToUpdate;
         }
+
         return null;
     };
 
