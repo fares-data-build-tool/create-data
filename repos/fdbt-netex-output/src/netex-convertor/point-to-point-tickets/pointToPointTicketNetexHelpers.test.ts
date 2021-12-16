@@ -371,6 +371,98 @@ describe('Netex Helpers', () => {
                     version: 'any',
                 },
             ]);
+
+            // check to ensure that we have not changed the array being
+            // passed into the function
+            expect(fareZones).toStrictEqual([
+                {
+                    name: 'Fare Zone 1',
+                    stops: [
+                        {
+                            stopName: 'Ashton Bus Station',
+                            naptanCode: '',
+                            atcoCode: '1800EHQ0081',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Arrivals',
+                            street: 'Wellington Road',
+                            qualifierName: '',
+                        },
+                        {
+                            stopName: 'New Street',
+                            naptanCode: '',
+                            atcoCode: '1800EHQ0721',
+                            localityCode: 'E0028493',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Arrivals',
+                            street: 'New Street',
+                            qualifierName: '',
+                        },
+                    ],
+                    prices: [],
+                },
+                {
+                    name: 'Fare Zone 2',
+                    stops: [
+                        {
+                            stopName: 'Henrietta Street',
+                            naptanCode: 'MANDAMPT',
+                            atcoCode: '1800EH24201',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Stop BB',
+                            street: '',
+                            qualifierName: '',
+                        },
+                    ],
+                    prices: [
+                        { price: '1.00', fareZones: ['Fare Zone 3'] },
+                        { price: '1.20', fareZones: ['Fare Zone 1'] },
+                    ],
+                },
+                {
+                    name: 'Fare Zone 3',
+                    stops: [
+                        {
+                            stopName: 'Crickets Ln',
+                            naptanCode: 'MANDAMPA',
+                            atcoCode: '1800EH24151',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'opp',
+                            street: 'PENNY MEADOW',
+                            qualifierName: '',
+                        },
+                        {
+                            stopName: 'Tameside College',
+                            naptanCode: 'MANDAJAM',
+                            atcoCode: '1800EH21241',
+                            localityCode: 'N0077788',
+                            localityName: 'Cockbrook',
+                            parentLocalityName: 'Ashton-under-Lyne',
+                            indicator: 'opp',
+                            street: 'BEAUFORT RD',
+                            qualifierName: '',
+                        },
+                        {
+                            stopName: 'Ashton Bus Station',
+                            naptanCode: '',
+                            atcoCode: '1800EHQ0081',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Arrivals',
+                            street: 'Wellington Road',
+                            qualifierName: '',
+                        },
+                    ],
+                    prices: [{ price: '1.30', fareZones: ['Fare Zone 1'] }],
+                },
+            ]);
         });
     });
 
