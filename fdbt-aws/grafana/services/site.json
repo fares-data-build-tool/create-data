@@ -15,7 +15,7 @@
     "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
-    "id": 21,
+    "id": 13,
     "links": [],
     "panels": [
         {
@@ -61,7 +61,7 @@
                 },
                 "textMode": "auto"
             },
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "targets": [
                 {
                     "alias": "",
@@ -123,7 +123,7 @@
                 },
                 "textMode": "auto"
             },
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "targets": [
                 {
                     "alias": "",
@@ -181,8 +181,11 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "percentage": false,
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -283,8 +286,11 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "percentage": false,
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
