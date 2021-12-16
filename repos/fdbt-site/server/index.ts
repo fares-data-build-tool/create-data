@@ -34,6 +34,7 @@ const unauthenticatedGetRoutes = [
     '/accessibility',
     '/privacy',
     '/noServices',
+    '/robots.txt',
 ];
 
 const unauthenticatedPostRoutes = [
