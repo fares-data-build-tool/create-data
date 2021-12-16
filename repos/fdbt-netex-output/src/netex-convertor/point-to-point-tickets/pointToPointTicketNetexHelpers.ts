@@ -34,18 +34,21 @@ export const hasDuplicates = (array: string[]): boolean => {
 };
 
 export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] => {
-    let stops = getStops(fareZones);
+    // we want a copy because we do not want to alter the fare zones array being passed in
+    const copyOfFareZones = fareZones.map(fz => fz);
+
+    let stops = getStops(copyOfFareZones);
 
     const stopsAtcoCodes = stops.map(s => s.atcoCode);
 
     const hasDuplicateStops = hasDuplicates(stopsAtcoCodes);
 
     if (hasDuplicateStops) {
-        const firstFareStage = fareZones[0];
+        const firstFareStage = copyOfFareZones[0];
 
         const firstStopInFirstFareStage = firstFareStage.stops[0];
 
-        const lastFareStage = fareZones[fareZones.length - 1];
+        const lastFareStage = copyOfFareZones[copyOfFareZones.length - 1];
 
         const lastStopInLastFareStage = lastFareStage.stops[lastFareStage.stops.length - 1];
 
@@ -55,7 +58,7 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
         }
     }
 
-    stops = getStops(fareZones);
+    stops = getStops(copyOfFareZones);
 
     return stops.map(stop => ({
         version: 'any',
