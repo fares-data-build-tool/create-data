@@ -111,30 +111,39 @@ Resources:
       RoleName:
         !If [
           ShouldNotCreateEnvResources,
-          'fdbtad65b519f2_sns-role',
-          !Join ['', ['sns', '65b519f2', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]],
+          "fdbtad65b519f2_sns-role",
+          !Join [
+            "",
+            [
+              "sns",
+              "65b519f2",
+              !Select [3, !Split ["-", !Ref "AWS::StackName"]],
+              "-",
+              !Ref env,
+            ],
+          ],
         ]
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
-          - Sid: ''
-            Effect: 'Allow'
+          - Sid: ""
+            Effect: "Allow"
             Principal:
-              Service: 'cognito-idp.amazonaws.com'
+              Service: "cognito-idp.amazonaws.com"
             Action:
-              - 'sts:AssumeRole'
+              - "sts:AssumeRole"
             Condition:
               StringEquals:
                 sts:ExternalId: fdbtad65b519f2_role_external_id
       Policies:
         - PolicyName: fdbtad65b519f2-sns-policy
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
-              - Effect: 'Allow'
+              - Effect: "Allow"
                 Action:
-                  - 'sns:Publish'
-                Resource: '*'
+                  - "sns:Publish"
+                Resource: "*"
   # BEGIN USER POOL RESOURCES
   UserPool:
     # Created upon user selection
@@ -171,13 +180,13 @@ Resources:
         AllowAdminCreateUserOnly: True
         InviteMessageTemplate:
           EmailMessage: !Sub >
-              To create an account to access the Create Fares Data Admin Panel click the link below:
-              <br />
-              <br />
-              https://admin.${env}.dft-cfd.infinityworks.com/
-              <br />
-              <br />
-              Your username is {username} and temporary password is {####}
+            To create an account to access the Create Fares Data Admin Panel click the link below:
+            <br />
+            <br />
+            https://admin.${env}.dft-cfd.infinityworks.com/
+            <br />
+            <br />
+            Your username is {username} and temporary password is {####}
           EmailSubject: Register for Create Fares Data Admin Panel
 
       MfaConfiguration: !Ref mfaConfiguration
@@ -191,7 +200,7 @@ Resources:
   UserPoolClientWeb:
     # Created provide application access to user pool
     # Depends on UserPool for ID reference
-    Type: 'AWS::Cognito::UserPoolClient'
+    Type: "AWS::Cognito::UserPoolClient"
     Properties:
       ClientName: fdbtad65b519f2_app_clientWeb
 
@@ -201,7 +210,7 @@ Resources:
   UserPoolClient:
     # Created provide application access to user pool
     # Depends on UserPool for ID reference
-    Type: 'AWS::Cognito::UserPoolClient'
+    Type: "AWS::Cognito::UserPoolClient"
     Properties:
       ClientName: fdbtad65b519f2_app_client
 
@@ -212,60 +221,66 @@ Resources:
   # BEGIN USER POOL LAMBDA RESOURCES
   UserPoolClientRole:
     # Created to execute Lambda which gets userpool app client config values
-    Type: 'AWS::IAM::Role'
+    Type: "AWS::IAM::Role"
     Properties:
       RoleName:
         !If [
           ShouldNotCreateEnvResources,
           !Ref userpoolClientLambdaRole,
           !Join [
-            '',
-            ['upClientLambdaRole', '65b519f2', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env],
+            "",
+            [
+              "upClientLambdaRole",
+              "65b519f2",
+              !Select [3, !Split ["-", !Ref "AWS::StackName"]],
+              "-",
+              !Ref env,
+            ],
           ],
         ]
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal:
               Service:
                 - lambda.amazonaws.com
             Action:
-              - 'sts:AssumeRole'
+              - "sts:AssumeRole"
     DependsOn: UserPoolClient
   UserPoolClientLambda:
     # Lambda which gets userpool app client config values
     # Depends on UserPool for id
     # Depends on UserPoolClientRole for role ARN
-    Type: 'AWS::Lambda::Function'
+    Type: "AWS::Lambda::Function"
     Properties:
       Code:
         ZipFile: !Join
           - |+
           - - "const response = require('cfn-response');"
             - "const aws = require('aws-sdk');"
-            - 'const identity = new aws.CognitoIdentityServiceProvider();'
-            - 'exports.handler = (event, context, callback) => {'
+            - "const identity = new aws.CognitoIdentityServiceProvider();"
+            - "exports.handler = (event, context, callback) => {"
             - " if (event.RequestType == 'Delete') { "
-            - '   response.send(event, context, response.SUCCESS, {})'
-            - ' }'
+            - "   response.send(event, context, response.SUCCESS, {})"
+            - " }"
             - " if (event.RequestType == 'Update' || event.RequestType == 'Create') {"
-            - '   const params = {'
-            - '     ClientId: event.ResourceProperties.clientId,'
-            - '     UserPoolId: event.ResourceProperties.userpoolId'
-            - '   };'
-            - '   identity.describeUserPoolClient(params).promise()'
-            - '     .then((res) => {'
+            - "   const params = {"
+            - "     ClientId: event.ResourceProperties.clientId,"
+            - "     UserPoolId: event.ResourceProperties.userpoolId"
+            - "   };"
+            - "   identity.describeUserPoolClient(params).promise()"
+            - "     .then((res) => {"
             - "       response.send(event, context, response.SUCCESS, {'appSecret': res.UserPoolClient.ClientSecret});"
-            - '     })'
-            - '     .catch((err) => {'
-            - '       response.send(event, context, response.FAILED, {err});'
-            - '     });'
-            - ' }'
-            - '};'
+            - "     })"
+            - "     .catch((err) => {"
+            - "       response.send(event, context, response.FAILED, {err});"
+            - "     });"
+            - " }"
+            - "};"
       Handler: index.handler
-      Runtime: nodejs10.x
-      Timeout: '300'
+      Runtime: nodejs12.x
+      Timeout: "300"
       Role: !GetAtt
         - UserPoolClientRole
         - Arn
@@ -274,24 +289,24 @@ Resources:
     # Sets userpool policy for the role that executes the Userpool Client Lambda
     # Depends on UserPool for Arn
     # Marked as depending on UserPoolClientRole for easier to understand CFN sequencing
-    Type: 'AWS::IAM::Policy'
+    Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: fdbtad65b519f2_userpoolclient_lambda_iam_policy
       Roles:
         - !Ref UserPoolClientRole
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Action:
-              - 'cognito-idp:DescribeUserPoolClient'
+              - "cognito-idp:DescribeUserPoolClient"
             Resource: !GetAtt UserPool.Arn
     DependsOn: UserPoolClientLambda
   UserPoolClientLogPolicy:
     # Sets log policy for the role that executes the Userpool Client Lambda
     # Depends on UserPool for Arn
     # Marked as depending on UserPoolClientLambdaPolicy for easier to understand CFN sequencing
-    Type: 'AWS::IAM::Policy'
+    Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: fdbtad65b519f2_userpoolclient_lambda_log_policy
       Roles:
@@ -301,19 +316,23 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - 'logs:CreateLogGroup'
-              - 'logs:CreateLogStream'
-              - 'logs:PutLogEvents'
+              - "logs:CreateLogGroup"
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
             Resource: !Sub
               - arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*
-              - { region: !Ref 'AWS::Region', account: !Ref 'AWS::AccountId', lambda: !Ref UserPoolClientLambda }
+              - {
+                  region: !Ref "AWS::Region",
+                  account: !Ref "AWS::AccountId",
+                  lambda: !Ref UserPoolClientLambda,
+                }
     DependsOn: UserPoolClientLambdaPolicy
   UserPoolClientInputs:
     # Values passed to Userpool client Lambda
     # Depends on UserPool for Id
     # Depends on UserPoolClient for Id
     # Marked as depending on UserPoolClientLambdaPolicy for easier to understand CFN sequencing
-    Type: 'Custom::LambdaCallout'
+    Type: "Custom::LambdaCallout"
     Properties:
       ServiceToken: !GetAtt UserPoolClientLambda.Arn
       clientId: !Ref UserPoolClient
@@ -332,11 +351,11 @@ Resources:
         - ClientId: !Ref UserPoolClient
           ProviderName: !Sub
             - cognito-idp.${region}.amazonaws.com/${client}
-            - { region: !Ref 'AWS::Region', client: !Ref UserPool }
+            - { region: !Ref "AWS::Region", client: !Ref UserPool }
         - ClientId: !Ref UserPoolClientWeb
           ProviderName: !Sub
             - cognito-idp.${region}.amazonaws.com/${client}
-            - { region: !Ref 'AWS::Region', client: !Ref UserPool }
+            - { region: !Ref "AWS::Region", client: !Ref UserPool }
 
       AllowUnauthenticatedIdentities: !Ref allowUnauthenticatedIdentities
 
@@ -351,35 +370,35 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Federated: 'cognito-identity.amazonaws.com'
-            Action: 'sts:AssumeRoleWithWebIdentity'
+              Federated: "cognito-identity.amazonaws.com"
+            Action: "sts:AssumeRoleWithWebIdentity"
             Condition:
               StringEquals:
-                'cognito-identity.amazonaws.com:aud': !Ref IdentityPool
+                "cognito-identity.amazonaws.com:aud": !Ref IdentityPool
       Path: /
       Policies:
         - PolicyName: allow-cognito-access
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Action:
-                  - 'cognito-idp:AddCustomAttributes'
-                  - 'cognito-idp:AdminCreateUser'
-                  - 'cognito-idp:AdminDeleteUser'
-                  - 'cognito-idp:AdminDeleteUserAttributes'
-                  - 'cognito-idp:AdminDisableUser'
-                  - 'cognito-idp:AdminEnableUser'
-                  - 'cognito-idp:AdminGetUser'
-                  - 'cognito-idp:AdminResetUserPassword'
-                  - 'cognito-idp:AdminUpdateUserAttributes'
-                  - 'cognito-idp:ListUsers'
-                Effect: 'Allow'
+                  - "cognito-idp:AddCustomAttributes"
+                  - "cognito-idp:AdminCreateUser"
+                  - "cognito-idp:AdminDeleteUser"
+                  - "cognito-idp:AdminDeleteUserAttributes"
+                  - "cognito-idp:AdminDisableUser"
+                  - "cognito-idp:AdminEnableUser"
+                  - "cognito-idp:AdminGetUser"
+                  - "cognito-idp:AdminResetUserPassword"
+                  - "cognito-idp:AdminUpdateUserAttributes"
+                  - "cognito-idp:ListUsers"
+                Effect: "Allow"
                 Resource:
                   Fn::ImportValue: !Sub ${env}:UserPoolArn
               - Action:
-                  - 'cognito-idp:ListUserPools'
-                Effect: 'Allow'
-                Resource: '*'
+                  - "cognito-idp:ListUserPools"
+                Effect: "Allow"
+                Resource: "*"
 
   IdentityPoolRoleMap:
     # Created to map Auth and Unauth roles to the identity pool
@@ -396,21 +415,21 @@ Resources:
 
 Outputs:
   IdentityPoolId:
-    Value: !Ref 'IdentityPool'
+    Value: !Ref "IdentityPool"
     Description: Id for the identity pool
   IdentityPoolName:
     Value: !GetAtt IdentityPool.Name
 
   UserPoolId:
-    Value: !Ref 'UserPool'
+    Value: !Ref "UserPool"
     Description: Id for the user pool
   UserPoolName:
     Value: !GetAtt UserPool.ProviderName
   AppClientIDWeb:
-    Value: !Ref 'UserPoolClientWeb'
+    Value: !Ref "UserPoolClientWeb"
     Description: The user pool app client id for web
   AppClientID:
-    Value: !Ref 'UserPoolClient'
+    Value: !Ref "UserPoolClient"
     Description: The user pool app client id
   AppClientSecret:
     Value: !GetAtt UserPoolClientInputs.appSecret
