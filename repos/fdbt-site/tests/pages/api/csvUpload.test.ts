@@ -19,7 +19,7 @@ import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
 } from '../../../src/constants/attributes';
-import { ReturnTicket, SingleTicket, WithIds } from '../../../shared/matchingJsonTypes';
+import { ReturnTicket, SingleTicket, WithIds } from 'fdbt-types/matchingJsonTypes';
 import * as userData from '../../../src/utils/apiUtils/userData';
 
 jest.spyOn(s3, 'putDataInS3');

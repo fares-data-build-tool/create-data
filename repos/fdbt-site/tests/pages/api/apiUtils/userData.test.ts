@@ -3,7 +3,7 @@ import {
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
 } from './../../../../src/constants/attributes';
-import { TicketType } from '../../../../shared/matchingJsonTypes';
+import { TicketType } from 'fdbt-types/matchingJsonTypes';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,

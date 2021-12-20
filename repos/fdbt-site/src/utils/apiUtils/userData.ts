@@ -10,7 +10,7 @@ import {
     PointToPointTicket,
     WithBaseIds,
     TicketWithIds,
-} from '../../../shared/matchingJsonTypes';
+} from 'fdbt-types/matchingJsonTypes';
 import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie, isSchemeOperator } from './index';
 
 import { ID_TOKEN_COOKIE, PRODUCTS_DATA_BUCKET_NAME } from '../../constants';

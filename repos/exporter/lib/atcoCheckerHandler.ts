@@ -1,14 +1,14 @@
 import { Handler } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
-import { WithIds, ReturnTicket, SingleTicket, PointToPointPeriodTicket } from '../shared/matchingJsonTypes';
+import { WithIds, ReturnTicket, SingleTicket, PointToPointPeriodTicket } from 'fdbt-types/matchingJsonTypes';
 import {
     saveIdsOfServicesRequiringAttentionInTheDb,
     getServicesByLineIdAndNoc,
     getPointToPointProducts,
     removeAllServicesRequiringAttentionIds,
 } from './database';
-import { ExportLambdaBody } from '../shared/integrationTypes';
-import { ServiceDetails } from '../shared/dbTypes';
+import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
+import { ServiceDetails } from 'fdbt-types/dbTypes';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'

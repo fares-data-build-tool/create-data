@@ -3,7 +3,7 @@ import {
     PointToPointPeriodTicket,
     PeriodMultipleServicesTicket,
     FlatFareMultipleServices,
-} from '../../shared/matchingJsonTypes';
+} from 'fdbt-types/matchingJsonTypes';
 import {
     CarnetExpiryUnit,
     FareZone,

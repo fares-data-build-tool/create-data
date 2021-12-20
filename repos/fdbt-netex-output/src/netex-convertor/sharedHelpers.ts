@@ -40,7 +40,7 @@ import {
     getLinesElement,
     getPointToPointAvailabilityElement,
 } from './point-to-point-tickets/pointToPointTicketNetexHelpers';
-import { FlatFareTicket, GroupDefinition } from '../../shared/matchingJsonTypes';
+import { FlatFareTicket, GroupDefinition } from 'fdbt-types/matchingJsonTypes';
 
 export interface NetexObject {
     [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any

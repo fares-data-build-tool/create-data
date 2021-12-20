@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { ReactElement } from 'react';
-import { DbTimeRestriction, SinglePassengerType } from '../../shared/dbTypes';
+import { DbTimeRestriction, SinglePassengerType } from 'fdbt-types/dbTypes';
 import {
     BaseProduct,
     CarnetDetails,
@@ -15,7 +15,7 @@ import {
     SalesOfferPackage,
     SelectedService,
     TicketType,
-} from '../../shared/matchingJsonTypes';
+} from 'fdbt-types/matchingJsonTypes';
 
 // Session Attributes and Cookies
 
@@ -701,9 +701,9 @@ export type {
     PeriodHybridTicket,
     Ticket,
     MultiOperatorGeoZoneTicket,
-} from '../../shared/matchingJsonTypes';
+} from 'fdbt-types/matchingJsonTypes';
 
-export { ExpiryUnit, CarnetExpiryUnit } from '../../shared/matchingJsonTypes';
+export { ExpiryUnit, CarnetExpiryUnit } from 'fdbt-types/matchingJsonTypes';
 
 export type {
     FullGroupPassengerType,
@@ -713,4 +713,4 @@ export type {
     GroupPassengerTypeDb,
     CompanionReference,
     GroupPassengerTypeReference,
-} from '../../shared/dbTypes';
+} from 'fdbt-types/dbTypes';

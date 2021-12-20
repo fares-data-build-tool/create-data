@@ -1,5 +1,5 @@
 import { Handler } from 'aws-lambda';
-import { ZipperLambdaBody } from '../../../../shared/integrationTypes';
+import { ZipperLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
 import { getConnection, checkReferenceDataImportHasCompleted, deleteAndRenameTables } from './tableRenamer';
 

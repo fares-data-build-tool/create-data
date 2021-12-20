@@ -1,7 +1,7 @@
 import awsParamStore from 'aws-param-store';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
-import { FromDb, OperatorDetails } from '../../shared/matchingJsonTypes';
+import { FromDb, OperatorDetails } from 'fdbt-types/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
     CompanionInfo,
@@ -29,7 +29,7 @@ import {
     MyFaresProduct,
     RawJourneyPattern,
     DbProduct,
-} from '../../shared/dbTypes';
+} from 'fdbt-types/dbTypes';
 import { convertDateFormat } from '../utils';
 
 interface ServiceQueryData {
@@ -604,8 +604,8 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
     const paymentMethods = salesOfferPackage.paymentMethods.toString();
     const ticketFormats = salesOfferPackage.ticketFormats.toString();
 
-    const insertQuery = `INSERT INTO salesOfferPackage 
-    (nocCode, name, description, purchaseLocations, paymentMethods, ticketFormats) 
+    const insertQuery = `INSERT INTO salesOfferPackage
+    (nocCode, name, description, purchaseLocations, paymentMethods, ticketFormats)
     VALUES (?, ?, ?, ?, ?, ?)`;
     try {
         await executeQuery(insertQuery, [
@@ -635,7 +635,7 @@ export const updateSalesOfferPackage = async (
     const paymentMethods = salesOfferPackage.paymentMethods.toString();
     const ticketFormats = salesOfferPackage.ticketFormats.toString();
 
-    const updateQuery = `UPDATE salesOfferPackage 
+    const updateQuery = `UPDATE salesOfferPackage
     SET name = ?, purchaseLocations = ?, paymentMethods = ?, ticketFormats = ?
     WHERE nocCode = ? AND id = ?`;
 
@@ -664,7 +664,7 @@ export const deleteSalesOfferPackageByNocCodeAndName = async (
     });
 
     const deleteQuery = `
-            DELETE FROM salesOfferPackage 
+            DELETE FROM salesOfferPackage
             WHERE id = ?
             AND nocCode = ?`;
     try {
@@ -684,8 +684,8 @@ export const insertOperatorGroup = async (nocCode: string, operators: Operator[]
 
     const contents = JSON.stringify(operators);
 
-    const insertQuery = `INSERT INTO operatorGroup 
-    (nocCode, name, contents) 
+    const insertQuery = `INSERT INTO operatorGroup
+    (nocCode, name, contents)
     VALUES (?, ?, ?)`;
     try {
         await executeQuery(insertQuery, [nocCode, name, contents]);
@@ -761,8 +761,8 @@ export const insertTimeRestriction = async (
 
     const contents = JSON.stringify(timeRestriction);
 
-    const insertQuery = `INSERT INTO timeRestriction 
-    (nocCode, name, contents) 
+    const insertQuery = `INSERT INTO timeRestriction
+    (nocCode, name, contents)
     VALUES (?, ?, ?)`;
     try {
         await executeQuery(insertQuery, [nocCode, name, contents]);
@@ -787,8 +787,8 @@ export const updateTimeRestriction = async (
 
     const contents = JSON.stringify(timeRestriction);
 
-    const updateQuery = `UPDATE timeRestriction 
-                         SET name = ?, contents = ? 
+    const updateQuery = `UPDATE timeRestriction
+                         SET name = ?, contents = ?
                          WHERE id = ? AND nocCode = ?`;
 
     try {
@@ -949,7 +949,7 @@ export const upsertSinglePassengerType = async (
     try {
         const updateQuery = `UPDATE passengerType
                              SET contents = ?
-                             WHERE name = ? 
+                             WHERE name = ?
                              AND isGroup = ?
                              AND nocCode = ?`;
         const meta = await executeQuery<ResultSetHeader>(updateQuery, [contents, name, false, nocCode]);
@@ -1133,7 +1133,7 @@ export const getPassengerTypeNameByIdAndNoc = async (id: number, noc: string): P
         const queryInput = `
             SELECT name
             FROM passengerType
-            WHERE id = ? 
+            WHERE id = ?
             AND nocCode = ?`;
 
         const queryResults = await executeQuery<{ name: string }[]>(queryInput, [id, noc]);
@@ -1195,7 +1195,7 @@ const retrievePassengerTypeById = async (
         const queryInput = `
             SELECT id, name, contents
             FROM passengerType
-            WHERE id = ? 
+            WHERE id = ?
             AND nocCode = ?
             AND isGroup = ?`;
 
@@ -1366,7 +1366,7 @@ export const deletePassengerTypeByNocCodeAndId = async (
     });
 
     const deleteQuery = `
-            DELETE FROM passengerType 
+            DELETE FROM passengerType
             WHERE id = ?
             AND nocCode = ?
             AND isGroup = ?`;
@@ -1388,7 +1388,7 @@ export const deleteTimeRestrictionByIdAndNocCode = async (id: number, nocCode: s
     });
 
     const deleteQuery = `
-            DELETE FROM timeRestriction 
+            DELETE FROM timeRestriction
             WHERE id = ?
             AND nocCode = ?`;
     try {
@@ -1459,8 +1459,8 @@ export const insertProducts = async (
         fareType,
     });
 
-    const insertQuery = `INSERT INTO products 
-    (nocCode, matchingJsonLink, dateModified, fareType, lineId, startDate, endDate) 
+    const insertQuery = `INSERT INTO products
+    (nocCode, matchingJsonLink, dateModified, fareType, lineId, startDate, endDate)
     VALUES (?, ?, ?, ?, ?, ?, ?)`;
     try {
         await executeQuery(insertQuery, [
@@ -1586,8 +1586,8 @@ export const getPointToPointProducts = async (nocCode: string): Promise<MyFaresP
     });
 
     try {
-        const queryInput = `      
-            SELECT id, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention 
+        const queryInput = `
+            SELECT id, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention
             FROM products
             WHERE lineId <> ''
             AND nocCode = ?

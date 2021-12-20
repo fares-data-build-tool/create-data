@@ -5,7 +5,7 @@ import { getS3Exports } from '../../data/s3';
 import { getAllProductsByNoc, getServicesByNocAndLineId } from '../../data/auroradb';
 import { triggerExport } from '../../utils/apiUtils/export';
 import { getEntityStatus } from '../products/services';
-import { DbProduct } from '../../../shared/dbTypes';
+import { DbProduct } from 'fdbt-types/dbTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const noc = getAndValidateNoc(req, res);

@@ -1,5 +1,5 @@
 import startCase from 'lodash/startCase';
-import { PointToPointPeriodTicket } from '../../../shared/matchingJsonTypes';
+import { PointToPointPeriodTicket } from 'fdbt-types/matchingJsonTypes';
 import {
     FareZone,
     FareZoneList,

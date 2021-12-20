@@ -7,8 +7,8 @@ import {
     SinglePassengerType,
     RawSalesOfferPackage,
     ServiceDetails,
-} from '../shared/dbTypes';
-import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from '../shared/matchingJsonTypes';
+} from 'fdbt-types/dbTypes';
+import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
 import { getSsmValue } from './ssm';
 
 const replaceInternalNocCode = (nocCode: string): string => {
@@ -57,7 +57,7 @@ const retrievePassengerTypeById = async (
     const queryInput = `
             SELECT id, name, contents, isGroup
             FROM passengerType
-            WHERE id = ? 
+            WHERE id = ?
             AND nocCode = ?`;
 
     const queryResults = await executeQuery<{ id: number; name: string; contents: string; isGroup: boolean }[]>(
@@ -180,7 +180,7 @@ export const getPointToPointProducts = async (): Promise<
         endDate: string;
     }[]
 > => {
-    const queryInput = `      
+    const queryInput = `
             SELECT id, lineId, matchingJsonLink, startDate, endDate
             FROM products
             WHERE lineId <> ''

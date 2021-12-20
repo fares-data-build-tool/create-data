@@ -2,7 +2,7 @@
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import React from 'react';
-import { RawService } from 'shared/dbTypes';
+import { RawService } from 'fdbt-types/dbTypes';
 import {
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
@@ -12,7 +12,7 @@ import {
     WithIds,
     FlatFareMultipleServices,
     WithBaseIds,
-} from '../../shared/matchingJsonTypes';
+} from 'fdbt-types/matchingJsonTypes';
 import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,

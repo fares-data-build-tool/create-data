@@ -1,5 +1,5 @@
 import React, { ChangeEventHandler, ReactElement, useState } from 'react';
-import { FromDb } from 'shared/matchingJsonTypes';
+import { FromDb } from 'fdbt-types/matchingJsonTypes';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';

@@ -5,7 +5,7 @@ import { NextPageContextWithSession, PremadeTimeRestriction } from '../interface
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { exportEnabled, globalSettingsDeleteEnabled, myFaresEnabled } from '../constants/featureFlag';
-import { DbTimeBand } from 'shared/matchingJsonTypes';
+import { DbTimeBand } from 'fdbt-types/matchingJsonTypes';
 
 const title = 'Time restrictions';
 const description = 'Define certain days and time periods that your tickets can be used within.';

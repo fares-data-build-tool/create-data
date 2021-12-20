@@ -6,7 +6,7 @@ import {
     SchemeOperatorTicket,
     SchemeOperatorMultiServiceTicket,
     SchemeOperatorGeoZoneTicket,
-} from '../../../shared/matchingJsonTypes';
+} from 'fdbt-types/matchingJsonTypes';
 
 import * as db from '../../data/auroradb';
 
