@@ -15,7 +15,8 @@
     "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
-    "id": 19,
+    "id": 10,
+    "iteration": 1639650889237,
     "links": [],
     "panels": [
         {
@@ -58,7 +59,7 @@
                 },
                 "textMode": "auto"
             },
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "targets": [
                 {
                     "alias": "",
@@ -121,7 +122,7 @@
                 },
                 "textMode": "auto"
             },
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "targets": [
                 {
                     "alias": "",
@@ -180,8 +181,11 @@
             "lines": false,
             "linewidth": 1,
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "percentage": false,
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "pointradius": 2,
             "points": true,
             "renderer": "flot",
@@ -287,7 +291,7 @@
                 },
                 "textMode": "auto"
             },
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "targets": [
                 {
                     "alias": "",
@@ -350,7 +354,7 @@
                 },
                 "textMode": "auto"
             },
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "targets": [
                 {
                     "alias": "",
@@ -409,8 +413,11 @@
             "lines": false,
             "linewidth": 1,
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "percentage": false,
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "pointradius": 2,
             "points": true,
             "renderer": "flot",
@@ -516,7 +523,7 @@
                 },
                 "textMode": "auto"
             },
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "targets": [
                 {
                     "alias": "",
@@ -579,7 +586,7 @@
                 },
                 "textMode": "auto"
             },
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "targets": [
                 {
                     "alias": "",
@@ -618,6 +625,7 @@
                 },
                 "datasource": "CloudWatch",
                 "definition": "metrics(FDBT/Netex-Output)",
+                "error": null,
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -644,7 +652,7 @@
         ]
     },
     "time": {
-        "from": "now-90d",
+        "from": "now-7d",
         "to": "now"
     },
     "timepicker": {

@@ -21,7 +21,7 @@ Parameters:
   MonitoringImage:
     Type: String
     Description: The monitoring docker image
-    Default: grafana/grafana:7.0.1
+    Default: grafana/grafana:8.3.3
   MonitoringContainerPort:
     Type: Number
     Default: 3000
