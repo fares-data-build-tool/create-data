@@ -583,21 +583,13 @@ export interface JourneyPattern {
         Id: string;
         Display: string;
     };
+
     endPoint: {
         Id: string;
         Display: string;
     };
-    stopList: string[];
-}
 
-export type StopPoint = {
-    stopPointRef: string;
-    commonName: string;
-    sequenceNumber?: number;
-};
-export interface RawJourneyPattern {
-    orderedStopPoints: StopPoint[];
-    direction: string;
+    stopList: string[];
 }
 
 // Components

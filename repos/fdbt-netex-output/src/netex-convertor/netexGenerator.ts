@@ -55,7 +55,9 @@ import {
 
 const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise<{ generate: Function }> => {
     const coreData = await getCoreData(operatorData, ticket);
+
     const baseOperatorInfo = coreData.baseOperatorInfo[0];
+
     const ticketIdentifier: string = coreData.placeholderGroupOfProductsName
         ? coreData.placeholderGroupOfProductsName
         : coreData.lineIdName;
@@ -220,10 +222,14 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
     const updateServiceFrame = (serviceFrame: NetexObject): NetexObject | null => {
         const serviceFrameToUpdate = { ...serviceFrame };
+
         if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket) || isHybridTicket(ticket)) {
             serviceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ServiceFrame_UK_PI_NETWORK:${coreData.placeholderGroupOfProductsName}:op`;
+
             const lines = getLinesList(ticket, coreData.url, operatorData);
+
             serviceFrameToUpdate.lines.Line = lines;
+
             serviceFrameToUpdate.groupsOfLines.GroupOfLines = getGroupOfLinesList(
                 coreData.operatorIdentifier,
                 isHybridTicket(ticket),
@@ -232,6 +238,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
             return serviceFrameToUpdate;
         }
+
         delete serviceFrameToUpdate.groupsOfLines;
 
         if ('lineName' in ticket) {
@@ -245,14 +252,19 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             serviceFrameToUpdate.lines.Line.OperatorRef.$t = coreData.opIdNocFormat;
             serviceFrameToUpdate.lines.Line.Description.$t = ticket.serviceDescription;
 
+            // do we have a return
             if ('inboundFareZones' in ticket) {
                 const outboundStops = getPointToPointScheduledStopPointsList(ticket.outboundFareZones);
+
                 const inboundStops = getPointToPointScheduledStopPointsList(ticket.inboundFareZones);
+
                 const scheduledStopPointList: ScheduledStopPoints[] = outboundStops.concat(inboundStops);
+
                 serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = [
                     ...new Set(scheduledStopPointList.map(({ id }) => id)),
                 ].map(e => scheduledStopPointList.find(({ id }) => id === e));
             } else {
+                // we have a single
                 serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint = getPointToPointScheduledStopPointsList(
                     ticket.fareZones,
                 );
@@ -260,11 +272,12 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
             return serviceFrameToUpdate;
         }
+
         return null;
     };
 
-    // This method is called for all period-type tickets instead of 'updateZoneFareFrame'.
-    // Only GeoZoneTickets need a NetworkFareFrame. MultiServiceTickets do not need a NetworkFareFrame.
+    // this method is called for all period-type tickets instead of 'updateZoneFareFrame'.
+    // only GeoZoneTickets need a NetworkFareFrame. MultiServiceTickets do not need a NetworkFareFrame.
     const updateNetworkFareFrame = (networkFareFrame: NetexObject): NetexObject | null => {
         if (isGeoZoneTicket(ticket) || isHybridTicket(ticket)) {
             const networkFareFrameToUpdate = { ...networkFareFrame };
@@ -289,12 +302,13 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         return null;
     };
 
-    // This method is called for all point-to-point-type tickets instead of 'updateNetworkFareFrame'.
+    // this method is called for all point-to-point-type tickets instead of 'updateNetworkFareFrame'.
     const updateZoneFareFrame = (
         zoneFareFrame: NetexObject,
         ticket: PointToPointTicket | PointToPointPeriodTicket,
     ): NetexObject | null => {
         const zoneFareFrameToUpdate = { ...zoneFareFrame };
+
         zoneFareFrameToUpdate.id = `epd:UK:${ticket.nocCode}:FareFrame_UK_PI_FARE_NETWORK:${coreData.lineIdName}:op`;
 
         if (ticket.type === 'single') {
@@ -465,17 +479,22 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         }
 
         netexJson.PublicationDelivery = updatePublicationTimeStamp(netexJson.PublicationDelivery);
+
         netexJson.PublicationDelivery.PublicationRequest = updatePublicationRequest(
             netexJson.PublicationDelivery.PublicationRequest,
         );
+
         netexJson.PublicationDelivery.dataObjects.CompositeFrame[0] = updateCompositeFrame(
             netexJson.PublicationDelivery.dataObjects.CompositeFrame[0],
         );
 
         const netexFrames = netexJson.PublicationDelivery.dataObjects.CompositeFrame[0].frames;
+
         netexFrames.ResourceFrame = updateResourceFrame(netexFrames.ResourceFrame);
+
         netexFrames.ServiceFrame = updateServiceFrame(netexFrames.ServiceFrame);
 
+        // do we have a point to point products, such as singles/returns
         if ('lineName' in ticket) {
             netexFrames.FareFrame[0] = updateZoneFareFrame(netexFrames.FareFrame[0], ticket);
         } else {
@@ -484,6 +503,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
         netexFrames.FareFrame[1] = updatePriceFareFrame(netexFrames.FareFrame[1]);
         netexFrames.FareFrame[2] = updateFareTableFareFrame(netexFrames.FareFrame[2]);
+
         return convertJsonToXml(netexJson);
     };
 

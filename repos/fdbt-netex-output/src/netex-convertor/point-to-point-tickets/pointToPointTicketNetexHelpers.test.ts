@@ -12,6 +12,7 @@ import {
     buildSalesOfferPackage,
     buildSalesOfferPackages,
     getPointToPointConditionsElement,
+    hasDuplicates,
 } from './pointToPointTicketNetexHelpers';
 
 describe('Netex Helpers', () => {
@@ -98,6 +99,24 @@ describe('Netex Helpers', () => {
         });
     });
 
+    describe('hasDuplicates', () => {
+        it('ensure true when duplicates exist', () => {
+            const arrayWithDuplicates = ['apple', 'orange', 'banana', 'pear', 'melon', 'apple'];
+
+            const result = hasDuplicates(arrayWithDuplicates);
+
+            expect(result).toBe(true);
+        });
+
+        it('ensure false when there are no duplicates', () => {
+            const arrayWithDuplicates = ['apple', 'orange', 'banana', 'pear', 'melon'];
+
+            const result = hasDuplicates(arrayWithDuplicates);
+
+            expect(result).toBe(false);
+        });
+    });
+
     describe('getScheduledStopPointsList', () => {
         it('gets a NeTEx scheduled stop point for each stop in the fare zones', () => {
             const stops = netexHelpers.getPointToPointScheduledStopPointsList(fareZones);
@@ -150,7 +169,7 @@ describe('Netex Helpers', () => {
             ]);
         });
 
-        it('gets a NeTEx scheduled stop point for each stop in the fare zones with NameSuffix ommited', () => {
+        it('gets a NeTEx scheduled stop point for each stop in the fare zones with NameSuffix omitted', () => {
             fareZones = fareZonesWithoutStopIndicator;
             const stops = netexHelpers.getPointToPointScheduledStopPointsList(fareZones);
 
@@ -198,6 +217,250 @@ describe('Netex Helpers', () => {
                     },
                     id: 'atco:1800EH21241',
                     version: 'any',
+                },
+            ]);
+        });
+
+        it('when a stop exists twice; as first stop in the first fare zone and last stop in last fare zone, remove said stop', () => {
+            const fareZones: FareZone[] = [
+                {
+                    name: 'Fare Zone 1',
+                    stops: [
+                        {
+                            stopName: 'Ashton Bus Station',
+                            naptanCode: '',
+                            atcoCode: '1800EHQ0081',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Arrivals',
+                            street: 'Wellington Road',
+                            qualifierName: '',
+                        },
+                        {
+                            stopName: 'New Street',
+                            naptanCode: '',
+                            atcoCode: '1800EHQ0721',
+                            localityCode: 'E0028493',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Arrivals',
+                            street: 'New Street',
+                            qualifierName: '',
+                        },
+                    ],
+                    prices: [],
+                },
+                {
+                    name: 'Fare Zone 2',
+                    stops: [
+                        {
+                            stopName: 'Henrietta Street',
+                            naptanCode: 'MANDAMPT',
+                            atcoCode: '1800EH24201',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Stop BB',
+                            street: '',
+                            qualifierName: '',
+                        },
+                    ],
+                    prices: [
+                        { price: '1.00', fareZones: ['Fare Zone 3'] },
+                        { price: '1.20', fareZones: ['Fare Zone 1'] },
+                    ],
+                },
+                {
+                    name: 'Fare Zone 3',
+                    stops: [
+                        {
+                            stopName: 'Crickets Ln',
+                            naptanCode: 'MANDAMPA',
+                            atcoCode: '1800EH24151',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'opp',
+                            street: 'PENNY MEADOW',
+                            qualifierName: '',
+                        },
+                        {
+                            stopName: 'Tameside College',
+                            naptanCode: 'MANDAJAM',
+                            atcoCode: '1800EH21241',
+                            localityCode: 'N0077788',
+                            localityName: 'Cockbrook',
+                            parentLocalityName: 'Ashton-under-Lyne',
+                            indicator: 'opp',
+                            street: 'BEAUFORT RD',
+                            qualifierName: '',
+                        },
+                        {
+                            stopName: 'Ashton Bus Station',
+                            naptanCode: '',
+                            atcoCode: '1800EHQ0081',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Arrivals',
+                            street: 'Wellington Road',
+                            qualifierName: '',
+                        },
+                    ],
+                    prices: [{ price: '1.30', fareZones: ['Fare Zone 1'] }],
+                },
+            ];
+
+            const stops = netexHelpers.getPointToPointScheduledStopPointsList(fareZones);
+
+            expect(stops).toEqual([
+                {
+                    Name: { $t: 'Ashton Bus Station' },
+                    NameSuffix: { $t: 'Arrivals' },
+                    TopographicPlaceView: {
+                        Name: { $t: 'Ashton-under-Lyne' },
+                        QualifierName: { $t: '' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0028492' },
+                    },
+                    id: 'atco:1800EHQ0081',
+                    version: 'any',
+                },
+                {
+                    Name: { $t: 'New Street' },
+                    NameSuffix: { $t: 'Arrivals' },
+                    TopographicPlaceView: {
+                        Name: { $t: 'Ashton-under-Lyne' },
+                        QualifierName: { $t: '' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0028493' },
+                    },
+                    id: 'atco:1800EHQ0721',
+                    version: 'any',
+                },
+                {
+                    Name: { $t: 'Henrietta Street' },
+                    NameSuffix: { $t: 'Stop BB' },
+                    TopographicPlaceView: {
+                        Name: { $t: 'Ashton-under-Lyne' },
+                        QualifierName: { $t: '' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0028492' },
+                    },
+                    id: 'atco:1800EH24201',
+                    version: 'any',
+                },
+                {
+                    Name: { $t: 'Crickets Ln' },
+                    NameSuffix: { $t: 'opp' },
+                    TopographicPlaceView: {
+                        Name: { $t: 'Ashton-under-Lyne' },
+                        QualifierName: { $t: '' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:E0028492' },
+                    },
+                    id: 'atco:1800EH24151',
+                    version: 'any',
+                },
+                {
+                    Name: { $t: 'Tameside College' },
+                    NameSuffix: { $t: 'opp' },
+                    TopographicPlaceView: {
+                        Name: { $t: 'Cockbrook' },
+                        QualifierName: { $t: '' },
+                        TopographicPlaceRef: { ref: 'nptgLocality:N0077788' },
+                    },
+                    id: 'atco:1800EH21241',
+                    version: 'any',
+                },
+            ]);
+
+            // check to ensure that we have not changed the array being
+            // passed into the function
+            expect(fareZones).toStrictEqual([
+                {
+                    name: 'Fare Zone 1',
+                    stops: [
+                        {
+                            stopName: 'Ashton Bus Station',
+                            naptanCode: '',
+                            atcoCode: '1800EHQ0081',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Arrivals',
+                            street: 'Wellington Road',
+                            qualifierName: '',
+                        },
+                        {
+                            stopName: 'New Street',
+                            naptanCode: '',
+                            atcoCode: '1800EHQ0721',
+                            localityCode: 'E0028493',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Arrivals',
+                            street: 'New Street',
+                            qualifierName: '',
+                        },
+                    ],
+                    prices: [],
+                },
+                {
+                    name: 'Fare Zone 2',
+                    stops: [
+                        {
+                            stopName: 'Henrietta Street',
+                            naptanCode: 'MANDAMPT',
+                            atcoCode: '1800EH24201',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Stop BB',
+                            street: '',
+                            qualifierName: '',
+                        },
+                    ],
+                    prices: [
+                        { price: '1.00', fareZones: ['Fare Zone 3'] },
+                        { price: '1.20', fareZones: ['Fare Zone 1'] },
+                    ],
+                },
+                {
+                    name: 'Fare Zone 3',
+                    stops: [
+                        {
+                            stopName: 'Crickets Ln',
+                            naptanCode: 'MANDAMPA',
+                            atcoCode: '1800EH24151',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'opp',
+                            street: 'PENNY MEADOW',
+                            qualifierName: '',
+                        },
+                        {
+                            stopName: 'Tameside College',
+                            naptanCode: 'MANDAJAM',
+                            atcoCode: '1800EH21241',
+                            localityCode: 'N0077788',
+                            localityName: 'Cockbrook',
+                            parentLocalityName: 'Ashton-under-Lyne',
+                            indicator: 'opp',
+                            street: 'BEAUFORT RD',
+                            qualifierName: '',
+                        },
+                        {
+                            stopName: 'Ashton Bus Station',
+                            naptanCode: '',
+                            atcoCode: '1800EHQ0081',
+                            localityCode: 'E0028492',
+                            localityName: 'Ashton-under-Lyne',
+                            parentLocalityName: '',
+                            indicator: 'Arrivals',
+                            street: 'Wellington Road',
+                            qualifierName: '',
+                        },
+                    ],
+                    prices: [{ price: '1.30', fareZones: ['Fare Zone 1'] }],
                 },
             ]);
         });
@@ -604,7 +867,9 @@ describe('Netex Helpers', () => {
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         it('creates conditions of travel fare frame with usage validity period if user provides a return validity', () => {
             const matchingDataWithReturnValidity = returnNonCircularTicketWithReturnValidity;
+
             const result = getPointToPointConditionsElement(matchingDataWithReturnValidity);
+
             expect(result.GenericParameterAssignment.limitations.UsageValidityPeriod).toStrictEqual({
                 version: '1.0',
                 id: `op:Trip@back@frequency`,
@@ -621,7 +886,9 @@ describe('Netex Helpers', () => {
 
         it('does not create conditions of travel fare frame with usage validity period if user does not provide a return validity', () => {
             const matchingDataWithoutReturnValidity = returnNonCircularTicket;
+
             const result = getPointToPointConditionsElement(matchingDataWithoutReturnValidity);
+
             expect(result.GenericParameterAssignment.limitations.UsageValidityPeriod).toBeUndefined();
         });
         /* eslint-enable @typescript-eslint/no-non-null-assertion */

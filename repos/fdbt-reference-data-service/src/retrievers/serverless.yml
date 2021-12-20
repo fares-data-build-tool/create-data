@@ -147,6 +147,7 @@ functions:
         maximumRetryAttempts: 2
         environment:
             BODS_URL: https://data.bus-data.dft.gov.uk/timetable/download/bulk_archive
+            XML_BUCKET_NAME: fdbt-txc-ref-data-${self:provider.stage}
             ZIPPED_BUCKET_NAME: fdbt-txc-ref-data-zipped-${self:provider.stage}
             TNDS_FUNCTION: reference-data-service-retrievers-${self:provider.stage}-TxcRetrieverTnds
             RDS_HOST:
@@ -179,13 +180,10 @@ functions:
         maximumRetryAttempts: 2
         environment:
             TNDS_FTP_HOST: ftp.tnds.basemap.co.uk
+            ZIPPED_BUCKET_NAME: fdbt-txc-ref-data-zipped-${self:provider.stage}
             XML_BUCKET_NAME: fdbt-txc-ref-data-${self:provider.stage}
             RDS_HOST:
                 Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
-        events:
-            - schedule:
-                  rate: ${self:custom.txcRetrieverSchedule.${self:provider.stage}, cron(15 2 * * ? *)}
-                  enabled: ${self:custom.enableSchedule.${self:provider.stage}, false}
         vpc:
             securityGroupIds:
                 - Fn::ImportValue: ${self:provider.stage}:ReferenceDataUploaderLambdaSG
