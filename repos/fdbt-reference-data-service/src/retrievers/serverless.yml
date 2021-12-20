@@ -31,7 +31,7 @@ provider:
                     - "lambda:invokeAsync"
                     - "lambda:invokeFunction"
                   Resource:
-                    - !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:reference-data-service-retrievers-test-TxcRetriever*
+                    - !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:reference-data-service-retrievers-${self:provider.stage}-TxcRetriever*
     s3:
         txcZippedData:
             name: fdbt-txc-ref-data-zipped-${self:provider.stage}
