@@ -9,6 +9,9 @@
         "lint:fix": "eslint --fix . --ext .ts",
         "runBrowserstack": "browserstack-cypress run --sync"
     },
+    "resolutions": {
+        "json-schema": ">=0.4.0"
+    },
     "devDependencies": {
         "@cypress/webpack-preprocessor": "^5.7.0",
         "@types/bluebird": "^3.5.33",

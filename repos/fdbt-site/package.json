@@ -55,7 +55,7 @@
         "express-session": "^1.17.1",
         "express-winston": "^4.0.3",
         "express": "^4.17.1",
-        "fdbt-types": "file:../fdbt-types",
+        "fdbt-types": "file:./fdbt-types",
         "formidable": "^1.2.2",
         "govuk-frontend": "^3.13.0",
         "helmet": "^3.22.0",
@@ -88,7 +88,8 @@
     "resolutions": {
         "node-fetch": "^2.6.1",
         "object-path": "^0.11.5",
-        "hosted-git-info": "3.0.8"
+        "hosted-git-info": "3.0.8",
+        "json-schema": ">=0.4.0"
     },
     "devDependencies": {
         "@babel/core": "^7.14.6",
