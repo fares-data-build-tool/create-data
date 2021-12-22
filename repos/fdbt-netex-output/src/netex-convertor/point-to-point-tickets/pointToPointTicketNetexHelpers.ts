@@ -62,7 +62,7 @@ export const hasDuplicatesAcrossFareZones = (fareZones: FareZone[]): boolean => 
 export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] => {
     let stops = getStops(fareZones);
 
-    if (hasDuplicatesWithinASingleFareZone(fareZones)) {
+    if (stops.length !== 0) {
         const fareZonesWithDuplicateStopsRemoved = fareZones.map(fareZone => {
             const set = new Set();
 
@@ -74,13 +74,15 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
                 } else return false;
             });
 
-            return { ...fareZone, stops };
+            fareZone.stops = stops;
+
+            return fareZone;
         });
 
         stops = getStops(fareZonesWithDuplicateStopsRemoved);
-    } else if (hasDuplicatesAcrossFareZones(fareZones)) {
+
         // we want a copy (by value, not by reference) because we do not want to alter the fare zones array being passed in
-        const copyOfFareZones = JSON.parse(JSON.stringify(fareZones));
+        const copyOfFareZones = JSON.parse(JSON.stringify(fareZonesWithDuplicateStopsRemoved));
 
         const firstFareStage = copyOfFareZones[0];
 
