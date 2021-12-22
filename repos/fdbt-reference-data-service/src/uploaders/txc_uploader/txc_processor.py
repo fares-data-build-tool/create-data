@@ -44,11 +44,13 @@ def get_operators(data_dict, data_source, cloudwatch):
 
 
 def get_services_for_operator(data_dict, operator):
-    services = make_list(data_dict['TransXChange']['Services']['Service'])
-    services_for_operator = [
-        service for service in services if service['RegisteredOperatorRef'] == operator['@id']]
+    if "Services" in data_dict["TransXChange"]:
+        services = make_list(data_dict['TransXChange']['Services']['Service'])
 
-    return services_for_operator
+        services_for_operator = [
+            service for service in services if service['RegisteredOperatorRef'] == operator['@id']]
+
+        return services_for_operator
 
 
 def get_lines_for_service(service):
