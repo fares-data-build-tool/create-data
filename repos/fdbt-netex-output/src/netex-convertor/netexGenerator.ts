@@ -18,7 +18,6 @@ import {
     Ticket,
     assertNever,
 } from '../types';
-
 import {
     getGeoZoneFareTable,
     getGroupOfLinesList,
