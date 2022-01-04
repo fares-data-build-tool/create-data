@@ -107,7 +107,10 @@ export const sortingWithoutSequenceNumbers = (journeyPatterns: RawJourneyPattern
 
         return toposort(graph);
     } catch (error) {
-        logger.error('failed to toposort', { error: error.stack, journeyPatterns: journeyPatterns });
+        logger.warn('failed to toposort, attempting fallback sort', {
+            error: error.stack,
+            journeyPatterns: journeyPatterns,
+        });
 
         const orderedStopPoints = journeyPatterns.flatMap((x) => x.orderedStopPoints);
 
