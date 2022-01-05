@@ -9,7 +9,7 @@ import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, MultiOperatorInfo, MultipleOperatorsAttribute } from '../../interfaces';
 import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
-import { SelectedService } from 'shared/matchingJsonTypes';
+import { SelectedService } from 'fdbt-types/matchingJsonTypes';
 
 const errorId = 'checkbox-0';
 

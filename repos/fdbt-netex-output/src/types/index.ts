@@ -18,7 +18,7 @@ import {
     SchemeOperatorFlatFareTicket,
     SchemeOperatorTicket,
     SchemeOperatorMultiServiceTicket,
-} from '../../shared/matchingJsonTypes';
+} from 'fdbt-types/matchingJsonTypes';
 import { NetexObject } from '../netex-convertor/sharedHelpers';
 
 // Misc

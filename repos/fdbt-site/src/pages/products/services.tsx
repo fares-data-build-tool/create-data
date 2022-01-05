@@ -5,7 +5,7 @@ import {
     NextPageContextWithSession,
     EntityStatus,
 } from '../../interfaces/index';
-import { MyFaresProduct } from '../../../shared/dbTypes';
+import { MyFaresProduct } from 'fdbt-types/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import { getPointToPointProducts, getBodsServicesByNoc } from '../../data/auroradb';

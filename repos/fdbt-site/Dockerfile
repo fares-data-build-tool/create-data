@@ -1,27 +1,21 @@
 FROM node:14-alpine AS build
-
+RUN apk add --no-cache git
+ENV NODE_ENV production
+RUN npm install -g npm
 WORKDIR /tmp
-
-COPY ./repos/fdbt-site .
-RUN apk add --no-cache git && npm install --ignore-scripts
-
-RUN rm shared
-COPY ./shared ./shared
-
+COPY . .
+RUN npm install --ignore-scripts --include=dev
 RUN npm run build
 
 FROM node:14-alpine
-
 ENV NODE_ENV production
-
+RUN npm install -g npm
 WORKDIR /home/node/app
-
-COPY ./repos/fdbt-site/package*.json ./repos/fdbt-site/start_clamav.sh ./repos/fdbt-site/next.config.js ./
-COPY ./repos/fdbt-site/supervisord.conf /etc/supervisor/
-
-RUN apk update && apk upgrade && \
+COPY ./start_clamav.sh ./
+COPY ./supervisord.conf /etc/supervisor/
+RUN apk update && \
+    apk upgrade && \
     apk add --no-cache -t .clamv-run-deps openrc clamav clamav-daemon clamav-libunrar supervisor && \
-    npm install --ignore-scripts && \
     mkdir /run/clamav && \
     chown clamav:clamav /run/clamav && \
     chmod 750 /run/clamav && \
@@ -33,10 +27,9 @@ RUN apk update && apk upgrade && \
     sed -i 's/^#Foreground yes/Foreground yes/g' /etc/clamav/clamd.conf && \
     sed -i 's/^#Foreground yes/Foreground yes/g' /etc/clamav/freshclam.conf && \
     freshclam --stdout
-
+COPY ./package*.json ./next.config.js ./
+RUN npm ci --ignore-scripts
 COPY --from=build /tmp/.next ./.next
 COPY --from=build /tmp/dist ./dist
-
-EXPOSE 80
-
 CMD ["supervisord",  "-c",  "/etc/supervisor/supervisord.conf", "-n"]
+EXPOSE 80

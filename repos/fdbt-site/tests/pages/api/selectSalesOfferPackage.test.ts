@@ -1,4 +1,4 @@
-import { ExpiryUnit } from '../../../shared/matchingJsonTypes';
+import { ExpiryUnit } from 'fdbt-types/matchingJsonTypes';
 import { MULTIPLE_PRODUCT_ATTRIBUTE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../../../src/constants/attributes';
 import { MultiProduct } from '../../../src/interfaces';
 import selectSalesOfferPackages, { sanitiseReqBody } from '../../../src/pages/api/selectSalesOfferPackage';

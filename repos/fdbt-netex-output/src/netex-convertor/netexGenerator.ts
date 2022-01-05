@@ -1,5 +1,5 @@
 import { startCase } from 'lodash';
-import { PointToPointPeriodTicket } from '../../shared/matchingJsonTypes';
+import { PointToPointPeriodTicket } from 'fdbt-types/matchingJsonTypes';
 import {
     isBaseSchemeOperatorInfo,
     isGeoZoneTicket,
@@ -18,7 +18,6 @@ import {
     Ticket,
     assertNever,
 } from '../types';
-
 import {
     getGeoZoneFareTable,
     getGroupOfLinesList,

@@ -10,7 +10,7 @@ import {
 } from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { FullTimeRestriction, TimeRestrictionDay } from 'shared/matchingJsonTypes';
+import { FullTimeRestriction, TimeRestrictionDay } from 'fdbt-types/matchingJsonTypes';
 
 describe('chooseTimeRestrictions', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');

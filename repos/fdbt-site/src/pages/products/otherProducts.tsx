@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { MyFaresOtherFaresProduct, NextPageContextWithSession } from '../../interfaces/index';
-import { MyFaresOtherProduct } from '../../../shared/dbTypes';
+import { MyFaresOtherProduct } from 'fdbt-types/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString, getCsrfToken } from '../../utils';

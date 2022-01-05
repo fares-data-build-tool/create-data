@@ -34,6 +34,9 @@ parameters:
   exporter:
     type: boolean
     default: false
+  fdbt-types:
+    type: boolean
+    default: false
 
 executors:
   node:
@@ -772,8 +775,8 @@ workflows:
           repo: "${SITE_ECR_REPO}"
           tag: "${CIRCLE_SHA1},latest"
           context: tfn-fdbt-core
-          path: ~/project
-          dockerfile: site.Dockerfile
+          path: ~/project/repos/fdbt-site
+          dockerfile: Dockerfile
           filters:
             tags:
               only: /^v.*/
@@ -1002,6 +1005,15 @@ workflows:
             - deploy-reference-data-retrievers-to-test
 
   fdbt-admin:
+    when: << pipeline.parameters.fdbt-admin >>
+    jobs:
+      - checkout-repo:
+          <<: *slack-fail-post-step
+          filters:
+            tags:
+              only: /^v.*/
+
+  fdbt-types:
     when: << pipeline.parameters.fdbt-admin >>
     jobs:
       - checkout-repo:

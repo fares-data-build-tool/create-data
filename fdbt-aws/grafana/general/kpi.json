@@ -15,12 +15,12 @@
     "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
-    "id": 22,
+    "id": 9,
+    "iteration": 1639650892649,
     "links": [],
     "panels": [
         {
-            "datasource": null,
-            "description": "",
+            "datasource": "CloudWatch",
             "fieldConfig": {
                 "defaults": {
                     "custom": {},
@@ -31,9 +31,14 @@
                             {
                                 "color": "green",
                                 "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 200
                             }
                         ]
-                    }
+                    },
+                    "unit": "s"
                 },
                 "overrides": []
             },
@@ -43,7 +48,7 @@
                 "x": 0,
                 "y": 0
             },
-            "id": 2,
+            "id": 7,
             "options": {
                 "colorMode": "value",
                 "graphMode": "none",
@@ -51,39 +56,41 @@
                 "orientation": "auto",
                 "reduceOptions": {
                     "calcs": [
-                        "sum"
+                        "mean"
                     ],
                     "fields": "",
                     "values": false
                 },
                 "textMode": "auto"
             },
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "targets": [
                 {
                     "alias": "",
-                    "dimensions": {},
+                    "dimensions": {
+                        "LoadBalancer": "app/FDBT-Publi-984WV6WVQ5BY/d90fa10cb3799dc0",
+                        "TargetGroup": "targetgroup/fdbt-site-tg-prod/21e1e60f2bf239d0"
+                    },
                     "expression": "",
                     "id": "",
                     "matchExact": true,
-                    "metricName": "startedTransactions",
-                    "namespace": "FDBT/Site",
+                    "metricName": "TargetResponseTime",
+                    "namespace": "AWS/ApplicationELB",
                     "period": "",
                     "refId": "A",
-                    "region": "default",
+                    "region": "eu-west-2",
                     "statistics": [
-                        "Sum"
+                        "Average"
                     ]
                 }
             ],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Started Transactions",
+            "title": "Site ALB response time (Average)",
             "type": "stat"
         },
         {
-            "datasource": null,
-            "description": "",
+            "datasource": "CloudWatch",
             "fieldConfig": {
                 "defaults": {
                     "custom": {},
@@ -94,9 +101,14 @@
                             {
                                 "color": "green",
                                 "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 200
                             }
                         ]
-                    }
+                    },
+                    "unit": "s"
                 },
                 "overrides": []
             },
@@ -106,7 +118,7 @@
                 "x": 8,
                 "y": 0
             },
-            "id": 3,
+            "id": 8,
             "options": {
                 "colorMode": "value",
                 "graphMode": "none",
@@ -114,34 +126,37 @@
                 "orientation": "auto",
                 "reduceOptions": {
                     "calcs": [
-                        "sum"
+                        "mean"
                     ],
                     "fields": "",
                     "values": false
                 },
                 "textMode": "auto"
             },
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
             "targets": [
                 {
                     "alias": "",
-                    "dimensions": {},
+                    "dimensions": {
+                        "LoadBalancer": "app/FDBT-Publi-984WV6WVQ5BY/d90fa10cb3799dc0",
+                        "TargetGroup": "targetgroup/fdbt-site-tg-prod/21e1e60f2bf239d0"
+                    },
                     "expression": "",
                     "id": "",
                     "matchExact": true,
-                    "metricName": "completeTransactions",
-                    "namespace": "FDBT/Site",
+                    "metricName": "TargetResponseTime",
+                    "namespace": "AWS/ApplicationELB",
                     "period": "",
                     "refId": "A",
-                    "region": "default",
+                    "region": "eu-west-2",
                     "statistics": [
-                        "Sum"
+                        "p95"
                     ]
                 }
             ],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Completed Transactions",
+            "title": "Site ALB response time (95th percentile)",
             "type": "stat"
         },
         {
@@ -168,7 +183,7 @@
                 "x": 16,
                 "y": 0
             },
-            "id": 5,
+            "id": 10,
             "options": {
                 "colorMode": "value",
                 "graphMode": "none",
@@ -183,7 +198,67 @@
                 },
                 "textMode": "auto"
             },
-            "pluginVersion": "7.1.5",
+            "pluginVersion": "7.3.5",
+            "targets": [
+                {
+                    "expression": "fields @timestamp, @message\n| sort @timestamp desc\n| filter @message like /NeTEx generation complete/\n| stats count()",
+                    "id": "",
+                    "logGroupNames": [
+                        "/aws/lambda/netex-output-service-prod-NetexConvertor"
+                    ],
+                    "namespace": "FDBT/Netex-Validator",
+                    "queryMode": "Logs",
+                    "refId": "A",
+                    "region": "default",
+                    "statsGroups": []
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Total NeTEx",
+            "type": "stat"
+        },
+        {
+            "datasource": null,
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 8,
+                "x": 0,
+                "y": 9
+            },
+            "id": 12,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.3.5",
             "targets": [
                 {
                     "alias": "",
@@ -191,8 +266,8 @@
                     "expression": "",
                     "id": "",
                     "matchExact": true,
-                    "metricName": "netex-valid-${environment}",
-                    "namespace": "FDBT/Netex-Validator",
+                    "metricName": "startedTransactions",
+                    "namespace": "FDBT/Site",
                     "period": "",
                     "refId": "A",
                     "region": "default",
@@ -203,10 +278,11 @@
             ],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Total NeTEx",
+            "title": "Started Transactions",
             "type": "stat"
         }
     ],
+    "refresh": false,
     "schemaVersion": 26,
     "style": "dark",
     "tags": [],
@@ -221,6 +297,7 @@
                 },
                 "datasource": "CloudWatch",
                 "definition": "metrics(FDBT/Netex-Output)",
+                "error": null,
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -266,5 +343,5 @@
     "timezone": "",
     "title": "KPI",
     "uid": "XE3h8LNGk",
-    "version": 4
+    "version": 5
 }

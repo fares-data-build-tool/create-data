@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactElement } from 'react';
-import { FromDb, SalesOfferPackage } from '../../shared/matchingJsonTypes';
+import { FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
 import { GlobalSettingsViewPage } from '../components/GlobalSettingsViewPage';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { NextPageContextWithSession } from '../interfaces';

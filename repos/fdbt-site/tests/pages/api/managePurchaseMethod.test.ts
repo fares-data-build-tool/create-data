@@ -2,7 +2,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import managePurchaseMethod from '../../../src/pages/api/managePurchaseMethod';
 import * as session from '../../../src/utils/sessions';
 import { GS_PURCHASE_METHOD_ATTRIBUTE } from '../../../src/constants/attributes';
-import { SalesOfferPackage, FromDb } from '../../../shared/matchingJsonTypes';
+import { SalesOfferPackage, FromDb } from 'fdbt-types/matchingJsonTypes';
 import * as db from '../../../src/data/auroradb';
 
 jest.mock('../../../src/data/auroradb');

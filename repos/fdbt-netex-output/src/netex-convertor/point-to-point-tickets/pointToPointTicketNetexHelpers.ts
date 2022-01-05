@@ -1,5 +1,5 @@
 import startCase from 'lodash/startCase';
-import { PointToPointPeriodTicket } from '../../../shared/matchingJsonTypes';
+import { PointToPointPeriodTicket } from 'fdbt-types/matchingJsonTypes';
 import {
     FareZone,
     FareZoneList,
@@ -33,17 +33,57 @@ export const hasDuplicates = (array: string[]): boolean => {
     return new Set(array).size !== array.length;
 };
 
-export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] => {
-    // we want a copy (by value, not by reference) because we do not want to alter the fare zones array being passed in
-    const copyOfFareZones = JSON.parse(JSON.stringify(fareZones));
+export const hasDuplicatesWithinASingleFareZone = (fareZones: FareZone[]): boolean => {
+    let hasDuplicatesWithinASingleFareZone = false;
 
-    let stops = getStops(copyOfFareZones);
+    hasDuplicatesWithinASingleFareZone = fareZones.some(fz => {
+        const stopsWithinFareZone = fz.stops;
+
+        const atcoCodesOfStopsWithinFareZone = stopsWithinFareZone.map(s => s.atcoCode);
+
+        const hasDuplicateStops = hasDuplicates(atcoCodesOfStopsWithinFareZone);
+
+        return hasDuplicateStops;
+    });
+
+    return hasDuplicatesWithinASingleFareZone;
+};
+
+export const hasDuplicatesAcrossFareZones = (fareZones: FareZone[]): boolean => {
+    const stops = getStops(fareZones);
 
     const stopsAtcoCodes = stops.map(s => s.atcoCode);
 
     const hasDuplicateStops = hasDuplicates(stopsAtcoCodes);
 
-    if (hasDuplicateStops) {
+    return hasDuplicateStops;
+};
+
+export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] => {
+    let stops = getStops(fareZones);
+
+    if (stops.length !== 0) {
+        const fareZonesWithDuplicateStopsRemoved = fareZones.map(fareZone => {
+            const set = new Set();
+
+            const stops = fareZone.stops.filter(o => {
+                if (!set.has(o.atcoCode)) {
+                    set.add(o.atcoCode);
+
+                    return true;
+                } else return false;
+            });
+
+            fareZone.stops = stops;
+
+            return fareZone;
+        });
+
+        stops = getStops(fareZonesWithDuplicateStopsRemoved);
+
+        // we want a copy (by value, not by reference) because we do not want to alter the fare zones array being passed in
+        const copyOfFareZones = JSON.parse(JSON.stringify(fareZonesWithDuplicateStopsRemoved));
+
         const firstFareStage = copyOfFareZones[0];
 
         const firstStopInFirstFareStage = firstFareStage.stops[0];

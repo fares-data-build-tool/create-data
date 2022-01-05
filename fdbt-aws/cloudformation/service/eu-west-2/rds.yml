@@ -113,14 +113,14 @@ Resources:
   DatabaseMasterCPUAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: Master database CPU utilization is over 80%.
+      AlarmDescription: Master database CPU utilization is over 95%.
       Namespace: AWS/RDS
       MetricName: CPUUtilization
       Unit: Percent
       Statistic: Average
       Period: 300
       EvaluationPeriods: 3
-      Threshold: 80
+      Threshold: 95
       ComparisonOperator: GreaterThanOrEqualToThreshold
       Dimensions:
         - Name: DBInstanceIdentifier

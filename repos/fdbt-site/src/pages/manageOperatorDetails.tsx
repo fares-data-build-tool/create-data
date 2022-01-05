@@ -10,7 +10,7 @@ import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils';
 import { getOperatorDetails, getOperatorDetailsFromNocTable } from '../data/auroradb';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import SubNavigation from '../layout/SubNavigation';
-import { OperatorDetails } from '../../shared/matchingJsonTypes';
+import { OperatorDetails } from 'fdbt-types/matchingJsonTypes';
 import InfoPopup from '../../src/components/InfoPopup';
 import { exportEnabled, myFaresEnabled } from '../../src/constants/featureFlag';
 

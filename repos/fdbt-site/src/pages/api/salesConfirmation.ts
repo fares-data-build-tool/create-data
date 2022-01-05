@@ -31,7 +31,7 @@ import {
     insertDataToProductsBucketAndProductsTable,
     shouldInstantlyGenerateNetexFromMatchingJson,
 } from '../../utils/apiUtils/userData';
-import { TicketWithIds } from '../../../shared/matchingJsonTypes';
+import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
 import { triggerExport } from '../../utils/apiUtils/export';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {

@@ -15,8 +15,8 @@ import { isService } from '../../interfaces/typeGuards';
 import logger from '../logger';
 import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { getUserFareStages } from '../../data/s3';
-import { RawJourneyPattern, StopPoint } from '../../../shared/dbTypes';
-import { UnassignedStop } from '../../../shared/matchingJsonTypes';
+import { RawJourneyPattern, StopPoint } from 'fdbt-types/dbTypes';
+import { UnassignedStop } from 'fdbt-types/matchingJsonTypes';
 
 export const getFareZones = (
     userFareStages: UserFareStages,
@@ -107,9 +107,39 @@ export const sortingWithoutSequenceNumbers = (journeyPatterns: RawJourneyPattern
 
         return toposort(graph);
     } catch (error) {
-        logger.error('failed to toposort', { error: error.stack, journeyPatterns: journeyPatterns });
+        logger.warn('failed to toposort, attempting fallback sort', {
+            error: error.stack,
+            journeyPatterns: journeyPatterns,
+        });
 
-        return journeyPatterns.flatMap((x) => x.orderedStopPoints).map((x) => x.stopPointRef);
+        const orderedStopPoints = journeyPatterns.flatMap((x) => x.orderedStopPoints);
+
+        const stopsAndPossibleSequenceNumbers = orderedStopPoints.map((x) => ({
+            stopPointRef: x.stopPointRef,
+            sequenceNumber: x.sequenceNumber,
+        }));
+
+        const stopsWithSequenceNumbers = stopsAndPossibleSequenceNumbers.filter(
+            (x) => x.sequenceNumber !== undefined,
+        ) as { stopPointRef: string; sequenceNumber: number }[];
+
+        const stopRefs = new Set();
+
+        const stopsWithSequenceNumbersWithDuplicateStopRefsRemoved = stopsWithSequenceNumbers.filter((x) => {
+            if (stopRefs.has(x.stopPointRef)) {
+                return false;
+            } else {
+                stopRefs.add(x.stopPointRef);
+
+                return true;
+            }
+        });
+
+        const sortedStopsBySequenceNumbers = stopsWithSequenceNumbersWithDuplicateStopRefsRemoved.sort((a, b) => {
+            return a.sequenceNumber - b.sequenceNumber;
+        });
+
+        return sortedStopsBySequenceNumbers.map((x) => x.stopPointRef);
     }
 };
 
@@ -156,6 +186,7 @@ export const getMatchingProps = async (
 
     // find journey patterns for direction (inbound or outbound)
     const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === directionAttribute.direction);
+
     // get an unordered list of stop points from journey patterns, then removing any duplicates on stopPointRef and sequence number
     const stops = journeyPatterns
         .flatMap((it) => it.orderedStopPoints)
@@ -183,6 +214,7 @@ export const getMatchingProps = async (
     const naptanInfo = await batchGetStopsByAtcoCode(
         masterStopList.filter((stop, index, self) => self.indexOf(stop) === index),
     );
+
     // removing any stops that aren't fully fleshed out
     const orderedStops = masterStopList
         .map((atco) => naptanInfo.find((s) => s.atcoCode === atco))

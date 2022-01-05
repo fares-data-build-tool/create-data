@@ -9,7 +9,7 @@ import {
     BasePeriodTicket,
     ProductDetails,
     BaseSchemeOperatorTicket,
-} from '../shared/matchingJsonTypes';
+} from 'fdbt-types/matchingJsonTypes';
 import {
     getFareDayEnd,
     getPassengerTypeById,
@@ -17,9 +17,9 @@ import {
     getGroupDefinition,
     getSalesOfferPackagesByNoc,
 } from './database';
-import { ExportLambdaBody } from '../shared/integrationTypes';
+import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
-import { DbTimeRestriction } from '../shared/dbTypes';
+import { DbTimeRestriction } from 'fdbt-types/dbTypes';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'

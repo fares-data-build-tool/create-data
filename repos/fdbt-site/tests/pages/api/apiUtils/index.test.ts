@@ -1,5 +1,5 @@
 import Cookies from 'cookies';
-import { TicketType } from '../../../../shared/matchingJsonTypes';
+import { TicketType } from 'fdbt-types/matchingJsonTypes';
 import { SchoolFareType } from '../../../../src/interfaces';
 import {
     setCookieOnResponseObject,
