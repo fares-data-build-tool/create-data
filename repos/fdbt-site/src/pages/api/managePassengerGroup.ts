@@ -5,18 +5,20 @@ import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../constants/attributes';
 import { getGroupPassengerTypesFromGlobalSettings, insertGroupPassengerType } from '../../data/auroradb';
 import { CompanionReference, ErrorInfo, GroupPassengerTypeDb, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { getAndValidateNoc, invalidCharactersArePresent, redirectTo, redirectToError } from '../../utils/apiUtils';
 import { checkIntegerIsValid, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import logger from '../../utils/logger';
 
 export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerTypeDb => {
     const id = req.body.groupId && Number(req.body.groupId);
+
     if (id && !Number.isInteger(id)) {
         throw Error(`Received invalid id for passenger group [${req.body.groupId}]`);
     }
 
     const maxGroupSize = removeExcessWhiteSpace(req.body.maxGroupSize);
     const groupName = removeExcessWhiteSpace(req.body.passengerGroupName);
+
     const passengerTypeIds: string[] = !req.body.passengerTypes
         ? []
         : isArray(req.body.passengerTypes)
@@ -28,6 +30,7 @@ export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassenge
         const maxNumber = req.body[`maximumPassengers${passengerTypeId}`];
 
         const id = Number(passengerTypeId);
+
         if (!Number.isInteger(id) || id < 1) {
             throw Error(`Received invalid id in passenger group [${passengerTypeId}]`);
         }
@@ -50,6 +53,7 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
     const errors: ErrorInfo[] = [];
     const integerCheck = checkIntegerIsValid(userInput.groupPassengerType.maxGroupSize, 'Maximum group size', 1, 30);
     const editMode = !!userInput.id;
+    const groupName = userInput.name;
 
     if (integerCheck) {
         errors.push({
@@ -85,7 +89,17 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
                         userInput: companion.minNumber || '',
                     });
                 }
+
+                const minNumberHasInvalidCharacters = invalidCharactersArePresent(companion.minNumber);
+
+                if (minNumberHasInvalidCharacters) {
+                    errors.push({
+                        id: `minimum-passengers-${companion.id}`,
+                        errorMessage: 'Minimum value has an invalid character',
+                    });
+                }
             }
+
             if (!companion.maxNumber) {
                 errors.push({
                     errorMessage: 'Maximum amount is required',
@@ -112,12 +126,21 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
                         userInput: companion.minNumber || '',
                     });
                 }
+
+                const maxNumberHasInvalidCharacters = invalidCharactersArePresent(companion.maxNumber);
+
+                if (maxNumberHasInvalidCharacters) {
+                    errors.push({
+                        id: `maximum-passengers-${companion.id}`,
+                        errorMessage: 'Maximum value has an invalid character',
+                    });
+                }
             }
         });
     }
 
     const groups = await getGroupPassengerTypesFromGlobalSettings(nocCode);
-    const groupNameCheck = groups.find((group) => group.name === userInput.name);
+    const groupNameCheck = groups.find((group) => group.name === groupName);
 
     // checks to see if the duplicate name exists
     // OR
@@ -126,17 +149,23 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
         errors.push({
             errorMessage: 'There is already a group with this name. Choose another',
             id: 'passenger-group-name',
-            userInput: userInput.name,
+            userInput: groupName,
         });
         return errors;
     }
 
-    if (!userInput.name || userInput.name.length > 50 || userInput.name.length < 1) {
+    if (!groupName || groupName.length > 50 || groupName.length < 1) {
         errors.push({
             errorMessage: 'Enter a group name of up to 50 characters',
             id: 'passenger-group-name',
-            userInput: userInput.name || '',
+            userInput: groupName || '',
         });
+    }
+
+    const nameHasInvalidCharacters = invalidCharactersArePresent(groupName);
+
+    if (nameHasInvalidCharacters) {
+        errors.push({ id: 'passenger-group-name', errorMessage: 'Passenger group name has an invalid character' });
     }
 
     return errors;

@@ -138,6 +138,26 @@ export const checkEmailValid = (email: string): boolean => {
     return emailRegex.test(email) && email !== '';
 };
 
+export const invalidCharactersArePresent = (value: string): boolean => {
+    // this regular expression checks to see if any of the characters
+    // are not:
+    //
+    // alphanumeric (a to z, capitalised too and numbers)
+    // parenthesis ()
+    // slashes \ or /
+    // plus sign +
+    // dash -
+    // underscore _
+    // dot .
+    // ampersand &
+    // space
+    // @ symbol
+    // apostrophe and comma
+    let regularExpression = new RegExp("[^\\ssa-zA-Z/\\()_0-9'@,&+.-]+");
+
+    return regularExpression.test(value);
+};
+
 export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
     req: NextApiRequest,
     res: NextApiResponse,

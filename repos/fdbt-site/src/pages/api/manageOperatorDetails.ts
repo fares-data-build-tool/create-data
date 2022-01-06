@@ -1,5 +1,11 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getAndValidateNoc, checkEmailValid } from '../../utils/apiUtils';
+import {
+    redirectTo,
+    redirectToError,
+    getAndValidateNoc,
+    checkEmailValid,
+    invalidCharactersArePresent,
+} from '../../utils/apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { GS_OPERATOR_DETAILS_ATTRIBUTE } from '../../constants/attributes';
@@ -23,6 +29,18 @@ export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => 
         )
         .forEach((entry) =>
             errors.push({ id: entry[0], errorMessage: upperFirst(`${lowerCase(entry[0])} is required`) }),
+        );
+
+    Object.entries(operatorDetails)
+        .filter((entry) => {
+            const inputValue = entry[1];
+
+            const entryHasInvalidCharacters = invalidCharactersArePresent(inputValue);
+
+            return entryHasInvalidCharacters;
+        })
+        .forEach((entry) =>
+            errors.push({ id: entry[0], errorMessage: upperFirst(`${lowerCase(entry[0])} has an invalid character`) }),
         );
 
     if (

@@ -13,7 +13,7 @@ import {
     SinglePassengerType,
 } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { getAndValidateNoc, invalidCharactersArePresent, redirectTo, redirectToError } from '../../utils/apiUtils';
 import { checkIntegerIsValid, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -86,6 +86,24 @@ const formatRequestBody = async (
     const isInEditMode = id && Number.isInteger(id);
 
     const trimmedName = removeExcessWhiteSpace(name);
+
+    const nameHasInvalidCharacters = invalidCharactersArePresent(trimmedName);
+
+    if (nameHasInvalidCharacters) {
+        errors.push({ id: 'name', errorMessage: 'Passenger type name has an invalid character' });
+    }
+
+    const ageRangeMinHasInvalidCharacters = invalidCharactersArePresent(ageRangeMin);
+
+    if (ageRangeMinHasInvalidCharacters) {
+        errors.push({ id: 'age-range-min', errorMessage: 'Minimum age has an invalid character' });
+    }
+
+    const ageRangeMaxHasInvalidCharacters = invalidCharactersArePresent(ageRangeMax);
+
+    if (ageRangeMaxHasInvalidCharacters) {
+        errors.push({ id: 'age-range-max', errorMessage: 'Maximum age has an invalid character' });
+    }
 
     const passengerType: SinglePassengerType = {
         id,

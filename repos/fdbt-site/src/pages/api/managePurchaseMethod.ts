@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getAndValidateNoc } from '../../utils/apiUtils';
+import { redirectTo, redirectToError, getAndValidateNoc, invalidCharactersArePresent } from '../../utils/apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession, SalesOfferPackage } from '../../interfaces';
 import { GS_PURCHASE_METHOD_ATTRIBUTE } from '../../constants/attributes';
@@ -50,6 +50,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const trimmedName = removeExcessWhiteSpace(name);
 
+        const nameHasInvalidCharacters = invalidCharactersArePresent(trimmedName);
+
+        if (nameHasInvalidCharacters) {
+            errors.push({
+                id: 'purchase-method-name',
+                errorMessage: 'Purchase method name has an invalid character',
+            });
+        }
+
         if (trimmedName.length < 1) {
             errors.push({ id: 'purchase-method-name', errorMessage: 'Name must be provided' });
         }
@@ -67,6 +76,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         };
 
         const noc = getAndValidateNoc(req, res);
+
         if (errors.length === 0) {
             const results = await getSalesOfferPackagesByNocCode(noc);
 
@@ -86,7 +96,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         await (id ? updateSalesOfferPackage : insertSalesOfferPackage)(noc, salesOfferPackage);
+
         updateSessionAttribute(req, GS_PURCHASE_METHOD_ATTRIBUTE, undefined);
+
         redirectTo(res, '/viewPurchaseMethods');
     } catch (err) {
         const message = 'There was a problem in the sales offer package API.';
