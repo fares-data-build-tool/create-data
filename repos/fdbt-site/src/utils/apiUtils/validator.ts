@@ -1,3 +1,5 @@
+import { invalidCharactersArePresent } from '.';
+
 export const removeExcessWhiteSpace = (input: undefined | string): string => {
     // this will remove all whitespace on the front and end of a string, and reduce internal whitespaces to one whitespace
     if (!input) {
@@ -28,6 +30,12 @@ export const checkProductNameIsValid = (inputtedProductName: string): string => 
         productNameError = `Product name cannot have more than 50 characters`;
     } else if (inputtedProductName.length < 2) {
         productNameError = `Product name cannot have less than 2 characters`;
+    }
+
+    const nameHasInvalidCharacters = invalidCharactersArePresent(inputtedProductName);
+
+    if (nameHasInvalidCharacters) {
+        productNameError = 'Product name has an invalid character';
     }
 
     if (productNameError) {
