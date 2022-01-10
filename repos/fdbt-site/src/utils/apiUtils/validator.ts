@@ -36,7 +36,9 @@ export const invalidCharactersArePresent = (value: string): boolean => {
     // space
     // @ symbol
     // apostrophe and comma
-    const regularExpression = new RegExp("[^\\ssa-zA-Z/\\()_0-9'@,&+.-]+");
+
+    // anything not in the above is considered invalid
+    const regularExpression = new RegExp("[^\\ssa-zA-Z()_0-9'@,&+.\\-\\/\\\\]+");
 
     return regularExpression.test(value);
 };
