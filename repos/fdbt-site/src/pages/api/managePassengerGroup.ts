@@ -5,8 +5,12 @@ import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../constants/attributes';
 import { getGroupPassengerTypesFromGlobalSettings, insertGroupPassengerType } from '../../data/auroradb';
 import { CompanionReference, ErrorInfo, GroupPassengerTypeDb, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { getAndValidateNoc, invalidCharactersArePresent, redirectTo, redirectToError } from '../../utils/apiUtils';
-import { checkIntegerIsValid, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
+import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
+import {
+    checkIntegerIsValid,
+    invalidCharactersArePresent,
+    removeExcessWhiteSpace,
+} from '../../utils/apiUtils/validator';
 import logger from '../../utils/logger';
 
 export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerTypeDb => {

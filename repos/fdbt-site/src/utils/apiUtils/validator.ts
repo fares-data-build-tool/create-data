@@ -1,5 +1,3 @@
-import { invalidCharactersArePresent } from './index';
-
 export const removeExcessWhiteSpace = (input: undefined | string): string => {
     // this will remove all whitespace on the front and end of a string, and reduce internal whitespaces to one whitespace
     if (!input) {
@@ -21,6 +19,26 @@ export const isValidInputDuration = (durationInput: string, carnet: boolean): bo
         allowedUnits.push('no expiry');
     }
     return allowedUnits.includes(durationInput);
+};
+
+export const invalidCharactersArePresent = (value: string): boolean => {
+    // this regular expression checks to see if any of the characters
+    // are not:
+    //
+    // alphanumeric (a to z, capitalised too and numbers)
+    // parenthesis ()
+    // slashes \ or /
+    // plus sign +
+    // dash -
+    // underscore _
+    // dot .
+    // ampersand &
+    // space
+    // @ symbol
+    // apostrophe and comma
+    let regularExpression = new RegExp("[^\\ssa-zA-Z/\\()_0-9'@,&+.-]+");
+
+    return regularExpression.test(value);
 };
 
 export const checkProductNameIsValid = (inputtedProductName: string): string => {

@@ -10,8 +10,13 @@ import {
 } from '../../data/auroradb';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { getAndValidateNoc, invalidCharactersArePresent, redirectTo, redirectToError } from '../../utils/apiUtils';
-import { isValid24hrTimeFormat, removeAllWhiteSpace, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
+import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
+import {
+    invalidCharactersArePresent,
+    isValid24hrTimeFormat,
+    removeAllWhiteSpace,
+    removeExcessWhiteSpace,
+} from '../../utils/apiUtils/validator';
 import { toArray } from '../../utils';
 import { DbTimeRestriction } from 'fdbt-types/dbTypes';
 

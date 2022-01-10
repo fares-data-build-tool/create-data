@@ -1,9 +1,13 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getAndValidateNoc, invalidCharactersArePresent } from '../../utils/apiUtils';
+import { redirectTo, redirectToError, getAndValidateNoc } from '../../utils/apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { GS_FARE_DAY_END_ATTRIBUTE } from '../../constants/attributes';
-import { removeExcessWhiteSpace, isValid24hrTimeFormat } from '../../utils/apiUtils/validator';
+import {
+    removeExcessWhiteSpace,
+    isValid24hrTimeFormat,
+    invalidCharactersArePresent,
+} from '../../utils/apiUtils/validator';
 import { upsertFareDayEnd } from '../../data/auroradb';
 import { fareDayEndInputId } from '../manageFareDayEnd';
 

@@ -1,15 +1,9 @@
 import { NextApiResponse } from 'next';
-import {
-    redirectTo,
-    redirectToError,
-    getAndValidateNoc,
-    checkEmailValid,
-    invalidCharactersArePresent,
-} from '../../utils/apiUtils';
+import { redirectTo, redirectToError, getAndValidateNoc, checkEmailValid } from '../../utils/apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { GS_OPERATOR_DETAILS_ATTRIBUTE } from '../../constants/attributes';
-import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
+import { invalidCharactersArePresent, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { upsertOperatorDetails } from '../../data/auroradb';
 import { OperatorDetails } from 'fdbt-types/matchingJsonTypes';
 import { lowerCase, upperFirst } from 'lodash';
