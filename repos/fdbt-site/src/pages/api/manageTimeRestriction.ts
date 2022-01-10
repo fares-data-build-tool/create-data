@@ -11,7 +11,12 @@ import {
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
-import { isValid24hrTimeFormat, removeAllWhiteSpace, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
+import {
+    invalidCharactersArePresent,
+    isValid24hrTimeFormat,
+    removeAllWhiteSpace,
+    removeExcessWhiteSpace,
+} from '../../utils/apiUtils/validator';
 import { toArray } from '../../utils';
 import { DbTimeRestriction } from 'fdbt-types/dbTypes';
 
@@ -53,6 +58,15 @@ export const collectErrors = (
         });
     }
 
+    const nameHasInvalidCharacters = invalidCharactersArePresent(refinedName);
+
+    if (nameHasInvalidCharacters) {
+        errors.push({
+            id: 'time-restriction-name',
+            errorMessage: 'Time restriction name has an invalid character',
+        });
+    }
+
     if (!fullTimeRestrictions.length) {
         errors.push({ errorMessage: `You must select at least one day.`, id: 'time-restriction-days' });
     }
@@ -73,6 +87,15 @@ export const collectErrors = (
                         userInput: timeBand.startTime,
                     });
                 }
+
+                const startTimeHasInvalidCharacters = invalidCharactersArePresent(timeBand.startTime);
+
+                if (startTimeHasInvalidCharacters) {
+                    errors.push({
+                        id: `start-time-${fullTimeRestriction.day}-${index}`,
+                        errorMessage: 'Start time has an invalid character',
+                    });
+                }
             }
 
             if (typeof timeBand.endTime === 'string' && timeBand.endTime && !isValid24hrTimeFormat(timeBand.endTime)) {
@@ -87,6 +110,15 @@ export const collectErrors = (
                         errorMessage: 'Time must be in 24hr format.',
                         id: `end-time-${fullTimeRestriction.day}-${index}`,
                         userInput: timeBand.endTime,
+                    });
+                }
+
+                const endTimeHasInvalidCharacters = invalidCharactersArePresent(timeBand.endTime);
+
+                if (endTimeHasInvalidCharacters) {
+                    errors.push({
+                        id: `end-time-${fullTimeRestriction.day}-${index}`,
+                        errorMessage: 'Time restriction name has an invalid character',
                     });
                 }
             }

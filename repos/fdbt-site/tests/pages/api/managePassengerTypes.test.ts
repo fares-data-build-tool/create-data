@@ -121,7 +121,7 @@ describe('managePassengerTypes', () => {
             cookieValues: {},
             body: {
                 id: '1',
-                name: 'ThisIsSomeVeryLongNameThatIsUnlikleyButYouNeverKnow,Right?',
+                name: 'ThisIsSomeVeryLongNameThatIsUnlikleyButYouNeverKnow',
                 type: 'Adult',
                 ageRangeMin: '18',
                 ageRangeMax: '65',
@@ -140,7 +140,7 @@ describe('managePassengerTypes', () => {
             ],
             inputs: {
                 id: 1,
-                name: 'ThisIsSomeVeryLongNameThatIsUnlikleyButYouNeverKnow,Right?',
+                name: 'ThisIsSomeVeryLongNameThatIsUnlikleyButYouNeverKnow',
                 passengerType: {
                     id: 1,
                     passengerType: 'Adult',

@@ -3,7 +3,7 @@ import { redirectTo, redirectToError, getAndValidateNoc, checkEmailValid } from 
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { GS_OPERATOR_DETAILS_ATTRIBUTE } from '../../constants/attributes';
-import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
+import { invalidCharactersArePresent, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { upsertOperatorDetails } from '../../data/auroradb';
 import { OperatorDetails } from 'fdbt-types/matchingJsonTypes';
 import { lowerCase, upperFirst } from 'lodash';
@@ -23,6 +23,18 @@ export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => 
         )
         .forEach((entry) =>
             errors.push({ id: entry[0], errorMessage: upperFirst(`${lowerCase(entry[0])} is required`) }),
+        );
+
+    Object.entries(operatorDetails)
+        .filter((entry) => {
+            const inputValue = entry[1];
+
+            const entryHasInvalidCharacters = invalidCharactersArePresent(inputValue);
+
+            return entryHasInvalidCharacters;
+        })
+        .forEach((entry) =>
+            errors.push({ id: entry[0], errorMessage: upperFirst(`${lowerCase(entry[0])} has an invalid character`) }),
         );
 
     if (

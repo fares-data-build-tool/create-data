@@ -5,6 +5,7 @@ import { updateSessionAttribute } from '../../utils/sessions';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession, ProductDateInformation } from '../../interfaces';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
+import { invalidCharactersArePresent } from '../../../src/utils/apiUtils/validator';
 
 export const combinedDateSchema = yup.object({
     endDate: yup.date().min(yup.ref('startDate'), 'The end date must be after the start date'),
@@ -48,10 +49,64 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             if (!isStartDateEmpty) {
                 startDate = moment.utc([startDateYear, startDateMonth - 1, startDateDay]);
+
+                const startDateDayHasInvalidCharacters = invalidCharactersArePresent(startDateDay);
+
+                if (startDateDayHasInvalidCharacters) {
+                    errors.push({
+                        id: 'product-dates-required',
+                        errorMessage: 'Start date day has an invalid character',
+                    });
+                }
+
+                const startDateMonthHasInvalidCharacters = invalidCharactersArePresent(startDateMonth);
+
+                if (startDateMonthHasInvalidCharacters) {
+                    errors.push({
+                        id: 'product-dates-required',
+                        errorMessage: 'Start date month has an invalid character',
+                    });
+                }
+
+                const startDateYearHasInvalidCharacters = invalidCharactersArePresent(startDateYear);
+
+                if (startDateYearHasInvalidCharacters) {
+                    errors.push({
+                        id: 'product-dates-required',
+                        errorMessage: 'Start date year has an invalid character',
+                    });
+                }
             }
 
             if (!isEndDateEmpty) {
                 endDate = moment.utc([endDateYear, endDateMonth - 1, endDateDay, 23, 59, 59]);
+
+                const endDateDayHasInvalidCharacters = invalidCharactersArePresent(endDateDay);
+
+                if (endDateDayHasInvalidCharacters) {
+                    errors.push({
+                        id: 'product-dates-required',
+                        errorMessage: 'End date day has an invalid character',
+                    });
+                }
+
+                const endDateMonthHasInvalidCharacters = invalidCharactersArePresent(endDateMonth);
+
+                if (endDateMonthHasInvalidCharacters) {
+                    errors.push({
+                        id: 'product-dates-required',
+                        errorMessage: 'End date month has an invalid character',
+                    });
+                }
+
+                const endDateYearHasInvalidCharacters = invalidCharactersArePresent(endDateYear);
+
+                if (endDateYearHasInvalidCharacters) {
+                    errors.push({
+                        id: 'product-dates-required',
+                        errorMessage: 'End date year has an invalid character',
+                    });
+                }
             }
 
             if (startDate && !startDate.isValid() && !isStartDateEmpty) {

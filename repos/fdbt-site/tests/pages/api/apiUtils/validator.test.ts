@@ -3,6 +3,7 @@ import {
     isCurrency,
     removeAllWhiteSpace,
     isValid24hrTimeFormat,
+    invalidCharactersArePresent,
 } from '../../../../src/utils/apiUtils/validator';
 
 describe('validator', () => {
@@ -56,6 +57,30 @@ describe('validator', () => {
             [false, 'an invalid time', '7pm'],
         ])('should return %s for %s in 2400 format', (validity, _case, value) => {
             expect(isValid24hrTimeFormat(value)).toBe(validity);
+        });
+    });
+
+    describe('invalidCharactersArePresent', () => {
+        it.each([
+            [true, 'invalid character <', 'hello<'],
+            [true, 'invalid character >', 'hello>'],
+            [true, 'invalid character ?', 'hello?'],
+            [true, 'invalid character !', 'hello!'],
+            [true, 'invalid character "', 'hello"'],
+            [false, 'valid character @', 'hello@'],
+            [false, 'valid characters', 'Hello'],
+            [false, 'valid character /', 'hello/'],
+            [false, 'valid character \\', 'hello\\'],
+            [false, 'valid character +', 'hello+'],
+            [false, 'valid character -', 'hello-'],
+            [false, 'valid character _', 'hello_'],
+            [false, 'valid character .', 'hello.'],
+            [false, 'valid character &', 'hello&'],
+            [false, 'valid space character', 'hello world'],
+            [false, 'valid character ,', 'hello, world'],
+            [false, "valid character '", "The King's head"],
+        ])('should return %s for %s', (validity, _case, value) => {
+            expect(invalidCharactersArePresent(value)).toBe(validity);
         });
     });
 });
