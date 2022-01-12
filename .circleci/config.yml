@@ -805,6 +805,7 @@ workflows:
           requires:
             - deploy-site-to-test
           context: tfn-fdbt-automation-test
+          path: ~/project
           filters:
             branches:
               only: develop
