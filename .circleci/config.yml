@@ -138,8 +138,11 @@ jobs:
           command: |
             sudo apt-get install jq
             cd cypress_tests
+            pwd
+            ls -ltrh
             cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
             cd ..
+            ls -ltrh
             ~/project/repos/<< parameters.package_name >>/run_tests_in_browserstack.sh
           no_output_timeout: 100m
 
@@ -805,7 +808,6 @@ workflows:
           requires:
             - deploy-site-to-test
           context: tfn-fdbt-automation-test
-          path: ~/project
           filters:
             branches:
               only: develop
