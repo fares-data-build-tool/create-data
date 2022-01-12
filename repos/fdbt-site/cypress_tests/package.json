@@ -7,7 +7,7 @@
         "runCypress": "cypress run -b $BROWSER",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint --fix . --ext .ts",
-        "runBrowserstack": "ls -l cypress/*; browserstack-cypress run --sync --force-upload"
+        "runBrowserstack": "browserstack-cypress run --sync"
     },
     "resolutions": {
         "json-schema": ">=0.4.0"
@@ -18,9 +18,9 @@
         "@types/webpack": "^5.28.0",
         "@typescript-eslint/eslint-plugin": "^4.28.1",
         "@typescript-eslint/parser": "^4.28.1",
-        "browserstack-cypress-cli": "^1.11.1",
-        "cypress": "7.6.0",
-        "cypress-file-upload": "^5.0.8",
+        "browserstack-cypress-cli": "^1.8.1",
+        "cypress": "^7.2.0",
+        "cypress-file-upload": "^5.0.5",
         "eslint": "^7.29.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-cypress": "^2.11.3",
