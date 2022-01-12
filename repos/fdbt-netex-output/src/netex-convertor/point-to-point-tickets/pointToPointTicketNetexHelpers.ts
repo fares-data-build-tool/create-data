@@ -100,7 +100,17 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
         stops = getStops(copyOfFareZones);
     }
 
-    return stops.map(stop => ({
+    const set = new Set();
+
+    const stopsWithDuplicatesRemoved = stops.filter(x => {
+        if (!set.has(x.atcoCode)) {
+            set.add(x.atcoCode);
+
+            return true;
+        } else return false;
+    });
+
+    return stopsWithDuplicatesRemoved.map(stop => ({
         version: 'any',
         id: stop.atcoCode ? `atco:${stop.atcoCode}` : `naptan:${stop.naptanCode}`,
         Name: { $t: stop.stopName },
