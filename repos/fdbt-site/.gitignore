@@ -22,3 +22,4 @@ cypress_tests/cypress/screenshots
 cypress_tests/local.log
 cypress_tests/log
 cypress_tests/results
+cypress_tests/tests.zip
