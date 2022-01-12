@@ -102,9 +102,9 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
 
     const set = new Set();
 
-    const stopsWithDuplicatesRemoved = stops.filter(x => {
-        if (!set.has(x.atcoCode)) {
-            set.add(x.atcoCode);
+    const stopsWithDuplicatesRemoved = stops.filter(stop => {
+        if (!set.has(stop.atcoCode)) {
+            set.add(stop.atcoCode);
 
             return true;
         } else return false;
