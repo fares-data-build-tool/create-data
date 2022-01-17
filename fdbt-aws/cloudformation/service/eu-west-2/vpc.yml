@@ -298,6 +298,12 @@ Resources:
           FromPort: 3306
           ToPort: 3306
           SourceSecurityGroupId: !Ref FargateSiteContainerSecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 127.0.0.1/32
+          Description: "Setting egress to local host as unable to delete default rule"
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
       Tags:
         - Key: Name
           Value: !Sub ${ProductName}-db-sg-${Stage}
@@ -307,9 +313,24 @@ Resources:
     Properties:
       GroupDescription: Access to the Bastion
       VpcId: !Ref VPC
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
       Tags:
         - Key: Name
           Value: !Sub ${ProductName}-bastion-sg-${Stage}
+
+  BastionSecurityGroupEgress:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      Description: "Database SG"
+      DestinationSecurityGroupId: !Ref DatabaseSecurityGroup
+      FromPort: 3306
+      GroupId: !Ref BastionSecurityGroup
+      IpProtocol: tcp
+      ToPort: 3306
 
   UploaderSecurityGroup:
     Type: AWS::EC2::SecurityGroup
