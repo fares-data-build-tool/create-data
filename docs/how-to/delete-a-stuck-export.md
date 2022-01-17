@@ -8,7 +8,7 @@ As part of the Export functionality, it is possible for exports to become "stuck
 
 1. Find the NOC of the affected user, for example `ACKC`
 1. Login to the AWS S3 Console or authenticate via the CLI into the desired environment either `test`/`preprod`/`prod`
-1. Locate the `fdbt-netex-data-${environment}` bucket, when `environment` is `test`/`preprod`/`prod`
-1. Locate any files in `${noc}/zips/${exportName}/`, where `noc` is the affected users NOC and `exportName` is `${noc}_${year}_${month}_${day}/` for example `ACKC_2022_01_01`
+1. Locate the `fdbt-matching-data-${environment}` bucket, when `environment` is `test`/`preprod`/`prod`
+1. Locate any files in `${noc}/exports/${exportName}/`, where `noc` is the affected users NOC and `exportName` is `${noc}_${year}_${month}_${day}/` for example `ACKC_2022_01_01`
 1. Delete all the files found within the export you want to clear
 1. Login to the site, with your users `custom:noc` Cognito attribute including the affected NOC and on the page `/products/exports` ensure no in-progress jobs are listed and the button to create a new export is displayed
