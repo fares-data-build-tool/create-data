@@ -21,6 +21,28 @@ export const isValidInputDuration = (durationInput: string, carnet: boolean): bo
     return allowedUnits.includes(durationInput);
 };
 
+export const invalidCharactersArePresent = (value: string): boolean => {
+    // this regular expression checks to see if any of the characters
+    // are not:
+    //
+    // alphanumeric (a to z, capitalised too and numbers)
+    // parenthesis ()
+    // slashes \ or /
+    // plus sign +
+    // dash -
+    // underscore _
+    // dot .
+    // ampersand &
+    // space
+    // @ symbol
+    // apostrophe and comma
+
+    // anything not in the above is considered invalid
+    const regularExpression = new RegExp("[^\\ssa-zA-Z()_0-9'@,&+.\\-\\/\\\\]+");
+
+    return regularExpression.test(value);
+};
+
 export const checkProductNameIsValid = (inputtedProductName: string): string => {
     let productNameError;
 
@@ -28,6 +50,12 @@ export const checkProductNameIsValid = (inputtedProductName: string): string => 
         productNameError = `Product name cannot have more than 50 characters`;
     } else if (inputtedProductName.length < 2) {
         productNameError = `Product name cannot have less than 2 characters`;
+    }
+
+    const nameHasInvalidCharacters = invalidCharactersArePresent(inputtedProductName);
+
+    if (nameHasInvalidCharacters) {
+        productNameError = 'Product name has an invalid character';
     }
 
     if (productNameError) {
