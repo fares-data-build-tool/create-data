@@ -337,12 +337,25 @@ Resources:
     Properties:
       GroupDescription: Allow all outbound traffic, no inbound
       SecurityGroupEgress:
-        - IpProtocol: "-1"
+        - Description: "to HTTPS"
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
           CidrIp: 0.0.0.0/0
       VpcId: !Ref VPC
       Tags:
         - Key: Name
           Value: !Sub ${ProductName}-ref-data-uploader-sg-${Stage}
+
+  UploaderSecurityGroupEgressDatabase:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      GroupId: !Ref UploaderSecurityGroup
+      Description: "to Database"
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      DestinationSecurityGroupId: !Ref DatabaseSecurityGroup
 
   FargateSiteContainerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
