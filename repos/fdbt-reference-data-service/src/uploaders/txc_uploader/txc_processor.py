@@ -483,9 +483,6 @@ def write_to_database(
         )
         raise e
 
-    finally:
-        db_connection.close()
-
 
 def download_from_s3_and_write_to_db(
     s3, cloudwatch, bucket, key, file_path, db_connection, logger
