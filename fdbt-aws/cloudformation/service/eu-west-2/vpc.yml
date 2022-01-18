@@ -354,6 +354,21 @@ Resources:
           FromPort: 80
           ToPort: 80
       VpcId: !Ref VPC
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+
+  FargateSiteContainerSecurityGroupEgressDatabase:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      Description: "Database SG"
+      DestinationSecurityGroupId: !Ref DatabaseSecurityGroup
+      FromPort: 3306
+      GroupId: !Ref FargateSiteContainerSecurityGroup
+      IpProtocol: tcp
+      ToPort: 3306
 
   FargateMonitoringContainerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -365,6 +380,11 @@ Resources:
           FromPort: 3000
           ToPort: 3000
       VpcId: !Ref VPC
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
 
   LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -381,6 +401,26 @@ Resources:
           ToPort: 443
       VpcId: !Ref VPC
 
+  LoadBalancerSecurityGroupEgressSite:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      Description: "To site"
+      DestinationSecurityGroupId: !Ref FargateSiteContainerSecurityGroup
+      FromPort: 80
+      GroupId: !Ref LoadBalancerSecurityGroup
+      IpProtocol: tcp
+      ToPort: 80
+
+  LoadBalancerSecurityGroupEgressMonitoring:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      Description: "To monitoring"
+      DestinationSecurityGroupId: !Ref FargateMonitoringContainerSecurityGroup
+      FromPort: 3000
+      GroupId: !Ref LoadBalancerSecurityGroup
+      IpProtocol: tcp
+      ToPort: 3000
+
   EFSMonitoringMountTargetSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -391,6 +431,12 @@ Resources:
           FromPort: 2049
           ToPort: 2049
       VpcId: !Ref VPC
+      SecurityGroupEgress:
+        - CidrIp: 127.0.0.1/32
+          Description: "Setting egress to local host as unable to delete default rule"
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
 
 Outputs:
   VpcId:
