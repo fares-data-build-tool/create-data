@@ -392,8 +392,8 @@ Resources:
       VpcId: !Ref VPC
       SecurityGroupEgress:
         - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
+          FromPort: 3000
+          ToPort: 3000
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: 80
