@@ -342,6 +342,16 @@ Resources:
           FromPort: 443
           ToPort: 443
           CidrIp: 0.0.0.0/0
+        - Description: "to FTP Control for Retrievers"
+          IpProtocol: tcp
+          FromPort: 21
+          ToPort: 21
+          CidrIp: 0.0.0.0/0
+        - Description: "to FTP Passive for Retrievers"
+          IpProtocol: tcp
+          FromPort: 5000
+          ToPort: 5100
+          CidrIp: 0.0.0.0/0
       VpcId: !Ref VPC
       Tags:
         - Key: Name
