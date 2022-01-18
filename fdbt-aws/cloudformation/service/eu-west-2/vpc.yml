@@ -360,6 +360,16 @@ Resources:
           ToPort: 443
           CidrIp: 0.0.0.0/0
 
+  FargateSiteContainerSecurityGroupEgressDatabase:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      Description: "Database SG"
+      DestinationSecurityGroupId: !Ref DatabaseSecurityGroup
+      FromPort: 3306
+      GroupId: !Ref FargateSiteContainerSecurityGroup
+      IpProtocol: tcp
+      ToPort: 3306
+
   FargateMonitoringContainerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -390,15 +400,26 @@ Resources:
           FromPort: 443
           ToPort: 443
       VpcId: !Ref VPC
-      SecurityGroupEgress:
-        - IpProtocol: tcp
-          FromPort: 3000
-          ToPort: 3000
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
+
+  LoadBalancerSecurityGroupEgressSite:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      Description: "To site"
+      DestinationSecurityGroupId: !Ref FargateSiteContainerSecurityGroup
+      FromPort: 80
+      GroupId: !Ref LoadBalancerSecurityGroup
+      IpProtocol: tcp
+      ToPort: 80
+
+  LoadBalancerSecurityGroupEgressMonitoring:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      Description: "To monitoring"
+      DestinationSecurityGroupId: !Ref FargateMonitoringContainerSecurityGroup
+      FromPort: 3000
+      GroupId: !Ref LoadBalancerSecurityGroup
+      IpProtocol: tcp
+      ToPort: 3000
 
   EFSMonitoringMountTargetSecurityGroup:
     Type: AWS::EC2::SecurityGroup
