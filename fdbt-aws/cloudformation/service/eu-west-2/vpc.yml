@@ -304,7 +304,6 @@ Resources:
           IpProtocol: tcp
           FromPort: 443
           ToPort: 443
-
       Tags:
         - Key: Name
           Value: !Sub ${ProductName}-db-sg-${Stage}
