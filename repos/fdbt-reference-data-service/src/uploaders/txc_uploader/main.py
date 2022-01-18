@@ -44,8 +44,6 @@ def lambda_handler(event, context):
         )
         raise e
     finally:
-        db_connection.close()
-
         if os.path.exists(file_path):
             logger.info(f"Removing File: {file_path}")
             os.remove(file_path)
