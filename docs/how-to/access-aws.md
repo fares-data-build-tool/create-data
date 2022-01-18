@@ -33,6 +33,24 @@ To use the CLI we advise using the [aws-azure-login](https://github.com/sportrad
 
 See the [installation instructions here](https://github.com/sportradar/aws-azure-login#installation)
 
+#### Shell Helper Functions
+
+This helper will set the `AWS_PROFILE` and do the SSO login ([providing your config is setup as below](#config-setup))
+
+```bash
+function aws-dft-login() {
+  aws-azure-login --no-prompt -p fdbt-$1 && export AWS_PROFILE=fdbt-$1
+}
+```
+
+This helper will remove your `AWS_PROFILE` from your current shell session
+
+```bash
+function unassume() {
+    unset AWS_PROFILE
+}
+```
+
 ### Config setup
 
 Add the following to your `~/.aws/config` file, updating the `azure_tenant_id`, `azure_app_id_uri`, `azure_default_username` and `azure_default_role_arn`:
