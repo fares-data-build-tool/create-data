@@ -299,8 +299,8 @@ Resources:
           ToPort: 3306
           SourceSecurityGroupId: !Ref FargateSiteContainerSecurityGroup
       SecurityGroupEgress:
-        - CidrIp: 127.0.0.1/32
-          Description: "Setting egress to local host as unable to delete default rule"
+        - CidrIp: 0.0.0.0/0
+          Description: "to AWS APIs"
           IpProtocol: tcp
           FromPort: 443
           ToPort: 443
