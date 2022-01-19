@@ -1,1 +1,2 @@
 PyMySQL==0.9.3
+Requests==2.26.0
