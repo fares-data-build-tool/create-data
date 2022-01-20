@@ -1,5 +1,5 @@
-AWSTemplateFormatVersion: 2010-09-09
-Description: CloudFormation template for Route53 resources
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "CloudFormation template for Route53 resources"
 
 Parameters:
   Stage:
@@ -8,9 +8,12 @@ Parameters:
       - test
       - preprod
       - prod
-  DomainName:
+  InternalDomainName:
+    Description: "Domain name for internal hosted zone"
     Type: String
-    Description: Domain name for private hosted zone
+  ExternalDomainName:
+    Description: "Domain name for external hosted zone"
+    Type: String
 
 Resources:
   PrivateHostedZone:
@@ -18,7 +21,18 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      Name: !Ref DomainName
+      Name: !Ref InternalDomainName
+      VPCs:
+        - VPCId:
+            Fn::ImportValue: !Sub ${Stage}:VpcId
+          VPCRegion: !Ref AWS::Region
+
+  ExternalHostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Ref ExternalDomainName
       VPCs:
         - VPCId:
             Fn::ImportValue: !Sub ${Stage}:VpcId
@@ -30,7 +44,17 @@ Outputs:
     Export:
       Name: !Sub ${Stage}:PrivateHostedZoneId
 
-  InternalDomain:
-    Value: !Ref DomainName
+  ExternalHostedZoneId:
+    Value: !Ref ExternalHostedZone
     Export:
-      Name: !Sub ${Stage}:InternalDomain
+      Name: !Sub ${Stage}:ExternalHostedZoneId
+
+  InternalDomain:
+    Value: !Ref InternalDomainName
+    Export:
+      Name: !Sub ${Stage}:InternalDomainName
+
+  ExternalDomain:
+    Value: !Ref ExternalDomainName
+    Export:
+      Name: !Sub ${Stage}:ExternalDomainName

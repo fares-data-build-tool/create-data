@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "CloudFormation template for Route53 resources"
+
+Parameters:
+  PublicDomainHostedZoneId:
+    Description: "HostedZone ID of external domain"
+    type: String
+  TestPublicDomainHostedZoneNS1:
+    Description: "Nameserver Domain Name"
+    type: String
+  TestPublicDomainHostedZoneNS2:
+    Description: "Nameserver Domain Name"
+    type: String
+  TestPublicDomainHostedZoneNS3:
+    Description: "Nameserver Domain Name"
+    type: String
+  TestPublicDomainHostedZoneNS4:
+    Description: "Nameserver Domain Name"
+    type: String
+  PreProdPublicDomainHostedZoneNS1:
+    Description: "Nameserver Domain Name"
+    type: String
+  PreProdPublicDomainHostedZoneNS2:
+    Description: "Nameserver Domain Name"
+    type: String
+  PreProdPublicDomainHostedZoneNS3:
+    Description: "Nameserver Domain Name"
+    type: String
+  PreProdPublicDomainHostedZoneNS4:
+    Description: "Nameserver Domain Name"
+    type: String
+  ProdPublicDomainHostedZoneNS1:
+    Description: "Nameserver Domain Name"
+    type: String
+  ProdPublicDomainHostedZoneNS2:
+    Description: "Nameserver Domain Name"
+    type: String
+  ProdPublicDomainHostedZoneNS3:
+    Description: "Nameserver Domain Name"
+    type: String
+  ProdPublicDomainHostedZoneNS4:
+    Description: "Nameserver Domain Name"
+    type: String
+
+Resources:
+  TestDelegationDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref PublicDomainHostedZoneId
+      Name: "test"
+      ResourceRecords:
+        - !Ref TestPublicDomainHostedZoneNS1
+        - !Ref TestPublicDomainHostedZoneNS2
+        - !Ref TestPublicDomainHostedZoneNS3
+        - !Ref TestPublicDomainHostedZoneNS4
+      TTL: 300
+      Type: NS
+
+  PreProdDelegationDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref PublicDomainHostedZoneId
+      Name: "preprod"
+      ResourceRecords:
+        - !Ref PreProdPublicDomainHostedZoneNS1
+        - !Ref PreProdPublicDomainHostedZoneNS2
+        - !Ref PreProdPublicDomainHostedZoneNS3
+        - !Ref PreProdPublicDomainHostedZoneNS4
+      TTL: 300
+      Type: NS
+
+  ProdDelegationDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref PublicDomainHostedZoneId
+      Name: "prod"
+      ResourceRecords:
+        - !Ref ProdPublicDomainHostedZoneNS1
+        - !Ref ProdPublicDomainHostedZoneNS2
+        - !Ref ProdPublicDomainHostedZoneNS3
+        - !Ref ProdPublicDomainHostedZoneNS4
+      TTL: 300
+      Type: NS
