@@ -409,6 +409,16 @@ Resources:
           ToPort: 443
           CidrIp: 0.0.0.0/0
 
+  FargateMonitoringContainerSecurityGroupEgressEFS:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      Description: "To EFS"
+      DestinationSecurityGroupId: !Ref EFSMonitoringMountTargetSecurityGroup
+      FromPort: 2049
+      GroupId: !Ref FargateMonitoringContainerSecurityGroup
+      IpProtocol: tcp
+      ToPort: 2049
+
   LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
