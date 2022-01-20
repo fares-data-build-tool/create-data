@@ -299,8 +299,8 @@ Resources:
           ToPort: 3306
           SourceSecurityGroupId: !Ref FargateSiteContainerSecurityGroup
       SecurityGroupEgress:
-        - CidrIp: 127.0.0.1/32
-          Description: "Setting egress to local host as unable to delete default rule"
+        - CidrIp: 0.0.0.0/0
+          Description: "to AWS APIs"
           IpProtocol: tcp
           FromPort: 443
           ToPort: 443
@@ -341,6 +341,16 @@ Resources:
           IpProtocol: tcp
           FromPort: 443
           ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - Description: "to FTP Control for Retrievers"
+          IpProtocol: tcp
+          FromPort: 21
+          ToPort: 21
+          CidrIp: 0.0.0.0/0
+        - Description: "to FTP Passive for Retrievers"
+          IpProtocol: tcp
+          FromPort: 5000
+          ToPort: 5100
           CidrIp: 0.0.0.0/0
       VpcId: !Ref VPC
       Tags:
@@ -398,6 +408,16 @@ Resources:
           FromPort: 443
           ToPort: 443
           CidrIp: 0.0.0.0/0
+
+  FargateMonitoringContainerSecurityGroupEgressEFS:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      Description: "To EFS"
+      DestinationSecurityGroupId: !Ref EFSMonitoringMountTargetSecurityGroup
+      FromPort: 2049
+      GroupId: !Ref FargateMonitoringContainerSecurityGroup
+      IpProtocol: tcp
+      ToPort: 2049
 
   LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup

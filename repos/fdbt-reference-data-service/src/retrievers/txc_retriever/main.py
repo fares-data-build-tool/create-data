@@ -47,8 +47,11 @@ db_connection = pymysql.connect(rds_host, user=db_username, passwd=db_password, 
 
 queries = [
     'SET FOREIGN_KEY_CHECKS=0',
+    'DROP TABLE IF EXISTS txcJourneyPatternLinkNew',
     'CREATE TABLE txcJourneyPatternLinkNew LIKE txcJourneyPatternLink',
+    'DROP TABLE IF EXISTS txcJourneyPatternNew',
     'CREATE TABLE txcJourneyPatternNew LIKE txcJourneyPattern',
+    'DROP TABLE IF EXISTS txcOperatorLineNew',
     'CREATE TABLE txcOperatorLineNew LIKE txcOperatorLine',
     'SET FOREIGN_KEY_CHECKS=1'
 ]
