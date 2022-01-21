@@ -10,7 +10,7 @@ import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { updateSessionAttribute } from '../utils/sessions';
-import { exportEnabled, globalSettingsDeleteEnabled, myFaresEnabled } from '../constants/featureFlag';
+import { exportEnabled, globalSettingsDeleteEnabled } from '../constants/featureFlag';
 
 const title = 'Passenger Types - Create Fares Data Service';
 const description = 'View and edit your passenger types.';
@@ -21,7 +21,6 @@ interface PassengerTypeProps {
     groupPassengerTypes: FullGroupPassengerType[];
     referer: string | null;
     deleteEnabled: boolean;
-    myFaresEnabled: boolean;
     exportEnabled: boolean;
 }
 
@@ -31,7 +30,6 @@ const ViewPassengerTypes = ({
     csrfToken,
     referer,
     deleteEnabled,
-    myFaresEnabled,
     exportEnabled,
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
@@ -69,7 +67,6 @@ const ViewPassengerTypes = ({
             description={description}
             showNavigation
             referer={referer}
-            myFaresEnabled={myFaresEnabled}
             exportEnabled={exportEnabled}
         >
             <div className="govuk-grid-row" data-card-count={singlePassengerTypes.length + groupPassengerTypes.length}>
@@ -247,7 +244,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             groupPassengerTypes,
             referer: extractGlobalSettingsReferer(ctx),
             deleteEnabled: globalSettingsDeleteEnabled,
-            myFaresEnabled,
             exportEnabled,
         },
     };

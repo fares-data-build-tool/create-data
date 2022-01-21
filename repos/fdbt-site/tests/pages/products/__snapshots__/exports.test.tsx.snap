@@ -5,7 +5,6 @@ exports[`pages confirmRegistration should render correctly without data when ope
   <BaseLayout
     description="View and access your settings in one place."
     exportEnabled={true}
-    myFaresEnabled={true}
     showNavigation={true}
     title="Exports"
   >
@@ -80,7 +79,6 @@ exports[`pages confirmRegistration should render the export button correctly whe
   <BaseLayout
     description="View and access your settings in one place."
     exportEnabled={true}
-    myFaresEnabled={true}
     showNavigation={true}
     title="Exports"
   >

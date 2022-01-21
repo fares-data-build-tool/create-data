@@ -20,7 +20,6 @@ describe('GlobalSettingsViewPage', () => {
                 entityDescription="my entity description"
                 CardBody={CardBody}
                 deleteEnabled={false}
-                myFaresEnabled={false}
                 exportEnabled={false}
             />,
         );
@@ -42,7 +41,6 @@ describe('GlobalSettingsViewPage', () => {
                 entityDescription="my entity description"
                 CardBody={CardBody}
                 deleteEnabled={false}
-                myFaresEnabled={false}
                 exportEnabled={false}
             />,
         );
@@ -64,7 +62,6 @@ describe('GlobalSettingsViewPage', () => {
                 entityDescription="my entity description"
                 CardBody={CardBody}
                 deleteEnabled={true}
-                myFaresEnabled={false}
                 exportEnabled={false}
             />,
         );

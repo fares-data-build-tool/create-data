@@ -62,7 +62,6 @@ describe('pages', () => {
                     timeRestrictions={[]}
                     referer={null}
                     deleteEnabled={false}
-                    myFaresEnabled={false}
                     exportEnabled={false}
                 />,
             );
@@ -76,7 +75,6 @@ describe('pages', () => {
                     timeRestrictions={timeRestrictions}
                     referer={'hello'}
                     deleteEnabled={false}
-                    myFaresEnabled={false}
                     exportEnabled={false}
                 />,
             );

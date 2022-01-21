@@ -23,7 +23,6 @@ describe('pages', () => {
                     operatorDetails={operatorDetails}
                     referer={null}
                     saved={false}
-                    myFaresEnabled={true}
                     exportEnabled={false}
                 />,
             );
@@ -48,7 +47,6 @@ describe('pages', () => {
                     operatorDetails={operatorDetails}
                     referer={null}
                     saved={false}
-                    myFaresEnabled={false}
                     exportEnabled={false}
                 />,
             );
@@ -64,7 +62,6 @@ describe('pages', () => {
                     operatorDetails={operatorDetails}
                     referer={null}
                     saved={true}
-                    myFaresEnabled={false}
                     exportEnabled={false}
                 />,
             );

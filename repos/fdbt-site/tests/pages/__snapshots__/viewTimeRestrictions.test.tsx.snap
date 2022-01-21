@@ -160,7 +160,6 @@ exports[`pages view time restrictions should render correctly when no time restr
     entities={Array []}
     entityDescription="time restriction"
     exportEnabled={false}
-    myFaresEnabled={false}
     referer={null}
     title="Time restrictions"
   />
@@ -227,7 +226,6 @@ exports[`pages view time restrictions should render correctly when time restrict
     }
     entityDescription="time restriction"
     exportEnabled={false}
-    myFaresEnabled={false}
     referer="hello"
     title="Time restrictions"
   />

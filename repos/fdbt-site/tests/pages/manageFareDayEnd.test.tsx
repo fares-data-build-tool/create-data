@@ -12,7 +12,6 @@ describe('pages', () => {
                     fareDayEnd={'1234'}
                     referer={'hi'}
                     saved={false}
-                    myFaresEnabled={false}
                     exportEnabled={false}
                 />,
             );
@@ -30,7 +29,6 @@ describe('pages', () => {
                     fareDayEnd={'Not a time'}
                     referer={null}
                     saved={false}
-                    myFaresEnabled={false}
                     exportEnabled={false}
                 />,
             );
@@ -46,7 +44,6 @@ describe('pages', () => {
                     fareDayEnd={'1254'}
                     referer={null}
                     saved={true}
-                    myFaresEnabled={false}
                     exportEnabled={false}
                 />,
             );

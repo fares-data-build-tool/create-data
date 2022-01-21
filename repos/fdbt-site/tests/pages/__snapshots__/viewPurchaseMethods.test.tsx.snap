@@ -84,7 +84,6 @@ exports[`pages view purchase methods should render correctly with purchase metho
     }
     entityDescription="purchase method"
     exportEnabled={false}
-    myFaresEnabled={false}
     referer="hello"
     title="Purchase methods"
   />

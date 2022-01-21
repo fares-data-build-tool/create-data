@@ -5,12 +5,7 @@ import Home from '../../src/pages/home';
 describe('pages', () => {
     describe('home page', () => {
         it('should render correctly', () => {
-            const tree = shallow(<Home myFaresEnabled={false} />);
-            expect(tree).toMatchSnapshot();
-        });
-
-        it('should render correctly with my fares enabled', () => {
-            const tree = shallow(<Home myFaresEnabled={true} />);
+            const tree = shallow(<Home />);
             expect(tree).toMatchSnapshot();
         });
     });
