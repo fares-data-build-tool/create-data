@@ -5,7 +5,6 @@ exports[`myfares pages services should render correctly when no services present
   <BaseLayout
     description="View and access your services in one place."
     exportEnabled={true}
-    myFaresEnabled={true}
     showNavigation={true}
     title="Services - Create Fares Data Service"
   >
@@ -91,7 +90,6 @@ exports[`myfares pages services should render correctly when services present 1`
   <BaseLayout
     description="View and access your services in one place."
     exportEnabled={true}
-    myFaresEnabled={true}
     showNavigation={true}
     title="Services - Create Fares Data Service"
   >
@@ -221,7 +219,6 @@ exports[`myfares pages services should render correctly when services present an
   <BaseLayout
     description="View and access your services in one place."
     exportEnabled={true}
-    myFaresEnabled={true}
     showNavigation={true}
     title="Services - Create Fares Data Service"
   >
@@ -351,7 +348,6 @@ exports[`myfares pages services should render correctly when services require at
   <BaseLayout
     description="View and access your services in one place."
     exportEnabled={true}
-    myFaresEnabled={true}
     showNavigation={true}
     title="Services - Create Fares Data Service"
   >

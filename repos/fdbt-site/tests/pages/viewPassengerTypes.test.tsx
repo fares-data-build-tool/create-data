@@ -13,7 +13,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={null}
                     deleteEnabled={false}
-                    myFaresEnabled={false}
                     exportEnabled={false}
                 />,
             );
@@ -41,7 +40,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={'hello'}
                     deleteEnabled={false}
-                    myFaresEnabled={false}
                     exportEnabled={false}
                 />,
             );
@@ -83,7 +81,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={null}
                     deleteEnabled={false}
-                    myFaresEnabled={false}
                     exportEnabled={false}
                 />,
             );
@@ -140,7 +137,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={'hello'}
                     deleteEnabled={false}
-                    myFaresEnabled={false}
                     exportEnabled={false}
                 />,
             );

@@ -4,7 +4,6 @@ exports[`pages view passenger types should render correctly when groups and indi
 <BaseLayout
   description="View and edit your passenger types."
   exportEnabled={false}
-  myFaresEnabled={false}
   referer="hello"
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
@@ -114,7 +113,6 @@ exports[`pages view passenger types should render correctly when no individual o
 <BaseLayout
   description="View and edit your passenger types."
   exportEnabled={false}
-  myFaresEnabled={false}
   referer={null}
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
@@ -165,7 +163,6 @@ exports[`pages view passenger types should render correctly when only individual
 <BaseLayout
   description="View and edit your passenger types."
   exportEnabled={false}
-  myFaresEnabled={false}
   referer="hello"
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
@@ -243,7 +240,6 @@ exports[`pages view passenger types should render correctly when only passenger 
 <BaseLayout
   description="View and edit your passenger types."
   exportEnabled={false}
-  myFaresEnabled={false}
   referer={null}
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"

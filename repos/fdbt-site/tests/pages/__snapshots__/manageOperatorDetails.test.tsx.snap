@@ -4,7 +4,6 @@ exports[`pages manage operator details should render correctly 1`] = `
 <BaseLayout
   description="Manage Operator Details End page of the Create Fares Data Service"
   exportEnabled={false}
-  myFaresEnabled={true}
   referer={null}
   showNavigation={true}
   title="Manage Operator Details - Create Fares Data Service"
@@ -330,7 +329,6 @@ exports[`pages manage operator details should render error state if error 1`] = 
 <BaseLayout
   description="Manage Operator Details End page of the Create Fares Data Service"
   exportEnabled={false}
-  myFaresEnabled={false}
   referer={null}
   showNavigation={true}
   title="Manage Operator Details - Create Fares Data Service"
@@ -1115,7 +1113,6 @@ exports[`pages manage operator details should render popup if saved 1`] = `
 <BaseLayout
   description="Manage Operator Details End page of the Create Fares Data Service"
   exportEnabled={false}
-  myFaresEnabled={false}
   referer={null}
   showNavigation={true}
   title="Manage Operator Details - Create Fares Data Service"
