@@ -147,6 +147,84 @@ const ManagePassengerTypes = ({
                                     <div className="govuk-radios__item">
                                         <input
                                             className="govuk-radios__input"
+                                            id="military"
+                                            name="type"
+                                            type="radio"
+                                            value="military"
+                                            defaultChecked={type === 'military'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="military">
+                                            Military
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="disabled"
+                                            name="type"
+                                            type="radio"
+                                            value="disabled"
+                                            defaultChecked={type === 'disabled'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="disabled">
+                                            Disabled
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="disabled_companion"
+                                            name="type"
+                                            type="radio"
+                                            value="disabledCompanion"
+                                            defaultChecked={type === 'disabledCompanion'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="disabled_companion">
+                                            Disabled companion
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="job_seeker"
+                                            name="type"
+                                            type="radio"
+                                            value="jobSeeker"
+                                            defaultChecked={type === 'jobSeeker'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="job_seeker">
+                                            Job seeker
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="employee"
+                                            name="type"
+                                            type="radio"
+                                            value="employee"
+                                            defaultChecked={type === 'employee'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="employee">
+                                            Employee
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="animal"
+                                            name="type"
+                                            type="radio"
+                                            value="animal"
+                                            defaultChecked={type === 'animal'}
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="animal">
+                                            Animal
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
                                             id="anyone"
                                             name="type"
                                             type="radio"

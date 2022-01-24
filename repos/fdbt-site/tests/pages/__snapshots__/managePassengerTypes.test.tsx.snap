@@ -180,6 +180,114 @@ exports[`pages manage passenger types should render correctly 1`] = `
               <input
                 className="govuk-radios__input"
                 defaultChecked={false}
+                id="military"
+                name="type"
+                type="radio"
+                value="military"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="military"
+              >
+                Military
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="disabled"
+                name="type"
+                type="radio"
+                value="disabled"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="disabled"
+              >
+                Disabled
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="disabled_companion"
+                name="type"
+                type="radio"
+                value="disabledCompanion"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="disabled_companion"
+              >
+                Disabled companion
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="job_seeker"
+                name="type"
+                type="radio"
+                value="jobSeeker"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="job_seeker"
+              >
+                Job seeker
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="employee"
+                name="type"
+                type="radio"
+                value="employee"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="employee"
+              >
+                Employee
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="animal"
+                name="type"
+                type="radio"
+                value="animal"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="animal"
+              >
+                Animal
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
                 id="anyone"
                 name="type"
                 type="radio"
@@ -553,6 +661,114 @@ exports[`pages manage passenger types should render correctly in edit mode 1`] =
                 htmlFor="school_pupil"
               >
                 School pupil
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="military"
+                name="type"
+                type="radio"
+                value="military"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="military"
+              >
+                Military
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="disabled"
+                name="type"
+                type="radio"
+                value="disabled"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="disabled"
+              >
+                Disabled
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="disabled_companion"
+                name="type"
+                type="radio"
+                value="disabledCompanion"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="disabled_companion"
+              >
+                Disabled companion
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="job_seeker"
+                name="type"
+                type="radio"
+                value="jobSeeker"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="job_seeker"
+              >
+                Job seeker
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="employee"
+                name="type"
+                type="radio"
+                value="employee"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="employee"
+              >
+                Employee
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="animal"
+                name="type"
+                type="radio"
+                value="animal"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="animal"
+              >
+                Animal
               </label>
             </div>
             <div
@@ -953,6 +1169,114 @@ exports[`pages manage passenger types should render error state on name form gro
                 htmlFor="school_pupil"
               >
                 School pupil
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="military"
+                name="type"
+                type="radio"
+                value="military"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="military"
+              >
+                Military
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="disabled"
+                name="type"
+                type="radio"
+                value="disabled"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="disabled"
+              >
+                Disabled
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="disabled_companion"
+                name="type"
+                type="radio"
+                value="disabledCompanion"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="disabled_companion"
+              >
+                Disabled companion
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="job_seeker"
+                name="type"
+                type="radio"
+                value="jobSeeker"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="job_seeker"
+              >
+                Job seeker
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="employee"
+                name="type"
+                type="radio"
+                value="employee"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="employee"
+              >
+                Employee
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="animal"
+                name="type"
+                type="radio"
+                value="animal"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="animal"
+              >
+                Animal
               </label>
             </div>
             <div
@@ -1384,6 +1708,114 @@ exports[`pages manage passenger types should render error state on passenger typ
               <input
                 className="govuk-radios__input"
                 defaultChecked={false}
+                id="military"
+                name="type"
+                type="radio"
+                value="military"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="military"
+              >
+                Military
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="disabled"
+                name="type"
+                type="radio"
+                value="disabled"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="disabled"
+              >
+                Disabled
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="disabled_companion"
+                name="type"
+                type="radio"
+                value="disabledCompanion"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="disabled_companion"
+              >
+                Disabled companion
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="job_seeker"
+                name="type"
+                type="radio"
+                value="jobSeeker"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="job_seeker"
+              >
+                Job seeker
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="employee"
+                name="type"
+                type="radio"
+                value="employee"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="employee"
+              >
+                Employee
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="animal"
+                name="type"
+                type="radio"
+                value="animal"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="animal"
+              >
+                Animal
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
                 id="anyone"
                 name="type"
                 type="radio"
@@ -1778,6 +2210,114 @@ exports[`pages manage passenger types should render update passenger type button
                 htmlFor="school_pupil"
               >
                 School pupil
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="military"
+                name="type"
+                type="radio"
+                value="military"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="military"
+              >
+                Military
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="disabled"
+                name="type"
+                type="radio"
+                value="disabled"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="disabled"
+              >
+                Disabled
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="disabled_companion"
+                name="type"
+                type="radio"
+                value="disabledCompanion"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="disabled_companion"
+              >
+                Disabled companion
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="job_seeker"
+                name="type"
+                type="radio"
+                value="jobSeeker"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="job_seeker"
+              >
+                Job seeker
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="employee"
+                name="type"
+                type="radio"
+                value="employee"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="employee"
+              >
+                Employee
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={false}
+                id="animal"
+                name="type"
+                type="radio"
+                value="animal"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="animal"
+              >
+                Animal
               </label>
             </div>
             <div
