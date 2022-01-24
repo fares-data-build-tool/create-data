@@ -845,7 +845,7 @@ workflows:
       - aws-ecs/deploy-service-update:
           <<: *slack-fail-post-step
           requires:
-            - aws-ecr/build-and-push-image
+            - check-image-scan-results
           name: deploy-site-to-test
           family: "${SITE_ECS_FAMILY}"
           cluster-name: "${SITE_ECS_CLUSTER}"
@@ -869,7 +869,7 @@ workflows:
       - aws-ecs/deploy-service-update:
           <<: *slack-fail-post-step
           requires:
-            - aws-ecr/build-and-push-image
+            - check-image-scan-results
           family: "${SITE_ECS_FAMILY}"
           name: deploy-site-to-preprod
           cluster-name: "${SITE_ECS_CLUSTER}"
@@ -883,7 +883,7 @@ workflows:
       - slack/on-hold:
           <<: *slack-fail-post-step
           requires:
-            - aws-ecr/build-and-push-image
+            - check-image-scan-results
           filters:
             tags:
               only: /^v.*/
@@ -916,6 +916,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+
       - slack-notify:
           <<: *slack-fail-post-step
           name: site deployed to prod
@@ -924,11 +925,13 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+
       - slack-notify:
           <<: *slack-fail-post-step
           name: site deployed to preprod
           requires:
             - deploy-site-to-preprod
+
       - slack-notify:
           <<: *slack-fail-post-step
           name: site deployed and tested
