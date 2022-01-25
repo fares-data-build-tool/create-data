@@ -6,7 +6,7 @@ import { MyFaresServiceWithProductCount } from '../../../src/interfaces';
 describe('myfares pages', () => {
     describe('services', () => {
         it('should render correctly when no services present', () => {
-            const tree = shallow(<Services servicesAndProducts={[]} exportEnabled={true} />);
+            const tree = shallow(<Services servicesAndProducts={[]} />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -26,7 +26,7 @@ describe('myfares pages', () => {
                 },
             ];
 
-            const tree = shallow(<Services servicesAndProducts={services} exportEnabled={true} />);
+            const tree = shallow(<Services servicesAndProducts={services} />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -46,7 +46,7 @@ describe('myfares pages', () => {
                 },
             ];
 
-            const tree = shallow(<Services servicesAndProducts={services} exportEnabled={true} />);
+            const tree = shallow(<Services servicesAndProducts={services} />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -66,7 +66,7 @@ describe('myfares pages', () => {
                 },
             ];
 
-            const tree = shallow(<Services servicesAndProducts={services} exportEnabled={true} />);
+            const tree = shallow(<Services servicesAndProducts={services} />);
 
             expect(tree).toMatchSnapshot();
         });

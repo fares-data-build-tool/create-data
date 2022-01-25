@@ -4,7 +4,6 @@ exports[`myfares pages services should render correctly when no services present
 <Fragment>
   <BaseLayout
     description="View and access your services in one place."
-    exportEnabled={true}
     showNavigation={true}
     title="Services - Create Fares Data Service"
   >
@@ -89,7 +88,6 @@ exports[`myfares pages services should render correctly when services present 1`
 <Fragment>
   <BaseLayout
     description="View and access your services in one place."
-    exportEnabled={true}
     showNavigation={true}
     title="Services - Create Fares Data Service"
   >
@@ -218,7 +216,6 @@ exports[`myfares pages services should render correctly when services present an
 <Fragment>
   <BaseLayout
     description="View and access your services in one place."
-    exportEnabled={true}
     showNavigation={true}
     title="Services - Create Fares Data Service"
   >
@@ -347,7 +344,6 @@ exports[`myfares pages services should render correctly when services require at
 <Fragment>
   <BaseLayout
     description="View and access your services in one place."
-    exportEnabled={true}
     showNavigation={true}
     title="Services - Create Fares Data Service"
   >

@@ -4,7 +4,6 @@ exports[`pages globalSettings should render correctly 1`] = `
 <Fragment>
   <BaseLayout
     description="View and access your settings in one place."
-    exportEnabled={false}
     referer="hello"
     showNavigation={true}
     title="Operator Settings - Create Fares Data Service"

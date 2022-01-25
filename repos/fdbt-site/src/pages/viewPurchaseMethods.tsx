@@ -6,7 +6,7 @@ import { NextPageContextWithSession } from '../interfaces';
 import { formatSOPArray, getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { sopTicketFormatConverter } from './salesConfirmation';
-import { exportEnabled, globalSettingsDeleteEnabled } from '../constants/featureFlag';
+import { globalSettingsDeleteEnabled } from '../constants/featureFlag';
 
 const title = 'Purchase methods';
 const description =
@@ -17,7 +17,6 @@ interface PurchaseMethodProps {
     purchaseMethods: FromDb<SalesOfferPackage>[];
     referer: string | null;
     deleteEnabled: boolean;
-    exportEnabled: boolean;
 }
 
 const ViewPurchaseMethods = ({
@@ -25,7 +24,6 @@ const ViewPurchaseMethods = ({
     referer,
     csrfToken,
     deleteEnabled,
-    exportEnabled,
 }: PurchaseMethodProps): ReactElement => {
     return (
         <>
@@ -38,7 +36,6 @@ const ViewPurchaseMethods = ({
                 description={description}
                 CardBody={PurchaseMethodCardBody}
                 deleteEnabled={deleteEnabled}
-                exportEnabled={exportEnabled}
             />
         </>
     );
@@ -75,7 +72,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             referer: extractGlobalSettingsReferer(ctx),
             csrfToken,
             deleteEnabled: globalSettingsDeleteEnabled,
-            exportEnabled: exportEnabled,
         },
     };
 };
