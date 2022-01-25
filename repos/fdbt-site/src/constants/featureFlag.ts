@@ -8,4 +8,3 @@
 const all = true;
 
 export const globalSettingsDeleteEnabled = all;
-export const exportEnabled = all;

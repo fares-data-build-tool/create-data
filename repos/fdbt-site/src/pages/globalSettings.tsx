@@ -13,7 +13,6 @@ import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
-import { exportEnabled } from '../constants/featureFlag';
 
 const title = 'Operator Settings - Create Fares Data Service';
 const description = 'View and access your settings in one place.';
@@ -21,19 +20,12 @@ const description = 'View and access your settings in one place.';
 interface GlobalSettingsProps {
     globalSettingsCounts: GlobalSettingsCounts;
     referer: string | null;
-    exportEnabled: boolean;
 }
 
-const GlobalSettings = ({ globalSettingsCounts, referer, exportEnabled }: GlobalSettingsProps): ReactElement => {
+const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps): ReactElement => {
     return (
         <>
-            <BaseLayout
-                title={title}
-                description={description}
-                showNavigation
-                referer={referer}
-                exportEnabled={exportEnabled}
-            >
+            <BaseLayout title={title} description={description} showNavigation referer={referer}>
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
                         <SubNavigation />
@@ -107,7 +99,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         operatorDetailsSet: !!operatorDetails,
     };
 
-    return { props: { globalSettingsCounts, referer, exportEnabled } };
+    return { props: { globalSettingsCounts, referer } };
 };
 
 export default GlobalSettings;

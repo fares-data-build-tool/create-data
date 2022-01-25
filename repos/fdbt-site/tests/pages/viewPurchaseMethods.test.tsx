@@ -18,7 +18,6 @@ describe('pages', () => {
                     purchaseMethods={purchaseMethods}
                     referer={'hello'}
                     deleteEnabled={false}
-                    exportEnabled={false}
                 />,
             );
             expect(tree).toMatchSnapshot();

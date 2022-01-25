@@ -12,7 +12,6 @@ import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import SubNavigation from '../layout/SubNavigation';
 import { OperatorDetails } from 'fdbt-types/matchingJsonTypes';
 import InfoPopup from '../../src/components/InfoPopup';
-import { exportEnabled } from '../../src/constants/featureFlag';
 
 const title = 'Manage Operator Details - Create Fares Data Service';
 const description = 'Manage Operator Details End page of the Create Fares Data Service';
@@ -23,7 +22,6 @@ type ManageOperatorDetailsProps = {
     operatorDetails: OperatorDetails;
     referer: string | null;
     saved: boolean;
-    exportEnabled: boolean;
 };
 
 const ManageOperatorDetails = ({
@@ -32,7 +30,6 @@ const ManageOperatorDetails = ({
     operatorDetails,
     referer,
     saved,
-    exportEnabled,
 }: ManageOperatorDetailsProps): ReactElement => {
     const [showSaved, setShowSaved] = useState(saved);
 
@@ -80,13 +77,7 @@ const ManageOperatorDetails = ({
     ];
 
     return (
-        <BaseLayout
-            title={title}
-            description={description}
-            showNavigation
-            referer={referer}
-            exportEnabled={exportEnabled}
-        >
+        <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div className="govuk-width-container">
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
@@ -193,7 +184,6 @@ export const getServerSideProps = async (
             csrfToken: getCsrfToken(ctx),
             referer: extractGlobalSettingsReferer(ctx),
             saved: !!saved,
-            exportEnabled,
         },
     };
 };

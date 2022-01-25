@@ -1,11 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 
-interface NavigationProps {
-    exportEnabled: boolean;
-}
-
-const Navigation = ({ exportEnabled }: NavigationProps): ReactElement => (
+const Navigation = (): ReactElement => (
     <nav className="app-navigation govuk-clearfix">
         <ul className="app-navigation__list app-width-container">
             <li
@@ -36,7 +32,7 @@ const Navigation = ({ exportEnabled }: NavigationProps): ReactElement => (
                 </a>
             </li>
 
-            {exportEnabled && (
+            {
                 <li
                     className={`app-navigation__list-item ${
                         isActivePage(['products/exports']) ? 'app-navigation__list-item--current' : ''
@@ -50,7 +46,7 @@ const Navigation = ({ exportEnabled }: NavigationProps): ReactElement => (
                         Export your data
                     </a>
                 </li>
-            )}
+            }
 
             <li
                 className={`app-navigation__list-item ${

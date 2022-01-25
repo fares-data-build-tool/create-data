@@ -13,7 +13,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={null}
                     deleteEnabled={false}
-                    exportEnabled={false}
                 />,
             );
 
@@ -40,7 +39,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={'hello'}
                     deleteEnabled={false}
-                    exportEnabled={false}
                 />,
             );
 
@@ -81,7 +79,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={null}
                     deleteEnabled={false}
-                    exportEnabled={false}
                 />,
             );
 
@@ -137,7 +134,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={'hello'}
                     deleteEnabled={false}
-                    exportEnabled={false}
                 />,
             );
             expect(tree).toMatchSnapshot();

@@ -1,4 +1,3 @@
-import { exportEnabled } from '../../constants/featureFlag';
 import { NextApiResponse } from 'next';
 import {
     CARNET_FARE_TYPE_ATTRIBUTE,
@@ -107,12 +106,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 );
             }
 
-            if (!exportEnabled || shouldInstantlyGenerateNetexFromMatchingJson(ticketType, dataFormat, { req, res })) {
+            if (shouldInstantlyGenerateNetexFromMatchingJson(ticketType, dataFormat, { req, res })) {
                 // if my fares or export isn't enabled we want to trigger the export lambda for a single
                 await triggerExport({ noc, paths: [filePath] });
             }
 
-            if ((ticketType === 'geoZone' || dataFormat !== 'tnds') && exportEnabled) {
+            if (ticketType === 'geoZone' || dataFormat !== 'tnds') {
                 redirectTo(res, '/productCreated');
                 return;
             }
