@@ -28,10 +28,8 @@ import {
     putUserDataInProductsBucket,
     splitUserDataJsonByProducts,
     insertDataToProductsBucketAndProductsTable,
-    shouldInstantlyGenerateNetexFromMatchingJson,
 } from '../../utils/apiUtils/userData';
 import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
-import { triggerExport } from '../../utils/apiUtils/export';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -78,7 +76,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             userDataJson.carnet = carnetAttribute;
             const noc = getAndValidateNoc(req, res);
-            let filePath = '';
 
             if (userDataJson.products.length > 1) {
                 const splitUserDataJson = splitUserDataJsonByProducts(userDataJson);
@@ -94,21 +91,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     );
                 });
 
-                filePath = await putUserDataInProductsBucket(userDataJson, uuid, noc);
+                await putUserDataInProductsBucket(userDataJson, uuid, noc);
             } else {
-                filePath = await insertDataToProductsBucketAndProductsTable(
-                    userDataJson,
-                    noc,
-                    uuid,
-                    ticketType,
-                    dataFormat,
-                    { req, res },
-                );
-            }
-
-            if (shouldInstantlyGenerateNetexFromMatchingJson(ticketType, dataFormat, { req, res })) {
-                // if my fares or export isn't enabled we want to trigger the export lambda for a single
-                await triggerExport({ noc, paths: [filePath] });
+                await insertDataToProductsBucketAndProductsTable(userDataJson, noc, uuid, ticketType, dataFormat, {
+                    req,
+                    res,
+                });
             }
 
             if (ticketType === 'geoZone' || dataFormat !== 'tnds') {
