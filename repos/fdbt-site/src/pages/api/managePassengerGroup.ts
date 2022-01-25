@@ -7,7 +7,7 @@ import { CompanionReference, ErrorInfo, GroupPassengerTypeDb, NextApiRequestWith
 import { updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
 import {
-    checkIntegerIsValid,
+    checkPassengerCountLimits,
     invalidCharactersArePresent,
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
@@ -30,17 +30,17 @@ export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassenge
         : [req.body.passengerTypes];
 
     const companions: CompanionReference[] = passengerTypeIds.map((passengerTypeId) => {
+        const name = req.body[`passengerType${passengerTypeId}`];
         const minNumber = req.body[`minimumPassengers${passengerTypeId}`];
         const maxNumber = req.body[`maximumPassengers${passengerTypeId}`];
-
         const id = Number(passengerTypeId);
-
         if (!Number.isInteger(id) || id < 1) {
             throw Error(`Received invalid id in passenger group [${passengerTypeId}]`);
         }
 
         return {
             id,
+            name,
             minNumber,
             maxNumber,
         };
@@ -55,7 +55,12 @@ export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassenge
 
 export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: string): Promise<ErrorInfo[]> => {
     const errors: ErrorInfo[] = [];
-    const integerCheck = checkIntegerIsValid(userInput.groupPassengerType.maxGroupSize, 'Maximum group size', 1, 30);
+    const integerCheck = checkPassengerCountLimits(
+        userInput.groupPassengerType.maxGroupSize,
+        'Maximum group size',
+        1,
+        30,
+    );
     const editMode = !!userInput.id;
     const groupName = userInput.name;
 
@@ -80,9 +85,9 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
     ) {
         userInput.groupPassengerType.companions.forEach((companion) => {
             if (companion.minNumber) {
-                const minCheck = checkIntegerIsValid(
+                const minCheck = checkPassengerCountLimits(
                     companion.minNumber,
-                    'Minimum amount',
+                    `Minimum amount of ${companion.name}`,
                     1,
                     Number(userInput.groupPassengerType.maxGroupSize),
                 );
@@ -99,20 +104,20 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
                 if (minNumberHasInvalidCharacters) {
                     errors.push({
                         id: `minimum-passengers-${companion.id}`,
-                        errorMessage: 'Minimum value has an invalid character',
+                        errorMessage: `Minimum value ${companion.name} has an invalid character`,
                     });
                 }
             }
 
             if (!companion.maxNumber) {
                 errors.push({
-                    errorMessage: 'Maximum amount is required',
-                    id: `minimum-passengers-${companion.id}`,
+                    errorMessage: `Maximum amount of ${companion.name} passengers is required`,
+                    id: `maximum-passengers-${companion.id}`,
                 });
             } else {
-                const maxCheck = checkIntegerIsValid(
+                const maxCheck = checkPassengerCountLimits(
                     companion.maxNumber,
-                    'Maximum amount',
+                    `Maximum amount of ${companion.name}`,
                     1,
                     Number(userInput.groupPassengerType.maxGroupSize),
                 );
@@ -125,7 +130,7 @@ export const collectErrors = async (userInput: GroupPassengerTypeDb, nocCode: st
                 }
                 if (companion.minNumber && Number(companion.minNumber) > Number(companion.maxNumber)) {
                     errors.push({
-                        errorMessage: 'Minimum amount cannot be greated than maximum amount',
+                        errorMessage: `Minimum amount of passengers for ${companion.name} cannot be greater than maximum amount`,
                         id: `minumum-passengers-${companion.id}`,
                         userInput: companion.minNumber || '',
                     });
