@@ -231,6 +231,11 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                   />
                 </div>
               </div>
+              <input
+                name="passengerType1"
+                type="hidden"
+                value="Regular Senior"
+              />
             </div>
             <div
               key="2"
@@ -304,6 +309,11 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                   />
                 </div>
               </div>
+              <input
+                name="passengerType2"
+                type="hidden"
+                value="Regular infant"
+              />
             </div>
           </div>
         </FormElementWrapper>
@@ -537,6 +547,11 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                   />
                 </div>
               </div>
+              <input
+                name="passengerType1"
+                type="hidden"
+                value="Regular Senior"
+              />
             </div>
             <div
               key="2"
@@ -610,6 +625,11 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                   />
                 </div>
               </div>
+              <input
+                name="passengerType2"
+                type="hidden"
+                value="Regular infant"
+              />
             </div>
           </div>
         </FormElementWrapper>
@@ -891,6 +911,11 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                   />
                 </div>
               </div>
+              <input
+                name="passengerType1"
+                type="hidden"
+                value="Regular Senior"
+              />
             </div>
             <div
               key="2"
@@ -964,6 +989,11 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                   />
                 </div>
               </div>
+              <input
+                name="passengerType2"
+                type="hidden"
+                value="Regular infant"
+              />
             </div>
           </div>
         </FormElementWrapper>
@@ -1193,6 +1223,11 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                   />
                 </div>
               </div>
+              <input
+                name="passengerType1"
+                type="hidden"
+                value="Normal adult"
+              />
             </div>
             <div
               key="2"
@@ -1266,6 +1301,11 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                   />
                 </div>
               </div>
+              <input
+                name="passengerType2"
+                type="hidden"
+                value="Normal child"
+              />
             </div>
           </div>
         </FormElementWrapper>
