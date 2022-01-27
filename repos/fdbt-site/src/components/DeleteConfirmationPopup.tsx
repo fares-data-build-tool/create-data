@@ -22,7 +22,10 @@ const DeleteConfirmationPopup = ({
 
                 <span className="govuk-hint" id="delete-hint">
                     {hintText || (
-                        <>When you delete, you will no longer be able to create new fares using this {entityType}.</>
+                        <>
+                            If you delete this {entityType}, any fares previously associated with this {entityType} will
+                            no longer be exportable.
+                        </>
                     )}
                 </span>
 
