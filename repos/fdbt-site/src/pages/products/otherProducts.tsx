@@ -2,7 +2,6 @@ import React, { ReactElement, useState } from 'react';
 import { MyFaresOtherFaresProduct, NextPageContextWithSession } from '../../interfaces/index';
 import { MyFaresOtherProduct } from 'fdbt-types/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
-import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString, getCsrfToken } from '../../utils';
 import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
@@ -15,17 +14,10 @@ const description = 'View and access your other products in one place.';
 
 interface OtherProductsProps {
     otherProducts: MyFaresOtherFaresProduct[];
-    myFaresEnabled: boolean;
-    exportEnabled: boolean;
     csrfToken: string;
 }
 
-const OtherProducts = ({
-    otherProducts,
-    myFaresEnabled,
-    exportEnabled,
-    csrfToken,
-}: OtherProductsProps): ReactElement => {
+const OtherProducts = ({ otherProducts, csrfToken }: OtherProductsProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         name: string;
         productId: number;
@@ -40,13 +32,7 @@ const OtherProducts = ({
 
     return (
         <>
-            <BaseLayout
-                title={title}
-                description={description}
-                showNavigation
-                myFaresEnabled={myFaresEnabled}
-                exportEnabled={exportEnabled}
-            >
+            <BaseLayout title={title} description={description} showNavigation>
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
@@ -213,7 +199,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         )
     ).flat();
 
-    return { props: { otherProducts, myFaresEnabled, exportEnabled, csrfToken: getCsrfToken(ctx) } };
+    return { props: { otherProducts, csrfToken: getCsrfToken(ctx) } };
 };
 
 export default OtherProducts;

@@ -51,6 +51,7 @@ jobs:
       - slack/notify:
           event: pass
           template: basic_success_1
+
   trigger-workflows:
     executor: node
     steps:
@@ -163,6 +164,47 @@ jobs:
             cd cypress_tests
             npm ci
             ./node_modules/.bin/tsc
+
+  check-image-scan-results:
+    parameters:
+      repo:
+        type: string
+      tag:
+        type: string
+    docker:
+      - image: amazon/aws-cli
+        entrypoint: bash
+    steps:
+      - run:
+          name: Install dependencies
+          command: |
+            yum install -y jq
+      - run:
+          name: Check Image Scan Findings
+          command: |
+            aws ecr wait image-scan-complete --repository-name "<< parameters.repo >>" --image-id "imageTag=<< parameters.tag >>"
+            if [ $(echo $?) -eq 0 ]; then
+              FINDINGS=$(aws ecr describe-image-scan-findings --repository-name "<< parameters.repo >>" --image-id "imageTag=<< parameters.tag >>")
+                status=$(echo "${FINDINGS}" | jq -r ".imageScanStatus.status")
+              NUMBER_OF_FINDINGS=$(echo "${FINDINGS}" | jq -r ".imageScanFindings.findings | length")
+              FINDING_SEVERITY_COUNTS=$(echo "${FINDINGS}" | jq -r ".imageScanFindings.findingSeverityCounts")
+
+              CRITICAL=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.CRITICAL')
+              HIGH=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.HIGH')
+              MEDIUM=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.MEDIUM')
+              LOW=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.LOW')
+              INFORMATIONAL=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.INFORMATIONAL')
+              UNDEFINED=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.UNDEFINED')
+
+              if [ ${CRITICAL} != null ] || [ ${HIGH} != null ]; then
+                echo "ECR image contains vulnerabilities at CRITICAL or HIGH level, with a total of ${NUMBER_OF_FINDINGS} found"
+                echo ${FINDING_SEVERITY_COUNTS}
+                exit 1
+              fi
+            else
+              echo "Waiting for scan result timed out!"
+              exit 2
+            fi
 
   # fdbt-netex-output
   deploy-netex-output-resources-to-test:
@@ -785,10 +827,25 @@ workflows:
                 - develop
                 - master
 
+      - check-image-scan-results:
+          <<: *slack-fail-post-step
+          repo: "${SITE_ECR_REPO}"
+          tag: "${CIRCLE_SHA1}"
+          context: tfn-fdbt-core
+          requires:
+            - aws-ecr/build-and-push-image
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only:
+                - develop
+                - master
+
       - aws-ecs/deploy-service-update:
           <<: *slack-fail-post-step
           requires:
-            - aws-ecr/build-and-push-image
+            - check-image-scan-results
           name: deploy-site-to-test
           family: "${SITE_ECS_FAMILY}"
           cluster-name: "${SITE_ECS_CLUSTER}"
@@ -812,7 +869,7 @@ workflows:
       - aws-ecs/deploy-service-update:
           <<: *slack-fail-post-step
           requires:
-            - aws-ecr/build-and-push-image
+            - check-image-scan-results
           family: "${SITE_ECS_FAMILY}"
           name: deploy-site-to-preprod
           cluster-name: "${SITE_ECS_CLUSTER}"
@@ -826,7 +883,7 @@ workflows:
       - slack/on-hold:
           <<: *slack-fail-post-step
           requires:
-            - aws-ecr/build-and-push-image
+            - check-image-scan-results
           filters:
             tags:
               only: /^v.*/
@@ -859,6 +916,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+
       - slack-notify:
           <<: *slack-fail-post-step
           name: site deployed to prod
@@ -867,11 +925,13 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+
       - slack-notify:
           <<: *slack-fail-post-step
           name: site deployed to preprod
           requires:
             - deploy-site-to-preprod
+
       - slack-notify:
           <<: *slack-fail-post-step
           name: site deployed and tested

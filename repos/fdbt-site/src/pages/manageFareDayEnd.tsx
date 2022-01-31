@@ -11,7 +11,6 @@ import { getFareDayEnd } from '../data/auroradb';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import SubNavigation from '../layout/SubNavigation';
 import InfoPopup from '../components/InfoPopup';
-import { exportEnabled, myFaresEnabled } from '../constants/featureFlag';
 import InformationSummary from '../components/InformationSummary';
 
 const title = 'Manage Fare Day End - Create Fares Data Service';
@@ -27,30 +26,13 @@ type ManageFareDayEndProps = {
     fareDayEnd: string;
     referer: string | null;
     saved: boolean;
-    myFaresEnabled: boolean;
-    exportEnabled: boolean;
 };
 
-const ManageFareDayEnd = ({
-    errors,
-    csrfToken,
-    fareDayEnd,
-    referer,
-    saved,
-    myFaresEnabled,
-    exportEnabled,
-}: ManageFareDayEndProps): ReactElement => {
+const ManageFareDayEnd = ({ errors, csrfToken, fareDayEnd, referer, saved }: ManageFareDayEndProps): ReactElement => {
     const [showSaved, setShowSaved] = useState(saved);
 
     return (
-        <BaseLayout
-            title={title}
-            description={description}
-            showNavigation
-            referer={referer}
-            myFaresEnabled={myFaresEnabled}
-            exportEnabled={exportEnabled}
-        >
+        <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div className="govuk-width-container">
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
@@ -131,8 +113,6 @@ export const getServerSideProps = async (
             csrfToken: getCsrfToken(ctx),
             referer: extractGlobalSettingsReferer(ctx),
             saved: !!saved,
-            myFaresEnabled,
-            exportEnabled,
         },
     };
 };

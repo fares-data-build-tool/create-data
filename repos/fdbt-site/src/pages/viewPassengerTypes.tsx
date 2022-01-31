@@ -10,7 +10,7 @@ import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { updateSessionAttribute } from '../utils/sessions';
-import { exportEnabled, globalSettingsDeleteEnabled, myFaresEnabled } from '../constants/featureFlag';
+import { globalSettingsDeleteEnabled } from '../constants/featureFlag';
 
 const title = 'Passenger Types - Create Fares Data Service';
 const description = 'View and edit your passenger types.';
@@ -21,8 +21,6 @@ interface PassengerTypeProps {
     groupPassengerTypes: FullGroupPassengerType[];
     referer: string | null;
     deleteEnabled: boolean;
-    myFaresEnabled: boolean;
-    exportEnabled: boolean;
 }
 
 const ViewPassengerTypes = ({
@@ -31,8 +29,6 @@ const ViewPassengerTypes = ({
     csrfToken,
     referer,
     deleteEnabled,
-    myFaresEnabled,
-    exportEnabled,
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         passengerTypeName: string;
@@ -64,14 +60,7 @@ const ViewPassengerTypes = ({
     };
 
     return (
-        <BaseLayout
-            title={title}
-            description={description}
-            showNavigation
-            referer={referer}
-            myFaresEnabled={myFaresEnabled}
-            exportEnabled={exportEnabled}
-        >
+        <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div className="govuk-grid-row" data-card-count={singlePassengerTypes.length + groupPassengerTypes.length}>
                 <div className="govuk-grid-column-one-quarter">
                     <SubNavigation />
@@ -247,8 +236,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             groupPassengerTypes,
             referer: extractGlobalSettingsReferer(ctx),
             deleteEnabled: globalSettingsDeleteEnabled,
-            myFaresEnabled,
-            exportEnabled,
         },
     };
 };

@@ -1,9 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { NextPageContextWithSession } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
-import { myFaresEnabled, exportEnabled } from '../../constants/featureFlag';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
-import { redirectTo } from '../../utils/apiUtils';
 import CsrfForm from '../../components/CsrfForm';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { getAllProductsByNoc as getAllProductsByNoc } from '../../data/auroradb';
@@ -17,12 +15,10 @@ const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).th
 
 interface GlobalSettingsProps {
     csrf: string;
-    myFaresEnabled: boolean;
-    exportEnabled: boolean;
     operatorHasProducts: boolean;
 }
 
-const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
+const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
     const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 5000 });
 
     const exports: Export[] | undefined = data?.exports;
@@ -38,13 +34,7 @@ const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: G
 
     return (
         <>
-            <BaseLayout
-                title={title}
-                description={description}
-                showNavigation
-                myFaresEnabled={myFaresEnabled}
-                exportEnabled={exportEnabled}
-            >
+            <BaseLayout title={title} description={description} showNavigation>
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
@@ -151,17 +141,11 @@ const Exports = ({ csrf, myFaresEnabled, exportEnabled, operatorHasProducts }: G
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: GlobalSettingsProps }> => {
     const noc = getAndValidateNoc(ctx);
 
-    if (!exportEnabled && ctx.res) {
-        redirectTo(ctx.res, '/home');
-    }
-
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
-            myFaresEnabled: myFaresEnabled,
-            exportEnabled: exportEnabled,
             operatorHasProducts,
         },
     };

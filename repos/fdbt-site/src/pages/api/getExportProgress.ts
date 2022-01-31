@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
-import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { getAndValidateNoc, redirectToError } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { exportEnabled } from '../../constants/featureFlag';
 import { getS3Exports, getS3FolderCount, retrieveExportZip } from '../../data/s3';
 import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 
@@ -14,10 +13,6 @@ export interface Export {
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        if (!exportEnabled) {
-            redirectTo(res, '/home');
-        }
-
         const noc = getAndValidateNoc(req, res);
 
         const exportNames = await getS3Exports(noc);

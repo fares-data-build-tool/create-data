@@ -19,8 +19,6 @@ interface LayoutProps {
     showNavigation?: boolean;
     hideHelp?: boolean;
     referer?: string | null;
-    myFaresEnabled?: boolean;
-    exportEnabled?: boolean;
 }
 
 export const BaseLayout = ({
@@ -32,8 +30,6 @@ export const BaseLayout = ({
     showNavigation,
     hideHelp,
     referer,
-    myFaresEnabled,
-    exportEnabled,
 }: PropsWithChildren<LayoutProps>): ReactElement => {
     const [showBanner, setShowBanner] = useState(false);
 
@@ -59,9 +55,7 @@ export const BaseLayout = ({
 
             <PhaseBanner />
 
-            {showNavigation && (
-                <Navigation myFaresEnabled={myFaresEnabled ?? false} exportEnabled={exportEnabled ?? false} />
-            )}
+            {showNavigation && <Navigation />}
 
             {referer && <GlobalSettingReturnHeader />}
 

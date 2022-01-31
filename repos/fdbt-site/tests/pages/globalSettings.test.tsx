@@ -13,14 +13,7 @@ describe('pages', () => {
                 fareDayEndSet: true,
                 operatorDetailsSet: true,
             };
-            const tree = shallow(
-                <GlobalSettings
-                    globalSettingsCounts={globalSettingsCounts}
-                    referer="hello"
-                    myFaresEnabled={false}
-                    exportEnabled={false}
-                />,
-            );
+            const tree = shallow(<GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" />);
             expect(tree).toMatchSnapshot();
         });
     });

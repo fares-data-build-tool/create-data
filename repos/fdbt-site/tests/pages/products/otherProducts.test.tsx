@@ -98,15 +98,13 @@ const testProducts: MyFaresOtherFaresProduct[] = [
 describe('myfares pages', () => {
     describe('otherProducts', () => {
         it('should render correctly when some non-Point-to-Point products exist', () => {
-            const tree = shallow(
-                <OtherProducts myFaresEnabled exportEnabled otherProducts={testProducts} csrfToken="" />,
-            );
+            const tree = shallow(<OtherProducts otherProducts={testProducts} csrfToken="" />);
 
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly when no non-Point-to-Point products exist', () => {
-            const tree = shallow(<OtherProducts myFaresEnabled exportEnabled otherProducts={[]} csrfToken={''} />);
+            const tree = shallow(<OtherProducts otherProducts={[]} csrfToken={''} />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -119,8 +117,6 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     csrfToken: '',
-                    exportEnabled: true,
-                    myFaresEnabled: true,
                     otherProducts: [
                         {
                             carnet: false,

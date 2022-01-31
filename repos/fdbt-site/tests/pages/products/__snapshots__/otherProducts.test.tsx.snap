@@ -4,8 +4,6 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
 <Fragment>
   <BaseLayout
     description="View and access your other products in one place."
-    exportEnabled={true}
-    myFaresEnabled={true}
     showNavigation={true}
     title="Other Products - Create Fares Data Service"
   >
@@ -109,8 +107,6 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
 <Fragment>
   <BaseLayout
     description="View and access your other products in one place."
-    exportEnabled={true}
-    myFaresEnabled={true}
     showNavigation={true}
     title="Other Products - Create Fares Data Service"
   >

@@ -123,6 +123,29 @@ export const checkIntegerIsValid = (input: string, inputName: string, min: numbe
     return '';
 };
 
+// checkPassengerCountLimits is a duplicate of checkIntegerIsValid but with better error messaging which is returned to end users
+export const checkPassengerCountLimits = (input: string, inputName: string, min: number, max: number): string => {
+    if (input === '') {
+        return `${inputName} cannot be empty`;
+    }
+
+    const numberInput = Number(input);
+
+    if (!Number.isInteger(numberInput) || numberInput < 0) {
+        return `${inputName} must be a whole, positive number`;
+    }
+
+    if (numberInput < min) {
+        return `${inputName} passengers cannot be less than ${min}`;
+    }
+
+    if (numberInput > max) {
+        return `${inputName} passengers cannot be greater than ${max}`;
+    }
+
+    return '';
+};
+
 export const isValidNumber = (input: number): boolean => {
     if (Number.isNaN(input)) {
         return false;

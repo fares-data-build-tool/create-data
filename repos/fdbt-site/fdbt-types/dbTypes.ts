@@ -108,6 +108,7 @@ export interface GroupPassengerTypeDb {
 
 export interface CompanionReference {
     id: number;
+    name: string;
     minNumber?: string;
     maxNumber: string;
 }

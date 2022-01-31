@@ -156,6 +156,11 @@ const ManagePassengerGroup = ({
                                                         />
                                                     </div>
                                                 </div>
+                                                <input
+                                                    type="hidden"
+                                                    name={`passengerType${passenger.id}`}
+                                                    value={passenger.name}
+                                                />
                                             </div>
                                         ),
                                     )}

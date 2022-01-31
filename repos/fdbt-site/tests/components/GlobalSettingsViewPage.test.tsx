@@ -20,8 +20,6 @@ describe('GlobalSettingsViewPage', () => {
                 entityDescription="my entity description"
                 CardBody={CardBody}
                 deleteEnabled={false}
-                myFaresEnabled={false}
-                exportEnabled={false}
             />,
         );
         expect(tree).toMatchSnapshot();
@@ -42,8 +40,6 @@ describe('GlobalSettingsViewPage', () => {
                 entityDescription="my entity description"
                 CardBody={CardBody}
                 deleteEnabled={false}
-                myFaresEnabled={false}
-                exportEnabled={false}
             />,
         );
         expect(tree).toMatchSnapshot();
@@ -64,8 +60,6 @@ describe('GlobalSettingsViewPage', () => {
                 entityDescription="my entity description"
                 CardBody={CardBody}
                 deleteEnabled={true}
-                myFaresEnabled={false}
-                exportEnabled={false}
             />,
         );
 

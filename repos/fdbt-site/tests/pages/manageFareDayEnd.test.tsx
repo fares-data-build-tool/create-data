@@ -6,15 +6,7 @@ describe('pages', () => {
     describe('manage passenger types', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <ManageFareDayEnd
-                    csrfToken={''}
-                    errors={[]}
-                    fareDayEnd={'1234'}
-                    referer={'hi'}
-                    saved={false}
-                    myFaresEnabled={false}
-                    exportEnabled={false}
-                />,
+                <ManageFareDayEnd csrfToken={''} errors={[]} fareDayEnd={'1234'} referer={'hi'} saved={false} />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -30,8 +22,6 @@ describe('pages', () => {
                     fareDayEnd={'Not a time'}
                     referer={null}
                     saved={false}
-                    myFaresEnabled={false}
-                    exportEnabled={false}
                 />,
             );
 
@@ -40,15 +30,7 @@ describe('pages', () => {
 
         it('should render popup if saved', () => {
             const tree = shallow(
-                <ManageFareDayEnd
-                    csrfToken={''}
-                    errors={[]}
-                    fareDayEnd={'1254'}
-                    referer={null}
-                    saved={true}
-                    myFaresEnabled={false}
-                    exportEnabled={false}
-                />,
+                <ManageFareDayEnd csrfToken={''} errors={[]} fareDayEnd={'1254'} referer={null} saved={true} />,
             );
 
             expect(tree).toMatchSnapshot();

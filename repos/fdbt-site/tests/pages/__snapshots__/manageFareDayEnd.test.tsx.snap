@@ -3,8 +3,6 @@
 exports[`pages manage passenger types should render correctly 1`] = `
 <BaseLayout
   description="Manage Fare Day End page of the Create Fares Data Service"
-  exportEnabled={false}
-  myFaresEnabled={false}
   referer="hi"
   showNavigation={true}
   title="Manage Fare Day End - Create Fares Data Service"
@@ -92,8 +90,6 @@ exports[`pages manage passenger types should render correctly 1`] = `
 exports[`pages manage passenger types should render error state if error 1`] = `
 <BaseLayout
   description="Manage Fare Day End page of the Create Fares Data Service"
-  exportEnabled={false}
-  myFaresEnabled={false}
   referer={null}
   showNavigation={true}
   title="Manage Fare Day End - Create Fares Data Service"
@@ -199,8 +195,6 @@ exports[`pages manage passenger types should render error state if error 1`] = `
 exports[`pages manage passenger types should render popup if saved 1`] = `
 <BaseLayout
   description="Manage Fare Day End page of the Create Fares Data Service"
-  exportEnabled={false}
-  myFaresEnabled={false}
   referer={null}
   showNavigation={true}
   title="Manage Fare Day End - Create Fares Data Service"
