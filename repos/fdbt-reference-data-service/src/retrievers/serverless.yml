@@ -59,7 +59,7 @@ custom:
   pythonRequirements:
     dockerizePip: false
   enableSchedule:
-    test: false
+    test: true
     preprod: true
     prod: true
   txcRetrieverSchedule:
