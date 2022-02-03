@@ -101,7 +101,6 @@ const ProductDetails = ({
                                         unitName="durationUnits"
                                         unitId="product-details-expiry-unit"
                                         errors={errors}
-                                        carnet
                                     />
                                 </>
                             </FormGroupWrapper>
