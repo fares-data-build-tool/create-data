@@ -1,17 +1,75 @@
+#!/bin/bash
+# cfd-bastion-tunnel
+# creates an ssh tunnel to a RDS database through the bastion EC2 instance
+
 set -e
+set -u
+set -o pipefail
 
-instance=$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Bastion,Values=true Name=instance-state-name,Values=running | jq -r '.Reservations[0].Instances[0]')
-db=db.dft-cfd.infinityworks.internal
+INSTANCE=$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Bastion,Values=true Name=instance-state-name,Values=running | jq -r '.Reservations[0].Instances[0]')
+OLD_DATABASE_HOSTNAME=db.dft-cfd.infinityworks.internal
+NEW_DATABASE_HOSTNAME=db.dft-cfd.internal
+INSTANCE_ID=`echo ${INSTANCE} | jq -r '.InstanceId'`
+AZ=`echo ${INSTANCE} | jq -r '.Placement.AvailabilityZone'`
+LOCAL_PORT=13306
 
-instanceId=`echo $instance | jq -r '.InstanceId'`
-az=`echo $instance | jq -r '.Placement.AvailabilityZone'`
+if [ $# -eq 1 ] && [ $1 == "--old-hostname" ]; then
+  DATABASE_HOSTNAME=${OLD_DATABASE_HOSTNAME}
+elif [ $# -eq 1 ] && [ $1 == "--help" ]; then
+   cat << EOF
+Usage: cfd-bastion-tunnel [--help] [--old-hostname]
 
-rm -f /tmp/bastion-tunnel*
+--help:
+  display this help message
 
-ssh-keygen -t rsa -f /tmp/bastion-tunnel -N ''
-aws ec2-instance-connect send-ssh-public-key --region eu-west-2 --instance-id $instanceId --availability-zone $az --instance-os-user ssm-user --ssh-public-key file:///tmp/bastion-tunnel.pub
-ssh -i /tmp/bastion-tunnel -N -f -M -S /tmp/bastion-tunnel.sock -L 13306:$db:3306 ssm-user@$instanceId -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o ProxyCommand="aws ssm start-session --region eu-west-2 --target %h --document-name AWS-StartSSHSession --parameters portNumber=%p"
-echo "Exposing DB on port 13306..."
-read -rsn1 -p "Press any key to close session."; echo
-ssh -O exit -S /tmp/bastion-tunnel.sock *
-rm /tmp/bastion-tunnel*
+--old-hostname:
+  use the old database hostname for the tunnel
+
+EOF
+   exit 1
+else
+  DATABASE_HOSTNAME=${NEW_DATABASE_HOSTNAME}
+fi
+
+echo "starting ssh database tunnel"
+echo "bastion instance: ${INSTANCE_ID}"
+echo "database: ${DATABASE_HOSTNAME}"
+echo "local port: ${LOCAL_PORT}"
+echo
+
+# delete any previous ssh keypairs
+rm -f /tmp/cfd-bastion-tunnel*
+
+# generate a new ssh keypair for this connection
+echo "generating temporary ssh keypair"
+ssh-keygen -t rsa -f /tmp/cfd-bastion-tunnel -N '' > /dev/null
+
+# send the generated ssh keypair to the instance, to allow the ssh login from this new keypair
+echo "uploading keypair to instance"
+aws ec2-instance-connect send-ssh-public-key --region eu-west-2 --instance-id ${INSTANCE_ID} --availability-zone ${AZ} --instance-os-user ssm-user --ssh-public-key file:///tmp/cfd-bastion-tunnel.pub > /dev/null
+
+# create the port forwarding ssh tunnel
+function start-tunnel() {
+  echo "starting ssh tunnel"
+  ssh -q -i /tmp/cfd-bastion-tunnel -N -f -M -S /tmp/cfd-bastion-tunnel.sock -L ${LOCAL_PORT}:${DATABASE_HOSTNAME}:3306 ssm-user@${INSTANCE_ID} -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o ProxyCommand="aws ssm start-session --region eu-west-2 --target %h --document-name AWS-StartSSHSession --parameters portNumber=%p"
+}
+until start-tunnel; do
+  echo "ssh tunnel not yet created, attempting to fix SSM then trying again in 3 seconds. Press ctrl+c to exit"
+  # triggering a plain ssm session seems to "wake up" the instance and allow the
+  # instance to accept the failing port forwarding ssh session in 'start-tunnel'
+  timeout 3 aws ssm start-session --target ${INSTANCE_ID} 2>&1 > /dev/null || true
+done
+
+# hang on user input to keep the tunnel open whilst the script is running
+echo "database connection now listening"
+echo "use 'mysql -h 127.0.0.1 -P 13306 -u admin -p' or your preferred client to connect"
+echo
+
+# await user input to then trigger closing down the session
+read -rsn1 -p "press any key to close session..."; echo
+
+# once user input is recieved, cleanup and exit
+echo "cleaning up and exiting"
+ssh -q -O exit -S /tmp/cfd-bastion-tunnel.sock *
+rm /tmp/cfd-bastion-tunnel*
+exit 0

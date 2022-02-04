@@ -12,27 +12,27 @@ provider:
   iam:
     role:
       statements:
-        - Effect: 'Allow'
+        - Effect: "Allow"
           Action:
-            - 'ssm:GetParameter'
-          Resource: '*'
-        - Effect: 'Allow'
+            - "ssm:GetParameter"
+          Resource: "*"
+        - Effect: "Allow"
           Action:
-            - 's3:GetObject'
-            - 's3:PutObject'
+            - "s3:GetObject"
+            - "s3:PutObject"
           Resource:
             - !Sub arn:aws:s3:::fdbt-matching-data-${self:provider.stage}/*
             - !Sub arn:aws:s3:::fdbt-unvalidated-netex-data-${self:provider.stage}/*
             - !Sub arn:aws:s3:::fdbt-netex-data-${self:provider.stage}/*
-        - Effect: 'Allow'
+        - Effect: "Allow"
           Action:
             - ses:SendEmail
             - ses:SendRawEmail
           Resource:
-            - '*'
-        - Effect: 'Allow'
+            - "*"
+        - Effect: "Allow"
           Action:
-            - 'sns:Publish'
+            - "sns:Publish"
           Resource:
             - Fn::ImportValue: ${self:provider.stage}:SlackAlertsTopicArn
 
@@ -52,7 +52,7 @@ provider:
         Rules:
           - Id: ExpiryRule
             Status: Enabled
-            ExpirationInDays: '90'
+            ExpirationInDays: "90"
 
     netexDataBucket:
       name: fdbt-netex-data-${self:provider.stage}
@@ -69,7 +69,7 @@ provider:
         Rules:
           - Id: ExpiryRule
             Status: Enabled
-            ExpirationInDays: '90'
+            ExpirationInDays: "90"
 
 functions:
   NetexConvertor:
@@ -86,7 +86,7 @@ functions:
         - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetA
         - Fn::ImportValue: ${self:provider.stage}:PrivateSubnetB
     environment:
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
       UNVALIDATED_NETEX_BUCKET: fdbt-unvalidated-netex-data-${self:provider.stage}
       RDS_HOST:
         Fn::ImportValue: ${self:provider.stage}:RdsClusterInternalEndpoint
@@ -104,69 +104,86 @@ functions:
 
 resources:
   Resources:
+    NetexConvertorLogGroup:
+      Type: "AWS::Logs::LogGroup"
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
+        RetentionInDays: 180
     NetexCompleteSingleFilter:
-      Type: 'AWS::Logs::MetricFilter'
+      Type: "AWS::Logs::MetricFilter"
       Properties:
-        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
-        FilterPattern: 'NeTEx generation complete for type single'
+        LogGroupName:
+          Ref: NetexConvertorLogGroup
+        FilterPattern: "NeTEx generation complete for type single"
         MetricTransformations:
-          - MetricValue: '1'
-            MetricNamespace: 'FDBT/Netex-Output'
-            MetricName: 'netex-complete-single-${self:provider.stage}'
+          - MetricValue: "1"
+            MetricNamespace: "FDBT/Netex-Output"
+            MetricName: "netex-complete-single-${self:provider.stage}"
     NetexCompleteReturnFilter:
-      Type: 'AWS::Logs::MetricFilter'
+      Type: "AWS::Logs::MetricFilter"
       Properties:
-        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
-        FilterPattern: 'NeTEx generation complete for type return'
+        LogGroupName:
+          Ref: NetexConvertorLogGroup
+        FilterPattern: "NeTEx generation complete for type return"
         MetricTransformations:
-          - MetricValue: '1'
-            MetricNamespace: 'FDBT/Netex-Output'
-            MetricName: 'netex-complete-return-${self:provider.stage}'
+          - MetricValue: "1"
+            MetricNamespace: "FDBT/Netex-Output"
+            MetricName: "netex-complete-return-${self:provider.stage}"
     NetexCompletePeriodFilter:
-      Type: 'AWS::Logs::MetricFilter'
+      Type: "AWS::Logs::MetricFilter"
       Properties:
-        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
-        FilterPattern: 'NeTEx generation complete for type period'
+        LogGroupName:
+          Ref: NetexConvertorLogGroup
+        FilterPattern: "NeTEx generation complete for type period"
         MetricTransformations:
-          - MetricValue: '1'
-            MetricNamespace: 'FDBT/Netex-Output'
-            MetricName: 'netex-complete-period-${self:provider.stage}'
+          - MetricValue: "1"
+            MetricNamespace: "FDBT/Netex-Output"
+            MetricName: "netex-complete-period-${self:provider.stage}"
     NetexCompleteFlatFareFilter:
-      Type: 'AWS::Logs::MetricFilter'
+      Type: "AWS::Logs::MetricFilter"
       Properties:
-        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
-        FilterPattern: 'NeTEx generation complete for type flatFare'
+        LogGroupName:
+          Ref: NetexConvertorLogGroup
+        FilterPattern: "NeTEx generation complete for type flatFare"
         MetricTransformations:
-          - MetricValue: '1'
-            MetricNamespace: 'FDBT/Netex-Output'
-            MetricName: 'netex-complete-flatfare-${self:provider.stage}'
+          - MetricValue: "1"
+            MetricNamespace: "FDBT/Netex-Output"
+            MetricName: "netex-complete-flatfare-${self:provider.stage}"
     NetexCompleteMultiOperatorFilter:
-      Type: 'AWS::Logs::MetricFilter'
+      Type: "AWS::Logs::MetricFilter"
       Properties:
-        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
-        FilterPattern: 'NeTEx generation complete for type multiOperator'
+        LogGroupName:
+          Ref: NetexConvertorLogGroup
+        FilterPattern: "NeTEx generation complete for type multiOperator"
         MetricTransformations:
-          - MetricValue: '1'
-            MetricNamespace: 'FDBT/Netex-Output'
-            MetricName: 'netex-complete-multiOperator-${self:provider.stage}'
+          - MetricValue: "1"
+            MetricNamespace: "FDBT/Netex-Output"
+            MetricName: "netex-complete-multiOperator-${self:provider.stage}"
     NetexCompleteTotalFilter:
-      Type: 'AWS::Logs::MetricFilter'
+      Type: "AWS::Logs::MetricFilter"
       Properties:
-        LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexConvertor
-        FilterPattern: 'NeTEx generation complete'
+        LogGroupName:
+          Ref: NetexConvertorLogGroup
+        FilterPattern: "NeTEx generation complete"
         MetricTransformations:
-          - MetricValue: '1'
-            MetricNamespace: 'FDBT/Netex-Output'
-            MetricName: 'netex-complete-total-${self:provider.stage}'
-    SESEmailsSentFilter:
-      Type: 'AWS::Logs::MetricFilter'
+          - MetricValue: "1"
+            MetricNamespace: "FDBT/Netex-Output"
+            MetricName: "netex-complete-total-${self:provider.stage}"
+    NetexEmailerLogGroup:
+      Type: "AWS::Logs::LogGroup"
       Properties:
         LogGroupName: /aws/lambda/${self:service}-${self:provider.stage}-NetexEmailer
-        FilterPattern: 'Email sent'
+        RetentionInDays: 180
+    SESEmailsSentFilter:
+      Type: "AWS::Logs::MetricFilter"
+      Properties:
+        LogGroupName:
+          Ref: NetexEmailerLogGroup
+        FilterPattern: "Email sent"
         MetricTransformations:
-          - MetricValue: '1'
-            MetricNamespace: 'FDBT/Netex-Emailer'
-            MetricName: 'SES-emails-sent-${self:provider.stage}'
+          - MetricValue: "1"
+            MetricNamespace: "FDBT/Netex-Emailer"
+            MetricName: "SES-emails-sent-${self:provider.stage}"
 
 plugins:
   - serverless-plugin-typescript

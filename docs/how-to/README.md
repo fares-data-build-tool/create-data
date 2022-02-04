@@ -16,6 +16,7 @@ Common step by step actions
 - [running-ui-tests-locally-and-in-browserstack](./running-ui-tests-locally-and-in-browserstack.md)
 - [scale-or-cycle-fargate-tasks](./scale-or-cycle-fargate-tasks.md)
 - [search-logs](./search-logs.md)
+- [setup-mfa-for-cfd-admin](./setup-mfa-for-cfd-admin.md)
 - [setup-vscode-for-dev](./setup-vscode-for-dev.md)
 - [update-contact-details](./update-contact-details.md)
 - [update-environment-variables](./update-environment-variables.md)

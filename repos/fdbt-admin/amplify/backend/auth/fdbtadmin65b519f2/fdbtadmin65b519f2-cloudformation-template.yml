@@ -183,7 +183,7 @@ Resources:
             To create an account to access the Create Fares Data Admin Panel click the link below:
             <br />
             <br />
-            https://admin.${env}.dft-cfd.infinityworks.com/
+            https://admin.${env}.dft-cfd.com/
             <br />
             <br />
             Your username is {username} and temporary password is {####}

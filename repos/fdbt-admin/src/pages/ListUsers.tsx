@@ -9,14 +9,17 @@ import getCognitoClientAndUserPool from '../utils/cognito';
 const formatAttributes = (attributes: AttributeListType) => {
     return attributes
         .filter((attribute) => ATTRIBUTE_MAP[attribute.Name])
-        .map((attribute) => (
-            <Fragment key={attribute.Name}>
-                <span>
-                    <strong>{ATTRIBUTE_MAP[attribute.Name]}</strong>: {attribute.Value}
-                </span>
-                <br />
-            </Fragment>
-        ));
+        .map(
+            (attribute) =>
+                attribute.Value !== undefined && (
+                    <Fragment key={attribute.Name}>
+                        <span>
+                            <strong>{ATTRIBUTE_MAP[attribute.Name]}</strong>: {attribute.Value.replace(/\|/g, ', ')}
+                        </span>
+                        <br />
+                    </Fragment>
+                ),
+        );
 };
 
 const getAttributeValue = (user: UserType, attributeName: string): string | undefined =>

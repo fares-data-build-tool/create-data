@@ -105,7 +105,6 @@ exports[`pages pointToPointPeriodProduct should render correctly on first load 1
             errors={Array []}
           />
           <ExpirySelector
-            carnet={true}
             defaultDuration=""
             errors={Array []}
             hintId="product-expiry-hint"
@@ -307,7 +306,6 @@ exports[`pages pointToPointPeriodProduct should render error messaging when erro
             }
           />
           <ExpirySelector
-            carnet={true}
             defaultDuration=""
             errors={
               Array [
