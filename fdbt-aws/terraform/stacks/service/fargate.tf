@@ -1,3 +1,19 @@
+# resource "aws_security_group_rule" "ingress_site" {
+#   description              = "from Site"
+#   security_group_id        = aws_security_group.rds.id
+#   type                     = "ingress"
+#   from_port                = 3306
+#   to_port                  = 3306
+#   protocol                 = "tcp"
+#   source_security_group_id = !Ref FargateSiteContainerSecurityGroup
+# }
+
+
+
+
+
+
+
 # AWSTemplateFormatVersion: 2010-09-09
 # Description: CloudFormation template for ECS resources
 

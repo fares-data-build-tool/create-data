@@ -1,15 +1,6 @@
-# AWSTemplateFormatVersion: 2010-09-09
-# Description: CloudFormation template for S3 resources
+###     MIGRATE BUCKETS OUT OF SERVERLESS AND CDK     ###
+### ALL STATEFUL RESOURCES TO BE MANAGED BY TERRAFORM ###
 
-# Parameters:
-#   Stage:
-#     Type: String
-#     AllowedValues:
-#       - test
-#       - preprod
-#       - prod
-
-# Resources:
 #   UserDataBucket:
 #     Type: AWS::S3::Bucket
 #     Properties:
@@ -69,14 +60,3 @@
 #             Resource: !Sub ${ErrorPageBucket.Arn}/*
 #             Principal:
 #               CanonicalUser: !GetAtt ErrorBucketOAI.S3CanonicalUserId
-
-# Outputs:
-#   ErrorPageBucketDomainName:
-#     Value: !GetAtt ErrorPageBucket.DomainName
-#     Export:
-#       Name: !Sub ${Stage}:ErrorBucketDomainName
-
-#   ErrorBucketOAI:
-#     Value: !Ref ErrorBucketOAI
-#     Export:
-#       Name: !Sub ${Stage}:ErrorBucketOAI

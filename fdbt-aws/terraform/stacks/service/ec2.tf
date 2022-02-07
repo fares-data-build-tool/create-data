@@ -1,3 +1,15 @@
+# resource "aws_security_group_rule" "ingress_bastion" {
+#   description              = "from Bastion"
+#   security_group_id        = aws_security_group.rds.id
+#   type                     = "ingress"
+#   from_port                = 3306
+#   to_port                  = 3306
+#   protocol                 = "tcp"
+#   source_security_group_id = !Ref BastionSecurityGroup
+# }
+
+
+
 # AWSTemplateFormatVersion: 2010-09-09
 # Description: CloudFormation template for an RDS resources
 
