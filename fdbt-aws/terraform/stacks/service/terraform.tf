@@ -20,7 +20,7 @@ provider "aws" {
 # terraform {
 #   backend "s3" {
 #     bucket         = "create-fares-data-terraform-state"
-#     key            = "service.tfstate"
+#     key            = "account.tfstate"
 #     dynamodb_table = "create-fares-data-terraform-locks"
 #     region         = "eu-west-2"
 #     encrypt        = true

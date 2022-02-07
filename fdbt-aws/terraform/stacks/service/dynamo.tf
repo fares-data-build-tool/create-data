@@ -1,23 +1,16 @@
-# AWSTemplateFormatVersion: 2010-09-09
-# Description: CloudFormation template for a dynamo db table
+module "site_session_storage" {
+  source = "../../modules/dynamodb_table"
 
-# Parameters:
-#   HashKeyName:
-#     Type: String
-#     Default: id
+  # we would never want to restore user sessions
+  point_in_time_recovery_enabled = false
 
-# Resources:
-#   siteSessionStorage:
-#     Type: AWS::DynamoDB::Table
-#     Properties:
-#       TableName: sessions
-#       BillingMode: PAY_PER_REQUEST
-#       AttributeDefinitions:
-#         - AttributeName: !Ref "HashKeyName"
-#           AttributeType: S
-#       KeySchema:
-#         - AttributeName: !Ref "HashKeyName"
-#           KeyType: HASH
-#       TimeToLiveSpecification:
-#         AttributeName: expires
-#         Enabled: true
+  table_name     = "sessions"
+  table_hash_key = "id"
+
+  attributes = [
+    {
+      name = "id"
+      type = "S"
+    }
+  ]
+}
