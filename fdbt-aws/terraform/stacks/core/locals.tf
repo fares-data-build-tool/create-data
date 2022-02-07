@@ -1,15 +1,12 @@
 locals {
-  name  = "cfd-${local.environment}"
+  name  = "cfd-${local.stage}"
   stage = "core"
 
-  log_retention_in_days = {
-    default = 90
-    prod    = 365
-  }
+  log_retention_days = 180
 
   tags = {
-    project     = "create-fares-data"
-    environment = local.stage
-    tool        = "terraform"
+    project = "create-fares-data"
+    stage   = local.stage
+    tool    = "terraform"
   }
 }
