@@ -1,0 +1,193 @@
+# AWSTemplateFormatVersion: 2010-09-09
+# Description: CloudFormation template for CloudFront resources
+
+# Parameters:
+#   Stage:
+#     Type: String
+#     AllowedValues:
+#       - test
+#       - preprod
+#       - prod
+#   DomainList:
+#     Type: CommaDelimitedList
+#   CertificateArn:
+#     Type: String
+#     Default: ""
+#     Description: ARN for ACM certificate
+#   OriginRequestPolicyId:
+#     Type: String
+#     Default: 216adef6-5c7f-47e4-b989-5492eafa07d3
+#   WebAclArn:
+#     Type: String
+#     Description: ARN for the WAF to apply to the distribution (optional)
+#   HeaderName:
+#     Type: String
+#     Default: X-Origin-Verify
+#     Description: Header name for origin secret
+#   SecurityHeadersEdgeLambdaARN:
+#     Type: String
+
+# Conditions:
+#   HasWaf: !Not [!Equals ["", !Ref WebAclArn]]
+
+# Resources:
+#   SiteCachePolicy:
+#     Type: AWS::CloudFront::CachePolicy
+#     Properties:
+#       CachePolicyConfig:
+#         DefaultTTL: 86400
+#         MinTTL: 0
+#         MaxTTL: 31536000
+#         Name: CfdSiteCachePolicy
+#         ParametersInCacheKeyAndForwardedToOrigin:
+#           CookiesConfig:
+#             CookieBehavior: all
+#           EnableAcceptEncodingGzip: true
+#           HeadersConfig:
+#             HeaderBehavior: none
+#           QueryStringsConfig:
+#             QueryStringBehavior: all
+
+#   ErrorCachePolicy:
+#     Type: AWS::CloudFront::CachePolicy
+#     Properties:
+#       CachePolicyConfig:
+#         DefaultTTL: 31536000
+#         MinTTL: 31536000
+#         MaxTTL: 31536000
+#         Name: CfdErrorCachePolicy
+#         ParametersInCacheKeyAndForwardedToOrigin:
+#           CookiesConfig:
+#             CookieBehavior: none
+#           EnableAcceptEncodingGzip: true
+#           HeadersConfig:
+#             HeaderBehavior: none
+#           QueryStringsConfig:
+#             QueryStringBehavior: none
+
+#   AssetsCachePolicy:
+#     Type: AWS::CloudFront::CachePolicy
+#     Properties:
+#       CachePolicyConfig:
+#         DefaultTTL: 86400
+#         MinTTL: 1
+#         MaxTTL: 31536000
+#         Name: CfdAssetsCachePolicy
+#         ParametersInCacheKeyAndForwardedToOrigin:
+#           EnableAcceptEncodingGzip: true
+#           EnableAcceptEncodingBrotli: true
+#           HeadersConfig:
+#             HeaderBehavior: none
+#           QueryStringsConfig:
+#             QueryStringBehavior: none
+#           CookiesConfig:
+#             CookieBehavior: none
+
+#   SiteDistribution:
+#     Type: AWS::CloudFront::Distribution
+#     Properties:
+#       DistributionConfig:
+#         Aliases: !Ref DomainList
+#         WebACLId: !If [HasWaf, !Ref WebAclArn, !Ref AWS::NoValue]
+#         CacheBehaviors:
+#           - TargetOriginId: ErrorOrigin
+#             ViewerProtocolPolicy: redirect-to-https
+#             PathPattern: /error/*
+#             CachePolicyId: !Ref ErrorCachePolicy
+#             Compress: true
+#             LambdaFunctionAssociations:
+#               - LambdaFunctionARN: !Ref SecurityHeadersEdgeLambdaARN
+#                 EventType: origin-response
+#           - TargetOriginId: AlbOrigin
+#             ViewerProtocolPolicy: redirect-to-https
+#             PathPattern: /assets/*
+#             CachePolicyId: !Ref AssetsCachePolicy
+#             OriginRequestPolicyId: !Ref OriginRequestPolicyId
+#             Compress: true
+#           - TargetOriginId: AlbOrigin
+#             ViewerProtocolPolicy: redirect-to-https
+#             PathPattern: /_next/static/*
+#             CachePolicyId: !Ref AssetsCachePolicy
+#             OriginRequestPolicyId: !Ref OriginRequestPolicyId
+#             Compress: true
+#           - TargetOriginId: AlbOrigin
+#             ViewerProtocolPolicy: redirect-to-https
+#             PathPattern: /scripts/*
+#             CachePolicyId: !Ref AssetsCachePolicy
+#             OriginRequestPolicyId: !Ref OriginRequestPolicyId
+#             Compress: true
+#         CustomErrorResponses:
+#           - ErrorCode: 400
+#             ErrorCachingMinTTL: 60
+#             ResponseCode: 404
+#             ResponsePagePath: /error/index.html
+#           - ErrorCode: 403
+#             ErrorCachingMinTTL: 60
+#             ResponseCode: 404
+#             ResponsePagePath: /error/index.html
+#           - ErrorCode: 500
+#             ErrorCachingMinTTL: 60
+#             ResponseCode: 500
+#             ResponsePagePath: /error/index.html
+#           - ErrorCode: 501
+#             ErrorCachingMinTTL: 60
+#             ResponseCode: 501
+#             ResponsePagePath: /error/index.html
+#           - ErrorCode: 502
+#             ErrorCachingMinTTL: 60
+#             ResponseCode: 502
+#             ResponsePagePath: /error/index.html
+#           - ErrorCode: 503
+#             ErrorCachingMinTTL: 60
+#             ResponseCode: 503
+#             ResponsePagePath: /error/index.html
+#           - ErrorCode: 504
+#             ErrorCachingMinTTL: 60
+#             ResponseCode: 504
+#             ResponsePagePath: /error/index.html
+#         DefaultCacheBehavior:
+#           AllowedMethods:
+#             - DELETE
+#             - GET
+#             - HEAD
+#             - OPTIONS
+#             - PATCH
+#             - POST
+#             - PUT
+#           Compress: true
+#           TargetOriginId: AlbOrigin
+#           ViewerProtocolPolicy: redirect-to-https
+#           CachePolicyId: !Ref SiteCachePolicy
+#           OriginRequestPolicyId: !Ref OriginRequestPolicyId
+#         Enabled: true
+#         HttpVersion: http2
+#         Origins:
+#           - Id: AlbOrigin
+#             CustomOriginConfig:
+#               OriginProtocolPolicy: https-only
+#               OriginSSLProtocols:
+#                 - TLSv1.2
+#             DomainName:
+#               Fn::ImportValue: !Sub ${Stage}:LoadbalancerDomainName
+#             OriginCustomHeaders:
+#               - HeaderName: !Ref HeaderName
+#                 HeaderValue:
+#                   Fn::Join:
+#                     - ""
+#                     - - "{{resolve:secretsmanager:"
+#                       - Fn::ImportValue: !Sub ${Stage}:OriginVerifySecret
+#                       - ":SecretString:HEADERVALUE}}"
+#           - Id: ErrorOrigin
+#             S3OriginConfig:
+#               OriginAccessIdentity:
+#                 Fn::Sub:
+#                   - origin-access-identity/cloudfront/${OAIId}
+#                   - OAIId:
+#                       Fn::ImportValue: !Sub ${Stage}:ErrorBucketOAI
+#             DomainName:
+#               Fn::ImportValue: !Sub ${Stage}:ErrorBucketDomainName
+#         PriceClass: PriceClass_100
+#         ViewerCertificate:
+#           AcmCertificateArn: !Ref CertificateArn
+#           SslSupportMethod: sni-only
+#           MinimumProtocolVersion: TLSv1.2_2021

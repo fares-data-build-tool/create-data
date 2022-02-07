@@ -1,0 +1,176 @@
+# AWSTemplateFormatVersion: 2010-09-09
+# Description: CloudFormation template for an RDS resources
+
+# Parameters:
+#   DatabaseUsername:
+#     AllowedPattern: "[a-zA-Z0-9]+"
+#     ConstraintDescription: must be between 1 to 16 alphanumeric characters.
+#     Description: The database admin account user name, between 1 to 16 alphanumeric characters.
+#     MaxLength: "16"
+#     MinLength: "1"
+#     Default: admin
+#     Type: String
+
+#   DatabasePassword:
+#     AllowedPattern: "[a-zA-Z0-9]+"
+#     ConstraintDescription: must be between 8 to 41 alphanumeric characters.
+#     Description: The database admin account password, between 8 to 41 alphanumeric characters.
+#     MaxLength: "41"
+#     MinLength: "8"
+#     NoEcho: "true"
+#     Type: String
+
+#   InstanceType:
+#     AllowedValues:
+#       - db.t3.small
+#       - db.t3.medium
+#     Type: String
+
+#   Stage:
+#     Type: String
+#     AllowedValues:
+#       - test
+#       - preprod
+#       - prod
+
+#   ProductName:
+#     Type: String
+#     Default: fdbt
+
+# Conditions:
+#   IsProd: !Equals [!Ref Stage, "prod"]
+
+# Resources:
+#   DatabaseSubnetGroup:
+#     Type: AWS::RDS::DBSubnetGroup
+#     Properties:
+#       DBSubnetGroupDescription: !Sub Subnet Group for ${ProductName} Aurora
+#       SubnetIds:
+#         - Fn::ImportValue: !Sub ${Stage}:DataSubnetA
+#         - Fn::ImportValue: !Sub ${Stage}:DataSubnetB
+
+#   DatabaseClusterParameterGroup5dot7:
+#     Type: AWS::RDS::DBClusterParameterGroup
+#     Properties:
+#       Description: Parameter Group for master DB
+#       Family: aurora-mysql5.7
+#       Parameters:
+#         aurora_load_from_s3_role:
+#           Fn::ImportValue: !Sub ${Stage}:RdsAuroraS3RoleArn
+#         max_connections: 90
+
+#   DatabaseCluster:
+#     Type: AWS::RDS::DBCluster
+#     Properties:
+#       Engine: aurora-mysql
+#       EngineVersion: 5.7.mysql_aurora.2.09.2
+#       DatabaseName: !Sub ${ProductName}
+#       MasterUsername: !Ref DatabaseUsername
+#       MasterUserPassword: !Ref DatabasePassword
+#       PreferredBackupWindow: 01:00-02:00
+#       BackupRetentionPeriod: !If [IsProd, 3, 1]
+#       PreferredMaintenanceWindow: mon:03:00-mon:04:00
+#       DBSubnetGroupName: !Ref DatabaseSubnetGroup
+#       StorageEncrypted: true
+#       DeletionProtection: !If [IsProd, true, false]
+#       DBClusterParameterGroupName: !Ref DatabaseClusterParameterGroup5dot7
+#       AssociatedRoles:
+#         - RoleArn:
+#             Fn::ImportValue: !Sub ${Stage}:RdsAuroraS3RoleArn
+#       VpcSecurityGroupIds:
+#         - Fn::ImportValue: !Sub ${Stage}:DatabaseSecurityGroup
+
+#   DatabaseMasterInstance:
+#     Type: AWS::RDS::DBInstance
+#     Properties:
+#       Engine: aurora
+#       DBClusterIdentifier: !Ref DatabaseCluster
+#       DBInstanceClass: !Ref InstanceType
+#       DBSubnetGroupName: !Ref DatabaseSubnetGroup
+#       MonitoringInterval: 60
+#       MonitoringRoleArn:
+#         Fn::ImportValue: !Sub ${Stage}:RdsEnhancedMonitoringRoleArn
+#       Tags:
+#         - Key: Master
+#           Value: "true"
+
+#   DatabaseSecondaryInstance:
+#     Type: AWS::RDS::DBInstance
+#     Condition: IsProd
+#     Properties:
+#       Engine: aurora
+#       DBClusterIdentifier: !Ref DatabaseCluster
+#       DBInstanceClass: !Ref InstanceType
+#       DBSubnetGroupName: !Ref DatabaseSubnetGroup
+#       MonitoringInterval: 60
+#       MonitoringRoleArn:
+#         Fn::ImportValue: !Sub ${Stage}:RdsEnhancedMonitoringRoleArn
+
+#   DatabaseMasterCPUAlarm:
+#     Type: AWS::CloudWatch::Alarm
+#     Properties:
+#       AlarmDescription: Master database CPU utilization is over 95%.
+#       Namespace: AWS/RDS
+#       MetricName: CPUUtilization
+#       Unit: Percent
+#       Statistic: Average
+#       Period: 300
+#       EvaluationPeriods: 3
+#       Threshold: 95
+#       ComparisonOperator: GreaterThanOrEqualToThreshold
+#       Dimensions:
+#         - Name: DBInstanceIdentifier
+#           Value: !Ref DatabaseMasterInstance
+#       AlarmActions:
+#         - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+#       InsufficientDataActions:
+#         - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+#       OKActions:
+#         - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+
+#   DatabaseMasterMemoryAlarm:
+#     Type: AWS::CloudWatch::Alarm
+#     Properties:
+#       AlarmDescription: Master database freeable memory is under 300MB.
+#       Namespace: AWS/RDS
+#       MetricName: FreeableMemory
+#       Unit: Bytes
+#       Statistic: Average
+#       Period: 300
+#       EvaluationPeriods: 2
+#       Threshold: 300000000
+#       ComparisonOperator: LessThanOrEqualToThreshold
+#       Dimensions:
+#         - Name: DBInstanceIdentifier
+#           Value: !Ref DatabaseMasterInstance
+#       AlarmActions:
+#         - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+#       InsufficientDataActions:
+#         - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+#       OKActions:
+#         - Fn::ImportValue: !Sub ${Stage}:SlackAlertsTopicArn
+
+#   ClusterEndpointDnsRecord:
+#     Type: AWS::Route53::RecordSet
+#     Properties:
+#       HostedZoneId:
+#         Fn::ImportValue: !Sub ${Stage}:PrivateHostedZoneId
+#       Name:
+#         Fn::Sub:
+#           - db.${internalDomain}
+#           - internalDomain:
+#               Fn::ImportValue: !Sub ${Stage}:InternalDomain
+#       ResourceRecords:
+#         - !GetAtt DatabaseCluster.Endpoint.Address
+#       TTL: 300
+#       Type: CNAME
+
+# Outputs:
+#   RdsHostName:
+#     Value: !GetAtt DatabaseMasterInstance.Endpoint.Address
+#     Export:
+#       Name: !Sub ${Stage}:RdsHostName
+#   RdsClusterInternalEndpoint:
+#     Value: !Ref ClusterEndpointDnsRecord
+#     Export:
+#       Name: !Sub ${Stage}:RdsClusterInternalEndpoint
