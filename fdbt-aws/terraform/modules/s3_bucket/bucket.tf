@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "bucket" {
-  bucket        = "${var.environment}-${var.name}"
+  bucket        = var.name
   acl           = var.s3_acl
   force_destroy = var.s3_force_destroy_bucket
 
@@ -8,7 +8,6 @@ resource "aws_s3_bucket" "bucket" {
       apply_server_side_encryption_by_default {
         sse_algorithm = "AES256"
       }
-      bucket_key_enabled = true
     }
   }
 
@@ -21,7 +20,7 @@ resource "aws_s3_bucket" "bucket" {
 
     content {
       target_bucket = var.s3_logging_bucket_name
-      target_prefix = "${var.environment}-${var.name}/"
+      target_prefix = "${var.name}/"
     }
   }
 }

@@ -1,3 +1,7 @@
+resource "aws_cloudfront_origin_access_identity" "error_page" {
+  comment = "error_page"
+}
+
 # AWSTemplateFormatVersion: 2010-09-09
 # Description: CloudFormation template for CloudFront resources
 
