@@ -16,25 +16,6 @@ resource "aws_lambda_function" "slack_alerts" {
   ]
 }
 
-resource "aws_iam_role" "slack_alerts" {
-  name               = "slack-alerts-${var.stage}"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
-
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type = "Service"
-
-      identifiers = [
-        "lambda.amazonaws.com",
-      ]
-    }
-  }
-}
-
 resource "aws_cloudwatch_log_group" "slack_alerts" {
   name              = "/aws/lambda/slack-alerts-${var.stage}"
   retention_in_days = var.log_retention_days
