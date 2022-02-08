@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+# validate-s3-transfer
+#   takes two S3 buckets and compares the files and sizes of the first bucket to the second
+#   validate-s3-transfer <source bucket> <target bucket>
+#   designed to compare a sync of data from <source bucket> to <target bucket>
+
+import sys
+import hashlib
+import boto3
+
+s3 = boto3.client("s3")
+
+if len(sys.argv) == 3:
+    source_bucket = sys.argv[1]
+    target_bucket = sys.argv[2]
+    print(f"comparing source bucket: {source_bucket} to target bucket: {target_bucket}")
+else:
+    print(
+        f"""usage:
+    validate-s3-transfer <source bucket> <target bucket>"""
+    )
+    sys.exit(1)
+
+source_objects = s3.list_objects_v2(Bucket=source_bucket)["Contents"]
+source_files = []
+for object in [
+    obj for obj in sorted(source_objects, key=lambda x: x["Key"], reverse=True)
+]:
+    key = object["Key"]
+    size = object["Size"]
+    source_files.append((key, size))
+source_bucket_hash = hashlib.md5(str(source_files).encode("utf8")).hexdigest()
+
+target_objects = s3.list_objects_v2(Bucket=target_bucket)["Contents"]
+target_files = []
+for object in [
+    obj for obj in sorted(target_objects, key=lambda x: x["Key"], reverse=True)
+]:
+    key = object["Key"]
+    size = object["Size"]
+    target_files.append((key, size))
+target_bucket_hash = hashlib.md5(str(target_files).encode("utf8")).hexdigest()
+
+print(f"source_files len: {len(source_files)} target_files len: {len(target_files)}")
+for i in range(max(len(source_files), len(target_files))):
+    source_file = ""
+    target_file = ""
+    try:
+        source_file = source_files[i - 1]
+        target_file = target_files[i - 1]
+    except:
+        if not source_file:
+            source_file = "MISSING"
+            target_file = target_files[i - 1]
+        if not target_file:
+            target_file = "MISSING"
+            source_file = source_files[i - 1]
+    print(f"{i}, {source_file}, {target_file}")
+
+print(f"{source_bucket}: {source_bucket_hash}")
+print(f"{target_bucket}: {target_bucket_hash}")
+if source_bucket_hash != target_bucket_hash:
+    print("FILE HASHES DO NOT MATCH, PANIC!")
+    sys.exit(1)
+else:
+    print("FILE HASHES MATCH, YAY!")
+    sys.exit(0)
