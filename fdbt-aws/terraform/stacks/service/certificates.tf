@@ -7,6 +7,7 @@ module "external_cert" {
 
   stage = local.stage
 
+  # TODO need to support multiple domain names for Prod
   domain_name     = "test.dft-cfd.com"
   route53_zone_id = data.aws_route53_zone.dft_cfd_com.zone_id
 }

@@ -31,8 +31,6 @@ provider "aws" {
   }
 }
 
-
-
 # terraform {
 #   backend "s3" {
 #     bucket         = "create-fares-data-terraform-state"

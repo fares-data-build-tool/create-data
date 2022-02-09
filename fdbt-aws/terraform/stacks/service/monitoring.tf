@@ -1,5 +1,6 @@
 ###         NOT YET IMPLEMENTED         ###
 ### REPLACE WITH CLOUDWATCH DASHBOARDS? ###
+###       OR AWS MANAGED GRAFANA?       ###
 
 # Parameters:
 #   Stage:

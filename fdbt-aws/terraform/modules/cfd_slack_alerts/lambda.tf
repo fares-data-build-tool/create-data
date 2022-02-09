@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "slack_alerts" {
-  function_name = "slack-alerts-${var.stage}"
+  function_name = "fdbt-slack-alerts-${var.stage}"
   filename      = "slackAlerts.js"
   role          = aws_iam_role.slack_alerts.arn
   handler       = "slackAlerts.handler"
@@ -17,7 +17,7 @@ resource "aws_lambda_function" "slack_alerts" {
 }
 
 resource "aws_cloudwatch_log_group" "slack_alerts" {
-  name              = "/aws/lambda/slack-alerts-${var.stage}"
+  name              = "/aws/lambda/fdbt-slack-alerts-${var.stage}"
   retention_in_days = var.log_retention_days
 }
 
