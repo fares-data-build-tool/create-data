@@ -1,9 +1,9 @@
-data "aws_route53_zone" "dft_cfd_com" {
-  name = "dft-cfd.com."
-}
-
 module "external_cert" {
   source = "../../modules/acm_certificate"
+
+  providers = {
+    aws.core = aws.core
+  }
 
   stage = local.stage
 

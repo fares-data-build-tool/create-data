@@ -16,6 +16,7 @@ resource "aws_lb" "site" {
   name               = "fdbt-site-${var.stage}"
   internal           = false
   load_balancer_type = "application"
+  idle_timeout       = 30
 
   security_groups = [
     aws_security_group.alb.id
@@ -66,14 +67,22 @@ resource "aws_lb_listener" "site" {
 }
 
 resource "aws_lb_target_group" "site" {
-  name        = "fdbt-site-${var.stage}"
-  port        = 80
-  protocol    = "HTTP"
-  vpc_id      = one(data.aws_vpcs.vpc.ids)
-  target_type = "ip"
+  name                 = "fdbt-site-${var.stage}"
+  port                 = 80
+  protocol             = "HTTP"
+  vpc_id               = one(data.aws_vpcs.vpc.ids)
+  target_type          = "ip"
+  deregistration_delay = 30
+
+  stickiness {
+    enabled = false
+    type    = "lb_cookie"
+  }
 
   health_check {
     path                = "/"
+    matcher             = 200
+    timeout             = 5
     healthy_threshold   = 2
     unhealthy_threshold = 2
   }

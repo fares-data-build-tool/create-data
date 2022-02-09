@@ -17,6 +17,22 @@ provider "aws" {
   }
 }
 
+provider "aws" {
+  alias  = "core"
+  region = "eu-west-2"
+
+  assume_role {
+    role_arn     = "arn:aws:iam::827855331226:role/TerraformCrossAccount"
+    session_name = "create-fares-data-terraform"
+  }
+
+  default_tags {
+    tags = local.tags
+  }
+}
+
+
+
 # terraform {
 #   backend "s3" {
 #     bucket         = "create-fares-data-terraform-state"
