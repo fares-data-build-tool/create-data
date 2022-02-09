@@ -21,5 +21,5 @@ module "cfd_error_page_bucket" {
   name  = "fdbt-error-page-${local.stage}"
   stage = local.stage
 
-  cloudfront_oai_arn = aws_cloudfront_origin_access_identity.error_page.iam_arn
+  cloudfront_oai_arn = module.cfd_cloudfront.cloudfront_oai_arn
 }
