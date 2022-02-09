@@ -1,131 +1,115 @@
-#   Stage:
-#     Type: String
-#     AllowedValues:
-#       - test
-#       - preprod
-#       - prod
-#   ProductName:
-#     Type: String
-#     Default: fdbt
-#   SiteImageUrl:
-#     Type: String
-#     Description: The url of the site docker image in ECR
-#   SiteContainerPort:
-#     Type: Number
-#     Default: 80
-#     Description: Port on which the site process is running in the container
-#   SessionSecret:
-#     AllowedPattern: "[a-zA-Z0-9]+"
-#     ConstraintDescription: Must be between 8 to 41 alphanumeric characters
-#     Description: The session secret, between 8 to 41 alphanumeric characters
-#     MaxLength: "41"
-#     MinLength: "8"
-#     NoEcho: "true"
-#     Type: String
-#   ExternalCertificateArn:
-#     Type: String
-#     Default: ""
-#     Description: ARN for ACM certificate for external domain
-#   SupportPhoneNumber:
-#     Type: String
-#     Description: The phone number to be used for user support
-#   SupportEmailAddress:
-#     Type: String
-#     Description: The email address to be used for user support
-#   ServiceEmailAddress:
-#     Type: String
-#     Description: The email address used by the service to email users
+resource "aws_ecs_cluster" "site" {
+  name = "fdbt-site-${var.stage}"
+}
 
-# Conditions:
-#   IsTest: !Equals [!Ref Stage, "test"]
-#   IsProd: !Equals [!Ref Stage, "prod"]
-#   IsNotProd: !Not [!Equals [!Ref Stage, "prod"]]
+resource "aws_ecs_task_definition" "site" {
+  family                   = "fdbt-site-${var.stage}"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = 512
+  memory                   = 2048
+  execution_role_arn       = aws_iam_role.site_execution.id
+  task_role_arn            = aws_iam_role.site_task.id
 
-# Resources:
-#   # ECS Resources
-#   ECSCluster:
-#     Type: AWS::ECS::Cluster
-#     Properties:
-#       ClusterName: !Sub ${ProductName}-fargate-cluster-${Stage}
+  container_definitions = jsonencode([{
+    "cpu" = 512
+    "environment" = [
+      {
+        "name"  = "RDS_HOST"
+        "value" = "db.dft-cfd.internal"
+      },
+      {
+        "name"  = "FDBT_USER_POOL_CLIENT_ID"
+        "value" = "2fu8u52qssovhru88t5ps1scsn" # TODO
+      },
+      {
+        "name"  = "SUPPORT_EMAIL_ADDRESS"
+        "value" = "fdbt-support@infinityworks.com"
+      },
+      {
+        "name"  = "ENABLE_VIRUS_SCAN"
+        "value" = "1"
+      },
+      {
+        "name"  = "SUPPORT_PHONE_NUMBER"
+        "value" = "0113 320 5010"
+      },
+      {
+        "name"  = "ALLOW_DISABLE_AUTH"
+        "value" = "1"
+      },
+      {
+        "name"  = "STAGE"
+        "value" = var.stage
+      },
+      {
+        "name"  = "FDBT_USER_POOL_ID"
+        "value" = "eu-west-2_8Bt13tfnT" # TODO
+      },
+      {
+        "name"  = "SERVICE_EMAIL_ADDRESS"
+        "value" = "fdbt-support@infinityworks.com"
+      },
+      {
+        "name"  = "SESSION_SECRET"
+        "value" = "" # TODO
+      },
+      {
+        "name"  = "AWS_NODEJS_CONNECTION_REUSE_ENABLED"
+        "value" = "1"
+      },
+    ]
+    "essential" = true
+    "image"     = "827855331226.dkr.ecr.eu-west-2.amazonaws.com/fdbt-site:8a29e3ad1af12206f5d25c09586097675a4f94d0" # TODO
+    "logConfiguration" = {
+      "logDriver" = "awslogs"
+      "options" = {
+        "awslogs-group"  = aws_cloudwatch_log_group.site.id
+        "awslogs-region" = "eu-west-2"
+      }
+    }
+    "memory" = 2048
+    "name"   = "fdbt-site-${var.stage}"
+    "portMappings" = [
+      {
+        "containerPort" = 80
+        "hostPort"      = 80
+        "protocol"      = "tcp"
+      },
+    ]
+  }])
+}
 
-#   SiteTaskDefinition:
-#     Type: AWS::ECS::TaskDefinition
-#     Properties:
-#       Family: !Sub ${ProductName}-site-${Stage}
-#       Cpu: 512
-#       Memory: 2048
-#       NetworkMode: awsvpc
-#       RequiresCompatibilities:
-#         - FARGATE
-#       ExecutionRoleArn:
-#         Fn::ImportValue: !Sub ${Stage}:EcsTaskExecutionRoleArn
-#       TaskRoleArn:
-#         Fn::ImportValue: !Sub ${Stage}:EcsSiteTaskRoleArn
-#       ContainerDefinitions:
-#         - Name: !Sub ${ProductName}-site-${Stage}
-#           Cpu: 512
-#           Memory: 2048
-#           Image: !Ref SiteImageUrl
-#           PortMappings:
-#             - ContainerPort: !Ref SiteContainerPort
-#           LogConfiguration:
-#             LogDriver: awslogs
-#             Options:
-#               awslogs-group: !Ref SiteLogGroup
-#               awslogs-region: !Ref AWS::Region
-#               awslogs-stream-prefix: !Ref ProductName
-#           Environment:
-#             - Name: STAGE
-#               Value: !Ref Stage
-#             - Name: AWS_NODEJS_CONNECTION_REUSE_ENABLED
-#               Value: "1"
-#             - Name: RDS_HOST
-#               Value:
-#                 Fn::ImportValue: !Sub ${Stage}:RdsClusterInternalEndpoint
-#             - Name: FDBT_USER_POOL_CLIENT_ID
-#               Value:
-#                 Fn::ImportValue: !Sub ${Stage}:UserPoolClientID
-#             - Name: FDBT_USER_POOL_ID
-#               Value:
-#                 Fn::ImportValue: !Sub ${Stage}:UserPoolID
-#             - Name: ALLOW_DISABLE_AUTH
-#               Value: !If [IsTest, "1", "0"]
-#             - Name: SESSION_SECRET
-#               Value: !Ref SessionSecret
-#             - Name: ENABLE_VIRUS_SCAN
-#               Value: "1"
-#             - Name: SUPPORT_PHONE_NUMBER
-#               Value: !Ref SupportPhoneNumber
-#             - Name: SUPPORT_EMAIL_ADDRESS
-#               Value: !Ref SupportEmailAddress
-#             - Name: SERVICE_EMAIL_ADDRESS
-#               Value: !Ref ServiceEmailAddress
 
-#   SiteService:
-#     Type: AWS::ECS::Service
-#     DependsOn: PublicLoadBalancerListener
-#     Properties:
-#       ServiceName: !Sub ${ProductName}-site-${Stage}
-#       Cluster: !Ref ECSCluster
-#       LaunchType: FARGATE
-#       PlatformVersion: "1.4.0"
-#       DeploymentConfiguration:
-#         MaximumPercent: 200
-#         MinimumHealthyPercent: 75
-#       DesiredCount: 3
-#       NetworkConfiguration:
-#         AwsvpcConfiguration:
-#           AssignPublicIp: DISABLED
-#           SecurityGroups:
-#             - Fn::ImportValue: !Sub ${Stage}:FargateSiteContainerSecurityGroup
-#           Subnets:
-#             - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetA
-#             - Fn::ImportValue: !Sub ${Stage}:PrivateSubnetB
-#       TaskDefinition: !Ref SiteTaskDefinition
-#       LoadBalancers:
-#         - ContainerName: !Sub ${ProductName}-site-${Stage}
-#           ContainerPort: !Ref SiteContainerPort
-#           TargetGroupArn: !Ref SiteTargetGroup
+resource "aws_ecs_service" "site" {
+  name                               = "fdbt-site-${var.stage}"
+  cluster                            = aws_ecs_cluster.site.id
+  task_definition                    = aws_ecs_task_definition.site.arn
+  desired_count                      = 3
+  deployment_maximum_percent         = 200
+  deployment_minimum_healthy_percent = 25
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.site.arn
+    container_name   = "fdbt-site-${var.stage}"
+    container_port   = 80
+  }
+
+  network_configuration {
+    security_groups  = [aws_security_group.site.id]
+    assign_public_ip = false
+    subnets = [
+      data.aws_subnet.private_a.id,
+      data.aws_subnet.private_b.id
+    ]
+  }
+
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
+}
+
+# TODO
 
 #   SiteAutoScalingTarget:
 #     Type: AWS::ApplicationAutoScaling::ScalableTarget
@@ -160,8 +144,27 @@
 #       PolicyType: TargetTrackingScaling
 #       ScalingTargetId: !Ref SiteAutoScalingTarget
 #       TargetTrackingScalingPolicyConfiguration:
-#         PredefinedMetricSpecification:
-#           PredefinedMetricType: ECSServiceAverageCPUUtilization
+
 #         ScaleInCooldown: 60
 #         ScaleOutCooldown: 60
 #         TargetValue: 50
+
+# resource "aws_autoscaling_policy" "bat" {
+#   name        = "fdbt-site-${var.stage}"
+#   policy_type = "TargetTrackingScaling"
+
+#   target_tracking_configuration {
+#     predefined_metric_specification {
+#       predefined_metric_type = "ECSServiceAverageCPUUtilization"
+#     }
+
+#     target_value = 50.0
+#   }
+
+#   scaling_adjustment     = 4
+#   adjustment_type        = "ChangeInCapacity"
+#   cooldown               = 300
+#   autoscaling_group_name = aws_autoscaling_group.bar.name
+# }
+
+# aws_iam_role.site_scaling.id

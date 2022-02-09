@@ -1,14 +1,7 @@
-#   SiteLogGroup:
-#     Type: AWS::Logs::LogGroup
-#     Properties:
-#       LogGroupName: !Sub ${ProductName}-site-${Stage}
-#       RetentionInDays: 180
-
-#   MonitoringLogGroup:
-#     Type: AWS::Logs::LogGroup
-#     Properties:
-#       LogGroupName: !Sub ${ProductName}-monitoring-${Stage}
-#       RetentionInDays: 180
+resource "aws_cloudwatch_log_group" "site" {
+  name              = "/aws/ecs/fdbt-site-${var.stage}"
+  retention_in_days = var.log_retention_days
+}
 
 #   2xxResponsesLogGroupMetric:
 #     Type: AWS::Logs::MetricFilter

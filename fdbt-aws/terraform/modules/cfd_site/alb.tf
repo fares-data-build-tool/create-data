@@ -1,19 +1,3 @@
-# TODO uplift data resources to Stacks
-#   use locals for value names
-data "aws_subnet" "public_a" {
-  filter {
-    name   = "tag:Name"
-    values = ["fdbt-publicSubnetA-${var.stage}"]
-  }
-}
-
-data "aws_subnet" "public_b" {
-  filter {
-    name   = "tag:Name"
-    values = ["fdbt-publicSubnetB-${var.stage}"]
-  }
-}
-
 resource "aws_lb" "site" {
   name               = "fdbt-site-${var.stage}"
   internal           = false
