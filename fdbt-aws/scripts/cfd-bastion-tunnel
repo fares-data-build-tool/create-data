@@ -6,30 +6,22 @@ set -e
 set -u
 set -o pipefail
 
-INSTANCE=$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Bastion,Values=true Name=instance-state-name,Values=running | jq -r '.Reservations[0].Instances[0]')
-OLD_DATABASE_HOSTNAME=db.dft-cfd.infinityworks.internal
-NEW_DATABASE_HOSTNAME=db.dft-cfd.internal
-INSTANCE_ID=`echo ${INSTANCE} | jq -r '.InstanceId'`
-AZ=`echo ${INSTANCE} | jq -r '.Placement.AvailabilityZone'`
-LOCAL_PORT=13306
-
-if [ $# -eq 1 ] && [ $1 == "--old-hostname" ]; then
-  DATABASE_HOSTNAME=${OLD_DATABASE_HOSTNAME}
-elif [ $# -eq 1 ] && [ $1 == "--help" ]; then
+if [ $# -eq 1 ] && [ $1 == "--help" ]; then
    cat << EOF
-Usage: cfd-bastion-tunnel [--help] [--old-hostname]
+Usage: cfd-bastion-tunnel [--help]
 
 --help:
   display this help message
 
---old-hostname:
-  use the old database hostname for the tunnel
-
 EOF
    exit 1
-else
-  DATABASE_HOSTNAME=${NEW_DATABASE_HOSTNAME}
 fi
+
+INSTANCE=$(aws ec2 describe-instances --region=eu-west-2 --filters Name=tag:Bastion,Values=true Name=instance-state-name,Values=running | jq -r '.Reservations[0].Instances[0]')
+DATABASE_HOSTNAME=db.dft-cfd.internal
+INSTANCE_ID=`echo ${INSTANCE} | jq -r '.InstanceId'`
+AZ=`echo ${INSTANCE} | jq -r '.Placement.AvailabilityZone'`
+LOCAL_PORT=13306
 
 echo "starting ssh database tunnel"
 echo "bastion instance: ${INSTANCE_ID}"
