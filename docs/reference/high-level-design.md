@@ -21,7 +21,7 @@ The aim of the tool is to integrate closely with the DfT BODS system where users
 - Create Fares Data website
   - Primary entrypoint for users, available on [https://fares-data.dft.gov.uk](https://fares-data.dft.gov.uk)
 - CFD Admin
-  - Site for support users to manage CFD website accounts [https://admin.prod.dft-cfd.infinityworks.com/](https://admin.prod.dft-cfd.infinityworks.com/)
+  - Site for support users to manage CFD website accounts [https://admin.prod.dft-cfd.com/](https://admin.prod.dft-cfd.com/)
 
 ## Technical Design
 
@@ -144,7 +144,7 @@ RDS Aurora will not scale automatically and is currently set as a t3.medium in p
 
 ## Availability and Resilience
 
-We aim for full availability of the service at all times. We utilise Uptime Robot for uptime monitoring and surface a status dashboard at [https://status.tfn-prod.infinityworks.com](https://status.tfn-prod.infinityworks.com)
+We aim for full availability of the service at all times. We utilise Uptime Robot for uptime monitoring.
 
 ### Infrastructure
 
