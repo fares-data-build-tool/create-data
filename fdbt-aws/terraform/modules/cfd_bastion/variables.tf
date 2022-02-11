@@ -9,3 +9,5 @@ variable "log_retention_days" {
 }
 
 variable "aws_security_group_rds_id" {}
+variable "private_subnets_ids" {}
+variable "vpc_id" {}

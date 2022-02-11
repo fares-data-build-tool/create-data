@@ -1,13 +1,7 @@
-data "aws_vpcs" "vpc" {
-  tags = {
-    Name = "fdbt-vpc-${var.stage}"
-  }
-}
-
 resource "aws_security_group" "rds" {
   name        = "fdbt-database-${var.stage}"
   description = "fdbt-database-${var.stage}"
-  vpc_id      = one(data.aws_vpcs.vpc.ids)
+  vpc_id      = var.vpc_id
 
   tags = {
     Name = "fdbt-database-${var.stage}"

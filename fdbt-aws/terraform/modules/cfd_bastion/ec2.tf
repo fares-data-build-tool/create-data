@@ -26,30 +26,12 @@ resource "aws_launch_template" "bastion" {
   }
 }
 
-data "aws_subnet" "private_a" {
-  filter {
-    name   = "tag:Name"
-    values = ["fdbt-privateSubnetA-${var.stage}"]
-  }
-}
-
-data "aws_subnet" "private_b" {
-  filter {
-    name   = "tag:Name"
-    values = ["fdbt-privateSubnetB-${var.stage}"]
-  }
-}
-
 resource "aws_autoscaling_group" "bastion" {
-  name             = "fdbt-bastion-${var.stage}"
-  desired_capacity = 1
-  max_size         = 1
-  min_size         = 1
-
-  vpc_zone_identifier = [
-    data.aws_subnet.private_a.id,
-    data.aws_subnet.private_b.id
-  ]
+  name                = "fdbt-bastion-${var.stage}"
+  desired_capacity    = 1
+  max_size            = 1
+  min_size            = 1
+  vpc_zone_identifier = var.private_subnets_ids
 
   launch_template {
     id      = aws_launch_template.bastion.id

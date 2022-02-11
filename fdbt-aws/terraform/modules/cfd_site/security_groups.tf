@@ -1,7 +1,7 @@
 resource "aws_security_group" "alb" {
   name        = "fdbt-alb-${var.stage}"
   description = "fdbt-alb-${var.stage}"
-  vpc_id      = one(data.aws_vpcs.vpc.ids)
+  vpc_id      = var.vpc_id
 
   tags = {
     Name = "fdbt-alb-${var.stage}"
@@ -41,7 +41,7 @@ resource "aws_security_group_rule" "egress_site" {
 resource "aws_security_group" "site" {
   name        = "fdbt-site-${var.stage}"
   description = "fdbt-site-${var.stage}"
-  vpc_id      = one(data.aws_vpcs.vpc.ids)
+  vpc_id      = var.vpc_id
 
   tags = {
     Name = "fdbt-site-${var.stage}"

@@ -98,10 +98,7 @@ resource "aws_ecs_service" "site" {
   network_configuration {
     security_groups  = [aws_security_group.site.id]
     assign_public_ip = false
-    subnets = [
-      data.aws_subnet.private_a.id,
-      data.aws_subnet.private_b.id
-    ]
+    subnets          = var.private_subnets_ids
   }
 
   lifecycle {
