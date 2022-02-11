@@ -116,10 +116,12 @@ describe('pages', () => {
                                 {
                                     id: 3,
                                     maxNumber: '2',
+                                    name: 'passenger 1',
                                 },
                                 {
                                     id: 4,
                                     maxNumber: '1',
+                                    name: 'passenger 2',
                                 },
                             ],
                         },
@@ -185,10 +187,12 @@ describe('pages', () => {
                                 {
                                     id: 3,
                                     maxNumber: '2',
+                                    name: 'passenger 1',
                                 },
                                 {
                                     id: 4,
                                     maxNumber: '1',
+                                    name: 'passenger 2',
                                 },
                             ],
                         },

@@ -37,6 +37,26 @@ const getFareTypeDesc = (fareType: TicketType) => {
     }
 };
 
+const getFareTypeHint = (fareType: TicketType) => {
+    switch (fareType) {
+        case 'period':
+            return [
+                'Unlimited travel within a geographical zone',
+                'Unlimited travel on specific service or set of services',
+            ];
+        case 'flatFare':
+            return [
+                'Single trip anywhere within a geographic zone',
+                'Single trip on a specific service or set of services',
+            ];
+        default:
+            return [
+                'Unlimited travel within a geographical zone',
+                'Unlimited travel on specific service or set of services',
+            ];
+    }
+};
+
 const TicketRepresentation = ({
     fareType,
     errors = [],
@@ -45,6 +65,7 @@ const TicketRepresentation = ({
     showPointToPoint,
 }: TicketRepresentationProps): ReactElement => {
     const fareTypeDesc = getFareTypeDesc(fareType);
+    const fareTypeHint = getFareTypeHint(fareType);
 
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -65,12 +86,12 @@ const TicketRepresentation = ({
                                         {
                                             value: 'geoZone',
                                             label: 'A ticket within a geographical zone',
-                                            hint: 'Unlimited travel within a geographical zone',
+                                            hint: fareTypeHint[0],
                                         },
                                         {
                                             value: 'multipleServices',
                                             label: 'A ticket for a set of services',
-                                            hint: 'Unlimited travel on specific service or set of services',
+                                            hint: fareTypeHint[1],
                                         },
                                         ...(showPointToPoint
                                             ? [
