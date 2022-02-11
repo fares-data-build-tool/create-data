@@ -40,13 +40,13 @@ provider "aws" {
   }
 }
 
-# terraform {
-#   backend "s3" {
-#     bucket         = "create-fares-data-terraform-state"
-#     key            = "account.tfstate"
-#     dynamodb_table = "create-fares-data-terraform-locks"
-#     region         = "eu-west-2"
-#     encrypt        = true
-#     # role_arn       = "arn:aws:iam::000000000000:role/xxx"
-#   }
-# }
+terraform {
+  backend "s3" {
+    bucket         = "create-fares-data-terraform-state"
+    key            = "service.tfstate"
+    dynamodb_table = "create-fares-data-terraform-state"
+    region         = "eu-west-2"
+    encrypt        = true
+    role_arn       = "arn:aws:iam::827855331226:role/TerraformState"
+  }
+}
