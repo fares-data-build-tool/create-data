@@ -8,4 +8,5 @@ module "cfd_cloudfront" {
   stage                    = local.stage
   log_retention_days       = local.log_retention_days
   cfd_error_page_bucket_id = module.cfd_error_page_bucket.bucket.id
+  domain_name              = local.domain_name[local.stage]
 }

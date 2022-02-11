@@ -16,7 +16,7 @@ resource "aws_ecs_task_definition" "site" {
     "environment" = [
       {
         "name"  = "RDS_HOST"
-        "value" = "db.dft-cfd.internal"
+        "value" = "db.dft-cfd.internal" #TODO
       },
       {
         "name"  = "FDBT_USER_POOL_CLIENT_ID"

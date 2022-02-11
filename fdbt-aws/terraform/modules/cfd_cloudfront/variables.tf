@@ -9,3 +9,4 @@ variable "log_retention_days" {
 }
 
 variable "cfd_error_page_bucket_id" {}
+variable "domain_name" {}

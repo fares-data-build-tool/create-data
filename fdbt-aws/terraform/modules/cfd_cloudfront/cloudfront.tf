@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "site" {
   comment         = "fdbt-site-${var.stage}"
-  aliases         = ["test.dft-cfd.com"] # TODO
+  aliases         = [var.domain_name]
   enabled         = true
   is_ipv6_enabled = true
   price_class     = "PriceClass_100"
