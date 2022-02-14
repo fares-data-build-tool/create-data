@@ -40,20 +40,20 @@ const getFareTypeDesc = (fareType: TicketType) => {
 const getFareTypeHint = (fareType: TicketType) => {
     switch (fareType) {
         case 'period':
-            return [
-                'Unlimited travel within a geographical zone',
-                'Unlimited travel on specific service or set of services',
-            ];
+            return {
+                geoZone: 'Unlimited travel within a geographical zone',
+                multipleServices: 'Unlimited travel on specific service or set of services',
+            };
         case 'flatFare':
-            return [
-                'Single trip anywhere within a geographic zone',
-                'Single trip on a specific service or set of services',
-            ];
+            return {
+                geoZone: 'Single trip anywhere within a geographic zone',
+                multipleServices: 'Single trip on a specific service or set of services',
+            };
         default:
-            return [
-                'Unlimited travel within a geographical zone',
-                'Unlimited travel on specific service or set of services',
-            ];
+            return {
+                geoZone: 'Unlimited travel within a geographical zone',
+                multipleServices: 'Unlimited travel on specific service or set of services',
+            };
     }
 };
 
@@ -86,12 +86,12 @@ const TicketRepresentation = ({
                                         {
                                             value: 'geoZone',
                                             label: 'A ticket within a geographical zone',
-                                            hint: fareTypeHint[0],
+                                            hint: fareTypeHint.geoZone,
                                         },
                                         {
                                             value: 'multipleServices',
                                             label: 'A ticket for a set of services',
-                                            hint: fareTypeHint[1],
+                                            hint: fareTypeHint.multipleServices,
                                         },
                                         ...(showPointToPoint
                                             ? [
