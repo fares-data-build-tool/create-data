@@ -51,8 +51,8 @@ const getFareTypeHint = (fareType: TicketType) => {
             };
         default:
             return {
-                geoZone: 'Unlimited travel within a geographical zone',
-                multipleServices: 'Unlimited travel on specific service or set of services',
+                geoZone: 'Travel within a geographical zone',
+                multipleServices: 'Travel on specific service or set of services',
             };
     }
 };
