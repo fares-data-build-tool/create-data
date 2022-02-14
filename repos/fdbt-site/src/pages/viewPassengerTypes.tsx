@@ -10,7 +10,6 @@ import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { updateSessionAttribute } from '../utils/sessions';
-import { globalSettingsDeleteEnabled } from '../constants/featureFlag';
 
 const title = 'Passenger Types - Create Fares Data Service';
 const description = 'View and edit your passenger types.';
@@ -20,7 +19,6 @@ interface PassengerTypeProps {
     singlePassengerTypes: SinglePassengerType[];
     groupPassengerTypes: FullGroupPassengerType[];
     referer: string | null;
-    deleteEnabled: boolean;
 }
 
 const ViewPassengerTypes = ({
@@ -28,7 +26,6 @@ const ViewPassengerTypes = ({
     groupPassengerTypes,
     csrfToken,
     referer,
-    deleteEnabled,
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         passengerTypeName: string;
@@ -79,7 +76,6 @@ const ViewPassengerTypes = ({
                             <IndividualPassengerTypes
                                 singlePassengerTypes={singlePassengerTypes}
                                 deleteActionHandler={deleteActionHandler}
-                                deleteEnabled={deleteEnabled}
                             />
                         )}
 
@@ -99,7 +95,6 @@ const ViewPassengerTypes = ({
                             <PassengerTypeGroups
                                 deleteActionHandler={deleteActionHandler}
                                 passengerTypeGroups={groupPassengerTypes}
-                                deleteEnabled={deleteEnabled}
                             />
                         )}
 
@@ -147,13 +142,11 @@ const NoIndividualPassengerTypes = (): ReactElement => {
 interface IndividualPassengerTypesProps {
     singlePassengerTypes: SinglePassengerType[];
     deleteActionHandler: (id: number, name: string, isGroup: boolean) => void;
-    deleteEnabled: boolean;
 }
 
 const IndividualPassengerTypes = ({
     singlePassengerTypes,
     deleteActionHandler,
-    deleteEnabled,
 }: IndividualPassengerTypesProps): ReactElement => {
     return (
         <>
@@ -166,7 +159,6 @@ const IndividualPassengerTypes = ({
                         deleteActionHandler={deleteActionHandler}
                         key={singlePassengerType.id.toString()}
                         defaultChecked={false}
-                        deleteEnabled={deleteEnabled}
                     />
                 ))}
             </div>
@@ -193,14 +185,9 @@ const NoPassengerTypeGroups = (): ReactElement => {
 interface PassengerTypeGroupProps {
     deleteActionHandler: (id: number, name: string, isGroup: boolean) => void;
     passengerTypeGroups: FullGroupPassengerType[];
-    deleteEnabled: boolean;
 }
 
-const PassengerTypeGroups = ({
-    deleteActionHandler,
-    passengerTypeGroups,
-    deleteEnabled,
-}: PassengerTypeGroupProps): ReactElement => {
+const PassengerTypeGroups = ({ deleteActionHandler, passengerTypeGroups }: PassengerTypeGroupProps): ReactElement => {
     return (
         <>
             <h2 className="govuk-heading-l">Groups</h2>
@@ -212,7 +199,6 @@ const PassengerTypeGroups = ({
                         deleteActionHandler={deleteActionHandler}
                         key={passengerTypeGroup.id}
                         defaultChecked={false}
-                        deleteEnabled={deleteEnabled}
                     />
                 ))}
             </div>
@@ -235,7 +221,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             singlePassengerTypes: singlePassengerTypes,
             groupPassengerTypes,
             referer: extractGlobalSettingsReferer(ctx),
-            deleteEnabled: globalSettingsDeleteEnabled,
         },
     };
 };

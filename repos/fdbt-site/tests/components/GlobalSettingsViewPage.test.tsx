@@ -19,7 +19,6 @@ describe('GlobalSettingsViewPage', () => {
                 description="my description"
                 entityDescription="my entity description"
                 CardBody={CardBody}
-                deleteEnabled={false}
             />,
         );
         expect(tree).toMatchSnapshot();
@@ -39,30 +38,8 @@ describe('GlobalSettingsViewPage', () => {
                 description="my description"
                 entityDescription="my entity description"
                 CardBody={CardBody}
-                deleteEnabled={false}
             />,
         );
-        expect(tree).toMatchSnapshot();
-    });
-
-    it('should render correctly when entities exist and delete is enabled', () => {
-        const tree = shallow(
-            <GlobalSettingsViewPage
-                csrfToken={''}
-                entities={[
-                    { id: 7, name: 'name seven' },
-                    { id: 17, name: 'name seventeen' },
-                    { id: 1, name: 'another one' },
-                ]}
-                referer={null}
-                title="my title"
-                description="my description"
-                entityDescription="my entity description"
-                CardBody={CardBody}
-                deleteEnabled={true}
-            />,
-        );
-
         expect(tree).toMatchSnapshot();
     });
 });

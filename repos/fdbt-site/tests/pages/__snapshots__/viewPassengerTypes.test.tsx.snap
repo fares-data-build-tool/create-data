@@ -32,7 +32,6 @@ exports[`pages view passenger types should render correctly when groups and indi
       <div>
         <IndividualPassengerTypes
           deleteActionHandler={[Function]}
-          deleteEnabled={false}
           singlePassengerTypes={
             Array [
               Object {
@@ -64,7 +63,6 @@ exports[`pages view passenger types should render correctly when groups and indi
       >
         <PassengerTypeGroups
           deleteActionHandler={[Function]}
-          deleteEnabled={false}
           passengerTypeGroups={
             Array [
               Object {
@@ -189,7 +187,6 @@ exports[`pages view passenger types should render correctly when only individual
       <div>
         <IndividualPassengerTypes
           deleteActionHandler={[Function]}
-          deleteEnabled={false}
           singlePassengerTypes={
             Array [
               Object {
@@ -277,7 +274,6 @@ exports[`pages view passenger types should render correctly when only passenger 
       >
         <PassengerTypeGroups
           deleteActionHandler={[Function]}
-          deleteEnabled={false}
           passengerTypeGroups={
             Array [
               Object {

@@ -6,15 +6,9 @@ interface PassengerTypeCardProps {
     contents: FullGroupPassengerType | SinglePassengerType;
     deleteActionHandler?: (id: number, name: string, isGroup: boolean) => void;
     defaultChecked: boolean;
-    deleteEnabled: boolean;
 }
 
-const PassengerTypeCard = ({
-    contents,
-    deleteActionHandler,
-    defaultChecked,
-    deleteEnabled,
-}: PassengerTypeCardProps): ReactElement => {
+const PassengerTypeCard = ({ contents, deleteActionHandler, defaultChecked }: PassengerTypeCardProps): ReactElement => {
     const { name, id } = contents;
     const isGroup = 'groupPassengerType' in contents;
     return (
@@ -32,16 +26,14 @@ const PassengerTypeCard = ({
                                 </a>
                             </li>
 
-                            {deleteEnabled && (
-                                <li className="actions__item">
-                                    <button
-                                        className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                        onClick={() => deleteActionHandler(id, name, isGroup)}
-                                    >
-                                        Delete
-                                    </button>
-                                </li>
-                            )}
+                            <li className="actions__item">
+                                <button
+                                    className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                                    onClick={() => deleteActionHandler(id, name, isGroup)}
+                                >
+                                    Delete
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 ) : (
