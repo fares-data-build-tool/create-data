@@ -528,3 +528,13 @@ export const addFlatFareProductIfNotPresent = (): void => {
         }
     });
 };
+
+export const retryRouteChoiceOnReturnProductError = (): void => {
+    cy.get('main').then(($main) => {
+        if ($main.text().includes('you cannot create a return product for this service')) {
+            cy.log('Retrying, could not create a return product for for the first service');
+            selectRandomOptionFromDropDown('service');
+            continueButtonClick();
+        }
+    });
+};
