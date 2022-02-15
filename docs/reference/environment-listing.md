@@ -2,11 +2,11 @@
 
 ## Site
 
-| Environment | Site                                      | Admin                                            | Monitoring                                           |
-| ----------- | ----------------------------------------- | ------------------------------------------------ | ---------------------------------------------------- |
-| Test        | https://test.dft-cfd.infinityworks.com    | https://admin.test.dft-cfd.infinityworks.com/    | https://monitoring.test.dft-cfd.infinityworks.com    |
-| PreProd     | https://preprod.dft-cfd.infinityworks.com | https://admin.preprod.dft-cfd.infinityworks.com/ | https://monitoring.preprod.dft-cfd.infinityworks.com |
-| Prod        | https://fares-data.dft.gov.uk             | https://admin.prod.dft-cfd.infinityworks.com/    | https://monitoring.prod.dft-cfd.infinityworks.com    |
+| Environment | Site                          | Admin                              | Monitoring                             |
+| ----------- | ----------------------------- | ---------------------------------- | -------------------------------------- |
+| Test        | https://test.dft-cfd.com      | https://admin.test.dft-cfd.com/    | https://monitoring.test.dft-cfd.com    |
+| PreProd     | https://preprod.dft-cfd.com   | https://admin.preprod.dft-cfd.com/ | https://monitoring.preprod.dft-cfd.com |
+| Prod        | https://fares-data.dft.gov.uk | https://admin.prod.dft-cfd.com/    | https://monitoring.prod.dft-cfd.com    |
 
 ## Tools
 

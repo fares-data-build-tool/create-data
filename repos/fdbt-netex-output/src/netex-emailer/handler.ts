@@ -60,7 +60,7 @@ export const setMailOptions = (
         from: process.env.SERVICE_EMAIL_ADDRESS,
         to: email,
         subject: `NeTEx created for ${params.Key}`,
-        text: `There was a file uploaded to '${params.Bucket}' [Filename: '${params.Key} ']`,
+        text: `There was a file uploaded to '${params.Bucket}' [Filename: '${params.Key}']`,
         html: emailTemplate(
             uuid,
             passengerType,
@@ -81,26 +81,24 @@ export const setMailOptions = (
 };
 
 export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
+    let mailOptions: Mail.Options = {};
     try {
         const s3ObjectParams = setS3ObjectParams(event);
         const splitName = s3ObjectParams.Key.split('/');
 
-        // the object key is something like
-        // "BLAC/exports/BLAC_2021_11_18_1/BLAC00df319d_1633608818591.xml" or
-        // "BLAC/zips/BLAC_2021_11_18_1/BLAC_2021_11_18_1.zip"
+        // if the object key is something like:
+        //  "BLAC/exports/BLAC_2021_11_18_1/BLAC00df319d_1633608818591.xml"
+        //  "BLAC/zips/BLAC_2021_11_18_1/BLAC_2021_11_18_1.zip"
         // we want to know if the object is in the zips or exports folder
         const isAnExportsOrZipsObject = splitName[1] === 'exports' || splitName[1] === 'zips';
-
         if (isAnExportsOrZipsObject) {
-            // we do not want to send an email if the object is in the
-            // zips or exports folder
+            // we do not want to send an email if the object is in the zips or exports folder
             return;
         }
 
         const splitKey = splitName.pop();
         const pathToSavedNetex = `/tmp/${splitKey}`;
         const netexFile = await getFileFromS3(s3ObjectParams);
-
         const matchingData = await fetchDataFromS3<MatchingData>(event, true);
 
         if (!matchingData.email) {
@@ -109,20 +107,36 @@ export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
 
         await fs.writeFile(pathToSavedNetex, netexFile);
 
-        const mailOptions = setMailOptions(s3ObjectParams, pathToSavedNetex, matchingData);
-
-        if (process.env.NODE_ENV === 'development') {
-            console.info('mailOptions', mailOptions);
-        }
-
-        if (process.env.NODE_ENV !== 'development') {
+        mailOptions = setMailOptions(s3ObjectParams, pathToSavedNetex, matchingData);
+        if (process.env.NODE_ENV !== 'development' && process.env.EMAIL_SENDING_ENABLED == 'true') {
             const mailTransporter = createMailTransporter();
             await mailTransporter.sendMail(mailOptions);
-
-            console.info(`Email sent.`);
+            console.info({
+                mailOptions: {
+                    from: mailOptions.from,
+                    to: mailOptions.to,
+                    subject: mailOptions.subject,
+                    text: mailOptions.text,
+                },
+                message: 'Sending of emails enabled, email sent',
+            });
+            return;
+        } else {
+            console.info({
+                mailOptions: {
+                    from: mailOptions.from,
+                    to: mailOptions.to,
+                    subject: mailOptions.subject,
+                    text: mailOptions.text,
+                },
+                message: 'Sending of emails disabled, email not sent',
+            });
+            return;
         }
     } catch (err) {
-        throw new Error(`SES SendEmail failed. Error: ${err.stack}`);
+        throw new Error(
+            `SES SendEmail failed. from: ${mailOptions?.from}, to: ${mailOptions?.to}, subject: ${mailOptions?.subject}, text: ${mailOptions?.text}, Error: ${err.stack}`,
+        );
     }
 };
 

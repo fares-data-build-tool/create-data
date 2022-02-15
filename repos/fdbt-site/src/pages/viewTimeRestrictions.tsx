@@ -4,7 +4,6 @@ import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import { NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
-import { globalSettingsDeleteEnabled } from '../constants/featureFlag';
 import { DbTimeBand } from 'fdbt-types/matchingJsonTypes';
 
 const title = 'Time restrictions';
@@ -25,7 +24,6 @@ interface TimeRestrictionProps {
     csrfToken: string;
     timeRestrictions: PremadeTimeRestriction[];
     referer: string | null;
-    deleteEnabled: boolean;
 }
 
 const formatTime = (time: string | object): string =>
@@ -46,12 +44,7 @@ const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: stri
     );
 };
 
-const ViewTimeRestrictions = ({
-    timeRestrictions,
-    referer,
-    csrfToken,
-    deleteEnabled,
-}: TimeRestrictionProps): ReactElement => {
+const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRestrictionProps): ReactElement => {
     return (
         <>
             <GlobalSettingsViewPage
@@ -62,7 +55,6 @@ const ViewTimeRestrictions = ({
                 title={title}
                 description={description}
                 CardBody={TimeRestrictionCardBody}
-                deleteEnabled={deleteEnabled}
             />
         </>
     );
@@ -103,7 +95,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             timeRestrictions,
             referer: extractGlobalSettingsReferer(ctx),
             csrfToken,
-            deleteEnabled: globalSettingsDeleteEnabled,
         },
     };
 };

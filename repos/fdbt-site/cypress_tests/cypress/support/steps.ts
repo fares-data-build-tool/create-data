@@ -21,6 +21,7 @@ import {
     randomlyChooseProductPeriodValidity,
     clickRandomElementInTable,
     clickElementByText,
+    retryRouteChoiceOnReturnProductError,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -117,6 +118,19 @@ export const completeFlatFareCarnet = (): void => {
 export const completeServicePage = (): void => {
     selectRandomOptionFromDropDown('service');
     continueButtonClick();
+
+    // CFD-638 We see an issue here when a bus route is chosen that cannot be used for a return fare.
+    //   The difficulty is in the feedback being returned after clicking the continue button, as we may go to a new page
+    //   or we may stay on the current page with an error dialog, this means it's difficult to place the checking code.
+    //   Cypress also advises against conditional testing, but we are server side rendered so we can use it if needed
+    //   see https://docs.cypress.io/guides/core-concepts/conditional-testing
+    //   however support is not great, as it's a minimally used feature.
+    //   We don't want to change the page flow or remove the route options, as they are this way to meet the GDS specifications.
+    //   So here we just retry the random choice twice more, which will almost always result in a test passing.
+    //   Due to Cypress' implementation, it's not possible to loop these or continually retry until success, so we just
+    //   do the naive approach of calling the retry twice
+    retryRouteChoiceOnReturnProductError();
+    retryRouteChoiceOnReturnProductError();
 };
 
 export const completeDirectionPageIfReached = (): void => {

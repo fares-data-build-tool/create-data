@@ -36,12 +36,25 @@ describe('netexEmailer SES emailer', () => {
         mockMailTransporter.mockReset();
     });
 
-    it('sends an email', async () => {
+    it('sending enabled, sends an email', async () => {
+        process.env.EMAIL_SENDING_ENABLED = 'true';
+
         const key = 'NameOfNetexFile.xml';
         const event: S3Event = testData.testS3Event('thisIsMyBucket', key);
 
         await netexEmailerHandler(event);
 
         expect(mockMailTransporter).toBeCalledTimes(1);
+    });
+
+    it('sending disabled, no email sent', async () => {
+        process.env.EMAIL_SENDING_ENABLED = 'false';
+
+        const key = 'NameOfNetexFile.xml';
+        const event: S3Event = testData.testS3Event('thisIsMyBucket', key);
+
+        await netexEmailerHandler(event);
+
+        expect(mockMailTransporter).toBeCalledTimes(0);
     });
 });

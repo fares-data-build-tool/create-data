@@ -41,12 +41,12 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
             options={
               Array [
                 Object {
-                  "hint": "Unlimited travel within a geographical zone",
+                  "hint": "Travel within a geographical zone",
                   "label": "A ticket within a geographical zone",
                   "value": "geoZone",
                 },
                 Object {
-                  "hint": "Unlimited travel on specific service or set of services",
+                  "hint": "Travel on specific service or set of services",
                   "label": "A ticket for a set of services",
                   "value": "multipleServices",
                 },

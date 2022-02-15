@@ -5,6 +5,9 @@
 // const preprod = ['preprod'].includes(process.env.STAGE ?? '');
 // const devOrTest = ['dev', 'test'].includes(process.env.STAGE ?? '');
 // const devTestPreprod = ['dev', 'test', 'preprod'].includes(process.env.STAGE ?? '');
-const all = true;
+// const all = true;
 
-export const globalSettingsDeleteEnabled = all;
+// Current Feature Flags
+//   Remove the empty export if a flag is created
+export {};
+// export const exampleFeatureEnabled = all;

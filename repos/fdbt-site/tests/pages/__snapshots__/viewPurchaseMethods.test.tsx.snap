@@ -48,7 +48,6 @@ exports[`pages view purchase methods should render correctly with purchase metho
   <GlobalSettingsViewPage
     CardBody={[Function]}
     csrfToken=""
-    deleteEnabled={false}
     description="Define the way your tickets are sold, including where they are bought, the payment method and format"
     entities={
       Array [
