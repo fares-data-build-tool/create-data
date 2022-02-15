@@ -14,7 +14,6 @@ interface GlobalSettingsViewPageProps<T extends Entity> {
     description: string;
     entityDescription: string;
     CardBody: FunctionComponent<{ entity: T }>;
-    deleteEnabled: boolean;
 }
 
 export const GlobalSettingsViewPage = <T extends Entity>({
@@ -25,7 +24,6 @@ export const GlobalSettingsViewPage = <T extends Entity>({
     description,
     entityDescription,
     CardBody,
-    deleteEnabled,
 }: GlobalSettingsViewPageProps<T>): ReactElement => {
     const entityUrl = entityDescription
         .split(' ')
@@ -74,18 +72,16 @@ export const GlobalSettingsViewPage = <T extends Entity>({
                                         </a>
                                     </li>
 
-                                    {deleteEnabled && (
-                                        <li className="actions__item">
-                                            <button
-                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                onClick={() => {
-                                                    deleteActionHandler(entity.id, entity.name);
-                                                }}
-                                            >
-                                                Delete
-                                            </button>
-                                        </li>
-                                    )}
+                                    <li className="actions__item">
+                                        <button
+                                            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                                            onClick={() => {
+                                                deleteActionHandler(entity.id, entity.name);
+                                            }}
+                                        >
+                                            Delete
+                                        </button>
+                                    </li>
                                 </ul>
                             </div>
 
