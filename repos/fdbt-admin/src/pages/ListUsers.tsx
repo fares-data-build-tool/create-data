@@ -1,6 +1,11 @@
 import { H1 } from '@govuk-react/heading';
 import { Fragment, ReactElement, useEffect, useState } from 'react';
-import { AttributeListType, UsersListType, UserType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import {
+    AttributeListType,
+    UsersListType,
+    UserType,
+    UsernameType,
+} from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import Table from '@govuk-react/table';
 import { ATTRIBUTE_MAP, STATUS_MAP } from '../constants';
 import { listUsersInPool } from '../data/cognito';
@@ -24,6 +29,9 @@ const formatAttributes = (attributes: AttributeListType) => {
 
 const getAttributeValue = (user: UserType, attributeName: string): string | undefined =>
     user?.Attributes?.find((item) => item.Name === attributeName)?.Value;
+
+const getDeleteUrl = (username: UsernameType | undefined): string => (username ? `/deleteUser/${username}` : `/`);
+const getEditUrl = (username: UsernameType | undefined): string => (username ? `/editUser/${username}` : `/`);
 
 const sortByEmail = (a: UserType, b: UserType) => {
     const aEmail = a.Attributes?.find((attribute) => attribute.Name === 'email')?.Value || 'z';
@@ -78,15 +86,22 @@ const ListUsers = (): ReactElement => {
                     </Table.Cell>
                 </Table.Row>
             </Table>
+            <br />
             <Table>
                 <Table.Row>
                     <Table.CellHeader>Email</Table.CellHeader>
+                    <Table.CellHeader>Actions</Table.CellHeader>
                     <Table.CellHeader>Attributes</Table.CellHeader>
                     <Table.CellHeader>Status</Table.CellHeader>
                 </Table.Row>
                 {users.map((user) => (
                     <Table.Row key={user.Username}>
                         <Table.Cell>{getAttributeValue(user, 'email')}</Table.Cell>
+                        <Table.Cell>
+                            <a href={getEditUrl(user.Username)}>Edit</a>
+                            <br />
+                            <a href={getDeleteUrl(user.Username)}>Delete</a>
+                        </Table.Cell>
                         <Table.Cell>{formatAttributes(user.Attributes || [])}</Table.Cell>
                         <Table.Cell>{STATUS_MAP[user.UserStatus || ''] ?? 'Unknown'}</Table.Cell>
                     </Table.Row>

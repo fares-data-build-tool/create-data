@@ -5,6 +5,8 @@ import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import Page from '@govuk-react/page';
 import Nav from './components/Nav';
 import AddUser from './pages/AddUser';
+import DeleteUser from './pages/DeleteUser';
+import EditUser from './pages/EditUser';
 import ListUsers from './pages/ListUsers';
 
 const App = (): ReactElement => {
@@ -25,6 +27,12 @@ const App = (): ReactElement => {
                 <Switch>
                     <Route path="/addUser">
                         <AddUser />
+                    </Route>
+                    <Route path="/deleteUser/:username">
+                        <DeleteUser />
+                    </Route>
+                    <Route path="/editUser/:username">
+                        <EditUser />
                     </Route>
                     <Route path="/listUsers">
                         <ListUsers />

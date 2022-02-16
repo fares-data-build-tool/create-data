@@ -2,6 +2,10 @@ import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { Auth } from 'aws-amplify';
 import {
     AdminCreateUserRequest,
+    AdminDeleteUserRequest,
+    AdminGetUserRequest,
+    AdminGetUserResponse,
+    AdminUpdateUserAttributesRequest,
     ListUserPoolsRequest,
     ListUsersRequest,
     UserPoolDescriptionType,
@@ -9,7 +13,8 @@ import {
 } from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { randomBytes } from 'crypto';
 import { AWS_REGION } from '../constants';
-import { FormUser } from '../pages/AddUser';
+import { AddFormUser } from '../pages/AddUser';
+import { EditFormUser } from '../pages/EditUser';
 
 export const getCognitoClient = async (): Promise<CognitoIdentityServiceProvider> =>
     new CognitoIdentityServiceProvider({ region: AWS_REGION, credentials: await Auth.currentUserCredentials() });
@@ -55,7 +60,7 @@ const generateTemporaryPassword = (): string => randomBytes(64).toString('hex').
 export const addUserToPool = async (
     cognito: CognitoIdentityServiceProvider,
     userPoolId: string,
-    formUser: FormUser,
+    formUser: AddFormUser,
 ): Promise<void> => {
     const params: AdminCreateUserRequest = {
         UserPoolId: userPoolId,
@@ -68,4 +73,42 @@ export const addUserToPool = async (
         TemporaryPassword: generateTemporaryPassword(),
     };
     await cognito.adminCreateUser(params).promise();
+};
+
+export const adminUpdateUserAttributes = async (
+    cognito: CognitoIdentityServiceProvider,
+    userPoolId: string,
+    formUser: EditFormUser,
+): Promise<void> => {
+    const params: AdminUpdateUserAttributesRequest = {
+        UserPoolId: userPoolId,
+        Username: formUser.email,
+        UserAttributes: [{ Name: 'custom:noc', Value: formUser.nocs }],
+    };
+    await cognito.adminUpdateUserAttributes(params).promise();
+};
+
+export const getUser = async (
+    cognito: CognitoIdentityServiceProvider,
+    userPoolId: string,
+    username: string,
+): Promise<AdminGetUserResponse> => {
+    const params: AdminGetUserRequest = {
+        UserPoolId: userPoolId,
+        Username: username,
+    };
+    return cognito.adminGetUser(params).promise();
+};
+
+export const adminDeleteUser = async (
+    cognito: CognitoIdentityServiceProvider,
+    userPoolId: string,
+    username: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> => {
+    const params: AdminDeleteUserRequest = {
+        UserPoolId: userPoolId,
+        Username: username,
+    };
+    return cognito.adminDeleteUser(params).promise();
 };
