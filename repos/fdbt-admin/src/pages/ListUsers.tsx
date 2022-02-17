@@ -1,5 +1,5 @@
-import { H1 } from '@govuk-react/heading';
 import { Fragment, ReactElement, useEffect, useState } from 'react';
+import { H1 } from '@govuk-react/heading';
 import {
     AttributeListType,
     UsersListType,
@@ -7,9 +7,10 @@ import {
     UsernameType,
 } from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import Table from '@govuk-react/table';
+
 import { ATTRIBUTE_MAP, STATUS_MAP } from '../constants';
 import { listUsersInPool } from '../data/cognito';
-import getCognitoClientAndUserPool from '../utils/cognito';
+import { getCognitoClientAndUserPool } from '../utils/cognito';
 
 const formatAttributes = (attributes: AttributeListType) => {
     return attributes
@@ -36,12 +37,14 @@ const getEditUrl = (username: UsernameType | undefined): string => (username ? `
 const sortByEmail = (a: UserType, b: UserType) => {
     const aEmail = a.Attributes?.find((attribute) => attribute.Name === 'email')?.Value || 'z';
     const bEmail = b.Attributes?.find((attribute) => attribute.Name === 'email')?.Value || 'z';
-
     return aEmail.localeCompare(bEmail);
 };
 
 const ListUsers = (): ReactElement => {
     const [users, setUsers] = useState<UsersListType>([]);
+    const nonTestUsers = users?.filter((user) => !getAttributeValue(user, 'custom:noc')?.includes('IWBusCo'));
+    const completedRegisteredUsers = nonTestUsers.filter((user) => user?.UserStatus === 'CONFIRMED');
+    const pendingRegisteredUsers = nonTestUsers.filter((user) => user?.UserStatus === 'FORCE_CHANGE_PASSWORD');
 
     useEffect(() => {
         const getUsers = async (): Promise<UsersListType> => {
@@ -58,12 +61,6 @@ const ListUsers = (): ReactElement => {
                 setUsers([]);
             });
     }, []);
-
-    const nonTestUsers = users?.filter((user) => !getAttributeValue(user, 'custom:noc')?.includes('IWBusCo'));
-
-    const completedRegisteredUsers = nonTestUsers.filter((user) => user?.UserStatus === 'CONFIRMED');
-
-    const pendingRegisteredUsers = nonTestUsers.filter((user) => user?.UserStatus === 'FORCE_CHANGE_PASSWORD');
 
     return (
         <>

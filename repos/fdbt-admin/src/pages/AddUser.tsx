@@ -1,20 +1,15 @@
-import { H1 } from '@govuk-react/heading';
 import { ReactElement, useState } from 'react';
+import { H1 } from '@govuk-react/heading';
 import Button from '@govuk-react/button';
 import { useForm } from 'react-hook-form';
+
 import { addUserToPool } from '../data/cognito';
-import getCognitoClientAndUserPool from '../utils/cognito';
+import { getCognitoClientAndUserPool, cogntioFormatNocs } from '../utils/cognito';
 
 export interface AddFormUser {
     email: string;
     nocs: string;
 }
-
-const formatNocs = (nocs: string): string =>
-    nocs
-        .split(',')
-        .map((noc) => noc.trim())
-        .join('|');
 
 const AddUser = (): ReactElement => {
     const { register, handleSubmit, formState, reset } = useForm<AddFormUser>();
@@ -24,7 +19,7 @@ const AddUser = (): ReactElement => {
     const onSubmit = async (formUser: AddFormUser) => {
         setCreatedUserEmail('');
         setError('');
-        const formattedUser = { ...formUser, nocs: formatNocs(formUser.nocs) };
+        const formattedUser = { ...formUser, nocs: cogntioFormatNocs(formUser.nocs) };
         reset();
 
         try {

@@ -21,9 +21,7 @@ export const getCognitoClient = async (): Promise<CognitoIdentityServiceProvider
 
 export const getUserPoolList = async (cognito: CognitoIdentityServiceProvider): Promise<UserPoolDescriptionType[]> => {
     const params: ListUserPoolsRequest = { MaxResults: 5 };
-
     const listUserPoolsResponse = await cognito.listUserPools(params).promise();
-
     return listUserPoolsResponse?.UserPools ?? [];
 };
 

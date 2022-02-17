@@ -1,8 +1,9 @@
 import { render, screen, within } from '@testing-library/react';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { UserPoolDescriptionType, UserType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
-import { MAIN_USER_POOL_PREFIX } from '../constants';
+
 import * as cognito from '../data/cognito';
+import { MAIN_USER_POOL_PREFIX } from '../constants';
 import ListUsers from './ListUsers';
 
 const userPoolsMock: UserPoolDescriptionType[] = [

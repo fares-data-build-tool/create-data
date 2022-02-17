@@ -20,6 +20,9 @@ const Nav = (): ReactElement => (
         <NavAnchor to="/addUser" as={Link}>
             Add New User
         </NavAnchor>
+        <NavAnchor to="/listIncompleteExports" as={Link}>
+            Incomplete Exports List
+        </NavAnchor>
         <StyledSignOutButton className="" />
     </TopNav>
 );

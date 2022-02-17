@@ -1,11 +1,19 @@
-import { H1 } from '@govuk-react/heading';
 import { ReactElement, useState, useEffect } from 'react';
+import { H1 } from '@govuk-react/heading';
 import { useParams } from 'react-router-dom';
 import Button from '@govuk-react/button';
 import { useForm } from 'react-hook-form';
-import { AdminGetUserResponse, AttributeListType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { AdminGetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+
 import { adminUpdateUserAttributes, getUser } from '../data/cognito';
-import getCognitoClientAndUserPool from '../utils/cognito';
+import {
+    getCognitoClientAndUserPool,
+    cogntioFormatNocs,
+    humanFormatNocs,
+    htmlFormatNocs,
+    parseCognitoUser,
+} from '../utils/cognito';
+import useAsyncEffect from '../hooks/useAsyncEffect';
 
 export interface EditFormUser {
     email: string;
@@ -14,53 +22,6 @@ export interface EditFormUser {
 
 type EditUserParams = {
     username: string;
-};
-
-const cogntioFormatNocs = (nocs: string): string =>
-    nocs
-        .split(',')
-        .map((noc) => noc.trim())
-        .join('|');
-
-const humanFormatNocs = (nocs: string): string =>
-    nocs
-        .split('|')
-        .map((noc) => noc.trim())
-        .join(',');
-
-const htmlFormatNocs = (nocs: string): string =>
-    nocs
-        .split(',')
-        .map((noc) => noc.trim())
-        .join(', ');
-
-const parseUserAttributes = (key: string, attributes: AttributeListType | undefined): string => {
-    const attribute = attributes?.find((attr) => attr.Name === key);
-    return attribute?.Value || 'Loading...';
-};
-
-const parseCognitoUser = (
-    user: AdminGetUserResponse,
-): { username: string | undefined; email: string; nocs: string } => {
-    const email = parseUserAttributes('email', user.UserAttributes);
-    const nocs = parseUserAttributes('custom:noc', user.UserAttributes);
-    return {
-        username: user.Username,
-        email,
-        nocs,
-    };
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const useAsyncEffect = (effect: (isCanceled: () => boolean) => Promise<void>, dependencies?: any[]) => {
-    return useEffect(() => {
-        let canceled = false;
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        effect(() => canceled);
-        return () => {
-            canceled = true;
-        };
-    }, dependencies);
 };
 
 const EditUser = (): ReactElement => {

@@ -1,4 +1,6 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import { AdminGetUserResponse, AttributeListType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+
 import { MAIN_USER_POOL_PREFIX } from '../constants';
 import { getCognitoClient, getUserPoolList } from '../data/cognito';
 
@@ -7,7 +9,7 @@ interface CognitoClientAndUserPool {
     userPoolId: string;
 }
 
-const getCognitoClientAndUserPool = async (): Promise<CognitoClientAndUserPool> => {
+export const getCognitoClientAndUserPool = async (): Promise<CognitoClientAndUserPool> => {
     const client = await getCognitoClient();
     const userPoolList = await getUserPoolList(client);
     const userPool = userPoolList?.find((pool) => pool.Name?.startsWith(MAIN_USER_POOL_PREFIX));
@@ -18,4 +20,37 @@ const getCognitoClientAndUserPool = async (): Promise<CognitoClientAndUserPool> 
     return { client, userPoolId: userPool.Id };
 };
 
-export default getCognitoClientAndUserPool;
+export const cogntioFormatNocs = (nocs: string): string =>
+    nocs
+        .split(',')
+        .map((noc) => noc.trim())
+        .join('|');
+
+export const humanFormatNocs = (nocs: string): string =>
+    nocs
+        .split('|')
+        .map((noc) => noc.trim())
+        .join(',');
+
+export const htmlFormatNocs = (nocs: string): string =>
+    nocs
+        .split(',')
+        .map((noc) => noc.trim())
+        .join(', ');
+
+export const parseUserAttributes = (key: string, attributes: AttributeListType | undefined): string => {
+    const attribute = attributes?.find((attr) => attr.Name === key);
+    return attribute?.Value || 'Loading...';
+};
+
+export const parseCognitoUser = (
+    user: AdminGetUserResponse,
+): { username: string | undefined; email: string; nocs: string } => {
+    const email = parseUserAttributes('email', user.UserAttributes);
+    const nocs = parseUserAttributes('custom:noc', user.UserAttributes);
+    return {
+        username: user.Username,
+        email,
+        nocs,
+    };
+};

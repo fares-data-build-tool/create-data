@@ -6,7 +6,9 @@ import Page from '@govuk-react/page';
 import Nav from './components/Nav';
 import AddUser from './pages/AddUser';
 import DeleteUser from './pages/DeleteUser';
+import DeleteExport from './pages/DeleteExport';
 import EditUser from './pages/EditUser';
+import ListIncompleteExports from './pages/ListIncompleteExports';
 import ListUsers from './pages/ListUsers';
 
 const App = (): ReactElement => {
@@ -25,6 +27,10 @@ const App = (): ReactElement => {
         <BrowserRouter>
             <Page header={<Nav />}>
                 <Switch>
+                    {/* Users */}
+                    <Route path="/listUsers">
+                        <ListUsers />
+                    </Route>
                     <Route path="/addUser">
                         <AddUser />
                     </Route>
@@ -34,9 +40,14 @@ const App = (): ReactElement => {
                     <Route path="/editUser/:username">
                         <EditUser />
                     </Route>
-                    <Route path="/listUsers">
-                        <ListUsers />
+                    {/* Exports */}
+                    <Route path="/listIncompleteExports">
+                        <ListIncompleteExports />
                     </Route>
+                    <Route path="/deleteExport/:exportName">
+                        <DeleteExport />
+                    </Route>
+                    {/* Root */}
                     <Route path="/">
                         <Redirect to="/listUsers" />
                     </Route>
