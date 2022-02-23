@@ -12,11 +12,20 @@ export const buildFeedbackContent = (feedbackQuestions: Feedback[]): string => {
     return questionsAndAnswers.join('\n');
 };
 
-export const setFeedbackMailOptions = (nocCodeOfSender: string, feedback: Feedback[]): Mail.Options => {
+export const setFeedbackMailOptions = (
+    nocCodeOfSender: string,
+    feedbackSubmitterEmailAddress: string,
+    feedback: Feedback[],
+): Mail.Options => {
+    const subject =
+        STAGE === 'prod'
+            ? `Feedback received from ${nocCodeOfSender}`
+            : `${STAGE} - Feedback received from ${nocCodeOfSender}`;
     return {
         from: SERVICE_EMAIL_ADDRESS,
         to: SERVICE_EMAIL_ADDRESS,
-        subject: `${STAGE} - Feedback received from ${nocCodeOfSender}`,
+        cc: feedbackSubmitterEmailAddress,
+        subject: subject,
         text: buildFeedbackContent(feedback),
     };
 };

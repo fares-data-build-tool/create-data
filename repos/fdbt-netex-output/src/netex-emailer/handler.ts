@@ -80,6 +80,31 @@ export const setMailOptions = (
     };
 };
 
+// redactEmailAddress replaces the user portion of an email address so it can be safely logged
+export const redactEmailAddress = (
+    toRedact: string | Mail.Address | (string | Mail.Address)[] | undefined,
+): string | string[] => {
+    const redact = (address: string): string => address.toString().replace(/.*@/, '*****@');
+    if (toRedact !== undefined) {
+        if (typeof toRedact === 'string') {
+            return redact(toRedact);
+        } else if (toRedact.hasOwnProperty('name') && toRedact.hasOwnProperty('address')) {
+            const email = toRedact as Mail.Address;
+            return redact(email.address);
+        } else if (typeof toRedact === 'object') {
+            const addresses = toRedact as Mail.Address[];
+            return addresses.map(email => {
+                if (email.hasOwnProperty('name') && email.hasOwnProperty('address')) {
+                    return redact(email.address);
+                } else {
+                    return redact((email as unknown) as string);
+                }
+            });
+        }
+    }
+    return '*****@*****.***';
+};
+
 export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
     let mailOptions: Mail.Options = {};
     try {
@@ -112,9 +137,9 @@ export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
             const mailTransporter = createMailTransporter();
             await mailTransporter.sendMail(mailOptions);
             console.info({
-                mailOptions: {
+                email: {
                     from: mailOptions.from,
-                    to: mailOptions.to,
+                    to: redactEmailAddress(mailOptions.to),
                     subject: mailOptions.subject,
                     text: mailOptions.text,
                 },
@@ -123,9 +148,9 @@ export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
             return;
         } else {
             console.info({
-                mailOptions: {
+                email: {
                     from: mailOptions.from,
-                    to: mailOptions.to,
+                    to: redactEmailAddress(mailOptions.to),
                     subject: mailOptions.subject,
                     text: mailOptions.text,
                 },
@@ -135,7 +160,9 @@ export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
         }
     } catch (err) {
         throw new Error(
-            `SES SendEmail failed. from: ${mailOptions?.from}, to: ${mailOptions?.to}, subject: ${mailOptions?.subject}, text: ${mailOptions?.text}, Error: ${err.stack}`,
+            `SES SendEmail failed. from: ${mailOptions?.from}, to: ${redactEmailAddress(mailOptions?.to)}, subject: ${
+                mailOptions?.subject
+            }, text: ${mailOptions?.text}, Error: ${err.stack}`,
         );
     }
 };

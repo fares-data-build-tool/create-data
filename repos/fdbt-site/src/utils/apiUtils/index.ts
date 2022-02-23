@@ -158,6 +158,9 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
 export const getNocFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
     getAttributeFromIdToken(req, res, 'custom:noc');
 
+export const getEmailFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
+    getAttributeFromIdToken(req, res, 'email');
+
 export const getAndValidateNoc = (req: NextApiRequestWithSession, res: NextApiResponse): string => {
     const idTokenNoc = getNocFromIdToken(req, res);
 
