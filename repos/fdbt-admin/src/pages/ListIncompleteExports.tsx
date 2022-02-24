@@ -1,16 +1,21 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { H1 } from '@govuk-react/heading';
 import Table from '@govuk-react/table';
+import { BrowserRouter, Redirect } from 'react-router-dom';
 
 import { getBucketName, listBucketObjects } from '../data/s3';
 import getS3Client from '../utils/s3';
 import { NETEX_DATA_BUCKET_PREFIX, MATCHING_DATA_BUCKET_PREFIX } from '../constants';
 
+interface ListIncompleteExportsProps {
+    isFullAdmin: boolean;
+}
+
 const getDeleteUrl = (exportName: string | undefined): string => (exportName ? `/deleteExport/${exportName}` : `/`);
 
 const getExportName = (file: string | undefined): string => (file ? file.split('/')[2] : `Error`);
 
-const ListIncompleteExports = (): ReactElement => {
+const ListIncompleteExports = ({ isFullAdmin }: ListIncompleteExportsProps): ReactElement => {
     const [loaded, setLoaded] = useState<boolean>(false);
     const [exportsFromMatchingDataBucket, setExportsFromMatchingDataBucket] = useState<string[]>([]);
     const [zipsFromNetexDataBucket, setZipsFromNetexDataBucket] = useState<string[]>([]);
@@ -85,7 +90,8 @@ const ListIncompleteExports = (): ReactElement => {
             ))}
         </>
     );
-    return (
+
+    return isFullAdmin ? (
         <>
             <H1>Incomplete Exports List</H1>
             <small>
@@ -101,6 +107,10 @@ const ListIncompleteExports = (): ReactElement => {
                 {loaded && differences.length > 0 ? table : placeholder('No incomplete exports found')}
             </Table>
         </>
+    ) : (
+        <BrowserRouter>
+            <Redirect to="/listUsers" />
+        </BrowserRouter>
     );
 };
 

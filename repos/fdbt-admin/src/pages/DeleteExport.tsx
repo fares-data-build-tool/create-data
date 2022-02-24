@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { H1 } from '@govuk-react/heading';
-import { useParams } from 'react-router-dom';
+import { BrowserRouter, Redirect, useParams } from 'react-router-dom';
 import Button from '@govuk-react/button';
 import { useForm } from 'react-hook-form';
 
@@ -16,9 +16,13 @@ export interface DeleteFormExport {
     exportName: string;
 }
 
+interface DeleteExportProps {
+    isFullAdmin: boolean;
+}
+
 const getNoc = (exportName: string) => exportName.split('_')[0];
 
-const DeleteExport = (): ReactElement => {
+const DeleteExport = ({ isFullAdmin }: DeleteExportProps): ReactElement => {
     const { exportName } = useParams<DeleteExportParams>();
     const [deletedExport, setDeletedExport] = useState('');
     const [error, setError] = useState('');
@@ -40,7 +44,7 @@ const DeleteExport = (): ReactElement => {
         }
     };
 
-    return (
+    return isFullAdmin ? (
         <>
             <H1>Delete Export</H1>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -68,6 +72,10 @@ const DeleteExport = (): ReactElement => {
                 {error && <div style={{ color: 'red' }}>{error}</div>}
             </form>
         </>
+    ) : (
+        <BrowserRouter>
+            <Redirect to="/listUsers" />
+        </BrowserRouter>
     );
 };
 

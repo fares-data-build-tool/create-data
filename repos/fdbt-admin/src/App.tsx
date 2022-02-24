@@ -11,41 +11,51 @@ import EditUser from './pages/EditUser';
 import ListIncompleteExports from './pages/ListIncompleteExports';
 import ListUsers from './pages/ListUsers';
 
+interface AuthDataAttributes {
+    'custom:fullAdmin': number;
+}
+
+interface AuthData {
+    attributes: AuthDataAttributes;
+}
+
 const App = (): ReactElement => {
     const [authState, setAuthState] = useState('');
     // eslint-disable-next-line @typescript-eslint/ban-types
-    const [user, setUser] = useState<object | undefined>(undefined);
+    const [user, setUser] = useState<AuthData | undefined>(undefined);
+    const [isFullAdmin, setIsFullAdmin] = useState<boolean>(false);
 
     useEffect(() => {
         onAuthUIStateChange((nextAuthState, authData) => {
             setAuthState(nextAuthState);
-            setUser(authData);
+            setUser(authData as AuthData);
+            setIsFullAdmin(Boolean(Number((authData as AuthData)?.attributes?.['custom:fullAdmin'])));
         });
     }, [user]);
 
     return authState === AuthState.SignedIn && user ? (
         <BrowserRouter>
-            <Page header={<Nav />}>
+            <Page header={<Nav isFullAdmin={isFullAdmin} />}>
                 <Switch>
                     {/* Users */}
                     <Route path="/listUsers">
-                        <ListUsers />
+                        <ListUsers isFullAdmin={isFullAdmin} />
                     </Route>
                     <Route path="/addUser">
                         <AddUser />
                     </Route>
                     <Route path="/deleteUser/:username">
-                        <DeleteUser />
+                        <DeleteUser isFullAdmin={isFullAdmin} />
                     </Route>
                     <Route path="/editUser/:username">
-                        <EditUser />
+                        <EditUser isFullAdmin={isFullAdmin} />
                     </Route>
                     {/* Exports */}
                     <Route path="/listIncompleteExports">
-                        <ListIncompleteExports />
+                        <ListIncompleteExports isFullAdmin={isFullAdmin} />
                     </Route>
                     <Route path="/deleteExport/:exportName">
-                        <DeleteExport />
+                        <DeleteExport isFullAdmin={isFullAdmin} />
                     </Route>
                     {/* Root */}
                     <Route path="/">

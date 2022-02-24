@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SignOutButton from './SignOutButton';
 
+interface NavProps {
+    isFullAdmin: boolean;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const NavAnchor = asNavLinkAnchor('a');
 const StyledSignOutButton = styled(SignOutButton)`
@@ -12,7 +16,7 @@ const StyledSignOutButton = styled(SignOutButton)`
     top 20px;
 `;
 
-const Nav = (): ReactElement => (
+const Nav = ({ isFullAdmin }: NavProps): ReactElement => (
     <TopNav serviceTitle="Create Fares Data Admin">
         <NavAnchor to="/listUsers" as={Link}>
             User List
@@ -20,11 +24,12 @@ const Nav = (): ReactElement => (
         <NavAnchor to="/addUser" as={Link}>
             Add New User
         </NavAnchor>
-        <NavAnchor to="/listIncompleteExports" as={Link}>
-            Incomplete Exports List
-        </NavAnchor>
+        {isFullAdmin && (
+            <NavAnchor to="/listIncompleteExports" as={Link}>
+                Incomplete Exports List
+            </NavAnchor>
+        )}
         <StyledSignOutButton className="" />
     </TopNav>
 );
-
 export default Nav;

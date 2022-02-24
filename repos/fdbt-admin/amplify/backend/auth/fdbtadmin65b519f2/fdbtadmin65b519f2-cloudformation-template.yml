@@ -161,6 +161,12 @@ Resources:
         - Name: email
           Required: true
           Mutable: true
+        - Name: fullAdmin
+          Mutable: true
+          AttributeDataType: Number
+          NumberAttributeConstraints:
+            MaxValue: "1"
+            MinValue: "0"
 
       AutoVerifiedAttributes: !Ref autoVerifiedAttributes
 

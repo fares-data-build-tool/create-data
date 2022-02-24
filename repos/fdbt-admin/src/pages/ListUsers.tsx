@@ -12,6 +12,10 @@ import { ATTRIBUTE_MAP, STATUS_MAP } from '../constants';
 import { listUsersInPool } from '../data/cognito';
 import { getCognitoClientAndUserPool } from '../utils/cognito';
 
+interface ListUsersProps {
+    isFullAdmin: boolean;
+}
+
 const formatAttributes = (attributes: AttributeListType) => {
     return attributes
         .filter((attribute) => ATTRIBUTE_MAP[attribute.Name])
@@ -40,7 +44,7 @@ const sortByEmail = (a: UserType, b: UserType) => {
     return aEmail.localeCompare(bEmail);
 };
 
-const ListUsers = (): ReactElement => {
+const ListUsers = ({ isFullAdmin }: ListUsersProps): ReactElement => {
     const [users, setUsers] = useState<UsersListType>([]);
     const nonTestUsers = users?.filter((user) => !getAttributeValue(user, 'custom:noc')?.includes('IWBusCo'));
     const completedRegisteredUsers = nonTestUsers.filter((user) => user?.UserStatus === 'CONFIRMED');
@@ -87,18 +91,20 @@ const ListUsers = (): ReactElement => {
             <Table>
                 <Table.Row>
                     <Table.CellHeader>Email</Table.CellHeader>
-                    <Table.CellHeader>Actions</Table.CellHeader>
+                    {isFullAdmin && <Table.CellHeader>Actions</Table.CellHeader>}
                     <Table.CellHeader>Attributes</Table.CellHeader>
                     <Table.CellHeader>Status</Table.CellHeader>
                 </Table.Row>
                 {users.map((user) => (
                     <Table.Row key={user.Username}>
                         <Table.Cell>{getAttributeValue(user, 'email')}</Table.Cell>
-                        <Table.Cell>
-                            <a href={getEditUrl(user.Username)}>Edit</a>
-                            <br />
-                            <a href={getDeleteUrl(user.Username)}>Delete</a>
-                        </Table.Cell>
+                        {isFullAdmin && (
+                            <Table.Cell>
+                                <a href={getEditUrl(user.Username)}>Edit</a>
+                                <br />
+                                <a href={getDeleteUrl(user.Username)}>Delete</a>
+                            </Table.Cell>
+                        )}
                         <Table.Cell>{formatAttributes(user.Attributes || [])}</Table.Cell>
                         <Table.Cell>{STATUS_MAP[user.UserStatus || ''] ?? 'Unknown'}</Table.Cell>
                     </Table.Row>

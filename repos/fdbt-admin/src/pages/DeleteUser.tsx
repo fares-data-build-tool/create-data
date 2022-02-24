@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { H1 } from '@govuk-react/heading';
-import { useParams } from 'react-router-dom';
+import { BrowserRouter, Redirect, useParams } from 'react-router-dom';
 import Button from '@govuk-react/button';
 import { useForm } from 'react-hook-form';
 import { AdminGetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
@@ -14,11 +14,15 @@ export interface DeleteFormUser {
     nocs: string;
 }
 
+interface DeleteUserProps {
+    isFullAdmin: boolean;
+}
+
 type DeleteUserParams = {
     username: string;
 };
 
-const DeleteUser = (): ReactElement => {
+const DeleteUser = ({ isFullAdmin }: DeleteUserProps): ReactElement => {
     const adminGetUserResponse: AdminGetUserResponse = { Username: '' };
     const [user, setUser] = useState(adminGetUserResponse);
     const { username } = useParams<DeleteUserParams>();
@@ -57,7 +61,7 @@ const DeleteUser = (): ReactElement => {
         }
     };
 
-    return (
+    return isFullAdmin ? (
         <>
             <H1>Delete User</H1>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,6 +101,10 @@ const DeleteUser = (): ReactElement => {
                 {error && <div style={{ color: 'red' }}>{error}</div>}
             </form>
         </>
+    ) : (
+        <BrowserRouter>
+            <Redirect to="/listUsers" />
+        </BrowserRouter>
     );
 };
 

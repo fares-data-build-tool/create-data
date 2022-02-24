@@ -1,6 +1,6 @@
 import { ReactElement, useState, useEffect } from 'react';
 import { H1 } from '@govuk-react/heading';
-import { useParams } from 'react-router-dom';
+import { BrowserRouter, Redirect, useParams } from 'react-router-dom';
 import Button from '@govuk-react/button';
 import { useForm } from 'react-hook-form';
 import { AdminGetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
@@ -20,11 +20,15 @@ export interface EditFormUser {
     nocs: string;
 }
 
+interface EditUserProps {
+    isFullAdmin: boolean;
+}
+
 type EditUserParams = {
     username: string;
 };
 
-const EditUser = (): ReactElement => {
+const EditUser = ({ isFullAdmin }: EditUserProps): ReactElement => {
     const adminGetUserResponse: AdminGetUserResponse = { Username: '' };
     const [user, setUser] = useState(adminGetUserResponse);
     const [nocs, setNocs] = useState('');
@@ -76,7 +80,7 @@ const EditUser = (): ReactElement => {
         reset({ nocs: updatedUserNocs });
     }, [updatedUserNocs]);
 
-    return (
+    return isFullAdmin ? (
         <>
             <H1>Edit User</H1>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -125,6 +129,10 @@ const EditUser = (): ReactElement => {
                 {error && <div style={{ color: 'red' }}>{error}</div>}
             </form>
         </>
+    ) : (
+        <BrowserRouter>
+            <Redirect to="/listUsers" />
+        </BrowserRouter>
     );
 };
 
