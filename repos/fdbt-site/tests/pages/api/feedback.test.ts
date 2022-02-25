@@ -1,5 +1,7 @@
+import Mail from 'nodemailer/lib/mailer';
+
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import feedback, { requestIsEmpty } from '../../../src/pages/api/feedback';
+import feedback, { requestIsEmpty, redactEmailAddress } from '../../../src/pages/api/feedback';
 
 describe('feedback', () => {
     const writeHeadMock = jest.fn();
@@ -60,5 +62,46 @@ describe('feedback', () => {
             });
             expect(requestIsEmpty(req)).toBeFalsy();
         });
+    });
+});
+
+describe('redactEmailAddress', () => {
+    it('email as string', () => {
+        const given = 'test@example.com';
+        const expected = '*****@example.com';
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('email as Address', () => {
+        const given: Mail.Address = { name: 'test', address: 'test@example.com' };
+        const expected = '*****@example.com';
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('emails as list of strings', () => {
+        const given: string[] = ['test@example.com'];
+        const expected: string[] = ['*****@example.com'];
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('emails as list of Address', () => {
+        const given: Mail.Address[] = [{ name: 'test', address: 'test@example.com' }];
+        const expected: string[] = ['*****@example.com'];
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('emails as list of multiple strings', () => {
+        const given: string[] = ['test@example.com', 'test2@example2.com'];
+        const expected: string[] = ['*****@example.com', '*****@example2.com'];
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('emails as list of multiple Address', () => {
+        const given: Mail.Address[] = [
+            { name: 'test', address: 'test@example.com' },
+            { name: 'test2', address: 'test2@example2.com' },
+        ];
+        const expected: string[] = ['*****@example.com', '*****@example2.com'];
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('email as bad input', () => {
+        const given: string = 1 as unknown as string;
+        const expected = '*****@*****.***';
+        expect(redactEmailAddress(given)).toEqual(expected);
     });
 });

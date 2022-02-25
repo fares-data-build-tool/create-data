@@ -1,7 +1,8 @@
 import { NextApiResponse } from 'next';
+import Mail from 'nodemailer/lib/mailer';
 import { setFeedbackMailOptions, createMailTransporter } from '../../utils/apiUtils/feedbackEmailer';
 import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
-import { redirectToError, redirectTo, getNocFromIdToken } from '../../utils/apiUtils/index';
+import { redirectToError, redirectTo, getNocFromIdToken, getEmailFromIdToken } from '../../utils/apiUtils/index';
 import { NextApiRequestWithSession, Feedback } from '../../interfaces';
 import {
     contactFeedbackQuestion,
@@ -60,7 +61,33 @@ export const requestIsEmpty = (req: NextApiRequestWithSession): boolean => {
     return false;
 };
 
+// redactEmailAddress replaces the user portion of an email address so it can be safely logged
+export const redactEmailAddress = (
+    toRedact: string | Mail.Address | (string | Mail.Address)[] | undefined,
+): string | string[] => {
+    const redact = (address: string): string => address.toString().replace(/.*@/, '*****@');
+    if (toRedact !== undefined) {
+        if (typeof toRedact === 'string') {
+            return redact(toRedact);
+        } else if (toRedact.hasOwnProperty('name') && toRedact.hasOwnProperty('address')) {
+            const email = toRedact as Mail.Address;
+            return redact(email.address);
+        } else if (typeof toRedact === 'object') {
+            const addresses = toRedact as Mail.Address[];
+            return addresses.map((email) => {
+                if (email.hasOwnProperty('name') && email.hasOwnProperty('address')) {
+                    return redact(email.address);
+                } else {
+                    return redact(email as unknown as string);
+                }
+            });
+        }
+    }
+    return '*****@*****.***';
+};
+
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
+    let mailOptions: Mail.Options = {};
     try {
         if (requestIsEmpty(req)) {
             redirectTo(res, '/feedback?feedbackSubmitted=false');
@@ -69,25 +96,48 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const feedback: Feedback[] = buildFeedbackForEmail(req);
         const noc = getNocFromIdToken(req, res) || 'UNKNOWN';
-        const mailOptions = setFeedbackMailOptions(noc, feedback);
+        const feedbackSubmitterEmailAddress = getEmailFromIdToken(req, res) || 'UNKNOWN';
+        mailOptions = setFeedbackMailOptions(noc, feedbackSubmitterEmailAddress, feedback);
 
         if (process.env.NODE_ENV !== 'production') {
             logger.info('mailOptions', {
                 context: 'api.feedback',
-                message: mailOptions,
+                mailOptions: {
+                    from: mailOptions.from,
+                    to: redactEmailAddress(mailOptions.to),
+                    subject: mailOptions.subject,
+                    text: mailOptions.text,
+                },
+                message: 'Sending of emails disabled, email not sent',
             });
         } else {
             const mailTransporter = createMailTransporter();
             await mailTransporter.sendMail(mailOptions);
-            logger.info('', {
+            logger.info({
                 context: 'api.feedback',
-                message: 'Email sent.',
+                mailOptions: {
+                    from: mailOptions.from,
+                    to: redactEmailAddress(mailOptions.to),
+                    subject: mailOptions.subject,
+                    text: mailOptions.text,
+                },
+                message: 'Sending of emails enabled, email sent',
             });
         }
 
         redirectTo(res, '/feedback?feedbackSubmitted=true');
         return;
     } catch (error) {
+        logger.error({
+            context: 'api.feedback',
+            mailOptions: {
+                from: mailOptions?.from,
+                to: redactEmailAddress(mailOptions?.to),
+                subject: mailOptions?.subject,
+                text: mailOptions?.text,
+            },
+            message: 'Sending of emails failed, email probably not sent',
+        });
         const message = 'There was a problem receiving the user feedback.';
         redirectToError(res, message, 'api.feedback', error);
     }
