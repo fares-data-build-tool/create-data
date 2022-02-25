@@ -53,6 +53,14 @@ provider:
           - Id: ExpiryRule
             Status: Enabled
             ExpirationInDays: "90"
+      corsConfiguration:
+        CorsRules:
+          - AllowedMethods:
+              - GET
+              - POST
+            AllowedOrigins:
+              - "http://localhost:3000"
+              - "https://*.dft-cfd.com"
 
     netexDataBucket:
       name: fdbt-netex-data-${self:provider.stage}
@@ -70,6 +78,13 @@ provider:
           - Id: ExpiryRule
             Status: Enabled
             ExpirationInDays: "90"
+      corsConfiguration:
+        CorsRules:
+          - AllowedMethods:
+              - GET
+            AllowedOrigins:
+              - "http://localhost:3000"
+              - "https://*.dft-cfd.com"
 
 functions:
   NetexConvertor:

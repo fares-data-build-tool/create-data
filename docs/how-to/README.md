@@ -5,6 +5,7 @@ Common step by step actions
 - [access-aws](./access-aws.md)
 - [access-data-in-s3](./access-data-in-s3.md)
 - [access-the-database](./access-the-database.md)
+- [add-a-new-cfd-admin](./add-a-new-cfd-admin.md)
 - [clean-up-ui-test-nocs](./clean-up-ui-test-nocs.md)
 - [communicate-during-an-incident](./communicate-during-an-incident.md)
 - [delete-a-stuck-export](./delete-a-stuck-export.md)

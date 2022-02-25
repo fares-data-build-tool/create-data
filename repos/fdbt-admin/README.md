@@ -1,6 +1,6 @@
 # FDBT Admin
 
-The codebase for the Create Fares Data admin panel. The site is built using React with Amplify to interact with AWS services.
+The codebase for the Create Fares Data Admin Site. The site is built using React with Amplify to interact with AWS services.
 
 ## Pre-requisites
 
@@ -8,12 +8,15 @@ The codebase for the Create Fares Data admin panel. The site is built using Reac
 -   AWS CLI
 -   [Amplify CLI](https://docs.amplify.aws/cli/start/install)
 
-## Initial Setup for dev
+## Development
+
+### Initial setup
 
 -   If using aws-vault, follow the instructions in 'Using aws-vault' below instead
 -   Run `npm install` to install necessary dependencies
--   Retrieve the contents of the secret, `adminTeamProviderInfo`, from secrets manager in the core or test AWS account
--   Create a file called `team-provider-info.json` in the root of the amplify folder and paste the above content into it
+-   Retrieve the contents of the secret, `adminTeamProviderInfo`, from Secrets Manager in the Core AWS account
+-   Create a file called `team-provider-info.json` in the root of the Amplify folder (`repos/fdbt-admin/amplify/team-provider-info.json`) and paste the above content into it
+-   [Authenticate to AWS](../../docs/how-to/access-aws.md) for the `test` environment
 -   Run `amplify init` to start init process
     -   "Do you want to use an existing environment?": Yes
     -   "Choose the environment you would like to use": test
@@ -21,41 +24,39 @@ The codebase for the Create Fares Data admin panel. The site is built using Reac
     -   "Do you want to use an AWS profile?": Yes
     -   "Please choose the profile you want to use": Profile with correct privileges
 
-## Using aws-vault
+### Developing the site
 
--   When using aws-vault the required setup is slightly different, these instructions assume you have a valid aws-vault setup with necessary access to the AWS accounts
--   Add a new profile to your AWS config file that looks like the following, where `PROFILE_NAME` is the name of the profile you normally use to access the target environment:
+-   [Authenticate to AWS](../../docs/how-to/access-aws.md) for the `test` environment
+-   Run `amplify serve`
+-   The site will now open in the browser and be served on [`http://localhost:3000`](http://localhost:3000)
 
-```
-[profile amplify-{PROFILE_NAME}]
-region=eu-west-2
-output=json
-credential_process=aws-vault exec {PROFILE_NAME} --json
-```
+## Deployment
 
--   Run `npm install` to install necessary dependencies
--   Retrieve the contents of the secret, `adminTeamProviderInfo`, from secrets manager in the core or test AWS account
--   Create a file called `team-provider-info.json` in the root of the amplify folder and paste the above content into it
--   Run `aws-vault exec {PROFILE_NAME} -- amplify init` to start init process
-    -   "Do you want to use an existing environment?": Yes
-    -   "Choose the environment you would like to use": test
-    -   "Choose your default editor": Preferred editor
-    -   "Do you want to use an AWS profile?": Yes
-    -   "Please choose the profile you want to use": Be careful to select the new profile you just added to the config file, ie. `amplify-{PROFILE_NAME}`
+### tl;dr
 
-## Running site
+-   [Authenticate to AWS](../../docs/how-to/access-aws.md) for the desired environment
+-   Run `amplify env checkout <test|preprod|prod>`
+-   Run `amplify publish`
 
--   Run `npm start` to start the site on port `localhost:3000`
+### Retrieving changes to the infrastructure before deploying
 
-## Retrieving changes to the infrastructure
+To retrieve the latest changes to Amplify:
 
--   To retrieve the latest changes to amplify, run `amplify pull`, make sure to do this before making pushing any other amplify changes
+-   Run `amplify pull`, make sure to do this before pushing any other Amplify changes
 
-## Switching envs
+### Switching envs
 
--   If you need to switch amplify envs to work against pre-prod or prod, this can be achieved by running `amplify env checkout {ENV}`
+If you need to switch Amplify envs to work against PreProd or Prod:
 
-## Changes to amplify
+-   [Authenticate to AWS](../../docs/how-to/access-aws.md) for the desired environment
+-   Run `amplify env checkout <test|preprod|prod>`
 
--   After making a change to amplify, either with `amplify add` or by changing the config file, this will need to be pushed up to AWS, make sure you are using the correct env and then run `amplify push`
--   If you have made a change to the `team-provider-info.json` file then this will need to be updated in secrets manager as well
+### Changes to Amplify
+
+After making a change to Amplify, either with `amplify add`, by changing the config files in `./amplify` or the React site, these will need to be pushed up to AWS:
+
+-   Run `amplify publish`
+
+### Changes to Team Provider Info
+
+If you have made any changes to the `team-provider-info.json` file, then you will need to update Secrets Manager in the Core AWS Account with the new JSON value

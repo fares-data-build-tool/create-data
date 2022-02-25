@@ -3,6 +3,7 @@ AWSTemplateFormatVersion: 2010-09-09
 Parameters:
   env:
     Type: String
+
   unauthRoleArn:
     Type: String
 
@@ -160,6 +161,12 @@ Resources:
         - Name: email
           Required: true
           Mutable: true
+        - Name: fullAdmin
+          Mutable: true
+          AttributeDataType: Number
+          NumberAttributeConstraints:
+            MaxValue: "1"
+            MinValue: "0"
 
       AutoVerifiedAttributes: !Ref autoVerifiedAttributes
 
@@ -399,6 +406,22 @@ Resources:
                   - "cognito-idp:ListUserPools"
                 Effect: "Allow"
                 Resource: "*"
+        - PolicyName: allow-s3-access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "s3:DeleteObject"
+                Effect: "Allow"
+                Resource:
+                  - !Sub "arn:aws:s3:::fdbt-netex-data-${env}/*/exports/*"
+                  - !Sub "arn:aws:s3:::fdbt-matching-data-${env}/*/exports/*"
+              - Action:
+                  - "s3:ListBucket"
+                Effect: "Allow"
+                Resource:
+                  - !Sub "arn:aws:s3:::fdbt-netex-data-${env}"
+                  - !Sub "arn:aws:s3:::fdbt-matching-data-${env}"
 
   IdentityPoolRoleMap:
     # Created to map Auth and Unauth roles to the identity pool
