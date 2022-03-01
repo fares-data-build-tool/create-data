@@ -55,7 +55,9 @@ provider:
             ExpirationInDays: "90"
       corsConfiguration:
         CorsRules:
-          - AllowedMethods:
+          - AllowedHeaders:
+              - "*"
+            AllowedMethods:
               - GET
               - POST
             AllowedOrigins:
@@ -80,7 +82,9 @@ provider:
             ExpirationInDays: "90"
       corsConfiguration:
         CorsRules:
-          - AllowedMethods:
+          - AllowedHeaders:
+              - "*"
+            AllowedMethods:
               - GET
             AllowedOrigins:
               - "http://localhost:3000"
