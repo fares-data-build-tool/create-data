@@ -11,10 +11,6 @@ Parameters:
     Type: String
     Default: fdbt
 
-  IwIpSetList:
-    Type: CommaDelimitedList
-    Default: ""
-
   CiIpSetList:
     Type: CommaDelimitedList
     Default: ""
@@ -24,15 +20,6 @@ Parameters:
     Default: ""
 
 Resources:
-  IwIpSet:
-    Type: AWS::WAFv2::IPSet
-    Properties:
-      Description: IP Set for Infinity Works office
-      Name: IwIpSet
-      Scope: CLOUDFRONT
-      IPAddressVersion: IPV4
-      Addresses: !Ref IwIpSetList
-
   CiIpSet:
     Type: AWS::WAFv2::IPSet
     Properties:
@@ -45,7 +32,7 @@ Resources:
   PersonalUserIpSet:
     Type: AWS::WAFv2::IPSet
     Properties:
-      Description: Personal IPs for IW and DFT users of the tool
+      Description: IP Set for Users
       Name: PersonalUserIpSet
       Scope: CLOUDFRONT
       IPAddressVersion: IPV4
@@ -121,17 +108,6 @@ Resources:
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true
             MetricName: AWS-AWSManagedRulesCommonRuleSet
-        - Name: AllowIw
-          Action:
-            Allow: {}
-          Priority: 10
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: AllowIwRuleMetric
-          Statement:
-            IPSetReferenceStatement:
-              Arn: !GetAtt IwIpSet.Arn
         - Name: AllowCi
           Action:
             Allow: {}

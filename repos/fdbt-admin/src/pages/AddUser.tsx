@@ -1,30 +1,25 @@
-import { H1 } from '@govuk-react/heading';
 import { ReactElement, useState } from 'react';
+import { H1 } from '@govuk-react/heading';
 import Button from '@govuk-react/button';
 import { useForm } from 'react-hook-form';
-import { addUserToPool } from '../data/cognito';
-import getCognitoClientAndUserPool from '../utils/cognito';
 
-export interface FormUser {
+import { addUserToPool } from '../data/cognito';
+import { getCognitoClientAndUserPool, cogntioFormatNocs } from '../utils/cognito';
+
+export interface AddFormUser {
     email: string;
     nocs: string;
 }
 
-const formatNocs = (nocs: string): string =>
-    nocs
-        .split(',')
-        .map((noc) => noc.trim())
-        .join('|');
-
 const AddUser = (): ReactElement => {
-    const { register, handleSubmit, formState, reset } = useForm<FormUser>();
+    const { register, handleSubmit, formState, reset } = useForm<AddFormUser>();
     const [createdUserEmail, setCreatedUserEmail] = useState('');
     const [error, setError] = useState('');
 
-    const onSubmit = async (formUser: FormUser) => {
+    const onSubmit = async (formUser: AddFormUser) => {
         setCreatedUserEmail('');
         setError('');
-        const formattedUser = { ...formUser, nocs: formatNocs(formUser.nocs) };
+        const formattedUser = { ...formUser, nocs: cogntioFormatNocs(formUser.nocs) };
         reset();
 
         try {
@@ -42,16 +37,16 @@ const AddUser = (): ReactElement => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="email">User Email</label>
                 <br />
-                <input id="email" name="email" ref={register({ required: true })} />
+                <input id="email" name="email" ref={register({ required: true })} style={{ width: `50%` }} />
                 <br />
                 <br />
                 <label htmlFor="nocs">User National Operator Code (NOC)</label>
                 <br />
                 <small>
-                    If the user has multiple NOCs, enter a comma-separated list. For example, &apos;NOC1,NOC2,NOC3&apos;
+                    If the user has multiple NOCs, enter a comma-separated list. For example: &apos;NOC1,NOC2,NOC3&apos;
                 </small>
                 <br />
-                <input id="nocs" name="nocs" ref={register({ required: true })} />
+                <input id="nocs" name="nocs" ref={register({ required: true })} style={{ width: `75%` }} />
                 <br />
                 <br />
                 <Button disabled={formState.isSubmitting}>Submit</Button>

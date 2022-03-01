@@ -15,9 +15,5 @@ In the event that the support email or phone number changes or we want to update
    3. `SERVICE_EMAIL_ADDRESS` - Email from address for feedback
 3. NeTEx emailer environment variables
    1. `SERVICE_EMAIL_ADDRESS` - Email from address for NeTEx (this change needs to be made in the code or it will be overridden in subsequent releases)
-4. Cognito Email address and email contents
-   1. Needs to be updated in the Cognito CloudFormation stack (see [Releasing infrastructure changes](./release-infrastructure-changes.md))
-   2. Update the `SESSourceArn` parameter to the new desired value
-   3. Update `SupportEmailAddress` parameter to the new desired value
-5. Update the static error page which is saved in the site repo
+4. Update the static error page which is saved in the site repo
    1. After updating the value, the html file will need uploading to the static error S3 bucket in all environments

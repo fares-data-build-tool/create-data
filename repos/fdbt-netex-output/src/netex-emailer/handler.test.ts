@@ -1,7 +1,9 @@
 import { S3Event } from 'aws-lambda';
 import nodemailer from 'nodemailer';
+import Mail from 'nodemailer/lib/mailer';
+
 import * as testData from './testData/testData';
-import { createMailTransporter, netexEmailerHandler } from './handler';
+import { createMailTransporter, netexEmailerHandler, redactEmailAddress } from './handler';
 import * as s3 from '../data/s3';
 import { periodGeoZoneTicket } from '../test-data/matchingData';
 
@@ -56,5 +58,46 @@ describe('netexEmailer SES emailer', () => {
         await netexEmailerHandler(event);
 
         expect(mockMailTransporter).toBeCalledTimes(0);
+    });
+});
+
+describe('redactEmailAddress', () => {
+    it('email as string', () => {
+        const given = 'test@example.com';
+        const expected = '*****@example.com';
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('email as Address', () => {
+        const given: Mail.Address = { name: 'test', address: 'test@example.com' };
+        const expected = '*****@example.com';
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('emails as list of strings', () => {
+        const given: string[] = ['test@example.com'];
+        const expected: string[] = ['*****@example.com'];
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('emails as list of Address', () => {
+        const given: Mail.Address[] = [{ name: 'test', address: 'test@example.com' }];
+        const expected: string[] = ['*****@example.com'];
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('emails as list of multiple strings', () => {
+        const given: string[] = ['test@example.com', 'test2@example2.com'];
+        const expected: string[] = ['*****@example.com', '*****@example2.com'];
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('emails as list of multiple Address', () => {
+        const given: Mail.Address[] = [
+            { name: 'test', address: 'test@example.com' },
+            { name: 'test2', address: 'test2@example2.com' },
+        ];
+        const expected: string[] = ['*****@example.com', '*****@example2.com'];
+        expect(redactEmailAddress(given)).toEqual(expected);
+    });
+    it('email as bad input', () => {
+        const given: string = (1 as unknown) as string;
+        const expected = '*****@*****.***';
+        expect(redactEmailAddress(given)).toEqual(expected);
     });
 });

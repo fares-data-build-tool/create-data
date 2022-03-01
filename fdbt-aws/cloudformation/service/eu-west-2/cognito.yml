@@ -91,8 +91,7 @@ Resources:
           MinimumLength: 8
           TemporaryPasswordValidityDays: 3
       EmailConfiguration:
-        SourceArn: !Ref SESSourceArn
-        EmailSendingAccount: !If [IsProd, "DEVELOPER", "COGNITO_DEFAULT"]
+        EmailSendingAccount: "COGNITO_DEFAULT"
       AdminCreateUserConfig:
         AllowAdminCreateUserOnly: true
       LambdaConfig:

@@ -1,8 +1,9 @@
 import { render, screen, within } from '@testing-library/react';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { UserPoolDescriptionType, UserType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
-import { MAIN_USER_POOL_PREFIX } from '../constants';
+
 import * as cognito from '../data/cognito';
+import { MAIN_USER_POOL_PREFIX } from '../constants';
 import ListUsers from './ListUsers';
 
 const userPoolsMock: UserPoolDescriptionType[] = [
@@ -146,7 +147,7 @@ describe('ListUsers Component', () => {
     test.each(registrationCountTableData)(
         '%s column at position %i displays value %s',
         async (header, columnPosition, value) => {
-            render(<ListUsers />);
+            render(<ListUsers isFullAdmin={false} />);
 
             const headerRow = (await screen.findAllByRole('row'))[0];
             const columnHeader = within(headerRow).getAllByRole('columnheader')[columnPosition as number];
@@ -169,7 +170,7 @@ describe('ListUsers Component', () => {
         async (header, columnPosition, value) => {
             jest.spyOn(cognito, 'listUsersInPool').mockImplementation(() => Promise.resolve(usersMockWithIWBusCoNoc));
 
-            render(<ListUsers />);
+            render(<ListUsers isFullAdmin={false} />);
 
             const headerRow = (await screen.findAllByRole('row'))[0];
             const columnHeader = within(headerRow).getAllByRole('columnheader')[columnPosition as number];
@@ -182,7 +183,7 @@ describe('ListUsers Component', () => {
     );
 
     test('displays email for each user', async () => {
-        render(<ListUsers />);
+        render(<ListUsers isFullAdmin={false} />);
 
         expect(await screen.findByText('test@example.com'));
         expect(await screen.findByText('test2@example.com'));
@@ -190,7 +191,7 @@ describe('ListUsers Component', () => {
     });
 
     test('displays correct attributes against each user', async () => {
-        render(<ListUsers />);
+        render(<ListUsers isFullAdmin={false} />);
 
         expect((await screen.findByText('test@example.com')).closest('tr')).toHaveTextContent('NOC: 1TEST');
         expect((await screen.findByText('test2@example.com')).closest('tr')).toHaveTextContent('NOC: 2TEST');
@@ -202,7 +203,7 @@ describe('ListUsers Component', () => {
     });
 
     test('displays correct status against each user', async () => {
-        render(<ListUsers />);
+        render(<ListUsers isFullAdmin={false} />);
 
         expect((await screen.findByText('test@example.com')).closest('tr')).toHaveTextContent('Registered');
         expect((await screen.findByText('test2@example.com')).closest('tr')).toHaveTextContent('Registered');
@@ -210,7 +211,7 @@ describe('ListUsers Component', () => {
     });
 
     test('sorts users by email alphabetically', async () => {
-        render(<ListUsers />);
+        render(<ListUsers isFullAdmin={false} />);
 
         expect((await screen.findByText('test@example.com')).closest('tbody')?.childNodes[1]).toHaveTextContent(
             'test@example.com',

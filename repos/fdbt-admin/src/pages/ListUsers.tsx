@@ -1,10 +1,20 @@
-import { H1 } from '@govuk-react/heading';
 import { Fragment, ReactElement, useEffect, useState } from 'react';
-import { AttributeListType, UsersListType, UserType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { H1 } from '@govuk-react/heading';
+import {
+    AttributeListType,
+    UsersListType,
+    UserType,
+    UsernameType,
+} from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import Table from '@govuk-react/table';
+
 import { ATTRIBUTE_MAP, STATUS_MAP } from '../constants';
 import { listUsersInPool } from '../data/cognito';
-import getCognitoClientAndUserPool from '../utils/cognito';
+import { getCognitoClientAndUserPool } from '../utils/cognito';
+
+interface ListUsersProps {
+    isFullAdmin: boolean;
+}
 
 const formatAttributes = (attributes: AttributeListType) => {
     return attributes
@@ -25,15 +35,20 @@ const formatAttributes = (attributes: AttributeListType) => {
 const getAttributeValue = (user: UserType, attributeName: string): string | undefined =>
     user?.Attributes?.find((item) => item.Name === attributeName)?.Value;
 
+const getDeleteUrl = (username: UsernameType | undefined): string => (username ? `/deleteUser/${username}` : `/`);
+const getEditUrl = (username: UsernameType | undefined): string => (username ? `/editUser/${username}` : `/`);
+
 const sortByEmail = (a: UserType, b: UserType) => {
     const aEmail = a.Attributes?.find((attribute) => attribute.Name === 'email')?.Value || 'z';
     const bEmail = b.Attributes?.find((attribute) => attribute.Name === 'email')?.Value || 'z';
-
     return aEmail.localeCompare(bEmail);
 };
 
-const ListUsers = (): ReactElement => {
+const ListUsers = ({ isFullAdmin }: ListUsersProps): ReactElement => {
     const [users, setUsers] = useState<UsersListType>([]);
+    const nonTestUsers = users?.filter((user) => !getAttributeValue(user, 'custom:noc')?.includes('IWBusCo'));
+    const completedRegisteredUsers = nonTestUsers.filter((user) => user?.UserStatus === 'CONFIRMED');
+    const pendingRegisteredUsers = nonTestUsers.filter((user) => user?.UserStatus === 'FORCE_CHANGE_PASSWORD');
 
     useEffect(() => {
         const getUsers = async (): Promise<UsersListType> => {
@@ -50,12 +65,6 @@ const ListUsers = (): ReactElement => {
                 setUsers([]);
             });
     }, []);
-
-    const nonTestUsers = users?.filter((user) => !getAttributeValue(user, 'custom:noc')?.includes('IWBusCo'));
-
-    const completedRegisteredUsers = nonTestUsers.filter((user) => user?.UserStatus === 'CONFIRMED');
-
-    const pendingRegisteredUsers = nonTestUsers.filter((user) => user?.UserStatus === 'FORCE_CHANGE_PASSWORD');
 
     return (
         <>
@@ -78,15 +87,24 @@ const ListUsers = (): ReactElement => {
                     </Table.Cell>
                 </Table.Row>
             </Table>
+            <br />
             <Table>
                 <Table.Row>
                     <Table.CellHeader>Email</Table.CellHeader>
+                    {isFullAdmin && <Table.CellHeader>Actions</Table.CellHeader>}
                     <Table.CellHeader>Attributes</Table.CellHeader>
                     <Table.CellHeader>Status</Table.CellHeader>
                 </Table.Row>
                 {users.map((user) => (
                     <Table.Row key={user.Username}>
                         <Table.Cell>{getAttributeValue(user, 'email')}</Table.Cell>
+                        {isFullAdmin && (
+                            <Table.Cell>
+                                <a href={getEditUrl(user.Username)}>Edit</a>
+                                <br />
+                                <a href={getDeleteUrl(user.Username)}>Delete</a>
+                            </Table.Cell>
+                        )}
                         <Table.Cell>{formatAttributes(user.Attributes || [])}</Table.Cell>
                         <Table.Cell>{STATUS_MAP[user.UserStatus || ''] ?? 'Unknown'}</Table.Cell>
                     </Table.Row>
