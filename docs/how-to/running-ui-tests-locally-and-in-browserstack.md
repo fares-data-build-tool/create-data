@@ -11,11 +11,18 @@ Selenium Webdriver Executables
 
 Download Maven from here: [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi)
 
-Download Java and install OpenJDK 13. For Mac: `curl https://download.java.net/java/GA/jdk13.0.2/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-13.0.2\_osx-x64\_bin.tar.gz | tar -xz mv jdk-13.0.2.jdk/ /Library/Java/JavaVirtualMachines/` (this might need `sudo` infront if you get permission denied)
+Download Java and install OpenJDK 13. 
 
-Update `JAVA_HOME` environment variable.
+For Mac: `curl https://download.java.net/java/GA/jdk13.0.2/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-13.0.2\_osx-x64\_bin.tar.gz` (this might need `sudo` infront if you get permission denied)
 
-Assuming your `.bash_profile` has `export JAVA_HOME=$(/usr/libexec/java_home)` just do: `source ~/.bash_profile`
+Then, wherever you curl'd it to, run `sudo tar xvzf {PATH_TO_FILE}/openjdk-13.0.2_osx-x64_bin.tar.gz -C /Library/Java/JavaVirtualMachines` (potentially have to make the /Library/Java/JavaVirtualMachines directory first)
+
+Update `JAVA_HOME` environment variable by doing the following:
+
+- run `/usr/libexec/java_home -V` and the output should give the path to your jdk, e.g. `/Library/Java/JavaVirtualMachines/jdk-13.0.2.jdk/Contents/Home`
+- in .bashrc or .zshrc, add `export JAVA_HOME=$(/usr/libexec/java_home)`
+- `source .bashrc` or .zshrc
+- `echo $JAVA_HOME` and see that it has set it
 
 ### Running the tests locally
 
