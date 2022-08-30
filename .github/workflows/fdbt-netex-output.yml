@@ -41,6 +41,7 @@ jobs:
     
     - name: build
       run: |
+        npm install
         echo "Starting build"
         npm ci
         echo " ci finished"
