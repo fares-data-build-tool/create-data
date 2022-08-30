@@ -8,7 +8,7 @@ name: 'fdbt-netex-output'
 
 defaults:
   run:
-    working-directory: ./
+    working-directory: ./repos/fdbt-netex-output
 
 jobs:
 
@@ -31,11 +31,11 @@ jobs:
     - name: audit-netex-validator
       run: |
         pip install safety
-        cd ${{ github.workspace }}/repos/fdbt-netex-output/src/netex-validator
+        cd ${{ github.workspace }}/src/netex-validator
         safety check -r requirements.txt
     
     - name: deploy-netex-validator 
-      if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
+      if: ${{ github.ref == 'refs/heads/migrate-circle-ci-pipelines' || github.ref == 'refs/heads/develop' }}
       run: |
         echo ${{ env.WORKSPACE }}
     
