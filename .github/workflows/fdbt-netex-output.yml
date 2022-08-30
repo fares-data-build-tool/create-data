@@ -31,7 +31,7 @@ jobs:
     - name: audit-netex-validator
       run: |
         pip install safety
-        cd ${{ github.workspace }}/src/netex-validator
+        cd src/netex-validator
         safety check -r requirements.txt
     
     - name: deploy-netex-validator 
