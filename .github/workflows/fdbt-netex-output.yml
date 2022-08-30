@@ -1,7 +1,5 @@
 on:
   push:
-    paths: 
-    - './repos/fdbt-netex-output/*'
     branches:
     - 'migrate-circle-ci-pipelines'
   workflow_dispatch:
