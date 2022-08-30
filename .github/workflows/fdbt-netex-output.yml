@@ -39,7 +39,14 @@ jobs:
     - name: deploy-netex-validator 
       if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
       run: |
-        echo ${{ env.WORKSPACE }}
+        echo "Deploying..."
+        curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+        sudo npm i -g serverless@2.35.0
+        cd ${{ github.workspace }}/src/netex-validator
+        npm ci
+        export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
+        echo "Finished deploy"
 
     - name: Use Node.js 
       uses: actions/setup-node@v3
@@ -62,6 +69,14 @@ jobs:
       run: |
         echo "Linting"
         npm run lint
+    
+    - name: deploy-netex-output-resources
+      if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
+      run: |
+        echo "Deploying..."
+        sudo npm i -g serverless@2.35.0
+        export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
+        echo "Finished deploy"
 
 
     
