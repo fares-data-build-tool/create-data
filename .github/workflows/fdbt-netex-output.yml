@@ -35,7 +35,7 @@ jobs:
         safety check -r requirements.txt
     
     - name: deploy-netex-validator 
-      if: ${{ github.ref == 'refs/heads/migrate-circle-ci-pipelines' || github.ref == 'refs/heads/develop' }}
+      if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
       run: |
         echo ${{ env.WORKSPACE }}
     
@@ -43,6 +43,7 @@ jobs:
       run: |
         echo "Starting build"
         npm ci
+        echo " ci finished"
         npm run build
 
     - name: test
