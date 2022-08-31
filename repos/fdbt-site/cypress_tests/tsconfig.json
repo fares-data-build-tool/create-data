@@ -6,7 +6,7 @@
         "target": "es5",
         "jsx": "react",
         "allowJs": true,
-        "types": ["cypress", "cypress-file-upload"],
+        "types": ["cypress", "cypress-file-upload", "node"],
         "lib": ["ES5", "ES6", "DOM"],
         "moduleResolution": "node"
     },
