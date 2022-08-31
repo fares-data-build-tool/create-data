@@ -3,10 +3,10 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "test": "jest --maxWorkers=2",
+        "test": "jest",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage --watchAll",
-        "test:ci": "CI=true jest --maxWorkers=2 --silent -w 1 --forceExit",
+        "test:ci": "CI=true jest --silent -w 1 --forceExit",
         "test:updateSnapshots": "jest --updateSnapshot",
         "dev": "export NODE_ENV='development' NODE_OPTIONS='--inspect' && ts-node --project tsconfig.server.json server/index.ts",
         "build:next": "next build",
