@@ -32,6 +32,7 @@ describe('_document', () => {
                 '/_app': [''],
             },
             polyfillFiles: [''],
+            rootMainFiles: [''],
         },
         devOnlyCacheBusterQueryString: '',
         docComponentsRendered: {},
