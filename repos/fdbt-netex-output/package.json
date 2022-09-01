@@ -8,7 +8,8 @@
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint --fix . --ext .ts",
         "netexConvert": "NODE_ENV=development UNVALIDATED_NETEX_BUCKET=$UNVALIDATED_NETEX_BUCKET ts-node src/netex-convertor/run-local.ts \"$EVENT_DATA\"",
-        "netexEmail": "NODE_ENV=development MATCHING_DATA_BUCKET=$MATCHING_DATA_BUCKET ts-node src/netex-emailer/run-local.ts \"$EVENT_DATA\""
+        "netexEmail": "NODE_ENV=development MATCHING_DATA_BUCKET=$MATCHING_DATA_BUCKET ts-node src/netex-emailer/run-local.ts \"$EVENT_DATA\"",
+        "preinstall": "npx npm-force-resolutions"
     },
     "husky": {
         "hooks": {
@@ -30,11 +31,15 @@
         "libxslt": "^0.10.0",
         "lodash": "^4.17.21",
         "moment": "^2.29.4",
-        "moment-timezone": "^0.5.31",
+        "moment-timezone": "^0.5.37",
         "mysql2": "^2.1.0",
         "nodemailer": "^6.6.2",
+        "npm-force-resolutions": "0.0.10",
         "typescript": "^4.3.5",
         "xml2json": "^0.12.0"
+    },
+    "resolutions": {
+        "ansi-regex": "4.1.1"
     },
     "devDependencies": {
         "@types/aws-lambda": "^8.10.77",
@@ -49,7 +54,7 @@
         "@typescript-eslint/eslint-plugin": "^5.33.1",
         "@typescript-eslint/parser": "^5.33.1",
         "aws-lambda-mock-context": "^3.2.1",
-        "eslint": "^6.8.0",
+        "eslint": "^8.23.0",
         "eslint-config-airbnb-base": "^14.1.0",
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-import": "^2.23.4",

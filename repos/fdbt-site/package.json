@@ -25,7 +25,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": ". ${NVM_DIR}/nvm.sh && nvm use && NODE_ENV=production lint-staged && CI=true jest --silent && tsc && tsc --project tsconfig.server.json && tsc --project cypress_tests"
+            "pre-commit": ". ${NVM_DIR}/nvm.sh && nvm use && NODE_ENV=production lint-staged && CI=true jest --silent && tsc && tsc --project tsconfig.server.json"
         }
     },
     "lint-staged": {
