@@ -20,7 +20,7 @@ jobs:
     environment:
       name: test
     env:
-      WORKSPACE: none
+      WORKSPACE: test
     
     steps:
     - name: Checkout
