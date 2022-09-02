@@ -138,7 +138,6 @@ jobs:
         aws-region: eu-west-2
 
     - name: Deploy Amazon ECS task definition
-      if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
       uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
