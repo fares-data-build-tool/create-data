@@ -37,6 +37,7 @@ const getAttributeValue = (user: UserType, attributeName: string): string | unde
 
 const getDeleteUrl = (username: UsernameType | undefined): string => (username ? `/deleteUser/${username}` : `/`);
 const getEditUrl = (username: UsernameType | undefined): string => (username ? `/editUser/${username}` : `/`);
+const getResendUrl = (username: UsernameType | undefined): string => (username ? `/editUser/${username}` : `/`);
 
 const sortByEmail = (a: UserType, b: UserType) => {
     const aEmail = a.Attributes?.find((attribute) => attribute.Name === 'email')?.Value || 'z';
@@ -93,6 +94,7 @@ const ListUsers = ({ isFullAdmin }: ListUsersProps): ReactElement => {
                     <Table.CellHeader>Email</Table.CellHeader>
                     {isFullAdmin && <Table.CellHeader>Actions</Table.CellHeader>}
                     <Table.CellHeader>Attributes</Table.CellHeader>
+                    <Table.CellHeader>Resend</Table.CellHeader>
                     <Table.CellHeader>Status</Table.CellHeader>
                 </Table.Row>
                 {users.map((user) => (
@@ -106,6 +108,16 @@ const ListUsers = ({ isFullAdmin }: ListUsersProps): ReactElement => {
                             </Table.Cell>
                         )}
                         <Table.Cell>{formatAttributes(user.Attributes || [])}</Table.Cell>
+                        <Table.Cell>
+                            {STATUS_MAP[user.UserStatus || ''] === 'Awaiting Registration' ? (
+                                <>
+                                    <br />
+                                    <a href={getResendUrl(user.Username)}>Resend</a>
+                                </>
+                            ) : (
+                                ''
+                            )}
+                        </Table.Cell>
                         <Table.Cell>{STATUS_MAP[user.UserStatus || ''] ?? 'Unknown'}</Table.Cell>
                     </Table.Row>
                 ))}
