@@ -138,6 +138,10 @@ export const showProductAgainstService = (
     const momentServiceStartDate = moment(serviceStartDate, 'DD/MM/YYYY').valueOf();
     const momentServiceEndDate = serviceEndDate ? moment(serviceEndDate, 'DD/MM/YYYY').valueOf() : undefined;
 
+    // returns TRUE if:
+    // there is no product end date OR there is a product end date and it is after the service start date
+    //          AND
+    // there is no service end date OR there is a service end date and it is after the product start date
     return (
         (!momentProductEndDate || momentProductEndDate >= momentServiceStartDate) &&
         (!momentServiceEndDate || momentServiceEndDate >= momentProductStartDate)

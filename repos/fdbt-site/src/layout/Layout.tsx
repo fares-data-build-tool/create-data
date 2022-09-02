@@ -40,7 +40,7 @@ export const BaseLayout = ({
     return (
         <>
             <Head>
-                <link rel="shortcut icon" href={favicon} />
+                <link rel="shortcut icon" href={favicon.src} />
                 <title>{buildTitle(errors, title || 'Create Fares Data')}</title>
                 <meta name="description" content={description || 'Create Fares Data'} />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { TwoThirdsLayout } from '../layout/Layout';
 import DACimage from '../assets/images/DAC_certification.png';
+import Image from 'next/image';
 
 const title = 'Accessibility - Create Fares Data Service';
 const description = 'Accessibility page for the Create Fares Data Service';
@@ -97,7 +98,7 @@ const Accessibility = (): ReactElement => {
                 .
             </p>
             <div>
-                <img width="150" src={DACimage} alt="DAC AA certification" />
+                <Image width="150" height="80" src={DACimage} alt="DAC AA certification" />
             </div>
         </TwoThirdsLayout>
     );
