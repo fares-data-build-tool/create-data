@@ -22,5 +22,6 @@
       "providerPlugin": "awscloudformation",
       "type": "manual"
     }
-  }
+  },
+  "function": {}
 }
