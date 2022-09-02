@@ -1,0 +1,94 @@
+on:
+  push:
+    branches:
+    - '**'
+    paths:
+    - repos/fdbt-reference-data-service/*
+  workflow_dispatch:
+
+name: 'fdbt-reference-data-service'
+
+defaults:
+  run:
+    working-directory: ./repos/fdbt-reference-data-service
+
+jobs:
+
+  fdbt-reference-data-service:
+    name: 'fdbt-reference-data-service'
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: none
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set variables
+      id: setvars
+      run: |
+        if [[ "${{github.ref}}" == "refs/heads/develop" ]]; then
+          echo "WORKSPACE=test" >> "$GITHUB_ENV"
+        fi
+
+        if [[ "${{github.ref}}" == "refs/heads/master" ]]; then
+          echo "WORKSPACE=preprod" >> "$GITHUB_ENV"
+        fi
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+      
+    - name: audit-reference-data-retrievers
+      run: |
+        pip install safety
+        cd src/retrievers
+        safety check -r requirements.txt
+
+    - name: Use Node.js 
+      uses: actions/setup-node@v3
+      with:
+        node-version: 12.x
+
+    - name: deploy-reference-data-retrievers
+      if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
+      run: |
+        echo "Deploying..."
+        curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+        cd src/retrievers
+        npm ci
+        npm run deploy:${{ env.WORKSPACE }}
+        echo "Finished deploy"
+
+    - name: audit-reference-data-uploaders
+      run: |
+        pip install safety
+        cd src/uploaders
+        safety check -r requirements.txt
+        safety check -r requirements.test.txt
+    
+    - name: test-reference-data-uploaders
+      run: |
+        cd src/uploaders
+        pip install -r requirements.test.txt
+        echo "Running tests..."
+        python3 -m pytest tests/
+
+    - name: deploy-reference-data-uploaders-to
+      if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
+      run: |
+        echo "Deploying..."
+        curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+        cd src/uploaders
+        npm ci
+        npm run deploy:${{ env.WORKSPACE }}
+        echo "Finished deploy"
+
+    
+
+
+    
+    

@@ -1,0 +1,25 @@
+on:
+  push:
+    branches:
+    - '**'
+    paths:
+    - repos/fdbt-types/*
+  workflow_dispatch:
+
+name: 'fdbt-types'
+
+defaults:
+  run:
+    working-directory: ./repos/fdbt-types
+
+jobs:
+
+  fdbt-types_to_deploy:
+    name: 'fdbt-types'
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: none
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
