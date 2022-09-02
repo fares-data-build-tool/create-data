@@ -52,7 +52,7 @@ jobs:
         echo "Deploying..."
         curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
         sudo apt-get install -y nodejs
-        sudo npm i -g serverless@2.35.0
+        sudo npm i -g serverless@3.22.0
         cd src/netex-validator
         npm ci
         export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
@@ -84,7 +84,7 @@ jobs:
       if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
       run: |
         echo "Deploying..."
-        sudo npm i -g serverless@2.35.0
+        sudo npm i -g serverless@3.22.0
         export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
         echo "Finished deploy"
 
