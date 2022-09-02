@@ -21,10 +21,10 @@ jobs:
     environment:
       name: preprod
     env:
-      ECS_SERVICE: ${{ secrets.MY_ECS_SERVICE }}                 # set this to your Amazon ECS service name
-      ECS_CLUSTER: ${{ secrets.MY_ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
-      ECS_TASK_DEFINITION: ${{ secrets.MY_ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
-      CONTAINER_NAME: ${{ secrets.MY_CONTAINER_NAME }}
+      ECS_SERVICE: ${{ secrets.ECS_SERVICE }}                 # set this to your Amazon ECS service name
+      ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
+      ECS_TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
+      CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     
@@ -59,13 +59,13 @@ jobs:
         echo "Linting"
         npm run lint
 
-    - name: compile-typescript
-      run: |
-        echo "Compiling typescript for site"
-        ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
-        cd cypress_tests
-        npm ci
-        ./node_modules/.bin/tsc
+    # - name: compile-typescript
+    #   run: |
+    #     echo "Compiling typescript for site"
+    #     ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
+    #     cd cypress_tests
+    #     npm ci
+    #     ./node_modules/.bin/tsc
 
     # build-and-push-image (tfn-fdbt-core) 
 

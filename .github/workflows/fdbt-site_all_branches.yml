@@ -54,10 +54,10 @@ jobs:
         echo "Linting"
         npm run lint
 
-    - name: compile-typescript
-      run: |
-        echo "Compiling typescript for site"
-        ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
-        cd cypress_tests
-        npm ci
-        ./node_modules/.bin/tsc
+    # - name: compile-typescript
+    #   run: |
+    #     echo "Compiling typescript for site"
+    #     ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
+    #     cd cypress_tests
+    #     npm ci
+    #     ./node_modules/.bin/tsc
