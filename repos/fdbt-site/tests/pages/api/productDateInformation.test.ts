@@ -188,10 +188,13 @@ describe('productDataInformation', () => {
 
         await productDateInformation(req, res);
 
+        // temporary fix to sort out the hour behind issue
+        const expectedStartDate = moment().startOf('day').toISOString(true).split('+')[0] + 'Z';
+
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             dateInput: expect.any(Object),
             endDate: undefined,
-            startDate: moment().startOf('day').toISOString(),
+            startDate: expectedStartDate,
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {

@@ -84,7 +84,7 @@ provider:
         CorsRules:
           - AllowedHeaders:
               - "*"
-            AllowedMethods:
+          - AllowedMethods:
               - GET
             AllowedOrigins:
               - "http://localhost:3000"
