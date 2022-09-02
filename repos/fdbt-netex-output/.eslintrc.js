@@ -27,6 +27,13 @@ module.exports = {
         'jest/no-identical-title': 'error',
         'jest/valid-expect': 'error',
         'no-unused-vars': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/ban-types': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-argument': 'off',
+        '@typescript-eslint/restrict-template-expressions': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unused-vars': [
             'error',
             {
