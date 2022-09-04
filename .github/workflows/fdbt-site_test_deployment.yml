@@ -1,9 +1,9 @@
 on:
   push:
     branches:
-    - 'develop'
-    paths:
-    - repos/fdbt-site/*
+    - '**'
+    # paths:
+    # - repos/fdbt-site/*
   workflow_dispatch:
 
 name: 'fdbt-site_test'
@@ -87,6 +87,11 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
+
+    - name: debug
+      run: |
+        echo "Starting debug"
+        echo ${{ steps.build-image.outputs.image }} | sed 's/./& /g'
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
