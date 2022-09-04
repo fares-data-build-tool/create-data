@@ -89,7 +89,7 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
 
     - name: scan Amazon ECR
-      id: build-image
+      id: scan-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: fdbt-site
