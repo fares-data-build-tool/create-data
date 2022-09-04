@@ -21,10 +21,10 @@ jobs:
     environment:
       name: test
     env:
-      ECS_SERVICE: ${{ secrets.MY_ECS_SERVICE }}                 # set this to your Amazon ECS service name
-      ECS_CLUSTER: ${{ secrets.MY_ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
-      ECS_TASK_DEFINITION: ${{ secrets.MY_ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
-      CONTAINER_NAME: ${{ secrets.MY_CONTAINER_NAME }}
+      ECS_SERVICE: ${{ secrets.ECS_SERVICE }}                 # set this to your Amazon ECS service name
+      ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
+      ECS_TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
+      CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
     
     steps:
     - name: Checkout
