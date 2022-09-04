@@ -1,9 +1,9 @@
 on:
   push:
     branches:
-    - 'develop'
-    paths:
-    - repos/fdbt-site/*
+    - '**'
+    # paths:
+    # - repos/fdbt-site/*
   workflow_dispatch:
 
 name: 'fdbt-site_test'
@@ -88,12 +88,21 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
 
-    - name: Scan Docker image
-      id: docker-scan
-      uses: alexjurkiewicz/ecr-scan-image@v1.7.0
-      with:
-        repository: fdbt-site
-        tag: ${{ github.sha }}
+    - name: scan Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: fdbt-site
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker scan $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    # - name: Scan Docker image
+    #   id: docker-scan
+    #   uses: alexjurkiewicz/ecr-scan-image@v1.7.0
+    #   with:
+    #     repository: fdbt-site
+    #     tag: ${{ github.sha }}
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
