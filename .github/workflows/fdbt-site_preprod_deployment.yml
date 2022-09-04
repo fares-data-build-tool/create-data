@@ -88,32 +88,12 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
 
-    - name: check-image-scan-results
-      run: |
-        yum install -y jq
-        aws ecr wait image-scan-complete --repository-name "fdbt-site" --image-id "${{ github.sha }}"
-        if [ $(echo $?) -eq 0 ]; then
-          FINDINGS=$(aws ecr describe-image-scan-findings --repository-name "fdbt-site" --image-id "${{ github.sha }}")
-            status=$(echo "${FINDINGS}" | jq -r ".imageScanStatus.status")
-          NUMBER_OF_FINDINGS=$(echo "${FINDINGS}" | jq -r ".imageScanFindings.findings | length")
-          FINDING_SEVERITY_COUNTS=$(echo "${FINDINGS}" | jq -r ".imageScanFindings.findingSeverityCounts")
-
-          CRITICAL=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.CRITICAL')
-          HIGH=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.HIGH')
-          MEDIUM=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.MEDIUM')
-          LOW=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.LOW')
-          INFORMATIONAL=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.INFORMATIONAL')
-          UNDEFINED=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.UNDEFINED')
-
-          if [ ${CRITICAL} != null ] || [ ${HIGH} != null ]; then
-            echo "ECR image contains vulnerabilities at CRITICAL or HIGH level, with a total of ${NUMBER_OF_FINDINGS} found"
-            echo ${FINDING_SEVERITY_COUNTS}
-            exit 1
-          fi
-        else
-          echo "Waiting for scan result timed out!"
-          exit 2
-        fi
+    - name: Scan Docker image
+      id: docker-scan
+      uses: alexjurkiewicz/ecr-scan-image@v1.7.0
+      with:
+        repository: fdbt-site
+        tag: ${{ github.sha }}
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
