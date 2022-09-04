@@ -1,12 +1,12 @@
 on:
   push:
-    tags:
-    - 'v*'
+    branches:
+    - 'develop'
     paths:
     - repos/fdbt-reference-data-service/*
   workflow_dispatch:
 
-name: 'fdbt-reference-data-service_prod'
+name: 'fdbt-reference-data-service_to_test'
 
 defaults:
   run:
@@ -14,13 +14,13 @@ defaults:
 
 jobs:
 
-  fdbt-reference-data-service_to_prod:
-    name: 'fdbt-reference-data-service_to_prod'
+  fdbt-reference-data-service_deploy_to_test:
+    name: 'fdbt-reference-data-service_to_test'
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: prod
+      WORKSPACE: test
     environment:
-      name: prod
+      name: test
     
     steps:
     - name: Checkout

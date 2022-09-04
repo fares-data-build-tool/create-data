@@ -1,12 +1,12 @@
 on:
   push:
-    tags:
-    - 'v*'
+    branches:
+    - 'master'
     paths:
     - repos/fdbt-netex-output/*
   workflow_dispatch:
 
-name: 'fdbt-netex-output_prod'
+name: 'fdbt-netex-output_preprod'
 
 defaults:
   run:
@@ -14,13 +14,13 @@ defaults:
 
 jobs:
 
-  fdbt-netex-output_to_prod:
-    name: 'fdbt-netex-output_to_prod'
+  fdbt-netex-output_deploy_to__preprod:
+    name: 'fdbt-netex-output_preprod'
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: prod
+      WORKSPACE: preprod
     environment:
-      name: prod
+      name: preprod
     
     steps:
     - name: Checkout

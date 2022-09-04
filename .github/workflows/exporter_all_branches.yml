@@ -2,6 +2,8 @@ on:
   push:
     branches:
     - '**'
+    - '!develop'
+    - '!master'
     paths:
     - repos/exporter/*
   workflow_dispatch:
@@ -24,17 +26,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Set variables
-      id: setvars
-      run: |
-        if [[ "${{github.ref}}" == "refs/heads/develop" ]]; then
-          echo "WORKSPACE=test" >> "$GITHUB_ENV"
-        fi
-
-        if [[ "${{github.ref}}" == "refs/heads/master" ]]; then
-          echo "WORKSPACE=preprod" >> "$GITHUB_ENV"
-        fi
-
     - name: Use Node.js 
       uses: actions/setup-node@v3
       with:
@@ -56,10 +47,3 @@ jobs:
       run: |
         echo "Linting"
         npm run lint
-    
-    - name: deploy-exporter
-      if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
-      run: |
-        echo "Deploying..."
-        export STAGE=${{ env.WORKSPACE }} && node_modules/.bin/cdk deploy --require-approval never --ci --no-color
-        echo "Finished deploy" 
