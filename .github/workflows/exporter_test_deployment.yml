@@ -1,12 +1,12 @@
 on:
   push:
-    tags:
-    - 'v*'
+    branches:
+    - 'develop'
     paths:
     - repos/exporter/*
   workflow_dispatch:
 
-name: 'exporter_prod'
+name: 'exporter_test'
 
 defaults:
   run:
@@ -14,13 +14,13 @@ defaults:
 
 jobs:
 
-  exporter_to_deploy_to_prod:
-    name: 'exporter_to_deploy_to_prod'
+  exporter_to_deploy_to_test:
+    name: 'exporter_test'
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: prod
+      WORKSPACE: test
     environment:
-      name: prod
+      name: test
     
     steps:
     - name: Checkout

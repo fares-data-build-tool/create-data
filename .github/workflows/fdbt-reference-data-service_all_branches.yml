@@ -2,6 +2,8 @@ on:
   push:
     branches:
     - '**'
+    - '!develop'
+    - '!master'
     paths:
     - repos/fdbt-reference-data-service/*
   workflow_dispatch:
@@ -24,17 +26,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Set variables
-      id: setvars
-      run: |
-        if [[ "${{github.ref}}" == "refs/heads/develop" ]]; then
-          echo "WORKSPACE=test" >> "$GITHUB_ENV"
-        fi
-
-        if [[ "${{github.ref}}" == "refs/heads/master" ]]; then
-          echo "WORKSPACE=preprod" >> "$GITHUB_ENV"
-        fi
-
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
@@ -51,17 +42,6 @@ jobs:
       with:
         node-version: 12.x
 
-    - name: deploy-reference-data-retrievers
-      if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
-      run: |
-        echo "Deploying..."
-        curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-        sudo apt-get install -y nodejs
-        cd src/retrievers
-        npm ci
-        npm run deploy:${{ env.WORKSPACE }}
-        echo "Finished deploy"
-
     - name: audit-reference-data-uploaders
       run: |
         pip install safety
@@ -75,17 +55,6 @@ jobs:
         pip install -r requirements.test.txt
         echo "Running tests..."
         python3 -m pytest tests/
-
-    - name: deploy-reference-data-uploaders-to
-      if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
-      run: |
-        echo "Deploying..."
-        curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-        sudo apt-get install -y nodejs
-        cd src/uploaders
-        npm ci
-        npm run deploy:${{ env.WORKSPACE }}
-        echo "Finished deploy"
 
     
 

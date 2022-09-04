@@ -1,12 +1,12 @@
 on:
   push:
-    tags:
-    - 'v*'
+    branches:
+    - 'master'
     paths:
     - repos/fdbt-reference-data-service/*
   workflow_dispatch:
 
-name: 'fdbt-reference-data-service_prod'
+name: 'fdbt-reference-data-service_preprod'
 
 defaults:
   run:
@@ -14,13 +14,13 @@ defaults:
 
 jobs:
 
-  fdbt-reference-data-service_to_prod:
-    name: 'fdbt-reference-data-service_to_prod'
+  fdbt-reference-data-service_deploy_to_preprod:
+    name: 'fdbt-reference-data-service_preprod'
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: prod
+      WORKSPACE: preprod
     environment:
-      name: prod
+      name: preprod
     
     steps:
     - name: Checkout
