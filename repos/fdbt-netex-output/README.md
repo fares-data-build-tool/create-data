@@ -101,5 +101,3 @@ make generate-validate-all-parallel
 ```
 
 Ensure that no validation errors occur.
-
-
