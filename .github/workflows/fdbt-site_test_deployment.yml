@@ -120,7 +120,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
 
-     - name: Deploy Amazon ECS task definition
+    - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
