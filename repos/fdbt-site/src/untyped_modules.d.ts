@@ -45,9 +45,7 @@ declare module '*.svg' {
 }
 
 declare module '*.ico' {
-    const value: {
-        src: string;
-    };
+    const value: string;
     export = value;
 }
 

@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import Image from 'next/image';
 
 interface FileAttachmentProps {
     displayName: string;
@@ -17,7 +16,7 @@ const FileAttachment: FC<FileAttachmentProps> = ({
     <section className="file-attachment">
         <div className="file-attachment-thumbnail">
             <a href={attachmentUrl} download tabIndex={-1} aria-hidden>
-                <Image alt="" src={imageUrl} tabIndex={-1} aria-hidden />
+                <img alt="" src={imageUrl} tabIndex={-1} aria-hidden />
             </a>
         </div>
         <div>
