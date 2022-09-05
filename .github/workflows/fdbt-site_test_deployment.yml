@@ -88,18 +88,17 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
 
-    - name: debug
-      run: |
-        echo "Starting debug"
-        echo ${{ steps.build-image.outputs.image }} | sed 's/./& /g'
-
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: fdbt-site
+        IMAGE_TAG: ${{ github.sha }}
       uses: aws-actions/amazon-ecs-render-task-definition@97587c9d45a4930bf0e3da8dd2feb2a463cf4a3a
       with:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
+        image: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
     - name: Logout of Amazon ECR
       if: always()
@@ -121,7 +120,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
 
-    - name: Deploy Amazon ECS task definition
+     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
