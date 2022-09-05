@@ -47,7 +47,7 @@ jobs:
         echo 3
         cd ..
         ls
-        run_tests_in_browserstack.sh
+        .run_tests_in_browserstack.sh
     
     - name: build
       run: |
