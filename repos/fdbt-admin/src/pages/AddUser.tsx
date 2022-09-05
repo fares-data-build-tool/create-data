@@ -4,7 +4,7 @@ import Button from '@govuk-react/button';
 import { useForm } from 'react-hook-form';
 
 import { addUserToPool } from '../data/cognito';
-import { getCognitoClientAndUserPool, cogntioFormatNocs } from '../utils/cognito';
+import { getCognitoClientAndUserPool, cognitoFormatNocs } from '../utils/cognito';
 
 export interface AddFormUser {
     email: string;
@@ -19,7 +19,7 @@ const AddUser = (): ReactElement => {
     const onSubmit = async (formUser: AddFormUser) => {
         setCreatedUserEmail('');
         setError('');
-        const formattedUser = { ...formUser, nocs: cogntioFormatNocs(formUser.nocs) };
+        const formattedUser = { ...formUser, nocs: cognitoFormatNocs(formUser.nocs) };
         reset();
 
         try {

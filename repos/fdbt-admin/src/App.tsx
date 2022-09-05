@@ -10,6 +10,7 @@ import DeleteExport from './pages/DeleteExport';
 import EditUser from './pages/EditUser';
 import ListIncompleteExports from './pages/ListIncompleteExports';
 import ListUsers from './pages/ListUsers';
+import ResendInvite from './pages/ResendInvite';
 
 interface AuthDataAttributes {
     'custom:fullAdmin': number;
@@ -49,6 +50,9 @@ const App = (): ReactElement => {
                     </Route>
                     <Route path="/editUser/:username">
                         <EditUser isFullAdmin={isFullAdmin} />
+                    </Route>
+                    <Route path="/resendInvite/:username">
+                        <ResendInvite isFullAdmin={isFullAdmin} />
                     </Route>
                     {/* Exports */}
                     <Route path="/listIncompleteExports">
