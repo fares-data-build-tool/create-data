@@ -1,1080 +1,1083 @@
-version: 2.1
-
-slack-fail-post-step: &slack-fail-post-step
-  post-steps:
-    - slack/notify:
-        event: fail
-        template: basic_fail_1
-
-orbs:
-  aws-cli: circleci/aws-cli@2.0.0
-  aws-ecr: circleci/aws-ecr@6.15.3
-  aws-ecs: circleci/aws-ecs@2.1.0
-  slack: circleci/slack@4.4.2
-
-parameters:
-  # This parameter is used to trigger the main workflow
-  trigger:
-    type: boolean
-    default: true
-
-  # A parameter per package
-  fdbt-admin:
-    type: boolean
-    default: false
-  fdbt-netex-output:
-    type: boolean
-    default: false
-  fdbt-reference-data-service:
-    type: boolean
-    default: false
-  fdbt-site:
-    type: boolean
-    default: false
-  exporter:
-    type: boolean
-    default: false
-  fdbt-types:
-    type: boolean
-    default: false
-
-executors:
-  node:
-    docker:
-      - image: circleci/node
-
-jobs:
-  slack-notify:
-    docker:
-      - image: "cimg/base:stable"
-    steps:
-      - slack/notify:
-          event: pass
-          template: basic_success_1
-
-  trigger-workflows:
-    executor: node
-    steps:
-      - checkout
-      - run:
-          name: Trigger workflows
-          command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
-
-  checkout-repo:
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project
-    steps:
-      - checkout
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "*"
-
-  build:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Starting build"
-            npm ci
-            npm run build
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - "./repos/<< parameters.package_name >>/node_modules"
-
-  test:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Running tests"
-            npm run test:ci
-
-  lint:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Linting"
-            npm run lint
-
-  # fdbt-site
-  run-ui-tests:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    executor: aws-cli/default
-    steps:
-      - aws-cli/setup:
-          profile-name: default
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            sudo apt-get install jq
-            cd cypress_tests
-            cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
-            cd ..
-            ~/project/repos/<< parameters.package_name >>/run_tests_in_browserstack.sh
-          no_output_timeout: 100m
-
-  compile-typescript:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    executor: aws-cli/default
-    steps:
-      - aws-cli/setup:
-          profile-name: default
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Compiling typescript for site"
-            ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
-
-  check-image-scan-results:
-    parameters:
-      repo:
-        type: string
-      tag:
-        type: string
-    docker:
-      - image: amazon/aws-cli
-        entrypoint: bash
-    steps:
-      - run:
-          name: Install dependencies
-          command: |
-            yum install -y jq
-      - run:
-          name: Check Image Scan Findings
-          command: |
-            aws ecr wait image-scan-complete --repository-name "<< parameters.repo >>" --image-id "imageTag=<< parameters.tag >>"
-            if [ $(echo $?) -eq 0 ]; then
-              FINDINGS=$(aws ecr describe-image-scan-findings --repository-name "<< parameters.repo >>" --image-id "imageTag=<< parameters.tag >>")
-                status=$(echo "${FINDINGS}" | jq -r ".imageScanStatus.status")
-              NUMBER_OF_FINDINGS=$(echo "${FINDINGS}" | jq -r ".imageScanFindings.findings | length")
-              FINDING_SEVERITY_COUNTS=$(echo "${FINDINGS}" | jq -r ".imageScanFindings.findingSeverityCounts")
-
-              CRITICAL=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.CRITICAL')
-              HIGH=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.HIGH')
-              MEDIUM=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.MEDIUM')
-              LOW=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.LOW')
-              INFORMATIONAL=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.INFORMATIONAL')
-              UNDEFINED=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.UNDEFINED')
-
-              if [ ${CRITICAL} != null ] || [ ${HIGH} != null ]; then
-                echo "ECR image contains vulnerabilities at CRITICAL or HIGH level, with a total of ${NUMBER_OF_FINDINGS} found"
-                echo ${FINDING_SEVERITY_COUNTS}
-                exit 1
-              fi
-            else
-              echo "Waiting for scan result timed out!"
-              exit 2
-            fi
-
-  # fdbt-netex-output
-  deploy-netex-output-resources-to-test:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            sudo npm i -g serverless@2.35.0
-            export SLS_DEBUG="*" && sls deploy --stage=test
-            echo "Finished deploy"
-
-  deploy-netex-output-resources-to-preprod:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            sudo npm i -g serverless@2.35.0
-            export SLS_DEBUG="*" && sls deploy --stage=preprod
-            echo "Finished deploy"
-
-  deploy-netex-output-resources-to-prod:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/node:12
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            sudo npm i -g serverless@2.35.0
-            export SLS_DEBUG="*" && sls deploy --stage=prod
-            echo "Finished deploy"
-
-  # exporter
-  deploy-exporter:
-    parameters:
-      environment:
-        type: string
-    docker:
-      - image: circleci/node:14
-    working_directory: ~/project/repos/exporter
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            export STAGE=<< parameters.environment >> && node_modules/.bin/cdk deploy --require-approval never --ci --no-color
-            echo "Finished deploy"
-
-  audit-netex-validator:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            pip install safety
-            cd src/netex-validator
-            safety check -r requirements.txt
-
-  deploy-netex-validator-to-test:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            sudo npm i -g serverless@2.35.0
-            cd src/netex-validator
-            npm ci
-            export SLS_DEBUG="*" && sls deploy --stage=test
-            echo "Finished deploy"
-
-  deploy-netex-validator-to-preprod:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            sudo npm i -g serverless@2.35.0
-            cd src/netex-validator
-            npm ci
-            export SLS_DEBUG="*" && sls deploy --stage=preprod
-            echo "Finished deploy"
-
-  deploy-netex-validator-to-prod:
-    parameters:
-      package_name:
-        type: string
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/<< parameters.package_name >>
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            sudo npm i -g serverless@2.35.0
-            cd src/netex-validator
-            npm ci
-            export SLS_DEBUG="*" && sls deploy --stage=prod
-            echo "Finished deploy"
-
-  # fdbt-reference-data-service
-  audit-reference-data-uploaders:
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/fdbt-reference-data-service
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            pip install safety
-            cd src/uploaders
-            safety check -r requirements.txt
-            safety check -r requirements.test.txt
-
-  test-reference-data-uploaders:
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/fdbt-reference-data-service
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            cd src/uploaders
-            pip install -r requirements.test.txt
-            echo "Running tests..."
-            python3 -m pytest tests/
-
-  deploy-reference-data-uploaders-to-test:
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/fdbt-reference-data-service
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            cd src/uploaders
-            npm ci
-            npm run deploy:test
-            echo "Finished deploy"
-
-  deploy-reference-data-uploaders-to-preprod:
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/fdbt-reference-data-service
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            cd src/uploaders
-            npm ci
-            npm run deploy:preprod
-            echo "Finished deploy"
-
-  deploy-reference-data-uploaders-to-prod:
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/fdbt-reference-data-service
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            cd src/uploaders
-            npm ci
-            npm run deploy:prod
-            echo "Finished deploy"
-
-  audit-reference-data-retrievers:
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/fdbt-reference-data-service
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            pip install safety
-            cd src/retrievers
-            safety check -r requirements.txt
-  deploy-reference-data-retrievers-to-test:
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/fdbt-reference-data-service
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            cd src/retrievers
-            npm ci
-            npm run deploy:test
-            echo "Finished deploy"
-
-  deploy-reference-data-retrievers-to-preprod:
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/fdbt-reference-data-service
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            cd src/retrievers
-            npm ci
-            npm run deploy:preprod
-            echo "Finished deploy"
-
-  deploy-reference-data-retrievers-to-prod:
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/project/repos/fdbt-reference-data-service
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            echo "Deploying..."
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            cd src/retrievers
-            npm ci
-            npm run deploy:prod
-            echo "Finished deploy"
-
-workflows:
-  version: 2
-
-  # The main workflow responsible for triggering all other workflows
-  # in which changes are detected.
-  ci:
-    when: << pipeline.parameters.trigger >>
-    jobs:
-      - trigger-workflows:
-          filters:
-            tags:
-              only: /^v.*/
-
-  # Workflows defined for each package.
-  fdbt-netex-output:
-    when: << pipeline.parameters.fdbt-netex-output >>
-    jobs:
-      - checkout-repo:
-          <<: *slack-fail-post-step
-          filters:
-            tags:
-              only: /^v.*/
-
-      - audit-netex-validator:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          requires:
-            - checkout-repo
-          filters:
-            tags:
-              only: /^v.*/
-
-      - deploy-netex-validator-to-test:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          requires:
-            - audit-netex-validator
-          context: tfn-fdbt-test
-          filters:
-            branches:
-              only:
-                - develop
-
-      - deploy-netex-validator-to-preprod:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          requires:
-            - audit-netex-validator
-          context: tfn-fdbt-preprod
-          filters:
-            branches:
-              only:
-                - master
-
-      - deploy-netex-validator-to-prod:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          requires:
-            - hold-prod-deployment-netex-output
-          context: tfn-fdbt-prod
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
-      - build:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          requires:
-            - checkout-repo
-          filters:
-            tags:
-              only: /^v.*/
-
-      - test:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          requires:
-            - build
-          filters:
-            tags:
-              only: /^v.*/
-
-      - lint:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          requires:
-            - build
-          filters:
-            tags:
-              only: /^v.*/
-
-      - deploy-netex-output-resources-to-test:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          requires:
-            - test
-            - lint
-          context: tfn-fdbt-test
-          filters:
-            branches:
-              only:
-                - develop
-
-      - deploy-netex-output-resources-to-preprod:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          requires:
-            - test
-            - lint
-          context: tfn-fdbt-preprod
-          filters:
-            branches:
-              only: master
-
-      - hold-prod-deployment-netex-output:
-          <<: *slack-fail-post-step
-          requires:
-            - test
-            - lint
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-          type: approval
-
-      - deploy-netex-output-resources-to-prod:
-          <<: *slack-fail-post-step
-          package_name: fdbt-netex-output
-          requires:
-            - hold-prod-deployment-netex-output
-          context: tfn-fdbt-prod
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: netex output deployed to prod
-          requires:
-            - deploy-netex-output-resources-to-prod
-            - deploy-netex-validator-to-prod
-          filters:
-            tags:
-              only: /^v.*/
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: netex output deployed to preprod
-          requires:
-            - deploy-netex-output-resources-to-preprod
-            - deploy-netex-validator-to-preprod
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: netex output deployed to test
-          requires:
-            - deploy-netex-output-resources-to-test
-            - deploy-netex-validator-to-test
-
-  exporter:
-    when: << pipeline.parameters.exporter >>
-    jobs:
-      - checkout-repo:
-          <<: *slack-fail-post-step
-          filters:
-            tags:
-              only: /^v.*/
-
-      - build:
-          <<: *slack-fail-post-step
-          package_name: exporter
-          requires:
-            - checkout-repo
-          filters:
-            tags:
-              only: /^v.*/
-
-      - test:
-          <<: *slack-fail-post-step
-          package_name: exporter
-          requires:
-            - build
-          filters:
-            tags:
-              only: /^v.*/
-
-      - lint:
-          <<: *slack-fail-post-step
-          package_name: exporter
-          requires:
-            - build
-          filters:
-            tags:
-              only: /^v.*/
-
-      - deploy-exporter:
-          <<: *slack-fail-post-step
-          environment: test
-          name: deploy-exporter-to-test
-          requires:
-            - test
-            - lint
-          context: tfn-fdbt-test
-          filters:
-            branches:
-              only:
-                - develop
-
-      - deploy-exporter:
-          <<: *slack-fail-post-step
-          environment: preprod
-          name: deploy-exporter-to-preprod
-          requires:
-            - test
-            - lint
-          context: tfn-fdbt-preprod
-          filters:
-            branches:
-              only:
-                - master
-
-      - deploy-exporter:
-          <<: *slack-fail-post-step
-          environment: prod
-          name: deploy-exporter-to-prod
-          requires:
-            - hold-prod-deployment-exporter
-          context: tfn-fdbt-prod
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
-      - hold-prod-deployment-exporter:
-          <<: *slack-fail-post-step
-          requires:
-            - test
-            - lint
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-          type: approval
-
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: exporter deployed to prod
-          requires:
-            - deploy-exporter-to-prod
-          filters:
-            tags:
-              only: /^v.*/
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: exporter deployed to preprod
-          requires:
-            - deploy-exporter-to-preprod
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: exporter deployed to test
-          requires:
-            - deploy-exporter-to-test
-
-  fdbt-site:
-    when: << pipeline.parameters.fdbt-site >>
-    jobs:
-      - checkout-repo:
-          <<: *slack-fail-post-step
-          filters:
-            tags:
-              only: /^v.*/
-
-      - build:
-          <<: *slack-fail-post-step
-          package_name: fdbt-site
-          requires:
-            - checkout-repo
-          filters:
-            tags:
-              only: /^v.*/
-
-      - test:
-          <<: *slack-fail-post-step
-          package_name: fdbt-site
-          requires:
-            - build
-          filters:
-            tags:
-              only: /^v.*/
-
-      - lint:
-          <<: *slack-fail-post-step
-          package_name: fdbt-site
-          requires:
-            - build
-          filters:
-            tags:
-              only: /^v.*/
-
-      - compile-typescript:
-          <<: *slack-fail-post-step
-          package_name: fdbt-site
-          requires:
-            - build
-          filters:
-            tags:
-              only: /^v.*/
-
-      - aws-ecr/build-and-push-image:
-          <<: *slack-fail-post-step
-          requires:
-            - test
-            - lint
-          repo: "${SITE_ECR_REPO}"
-          tag: "${CIRCLE_SHA1},latest"
-          context: tfn-fdbt-core
-          path: ~/project/repos/fdbt-site
-          dockerfile: Dockerfile
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              only:
-                - develop
-                - master
-
-      - check-image-scan-results:
-          <<: *slack-fail-post-step
-          repo: "${SITE_ECR_REPO}"
-          tag: "${CIRCLE_SHA1}"
-          context: tfn-fdbt-core
-          requires:
-            - aws-ecr/build-and-push-image
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              only:
-                - develop
-                - master
-
-      - aws-ecs/deploy-service-update:
-          <<: *slack-fail-post-step
-          requires:
-            - check-image-scan-results
-          name: deploy-site-to-test
-          family: "${SITE_ECS_FAMILY}"
-          cluster-name: "${SITE_ECS_CLUSTER}"
-          container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
-          context: tfn-fdbt-test
-          verify-revision-is-deployed: true
-          filters:
-            branches:
-              only: develop
-
-      - run-ui-tests:
-          <<: *slack-fail-post-step
-          package_name: fdbt-site
-          requires:
-            - deploy-site-to-test
-          context: tfn-fdbt-automation-test
-          filters:
-            branches:
-              only: develop
-
-      - aws-ecs/deploy-service-update:
-          <<: *slack-fail-post-step
-          requires:
-            - check-image-scan-results
-          family: "${SITE_ECS_FAMILY}"
-          name: deploy-site-to-preprod
-          cluster-name: "${SITE_ECS_CLUSTER}"
-          container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
-          context: tfn-fdbt-preprod
-          verify-revision-is-deployed: true
-          filters:
-            branches:
-              only: master
-
-      - slack/on-hold:
-          <<: *slack-fail-post-step
-          requires:
-            - check-image-scan-results
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
-      - hold-prod-deployment-site:
-          <<: *slack-fail-post-step
-          requires:
-            - slack/on-hold
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-          type: approval
-
-      - aws-ecs/deploy-service-update:
-          <<: *slack-fail-post-step
-          requires:
-            - hold-prod-deployment-site
-          family: "${SITE_ECS_FAMILY}"
-          name: deploy-site-to-prod
-          cluster-name: "${SITE_ECS_CLUSTER}"
-          container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
-          context: tfn-fdbt-prod
-          verify-revision-is-deployed: true
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: site deployed to prod
-          requires:
-            - deploy-site-to-prod
-          filters:
-            tags:
-              only: /^v.*/
-
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: site deployed to preprod
-          requires:
-            - deploy-site-to-preprod
-
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: site deployed and tested
-          requires:
-            - run-ui-tests
-
-  fdbt-reference-data-service:
-    when: << pipeline.parameters.fdbt-reference-data-service >>
-    jobs:
-      - checkout-repo:
-          <<: *slack-fail-post-step
-          filters:
-            tags:
-              only: /^v.*/
-
-      - audit-reference-data-retrievers:
-          <<: *slack-fail-post-step
-          requires:
-            - checkout-repo
-          filters:
-            tags:
-              only: /^v.*/
-
-      - deploy-reference-data-retrievers-to-test:
-          <<: *slack-fail-post-step
-          requires:
-            - audit-reference-data-retrievers
-          context: tfn-fdbt-test
-          filters:
-            branches:
-              only: develop
-
-      - deploy-reference-data-retrievers-to-preprod:
-          <<: *slack-fail-post-step
-          requires:
-            - audit-reference-data-retrievers
-          context: tfn-fdbt-preprod
-          filters:
-            branches:
-              only: master
-
-      - deploy-reference-data-retrievers-to-prod:
-          <<: *slack-fail-post-step
-          requires:
-            - hold-reference-data-prod-deployment
-          context: tfn-fdbt-prod
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
-      - audit-reference-data-uploaders:
-          <<: *slack-fail-post-step
-          requires:
-            - checkout-repo
-          filters:
-            tags:
-              only: /^v.*/
-
-      - test-reference-data-uploaders:
-          <<: *slack-fail-post-step
-          requires:
-            - audit-reference-data-uploaders
-          filters:
-            tags:
-              only: /^v.*/
-
-      - deploy-reference-data-uploaders-to-test:
-          <<: *slack-fail-post-step
-          requires:
-            - test-reference-data-uploaders
-          context: tfn-fdbt-test
-          filters:
-            branches:
-              only: develop
-
-      - deploy-reference-data-uploaders-to-preprod:
-          <<: *slack-fail-post-step
-          requires:
-            - test-reference-data-uploaders
-          context: tfn-fdbt-preprod
-          filters:
-            branches:
-              only: master
-
-      - hold-reference-data-prod-deployment:
-          <<: *slack-fail-post-step
-          requires:
-            - test-reference-data-uploaders
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-          type: approval
-
-      - deploy-reference-data-uploaders-to-prod:
-          <<: *slack-fail-post-step
-          requires:
-            - hold-reference-data-prod-deployment
-          context: tfn-fdbt-prod
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: reference data uploaders deployed to prod
-          requires:
-            - deploy-reference-data-uploaders-to-prod
-            - deploy-reference-data-retrievers-to-prod
-          filters:
-            tags:
-              only: /^v.*/
-
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: reference data uploaders deployed to preprod
-          requires:
-            - deploy-reference-data-uploaders-to-preprod
-            - deploy-reference-data-retrievers-to-preprod
-
-      - slack-notify:
-          <<: *slack-fail-post-step
-          name: reference data uploaders deployed to test
-          requires:
-            - deploy-reference-data-uploaders-to-test
-            - deploy-reference-data-retrievers-to-test
-
-  fdbt-admin:
-    when: << pipeline.parameters.fdbt-admin >>
-    jobs:
-      - checkout-repo:
-          <<: *slack-fail-post-step
-          filters:
-            tags:
-              only: /^v.*/
-
-  fdbt-types:
-    when: << pipeline.parameters.fdbt-admin >>
-    jobs:
-      - checkout-repo:
-          <<: *slack-fail-post-step
-          filters:
-            tags:
-              only: /^v.*/
+# version: 2.1
+
+# slack-fail-post-step: &slack-fail-post-step
+#   post-steps:
+#     - slack/notify:
+#         event: fail
+#         template: basic_fail_1
+
+# orbs:
+#   aws-cli: circleci/aws-cli@2.0.0
+#   aws-ecr: circleci/aws-ecr@6.15.3
+#   aws-ecs: circleci/aws-ecs@2.1.0
+#   slack: circleci/slack@4.4.2
+
+# parameters:
+#   # This parameter is used to trigger the main workflow
+#   trigger:
+#     type: boolean
+#     default: true
+
+#   # A parameter per package
+#   fdbt-admin:
+#     type: boolean
+#     default: false
+#   fdbt-netex-output:
+#     type: boolean
+#     default: false
+#   fdbt-reference-data-service:
+#     type: boolean
+#     default: false
+#   fdbt-site:
+#     type: boolean
+#     default: false
+#   exporter:
+#     type: boolean
+#     default: false
+#   fdbt-types:
+#     type: boolean
+#     default: false
+
+# executors:
+#   node:
+#     docker:
+#       - image: circleci/node
+
+# jobs:
+#   slack-notify:
+#     docker:
+#       - image: "cimg/base:stable"
+#     steps:
+#       - slack/notify:
+#           event: pass
+#           template: basic_success_1
+
+#   trigger-workflows:
+#     executor: node
+#     steps:
+#       - checkout
+#       - run:
+#           name: Trigger workflows
+#           command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
+
+#   checkout-repo:
+#     docker:
+#       - image: circleci/node:12
+#     working_directory: ~/project
+#     steps:
+#       - checkout
+#       - persist_to_workspace:
+#           root: ~/project
+#           paths:
+#             - "*"
+
+#   build:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/node:12
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Starting build"
+#             npm ci
+#             npm run build
+#       - persist_to_workspace:
+#           root: ~/project
+#           paths:
+#             - "./repos/<< parameters.package_name >>/node_modules"
+
+#   test:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/node:12
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Running tests"
+#             npm run test:ci
+
+#   lint:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/node:12
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Linting"
+#             npm run lint
+
+#   # fdbt-site
+#   run-ui-tests:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/node:12
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     executor: aws-cli/default
+#     steps:
+#       - aws-cli/setup:
+#           profile-name: default
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             sudo apt-get install jq
+#             cd cypress_tests
+#             cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
+#             cd ..
+#             ~/project/repos/<< parameters.package_name >>/run_tests_in_browserstack.sh
+#           no_output_timeout: 100m
+
+#   compile-typescript:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/node:12
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     executor: aws-cli/default
+#     steps:
+#       - aws-cli/setup:
+#           profile-name: default
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Compiling typescript for site"
+#             ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
+#             cd cypress_tests
+#             npm ci
+#             ./node_modules/.bin/tsc
+
+#   check-image-scan-results:
+#     parameters:
+#       repo:
+#         type: string
+#       tag:
+#         type: string
+#     docker:
+#       - image: amazon/aws-cli
+#         entrypoint: bash
+#     steps:
+#       - run:
+#           name: Install dependencies
+#           command: |
+#             yum install -y jq
+#       - run:
+#           name: Check Image Scan Findings
+#           command: |
+#             aws ecr wait image-scan-complete --repository-name "<< parameters.repo >>" --image-id "imageTag=<< parameters.tag >>"
+#             if [ $(echo $?) -eq 0 ]; then
+#               FINDINGS=$(aws ecr describe-image-scan-findings --repository-name "<< parameters.repo >>" --image-id "imageTag=<< parameters.tag >>")
+#                 status=$(echo "${FINDINGS}" | jq -r ".imageScanStatus.status")
+#               NUMBER_OF_FINDINGS=$(echo "${FINDINGS}" | jq -r ".imageScanFindings.findings | length")
+#               FINDING_SEVERITY_COUNTS=$(echo "${FINDINGS}" | jq -r ".imageScanFindings.findingSeverityCounts")
+
+#               CRITICAL=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.CRITICAL')
+#               HIGH=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.HIGH')
+#               MEDIUM=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.MEDIUM')
+#               LOW=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.LOW')
+#               INFORMATIONAL=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.INFORMATIONAL')
+#               UNDEFINED=$(echo ${FINDING_SEVERITY_COUNTS} | jq '.UNDEFINED')
+
+#               if [ ${CRITICAL} != null ] || [ ${HIGH} != null ]; then
+#                 echo "ECR image contains vulnerabilities at CRITICAL or HIGH level, with a total of ${NUMBER_OF_FINDINGS} found"
+#                 echo ${FINDING_SEVERITY_COUNTS}
+#                 exit 1
+#               fi
+#             else
+#               echo "Waiting for scan result timed out!"
+#               exit 2
+#             fi
+
+#   # fdbt-netex-output
+#   deploy-netex-output-resources-to-test:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/node:12
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             sudo npm i -g serverless@2.35.0
+#             export SLS_DEBUG="*" && sls deploy --stage=test
+#             echo "Finished deploy"
+
+#   deploy-netex-output-resources-to-preprod:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/node:12
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             sudo npm i -g serverless@2.35.0
+#             export SLS_DEBUG="*" && sls deploy --stage=preprod
+#             echo "Finished deploy"
+
+#   deploy-netex-output-resources-to-prod:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/node:12
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             sudo npm i -g serverless@2.35.0
+#             export SLS_DEBUG="*" && sls deploy --stage=prod
+#             echo "Finished deploy"
+
+#   # exporter
+#   deploy-exporter:
+#     parameters:
+#       environment:
+#         type: string
+#     docker:
+#       - image: circleci/node:14
+#     working_directory: ~/project/repos/exporter
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             export STAGE=<< parameters.environment >> && node_modules/.bin/cdk deploy --require-approval never --ci --no-color
+#             echo "Finished deploy"
+
+#   audit-netex-validator:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             pip install safety
+#             cd src/netex-validator
+#             safety check -r requirements.txt
+
+#   deploy-netex-validator-to-test:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+#             sudo apt-get install -y nodejs
+#             sudo npm i -g serverless@2.35.0
+#             cd src/netex-validator
+#             npm ci
+#             export SLS_DEBUG="*" && sls deploy --stage=test
+#             echo "Finished deploy"
+
+#   deploy-netex-validator-to-preprod:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+#             sudo apt-get install -y nodejs
+#             sudo npm i -g serverless@2.35.0
+#             cd src/netex-validator
+#             npm ci
+#             export SLS_DEBUG="*" && sls deploy --stage=preprod
+#             echo "Finished deploy"
+
+#   deploy-netex-validator-to-prod:
+#     parameters:
+#       package_name:
+#         type: string
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/<< parameters.package_name >>
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+#             sudo apt-get install -y nodejs
+#             sudo npm i -g serverless@2.35.0
+#             cd src/netex-validator
+#             npm ci
+#             export SLS_DEBUG="*" && sls deploy --stage=prod
+#             echo "Finished deploy"
+
+#   # fdbt-reference-data-service
+#   audit-reference-data-uploaders:
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/fdbt-reference-data-service
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             pip install safety
+#             cd src/uploaders
+#             safety check -r requirements.txt
+#             safety check -r requirements.test.txt
+
+#   test-reference-data-uploaders:
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/fdbt-reference-data-service
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             cd src/uploaders
+#             pip install -r requirements.test.txt
+#             echo "Running tests..."
+#             python3 -m pytest tests/
+
+#   deploy-reference-data-uploaders-to-test:
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/fdbt-reference-data-service
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+#             sudo apt-get install -y nodejs
+#             cd src/uploaders
+#             npm ci
+#             npm run deploy:test
+#             echo "Finished deploy"
+
+#   deploy-reference-data-uploaders-to-preprod:
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/fdbt-reference-data-service
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+#             sudo apt-get install -y nodejs
+#             cd src/uploaders
+#             npm ci
+#             npm run deploy:preprod
+#             echo "Finished deploy"
+
+#   deploy-reference-data-uploaders-to-prod:
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/fdbt-reference-data-service
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+#             sudo apt-get install -y nodejs
+#             cd src/uploaders
+#             npm ci
+#             npm run deploy:prod
+#             echo "Finished deploy"
+
+#   audit-reference-data-retrievers:
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/fdbt-reference-data-service
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             pip install safety
+#             cd src/retrievers
+#             safety check -r requirements.txt
+#   deploy-reference-data-retrievers-to-test:
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/fdbt-reference-data-service
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+#             sudo apt-get install -y nodejs
+#             cd src/retrievers
+#             npm ci
+#             npm run deploy:test
+#             echo "Finished deploy"
+
+#   deploy-reference-data-retrievers-to-preprod:
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/fdbt-reference-data-service
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+#             sudo apt-get install -y nodejs
+#             cd src/retrievers
+#             npm ci
+#             npm run deploy:preprod
+#             echo "Finished deploy"
+
+#   deploy-reference-data-retrievers-to-prod:
+#     docker:
+#       - image: circleci/python:3.8
+#     working_directory: ~/project/repos/fdbt-reference-data-service
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             echo "Deploying..."
+#             curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+#             sudo apt-get install -y nodejs
+#             cd src/retrievers
+#             npm ci
+#             npm run deploy:prod
+#             echo "Finished deploy"
+
+# workflows:
+#   version: 2
+
+#   # The main workflow responsible for triggering all other workflows
+#   # in which changes are detected.
+#   ci:
+#     when: << pipeline.parameters.trigger >>
+#     jobs:
+#       - trigger-workflows:
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#   # Workflows defined for each package.
+#   fdbt-netex-output:
+#     when: << pipeline.parameters.fdbt-netex-output >>
+#     jobs:
+#       - checkout-repo:
+#           <<: *slack-fail-post-step
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - audit-netex-validator:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-netex-output
+#           requires:
+#             - checkout-repo
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - deploy-netex-validator-to-test:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-netex-output
+#           requires:
+#             - audit-netex-validator
+#           context: tfn-fdbt-test
+#           filters:
+#             branches:
+#               only:
+#                 - develop
+
+#       - deploy-netex-validator-to-preprod:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-netex-output
+#           requires:
+#             - audit-netex-validator
+#           context: tfn-fdbt-preprod
+#           filters:
+#             branches:
+#               only:
+#                 - master
+
+#       - deploy-netex-validator-to-prod:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-netex-output
+#           requires:
+#             - hold-prod-deployment-netex-output
+#           context: tfn-fdbt-prod
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+
+#       - build:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-netex-output
+#           requires:
+#             - checkout-repo
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - test:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-netex-output
+#           requires:
+#             - build
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - lint:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-netex-output
+#           requires:
+#             - build
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - deploy-netex-output-resources-to-test:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-netex-output
+#           requires:
+#             - test
+#             - lint
+#           context: tfn-fdbt-test
+#           filters:
+#             branches:
+#               only:
+#                 - develop
+
+#       - deploy-netex-output-resources-to-preprod:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-netex-output
+#           requires:
+#             - test
+#             - lint
+#           context: tfn-fdbt-preprod
+#           filters:
+#             branches:
+#               only: master
+
+#       - hold-prod-deployment-netex-output:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - test
+#             - lint
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+#           type: approval
+
+#       - deploy-netex-output-resources-to-prod:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-netex-output
+#           requires:
+#             - hold-prod-deployment-netex-output
+#           context: tfn-fdbt-prod
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: netex output deployed to prod
+#           requires:
+#             - deploy-netex-output-resources-to-prod
+#             - deploy-netex-validator-to-prod
+#           filters:
+#             tags:
+#               only: /^v.*/
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: netex output deployed to preprod
+#           requires:
+#             - deploy-netex-output-resources-to-preprod
+#             - deploy-netex-validator-to-preprod
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: netex output deployed to test
+#           requires:
+#             - deploy-netex-output-resources-to-test
+#             - deploy-netex-validator-to-test
+
+#   exporter:
+#     when: << pipeline.parameters.exporter >>
+#     jobs:
+#       - checkout-repo:
+#           <<: *slack-fail-post-step
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - build:
+#           <<: *slack-fail-post-step
+#           package_name: exporter
+#           requires:
+#             - checkout-repo
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - test:
+#           <<: *slack-fail-post-step
+#           package_name: exporter
+#           requires:
+#             - build
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - lint:
+#           <<: *slack-fail-post-step
+#           package_name: exporter
+#           requires:
+#             - build
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - deploy-exporter:
+#           <<: *slack-fail-post-step
+#           environment: test
+#           name: deploy-exporter-to-test
+#           requires:
+#             - test
+#             - lint
+#           context: tfn-fdbt-test
+#           filters:
+#             branches:
+#               only:
+#                 - develop
+
+#       - deploy-exporter:
+#           <<: *slack-fail-post-step
+#           environment: preprod
+#           name: deploy-exporter-to-preprod
+#           requires:
+#             - test
+#             - lint
+#           context: tfn-fdbt-preprod
+#           filters:
+#             branches:
+#               only:
+#                 - master
+
+#       - deploy-exporter:
+#           <<: *slack-fail-post-step
+#           environment: prod
+#           name: deploy-exporter-to-prod
+#           requires:
+#             - hold-prod-deployment-exporter
+#           context: tfn-fdbt-prod
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+
+#       - hold-prod-deployment-exporter:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - test
+#             - lint
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+#           type: approval
+
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: exporter deployed to prod
+#           requires:
+#             - deploy-exporter-to-prod
+#           filters:
+#             tags:
+#               only: /^v.*/
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: exporter deployed to preprod
+#           requires:
+#             - deploy-exporter-to-preprod
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: exporter deployed to test
+#           requires:
+#             - deploy-exporter-to-test
+
+#   fdbt-site:
+#     when: << pipeline.parameters.fdbt-site >>
+#     jobs:
+#       - checkout-repo:
+#           <<: *slack-fail-post-step
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - build:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-site
+#           requires:
+#             - checkout-repo
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - test:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-site
+#           requires:
+#             - build
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - lint:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-site
+#           requires:
+#             - build
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - compile-typescript:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-site
+#           requires:
+#             - build
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - aws-ecr/build-and-push-image:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - test
+#             - lint
+#           repo: "${SITE_ECR_REPO}"
+#           tag: "${CIRCLE_SHA1},latest"
+#           context: tfn-fdbt-core
+#           path: ~/project/repos/fdbt-site
+#           dockerfile: Dockerfile
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               only:
+#                 - develop
+#                 - master
+
+#       - check-image-scan-results:
+#           <<: *slack-fail-post-step
+#           repo: "${SITE_ECR_REPO}"
+#           tag: "${CIRCLE_SHA1}"
+#           context: tfn-fdbt-core
+#           requires:
+#             - aws-ecr/build-and-push-image
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               only:
+#                 - develop
+#                 - master
+
+#       - aws-ecs/deploy-service-update:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - check-image-scan-results
+#           name: deploy-site-to-test
+#           family: "${SITE_ECS_FAMILY}"
+#           cluster-name: "${SITE_ECS_CLUSTER}"
+#           container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
+#           context: tfn-fdbt-test
+#           verify-revision-is-deployed: true
+#           filters:
+#             branches:
+#               only: develop
+
+#       - run-ui-tests:
+#           <<: *slack-fail-post-step
+#           package_name: fdbt-site
+#           requires:
+#             - deploy-site-to-test
+#           context: tfn-fdbt-automation-test
+#           filters:
+#             branches:
+#               only: develop
+
+#       - aws-ecs/deploy-service-update:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - check-image-scan-results
+#           family: "${SITE_ECS_FAMILY}"
+#           name: deploy-site-to-preprod
+#           cluster-name: "${SITE_ECS_CLUSTER}"
+#           container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
+#           context: tfn-fdbt-preprod
+#           verify-revision-is-deployed: true
+#           filters:
+#             branches:
+#               only: master
+
+#       - slack/on-hold:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - check-image-scan-results
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+
+#       - hold-prod-deployment-site:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - slack/on-hold
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+#           type: approval
+
+#       - aws-ecs/deploy-service-update:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - hold-prod-deployment-site
+#           family: "${SITE_ECS_FAMILY}"
+#           name: deploy-site-to-prod
+#           cluster-name: "${SITE_ECS_CLUSTER}"
+#           container-image-name-updates: "container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}"
+#           context: tfn-fdbt-prod
+#           verify-revision-is-deployed: true
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: site deployed to prod
+#           requires:
+#             - deploy-site-to-prod
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: site deployed to preprod
+#           requires:
+#             - deploy-site-to-preprod
+
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: site deployed and tested
+#           requires:
+#             - run-ui-tests
+
+#   fdbt-reference-data-service:
+#     when: << pipeline.parameters.fdbt-reference-data-service >>
+#     jobs:
+#       - checkout-repo:
+#           <<: *slack-fail-post-step
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - audit-reference-data-retrievers:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - checkout-repo
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - deploy-reference-data-retrievers-to-test:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - audit-reference-data-retrievers
+#           context: tfn-fdbt-test
+#           filters:
+#             branches:
+#               only: develop
+
+#       - deploy-reference-data-retrievers-to-preprod:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - audit-reference-data-retrievers
+#           context: tfn-fdbt-preprod
+#           filters:
+#             branches:
+#               only: master
+
+#       - deploy-reference-data-retrievers-to-prod:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - hold-reference-data-prod-deployment
+#           context: tfn-fdbt-prod
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+
+#       - audit-reference-data-uploaders:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - checkout-repo
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - test-reference-data-uploaders:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - audit-reference-data-uploaders
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - deploy-reference-data-uploaders-to-test:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - test-reference-data-uploaders
+#           context: tfn-fdbt-test
+#           filters:
+#             branches:
+#               only: develop
+
+#       - deploy-reference-data-uploaders-to-preprod:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - test-reference-data-uploaders
+#           context: tfn-fdbt-preprod
+#           filters:
+#             branches:
+#               only: master
+
+#       - hold-reference-data-prod-deployment:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - test-reference-data-uploaders
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+#           type: approval
+
+#       - deploy-reference-data-uploaders-to-prod:
+#           <<: *slack-fail-post-step
+#           requires:
+#             - hold-reference-data-prod-deployment
+#           context: tfn-fdbt-prod
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: reference data uploaders deployed to prod
+#           requires:
+#             - deploy-reference-data-uploaders-to-prod
+#             - deploy-reference-data-retrievers-to-prod
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: reference data uploaders deployed to preprod
+#           requires:
+#             - deploy-reference-data-uploaders-to-preprod
+#             - deploy-reference-data-retrievers-to-preprod
+
+#       - slack-notify:
+#           <<: *slack-fail-post-step
+#           name: reference data uploaders deployed to test
+#           requires:
+#             - deploy-reference-data-uploaders-to-test
+#             - deploy-reference-data-retrievers-to-test
+
+#   fdbt-admin:
+#     when: << pipeline.parameters.fdbt-admin >>
+#     jobs:
+#       - checkout-repo:
+#           <<: *slack-fail-post-step
+#           filters:
+#             tags:
+#               only: /^v.*/
+
+#   fdbt-types:
+#     when: << pipeline.parameters.fdbt-admin >>
+#     jobs:
+#       - checkout-repo:
+#           <<: *slack-fail-post-step
+#           filters:
+#             tags:
+#               only: /^v.*/

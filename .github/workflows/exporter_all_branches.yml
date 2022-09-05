@@ -1,0 +1,49 @@
+on:
+  push:
+    branches:
+    - '**'
+    - '!develop'
+    - '!master'
+    paths:
+    - repos/exporter/*
+  workflow_dispatch:
+
+name: 'exporter'
+
+defaults:
+  run:
+    working-directory: ./repos/exporter
+
+jobs:
+
+  exporter_to_deploy:
+    name: 'exporter'
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: none
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js 
+      uses: actions/setup-node@v3
+      with:
+        node-version: 12.x
+    
+    - name: build
+      run: |
+        echo "Starting build"
+        npm ci
+        echo " ci finished"
+        npm run build
+
+    - name: test
+      run: |
+        echo "Running tests"
+        npm run test:ci
+
+    - name: lint
+      run: |
+        echo "Linting"
+        npm run lint
