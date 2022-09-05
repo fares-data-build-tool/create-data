@@ -35,8 +35,9 @@ const formatAttributes = (attributes: AttributeListType) => {
 const getAttributeValue = (user: UserType, attributeName: string): string | undefined =>
     user?.Attributes?.find((item) => item.Name === attributeName)?.Value;
 
-const getDeleteUrl = (username: UsernameType | undefined): string => (username ? `/deleteUser/${username}` : `/`);
-const getEditUrl = (username: UsernameType | undefined): string => (username ? `/editUser/${username}` : `/`);
+const getDeleteUrl = (username: UsernameType | undefined): string => (username ? `/deleteUser/${username}` : '/');
+const getEditUrl = (username: UsernameType | undefined): string => (username ? `/editUser/${username}` : '/');
+const getResendUrl = (username: UsernameType | undefined): string => (username ? `/resendInvite/${username}` : '/');
 
 const sortByEmail = (a: UserType, b: UserType) => {
     const aEmail = a.Attributes?.find((attribute) => attribute.Name === 'email')?.Value || 'z';
@@ -103,6 +104,14 @@ const ListUsers = ({ isFullAdmin }: ListUsersProps): ReactElement => {
                                 <a href={getEditUrl(user.Username)}>Edit</a>
                                 <br />
                                 <a href={getDeleteUrl(user.Username)}>Delete</a>
+                                {STATUS_MAP[user.UserStatus || ''] === 'Awaiting Registration' ? (
+                                    <>
+                                        <br />
+                                        <a href={getResendUrl(user.Username)}>Resend</a>
+                                    </>
+                                ) : (
+                                    ''
+                                )}
                             </Table.Cell>
                         )}
                         <Table.Cell>{formatAttributes(user.Attributes || [])}</Table.Cell>
