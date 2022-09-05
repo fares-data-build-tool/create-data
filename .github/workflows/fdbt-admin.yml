@@ -3,7 +3,7 @@ on:
     branches:
     - '**'
     paths:
-    - repos/fdbt-admin/*
+    - repos/fdbt-admin/**
   workflow_dispatch:
 
 name: 'fdbt-admin'

@@ -5,7 +5,7 @@ on:
     - '!develop'
     - '!master'
     paths:
-    - repos/exporter/*
+    - repos/exporter/**
   workflow_dispatch:
 
 name: 'exporter'

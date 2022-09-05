@@ -5,7 +5,7 @@ on:
     - '!develop'
     - '!master'
     paths:
-    - repos/fdbt-reference-data-service/*
+    - repos/fdbt-reference-data-service/**
   workflow_dispatch:
 
 name: 'fdbt-reference-data-service'

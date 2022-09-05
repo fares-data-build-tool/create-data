@@ -3,7 +3,7 @@ on:
     branches:
     - 'master'
     paths:
-    - repos/fdbt-site/*
+    - repos/fdbt-site/**
   workflow_dispatch:
 
 name: 'fdbt-site_preprod'

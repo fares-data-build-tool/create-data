@@ -5,7 +5,7 @@ on:
     - '!develop'
     - '!master'
     paths:
-    - repos/fdbt-netex-output/*
+    - repos/fdbt-netex-output/**
   workflow_dispatch:
 
 name: 'fdbt-netex-output'
