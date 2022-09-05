@@ -98,7 +98,7 @@ jobs:
         cd cypress_tests
         cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
         cd ..
-        run_tests_in_browserstack.sh
+        bash run_tests_in_browserstack.sh
 
     # aws-ecs/deploy-service-update 
     - name: Configure AWS credentials
