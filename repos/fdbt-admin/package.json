@@ -20,6 +20,7 @@
         "aws-amplify": "^4.3.10",
         "aws-sdk": "^2.1046.0",
         "govuk-react": "^0.10.0",
+        "npm-force-resolutions": "0.0.10",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-hook-form": "^6.15.8",
@@ -32,7 +33,8 @@
         "@aws-sdk/shared-ini-file-loader": ">=1.0.0-rc.9",
         "axios": ">=0.21.2",
         "immer": ">=9.0.6",
-        "postcss": ">=7.0.36"
+        "postcss": ">=7.0.36",
+        "nth-check": "2.0.1"
     },
     "scripts": {
         "start": "react-scripts start",
@@ -41,7 +43,8 @@
         "eject": "react-scripts eject",
         "lint": "eslint . --ext .ts,.tsx",
         "lint:fix": "eslint --fix . --ext .ts,.tsx",
-        "test:ci": "CI=true react-scripts test"
+        "test:ci": "CI=true react-scripts test",
+        "preinstall": "npx npm-force-resolutions"
     },
     "husky": {
         "hooks": {
@@ -50,8 +53,7 @@
     },
     "lint-staged": {
         "./**/*.{ts,tsx}": [
-            "eslint --fix . --ext .ts,.tsx",
-            "prettier --c './**/*.{ts,tsx}'"
+            "eslint --fix . --ext .ts,.tsx"
         ]
     },
     "eslintConfig": {

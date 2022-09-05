@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "devDependencies": {
-    "serverless": "^2.45.2",
+    "serverless": "^3.22.0",
     "serverless-plugin-aws-alerts": "^1.7.3",
     "serverless-plugin-log-retention": "^2.0.0",
     "serverless-python-requirements": "^5.1.0"

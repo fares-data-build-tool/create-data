@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { mount, shallow, ShallowWrapper } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import * as auroradb from '../../src/data/auroradb';
 import * as s3 from '../../src/data/s3';
 import { mockRawService, userFareStages, zoneStops, service, selectedFareStages } from '../testData/mockData';
@@ -74,21 +74,5 @@ describe('OutboundMatching Page', () => {
             />,
         );
         expect(wrapper).toMatchSnapshot();
-    });
-
-    it('shows the correct amount of fare stages in the select boxes', () => {
-        const mountedWrapper = mount(
-            <OutboundMatching
-                userFareStages={userFareStages}
-                stops={zoneStops}
-                service={service}
-                error=""
-                warning={false}
-                selectedFareStages={selectedFareStages}
-                csrfToken=""
-            />,
-        );
-
-        expect(mountedWrapper.find('.farestage-select').first().find('option')).toHaveLength(10);
     });
 });

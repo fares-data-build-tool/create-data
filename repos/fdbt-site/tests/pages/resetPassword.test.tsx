@@ -6,7 +6,7 @@ import { USER_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('resetPassword', () => {
     // gets the time value in seconds and adds one hour
-    const expiryDate = Math.floor(new Date(2018, 12, 28).getTime() / 1000) + 3600;
+    const expiryDate = new Date(Date.UTC(2018, 12, 28)).getTime() / 1000 + 3600;
     const mockErrors = [
         {
             errorMessage: 'Passwords do not match',

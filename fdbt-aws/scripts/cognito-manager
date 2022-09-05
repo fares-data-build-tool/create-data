@@ -127,6 +127,8 @@ elif [[ $COMMAND = 'delete-user' ]]; then
   delete_user
 elif [[ $COMMAND = 'update-noc' ]]; then
   update_noc
+elif [[ $COMMAND = 'grant_or_revoke_full_admin' ]]; then
+  grant_or_revoke_full_admin
 elif [[ $COMMAND = 'update-scheme-operator-name' ]]; then
   update_scheme_operator_name
 elif [[ $COMMAND = 'grant_or_revoke_full_admin' ]]; then
