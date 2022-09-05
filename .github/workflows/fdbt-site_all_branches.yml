@@ -40,16 +40,10 @@ jobs:
     - name: run-ui-tests
       run: |
         sudo apt-get install jq
-        echo 1
         cd cypress_tests
-        echo 2
         cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
-        echo 3
         cd ..
-        ls
-        chmod +x run_tests_in_browserstack.sh
-        run_tests_in_browserstack.sh
-      shell: bash
+        bash run_tests_in_browserstack.sh
     
     - name: build
       run: |
