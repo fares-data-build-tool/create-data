@@ -1,0 +1,89 @@
+on:
+  push:
+    branches:
+    - 'develop'
+    paths:
+    - repos/fdbt-netex-output/*
+  workflow_dispatch:
+
+name: 'fdbt-netex-output_test'
+
+defaults:
+  run:
+    working-directory: ./repos/fdbt-netex-output
+
+jobs:
+
+  fdbt-netex-output_deploy_to_test:
+    name: 'fdbt-netex-output_test'
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: test
+    environment:
+      name: test
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+      
+    - name: audit-netex-validator
+      run: |
+        pip install safety
+        cd src/netex-validator
+        safety check -r requirements.txt
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
+    
+    - name: deploy-netex-validator 
+      run: |
+        echo "Deploying..."
+        curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+        sudo npm i -g serverless@3.22.0
+        cd src/netex-validator
+        npm ci
+        export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
+        echo "Finished deploy"
+
+    - name: Use Node.js 
+      uses: actions/setup-node@v3
+      with:
+        node-version: 12.x
+    
+    - name: build
+      run: |
+        echo "Starting build"
+        npm ci
+        echo " ci finished"
+        npm run build
+
+    - name: test
+      run: |
+        echo "Running tests"
+        npm run test:ci
+
+    - name: lint
+      run: |
+        echo "Linting"
+        npm run lint
+    
+    - name: deploy-netex-output-resources
+      run: |
+        echo "Deploying..."
+        sudo npm i -g serverless@3.22.0
+        export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
+        echo "Finished deploy"
+
+
+    
+    
