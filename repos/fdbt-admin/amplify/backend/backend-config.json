@@ -1,26 +1,22 @@
 {
-  "auth": {
-    "fdbtadmin65b519f2": {
-      "service": "Cognito",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false,
-      "frontendAuthConfig": {
-        "mfaConfiguration": "ON",
-        "mfaTypes": [
-          "TOTP"
-        ],
-        "verificationMechanisms": [
-          "EMAIL"
-        ]
-      }
+    "auth": {
+        "fdbtadmin65b519f2": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [],
+            "customAuth": false,
+            "frontendAuthConfig": {
+                "mfaConfiguration": "ON",
+                "mfaTypes": ["TOTP"],
+                "verificationMechanisms": ["EMAIL"]
+            }
+        }
+    },
+    "hosting": {
+        "amplifyhosting": {
+            "service": "amplifyhosting",
+            "providerPlugin": "awscloudformation",
+            "type": "manual"
+        }
     }
-  },
-  "hosting": {
-    "amplifyhosting": {
-      "service": "amplifyhosting",
-      "providerPlugin": "awscloudformation",
-      "type": "manual"
-    }
-  }
 }

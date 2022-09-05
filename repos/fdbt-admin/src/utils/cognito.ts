@@ -20,7 +20,7 @@ export const getCognitoClientAndUserPool = async (): Promise<CognitoClientAndUse
     return { client, userPoolId: userPool.Id };
 };
 
-export const cogntioFormatNocs = (nocs: string): string =>
+export const cognitoFormatNocs = (nocs: string): string =>
     nocs
         .split(',')
         .map((noc) => noc.trim())
