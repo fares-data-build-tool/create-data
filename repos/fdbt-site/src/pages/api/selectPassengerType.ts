@@ -34,7 +34,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
         if (ticket && matchingJsonMetaData && (dbIndividual || dbGroup)) {
-            console.log('HERE')
             // edit mode
             const updatedTicket = {
                 ...ticket,

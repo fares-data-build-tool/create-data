@@ -178,7 +178,6 @@ describe('selectPassengerType', () => {
     });
 
     it('should update the passenger type when in edit mode and redirect back to products/productDetails', async () => {
-
         getPassengerTypeByIdSpy.mockImplementation().mockResolvedValue(individualDatabaseResult);
         getGroupPassengerTypeByIdSpy.mockImplementation().mockResolvedValue(groupDbResult);
 
