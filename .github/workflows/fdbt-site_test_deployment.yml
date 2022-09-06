@@ -50,15 +50,15 @@ jobs:
         echo " ci finished"
         npm run build
 
-    - name: test
-      run: |
-        echo "Running tests"
-        npm run test:ci
+    # - name: test
+    #   run: |
+    #     echo "Running tests"
+    #     npm run test:ci
 
-    - name: lint
-      run: |
-        echo "Linting"
-        npm run lint
+    # - name: lint
+    #   run: |
+    #     echo "Linting"
+    #     npm run lint
 
     # # - name: compile-typescript
     # #   run: |
