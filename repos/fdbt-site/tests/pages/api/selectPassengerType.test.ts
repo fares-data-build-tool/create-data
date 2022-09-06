@@ -1,17 +1,55 @@
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import selectPassengerType from '../../../src/pages/api/selectPassengerType';
 import * as aurora from '../../../src/data/auroradb';
 import * as sessions from '../../../src/utils/sessions';
+import * as userData from '../../../src/utils/apiUtils/userData';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { GROUP_PASSENGER_TYPE } from '../../../src/constants';
 import { GroupPassengerTypeDb } from 'fdbt-types/dbTypes';
+import { expectedSingleTicket } from '../../testData/mockData';
+
+const groupDbResult: GroupPassengerTypeDb = {
+    id: 3,
+    name: 'family group',
+    groupPassengerType: {
+        name: 'family group',
+        maxGroupSize: '4',
+        companions: [
+            {
+                id: 1,
+                minNumber: '1',
+                maxNumber: '2',
+                name: 'adult',
+            },
+            {
+                id: 2,
+                minNumber: '1',
+                maxNumber: '2',
+                name: 'child',
+            },
+        ],
+    },
+};
+
+const individualDatabaseResult = {
+    id: 3,
+    name: 'Adult',
+    passengerType: {
+        id: 3,
+        passengerType: 'adult',
+    },
+};
 
 describe('selectPassengerType', () => {
     const writeHeadMock = jest.fn();
+    const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
+    s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const getPassengerTypeByIdSpy = jest.spyOn(aurora, 'getPassengerTypeById');
     const getGroupPassengerTypeByIdSpy = jest.spyOn(aurora, 'getGroupPassengerTypeById');
@@ -55,28 +93,6 @@ describe('selectPassengerType', () => {
     });
 
     it('should return 302 redirect to /defineTimeRestrictions when the passenger selected is a group and the selected group information added to session', async () => {
-        const groupDbResult: GroupPassengerTypeDb = {
-            id: 3,
-            name: 'family group',
-            groupPassengerType: {
-                name: 'family group',
-                maxGroupSize: '4',
-                companions: [
-                    {
-                        id: 1,
-                        minNumber: '1',
-                        maxNumber: '2',
-                        name: 'adult',
-                    },
-                    {
-                        id: 2,
-                        minNumber: '1',
-                        maxNumber: '2',
-                        name: 'child',
-                    },
-                ],
-            },
-        };
         getPassengerTypeByIdSpy.mockImplementation().mockResolvedValue(undefined);
         getGroupPassengerTypeByIdSpy.mockImplementation().mockResolvedValue(groupDbResult);
         const convertToFullPassengerTypeSpy = jest.spyOn(aurora, 'convertToFullPassengerType');
@@ -139,15 +155,7 @@ describe('selectPassengerType', () => {
     });
 
     it('should return 302 redirect to /defineTimeRestrictions when the passenger selected is an individual and the selected individual information added to session', async () => {
-        const databaseResult = {
-            id: 3,
-            name: 'Adult',
-            passengerType: {
-                id: 3,
-                passengerType: 'adult',
-            },
-        };
-        getPassengerTypeByIdSpy.mockImplementation().mockResolvedValue(databaseResult);
+        getPassengerTypeByIdSpy.mockImplementation().mockResolvedValue(individualDatabaseResult);
         getGroupPassengerTypeByIdSpy.mockImplementation().mockResolvedValue(undefined);
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
@@ -166,6 +174,39 @@ describe('selectPassengerType', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, {
             passengerType: 'adult',
             id: 3,
+        });
+    });
+
+    it('should update the passenger type when in edit mode and redirect back to products/productDetails', async () => {
+
+        getPassengerTypeByIdSpy.mockImplementation().mockResolvedValue(individualDatabaseResult);
+        getGroupPassengerTypeByIdSpy.mockImplementation().mockResolvedValue(groupDbResult);
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                passengerTypeId: '3',
+            },
+            uuid: {},
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedSingleTicket,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '2',
+                    serviceId: '22D',
+                    matchingJsonLink: 'test/path',
+                },
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await selectPassengerType(req, res);
+
+        expect(userData.putUserDataInProductsBucketWithFilePath).toBeCalledWith(
+            { ...expectedSingleTicket, passengerType: { id: 3 } },
+            'test/path',
+        );
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/products/productDetails?productId=2&serviceId=22D',
         });
     });
 });

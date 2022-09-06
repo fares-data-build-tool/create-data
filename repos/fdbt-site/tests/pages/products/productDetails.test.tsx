@@ -98,7 +98,7 @@ describe('myfares pages', () => {
                         { name: 'Fare type', id: 'fare-type', content: ['Single'] },
                         { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
                         { name: 'Journey direction', content: ['Inbound - this way'] },
-                        { name: 'Passenger type', content: ['Test Passenger Type'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
                         { name: 'Only valid during term time', content: ['Yes'] },
                         { name: 'Fare triangle', content: ['You created a fare triangle'], editLink: '/csvUpload' },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
@@ -122,7 +122,7 @@ describe('myfares pages', () => {
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
                         { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
-                        { name: 'Passenger type', content: ['Test Passenger Type'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Fare triangle', content: ['You created a fare triangle'], editLink: '/csvUpload' },
                         { name: 'Period duration', content: ['7 weeks'] },
@@ -152,7 +152,7 @@ describe('myfares pages', () => {
                     endDate: '18/12/2020',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Return'] },
-                        { name: 'Passenger type', content: ['Test Passenger Type'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Fare triangle', content: ['You created a fare triangle'], editLink: '/csvUpload' },
                         { name: 'Quantity in bundle', content: ['10'] },
@@ -181,7 +181,7 @@ describe('myfares pages', () => {
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
                         { name: 'Zone', content: ['Green Lane Shops'] },
-                        { name: 'Passenger type', content: ['Test Passenger Type'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Period duration', content: ['5 weeks'] },
                         { name: 'Product expiry', content: ['24 hr'] },
@@ -208,7 +208,7 @@ describe('myfares pages', () => {
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Multi operator'] },
                         { name: 'Zone', content: ['Green Lane Shops'] },
-                        { name: 'Passenger type', content: ['Test Passenger Type'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Multi Operator Group', content: ['TEST, MCTR, WBTR, BLAC'] },
                         { name: 'Period duration', content: ['5 weeks'] },
@@ -234,7 +234,7 @@ describe('myfares pages', () => {
                     endDate: '18/12/2020',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Flat fare'] },
-                        { name: 'Passenger type', content: ['Test Passenger Type'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'WBTR Services', content: ['343, 444, 543'] },
                         { name: 'BLAC Services', content: ['100, 101, 102'] },
@@ -261,7 +261,7 @@ describe('myfares pages', () => {
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
                         { name: 'Zone', content: ['Green Lane Shops'] },
-                        { name: 'Passenger type', content: ['Test Passenger Type'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
                         { name: 'Time restriction', content: ['Test Time Restriction'] },
                         { name: 'Multi Operator Group', content: ['MCTR, WBTR, BLAC'] },
                         { name: 'Period duration', content: ['5 weeks'] },
