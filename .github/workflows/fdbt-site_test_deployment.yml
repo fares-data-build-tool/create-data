@@ -1,9 +1,9 @@
 on:
   push:
     branches:
-    - 'develop'
-    paths:
-    - repos/fdbt-site/**
+    - '**'
+    # paths:
+    # - repos/fdbt-site/**
   workflow_dispatch:
 
 name: 'fdbt-site_test'
@@ -25,6 +25,9 @@ jobs:
       ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
       ECS_TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
       CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+      WAF_IPSET_NAME: ${{ secrets.WAF_IPSET_NAME }}
+      WAF_IPSET_ID: ${{ secrets.WAF_IPSET_ID }}
+      CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
     
     steps:
     - name: Checkout
@@ -57,40 +60,40 @@ jobs:
         echo "Linting"
         npm run lint
 
-    # - name: compile-typescript
+    # # - name: compile-typescript
+    # #   run: |
+    # #     echo "Compiling typescript for site"
+    # #     ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
+    # #     cd cypress_tests
+    # #     npm ci
+    # #     ./node_modules/.bin/tsc
+
+    # # build-and-push-image (tfn-fdbt-core) 
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.CORE_AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ secrets.CORE_AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: eu-west-2
+
+    # - name: Login to Amazon ECR
+    #   id: login-ecr
+    #   uses: aws-actions/amazon-ecr-login@v1
+
+    # - name: Build, tag, and push image to Amazon ECR
+    #   id: build-image
+    #   env:
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     ECR_REPOSITORY: fdbt-site
+    #     IMAGE_TAG: ${{ github.sha }}
     #   run: |
-    #     echo "Compiling typescript for site"
-    #     ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
-    #     cd cypress_tests
-    #     npm ci
-    #     ./node_modules/.bin/tsc
+    #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
 
-    # build-and-push-image (tfn-fdbt-core) 
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.CORE_AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.CORE_AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-west-2
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: fdbt-site
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
-
-    - name: Logout of Amazon ECR
-      if: always()
-      run: docker logout ${{ steps.login-ecr.outputs.registry }}   
+    # - name: Logout of Amazon ECR
+    #   if: always()
+    #   run: docker logout ${{ steps.login-ecr.outputs.registry }}   
 
     # aws-ecs/deploy-service-update 
     - name: Configure AWS credentials
@@ -100,23 +103,31 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
 
-    # - name: run-ui-tests
-    #   run: |
-    #     sudo apt-get install jq
-    #     cd cypress_tests
-    #     echo "${CYPRESS_BASE_URL}"
-    #     cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
-    #     cd ..
-    #     bash run_tests_in_browserstack.sh
-
-    - name: Download task definition
+    - name: run-ui-tests
       run: |
-        aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query taskDefinition > ${{ github.workspace }}/task-definition.json
+        sudo apt-get install jq
+        cd cypress_tests
+        echo "${CYPRESS_BASE_URL}"
+        cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
+        cd ..
+        bash run_tests_in_browserstack.sh
 
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
-      with:
-        task-definition: ${{ github.workspace }}/task-definition.json
-        service: ${{ env.ECS_SERVICE }}
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
+    # - name: Download task definition
+    #   run: |
+    #     aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query taskDefinition > ${{ github.workspace }}/task-definition.json
+
+    # - name: Fill in the new image ID in the Amazon ECS task definition
+    #   id: task-def
+    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+    #   with:
+    #     task-definition: task-definition.json
+    #     container-name: my-container
+    #     image: ${{ steps.build-image.outputs.image }}
+
+    # - name: Deploy Amazon ECS task definition
+    #   uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+    #   with:
+    #     task-definition: ${{ github.workspace }}/task-definition.json
+    #     service: ${{ env.ECS_SERVICE }}
+    #     cluster: ${{ env.ECS_CLUSTER }}
+    #     wait-for-service-stability: true
