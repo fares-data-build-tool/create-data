@@ -1,11 +1,16 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import moment from 'moment';
-import { updateSessionAttribute } from '../../utils/sessions';
-import { PRODUCT_DATE_ATTRIBUTE } from '../../constants/attributes';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    PRODUCT_DATE_ATTRIBUTE,
+} from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession, ProductDateInformation } from '../../interfaces';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { invalidCharactersArePresent } from '../../../src/utils/apiUtils/validator';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 
 export const combinedDateSchema = yup.object({
     endDate: yup.date().min(yup.ref('startDate'), 'The end date must be after the start date'),
@@ -36,6 +41,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/productDateInformation');
             return;
         }
+
         let startDate;
         let endDate;
 
@@ -159,6 +165,26 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     return;
                 }
             }
+        }
+
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+        if (ticket && matchingJsonMetaData) {
+            const updatedTicket = {
+                ...ticket,
+                ticketPeriod: {
+                    startDate: startDate?.toISOString() ?? moment.utc().startOf('day').toISOString(),
+                    endDate: endDate?.toISOString(),
+                },
+            };
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            redirectTo(
+                res,
+                `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                }`,
+            );
+            return;
         }
 
         updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {

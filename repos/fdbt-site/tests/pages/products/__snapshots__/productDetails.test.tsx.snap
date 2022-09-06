@@ -71,11 +71,20 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          key="Adult Test"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          Adult Test
-        </span>
+          <span
+            key="Adult Test"
+          >
+            Adult Test
+          </span>
+          <a
+            href="/selectPassengerType"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>
@@ -196,11 +205,20 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          key="18/10/2021"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          18/10/2021
-        </span>
+          <span
+            key="18/10/2021"
+          >
+            18/10/2021
+          </span>
+          <a
+            href="/productDateInformation"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>
@@ -220,11 +238,20 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          key="18/10/2121"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          18/10/2121
-        </span>
+          <span
+            key="18/10/2121"
+          >
+            18/10/2121
+          </span>
+          <a
+            href="/productDateInformation"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>

@@ -1,13 +1,20 @@
 import productDateInformation from '../../../src/pages/api/productDateInformation';
 import * as sessions from '../../../src/utils/sessions';
-import { PRODUCT_DATE_ATTRIBUTE } from '../../../src/constants/attributes';
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    PRODUCT_DATE_ATTRIBUTE,
+} from '../../../src/constants/attributes';
+import { expectedSingleTicket, getMockRequestAndResponse } from '../../testData/mockData';
 import moment from 'moment';
+import * as userData from '../../../src/utils/apiUtils/userData';
+
 
 describe('productDataInformation', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
-
+    const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
+    s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
     afterEach(() => {
         jest.resetAllMocks();
     });
@@ -272,6 +279,47 @@ describe('productDataInformation', () => {
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/productDateInformation',
+        });
+    });
+
+    it('should update the product Date information when in edit mode and redirect back to products/productDetails', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                startDateDay: '12',
+                startDateMonth: '12',
+                startDateYear: '2020',
+                endDateDay: '15',
+                endDateMonth: '12',
+                endDateYear: '2020',
+                productDates: 'Yes',
+            },
+            uuid: {},
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedSingleTicket,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '2',
+                    serviceId: '22D',
+                    matchingJsonLink: 'test/path',
+                },
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await productDateInformation(req, res);
+
+        expect(userData.putUserDataInProductsBucketWithFilePath).toBeCalledWith(
+            {
+                ...expectedSingleTicket,
+                ticketPeriod: {
+                    startDate: '2020-12-12T00:00:00.000Z',
+                    endDate: '2020-12-15T23:59:59.000Z',
+                },
+            },
+            'test/path',
+        );
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/products/productDetails?productId=2&serviceId=22D',
         });
     });
 });
