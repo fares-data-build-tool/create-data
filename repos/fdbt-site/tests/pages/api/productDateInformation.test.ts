@@ -9,7 +9,6 @@ import { expectedSingleTicket, getMockRequestAndResponse } from '../../testData/
 import moment from 'moment';
 import * as userData from '../../../src/utils/apiUtils/userData';
 
-
 describe('productDataInformation', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
