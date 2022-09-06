@@ -108,10 +108,11 @@ jobs:
         access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
 
     - name: run-ui-tests
+      env:
+        CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
       run: |
         sudo apt-get install jq
         cd cypress_tests
-        echo "${CYPRESS_BASE_URL}"
         cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
         cd ..
         bash run_tests_in_browserstack.sh
