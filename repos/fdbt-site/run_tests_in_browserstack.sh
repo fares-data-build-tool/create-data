@@ -15,6 +15,9 @@ set -o pipefail
 
 update_ip_set() {
     IP=$(wget -qO- http://checkip.amazonaws.com)
+    echo $IP
+    echo $WAF_IPSET_NAME
+    echo $WAF_IPSET_ID
     LOCK_TOKEN=$(aws wafv2 get-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID | jq .LockToken | tr -d '"')
     NEXT_LOCK_TOKEN=$(aws wafv2 update-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID --addresses $IP/32 --lock-token $LOCK_TOKEN 2>/dev/null | jq .NextLockToken | tr -d '"')
 
@@ -42,9 +45,13 @@ until [ "$n" -ge 5 ]; do
     n=$((n+1))
     sleep 5
 done
+echo "added ip's"
 
 make install-cypress-deps-ci
+echo "line 50"
 
 make run-cypress-browserstack
+echo "run cypress browserstacks"
 
 cleanup_ip_set
+echo "cleanup ip set"

@@ -36,14 +36,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 12.x
-
-    - name: run-ui-tests
-      run: |
-        sudo apt-get install jq
-        cd cypress_tests
-        cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
-        cd ..
-        bash run_tests_in_browserstack.sh
     
     - name: build
       run: |
