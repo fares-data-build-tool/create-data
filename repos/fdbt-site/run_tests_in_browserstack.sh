@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -e
-
 # Exit script if you try to use an uninitialized variable.
 set -o nounset
 
