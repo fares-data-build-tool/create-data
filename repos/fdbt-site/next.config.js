@@ -1,4 +1,9 @@
+const withPlugins = require('next-compose-plugins');
+const withImages = require('next-images');
+
 const nextConfig = {
+    webpack5: false,
+    target: 'server',
     poweredByHeader: false,
     webpack: (config, { isServer }) => {
         config.module.rules.push({
@@ -17,11 +22,8 @@ const nextConfig = {
         config.resolve = { ...config.resolve, symlinks: false };
 
         if (!isServer) {
-            config.resolve = {
-                ...config.resolve,
-                fallback: {
-                    fs: 'empty'
-                }
+            config.node = {
+                fs: 'empty',
             };
         }
 
@@ -29,8 +31,4 @@ const nextConfig = {
     },
 };
 
-
-module.exports = () => {
-    const plugins = [] // any plugins we might add
-    return plugins.reduce((acc, next) => next(acc), nextConfig);
-};
+module.exports = withPlugins([[withImages]], nextConfig);
