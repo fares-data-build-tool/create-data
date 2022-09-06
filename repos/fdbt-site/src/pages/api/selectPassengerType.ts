@@ -4,12 +4,15 @@ import {
     FARE_TYPE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { convertToFullPassengerType, getGroupPassengerTypeById, getPassengerTypeById } from '../../data/auroradb';
 import { FareType, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError, getAndValidateNoc } from '../../utils/apiUtils/index';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -26,6 +29,31 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const dbIndividual = await getPassengerTypeById(selectedPassengerType, nocCode);
         const dbGroup = await getGroupPassengerTypeById(selectedPassengerType, nocCode);
+
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+        if (ticket && matchingJsonMetaData && (dbIndividual || dbGroup)) {
+            // edit mode
+            const updatedTicket = {
+                ...ticket,
+                passengerType: { id: selectedPassengerType },
+            };
+
+            // put the now updated matching json into s3
+            // overriding the existing object
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+
+            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, undefined);
+
+            redirectTo(
+                res,
+                `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                }`,
+            );
+            return;
+        }
 
         if (dbGroup) {
             const fullGroup = await convertToFullPassengerType(dbGroup, nocCode);
