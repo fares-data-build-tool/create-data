@@ -18,6 +18,10 @@ update_ip_set() {
     IP=$(curl ipinfo.io/ip)
     echo "ip is"
     echo $IP
+    echo "ipset id"
+    echo $WAF_IPSET_ID
+    echo "ipset name"
+    echo $WAF_IPSET_NAME
     LOCK_TOKEN=$(aws wafv2 get-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID | jq .LockToken | tr -d '"')
     NEXT_LOCK_TOKEN=$(aws wafv2 update-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID --addresses $IP/32 --lock-token $LOCK_TOKEN 2>/dev/null | jq .NextLockToken | tr -d '"')
     echo "update the ipset"
