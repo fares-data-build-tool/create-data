@@ -38,14 +38,14 @@ exports[`pages productDateInformation it should render end date errors and start
           <h1
             className="govuk-fieldset__heading"
           >
-            Enter start date for your product(s), and an end date if applicable
+            Enter dates for your product(s)
           </h1>
         </legend>
         <div
           className="govuk-hint"
           id="product-date-hint"
         >
-          Start dates are mandatory, end dates are optional
+          Start dates are mandatory. End dates should only be added where appropriate.
         </div>
         <DateSelector
           errors={
@@ -129,14 +129,14 @@ exports[`pages productDateInformation it should render end date errors correctly
           <h1
             className="govuk-fieldset__heading"
           >
-            Enter start date for your product(s), and an end date if applicable
+            Enter dates for your product(s)
           </h1>
         </legend>
         <div
           className="govuk-hint"
           id="product-date-hint"
         >
-          Start dates are mandatory, end dates are optional
+          Start dates are mandatory. End dates should only be added where appropriate.
         </div>
         <DateSelector
           errors={Array []}
@@ -213,14 +213,14 @@ exports[`pages productDateInformation it should render start date errors correct
           <h1
             className="govuk-fieldset__heading"
           >
-            Enter start date for your product(s), and an end date if applicable
+            Enter dates for your product(s)
           </h1>
         </legend>
         <div
           className="govuk-hint"
           id="product-date-hint"
         >
-          Start dates are mandatory, end dates are optional
+          Start dates are mandatory. End dates should only be added where appropriate.
         </div>
         <DateSelector
           errors={
@@ -290,14 +290,14 @@ exports[`pages productDateInformation it should render the product date informat
           <h1
             className="govuk-fieldset__heading"
           >
-            Enter start date for your product(s), and an end date if applicable
+            Enter dates for your product(s)
           </h1>
         </legend>
         <div
           className="govuk-hint"
           id="product-date-hint"
         >
-          Start dates are mandatory, end dates are optional
+          Start dates are mandatory. End dates should only be added where appropriate.
         </div>
         <DateSelector
           errors={Array []}

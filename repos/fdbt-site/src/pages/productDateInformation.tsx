@@ -38,11 +38,11 @@ const ProductDateInfo = ({
                         <fieldset className="govuk-fieldset" role="group" aria-describedby="product-date-hint">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 className="govuk-fieldset__heading">
-                                    Enter start date for your product(s), and an end date if applicable
+                                    Enter dates for your product(s)
                                 </h1>
                             </legend>
                             <div id="product-date-hint" className="govuk-hint">
-                                Start dates are mandatory, end dates are optional
+                                Start dates are mandatory. End dates should only be added where appropriate.
                             </div>
 
                             <DateSelector
