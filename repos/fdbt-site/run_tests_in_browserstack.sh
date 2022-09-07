@@ -14,7 +14,10 @@ set -o pipefail
 
 update_ip_set() {
     echo "updating ip set"
-    IP=$(wget -qO- http://checkip.amazonaws.com)
+    # IP=$(wget -qO- http://checkip.amazonaws.com)
+    IP=$(Invoke-WebRequest ifconfig.me/ip).Content.Trim()
+    echo "ip is"
+    echo $IP
     LOCK_TOKEN=$(aws wafv2 get-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID | jq .LockToken | tr -d '"')
     NEXT_LOCK_TOKEN=$(aws wafv2 update-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID --addresses $IP/32 --lock-token $LOCK_TOKEN 2>/dev/null | jq .NextLockToken | tr -d '"')
     echo "update the ipset"
