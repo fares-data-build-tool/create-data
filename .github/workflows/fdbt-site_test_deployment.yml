@@ -25,6 +25,8 @@ jobs:
       ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
       ECS_TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
       CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+      WAF_IPSET_ID: ${{ secrets.WAF_IPSET_ID }}
+      WAF_IPSET_NAME: ${{ secrets.WAF_IPSET_NAME }}
     
     steps:
     - name: Checkout
@@ -136,4 +138,3 @@ jobs:
     #     service: ${{ env.ECS_SERVICE }}
     #     cluster: ${{ env.ECS_CLUSTER }}
     #     wait-for-service-stability: true
-    
