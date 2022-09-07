@@ -1,28 +1,91 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import {
-    getMockContext,
-    mockProductDateInformationFieldsets,
-    mockProductDateInformationFieldsetsWithInputErrors,
-    mockProductRadioErrors,
-} from '../testData/mockData';
-import ProductDateInfo, { getFieldsets, getServerSideProps } from '../../src/pages/productDateInformation';
-import { ErrorInfo, ProductDateInformation } from '../../src/interfaces';
+import { getMockContext } from '../testData/mockData';
+import ProductDateInfo, { getServerSideProps } from '../../src/pages/productDateInformation';
+import { ErrorInfo } from '../../src/interfaces';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('productDateInformation', () => {
-        it('it should render the product date information page', () => {
+        it('it should render the product date information page upon first landing', () => {
             const wrapper = shallow(
-                <ProductDateInfo errors={[]} fieldsets={mockProductDateInformationFieldsets} csrfToken="" />,
+                <ProductDateInfo
+                    startDateErrors={[]}
+                    endDateErrors={[]}
+                    inputs={{
+                        startDateDay: '',
+                        startDateMonth: '',
+                        startDateYear: '',
+                        endDateDay: '',
+                        endDateMonth: '',
+                        endDateYear: '',
+                    }}
+                    csrfToken=""
+                />,
             );
             expect(wrapper).toMatchSnapshot();
         });
-        it('it should render errors correctly when radio errors are passed to the page', () => {
+        it('it should render start date errors correctly when start date errors are passed to the page', () => {
             const wrapper = shallow(
                 <ProductDateInfo
-                    errors={mockProductRadioErrors}
-                    fieldsets={mockProductDateInformationFieldsets}
+                    startDateErrors={[{ errorMessage: 'Start date must be a real date', id: 'start-day-input' }]}
+                    endDateErrors={[]}
+                    inputs={{
+                        startDateDay: 'first',
+                        startDateMonth: 'august',
+                        startDateYear: '2020',
+                        endDateDay: '',
+                        endDateMonth: '',
+                        endDateYear: '',
+                    }}
+                    csrfToken=""
+                />,
+            );
+            expect(wrapper).toMatchSnapshot();
+        });
+
+        it('it should render end date errors correctly when end date errors are passed to the page', () => {
+            const wrapper = shallow(
+                <ProductDateInfo
+                    startDateErrors={[]}
+                    endDateErrors={[
+                        {
+                            id: 'end-year-input',
+                            errorMessage: 'End date year has an invalid character',
+                        },
+                    ]}
+                    inputs={{
+                        startDateDay: '01',
+                        startDateMonth: '01',
+                        startDateYear: '2020',
+                        endDateDay: '01',
+                        endDateMonth: '01',
+                        endDateYear: '20.25',
+                    }}
+                    csrfToken=""
+                />,
+            );
+            expect(wrapper).toMatchSnapshot();
+        });
+
+        it('it should render end date errors and start date errors when both errors are passed to the page', () => {
+            const wrapper = shallow(
+                <ProductDateInfo
+                    startDateErrors={[{ errorMessage: 'Start date must be a real date', id: 'start-day-input' }]}
+                    endDateErrors={[
+                        {
+                            id: 'end-year-input',
+                            errorMessage: 'End date year has an invalid character',
+                        },
+                    ]}
+                    inputs={{
+                        startDateDay: 'first',
+                        startDateMonth: 'august',
+                        startDateYear: '2020',
+                        endDateDay: '01',
+                        endDateMonth: '01',
+                        endDateYear: '20.25',
+                    }}
                     csrfToken=""
                 />,
             );
@@ -30,88 +93,91 @@ describe('pages', () => {
         });
     });
 
-    describe('getProductDateInformationFieldSets', () => {
-        const mockDates: ProductDateInformation = {
-            startDateDay: '',
-            startDateMonth: '',
-            startDateYear: '',
-            endDateDay: '',
-            endDateMonth: '',
-            endDateYear: '',
-        };
+    describe('getServerSideProps', () => {
+        it('it should return props containing no errors and valid fieldsets when no product session is present', () => {
+            const ctx = getMockContext();
+            const result = getServerSideProps(ctx);
 
-        const mockDatesWithErrors: ProductDateInformation = {
-            startDateDay: '',
-            startDateMonth: '12',
-            startDateYear: '2020',
-            endDateDay: '',
-            endDateMonth: '12',
-            endDateYear: '2020',
-        };
-
-        it('it should return a fieldset containing two text inputs with no errors when no errors are passed', () => {
-            const errors: ErrorInfo[] = [];
-            const fieldset = getFieldsets(errors, mockDates);
-            expect(fieldset).toEqual(mockProductDateInformationFieldsets);
+            expect(result.props.endDateErrors).toEqual([]);
+            expect(result.props.startDateErrors).toEqual([]);
+            expect(result.props.inputs).toEqual({
+                startDateDay: '',
+                startDateMonth: '',
+                startDateYear: '',
+                endDateDay: '',
+                endDateMonth: '',
+                endDateYear: '',
+            });
         });
 
-        it('it should return a fieldset containing two text inputs with errors attached when errors are passed', () => {
+        it('it should return props containing no errors and valid fieldsets when no are present', () => {
+            const ctx = getMockContext({
+                session: {
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        errors: [],
+                        dates: {
+                            startDateDay: '01',
+                            startDateMonth: '01',
+                            startDateYear: '2020',
+                            endDateDay: '01',
+                            endDateMonth: '01',
+                            endDateYear: '2025',
+                        },
+                    },
+                },
+            });
+            const result = getServerSideProps(ctx);
+
+            expect(result.props.endDateErrors).toEqual([]);
+            expect(result.props.startDateErrors).toEqual([]);
+            expect(result.props.inputs).toEqual({
+                startDateDay: '01',
+                startDateMonth: '01',
+                startDateYear: '2020',
+                endDateDay: '01',
+                endDateMonth: '01',
+                endDateYear: '2025',
+            });
+        });
+
+        it('it should return props containing errors and valid fieldsets when radio and all input errors are present', () => {
             const errors: ErrorInfo[] = [
                 {
-                    id: 'start-date-day',
+                    id: 'start-day-input',
                     errorMessage: 'Start date must be a real date',
                 },
                 {
-                    id: 'end-date-day',
+                    id: 'end-day-input',
                     errorMessage: 'End date must be a real date',
                 },
             ];
-            const fieldset = getFieldsets(errors, mockDatesWithErrors);
-            expect(fieldset).toEqual(mockProductDateInformationFieldsetsWithInputErrors);
-        });
 
-        describe('getServerSideProps', () => {
-            it('it should return props containing no errors and valid fieldsets when no product session is present', () => {
-                const ctx = getMockContext();
-                const result = getServerSideProps(ctx);
-
-                expect(result.props.errors).toEqual([]);
-                expect(result.props.fieldsets).toEqual(mockProductDateInformationFieldsets);
+            const ctx = getMockContext({
+                session: {
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        errors,
+                        dates: {
+                            startDateDay: 'first',
+                            startDateMonth: 'august',
+                            startDateYear: '2020',
+                            endDateDay: '01',
+                            endDateMonth: '01',
+                            endDateYear: '20.25',
+                        },
+                    },
+                },
             });
+            const result = getServerSideProps(ctx);
 
-            it('it should return props containing no errors and valid fieldsets when no are present', () => {
-                const ctx = getMockContext({
-                    session: {
-                        [PRODUCT_DATE_ATTRIBUTE]: { errors: [], dates: mockDates },
-                    },
-                });
-                const result = getServerSideProps(ctx);
-
-                expect(result.props.errors).toEqual([]);
-                expect(result.props.fieldsets).toEqual(mockProductDateInformationFieldsets);
-            });
-
-            it('it should return props containing errors and valid fieldsets when radio and all input errors are present', () => {
-                const errors: ErrorInfo[] = [
-                    {
-                        id: 'start-date-day',
-                        errorMessage: 'Start date must be a real date',
-                    },
-                    {
-                        id: 'end-date-day',
-                        errorMessage: 'End date must be a real date',
-                    },
-                ];
-
-                const ctx = getMockContext({
-                    session: {
-                        [PRODUCT_DATE_ATTRIBUTE]: { errors, dates: mockDatesWithErrors },
-                    },
-                });
-                const result = getServerSideProps(ctx);
-
-                expect(result.props.errors).toEqual(errors);
-                expect(result.props.fieldsets).toEqual(mockProductDateInformationFieldsetsWithInputErrors);
+            expect(result.props.startDateErrors).toEqual([errors[0]]);
+            expect(result.props.endDateErrors).toEqual([errors[1]]);
+            expect(result.props.inputs).toEqual({
+                startDateDay: 'first',
+                startDateMonth: 'august',
+                startDateYear: '2020',
+                endDateDay: '01',
+                endDateMonth: '01',
+                endDateYear: '20.25',
             });
         });
     });

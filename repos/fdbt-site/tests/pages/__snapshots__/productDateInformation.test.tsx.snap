@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages productDateInformation it should render errors correctly when radio errors are passed to the page 1`] = `
+exports[`pages productDateInformation it should render end date errors and start date errors when both errors are passed to the page 1`] = `
 <TwoThirdsLayout
   description="Product Date Information page of the Create Fares Data Service"
   title="Product Date Information - Create Fares Data Service"
@@ -14,78 +14,74 @@ exports[`pages productDateInformation it should render errors correctly when rad
       errors={
         Array [
           Object {
-            "errorMessage": "Choose one of the options below",
-            "id": "start-date",
+            "errorMessage": "Start date must be a real date",
+            "id": "start-day-input",
+          },
+          Object {
+            "errorMessage": "End date year has an invalid character",
+            "id": "end-year-input",
           },
         ]
       }
     />
     <div
-      className="govuk-form-group "
+      className="govuk-form-group govuk-form-group--error"
     >
       <fieldset
-        aria-describedby="product-date-information-heading"
+        aria-describedby="product-date-hint"
         className="govuk-fieldset"
+        role="group"
       >
         <legend
-          className="govuk-heading-l"
-          id="product-date-information-heading"
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          Is there a start or end date for your product(s)?
+          <h1
+            className="govuk-fieldset__heading"
+          >
+            Enter start date for your product(s), and an end date if applicable
+          </h1>
         </legend>
-        <span
+        <div
           className="govuk-hint"
-          id="product-dating-hint"
+          id="product-date-hint"
         >
-          If not supplied, your start date will default to today and your product will not have an end date
-        </span>
-        <RadioConditionalInput
-          fieldset={
-            Object {
-              "heading": Object {
-                "content": "Is there a start or end date for your product(s)?",
-                "hidden": true,
-                "id": "product-dates-information",
+          Start dates are mandatory, end dates are optional
+        </div>
+        <DateSelector
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Start date must be a real date",
+                "id": "start-day-input",
               },
-              "radioError": Array [],
-              "radios": Array [
-                Object {
-                  "dataAriaControls": "product-dates-required-conditional",
-                  "id": "product-dates-required",
-                  "inputErrors": Array [],
-                  "inputHint": Object {
-                    "content": "",
-                    "id": "",
-                  },
-                  "inputType": "date",
-                  "inputs": Array [
-                    Object {
-                      "defaultValue": "##",
-                      "id": "start-date",
-                      "label": "Start Date",
-                      "name": "startDate",
-                    },
-                    Object {
-                      "defaultValue": "##",
-                      "id": "end-date",
-                      "label": "End Date",
-                      "name": "endDate",
-                    },
-                  ],
-                  "label": "Yes",
-                  "name": "productDates",
-                  "value": "Yes",
-                },
-                Object {
-                  "id": "product-dates-information-not-required",
-                  "label": "No",
-                  "name": "productDates",
-                  "value": "No",
-                },
-              ],
+            ]
+          }
+          inputs={
+            Object {
+              "dayInput": "first",
+              "monthInput": "august",
+              "yearInput": "2020",
             }
           }
-          key="product-dates-information"
+          startOrEnd="start"
+        />
+        <DateSelector
+          errors={
+            Array [
+              Object {
+                "errorMessage": "End date year has an invalid character",
+                "id": "end-year-input",
+              },
+            ]
+          }
+          inputs={
+            Object {
+              "dayInput": "01",
+              "monthInput": "01",
+              "yearInput": "20.25",
+            }
+          }
+          startOrEnd="end"
         />
       </fieldset>
     </div>
@@ -99,7 +95,175 @@ exports[`pages productDateInformation it should render errors correctly when rad
 </TwoThirdsLayout>
 `;
 
-exports[`pages productDateInformation it should render the product date information page 1`] = `
+exports[`pages productDateInformation it should render end date errors correctly when end date errors are passed to the page 1`] = `
+<TwoThirdsLayout
+  description="Product Date Information page of the Create Fares Data Service"
+  title="Product Date Information - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/productDateInformation"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "End date year has an invalid character",
+            "id": "end-year-input",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="product-date-hint"
+        className="govuk-fieldset"
+        role="group"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+          >
+            Enter start date for your product(s), and an end date if applicable
+          </h1>
+        </legend>
+        <div
+          className="govuk-hint"
+          id="product-date-hint"
+        >
+          Start dates are mandatory, end dates are optional
+        </div>
+        <DateSelector
+          errors={Array []}
+          inputs={
+            Object {
+              "dayInput": "01",
+              "monthInput": "01",
+              "yearInput": "2020",
+            }
+          }
+          startOrEnd="start"
+        />
+        <DateSelector
+          errors={
+            Array [
+              Object {
+                "errorMessage": "End date year has an invalid character",
+                "id": "end-year-input",
+              },
+            ]
+          }
+          inputs={
+            Object {
+              "dayInput": "01",
+              "monthInput": "01",
+              "yearInput": "20.25",
+            }
+          }
+          startOrEnd="end"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages productDateInformation it should render start date errors correctly when start date errors are passed to the page 1`] = `
+<TwoThirdsLayout
+  description="Product Date Information page of the Create Fares Data Service"
+  title="Product Date Information - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/productDateInformation"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Start date must be a real date",
+            "id": "start-day-input",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="product-date-hint"
+        className="govuk-fieldset"
+        role="group"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+          >
+            Enter start date for your product(s), and an end date if applicable
+          </h1>
+        </legend>
+        <div
+          className="govuk-hint"
+          id="product-date-hint"
+        >
+          Start dates are mandatory, end dates are optional
+        </div>
+        <DateSelector
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Start date must be a real date",
+                "id": "start-day-input",
+              },
+            ]
+          }
+          inputs={
+            Object {
+              "dayInput": "first",
+              "monthInput": "august",
+              "yearInput": "2020",
+            }
+          }
+          startOrEnd="start"
+        />
+        <DateSelector
+          errors={Array []}
+          inputs={
+            Object {
+              "dayInput": "",
+              "monthInput": "",
+              "yearInput": "",
+            }
+          }
+          startOrEnd="end"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages productDateInformation it should render the product date information page upon first landing 1`] = `
 <TwoThirdsLayout
   description="Product Date Information page of the Create Fares Data Service"
   title="Product Date Information - Create Fares Data Service"
@@ -116,68 +280,46 @@ exports[`pages productDateInformation it should render the product date informat
       className="govuk-form-group "
     >
       <fieldset
-        aria-describedby="product-date-information-heading"
+        aria-describedby="product-date-hint"
         className="govuk-fieldset"
+        role="group"
       >
         <legend
-          className="govuk-heading-l"
-          id="product-date-information-heading"
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
         >
-          Is there a start or end date for your product(s)?
+          <h1
+            className="govuk-fieldset__heading"
+          >
+            Enter start date for your product(s), and an end date if applicable
+          </h1>
         </legend>
-        <span
+        <div
           className="govuk-hint"
-          id="product-dating-hint"
+          id="product-date-hint"
         >
-          If not supplied, your start date will default to today and your product will not have an end date
-        </span>
-        <RadioConditionalInput
-          fieldset={
+          Start dates are mandatory, end dates are optional
+        </div>
+        <DateSelector
+          errors={Array []}
+          inputs={
             Object {
-              "heading": Object {
-                "content": "Is there a start or end date for your product(s)?",
-                "hidden": true,
-                "id": "product-dates-information",
-              },
-              "radioError": Array [],
-              "radios": Array [
-                Object {
-                  "dataAriaControls": "product-dates-required-conditional",
-                  "id": "product-dates-required",
-                  "inputErrors": Array [],
-                  "inputHint": Object {
-                    "content": "",
-                    "id": "",
-                  },
-                  "inputType": "date",
-                  "inputs": Array [
-                    Object {
-                      "defaultValue": "##",
-                      "id": "start-date",
-                      "label": "Start Date",
-                      "name": "startDate",
-                    },
-                    Object {
-                      "defaultValue": "##",
-                      "id": "end-date",
-                      "label": "End Date",
-                      "name": "endDate",
-                    },
-                  ],
-                  "label": "Yes",
-                  "name": "productDates",
-                  "value": "Yes",
-                },
-                Object {
-                  "id": "product-dates-information-not-required",
-                  "label": "No",
-                  "name": "productDates",
-                  "value": "No",
-                },
-              ],
+              "dayInput": "",
+              "monthInput": "",
+              "yearInput": "",
             }
           }
-          key="product-dates-information"
+          startOrEnd="start"
+        />
+        <DateSelector
+          errors={Array []}
+          inputs={
+            Object {
+              "dayInput": "",
+              "monthInput": "",
+              "yearInput": "",
+            }
+          }
+          startOrEnd="end"
         />
       </fieldset>
     </div>
