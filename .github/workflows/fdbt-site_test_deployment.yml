@@ -25,6 +25,8 @@ jobs:
       ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
       ECS_TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
       CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+      WAF_IPSET_ID: ${{ secrets.WAF_IPSET_ID }}
+      WAF_IPSET_NAME: ${{ secrets.WAF_IPSET_NAME }}
     
     steps:
     - name: Checkout
@@ -101,14 +103,21 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
 
-    # - name: run-ui-tests
-    #   run: |
-    #     sudo apt-get install jq
-    #     cd cypress_tests
-    #     echo "${CYPRESS_BASE_URL}"
-    #     cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
-    #     cd ..
-    #     bash run_tests_in_browserstack.sh
+    - name: 'BrowserStack Env Setup'
+      uses: 'browserstack/github-actions/setup-env@master'
+      with:
+        username:  ${{ secrets.BROWSERSTACK_USERNAME }}
+        access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+
+    - name: run-ui-tests
+      env:
+        CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
+      run: |
+        sudo apt-get install jq
+        cd cypress_tests
+        cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
+        cd ..
+        bash run_tests_in_browserstack.sh
 
     - name: Download task definition
       run: |
