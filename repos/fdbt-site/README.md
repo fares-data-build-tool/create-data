@@ -35,4 +35,3 @@ There are two pages on the fdbt site which accept file uploads. Upon file upload
 -   You should now be able to run 'clamdscan' to run the virus scanning tool. Pointing the tool to a file will run the ClamAV virus scanning tool against the file.
 
 Once set up, and with the site running locally, the file upload pages can now successfully run the virus scanning tool. The site contains config which will point to the local clamdscan binary that has been set up above.
-
