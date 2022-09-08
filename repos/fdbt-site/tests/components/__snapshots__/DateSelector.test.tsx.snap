@@ -1,0 +1,350 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DateSelector should render the DateSelector component with errors 1`] = `
+<div
+  className=""
+>
+  <h1
+    className="govuk-heading-m"
+  >
+    Start
+     date
+  </h1>
+  <FormElementWrapper
+    errorClass="govuk-date-input--error"
+    errorId="start-day-input"
+    errors={
+      Array [
+        Object {
+          "errorMessage": "Start date must be a real date",
+          "id": "start-day-input",
+        },
+      ]
+    }
+  >
+    <div
+      className="govuk-date-input"
+      id="start-date"
+    >
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="start-day-input"
+          >
+            Day
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-2 govuk-input--error "
+            defaultValue="first"
+            id="start-day-input"
+            name="startDateDay"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="start-month-input"
+          >
+            Month
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-2 govuk-input--error "
+            defaultValue="august"
+            id="start-month-input"
+            name="startDateMonth"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="start-year-input"
+          >
+            Year
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-4 govuk-input--error "
+            defaultValue="2020"
+            id="start-year-input"
+            name="startDateYear"
+            type="text"
+          />
+        </div>
+      </div>
+    </div>
+  </FormElementWrapper>
+</div>
+`;
+
+exports[`DateSelector should render the DateSelector component with valid inputs 1`] = `
+<div
+  className=""
+>
+  <h1
+    className="govuk-heading-m"
+  >
+    Start
+     date
+  </h1>
+  <FormElementWrapper
+    errorClass="govuk-date-input--error"
+    errorId="start-day-input"
+    errors={Array []}
+  >
+    <div
+      className="govuk-date-input"
+      id="start-date"
+    >
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="start-day-input"
+          >
+            Day
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-2  "
+            defaultValue="01"
+            id="start-day-input"
+            name="startDateDay"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="start-month-input"
+          >
+            Month
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-2  "
+            defaultValue="01"
+            id="start-month-input"
+            name="startDateMonth"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="start-year-input"
+          >
+            Year
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-4  "
+            defaultValue="2020"
+            id="start-year-input"
+            name="startDateYear"
+            type="text"
+          />
+        </div>
+      </div>
+    </div>
+  </FormElementWrapper>
+</div>
+`;
+
+exports[`DateSelector should render the end DateSelector component empty 1`] = `
+<div
+  className="govuk-!-padding-top-4"
+>
+  <h1
+    className="govuk-heading-m"
+  >
+    End
+     date
+  </h1>
+  <FormElementWrapper
+    errorClass="govuk-date-input--error"
+    errorId="end-day-input"
+    errors={Array []}
+  >
+    <div
+      className="govuk-date-input"
+      id="end-date"
+    >
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="end-day-input"
+          >
+            Day
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-2  "
+            id="end-day-input"
+            name="endDateDay"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="end-month-input"
+          >
+            Month
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-2  "
+            id="end-month-input"
+            name="endDateMonth"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="end-year-input"
+          >
+            Year
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-4  "
+            id="end-year-input"
+            name="endDateYear"
+            type="text"
+          />
+        </div>
+      </div>
+    </div>
+  </FormElementWrapper>
+</div>
+`;
+
+exports[`DateSelector should render the start DateSelector component empty 1`] = `
+<div
+  className=""
+>
+  <h1
+    className="govuk-heading-m"
+  >
+    Start
+     date
+  </h1>
+  <FormElementWrapper
+    errorClass="govuk-date-input--error"
+    errorId="start-day-input"
+    errors={Array []}
+  >
+    <div
+      className="govuk-date-input"
+      id="start-date"
+    >
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="start-day-input"
+          >
+            Day
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-2  "
+            id="start-day-input"
+            name="startDateDay"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="start-month-input"
+          >
+            Month
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-2  "
+            id="start-month-input"
+            name="startDateMonth"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label govuk-date-input__label"
+            htmlFor="start-year-input"
+          >
+            Year
+          </label>
+          <input
+            className="govuk-input govuk-date-input__input govuk-input--width-4  "
+            id="start-year-input"
+            name="startDateYear"
+            type="text"
+          />
+        </div>
+      </div>
+    </div>
+  </FormElementWrapper>
+</div>
+`;
