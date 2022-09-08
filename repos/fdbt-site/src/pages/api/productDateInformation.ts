@@ -144,7 +144,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const updatedTicket = {
                 ...ticket,
                 ticketPeriod: {
-                    startDate: startDate?.toISOString() ?? moment.utc().startOf('day').toISOString(),
+                    startDate: startDate.toISOString(),
                     endDate: endDate?.toISOString(),
                 },
             };
@@ -159,7 +159,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
-            startDate: startDate?.toISOString() ?? moment.utc().startOf('day').toISOString(),
+            startDate: startDate.toISOString(),
             endDate: endDate?.toISOString(),
             dateInput,
         });
