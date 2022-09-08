@@ -13,7 +13,7 @@ describe('pages', () => {
                     passengers={[
                         {
                             id: 1,
-                            name: 'Normal adult',
+                            name: 'Normal Adult',
                             passengerType: {
                                 id: 1,
                                 passengerType: 'adult',

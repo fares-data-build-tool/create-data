@@ -3,6 +3,7 @@ import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 
 import * as testData from './testData/testData';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createMailTransporter, netexEmailerHandler, redactEmailAddress } from './handler';
 import * as s3 from '../data/s3';
 import { periodGeoZoneTicket } from '../test-data/matchingData';

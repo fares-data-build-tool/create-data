@@ -1,0 +1,63 @@
+on:
+  push:
+    branches:
+    - '**'
+    - '!develop'
+    - '!master'
+    paths:
+    - repos/fdbt-netex-output/**
+  workflow_dispatch:
+
+name: 'fdbt-netex-output'
+
+defaults:
+  run:
+    working-directory: ./repos/fdbt-netex-output
+
+jobs:
+
+  fdbt-netex-output:
+    name: 'fdbt-netex-output'
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: none
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+      
+    - name: audit-netex-validator
+      run: |
+        pip install safety
+        cd src/netex-validator
+        safety check -r requirements.txt
+
+    - name: Use Node.js 
+      uses: actions/setup-node@v3
+      with:
+        node-version: 12.x
+    
+    - name: build
+      run: |
+        echo "Starting build"
+        npm ci
+        echo " ci finished"
+        npm run build
+
+    - name: test
+      run: |
+        echo "Running tests"
+        npm run test:ci
+
+    - name: lint
+      run: |
+        echo "Linting"
+        npm run lint
+
+    
+    

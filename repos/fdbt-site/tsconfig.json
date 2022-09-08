@@ -26,6 +26,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "useUnknownInCatchVariables": false,
+    "incremental": true
   },
   "include": [
     "server",

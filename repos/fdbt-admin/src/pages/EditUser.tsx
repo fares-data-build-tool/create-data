@@ -8,7 +8,7 @@ import { AdminGetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprov
 import { adminUpdateUserAttributes, getUser } from '../data/cognito';
 import {
     getCognitoClientAndUserPool,
-    cogntioFormatNocs,
+    cognitoFormatNocs,
     humanFormatNocs,
     htmlFormatNocs,
     parseCognitoUser,
@@ -59,7 +59,7 @@ const EditUser = ({ isFullAdmin }: EditUserProps): ReactElement => {
         setUpdatedUserNocs('');
         setError('');
 
-        const formattedUser = { ...formUser, nocs: cogntioFormatNocs(formUser.nocs) };
+        const formattedUser = { ...formUser, nocs: cognitoFormatNocs(formUser.nocs) };
 
         reset();
 

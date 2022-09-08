@@ -1,0 +1,62 @@
+on:
+  push:
+    branches:
+    - 'develop'
+    paths:
+    - repos/exporter/**
+  workflow_dispatch:
+
+name: 'exporter_test'
+
+defaults:
+  run:
+    working-directory: ./repos/exporter
+
+jobs:
+
+  exporter_to_deploy_to_test:
+    name: 'exporter_test'
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: test
+    environment:
+      name: test
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js 
+      uses: actions/setup-node@v3
+      with:
+        node-version: 12.x
+    
+    - name: build
+      run: |
+        echo "Starting build"
+        npm ci
+        echo " ci finished"
+        npm run build
+
+    - name: test
+      run: |
+        echo "Running tests"
+        npm run test:ci
+
+    - name: lint
+      run: |
+        echo "Linting"
+        npm run lint
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
+    
+    - name: deploy-exporter
+      run: |
+        echo "Deploying..."
+        export STAGE=${{ env.WORKSPACE }} && node_modules/.bin/cdk deploy --require-approval never --ci --no-color
+        echo "Finished deploy" 

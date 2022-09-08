@@ -1171,7 +1171,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="passenger-type-0"
                 >
-                  Normal adult
+                  Normal Adult
                 </label>
               </div>
               <div
@@ -1179,7 +1179,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 id="conditional-input-0"
               >
                 <label
-                  htmlFor="maximum-passengers-Normal adult"
+                  htmlFor="maximum-passengers-Normal Adult"
                 >
                   <h1
                     className="govuk-heading-s"
@@ -1193,7 +1193,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="minimum-passengers-Normal adult"
+                    htmlFor="minimum-passengers-Normal Adult"
                   >
                     Minimum (optional)
                   </label>
@@ -1210,7 +1210,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="maximum-passengers-Normal adult"
+                    htmlFor="maximum-passengers-Normal Adult"
                   >
                     Maximum (required)
                   </label>
@@ -1226,7 +1226,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
               <input
                 name="passengerType1"
                 type="hidden"
-                value="Normal adult"
+                value="Normal Adult"
               />
             </div>
             <div

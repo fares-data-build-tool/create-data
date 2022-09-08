@@ -8,13 +8,18 @@ import {
     getTimeRestrictionByIdAndNoc,
     getBodsServiceDirectionDescriptionsByNocAndServiceId,
 } from '../../data/auroradb';
-import { ProductDetailsElement, NextPageContextWithSession } from '../../interfaces';
+import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
 import BackButton from '../../components/BackButton';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { MATCHING_JSON_ATTRIBUTE, MATCHING_JSON_META_DATA_ATTRIBUTE } from '../../../src/constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    PRODUCT_DATE_ATTRIBUTE,
+} from '../../../src/constants/attributes';
+import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -89,25 +94,19 @@ const getEditableValue = (element: ProductDetailsElement) => {
     );
 };
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ProductDetailsProps }> => {
-    const noc = getAndValidateNoc(ctx);
-
-    const serviceId = ctx.query?.serviceId;
-
-    const productId = ctx.query?.productId;
-
-    if (typeof productId !== 'string') {
-        throw new Error(`Expected string type for productID, received: ${productId}`);
-    }
-
-    const { matchingJsonLink, servicesRequiringAttention } = await getProductById(noc, productId);
-
-    const ticket = await getProductsMatchingJson(matchingJsonLink);
-
-    // store the ticket in the session so that it can be retrieved
-    // on the /csvUpload page.
-    updateSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE, ticket);
-
+const createProductDetails = async (
+    ticket: TicketWithIds,
+    noc: string,
+    servicesRequiringAttention: string[] | undefined,
+    serviceId: string | string[] | undefined,
+    ctx: NextPageContextWithSession,
+): Promise<{
+    productDetailsElements: ProductDetailsElement[];
+    productName: string;
+    startDate: string;
+    endDate: string | undefined;
+    requiresAttention: boolean;
+}> => {
     const productDetailsElements: ProductDetailsElement[] = [];
 
     if ('type' in ticket) {
@@ -133,16 +132,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
-    let backHref = '/products/otherProducts';
-
     let requiresAttention = false;
 
     if (serviceId) {
         if (typeof serviceId !== 'string') {
             throw new Error(`Expected string type for serviceId, received: ${serviceId}`);
         }
-
-        updateSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE, { productId, serviceId, matchingJsonLink });
 
         const pointToPointService = await getBodsServiceByNocAndId(noc, serviceId);
 
@@ -152,8 +147,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 `${pointToPointService.lineName} - ${pointToPointService.origin} to ${pointToPointService.destination}`,
             ],
         });
-
-        backHref = `/products/pointToPointProducts?serviceId=${serviceId}`;
 
         requiresAttention = servicesRequiringAttention?.includes(serviceId) ?? false;
 
@@ -180,7 +173,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
 
-    productDetailsElements.push({ name: 'Passenger type', content: [passengerTypeName] });
+    productDetailsElements.push({
+        name: 'Passenger type',
+        content: [passengerTypeName],
+        editLink: '/selectPassengerType',
+    });
 
     const isSchoolTicket = 'termTime' in ticket && ticket.termTime;
 
@@ -278,10 +275,29 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const startDate = convertDateFormat(ticket.ticketPeriod.startDate);
 
     const endDate = ticket.ticketPeriod.endDate ? convertDateFormat(ticket.ticketPeriod.endDate) : undefined;
+    const startDateParts = startDate.split('/');
+    const endDateParts = endDate ? endDate.split('/') : [];
+    const dates: ProductDateInformation = {
+        startDateDay: startDateParts[0],
+        startDateMonth: startDateParts[1],
+        startDateYear: startDateParts[2],
+        ...(endDateParts.length > 0
+            ? {
+                  endDateDay: endDateParts[0],
+                  endDateMonth: endDateParts[1],
+                  endDateYear: endDateParts[2],
+              }
+            : {
+                  endDateDay: '',
+                  endDateMonth: '',
+                  endDateYear: '',
+              }),
+    };
+    updateSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE, { dates, errors: [] });
 
-    productDetailsElements.push({ name: 'Start date', content: [startDate] });
+    productDetailsElements.push({ name: 'Start date', content: [startDate], editLink: '/productDateInformation' });
 
-    productDetailsElements.push({ name: 'End date', content: [endDate ?? '-'] });
+    productDetailsElements.push({ name: 'End date', content: [endDate ?? '-'], editLink: '/productDateInformation' });
 
     const productName =
         'productName' in product
@@ -290,14 +306,46 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ? `${passengerTypeName} - ${sentenceCaseString(ticket.type)} (school)`
             : `${passengerTypeName} - ${sentenceCaseString(ticket.type)}`;
 
+    return { productDetailsElements, productName, startDate, endDate, requiresAttention };
+};
+
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ProductDetailsProps }> => {
+    const noc = getAndValidateNoc(ctx);
+
+    const serviceId = ctx.query?.serviceId;
+
+    const productId = ctx.query?.productId;
+
+    if (typeof productId !== 'string') {
+        throw new Error(`Expected string type for productID, received: ${productId}`);
+    }
+
+    const { matchingJsonLink, servicesRequiringAttention } = await getProductById(noc, productId);
+
+    const ticket = await getProductsMatchingJson(matchingJsonLink);
+
+    // store the ticket in the session so that it can be retrieved
+    // on the /csvUpload page.
+    updateSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE, ticket);
+
+    updateSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE, {
+        productId,
+        ...(typeof serviceId === 'string' && { serviceId }),
+        matchingJsonLink,
+    });
+
+    const productDetails = await createProductDetails(ticket, noc, servicesRequiringAttention, serviceId, ctx);
+
+    const backHref = serviceId ? `/products/pointToPointProducts?serviceId=${serviceId}` : '/products/otherProducts';
+
     return {
         props: {
             backHref,
-            productName,
-            startDate,
-            ...(endDate && { endDate }),
-            productDetailsElements,
-            requiresAttention,
+            productName: productDetails.productName,
+            startDate: productDetails.startDate,
+            ...(productDetails.endDate && { endDate: productDetails.endDate }),
+            productDetailsElements: productDetails.productDetailsElements,
+            requiresAttention: productDetails.requiresAttention,
         },
     };
 };

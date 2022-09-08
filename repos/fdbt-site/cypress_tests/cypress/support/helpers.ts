@@ -396,38 +396,25 @@ export const randomlyChooseAndSelectServices = (): void => {
 };
 
 export const completeProductDateInformationPage = (): void => {
-    assertElementNotVisibleById('product-dates-required-conditional');
-
-    if (getRandomNumber(0, 1) === 0) {
-        clickElementById('product-dates-information-not-required');
-    } else {
-        clickElementById('product-dates-required');
-        const randomSelector = getRandomNumber(1, 3);
-        switch (randomSelector) {
-            case 1: {
-                getElementById('start-date-day').type('13');
-                getElementById('start-date-month').type('10');
-                getElementById('start-date-year').type('2010');
-                break;
-            }
-            case 2: {
-                getElementById('start-date-day').type('13');
-                getElementById('start-date-month').type('10');
-                getElementById('start-date-year').type('2010');
-                getElementById('end-date-day').type('7');
-                getElementById('end-date-month').type('12');
-                getElementById('end-date-year').type('2025');
-                break;
-            }
-            case 3: {
-                getElementById('end-date-day').type('4');
-                getElementById('end-date-month').type('4');
-                getElementById('end-date-year').type('2030');
-                break;
-            }
-            default: {
-                throwInvalidRandomSelectorError();
-            }
+    const randomSelector = getRandomNumber(1, 2);
+    switch (randomSelector) {
+        case 1: {
+            getElementById('start-day-input').type('13');
+            getElementById('start-month-input').type('10');
+            getElementById('start-year-input').type('2010');
+            break;
+        }
+        case 2: {
+            getElementById('start-day-input').type('13');
+            getElementById('start-month-input').type('10');
+            getElementById('start-year-input').type('2010');
+            getElementById('end-day-input').type('7');
+            getElementById('end-month-input').type('12');
+            getElementById('end-year-input').type('2025');
+            break;
+        }
+        default: {
+            throwInvalidRandomSelectorError();
         }
     }
     continueButtonClick();

@@ -1,0 +1,123 @@
+on:
+  push:
+    branches:
+    - 'master'
+    paths:
+    - repos/fdbt-site/**
+  workflow_dispatch:
+
+name: 'fdbt-site_preprod'
+
+defaults:
+  run:
+    working-directory: ./repos/fdbt-site
+    
+
+jobs:
+
+  fdbt-site_to_preprod:
+    name: 'fdbt-site_to_preprod'
+    runs-on: ubuntu-latest
+    environment:
+      name: preprod
+    env:
+      ECS_SERVICE: ${{ secrets.ECS_SERVICE }}                 # set this to your Amazon ECS service name
+      ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
+      ECS_TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
+      CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Use Node.js 
+      uses: actions/setup-node@v3
+      with:
+        node-version: 12.x
+    
+    - name: build
+      run: |
+        echo "Starting build"
+        npm ci
+        echo " ci finished"
+        npm run build
+
+    - name: test
+      run: |
+        echo "Running tests"
+        npm run test:ci
+
+    - name: lint
+      run: |
+        echo "Linting"
+        npm run lint
+
+    # - name: compile-typescript
+    #   run: |
+    #     echo "Compiling typescript for site"
+    #     ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
+    #     cd cypress_tests
+    #     npm ci
+    #     ./node_modules/.bin/tsc
+
+    # build-and-push-image (tfn-fdbt-core) 
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.CORE_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.CORE_AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: fdbt-site
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+
+    - name: Logout of Amazon ECR
+      if: always()
+      run: docker logout ${{ steps.login-ecr.outputs.registry }}   
+
+    # aws-ecs/deploy-service-update 
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
+
+    - name: Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query taskDefinition > ${{ github.workspace }}/task-definition.json
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ steps.build-image.outputs.image }}
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true

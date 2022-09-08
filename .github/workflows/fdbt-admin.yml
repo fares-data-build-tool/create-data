@@ -1,0 +1,25 @@
+on:
+  push:
+    branches:
+    - '**'
+    paths:
+    - repos/fdbt-admin/**
+  workflow_dispatch:
+
+name: 'fdbt-admin'
+
+defaults:
+  run:
+    working-directory: ./repos/fdbt-admin
+
+jobs:
+
+  fdbt-admin_to_deploy:
+    name: 'fdbt-admin'
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: none
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
