@@ -399,18 +399,18 @@ export const completeProductDateInformationPage = (): void => {
     const randomSelector = getRandomNumber(1, 2);
     switch (randomSelector) {
         case 1: {
-            getElementById('start-date-day').type('13');
-            getElementById('start-date-month').type('10');
-            getElementById('start-date-year').type('2010');
+            getElementById('start-day-input').type('13');
+            getElementById('start-month-input').type('10');
+            getElementById('start-year-input').type('2010');
             break;
         }
         case 2: {
-            getElementById('start-date-day').type('13');
-            getElementById('start-date-month').type('10');
-            getElementById('start-date-year').type('2010');
-            getElementById('end-date-day').type('7');
-            getElementById('end-date-month').type('12');
-            getElementById('end-date-year').type('2025');
+            getElementById('start-day-input').type('13');
+            getElementById('start-month-input').type('10');
+            getElementById('start-year-input').type('2010');
+            getElementById('end-day-input').type('7');
+            getElementById('end-month-input').type('12');
+            getElementById('end-year-input').type('2025');
             break;
         }
         default: {
