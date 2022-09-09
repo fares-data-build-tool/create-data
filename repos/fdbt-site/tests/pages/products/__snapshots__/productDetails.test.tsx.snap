@@ -9,12 +9,22 @@ exports[`myfares pages productDetails should render correctly 1`] = `
   <BackButton
     href="/products/pointToPointProducts?serviceId=1"
   />
-  <h1
-    className="govuk-heading-l"
-    id="product-name"
+  <div
+    className="dft-flex"
   >
-    Carnet Return Test
-  </h1>
+    <h1
+      className="govuk-heading-l"
+      id="product-name"
+    >
+      Carnet Return Test
+    </h1>
+    <button
+      className="govuk-link align-top button-link govuk-!-margin-left-2"
+      onClick={[Function]}
+    >
+      Edit
+    </button>
+  </div>
   <div
     className="govuk-hint"
     id="product-status"

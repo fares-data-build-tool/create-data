@@ -47,6 +47,8 @@ describe('myfares pages', () => {
                         { name: 'Start date', content: ['18/10/2021'], editLink: '/productDateInformation' },
                         { name: 'End date', content: ['18/10/2121'], editLink: '/productDateInformation' },
                     ]}
+                    productId="2"
+                    csrfToken=""
                 />,
             );
 
@@ -105,6 +107,8 @@ describe('myfares pages', () => {
                         { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
+                    productId: '1',
+                    csrfToken: '',
                 },
             });
         });
@@ -131,6 +135,8 @@ describe('myfares pages', () => {
                         { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
+                    productId: '1',
+                    csrfToken: '',
                 },
             });
         });
@@ -162,6 +168,8 @@ describe('myfares pages', () => {
                         { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
+                    productId: '1',
+                    csrfToken: '',
                 },
             });
         });
@@ -189,6 +197,8 @@ describe('myfares pages', () => {
                         { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
+                    productId: '1',
+                    csrfToken: '',
                 },
             });
         });
@@ -217,6 +227,8 @@ describe('myfares pages', () => {
                         { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
+                    productId: '1',
+                    csrfToken: '',
                 },
             });
         });
@@ -243,6 +255,8 @@ describe('myfares pages', () => {
                         { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
+                    productId: '1',
+                    csrfToken: '',
                 },
             });
         });
@@ -270,6 +284,8 @@ describe('myfares pages', () => {
                         { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
+                    productId: '1',
+                    csrfToken: '',
                 },
             });
         });
