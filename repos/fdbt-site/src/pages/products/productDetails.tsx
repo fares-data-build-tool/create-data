@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
-import { convertDateFormat, getAndValidateNoc, sentenceCaseString } from '../../utils';
+import React, { ReactElement, useState } from 'react';
+import { convertDateFormat, getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../../utils';
 import {
     getBodsServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
@@ -20,6 +20,7 @@ import {
     PRODUCT_DATE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
+import ProductNamePopup from '../../components/ProductNamePopup';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -31,6 +32,8 @@ interface ProductDetailsProps {
     startDate: string;
     productDetailsElements: ProductDetailsElement[];
     requiresAttention: boolean;
+    productId: string;
+    csrfToken: string;
 }
 
 const ProductDetails = ({
@@ -40,35 +43,62 @@ const ProductDetails = ({
     endDate,
     productDetailsElements,
     requiresAttention,
-}: ProductDetailsProps): ReactElement => (
-    <TwoThirdsLayout title={title} description={description} errors={[]}>
-        <BackButton href={backHref} />
-        <h1 className="govuk-heading-l" id="product-name">
-            {productName}
-        </h1>
+    productId,
+    csrfToken,
+}: ProductDetailsProps): ReactElement => {
+    const [popupOpen, setPopupOpen] = useState(false);
 
-        <div id="product-status" className="govuk-hint">
-            Product status: {getTag(startDate, endDate, false)}
-            {requiresAttention && (
-                <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">NEEDS ATTENTION</strong>
+    const cancelActionHandler = (): void => {
+        setPopupOpen(false);
+    };
+
+    return (
+        <TwoThirdsLayout title={title} description={description} errors={[]}>
+            <BackButton href={backHref} />
+            <div className="dft-flex">
+                <h1 className="govuk-heading-l" id="product-name">
+                    {productName}
+                </h1>
+                <button
+                    className="govuk-link align-top button-link govuk-!-margin-left-2"
+                    onClick={() => setPopupOpen(true)}
+                >
+                    Edit
+                </button>
+            </div>
+
+            <div id="product-status" className="govuk-hint">
+                Product status: {getTag(startDate, endDate, false)}
+                {requiresAttention && (
+                    <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">NEEDS ATTENTION</strong>
+                )}
+            </div>
+
+            {productDetailsElements.map((element) => {
+                return (
+                    <dl className="govuk-summary-list" key={element.name}>
+                        <div className="govuk-summary-list__row" key={element.name}>
+                            <dt className="govuk-summary-list__key">{element.name}</dt>
+
+                            <dd className="govuk-summary-list__value">
+                                {element.editLink !== undefined ? getEditableValue(element) : getReadValue(element)}
+                            </dd>
+                        </div>
+                    </dl>
+                );
+            })}
+
+            {popupOpen && (
+                <ProductNamePopup
+                    cancelActionHandler={cancelActionHandler}
+                    defaultValue={productName}
+                    productId={productId}
+                    csrfToken={csrfToken}
+                />
             )}
-        </div>
-
-        {productDetailsElements.map((element) => {
-            return (
-                <dl className="govuk-summary-list" key={element.name}>
-                    <div className="govuk-summary-list__row" key={element.name}>
-                        <dt className="govuk-summary-list__key">{element.name}</dt>
-
-                        <dd className="govuk-summary-list__value">
-                            {element.editLink !== undefined ? getEditableValue(element) : getReadValue(element)}
-                        </dd>
-                    </div>
-                </dl>
-            );
-        })}
-    </TwoThirdsLayout>
-);
+        </TwoThirdsLayout>
+    );
+};
 
 const getReadValue = (element: ProductDetailsElement) => {
     return element.content.map((item) => (
@@ -310,10 +340,10 @@ const createProductDetails = async (
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ProductDetailsProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const noc = getAndValidateNoc(ctx);
 
     const serviceId = ctx.query?.serviceId;
-
     const productId = ctx.query?.productId;
 
     if (typeof productId !== 'string') {
@@ -346,6 +376,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ...(productDetails.endDate && { endDate: productDetails.endDate }),
             productDetailsElements: productDetails.productDetailsElements,
             requiresAttention: productDetails.requiresAttention,
+            productId,
+            csrfToken,
         },
     };
 };

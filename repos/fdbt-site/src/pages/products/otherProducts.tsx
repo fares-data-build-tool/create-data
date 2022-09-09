@@ -124,7 +124,7 @@ const otherProductsTable = (
                                   </td>
                                   <td className="govuk-table__cell">
                                       <button
-                                          className="govuk-link delete-link"
+                                          className="govuk-link button-link"
                                           onClick={() => deleteActionHandler(product.id, product.productDescription)}
                                       >
                                           Delete
