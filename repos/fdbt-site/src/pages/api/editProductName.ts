@@ -10,6 +10,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     try {
         const id = Number(req.query.id);
         const productName = req.query.productName;
+        const serviceId = req.query.serviceId;
+
+        if (serviceId && typeof serviceId !== 'string') {
+            throw new Error('Service id passed is not a string.');
+        }
 
         if (!Number.isInteger(id) || typeof productName !== 'string') {
             throw new Error('Insufficient data provided for edit product name query.');
@@ -38,7 +43,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         };
 
         await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonLink);
-        redirectTo(res, `/products/productDetails?productId=${productId}`);
+        redirectTo(
+            res,
+            `/products/productDetails?productId=${productId}${!!serviceId ? `&serviceId=${serviceId}` : ''}`,
+        );
     } catch (error) {
         redirectToError(res, 'There was a problem editing the selected product name', 'api.editProductName', error);
     }

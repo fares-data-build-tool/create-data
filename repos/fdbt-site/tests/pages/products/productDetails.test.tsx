@@ -26,7 +26,7 @@ jest.mock('../../../src/data/s3');
 
 describe('myfares pages', () => {
     describe('productDetails', () => {
-        it('should render correctly for a point to point ticket', () => {
+        it('should render correctly', () => {
             const tree = shallow(
                 <ProductDetails
                     requiresAttention={true}
@@ -48,37 +48,6 @@ describe('myfares pages', () => {
                         { name: 'End date', content: ['18/10/2121'], editLink: '/productDateInformation' },
                     ]}
                     productId="2"
-                    showEditName={false}
-                    csrfToken=""
-                />,
-            );
-
-            expect(tree).toMatchSnapshot();
-        });
-
-        it('should render correctly for a period ticket', () => {
-            const tree = shallow(
-                <ProductDetails
-                    requiresAttention={true}
-                    backHref={'/products/pointToPointProducts?serviceId=1'}
-                    productName={'Carnet Return Test'}
-                    startDate={'18/10/2021'}
-                    endDate={'18/10/2121'}
-                    productDetailsElements={[
-                        {
-                            name: 'Service',
-                            content: ['19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)'],
-                        },
-                        { name: 'Passenger type', content: ['Adult Test'], editLink: '/selectPassengerType' },
-                        { name: 'Time restriction', content: ['N/A'] },
-                        { name: 'Quantity in bundle', content: ['2'] },
-                        { name: 'Carnet expiry', content: ['22 year(s)'] },
-                        { name: 'Purchase methods', content: ['SOP Test 1', 'SOP Test 2'] },
-                        { name: 'Start date', content: ['18/10/2021'], editLink: '/productDateInformation' },
-                        { name: 'End date', content: ['18/10/2121'], editLink: '/productDateInformation' },
-                    ]}
-                    productId="2"
-                    showEditName
                     csrfToken=""
                 />,
             );
@@ -139,7 +108,7 @@ describe('myfares pages', () => {
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
                     productId: '1',
-                    showEditName: false,
+                    serviceId: '2',
                     csrfToken: '',
                 },
             });
@@ -168,7 +137,7 @@ describe('myfares pages', () => {
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
                     productId: '1',
-                    showEditName: true,
+                    serviceId: '2',
                     csrfToken: '',
                 },
             });
@@ -202,7 +171,7 @@ describe('myfares pages', () => {
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
                     productId: '1',
-                    showEditName: true,
+                    serviceId: '',
                     csrfToken: '',
                 },
             });
@@ -232,7 +201,7 @@ describe('myfares pages', () => {
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
                     productId: '1',
-                    showEditName: true,
+                    serviceId: '',
                     csrfToken: '',
                 },
             });
@@ -263,7 +232,7 @@ describe('myfares pages', () => {
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
                     productId: '1',
-                    showEditName: true,
+                    serviceId: '',
                     csrfToken: '',
                 },
             });
@@ -292,7 +261,7 @@ describe('myfares pages', () => {
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
                     productId: '1',
-                    showEditName: true,
+                    serviceId: '',
                     csrfToken: '',
                 },
             });
@@ -322,7 +291,7 @@ describe('myfares pages', () => {
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
                     ],
                     productId: '1',
-                    showEditName: true,
+                    serviceId: '',
                     csrfToken: '',
                 },
             });

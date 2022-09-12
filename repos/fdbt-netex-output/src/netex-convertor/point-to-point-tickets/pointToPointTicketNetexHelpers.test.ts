@@ -1897,9 +1897,11 @@ describe('Netex Helpers', () => {
             ['return circular ticket', returnCircularTicket],
         ])('should return a preassigned fare product object for a %s', (_ticketType, ticket) => {
             const tripString = 'Trip@';
+            const ticketUserConcat = 'adult_single';
+            const productNameForPlainText = 'adult - single';
             const expectedPreassignedFareProduct = {
                 id: expect.stringContaining(tripString),
-                Name: { $t: expect.any(String) },
+                Name: { $t: productNameForPlainText },
                 TypeOfFareProductRef: { version: '1.0', ref: expect.stringContaining('fxc:standard_product@trip@') },
                 validableElements: {
                     ValidableElement: {
@@ -1937,11 +1939,12 @@ describe('Netex Helpers', () => {
                 },
                 version: '1.0',
             };
-            const actualPreassignedFareProduct = netexHelpers.getPreassignedFareProduct(ticket, [
-                { id: '@lines' },
-                { id: '@eligibility' },
-                { id: '@conditions_of_travel' },
-            ]);
+            const actualPreassignedFareProduct = netexHelpers.getPreassignedFareProduct(
+                ticket,
+                [{ id: '@lines' }, { id: '@eligibility' }, { id: '@conditions_of_travel' }],
+                ticketUserConcat,
+                productNameForPlainText,
+            );
             expect(actualPreassignedFareProduct).toEqual(expectedPreassignedFareProduct);
         });
     });
@@ -1996,13 +1999,16 @@ describe('Netex Helpers', () => {
 
     describe('getFareTable', () => {
         it.each([
-            ['single ticket', singleTicket],
-            ['return non-circular ticket', returnNonCircularTicket],
-            ['return circular ticket', returnCircularTicket],
-        ])('should return a fare table object array for each sales offer package for a %s', (_ticketType, ticket) => {
-            const actualFareTable = netexHelpers.getFareTables(ticket, lineIdName);
-            expect(actualFareTable.length).toEqual(ticket.products[0].salesOfferPackages.length);
-        });
+            ['single ticket', singleTicket, 'single_anyone'],
+            ['return non-circular ticket', returnNonCircularTicket, 'return_anyone'],
+            ['return circular ticket', returnCircularTicket, 'return_student'],
+        ])(
+            'should return a fare table object array for each sales offer package for a %s',
+            (_ticketType, ticket, ticketUserConcat) => {
+                const actualFareTable = netexHelpers.getFareTables(ticket, lineIdName, ticketUserConcat);
+                expect(actualFareTable.length).toEqual(ticket.products[0].salesOfferPackages.length);
+            },
+        );
     });
 
     describe('buildSalesOfferPackage', () => {

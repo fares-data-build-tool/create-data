@@ -33,7 +33,7 @@ interface ProductDetailsProps {
     productDetailsElements: ProductDetailsElement[];
     requiresAttention: boolean;
     productId: string;
-    showEditName: boolean;
+    serviceId?: string;
     csrfToken: string;
 }
 
@@ -45,7 +45,7 @@ const ProductDetails = ({
     productDetailsElements,
     requiresAttention,
     productId,
-    showEditName,
+    serviceId,
     csrfToken,
 }: ProductDetailsProps): ReactElement => {
     const [popupOpen, setPopupOpen] = useState(false);
@@ -61,16 +61,13 @@ const ProductDetails = ({
                 <h1 className="govuk-heading-l" id="product-name">
                     {productName}
                 </h1>
-                {showEditName ? (
-                    <button
-                        className="govuk-link align-top button-link govuk-!-margin-left-2"
-                        onClick={() => setPopupOpen(true)}
-                    >
-                        Edit
-                    </button>
-                ) : (
-                    ''
-                )}
+
+                <button
+                    className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
+                    onClick={() => setPopupOpen(true)}
+                >
+                    Edit
+                </button>
             </div>
 
             <div id="product-status" className="govuk-hint">
@@ -99,6 +96,7 @@ const ProductDetails = ({
                     cancelActionHandler={cancelActionHandler}
                     defaultValue={productName}
                     productId={productId}
+                    serviceId={serviceId}
                     csrfToken={csrfToken}
                 />
             )}
@@ -142,7 +140,6 @@ const createProductDetails = async (
     startDate: string;
     endDate: string | undefined;
     requiresAttention: boolean;
-    hasProductName: boolean;
 }> => {
     const productDetailsElements: ProductDetailsElement[] = [];
 
@@ -349,7 +346,6 @@ const createProductDetails = async (
         startDate,
         endDate,
         requiresAttention,
-        hasProductName: 'productName' in product,
     };
 };
 
@@ -391,7 +387,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             productDetailsElements: productDetails.productDetailsElements,
             requiresAttention: productDetails.requiresAttention,
             productId,
-            showEditName: productDetails.hasProductName,
+            serviceId: typeof serviceId === 'string' ? serviceId : '',
             csrfToken,
         },
     };

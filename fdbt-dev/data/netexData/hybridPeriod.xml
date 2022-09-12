@@ -368,65 +368,65 @@
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@period_anyone-Best_product_one-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@Best_product_one-Best_product_one-SOP@Onboard_(cash)">
               <Name>Best product one - anyone - Onboard (cash)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_anyone-Best_product_one-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Best_product_one-Best_product_one-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_anyone-Best_product_one-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Best_product_one-Best_product_one-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Best_product_one_anyone"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_anyone-Best_product_one-SOP@Onboard_(contactless)">
+            <SalesOfferPackage version="1.0" id="Trip@Best_product_one-Best_product_one-SOP@Onboard_(contactless)">
               <Name>Best product one - anyone - Onboard (contactless)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_anyone-Best_product_one-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Best_product_one-Best_product_one-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_anyone-Best_product_one-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Best_product_one-Best_product_one-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Best_product_one_anyone"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_anyone-Another_great_product-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@Best_product_one-Another_great_product-SOP@Onboard_(cash)">
               <Name>Another great product - anyone - Onboard (cash)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_anyone-Another_great_product-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Best_product_one-Another_great_product-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_anyone-Another_great_product-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Best_product_one-Another_great_product-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Another_great_product_anyone"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_anyone-Another_great_product-SOP@Onboard_(contactless)">
+            <SalesOfferPackage version="1.0" id="Trip@Best_product_one-Another_great_product-SOP@Onboard_(contactless)">
               <Name>Another great product - anyone - Onboard (contactless)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_anyone-Another_great_product-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Best_product_one-Another_great_product-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_anyone-Another_great_product-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Best_product_one-Another_great_product-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Another_great_product_anyone"/>
                 </SalesOfferPackageElement>
@@ -459,7 +459,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Best_product_one@Onboard_(cash)@anyone@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-Best_product_one-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Best_product_one-SOP@Onboard_(cash)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Best_product_one@Onboard_(cash)@anyone@zone@nested@prices">
@@ -493,7 +493,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Best_product_one@Onboard_(contactless)@anyone@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-Best_product_one-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Best_product_one-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Best_product_one@Onboard_(contactless)@anyone@zone@nested@prices">
@@ -527,7 +527,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Another_great_product@Onboard_(cash)@anyone@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-Another_great_product-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Another_great_product-SOP@Onboard_(cash)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Another_great_product@Onboard_(cash)@anyone@zone@nested@prices">
@@ -561,7 +561,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Another_great_product@Onboard_(contactless)@anyone@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-Another_great_product-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Another_great_product-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Another_great_product@Onboard_(contactless)@anyone@zone@nested@prices">
@@ -592,7 +592,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Best_product_one@Onboard_(cash)@anyone@service@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-Best_product_one-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Best_product_one-SOP@Onboard_(cash)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Best_product_one@Onboard_(cash)@anyone@service@nested@prices">
@@ -623,7 +623,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Best_product_one@Onboard_(contactless)@anyone@service@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-Best_product_one-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Best_product_one-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Best_product_one@Onboard_(contactless)@anyone@service@nested@prices">
@@ -654,7 +654,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Another_great_product@Onboard_(cash)@anyone@service@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-Another_great_product-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Another_great_product-SOP@Onboard_(cash)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Another_great_product@Onboard_(cash)@anyone@service@nested@prices">
@@ -685,7 +685,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Another_great_product@Onboard_(contactless)@anyone@service@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-Another_great_product-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Another_great_product-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Another_great_product@Onboard_(contactless)@anyone@service@nested@prices">

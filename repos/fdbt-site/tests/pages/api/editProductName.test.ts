@@ -73,6 +73,12 @@ describe('editProductName', () => {
             'User has inputted a product name too short, too long or with invalid characters.',
             { productName: 'a%df', id: 2 },
         ],
+        [
+            'Service id passed is not a string.',
+            {
+                serviceId: ['1'],
+            },
+        ],
     ])('should throw %s for query input %s', async (errorMessage, query) => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},

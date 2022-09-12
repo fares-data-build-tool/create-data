@@ -133,7 +133,8 @@
             "smartCard"
           ]
         }
-      ]
+      ],
+      "productName": "Another product"
     }
   ],
   "inboundFareZones": [
