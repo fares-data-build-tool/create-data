@@ -61,12 +61,16 @@ const ProductDetails = ({
                 <h1 className="govuk-heading-l" id="product-name">
                     {productName}
                 </h1>
-                {showEditName ? <button
-                    className="govuk-link align-top button-link govuk-!-margin-left-2"
-                    onClick={() => setPopupOpen(true)}
-                >
-                    Edit
-                </button> : ''}
+                {showEditName ? (
+                    <button
+                        className="govuk-link align-top button-link govuk-!-margin-left-2"
+                        onClick={() => setPopupOpen(true)}
+                    >
+                        Edit
+                    </button>
+                ) : (
+                    ''
+                )}
             </div>
 
             <div id="product-status" className="govuk-hint">
@@ -138,7 +142,7 @@ const createProductDetails = async (
     startDate: string;
     endDate: string | undefined;
     requiresAttention: boolean;
-    hasProductName: boolean
+    hasProductName: boolean;
 }> => {
     const productDetailsElements: ProductDetailsElement[] = [];
 
@@ -339,7 +343,14 @@ const createProductDetails = async (
             ? `${passengerTypeName} - ${sentenceCaseString(ticket.type)} (school)`
             : `${passengerTypeName} - ${sentenceCaseString(ticket.type)}`;
 
-    return { productDetailsElements, productName, startDate, endDate, requiresAttention, hasProductName: 'productName' in product };
+    return {
+        productDetailsElements,
+        productName,
+        startDate,
+        endDate,
+        requiresAttention,
+        hasProductName: 'productName' in product,
+    };
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ProductDetailsProps }> => {

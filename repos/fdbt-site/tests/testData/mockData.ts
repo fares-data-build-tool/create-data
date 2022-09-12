@@ -94,7 +94,7 @@ export const getMockRequestAndResponse = ({
     isLoggedin = true,
     url = null,
     session,
-    query=null
+    query = null,
 }: GetMockRequestAndResponse = {}): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
