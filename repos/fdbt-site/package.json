@@ -74,7 +74,6 @@
         "papaparse": "^5.3.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "react-hook-form": "^7.34.2",
         "react-portal": "^4.2.1",
         "react-test-renderer": "^17.0.2",
         "swr": "^1.0.1",
