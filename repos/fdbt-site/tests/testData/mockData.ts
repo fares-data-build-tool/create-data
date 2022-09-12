@@ -81,6 +81,7 @@ interface GetMockRequestAndResponse {
     requestHeaders?: any;
     isLoggedin?: boolean;
     url?: any;
+    query?: any;
 }
 
 export const getMockRequestAndResponse = ({
@@ -93,6 +94,7 @@ export const getMockRequestAndResponse = ({
     isLoggedin = true,
     url = null,
     session,
+    query = null,
 }: GetMockRequestAndResponse = {}): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
@@ -225,6 +227,9 @@ export const getMockRequestAndResponse = ({
 
     if (body) {
         req.body = body;
+    }
+    if (query) {
+        req.query = query;
     }
 
     return { req, res };
