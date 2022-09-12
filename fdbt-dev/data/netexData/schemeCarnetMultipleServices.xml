@@ -330,33 +330,33 @@
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@period_child-test-SOP@Purchase_method">
+            <SalesOfferPackage version="1.0" id="Trip@test-test-SOP@Purchase_method">
               <Name>test - child - Purchase method</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_child-test-SOP@Purchase_method@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@test-test-SOP@Purchase_method@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_child-test-Purchase_method@electronic_document" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@test-test-Purchase_method@electronic_document" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:electronic_document"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@test_child"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_child-Jacob_Ellis-SOP@Purchase_method">
+            <SalesOfferPackage version="1.0" id="Trip@test-Jacob_Ellis-SOP@Purchase_method">
               <Name>Jacob Ellis - child - Purchase method</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_child-Jacob_Ellis-SOP@Purchase_method@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@test-Jacob_Ellis-SOP@Purchase_method@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_child-Jacob_Ellis-Purchase_method@electronic_document" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@test-Jacob_Ellis-Purchase_method@electronic_document" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:electronic_document"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Jacob_Ellis_child"/>
                 </SalesOfferPackageElement>
@@ -386,7 +386,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:test@Purchase_method@child@service@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_child-test-SOP@Purchase_method"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@test-test-SOP@Purchase_method"/>
                         <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@2"/>
                       </pricesFor>
                       <includes>
@@ -418,7 +418,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Jacob_Ellis@Purchase_method@child@service@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_child-Jacob_Ellis-SOP@Purchase_method"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@test-Jacob_Ellis-SOP@Purchase_method"/>
                         <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@5"/>
                       </pricesFor>
                       <includes>

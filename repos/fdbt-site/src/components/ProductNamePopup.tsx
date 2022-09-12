@@ -4,12 +4,20 @@ import { checkProductNameIsValid, removeExcessWhiteSpace } from '../utils/apiUti
 interface ProductNamePopupProps {
     defaultValue: string;
     productId: string;
+    serviceId?: string;
     cancelActionHandler: React.MouseEventHandler<HTMLButtonElement>;
     csrfToken: string;
 }
 
-export const buildEditUrl = (idToEdit: string, csrfToken: string, productName: string): string => {
-    return `/api/editProductName?id=${idToEdit}&productName=${productName}&_csrf=${csrfToken}`;
+export const buildEditUrl = (
+    idToEdit: string,
+    csrfToken: string,
+    productName: string,
+    serviceId: string | undefined,
+): string => {
+    return `/api/editProductName?id=${idToEdit}&productName=${productName}&_csrf=${csrfToken}${
+        !!serviceId ? `&serviceId=${serviceId}` : ''
+    }`;
 };
 
 const ProductNamePopup = ({
@@ -17,6 +25,7 @@ const ProductNamePopup = ({
     defaultValue,
     csrfToken,
     productId,
+    serviceId,
 }: ProductNamePopupProps): ReactElement | null => {
     const [popupError, setPopupError] = useState('');
     const [productName, updateProductName] = useState('');
@@ -68,7 +77,12 @@ const ProductNamePopup = ({
                     {showSubmitButton && (
                         <button
                             className="govuk-button"
-                            formAction={buildEditUrl(productId, csrfToken, removeExcessWhiteSpace(productName))}
+                            formAction={buildEditUrl(
+                                productId,
+                                csrfToken,
+                                removeExcessWhiteSpace(productName),
+                                serviceId,
+                            )}
                             formMethod="post"
                             type="submit"
                             id="popup-edit-product-name-button"

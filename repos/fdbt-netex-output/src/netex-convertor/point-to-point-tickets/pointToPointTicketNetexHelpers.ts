@@ -276,9 +276,9 @@ export const getPointToPointAvailabilityElement = (
 export const getPreassignedFareProduct = (
     matchingData: PointToPointTicket | PointToPointPeriodTicket,
     fareStructuresElements: NetexObject[],
+    ticketUserConcat: string,
+    productNameForPlainText: string,
 ): NetexObject => {
-    const ticketUserConcat = `${matchingData.type}_${matchingData.passengerType}`;
-
     const fareStructureElementRefs = fareStructuresElements.map(element => ({
         version: '1.0',
         ref: element.id,
@@ -288,7 +288,7 @@ export const getPreassignedFareProduct = (
         id: `Trip@${ticketUserConcat}`,
         version: '1.0',
         Name: {
-            $t: `${matchingData.type} Ticket - ${matchingData.passengerType}`,
+            $t: productNameForPlainText,
         },
         TypeOfFareProductRef: {
             version: '1.0',
@@ -389,9 +389,9 @@ export const buildSalesOfferPackages = (product: BaseProduct, ticketUserConcat: 
 export const getFareTables = (
     matchingData: PointToPointTicket | PointToPointPeriodTicket,
     lineIdName: string,
+    ticketUserConcat: string,
 ): NetexObject[] => {
     const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
-    const ticketUserConcat = `${matchingData.type}_${matchingData.passengerType}`;
 
     return matchingData.products[0].salesOfferPackages.map(salesOfferPackage => {
         return {

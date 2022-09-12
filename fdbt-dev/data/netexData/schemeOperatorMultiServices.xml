@@ -378,58 +378,58 @@
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@period_adult-Week_Rider-SOP@Cash_On_Board">
+            <SalesOfferPackage version="1.0" id="Trip@Week_Rider-Week_Rider-SOP@Cash_On_Board">
               <Name>Week Rider - adult - Cash On Board</Name>
               <Description>blah</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_adult-Week_Rider-SOP@Cash_On_Board@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Week_Rider-Week_Rider-SOP@Cash_On_Board@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_adult-Week_Rider-Cash_On_Board@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Week_Rider-Week_Rider-Cash_On_Board@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Week_Rider_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_adult-Week_Rider-SOP@Online">
+            <SalesOfferPackage version="1.0" id="Trip@Week_Rider-Week_Rider-SOP@Online">
               <Name>Week Rider - adult - Online</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_adult-Week_Rider-SOP@Online@online" order="1">
+                <DistributionAssignment version="any" id="Trip@Week_Rider-Week_Rider-SOP@Online@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>creditCard mobilePhone directDebit contactlessTravelCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_adult-Week_Rider-Online@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Week_Rider-Week_Rider-Online@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Week_Rider_adult"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@period_adult-Week_Rider-Online@electronic_document" version="1.0" order="2">
+                <SalesOfferPackageElement id="Trip@Week_Rider-Week_Rider-Online@electronic_document" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:electronic_document"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Week_Rider_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_adult-Month_Rider-SOP@Online">
+            <SalesOfferPackage version="1.0" id="Trip@Week_Rider-Month_Rider-SOP@Online">
               <Name>Month Rider - adult - Online</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_adult-Month_Rider-SOP@Online@online" order="1">
+                <DistributionAssignment version="any" id="Trip@Week_Rider-Month_Rider-SOP@Online@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>creditCard mobilePhone directDebit contactlessTravelCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_adult-Month_Rider-Online@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Week_Rider-Month_Rider-Online@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Month_Rider_adult"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@period_adult-Month_Rider-Online@electronic_document" version="1.0" order="2">
+                <SalesOfferPackageElement id="Trip@Week_Rider-Month_Rider-Online@electronic_document" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:electronic_document"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Month_Rider_adult"/>
                 </SalesOfferPackageElement>
@@ -459,7 +459,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Week_Rider@Cash_On_Board@adult@service@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Week_Rider-SOP@Cash_On_Board"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Week_Rider-Week_Rider-SOP@Cash_On_Board"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Week_Rider@Cash_On_Board@adult@service@nested@prices">
@@ -490,7 +490,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Week_Rider@Online@adult@service@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Week_Rider-SOP@Online"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Week_Rider-Week_Rider-SOP@Online"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Week_Rider@Online@adult@service@nested@prices">
@@ -521,7 +521,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Month_Rider@Online@adult@service@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_adult-Month_Rider-SOP@Online"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Week_Rider-Month_Rider-SOP@Online"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Month_Rider@Online@adult@service@nested@prices">

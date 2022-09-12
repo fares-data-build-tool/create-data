@@ -307,17 +307,17 @@
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@period_anyone-jakes-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@jakes-jakes-SOP@Onboard_(cash)">
               <Name>jakes - anyone - Onboard (cash)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_anyone-jakes-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@jakes-jakes-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_anyone-jakes-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@jakes-jakes-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@jakes_anyone"/>
                 </SalesOfferPackageElement>
@@ -350,7 +350,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:jakes@Onboard_(cash)@anyone@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-jakes-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@jakes-jakes-SOP@Onboard_(cash)"/>
                         <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@5"/>
                       </pricesFor>
                       <includes>

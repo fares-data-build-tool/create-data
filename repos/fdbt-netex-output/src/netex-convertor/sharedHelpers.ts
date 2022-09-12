@@ -258,6 +258,8 @@ export const getCoreData = async (operators: Operator[], ticket: Ticket): Promis
         isSchemeOperatorTicket(ticket) ? operatorIdentifier : replaceIWBusCoNocCode(ticket.nocCode)
     }`;
 
+    const productNameForXml = ticket.products[0].productName.replace(' ', '_');
+
     return {
         opIdNocFormat: `noc:${baseOperatorInfo.opId}`,
         nocCodeFormat,
@@ -267,7 +269,8 @@ export const getCoreData = async (operators: Operator[], ticket: Ticket): Promis
         operatorIdentifier,
         baseOperatorInfo: [baseOperatorInfo],
         placeholderGroupOfProductsName: isPointToPointTicket(ticket) ? '' : `${operatorIdentifier}_products`,
-        ticketUserConcat: `${ticket.type}_${ticket.passengerType}`,
+        ticketUserConcat: productNameForXml,
+        productNameForPlainText: ticket.products[0].productName,
         operatorPublicNameLineNameFormat:
             'lineName' in ticket && 'operatorName' in baseOperatorInfo
                 ? `${baseOperatorInfo.operatorName} ${ticket.lineName}`

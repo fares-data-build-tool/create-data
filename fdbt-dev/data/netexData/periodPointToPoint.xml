@@ -18,7 +18,7 @@
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
             <LineRef version="1.0" ref="2"/>
             <BrandingRef version="1.0" ref="op:BLAC@brand"/>
-            <PreassignedFareProductRef version="1.0" ref="Trip@period_anyone"/>
+            <PreassignedFareProductRef version="1.0" ref="Trip@Period_Point_to_Point"/>
             <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
           </objectReferences>
         </NetworkFilterByValue>
@@ -1198,11 +1198,11 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct id="Trip@period_anyone" version="1.0">
-              <Name>period Ticket - anyone</Name>
+            <PreassignedFareProduct id="Trip@Period_Point_to_Point" version="1.0">
+              <Name>Period Point to Point</Name>
               <TypeOfFareProductRef version="1.0" ref="fxc:standard_product@trip@single"/>
               <validableElements>
-                <ValidableElement id="Trip@period_anyone@travel" version="1.0">
+                <ValidableElement id="Trip@Period_Point_to_Point@travel" version="1.0">
                   <Name>period Ride</Name>
                   <fareStructureElements>
                     <FareStructureElementRef version="1.0" ref="Tariff@period@lines"/>
@@ -1214,42 +1214,42 @@
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct id="Trip@period_anyone" version="1.0" order="1">
-                  <ValidableElementRef version="1.0" ref="Trip@period_anyone@travel"/>
+                <AccessRightInProduct id="Trip@Period_Point_to_Point" version="1.0" order="1">
+                  <ValidableElementRef version="1.0" ref="Trip@Period_Point_to_Point@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@period_anyone-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@Period_Point_to_Point-SOP@Onboard_(cash)">
               <Name>Onboard (cash)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_anyone-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Period_Point_to_Point-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Onboard_(cash)@period_anyone-SOP@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Onboard_(cash)@Period_Point_to_Point-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@period_anyone"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@Period_Point_to_Point"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_anyone-SOP@Onboard_(contactless)">
+            <SalesOfferPackage version="1.0" id="Trip@Period_Point_to_Point-SOP@Onboard_(contactless)">
               <Name>Onboard (contactless)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_anyone-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Period_Point_to_Point-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Onboard_(contactless)@period_anyone-SOP@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Onboard_(contactless)@Period_Point_to_Point-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@period_anyone"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@Period_Point_to_Point"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -1285,8 +1285,8 @@
               <Name>POULTON - BLACKPOOL via Victoria Hospital Outpatients</Name>
               <Description>anyone period fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@period_anyone"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-SOP@Onboard_(cash)"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@Period_Point_to_Point"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Period_Point_to_Point-SOP@Onboard_(cash)"/>
                 <UserProfileRef version="1.0" ref="op:anyone-0"/>
               </pricesFor>
               <usedIn>
@@ -1354,8 +1354,8 @@
               <Name>POULTON - BLACKPOOL via Victoria Hospital Outpatients</Name>
               <Description>anyone period fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@period_anyone"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@period_anyone-SOP@Onboard_(contactless)"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@Period_Point_to_Point"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Period_Point_to_Point-SOP@Onboard_(contactless)"/>
                 <UserProfileRef version="1.0" ref="op:anyone-0"/>
               </pricesFor>
               <usedIn>

@@ -39,6 +39,7 @@ export interface CoreData {
     lineIdName: string;
     lineName: string;
     operatorName: string;
+    productNameForPlainText: string;
     isCarnet: boolean;
 }
 

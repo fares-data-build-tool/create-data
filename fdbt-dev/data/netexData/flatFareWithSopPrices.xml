@@ -210,49 +210,49 @@
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@flatFare_anyone-test-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@test-test-SOP@Onboard_(cash)">
               <Name>test - anyone - Onboard (cash)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@flatFare_anyone-test-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@test-test-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@flatFare_anyone-test-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@test-test-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@test_anyone"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@flatFare_anyone-test-SOP@Onboard_(contactless)">
+            <SalesOfferPackage version="1.0" id="Trip@test-test-SOP@Onboard_(contactless)">
               <Name>test - anyone - Onboard (contactless)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@flatFare_anyone-test-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@test-test-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@flatFare_anyone-test-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@test-test-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@test_anyone"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@flatFare_anyone-test-SOP@Online_(smart_card)">
+            <SalesOfferPackage version="1.0" id="Trip@test-test-SOP@Online_(smart_card)">
               <Name>test - anyone - Online (smart card)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@flatFare_anyone-test-SOP@Online_(smart_card)@online" order="1">
+                <DistributionAssignment version="any" id="Trip@test-test-SOP@Online_(smart_card)@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@flatFare_anyone-test-Online_(smart_card)@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@test-test-Online_(smart_card)@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@test_anyone"/>
                 </SalesOfferPackageElement>
@@ -274,7 +274,7 @@
             <FareTable version="1.0" id="op:test@Onboard_(cash)">
               <Name>test</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_anyone-test-SOP@Onboard_(cash)"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@test-test-SOP@Onboard_(cash)"/>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@test_anyone"/>
               </pricesFor>
               <limitations>
@@ -294,7 +294,7 @@
             <FareTable version="1.0" id="op:test@Onboard_(contactless)">
               <Name>test</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_anyone-test-SOP@Onboard_(contactless)"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@test-test-SOP@Onboard_(contactless)"/>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@test_anyone"/>
               </pricesFor>
               <limitations>
@@ -314,7 +314,7 @@
             <FareTable version="1.0" id="op:test@Online_(smart_card)">
               <Name>test</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_anyone-test-SOP@Online_(smart_card)"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@test-test-SOP@Online_(smart_card)"/>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@test_anyone"/>
               </pricesFor>
               <limitations>

@@ -95,12 +95,12 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         publicationRequestToUpdate.topics.NetworkFrameTopic.TypeOfFrameRef.ref = `fxc:UK:DFT:TypeOfFrame_UK_PI_${ticketTypeInsert}_FARE_OFFER:FXCP`;
 
         const productRefs = ticket.products.flatMap(product =>
-            'productName' in product && !isPointToPointTicket(ticket)
+            !isPointToPointTicket(ticket)
                 ? {
                       version: '1.0',
                       ref:
                           'lineName' in ticket
-                              ? `Trip@${ticket.type}_${ticket.passengerType}`
+                              ? `Trip@${coreData.ticketUserConcat}`
                               : `op:Pass@${product.productName}_${ticket.passengerType}`,
                   }
                 : [],
@@ -376,6 +376,8 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProduct(
                 ticket,
                 fareStructuresElements,
+                coreData.ticketUserConcat,
+                coreData.productNameForPlainText,
             );
 
             priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = buildSalesOfferPackages(
@@ -443,7 +445,11 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
         if ('lineName' in ticket) {
             fareTableFareFrameToUpdate.priceGroups.PriceGroup = getPriceGroups(ticket);
-            fareTableFareFrameToUpdate.fareTables.FareTable = getFareTables(ticket, coreData.lineIdName);
+            fareTableFareFrameToUpdate.fareTables.FareTable = getFareTables(
+                ticket,
+                coreData.lineIdName,
+                coreData.ticketUserConcat,
+            );
         } else if ('zoneName' in ticket && 'selectedServices' in ticket) {
             fareTableFareFrameToUpdate.fareTables.FareTable = getHybridFareTable(
                 ticket,
