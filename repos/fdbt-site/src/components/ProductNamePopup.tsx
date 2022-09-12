@@ -68,7 +68,7 @@ const ProductNamePopup = ({
                     {showSubmitButton && (
                         <button
                             className="govuk-button"
-                            formAction={buildEditUrl(productId, csrfToken, productName)}
+                            formAction={buildEditUrl(productId, csrfToken, removeExcessWhiteSpace(productName))}
                             formMethod="post"
                             type="submit"
                             id="popup-edit-product-name-button"
