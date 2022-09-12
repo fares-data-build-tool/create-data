@@ -4,14 +4,19 @@ import { NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute } from '../../utils/sessions';
 import { MATCHING_JSON_ATTRIBUTE, MATCHING_JSON_META_DATA_ATTRIBUTE } from '../../constants/attributes';
 import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
+import { checkProductNameIsValid } from '../../../src/utils/apiUtils/validator';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const id = Number(req.query?.id);
-        const productName = req.query?.productName;
+        const id = Number(req.query.id);
+        const productName = req.query.productName;
 
         if (!Number.isInteger(id) || typeof productName !== 'string') {
-            throw new Error('insufficient data provided for edit product name query');
+            throw new Error('Insufficient data provided for edit product name query.');
+        }
+
+        if (checkProductNameIsValid(productName)) {
+            throw new Error('User has inputted a product name too short, too long or with invalid characters.');
         }
 
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
@@ -24,7 +29,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { matchingJsonLink, productId } = metaDataAttribute;
 
         if (Number(productId) !== id) {
-            throw new Error('Product id in request does not match product id in session');
+            throw new Error('Product id in request does not match product id in session.');
         }
 
         const updatedTicket = {
