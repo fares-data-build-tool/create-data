@@ -79,6 +79,7 @@ jobs:
     
     - name: deploy-netex-output-resources
       run: |
+        ldd --version
         echo "Deploying..."
         sudo npm i -g serverless@3.22.0
         export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
