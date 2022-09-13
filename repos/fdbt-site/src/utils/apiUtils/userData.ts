@@ -658,8 +658,8 @@ export const insertDataToProductsBucketAndProductsTable = async (
     const filePath = await putUserDataInProductsBucket(userDataJson, uuid, nocCode);
 
     if (!shouldInstantlyGenerateNetexFromMatchingJson(ticketType, dataFormat, ctx)) {
-        const { startDate, endDate } = userDataJson.ticketPeriod;
         const dateTime = moment().toDate();
+        const { startDate, endDate } = userDataJson.ticketPeriod;
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
 
         await insertProducts(nocCode, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);

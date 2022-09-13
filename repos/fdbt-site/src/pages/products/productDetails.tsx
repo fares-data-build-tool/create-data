@@ -13,6 +13,7 @@ import TwoThirdsLayout from '../../layout/Layout';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
 import BackButton from '../../components/BackButton';
+import InformationSummary from '../../components/InformationSummary';
 import { updateSessionAttribute } from '../../utils/sessions';
 import {
     MATCHING_JSON_ATTRIBUTE,
@@ -34,6 +35,7 @@ interface ProductDetailsProps {
     requiresAttention: boolean;
     productId: string;
     serviceId?: string;
+    copiedProduct: boolean;
     csrfToken: string;
 }
 
@@ -46,6 +48,7 @@ const ProductDetails = ({
     requiresAttention,
     productId,
     serviceId,
+    copiedProduct,
     csrfToken,
 }: ProductDetailsProps): ReactElement => {
     const [popupOpen, setPopupOpen] = useState(false);
@@ -57,6 +60,9 @@ const ProductDetails = ({
     return (
         <TwoThirdsLayout title={title} description={description} errors={[]}>
             <BackButton href={backHref} />
+            {copiedProduct && (
+                <InformationSummary informationText="This is a copy of the product you selected. Edit one or more of the fields as required." />
+            )}
             <div className="dft-flex">
                 <h1 className="govuk-heading-l" id="product-name">
                     {productName}
@@ -355,6 +361,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const serviceId = ctx.query?.serviceId;
     const productId = ctx.query?.productId;
+    const copiedProduct = ctx.query?.copied === 'true';
 
     if (typeof productId !== 'string') {
         throw new Error(`Expected string type for productID, received: ${productId}`);
@@ -388,6 +395,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             requiresAttention: productDetails.requiresAttention,
             productId,
             serviceId: typeof serviceId === 'string' ? serviceId : '',
+            copiedProduct,
             csrfToken,
         },
     };
