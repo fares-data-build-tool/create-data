@@ -84,6 +84,10 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
                 className="govuk-table__header"
                 scope="col"
               />
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
             </tr>
           </thead>
           <tbody
@@ -187,6 +191,10 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 className="govuk-table__header"
                 scope="col"
               />
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
             </tr>
           </thead>
           <tbody
@@ -243,8 +251,23 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               <td
                 className="govuk-table__cell"
               >
+                <form>
+                  <button
+                    className="govuk-link govuk-body button-link"
+                    formAction="/api/copyProduct?id=1&_csrf="
+                    formMethod="post"
+                    id="copy-product-button"
+                    type="submit"
+                  >
+                    Copy
+                  </button>
+                </form>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
                 <button
-                  className="govuk-link delete-link"
+                  className="govuk-link govuk-body button-link"
                   onClick={[Function]}
                 >
                   Delete
@@ -302,8 +325,23 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               <td
                 className="govuk-table__cell"
               >
+                <form>
+                  <button
+                    className="govuk-link govuk-body button-link"
+                    formAction="/api/copyProduct?id=2&_csrf="
+                    formMethod="post"
+                    id="copy-product-button"
+                    type="submit"
+                  >
+                    Copy
+                  </button>
+                </form>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
                 <button
-                  className="govuk-link delete-link"
+                  className="govuk-link govuk-body button-link"
                   onClick={[Function]}
                 >
                   Delete
@@ -361,8 +399,23 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               <td
                 className="govuk-table__cell"
               >
+                <form>
+                  <button
+                    className="govuk-link govuk-body button-link"
+                    formAction="/api/copyProduct?id=3&_csrf="
+                    formMethod="post"
+                    id="copy-product-button"
+                    type="submit"
+                  >
+                    Copy
+                  </button>
+                </form>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
                 <button
-                  className="govuk-link delete-link"
+                  className="govuk-link govuk-body button-link"
                   onClick={[Function]}
                 >
                   Delete

@@ -1925,11 +1925,11 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct id="Trip@single_adult" version="1.0">
-              <Name>single Ticket - adult</Name>
+            <PreassignedFareProduct id="Trip@adult_-_single" version="1.0">
+              <Name>adult - single</Name>
               <TypeOfFareProductRef version="1.0" ref="fxc:standard_product@trip@single"/>
               <validableElements>
-                <ValidableElement id="Trip@single_adult@travel" version="1.0">
+                <ValidableElement id="Trip@adult_-_single@travel" version="1.0">
                   <Name>single Ride</Name>
                   <fareStructureElements>
                     <FareStructureElementRef version="1.0" ref="Tariff@single@lines"/>
@@ -1940,113 +1940,113 @@
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct id="Trip@single_adult" version="1.0" order="1">
-                  <ValidableElementRef version="1.0" ref="Trip@single_adult@travel"/>
+                <AccessRightInProduct id="Trip@adult_-_single" version="1.0" order="1">
+                  <ValidableElementRef version="1.0" ref="Trip@adult_-_single@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@single_adult-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@adult_-_single-SOP@Onboard_(cash)">
               <Name>Onboard (cash)</Name>
               <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@single_adult-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@adult_-_single-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Onboard_(cash)@single_adult-SOP@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Onboard_(cash)@adult_-_single-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@single_adult-SOP@Onboard_(contactless)">
+            <SalesOfferPackage version="1.0" id="Trip@adult_-_single-SOP@Onboard_(contactless)">
               <Name>Onboard (contactless)</Name>
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@single_adult-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@adult_-_single-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Onboard_(contactless)@single_adult-SOP@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Onboard_(contactless)@adult_-_single-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@single_adult-SOP@Online_(smart_card)">
+            <SalesOfferPackage version="1.0" id="Trip@adult_-_single-SOP@Online_(smart_card)">
               <Name>Online (smart card)</Name>
               <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@single_adult-SOP@Online_(smart_card)@online" order="1">
+                <DistributionAssignment version="any" id="Trip@adult_-_single-SOP@Online_(smart_card)@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Online_(smart_card)@single_adult-SOP@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Online_(smart_card)@adult_-_single-SOP@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@single_adult-SOP@Mobile_App">
+            <SalesOfferPackage version="1.0" id="Trip@adult_-_single-SOP@Mobile_App">
               <Name>Mobile App</Name>
               <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@single_adult-SOP@Mobile_App@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@adult_-_single-SOP@Mobile_App@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Mobile_App@single_adult-SOP@mobileApp" version="1.0" order="1">
+                <SalesOfferPackageElement id="Mobile_App@adult_-_single-SOP@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@single_adult-SOP@All_Encompassing">
+            <SalesOfferPackage version="1.0" id="Trip@adult_-_single-SOP@All_Encompassing">
               <Name>All Encompassing</Name>
               <Description>All currently available options selected</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@single_adult-SOP@All_Encompassing@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@adult_-_single-SOP@All_Encompassing@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@single_adult-SOP@All_Encompassing@online" order="2">
+                <DistributionAssignment version="any" id="Trip@adult_-_single-SOP@All_Encompassing@online" order="2">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@single_adult-SOP@All_Encompassing@mobileDevice" order="3">
+                <DistributionAssignment version="any" id="Trip@adult_-_single-SOP@All_Encompassing@mobileDevice" order="3">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="All_Encompassing@single_adult-SOP@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="All_Encompassing@adult_-_single-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="All_Encompassing@single_adult-SOP@mobileApp" version="1.0" order="2">
+                <SalesOfferPackageElement id="All_Encompassing@adult_-_single-SOP@mobileApp" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="All_Encompassing@single_adult-SOP@smartCard" version="1.0" order="3">
+                <SalesOfferPackageElement id="All_Encompassing@adult_-_single-SOP@smartCard" version="1.0" order="3">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -2124,8 +2124,8 @@
               <Name>CLEVELEYS - MERESIDE via Blackpool</Name>
               <Description>adult single fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Onboard_(cash)"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@adult_-_single-SOP@Onboard_(cash)"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
               </pricesFor>
               <usedIn>
@@ -3893,8 +3893,8 @@
               <Name>CLEVELEYS - MERESIDE via Blackpool</Name>
               <Description>adult single fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Onboard_(contactless)"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@adult_-_single-SOP@Onboard_(contactless)"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
               </pricesFor>
               <usedIn>
@@ -5662,8 +5662,8 @@
               <Name>CLEVELEYS - MERESIDE via Blackpool</Name>
               <Description>adult single fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Online_(smart_card)"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@adult_-_single-SOP@Online_(smart_card)"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
               </pricesFor>
               <usedIn>
@@ -7431,8 +7431,8 @@
               <Name>CLEVELEYS - MERESIDE via Blackpool</Name>
               <Description>adult single fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@Mobile_App"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@adult_-_single-SOP@Mobile_App"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
               </pricesFor>
               <usedIn>
@@ -9200,8 +9200,8 @@
               <Name>CLEVELEYS - MERESIDE via Blackpool</Name>
               <Description>adult single fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@single_adult"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@single_adult-SOP@All_Encompassing"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@adult_-_single-SOP@All_Encompassing"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
               </pricesFor>
               <usedIn>

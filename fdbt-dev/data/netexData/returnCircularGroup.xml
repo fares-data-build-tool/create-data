@@ -621,11 +621,11 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct id="Trip@return_group" version="1.0">
-              <Name>return Ticket - group</Name>
+            <PreassignedFareProduct id="Trip@Another_product" version="1.0">
+              <Name>Another product</Name>
               <TypeOfFareProductRef version="1.0" ref="fxc:standard_product@trip@day_return"/>
               <validableElements>
-                <ValidableElement id="Trip@return_group@travel" version="1.0">
+                <ValidableElement id="Trip@Another_product@travel" version="1.0">
                   <Name>return Ride</Name>
                   <fareStructureElements>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@group"/>
@@ -637,113 +637,113 @@
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct id="Trip@return_group" version="1.0" order="1">
-                  <ValidableElementRef version="1.0" ref="Trip@return_group@travel"/>
+                <AccessRightInProduct id="Trip@Another_product" version="1.0" order="1">
+                  <ValidableElementRef version="1.0" ref="Trip@Another_product@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@return_group-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@Another_product-SOP@Onboard_(cash)">
               <Name>Onboard (cash)</Name>
               <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@return_group-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Another_product-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Onboard_(cash)@return_group-SOP@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Onboard_(cash)@Another_product-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@return_group-SOP@Onboard_(contactless)">
+            <SalesOfferPackage version="1.0" id="Trip@Another_product-SOP@Onboard_(contactless)">
               <Name>Onboard (contactless)</Name>
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@return_group-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Another_product-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Onboard_(contactless)@return_group-SOP@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Onboard_(contactless)@Another_product-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@return_group-SOP@Online_(smart_card)">
+            <SalesOfferPackage version="1.0" id="Trip@Another_product-SOP@Online_(smart_card)">
               <Name>Online (smart card)</Name>
               <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@return_group-SOP@Online_(smart_card)@online" order="1">
+                <DistributionAssignment version="any" id="Trip@Another_product-SOP@Online_(smart_card)@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Online_(smart_card)@return_group-SOP@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Online_(smart_card)@Another_product-SOP@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@return_group-SOP@Mobile_App">
+            <SalesOfferPackage version="1.0" id="Trip@Another_product-SOP@Mobile_App">
               <Name>Mobile App</Name>
               <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@return_group-SOP@Mobile_App@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@Another_product-SOP@Mobile_App@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Mobile_App@return_group-SOP@mobileApp" version="1.0" order="1">
+                <SalesOfferPackageElement id="Mobile_App@Another_product-SOP@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@return_group-SOP@All_Encompassing">
+            <SalesOfferPackage version="1.0" id="Trip@Another_product-SOP@All_Encompassing">
               <Name>All Encompassing</Name>
               <Description>All currently available options selected</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@return_group-SOP@All_Encompassing@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Another_product-SOP@All_Encompassing@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@return_group-SOP@All_Encompassing@online" order="2">
+                <DistributionAssignment version="any" id="Trip@Another_product-SOP@All_Encompassing@online" order="2">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@return_group-SOP@All_Encompassing@mobileDevice" order="3">
+                <DistributionAssignment version="any" id="Trip@Another_product-SOP@All_Encompassing@mobileDevice" order="3">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="All_Encompassing@return_group-SOP@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="All_Encompassing@Another_product-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="All_Encompassing@return_group-SOP@mobileApp" version="1.0" order="2">
+                <SalesOfferPackageElement id="All_Encompassing@Another_product-SOP@mobileApp" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="All_Encompassing@return_group-SOP@smartCard" version="1.0" order="3">
+                <SalesOfferPackageElement id="All_Encompassing@Another_product-SOP@smartCard" version="1.0" order="3">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -786,8 +786,8 @@
               <Name>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Name>
               <Description>group return fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@return_group-SOP@Onboard_(cash)"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Another_product-SOP@Onboard_(cash)"/>
                 <GroupTicketRef version="1.0" ref="op:group"/>
               </pricesFor>
               <usedIn>
@@ -1115,8 +1115,8 @@
               <Name>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Name>
               <Description>group return fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@return_group-SOP@Onboard_(contactless)"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Another_product-SOP@Onboard_(contactless)"/>
                 <GroupTicketRef version="1.0" ref="op:group"/>
               </pricesFor>
               <usedIn>
@@ -1444,8 +1444,8 @@
               <Name>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Name>
               <Description>group return fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@return_group-SOP@Online_(smart_card)"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Another_product-SOP@Online_(smart_card)"/>
                 <GroupTicketRef version="1.0" ref="op:group"/>
               </pricesFor>
               <usedIn>
@@ -1773,8 +1773,8 @@
               <Name>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Name>
               <Description>group return fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@return_group-SOP@Mobile_App"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Another_product-SOP@Mobile_App"/>
                 <GroupTicketRef version="1.0" ref="op:group"/>
               </pricesFor>
               <usedIn>
@@ -2102,8 +2102,8 @@
               <Name>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Name>
               <Description>group return fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@return_group"/>
-                <SalesOfferPackageRef version="1.0" ref="Trip@return_group-SOP@All_Encompassing"/>
+                <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Another_product-SOP@All_Encompassing"/>
                 <GroupTicketRef version="1.0" ref="op:group"/>
               </pricesFor>
               <usedIn>

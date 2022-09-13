@@ -226,17 +226,17 @@
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@flatFare_adult-test-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@test-test-SOP@Onboard_(cash)">
               <Name>test - adult - Onboard (cash)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@flatFare_adult-test-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@test-test-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@flatFare_adult-test-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@test-test-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@test_adult"/>
                 </SalesOfferPackageElement>
@@ -258,7 +258,7 @@
             <FareTable version="1.0" id="op:test@Onboard_(cash)">
               <Name>test</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_adult-test-SOP@Onboard_(cash)"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@test-test-SOP@Onboard_(cash)"/>
                 <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@5"/>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@test_adult"/>
               </pricesFor>

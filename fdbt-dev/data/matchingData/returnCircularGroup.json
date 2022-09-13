@@ -125,7 +125,8 @@
             "smartCard"
           ]
         }
-      ]
+      ],
+      "productName": "Another product"
     }
   ],
   "outboundFareZones": [

@@ -17,6 +17,10 @@ interface OtherProductsProps {
     csrfToken: string;
 }
 
+const buildCopyUrl = (productId: string, csrfToken: string) => {
+    return `/api/copyProduct?id=${productId}&_csrf=${csrfToken}`;
+};
+
 const OtherProducts = ({ otherProducts, csrfToken }: OtherProductsProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         name: string;
@@ -43,7 +47,7 @@ const OtherProducts = ({ otherProducts, csrfToken }: OtherProductsProps): ReactE
                             </a>
                         </div>
 
-                        {otherProductsTable(otherProducts, deleteActionHandler)}
+                        {otherProductsTable(otherProducts, deleteActionHandler, csrfToken)}
 
                         {popUpState && (
                             <DeleteConfirmationPopup
@@ -70,6 +74,7 @@ export const buildDeleteUrl = (idToDelete: number, csrfToken: string): string =>
 const otherProductsTable = (
     otherProducts: MyFaresOtherFaresProduct[],
     deleteActionHandler: (productId: number, name: string) => void,
+    csrfToken: string,
 ): React.ReactElement => {
     return (
         <>
@@ -98,6 +103,7 @@ const otherProductsTable = (
                             Product status
                         </th>
                         <th scope="col" className="govuk-table__header" />
+                        <th scope="col" className="govuk-table__header" />
                     </tr>
                 </thead>
                 <tbody className="govuk-table__body">
@@ -123,8 +129,21 @@ const otherProductsTable = (
                                       {getTag(product.startDate, product.endDate, true)}
                                   </td>
                                   <td className="govuk-table__cell">
+                                      <form>
+                                          <button
+                                              className="govuk-link govuk-body button-link"
+                                              formAction={buildCopyUrl(product.id.toString(), csrfToken)}
+                                              formMethod="post"
+                                              type="submit"
+                                              id="copy-product-button"
+                                          >
+                                              Copy
+                                          </button>
+                                      </form>
+                                  </td>
+                                  <td className="govuk-table__cell">
                                       <button
-                                          className="govuk-link delete-link"
+                                          className="govuk-link govuk-body button-link"
                                           onClick={() => deleteActionHandler(product.id, product.productDescription)}
                                       >
                                           Delete

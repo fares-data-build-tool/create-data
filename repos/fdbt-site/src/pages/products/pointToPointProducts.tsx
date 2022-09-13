@@ -27,6 +27,10 @@ interface PointToPointProductsProps {
     csrfToken: string;
 }
 
+const buildCopyUrl = (productId: string, service: MyFaresService, csrfToken: string) => {
+    return `/api/copyProduct?id=${productId}&serviceId=${service.id}&_csrf=${csrfToken}`;
+};
+
 const PointToPointProducts = ({
     products,
     service,
@@ -70,7 +74,7 @@ const PointToPointProducts = ({
                             Service status: {getTag(service.startDate, service.endDate, false)}
                         </h1>
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">Products</h1>
-                        {PointToPointProductsTable(products, service, deleteActionHandler)}
+                        {PointToPointProductsTable(products, service, deleteActionHandler, csrfToken)}
 
                         {popUpState && (
                             <DeleteConfirmationPopup
@@ -94,6 +98,7 @@ const PointToPointProductsTable = (
     products: MyFaresPointToPointProduct[],
     service: MyFaresService,
     deleteActionHandler: (productId: number, name: string) => void,
+    csrfToken: string,
 ): ReactElement => {
     return (
         <>
@@ -115,6 +120,7 @@ const PointToPointProductsTable = (
                         <th scope="col" className="govuk-table__header">
                             Product status
                         </th>
+                        <th scope="col" className="govuk-table__header" />
                         <th scope="col" className="govuk-table__header" />
                     </tr>
                 </thead>
@@ -145,8 +151,21 @@ const PointToPointProductsTable = (
                                       ) : null}
                                   </td>
                                   <td className="govuk-table__cell">
+                                      <form>
+                                          <button
+                                              className="govuk-link govuk-body button-link"
+                                              formAction={buildCopyUrl(product.id.toString(), service, csrfToken)}
+                                              formMethod="post"
+                                              type="submit"
+                                              id="copy-product-button"
+                                          >
+                                              Copy
+                                          </button>
+                                      </form>
+                                  </td>
+                                  <td className="govuk-table__cell">
                                       <button
-                                          className="govuk-link govuk-body delete-link"
+                                          className="govuk-link govuk-body button-link"
                                           onClick={() => deleteActionHandler(product.id, product.productDescription)}
                                       >
                                           Delete

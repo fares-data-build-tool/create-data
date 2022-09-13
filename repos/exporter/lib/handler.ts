@@ -54,8 +54,10 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
             const ticketWithIds = JSON.parse(object.Body.toString('utf-8')) as TicketWithIds;
             const singleOrGroupPassengerType = await getPassengerTypeById(ticketWithIds.passengerType.id, noc);
+            const passengerTypeValue = singleOrGroupPassengerType.name;
 
-            let passengerType, groupDefinition;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let passengerType: any, groupDefinition;
             if ('groupPassengerType' in singleOrGroupPassengerType) {
                 passengerType = { passengerType: 'group' };
                 groupDefinition = await getGroupDefinition(singleOrGroupPassengerType.groupPassengerType, noc);
@@ -67,6 +69,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
             const fullProducts = ticketWithIds.products.map((product) => ({
                 ...product,
+                productName: product.productName ? product.productName : `${passengerTypeValue} ${ticketWithIds.type}`,
                 salesOfferPackages: product.salesOfferPackages.map((sopWithIds) => {
                     const sop = allSops.find((it) => it.id === sopWithIds.id);
                     if (!sop) {
@@ -108,12 +111,14 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             const setFareDayEnd =
                 isBasePeriodTicket(ticketWithIds) && ticketWithIds.products[0].productValidity === 'fareDayEnd';
 
+            /* eslint-disable */
             const baseTicket: BaseTicket | BaseSchemeOperatorTicket = {
                 ...ticketWithIds,
                 ...passengerType,
                 groupDefinition,
                 timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
             };
+            /* eslint-enable */
 
             const fullTicket: Ticket = {
                 ...baseTicket,

@@ -226,136 +226,136 @@
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@flatFare_senior-Weekly_Rider-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(cash)">
               <Name>Weekly Rider - senior - Onboard (cash)</Name>
               <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@flatFare_senior-Weekly_Rider-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessTravelCard cash</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@flatFare_senior-Weekly_Rider-SOP@Onboard_(cash)@postal" order="2">
+                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(cash)@postal" order="2">
                   <DistributionChannelRef ref="fxc:postal" version="fxc:v1.0"/>
                   <DistributionChannelType>postal</DistributionChannelType>
                   <PaymentMethods>contactlessTravelCard cash</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@flatFare_senior-Weekly_Rider-SOP@Onboard_(cash)@agency" order="3">
+                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(cash)@agency" order="3">
                   <DistributionChannelRef ref="fxc:agency" version="fxc:v1.0"/>
                   <DistributionChannelType>agency</DistributionChannelType>
                   <PaymentMethods>contactlessTravelCard cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@flatFare_senior-Weekly_Rider-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@flatFare_senior-Weekly_Rider-SOP@Onboard_(contactless)">
+            <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(contactless)">
               <Name>Weekly Rider - senior - Onboard (contactless)</Name>
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@flatFare_senior-Weekly_Rider-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@flatFare_senior-Weekly_Rider-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@flatFare_senior-Weekly_Rider-SOP@Online_(smart_card)">
+            <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Online_(smart_card)">
               <Name>Weekly Rider - senior - Online (smart card)</Name>
               <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@flatFare_senior-Weekly_Rider-SOP@Online_(smart_card)@online" order="1">
+                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Online_(smart_card)@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@flatFare_senior-Weekly_Rider-Online_(smart_card)@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Online_(smart_card)@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@flatFare_senior-Weekly_Rider-SOP@Mobile_App">
+            <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Mobile_App">
               <Name>Weekly Rider - senior - Mobile App</Name>
               <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@flatFare_senior-Weekly_Rider-SOP@Mobile_App@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Mobile_App@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@flatFare_senior-Weekly_Rider-Mobile_App@mobileApp" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Mobile_App@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@flatFare_senior-Weekly_Rider-SOP@All_Encompassing">
+            <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing">
               <Name>Weekly Rider - senior - All Encompassing</Name>
               <Description>All currently available options selected</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@flatFare_senior-Weekly_Rider-SOP@All_Encompassing@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@flatFare_senior-Weekly_Rider-SOP@All_Encompassing@online" order="2">
+                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing@online" order="2">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@flatFare_senior-Weekly_Rider-SOP@All_Encompassing@mobileDevice" order="3">
+                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing@mobileDevice" order="3">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@flatFare_senior-Weekly_Rider-All_Encompassing@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-All_Encompassing@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@flatFare_senior-Weekly_Rider-All_Encompassing@mobileApp" version="1.0" order="2">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-All_Encompassing@mobileApp" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@flatFare_senior-Weekly_Rider-All_Encompassing@smartCard" version="1.0" order="3">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-All_Encompassing@smartCard" version="1.0" order="3">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@flatFare_senior-Weekly_Rider-SOP@School_Service_Payment_Methods">
+            <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@School_Service_Payment_Methods">
               <Name>Weekly Rider - senior - School Service Payment Methods</Name>
               <Description>Additional payment methods provided for school service tickets</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@flatFare_senior-Weekly_Rider-SOP@School_Service_Payment_Methods@online" order="1">
+                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@School_Service_Payment_Methods@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>cheque directDebit</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@flatFare_senior-Weekly_Rider-SOP@School_Service_Payment_Methods@mobileDevice" order="2">
+                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@School_Service_Payment_Methods@mobileDevice" order="2">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>cheque directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@flatFare_senior-Weekly_Rider-School_Service_Payment_Methods@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-School_Service_Payment_Methods@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
@@ -377,7 +377,7 @@
             <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(cash)">
               <Name>Weekly Rider</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@Onboard_(cash)"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(cash)"/>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
@@ -397,7 +397,7 @@
             <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(contactless)">
               <Name>Weekly Rider</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@Onboard_(contactless)"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(contactless)"/>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
@@ -417,7 +417,7 @@
             <FareTable version="1.0" id="op:Weekly_Rider@Online_(smart_card)">
               <Name>Weekly Rider</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@Online_(smart_card)"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Online_(smart_card)"/>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
@@ -437,7 +437,7 @@
             <FareTable version="1.0" id="op:Weekly_Rider@Mobile_App">
               <Name>Weekly Rider</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@Mobile_App"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Mobile_App"/>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
@@ -457,7 +457,7 @@
             <FareTable version="1.0" id="op:Weekly_Rider@All_Encompassing">
               <Name>Weekly Rider</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@All_Encompassing"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing"/>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
@@ -477,7 +477,7 @@
             <FareTable version="1.0" id="op:Weekly_Rider@School_Service_Payment_Methods">
               <Name>Weekly Rider</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@flatFare_senior-Weekly_Rider-SOP@School_Service_Payment_Methods"/>
+                <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@School_Service_Payment_Methods"/>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>

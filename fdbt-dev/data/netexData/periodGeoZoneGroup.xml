@@ -669,308 +669,308 @@
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_1-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_1-SOP@Onboard_(cash)">
               <Name>Product 1 - group - Onboard (cash)</Name>
               <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_1-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_1-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_1-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_1-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_1-SOP@Onboard_(contactless)">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_1-SOP@Onboard_(contactless)">
               <Name>Product 1 - group - Onboard (contactless)</Name>
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_1-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_1-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_1-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_1-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_1-SOP@Online_(smart_card)">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_1-SOP@Online_(smart_card)">
               <Name>Product 1 - group - Online (smart card)</Name>
               <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_1-SOP@Online_(smart_card)@online" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_1-SOP@Online_(smart_card)@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_1-Online_(smart_card)@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_1-Online_(smart_card)@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_1-SOP@Mobile_App">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_1-SOP@Mobile_App">
               <Name>Product 1 - group - Mobile App</Name>
               <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_1-SOP@Mobile_App@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_1-SOP@Mobile_App@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_1-Mobile_App@mobileApp" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_1-Mobile_App@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_2-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_2-SOP@Onboard_(cash)">
               <Name>Product 2 - group - Onboard (cash)</Name>
               <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_2-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_2-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_2-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_2-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_2-SOP@Onboard_(contactless)">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_2-SOP@Onboard_(contactless)">
               <Name>Product 2 - group - Onboard (contactless)</Name>
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_2-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_2-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_2-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_2-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_2-SOP@Online_(smart_card)">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_2-SOP@Online_(smart_card)">
               <Name>Product 2 - group - Online (smart card)</Name>
               <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_2-SOP@Online_(smart_card)@online" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_2-SOP@Online_(smart_card)@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_2-Online_(smart_card)@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_2-Online_(smart_card)@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_2-SOP@Mobile_App">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_2-SOP@Mobile_App">
               <Name>Product 2 - group - Mobile App</Name>
               <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_2-SOP@Mobile_App@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_2-SOP@Mobile_App@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_2-Mobile_App@mobileApp" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_2-Mobile_App@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_2_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_3-SOP@Onboard_(contactless)">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_3-SOP@Onboard_(contactless)">
               <Name>Product 3 - group - Onboard (contactless)</Name>
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_3-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_3-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_3-SOP@Online_(smart_card)">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_3-SOP@Online_(smart_card)">
               <Name>Product 3 - group - Online (smart card)</Name>
               <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@Online_(smart_card)@online" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_3-SOP@Online_(smart_card)@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-Online_(smart_card)@smartCard" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_3-Online_(smart_card)@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_3-SOP@Mobile_App">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_3-SOP@Mobile_App">
               <Name>Product 3 - group - Mobile App</Name>
               <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@Mobile_App@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_3-SOP@Mobile_App@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-Mobile_App@mobileApp" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_3-Mobile_App@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_3-SOP@All_Encompassing">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_3-SOP@All_Encompassing">
               <Name>Product 3 - group - All Encompassing</Name>
               <Description>All currently available options selected</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@All_Encompassing@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_3-SOP@All_Encompassing@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@All_Encompassing@online" order="2">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_3-SOP@All_Encompassing@online" order="2">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_3-SOP@All_Encompassing@mobileDevice" order="3">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_3-SOP@All_Encompassing@mobileDevice" order="3">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-All_Encompassing@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_3-All_Encompassing@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-All_Encompassing@mobileApp" version="1.0" order="2">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_3-All_Encompassing@mobileApp" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@period_group-Product_3-All_Encompassing@smartCard" version="1.0" order="3">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_3-All_Encompassing@smartCard" version="1.0" order="3">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_3_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_4-SOP@Onboard_(cash)">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_4-SOP@Onboard_(cash)">
               <Name>Product 4 - group - Onboard (cash)</Name>
               <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_4-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_4-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_4-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_4-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_4-SOP@Onboard_(contactless)">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_4-SOP@Onboard_(contactless)">
               <Name>Product 4 - group - Onboard (contactless)</Name>
               <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_4-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_4-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_4-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_4-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_4_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_5-SOP@onboard_sales_offer_package">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_5-SOP@onboard_sales_offer_package">
               <Name>Product 5 - group - onboard sales offer package</Name>
               <Description>this sales offer package explains how to buy the ticket onboard</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_5-SOP@onboard_sales_offer_package@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_5-SOP@onboard_sales_offer_package@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash debitCard creditCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_5-onboard_sales_offer_package@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_5-onboard_sales_offer_package@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_5-SOP@mobile_app_offer_package">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_5-SOP@mobile_app_offer_package">
               <Name>Product 5 - group - mobile app offer package</Name>
               <Description>this sales offer package explains how to buy the ticket on a mobile app</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_5-SOP@mobile_app_offer_package@mobileDevice" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_5-SOP@mobile_app_offer_package@mobileDevice" order="1">
                   <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
                   <DistributionChannelType>mobileDevice</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard mobilePhone</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_5-mobile_app_offer_package@mobileApp" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_5-mobile_app_offer_package@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_group"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@period_group-Product_5-SOP@online_offer_package">
+            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_5-SOP@online_offer_package">
               <Name>Product 5 - group - online offer package</Name>
               <Description>this sales offer package explains how to buy the ticket on a mobile app</Description>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@period_group-Product_5-SOP@online_offer_package@online" order="1">
+                <DistributionAssignment version="any" id="Trip@Product_1-Product_5-SOP@online_offer_package@online" order="1">
                   <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
                   <DistributionChannelType>online</DistributionChannelType>
                   <PaymentMethods>debitCard creditCard directDebit</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@period_group-Product_5-online_offer_package@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@Product_1-Product_5-online_offer_package@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_5_group"/>
                 </SalesOfferPackageElement>
@@ -1003,7 +1003,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_1-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_1-SOP@Onboard_(cash)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@group@zone@nested@prices">
@@ -1037,7 +1037,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_1-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_1-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@group@zone@nested@prices">
@@ -1071,7 +1071,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_1-SOP@Online_(smart_card)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_1-SOP@Online_(smart_card)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@group@zone@nested@prices">
@@ -1105,7 +1105,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_1@Mobile_App@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_1-SOP@Mobile_App"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_1-SOP@Mobile_App"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_1@Mobile_App@group@zone@nested@prices">
@@ -1139,7 +1139,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_2@Onboard_(cash)@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_2-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_2-SOP@Onboard_(cash)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_2@Onboard_(cash)@group@zone@nested@prices">
@@ -1173,7 +1173,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_2@Onboard_(contactless)@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_2-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_2-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_2@Onboard_(contactless)@group@zone@nested@prices">
@@ -1207,7 +1207,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_2@Online_(smart_card)@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_2-SOP@Online_(smart_card)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_2-SOP@Online_(smart_card)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_2@Online_(smart_card)@group@zone@nested@prices">
@@ -1241,7 +1241,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_2@Mobile_App@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_2-SOP@Mobile_App"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_2-SOP@Mobile_App"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_2@Mobile_App@group@zone@nested@prices">
@@ -1275,7 +1275,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_3@Onboard_(contactless)@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_3-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_3-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_3@Onboard_(contactless)@group@zone@nested@prices">
@@ -1309,7 +1309,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_3@Online_(smart_card)@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_3-SOP@Online_(smart_card)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_3-SOP@Online_(smart_card)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_3@Online_(smart_card)@group@zone@nested@prices">
@@ -1343,7 +1343,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_3@Mobile_App@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_3-SOP@Mobile_App"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_3-SOP@Mobile_App"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_3@Mobile_App@group@zone@nested@prices">
@@ -1377,7 +1377,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_3@All_Encompassing@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_3-SOP@All_Encompassing"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_3-SOP@All_Encompassing"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_3@All_Encompassing@group@zone@nested@prices">
@@ -1411,7 +1411,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_4@Onboard_(cash)@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_4-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_4-SOP@Onboard_(cash)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_4@Onboard_(cash)@group@zone@nested@prices">
@@ -1445,7 +1445,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_4@Onboard_(contactless)@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_4-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_4-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_4@Onboard_(contactless)@group@zone@nested@prices">
@@ -1479,7 +1479,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_5@onboard_sales_offer_package@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_5-SOP@onboard_sales_offer_package"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_5-SOP@onboard_sales_offer_package"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_5@onboard_sales_offer_package@group@zone@nested@prices">
@@ -1513,7 +1513,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_5@mobile_app_offer_package@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_5-SOP@mobile_app_offer_package"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_5-SOP@mobile_app_offer_package"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_5@mobile_app_offer_package@group@zone@nested@prices">
@@ -1547,7 +1547,7 @@
                   <includes>
                     <FareTable version="1.0" id="op:Product_5@online_offer_package@group@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@period_group-Product_5-SOP@online_offer_package"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_5-SOP@online_offer_package"/>
                       </pricesFor>
                       <includes>
                         <FareTable version="1.0" id="op:Product_5@online_offer_package@group@zone@nested@prices">
