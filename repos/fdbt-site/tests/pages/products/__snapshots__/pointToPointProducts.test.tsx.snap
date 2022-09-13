@@ -84,6 +84,10 @@ exports[`myfares pages pointToPointProducts should render correctly when no prod
                 className="govuk-table__header"
                 scope="col"
               />
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
             </tr>
           </thead>
           <tbody
@@ -187,6 +191,10 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 className="govuk-table__header"
                 scope="col"
               />
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
             </tr>
           </thead>
           <tbody
@@ -229,6 +237,21 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 >
                   Expired
                 </strong>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <form>
+                  <button
+                    className="govuk-link govuk-body button-link"
+                    formAction="/api/copyProduct?id=1&serviceId=01&_csrf="
+                    formMethod="post"
+                    id="copy-product-button"
+                    type="submit"
+                  >
+                    Copy
+                  </button>
+                </form>
               </td>
               <td
                 className="govuk-table__cell"
@@ -353,6 +376,10 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 className="govuk-table__header"
                 scope="col"
               />
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
             </tr>
           </thead>
           <tbody
@@ -400,6 +427,21 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 >
                   NEEDS ATTENTION
                 </strong>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <form>
+                  <button
+                    className="govuk-link govuk-body button-link"
+                    formAction="/api/copyProduct?id=1&serviceId=01&_csrf="
+                    formMethod="post"
+                    id="copy-product-button"
+                    type="submit"
+                  >
+                    Copy
+                  </button>
+                </form>
               </td>
               <td
                 className="govuk-table__cell"

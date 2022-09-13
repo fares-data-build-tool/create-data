@@ -1457,6 +1457,7 @@ export const insertProducts = async (
         message: 'inserting products for given noc and fareType',
         noc: nocCode,
         fareType,
+        matchingJsonLink,
     });
 
     const insertQuery = `INSERT INTO products
@@ -1700,6 +1701,36 @@ export const getProductById = async (nocCode: string, productId: string): Promis
         return queryResults[0];
     } catch (error) {
         throw new Error(`Could not retrieve product matchingJsonLinks by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getProductIdByMatchingJsonLink = async (nocCode: string, jsonLink: string): Promise<string> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting product id for given noc and date created',
+        nocCode,
+        jsonLink,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id
+            FROM products
+            WHERE matchingJsonLink = ?
+            AND nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<{ id: string }[]>(queryInput, [jsonLink, nocCode]);
+
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
+        }
+
+        return queryResults[0].id;
+    } catch (error) {
+        throw new Error(
+            `Could not retrieve product id by nocCode and matchingJsonLink created from AuroraDB: ${error.stack}`,
+        );
     }
 };
 
