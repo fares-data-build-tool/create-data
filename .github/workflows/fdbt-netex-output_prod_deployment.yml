@@ -16,7 +16,7 @@ jobs:
 
   fdbt-netex-output_to_prod:
     name: 'fdbt-netex-output_to_prod'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     env:
       WORKSPACE: prod
     environment:
