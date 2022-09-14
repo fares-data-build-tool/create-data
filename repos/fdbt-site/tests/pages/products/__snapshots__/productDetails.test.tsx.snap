@@ -186,16 +186,25 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          key="SOP Test 1"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          SOP Test 1
-        </span>
-        <span
-          key="SOP Test 2"
-        >
-          SOP Test 2
-        </span>
+          <span
+            key="SOP Test 1"
+          >
+            SOP Test 1
+          </span>
+          <span
+            key="SOP Test 2"
+          >
+            SOP Test 2
+          </span>
+          <a
+            href="/selectPurchaseMethods"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>
@@ -457,16 +466,25 @@ exports[`myfares pages productDetails should render correctly for a copied produ
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          key="SOP Test 1"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          SOP Test 1
-        </span>
-        <span
-          key="SOP Test 2"
-        >
-          SOP Test 2
-        </span>
+          <span
+            key="SOP Test 1"
+          >
+            SOP Test 1
+          </span>
+          <span
+            key="SOP Test 2"
+          >
+            SOP Test 2
+          </span>
+          <a
+            href="/selectPurchaseMethods"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>
