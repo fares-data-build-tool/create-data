@@ -124,6 +124,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             };
 
             // put the now updated matching json into s3
+            // eslint-disable-next-line
             putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, undefined);
             redirectTo(
