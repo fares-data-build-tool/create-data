@@ -23,7 +23,7 @@ import {
 } from '../../../src/constants/attributes';
 import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
 import ProductNamePopup from '../../components/ProductNamePopup';
-import GenerateSinglePopup from '../../components/GenerateReturnPopup';
+import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -40,10 +40,20 @@ interface ProductDetailsProps {
     lineId?: string;
     nocCode: string;
     copiedProduct: boolean;
+    passengerTypeId: number;
+    isSingle: boolean;
+    cannotGenerateReturn: boolean;
     csrfToken: string;
 }
 
-const createGenerateReturnUrl = () => '';
+const createGenerateReturnUrl = (
+    lineId: string,
+    passengerTypeId: string,
+    serviceId: string,
+    productId: string,
+    csrfToken: string,
+) =>
+    `/api/generateReturn?lineId=${lineId}&passengerTypeId=${passengerTypeId}&serviceId=${serviceId}&productId=${productId}&_csrf=${csrfToken}`;
 
 const ProductDetails = ({
     backHref,
@@ -55,12 +65,14 @@ const ProductDetails = ({
     productId,
     serviceId,
     copiedProduct,
-    nocCode,
     lineId,
+    passengerTypeId,
+    isSingle,
+    cannotGenerateReturn,
     csrfToken,
 }: ProductDetailsProps): ReactElement => {
     const [editNamePopupOpen, setEditNamePopupOpen] = useState(false);
-    const [generateReturnPopupOpen, setGenerateReturnPopupOpen] = useState(false);
+    const [generateReturnPopupOpen, setGenerateReturnPopupOpen] = useState(cannotGenerateReturn);
 
     const editNameCancelActionHandler = (): void => {
         setEditNamePopupOpen(false);
@@ -111,12 +123,25 @@ const ProductDetails = ({
                                                 </span>
                                             );
                                         })}
-                                        <button
-                                            className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
-                                            onClick={() => setGenerateReturnPopupOpen(true)}
-                                        >
-                                            Generate return from singles
-                                        </button>
+                                        {serviceId && isSingle && (
+                                            <form>
+                                                <button
+                                                    className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2 govuk-!-margin-bottom-0"
+                                                    formAction={createGenerateReturnUrl(
+                                                        lineId,
+                                                        passengerTypeId.toString(),
+                                                        serviceId,
+                                                        productId,
+                                                        csrfToken,
+                                                    )}
+                                                    formMethod="post"
+                                                    type="submit"
+                                                    id="generate-return-button"
+                                                >
+                                                    Generate return from singles
+                                                </button>
+                                            </form>
+                                        )}
                                     </div>
                                 </dd>
                             </div>
@@ -146,14 +171,9 @@ const ProductDetails = ({
                     csrfToken={csrfToken}
                 />
             )}
-            
+
             {generateReturnPopupOpen && lineId && (
-                <GenerateSinglePopup
-                    apiUrl={createGenerateReturnUrl()}
-                    cancelActionHandler={generateReturnCancelActionHandler}
-                    nocCode={nocCode}
-                    lineId={lineId}
-                />
+                <GenerateReturnPopup cancelActionHandler={generateReturnCancelActionHandler} />
             )}
         </TwoThirdsLayout>
     );
@@ -409,6 +429,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const serviceId = ctx.query?.serviceId;
     const productId = ctx.query?.productId;
     const copiedProduct = ctx.query?.copied === 'true';
+    const cannotGenerateReturn = ctx.query?.generateReturn === 'false';
 
     if (typeof productId !== 'string') {
         throw new Error(`Expected string type for productID, received: ${productId}`);
@@ -448,6 +469,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             lineId,
             nocCode: noc,
             copiedProduct,
+            passengerTypeId: ticket.passengerType.id,
+            isSingle: ticket.type === 'single',
+            cannotGenerateReturn,
             csrfToken,
         },
     };
