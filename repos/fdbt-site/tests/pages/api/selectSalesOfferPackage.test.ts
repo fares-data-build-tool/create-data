@@ -17,21 +17,21 @@ describe('selectSalesOfferPackage', () => {
     s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
     beforeEach(jest.resetAllMocks);
 
-    it('redirects back to /selectSalesOfferPackages if there are no sales offer packages selected, single product', () => {
+    it('redirects back to /selectSalesOfferPackages if there are no sales offer packages selected, single product', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 '^0000-product-TestProduct': '',
             },
         });
 
-        selectSalesOfferPackages(req, res);
+        await selectSalesOfferPackages(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/selectPurchaseMethods',
         });
     });
 
-    it('redirects back to /selectSalesOfferPackages if there are no sales offer packages selected, multiple product', () => {
+    it('redirects back to /selectSalesOfferPackages if there are no sales offer packages selected, multiple product', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 '^0000-product-TestProduct': '',
@@ -39,14 +39,14 @@ describe('selectSalesOfferPackage', () => {
             },
         });
 
-        selectSalesOfferPackages(req, res);
+        await selectSalesOfferPackages(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/selectPurchaseMethods',
         });
     });
 
-    it('should update the purchase method when in edit mode and redirect back to products/productDetails', () => {
+    it('should update the purchase method when in edit mode and redirect back to products/productDetails', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -66,7 +66,7 @@ describe('selectSalesOfferPackage', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        selectSalesOfferPackages(req, res);
+        await selectSalesOfferPackages(req, res);
 
         expect(userData.putUserDataInProductsBucketWithFilePath).toBeCalledWith(
             {
@@ -86,7 +86,7 @@ describe('selectSalesOfferPackage', () => {
         });
     });
 
-    it('redirects to /productDateInformation if there are sales offer packages selected', () => {
+    it('redirects to /productDateInformation if there are sales offer packages selected', async () => {
         const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
         const { req, res } = getMockRequestAndResponse({
             body: {
@@ -129,7 +129,7 @@ describe('selectSalesOfferPackage', () => {
             },
         });
 
-        selectSalesOfferPackages(req, res);
+        await selectSalesOfferPackages(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, SALES_OFFER_PACKAGES_ATTRIBUTE, [
             {

@@ -76,7 +76,7 @@ export const sanitiseReqBody = (
     };
 };
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
@@ -121,8 +121,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             };
 
             // put the now updated matching json into s3
-            // eslint-disable-next-line
-            putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, undefined);
             redirectTo(
                 res,
