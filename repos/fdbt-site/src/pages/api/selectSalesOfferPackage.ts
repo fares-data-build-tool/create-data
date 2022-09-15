@@ -82,14 +82,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
-        let prod = [];
-        if (ticket?.products && 'productName' in ticket.products[0]) {
-            prod = [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice }];
-        } else {
-            prod = [{ productName: 'product', productPrice: '' }];
-        }
-
-        const products = multipleProductAttribute ? multipleProductAttribute.products : prod;
+        const products = multipleProductAttribute
+            ? multipleProductAttribute.products
+            : ticket && 'productName' in ticket.products[0]
+            ? [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice }]
+            : [{ productName: 'product', productPrice: '' }];
 
         const { sanitisedBody, errors } = sanitiseReqBody(req, products);
 
