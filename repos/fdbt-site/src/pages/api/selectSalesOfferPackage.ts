@@ -1,16 +1,24 @@
 import { NextApiResponse } from 'next';
-import { MULTIPLE_PRODUCT_ATTRIBUTE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../../constants/attributes';
+import {
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+} from '../../constants/attributes';
 import {
     ErrorInfo,
     NextApiRequestWithSession,
     ProductWithSalesOfferPackages,
     SalesOfferPackage,
     SelectSalesOfferPackageWithError,
+    Ticket,
 } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { checkPriceIsValid, removeAllWhiteSpace, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { toArray } from '../../utils';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
+import { WithIds } from 'fdbt-types/matchingJsonTypes';
 
 interface SanitisedBodyAndErrors {
     sanitisedBody: { [key: string]: SalesOfferPackage[] };
@@ -68,11 +76,16 @@ export const sanitiseReqBody = (
     };
 };
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
         const products = multipleProductAttribute
             ? multipleProductAttribute.products
+            : ticket && 'productName' in ticket.products[0]
+            ? [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice }]
             : [{ productName: 'product', productPrice: '' }];
 
         const { sanitisedBody, errors } = sanitiseReqBody(req, products);
@@ -84,6 +97,38 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             };
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
             redirectTo(res, '/selectPurchaseMethods');
+            return;
+        }
+
+        // redirected from the product details page
+        if (ticket && matchingJsonMetaData) {
+            const product = ticket.products[0];
+
+            const productName = 'productName' in product ? product.productName : 'product';
+            // edit mode
+            const salesOfferPackages: SalesOfferPackage[] = sanitisedBody[productName];
+
+            const updatedTicket: WithIds<Ticket> = {
+                ...ticket,
+                products: [
+                    {
+                        ...ticket.products[0],
+                        salesOfferPackages: salesOfferPackages.map((sop) => {
+                            return { id: sop.id, price: sop.price };
+                        }),
+                    },
+                ],
+            };
+
+            // put the now updated matching json into s3
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, undefined);
+            redirectTo(
+                res,
+                `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                }`,
+            );
             return;
         }
 

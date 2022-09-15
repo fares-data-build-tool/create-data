@@ -5,6 +5,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import {
     FARE_TYPE_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
@@ -214,7 +216,29 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectPurchaseMethods page');
     }
 
-    const purchaseMethodsList: SalesOfferPackage[] = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
+    const purchaseMethodsList: SalesOfferPackage[] = await getSalesOfferPackagesByNocCode(nocCode);
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const sopAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
+    const errors = (sopAttribute && 'errors' in sopAttribute && sopAttribute.errors) || [];
+
+    if (ticket && matchingJsonMetaData) {
+        const product = ticket.products[0];
+        const productInfo: ProductInfo = {
+            productName: 'productName' in product ? product.productName : 'product',
+            productPrice: product.salesOfferPackages[0].price || '',
+        };
+
+        return {
+            props: {
+                products: [productInfo],
+                purchaseMethodsList: purchaseMethodsList as FromDb<SalesOfferPackage>[],
+                errors,
+                csrfToken,
+            },
+        };
+    }
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
@@ -233,10 +257,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         ['period', 'multiOperator', 'flatFare'].includes(fareType) && multipleProductAttribute
             ? multipleProductAttribute.products
             : [{ productName: 'product', productPrice: '' }];
-
-    const sopAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
-
-    const errors = (sopAttribute && 'errors' in sopAttribute && sopAttribute.errors) || [];
 
     const selected: { [key: string]: SalesOfferPackage[] } | undefined =
         sopAttribute &&

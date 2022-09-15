@@ -310,6 +310,7 @@ const createProductDetails = async (
                 return content;
             }),
         ),
+        editLink: '/selectPurchaseMethods',
     });
 
     const startDate = convertDateFormat(ticket.ticketPeriod.startDate);
