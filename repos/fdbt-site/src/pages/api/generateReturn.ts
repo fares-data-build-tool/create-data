@@ -1,68 +1,43 @@
-import { ReturnTicket, SingleTicket, WithIds } from 'fdbt-types/matchingJsonTypes';
+import { ReturnTicket, SingleTicket, TicketWithIds, WithIds } from 'fdbt-types/matchingJsonTypes';
 import moment from 'moment';
 import { NextApiResponse } from 'next';
-import {
-    getPointToPointProductsByLineId,
-    getProductById,
-    getProductIdByMatchingJsonLink,
-    getServiceByIdAndDataSource,
-} from '../../data/auroradb';
-import { getProductsMatchingJson } from '../../data/s3';
+import { getProductIdByMatchingJsonLink, getServiceByIdAndDataSource } from '../../data/auroradb';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { isPointToPointTicket } from '../../interfaces/typeGuards';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
-import { insertDataToProductsBucketAndProductsTable } from '../../utils/apiUtils/userData';
+import {
+    collectInfoForMatchingTickets,
+    insertDataToProductsBucketAndProductsTable,
+} from '../../utils/apiUtils/userData';
 import { buildUuid } from '../fareType';
 
-const findTicketsToMakeReturn = async (
-    noc: string,
-    lineId: string,
+export const findTicketsToMakeReturn = (
     passengerTypeId: number,
-    outboundDirection: string,
-    inboundDirection: string,
-    productId: string,
-): Promise<WithIds<SingleTicket>[]> => {
-    const originalProduct = await getProductById(noc, productId);
-    const originalTicket = await getProductsMatchingJson(originalProduct.matchingJsonLink);
-
-    const products = await getPointToPointProductsByLineId(noc, lineId);
-    const matchingJsonLinks = products.map((product) => product.matchingJsonLink);
-    const tickets = await Promise.all(
-        matchingJsonLinks.map(async (link) => {
-            return await getProductsMatchingJson(link);
-        }),
-    );
-
-    const chosenTickets: WithIds<SingleTicket>[] = [];
-
+    directionToFind: 'inbound' | 'outbound',
+    tickets: TicketWithIds[],
+    originalTicket: TicketWithIds,
+): WithIds<SingleTicket>[] => {
+    const chosenTickets = [originalTicket as WithIds<SingleTicket>];
+    let found = false;
     tickets.forEach((ticket) => {
-        let chosenOutboundSingleTicket;
-        let chosenInboundSingleTicket;
+        if (!found) {
+            let expired = false;
 
-        if ((originalTicket as WithIds<SingleTicket>).journeyDirection === outboundDirection) {
-            chosenOutboundSingleTicket = originalTicket;
-        } else {
-            chosenInboundSingleTicket = originalTicket;
-        }
-        let expired = false;
-
-        if (ticket.ticketPeriod.endDate) {
-            const today = moment.utc().startOf('day').valueOf();
-            const endDateAsUnixTime = moment.utc(ticket.ticketPeriod.endDate, 'DD/MM/YYYY').valueOf();
-            if (endDateAsUnixTime < today) {
-                expired = true;
+            if (ticket.ticketPeriod.endDate) {
+                const today = moment.utc().startOf('day').valueOf();
+                const endDateAsUnixTime = moment.utc(ticket.ticketPeriod.endDate, 'DD/MM/YYYY').valueOf();
+                if (endDateAsUnixTime < today) {
+                    expired = true;
+                }
             }
-        }
 
-        if (!expired) {
-            if (isPointToPointTicket(ticket) && ticket.type === 'single') {
-                if ('journeyDirection' in ticket && ticket.passengerType.id === passengerTypeId) {
-                    if (ticket.journeyDirection === outboundDirection && !chosenOutboundSingleTicket) {
-                        chosenOutboundSingleTicket = ticket;
-                        chosenTickets.push(chosenOutboundSingleTicket);
-                    } else if (ticket.journeyDirection === inboundDirection && !chosenInboundSingleTicket) {
-                        chosenInboundSingleTicket = ticket;
-                        chosenTickets.push(chosenInboundSingleTicket);
+            if (!expired) {
+                if (isPointToPointTicket(ticket) && ticket.type === 'single') {
+                    if ('journeyDirection' in ticket && ticket.passengerType.id === passengerTypeId) {
+                        if (ticket.journeyDirection === directionToFind) {
+                            chosenTickets.push(ticket);
+                            found = true;
+                        }
                     }
                 }
             }
@@ -109,14 +84,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        const result = await findTicketsToMakeReturn(
+        const { directionToFind, tickets, originalTicket } = await collectInfoForMatchingTickets(
             noc,
             lineId,
-            Number(passengerTypeId),
             outboundDirection,
-            inboundDirection,
             productId,
         );
+        const result = findTicketsToMakeReturn(Number(passengerTypeId), directionToFind, tickets, originalTicket);
 
         if (result.length !== 2) {
             redirectTo(
@@ -126,7 +100,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         } else {
             // create return
-
             const outboundTicket = result.find(
                 (ticket) => ticket.journeyDirection === outboundDirection,
             ) as WithIds<SingleTicket>;
@@ -172,6 +145,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
     } catch (error) {
         const message = 'There was a problem generating a return.';
-        redirectToError(res, message, 'api.generateReturn.', error);
+        redirectToError(res, message, 'api.generateReturn', error);
     }
 };

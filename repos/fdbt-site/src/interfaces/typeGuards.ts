@@ -42,8 +42,9 @@ export const isPeriodTicket = (ticket: PeriodTicket | PointToPointTicket): ticke
 export const isMultipleServicesTicket = (ticket: Ticket): ticket is PeriodMultipleServicesTicket | FlatFareTicket =>
     (ticket as PeriodMultipleServicesTicket).selectedServices !== undefined;
 
-export const isPointToPointTicket = (ticket: PeriodTicket | PointToPointTicket | WithIds<Ticket>): ticket is PointToPointTicket =>
-    (ticket as PointToPointTicket).lineName !== undefined;
+export const isPointToPointTicket = (
+    ticket: PeriodTicket | PointToPointTicket | WithIds<Ticket>,
+): ticket is PointToPointTicket => (ticket as PointToPointTicket).lineName !== undefined;
 
 export const isGeoZoneTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is GeoZoneTicket =>
     (ticket as GeoZoneTicket).zoneName !== undefined;

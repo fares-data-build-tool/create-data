@@ -7,6 +7,7 @@ import {
     getProductById,
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
+    getServiceByIdAndDataSource,
 } from '../../../src/data/auroradb';
 import { getProductsMatchingJson } from '../../../src/data/s3';
 import ProductDetails, { getServerSideProps } from '../../../src/pages/products/productDetails';
@@ -19,6 +20,7 @@ import {
     expectedSchemeOperatorTicketAfterGeoZoneAdjustment,
     expectedSingleTicket,
     getMockContext,
+    mockRawService,
 } from '../../testData/mockData';
 
 jest.mock('../../../src/data/auroradb');
@@ -49,6 +51,9 @@ describe('myfares pages', () => {
                     ]}
                     productId="2"
                     copiedProduct={false}
+                    isSingle={false}
+                    cannotGenerateReturn={false}
+                    passengerTypeId={2}
                     csrfToken=""
                 />,
             );
@@ -79,6 +84,41 @@ describe('myfares pages', () => {
                     ]}
                     productId="2"
                     copiedProduct
+                    isSingle={false}
+                    cannotGenerateReturn={false}
+                    passengerTypeId={2}
+                    csrfToken=""
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+        it('should render correctly while the cannot generate return popup is open', () => {
+            const tree = shallow(
+                <ProductDetails
+                    requiresAttention={true}
+                    backHref={'/products/pointToPointProducts?serviceId=1'}
+                    productName={'Carnet Return Test'}
+                    startDate={'18/10/2021'}
+                    endDate={'18/10/2121'}
+                    productDetailsElements={[
+                        {
+                            name: 'Service',
+                            content: ['19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)'],
+                        },
+                        { name: 'Passenger type', content: ['Adult Test'], editLink: '/selectPassengerType' },
+                        { name: 'Time restriction', content: ['N/A'] },
+                        { name: 'Quantity in bundle', content: ['2'] },
+                        { name: 'Carnet expiry', content: ['22 year(s)'] },
+                        { name: 'Purchase methods', content: ['SOP Test 1', 'SOP Test 2'] },
+                        { name: 'Start date', content: ['18/10/2021'], editLink: '/productDateInformation' },
+                        { name: 'End date', content: ['18/10/2121'], editLink: '/productDateInformation' },
+                    ]}
+                    productId="2"
+                    copiedProduct={false}
+                    isSingle
+                    cannotGenerateReturn
+                    passengerTypeId={2}
                     csrfToken=""
                 />,
             );
@@ -115,6 +155,8 @@ describe('myfares pages', () => {
                 inboundDirectionDescription: 'this way',
                 outboundDirectionDescription: 'another way',
             });
+
+            (getServiceByIdAndDataSource as jest.Mock).mockResolvedValue(mockRawService);
         });
 
         it('correctly returns the elements which should be displayed on the page for a school single ticket', async () => {
@@ -126,7 +168,7 @@ describe('myfares pages', () => {
                     backHref: `/products/pointToPointProducts?serviceId=2`,
                     productName: 'Test Passenger Type - Single (school)',
                     startDate: '17/12/2020',
-                    endDate: '18/12/2020',
+                    endDate: '18/12/2024',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Single'] },
                         { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
@@ -136,11 +178,15 @@ describe('myfares pages', () => {
                         { name: 'Fare triangle', content: ['You created a fare triangle'], editLink: '/csvUpload' },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'] },
                         { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
-                        { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
+                        { name: 'End date', content: ['18/12/2024'], editLink: '/productDateInformation' },
                     ],
                     productId: '1',
                     serviceId: '2',
                     copiedProduct: false,
+                    cannotGenerateReturn: false,
+                    isSingle: true,
+                    lineId: 'q2gv2ve',
+                    passengerTypeId: 9,
                     csrfToken: '',
                 },
             });
@@ -171,6 +217,10 @@ describe('myfares pages', () => {
                     productId: '1',
                     serviceId: '2',
                     copiedProduct: false,
+                    cannotGenerateReturn: false,
+                    isSingle: false,
+                    passengerTypeId: 9,
+                    lineId: 'q2gv2ve',
                     csrfToken: '',
                 },
             });
@@ -206,6 +256,10 @@ describe('myfares pages', () => {
                     productId: '1',
                     serviceId: '',
                     copiedProduct: false,
+                    cannotGenerateReturn: false,
+                    isSingle: false,
+                    lineId: '',
+                    passengerTypeId: 9,
                     csrfToken: '',
                 },
             });
@@ -237,6 +291,10 @@ describe('myfares pages', () => {
                     productId: '1',
                     serviceId: '',
                     copiedProduct: false,
+                    cannotGenerateReturn: false,
+                    isSingle: false,
+                    lineId: '',
+                    passengerTypeId: 9,
                     csrfToken: '',
                 },
             });
@@ -269,6 +327,10 @@ describe('myfares pages', () => {
                     productId: '1',
                     serviceId: '',
                     copiedProduct: false,
+                    cannotGenerateReturn: false,
+                    isSingle: false,
+                    lineId: '',
+                    passengerTypeId: 9,
                     csrfToken: '',
                 },
             });
@@ -299,6 +361,10 @@ describe('myfares pages', () => {
                     productId: '1',
                     serviceId: '',
                     copiedProduct: false,
+                    cannotGenerateReturn: false,
+                    isSingle: false,
+                    lineId: '',
+                    passengerTypeId: 9,
                     csrfToken: '',
                 },
             });
@@ -330,6 +396,10 @@ describe('myfares pages', () => {
                     productId: '1',
                     serviceId: '',
                     copiedProduct: true,
+                    cannotGenerateReturn: false,
+                    isSingle: false,
+                    lineId: '',
+                    passengerTypeId: 9,
                     csrfToken: '',
                 },
             });

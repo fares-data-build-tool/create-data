@@ -38,7 +38,6 @@ interface ProductDetailsProps {
     productId: string;
     serviceId?: string;
     lineId?: string;
-    nocCode: string;
     copiedProduct: boolean;
     passengerTypeId: number;
     isSingle: boolean;
@@ -467,7 +466,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             productId,
             serviceId: typeof serviceId === 'string' ? serviceId : '',
             lineId,
-            nocCode: noc,
             copiedProduct,
             passengerTypeId: ticket.passengerType.id,
             isSingle: ticket.type === 'single',
