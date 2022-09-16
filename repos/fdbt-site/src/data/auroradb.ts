@@ -1494,6 +1494,30 @@ export const deleteProductByNocCodeAndId = async (id: number, nocCode: string): 
     await executeQuery(deleteQuery, [id, nocCode]);
 };
 
+export const updateProductFareTriangleModifiedByNocCodeAndId = async (
+    id: number,
+    nocCode: string,
+    fareTriangleModified: Date,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'updating products fare triangle modified date for given id',
+        id,
+        nocCode,
+    });
+
+    const updateQuery = `
+            UPDATE products
+            SET fareTriangleModified = ?
+            WHERE id = ?
+            AND nocCode = ?`;
+    try {
+        await executeQuery(updateQuery, [fareTriangleModified, id, nocCode]);
+    } catch (error) {
+        throw new Error(`Could not update fareTriangleModified into the products table. ${error.stack}`);
+    }
+};
+
 export const getOperatorDetailsFromNocTable = async (nocCode: string): Promise<OperatorDetails | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1686,7 +1710,7 @@ export const getProductById = async (nocCode: string, productId: string): Promis
 
     try {
         const queryInput = `
-            SELECT id, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention
+            SELECT id, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention, fareTriangleModified
             FROM products
             WHERE id = ?
             AND nocCode = ?

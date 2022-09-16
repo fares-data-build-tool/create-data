@@ -13,3 +13,6 @@ CREATE TABLE products(
     INDEX idx_nocCode (nocCode),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
+
+ALTER TABLE products 
+    ADD fareTriangleModified DATETIME DEFAULT NULL;
