@@ -1027,7 +1027,7 @@ describe('csvUpload', () => {
             serviceDescription: 'Worthing - Seaham - Crawley',
             termTime: true,
             ticketPeriod: {
-                endDate: '2020-12-18T09:30:46.0Z',
+                endDate: '2024-12-18T09:30:46.0Z',
                 startDate: '2020-12-17T09:30:46.0Z',
             },
             timeRestriction: {

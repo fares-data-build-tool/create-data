@@ -204,7 +204,7 @@ describe('userData', () => {
                     [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
-                        endDate: '2020-12-18T09:30:46.0Z',
+                        endDate: '2024-12-18T09:30:46.0Z',
                         dateInput: {
                             startDateDay: '17',
                             startDateMonth: '12',
