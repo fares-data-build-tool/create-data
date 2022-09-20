@@ -38,17 +38,6 @@ const Footer = (): ReactElement => (
                             </a>
                         </li>
                     </ul>
-                    <div className="govuk-footer__meta-custom">
-                        Built by{' '}
-                        <a
-                            href="https://transportforthenorth.com/"
-                            className="govuk-footer__link"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            Transport for the North
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
