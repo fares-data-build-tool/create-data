@@ -193,9 +193,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
     if (ticketJson && matchingJsonMetaData) {
-        const additional = false;
-        const multiOperator = false;
-        const editMode = true;
         return {
             props: {
                 serviceList,
@@ -204,11 +201,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
                         ? serviceListAttribute.errors
                         : [],
-                multiOperator,
+                multiOperator: false,
                 dataSourceAttribute,
                 csrfToken,
-                additional,
-                editMode,
+                additional: false,
+                editMode: true,
             },
         };
     }

@@ -141,7 +141,7 @@ describe('serviceList', () => {
 
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
-            body: { ...serviceInfo },
+            body: { serviceInfo },
             uuid: {},
             session: {
                 [MATCHING_JSON_ATTRIBUTE]: expectedPeriodMultipleServicesTicketWithMultipleProducts,
