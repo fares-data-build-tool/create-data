@@ -170,7 +170,7 @@ describe('pages', () => {
             expect(tree).toMatchSnapshot();
         });
 
-        it.only('should render correctly when in edit mode', () => {
+        it('should render correctly when in edit mode', () => {
             const tree = shallow(
                 <ServiceList
                     serviceList={mockServiceList}
