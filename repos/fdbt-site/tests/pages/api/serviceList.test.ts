@@ -134,7 +134,7 @@ describe('serviceList', () => {
         });
     });
 
-    it.only('should update the service list when in edit mode and redirect back to products/productDetails', async () => {
+    it('should update the service list when in edit mode and redirect back to products/productDetails', async () => {
         const serviceInfo = {
             '2#YpQjUw#NW_05_BLAC_2_1#05/04/2020': 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
         };
