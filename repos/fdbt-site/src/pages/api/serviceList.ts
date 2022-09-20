@@ -2,19 +2,22 @@ import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
 import { NextApiRequestWithSession } from '../../interfaces/index';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from '../../utils/apiUtils';
-import { SERVICE_LIST_ATTRIBUTE } from '../../constants/attributes';
-import { updateSessionAttribute } from '../../utils/sessions';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+} from '../../constants/attributes';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { SelectedService } from 'fdbt-types/matchingJsonTypes';
+import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
 
 const errorId = 'checkbox-0';
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const redirectUrl = '/serviceList';
     const selectAllText = 'Select All Services';
 
     try {
-        const fareType = getFareTypeFromFromAttributes(req);
-
         const refererUrl = req?.headers?.referer;
         const queryString = refererUrl?.substring(refererUrl?.indexOf('?') + 1);
         const { selectAll } = req.body;
@@ -56,6 +59,30 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 serviceDescription,
             });
         });
+
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+        // edit mode
+        if (ticket && matchingJsonMetaData && 'selectedServices' in ticket) {
+            const updatedTicket = {
+                ...ticket,
+                selectedServices,
+            };
+
+            // put the now updated matching json into s3
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, undefined);
+            redirectTo(
+                res,
+                `/products/productDetails?productId=${matchingJsonMetaData.productId}${
+                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                }`,
+            );
+            return;
+        }
+
+        const fareType = getFareTypeFromFromAttributes(req);
 
         updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, { selectedServices });
 
