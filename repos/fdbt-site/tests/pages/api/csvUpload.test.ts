@@ -21,7 +21,9 @@ import {
 } from '../../../src/constants/attributes';
 import { ReturnTicket, SingleTicket, WithIds } from 'fdbt-types/matchingJsonTypes';
 import * as userData from '../../../src/utils/apiUtils/userData';
+import * as auroradb from '../../../src/data/auroradb';
 
+jest.mock('../../../src/data/auroradb');
 jest.spyOn(s3, 'putDataInS3');
 jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
 
@@ -29,6 +31,12 @@ describe('csvUpload', () => {
     const loggerSpy = jest.spyOn(logger, 'warn');
     const getFormDataSpy = jest.spyOn(fileUpload, 'getFormData');
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+    const updateProductFareTriangleModifiedByNocCodeAndIdSpy = jest.spyOn(
+        auroradb,
+        'updateProductFareTriangleModifiedByNocCodeAndId',
+    );
+
+    updateProductFareTriangleModifiedByNocCodeAndIdSpy.mockImplementation().mockResolvedValue();
 
     beforeEach(() => {
         jest.resetAllMocks();
