@@ -557,6 +557,286 @@ exports[`myfares pages productDetails should render correctly for a copied produ
 </TwoThirdsLayout>
 `;
 
+exports[`myfares pages productDetails should render correctly for a fare triangle modified product 1`] = `
+<TwoThirdsLayout
+  description="Product Details page of the Create Fares Data Service"
+  errors={Array []}
+  title="Product Details - Create Fares Data Service"
+>
+  <BackButton
+    href="/products/pointToPointProducts?serviceId=1"
+  />
+  <InformationSummary
+    informationText="This is a copy of the product you selected. Edit one or more of the fields as required."
+  />
+  <div
+    className="dft-flex"
+  >
+    <h1
+      className="govuk-heading-l"
+      id="product-name"
+    >
+      Carnet Return Test
+    </h1>
+    <button
+      className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
+      onClick={[Function]}
+    >
+      Edit
+    </button>
+  </div>
+  <div
+    className="govuk-hint"
+    id="product-status"
+  >
+    Product status: 
+    <strong
+      className="govuk-tag govuk-tag--turquoise"
+    >
+      Active
+    </strong>
+    <strong
+      className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2"
+    >
+      NEEDS ATTENTION
+    </strong>
+  </div>
+  <dl
+    className="govuk-summary-list"
+    key="Service"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Service"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Service
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          key="19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)"
+        >
+          19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Passenger type"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Passenger type"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Passenger type
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          className="dft-flex dft-flex-justify-space-between"
+        >
+          <span
+            key="Adult Test"
+          >
+            Adult Test
+          </span>
+          <a
+            href="/selectPassengerType"
+          >
+            Edit
+          </a>
+        </div>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Time restriction"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Time restriction"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Time restriction
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          key="N/A"
+        >
+          N/A
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Quantity in bundle"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Quantity in bundle"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Quantity in bundle
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          key="2"
+        >
+          2
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Carnet expiry"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Carnet expiry"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Carnet expiry
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          key="22 year(s)"
+        >
+          22 year(s)
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Purchase methods"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Purchase methods"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Purchase methods
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          className="dft-flex dft-flex-justify-space-between"
+        >
+          <span
+            key="SOP Test 1"
+          >
+            SOP Test 1
+          </span>
+          <span
+            key="SOP Test 2"
+          >
+            SOP Test 2
+          </span>
+          <a
+            href="/selectPurchaseMethods"
+          >
+            Edit
+          </a>
+        </div>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Start date"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Start date"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Start date
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          className="dft-flex dft-flex-justify-space-between"
+        >
+          <span
+            key="18/10/2021"
+          >
+            18/10/2021
+          </span>
+          <a
+            href="/productDateInformation"
+          >
+            Edit
+          </a>
+        </div>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="End date"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="End date"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        End date
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          className="dft-flex dft-flex-justify-space-between"
+        >
+          <span
+            key="18/10/2121"
+          >
+            18/10/2121
+          </span>
+          <a
+            href="/productDateInformation"
+          >
+            Edit
+          </a>
+        </div>
+      </dd>
+    </div>
+  </dl>
+</TwoThirdsLayout>
+`;
+
 exports[`myfares pages productDetails should render correctly while the cannot generate return popup is open 1`] = `
 <TwoThirdsLayout
   description="Product Details page of the Create Fares Data Service"

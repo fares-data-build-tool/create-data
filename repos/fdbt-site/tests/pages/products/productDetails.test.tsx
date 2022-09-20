@@ -133,6 +133,43 @@ describe('myfares pages', () => {
 
             expect(tree).toMatchSnapshot();
         });
+        it('should render correctly for a fare triangle modified product', () => {
+            const tree = shallow(
+                <ProductDetails
+                    requiresAttention={true}
+                    backHref={'/products/pointToPointProducts?serviceId=1'}
+                    productName={'Carnet Return Test'}
+                    startDate={'18/10/2021'}
+                    endDate={'18/10/2121'}
+                    productDetailsElements={[
+                        {
+                            name: 'Service',
+                            content: ['19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)'],
+                        },
+                        { name: 'Passenger type', content: ['Adult Test'], editLink: '/selectPassengerType' },
+                        { name: 'Time restriction', content: ['N/A'] },
+                        { name: 'Quantity in bundle', content: ['2'] },
+                        { name: 'Carnet expiry', content: ['22 year(s)'] },
+                        {
+                            name: 'Purchase methods',
+                            content: ['SOP Test 1', 'SOP Test 2'],
+                            editLink: '/selectPurchaseMethods',
+                        },
+                        { name: 'Start date', content: ['18/10/2021'], editLink: '/productDateInformation' },
+                        { name: 'End date', content: ['18/10/2121'], editLink: '/productDateInformation' },
+                    ]}
+                    productId="2"
+                    copiedProduct
+                    isSingle={false}
+                    cannotGenerateReturn={false}
+                    passengerTypeId={2}
+                    csrfToken=""
+                    fareTriangleModified={'18/10/2021'}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
     });
     describe('getServerSideProps', () => {
         beforeEach(() => {
@@ -196,6 +233,7 @@ describe('myfares pages', () => {
                     lineId: 'q2gv2ve',
                     passengerTypeId: 9,
                     csrfToken: '',
+                    fareTriangleModified: undefined,
                 },
             });
         });
@@ -230,6 +268,7 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     lineId: 'q2gv2ve',
                     csrfToken: '',
+                    fareTriangleModified: undefined,
                 },
             });
         });
@@ -269,6 +308,7 @@ describe('myfares pages', () => {
                     lineId: '',
                     passengerTypeId: 9,
                     csrfToken: '',
+                    fareTriangleModified: undefined,
                 },
             });
         });
@@ -304,6 +344,7 @@ describe('myfares pages', () => {
                     lineId: '',
                     passengerTypeId: 9,
                     csrfToken: '',
+                    fareTriangleModified: undefined,
                 },
             });
         });
@@ -340,6 +381,7 @@ describe('myfares pages', () => {
                     lineId: '',
                     passengerTypeId: 9,
                     csrfToken: '',
+                    fareTriangleModified: undefined,
                 },
             });
         });
@@ -374,6 +416,7 @@ describe('myfares pages', () => {
                     lineId: '',
                     passengerTypeId: 9,
                     csrfToken: '',
+                    fareTriangleModified: undefined,
                 },
             });
         });
@@ -409,6 +452,42 @@ describe('myfares pages', () => {
                     lineId: '',
                     passengerTypeId: 9,
                     csrfToken: '',
+                    fareTriangleModified: undefined,
+                },
+            });
+        });
+        it('correctly returns the elements which should be displayed on the page when fare triangle is modified', async () => {
+            (getProductById as jest.Mock).mockReset();
+            (getProductById as jest.Mock).mockResolvedValue({ fareTriangleModified: '2021-12-17T00:00:00.000Z' });
+            (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedSingleTicket);
+            const ctx = getMockContext({ query: { productId: '1', serviceId: '2' } });
+            expect(await getServerSideProps(ctx)).toStrictEqual({
+                props: {
+                    requiresAttention: false,
+                    backHref: `/products/pointToPointProducts?serviceId=2`,
+                    productName: 'Test Passenger Type - Single (school)',
+                    startDate: '17/12/2020',
+                    endDate: '18/12/2024',
+                    productDetailsElements: [
+                        { name: 'Fare type', id: 'fare-type', content: ['Single'] },
+                        { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
+                        { name: 'Journey direction', content: ['Inbound - this way'] },
+                        { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
+                        { name: 'Only valid during term time', content: ['Yes'] },
+                        { name: 'Fare triangle', content: ['Updated: 17/12/2021'], editLink: '/csvUpload' },
+                        { name: 'Purchase methods', content: ['SOP 2', 'SOP 1'], editLink: '/selectPurchaseMethods' },
+                        { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
+                        { name: 'End date', content: ['18/12/2024'], editLink: '/productDateInformation' },
+                    ],
+                    productId: '1',
+                    serviceId: '2',
+                    copiedProduct: false,
+                    cannotGenerateReturn: false,
+                    isSingle: true,
+                    lineId: 'q2gv2ve',
+                    passengerTypeId: 9,
+                    csrfToken: '',
+                    fareTriangleModified: '2021-12-17T00:00:00.000Z',
                 },
             });
         });

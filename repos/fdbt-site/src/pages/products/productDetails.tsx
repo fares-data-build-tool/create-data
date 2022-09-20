@@ -43,6 +43,7 @@ interface ProductDetailsProps {
     isSingle: boolean;
     cannotGenerateReturn: boolean;
     csrfToken: string;
+    fareTriangleModified?: string;
 }
 
 const createGenerateReturnUrl = (
@@ -208,6 +209,7 @@ const createProductDetails = async (
     servicesRequiringAttention: string[] | undefined,
     serviceId: string | string[] | undefined,
     ctx: NextPageContextWithSession,
+    fareTriangleModified: string | undefined,
 ): Promise<{
     productDetailsElements: ProductDetailsElement[];
     productName: string;
@@ -302,7 +304,11 @@ const createProductDetails = async (
     if ('lineId' in ticket) {
         productDetailsElements.push({
             name: 'Fare triangle',
-            content: ['You created a fare triangle'],
+            content: [
+                fareTriangleModified
+                    ? `Updated: ${convertDateFormat(fareTriangleModified)}`
+                    : 'You created a fare triangle',
+            ],
             editLink: '/csvUpload',
         });
     }
@@ -436,7 +442,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error(`Expected string type for productID, received: ${productId}`);
     }
 
-    const { matchingJsonLink, servicesRequiringAttention } = await getProductById(noc, productId);
+    const { matchingJsonLink, servicesRequiringAttention, fareTriangleModified } = await getProductById(noc, productId);
 
     const ticket = await getProductsMatchingJson(matchingJsonLink);
 
@@ -450,7 +456,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         matchingJsonLink,
     });
 
-    const productDetails = await createProductDetails(ticket, noc, servicesRequiringAttention, serviceId, ctx);
+    const productDetails = await createProductDetails(
+        ticket,
+        noc,
+        servicesRequiringAttention,
+        serviceId,
+        ctx,
+        fareTriangleModified,
+    );
 
     const backHref = serviceId ? `/products/pointToPointProducts?serviceId=${serviceId}` : '/products/otherProducts';
 
@@ -473,6 +486,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             isSingle: ticket.type === 'single',
             cannotGenerateReturn,
             csrfToken,
+            fareTriangleModified,
         },
     };
 };
