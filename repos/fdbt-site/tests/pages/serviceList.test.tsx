@@ -104,6 +104,7 @@ describe('pages', () => {
                         hasBods: false,
                     }}
                     additional
+                    editMode={false}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -123,6 +124,7 @@ describe('pages', () => {
                         hasBods: true,
                     }}
                     additional={false}
+                    editMode={false}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -142,6 +144,7 @@ describe('pages', () => {
                         hasBods: false,
                     }}
                     additional={false}
+                    editMode={false}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -161,6 +164,27 @@ describe('pages', () => {
                         hasBods: true,
                     }}
                     additional={false}
+                    editMode={false}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it.only('should render correctly when in edit mode', () => {
+            const tree = shallow(
+                <ServiceList
+                    serviceList={mockServiceList}
+                    buttonText="Select All"
+                    errors={[]}
+                    csrfToken=""
+                    multiOperator={false}
+                    dataSourceAttribute={{
+                        source: 'bods',
+                        hasTnds: true,
+                        hasBods: true,
+                    }}
+                    additional={false}
+                    editMode={true}
                 />,
             );
             expect(tree).toMatchSnapshot();
