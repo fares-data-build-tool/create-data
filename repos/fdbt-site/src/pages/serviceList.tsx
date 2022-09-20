@@ -8,6 +8,8 @@ import {
     FARE_TYPE_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
 } from '../constants/attributes';
 import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import {
@@ -35,6 +37,7 @@ interface ServiceListProps {
     dataSourceAttribute: TxcSourceAttribute;
     csrfToken: string;
     additional: boolean;
+    editMode: boolean;
 }
 
 const ServiceList = ({
@@ -45,16 +48,19 @@ const ServiceList = ({
     multiOperator,
     dataSourceAttribute,
     additional,
+    editMode,
 }: ServiceListProps): ReactElement => {
     const multiOperatorText = multiOperator ? 'of your ' : '';
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
-            <SwitchDataSource
-                dataSourceAttribute={dataSourceAttribute}
-                pageUrl="/serviceList"
-                attributeVersion="baseOperator"
-                csrfToken={csrfToken}
-            />
+            {!editMode && (
+                <SwitchDataSource
+                    dataSourceAttribute={dataSourceAttribute}
+                    pageUrl="/serviceList"
+                    attributeVersion="baseOperator"
+                    csrfToken={csrfToken}
+                />
+            )}
             <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
@@ -183,12 +189,33 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         };
     });
 
+    const ticketJson = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    if (ticketJson && matchingJsonMetaData) {
+        return {
+            props: {
+                serviceList,
+                buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
+                errors:
+                    serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
+                        ? serviceListAttribute.errors
+                        : [],
+                multiOperator: false,
+                dataSourceAttribute,
+                csrfToken,
+                additional: false,
+                editMode: true,
+            },
+        };
+    }
+
     const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
     const multiOperator = fareType === 'multiOperator';
 
     const ticket = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
     const additional = !!ticket && 'name' in ticket && ticket.name === 'hybrid';
-
+    const editMode = false;
     return {
         props: {
             serviceList,
@@ -201,6 +228,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             dataSourceAttribute,
             csrfToken,
             additional,
+            editMode,
         },
     };
 };

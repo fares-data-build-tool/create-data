@@ -235,6 +235,7 @@ const createProductDetails = async (
                     )
                 ).join(', '),
             ],
+            editLink: '/serviceList',
         });
     }
 
