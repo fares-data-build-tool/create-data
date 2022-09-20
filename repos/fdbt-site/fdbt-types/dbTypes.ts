@@ -29,7 +29,6 @@ export interface MyFaresProduct {
     startDate: string;
     endDate?: string;
     servicesRequiringAttention?: string[];
-    fareTriangleModified?: Date;
 }
 
 export type RawMyFaresProduct = Omit<MyFaresProduct, 'servicesRequiringAttention'> & {
