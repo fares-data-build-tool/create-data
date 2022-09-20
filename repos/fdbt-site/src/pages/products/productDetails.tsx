@@ -43,7 +43,7 @@ interface ProductDetailsProps {
     isSingle: boolean;
     cannotGenerateReturn: boolean;
     csrfToken: string;
-    fareTriangleModified?: Date;
+    fareTriangleModified?: string;
 }
 
 const createGenerateReturnUrl = (
@@ -209,7 +209,7 @@ const createProductDetails = async (
     servicesRequiringAttention: string[] | undefined,
     serviceId: string | string[] | undefined,
     ctx: NextPageContextWithSession,
-    fareTriangleModified: Date | undefined,
+    fareTriangleModified: string | undefined,
 ): Promise<{
     productDetailsElements: ProductDetailsElement[];
     productName: string;
@@ -305,7 +305,7 @@ const createProductDetails = async (
             name: 'Fare triangle',
             content: [
                 fareTriangleModified
-                    ? `Updated: ${convertDateFormat(fareTriangleModified?.toString())}`
+                    ? `Updated: ${convertDateFormat(fareTriangleModified)}`
                     : 'You created a fare triangle',
             ],
             editLink: '/csvUpload',

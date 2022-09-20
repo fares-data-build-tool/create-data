@@ -341,11 +341,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     );
                 }
 
-                // put the now updated matching json into s3
                 // overriding the existing object
                 await putUserDataInProductsBucketWithFilePath(ticket, matchingJsonMetaData.matchingJsonLink);
                 const fareTriangleModified = moment().utc().toDate();
                 const productId = Number(matchingJsonMetaData.productId);
+                // updating fareTriangleModified in products table
                 await updateProductFareTriangleModifiedByNocCodeAndId(productId, noc, fareTriangleModified);
                 redirectTo(
                     res,
