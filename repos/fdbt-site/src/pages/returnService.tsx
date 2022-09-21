@@ -10,7 +10,7 @@ import {
     TXC_SOURCE_ATTRIBUTE,
     RETURN_SERVICE_ATTRIBUTE,
 } from '../constants/attributes';
-import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import { getServiceByIdAndDataSource, getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
@@ -134,11 +134,37 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }
     }
 
+    const dataSource = dataSourceAttribute.source;
+
+    const servicesWithOneDirection = (
+        await Promise.all(
+            services.map(async (service) => {
+                const rawService = await getServiceByIdAndDataSource(nocCode, service.id, dataSource);
+
+                const directions = Array.from(
+                    rawService.journeyPatterns.reduce((set, pattern) => {
+                        set.add(pattern.direction);
+                        return set;
+                    }, new Set<string>()),
+                );
+
+                const outboundDirection = directions.find((it) => ['outbound', 'clockwise'].includes(it));
+                const inboundDirection = directions.find((it) => ['inbound', 'antiClockwise'].includes(it));
+
+                if (!outboundDirection || !inboundDirection) {
+                    return service;
+                }
+
+                return;
+            }),
+        )
+    ).filter((service) => service !== undefined);
+
     return {
         props: {
             operator: operatorAttribute.name,
             passengerType: passengerTypeAttribute.passengerType,
-            services,
+            services: servicesWithOneDirection as ServiceType[],
             error,
             dataSourceAttribute,
             csrfToken,
