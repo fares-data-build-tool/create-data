@@ -2,11 +2,16 @@ import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import { redirectToError, redirectTo } from '../../utils/apiUtils/index';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
-import { RETURN_VALIDITY_ATTRIBUTE } from '../../constants/attributes';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    RETURN_VALIDITY_ATTRIBUTE,
+} from '../../constants/attributes';
+import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
 
 const radioButtonError = 'Choose one of the options below';
-const textInputError = 'Enter a whole number greater than zero';
+const textInputError = 'Enter a whole number greater than 0 and less than 1000';
 const selectInputError = 'Choose one of the options from the dropdown list';
 
 export const returnValiditySchema = yup
@@ -39,7 +44,7 @@ export const returnValiditySchema = yup
                             .typeError(textInputError)
                             .integer(textInputError)
                             .min(1, textInputError)
-                            .max(260, textInputError),
+                            .max(1000, textInputError),
                     })
                     .when('duration', {
                         is: 'month',
@@ -48,7 +53,7 @@ export const returnValiditySchema = yup
                             .typeError(textInputError)
                             .integer(textInputError)
                             .min(1, textInputError)
-                            .max(120, textInputError),
+                            .max(1000, textInputError),
                     })
                     .when('duration', {
                         is: 'year',
@@ -97,7 +102,28 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     try {
         const { amount, duration, validity } = req.body;
 
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
         if (validity === 'No') {
+            // edit mode
+            if (ticket && matchingJsonMetaData) {
+                const updatedTicket = {
+                    ...ticket,
+                    returnPeriodValidity: undefined,
+                };
+
+                // put the now updated matching json into s3
+                await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+                updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, undefined);
+                redirectTo(
+                    res,
+                    `/products/productDetails?productId=${matchingJsonMetaData.productId}${
+                        matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                    }`,
+                );
+                return;
+            }
             updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, undefined);
             redirectTo(res, '/ticketConfirmation');
             return;
@@ -121,6 +147,25 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (errors.length > 0) {
             updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, { amount, typeOfDuration: duration, errors });
             redirectTo(res, '/returnValidity');
+            return;
+        }
+
+        // edit mode
+        if (ticket && matchingJsonMetaData) {
+            const updatedTicket = {
+                ...ticket,
+                returnPeriodValidity: { amount, typeOfDuration: duration },
+            };
+
+            // put the now updated matching json into s3
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, undefined);
+            redirectTo(
+                res,
+                `/products/productDetails?productId=${matchingJsonMetaData.productId}${
+                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                }`,
+            );
             return;
         }
 

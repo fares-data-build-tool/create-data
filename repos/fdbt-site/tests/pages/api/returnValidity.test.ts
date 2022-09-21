@@ -1,16 +1,25 @@
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import {
+    expectedPeriodMultipleServicesTicketWithMultipleProducts,
+    getMockRequestAndResponse,
+} from '../../testData/mockData';
 import returnValidity, {
     returnValiditySchema,
     getErrorIdFromValidityError,
     formatRequestBody,
 } from '../../../src/pages/api/returnValidity';
 import * as sessions from '../../../src/utils/sessions';
-import { RETURN_VALIDITY_ATTRIBUTE } from '../../../src/constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    RETURN_VALIDITY_ATTRIBUTE,
+} from '../../../src/constants/attributes';
 import { ErrorInfo } from '../../../src/interfaces';
+import * as userData from '../../../src/utils/apiUtils/userData';
 
 describe('returnValidity', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+    jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
 
     afterEach(() => {
         jest.resetAllMocks();
@@ -33,9 +42,9 @@ describe('returnValidity', () => {
             [{ validity: 'Yes', amount: '365', duration: 'day' }, true],
             [{ validity: 'Yes', amount: '366', duration: 'day' }, false],
             [{ validity: 'Yes', amount: '260', duration: 'week' }, true],
-            [{ validity: 'Yes', amount: '261', duration: 'week' }, false],
+            [{ validity: 'Yes', amount: '1001', duration: 'week' }, false],
             [{ validity: 'Yes', amount: '120', duration: 'month' }, true],
-            [{ validity: 'Yes', amount: '121', duration: 'month' }, false],
+            [{ validity: 'Yes', amount: '1210', duration: 'month' }, false],
             [{ validity: 'Yes', amount: '5', duration: 'year' }, true],
         ])('should validate that %s is %s', (candidate, validity) => {
             const result = returnValiditySchema.isValidSync(candidate);
@@ -109,14 +118,14 @@ describe('returnValidity', () => {
     it('should set the RETURN_VALIDITY_ATTRIBUTE with errors and redirect to itself (i.e. /returnValidity) when there are errors present', async () => {
         const mockReturnValidityDetails = {
             validity: 'Yes',
-            amount: '720',
+            amount: '1500',
             duration: 'week',
         };
         const mockErrors: ErrorInfo[] = [
             {
-                errorMessage: 'Enter a whole number greater than zero',
+                errorMessage: 'Enter a whole number greater than 0 and less than 1000',
                 id: 'return-validity-amount',
-                userInput: '720',
+                userInput: '1500',
             },
         ];
         const { req, res } = getMockRequestAndResponse({
@@ -131,6 +140,68 @@ describe('returnValidity', () => {
         });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/returnValidity',
+        });
+    });
+
+    it('should clear the RETURN_VALIDITY_ATTRIBUTE, update the ticket with a returnPeriodValidity in s3, and redirect back to /productDetails when in edit mode', async () => {
+        const mockReturnValidityDetails = {
+            validity: 'Yes',
+            amount: '200',
+            duration: 'week',
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: mockReturnValidityDetails,
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedPeriodMultipleServicesTicketWithMultipleProducts,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '2',
+                    serviceId: '22D',
+                    matchingJsonLink: 'test/path',
+                },
+            },
+        });
+        await returnValidity(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_VALIDITY_ATTRIBUTE, undefined);
+        expect(userData.putUserDataInProductsBucketWithFilePath).toBeCalledWith(
+            {
+                ...expectedPeriodMultipleServicesTicketWithMultipleProducts,
+                returnPeriodValidity: { amount: '200', typeOfDuration: 'week' },
+            },
+            'test/path',
+        );
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/products/productDetails?productId=2&serviceId=22D',
+        });
+    });
+
+    it('should clear the RETURN_VALIDITY_ATTRIBUTE, update the ticket with no returnPeriodValidity in s3, and redirect back to /productDetails when in edit mode', async () => {
+        const mockReturnValidityDetails = {
+            validity: 'No',
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: mockReturnValidityDetails,
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedPeriodMultipleServicesTicketWithMultipleProducts,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '2',
+                    serviceId: '22D',
+                    matchingJsonLink: 'test/path',
+                },
+            },
+        });
+        await returnValidity(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_VALIDITY_ATTRIBUTE, undefined);
+        expect(userData.putUserDataInProductsBucketWithFilePath).toBeCalledWith(
+            {
+                ...expectedPeriodMultipleServicesTicketWithMultipleProducts,
+                returnPeriodValidity: undefined,
+            },
+            'test/path',
+        );
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/products/productDetails?productId=2&serviceId=22D',
         });
     });
 });
