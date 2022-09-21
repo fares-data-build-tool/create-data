@@ -9,6 +9,7 @@ import {
     DIRECTION_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
+    RETURN_SERVICE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getAndValidateNoc, getCsrfToken } from '../index';
 import { isService } from '../../interfaces/typeGuards';
@@ -168,7 +169,12 @@ export const getMatchingProps = async (
     ctx: NextPageContextWithSession,
     matchingAttribute: MatchingWithErrors | object | undefined,
 ): Promise<{ props: MatchingProps }> => {
-    const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
+    let serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
+    const returnServiceAttribute = getSessionAttribute(ctx.req, RETURN_SERVICE_ATTRIBUTE);
+
+    if (returnServiceAttribute !== undefined) {
+        serviceAttribute = returnServiceAttribute;
+    }
     const directionAttribute = getRequiredSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE);
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
