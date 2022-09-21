@@ -604,6 +604,7 @@ export interface ProductDetailsElement {
     name: string;
     content: string[];
     editLink?: string;
+    generateLink?: string;
     id?: string;
 }
 

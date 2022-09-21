@@ -39,8 +39,13 @@ import {
     UNASSIGNED_STOPS_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
 } from '../../constants/attributes';
-import { batchGetStopsByAtcoCode, insertProducts } from '../../data/auroradb';
-import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
+import {
+    batchGetStopsByAtcoCode,
+    getPointToPointProductsByLineId,
+    getProductById,
+    insertProducts,
+} from '../../data/auroradb';
+import { getCsvZoneUploadData, getProductsMatchingJson, putStringInS3 } from '../../data/s3';
 import {
     BaseTicket,
     CognitoIdToken,
@@ -89,6 +94,36 @@ import moment from 'moment';
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
     return !!termTimeAttribute && (termTimeAttribute as TermTimeAttribute).termTime;
+};
+
+export const collectInfoForMatchingTickets = async (
+    noc: string,
+    lineId: string,
+    outboundDirection: string,
+    productId: string,
+): Promise<{
+    directionToFind: 'inbound' | 'outbound';
+    tickets: TicketWithIds[];
+    originalTicket: TicketWithIds;
+}> => {
+    const originalProduct = await getProductById(noc, productId);
+    const originalTicket = await getProductsMatchingJson(originalProduct.matchingJsonLink);
+    const directionToFind: 'inbound' | 'outbound' =
+        (originalTicket as WithIds<SingleTicket>).journeyDirection === outboundDirection ? 'inbound' : 'outbound';
+
+    const products = await getPointToPointProductsByLineId(noc, lineId);
+    const matchingJsonLinks = products.map((product) => product.matchingJsonLink);
+    const tickets = await Promise.all(
+        matchingJsonLinks.map(async (link) => {
+            return await getProductsMatchingJson(link);
+        }),
+    );
+
+    return {
+        directionToFind,
+        tickets,
+        originalTicket,
+    };
 };
 
 export const getProductsAndSalesOfferPackages = <T extends { products: { salesOfferPackages: { id: number }[] }[] }>(

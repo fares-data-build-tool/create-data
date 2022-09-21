@@ -3,7 +3,7 @@ import uniq from 'lodash/uniq';
 import Papa from 'papaparse';
 import { putDataInS3 } from '../../data/s3';
 import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
-import { redirectToError, redirectTo, getUuidFromSession } from '../../utils/apiUtils';
+import { redirectToError, redirectTo, getUuidFromSession, getAndValidateNoc } from '../../utils/apiUtils';
 import {
     INPUT_METHOD_ATTRIBUTE,
     CSV_UPLOAD_ATTRIBUTE,
@@ -18,6 +18,8 @@ import { ReturnTicket, SingleTicket, WithIds } from 'fdbt-types/matchingJsonType
 import { getFareZones } from '../../../src/utils/apiUtils/matching';
 import { MatchingFareZones } from '../../../src/interfaces/matchingInterface';
 import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
+import { updateProductFareTriangleModifiedByNocCodeAndId } from '../../data/auroradb';
+import moment from 'moment';
 
 const errorId = 'csv-upload';
 
@@ -246,7 +248,7 @@ const nameMismatchError: ErrorInfo = {
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
-
+        const noc = getAndValidateNoc(req, res);
         const { fields } = formData;
 
         if (!fields?.poundsOrPence) {
@@ -339,10 +341,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     );
                 }
 
-                // put the now updated matching json into s3
                 // overriding the existing object
                 await putUserDataInProductsBucketWithFilePath(ticket, matchingJsonMetaData.matchingJsonLink);
-
+                const fareTriangleModified = moment().utc().toDate();
+                const productId = Number(matchingJsonMetaData.productId);
+                // updating fareTriangleModified in products table
+                await updateProductFareTriangleModifiedByNocCodeAndId(productId, noc, fareTriangleModified);
                 redirectTo(
                     res,
                     `/products/productDetails?productId=${matchingJsonMetaData?.productId}&serviceId=${matchingJsonMetaData?.serviceId}`,

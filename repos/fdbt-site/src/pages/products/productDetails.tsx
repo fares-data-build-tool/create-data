@@ -7,6 +7,7 @@ import {
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
     getBodsServiceDirectionDescriptionsByNocAndServiceId,
+    getServiceByIdAndDataSource,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
@@ -22,6 +23,7 @@ import {
 } from '../../../src/constants/attributes';
 import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
 import ProductNamePopup from '../../components/ProductNamePopup';
+import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -35,9 +37,23 @@ interface ProductDetailsProps {
     requiresAttention: boolean;
     productId: string;
     serviceId?: string;
+    lineId?: string;
     copiedProduct: boolean;
+    passengerTypeId: number;
+    isSingle: boolean;
+    cannotGenerateReturn: boolean;
     csrfToken: string;
+    fareTriangleModified?: string;
 }
+
+const createGenerateReturnUrl = (
+    lineId: string,
+    passengerTypeId: string,
+    serviceId: string,
+    productId: string,
+    csrfToken: string,
+) =>
+    `/api/generateReturn?lineId=${lineId}&passengerTypeId=${passengerTypeId}&serviceId=${serviceId}&productId=${productId}&_csrf=${csrfToken}`;
 
 const ProductDetails = ({
     backHref,
@@ -49,12 +65,21 @@ const ProductDetails = ({
     productId,
     serviceId,
     copiedProduct,
+    lineId,
+    passengerTypeId,
+    isSingle,
+    cannotGenerateReturn,
     csrfToken,
 }: ProductDetailsProps): ReactElement => {
-    const [popupOpen, setPopupOpen] = useState(false);
+    const [editNamePopupOpen, setEditNamePopupOpen] = useState(false);
+    const [generateReturnPopupOpen, setGenerateReturnPopupOpen] = useState(cannotGenerateReturn);
 
-    const cancelActionHandler = (): void => {
-        setPopupOpen(false);
+    const editNameCancelActionHandler = (): void => {
+        setEditNamePopupOpen(false);
+    };
+
+    const generateReturnCancelActionHandler = (): void => {
+        setGenerateReturnPopupOpen(false);
     };
 
     return (
@@ -70,7 +95,7 @@ const ProductDetails = ({
 
                 <button
                     className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
-                    onClick={() => setPopupOpen(true)}
+                    onClick={() => setEditNamePopupOpen(true)}
                 >
                     Edit
                 </button>
@@ -84,27 +109,71 @@ const ProductDetails = ({
             </div>
 
             {productDetailsElements.map((element) => {
-                return (
-                    <dl className="govuk-summary-list" key={element.name}>
-                        <div className="govuk-summary-list__row" key={element.name}>
-                            <dt className="govuk-summary-list__key">{element.name}</dt>
+                if (element.name === 'Fare type' && lineId) {
+                    return (
+                        <dl className="govuk-summary-list" key={element.name}>
+                            <div className="govuk-summary-list__row" key={element.name}>
+                                <dt className="govuk-summary-list__key">{element.name}</dt>
+                                <dd className="govuk-summary-list__value">
+                                    <div className="dft-flex dft-flex-justify-space-between">
+                                        {element.content.map((item) => {
+                                            return (
+                                                <span key={item} id={element.id || undefined}>
+                                                    {item}
+                                                </span>
+                                            );
+                                        })}
+                                        {serviceId && isSingle && (
+                                            <form>
+                                                <button
+                                                    className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2 govuk-!-margin-bottom-0"
+                                                    formAction={createGenerateReturnUrl(
+                                                        lineId,
+                                                        passengerTypeId.toString(),
+                                                        serviceId,
+                                                        productId,
+                                                        csrfToken,
+                                                    )}
+                                                    formMethod="post"
+                                                    type="submit"
+                                                    id="generate-return-button"
+                                                >
+                                                    Generate return from singles
+                                                </button>
+                                            </form>
+                                        )}
+                                    </div>
+                                </dd>
+                            </div>
+                        </dl>
+                    );
+                } else {
+                    return (
+                        <dl className="govuk-summary-list" key={element.name}>
+                            <div className="govuk-summary-list__row" key={element.name}>
+                                <dt className="govuk-summary-list__key">{element.name}</dt>
 
-                            <dd className="govuk-summary-list__value">
-                                {element.editLink !== undefined ? getEditableValue(element) : getReadValue(element)}
-                            </dd>
-                        </div>
-                    </dl>
-                );
+                                <dd className="govuk-summary-list__value">
+                                    {element.editLink !== undefined ? getEditableValue(element) : getReadValue(element)}
+                                </dd>
+                            </div>
+                        </dl>
+                    );
+                }
             })}
 
-            {popupOpen && (
+            {editNamePopupOpen && (
                 <ProductNamePopup
-                    cancelActionHandler={cancelActionHandler}
+                    cancelActionHandler={editNameCancelActionHandler}
                     defaultValue={productName}
                     productId={productId}
                     serviceId={serviceId}
                     csrfToken={csrfToken}
                 />
+            )}
+
+            {generateReturnPopupOpen && lineId && (
+                <GenerateReturnPopup cancelActionHandler={generateReturnCancelActionHandler} />
             )}
         </TwoThirdsLayout>
     );
@@ -140,6 +209,7 @@ const createProductDetails = async (
     servicesRequiringAttention: string[] | undefined,
     serviceId: string | string[] | undefined,
     ctx: NextPageContextWithSession,
+    fareTriangleModified: string | undefined,
 ): Promise<{
     productDetailsElements: ProductDetailsElement[];
     productName: string;
@@ -149,13 +219,11 @@ const createProductDetails = async (
 }> => {
     const productDetailsElements: ProductDetailsElement[] = [];
 
-    if ('type' in ticket) {
-        productDetailsElements.push({
-            name: 'Fare type',
-            id: 'fare-type',
-            content: [`${sentenceCaseString(ticket.type)}${ticket.carnet ? ' (carnet)' : ''}`],
-        });
-    }
+    productDetailsElements.push({
+        name: 'Fare type',
+        id: 'fare-type',
+        content: [`${sentenceCaseString(ticket.type)}${ticket.carnet ? ' (carnet)' : ''}`],
+    });
 
     if ('selectedServices' in ticket) {
         productDetailsElements.push({
@@ -169,6 +237,7 @@ const createProductDetails = async (
                     )
                 ).join(', '),
             ],
+            editLink: '/serviceList',
         });
     }
 
@@ -235,7 +304,11 @@ const createProductDetails = async (
     if ('lineId' in ticket) {
         productDetailsElements.push({
             name: 'Fare triangle',
-            content: ['You created a fare triangle'],
+            content: [
+                fareTriangleModified
+                    ? `Updated: ${convertDateFormat(fareTriangleModified)}`
+                    : 'You created a fare triangle',
+            ],
             editLink: '/csvUpload',
         });
     }
@@ -363,12 +436,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const serviceId = ctx.query?.serviceId;
     const productId = ctx.query?.productId;
     const copiedProduct = ctx.query?.copied === 'true';
+    const cannotGenerateReturn = ctx.query?.generateReturn === 'false';
 
     if (typeof productId !== 'string') {
         throw new Error(`Expected string type for productID, received: ${productId}`);
     }
 
-    const { matchingJsonLink, servicesRequiringAttention } = await getProductById(noc, productId);
+    const { matchingJsonLink, servicesRequiringAttention, fareTriangleModified } = await getProductById(noc, productId);
 
     const ticket = await getProductsMatchingJson(matchingJsonLink);
 
@@ -382,9 +456,19 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         matchingJsonLink,
     });
 
-    const productDetails = await createProductDetails(ticket, noc, servicesRequiringAttention, serviceId, ctx);
+    const productDetails = await createProductDetails(
+        ticket,
+        noc,
+        servicesRequiringAttention,
+        serviceId,
+        ctx,
+        fareTriangleModified,
+    );
 
     const backHref = serviceId ? `/products/pointToPointProducts?serviceId=${serviceId}` : '/products/otherProducts';
+
+    const lineId =
+        typeof serviceId === 'string' ? (await getServiceByIdAndDataSource(noc, Number(serviceId), 'bods')).lineId : '';
 
     return {
         props: {
@@ -396,8 +480,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             requiresAttention: productDetails.requiresAttention,
             productId,
             serviceId: typeof serviceId === 'string' ? serviceId : '',
+            lineId,
             copiedProduct,
+            passengerTypeId: ticket.passengerType.id,
+            isSingle: ticket.type === 'single',
+            cannotGenerateReturn,
             csrfToken,
+            fareTriangleModified,
         },
     };
 };
