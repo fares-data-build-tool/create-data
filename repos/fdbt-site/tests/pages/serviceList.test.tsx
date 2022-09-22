@@ -89,7 +89,7 @@ describe('pages', () => {
             (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => mockServices);
             (getAllServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
         });
-/*
+        /*
         it('should render correctly with tnds data source', () => {
             const tree = shallow(
                 <ServiceList
