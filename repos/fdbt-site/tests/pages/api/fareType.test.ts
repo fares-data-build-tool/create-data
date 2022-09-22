@@ -164,7 +164,7 @@ describe('fareType', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, TXC_SOURCE_ATTRIBUTE, {
             source: 'bods',
             hasBods: true,
-            hasTnds: true,
+            hasTnds: false,
         });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectPassengerType',
