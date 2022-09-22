@@ -44,24 +44,25 @@ describe('pages', () => {
         beforeEach(() => {
             (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => mockServices);
         });
-
-        // it('should render correctly when data source is tnds', () => {
-        //     const tree = shallow(
-        //         <Service
-        //             operator="Connexions Buses"
-        //             passengerType="Adult"
-        //             services={mockServices}
-        //             error={[]}
-        //             dataSourceAttribute={{
-        //                 source: 'tnds',
-        //                 hasTnds: true,
-        //                 hasBods: false,
-        //             }}
-        //             csrfToken=""
-        //         />,
-        //     );
-        //     expect(tree).toMatchSnapshot();
-        // });
+        /*
+         it('should render correctly when data source is tnds', () => {
+             const tree = shallow(
+                 <Service
+                     operator="Connexions Buses"
+                     passengerType="Adult"
+                     services={mockServices}
+                     error={[]}
+                     dataSourceAttribute={{
+                         source: 'tnds',
+                         hasTnds: true,
+                         hasBods: false,
+                     }}
+                     csrfToken=""
+                 />,
+             );
+             expect(tree).toMatchSnapshot();
+         });
+         */
 
         it('should render correctly when data source is bods', () => {
             const tree = shallow(
