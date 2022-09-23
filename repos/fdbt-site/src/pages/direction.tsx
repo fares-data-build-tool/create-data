@@ -119,7 +119,7 @@ export const getServerSideProps = async (
     const fareTypeAttribute = getRequiredSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const isReturn = 'fareType' in fareTypeAttribute && ['period', 'return'].includes(fareTypeAttribute.fareType);
     if (isReturn) {
-        updateSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE, { direction, inboundDirection: inboundDirection ? inboundDirection : direction });
+        updateSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE, { direction, inboundDirection });
         return { redirect: { destination: '/inputMethod', permanent: false } };
     }
 

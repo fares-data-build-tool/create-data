@@ -9,7 +9,7 @@ beforeEach(() => {
     jest.spyOn(auroradb, 'getServiceByIdAndDataSource').mockResolvedValue(mockRawService);
 });
 
-describe('service', () => {
+describe('returnService', () => {
     it('should return 302 redirect to /returnService when there is no body in the request', async () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({

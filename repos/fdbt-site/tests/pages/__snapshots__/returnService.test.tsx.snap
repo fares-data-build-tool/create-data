@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages service should render correctly when data source is bods 1`] = `
+exports[`pages returnService should render correctly when data source is bods 1`] = `
 <TwoThirdsLayout
   description="Service selection page of the Create Fares Data Service"
   errors={Array []}

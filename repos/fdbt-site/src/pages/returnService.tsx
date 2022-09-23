@@ -14,7 +14,7 @@ import { getServiceByIdAndDataSource, getServicesByNocCodeAndDataSource } from '
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { isPassengerType, isBasicServiceAttributeWithErrors } from '../interfaces/typeGuards';
+import { isPassengerType, isWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 import { redirectTo } from '../utils/apiUtils';
 
@@ -110,9 +110,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const selectedServiceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
 
     const error: ErrorInfo[] =
-        returnServiceAttribute && isBasicServiceAttributeWithErrors(returnServiceAttribute)
-            ? returnServiceAttribute.errors
-            : [];
+        returnServiceAttribute && isWithErrors(returnServiceAttribute) ? returnServiceAttribute.errors : [];
 
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);

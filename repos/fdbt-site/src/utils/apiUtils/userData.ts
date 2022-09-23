@@ -388,11 +388,6 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
 
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
 
-    let returnService = undefined;
-    if (returnServiceAttribute && !('errors' in returnServiceAttribute)) {
-        returnService = returnServiceAttribute;
-    }
-
     return {
         ...baseTicketAttributes,
         ...service,
@@ -413,13 +408,14 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
-        ...(returnService && {
-            additionalService: {
-                lineName: returnService.lineName,
-                lineId: returnService.lineId,
-                serviceDescription: returnService.serviceDescription,
-            },
-        }),
+        ...(returnServiceAttribute &&
+            !isWithErrors(returnServiceAttribute) && {
+                additionalService: {
+                    lineName: returnServiceAttribute.lineName,
+                    lineId: returnServiceAttribute.lineId,
+                    serviceDescription: returnServiceAttribute.serviceDescription,
+                },
+            }),
     };
 };
 

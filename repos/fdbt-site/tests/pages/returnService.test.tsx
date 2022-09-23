@@ -42,7 +42,7 @@ const mockServices: ServiceType[] = [
 ];
 
 describe('pages', () => {
-    describe('service', () => {
+    describe('returnService', () => {
         beforeEach(() => {
             (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => mockServices);
         });
