@@ -20,17 +20,18 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const service = await getServiceByIdAndDataSource(getAndValidateNoc(req, res), serviceId, dataSource);
 
-        const returnService:BasicService =  {
+        const returnService: BasicService = {
             lineName: service.lineName,
             lineId: service.lineId,
             serviceDescription: service.serviceDescription,
             nocCode: '',
-            operatorShortName: ''
+            operatorShortName: '',
         };
 
         updateSessionAttribute(req, RETURN_SERVICE_ATTRIBUTE, returnService);
 
         redirectTo(res, '/direction');
+        return;
     } catch (error) {
         const message = 'There was a problem selecting the service:';
         redirectToError(res, message, 'api.service', error);

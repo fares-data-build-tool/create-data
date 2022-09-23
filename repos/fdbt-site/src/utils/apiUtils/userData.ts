@@ -415,7 +415,9 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         ...{ operatorShortName: undefined },
         ...(returnService && {
             additionalService: {
-                returnService,
+                lineName: returnService.lineName,
+                lineId: returnService.lineId,
+                serviceDescription: returnService.serviceDescription,
             },
         }),
     };
