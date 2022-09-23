@@ -65,7 +65,6 @@ describe('pages', () => {
             );
             expect(tree).toMatchSnapshot();
         });
-        
 
         it('should render correctly when data source is bods', () => {
             const tree = shallow(
