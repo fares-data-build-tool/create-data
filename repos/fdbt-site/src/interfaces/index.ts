@@ -348,6 +348,10 @@ export interface BasicService {
     serviceDescription: string;
 }
 
+export interface BasicServiceWithErrors {
+    errors: ErrorInfo[];
+}
+
 export interface SalesOfferPackageInfo {
     purchaseLocations: string[];
     paymentMethods: string[];
