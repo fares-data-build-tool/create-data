@@ -17,7 +17,6 @@ import CsrfForm from '../components/CsrfForm';
 import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 import { redirectTo } from '../utils/apiUtils';
-import SwitchDataSource from '../components/SwitchDataSource';
 
 const title = 'Return Service - Create Fares Data Service';
 const description = 'Service selection page of the Create Fares Data Service';
@@ -94,12 +93,13 @@ const ReturnService = ({
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
-        <SwitchDataSource
+        {/* removed as TNDS is being disabled until further notice */}
+        {/* <SwitchDataSource
             dataSourceAttribute={dataSourceAttribute}
             pageUrl="/returnService"
             attributeVersion="baseOperator"
             csrfToken={csrfToken}
-        />
+        /> */}
     </TwoThirdsLayout>
 );
 

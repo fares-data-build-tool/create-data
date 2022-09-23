@@ -47,6 +47,8 @@ describe('pages', () => {
             (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => mockServices);
         });
 
+        /* removed as TNDS is being disabled until further notice */
+        /* 
         it('should render correctly when data source is tnds', () => {
             const tree = shallow(
                 <ReturnService
@@ -65,6 +67,7 @@ describe('pages', () => {
             );
             expect(tree).toMatchSnapshot();
         });
+        */
 
         it('should render correctly when data source is bods', () => {
             const tree = shallow(
@@ -75,7 +78,7 @@ describe('pages', () => {
                     error={[]}
                     dataSourceAttribute={{
                         source: 'bods',
-                        hasTnds: true,
+                        hasTnds: false,
                         hasBods: true,
                     }}
                     csrfToken=""
@@ -106,6 +109,8 @@ describe('pages', () => {
             expect(operatorWelcome.text()).toBe('Connexions Buses - Adult');
         });
 
+        /* removed as TNDS is being disabled until further notice */
+        /*
         it('shows a list of services for the operator in the select box with tnds data source', () => {
             const wrapper = shallow(
                 <ReturnService
@@ -128,6 +133,7 @@ describe('pages', () => {
             expect(operatorServices.first().text()).toBe('X1 - Start date 06/02/2020');
             expect(operatorServices.at(1).text()).toBe('Infinity Line - Start date 07/02/2020');
         });
+        */
 
         it('shows a list of services for the operator in the select box with bods data source', () => {
             const wrapper = shallow(
@@ -192,7 +198,7 @@ describe('pages', () => {
                     [TXC_SOURCE_ATTRIBUTE]: {
                         source: 'bods',
                         hasBods: true,
-                        hasTnds: true,
+                        hasTnds: false,
                     },
                 },
                 uuid: {},
