@@ -1,5 +1,7 @@
 import { FlatFareTicket, PeriodMultipleServicesTicket, Ticket, WithIds } from 'fdbt-types/matchingJsonTypes';
 import {
+    BasicService,
+    BasicServiceWithErrors,
     CarnetProductInfo,
     ErrorInfo,
     FareStagesAttribute,
@@ -76,6 +78,10 @@ export const isServiceAttributeWithErrors = (
 export const isService = (service: Service | ServiceWithErrors | undefined): service is Service => {
     return service !== undefined && (service as Service).service !== undefined;
 };
+
+export const isBasicServiceAttributeWithErrors = (
+    serviceAttribute: BasicService | BasicServiceWithErrors,
+): serviceAttribute is BasicServiceWithErrors => (serviceAttribute as BasicServiceWithErrors).errors !== undefined;
 
 export const isTicketRepresentationWithErrors = (
     ticketType: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors | undefined,
