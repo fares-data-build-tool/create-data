@@ -224,6 +224,13 @@ export interface ReturnTicket extends BasePointToPointTicket {
     inboundFareZones: FareZone[];
     outboundFareZones: FareZone[];
     returnPeriodValidity?: ReturnPeriodValidity;
+    additionalServiceReturn?: AdditionalServiceReturn;
+}
+
+export interface AdditionalServiceReturn {
+    lineName: string;
+    lineId: string;
+    serviceDescription: string;
 }
 
 export interface Product {

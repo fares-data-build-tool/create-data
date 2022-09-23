@@ -152,6 +152,11 @@ generate-flat-fare-geo-zone:
 
 generate-validate-flat-fare-geo-zone: generate-flat-fare-geo-zone validate-latest-file
 
+generate-return-with-extra-service:
+	./scripts/trigger_netex_convertor.sh returnWithExtraService
+
+generate-validate-return-with-extra-service: generate-return-with-extra-service validate-latest-file
+
 generate-scheme-multiple-services:
 	./scripts/trigger_netex_convertor.sh schemeOperatorMultiServices
 
