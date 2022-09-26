@@ -378,7 +378,7 @@ describe('pages', () => {
                     },
                     {
                         content: 'Single',
-                        href: 'schoolFareType',
+                        href: '',
                         name: 'School ticket fare type',
                     },
                 ]);

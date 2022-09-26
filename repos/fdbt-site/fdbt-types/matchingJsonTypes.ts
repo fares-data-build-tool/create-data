@@ -333,6 +333,7 @@ export enum ExpiryUnit {
     WEEK = 'week',
     MONTH = 'month',
     YEAR = 'year',
+    TERM = 'term',
 }
 
 export interface Stop {

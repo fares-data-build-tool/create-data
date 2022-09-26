@@ -154,7 +154,7 @@ export const buildFareConfirmationElements = (
             confirmationElements.push({
                 name: 'School ticket fare type',
                 content: sentenceCaseString(schoolFareType),
-                href: 'schoolFareType',
+                href: '',
             });
         }
     }
@@ -239,11 +239,15 @@ export const getServerSideProps = async (
         FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     ) as FullTimeRestrictionAttribute;
     const newTimeRestrictionCreated = (ctx.query?.createdTimeRestriction as string) || '';
+    console.log( "!!!!!!!!!!",isPassengerTypeAttributeWithErrors(passengerTypeAttribute));
+    console.log("!!!!!!!!!!",!isFareType(fareTypeAttribute) );
+    console.log("!!!!!!!!!!",!schoolFareTypeAttribute );
+    console.log("!!!!!!!!!!",fareTypeAttribute.fareType === 'schoolService' );
     if (
         !passengerTypeAttribute ||
         isPassengerTypeAttributeWithErrors(passengerTypeAttribute) ||
         !isFareType(fareTypeAttribute) ||
-        (fareTypeAttribute.fareType === 'schoolService' && !schoolFareTypeAttribute)
+        (fareTypeAttribute.fareType === 'schoolService' && !schoolFareTypeAttribute )
     ) {
         throw new Error('Could not extract the correct attributes for the user journey.');
     }

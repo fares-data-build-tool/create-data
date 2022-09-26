@@ -14,6 +14,7 @@ import CsrfForm from '../components/CsrfForm';
 import { isWithErrors, isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
+import fareType from './api/fareType';
 
 const title = 'Multiple Product - Create Fares Data Service';
 const description = 'Multiple Product entry page of the Create Fares Data Service';
@@ -25,6 +26,7 @@ interface MultipleProductProps {
     flatFare: boolean;
     carnet: boolean;
     numberOfProductsToRender: number;
+    school: boolean;
 }
 
 const MultipleProducts = ({
@@ -33,10 +35,12 @@ const MultipleProducts = ({
     csrfToken,
     flatFare,
     carnet,
+    school,
     numberOfProductsToRender,
 }: MultipleProductProps): ReactElement => {
     const [numberOfProducts, setNumberOfProducts] = useState(numberOfProductsToRender);
     const displayButton = (carnet || !flatFare) && typeof window !== 'undefined';
+    console.log('!!!!!!!',school);
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/multipleProducts" method="post" csrfToken={csrfToken}>
@@ -52,6 +56,7 @@ const MultipleProducts = ({
                             userInput={userInput}
                             flatFare={flatFare}
                             carnet={carnet}
+                            school={school}
                         />
                         {displayButton ? (
                             <div className="flex-container">
@@ -114,6 +119,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const flatFare =
         fareType === 'flatFare' || (fareType === 'schoolService' && schoolFareType?.schoolFareType === 'flatFare');
     const numberOfProductsToRender = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) || 1;
+    /*     console.log('fareType', fareType);
+    if (fareType === 'schoolService') {
+         school = true;
+    } */
 
     return {
         props: {
@@ -123,6 +132,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             flatFare,
             carnet,
             numberOfProductsToRender,
+            school: fareType === 'schoolService' ? true : false,
         },
     };
 };

@@ -149,6 +149,12 @@ exports[`ExpirySelector should render the selector for a non-carnet 1`] = `
       >
         Years
       </option>
+      <option
+        key="term"
+        value="term"
+      >
+        Terms
+      </option>
     </select>
   </FormElementWrapper>
 </div>

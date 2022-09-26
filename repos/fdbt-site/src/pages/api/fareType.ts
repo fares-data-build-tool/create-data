@@ -5,6 +5,8 @@ import { regenerateSession, updateSessionAttribute } from '../../utils/sessions'
 import { FARE_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getAllServicesByNocCode } from '../../data/auroradb';
+import { SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
+import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -48,6 +50,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 fareType,
             });
+            console.log('!!!!!!!!!!!!fareType', fareType);
+            if (fareType === 'schoolService') {
+                updateSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE, {
+                    schoolFareType: 'period',
+                });
+            }
 
             redirectTo(res, '/selectPassengerType');
         } else {

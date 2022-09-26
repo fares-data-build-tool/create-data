@@ -92,7 +92,7 @@ const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
         // },
         {
             value: 'schoolService',
-            label: 'School service',
+            label: 'Academic term/year ticket',
             hint: 'A ticket available to pupils in full-time education',
         },
     ];

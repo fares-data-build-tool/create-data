@@ -343,7 +343,7 @@ exports[`pages fareConfirmation should render correctly for school tickets 1`] =
           },
           Object {
             "content": "Single",
-            "href": "schoolFareType",
+            "href": "",
             "name": "School ticket fare type",
           },
         ]

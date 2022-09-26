@@ -9,6 +9,7 @@ interface ProductRowProps {
     userInput: MultiProduct[];
     flatFare: boolean;
     carnet: boolean;
+    school: boolean;
 }
 
 export const renderTable = (
@@ -17,6 +18,7 @@ export const renderTable = (
     userInput: MultiProduct[] = [],
     flatFare: boolean,
     carnet: boolean,
+    school: boolean,
 ): ReactElement => (
     <fieldset key={index} className="govuk-fieldset">
         <legend className="govuk-fieldset__legend govuk-visually-hidden">
@@ -140,6 +142,7 @@ export const renderTable = (
                                 unitId={`product-details-period-duration-unit-${index}`}
                                 carnet={false}
                                 errors={errors}
+                                school={school}
                                 hideFormGroupError
                             />
                         </>
@@ -240,10 +243,11 @@ export const renderRows = (
     userInput: MultiProduct[] = [],
     flatFare: boolean,
     carnet: boolean,
+    school: boolean,
 ): ReactElement[] => {
     const elements: ReactElement[] = [];
     for (let i = 0; i < numberOfRows; i += 1) {
-        elements.push(renderTable(i, errors, userInput, flatFare, carnet));
+        elements.push(renderTable(i, errors, userInput, flatFare, carnet, school));
     }
     return elements;
 };
@@ -254,8 +258,9 @@ const ProductRow = ({
     userInput = [],
     flatFare,
     carnet,
+    school,
 }: ProductRowProps): ReactElement => {
-    return <div>{renderRows(numberOfProductsToDisplay, errors, userInput, flatFare, carnet)}</div>;
+    return <div>{renderRows(numberOfProductsToDisplay, errors, userInput, flatFare, carnet, school)}</div>;
 };
 
 export default ProductRow;
