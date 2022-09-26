@@ -169,6 +169,7 @@ export const getMatchingProps = async (
     matchingAttribute: MatchingWithErrors | object | undefined,
 ): Promise<{ props: MatchingProps }> => {
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
+
     const directionAttribute = getRequiredSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE);
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
