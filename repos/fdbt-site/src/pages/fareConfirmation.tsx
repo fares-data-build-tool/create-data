@@ -146,7 +146,7 @@ export const buildFareConfirmationElements = (
             confirmationElements.push({
                 name: 'Only valid during term times',
                 content: termTime === 'true' ? 'Yes' : 'No',
-                href: 'termTime',
+                href: carnet === true ? 'termTime' : '',
             });
         }
 
@@ -154,7 +154,7 @@ export const buildFareConfirmationElements = (
             confirmationElements.push({
                 name: 'School ticket fare type',
                 content: sentenceCaseString(schoolFareType),
-                href: '',
+                href: carnet === true ? 'schoolFareType' : '',
             });
         }
     }
