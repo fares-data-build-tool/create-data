@@ -42,6 +42,11 @@ generate-multi-service:
 
 generate-validate-multi-service: generate-multi-service validate-latest-file
 
+generate-school-multi-service:
+	./scripts/trigger_netex_convertor.sh schoolPeriodMultiService
+
+generate-validate-shool-multi-service: generate-school-multi-service validate-latest-file
+
 generate-flat-fare:
 	./scripts/trigger_netex_convertor.sh flatFare
 

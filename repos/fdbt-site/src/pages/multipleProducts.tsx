@@ -25,6 +25,7 @@ interface MultipleProductProps {
     flatFare: boolean;
     carnet: boolean;
     numberOfProductsToRender: number;
+    school: boolean;
 }
 
 const MultipleProducts = ({
@@ -33,6 +34,7 @@ const MultipleProducts = ({
     csrfToken,
     flatFare,
     carnet,
+    school,
     numberOfProductsToRender,
 }: MultipleProductProps): ReactElement => {
     const [numberOfProducts, setNumberOfProducts] = useState(numberOfProductsToRender);
@@ -52,6 +54,7 @@ const MultipleProducts = ({
                             userInput={userInput}
                             flatFare={flatFare}
                             carnet={carnet}
+                            school={school}
                         />
                         {displayButton ? (
                             <div className="flex-container">
@@ -123,6 +126,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             flatFare,
             carnet,
             numberOfProductsToRender,
+            school: fareType === 'schoolService' ? true : false,
         },
     };
 };

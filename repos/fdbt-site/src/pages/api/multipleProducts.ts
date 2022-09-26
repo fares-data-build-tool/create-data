@@ -20,7 +20,7 @@ import {
 } from '../../utils/apiUtils/validator';
 
 export const isValidInputDuration = (durationInput: string, carnet: boolean): boolean => {
-    const allowedUnits = ['day', 'week', 'month', 'year', 'hour'];
+    const allowedUnits = ['day', 'week', 'month', 'year', 'hour', 'term'];
     if (carnet) {
         allowedUnits.push('no expiry');
     }
