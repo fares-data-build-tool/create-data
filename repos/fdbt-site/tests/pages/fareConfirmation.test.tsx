@@ -373,7 +373,7 @@ describe('pages', () => {
                     },
                     {
                         content: 'Yes',
-                        href: 'termTime',
+                        href: '',
                         name: 'Only valid during term times',
                     },
                     {
