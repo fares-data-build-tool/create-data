@@ -46,7 +46,7 @@ const ReturnService = ({
             <>
                 <label htmlFor="service">
                     <h1 className="govuk-heading-l" id="service-page-heading">
-                        Select a service
+                        Select another service for return leg
                     </h1>
                 </label>
                 <span className="govuk-hint" id="service-operator-passenger-type-hint">
