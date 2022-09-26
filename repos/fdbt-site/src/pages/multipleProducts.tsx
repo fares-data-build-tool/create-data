@@ -40,7 +40,6 @@ const MultipleProducts = ({
 }: MultipleProductProps): ReactElement => {
     const [numberOfProducts, setNumberOfProducts] = useState(numberOfProductsToRender);
     const displayButton = (carnet || !flatFare) && typeof window !== 'undefined';
-    console.log('!!!!!!!',school);
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/multipleProducts" method="post" csrfToken={csrfToken}>
@@ -119,10 +118,6 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const flatFare =
         fareType === 'flatFare' || (fareType === 'schoolService' && schoolFareType?.schoolFareType === 'flatFare');
     const numberOfProductsToRender = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) || 1;
-    /*     console.log('fareType', fareType);
-    if (fareType === 'schoolService') {
-         school = true;
-    } */
 
     return {
         props: {

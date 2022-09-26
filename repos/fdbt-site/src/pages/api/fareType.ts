@@ -49,7 +49,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 fareType,
             });
-            console.log('!!!!!!!!!!!!fareType', fareType);
             if (fareType === 'schoolService') {
                 updateSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE, {
                     schoolFareType: 'period',
