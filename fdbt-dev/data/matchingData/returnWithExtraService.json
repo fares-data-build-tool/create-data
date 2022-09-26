@@ -1,12 +1,16 @@
 {
   "lineName": "19",
-  "lineId": "PK1146649_RJ1_Outbound",
   "nocCode": "BLAC",
   "operatorName": "Blackpool Transport",
   "serviceDescription": "STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)",
   "type": "return",
   "email": "test@example.com",
   "uuid": "BLACc1363964",
+  "additionalServiceReturn": {
+    "lineName": "20",
+    "lineId": "examplelineid_RJ1_Outbound",
+    "serviceDescription": "ANOTHER - DESCRIPTION via Victoria Hospital (Main Entrance)"
+  },
   "timeRestriction": [
     {
       "day": "monday",
@@ -55,79 +59,42 @@
         {
           "name": "Onboard (cash)",
           "description": "Purchasable on board the bus, with cash, as a paper ticket.",
-          "purchaseLocations": [
-            "onBoard"
-          ],
-          "paymentMethods": [
-            "cash"
-          ],
-          "ticketFormats": [
-            "paperTicket"
-          ]
+          "purchaseLocations": ["onBoard"],
+          "paymentMethods": ["cash"],
+          "ticketFormats": ["paperTicket"]
         },
         {
           "name": "Onboard (contactless)",
           "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
-          "purchaseLocations": [
-            "onBoard"
-          ],
-          "paymentMethods": [
-            "contactlessPaymentCard"
-          ],
-          "ticketFormats": [
-            "paperTicket"
-          ]
+          "purchaseLocations": ["onBoard"],
+          "paymentMethods": ["contactlessPaymentCard"],
+          "ticketFormats": ["paperTicket"]
         },
         {
           "name": "Online (smart card)",
           "description": "Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.",
-          "purchaseLocations": [
-            "online"
-          ],
-          "paymentMethods": [
-            "directDebit",
-            "creditCard",
-            "debitCard"
-          ],
-          "ticketFormats": [
-            "smartCard"
-          ]
+          "purchaseLocations": ["online"],
+          "paymentMethods": ["directDebit", "creditCard", "debitCard"],
+          "ticketFormats": ["smartCard"]
         },
         {
           "name": "Mobile App",
           "description": "Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.",
-          "purchaseLocations": [
-            "mobileDevice"
-          ],
+          "purchaseLocations": ["mobileDevice"],
           "paymentMethods": [
             "debitCard",
             "creditCard",
             "mobilePhone",
             "directDebit"
           ],
-          "ticketFormats": [
-            "mobileApp"
-          ]
+          "ticketFormats": ["mobileApp"]
         },
         {
           "name": "All Encompassing",
           "description": "All currently available options selected",
-          "purchaseLocations": [
-            "onBoard",
-            "online",
-            "mobileDevice"
-          ],
-          "paymentMethods": [
-            "cash",
-            "debitCard",
-            "creditCard",
-            "mobilePhone"
-          ],
-          "ticketFormats": [
-            "paperTicket",
-            "mobileApp",
-            "smartCard"
-          ]
+          "purchaseLocations": ["onBoard", "online", "mobileDevice"],
+          "paymentMethods": ["cash", "debitCard", "creditCard", "mobilePhone"],
+          "ticketFormats": ["paperTicket", "mobileApp", "smartCard"]
         }
       ],
       "productName": "Another product"
@@ -152,11 +119,7 @@
       "prices": [
         {
           "price": "1.10",
-          "fareZones": [
-            "The Stag pub",
-            "Frederick Drive",
-            "Red Lane"
-          ]
+          "fareZones": ["The Stag pub", "Frederick Drive", "Red Lane"]
         },
         {
           "price": "1.70",
@@ -187,10 +150,7 @@
       "prices": [
         {
           "price": "1.10",
-          "fareZones": [
-            "Frederick Drive",
-            "Red Lane"
-          ]
+          "fareZones": ["Frederick Drive", "Red Lane"]
         },
         {
           "price": "1.70",
@@ -221,18 +181,11 @@
       "prices": [
         {
           "price": "1.10",
-          "fareZones": [
-            "Red Lane",
-            "Rail Station",
-            "Redtree Street"
-          ]
+          "fareZones": ["Red Lane", "Rail Station", "Redtree Street"]
         },
         {
           "price": "1.70",
-          "fareZones": [
-            "Park Lane",
-            "Daws Bank/Plough Ave"
-          ]
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
         }
       ]
     },
@@ -254,17 +207,11 @@
       "prices": [
         {
           "price": "1.10",
-          "fareZones": [
-            "Rail Station",
-            "Redtree Street"
-          ]
+          "fareZones": ["Rail Station", "Redtree Street"]
         },
         {
           "price": "1.70",
-          "fareZones": [
-            "Park Lane",
-            "Daws Bank/Plough Ave"
-          ]
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
         }
       ]
     },
@@ -286,11 +233,7 @@
       "prices": [
         {
           "price": "1.00",
-          "fareZones": [
-            "Redtree Street",
-            "Park Lane",
-            "Daws Bank/Plough Ave"
-          ]
+          "fareZones": ["Redtree Street", "Park Lane", "Daws Bank/Plough Ave"]
         }
       ]
     },
@@ -312,10 +255,7 @@
       "prices": [
         {
           "price": "1.00",
-          "fareZones": [
-            "Park Lane",
-            "Daws Bank/Plough Ave"
-          ]
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
         }
       ]
     },
@@ -337,9 +277,7 @@
       "prices": [
         {
           "price": "1.00",
-          "fareZones": [
-            "Daws Bank/Plough Ave"
-          ]
+          "fareZones": ["Daws Bank/Plough Ave"]
         }
       ]
     },
@@ -380,11 +318,7 @@
       "prices": [
         {
           "price": "1.10",
-          "fareZones": [
-            "The Stag pub",
-            "Frederick Drive",
-            "Red Lane"
-          ]
+          "fareZones": ["The Stag pub", "Frederick Drive", "Red Lane"]
         },
         {
           "price": "1.70",
@@ -426,10 +360,7 @@
       "prices": [
         {
           "price": "1.10",
-          "fareZones": [
-            "Frederick Drive",
-            "Red Lane"
-          ]
+          "fareZones": ["Frederick Drive", "Red Lane"]
         },
         {
           "price": "1.70",
@@ -460,18 +391,11 @@
       "prices": [
         {
           "price": "1.10",
-          "fareZones": [
-            "Red Lane",
-            "Rail Station",
-            "Redtree Street"
-          ]
+          "fareZones": ["Red Lane", "Rail Station", "Redtree Street"]
         },
         {
           "price": "1.70",
-          "fareZones": [
-            "Park Lane",
-            "Daws Bank/Plough Ave"
-          ]
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
         }
       ]
     },
@@ -493,17 +417,11 @@
       "prices": [
         {
           "price": "1.10",
-          "fareZones": [
-            "Rail Station",
-            "Redtree Street"
-          ]
+          "fareZones": ["Rail Station", "Redtree Street"]
         },
         {
           "price": "1.70",
-          "fareZones": [
-            "Park Lane",
-            "Daws Bank/Plough Ave"
-          ]
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
         }
       ]
     },
@@ -536,11 +454,7 @@
       "prices": [
         {
           "price": "1.00",
-          "fareZones": [
-            "Redtree Street",
-            "Park Lane",
-            "Daws Bank/Plough Ave"
-          ]
+          "fareZones": ["Redtree Street", "Park Lane", "Daws Bank/Plough Ave"]
         }
       ]
     },
@@ -562,10 +476,7 @@
       "prices": [
         {
           "price": "1.00",
-          "fareZones": [
-            "Park Lane",
-            "Daws Bank/Plough Ave"
-          ]
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
         }
       ]
     },
@@ -587,9 +498,7 @@
       "prices": [
         {
           "price": "1.00",
-          "fareZones": [
-            "Daws Bank/Plough Ave"
-          ]
+          "fareZones": ["Daws Bank/Plough Ave"]
         }
       ]
     },

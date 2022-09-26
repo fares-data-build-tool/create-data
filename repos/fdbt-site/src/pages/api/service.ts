@@ -31,15 +31,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const inboundDirection = directions.find((it) => ['inbound', 'antiClockwise'].includes(it));
 
         if (isReturn && (!direction || !inboundDirection)) {
-            const errors: ErrorInfo[] = [
-                {
-                    id: 'service',
-                    errorMessage: `As your service only operates in a single direction, you cannot create a return product for this service`,
-                    userInput: req.body.serviceId,
-                },
-            ];
-            updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors });
-            redirectTo(res, '/service');
+            updateSessionAttribute(req, SERVICE_ATTRIBUTE, {
+                service: `${service.lineName}#${service.startDate}`,
+                id: serviceId,
+            });
+            redirectTo(res, '/returnService');
             return;
         }
 
@@ -49,6 +45,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         });
 
         redirectTo(res, '/direction');
+        return;
     } catch (error) {
         const message = 'There was a problem selecting the service:';
         redirectToError(res, message, 'api.service', error);
