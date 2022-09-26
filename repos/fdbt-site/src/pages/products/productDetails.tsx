@@ -353,10 +353,16 @@ const createProductDetails = async (
         });
     }
 
-    if ('returnPeriodValidity' in ticket && ticket.returnPeriodValidity) {
+    if (ticket.type === 'return') {
+        const content =
+            'returnPeriodValidity' in ticket && ticket.returnPeriodValidity
+                ? `${ticket.returnPeriodValidity.amount} ${ticket.returnPeriodValidity.typeOfDuration}(s)`
+                : 'N/A';
+
         productDetailsElements.push({
             name: 'Return ticket validity',
-            content: [`${ticket.returnPeriodValidity.amount} ${ticket.returnPeriodValidity.typeOfDuration}(s)`],
+            content: [content],
+            editLink: '/returnValidity',
         });
     }
 

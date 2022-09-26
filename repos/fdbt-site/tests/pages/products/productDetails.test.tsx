@@ -295,7 +295,7 @@ describe('myfares pages', () => {
                         { name: 'Fare triangle', content: ['You created a fare triangle'], editLink: '/csvUpload' },
                         { name: 'Quantity in bundle', content: ['10'] },
                         { name: 'Carnet expiry', content: ['No expiry'] },
-                        { name: 'Return ticket validity', content: ['3 month(s)'] },
+                        { name: 'Return ticket validity', content: ['3 month(s)'], editLink: '/returnValidity' },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'], editLink: '/selectPurchaseMethods' },
                         { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },

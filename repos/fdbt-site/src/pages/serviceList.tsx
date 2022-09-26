@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import SwitchDataSource from '../components/SwitchDataSource';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
@@ -37,7 +36,6 @@ interface ServiceListProps {
     dataSourceAttribute: TxcSourceAttribute;
     csrfToken: string;
     additional: boolean;
-    editMode: boolean;
 }
 
 const ServiceList = ({
@@ -48,19 +46,19 @@ const ServiceList = ({
     multiOperator,
     dataSourceAttribute,
     additional,
-    editMode,
 }: ServiceListProps): ReactElement => {
     const multiOperatorText = multiOperator ? 'of your ' : '';
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
-            {!editMode && (
+            {/* removed as TNDS is being disabled until further notice */}
+            {/* {!editMode && (
                 <SwitchDataSource
                     dataSourceAttribute={dataSourceAttribute}
                     pageUrl="/serviceList"
                     attributeVersion="baseOperator"
                     csrfToken={csrfToken}
                 />
-            )}
+            )} */}
             <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
@@ -161,19 +159,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     if (!dataSourceAttribute) {
         const services = await getAllServicesByNocCode(nocCode);
-        if (services.length === 0) {
+        const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
+
+        if (!hasBodsServices) {
             if (ctx.res) {
                 redirectTo(ctx.res, '/noServices');
             } else {
                 throw new Error(`No services found for NOC Code: ${nocCode}`);
             }
         }
-        const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
-        const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
+        // removed as TNDS is being disabled until further notice
+        // const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
         updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
-            source: hasBodsServices && !hasTndsServices ? 'bods' : 'tnds',
-            hasBods: hasBodsServices,
-            hasTnds: hasTndsServices,
+            source: 'bods',
+            hasBods: true,
+            hasTnds: false,
         });
         dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
     }
@@ -205,7 +205,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 dataSourceAttribute,
                 csrfToken,
                 additional: false,
-                editMode: true,
             },
         };
     }
@@ -215,7 +214,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const ticket = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
     const additional = !!ticket && 'name' in ticket && ticket.name === 'hybrid';
-    const editMode = false;
     return {
         props: {
             serviceList,
@@ -228,7 +226,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             dataSourceAttribute,
             csrfToken,
             additional,
-            editMode,
         },
     };
 };
