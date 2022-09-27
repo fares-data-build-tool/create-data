@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { RETURN_SERVICE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { updateSessionAttribute, getRequiredSessionAttribute } from '../../utils/sessions';
-import { BasicService, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { ReturnService, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getServiceByIdAndDataSource } from '../../data/auroradb';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -20,12 +20,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const service = await getServiceByIdAndDataSource(getAndValidateNoc(req, res), serviceId, dataSource);
 
-        const returnService: BasicService = {
+        const returnService: ReturnService = {
             lineName: service.lineName,
             lineId: service.lineId,
             serviceDescription: service.serviceDescription,
             nocCode: '',
             operatorShortName: '',
+            id: serviceId,
         };
 
         updateSessionAttribute(req, RETURN_SERVICE_ATTRIBUTE, returnService);

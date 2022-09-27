@@ -47,6 +47,7 @@ describe('returnService', () => {
             nocCode: '',
             operatorShortName: '',
             serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
+            id: 123,
         };
         await returnService(req, res);
         expect(updateAttributeSpy).toHaveBeenCalledWith(req, RETURN_SERVICE_ATTRIBUTE, expectedReturnService);

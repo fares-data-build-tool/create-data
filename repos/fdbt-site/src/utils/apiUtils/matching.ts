@@ -9,9 +9,10 @@ import {
     DIRECTION_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
+    RETURN_SERVICE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getAndValidateNoc, getCsrfToken } from '../index';
-import { isService } from '../../interfaces/typeGuards';
+import { isService, isWithErrors } from '../../interfaces/typeGuards';
 import logger from '../logger';
 import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { getUserFareStages } from '../../data/s3';
@@ -167,9 +168,11 @@ export const removeDuplicateAdjacentStops = (stops: string[]): string[] => {
 export const getMatchingProps = async (
     ctx: NextPageContextWithSession,
     matchingAttribute: MatchingWithErrors | object | undefined,
+    isOutbound?: boolean,
 ): Promise<{ props: MatchingProps }> => {
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
 
+    const returnServiceAttribute = getSessionAttribute(ctx.req, RETURN_SERVICE_ATTRIBUTE);
     const directionAttribute = getRequiredSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE);
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
@@ -180,13 +183,21 @@ export const getMatchingProps = async (
         throw new Error('Necessary attributes not found to show matching page');
     }
 
-    const lineName = serviceAttribute.service.split('#')[0];
+    let serviceId = serviceAttribute.id;
+    let lineName = serviceAttribute.service.split('#')[0];
+    let direction = directionAttribute.direction;
+    if (returnServiceAttribute && isOutbound && !isWithErrors(returnServiceAttribute)) {
+        lineName = returnServiceAttribute.lineName;
+        serviceId = returnServiceAttribute.id;
+        direction = 'outbound';
+    }
+
     const dataSource = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE).source;
-    const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, dataSource);
+    const service = await getServiceByIdAndDataSource(nocCode, serviceId, dataSource);
     const userFareStages = await getUserFareStages(operatorAttribute.uuid);
 
     // find journey patterns for direction (inbound or outbound)
-    const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === directionAttribute.direction);
+    const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === direction);
 
     // get an unordered list of stop points from journey patterns, then removing any duplicates on stopPointRef and sequence number
     const stops = journeyPatterns
