@@ -125,8 +125,8 @@ import {
     PremadeTimeRestriction,
     Direction,
     Errors,
-    BasicService,
-    BasicServiceWithErrors,
+    ReturnServiceWithErrors,
+    ReturnService,
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -171,7 +171,7 @@ export interface SessionAttributeTypes {
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
-    [RETURN_SERVICE_ATTRIBUTE]: BasicService | BasicServiceWithErrors;
+    [RETURN_SERVICE_ATTRIBUTE]: ReturnService | ReturnServiceWithErrors;
     [DIRECTION_ATTRIBUTE]: Direction | Errors;
     [TICKET_REPRESENTATION_ATTRIBUTE]: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
