@@ -362,6 +362,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Product_1@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Product_1@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
@@ -400,6 +401,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Product_2@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Product_2@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
@@ -438,6 +440,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Product_3@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Product_3@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
@@ -476,6 +479,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Product_4@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Product_4@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
@@ -514,6 +518,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Product_5@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Product_5@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>

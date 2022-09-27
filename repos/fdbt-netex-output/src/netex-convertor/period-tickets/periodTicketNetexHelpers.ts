@@ -777,6 +777,10 @@ export const getPeriodConditionsElement = (
         id: `op:Tariff@${product.productName}@conditions_of_travel`,
         version: '1.0',
         Name: { $t: 'Conditions of travel' },
+        TypeOfFareStructureElementRef: {
+            version: 'fxc:v1.0',
+            ref: 'fxc:travel_conditions',
+        },
         GenericParameterAssignment: {
             version: '1.0',
             order: '1',
