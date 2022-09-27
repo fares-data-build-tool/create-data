@@ -12,13 +12,13 @@ import {
 describe('The school faretype product journey', () => {
     it('completes successfully for school flat fare', () => {
         selectFareType('schoolService', false);
-        defineSchoolUserAndTimeRestrictions();
+   /*      defineSchoolUserAndTimeRestrictions();
         selectSchoolFareType('flatFare');
         completeFlatFarePages('School Flat Fare Test Product', false);
         completeSalesPages();
-        isFinished();
+        isFinished(); */
     });
-    it('completes successfully for school single manual upload', () => {
+   /*  it('completes successfully for school single manual upload', () => {
         selectFareType('schoolService', false);
         defineSchoolUserAndTimeRestrictions();
         selectSchoolFareType('single');
@@ -43,5 +43,5 @@ describe('The school faretype product journey', () => {
         completeSchoolPeriodMultiServicePages(numberOfProducts, multiProductNamePrefix);
         completeSalesPages(numberOfProducts, multiProductNamePrefix);
         isFinished();
-    });
+    }); */
 });
