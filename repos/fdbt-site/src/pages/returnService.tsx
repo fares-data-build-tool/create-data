@@ -149,7 +149,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 const outboundDirection = directions.find((it) => ['outbound', 'clockwise'].includes(it));
                 const inboundDirection = directions.find((it) => ['inbound', 'antiClockwise'].includes(it));
 
-                if (inboundDirection || outboundDirection) {
+                if (!inboundDirection || !outboundDirection) {
                     return service;
                 }
 
