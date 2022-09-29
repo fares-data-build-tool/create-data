@@ -28,6 +28,7 @@ exports[`pages multipleProduct should render correctly for 5 products 1`] = `
         errors={Array []}
         flatFare={true}
         numberOfProductsToDisplay={5}
+        school={true}
         userInput={Array []}
       />
       <div
@@ -89,6 +90,7 @@ exports[`pages multipleProduct should render correctly for a flat fare carnet 1`
         errors={Array []}
         flatFare={true}
         numberOfProductsToDisplay={1}
+        school={false}
         userInput={Array []}
       />
       <div
@@ -142,6 +144,7 @@ exports[`pages multipleProduct should render correctly for a flat fare non carne
         errors={Array []}
         flatFare={true}
         numberOfProductsToDisplay={1}
+        school={false}
         userInput={Array []}
       />
       <input
@@ -183,6 +186,7 @@ exports[`pages multipleProduct should render correctly for a non flat fare non c
         errors={Array []}
         flatFare={false}
         numberOfProductsToDisplay={1}
+        school={false}
         userInput={Array []}
       />
       <div
@@ -236,6 +240,7 @@ exports[`pages multipleProduct should render correctly for a period carnet 1`] =
         errors={Array []}
         flatFare={false}
         numberOfProductsToDisplay={1}
+        school={false}
         userInput={Array []}
       />
       <div
