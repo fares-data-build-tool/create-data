@@ -165,6 +165,7 @@
 							</OperatorRef>
 							<LineRef version="1.0" ref="" />
 							<TariffBasis>zoneToZone</TariffBasis>
+							<TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
 							<qualityStructureFactors></qualityStructureFactors>
 							<fareStructureElements></fareStructureElements>
 						</Tariff>

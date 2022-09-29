@@ -472,6 +472,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="4"/>
               <TariffBasis>zoneToZone</TariffBasis>
+              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <qualityStructureFactors>
                 <FareDemandFactor id="op@Tariff@Demand" version="1.0">
                   <validityConditions>

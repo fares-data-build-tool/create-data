@@ -1072,6 +1072,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="2"/>
               <TariffBasis>zoneToZone</TariffBasis>
+              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <timeIntervals>
                 <TimeInterval version="1.0" id="op:Tariff@Period_Point_to_Point@2-weeks">
                   <Name>2 weeks</Name>
