@@ -187,8 +187,8 @@
 							<Description></Description>
 							<GroupOfOperatorsRef version="1.0" ref=""/>
 							<OperatorRef version="1.0" ref=""></OperatorRef>
-                            <TariffBasis>zone</TariffBasis> 
-							<TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal" />
+                            <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal" />
+                            <TariffBasis>zone</TariffBasis>							
 							<!--- ====Fare Structure======= -->
 							<timeIntervals></timeIntervals>
 							<!-- ==FARE STRUCTURE ELEMENTS -->
