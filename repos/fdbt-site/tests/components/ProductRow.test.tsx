@@ -6,7 +6,7 @@ describe('product row', () => {
     it('renders the right amount of rows for a flatfare carnet', () => {
         const numberToRender = 2;
         const wrapper = shallow(
-            <ProductRow numberOfProductsToDisplay={numberToRender} errors={[]} userInput={[]} flatFare carnet />,
+            <ProductRow numberOfProductsToDisplay={numberToRender} errors={[]} userInput={[]} flatFare carnet school />,
         );
         expect(wrapper.find('.flex-container')).toHaveLength(numberToRender);
         expect(wrapper).toMatchSnapshot();
@@ -21,6 +21,7 @@ describe('product row', () => {
                 userInput={[]}
                 flatFare={false}
                 carnet
+                school
             />,
         );
         expect(wrapper.find('.flex-container')).toHaveLength(numberToRender);
@@ -36,6 +37,7 @@ describe('product row', () => {
                 userInput={[]}
                 flatFare={false}
                 carnet={false}
+                school={false}
             />,
         );
         expect(wrapper.find('.flex-container')).toHaveLength(numberToRender);
@@ -51,6 +53,7 @@ describe('product row', () => {
                 userInput={[]}
                 flatFare
                 carnet={false}
+                school={false}
             />,
         );
         expect(wrapper.find('.flex-container')).toHaveLength(numberToRender);

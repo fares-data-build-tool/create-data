@@ -4,7 +4,7 @@ Helper scripts for AWS can be found in the `fdbt-aws` directory.
 
 ## Requirements
 
-- AWS CLI
+- AWS CLI 
   - [cli-chap-install](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
 - Python 3.5 or greater
   - [Getting Started](../guides/getting-started.md#install-upgrade-python)
