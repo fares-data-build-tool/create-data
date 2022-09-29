@@ -144,6 +144,7 @@
               </validityConditions>
               <Name>Blackpool Transport - BLAC_products - Fares for Flat Fare ticket</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <TariffBasis>zone</TariffBasis>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="mb:Tariff@multitrip@units">
