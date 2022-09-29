@@ -177,8 +177,8 @@
               </validityConditions>
               <Name>Blackpool Transport - BLAC_products - Fares for Multi Operator ticket</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
-              <TariffBasis>zone</TariffBasis>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
+              <TariffBasis>zone</TariffBasis>
               <timeIntervals>
                 <TimeInterval version="1.0" id="op:Tariff@Test_Product_1@1-year">
                   <Name>1 year</Name>

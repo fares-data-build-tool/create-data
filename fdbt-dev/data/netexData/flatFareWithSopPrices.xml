@@ -141,8 +141,8 @@
               </validityConditions>
               <Name>Test Operator - WBTR_products - Fares for Flat Fare ticket</Name>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
-              <TariffBasis>zone</TariffBasis>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
+              <TariffBasis>zone</TariffBasis>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="op:Tariff@test@access_lines">
                   <Name>Available lines and/or zones</Name>

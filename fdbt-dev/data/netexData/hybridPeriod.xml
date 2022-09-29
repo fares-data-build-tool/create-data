@@ -204,8 +204,8 @@
               </validityConditions>
               <Name>Test Operator - WBTR_products - Fares for Period ticket</Name>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
-              <TariffBasis>zone</TariffBasis>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
+              <TariffBasis>zone</TariffBasis>
               <timeIntervals>
                 <TimeInterval version="1.0" id="op:Tariff@Best_product_one@3-months">
                   <Name>3 months</Name>

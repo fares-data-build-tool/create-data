@@ -165,8 +165,8 @@
               </validityConditions>
               <Name>Test Scheme Op - Test Scheme Op-SE_products - Fares for Period ticket</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
-              <TariffBasis>zone</TariffBasis>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
+              <TariffBasis>zone</TariffBasis>
               <timeIntervals>
                 <TimeInterval version="1.0" id="op:Tariff@Week_Rider@1-week">
                   <Name>1 week</Name>
