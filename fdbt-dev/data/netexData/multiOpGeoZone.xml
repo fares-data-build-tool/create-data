@@ -258,6 +258,7 @@
               </validityConditions>
               <Name>Blackpool Transport - BLAC_products - Fares for Multi Operator ticket</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
+              <TariffBasis>zone</TariffBasis>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <timeIntervals>
                 <TimeInterval version="1.0" id="op:Tariff@Product_1@1-day">
