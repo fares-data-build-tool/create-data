@@ -516,7 +516,7 @@ export const getLinesElement = (
                     version: '1.0',
                     ref: lineName,
                 },
-            },            
+            },
         },
     };
 };
