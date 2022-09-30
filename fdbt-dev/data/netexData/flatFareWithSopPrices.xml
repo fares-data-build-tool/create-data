@@ -142,6 +142,7 @@
               <Name>Test Operator - WBTR_products - Fares for Flat Fare ticket</Name>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
+              <TariffBasis>zone</TariffBasis>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="op:Tariff@test@access_lines">
                   <Name>Available lines and/or zones</Name>
@@ -158,6 +159,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@test@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@test@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>

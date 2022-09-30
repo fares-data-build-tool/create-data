@@ -848,6 +848,7 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
             hintId="product-period-duration-hint"
             quantityId="product-details-period-duration-quantity-0"
             quantityName="multipleProductDurationInput0"
+            school={true}
             unitId="product-details-period-duration-unit-0"
             unitName="multipleProductDurationUnitsInput0"
           />
@@ -1108,6 +1109,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             hintId="product-period-duration-hint"
             quantityId="product-details-period-duration-quantity-0"
             quantityName="multipleProductDurationInput0"
+            school={false}
             unitId="product-details-period-duration-unit-0"
             unitName="multipleProductDurationUnitsInput0"
           />
@@ -1223,6 +1225,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             hintId="product-period-duration-hint"
             quantityId="product-details-period-duration-quantity-1"
             quantityName="multipleProductDurationInput1"
+            school={false}
             unitId="product-details-period-duration-unit-1"
             unitName="multipleProductDurationUnitsInput1"
           />
@@ -1338,6 +1341,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             hintId="product-period-duration-hint"
             quantityId="product-details-period-duration-quantity-2"
             quantityName="multipleProductDurationInput2"
+            school={false}
             unitId="product-details-period-duration-unit-2"
             unitName="multipleProductDurationUnitsInput2"
           />
@@ -1453,6 +1457,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             hintId="product-period-duration-hint"
             quantityId="product-details-period-duration-quantity-3"
             quantityName="multipleProductDurationInput3"
+            school={false}
             unitId="product-details-period-duration-unit-3"
             unitName="multipleProductDurationUnitsInput3"
           />

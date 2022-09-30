@@ -145,6 +145,7 @@
               <Name>Blackpool Transport - BLAC_products - Fares for Flat Fare ticket</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
+              <TariffBasis>zone</TariffBasis>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="mb:Tariff@multitrip@units">
                   <Name>Carnet denominations</Name>
@@ -182,6 +183,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Weekly_Rider@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Weekly_Rider@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>

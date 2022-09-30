@@ -5,6 +5,7 @@ import { regenerateSession, updateSessionAttribute } from '../../utils/sessions'
 import { FARE_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getAllServicesByNocCode } from '../../data/auroradb';
+import { SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -15,17 +16,18 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const nocCode = getAndValidateNoc(req, res);
             const services = await getAllServicesByNocCode(nocCode);
             const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
-            const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
+            // removed as TNDS is being disabled until further notice
+            // const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
 
-            if (!schemeOp && services.length === 0) {
+            if (!schemeOp && !hasBodsServices) {
                 redirectTo(res, '/noServices');
                 return;
             }
 
             updateSessionAttribute(req, TXC_SOURCE_ATTRIBUTE, {
-                source: hasBodsServices ? 'bods' : 'tnds',
-                hasBods: hasBodsServices,
-                hasTnds: hasTndsServices,
+                source: 'bods',
+                hasBods: true,
+                hasTnds: false,
             });
 
             if (
@@ -48,6 +50,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 fareType,
             });
+            if (fareType === 'schoolService') {
+                updateSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE, {
+                    schoolFareType: 'period',
+                });
+            }
 
             redirectTo(res, '/selectPassengerType');
         } else {

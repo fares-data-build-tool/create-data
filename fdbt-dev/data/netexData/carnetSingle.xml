@@ -471,6 +471,7 @@
               <Name>Blackpool Transport - Line_4 - Fares for Single ticket</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="4"/>
+              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <TariffBasis>zoneToZone</TariffBasis>
               <qualityStructureFactors>
                 <FareDemandFactor id="op@Tariff@Demand" version="1.0">
@@ -553,6 +554,7 @@
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="Tariff@single@lines">
                   <Name>O/D pairs for 4</Name>
+                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:access"/>
                   <distanceMatrixElements>
                     <DistanceMatrixElement version="1.0" id="Test_Stage_1+Test_Stage_2">
                       <priceGroups>
@@ -1895,6 +1897,7 @@
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="Tariff@single@eligibility">
                   <Name>eligible user types</Name>
+                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:eligibility"/>
                   <GenericParameterAssignment version="1.0" order="1" id="Tariff@single@eligibility">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
@@ -1909,6 +1912,7 @@
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="Tariff@single@conditions_of_travel">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="Tariff@single@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>

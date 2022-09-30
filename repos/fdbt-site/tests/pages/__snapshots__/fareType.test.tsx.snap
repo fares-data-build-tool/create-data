@@ -73,7 +73,7 @@ exports[`pages fareType should render correctly 1`] = `
                 },
                 Object {
                   "hint": "A ticket available to pupils in full-time education",
-                  "label": "School service",
+                  "label": "Academic term/year ticket",
                   "value": "schoolService",
                 },
               ]
@@ -268,7 +268,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
                 },
                 Object {
                   "hint": "A ticket available to pupils in full-time education",
-                  "label": "School service",
+                  "label": "Academic term/year ticket",
                   "value": "schoolService",
                 },
               ]

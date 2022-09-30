@@ -84,7 +84,7 @@ const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
             label: 'Carnet ticket',
             hint: 'A bundle of pre-paid tickets',
         },
-        // Disabling until a plan for mutliop tickets interacting with MyFares is devised
+        // Disabling until a plan for multiop tickets interacting with MyFares is devised
         // {
         //     value: 'multiOperator',
         //     label: 'Multi-operator',
@@ -92,7 +92,7 @@ const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
         // },
         {
             value: 'schoolService',
-            label: 'School service',
+            label: 'Academic term/year ticket',
             hint: 'A ticket available to pupils in full-time education',
         },
     ];

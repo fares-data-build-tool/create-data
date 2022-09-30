@@ -264,6 +264,7 @@
               <Name>Warrington's Own Buses - PK1146649_RJ1_Outbound - Fares for Return ticket</Name>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="709"/>
+              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <TariffBasis>zoneToZone</TariffBasis>
               <qualityStructureFactors>
                 <FareDemandFactor id="op@Tariff@Demand" version="1.0">
@@ -335,6 +336,7 @@
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="Tariff@return@lines">
                   <Name>O/D pairs for 709</Name>
+                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:access"/>
                   <distanceMatrixElements>
                     <DistanceMatrixElement version="1.0" id="Shott_Drive+The_Stag_pub">
                       <priceGroups>
@@ -543,6 +545,7 @@
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="Tariff@return@eligibility">
                   <Name>eligible user types</Name>
+                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:eligibility"/>
                   <GenericParameterAssignment version="1.0" order="1" id="Tariff@return@eligibility">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
@@ -559,6 +562,7 @@
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="Tariff@return@conditions_of_travel">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="Tariff@return@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>

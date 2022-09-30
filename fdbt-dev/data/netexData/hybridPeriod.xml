@@ -205,6 +205,7 @@
               <Name>Test Operator - WBTR_products - Fares for Period ticket</Name>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
+              <TariffBasis>zone</TariffBasis>
               <timeIntervals>
                 <TimeInterval version="1.0" id="op:Tariff@Best_product_one@3-months">
                   <Name>3 months</Name>
@@ -244,6 +245,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Best_product_one@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Best_product_one@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
@@ -287,6 +289,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Another_great_product@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Another_great_product@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>

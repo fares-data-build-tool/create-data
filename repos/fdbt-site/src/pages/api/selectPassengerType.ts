@@ -1,12 +1,14 @@
 import { NextApiResponse } from 'next';
 import { GROUP_PASSENGER_TYPE } from '../../constants';
 import {
+    CARNET_FARE_TYPE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
+    TERM_TIME_ATTRIBUTE,
 } from '../../constants/attributes';
 import { convertToFullPassengerType, getGroupPassengerTypeById, getPassengerTypeById } from '../../data/auroradb';
 import { FareType, NextApiRequestWithSession } from '../../interfaces';
@@ -81,9 +83,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
-        const redirectLocation = fareType === 'schoolService' ? '/termTime' : '/selectTimeRestrictions';
+        if (fareType === 'schoolService' && !getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE)) {
+            updateSessionAttribute(req, TERM_TIME_ATTRIBUTE, { termTime: true });
+            const redirectLocation = fareType === 'schoolService' ? '/fareConfirmation' : '/selectTimeRestrictions';
+            redirectTo(res, redirectLocation);
+        } else {
+            const redirectLocation = fareType === 'schoolService' ? '/termTime' : '/selectTimeRestrictions';
+            redirectTo(res, redirectLocation);
+        }
 
-        redirectTo(res, redirectLocation);
         return;
     } catch (error) {
         const message = 'There was a problem selecting the passenger type:';

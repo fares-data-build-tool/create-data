@@ -493,6 +493,10 @@ export const getLinesElement = (
         version: '1.0',
         id: `Tariff@${typeOfPointToPoint}@lines`,
         Name: { $t: `O/D pairs for ${lineName}` },
+        TypeOfFareStructureElementRef: {
+            versionRef: 'fxc:v1.0',
+            ref: 'fxc:access',
+        },
         distanceMatrixElements: {
             DistanceMatrixElement: isReturnTicket(ticket)
                 ? getDistanceMatrixElements(combineFareZones(ticket.outboundFareZones, ticket.inboundFareZones))
@@ -534,6 +538,10 @@ export const getEligibilityElement = (ticket: PointToPointTicket | PointToPointP
         version: '1.0',
         id: `Tariff@${typeOfPointToPoint}@eligibility`,
         Name: { $t: `eligible user types` },
+        TypeOfFareStructureElementRef: {
+            versionRef: 'fxc:v1.0',
+            ref: 'fxc:eligibility',
+        },
         GenericParameterAssignment: {
             version: '1.0',
             order: '1',
@@ -589,6 +597,10 @@ export const getPointToPointConditionsElement = (ticket: PointToPointTicket): Ne
         version: '1.0',
         id: `Tariff@${typeOfPointToPoint}@conditions_of_travel`,
         Name: { $t: 'Conditions of travel' },
+        TypeOfFareStructureElementRef: {
+            versionRef: 'fxc:v1.0',
+            ref: 'fxc:travel_conditions',
+        },
         GenericParameterAssignment: {
             version: '1.0',
             order: '1',

@@ -373,12 +373,12 @@ describe('pages', () => {
                     },
                     {
                         content: 'Yes',
-                        href: 'termTime',
+                        href: '',
                         name: 'Only valid during term times',
                     },
                     {
                         content: 'Single',
-                        href: 'schoolFareType',
+                        href: '',
                         name: 'School ticket fare type',
                     },
                 ]);

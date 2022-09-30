@@ -144,6 +144,7 @@
               <Name>Blackpool Transport - BLAC_products - Fares for Period ticket</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
+              <TariffBasis>zone</TariffBasis>
               <timeIntervals>
                 <TimeInterval version="1.0" id="op:Tariff@Test_Product_1@1-hour">
                   <Name>1 hour</Name>
@@ -275,6 +276,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Test_Product_1@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Test_Product_1@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
@@ -326,6 +328,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Test_Product_2@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Test_Product_2@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
@@ -377,6 +380,7 @@
                 </FareStructureElement>
                 <FareStructureElement id="op:Tariff@Test_Product_3@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Test_Product_3@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>

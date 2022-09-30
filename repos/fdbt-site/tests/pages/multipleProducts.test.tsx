@@ -19,6 +19,7 @@ describe('pages', () => {
                     csrfToken=""
                     flatFare={false}
                     carnet={false}
+                    school={false}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -33,6 +34,7 @@ describe('pages', () => {
                     csrfToken=""
                     flatFare
                     carnet={false}
+                    school={false}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -47,6 +49,7 @@ describe('pages', () => {
                     csrfToken=""
                     flatFare
                     carnet
+                    school={false}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -61,6 +64,7 @@ describe('pages', () => {
                     csrfToken=""
                     flatFare={false}
                     carnet
+                    school={false}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -75,6 +79,7 @@ describe('pages', () => {
                     csrfToken=""
                     flatFare
                     carnet
+                    school
                 />,
             );
             expect(wrapper).toMatchSnapshot();
