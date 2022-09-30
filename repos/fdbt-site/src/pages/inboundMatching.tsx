@@ -54,7 +54,7 @@ const InboundMatching = ({
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: InboundMatchingProps }> => {
     const matchingAttribute = getSessionAttribute(ctx.req, INBOUND_MATCHING_ATTRIBUTE);
     const unusedStage = !!ctx.query.unusedStage;
-    return { props: { ...(await getMatchingProps(ctx, matchingAttribute, true)).props, unusedStage } };
+    return { props: { ...(await getMatchingProps(ctx, matchingAttribute)).props, unusedStage } };
 };
 
 export default InboundMatching;

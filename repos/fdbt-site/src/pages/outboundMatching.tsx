@@ -43,7 +43,7 @@ const OutboundMatching = ({
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const matchingAttribute = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);
 
-    return await getMatchingProps(ctx, matchingAttribute);
+    return await getMatchingProps(ctx, matchingAttribute, true);
 };
 
 export default OutboundMatching;

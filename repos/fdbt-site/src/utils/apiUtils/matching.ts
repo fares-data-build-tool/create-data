@@ -168,7 +168,7 @@ export const removeDuplicateAdjacentStops = (stops: string[]): string[] => {
 export const getMatchingProps = async (
     ctx: NextPageContextWithSession,
     matchingAttribute: MatchingWithErrors | object | undefined,
-    isInbound?: boolean,
+    isOutbound?: boolean,
 ): Promise<{ props: MatchingProps }> => {
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
 
@@ -185,10 +185,11 @@ export const getMatchingProps = async (
 
     let serviceId = serviceAttribute.id;
     let lineName = serviceAttribute.service.split('#')[0];
-
-    if (returnServiceAttribute && isInbound && !isWithErrors(returnServiceAttribute)) {
+    let direction = directionAttribute.direction;
+    if (returnServiceAttribute && isOutbound && !isWithErrors(returnServiceAttribute)) {
         lineName = returnServiceAttribute.lineName;
         serviceId = returnServiceAttribute.id;
+        direction = 'outbound';
     }
 
     const dataSource = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE).source;
@@ -196,7 +197,7 @@ export const getMatchingProps = async (
     const userFareStages = await getUserFareStages(operatorAttribute.uuid);
 
     // find journey patterns for direction (inbound or outbound)
-    const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === directionAttribute.direction);
+    const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === direction);
 
     // get an unordered list of stop points from journey patterns, then removing any duplicates on stopPointRef and sequence number
     const stops = journeyPatterns
