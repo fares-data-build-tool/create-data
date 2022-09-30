@@ -5,7 +5,6 @@ import {
     DIRECTION_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
-    RETURN_SERVICE_ATTRIBUTE,
 } from '../constants/attributes';
 import { getServiceByIdAndDataSource } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
@@ -98,14 +97,6 @@ export const getServerSideProps = async (
     const inboundDirection = directions.find((it) => ['inbound', 'antiClockwise'].includes(it));
 
     if (directions.length === 1) {
-        const returnServiceAttribute = getSessionAttribute(ctx.req, RETURN_SERVICE_ATTRIBUTE);
-        if (returnServiceAttribute) {
-            updateSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE, {
-                direction: directions[0],
-                inboundDirection: inboundDirection ? inboundDirection : direction,
-            });
-            return { redirect: { destination: '/inputMethod', permanent: false } };
-        }
         updateSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE, { direction: directions[0] });
         return { redirect: { destination: '/inputMethod', permanent: false } };
     }

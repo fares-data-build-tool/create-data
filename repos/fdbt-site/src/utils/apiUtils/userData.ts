@@ -38,7 +38,6 @@ import {
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
-    RETURN_SERVICE_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
     batchGetStopsByAtcoCode,
@@ -368,7 +367,6 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const products = getPointToPointProducts(req);
     const outboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
     const inboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE);
-    const returnServiceAttribute = getSessionAttribute(req, RETURN_SERVICE_ATTRIBUTE);
 
     if (
         !matchingAttributeInfo ||
@@ -408,14 +406,6 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
-        ...(returnServiceAttribute &&
-            !isWithErrors(returnServiceAttribute) && {
-                additionalService: {
-                    lineName: returnServiceAttribute.lineName,
-                    lineId: returnServiceAttribute.lineId,
-                    serviceDescription: returnServiceAttribute.serviceDescription,
-                },
-            }),
     };
 };
 
