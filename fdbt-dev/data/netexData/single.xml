@@ -464,9 +464,6 @@
                   <FromDate>2010-12-17T00:00:00.000Z</FromDate>
                   <ToDate>2028-12-17T23:59:59.999Z</ToDate>
                 </ValidBetween>
-                <ValidityCondition id="op:termtime" version="1.0">
-                  <Name>Term Time Usage Only</Name>
-                </ValidityCondition>
               </validityConditions>
               <Name>Blackpool Transport - Line_4 - Fares for Single ticket</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>

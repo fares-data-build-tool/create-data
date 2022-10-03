@@ -344,13 +344,23 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         );
         tariff.fareStructureElements.FareStructureElement = fareStructuresElements;
 
+        if(isFlatFareType(ticket)) {
+            
+            tariff.TypeOfTariffRef = {
+                version: "fxc:v1.0",
+                ref: "fxc:flat"
+            };
+            
+            tariff.TariffBasis =  { $t: "flat" };
+            
+        }
         tariff.validityConditions = {
             ValidBetween: {
                 FromDate: { $t: ticket.ticketPeriod.startDate },
                 ToDate: { $t: ticket.ticketPeriod.endDate },
             },
             ValidityCondition:
-                'termTime' in ticket && ticket.termTime
+                'termTime' in ticket && ticket.termTime && ticket.type === 'period' && 'selectedServices' in ticket 
                     ? {
                           id: 'op:termtime',
                           version: '1.0',

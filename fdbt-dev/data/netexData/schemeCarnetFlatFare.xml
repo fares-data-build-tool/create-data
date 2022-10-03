@@ -149,8 +149,8 @@
               </validityConditions>
               <Name>Test Scheme Op - Test Scheme Op-SE_products - Fares for Flat Fare ticket</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
-              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
-              <TariffBasis>zone</TariffBasis>
+              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
+              <TariffBasis>flat</TariffBasis>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="mb:Tariff@multitrip@units">
                   <Name>Carnet denominations</Name>

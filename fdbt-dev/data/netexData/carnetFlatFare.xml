@@ -138,14 +138,11 @@
                   <FromDate>2010-12-17T00:00:00.000Z</FromDate>
                   <ToDate>2028-12-17T23:59:59.999Z</ToDate>
                 </ValidBetween>
-                <ValidityCondition id="op:termtime" version="1.0">
-                  <Name>Term Time Usage Only</Name>
-                </ValidityCondition>
               </validityConditions>
               <Name>Blackpool Transport - BLAC_products - Fares for Flat Fare ticket</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
-              <TariffBasis>zone</TariffBasis>
+              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
+              <TariffBasis>flat</TariffBasis>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="mb:Tariff@multitrip@units">
                   <Name>Carnet denominations</Name>
