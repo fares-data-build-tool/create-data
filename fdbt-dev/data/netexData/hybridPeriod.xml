@@ -324,7 +324,7 @@
           </tariffs>
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@Best_product_one_anyone">
-              <Name>Best product one Pass - anyone</Name>
+              <Name>Best product one - anyone</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
@@ -347,7 +347,7 @@
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Another_great_product_anyone">
-              <Name>Another great product Pass - anyone</Name>
+              <Name>Another great product - anyone</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
