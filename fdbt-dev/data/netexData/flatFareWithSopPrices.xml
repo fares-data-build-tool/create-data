@@ -189,7 +189,7 @@
           </tariffs>
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@test_anyone">
-              <Name>test Pass - anyone</Name>
+              <Name>test</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
