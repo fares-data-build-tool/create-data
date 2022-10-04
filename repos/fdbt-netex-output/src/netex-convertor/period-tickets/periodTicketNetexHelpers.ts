@@ -572,7 +572,7 @@ export const getPreassignedFareProducts = (
             Name: {
                 $t: isFlatFareType(userPeriodTicket)
                     ? product.productName
-                    : `${product.productName} - ${passengerType}`,
+                    : `${product.productName} Pass - ${passengerType}`,
             },
             ChargingMomentType: {
                 $t: 'beforeTravel',
