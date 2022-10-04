@@ -405,7 +405,7 @@
           </tariffs>
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@Test_Product_1_youngPerson">
-              <Name>Test Product 1</Name>
+              <Name>Test Product 1 Pass - youngPerson</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
@@ -428,7 +428,7 @@
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Test_Product_2_youngPerson">
-              <Name>Test Product 2</Name>
+              <Name>Test Product 2 Pass - youngPerson</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
@@ -451,7 +451,7 @@
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Test_Product_3_youngPerson">
-              <Name>Test Product 3</Name>
+              <Name>Test Product 3 Pass - youngPerson</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
