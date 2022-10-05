@@ -208,7 +208,7 @@ describe('periodTicketNetexHelpers', () => {
             };
             let seen: string[] = [];
             const expectedLength = periodMultipleServicesTicket.selectedServices.filter((item) =>{
-                return seen.includes(item.lineId) ? false : (seen.push(item.lineId));
+                return seen.includes(item.serviceCode) ? false : (seen.push(item.serviceCode));
             }).length;
             const linesList = netexHelpers.getLinesList(periodMultipleServicesTicket, opData.url, multiOperatorList);
 
