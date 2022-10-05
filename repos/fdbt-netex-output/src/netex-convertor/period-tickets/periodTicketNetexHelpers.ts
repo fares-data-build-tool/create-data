@@ -152,30 +152,31 @@ export const getLinesList = (
     }
 
     if (!isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
-        linesList = linesList.concat(
-            userPeriodTicket.selectedServices
-                ? userPeriodTicket.selectedServices.map(service => ({
-                      version: '1.0',
-                      id: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
-                      Name: { $t: `Line ${service.lineName}` },
-                      Description: { $t: service.serviceDescription },
-                      Url: { $t: website },
-                      PublicCode: { $t: service.lineName },
-                      PrivateCode: service.lineId
-                          ? {
-                                type: 'txc:Line@id',
-                                $t: service.lineId,
-                            }
-                          : {},
-                      OperatorRef: {
-                          version: '1.0',
-                          ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
-                      },
-                      LineType: { $t: 'local' },
-                  }))
-                : [],
-        );
+        
+        const duplicateLines = userPeriodTicket.selectedServices.map(service => ({
+            version: '1.0',
+            id: `op:${service.lineName}#${service.serviceCode}`,
+            Name: { $t: `Line ${service.lineName}` },
+            Description: { $t: service.serviceDescription },
+            Url: { $t: website },
+            PublicCode: { $t: service.lineName },
+            PrivateCode: service.lineId
+                ? {
+                    type: 'txc:Line@id',
+                    $t: service.lineId,
+                }
+                : {},
+            OperatorRef: {
+                version: '1.0',
+                ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
+            },
+            LineType: { $t: 'local' },
+        }))
+        const seen: string[] = [];
+        return linesList.concat(duplicateLines.filter(item => (seen.includes(item.id) ? false : seen.push(item.id))));
+
     }
+    
     return linesList;
 };
 
