@@ -714,7 +714,7 @@
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:1#NW_07_NW_1_1#19/04/2021">
+            <Line version="1.0" id="op:1#NW_07_NW_1_1">
               <Name>Line 1</Name>
               <Description>Warrington - Latchford/Westy (Circ)</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -723,7 +723,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:2#NW_07_NW_2_1#08/03/2021">
+            <Line version="1.0" id="op:2#NW_07_NW_2_1">
               <Name>Line 2</Name>
               <Description>Warrington - Westy/Latchford (Circ) via Manchester Rd, Knutsford Rd</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -732,7 +732,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:8A#NW_07_NW_8A_1#19/04/2021">
+            <Line version="1.0" id="op:8A#NW_07_NW_8A_1">
               <Name>Line 8A</Name>
               <Description>Warrington - Hatton via Lyons Lane, Stretton</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -741,7 +741,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:9A#NW_07_NW_9A_1#08/03/2021">
+            <Line version="1.0" id="op:9A#NW_07_NW_9A_1">
               <Name>Line 9A</Name>
               <Description>Warrington - Northwich via Antrobus, Barnton</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -750,7 +750,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:11#NW_07_NW_11_1#19/04/2021">
+            <Line version="1.0" id="op:11#NW_07_NW_11_1">
               <Name>Line 11</Name>
               <Description>Warrington - Gains/Latchford (Circ) via Knutsford Rd, Latchford Shopping Centre, Wilderspool Causeway</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -759,7 +759,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:12#NW_07_NW_12_1#08/03/2021">
+            <Line version="1.0" id="op:12#NW_07_NW_12_1">
               <Name>Line 12</Name>
               <Description>Gains/Latchford (Circ) - Warrington via Chester Rd, Latchford Shopping Centre, Knutsford Rd</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -768,7 +768,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:17C#NW_07_NW_17C_1#08/03/2021">
+            <Line version="1.0" id="op:17C#NW_07_NW_17C_1">
               <Name>Line 17C</Name>
               <Description>Birchwood - Callands via Hilden Island, Westbrook, Gemini</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -777,7 +777,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:18#NW_07_NW_18_1#08/03/2021">
+            <Line version="1.0" id="op:18#NW_07_NW_18_1">
               <Name>Line 18</Name>
               <Description>Warrington - Callands via Old Hall, Westbrook</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -786,7 +786,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:20#NW_07_NW_20_1#08/03/2021">
+            <Line version="1.0" id="op:20#NW_07_NW_20_1">
               <Name>Line 20</Name>
               <Description>Warrington - Longford/Orford (Circ) via Orford Park Centre</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -795,7 +795,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:28E#NW_04_WOB_28E_1#22/03/2021">
+            <Line version="1.0" id="op:28E#NW_04_WOB_28E_1">
               <Name>Line 28E</Name>
               <Description>Warrington - Leigh via Padgate, Birchwood, Gorse Covert, Culcheth</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -804,7 +804,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:X43#NW_07_NW_X43_1#19/04/2021">
+            <Line version="1.0" id="op:X43#NW_07_NW_X43_1">
               <Name>Line X43</Name>
               <Description>Stockton Heath - Cronton Lane via Sandymoor, Windmill Hill, Castlefields</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -818,17 +818,17 @@
             <GroupOfLines version="1.0" id="WBTR@groupOfLines@1">
               <Name>A group of available additional services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:1#NW_07_NW_1_1#19/04/2021"/>
-                <LineRef version="1.0" ref="op:2#NW_07_NW_2_1#08/03/2021"/>
-                <LineRef version="1.0" ref="op:8A#NW_07_NW_8A_1#19/04/2021"/>
-                <LineRef version="1.0" ref="op:9A#NW_07_NW_9A_1#08/03/2021"/>
-                <LineRef version="1.0" ref="op:11#NW_07_NW_11_1#19/04/2021"/>
-                <LineRef version="1.0" ref="op:12#NW_07_NW_12_1#08/03/2021"/>
-                <LineRef version="1.0" ref="op:17C#NW_07_NW_17C_1#08/03/2021"/>
-                <LineRef version="1.0" ref="op:18#NW_07_NW_18_1#08/03/2021"/>
-                <LineRef version="1.0" ref="op:20#NW_07_NW_20_1#08/03/2021"/>
-                <LineRef version="1.0" ref="op:28E#NW_04_WOB_28E_1#22/03/2021"/>
-                <LineRef version="1.0" ref="op:X43#NW_07_NW_X43_1#19/04/2021"/>
+                <LineRef version="1.0" ref="op:1#NW_07_NW_1_1"/>
+                <LineRef version="1.0" ref="op:2#NW_07_NW_2_1"/>
+                <LineRef version="1.0" ref="op:8A#NW_07_NW_8A_1"/>
+                <LineRef version="1.0" ref="op:9A#NW_07_NW_9A_1"/>
+                <LineRef version="1.0" ref="op:11#NW_07_NW_11_1"/>
+                <LineRef version="1.0" ref="op:12#NW_07_NW_12_1"/>
+                <LineRef version="1.0" ref="op:17C#NW_07_NW_17C_1"/>
+                <LineRef version="1.0" ref="op:18#NW_07_NW_18_1"/>
+                <LineRef version="1.0" ref="op:20#NW_07_NW_20_1"/>
+                <LineRef version="1.0" ref="op:28E#NW_04_WOB_28E_1"/>
+                <LineRef version="1.0" ref="op:X43#NW_07_NW_X43_1"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>

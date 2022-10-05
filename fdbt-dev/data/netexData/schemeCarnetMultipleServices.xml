@@ -448,7 +448,7 @@
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:3#NW_05_PBLT_3_1#28/03/2020">
+            <Line version="1.0" id="op:3#NW_05_PBLT_3_1">
               <Name>Line 3</Name>
               <Description>CLITHEROE - CLITHEROE via Pimlico, Chatburn, Pimlico</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -457,7 +457,7 @@
               <OperatorRef version="1.0" ref="noc:PBLT"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:5#NW_05_PBLT_5_3#02/01/2020">
+            <Line version="1.0" id="op:5#NW_05_PBLT_5_3">
               <Name>Line 5</Name>
               <Description>ORMSKIRK - TOWN GREEN CIRCULAR</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -466,7 +466,7 @@
               <OperatorRef version="1.0" ref="noc:PBLT"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:4#NW_05_NWBT_4_1#02/01/2020">
+            <Line version="1.0" id="op:4#NW_05_NWBT_4_1">
               <Name>Line 4</Name>
               <Description>CLITHEROE - PEEL PARK CIRCULAR via Claremont Ave, Standen Rd, Langshaw Dr, Turner St, Victoria St</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -480,9 +480,9 @@
             <GroupOfLines version="1.0" id="Test_Scheme_Op-SE@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1#28/03/2020"/>
-                <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3#02/01/2020"/>
-                <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1#02/01/2020"/>
+                <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1"/>
+                <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3"/>
+                <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>

@@ -206,8 +206,10 @@ describe('periodTicketNetexHelpers', () => {
                 OperatorRef: { version: '1.0', ref: expect.stringContaining('noc:') },
                 LineType: { $t: 'local' },
             };
-            const expectedLength = periodMultipleServicesTicket.selectedServices.length;
-
+            let seen: string[] = [];
+            const expectedLength = periodMultipleServicesTicket.selectedServices.filter((item) =>{
+                return seen.includes(item.lineId) ? false : (seen.push(item.lineId));
+            }).length;
             const linesList = netexHelpers.getLinesList(periodMultipleServicesTicket, opData.url, multiOperatorList);
 
             expect(linesList).toHaveLength(expectedLength);
