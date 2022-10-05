@@ -126,9 +126,9 @@ export const getLinesList = (
         linesList = userPeriodTicket.additionalOperators.flatMap((operator): Line[] => {
             const currentOperator = operatorData.find(o => o.nocCode === operator.nocCode);
 
-            return operator.selectedServices.map(service => ({
+            const duplicateLines = operator.selectedServices.map(service => ({
                 version: '1.0',
-                id: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
+                id: `op:${service.lineName}#${service.serviceCode}`,
                 Name: { $t: `Line ${service.lineName}` },
                 Description: { $t: service.serviceDescription },
                 Url: { $t: currentOperator ? getCleanWebsite(currentOperator.url) : '' },
@@ -145,6 +145,11 @@ export const getLinesList = (
                 },
                 LineType: { $t: 'local' },
             }));
+
+            let seen: string[] = [];
+            return duplicateLines.filter((item) =>{
+                return seen.includes(item.id) ? false : (seen.push(item.id));
+            })
         });
     }
 
