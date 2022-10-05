@@ -147,7 +147,7 @@ export const getLinesList = (
             }));
 
             const seen: string[] = [];
-            return linesList.concat(duplicateLines.filter(item => (seen.includes(item.id) ? false : seen.push(item.id))));
+            return duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id))) ?? [];
         });
     }
 
@@ -173,7 +173,7 @@ export const getLinesList = (
             LineType: { $t: 'local' },
         }))
         const seen: string[] = [];
-        return linesList.concat(duplicateLines.filter(item => (seen.includes(item.id) ? false : seen.push(item.id))));
+        return linesList?.concat(duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id)))) ?? [];
 
     }
     
