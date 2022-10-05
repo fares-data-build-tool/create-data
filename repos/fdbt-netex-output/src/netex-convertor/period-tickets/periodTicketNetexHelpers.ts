@@ -128,7 +128,7 @@ export const getLinesList = (
 
             const duplicateLines = operator.selectedServices.map(service => ({
                 version: '1.0',
-                id: `op:${service.lineName}#${service.serviceCode}`,
+                id: `op:${service.lineName}#${service.serviceCode}test`,
                 Name: { $t: `Line ${service.lineName}` },
                 Description: { $t: service.serviceDescription },
                 Url: { $t: currentOperator ? getCleanWebsite(currentOperator.url) : '' },
@@ -155,7 +155,7 @@ export const getLinesList = (
         
         const duplicateLines = userPeriodTicket.selectedServices.map(service => ({
             version: '1.0',
-            id: `op:${service.lineName}#${service.serviceCode}`,
+            id: `op:${service.lineName}#${service.serviceCode}test`,
             Name: { $t: `Line ${service.lineName}` },
             Description: { $t: service.serviceDescription },
             Url: { $t: website },
