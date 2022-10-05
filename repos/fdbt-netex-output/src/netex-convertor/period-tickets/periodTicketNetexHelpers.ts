@@ -146,10 +146,8 @@ export const getLinesList = (
                 LineType: { $t: 'local' },
             }));
 
-            let seen: string[] = [];
-            return duplicateLines.filter((item) =>{
-                return seen.includes(item.id) ? false : (seen.push(item.id));
-            })
+            const seen: string[] = [];
+            return duplicateLines.filter(item => (seen.includes(item.id) ? false : seen.push(item.id)));
         });
     }
 
