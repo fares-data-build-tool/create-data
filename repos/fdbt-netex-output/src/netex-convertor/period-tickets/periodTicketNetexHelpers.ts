@@ -126,25 +126,27 @@ export const getLinesList = (
         linesList = userPeriodTicket.additionalOperators.flatMap((operator): Line[] => {
             const currentOperator = operatorData.find(o => o.nocCode === operator.nocCode);
 
-            const duplicateLines = operator.selectedServices.map(service => ({
-                version: '1.0',
-                id: `op:${service.lineName}#${service.serviceCode}`,
-                Name: { $t: `Line ${service.lineName}` },
-                Description: { $t: service.serviceDescription },
-                Url: { $t: currentOperator ? getCleanWebsite(currentOperator.url) : '' },
-                PublicCode: { $t: service.lineName },
-                PrivateCode: service.lineId
-                    ? {
-                          type: 'txc:Line@id',
-                          $t: service.lineId,
-                      }
-                    : {},
-                OperatorRef: {
-                    version: '1.0',
-                    ref: `noc:${operator.nocCode}`,
-                },
-                LineType: { $t: 'local' },
-            }));
+            const duplicateLines = operator.selectedServices
+                ? operator.selectedServices.map(service => ({
+                      version: '1.0',
+                      id: `op:${service.lineName}#${service.serviceCode}`,
+                      Name: { $t: `Line ${service.lineName}` },
+                      Description: { $t: service.serviceDescription },
+                      Url: { $t: currentOperator ? getCleanWebsite(currentOperator.url) : '' },
+                      PublicCode: { $t: service.lineName },
+                      PrivateCode: service.lineId
+                          ? {
+                                type: 'txc:Line@id',
+                                $t: service.lineId,
+                            }
+                          : {},
+                      OperatorRef: {
+                          version: '1.0',
+                          ref: `noc:${operator.nocCode}`,
+                      },
+                      LineType: { $t: 'local' },
+                  }))
+                : [];
 
             const seen: string[] = [];
             return duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id))) ?? [];
@@ -152,25 +154,27 @@ export const getLinesList = (
     }
 
     if (!isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
-        const duplicateLines = userPeriodTicket.selectedServices.map(service => ({
-            version: '1.0',
-            id: `op:${service.lineName}#${service.serviceCode}`,
-            Name: { $t: `Line ${service.lineName}` },
-            Description: { $t: service.serviceDescription },
-            Url: { $t: website },
-            PublicCode: { $t: service.lineName },
-            PrivateCode: service.lineId
-                ? {
-                      type: 'txc:Line@id',
-                      $t: service.lineId,
-                  }
-                : {},
-            OperatorRef: {
-                version: '1.0',
-                ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
-            },
-            LineType: { $t: 'local' },
-        }));
+        const duplicateLines = userPeriodTicket.selectedServices
+            ? userPeriodTicket.selectedServices.map(service => ({
+                  version: '1.0',
+                  id: `op:${service.lineName}#${service.serviceCode}`,
+                  Name: { $t: `Line ${service.lineName}` },
+                  Description: { $t: service.serviceDescription },
+                  Url: { $t: website },
+                  PublicCode: { $t: service.lineName },
+                  PrivateCode: service.lineId
+                      ? {
+                            type: 'txc:Line@id',
+                            $t: service.lineId,
+                        }
+                      : {},
+                  OperatorRef: {
+                      version: '1.0',
+                      ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
+                  },
+                  LineType: { $t: 'local' },
+              }))
+            : [];
         const seen: string[] = [];
         return (
             linesList?.concat(duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id)))) ??
