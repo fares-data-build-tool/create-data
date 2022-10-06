@@ -1,6 +1,0 @@
-{
-    "baseUrl": "http://localhost:5555",
-    "supportFile": "cypress/support/index.ts",
-    "retries": 3,
-    "numTestsKeptInMemory": 0
-}
