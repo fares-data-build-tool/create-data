@@ -1978,6 +1978,7 @@
                   <ValidableElementRef version="1.0" ref="Trip@Super_product@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
+              <ProductType>singleTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>

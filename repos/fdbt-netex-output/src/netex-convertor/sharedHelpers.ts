@@ -24,6 +24,8 @@ import {
     BaseProduct,
     PointToPointCarnetProductDetails,
     isHybridTicket,
+    isReturnTicket,
+    isSingleTicket,
 } from '../types';
 
 import {
@@ -299,6 +301,37 @@ export const getDistributionChannel = (purchaseLocation: string): string => {
 };
 
 export const isFlatFareType = (ticket: Ticket): boolean => ticket.type === 'flatFare';
+
+export const isPeriodType = (ticket: Ticket): boolean => ticket.type === 'period';
+
+export const getProductType = (ticket: Ticket): string => {
+    if (isFlatFareType(ticket) || isSingleTicket(ticket)) {
+        return 'singleTrip';
+    } else if (isPeriodType(ticket)) {
+        if (
+            ticket.products &&
+            ticket.products.length == 1 &&
+            isProductDetails(ticket.products[0]) &&
+            ticket.products[0].productDuration == '1 day'
+        ) {
+            return 'dayPass';
+        }
+        return 'periodPass';
+    } else if (isReturnTicket(ticket)) {
+        // Return period validity
+        if (
+            'returnPeriodValidity' in ticket &&
+            ticket.returnPeriodValidity &&
+            ticket.returnPeriodValidity.typeOfDuration === 'day'
+        ) {
+            return 'dayReturnTrip';
+        }
+
+        return 'periodReturnTrip';
+    }
+
+    return 'periodPass';
+};
 
 export const getCarnetElement = (ticket: Ticket): NetexObject => {
     const uniqueCarnetDenominations = new Set();

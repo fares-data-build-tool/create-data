@@ -1945,6 +1945,7 @@
                   <ValidableElementRef version="1.0" ref="Trip@adult_-_single@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
+              <ProductType>singleTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>

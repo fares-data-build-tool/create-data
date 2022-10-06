@@ -1956,6 +1956,7 @@
                   <ValidableElementRef version="1.0" ref="Trip@Product_1@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
+              <ProductType>singleTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>

@@ -47,6 +47,7 @@ import {
     getCleanWebsite,
     getDistributionChannel,
     getNetexMode,
+    getProductType,
     getProfileRef,
     getUserProfile,
     isFlatFareType,
@@ -619,7 +620,7 @@ export const getPreassignedFareProducts = (
                 },
             },
             ProductType: {
-                $t: isFlatFareType(userPeriodTicket) ? 'singleTrip' : 'periodPass',
+                $t: getProductType(userPeriodTicket),
             },
         };
     });

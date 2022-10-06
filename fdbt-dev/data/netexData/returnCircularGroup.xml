@@ -645,6 +645,7 @@
                   <ValidableElementRef version="1.0" ref="Trip@Another_product@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
+              <ProductType>periodReturnTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
