@@ -114,6 +114,13 @@ export const completeFlatFareCarnet = (): void => {
     continueButtonClick();
     continueButtonClick();
 };
+export const completeSchoolPage = (numberOfProducts: number, multiProductNamePrefix: string): void => {
+    randomlyDetermineUserType();
+    continueButtonClick();
+    randomlyChooseAndSelectServices();
+    continueButtonClick();
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+};
 
 export const completeServicePage = (): void => {
     selectRandomOptionFromDropDown('service');
