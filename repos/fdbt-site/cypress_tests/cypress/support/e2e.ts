@@ -36,7 +36,7 @@ const addTestOperatorDetails = (): void => {
     clickElementById('operatorName').clear().type('Easy A to B');
     clickElementById('contactNumber').clear().type('01492 451 652');
     clickElementById('email').clear().type('info@easyab.co.uk');
-    clickElementById('url').clear().type('https://easyab.co.uk');
+    clickElementById('url').clear().type('www.easyab.co.uk');
     clickElementById('street').clear().type('123 Some Road');
     clickElementById('town').clear().type('Awesomeville');
     clickElementById('county').clear().type('Home County');
