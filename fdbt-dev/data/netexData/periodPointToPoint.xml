@@ -1222,6 +1222,7 @@
                   <ValidableElementRef version="1.0" ref="Trip@Period_Point_to_Point@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
+              <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>

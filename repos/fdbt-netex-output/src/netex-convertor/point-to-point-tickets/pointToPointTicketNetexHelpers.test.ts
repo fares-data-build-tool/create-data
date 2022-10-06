@@ -7,7 +7,7 @@ import {
     returnNonCircularTicketWithReturnValidity,
     fareZonesWithoutStopIndicator,
 } from '../../test-data/matchingData';
-import { NetexObject, getUserProfile } from '../sharedHelpers';
+import { NetexObject, getUserProfile, getProductType } from '../sharedHelpers';
 import {
     buildSalesOfferPackage,
     buildSalesOfferPackages,
@@ -1936,6 +1936,9 @@ describe('Netex Helpers', () => {
                         order: '1',
                         version: '1.0',
                     },
+                },
+                ProductType: {
+                    $t: getProductType(ticket),
                 },
                 version: '1.0',
             };

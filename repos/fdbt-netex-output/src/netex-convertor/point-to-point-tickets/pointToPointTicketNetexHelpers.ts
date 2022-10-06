@@ -19,6 +19,7 @@ import {
     getDistributionChannel,
     getUserProfile,
     getCarnetQualityStructureFactorRef,
+    getProductType,
 } from '../sharedHelpers';
 
 export const getStops = (fareZones: FareZone[]): Stop[] => fareZones.flatMap(zone => zone.stops);
@@ -314,6 +315,9 @@ export const getPreassignedFareProduct = (
                     ref: `Trip@${ticketUserConcat}@travel`,
                 },
             },
+        },
+        ProductType: {
+            $t: getProductType(matchingData),
         },
     };
 };
