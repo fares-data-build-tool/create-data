@@ -198,9 +198,9 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1#28/03/2020"/>
-                      <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3#02/01/2020"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1#02/01/2020"/>
+                      <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1"/>
+                      <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3"/>
+                      <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -236,9 +236,9 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1#28/03/2020"/>
-                      <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3#02/01/2020"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1#02/01/2020"/>
+                      <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1"/>
+                      <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3"/>
+                      <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>

@@ -151,9 +151,9 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:1#NW_07_NW_1_1#06/04/2020"/>
-                      <LineRef version="1.0" ref="op:2#NW_07_NW_2_1#06/04/2020"/>
-                      <LineRef version="1.0" ref="op:3#NW_07_NW_3_1#06/04/2020"/>
+                      <LineRef version="1.0" ref="op:1#NW_07_NW_1_1"/>
+                      <LineRef version="1.0" ref="op:2#NW_07_NW_2_1"/>
+                      <LineRef version="1.0" ref="op:3#NW_07_NW_3_1"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
