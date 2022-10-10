@@ -7,10 +7,14 @@ import * as auroradb from '../../../src/data/auroradb';
 import { TimeRestriction } from '../../../src/interfaces';
 import defineTimeRestrictions from '../../../src/pages/api/defineTimeRestrictions';
 import * as sessions from '../../../src/utils/sessions';
-import { getMockRequestAndResponse, mockIdTokenMultiple } from '../../testData/mockData';
+import { getMockRequestAndResponse, mockIdTokenMultiple, expectedSingleTicket } from '../../testData/mockData';
+import { MATCHING_JSON_ATTRIBUTE, MATCHING_JSON_META_DATA_ATTRIBUTE } from '../../../src/constants/attributes';
+import * as userData from '../../../src/utils/apiUtils/userData';
 
 describe('defineTimeRestrictions', () => {
     const writeHeadMock = jest.fn();
+    const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
+    s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
 
     beforeEach(() => {
         jest.resetAllMocks();
@@ -194,6 +198,60 @@ describe('defineTimeRestrictions', () => {
         });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectTimeRestrictions',
+        });
+    });
+
+    it('should set the TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE when in edit mode', async () => {
+        const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
+        getTimeRestrictionByNameAndNocSpy.mockImplementation().mockResolvedValue([
+            {
+                id: 1,
+                name: 'My time restriction',
+                contents: [
+                    {
+                        day: 'monday',
+                        timeBands: [
+                            {
+                                startTime: '1000',
+                                endTime: '1100',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ]);
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                timeRestrictionChoice: 'Premade',
+                timeRestriction: 'My time restriction',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            cookieValues: {
+                idToken: mockIdTokenMultiple,
+            },
+            session: {
+                [OPERATOR_ATTRIBUTE]: { name: 'test', nocCode: 'HELLO', uuid: 'blah' },
+                [MATCHING_JSON_ATTRIBUTE]: expectedSingleTicket,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '1',
+                    serviceId: '2',
+                    matchingJsonLink: 'matchingJsonLink',
+                },
+            },
+        });
+        await defineTimeRestrictions(req, res);
+
+        expect(userData.putUserDataInProductsBucketWithFilePath).toBeCalledWith(
+            {
+                ...expectedSingleTicket,
+                timeRestriction: { id: 1 },
+            },
+            'matchingJsonLink',
+        );
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/products/productDetails?productId=1&serviceId=2',
         });
     });
 });

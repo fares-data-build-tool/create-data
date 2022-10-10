@@ -1,14 +1,23 @@
 import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
-import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
+import {
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+} from '../../constants/attributes';
 import { getTimeRestrictionByNameAndNoc, getFareDayEnd } from '../../data/auroradb';
 import { NextApiRequestWithSession, TimeRestriction, TimeRestrictionsDefinitionWithErrors } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const { timeRestrictionChoice, validDays, timeRestriction } = req.body;
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
         if (timeRestrictionChoice === 'Premade') {
             if (!timeRestriction) {
                 const timeRestrictionsDefinitionWithErrors: TimeRestrictionsDefinitionWithErrors = {
@@ -70,6 +79,28 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }),
             }));
 
+            // if in edit mode
+            if (ticket && matchingJsonMetaData) {
+                const updatedTicket = {
+                    ...ticket,
+                    timeRestriction: { id: dbTimeRestriction.id },
+                };
+
+                await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+
+                updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, undefined);
+
+                updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, undefined);
+
+                redirectTo(
+                    res,
+                    `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                        matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                    }`,
+                );
+                return;
+            }
+
             updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
                 fullTimeRestrictions: timeRestrictions,
                 errors: [],
@@ -122,6 +153,25 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
             updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinition);
             redirectTo(res, '/chooseTimeRestrictions');
+            return;
+        }
+
+        // if in edit mode
+        if (ticket && matchingJsonMetaData) {
+            const updatedTicket = {
+                ...ticket,
+                timeRestriction: undefined,
+            };
+
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, undefined);
+
+            redirectTo(
+                res,
+                `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                }`,
+            );
             return;
         }
 

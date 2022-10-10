@@ -5,8 +5,14 @@ import { removeAllWhiteSpace, removeExcessWhiteSpace, isValid24hrTimeFormat } fr
 import { NextApiRequestWithSession, TimeRestriction, ErrorInfo, FullTimeRestriction, TimeBand } from '../../interfaces';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
+import {
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+} from '../../constants/attributes';
 import { TimeRestrictionDay } from 'fdbt-types/matchingJsonTypes';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 
 export const collectInputsFromRequest = (
     req: NextApiRequestWithSession,
@@ -171,6 +177,26 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (errors.length > 0) {
             redirectTo(res, '/chooseTimeRestrictions');
+            return;
+        }
+
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+        // if in edit mode
+        if (ticket && matchingJsonMetaData) {
+            const updatedTicket = {
+                ...ticket,
+                timeRestriction: undefined,
+            };
+
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, undefined);
+            redirectTo(
+                res,
+                `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                }`,
+            );
             return;
         }
 
