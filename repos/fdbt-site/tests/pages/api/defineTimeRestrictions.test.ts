@@ -28,7 +28,7 @@ describe('defineTimeRestrictions', () => {
             validDays: 'tuesday',
         };
         const mockAttributeValue: TimeRestriction = {
-            validDays: ['tuesday'],
+            validDays: [],
         };
         const { req, res } = getMockRequestAndResponse({
             body: mockReqBody,
@@ -42,28 +42,7 @@ describe('defineTimeRestrictions', () => {
             mockAttributeValue,
         );
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/chooseTimeRestrictions',
-        });
-    });
-
-    it('should set the TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE and redirect to itself (i.e. /defineTimeRestrictions) when errors are present due to saying there are valid days but not providing any', async () => {
-        const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
-            body: {
-                timeRestrictionChoice: 'Yes',
-            },
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-        });
-        await defineTimeRestrictions(req, res);
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, {
-            validDays: undefined,
-            timeRestrictionChoice: 'Yes',
-            errors: [{ errorMessage: 'Select at least one day', id: 'monday' }],
-        });
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/defineTimeRestrictions',
+            Location: '/fareConfirmation',
         });
     });
 

@@ -1,4 +1,3 @@
-import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
 import {
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
@@ -18,6 +17,26 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
+        if (!timeRestrictionChoice) {
+            const timeRestrictionsDefinitionWithErrors: TimeRestrictionsDefinitionWithErrors = {
+                validDays,
+                timeRestrictionChoice,
+                errors: [{ errorMessage: 'Choose one of the options below', id: 'valid-days-required' }],
+            };
+
+            updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinitionWithErrors);
+
+            redirectTo(res, '/selectTimeRestrictions');
+
+            return;
+        }
+
+        const noc = getAndValidateNoc(req, res);
+
+        if (!noc) {
+            throw new Error('Could not find users NOC code.');
+        }
+
         if (timeRestrictionChoice === 'Premade') {
             if (!timeRestriction) {
                 const timeRestrictionsDefinitionWithErrors: TimeRestrictionsDefinitionWithErrors = {
@@ -35,12 +54,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 redirectTo(res, '/selectTimeRestrictions');
 
                 return;
-            }
-
-            const noc = getAndValidateNoc(req, res);
-
-            if (!noc) {
-                throw new Error('Could not find users NOC code.');
             }
 
             const results = await getTimeRestrictionByNameAndNoc(timeRestriction, noc);
@@ -113,49 +126,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        const timeRestrictionsDefinition: TimeRestriction = {
-            validDays: [],
-        };
-
-        if (!timeRestrictionChoice) {
-            const timeRestrictionsDefinitionWithErrors: TimeRestrictionsDefinitionWithErrors = {
-                validDays,
-                timeRestrictionChoice,
-                errors: [{ errorMessage: 'Choose one of the options below', id: 'valid-days-required' }],
-            };
-
-            updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinitionWithErrors);
-
-            redirectTo(res, '/selectTimeRestrictions');
-
-            return;
-        }
-
-        if (timeRestrictionChoice === 'Yes') {
-            if (!validDays || validDays.length === 0) {
-                const timeRestrictionsDefinitionWithErrors: TimeRestrictionsDefinitionWithErrors = {
-                    validDays,
-                    timeRestrictionChoice,
-                    errors: [{ errorMessage: 'Select at least one day', id: 'monday' }],
-                };
-                updateSessionAttribute(
-                    req,
-                    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
-                    timeRestrictionsDefinitionWithErrors,
-                );
-                redirectTo(res, '/defineTimeRestrictions');
-                return;
-            }
-            if (isArray(validDays)) {
-                timeRestrictionsDefinition.validDays = timeRestrictionsDefinition.validDays.concat(validDays);
-            } else {
-                timeRestrictionsDefinition.validDays.push(validDays);
-            }
-            updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinition);
-            redirectTo(res, '/chooseTimeRestrictions');
-            return;
-        }
-
         // if in edit mode
         if (ticket && matchingJsonMetaData) {
             const updatedTicket = {
@@ -174,6 +144,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             );
             return;
         }
+
+        const timeRestrictionsDefinition: TimeRestriction = {
+            validDays: [],
+        };
 
         updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, { fullTimeRestrictions: [], errors: [] });
         updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinition);
