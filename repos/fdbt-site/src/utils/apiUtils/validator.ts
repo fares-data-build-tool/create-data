@@ -43,27 +43,8 @@ export const invalidCharactersArePresent = (value: string): boolean => {
     return regularExpression.test(value);
 };
 export const invalidUrlInput = (value: string): boolean => {
-    console.log('!!!!!!!! indide invalidURL');
     // this regular expression checks to see if any of the characters
-    // are not:
-    //
-    // alphanumeric (a to z, capitalised too and numbers)
-    // parenthesis ()
-    // slashes \ or /
-    // plus sign +
-    // dash -
-    // underscore _
-    // dot .
-    // ampersand &
-    // space
-    // @ symbol
-    // apostrophe and comma
-
-    // anything not in the above is considered invalid
-    // const regularExpression = new RegExp("(https?:(//)/*  */?)[^\\ssa-zA-Z()_0-9'@,&+.\\/]+|[^\\ssa-zA-Z()_0-9'@,&+.\\/]+");
-    const regularExpression = new RegExp(
-        '[(http(s)?)://(www.)?a-zA-Z0-9@:%._+~#=]{2,256}.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)',
-    );
+    const regularExpression = new RegExp("[^\\ssa-zA-Z()_0-9'@,&+.:/]+");
 
     return regularExpression.test(value);
 };

@@ -29,11 +29,9 @@ export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => 
         .filter((entry) => {
             const inputValue = entry[1];
             const inputKey = entry[0];
-            console.log('!!!!!!!!!!!!!!', inputKey);
 
             const entryHasInvalidCharacters =
                 inputKey === 'url' ? invalidUrlInput(inputValue) : invalidCharactersArePresent(inputValue);
-            console.log(entryHasInvalidCharacters);
             return entryHasInvalidCharacters;
         })
         .forEach((entry) =>
