@@ -212,7 +212,7 @@ export const getLineRefList = (
     return fullServicesList.length > 0
         ? fullServicesList.map(service => ({
               version: '1.0',
-              ref: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
+              ref: `op:${service.lineName}#${service.serviceCode}`,
           }))
         : [];
 };

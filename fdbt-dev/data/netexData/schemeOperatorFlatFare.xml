@@ -174,12 +174,12 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1#05/04/2020"/>
+                      <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1"/>
+                      <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1"/>
+                      <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1"/>
+                      <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1"/>
+                      <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1"/>
+                      <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
