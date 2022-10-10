@@ -207,7 +207,7 @@
                   <ToDate>2028-12-17T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Tariff for Product 1 - group</Name>
+              <Name>Product 1</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>
@@ -559,7 +559,7 @@
           </tariffs>
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_1_group">
-              <Name>Product 1 - group</Name>
+              <Name>Product 1</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
@@ -582,7 +582,7 @@
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_2_group">
-              <Name>Product 2 - group</Name>
+              <Name>Product 2</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
@@ -605,7 +605,7 @@
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_3_group">
-              <Name>Product 3 - group</Name>
+              <Name>Product 3</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
@@ -651,7 +651,7 @@
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_5_group">
-              <Name>Product 5 - group</Name>
+              <Name>Product 5</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>

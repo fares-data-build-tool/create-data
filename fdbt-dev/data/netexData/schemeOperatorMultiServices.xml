@@ -163,7 +163,7 @@
                   <ToDate>2022-02-02T23:59:00.000Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Tariff for Week Rider - adult</Name>
+              <Name>Week Rider</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>
@@ -334,7 +334,7 @@
           </tariffs>
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@Week_Rider_adult">
-              <Name>Week Rider - adult</Name>
+              <Name>Week Rider</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
@@ -357,7 +357,7 @@
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Month_Rider_adult">
-              <Name>Month Rider - adult</Name>
+              <Name>Month Rider</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>

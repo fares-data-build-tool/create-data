@@ -163,7 +163,7 @@
                   <ToDate>2121-09-02T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Tariff for test - child</Name>
+              <Name>test</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>
@@ -286,7 +286,7 @@
           </tariffs>
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@test_child">
-              <Name>test - child</Name>
+              <Name>test</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
@@ -309,7 +309,7 @@
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Jacob_Ellis_child">
-              <Name>Jacob Ellis - child</Name>
+              <Name>Jacob Ellis</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>

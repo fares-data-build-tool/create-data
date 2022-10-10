@@ -145,7 +145,7 @@
                   <Name>Term Time Usage Only</Name>
                 </ValidityCondition>
               </validityConditions>
-              <Name>Tariff for Test Product 4 - youngPerson</Name>
+              <Name>Test Product 4</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>
@@ -465,7 +465,7 @@
           </tariffs>
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@Test_Product_4_youngPerson">
-              <Name>Test Product 4 - youngPerson</Name>
+              <Name>Test Product 4</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
@@ -488,7 +488,7 @@
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Test_Product_1_youngPerson">
-              <Name>Test Product 1 - youngPerson</Name>
+              <Name>Test Product 1</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
@@ -511,7 +511,7 @@
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Test_Product_2_youngPerson">
-              <Name>Test Product 2 - youngPerson</Name>
+              <Name>Test Product 2</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
@@ -534,7 +534,7 @@
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Test_Product_3_youngPerson">
-              <Name>Test Product 3 - youngPerson</Name>
+              <Name>Test Product 3</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>

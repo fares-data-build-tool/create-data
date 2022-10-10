@@ -330,11 +330,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         tariff.id = coreData.lineIdName
             ? `Tariff@${coreData.ticketType}@${coreData.lineIdName}`
             : `op:Tariff@${coreData.placeholderGroupOfProductsName}`;
-        tariff.Name.$t = `Tariff for ${
-            isFlatFareType(ticket) || isPointToPointTicket(ticket)
-                ? coreData.productNameForPlainText
-                : `${coreData.productNameForPlainText} - ${ticket.passengerType}`
-        }`;
+        tariff.Name.$t = coreData.productNameForPlainText;
 
         const fareStructuresElements = getFareStructuresElements(
             ticket,

@@ -139,7 +139,7 @@
                   <ToDate>2121-07-06T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Tariff for test</Name>
+              <Name>test</Name>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
               <TariffBasis>flat</TariffBasis>
