@@ -141,7 +141,7 @@
                   <ToDate>2028-12-17T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Blackpool Transport - BLAC_products - Fares for Period ticket</Name>
+              <Name>Tariff for Test Product 1 - youngPerson</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>

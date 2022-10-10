@@ -201,7 +201,7 @@
                   <ToDate>2021-10-01T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Test Operator - BLAC_products - Fares for Flat Fare ticket</Name>
+              <Name>Tariff for JTest00</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
               <TariffBasis>flat</TariffBasis>
