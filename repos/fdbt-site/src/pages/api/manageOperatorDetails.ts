@@ -3,7 +3,7 @@ import { redirectTo, redirectToError, getAndValidateNoc, checkEmailValid } from 
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { GS_OPERATOR_DETAILS_ATTRIBUTE } from '../../constants/attributes';
-import { invalidCharactersArePresent, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
+import { invalidCharactersArePresent, invalidUrlInput, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { upsertOperatorDetails } from '../../data/auroradb';
 import { OperatorDetails } from 'fdbt-types/matchingJsonTypes';
 import { lowerCase, upperFirst } from 'lodash';
@@ -28,9 +28,12 @@ export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => 
     Object.entries(operatorDetails)
         .filter((entry) => {
             const inputValue = entry[1];
+            const inputKey = entry[0];
+            console.log('!!!!!!!!!!!!!!', inputKey);
 
-            const entryHasInvalidCharacters = invalidCharactersArePresent(inputValue);
-
+            const entryHasInvalidCharacters =
+                inputKey === 'url' ? invalidUrlInput(inputValue) : invalidCharactersArePresent(inputValue);
+            console.log(entryHasInvalidCharacters);
             return entryHasInvalidCharacters;
         })
         .forEach((entry) =>
@@ -52,7 +55,6 @@ export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => 
     if (operatorDetails.email && !checkEmailValid(operatorDetails.email)) {
         errors.push({ id: 'email', errorMessage: 'Provide a valid email' });
     }
-
     if (operatorDetails.url && !/^[^ ]+$/.exec(operatorDetails.url)) {
         errors.push({ id: 'url', errorMessage: 'Provide a valid URL' });
     }
