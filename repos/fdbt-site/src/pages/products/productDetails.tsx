@@ -295,7 +295,11 @@ const createProductDetails = async (
             ? (await getTimeRestrictionByIdAndNoc(ticket.timeRestriction.id, noc)).name
             : 'N/A';
 
-        productDetailsElements.push({ name: 'Time restriction', content: [timeRestriction] });
+        productDetailsElements.push({
+            name: 'Time restriction',
+            content: [timeRestriction],
+            editLink: '/selectTimeRestrictions',
+        });
     } else {
         productDetailsElements.push({ name: 'Only valid during term time', content: ['Yes'] });
     }
