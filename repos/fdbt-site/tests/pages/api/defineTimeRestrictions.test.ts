@@ -180,7 +180,7 @@ describe('defineTimeRestrictions', () => {
         });
     });
 
-    it('should set the TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE when in edit mode', async () => {
+    it('should update the time restrictions id when in edit mode', async () => {
         const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
         getTimeRestrictionByNameAndNocSpy.mockImplementation().mockResolvedValue([
             {
@@ -225,6 +225,59 @@ describe('defineTimeRestrictions', () => {
             {
                 ...expectedSingleTicket,
                 timeRestriction: { id: 1 },
+            },
+            'matchingJsonLink',
+        );
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/products/productDetails?productId=1&serviceId=2',
+        });
+    });
+
+    it('should update the time restrictions when in edit mode', async () => {
+        const getTimeRestrictionByNameAndNocSpy = jest.spyOn(auroradb, 'getTimeRestrictionByNameAndNoc');
+        getTimeRestrictionByNameAndNocSpy.mockImplementation().mockResolvedValue([
+            {
+                id: 1,
+                name: 'My time restriction',
+                contents: [
+                    {
+                        day: 'monday',
+                        timeBands: [
+                            {
+                                startTime: '1000',
+                                endTime: '1100',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ]);
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                timeRestrictionChoice: 'No',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            cookieValues: {
+                idToken: mockIdTokenMultiple,
+            },
+            session: {
+                [OPERATOR_ATTRIBUTE]: { name: 'test', nocCode: 'HELLO', uuid: 'blah' },
+                [MATCHING_JSON_ATTRIBUTE]: expectedSingleTicket,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '1',
+                    serviceId: '2',
+                    matchingJsonLink: 'matchingJsonLink',
+                },
+            },
+        });
+        await defineTimeRestrictions(req, res);
+
+        expect(userData.putUserDataInProductsBucketWithFilePath).toBeCalledWith(
+            {
+                ...expectedSingleTicket,
+                timeRestriction: undefined,
             },
             'matchingJsonLink',
         );
