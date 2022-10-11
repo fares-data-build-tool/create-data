@@ -17,21 +17,16 @@ export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => 
         }));
 
     Object.entries(operatorDetails)
-        .filter(
-            (entry) =>
-                ['operatorName', 'street', 'town', 'county', 'postcode'].includes(entry[0]) && entry[1].length < 1,
-        )
+        .filter((entry) => ['operatorName', 'street', 'town', 'postcode'].includes(entry[0]) && entry[1].length < 1)
         .forEach((entry) =>
             errors.push({ id: entry[0], errorMessage: upperFirst(`${lowerCase(entry[0])} is required`) }),
         );
 
     Object.entries(operatorDetails)
+        .filter((entry) => !entry[0].includes('url'))
         .filter((entry) => {
             const inputValue = entry[1];
-            const inputKey = entry[0];
-
-            const entryHasInvalidCharacters =
-                inputKey === 'url' ? invalidUrlInput(inputValue) : invalidCharactersArePresent(inputValue);
+            const entryHasInvalidCharacters = invalidCharactersArePresent(inputValue);
             return entryHasInvalidCharacters;
         })
         .forEach((entry) =>
@@ -53,7 +48,7 @@ export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => 
     if (operatorDetails.email && !checkEmailValid(operatorDetails.email)) {
         errors.push({ id: 'email', errorMessage: 'Provide a valid email' });
     }
-    if (operatorDetails.url && !/^[^ ]+$/.exec(operatorDetails.url)) {
+    if (operatorDetails.url && invalidUrlInput(operatorDetails.url)) {
         errors.push({ id: 'url', errorMessage: 'Provide a valid URL' });
     }
 

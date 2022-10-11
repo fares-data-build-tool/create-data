@@ -47,7 +47,6 @@ describe('manageOperatorDetails', () => {
                 { id: 'operatorName', errorMessage: 'Operator name is required' },
                 { id: 'street', errorMessage: 'Street is required' },
                 { id: 'town', errorMessage: 'Town is required' },
-                { id: 'county', errorMessage: 'County is required' },
                 { id: 'postcode', errorMessage: 'Postcode is required' },
             ],
             input,
