@@ -42,6 +42,30 @@ export const invalidCharactersArePresent = (value: string): boolean => {
 
     return regularExpression.test(value);
 };
+export const invalidUrlInput = (value: string): boolean => {
+    // this regular expression checks to see if any of the characters
+    // are not:
+    //
+    // alphanumeric (a to z, capitalised too and numbers);
+    // parenthesis ()
+    // backslash \
+    // plus sign +
+    // dash -
+    // underscore _
+    // dot .
+    // ampersand &
+    // space
+    // @ symbol
+    // apostrophe and comma
+
+    // anything not in the above is considered invalid
+    const regularExpression = new RegExp("[^\\ssa-zA-Z()_0-9'\\:@,&+.\\-\\/]+");
+    // URL has at least one dot
+    const hasDot = /[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]/.exec(value) ? true : false;
+    // URL has no spaces
+    const hasSpace = !/^[^ ]+$/.exec(value) ? true : false;
+    return regularExpression.test(value) || !hasDot || hasSpace;
+};
 
 export const checkProductNameIsValid = (inputtedProductName: string): string => {
     let productNameError;
