@@ -445,7 +445,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         const fareTableFareFrameToUpdate = { ...fareTableFareFrame };
 
         fareTableFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRICE:${ticketIdentifier}@pass:op`;
-        fareTableFareFrameToUpdate.Name.$t = `${ticketIdentifier} Prices`;
+        fareTableFareFrameToUpdate.Name.$t = `Prices for ${coreData.productNameForPlainText}`;
         fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${ticketIdentifier}@pass:op`;
 
         if ('lineName' in ticket) {
