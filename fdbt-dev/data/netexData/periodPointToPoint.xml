@@ -1068,7 +1068,7 @@
                   <ToDate>2022-02-02T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Blackpool Transport - BLAC_products - Fares for Period ticket</Name>
+              <Name>Period Point to Point</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="2"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>

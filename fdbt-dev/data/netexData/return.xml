@@ -350,7 +350,7 @@
                   <FromDate>2010-12-17T00:00:00.000Z</FromDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Blackpool Transport - Line_19 - Fares for Return ticket</Name>
+              <Name>Another product</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="19"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>

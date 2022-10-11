@@ -1,4 +1,3 @@
-import { startCase } from 'lodash';
 import { PointToPointPeriodTicket } from 'fdbt-types/matchingJsonTypes';
 import {
     isBaseSchemeOperatorInfo,
@@ -331,9 +330,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         tariff.id = coreData.lineIdName
             ? `Tariff@${coreData.ticketType}@${coreData.lineIdName}`
             : `op:Tariff@${coreData.placeholderGroupOfProductsName}`;
-        tariff.Name.$t = `${coreData.operatorName} - ${ticketIdentifier} - Fares for ${startCase(
-            coreData.ticketType,
-        )} ticket`;
+        tariff.Name.$t = coreData.productNameForPlainText;
 
         const fareStructuresElements = getFareStructuresElements(
             ticket,
