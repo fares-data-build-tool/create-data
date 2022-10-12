@@ -64,7 +64,7 @@ export const getNetexTemplateAsJson = async (filepath: string): Promise<NetexObj
 
         return json;
     } catch (error) {
-        throw new Error(`Error converting NeTEx template to JSON: ${error.stack}`);
+        throw new Error(`Error converting NeTEx template to JSON: ${(error as Error).stack}`);
     }
 };
 
@@ -307,22 +307,20 @@ export const isPeriodType = (ticket: Ticket): boolean => ticket.type === 'period
 export const getProductType = (ticket: Ticket): string => {
     if (isFlatFareType(ticket) || isSingleTicket(ticket)) {
         return 'singleTrip';
-    } else if (isPeriodType(ticket)) {
-        if (
-            ticket.products &&
-            ticket.products.length == 1 &&
-            isProductDetails(ticket.products[0]) &&
-            ticket.products[0].productDuration == '1 day'
-        ) {
+    }
+
+    if (isPeriodType(ticket)) {
+        if (isProductDetails(ticket.products[0]) && ticket.products[0].productDuration === '1 day') {
             return 'dayPass';
         }
         return 'periodPass';
-    } else if (isReturnTicket(ticket)) {
-        // Return period validity
+    }
+
+    if (isReturnTicket(ticket)) {
         if (
-            'returnPeriodValidity' in ticket &&
             ticket.returnPeriodValidity &&
-            ticket.returnPeriodValidity.typeOfDuration === 'day'
+            ticket.returnPeriodValidity.typeOfDuration === 'day' &&
+            ticket.returnPeriodValidity.amount === '1'
         ) {
             return 'dayReturnTrip';
         }
