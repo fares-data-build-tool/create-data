@@ -26,6 +26,7 @@ import {
     isHybridTicket,
     isReturnTicket,
     isSingleTicket,
+    checkPassengerType,
 } from '../types';
 
 import {
@@ -95,20 +96,23 @@ export const getProfileRef = (
     };
 };
 
-export const getUserProfile = (user: User | GroupCompanion, index: number): NetexObject => ({
-    version: '1.0',
-    id: `op:${user.passengerType}-${index}`,
-    Name: { $t: user.passengerType },
-    TypeOfConcessionRef: {
-        version: 'fxc:v1.0',
-        ref: `fxc:${
-            user.passengerType === 'anyone' || user.passengerType === 'adult' ? 'none' : snakeCase(user.passengerType)
-        }`,
-    },
-    MinimumAge: { $t: user.ageRangeMin || null },
-    MaximumAge: { $t: user.ageRangeMax || null },
-    ProofRequired: { $t: user.proofDocuments?.join(' ') || null },
-});
+export const getUserProfile = (user: User | GroupCompanion, index: number): NetexObject => {
+    checkPassengerType(user.passengerType);
+    const { passengerType } = user;
+    return {
+        version: '1.0',
+        id: `op:${passengerType}-${index}`,
+        Name: { $t: passengerType },
+        TypeOfConcessionRef: {
+            version: 'fxc:v1.0',
+            ref: `fxc:${passengerType === 'anyone' || passengerType === 'adult' ? 'none' : snakeCase(passengerType)}`,
+        },
+        UserType: { $t: passengerType },
+        MinimumAge: { $t: user.ageRangeMin || null },
+        MaximumAge: { $t: user.ageRangeMax || null },
+        ProofRequired: { $t: user.proofDocuments?.join(' ') || null },
+    };
+};
 
 export const getGroupElement = (groupDefinition: GroupDefinition): NetexObject => {
     return {

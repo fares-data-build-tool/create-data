@@ -531,6 +531,7 @@
                       <UserProfile version="1.0" id="op:adult-0">
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>adult</UserType>
                         <MinimumAge>18</MinimumAge>
                         <ProofRequired>identityDocument</ProofRequired>
                       </UserProfile>
@@ -547,6 +548,7 @@
                       <UserProfile version="1.0" id="op:child-1">
                         <Name>child</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+                        <UserType>child</UserType>
                         <MinimumAge>5</MinimumAge>
                         <MaximumAge>17</MaximumAge>
                         <ProofRequired>identityDocument</ProofRequired>
