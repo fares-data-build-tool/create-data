@@ -504,7 +504,7 @@ describe('Shared Helpers', () => {
         });
     });
 
-    describe.only('getProductType', () => {
+    describe('getProductType', () => {
         const returnCircularTicketForOneDay = {
             ...returnCircularTicket,
             returnPeriodValidity: {
