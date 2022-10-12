@@ -1922,6 +1922,7 @@
                       </UserProfile>
                       <UserProfile version="1.0" id="op:adult-1">
                         <Name>adult</Name>
+                        <UserType>adult</UserType>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                         <MinimumAge>5</MinimumAge>
                         <MaximumAge>17</MaximumAge>
