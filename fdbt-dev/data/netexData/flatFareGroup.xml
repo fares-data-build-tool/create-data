@@ -286,6 +286,7 @@
                     <limitations>
                       <UserProfile version="1.0" id="op:adult-0">
                         <Name>adult</Name>
+                        <UserType>adult</UserType>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                         <MinimumAge>18</MinimumAge>
                         <ProofRequired>identityDocument</ProofRequired>

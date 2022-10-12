@@ -99,6 +99,7 @@ export const getUserProfile = (user: User | GroupCompanion, index: number): Nete
     version: '1.0',
     id: `op:${user.passengerType}-${index}`,
     Name: { $t: user.passengerType },
+    UserType: { $t: user.passengerType },
     TypeOfConcessionRef: {
         version: 'fxc:v1.0',
         ref: `fxc:${
