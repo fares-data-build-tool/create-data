@@ -201,7 +201,7 @@ export interface CarnetDetails {
 const passengerTypes = ['adult', 'child', 'infant' ,'senior' , 'student' , 'youngPerson' , 'schoolPupil' , 'military' 
 , 'disabled' , 'disabledCompanion' , 'jobSeeker' , 'employee' , 'animal' , 'anyone']
 type PassengerType = (typeof passengerTypes)[number];
-export const isPassengerType = (passengerType : any): passengerType is PassengerType => passengerTypes.includes(passengerType);
+export const isPassengerType = (passengerType : string): passengerType is PassengerType => passengerTypes.includes(passengerType);
 
 export const isPointToPointTicket = (ticketData: Ticket): ticketData is PointToPointTicket =>
     ticketData.type === 'single' || ticketData.type === 'return';
