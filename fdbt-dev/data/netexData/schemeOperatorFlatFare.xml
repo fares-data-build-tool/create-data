@@ -206,6 +206,7 @@
                       <UserProfile version="1.0" id="op:senior-0">
                         <Name>senior</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
+                        <UserType>senior</UserType>
                         <MinimumAge>65</MinimumAge>
                         <ProofRequired>identityDocument</ProofRequired>
                       </UserProfile>
