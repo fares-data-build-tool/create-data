@@ -216,7 +216,12 @@ describe('myfares pages', () => {
                     endDate: '18/12/2024',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Single'] },
-                        { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
+                        {
+                            name: 'Service',
+                            content: ['Test Line Name - Test Origin to Test Destination'],
+                            editLabel: '',
+                            editLink: '',
+                        },
                         { name: 'Journey direction', content: ['Inbound - this way'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
                         { name: 'Only valid during term time', content: ['Yes'] },
@@ -250,7 +255,12 @@ describe('myfares pages', () => {
                     endDate: '18/12/2020',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
-                        { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
+                        {
+                            name: 'Service',
+                            content: ['Test Line Name - Test Origin to Test Destination'],
+                            editLabel: '',
+                            editLink: '',
+                        },
                         { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
                         {
                             name: 'Time restriction',
@@ -494,7 +504,12 @@ describe('myfares pages', () => {
                     endDate: '18/12/2024',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Single'] },
-                        { name: 'Service', content: ['Test Line Name - Test Origin to Test Destination'] },
+                        {
+                            name: 'Service',
+                            content: ['Test Line Name - Test Origin to Test Destination'],
+                            editLabel: '',
+                            editLink: '',
+                        },
                         { name: 'Journey direction', content: ['Inbound - this way'] },
                         { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
                         { name: 'Only valid during term time', content: ['Yes'] },

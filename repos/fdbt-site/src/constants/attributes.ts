@@ -113,3 +113,5 @@ export const CSV_ZONE_FILE_NAME = 'fdbt-csv-zone-file-name';
 export const MATCHING_JSON_ATTRIBUTE = 'fdbt-matching-json';
 
 export const MATCHING_JSON_META_DATA_ATTRIBUTE = 'fdbt-matching-json-meta-data';
+
+export const RETURN_SERVICE_ATTRIBUTE = 'fdbt-return-service';

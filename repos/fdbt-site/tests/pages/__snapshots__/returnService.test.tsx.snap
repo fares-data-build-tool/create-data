@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages returnService should render correctly 1`] = `
+<TwoThirdsLayout
+  description="Service selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Return Service - Create Fares Data Service"
+>
+  <BackButton
+    href=""
+  />
+  <CsrfForm
+    action="/api/returnService"
+    csrfToken=""
+    method="post"
+  >
+    <label
+      htmlFor="service"
+    >
+      <h1
+        className="govuk-heading-l"
+        id="service-page-heading"
+      >
+        Select another service for return leg
+      </h1>
+    </label>
+    <InformationSummary
+      informationText="No stops are being changed, you are only adding a service"
+    />
+    <span
+      className="govuk-hint"
+      id="service-operator-passenger-type-hint"
+    >
+      Connexions Buses
+       - 
+      Adult
+    </span>
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <FormElementWrapper
+        errorClass="govuk-select--error"
+        errorId="returnService"
+        errors={Array []}
+      >
+        <select
+          className="govuk-select"
+          id="service"
+          name="serviceId"
+        >
+          <option
+            disabled={true}
+            value=""
+          >
+            Select One
+          </option>
+          <option
+            className="service-option"
+            key="11"
+            value="11"
+          >
+            123
+             
+            Manchester
+             - 
+            Leeds
+             
+            (Start date 
+            05/02/2020
+            )
+          </option>
+          <option
+            className="service-option"
+            key="12"
+            value="12"
+          >
+            X1
+             
+            Edinburgh
+             - 
+            N/A
+             
+            (Start date 
+            06/02/2020
+            )
+          </option>
+          <option
+            className="service-option"
+            key="13"
+            value="13"
+          >
+            Infinity Line
+             
+            N/A
+             - 
+            London
+             
+            (Start date 
+            07/02/2020
+            )
+          </option>
+        </select>
+      </FormElementWrapper>
+      <span
+        className="govuk-hint hint-text"
+        id="traveline-hint"
+      >
+        This data is taken from the 
+        <b>
+          Bus Open Data Service (BODS)
+        </b>
+        . If the service you are looking for is not listed, contact the BODS help desk for advice 
+        <a
+          href="/contact"
+        >
+          here
+        </a>
+      </span>
+    </div>
+    <input
+      name="selectedServiceId"
+      type="hidden"
+      value={1}
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;

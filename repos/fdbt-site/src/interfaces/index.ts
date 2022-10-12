@@ -348,6 +348,14 @@ export interface BasicService {
     serviceDescription: string;
 }
 
+export interface ReturnService extends BasicService {
+    id: number;
+}
+
+export interface ReturnServiceWithErrors {
+    errors: ErrorInfo[];
+}
+
 export interface SalesOfferPackageInfo {
     purchaseLocations: string[];
     paymentMethods: string[];
@@ -606,6 +614,7 @@ export interface ProductDetailsElement {
     editLink?: string;
     generateLink?: string;
     id?: string;
+    editLabel?: string;
 }
 
 export interface RadioOption {
