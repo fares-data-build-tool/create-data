@@ -145,7 +145,7 @@
                   <Name>Term Time Usage Only</Name>
                 </ValidityCondition>
               </validityConditions>
-              <Name>Test Product 4</Name>
+              <Name>Tariff for Test Product 4</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>
