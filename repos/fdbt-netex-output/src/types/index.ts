@@ -198,8 +198,8 @@ export interface CarnetDetails {
     expiryUnit: CarnetExpiryUnit;
 }
 
-const  passengerTypes = ['adult', 'child', 'infant' ,'senior' , 'student' , 'youngPerson' , 'schoolPupil' , 'military' 
-, 'disabled' , 'disabledCompanion' , 'jobSeeker' , 'employee' , 'animal' , 'anyone'] as const
+const passengerTypes = ['adult', 'child', 'infant' ,'senior' , 'student' , 'youngPerson' , 'schoolPupil' , 'military' 
+, 'disabled' , 'disabledCompanion' , 'jobSeeker' , 'employee' , 'animal' , 'anyone']
 type PassengerType = (typeof passengerTypes)[number];
 export const isPassengerType = (passengerType : any): passengerType is PassengerType => passengerTypes.includes(passengerType);
 

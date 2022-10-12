@@ -552,8 +552,8 @@
                     <limitations>
                       <UserProfile version="1.0" id="op:student-0">
                         <Name>student</Name>
-                        <UserType>student</UserType>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:student"/>
+                        <UserType>student</UserType>
                         <MinimumAge>12</MinimumAge>
                         <MaximumAge>25</MaximumAge>
                         <ProofRequired>studentCard identityDocument membershipCard</ProofRequired>

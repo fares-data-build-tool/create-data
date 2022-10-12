@@ -102,11 +102,11 @@ export const getUserProfile = (user: User | GroupCompanion, index: number): Nete
         version: '1.0',
         id: `op:${passengerType}-${index}`,
         Name: { $t: passengerType },
-        UserType: { $t: passengerType },
         TypeOfConcessionRef: {
             version: 'fxc:v1.0',
             ref: `fxc:${passengerType === 'anyone' || passengerType === 'adult' ? 'none' : snakeCase(passengerType)}`,
         },
+        UserType: { $t: passengerType },
         MinimumAge: { $t: user.ageRangeMin || null },
         MaximumAge: { $t: user.ageRangeMax || null },
         ProofRequired: { $t: user.proofDocuments?.join(' ') || null },

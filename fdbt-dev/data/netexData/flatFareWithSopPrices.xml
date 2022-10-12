@@ -179,8 +179,8 @@
                     <limitations>
                       <UserProfile version="1.0" id="op:anyone-0">
                         <Name>anyone</Name>
-                        <UserType>anyone</UserType>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>anyone</UserType>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>

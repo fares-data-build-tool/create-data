@@ -645,8 +645,8 @@
                     <limitations>
                       <UserProfile version="1.0" id="op:child-0">
                         <Name>child</Name>
-                        <UserType>child</UserType>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+                        <UserType>child</UserType>
                         <MaximumAge>14</MaximumAge>
                       </UserProfile>
                     </limitations>
