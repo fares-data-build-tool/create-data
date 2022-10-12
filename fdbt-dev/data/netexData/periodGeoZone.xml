@@ -207,7 +207,7 @@
                   <ToDate>2028-12-17T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Product 1</Name>
+              <Name>Tariff for Product 1</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>
