@@ -576,7 +576,7 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@Product_1_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
+              <ProductType>dayPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_2_adult">
               <Name>Product 2</Name>
@@ -599,7 +599,7 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@Product_2_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
+              <ProductType>dayPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_3_adult">
               <Name>Product 3</Name>
@@ -622,7 +622,7 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@Product_3_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
+              <ProductType>dayPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_4_adult">
               <Name>Product 4</Name>
@@ -645,7 +645,7 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@Product_4_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
+              <ProductType>dayPass</ProductType>
             </PreassignedFareProduct>
             <PreassignedFareProduct version="1.0" id="op:Pass@Product_5_adult">
               <Name>Product 5</Name>
@@ -668,7 +668,7 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@Product_5_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
+              <ProductType>dayPass</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
