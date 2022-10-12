@@ -200,8 +200,10 @@ export interface CarnetDetails {
 
 const passengerTypes = ['adult', 'child', 'infant' ,'senior' , 'student' , 'youngPerson' , 'schoolPupil' , 'military' 
 , 'disabled' , 'disabledCompanion' , 'jobSeeker' , 'employee' , 'animal' , 'anyone']
-type PassengerType = (typeof passengerTypes)[number];
-export const isPassengerType = (passengerType : string): passengerType is PassengerType => passengerTypes.includes(passengerType);
+
+export const checkPassengerType = (passengerType : string) => {
+    if(!passengerTypes.includes(passengerType)) throw new Error('Passenger type received was not one of the accepted enumerations.')
+}
 
 export const isPointToPointTicket = (ticketData: Ticket): ticketData is PointToPointTicket =>
     ticketData.type === 'single' || ticketData.type === 'return';

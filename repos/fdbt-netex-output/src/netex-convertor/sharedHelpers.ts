@@ -26,7 +26,7 @@ import {
     isHybridTicket,
     isReturnTicket,
     isSingleTicket,
-    isPassengerType,
+    checkPassengerType,
 } from '../types';
 
 import {
@@ -97,7 +97,8 @@ export const getProfileRef = (
 };
 
 export const getUserProfile = (user: User | GroupCompanion, index: number): NetexObject => {
-    const passengerType = isPassengerType(user.passengerType) ? user.passengerType : '';
+    checkPassengerType(user.passengerType);
+    const { passengerType } = user;
     return {
         version: '1.0',
         id: `op:${passengerType}-${index}`,
