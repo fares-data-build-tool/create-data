@@ -277,6 +277,7 @@
                       <UserProfile version="1.0" id="op:child-0">
                         <Name>child</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+                        <UserType>child</UserType>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>

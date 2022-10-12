@@ -393,6 +393,7 @@
                       <UserProfile version="1.0" id="op:youngPerson-0">
                         <Name>youngPerson</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:young_person"/>
+                        <UserType>youngPerson</UserType>
                         <MinimumAge>16</MinimumAge>
                         <MaximumAge>25</MaximumAge>
                         <ProofRequired>identityDocument</ProofRequired>
