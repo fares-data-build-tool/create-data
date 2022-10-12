@@ -198,6 +198,11 @@ export interface CarnetDetails {
     expiryUnit: CarnetExpiryUnit;
 }
 
+const  passengerTypes = ['adult', 'child', 'infant' ,'senior' , 'student' , 'youngPerson' , 'schoolPupil' , 'military' 
+, 'disabled' , 'disabledCompanion' , 'jobSeeker' , 'employee' , 'animal' , 'anyone'] as const
+type PassengerType = (typeof passengerTypes)[number];
+export const isPassengerType = (passengerType : any): passengerType is PassengerType => passengerTypes.includes(passengerType);
+
 export const isPointToPointTicket = (ticketData: Ticket): ticketData is PointToPointTicket =>
     ticketData.type === 'single' || ticketData.type === 'return';
 
