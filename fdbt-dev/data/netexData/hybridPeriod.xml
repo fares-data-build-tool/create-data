@@ -18,7 +18,6 @@
             <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
             <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
             <PreassignedFareProductRef version="1.0" ref="op:Pass@Best_product_one_anyone"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Another_great_product_anyone"/>
             <BrandingRef version="1.0" ref="op:WBTR@brand"/>
           </objectReferences>
         </NetworkFilterByValue>
@@ -211,10 +210,6 @@
                   <Name>3 months</Name>
                   <Description>P3M</Description>
                 </TimeInterval>
-                <TimeInterval version="1.0" id="op:Tariff@Another_great_product@4-years">
-                  <Name>4 years</Name>
-                  <Description>P4Y</Description>
-                </TimeInterval>
               </timeIntervals>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="op:Tariff@Best_product_one@access_zones">
@@ -254,50 +249,6 @@
                         <FrequencyOfUseType>unlimited</FrequencyOfUseType>
                       </FrequencyOfUse>
                       <UsageValidityPeriod version="1.0" id="op:Trip@Best_product_one@back@frequency">
-                        <UsageTrigger>purchase</UsageTrigger>
-                        <UsageEnd>endOfFareDay</UsageEnd>
-                        <ActivationMeans>noneRequired</ActivationMeans>
-                      </UsageValidityPeriod>
-                    </limitations>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Another_great_product@access_zones">
-                  <Name>Available lines and/or zones</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
-                  <GenericParameterAssignment id="Tariff@Another_great_product@access_zones" version="1.0" order="1">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
-                    <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
-                    <validityParameters>
-                      <FareZoneRef version="1.0" ref="op:WBTR_products@Test_Town_Centre"/>
-                    </validityParameters>
-                    <includes>
-                      <GenericParameterAssignment version="1.0" id="Another_great_product-groupsOfLinesWrapper" order="2">
-                        <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
-                        <validityParameters>
-                          <GroupOfLinesRef version="1.0" ref="WBTR@groupOfLines@1"/>
-                        </validityParameters>
-                      </GenericParameterAssignment>
-                    </includes>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Another_great_product@durations@anyone">
-                  <Name>Available duration combination - anyone ticket</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
-                  <timeIntervals>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@Another_great_product@4-years"/>
-                  </timeIntervals>
-                </FareStructureElement>
-                <FareStructureElement id="op:Tariff@Another_great_product@conditions_of_travel" version="1.0">
-                  <Name>Conditions of travel</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
-                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Another_great_product@conditions_of_travel">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
-                    <LimitationGroupingType>AND</LimitationGroupingType>
-                    <limitations>
-                      <FrequencyOfUse version="1.0" id="op:Pass@Another_great_product@frequency">
-                        <FrequencyOfUseType>unlimited</FrequencyOfUseType>
-                      </FrequencyOfUse>
-                      <UsageValidityPeriod version="1.0" id="op:Trip@Another_great_product@back@frequency">
                         <UsageTrigger>purchase</UsageTrigger>
                         <UsageEnd>endOfFareDay</UsageEnd>
                         <ActivationMeans>noneRequired</ActivationMeans>
@@ -347,29 +298,6 @@
               </accessRightsInProduct>
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Another_great_product_anyone">
-              <Name>Another great product</Name>
-              <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
-              <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Another_great_product_anyone@travel">
-                  <Name>Rides available for specified durations</Name>
-                  <fareStructureElements>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Another_great_product@access_zones"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Another_great_product@durations@anyone"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Another_great_product@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@anyone"/>
-                  </fareStructureElements>
-                </ValidableElement>
-              </validableElements>
-              <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Another_great_product_anyone@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Another_great_product_anyone@travel"/>
-                </AccessRightInProduct>
-              </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
-            </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
             <SalesOfferPackage version="1.0" id="Trip@Best_product_one-Best_product_one-SOP@Onboard_(cash)">
@@ -401,38 +329,6 @@
                 <SalesOfferPackageElement id="Trip@Best_product_one-Best_product_one-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Best_product_one_anyone"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@Best_product_one-Another_great_product-SOP@Onboard_(cash)">
-              <Name>Another great product - anyone - Onboard (cash)</Name>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Best_product_one-Another_great_product-SOP@Onboard_(cash)@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
-                  <DistributionChannelType>onBoard</DistributionChannelType>
-                  <PaymentMethods>cash</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Best_product_one-Another_great_product-Onboard_(cash)@paperTicket" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Another_great_product_anyone"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@Best_product_one-Another_great_product-SOP@Onboard_(contactless)">
-              <Name>Another great product - anyone - Onboard (contactless)</Name>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Best_product_one-Another_great_product-SOP@Onboard_(contactless)@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
-                  <DistributionChannelType>onBoard</DistributionChannelType>
-                  <PaymentMethods>contactlessPaymentCard</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Best_product_one-Another_great_product-Onboard_(contactless)@paperTicket" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Another_great_product_anyone"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -517,74 +413,6 @@
                 </FareTable>
               </includes>
             </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Another_great_product@Onboard_(cash)@zone">
-              <Name>Another great product - Onboard (cash) - Test Town Centre</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Another_great_product_anyone"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Another_great_product@Onboard_(cash)@anyone@product-1@SOP-0@zone">
-                  <Name>Another great product - Onboard (cash)  - anyone</Name>
-                  <specifics>
-                    <TariffZoneRef version="1.0" ref="op:WBTR_products@Test_Town_Centre"/>
-                  </specifics>
-                  <includes>
-                    <FareTable version="1.0" id="op:Another_great_product@Onboard_(cash)@anyone@zone@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Another_great_product-SOP@Onboard_(cash)"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Another_great_product@Onboard_(cash)@anyone@zone@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:anyone-0"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Another_great_product@Onboard_(cash)@zone">
-                              <Amount>320</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Another_great_product@4-years"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Another_great_product@Onboard_(contactless)@zone">
-              <Name>Another great product - Onboard (contactless) - Test Town Centre</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Another_great_product_anyone"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Another_great_product@Onboard_(contactless)@anyone@product-1@SOP-1@zone">
-                  <Name>Another great product - Onboard (contactless)  - anyone</Name>
-                  <specifics>
-                    <TariffZoneRef version="1.0" ref="op:WBTR_products@Test_Town_Centre"/>
-                  </specifics>
-                  <includes>
-                    <FareTable version="1.0" id="op:Another_great_product@Onboard_(contactless)@anyone@zone@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Another_great_product-SOP@Onboard_(contactless)"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Another_great_product@Onboard_(contactless)@anyone@zone@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:anyone-0"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Another_great_product@Onboard_(contactless)@zone">
-                              <Amount>314</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Another_great_product@4-years"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
             <FareTable version="1.0" id="op:fareTable@Best_product_one@Onboard_(cash)@services">
               <Name>Best product one - Onboard (cash) - 11 services</Name>
               <pricesFor>
@@ -638,68 +466,6 @@
                             <TimeIntervalPrice version="1.0" id="op:Best_product_one@Onboard_(contactless)@service">
                               <Amount>22</Amount>
                               <TimeIntervalRef version="1.0" ref="op:Tariff@Best_product_one@3-months"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Another_great_product@Onboard_(cash)@services">
-              <Name>Another great product - Onboard (cash) - 11 services</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Another_great_product_anyone"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Another_great_product@Onboard_(cash)@anyone@product-1@SOP-0@service">
-                  <Name>Another great product - Onboard (cash)  - anyone</Name>
-                  <includes>
-                    <FareTable version="1.0" id="op:Another_great_product@Onboard_(cash)@anyone@service@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Another_great_product-SOP@Onboard_(cash)"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Another_great_product@Onboard_(cash)@anyone@service@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:anyone-0"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Another_great_product@Onboard_(cash)@service">
-                              <Amount>320</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Another_great_product@4-years"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Another_great_product@Onboard_(contactless)@services">
-              <Name>Another great product - Onboard (contactless) - 11 services</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Another_great_product_anyone"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Another_great_product@Onboard_(contactless)@anyone@product-1@SOP-1@service">
-                  <Name>Another great product - Onboard (contactless)  - anyone</Name>
-                  <includes>
-                    <FareTable version="1.0" id="op:Another_great_product@Onboard_(contactless)@anyone@service@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@Best_product_one-Another_great_product-SOP@Onboard_(contactless)"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Another_great_product@Onboard_(contactless)@anyone@service@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:anyone-0"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Another_great_product@Onboard_(contactless)@service">
-                              <Amount>314</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Another_great_product@4-years"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>

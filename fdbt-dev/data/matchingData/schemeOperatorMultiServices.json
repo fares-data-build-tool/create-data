@@ -83,34 +83,6 @@
           "price": "2.59"
         }
       ]
-    },
-    {
-      "productName": "Month Rider",
-      "productPrice": "3.99",
-      "productDuration": "1 month",
-      "productValidity": "fareDayEnd",
-      "productEndTime": "1500",
-      "salesOfferPackages": [
-        {
-          "id": 4,
-          "name": "Online",
-          "description": "",
-          "purchaseLocations": [
-            "online"
-          ],
-          "paymentMethods": [
-            "creditCard",
-            "mobilePhone",
-            "directDebit",
-            "contactlessTravelCard"
-          ],
-          "ticketFormats": [
-            "smartCard",
-            "electronic_document"
-          ],
-          "price": "3.99"
-        }
-      ]
     }
   ],
   "additionalOperators": [
