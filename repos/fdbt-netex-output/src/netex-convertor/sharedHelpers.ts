@@ -64,7 +64,7 @@ export const getNetexTemplateAsJson = async (filepath: string): Promise<NetexObj
 
         return json;
     } catch (error) {
-        throw new Error(`Error converting NeTEx template to JSON: ${error.stack}`);
+        throw new Error(`Error converting NeTEx template to JSON: ${(error as Error).stack}`);
     }
 };
 
@@ -380,7 +380,13 @@ export const getFareStructuresElements = (
     }
 
     if ('lineName' in ticket) {
-        fareStructureElements.push(getLinesElement(ticket, lineName));
+        let isReturnAndHasAdditionalService = false;
+
+        if (isReturnTicket(ticket) && ticket.additionalServices) {
+            isReturnAndHasAdditionalService = true;
+        }
+
+        fareStructureElements.push(getLinesElement(ticket, lineName, isReturnAndHasAdditionalService));
         fareStructureElements.push(getEligibilityElement(ticket));
 
         // P2P Periods have one product with duration details attached

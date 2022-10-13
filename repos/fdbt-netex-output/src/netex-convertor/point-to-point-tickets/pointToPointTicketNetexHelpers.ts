@@ -1,5 +1,5 @@
 import startCase from 'lodash/startCase';
-import { PointToPointPeriodTicket } from 'fdbt-types/matchingJsonTypes';
+import { AdditionalService, PointToPointPeriodTicket, ReturnTicket } from 'fdbt-types/matchingJsonTypes';
 import {
     FareZone,
     FareZoneList,
@@ -12,6 +12,7 @@ import {
     BaseProduct,
     NetexSalesOfferPackage,
     isReturnTicket,
+    CoreData,
 } from '../../types';
 import {
     NetexObject,
@@ -490,8 +491,53 @@ export const combineFareZones = (outbound: FareZone[], inbound: FareZone[]): Far
 export const getLinesElement = (
     ticket: PointToPointTicket | PointToPointPeriodTicket,
     lineName: string,
+    isReturnAndHasAdditionalService: boolean,
 ): NetexObject => {
     const typeOfPointToPoint = ticket.type;
+
+    if (!isReturnAndHasAdditionalService) {
+        return {
+            version: '1.0',
+            id: `Tariff@${typeOfPointToPoint}@lines`,
+            Name: { $t: `O/D pairs for ${lineName}` },
+            TypeOfFareStructureElementRef: {
+                versionRef: 'fxc:v1.0',
+                ref: 'fxc:access',
+            },
+            distanceMatrixElements: {
+                DistanceMatrixElement: isReturnTicket(ticket)
+                    ? getDistanceMatrixElements(combineFareZones(ticket.outboundFareZones, ticket.inboundFareZones))
+                    : getDistanceMatrixElements(ticket.fareZones),
+            },
+            GenericParameterAssignment: {
+                version: '1.0',
+                order: '01',
+                id: `Tariff@${typeOfPointToPoint}@lines`,
+                TypeOfAccessRightAssignmentRef: {
+                    version: 'fxc:v1.0',
+                    ref: 'fxc:can_access',
+                },
+                ValidityParameterAssignmentType: { $t: 'EQ' },
+                validityParameters: {
+                    LineRef: {
+                        version: '1.0',
+                        ref: lineName,
+                    },
+                },
+            },
+        };
+    }
+
+    const lineRefs = [
+        {
+            version: '1.0',
+            ref: lineName,
+        },
+        {
+            version: '1.0',
+            ref: isReturnTicket(ticket)  &&  ticket.additionalServices && ticket.additionalServices.length >0 ? ticket.additionalServices[0]?.lineName : '',
+        },
+    ];
 
     return {
         version: '1.0',
@@ -514,13 +560,8 @@ export const getLinesElement = (
                 version: 'fxc:v1.0',
                 ref: 'fxc:can_access',
             },
-            ValidityParameterAssignmentType: { $t: 'EQ' },
-            validityParameters: {
-                LineRef: {
-                    version: '1.0',
-                    ref: lineName,
-                },
-            },
+            ValidityParameterAssignmentType: { $t: 'XOR' },
+            validityParameters: { LineRef: lineRefs },
         },
     };
 };
@@ -632,4 +673,40 @@ export const getPointToPointConditionsElement = (ticket: PointToPointTicket): Ne
             },
         },
     };
+};
+
+export const getAdditionalReturnLines = (
+    ticket: ReturnTicket | PointToPointPeriodTicket,
+    coreData: CoreData,
+    additionalService: AdditionalService,
+): NetexObject[] => {
+    const firstLine = {
+        version: '1.0',
+        id: coreData.lineName,
+        Name: { $t: coreData.operatorPublicNameLineNameFormat },
+        Description: { $t: ticket.serviceDescription },
+        PublicCode: { $t: coreData.lineName },
+        PrivateCode: { type: 'txc:Line@id', $t: coreData.lineIdName },
+        OperatorRef: {
+            version: '1.0',
+            ref: coreData.nocCodeFormat,
+            $t: coreData.opIdNocFormat,
+        },
+        LineType: { $t: 'local' },
+    };
+    const secondLine = {
+        version: '1.0',
+        id: additionalService.lineName,
+        Name: { $t: `${ticket.operatorName} ${additionalService.lineName}` },
+        Description: { $t: additionalService.serviceDescription },
+        PublicCode: { $t: additionalService.lineName },
+        PrivateCode: { type: 'txc:Line@id', $t: `Line_${additionalService.lineName}` },
+        OperatorRef: {
+            version: '1.0',
+            ref: coreData.nocCodeFormat,
+            $t: coreData.opIdNocFormat,
+        },
+        LineType: { $t: 'local' },
+    };
+    return [firstLine, secondLine];
 };
