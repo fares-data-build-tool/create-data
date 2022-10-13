@@ -130,6 +130,14 @@
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineType>local</LineType>
             </Line>
+            <Line version="1.0" id="20">
+              <Name>Blackpool Transport 20</Name>
+              <Description>ANOTHER - DESCRIPTION via Victoria Hospital (Main Entrance)</Description>
+              <PublicCode>20</PublicCode>
+              <PrivateCode type="txc:Line@id">Line_20</PrivateCode>
+              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <LineType>local</LineType>
+            </Line>
           </lines>
           <scheduledStopPoints>
             <ScheduledStopPoint version="any" id="atco:2500B0636">
@@ -350,10 +358,9 @@
                   <FromDate>2010-12-17T00:00:00.000Z</FromDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Tariff for Another product</Name>
+              <Name>Blackpool Transport - Line_19 - Fares for Return ticket</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="19"/>
-              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <TariffBasis>zoneToZone</TariffBasis>
               <qualityStructureFactors>
                 <FareDemandFactor id="op@Tariff@Demand" version="1.0">
@@ -429,7 +436,6 @@
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="Tariff@return@lines">
                   <Name>O/D pairs for 19</Name>
-                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:access"/>
                   <distanceMatrixElements>
                     <DistanceMatrixElement version="1.0" id="Shott_Drive+The_Stag_pub">
                       <priceGroups>
@@ -630,15 +636,15 @@
                   </distanceMatrixElements>
                   <GenericParameterAssignment version="1.0" order="01" id="Tariff@return@lines">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
-                    <ValidityParameterAssignmentType>EQ</ValidityParameterAssignmentType>
+                    <ValidityParameterGroupingType>XOR</ValidityParameterGroupingType>
                     <validityParameters>
                       <LineRef version="1.0" ref="19"/>
+                      <LineRef version="1.0" ref="20"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="Tariff@return@eligibility">
                   <Name>eligible user types</Name>
-                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:eligibility"/>
                   <GenericParameterAssignment version="1.0" order="1" id="Tariff@return@eligibility">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
                     <LimitationGroupingType>XOR</LimitationGroupingType>
@@ -646,7 +652,6 @@
                       <UserProfile version="1.0" id="op:child-0">
                         <Name>child</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
-                        <UserType>child</UserType>
                         <MaximumAge>14</MaximumAge>
                       </UserProfile>
                     </limitations>
@@ -654,7 +659,6 @@
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="Tariff@return@conditions_of_travel">
                   <Name>Conditions of travel</Name>
-                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:travel_conditions"/>
                   <GenericParameterAssignment version="1.0" order="1" id="Tariff@return@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
@@ -706,7 +710,6 @@
                   <ValidableElementRef version="1.0" ref="Trip@Another_product@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>periodReturnTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
@@ -816,7 +819,7 @@
           </salesOfferPackages>
         </FareFrame>
         <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:Line_19@pass:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
-          <Name>Prices for Another product</Name>
+          <Name>Line_19 Prices</Name>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" version="fxc:v1.0"/>
           <FrameDefaults>
             <DefaultCurrency>GBP</DefaultCurrency>
@@ -3672,7 +3675,7 @@
             </UserProfile>
             <UserProfile version="fxc:v1.0" id="fxc:senior">
               <Name>Senior</Name>
-              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
+              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
               <UserType>senior</UserType>
               <MinimumAge>60</MinimumAge>
             </UserProfile>
