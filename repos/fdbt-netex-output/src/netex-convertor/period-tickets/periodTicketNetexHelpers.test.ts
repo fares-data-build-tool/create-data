@@ -197,7 +197,7 @@ describe('periodTicketNetexHelpers', () => {
         it('returns a list of NeTEx lines given periodMultipleServicesTicket matching data', () => {
             const expectedLineSchema = {
                 version: '1.0',
-                id:  expect.any(String),
+                id: expect.any(String),
                 Name: expect.objectContaining({ $t: expect.any(String) }),
                 Description: { $t: expect.any(String) },
                 Url: expect.objectContaining({ $t: expect.any(String) }),
