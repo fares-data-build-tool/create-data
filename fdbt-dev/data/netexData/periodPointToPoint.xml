@@ -1068,7 +1068,7 @@
                   <ToDate>2022-02-02T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Blackpool Transport - BLAC_products - Fares for Period ticket</Name>
+              <Name>Tariff for Period Point to Point</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="2"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
@@ -1163,6 +1163,7 @@
                       <UserProfile version="1.0" id="op:anyone-0">
                         <Name>anyone</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>anyone</UserType>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -1222,6 +1223,7 @@
                   <ValidableElementRef version="1.0" ref="Trip@Period_Point_to_Point@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
+              <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
@@ -1260,7 +1262,7 @@
           </salesOfferPackages>
         </FareFrame>
         <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:BLAC_products@pass:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
-          <Name>BLAC_products Prices</Name>
+          <Name>Prices for Period Point to Point</Name>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" version="fxc:v1.0"/>
           <FrameDefaults>
             <DefaultCurrency>GBP</DefaultCurrency>

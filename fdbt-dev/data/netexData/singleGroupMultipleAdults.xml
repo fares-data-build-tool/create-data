@@ -465,7 +465,7 @@
                   <ToDate>2028-12-17T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Blackpool Transport - PK1146649_RJ1_Outbound - Fares for Single ticket</Name>
+              <Name>Tariff for Best product</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="4"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
@@ -1917,11 +1917,13 @@
                       <UserProfile version="1.0" id="op:adult-0">
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>adult</UserType>
                         <MinimumAge>18</MinimumAge>
                       </UserProfile>
                       <UserProfile version="1.0" id="op:adult-1">
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>adult</UserType>
                         <MinimumAge>5</MinimumAge>
                         <MaximumAge>17</MaximumAge>
                         <ProofRequired>identityDocument</ProofRequired>
@@ -1978,6 +1980,7 @@
                   <ValidableElementRef version="1.0" ref="Trip@Best_product@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
+              <ProductType>singleTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
@@ -2087,7 +2090,7 @@
           </salesOfferPackages>
         </FareFrame>
         <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:PK1146649_RJ1_Outbound@pass:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
-          <Name>PK1146649_RJ1_Outbound Prices</Name>
+          <Name>Prices for Best product</Name>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" version="fxc:v1.0"/>
           <FrameDefaults>
             <DefaultCurrency>GBP</DefaultCurrency>

@@ -24,6 +24,11 @@ import {
     BaseProduct,
     PointToPointCarnetProductDetails,
     isHybridTicket,
+    isReturnTicket,
+    isSingleTicket,
+    checkPassengerType,
+    isMultiOperatorGeoZoneTicket,
+    isMultiOperatorMultipleServicesTicket,
 } from '../types';
 
 import {
@@ -62,7 +67,7 @@ export const getNetexTemplateAsJson = async (filepath: string): Promise<NetexObj
 
         return json;
     } catch (error) {
-        throw new Error(`Error converting NeTEx template to JSON: ${error.stack}`);
+        throw new Error(`Error converting NeTEx template to JSON: ${(error as Error).stack}`);
     }
 };
 
@@ -93,20 +98,23 @@ export const getProfileRef = (
     };
 };
 
-export const getUserProfile = (user: User | GroupCompanion, index: number): NetexObject => ({
-    version: '1.0',
-    id: `op:${user.passengerType}-${index}`,
-    Name: { $t: user.passengerType },
-    TypeOfConcessionRef: {
-        version: 'fxc:v1.0',
-        ref: `fxc:${
-            user.passengerType === 'anyone' || user.passengerType === 'adult' ? 'none' : snakeCase(user.passengerType)
-        }`,
-    },
-    MinimumAge: { $t: user.ageRangeMin || null },
-    MaximumAge: { $t: user.ageRangeMax || null },
-    ProofRequired: { $t: user.proofDocuments?.join(' ') || null },
-});
+export const getUserProfile = (user: User | GroupCompanion, index: number): NetexObject => {
+    checkPassengerType(user.passengerType);
+    const { passengerType } = user;
+    return {
+        version: '1.0',
+        id: `op:${passengerType}-${index}`,
+        Name: { $t: passengerType },
+        TypeOfConcessionRef: {
+            version: 'fxc:v1.0',
+            ref: `fxc:${passengerType === 'anyone' || passengerType === 'adult' ? 'none' : snakeCase(passengerType)}`,
+        },
+        UserType: { $t: passengerType },
+        MinimumAge: { $t: user.ageRangeMin || null },
+        MaximumAge: { $t: user.ageRangeMax || null },
+        ProofRequired: { $t: user.proofDocuments?.join(' ') || null },
+    };
+};
 
 export const getGroupElement = (groupDefinition: GroupDefinition): NetexObject => {
     return {
@@ -299,6 +307,37 @@ export const getDistributionChannel = (purchaseLocation: string): string => {
 };
 
 export const isFlatFareType = (ticket: Ticket): boolean => ticket.type === 'flatFare';
+
+export const getProductType = (ticket: Ticket): string => {
+    if (isFlatFareType(ticket) || isSingleTicket(ticket)) {
+        return 'singleTrip';
+    }
+
+    if (
+        ticket.type === 'period' ||
+        isMultiOperatorGeoZoneTicket(ticket) ||
+        isMultiOperatorMultipleServicesTicket(ticket)
+    ) {
+        if (isProductDetails(ticket.products[0]) && ticket.products[0].productDuration === '1 day') {
+            return 'dayPass';
+        }
+        return 'periodPass';
+    }
+
+    if (isReturnTicket(ticket)) {
+        if (
+            ticket.returnPeriodValidity &&
+            ticket.returnPeriodValidity.typeOfDuration === 'day' &&
+            ticket.returnPeriodValidity.amount === '1'
+        ) {
+            return 'dayReturnTrip';
+        }
+
+        return 'periodReturnTrip';
+    }
+
+    return 'periodPass';
+};
 
 export const getCarnetElement = (ticket: Ticket): NetexObject => {
     const uniqueCarnetDenominations = new Set();

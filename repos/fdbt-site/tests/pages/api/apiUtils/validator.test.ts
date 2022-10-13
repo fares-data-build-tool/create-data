@@ -4,6 +4,7 @@ import {
     removeAllWhiteSpace,
     isValid24hrTimeFormat,
     invalidCharactersArePresent,
+    invalidUrlInput,
 } from '../../../../src/utils/apiUtils/validator';
 
 describe('validator', () => {
@@ -81,6 +82,29 @@ describe('validator', () => {
             [false, "valid character '", "The King's head"],
         ])('should return %s for %s', (validity, _case, value) => {
             expect(invalidCharactersArePresent(value)).toBe(validity);
+        });
+    });
+    describe('invalidUrlInput', () => {
+        it.each([
+            [false, 'Valid http URL', 'http://www.example.com'],
+            [false, 'Valid https URL', 'https://www.example.com'],
+            [false, 'Valid www.example.com', 'www.example.com'],
+            [false, 'Valid example.com', 'example.com'],
+            [true, 'Invalid URL without dot ', 'examplecom'],
+            [true, 'invalid URL space', 'http://www.example. com'],
+            [true, 'invalid URL simicolon', 'http://www.example.com;'],
+            [false, 'valid character @', 'http://www.example.com@'],
+            [true, 'Invalid string with no dot', 'Hello'],
+            [true, 'valid character \\', 'http://www.example.com\\'],
+            [false, 'valid character +', 'http://www.example.com+'],
+            [false, 'valid character -', 'http://www.example.com-'],
+            [false, 'valid character _', 'http://www.example.com_'],
+            [false, 'valid character .', 'http://www.example.com.'],
+            [false, 'valid character &', 'http://www.example.com&'],
+            [false, 'valid character ,', 'http://www.example.com,'],
+            [false, "valid character '", "http://www.example.com's"],
+        ])('should return %s for %s', (validity, _case, value) => {
+            expect(invalidUrlInput(value)).toBe(validity);
         });
     });
 });

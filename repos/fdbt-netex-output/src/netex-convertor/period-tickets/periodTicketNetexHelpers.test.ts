@@ -206,8 +206,10 @@ describe('periodTicketNetexHelpers', () => {
                 OperatorRef: { version: '1.0', ref: expect.stringContaining('noc:') },
                 LineType: { $t: 'local' },
             };
-            const expectedLength = periodMultipleServicesTicket.selectedServices.length;
-
+            const seen: string[] = [];
+            const expectedLength = periodMultipleServicesTicket.selectedServices.filter(item => {
+                return seen.includes(item.serviceCode) ? false : seen.push(item.serviceCode);
+            }).length;
             const linesList = netexHelpers.getLinesList(periodMultipleServicesTicket, opData.url, multiOperatorList);
 
             expect(linesList).toHaveLength(expectedLength);
@@ -506,7 +508,6 @@ describe('periodTicketNetexHelpers', () => {
 
     describe('getTimeIntervals', () => {
         it('returns a time interval for each product in the products array', () => {
-            const expectedLength = periodMultipleServicesTicket.products.length;
             const result = netexHelpers.getTimeIntervals(periodMultipleServicesTicket);
             const expectedFormat = {
                 Description: expect.objectContaining({ $t: expect.any(String) }),
@@ -526,13 +527,7 @@ describe('periodTicketNetexHelpers', () => {
                 Name: { $t: '1 day' },
                 Description: { $t: 'P1D' },
             });
-            expect(result[1]).toStrictEqual({
-                version: '1.0',
-                id: 'op:Tariff@Weekly Rider@7-weeks',
-                Name: { $t: '7 weeks' },
-                Description: { $t: 'P49D' },
-            });
-            expect(result.length).toBe(expectedLength);
+            expect(result.length).toBe(1);
         });
     });
 

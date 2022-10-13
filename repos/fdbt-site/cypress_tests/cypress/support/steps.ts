@@ -236,6 +236,14 @@ export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPer
     continueButtonClick();
 };
 
+export const completeAcademicPage = (numberOfProducts: number, multiProductNamePrefix: string): void => {
+    randomlyDetermineUserType();
+    continueButtonClick();
+    randomlyChooseAndSelectServices();
+    continueButtonClick();
+    completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
+};
+
 export const completeSalesPages = (numberOfProducts?: number, multiProductNamePrefix?: string): void => {
     if (numberOfProducts && multiProductNamePrefix) {
         completeSalesOfferPackagesForMultipleProducts(numberOfProducts, multiProductNamePrefix);

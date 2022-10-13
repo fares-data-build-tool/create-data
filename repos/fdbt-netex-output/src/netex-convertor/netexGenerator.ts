@@ -1,4 +1,3 @@
-import { startCase } from 'lodash';
 import { PointToPointPeriodTicket } from 'fdbt-types/matchingJsonTypes';
 import {
     isBaseSchemeOperatorInfo,
@@ -331,9 +330,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         tariff.id = coreData.lineIdName
             ? `Tariff@${coreData.ticketType}@${coreData.lineIdName}`
             : `op:Tariff@${coreData.placeholderGroupOfProductsName}`;
-        tariff.Name.$t = `${coreData.operatorName} - ${ticketIdentifier} - Fares for ${startCase(
-            coreData.ticketType,
-        )} ticket`;
+        tariff.Name.$t = `Tariff for ${coreData.productNameForPlainText}`;
 
         const fareStructuresElements = getFareStructuresElements(
             ticket,
@@ -344,13 +341,21 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         );
         tariff.fareStructureElements.FareStructureElement = fareStructuresElements;
 
+        if (isFlatFareType(ticket)) {
+            tariff.TypeOfTariffRef = {
+                version: 'fxc:v1.0',
+                ref: 'fxc:flat',
+            };
+
+            tariff.TariffBasis = { $t: 'flat' };
+        }
         tariff.validityConditions = {
             ValidBetween: {
                 FromDate: { $t: ticket.ticketPeriod.startDate },
                 ToDate: { $t: ticket.ticketPeriod.endDate },
             },
             ValidityCondition:
-                'termTime' in ticket && ticket.termTime
+                'termTime' in ticket && ticket.termTime && ticket.type === 'period' && 'selectedServices' in ticket
                     ? {
                           id: 'op:termtime',
                           version: '1.0',
@@ -440,7 +445,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         const fareTableFareFrameToUpdate = { ...fareTableFareFrame };
 
         fareTableFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRICE:${ticketIdentifier}@pass:op`;
-        fareTableFareFrameToUpdate.Name.$t = `${ticketIdentifier} Prices`;
+        fareTableFareFrameToUpdate.Name.$t = `Prices for ${coreData.productNameForPlainText}`;
         fareTableFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${ticketIdentifier}@pass:op`;
 
         if ('lineName' in ticket) {

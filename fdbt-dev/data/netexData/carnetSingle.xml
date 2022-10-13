@@ -464,11 +464,8 @@
                   <FromDate>2010-12-17T00:00:00.000Z</FromDate>
                   <ToDate>2028-12-17T23:59:59.999Z</ToDate>
                 </ValidBetween>
-                <ValidityCondition id="op:termtime" version="1.0">
-                  <Name>Term Time Usage Only</Name>
-                </ValidityCondition>
               </validityConditions>
-              <Name>Blackpool Transport - Line_4 - Fares for Single ticket</Name>
+              <Name>Tariff for Product 1</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="4"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
@@ -1905,6 +1902,7 @@
                       <UserProfile version="1.0" id="op:adult-0">
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>adult</UserType>
                         <MinimumAge>18</MinimumAge>
                       </UserProfile>
                     </limitations>
@@ -1959,6 +1957,7 @@
                   <ValidableElementRef version="1.0" ref="Trip@Product_1@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
+              <ProductType>singleTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
@@ -2068,7 +2067,7 @@
           </salesOfferPackages>
         </FareFrame>
         <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:Line_4@pass:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
-          <Name>Line_4 Prices</Name>
+          <Name>Prices for Product 1</Name>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" version="fxc:v1.0"/>
           <FrameDefaults>
             <DefaultCurrency>GBP</DefaultCurrency>

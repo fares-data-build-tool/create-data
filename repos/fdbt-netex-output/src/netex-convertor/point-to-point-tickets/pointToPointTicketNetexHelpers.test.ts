@@ -7,7 +7,7 @@ import {
     returnNonCircularTicketWithReturnValidity,
     fareZonesWithoutStopIndicator,
 } from '../../test-data/matchingData';
-import { NetexObject, getUserProfile } from '../sharedHelpers';
+import { NetexObject, getUserProfile, getProductType } from '../sharedHelpers';
 import {
     buildSalesOfferPackage,
     buildSalesOfferPackages,
@@ -1817,6 +1817,7 @@ describe('Netex Helpers', () => {
                         ref: expect.any(String),
                         version: 'fxc:v1.0',
                     },
+                    UserType: { $t: expect.any(String) },
                     Name: { $t: expect.any(String) },
                 };
                 const actualUserProfile = getUserProfile(ticket as User, 0);
@@ -1842,6 +1843,7 @@ describe('Netex Helpers', () => {
                         ref: expect.any(String),
                         version: 'fxc:v1.0',
                     },
+                    UserType: { $t: expect.any(String) },
                 };
                 const ticketWithAgeRangeAndProof: PointToPointTicket = {
                     ...ticket,
@@ -1878,6 +1880,7 @@ describe('Netex Helpers', () => {
                         ref: expect.any(String),
                         version: 'fxc:v1.0',
                     },
+                    UserType: { $t: expect.any(String) },
                 };
                 const ticketWithAgeRange: PointToPointTicket = {
                     ...ticket,
@@ -1936,6 +1939,9 @@ describe('Netex Helpers', () => {
                         order: '1',
                         version: '1.0',
                     },
+                },
+                ProductType: {
+                    $t: getProductType(ticket),
                 },
                 version: '1.0',
             };

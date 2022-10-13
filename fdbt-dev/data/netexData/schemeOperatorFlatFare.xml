@@ -162,10 +162,10 @@
                   <ToDate>2028-12-17T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>IW Buses - IW Buses-Y_products - Fares for Flat Fare ticket</Name>
+              <Name>Tariff for Weekly Rider</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
-              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
-              <TariffBasis>zone</TariffBasis>
+              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
+              <TariffBasis>flat</TariffBasis>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="op:Tariff@Weekly_Rider@access_lines">
                   <Name>Available lines and/or zones</Name>
@@ -174,12 +174,12 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1#05/04/2020"/>
-                      <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1#05/04/2020"/>
+                      <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1"/>
+                      <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1"/>
+                      <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1"/>
+                      <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1"/>
+                      <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1"/>
+                      <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -206,6 +206,7 @@
                       <UserProfile version="1.0" id="op:senior-0">
                         <Name>senior</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
+                        <UserType>senior</UserType>
                         <MinimumAge>65</MinimumAge>
                         <ProofRequired>identityDocument</ProofRequired>
                       </UserProfile>
@@ -217,7 +218,7 @@
           </tariffs>
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@Weekly_Rider_senior">
-              <Name>Weekly Rider Pass - senior</Name>
+              <Name>Weekly Rider</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
               <OperatorRef version="1.0" ref="noc:IW_Buses-Y">noc:IW Buses-Y-opId</OperatorRef>
@@ -378,7 +379,7 @@
           </salesOfferPackages>
         </FareFrame>
         <FareFrame version="1.0" id="epd:UK:IW_Buses-Y:FareFrame_UK_PI_FARE_PRICE:IW_Buses-Y_products@pass:op" responsibilitySetRef="op:tariffs">
-          <Name>IW Buses-Y_products Prices</Name>
+          <Name>Prices for Weekly Rider</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP"/>
           <FrameDefaults>
             <DefaultCodespaceRef ref="op_data"/>
@@ -514,7 +515,7 @@
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:5#NW_05_WBTR_3_1#05/04/2020">
+            <Line version="1.0" id="op:5#NW_05_WBTR_3_1">
               <Name>Line 5</Name>
               <Description>LONDON - ESSEX - BIRMINGHAM</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -523,7 +524,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:4#NW_05_WBTR_7_1#05/04/2020">
+            <Line version="1.0" id="op:4#NW_05_WBTR_7_1">
               <Name>Line 4</Name>
               <Description>EDINBURGH - GLASGOW - LEEDS</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -532,7 +533,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:7#NW_05_WBTR_6_1#05/04/2020">
+            <Line version="1.0" id="op:7#NW_05_WBTR_6_1">
               <Name>Line 7</Name>
               <Description>HULL - WIGAN - BOLTON</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -541,7 +542,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:663#NW_05_DCCL_3_1#05/04/2020">
+            <Line version="1.0" id="op:663#NW_05_DCCL_3_1">
               <Name>Line 663</Name>
               <Description>LEEDS - WAKEFIELD - YORK</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -550,7 +551,7 @@
               <OperatorRef version="1.0" ref="noc:DCCL"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:77#NW_05_DCCL_7_1#05/04/2020">
+            <Line version="1.0" id="op:77#NW_05_DCCL_7_1">
               <Name>Line 77</Name>
               <Description>BEESTON - HUNSLET - CITY CENTRE</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -559,7 +560,7 @@
               <OperatorRef version="1.0" ref="noc:DCCL"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:65#NW_05_DCCL_6_1#05/04/2020">
+            <Line version="1.0" id="op:65#NW_05_DCCL_6_1">
               <Name>Line 65</Name>
               <Description>LIVERPOOL - MANCHESTER - BOLTON</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -573,12 +574,12 @@
             <GroupOfLines version="1.0" id="IW_Buses-Y@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1#05/04/2020"/>
-                <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1#05/04/2020"/>
+                <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1"/>
+                <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1"/>
+                <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1"/>
+                <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1"/>
+                <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1"/>
+                <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>

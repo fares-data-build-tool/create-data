@@ -17,7 +17,6 @@
           <objectReferences>
             <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
             <PreassignedFareProductRef version="1.0" ref="op:Pass@Week_Rider_adult"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Month_Rider_adult"/>
             <BrandingRef version="1.0" ref="op:Test_Scheme_Op-SE@brand"/>
             <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
           </objectReferences>
@@ -163,7 +162,7 @@
                   <ToDate>2022-02-02T23:59:00.000Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Test Scheme Op - Test Scheme Op-SE_products - Fares for Period ticket</Name>
+              <Name>Tariff for Week Rider</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>
@@ -171,10 +170,6 @@
                 <TimeInterval version="1.0" id="op:Tariff@Week_Rider@1-week">
                   <Name>1 week</Name>
                   <Description>P7D</Description>
-                </TimeInterval>
-                <TimeInterval version="1.0" id="op:Tariff@Month_Rider@1-month">
-                  <Name>1 month</Name>
-                  <Description>P1M</Description>
                 </TimeInterval>
               </timeIntervals>
               <qualityStructureFactors>
@@ -241,10 +236,10 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:1#NW_07_NW_1_2#13/04/2020"/>
-                      <LineRef version="1.0" ref="op:15#NW_05_NWBT_15_1#28/03/2020"/>
-                      <LineRef version="1.0" ref="op:65#NW_05_NWBT_65_1#28/03/2020"/>
-                      <LineRef version="1.0" ref="op:67#NW_05_NWBT_67_1#28/03/2020"/>
+                      <LineRef version="1.0" ref="op:1#NW_07_NW_1_2"/>
+                      <LineRef version="1.0" ref="op:15#NW_05_NWBT_15_1"/>
+                      <LineRef version="1.0" ref="op:65#NW_05_NWBT_65_1"/>
+                      <LineRef version="1.0" ref="op:67#NW_05_NWBT_67_1"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -273,48 +268,6 @@
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Month_Rider@access_lines">
-                  <Name>Available lines and/or zones</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
-                  <qualityStructureFactors>
-                    <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
-                  </qualityStructureFactors>
-                  <GenericParameterAssignment id="Tariff@Month_Rider@access_lines" version="1.0" order="1">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
-                    <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
-                    <validityParameters>
-                      <LineRef version="1.0" ref="op:1#NW_07_NW_1_2#13/04/2020"/>
-                      <LineRef version="1.0" ref="op:15#NW_05_NWBT_15_1#28/03/2020"/>
-                      <LineRef version="1.0" ref="op:65#NW_05_NWBT_65_1#28/03/2020"/>
-                      <LineRef version="1.0" ref="op:67#NW_05_NWBT_67_1#28/03/2020"/>
-                    </validityParameters>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Month_Rider@durations@adult">
-                  <Name>Available duration combination - adult ticket</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
-                  <timeIntervals>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@Month_Rider@1-month"/>
-                  </timeIntervals>
-                </FareStructureElement>
-                <FareStructureElement id="op:Tariff@Month_Rider@conditions_of_travel" version="1.0">
-                  <Name>Conditions of travel</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
-                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Month_Rider@conditions_of_travel">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
-                    <LimitationGroupingType>AND</LimitationGroupingType>
-                    <limitations>
-                      <FrequencyOfUse version="1.0" id="op:Pass@Month_Rider@frequency">
-                        <FrequencyOfUseType>unlimited</FrequencyOfUseType>
-                      </FrequencyOfUse>
-                      <UsageValidityPeriod version="1.0" id="op:Trip@Month_Rider@back@frequency">
-                        <UsageTrigger>purchase</UsageTrigger>
-                        <UsageEnd>endOfFareDay</UsageEnd>
-                        <ActivationMeans>noneRequired</ActivationMeans>
-                      </UsageValidityPeriod>
-                    </limitations>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
                 <FareStructureElement version="1.0" id="op:Tariff@eligibility@adult">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
@@ -325,6 +278,7 @@
                       <UserProfile version="1.0" id="op:adult-0">
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>adult</UserType>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -334,7 +288,7 @@
           </tariffs>
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@Week_Rider_adult">
-              <Name>Week Rider Pass - adult</Name>
+              <Name>Week Rider</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
@@ -352,29 +306,6 @@
               <accessRightsInProduct>
                 <AccessRightInProduct version="1.0" id="op:Pass@Week_Rider_adult@travel" order="1">
                   <ValidableElementRef version="1.0" ref="op:Pass@Week_Rider_adult@travel"/>
-                </AccessRightInProduct>
-              </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
-            </PreassignedFareProduct>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Month_Rider_adult">
-              <Name>Month Rider Pass - adult</Name>
-              <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
-              <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Month_Rider_adult@travel">
-                  <Name>Rides available for specified durations</Name>
-                  <fareStructureElements>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Month_Rider@access_lines"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Month_Rider@durations@adult"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Month_Rider@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
-                  </fareStructureElements>
-                </ValidableElement>
-              </validableElements>
-              <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Month_Rider_adult@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Month_Rider_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
               <ProductType>periodPass</ProductType>
@@ -418,30 +349,10 @@
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@Week_Rider-Month_Rider-SOP@Online">
-              <Name>Month Rider - adult - Online</Name>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Week_Rider-Month_Rider-SOP@Online@online" order="1">
-                  <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
-                  <DistributionChannelType>online</DistributionChannelType>
-                  <PaymentMethods>creditCard mobilePhone directDebit contactlessTravelCard</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Week_Rider-Month_Rider-Online@smartCard" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Month_Rider_adult"/>
-                </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Week_Rider-Month_Rider-Online@electronic_document" version="1.0" order="2">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:electronic_document"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Month_Rider_adult"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
           </salesOfferPackages>
         </FareFrame>
         <FareFrame version="1.0" id="epd:UK:Test_Scheme_Op-SE:FareFrame_UK_PI_FARE_PRICE:Test_Scheme_Op-SE_products@pass:op" responsibilitySetRef="op:tariffs">
-          <Name>Test Scheme Op-SE_products Prices</Name>
+          <Name>Prices for Week Rider</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP"/>
           <FrameDefaults>
             <DefaultCodespaceRef ref="op_data"/>
@@ -513,44 +424,13 @@
                 </FareTable>
               </includes>
             </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Month_Rider@Online@services">
-              <Name>Month Rider - Online - 4 services</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Month_Rider_adult"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Month_Rider@Online@adult@product-1@SOP-0@service">
-                  <Name>Month Rider - Online  - adult</Name>
-                  <includes>
-                    <FareTable version="1.0" id="op:Month_Rider@Online@adult@service@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@Week_Rider-Month_Rider-SOP@Online"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Month_Rider@Online@adult@service@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:adult-0"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Month_Rider@Online@service">
-                              <Amount>3.99</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Month_Rider@1-month"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
           </fareTables>
         </FareFrame>
         <ServiceFrame version="1.0" id="epd:UK:Test_Scheme_Op-SE:ServiceFrame_UK_PI_NETWORK:Test_Scheme_Op-SE_products:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:1#NW_07_NW_1_2#13/04/2020">
+            <Line version="1.0" id="op:1#NW_07_NW_1_2">
               <Name>Line 1</Name>
               <Description>Warrington - Latchford/Westy (Circ)</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -559,7 +439,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:15#NW_05_NWBT_15_1#28/03/2020">
+            <Line version="1.0" id="op:15#NW_05_NWBT_15_1">
               <Name>Line 15</Name>
               <Description>BURNLEY - BURNLEY via Rose Hill Road, Moorland Road</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -568,7 +448,7 @@
               <OperatorRef version="1.0" ref="noc:NWBT"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:65#NW_05_NWBT_65_1#28/03/2020">
+            <Line version="1.0" id="op:65#NW_05_NWBT_65_1">
               <Name>Line 65</Name>
               <Description>BURNLEY - NELSON via Sycamore Avenue, Lowerhouse, Slade Lane, Higham, Barrowford</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -577,7 +457,7 @@
               <OperatorRef version="1.0" ref="noc:NWBT"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:67#NW_05_NWBT_67_1#28/03/2020">
+            <Line version="1.0" id="op:67#NW_05_NWBT_67_1">
               <Name>Line 67</Name>
               <Description>CLITHEROE - NELSON via Waddington, West Bradford, Grindleton, Downham, Blacko</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -591,10 +471,10 @@
             <GroupOfLines version="1.0" id="Test_Scheme_Op-SE@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:1#NW_07_NW_1_2#13/04/2020"/>
-                <LineRef version="1.0" ref="op:15#NW_05_NWBT_15_1#28/03/2020"/>
-                <LineRef version="1.0" ref="op:65#NW_05_NWBT_65_1#28/03/2020"/>
-                <LineRef version="1.0" ref="op:67#NW_05_NWBT_67_1#28/03/2020"/>
+                <LineRef version="1.0" ref="op:1#NW_07_NW_1_2"/>
+                <LineRef version="1.0" ref="op:15#NW_05_NWBT_15_1"/>
+                <LineRef version="1.0" ref="op:65#NW_05_NWBT_65_1"/>
+                <LineRef version="1.0" ref="op:67#NW_05_NWBT_67_1"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>

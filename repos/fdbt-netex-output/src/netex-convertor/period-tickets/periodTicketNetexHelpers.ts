@@ -47,6 +47,7 @@ import {
     getCleanWebsite,
     getDistributionChannel,
     getNetexMode,
+    getProductType,
     getProfileRef,
     getUserProfile,
     isFlatFareType,
@@ -126,37 +127,13 @@ export const getLinesList = (
         linesList = userPeriodTicket.additionalOperators.flatMap((operator): Line[] => {
             const currentOperator = operatorData.find(o => o.nocCode === operator.nocCode);
 
-            return operator.selectedServices.map(service => ({
-                version: '1.0',
-                id: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
-                Name: { $t: `Line ${service.lineName}` },
-                Description: { $t: service.serviceDescription },
-                Url: { $t: currentOperator ? getCleanWebsite(currentOperator.url) : '' },
-                PublicCode: { $t: service.lineName },
-                PrivateCode: service.lineId
-                    ? {
-                          type: 'txc:Line@id',
-                          $t: service.lineId,
-                      }
-                    : {},
-                OperatorRef: {
-                    version: '1.0',
-                    ref: `noc:${operator.nocCode}`,
-                },
-                LineType: { $t: 'local' },
-            }));
-        });
-    }
-
-    if (!isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
-        linesList = linesList.concat(
-            userPeriodTicket.selectedServices
-                ? userPeriodTicket.selectedServices.map(service => ({
+            const duplicateLines = operator.selectedServices
+                ? operator.selectedServices.map(service => ({
                       version: '1.0',
-                      id: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
+                      id: `op:${service.lineName}#${service.serviceCode}`,
                       Name: { $t: `Line ${service.lineName}` },
                       Description: { $t: service.serviceDescription },
-                      Url: { $t: website },
+                      Url: { $t: currentOperator ? getCleanWebsite(currentOperator.url) : '' },
                       PublicCode: { $t: service.lineName },
                       PrivateCode: service.lineId
                           ? {
@@ -166,13 +143,46 @@ export const getLinesList = (
                           : {},
                       OperatorRef: {
                           version: '1.0',
-                          ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
+                          ref: `noc:${operator.nocCode}`,
                       },
                       LineType: { $t: 'local' },
                   }))
-                : [],
+                : [];
+
+            const seen: string[] = [];
+            return duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id))) ?? [];
+        });
+    }
+
+    if (!isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
+        const duplicateLines = userPeriodTicket.selectedServices
+            ? userPeriodTicket.selectedServices.map(service => ({
+                  version: '1.0',
+                  id: `op:${service.lineName}#${service.serviceCode}`,
+                  Name: { $t: `Line ${service.lineName}` },
+                  Description: { $t: service.serviceDescription },
+                  Url: { $t: website },
+                  PublicCode: { $t: service.lineName },
+                  PrivateCode: service.lineId
+                      ? {
+                            type: 'txc:Line@id',
+                            $t: service.lineId,
+                        }
+                      : {},
+                  OperatorRef: {
+                      version: '1.0',
+                      ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
+                  },
+                  LineType: { $t: 'local' },
+              }))
+            : [];
+        const seen: string[] = [];
+        return (
+            linesList?.concat(duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id)))) ??
+            []
         );
     }
+
     return linesList;
 };
 
@@ -202,7 +212,7 @@ export const getLineRefList = (
     return fullServicesList.length > 0
         ? fullServicesList.map(service => ({
               version: '1.0',
-              ref: `op:${service.lineName}#${service.serviceCode}#${service.startDate}`,
+              ref: `op:${service.lineName}#${service.serviceCode}`,
           }))
         : [];
 };
@@ -570,7 +580,7 @@ export const getPreassignedFareProducts = (
             version: '1.0',
             id: `op:Pass@${product.productName}_${passengerType}`,
             Name: {
-                $t: `${product.productName} Pass - ${passengerType}`,
+                $t: product.productName,
             },
             ChargingMomentType: {
                 $t: 'beforeTravel',
@@ -608,7 +618,7 @@ export const getPreassignedFareProducts = (
                 },
             },
             ProductType: {
-                $t: isFlatFareType(userPeriodTicket) ? 'singleTrip' : 'periodPass',
+                $t: getProductType(userPeriodTicket),
             },
         };
     });

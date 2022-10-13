@@ -147,10 +147,10 @@
                   <ToDate>2121-06-25T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Test Scheme Op - Test Scheme Op-SE_products - Fares for Flat Fare ticket</Name>
+              <Name>Tariff for test</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
-              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
-              <TariffBasis>zone</TariffBasis>
+              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
+              <TariffBasis>flat</TariffBasis>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="mb:Tariff@multitrip@units">
                   <Name>Carnet denominations</Name>
@@ -169,7 +169,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:X64#YWAX064#30/10/2017"/>
+                      <LineRef version="1.0" ref="op:X64#YWAX064"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -196,6 +196,7 @@
                       <UserProfile version="1.0" id="op:adult-0">
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>adult</UserType>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -205,7 +206,7 @@
           </tariffs>
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@test_adult">
-              <Name>test Pass - adult</Name>
+              <Name>test</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
@@ -247,7 +248,7 @@
           </salesOfferPackages>
         </FareFrame>
         <FareFrame version="1.0" id="epd:UK:Test_Scheme_Op-SE:FareFrame_UK_PI_FARE_PRICE:Test_Scheme_Op-SE_products@pass:op" responsibilitySetRef="op:tariffs">
-          <Name>Test Scheme Op-SE_products Prices</Name>
+          <Name>Prices for test</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP"/>
           <FrameDefaults>
             <DefaultCodespaceRef ref="op_data"/>
@@ -284,7 +285,7 @@
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:X64#YWAX064#30/10/2017">
+            <Line version="1.0" id="op:X64#YWAX064">
               <Name>Line X64</Name>
               <Description>Aberford Old Cafe - Garforth Academy</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -298,7 +299,7 @@
             <GroupOfLines version="1.0" id="Test_Scheme_Op-SE@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:X64#YWAX064#30/10/2017"/>
+                <LineRef version="1.0" ref="op:X64#YWAX064"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>

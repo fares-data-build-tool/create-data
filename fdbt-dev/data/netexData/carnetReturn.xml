@@ -351,7 +351,7 @@
                   <ToDate>2028-12-17T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Blackpool Transport - Line_19 - Fares for Return ticket</Name>
+              <Name>Tariff for Another product</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="19"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
@@ -657,6 +657,7 @@
                       <UserProfile version="1.0" id="op:child-0">
                         <Name>child</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+                        <UserType>child</UserType>
                         <MaximumAge>14</MaximumAge>
                       </UserProfile>
                     </limitations>
@@ -717,6 +718,7 @@
                   <ValidableElementRef version="1.0" ref="Trip@Another_product@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
+              <ProductType>periodReturnTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
@@ -826,7 +828,7 @@
           </salesOfferPackages>
         </FareFrame>
         <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:Line_19@pass:op" dataSourceRef="op:operator" responsibilitySetRef="op:tariffs">
-          <Name>Line_19 Prices</Name>
+          <Name>Prices for Another product</Name>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP" version="fxc:v1.0"/>
           <FrameDefaults>
             <DefaultCurrency>GBP</DefaultCurrency>

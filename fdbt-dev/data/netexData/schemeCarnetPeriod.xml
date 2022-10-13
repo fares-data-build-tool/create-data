@@ -209,7 +209,7 @@
                   <ToDate>2121-06-25T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Test Scheme Op - Test Scheme Op-SE_products - Fares for Period ticket</Name>
+              <Name>Tariff for jakes</Name>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>
@@ -276,6 +276,7 @@
                       <UserProfile version="1.0" id="op:anyone-0">
                         <Name>anyone</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>anyone</UserType>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -285,7 +286,7 @@
           </tariffs>
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@jakes_anyone">
-              <Name>jakes Pass - anyone</Name>
+              <Name>jakes</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
@@ -328,7 +329,7 @@
           </salesOfferPackages>
         </FareFrame>
         <FareFrame version="1.0" id="epd:UK:Test_Scheme_Op-SE:FareFrame_UK_PI_FARE_PRICE:Test_Scheme_Op-SE_products@pass:op" responsibilitySetRef="op:tariffs">
-          <Name>Test Scheme Op-SE_products Prices</Name>
+          <Name>Prices for jakes</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP"/>
           <FrameDefaults>
             <DefaultCodespaceRef ref="op_data"/>
