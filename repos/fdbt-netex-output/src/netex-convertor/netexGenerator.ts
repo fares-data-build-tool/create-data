@@ -241,7 +241,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
         if ('lineName' in ticket) {
             serviceFrameToUpdate.id = `epd:UK:${ticket.nocCode}:ServiceFrame_UK_PI_NETWORK:${coreData.lineIdName}:op`;
-            serviceFrameToUpdate.lines.Line.id = coreData.lineName;
+            serviceFrameToUpdate.lines.Line.id = coreData.lineIdName;
             serviceFrameToUpdate.lines.Line.Name.$t = coreData.operatorPublicNameLineNameFormat;
             serviceFrameToUpdate.lines.Line.PublicCode.$t = coreData.lineName;
             serviceFrameToUpdate.lines.Line.PrivateCode.type = 'txc:Line@id';

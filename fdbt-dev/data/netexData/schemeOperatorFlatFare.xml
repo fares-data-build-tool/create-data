@@ -174,12 +174,12 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1"/>
-                      <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1"/>
-                      <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1"/>
-                      <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1"/>
-                      <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1"/>
+                      <LineRef version="1.0" ref="AD1146649_RJ1_Outbound"/>
+                      <LineRef version="1.0" ref="FD1146649_RJ1_Outbound"/>
+                      <LineRef version="1.0" ref="XC1146649_RJ1_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146639_RJ1_Outbound"/>
+                      <LineRef version="1.0" ref="PK133146649_RJ1_Outbound"/>
+                      <LineRef version="1.0" ref="PK121146649_RJ1_Outbound"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -515,7 +515,7 @@
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:5#NW_05_WBTR_3_1">
+            <Line version="1.0" id="AD1146649_RJ1_Outbound">
               <Name>Line 5</Name>
               <Description>LONDON - ESSEX - BIRMINGHAM</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -524,7 +524,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:4#NW_05_WBTR_7_1">
+            <Line version="1.0" id="FD1146649_RJ1_Outbound">
               <Name>Line 4</Name>
               <Description>EDINBURGH - GLASGOW - LEEDS</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -533,7 +533,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:7#NW_05_WBTR_6_1">
+            <Line version="1.0" id="XC1146649_RJ1_Outbound">
               <Name>Line 7</Name>
               <Description>HULL - WIGAN - BOLTON</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -542,7 +542,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:663#NW_05_DCCL_3_1">
+            <Line version="1.0" id="PK1146639_RJ1_Outbound">
               <Name>Line 663</Name>
               <Description>LEEDS - WAKEFIELD - YORK</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -551,7 +551,7 @@
               <OperatorRef version="1.0" ref="noc:DCCL"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:77#NW_05_DCCL_7_1">
+            <Line version="1.0" id="PK133146649_RJ1_Outbound">
               <Name>Line 77</Name>
               <Description>BEESTON - HUNSLET - CITY CENTRE</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -560,7 +560,7 @@
               <OperatorRef version="1.0" ref="noc:DCCL"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:65#NW_05_DCCL_6_1">
+            <Line version="1.0" id="PK121146649_RJ1_Outbound">
               <Name>Line 65</Name>
               <Description>LIVERPOOL - MANCHESTER - BOLTON</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -574,12 +574,12 @@
             <GroupOfLines version="1.0" id="IW_Buses-Y@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:5#NW_05_WBTR_3_1"/>
-                <LineRef version="1.0" ref="op:4#NW_05_WBTR_7_1"/>
-                <LineRef version="1.0" ref="op:7#NW_05_WBTR_6_1"/>
-                <LineRef version="1.0" ref="op:663#NW_05_DCCL_3_1"/>
-                <LineRef version="1.0" ref="op:77#NW_05_DCCL_7_1"/>
-                <LineRef version="1.0" ref="op:65#NW_05_DCCL_6_1"/>
+                <LineRef version="1.0" ref="AD1146649_RJ1_Outbound"/>
+                <LineRef version="1.0" ref="FD1146649_RJ1_Outbound"/>
+                <LineRef version="1.0" ref="XC1146649_RJ1_Outbound"/>
+                <LineRef version="1.0" ref="PK1146639_RJ1_Outbound"/>
+                <LineRef version="1.0" ref="PK133146649_RJ1_Outbound"/>
+                <LineRef version="1.0" ref="PK121146649_RJ1_Outbound"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>
