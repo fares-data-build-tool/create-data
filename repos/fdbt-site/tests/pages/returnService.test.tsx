@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import ReturnService, { getServerSideProps } from '../../src/pages/returnService';
 import { getServicesByNocCodeAndDataSource } from '../../src/data/auroradb';
-import { expectedNonCircularReturnTicket, getMockContext } from '../testData/mockData';
+import { expectedReturnTicketWithAdditionalService, getMockContext } from '../testData/mockData';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
@@ -110,7 +110,7 @@ describe('pages', () => {
             const ctx = getMockContext({
                 session: {
                     [OPERATOR_ATTRIBUTE]: operatorData,
-                    [MATCHING_JSON_ATTRIBUTE]: expectedNonCircularReturnTicket,
+                    [MATCHING_JSON_ATTRIBUTE]: expectedReturnTicketWithAdditionalService,
                     [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },
                 },
                 query: {
@@ -174,7 +174,7 @@ describe('pages', () => {
                 body: null,
                 session: {
                     [OPERATOR_ATTRIBUTE]: operatorData,
-                    [MATCHING_JSON_ATTRIBUTE]: expectedNonCircularReturnTicket,
+                    [MATCHING_JSON_ATTRIBUTE]: expectedReturnTicketWithAdditionalService,
                     [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },
                 },
                 uuid: {},

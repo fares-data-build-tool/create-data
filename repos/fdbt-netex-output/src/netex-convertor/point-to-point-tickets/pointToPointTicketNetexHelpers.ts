@@ -535,7 +535,10 @@ export const getLinesElement = (
         },
         {
             version: '1.0',
-            ref: isReturnTicket(ticket)  &&  ticket.additionalServices && ticket.additionalServices.length >0 ? ticket.additionalServices[0]?.lineName : '',
+            ref:
+                isReturnTicket(ticket) && ticket.additionalServices && ticket.additionalServices.length > 0
+                    ? ticket.additionalServices[0]?.lineName
+                    : '',
         },
     ];
 
@@ -560,7 +563,7 @@ export const getLinesElement = (
                 version: 'fxc:v1.0',
                 ref: 'fxc:can_access',
             },
-            ValidityParameterAssignmentType: { $t: 'XOR' },
+            ValidityParameterGroupingType: { $t: 'XOR' },
             validityParameters: { LineRef: lineRefs },
         },
     };
