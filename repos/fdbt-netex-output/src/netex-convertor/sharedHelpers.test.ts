@@ -10,6 +10,7 @@ import {
     pointToPointPeriodTicket,
     returnCircularTicket,
     returnNonCircularTicketWithReturnValidity,
+    multiOperatorMultiServiceTicket,
 } from '../test-data/matchingData';
 
 describe('Shared Helpers', () => {
@@ -512,6 +513,11 @@ describe('Shared Helpers', () => {
                 typeOfDuration: 'day',
             },
         };
+
+        const multiOperatorMultiServiceTicketForOneDay = {
+            ...multiOperatorMultiServiceTicket,
+            products: [{ ...multiOperatorMultiServiceTicket.products[0], productDuration: '1 day' }],
+        };
         it.each([
             ['singleTrip', singleTicket],
             ['periodReturnTrip', returnNonCircularTicketWithReturnValidity],
@@ -521,6 +527,7 @@ describe('Shared Helpers', () => {
             ['singleTrip', flatFareTicket],
             ['periodPass', hybridPeriodTicket],
             ['periodPass', pointToPointPeriodTicket],
+            ['dayPass', multiOperatorMultiServiceTicketForOneDay],
         ])('should return %s when given %s', (expectedResult, ticket) => {
             const result = getProductType(ticket);
 
