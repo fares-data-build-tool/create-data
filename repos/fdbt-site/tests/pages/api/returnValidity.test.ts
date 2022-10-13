@@ -100,7 +100,7 @@ describe('returnValidity', () => {
         });
     });
 
-    it('should set the RETURN_VALIDITY_ATTRIBUTE and redirect to /selectSalesOfferPackage when no errors are found and no validity info is entered', async () => {
+    it('should set the RETURN_VALIDITY_ATTRIBUTE to 1 day and redirect to /selectSalesOfferPackage when no errors are found and no validity info is entered', async () => {
         const mockBody = {
             validity: 'No',
         };
@@ -109,7 +109,10 @@ describe('returnValidity', () => {
             mockWriteHeadFn: writeHeadMock,
         });
         await returnValidity(req, res);
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_VALIDITY_ATTRIBUTE, undefined);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_VALIDITY_ATTRIBUTE, {
+            amount: '1',
+            typeOfDuration: 'day',
+        });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/ticketConfirmation',
         });

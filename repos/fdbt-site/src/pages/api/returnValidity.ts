@@ -124,7 +124,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 );
                 return;
             }
-            updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, undefined);
+            updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, { amount: '1', typeOfDuration: 'day' });
             redirectTo(res, '/ticketConfirmation');
             return;
         }

@@ -47,43 +47,6 @@
                     "price": "22"
                 }
             ]
-        },
-        {
-            "productName": "Another great product",
-            "productPrice": "320",
-            "productDuration": "4 years",
-            "productValidity": "fareDayEnd",
-            "productEndTime": "2300",
-            "salesOfferPackages": [
-                {
-                    "name": "Onboard (cash)",
-                    "description": "",
-                    "purchaseLocations": [
-                        "onBoard"
-                    ],
-                    "paymentMethods": [
-                        "cash"
-                    ],
-                    "ticketFormats": [
-                        "paperTicket"
-                    ],
-                    "price": "320"
-                },
-                {
-                    "name": "Onboard (contactless)",
-                    "description": "",
-                    "purchaseLocations": [
-                        "onBoard"
-                    ],
-                    "paymentMethods": [
-                        "contactlessPaymentCard"
-                    ],
-                    "ticketFormats": [
-                        "paperTicket"
-                    ],
-                    "price": "314"
-                }
-            ]
         }
     ],
     "zoneName": "Test Town Centre",

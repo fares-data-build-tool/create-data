@@ -1,7 +1,17 @@
 import { FullTimeRestriction, GeoZoneTicket } from '../types';
 import * as sharedHelpers from './sharedHelpers';
-import { getTimeRestrictions, getEarliestTime } from './sharedHelpers';
-import { periodGeoZoneTicket, periodMultipleServicesTicket, flatFareTicket } from '../test-data/matchingData';
+import { getTimeRestrictions, getEarliestTime, getProductType } from './sharedHelpers';
+import {
+    periodGeoZoneTicket,
+    periodMultipleServicesTicket,
+    flatFareTicket,
+    singleTicket,
+    hybridPeriodTicket,
+    pointToPointPeriodTicket,
+    returnCircularTicket,
+    returnNonCircularTicketWithReturnValidity,
+    multiOperatorMultiServiceTicket,
+} from '../test-data/matchingData';
 
 describe('Shared Helpers', () => {
     describe('getTimeRestrictions', () => {
@@ -492,6 +502,36 @@ describe('Shared Helpers', () => {
             expect(sharedHelpers.getCarnetQualityStructureFactorRef(productDetails)).toEqual(
                 expectedCarnetQualityStructureFactorRef,
             );
+        });
+    });
+
+    describe('getProductType', () => {
+        const returnCircularTicketForOneDay = {
+            ...returnCircularTicket,
+            returnPeriodValidity: {
+                amount: '1',
+                typeOfDuration: 'day',
+            },
+        };
+
+        const multiOperatorMultiServiceTicketForOneDay = {
+            ...multiOperatorMultiServiceTicket,
+            products: [{ ...multiOperatorMultiServiceTicket.products[0], productDuration: '1 day' }],
+        };
+        it.each([
+            ['singleTrip', singleTicket],
+            ['periodReturnTrip', returnNonCircularTicketWithReturnValidity],
+            ['dayReturnTrip', returnCircularTicketForOneDay],
+            ['periodPass', periodGeoZoneTicket],
+            ['dayPass', periodMultipleServicesTicket],
+            ['singleTrip', flatFareTicket],
+            ['periodPass', hybridPeriodTicket],
+            ['periodPass', pointToPointPeriodTicket],
+            ['dayPass', multiOperatorMultiServiceTicketForOneDay],
+        ])('should return %s when given %s', (expectedResult, ticket) => {
+            const result = getProductType(ticket);
+
+            expect(result).toEqual(expectedResult);
         });
     });
 });

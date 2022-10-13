@@ -201,7 +201,7 @@ export interface CarnetDetails {
 const passengerTypes = ['adult', 'child', 'infant' ,'senior' , 'student' , 'youngPerson' , 'schoolPupil' , 'military' 
 , 'disabled' , 'disabledCompanion' , 'jobSeeker' , 'employee' , 'animal' , 'anyone']
 
-export const checkPassengerType = (passengerType : string) => {
+export const checkPassengerType = (passengerType : string): void => {
     if(!passengerTypes.includes(passengerType)) throw new Error('Passenger type received was not one of the accepted enumerations.')
 }
 
