@@ -380,9 +380,7 @@ export const getFareStructuresElements = (
     }
 
     if ('lineName' in ticket) {
-        const isReturnAndHasAdditionalService = isReturnTicket(ticket) && 'additionalServices' in ticket;
-
-        fareStructureElements.push(getLinesElement(ticket, lineName, isReturnAndHasAdditionalService));
+        fareStructureElements.push(getLinesElement(ticket, lineName));
         fareStructureElements.push(getEligibilityElement(ticket));
 
         // P2P Periods have one product with duration details attached

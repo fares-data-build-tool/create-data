@@ -1,5 +1,5 @@
 import startCase from 'lodash/startCase';
-import { AdditionalService, PointToPointPeriodTicket, ReturnTicket } from 'fdbt-types/matchingJsonTypes';
+import { PointToPointPeriodTicket, ReturnTicket, SelectedService } from 'fdbt-types/matchingJsonTypes';
 import {
     FareZone,
     FareZoneList,
@@ -491,11 +491,21 @@ export const combineFareZones = (outbound: FareZone[], inbound: FareZone[]): Far
 export const getLinesElement = (
     ticket: PointToPointTicket | PointToPointPeriodTicket,
     lineName: string,
-    isReturnAndHasAdditionalService: boolean,
 ): NetexObject => {
     const typeOfPointToPoint = ticket.type;
 
-    if (!isReturnAndHasAdditionalService) {
+    if (isReturnTicket(ticket) && ticket.additionalServices && ticket.additionalServices.length > 0) {
+        const lineRefs = [
+            {
+                version: '1.0',
+                ref: lineName,
+            },
+            {
+                version: '1.0',
+                ref: ticket.additionalServices[0].lineName,
+            },
+        ];
+
         return {
             version: '1.0',
             id: `Tariff@${typeOfPointToPoint}@lines`,
@@ -505,9 +515,9 @@ export const getLinesElement = (
                 ref: 'fxc:access',
             },
             distanceMatrixElements: {
-                DistanceMatrixElement: isReturnTicket(ticket)
-                    ? getDistanceMatrixElements(combineFareZones(ticket.outboundFareZones, ticket.inboundFareZones))
-                    : getDistanceMatrixElements(ticket.fareZones),
+                DistanceMatrixElement: getDistanceMatrixElements(
+                    combineFareZones(ticket.outboundFareZones, ticket.inboundFareZones),
+                ),
             },
             GenericParameterAssignment: {
                 version: '1.0',
@@ -517,30 +527,11 @@ export const getLinesElement = (
                     version: 'fxc:v1.0',
                     ref: 'fxc:can_access',
                 },
-                ValidityParameterAssignmentType: { $t: 'EQ' },
-                validityParameters: {
-                    LineRef: {
-                        version: '1.0',
-                        ref: lineName,
-                    },
-                },
+                ValidityParameterGroupingType: { $t: 'XOR' },
+                validityParameters: { LineRef: lineRefs },
             },
         };
     }
-
-    const lineRefs = [
-        {
-            version: '1.0',
-            ref: lineName,
-        },
-        {
-            version: '1.0',
-            ref:
-                isReturnTicket(ticket) && ticket.additionalServices && ticket.additionalServices.length > 0
-                    ? ticket.additionalServices[0]?.lineName
-                    : '',
-        },
-    ];
 
     return {
         version: '1.0',
@@ -563,8 +554,13 @@ export const getLinesElement = (
                 version: 'fxc:v1.0',
                 ref: 'fxc:can_access',
             },
-            ValidityParameterGroupingType: { $t: 'XOR' },
-            validityParameters: { LineRef: lineRefs },
+            ValidityParameterAssignmentType: { $t: 'EQ' },
+            validityParameters: {
+                LineRef: {
+                    version: '1.0',
+                    ref: lineName,
+                },
+            },
         },
     };
 };
@@ -681,7 +677,7 @@ export const getPointToPointConditionsElement = (ticket: PointToPointTicket): Ne
 export const getAdditionalReturnLines = (
     ticket: ReturnTicket | PointToPointPeriodTicket,
     coreData: CoreData,
-    additionalService: AdditionalService,
+    additionalService: SelectedService,
 ): NetexObject[] => {
     const firstLine = {
         version: '1.0',
