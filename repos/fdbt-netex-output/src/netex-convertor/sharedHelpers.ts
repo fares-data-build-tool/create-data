@@ -380,11 +380,7 @@ export const getFareStructuresElements = (
     }
 
     if ('lineName' in ticket) {
-        let isReturnAndHasAdditionalService = false;
-
-        if (isReturnTicket(ticket) && ticket.additionalServices) {
-            isReturnAndHasAdditionalService = true;
-        }
+        const isReturnAndHasAdditionalService = isReturnTicket(ticket) && 'additionalServices' in ticket;
 
         fareStructureElements.push(getLinesElement(ticket, lineName, isReturnAndHasAdditionalService));
         fareStructureElements.push(getEligibilityElement(ticket));

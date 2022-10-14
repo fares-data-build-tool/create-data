@@ -243,6 +243,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
         if ('lineName' in ticket) {
             serviceFrameToUpdate.id = `epd:UK:${ticket.nocCode}:ServiceFrame_UK_PI_NETWORK:${coreData.lineIdName}:op`;
+
             if (isReturnTicket(ticket) && ticket.additionalServices && ticket.additionalServices.length > 0) {
                 serviceFrameToUpdate.lines.Line = getAdditionalReturnLines(
                     ticket,

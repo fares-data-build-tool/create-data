@@ -27,31 +27,38 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
         // edit mode
-        if (ticket && matchingJsonMetaData) {
-            const updatedTicket = {
-                ...ticket,
-                additionalServices: [
-                    {
-                        lineName: service.lineName,
-                        lineId: service.lineId,
-                        serviceDescription: service.serviceDescription,
-                        id: serviceId,
-                    },
-                ],
-            };
-
-            // put the now updated matching json into s3
-            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
-            updateSessionAttribute(req, RETURN_SERVICE_ATTRIBUTE, undefined);
-
-            redirectTo(
-                res,
-                `/products/productDetails?productId=${matchingJsonMetaData.productId}${
-                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
-                }`,
-            );
+        if (!ticket || !matchingJsonMetaData) {
+            const errors: ErrorInfo[] = [
+                { id: 'returnService', errorMessage: 'You can add a service from product details page only' },
+            ];
+            updateSessionAttribute(req, RETURN_SERVICE_ATTRIBUTE, { errors });
+            redirectTo(res, `/returnService?selectedServiceId=${selectedServiceId}`);
             return;
         }
+
+        const updatedTicket = {
+            ...ticket,
+            additionalServices: [
+                {
+                    lineName: service.lineName,
+                    lineId: service.lineId,
+                    serviceDescription: service.serviceDescription,
+                    id: serviceId,
+                },
+            ],
+        };
+
+        // put the now updated matching json into s3
+        await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+        updateSessionAttribute(req, RETURN_SERVICE_ATTRIBUTE, undefined);
+
+        redirectTo(
+            res,
+            `/products/productDetails?productId=${matchingJsonMetaData.productId}${
+                matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+            }`,
+        );
+        return;
     } catch (error) {
         const message = 'There was a problem selecting the service:';
         redirectToError(res, message, 'api.service', error);

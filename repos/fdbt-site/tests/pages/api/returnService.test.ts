@@ -38,7 +38,25 @@ describe('returnService', () => {
         });
     });
 
-    it('should return 302 redirect to /direction', async () => {
+    it('should return 302 redirect to /returnService when the ticket is not in edit mode', async () => {
+        const writeHeadMock = jest.fn();
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            query: {},
+            body: {
+                serviceId: 2,
+                selectedServiceId: 1,
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await returnService(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/returnService?selectedServiceId=1',
+        });
+    });
+
+    it('should return 302 redirect to /productDetails', async () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({
             body: { selectedServiceId: 1, serviceId: 4 },
