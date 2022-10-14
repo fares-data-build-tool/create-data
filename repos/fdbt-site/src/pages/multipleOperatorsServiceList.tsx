@@ -46,12 +46,13 @@ const MultipleOperatorsServiceList = ({
     dataSourceAttribute,
 }: MultipleOperatorsServiceListProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
-        <SwitchDataSource
+        {/* removed as TNDS is being disabled until further notice */}
+        {/* <SwitchDataSource
             dataSourceAttribute={dataSourceAttribute}
             pageUrl="/multipleOperatorsServiceList"
             attributeVersion="multiOperator"
             csrfToken={csrfToken}
-        />
+        /> */}
         <CsrfForm action="/api/multipleOperatorsServiceList" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
