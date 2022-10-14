@@ -197,7 +197,7 @@ describe('periodTicketNetexHelpers', () => {
         it('returns a list of NeTEx lines given periodMultipleServicesTicket matching data', () => {
             const expectedLineSchema = {
                 version: '1.0',
-                id: expect.stringContaining('op:'),
+                id: expect.any(String),
                 Name: expect.objectContaining({ $t: expect.any(String) }),
                 Description: { $t: expect.any(String) },
                 Url: expect.objectContaining({ $t: expect.any(String) }),
@@ -208,7 +208,7 @@ describe('periodTicketNetexHelpers', () => {
             };
             const seen: string[] = [];
             const expectedLength = periodMultipleServicesTicket.selectedServices.filter(item => {
-                return seen.includes(item.serviceCode) ? false : seen.push(item.serviceCode);
+                return seen.includes(item.lineId) ? false : seen.push(item.lineId);
             }).length;
             const linesList = netexHelpers.getLinesList(periodMultipleServicesTicket, opData.url, multiOperatorList);
 
@@ -223,7 +223,7 @@ describe('periodTicketNetexHelpers', () => {
         it('returns a list of NeTEx line refs given periodMultipleServicesTicket matching data', () => {
             const expectLineRefFormat = {
                 version: '1.0',
-                ref: expect.stringContaining('op:'),
+                ref: expect.any(String),
             };
             const expectedLength = periodMultipleServicesTicket.selectedServices.length;
 

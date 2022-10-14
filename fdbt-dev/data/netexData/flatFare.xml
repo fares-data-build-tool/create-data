@@ -151,20 +151,20 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_1"/>
-                      <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_2"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_BLAC_4_1"/>
-                      <LineRef version="1.0" ref="op:19#NW_05_BLAC_19_1"/>
-                      <LineRef version="1.0" ref="op:1#NW_05_BLAC_1_1"/>
-                      <LineRef version="1.0" ref="op:2#NW_05_BLAC_2_1"/>
-                      <LineRef version="1.0" ref="op:5#NW_05_BLAC_5_1"/>
-                      <LineRef version="1.0" ref="op:9#NW_05_BLAC_9_1"/>
-                      <LineRef version="1.0" ref="op:14#NW_05_BLAC_14_1"/>
-                      <LineRef version="1.0" ref="op:18#NW_05_BLAC_18_1"/>
-                      <LineRef version="1.0" ref="op:11#NW_05_BLAC_11_1"/>
-                      <LineRef version="1.0" ref="op:3#NW_05_BLAC_3_1"/>
-                      <LineRef version="1.0" ref="op:7#NW_05_BLAC_7_1"/>
-                      <LineRef version="1.0" ref="op:6#NW_05_BLAC_6_1"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ2_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ4_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ19_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ01_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ02_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ05_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ9_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ014_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ018_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ011_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ003_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ007_Outbound"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ006_Outbound"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -500,7 +500,7 @@
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:25#NW_07_BLAC_25_1">
+            <Line version="1.0" id="PK1146649_RJ1_Outbound">
               <Name>Line 25</Name>
               <Description>KNOTT END - POULTON - BLACKPOOL</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -509,7 +509,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:25#NW_07_BLAC_25_2">
+            <Line version="1.0" id="PK1146649_RJ2_Outbound">
               <Name>Line 25</Name>
               <Description>BLACKPOOL - ST ANNES - LYTHAM</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -518,7 +518,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:4#NW_05_BLAC_4_1">
+            <Line version="1.0" id="PK1146649_RJ4_Outbound">
               <Name>Line 4</Name>
               <Description>CLEVELEYS - MERESIDE via Blackpool</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -527,7 +527,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:19#NW_05_BLAC_19_1">
+            <Line version="1.0" id="PK1146649_RJ19_Outbound">
               <Name>Line 19</Name>
               <Description>STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -536,7 +536,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:1#NW_05_BLAC_1_1">
+            <Line version="1.0" id="PK1146649_RJ01_Outbound">
               <Name>Line 1</Name>
               <Description>FLEETWOOD - BLACKPOOL via Promenade</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -545,7 +545,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:2#NW_05_BLAC_2_1">
+            <Line version="1.0" id="PK1146649_RJ02_Outbound">
               <Name>Line 2</Name>
               <Description>POULTON - BLACKPOOL via Victoria Hospital Outpatients</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -554,7 +554,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:5#NW_05_BLAC_5_1">
+            <Line version="1.0" id="PK1146649_RJ05_Outbound">
               <Name>Line 5</Name>
               <Description>VICTORIA HOSPITAL - BLACKPOOL TOWN CENTRE - HALFWAY HOUSE</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -563,7 +563,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:9#NW_05_BLAC_9_1">
+            <Line version="1.0" id="PK1146649_RJ9_Outbound">
               <Name>Line 9</Name>
               <Description>CLEVELEYS - BLACKPOOL via Bispham</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -572,7 +572,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:14#NW_05_BLAC_14_1">
+            <Line version="1.0" id="PK1146649_RJ014_Outbound">
               <Name>Line 14</Name>
               <Description>FLEETWOOD - BLACKPOOL via Layton</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -581,7 +581,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:18#NW_05_BLAC_18_1">
+            <Line version="1.0" id="PK1146649_RJ018_Outbound">
               <Name>Line 18</Name>
               <Description>BLACKPOOL - MERESIDE via South Shore</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -590,7 +590,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:11#NW_05_BLAC_11_1">
+            <Line version="1.0" id="PK1146649_RJ011_Outbound">
               <Name>Line 11</Name>
               <Description>LYTHAM - BLACKPOOL via St Annes</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -599,7 +599,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:3#NW_05_BLAC_3_1">
+            <Line version="1.0" id="PK1146649_RJ003_Outbound">
               <Name>Line 3</Name>
               <Description>MERESIDE - BLACKPOOL - CLEVELEYS - CLEVELEYS PARK</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -608,7 +608,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:7#NW_05_BLAC_7_1">
+            <Line version="1.0" id="PK1146649_RJ007_Outbound">
               <Name>Line 7</Name>
               <Description>CLEVELEYS - BLACKPOOL - ST ANNES CLIFTON HOSPITAL</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -617,7 +617,7 @@
               <OperatorRef version="1.0" ref="noc:BLAC"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:6#NW_05_BLAC_6_1">
+            <Line version="1.0" id="PK1146649_RJ006_Outbound">
               <Name>Line 6</Name>
               <Description>MERESIDE - BLACKPOOL - GRANGE PARK</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -631,20 +631,20 @@
             <GroupOfLines version="1.0" id="BLAC@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_1"/>
-                <LineRef version="1.0" ref="op:25#NW_07_BLAC_25_2"/>
-                <LineRef version="1.0" ref="op:4#NW_05_BLAC_4_1"/>
-                <LineRef version="1.0" ref="op:19#NW_05_BLAC_19_1"/>
-                <LineRef version="1.0" ref="op:1#NW_05_BLAC_1_1"/>
-                <LineRef version="1.0" ref="op:2#NW_05_BLAC_2_1"/>
-                <LineRef version="1.0" ref="op:5#NW_05_BLAC_5_1"/>
-                <LineRef version="1.0" ref="op:9#NW_05_BLAC_9_1"/>
-                <LineRef version="1.0" ref="op:14#NW_05_BLAC_14_1"/>
-                <LineRef version="1.0" ref="op:18#NW_05_BLAC_18_1"/>
-                <LineRef version="1.0" ref="op:11#NW_05_BLAC_11_1"/>
-                <LineRef version="1.0" ref="op:3#NW_05_BLAC_3_1"/>
-                <LineRef version="1.0" ref="op:7#NW_05_BLAC_7_1"/>
-                <LineRef version="1.0" ref="op:6#NW_05_BLAC_6_1"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ2_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ4_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ19_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ01_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ02_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ05_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ9_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ014_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ018_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ011_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ003_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ007_Outbound"/>
+                <LineRef version="1.0" ref="PK1146649_RJ006_Outbound"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>

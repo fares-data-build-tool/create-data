@@ -151,9 +151,9 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:1#NW_07_NW_1_1"/>
-                      <LineRef version="1.0" ref="op:2#NW_07_NW_2_1"/>
-                      <LineRef version="1.0" ref="op:3#NW_07_NW_3_1"/>
+                      <LineRef version="1.0" ref="lzkklu"/>
+                      <LineRef version="1.0" ref="wido2q"/>
+                      <LineRef version="1.0" ref="TgBKhM"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -340,7 +340,7 @@
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:1#NW_07_NW_1_1">
+            <Line version="1.0" id="lzkklu">
               <Name>Line 1</Name>
               <Description>Warrington - Latchford/Westy (Circ)</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -349,7 +349,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:2#NW_07_NW_2_1">
+            <Line version="1.0" id="wido2q">
               <Name>Line 2</Name>
               <Description>Warrington - Westy/Latchford (Circ)</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -358,7 +358,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:3#NW_07_NW_3_1">
+            <Line version="1.0" id="TgBKhM">
               <Name>Line 3</Name>
               <Description>Warrington - Martinscroft</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -372,9 +372,9 @@
             <GroupOfLines version="1.0" id="WBTR@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:1#NW_07_NW_1_1"/>
-                <LineRef version="1.0" ref="op:2#NW_07_NW_2_1"/>
-                <LineRef version="1.0" ref="op:3#NW_07_NW_3_1"/>
+                <LineRef version="1.0" ref="lzkklu"/>
+                <LineRef version="1.0" ref="wido2q"/>
+                <LineRef version="1.0" ref="TgBKhM"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>
