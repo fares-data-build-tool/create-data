@@ -147,7 +147,7 @@
                   <ToDate>2121-06-25T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>test</Name>
+              <Name>Tariff for test</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
               <TariffBasis>flat</TariffBasis>
@@ -169,7 +169,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:X64#YWAX064"/>
+                      <LineRef version="1.0" ref="ZgvsrC"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -196,6 +196,7 @@
                       <UserProfile version="1.0" id="op:adult-0">
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>adult</UserType>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -284,7 +285,7 @@
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:X64#YWAX064">
+            <Line version="1.0" id="ZgvsrC">
               <Name>Line X64</Name>
               <Description>Aberford Old Cafe - Garforth Academy</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -298,7 +299,7 @@
             <GroupOfLines version="1.0" id="Test_Scheme_Op-SE@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:X64#YWAX064"/>
+                <LineRef version="1.0" ref="ZgvsrC"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>
@@ -1480,7 +1481,7 @@
             </UserProfile>
             <UserProfile version="fxc:v1.0" id="fxc:senior">
               <Name>Senior</Name>
-              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
               <UserType>senior</UserType>
               <MinimumAge>60</MinimumAge>
             </UserProfile>

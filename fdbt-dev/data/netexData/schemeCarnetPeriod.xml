@@ -209,7 +209,7 @@
                   <ToDate>2121-06-25T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>jakes</Name>
+              <Name>Tariff for jakes</Name>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>
@@ -276,6 +276,7 @@
                       <UserProfile version="1.0" id="op:anyone-0">
                         <Name>anyone</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>anyone</UserType>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -1552,7 +1553,7 @@
             </UserProfile>
             <UserProfile version="fxc:v1.0" id="fxc:senior">
               <Name>Senior</Name>
-              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
               <UserType>senior</UserType>
               <MinimumAge>60</MinimumAge>
             </UserProfile>

@@ -26,6 +26,9 @@ import {
     isHybridTicket,
     isReturnTicket,
     isSingleTicket,
+    checkPassengerType,
+    isMultiOperatorGeoZoneTicket,
+    isMultiOperatorMultipleServicesTicket,
 } from '../types';
 
 import {
@@ -95,20 +98,23 @@ export const getProfileRef = (
     };
 };
 
-export const getUserProfile = (user: User | GroupCompanion, index: number): NetexObject => ({
-    version: '1.0',
-    id: `op:${user.passengerType}-${index}`,
-    Name: { $t: user.passengerType },
-    TypeOfConcessionRef: {
-        version: 'fxc:v1.0',
-        ref: `fxc:${
-            user.passengerType === 'anyone' || user.passengerType === 'adult' ? 'none' : snakeCase(user.passengerType)
-        }`,
-    },
-    MinimumAge: { $t: user.ageRangeMin || null },
-    MaximumAge: { $t: user.ageRangeMax || null },
-    ProofRequired: { $t: user.proofDocuments?.join(' ') || null },
-});
+export const getUserProfile = (user: User | GroupCompanion, index: number): NetexObject => {
+    checkPassengerType(user.passengerType);
+    const { passengerType } = user;
+    return {
+        version: '1.0',
+        id: `op:${passengerType}-${index}`,
+        Name: { $t: passengerType },
+        TypeOfConcessionRef: {
+            version: 'fxc:v1.0',
+            ref: `fxc:${passengerType === 'anyone' || passengerType === 'adult' ? 'none' : snakeCase(passengerType)}`,
+        },
+        UserType: { $t: passengerType },
+        MinimumAge: { $t: user.ageRangeMin || null },
+        MaximumAge: { $t: user.ageRangeMax || null },
+        ProofRequired: { $t: user.proofDocuments?.join(' ') || null },
+    };
+};
 
 export const getGroupElement = (groupDefinition: GroupDefinition): NetexObject => {
     return {
@@ -302,27 +308,27 @@ export const getDistributionChannel = (purchaseLocation: string): string => {
 
 export const isFlatFareType = (ticket: Ticket): boolean => ticket.type === 'flatFare';
 
-export const isPeriodType = (ticket: Ticket): boolean => ticket.type === 'period';
-
 export const getProductType = (ticket: Ticket): string => {
     if (isFlatFareType(ticket) || isSingleTicket(ticket)) {
         return 'singleTrip';
-    } else if (isPeriodType(ticket)) {
-        if (
-            ticket.products &&
-            ticket.products.length == 1 &&
-            isProductDetails(ticket.products[0]) &&
-            ticket.products[0].productDuration == '1 day'
-        ) {
+    }
+
+    if (
+        ticket.type === 'period' ||
+        isMultiOperatorGeoZoneTicket(ticket) ||
+        isMultiOperatorMultipleServicesTicket(ticket)
+    ) {
+        if (isProductDetails(ticket.products[0]) && ticket.products[0].productDuration === '1 day') {
             return 'dayPass';
         }
         return 'periodPass';
-    } else if (isReturnTicket(ticket)) {
-        // Return period validity
+    }
+
+    if (isReturnTicket(ticket)) {
         if (
-            'returnPeriodValidity' in ticket &&
             ticket.returnPeriodValidity &&
-            ticket.returnPeriodValidity.typeOfDuration === 'day'
+            ticket.returnPeriodValidity.typeOfDuration === 'day' &&
+            ticket.returnPeriodValidity.amount === '1'
         ) {
             return 'dayReturnTrip';
         }

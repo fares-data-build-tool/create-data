@@ -198,6 +198,13 @@ export interface CarnetDetails {
     expiryUnit: CarnetExpiryUnit;
 }
 
+const passengerTypes = ['adult', 'child', 'infant' ,'senior' , 'student' , 'youngPerson' , 'schoolPupil' , 'military' 
+, 'disabled' , 'disabledCompanion' , 'jobSeeker' , 'employee' , 'animal' , 'anyone']
+
+export const checkPassengerType = (passengerType : string): void => {
+    if(!passengerTypes.includes(passengerType)) throw new Error('Passenger type received was not one of the accepted enumerations.')
+}
+
 export const isPointToPointTicket = (ticketData: Ticket): ticketData is PointToPointTicket =>
     ticketData.type === 'single' || ticketData.type === 'return';
 
