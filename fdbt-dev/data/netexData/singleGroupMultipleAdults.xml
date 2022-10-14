@@ -122,7 +122,7 @@
           <Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="4">
+            <Line version="1.0" id="PK1146649_RJ1_Outbound">
               <Name>Blackpool Transport 4</Name>
               <Description>CLEVELEYS - MERESIDE via Blackpool</Description>
               <PublicCode>4</PublicCode>
@@ -12181,7 +12181,7 @@
             </UserProfile>
             <UserProfile version="fxc:v1.0" id="fxc:senior">
               <Name>Senior</Name>
-              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
               <UserType>senior</UserType>
               <MinimumAge>60</MinimumAge>
             </UserProfile>

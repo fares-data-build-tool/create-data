@@ -236,10 +236,10 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:1#NW_07_NW_1_2"/>
-                      <LineRef version="1.0" ref="op:15#NW_05_NWBT_15_1"/>
-                      <LineRef version="1.0" ref="op:65#NW_05_NWBT_65_1"/>
-                      <LineRef version="1.0" ref="op:67#NW_05_NWBT_67_1"/>
+                      <LineRef version="1.0" ref="Mon1JJ"/>
+                      <LineRef version="1.0" ref="rLjpBT"/>
+                      <LineRef version="1.0" ref="M0L2FP"/>
+                      <LineRef version="1.0" ref="BptR81"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -430,7 +430,7 @@
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:1#NW_07_NW_1_2">
+            <Line version="1.0" id="Mon1JJ">
               <Name>Line 1</Name>
               <Description>Warrington - Latchford/Westy (Circ)</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -439,7 +439,7 @@
               <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:15#NW_05_NWBT_15_1">
+            <Line version="1.0" id="rLjpBT">
               <Name>Line 15</Name>
               <Description>BURNLEY - BURNLEY via Rose Hill Road, Moorland Road</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -448,7 +448,7 @@
               <OperatorRef version="1.0" ref="noc:NWBT"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:65#NW_05_NWBT_65_1">
+            <Line version="1.0" id="M0L2FP">
               <Name>Line 65</Name>
               <Description>BURNLEY - NELSON via Sycamore Avenue, Lowerhouse, Slade Lane, Higham, Barrowford</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -457,7 +457,7 @@
               <OperatorRef version="1.0" ref="noc:NWBT"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:67#NW_05_NWBT_67_1">
+            <Line version="1.0" id="BptR81">
               <Name>Line 67</Name>
               <Description>CLITHEROE - NELSON via Waddington, West Bradford, Grindleton, Downham, Blacko</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -471,10 +471,10 @@
             <GroupOfLines version="1.0" id="Test_Scheme_Op-SE@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:1#NW_07_NW_1_2"/>
-                <LineRef version="1.0" ref="op:15#NW_05_NWBT_15_1"/>
-                <LineRef version="1.0" ref="op:65#NW_05_NWBT_65_1"/>
-                <LineRef version="1.0" ref="op:67#NW_05_NWBT_67_1"/>
+                <LineRef version="1.0" ref="Mon1JJ"/>
+                <LineRef version="1.0" ref="rLjpBT"/>
+                <LineRef version="1.0" ref="M0L2FP"/>
+                <LineRef version="1.0" ref="BptR81"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>
@@ -1656,7 +1656,7 @@
             </UserProfile>
             <UserProfile version="fxc:v1.0" id="fxc:senior">
               <Name>Senior</Name>
-              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
               <UserType>senior</UserType>
               <MinimumAge>60</MinimumAge>
             </UserProfile>
