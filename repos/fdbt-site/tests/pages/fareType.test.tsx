@@ -32,7 +32,7 @@ describe('pages', () => {
             expect(tree).toMatchSnapshot();
             process.env.STAGE = undefined;
         });
-        
+
         it('should render correctly for a scheme operator', () => {
             const tree = shallow(<FareType operatorName="Blackpool Transport" schemeOp errors={[]} csrfToken="" />);
             expect(tree).toMatchSnapshot();
