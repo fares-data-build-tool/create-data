@@ -76,6 +76,11 @@ exports[`pages fareType should render correctly 1`] = `
                   "label": "Academic term/year ticket",
                   "value": "schoolService",
                 },
+                Object {
+                  "hint": "A ticket that covers more than one operator",
+                  "label": "Multi-operator",
+                  "value": "multiOperator",
+                },
               ]
             }
           />
@@ -270,6 +275,11 @@ exports[`pages fareType should render error messaging when errors are passed to 
                   "hint": "A ticket available to pupils in full-time education",
                   "label": "Academic term/year ticket",
                   "value": "schoolService",
+                },
+                Object {
+                  "hint": "A ticket that covers more than one operator",
+                  "label": "Multi-operator",
+                  "value": "multiOperator",
                 },
               ]
             }
