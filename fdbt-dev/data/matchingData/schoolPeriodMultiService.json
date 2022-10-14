@@ -5,7 +5,6 @@
   "email": "test@example.com",
   "uuid": "BLACc1363964",
   "termTime": true,
-
   "timeRestriction": [
     {
       "day": "monday",
@@ -64,111 +63,6 @@
           "purchaseLocations": ["onBoard"],
           "paymentMethods": ["contactlessPaymentCard"],
           "ticketFormats": ["paperTicket"]
-        }
-      ]
-  },
-    {
-      "productName": "Test Product 1",
-      "productPrice": "5",
-      "productDuration": "1 hour",
-      "productValidity": "24hr",
-
-      "salesOfferPackages": [
-        {
-          "name": "Online (smart card)",
-          "description": "Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.",
-          "purchaseLocations": ["online"],
-          "paymentMethods": ["directDebit", "creditCard", "debitCard"],
-          "ticketFormats": ["smartCard"]
-        },
-        {
-          "name": "Mobile App",
-          "description": "Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.",
-          "purchaseLocations": ["mobileDevice"],
-          "paymentMethods": [
-            "debitCard",
-            "creditCard",
-            "mobilePhone",
-            "directDebit"
-          ],
-          "ticketFormats": ["mobileApp"]
-        },
-        {
-          "name": "School Service Payment Methods",
-          "description": "Additional payment methods provided for school service tickets",
-          "purchaseLocations": ["online", "mobileDevice"],
-          "paymentMethods": ["cheque", "directDebit"],
-          "ticketFormats": ["paperTicket"]
-        }
-      ]
-    },
-    {
-      "productName": "Test Product 2",
-      "productPrice": "10",
-      "productDuration": "2 years",
-      "productValidity": "24hr",
-      "salesOfferPackages": [
-        {
-          "name": "Onboard (cash)",
-          "description": "Purchasable on board the bus, with cash, as a paper ticket.",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["cash"],
-          "ticketFormats": ["paperTicket"]
-        },
-        {
-          "name": "Onboard (contactless)",
-          "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["contactlessPaymentCard"],
-          "ticketFormats": ["paperTicket"]
-        }
-      ]
-    },
-    {
-      "productName": "Test Product 3",
-      "productPrice": "100",
-      "productDuration": "365 days",
-      "productValidity": "24hr",
-      "salesOfferPackages": [
-        {
-          "name": "Onboard (cash)",
-          "description": "Purchasable on board the bus, with cash, as a paper ticket.",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["cash"],
-          "ticketFormats": ["paperTicket"]
-        },
-        {
-          "name": "Onboard (contactless)",
-          "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["contactlessPaymentCard"],
-          "ticketFormats": ["paperTicket"]
-        },
-        {
-          "name": "Online (smart card)",
-          "description": "Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.",
-          "purchaseLocations": ["online"],
-          "paymentMethods": ["directDebit", "creditCard", "debitCard"],
-          "ticketFormats": ["smartCard"]
-        },
-        {
-          "name": "Mobile App",
-          "description": "Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.",
-          "purchaseLocations": ["mobileDevice"],
-          "paymentMethods": [
-            "debitCard",
-            "creditCard",
-            "mobilePhone",
-            "directDebit"
-          ],
-          "ticketFormats": ["mobileApp"]
-        },
-        {
-          "name": "All Encompassing",
-          "description": "All currently available options selected",
-          "purchaseLocations": ["onBoard", "online", "mobileDevice"],
-          "paymentMethods": ["cash", "debitCard", "creditCard", "mobilePhone"],
-          "ticketFormats": ["paperTicket", "mobileApp", "smartCard"]
         }
       ]
     }

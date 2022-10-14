@@ -17,7 +17,6 @@
           <objectReferences>
             <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
             <PreassignedFareProductRef version="1.0" ref="op:Pass@test_child"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Jacob_Ellis_child"/>
             <BrandingRef version="1.0" ref="op:Test_Scheme_Op-SE@brand"/>
             <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
           </objectReferences>
@@ -163,7 +162,7 @@
                   <ToDate>2121-09-02T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>test</Name>
+              <Name>Tariff for test</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>
@@ -171,10 +170,6 @@
                 <TimeInterval version="1.0" id="op:Tariff@test@1-month">
                   <Name>1 month</Name>
                   <Description>P1M</Description>
-                </TimeInterval>
-                <TimeInterval version="1.0" id="op:Tariff@Jacob_Ellis@2-weeks">
-                  <Name>2 weeks</Name>
-                  <Description>P14D</Description>
                 </TimeInterval>
               </timeIntervals>
               <fareStructureElements>
@@ -186,9 +181,6 @@
                     <QualityStructureFactor version="1.0" id="mb:Tariff@multitrip@2">
                       <Value>2</Value>
                     </QualityStructureFactor>
-                    <QualityStructureFactor version="1.0" id="mb:Tariff@multitrip@5">
-                      <Value>5</Value>
-                    </QualityStructureFactor>
                   </qualityStructureFactors>
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="op:Tariff@test@access_lines">
@@ -198,9 +190,9 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1"/>
-                      <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1"/>
+                      <LineRef version="1.0" ref="lDJRAS"/>
+                      <LineRef version="1.0" ref="A2EHwY"/>
+                      <LineRef version="1.0" ref="DnmNdy"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -229,44 +221,6 @@
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Jacob_Ellis@access_lines">
-                  <Name>Available lines and/or zones</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
-                  <GenericParameterAssignment id="Tariff@Jacob_Ellis@access_lines" version="1.0" order="1">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
-                    <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
-                    <validityParameters>
-                      <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1"/>
-                      <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3"/>
-                      <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1"/>
-                    </validityParameters>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Jacob_Ellis@durations@child">
-                  <Name>Available duration combination - child ticket</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
-                  <timeIntervals>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@Jacob_Ellis@2-weeks"/>
-                  </timeIntervals>
-                </FareStructureElement>
-                <FareStructureElement id="op:Tariff@Jacob_Ellis@conditions_of_travel" version="1.0">
-                  <Name>Conditions of travel</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
-                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Jacob_Ellis@conditions_of_travel">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
-                    <LimitationGroupingType>AND</LimitationGroupingType>
-                    <limitations>
-                      <FrequencyOfUse version="1.0" id="op:Pass@Jacob_Ellis@frequency">
-                        <FrequencyOfUseType>unlimited</FrequencyOfUseType>
-                      </FrequencyOfUse>
-                      <UsageValidityPeriod version="1.0" id="op:Trip@Jacob_Ellis@back@frequency">
-                        <UsageTrigger>purchase</UsageTrigger>
-                        <UsageEnd>endOfFareDay</UsageEnd>
-                        <ActivationMeans>noneRequired</ActivationMeans>
-                      </UsageValidityPeriod>
-                    </limitations>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
                 <FareStructureElement version="1.0" id="op:Tariff@eligibility@child">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
@@ -277,6 +231,7 @@
                       <UserProfile version="1.0" id="op:child-0">
                         <Name>child</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+                        <UserType>child</UserType>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -308,29 +263,6 @@
               </accessRightsInProduct>
               <ProductType>periodPass</ProductType>
             </PreassignedFareProduct>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Jacob_Ellis_child">
-              <Name>Jacob Ellis</Name>
-              <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
-              <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Jacob_Ellis_child@travel">
-                  <Name>Rides available for specified durations</Name>
-                  <fareStructureElements>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Jacob_Ellis@access_lines"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Jacob_Ellis@durations@child"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Jacob_Ellis@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@child"/>
-                  </fareStructureElements>
-                </ValidableElement>
-              </validableElements>
-              <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Jacob_Ellis_child@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Jacob_Ellis_child@travel"/>
-                </AccessRightInProduct>
-              </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
-            </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
             <SalesOfferPackage version="1.0" id="Trip@test-test-SOP@Purchase_method">
@@ -346,22 +278,6 @@
                 <SalesOfferPackageElement id="Trip@test-test-Purchase_method@electronic_document" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:electronic_document"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@test_child"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@test-Jacob_Ellis-SOP@Purchase_method">
-              <Name>Jacob Ellis - child - Purchase method</Name>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@test-Jacob_Ellis-SOP@Purchase_method@mobileDevice" order="1">
-                  <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
-                  <DistributionChannelType>mobileDevice</DistributionChannelType>
-                  <PaymentMethods>cash</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@test-Jacob_Ellis-Purchase_method@electronic_document" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:electronic_document"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Jacob_Ellis_child"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -410,45 +326,13 @@
                 </FareTable>
               </includes>
             </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Jacob_Ellis@Purchase_method@services">
-              <Name>Jacob Ellis - Purchase method - 3 services</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Jacob_Ellis_child"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Jacob_Ellis@Purchase_method@child@product-1@SOP-0@service">
-                  <Name>Jacob Ellis - Purchase method  - child</Name>
-                  <includes>
-                    <FareTable version="1.0" id="op:Jacob_Ellis@Purchase_method@child@service@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@test-Jacob_Ellis-SOP@Purchase_method"/>
-                        <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@5"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Jacob_Ellis@Purchase_method@child@service@nested@prices">
-                          <limitations>
-                            <UserProfileRef version="1.0" ref="op:child-0"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Jacob_Ellis@Purchase_method@service">
-                              <Amount>3.99</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Jacob_Ellis@2-weeks"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
           </fareTables>
         </FareFrame>
         <ServiceFrame version="1.0" id="epd:UK:Test_Scheme_Op-SE:ServiceFrame_UK_PI_NETWORK:Test_Scheme_Op-SE_products:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="op:3#NW_05_PBLT_3_1">
+            <Line version="1.0" id="lDJRAS">
               <Name>Line 3</Name>
               <Description>CLITHEROE - CLITHEROE via Pimlico, Chatburn, Pimlico</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -457,7 +341,7 @@
               <OperatorRef version="1.0" ref="noc:PBLT"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:5#NW_05_PBLT_5_3">
+            <Line version="1.0" id="A2EHwY">
               <Name>Line 5</Name>
               <Description>ORMSKIRK - TOWN GREEN CIRCULAR</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -466,7 +350,7 @@
               <OperatorRef version="1.0" ref="noc:PBLT"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="op:4#NW_05_NWBT_4_1">
+            <Line version="1.0" id="DnmNdy">
               <Name>Line 4</Name>
               <Description>CLITHEROE - PEEL PARK CIRCULAR via Claremont Ave, Standen Rd, Langshaw Dr, Turner St, Victoria St</Description>
               <Url>http://www.blackpooltransport.com</Url>
@@ -480,9 +364,9 @@
             <GroupOfLines version="1.0" id="Test_Scheme_Op-SE@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="op:3#NW_05_PBLT_3_1"/>
-                <LineRef version="1.0" ref="op:5#NW_05_PBLT_5_3"/>
-                <LineRef version="1.0" ref="op:4#NW_05_NWBT_4_1"/>
+                <LineRef version="1.0" ref="lDJRAS"/>
+                <LineRef version="1.0" ref="A2EHwY"/>
+                <LineRef version="1.0" ref="DnmNdy"/>
               </members>
             </GroupOfLines>
           </groupsOfLines>
@@ -1664,7 +1548,7 @@
             </UserProfile>
             <UserProfile version="fxc:v1.0" id="fxc:senior">
               <Name>Senior</Name>
-              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
               <UserType>senior</UserType>
               <MinimumAge>60</MinimumAge>
             </UserProfile>

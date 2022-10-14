@@ -124,7 +124,7 @@
           <Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="2">
+            <Line version="1.0" id="YpQjUw">
               <Name>Blackpool Transport 2</Name>
               <Description>POULTON - BLACKPOOL via Victoria Hospital Outpatients</Description>
               <PublicCode>2</PublicCode>
@@ -1068,7 +1068,7 @@
                   <ToDate>2022-02-02T23:59:59.999Z</ToDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Period Point to Point</Name>
+              <Name>Tariff for Period Point to Point</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <LineRef version="1.0" ref="2"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
@@ -1163,6 +1163,7 @@
                       <UserProfile version="1.0" id="op:anyone-0">
                         <Name>anyone</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
+                        <UserType>anyone</UserType>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -2603,7 +2604,7 @@
             </UserProfile>
             <UserProfile version="fxc:v1.0" id="fxc:senior">
               <Name>Senior</Name>
-              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
               <UserType>senior</UserType>
               <MinimumAge>60</MinimumAge>
             </UserProfile>

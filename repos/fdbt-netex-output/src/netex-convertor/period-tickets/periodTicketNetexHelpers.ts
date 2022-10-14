@@ -130,7 +130,7 @@ export const getLinesList = (
             const duplicateLines = operator.selectedServices
                 ? operator.selectedServices.map(service => ({
                       version: '1.0',
-                      id: `op:${service.lineName}#${service.serviceCode}`,
+                      id: service.lineId,
                       Name: { $t: `Line ${service.lineName}` },
                       Description: { $t: service.serviceDescription },
                       Url: { $t: currentOperator ? getCleanWebsite(currentOperator.url) : '' },
@@ -158,7 +158,7 @@ export const getLinesList = (
         const duplicateLines = userPeriodTicket.selectedServices
             ? userPeriodTicket.selectedServices.map(service => ({
                   version: '1.0',
-                  id: `op:${service.lineName}#${service.serviceCode}`,
+                  id: service.lineId,
                   Name: { $t: `Line ${service.lineName}` },
                   Description: { $t: service.serviceDescription },
                   Url: { $t: website },
@@ -212,7 +212,7 @@ export const getLineRefList = (
     return fullServicesList.length > 0
         ? fullServicesList.map(service => ({
               version: '1.0',
-              ref: `op:${service.lineName}#${service.serviceCode}`,
+              ref: service.lineId,
           }))
         : [];
 };

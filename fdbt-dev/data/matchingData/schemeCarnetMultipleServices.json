@@ -41,35 +41,6 @@
           "price": "2.99"
         }
       ]
-    },
-    {
-      "productName": "Jacob Ellis",
-      "productPrice": "3.99",
-      "productDuration": "2 weeks",
-      "productValidity": "endOfCalendarDay",
-      "productEndTime": "",
-      "carnetDetails": {
-        "quantity": "5",
-        "expiryTime": "77",
-        "expiryUnit": "month"
-      },
-      "salesOfferPackages": [
-        {
-          "id": 1,
-          "name": "Purchase method",
-          "description": "",
-          "purchaseLocations": [
-            "mobileDevice"
-          ],
-          "paymentMethods": [
-            "cash"
-          ],
-          "ticketFormats": [
-            "electronic_document"
-          ],
-          "price": "3.99"
-        }
-      ]
     }
   ],
   "additionalOperators": [
