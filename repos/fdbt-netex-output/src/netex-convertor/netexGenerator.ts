@@ -251,7 +251,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                     ticket.additionalServices[0],
                 );
             } else {
-                serviceFrameToUpdate.lines.Line.id = coreData.lineName;
+                serviceFrameToUpdate.lines.Line.id = coreData.lineIdName;
                 serviceFrameToUpdate.lines.Line.Name.$t = coreData.operatorPublicNameLineNameFormat;
                 serviceFrameToUpdate.lines.Line.PublicCode.$t = coreData.lineName;
                 serviceFrameToUpdate.lines.Line.PrivateCode.type = 'txc:Line@id';
