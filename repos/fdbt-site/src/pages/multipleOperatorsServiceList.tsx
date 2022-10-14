@@ -21,7 +21,6 @@ import {
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import { redirectTo } from '../utils/apiUtils';
-import SwitchDataSource from '../components/SwitchDataSource';
 
 const pageTitle = 'Multiple Operators Service List - Create Fares Data Service';
 const pageDescription = 'Multiple Operators Service List selection page of the Create Fares Data Service';
