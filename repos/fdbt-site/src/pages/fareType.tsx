@@ -34,8 +34,33 @@ export const buildUuid = (noc: string): string => {
 };
 
 const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
+    if (schemeOp) {
+        return [
+            {
+                value: 'period',
+                label: 'Period ticket',
+                hint: 'A ticket valid for a number of days, weeks, months or years',
+            },
+            {
+                value: 'carnetPeriod',
+                label: 'Carnet period ticket',
+                hint: 'A bundle of period tickets, each valid for a number of days, weeks, months or years',
+            },
+            {
+                value: 'flatFare',
+                label: 'Flat fare ticket',
+                hint: 'A fixed fee ticket for a single journey',
+            },
+            {
+                value: 'carnetFlatFare',
+                label: 'Carnet flat fare ticket',
+                hint: 'A bundle of fixed fee tickets, each for a single journey',
+            },
+        ];
+    }
+
     const isDevelopment = process.env.NODE_ENV === 'development';
-    const isTest = process.env.NODE_ENV === 'test';
+    const isTest = process.env.STAGE === 'test';
 
     const radioProps = [
         {
@@ -63,46 +88,21 @@ const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
             label: 'Carnet ticket',
             hint: 'A bundle of pre-paid tickets',
         },
-        // Disabling until a plan for multiop tickets interacting with MyFares is devised
-
         {
             value: 'schoolService',
             label: 'Academic term/year ticket',
             hint: 'A ticket available to pupils in full-time education',
         },
     ];
+
     if (isDevelopment || isTest) {
-        radioProps.push({
+        radioProps.splice(radioProps.length - 1, 0, {
             value: 'multiOperator',
             label: 'Multi-operator',
             hint: 'A ticket that covers more than one operator',
         });
     }
 
-    if (schemeOp) {
-        return [
-            {
-                value: 'period',
-                label: 'Period ticket',
-                hint: 'A ticket valid for a number of days, weeks, months or years',
-            },
-            {
-                value: 'carnetPeriod',
-                label: 'Carnet period ticket',
-                hint: 'A bundle of period tickets, each valid for a number of days, weeks, months or years',
-            },
-            {
-                value: 'flatFare',
-                label: 'Flat fare ticket',
-                hint: 'A fixed fee ticket for a single journey',
-            },
-            {
-                value: 'carnetFlatFare',
-                label: 'Carnet flat fare ticket',
-                hint: 'A bundle of fixed fee tickets, each for a single journey',
-            },
-        ];
-    }
     return radioProps;
 };
 
