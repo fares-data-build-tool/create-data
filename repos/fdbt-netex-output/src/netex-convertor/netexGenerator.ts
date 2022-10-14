@@ -84,9 +84,9 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref =
             coreData.nocCodeFormat;
 
-        if (coreData.lineName) {
+        if (coreData.lineIdName) {
             publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.LineRef.ref =
-                coreData.lineName;
+                coreData.lineIdName;
         }
 
         const ticketTypeInsert =
@@ -346,6 +346,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         const fareStructuresElements = getFareStructuresElements(
             ticket,
             coreData.isCarnet,
+            coreData.lineIdName,
             coreData.lineName,
             coreData.placeholderGroupOfProductsName,
             `${coreData.operatorIdentifier}@groupOfLines@1`,
@@ -384,8 +385,8 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             tariff.qualityStructureFactors = getTimeRestrictions(ticket.timeRestriction);
         }
 
-        if (coreData.lineName) {
-            tariff.LineRef.ref = coreData.lineName;
+        if (coreData.lineIdName) {
+            tariff.LineRef.ref = coreData.lineIdName;
         }
 
         if ('lineName' in ticket) {

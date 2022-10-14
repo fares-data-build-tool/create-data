@@ -490,6 +490,7 @@ export const combineFareZones = (outbound: FareZone[], inbound: FareZone[]): Far
 
 export const getLinesElement = (
     ticket: PointToPointTicket | PointToPointPeriodTicket,
+    lineIdName: string,
     lineName: string,
 ): NetexObject => {
     const typeOfPointToPoint = ticket.type;
@@ -558,7 +559,7 @@ export const getLinesElement = (
             validityParameters: {
                 LineRef: {
                     version: '1.0',
-                    ref: lineName,
+                    ref: lineIdName,
                 },
             },
         },
@@ -681,7 +682,7 @@ export const getAdditionalReturnLines = (
 ): NetexObject[] => {
     const firstLine = {
         version: '1.0',
-        id: coreData.lineName,
+        id: coreData.lineIdName,
         Name: { $t: coreData.operatorPublicNameLineNameFormat },
         Description: { $t: ticket.serviceDescription },
         PublicCode: { $t: coreData.lineName },

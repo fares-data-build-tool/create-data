@@ -16,7 +16,7 @@
         <NetworkFilterByValue>
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-            <LineRef version="1.0" ref="4"/>
+            <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
             <BrandingRef version="1.0" ref="op:BLAC@brand"/>
           </objectReferences>
         </NetworkFilterByValue>
@@ -467,7 +467,7 @@
               </validityConditions>
               <Name>Tariff for Best product</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-              <LineRef version="1.0" ref="4"/>
+              <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <TariffBasis>zoneToZone</TariffBasis>
               <qualityStructureFactors>
@@ -1903,7 +1903,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterAssignmentType>EQ</ValidityParameterAssignmentType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="4"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>

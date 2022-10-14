@@ -16,7 +16,7 @@
         <NetworkFilterByValue>
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-            <LineRef version="1.0" ref="2"/>
+            <LineRef version="1.0" ref="YpQjUw"/>
             <BrandingRef version="1.0" ref="op:BLAC@brand"/>
             <PreassignedFareProductRef version="1.0" ref="Trip@Period_Point_to_Point"/>
             <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
@@ -1070,7 +1070,7 @@
               </validityConditions>
               <Name>Tariff for Period Point to Point</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-              <LineRef version="1.0" ref="2"/>
+              <LineRef version="1.0" ref="YpQjUw"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <TariffBasis>zoneToZone</TariffBasis>
               <timeIntervals>
@@ -1149,7 +1149,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterAssignmentType>EQ</ValidityParameterAssignmentType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="2"/>
+                      <LineRef version="1.0" ref="YpQjUw"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
