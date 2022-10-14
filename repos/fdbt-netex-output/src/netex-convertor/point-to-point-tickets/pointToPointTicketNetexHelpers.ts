@@ -424,7 +424,7 @@ export const getFareTables = (
             specifics: {
                 LineRef: {
                     version: '1.0',
-                    ref: matchingData.lineName,
+                    ref: matchingData.lineId,
                 },
             },
             columns: {
@@ -696,11 +696,11 @@ export const getAdditionalReturnLines = (
     };
     const secondLine = {
         version: '1.0',
-        id: additionalService.lineName,
+        id: additionalService.lineId,
         Name: { $t: `${ticket.operatorName} ${additionalService.lineName}` },
         Description: { $t: additionalService.serviceDescription },
         PublicCode: { $t: additionalService.lineName },
-        PrivateCode: { type: 'txc:Line@id', $t: `Line_${additionalService.lineName}` },
+        PrivateCode: { type: 'txc:Line@id', $t: additionalService.lineId },
         OperatorRef: {
             version: '1.0',
             ref: coreData.nocCodeFormat,

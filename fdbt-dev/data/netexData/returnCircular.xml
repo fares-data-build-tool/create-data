@@ -763,7 +763,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@student@c1@Shott_Drive" order="1">
@@ -1092,7 +1092,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@student@c1@Shott_Drive" order="1">
@@ -1421,7 +1421,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@student@c1@Shott_Drive" order="1">
@@ -1750,7 +1750,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@student@c1@Shott_Drive" order="1">
@@ -2079,7 +2079,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@student@c1@Shott_Drive" order="1">

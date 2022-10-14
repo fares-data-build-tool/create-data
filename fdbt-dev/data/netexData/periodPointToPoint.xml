@@ -1299,7 +1299,7 @@
                 <TariffRef version="1.0" ref="Tariff@period@YpQjUw"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="2"/>
+                <LineRef version="1.0" ref="YpQjUw"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c1@Shott_Drive" order="1">
@@ -1368,7 +1368,7 @@
                 <TariffRef version="1.0" ref="Tariff@period@YpQjUw"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="2"/>
+                <LineRef version="1.0" ref="YpQjUw"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c1@Shott_Drive" order="1">
