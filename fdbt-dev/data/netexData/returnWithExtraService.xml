@@ -640,8 +640,8 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>XOR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="19"/>
-                      <LineRef version="1.0" ref="20"/>
+                      <LineRef version="1.0" ref="Line_19"/>
+                      <LineRef version="1.0" ref="examplelineid_RJ1_Outbound"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>

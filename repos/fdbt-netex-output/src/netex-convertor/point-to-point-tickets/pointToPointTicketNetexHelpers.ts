@@ -499,11 +499,11 @@ export const getLinesElement = (
         const lineRefs = [
             {
                 version: '1.0',
-                ref: lineName,
+                ref: lineIdName,
             },
             {
                 version: '1.0',
-                ref: ticket.additionalServices[0].lineName,
+                ref: ticket.additionalServices[0].lineId,
             },
         ];
 
