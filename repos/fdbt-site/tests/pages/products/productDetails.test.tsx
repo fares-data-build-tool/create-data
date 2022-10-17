@@ -16,6 +16,7 @@ import {
     expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
     expectedPointToPointPeriodTicket,
+    expectedReturnTicketWithAdditionalService,
     expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
     expectedSchemeOperatorTicketAfterGeoZoneAdjustment,
     expectedSingleTicket,
@@ -270,6 +271,49 @@ describe('myfares pages', () => {
                         { name: 'Fare triangle', content: ['You created a fare triangle'], editLink: '/csvUpload' },
                         { name: 'Period duration', content: ['7 weeks'] },
                         { name: 'Product expiry', content: ['24 hr'] },
+                        { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'], editLink: '/selectPurchaseMethods' },
+                        { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
+                        { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
+                    ],
+                    productId: '1',
+                    serviceId: '2',
+                    copiedProduct: false,
+                    cannotGenerateReturn: false,
+                    isSingle: false,
+                    passengerTypeId: 9,
+                    lineId: 'q2gv2ve',
+                    csrfToken: '',
+                    fareTriangleModified: undefined,
+                },
+            });
+        });
+
+        it('correctly returns the elements which should be displayed on the page for a return ticket with additional service', async () => {
+            (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedReturnTicketWithAdditionalService);
+            const ctx = getMockContext({ query: { productId: '1', serviceId: '2' } });
+            expect(await getServerSideProps(ctx)).toStrictEqual({
+                props: {
+                    requiresAttention: false,
+                    backHref: `/products/pointToPointProducts?serviceId=2`,
+                    productName: 'Test Passenger Type - Return',
+                    startDate: '17/12/2020',
+                    endDate: '18/12/2020',
+                    productDetailsElements: [
+                        { name: 'Fare type', id: 'fare-type', content: ['Return'] },
+                        {
+                            name: 'Service',
+                            content: ['Test Line Name - Test Origin to Test Destination'],
+                            editLabel: 'Add service',
+                            editLink: '/returnService?selectedServiceId=2',
+                        },
+                        { name: 'Passenger type', content: ['Test Passenger Type'], editLink: '/selectPassengerType' },
+                        {
+                            name: 'Time restriction',
+                            content: ['Test Time Restriction'],
+                            editLink: '/selectTimeRestrictions',
+                        },
+                        { name: 'Fare triangle', content: ['You created a fare triangle'], editLink: '/csvUpload' },
+                        { name: 'Return ticket validity', content: ['N/A'], editLink: '/returnValidity' },
                         { name: 'Purchase methods', content: ['SOP 1', 'SOP 2'], editLink: '/selectPurchaseMethods' },
                         { name: 'Start date', content: ['17/12/2020'], editLink: '/productDateInformation' },
                         { name: 'End date', content: ['18/12/2020'], editLink: '/productDateInformation' },
