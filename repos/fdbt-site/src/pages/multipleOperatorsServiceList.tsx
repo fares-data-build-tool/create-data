@@ -19,7 +19,7 @@ import {
     TxcSourceAttribute,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getCsrfToken } from '../utils';
 import { redirectTo } from '../utils/apiUtils';
 
 const pageTitle = 'Multiple Operators Service List - Create Fares Data Service';
