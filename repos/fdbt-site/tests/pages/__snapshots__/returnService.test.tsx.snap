@@ -2,7 +2,7 @@
 
 exports[`pages returnService should render correctly 1`] = `
 <TwoThirdsLayout
-  description="Service selection page of the Create Fares Data Service"
+  description="Return Service selection page of the Create Fares Data Service"
   errors={Array []}
   title="Return Service - Create Fares Data Service"
 >

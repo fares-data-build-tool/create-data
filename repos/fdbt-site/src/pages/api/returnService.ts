@@ -17,7 +17,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (!Number.isInteger(serviceId)) {
             const errors: ErrorInfo[] = [{ id: 'returnService', errorMessage: 'Choose a service from the options' }];
-            updateSessionAttribute(req, RETURN_SERVICE_ATTRIBUTE, { errors });
+            updateSessionAttribute(req, RETURN_SERVICE_ATTRIBUTE, {
+                lineName: '',
+                lineId: '',
+                nocCode: '',
+                operatorShortName: '',
+                serviceDescription: '',
+                errors,
+            });
             redirectTo(res, `/returnService?selectedServiceId=${selectedServiceId}`);
             return;
         }
