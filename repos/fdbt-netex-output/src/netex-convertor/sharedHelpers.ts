@@ -371,6 +371,7 @@ export const getCarnetElement = (ticket: Ticket): NetexObject => {
 export const getFareStructuresElements = (
     ticket: Ticket,
     isCarnet: boolean,
+    lineIdName: string,
     lineName: string,
     placeholderGroupOfProductsName: string,
     groupOfLinesRef: string,
@@ -386,7 +387,7 @@ export const getFareStructuresElements = (
     }
 
     if ('lineName' in ticket) {
-        fareStructureElements.push(getLinesElement(ticket, lineName));
+        fareStructureElements.push(getLinesElement(ticket, lineIdName, lineName));
         fareStructureElements.push(getEligibilityElement(ticket));
 
         // P2P Periods have one product with duration details attached

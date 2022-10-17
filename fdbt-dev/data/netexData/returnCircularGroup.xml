@@ -16,7 +16,7 @@
         <NetworkFilterByValue>
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
-            <LineRef version="1.0" ref="709"/>
+            <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
             <BrandingRef version="1.0" ref="op:WBTR@brand"/>
           </objectReferences>
         </NetworkFilterByValue>
@@ -263,7 +263,7 @@
               </validityConditions>
               <Name>Tariff for Another product</Name>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
-              <LineRef version="1.0" ref="709"/>
+              <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <TariffBasis>zoneToZone</TariffBasis>
               <qualityStructureFactors>
@@ -564,7 +564,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterAssignmentType>EQ</ValidityParameterAssignmentType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="709"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -801,7 +801,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c1@Shott_Drive" order="1">
@@ -1130,7 +1130,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c1@Shott_Drive" order="1">
@@ -1459,7 +1459,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c1@Shott_Drive" order="1">
@@ -1788,7 +1788,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c1@Shott_Drive" order="1">
@@ -2117,7 +2117,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c1@Shott_Drive" order="1">

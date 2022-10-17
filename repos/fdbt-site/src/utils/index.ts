@@ -24,8 +24,11 @@ import {
     DocumentContextWithSession,
     Stop,
     ResponseWithLocals,
+    Ticket,
+    ReturnTicket,
 } from '../interfaces';
 import dateFormat from 'dateformat';
+import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
 
 export const getProofDocumentsString = (documents: string[]): string =>
     documents.map((document) => sentenceCaseString(document)).join(', ');
@@ -160,10 +163,8 @@ export const getNocFromIdToken = (ctx: NextPageContext): string | null => getAtt
 export const getAndValidateNoc = (ctx: NextPageContextWithSession): string => {
     const idTokenNoc = getNocFromIdToken(ctx);
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
-
     const sessionNoc = operatorAttribute?.nocCode;
     const splitNoc = idTokenNoc?.split('|');
-
     if (sessionNoc && idTokenNoc && splitNoc?.includes(sessionNoc)) {
         return sessionNoc;
     }
@@ -238,3 +239,5 @@ export const chunk = <T>(array: T[], size: number): T[][] => {
 export const convertDateFormat = (date: string): string => {
     return dateFormat(date, 'dd/mm/yyyy');
 };
+
+export const isReturnTicket = (ticket: Ticket | TicketWithIds): ticket is ReturnTicket => ticket.type === 'return';
