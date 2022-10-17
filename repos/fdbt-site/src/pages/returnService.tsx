@@ -18,14 +18,14 @@ import InformationSummary from '../components/InformationSummary';
 import BackButton from '../components/BackButton';
 
 const title = 'Return Service - Create Fares Data Service';
-const description = 'Service selection page of the Create Fares Data Service';
+const description = 'Return Service selection page of the Create Fares Data Service';
 const errorId = 'returnService';
 
 interface ReturnServiceProps {
     operator: string;
     passengerType: string;
     services: ServiceType[];
-    error: ErrorInfo[];
+    errors: ErrorInfo[];
     csrfToken: string;
     selectedServiceId: number;
     backHref: string;
@@ -35,12 +35,12 @@ const ReturnService = ({
     operator,
     passengerType,
     services,
-    error,
+    errors,
     csrfToken,
     selectedServiceId,
     backHref,
 }: ReturnServiceProps): ReactElement => (
-    <TwoThirdsLayout title={title} description={description} errors={error}>
+    <TwoThirdsLayout title={title} description={description} errors={errors}>
         <BackButton href={backHref} />
         <CsrfForm action="/api/returnService" method="post" csrfToken={csrfToken}>
             <>
@@ -54,15 +54,15 @@ const ReturnService = ({
                 <span className="govuk-hint" id="service-operator-passenger-type-hint">
                     {operator} - {upperFirst(passengerType)}
                 </span>
-                <ErrorSummary errors={error} />
+                <ErrorSummary errors={errors} />
 
-                <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-select--error">
+                <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                    <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-select--error">
                         <select
                             className="govuk-select"
                             id="service"
                             name="serviceId"
-                            defaultValue={error.length > 0 && error[0].userInput ? error[0].userInput : undefined}
+                            defaultValue={errors.length > 0 && errors[0].userInput ? errors[0].userInput : undefined}
                         >
                             <option value="" disabled>
                                 Select One
@@ -122,8 +122,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }
     }
 
-    const error: ErrorInfo[] = [];
-
     const passengerType = await getPassengerTypeById(ticket.passengerType.id, nocCode);
 
     const backHref = `/products/productDetails?productId=${matchingJsonMetaData.productId}${
@@ -135,7 +133,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             operator: operatorAttribute && operatorAttribute.name ? operatorAttribute.name : '',
             passengerType: passengerType ? passengerType.name : '',
             services: services,
-            error,
+            errors: [],
             csrfToken,
             selectedServiceId,
             backHref,

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import ReturnService, { getServerSideProps } from '../../src/pages/returnService';
 import { getServicesByNocCodeAndDataSource } from '../../src/data/auroradb';
-import { expectedReturnTicketWithAdditionalService, getMockContext } from '../testData/mockData';
+import { expectedReturnTicketWithAdditionalService, expectedSingleTicket, getMockContext } from '../testData/mockData';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
@@ -55,10 +55,10 @@ describe('pages', () => {
                     operator="Connexions Buses"
                     passengerType="Adult"
                     services={mockServices}
-                    error={[]}
+                    errors={[]}
                     csrfToken=""
                     selectedServiceId={1}
-                    backHref=""
+                    backHref="/productDetails?productId=1"
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -70,10 +70,10 @@ describe('pages', () => {
                     operator="Connexions Buses"
                     passengerType="Adult"
                     services={mockServices}
-                    error={[]}
+                    errors={[]}
                     csrfToken=""
                     selectedServiceId={1}
-                    backHref=""
+                    backHref="/productDetails?productId=1"
                 />,
             );
             const operatorWelcome = wrapper.find('#service-operator-passenger-type-hint').first();
@@ -87,7 +87,7 @@ describe('pages', () => {
                     operator="Connexions Buses"
                     passengerType="Adult"
                     services={mockServices}
-                    error={[]}
+                    errors={[]}
                     csrfToken=""
                     selectedServiceId={1}
                     backHref=""
@@ -120,7 +120,7 @@ describe('pages', () => {
             const result = await getServerSideProps(ctx);
             expect(result).toEqual({
                 props: {
-                    error: [],
+                    errors: [],
                     operator: 'Test Op',
                     passengerType: '',
                     services: [
@@ -188,6 +188,86 @@ describe('pages', () => {
             await getServerSideProps(ctx);
 
             expect(ctx.res?.writeHead).toBeCalledWith(302, { Location: '/noServices' });
+        });
+
+        it('throws error if ticket was not in edit mode', async () => {
+            (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => []);
+
+            const mockWriteHeadFn = jest.fn();
+            const mockEndFn = jest.fn();
+            const operatorData: OperatorAttribute = {
+                name: 'Test Op',
+                nocCode: 'TEST',
+            };
+
+            const ctx = getMockContext({
+                body: null,
+                session: {
+                    [OPERATOR_ATTRIBUTE]: operatorData,
+                },
+                uuid: {},
+                query: {
+                    selectedServiceId: 1,
+                },
+                mockWriteHeadFn,
+                mockEndFn,
+            });
+
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Ticket details not found');
+        });
+
+        it('throws error if selected service id is missing', async () => {
+            (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => []);
+
+            const mockWriteHeadFn = jest.fn();
+            const mockEndFn = jest.fn();
+            const operatorData: OperatorAttribute = {
+                name: 'Test Op',
+                nocCode: 'TEST',
+            };
+
+            const ctx = getMockContext({
+                body: null,
+                session: {
+                    [OPERATOR_ATTRIBUTE]: operatorData,
+                    [MATCHING_JSON_ATTRIBUTE]: expectedSingleTicket,
+                    [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },
+                },
+                uuid: {},
+                query: {},
+                mockWriteHeadFn,
+                mockEndFn,
+            });
+
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Added service is missing');
+        });
+
+        it('throws error if ticket is not a return ticket', async () => {
+            (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => []);
+
+            const mockWriteHeadFn = jest.fn();
+            const mockEndFn = jest.fn();
+            const operatorData: OperatorAttribute = {
+                name: 'Test Op',
+                nocCode: 'TEST',
+            };
+
+            const ctx = getMockContext({
+                body: null,
+                session: {
+                    [OPERATOR_ATTRIBUTE]: operatorData,
+                    [MATCHING_JSON_ATTRIBUTE]: expectedSingleTicket,
+                    [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },
+                },
+                uuid: {},
+                query: {
+                    selectedServiceId: 1,
+                },
+                mockWriteHeadFn,
+                mockEndFn,
+            });
+
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Ticket should be return type');
         });
 
         it('throws error if noc invalid', async () => {

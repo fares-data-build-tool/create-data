@@ -21,7 +21,7 @@ beforeEach(() => {
 });
 
 describe('returnService', () => {
-    it('should return 302 redirect to /returnService when there is no body in the request', async () => {
+    it('should return 302 redirect to /returnService with an error when there is no body in the reques', async () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
@@ -38,8 +38,9 @@ describe('returnService', () => {
         });
     });
 
-    it('should return 302 redirect to /returnService when the ticket is not in edit mode', async () => {
+    it('should return 302 redirect to /error when the ticket is not in edit mode', async () => {
         const writeHeadMock = jest.fn();
+
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             query: {},
@@ -51,12 +52,13 @@ describe('returnService', () => {
             mockWriteHeadFn: writeHeadMock,
         });
         await returnService(req, res);
+
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/returnService?selectedServiceId=1',
+            Location: '/error',
         });
     });
 
-    it('should return 302 redirect to /productDetails', async () => {
+    it('should return 302 redirect to /productDetails when a user gives a valid input', async () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({
             body: { selectedServiceId: 1, serviceId: 4 },
@@ -79,7 +81,6 @@ describe('returnService', () => {
                 ...expectedReturnTicketWithAdditionalService,
                 additionalServices: [
                     {
-                        id: 4,
                         lineId: 'q2gv2ve',
                         lineName: '17',
                         serviceDescription:

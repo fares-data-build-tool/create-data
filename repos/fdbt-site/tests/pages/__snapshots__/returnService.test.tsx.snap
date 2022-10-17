@@ -7,7 +7,7 @@ exports[`pages returnService should render correctly 1`] = `
   title="Return Service - Create Fares Data Service"
 >
   <BackButton
-    href=""
+    href="/productDetails?productId=1"
   />
   <CsrfForm
     action="/api/returnService"

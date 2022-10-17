@@ -28,12 +28,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         // edit mode
         if (!ticket || !matchingJsonMetaData) {
-            const errors: ErrorInfo[] = [
-                { id: 'returnService', errorMessage: 'You can add a service from product details page only' },
-            ];
-            updateSessionAttribute(req, RETURN_SERVICE_ATTRIBUTE, { errors });
-            redirectTo(res, `/returnService?selectedServiceId=${selectedServiceId}`);
-            return;
+            throw new Error('Could not find the ticket for which the service needs to be added.');
         }
 
         const updatedTicket = {
@@ -43,7 +38,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     lineName: service.lineName,
                     lineId: service.lineId,
                     serviceDescription: service.serviceDescription,
-                    id: serviceId,
                 },
             ],
         };
