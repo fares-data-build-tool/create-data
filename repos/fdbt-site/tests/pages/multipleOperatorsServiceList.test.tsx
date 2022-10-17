@@ -324,7 +324,7 @@ describe('pages', () => {
                 expect(updateSessionAttributeSpy).toBeCalledWith(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, {
                     source: 'tnds',
                     hasBods: false,
-                    hasTnds: true,
+                    hasTnds: false,
                 });
             });
         });

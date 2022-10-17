@@ -19,7 +19,7 @@ import {
     TxcSourceAttribute,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
-import { getCsrfToken } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { redirectTo } from '../utils/apiUtils';
 
 const pageTitle = 'Multiple Operators Service List - Create Fares Data Service';
@@ -179,20 +179,22 @@ export const getServerSideProps = async (
     let dataSourceAttribute = getSessionAttribute(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE);
 
     if (!dataSourceAttribute) {
+        const nocCode = getAndValidateNoc(ctx);
         const services = await getAllServicesByNocCode(operatorToUse.nocCode);
-        if (services.length === 0) {
+        const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
+
+        if (!hasBodsServices) {
             if (ctx.res) {
                 redirectTo(ctx.res, '/noServices');
             } else {
-                throw new Error(`No services found for NOC Code: ${operatorToUse.nocCode}`);
+                throw new Error(`No services found for NOC Code: ${nocCode}`);
             }
         }
-        const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
-        const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
+        // const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
         updateSessionAttribute(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, {
             source: hasBodsServices ? 'bods' : 'tnds',
             hasBods: hasBodsServices,
-            hasTnds: hasTndsServices,
+            hasTnds: false,
         });
         dataSourceAttribute = getSessionAttribute(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
     }
