@@ -42,7 +42,6 @@ const ViewPassengerTypes = ({
             group.groupPassengerType.companions.some((individual) => individual.name === name) ? group.name : [],
         );
 
-        console.log(productsUsingPassengerType)
         setPopUpState({
             ...popUpState,
             passengerTypeName: name,
@@ -217,7 +216,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
     const productsUsingPassengerType = getSessionAttribute(ctx.req,PRODUCTS_USING_PASSENGER_TYPE) 
-console.log(productsUsingPassengerType)
+
     updateSessionAttribute(ctx.req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, PRODUCTS_USING_PASSENGER_TYPE, undefined);
