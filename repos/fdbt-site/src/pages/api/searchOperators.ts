@@ -6,7 +6,7 @@ import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { addOperatorsErrorId, removeOperatorsErrorId, searchInputId } from '../searchOperators';
-import { getBodsServicesByNoc } from '../../data/auroradb';
+import { checkBodshasServicesByNoc } from '../../data/auroradb';
 
 export const removeOperatorsFromPreviouslySelectedOperators = (
     rawList: string[],
@@ -37,11 +37,8 @@ export const isSearchInputValid = (searchText: string): boolean => {
 };
 
 export const bodsHasServices = async (nocCode: string): Promise<boolean> => {
-    const services = await getBodsServicesByNoc(nocCode);
-    if (services.length > 0) {
-        return true;
-    }
-    return false;
+    const hasService = await checkBodshasServicesByNoc(nocCode);
+    return hasService;
 };
 export const operatorsWithNoServers = (selectedOperators: Operator[]): string[] => {
     const operatorsList: string[] = [];
