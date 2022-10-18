@@ -6,6 +6,7 @@ import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { addOperatorsErrorId, removeOperatorsErrorId, searchInputId } from '../searchOperators';
+import { getBodsServicesByNoc } from '../../data/auroradb';
 
 export const removeOperatorsFromPreviouslySelectedOperators = (
     rawList: string[],
@@ -26,12 +27,33 @@ export const addOperatorsToPreviouslySelectedOperators = (
     }));
     const combinedLists = selectedOperators.concat(formattedRawList);
     const updatedList = uniqBy(combinedLists, 'nocCode');
+
     return updatedList;
 };
 
 export const isSearchInputValid = (searchText: string): boolean => {
     const searchRegex = new RegExp(/^[a-zA-Z0-9\-:\s]+$/g);
     return searchRegex.test(searchText);
+};
+
+export const bodsHasServices = async (nocCode: string): Promise<boolean> => {
+    const services = await getBodsServicesByNoc(nocCode);
+    if (services.length > 0) {
+        return true;
+    }
+    return false;
+};
+export const operatorsWithNoServers = (selectedOperators: Operator[]): string[] => {
+    const operatorsList: string[] = [];
+    Object.entries(selectedOperators).forEach((entry) => {
+        const nocCode = entry[1].nocCode;
+        const bodsName = entry[1].name;
+        const hasService = bodsHasServices(nocCode);
+        if (!hasService) {
+            operatorsList.push(bodsName);
+        }
+    });
+    return operatorsList;
 };
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
@@ -117,6 +139,16 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
 
         if (continueButtonClick) {
+            const operatorNames = operatorsWithNoServers(selectedOperators);
+            if (operatorNames.length > 0) {
+                errors.push({
+                    errorMessage: `${operatorNames.join(', ')} has no services`,
+                    id: removeOperatorsErrorId,
+                });
+                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
+                redirectTo(res, '/searchOperators');
+                return;
+            }
             redirectTo(res, '/saveOperatorGroup');
             return;
         }
