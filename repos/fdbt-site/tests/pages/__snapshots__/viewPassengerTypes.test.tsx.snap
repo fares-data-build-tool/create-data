@@ -7,6 +7,11 @@ exports[`pages view passenger types should render correctly when groups and indi
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={null}
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={2}
@@ -113,6 +118,11 @@ exports[`pages view passenger types should render correctly when no individual o
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={null}
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={0}
@@ -162,6 +172,11 @@ exports[`pages view passenger types should render correctly when only individual
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={null}
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={1}
@@ -237,6 +252,11 @@ exports[`pages view passenger types should render correctly when only passenger 
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={null}
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={1}

@@ -2,7 +2,7 @@ import React, { ReactElement, PropsWithChildren } from 'react';
 import { ErrorInfo } from '../interfaces';
 
 interface ErrorSummary {
-    errors: ErrorInfo[];
+    errors: ErrorInfo[] | null;
 }
 
 const ErrorSummary = ({ errors, children }: PropsWithChildren<ErrorSummary>): null | ReactElement => {

@@ -1,7 +1,10 @@
 import { NextApiResponse } from 'next';
-import { deletePassengerTypeByNocCodeAndId, getGroupPassengerTypeDbsFromGlobalSettings } from '../../data/auroradb';
+import { deletePassengerTypeByNocCodeAndId, getAllProductsByNoc, getGroupPassengerTypeDbsFromGlobalSettings, getPassengerTypeById } from '../../data/auroradb';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils/index';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { getProductsMatchingJson } from 'src/data/s3';
+import { updateSessionAttribute } from 'src/utils/sessions';
+import { PRODUCTS_USING_PASSENGER_TYPE } from 'src/constants/attributes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -23,6 +26,30 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (groupsInUse) {
             throw new Error('This individual cannot be deleted because it is in use in a group.');
+        }
+
+        const products = await getAllProductsByNoc(nationalOperatorCode)
+        const matchingJsonLinks = products.map((product) => product.matchingJsonLink);
+        const tickets = await Promise.all(
+            matchingJsonLinks?.map(async (link) => {
+                return await getProductsMatchingJson(link);
+            }),
+        );
+
+        const productsUsingPassengerType = tickets?.filter(t => t?.passengerType?.id === id)
+        const productNames = productsUsingPassengerType?.map(ticket=> ticket.products[0] ? (ticket.products[0].productName || 'missing'): "")
+        if(productsUsingPassengerType && productsUsingPassengerType.length > 0){
+            const passengerDetails : any = await getPassengerTypeById(id, nationalOperatorCode)
+            const { name } = passengerDetails || ""
+            const errorMessage = `You cannot delete ${name} because ${productNames.some(p => p!=='missing') ? `it is part of the following product(s): ${productNames?.join(', ')}.`: 'it is in use in a product(s).'} `
+            const errors: ErrorInfo[] = [{ id: '/viewPassengerTypes', errorMessage}];
+            updateSessionAttribute(req, PRODUCTS_USING_PASSENGER_TYPE, {
+                errors,
+                productsUsingPassengerType : productNames,
+                passengerName: name
+            });
+            redirectTo(res, `/viewPassengerTypes?cannotDelete=${name}`);
+            return;
         }
 
         await deletePassengerTypeByNocCodeAndId(id, nationalOperatorCode, isGroup === 'true');
