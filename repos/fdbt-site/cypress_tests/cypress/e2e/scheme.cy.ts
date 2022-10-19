@@ -7,7 +7,7 @@ import {
     selectFareType,
 } from '../support/steps';
 
-describe('the scheme journey', () => {
+describe.skip('the scheme journey', () => {
     it('completes successfully for geozone and a single product', () => {
         selectFareType('period', true);
         defineUserTypeAndTimeRestrictions();

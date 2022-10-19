@@ -17,6 +17,8 @@ before(() => {
     addTestFareDayEnd();
     cy.log('Global Settings set up for BLAC');
 
+    // Disabling the below, as schemes are currently not fully supported
+    /*
     getHomePage('scheme');
     clickElementById('account-link');
     clickElementByText('Passenger types');
@@ -29,6 +31,7 @@ before(() => {
     addTestFareDayEnd();
     clickElementByText('Operator details');
     addTestOperatorDetails();
+    */
     cy.log('Global Settings set up for scheme');
 });
 
