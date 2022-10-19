@@ -1,15 +1,20 @@
 import React, { ReactElement, useState } from 'react';
+import ErrorSummary from '../components/ErrorSummary';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 import PassengerTypeCard from '../components/PassengerTypeCard';
 import UnableToDeletePopup from '../components/UnableToDeletePopup';
-import { GS_PASSENGER_GROUP_ATTRIBUTE, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
+import {
+    GS_PASSENGER_GROUP_ATTRIBUTE,
+    MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    VIEW_PASSENGER_TYPE,
+} from '../constants/attributes';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
-import { FullGroupPassengerType, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
+import { ErrorInfo, FullGroupPassengerType, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
-import { updateSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Passenger Types - Create Fares Data Service';
 const description = 'View and edit your passenger types.';
@@ -19,6 +24,7 @@ interface PassengerTypeProps {
     singlePassengerTypes: SinglePassengerType[];
     groupPassengerTypes: FullGroupPassengerType[];
     referer: string | null;
+    viewPassengerTypeErrors: ErrorInfo[];
 }
 
 const ViewPassengerTypes = ({
@@ -26,6 +32,7 @@ const ViewPassengerTypes = ({
     groupPassengerTypes,
     csrfToken,
     referer,
+    viewPassengerTypeErrors = [],
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         passengerTypeName: string;
@@ -58,6 +65,9 @@ const ViewPassengerTypes = ({
 
     return (
         <BaseLayout title={title} description={description} showNavigation referer={referer}>
+            <div>
+                <ErrorSummary errors={viewPassengerTypeErrors} />
+            </div>
             <div className="govuk-grid-row" data-card-count={singlePassengerTypes.length + groupPassengerTypes.length}>
                 <div className="govuk-grid-column-one-quarter">
                     <SubNavigation />
@@ -211,9 +221,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
+    const viewPassengerType = getSessionAttribute(ctx.req, VIEW_PASSENGER_TYPE);
 
     updateSessionAttribute(ctx.req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
+    updateSessionAttribute(ctx.req, VIEW_PASSENGER_TYPE, undefined);
 
     return {
         props: {
@@ -221,6 +233,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             singlePassengerTypes: singlePassengerTypes,
             groupPassengerTypes,
             referer: extractGlobalSettingsReferer(ctx),
+            viewPassengerTypeErrors: viewPassengerType || [],
         },
     };
 };

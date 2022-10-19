@@ -7,7 +7,13 @@ describe('pages', () => {
     describe('view passenger types', () => {
         it('should render correctly when no individual or group passenger types', () => {
             const tree = shallow(
-                <ViewPassengerTypes singlePassengerTypes={[]} groupPassengerTypes={[]} csrfToken={''} referer={null} />,
+                <ViewPassengerTypes
+                    singlePassengerTypes={[]}
+                    groupPassengerTypes={[]}
+                    csrfToken={''}
+                    referer={null}
+                    productsUsingPassengerType={null}
+                />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -32,6 +38,7 @@ describe('pages', () => {
                     groupPassengerTypes={[]}
                     csrfToken={''}
                     referer={'hello'}
+                    productsUsingPassengerType={null}
                 />,
             );
 
@@ -71,6 +78,7 @@ describe('pages', () => {
                     groupPassengerTypes={[passengerTypeGroup]}
                     csrfToken={''}
                     referer={null}
+                    productsUsingPassengerType={null}
                 />,
             );
 
@@ -125,6 +133,7 @@ describe('pages', () => {
                     groupPassengerTypes={passengerTypeGroups}
                     csrfToken={''}
                     referer={'hello'}
+                    productsUsingPassengerType={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
