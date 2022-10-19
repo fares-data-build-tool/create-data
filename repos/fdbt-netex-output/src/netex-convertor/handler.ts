@@ -81,11 +81,7 @@ export const getFinalNetexName = async (fileName: string): Promise<string> => {
     while (true) {
         const fileNameTaken = await fileNameExistsAlready(placeHolderFileName);
         if (fileNameTaken) {
-            if (counter > 1) {
-                placeHolderFileName = `${fileName}_${counter}`;
-            } else {
-                placeHolderFileName = `${placeHolderFileName}_${counter}`;
-            }
+            placeHolderFileName = `${fileName}_${counter}`;
             counter++;
         } else {
             break;
