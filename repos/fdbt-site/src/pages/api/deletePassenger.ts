@@ -48,7 +48,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     ? ticket.products[0].productName
                     : 'missing'
                 : '',
-        );
+        ).filter(product => (product !== 'missing'));
+
         if (productsUsingPassengerType && productsUsingPassengerType.length > 0) {
             const passengerDetails: any = await getPassengerTypeById(id, nationalOperatorCode);
             const { name } = passengerDetails || '';
