@@ -160,7 +160,7 @@ export const checkBodshasServicesByNoc = async (nationalOperatorCode: string): P
 
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving services for given national operator code',
+        message: 'retrieving number of services for given national operator code',
         noc: nationalOperatorCode,
     });
 

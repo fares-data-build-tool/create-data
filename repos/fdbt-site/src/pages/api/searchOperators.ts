@@ -36,24 +36,21 @@ export const isSearchInputValid = (searchText: string): boolean => {
     return searchRegex.test(searchText);
 };
 
-export const bodsHasServices = async (nocCode: string): Promise<boolean> => {
-    const hasService = await checkBodshasServicesByNoc(nocCode);
-    return hasService;
-};
-export const operatorsWithNoServers = (selectedOperators: Operator[]): string[] => {
-    const operatorsList: string[] = [];
-    Object.entries(selectedOperators).forEach((entry) => {
-        const nocCode = entry[1].nocCode;
-        const bodsName = entry[1].name;
-        const hasService = bodsHasServices(nocCode);
-        if (!hasService) {
-            operatorsList.push(bodsName);
-        }
-    });
-    return operatorsList;
+export const operatorsWithNoServers = async (selectedOperators: Operator[]): Promise<string[]> => {
+    const results = Promise.all(
+        selectedOperators.map(async (operator) => {
+            const nocCode = operator.nocCode;
+            const hasService = await checkBodshasServicesByNoc(nocCode);
+            if (!hasService) {
+                return operator.name;
+            }
+            return '';
+        }),
+    );
+    return (await results).filter((item) => item !== '');
 };
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const errors: ErrorInfo[] = [];
         const {
@@ -136,11 +133,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
 
         if (continueButtonClick) {
-            const operatorNames = operatorsWithNoServers(selectedOperators);
+            const operatorNames = await operatorsWithNoServers(selectedOperators);
             if (operatorNames.length > 0) {
                 errors.push({
-                    errorMessage: `${operatorNames.join(', ')} has no services`,
+                    errorMessage: `Some of the selected operators have no services`,
                     id: removeOperatorsErrorId,
+                });
+                operatorNames.map((names) => {
+                    errors.push({ errorMessage: names, id: removeOperatorsErrorId });
                 });
                 updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
                 redirectTo(res, '/searchOperators');

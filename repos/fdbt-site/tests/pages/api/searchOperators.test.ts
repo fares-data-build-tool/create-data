@@ -61,7 +61,7 @@ describe('searchOperators', () => {
         });
     });
 
-    it('should redirect to itself (i.e. /searchOperators) with search text in the query string when the search term is valid', () => {
+    it('should redirect to itself (i.e. /searchOperators) with search text in the query string when the search term is valid', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 search: 'Search',
@@ -69,14 +69,14 @@ describe('searchOperators', () => {
             },
         });
 
-        searchOperators(req, res);
+        await searchOperators(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/searchOperators?searchOperator=manchester',
         });
     });
 
-    it('should redirect to itself (i.e. /searchOperators) with search input errors when the user enters an invalid search term', () => {
+    it('should redirect to itself (i.e. /searchOperators) with search input errors when the user enters an invalid search term', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 search: 'Search',
@@ -94,7 +94,7 @@ describe('searchOperators', () => {
             ],
         };
 
-        searchOperators(req, res);
+        await searchOperators(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -107,7 +107,7 @@ describe('searchOperators', () => {
         });
     });
 
-    it("should succesfully add to the selected operators when the user selects from the search results and clicks the 'Add Opertator' button", () => {
+    it("should succesfully add to the selected operators when the user selects from the search results and clicks the 'Add Opertator' button", async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 addOperators: 'Add Operator(s)',
@@ -125,7 +125,7 @@ describe('searchOperators', () => {
             ],
         };
 
-        searchOperators(req, res);
+        await searchOperators(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -137,7 +137,7 @@ describe('searchOperators', () => {
         });
     });
 
-    it("should redirect with errors when the user tries to add to the selected operators and clicks the 'Continue' button", () => {
+    it("should redirect with errors when the user tries to add to the selected operators and clicks the 'Continue' button", async () => {
         const mockSelectedOperators: Operator[] = [{ nocCode: 'MCTR', name: 'Manchester Community Transport' }];
         const { req, res } = getMockRequestAndResponse({
             requestHeaders: { referer: 'host/searchOperators?searchOperator=warr' },
@@ -160,7 +160,7 @@ describe('searchOperators', () => {
             ],
         };
 
-        searchOperators(req, res);
+        await searchOperators(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -172,7 +172,7 @@ describe('searchOperators', () => {
         });
     });
 
-    it("should redirect with errors when the user clicks the 'Add Operator' button without making a selection", () => {
+    it("should redirect with errors when the user clicks the 'Add Operator' button without making a selection", async () => {
         const { req, res } = getMockRequestAndResponse({
             requestHeaders: { referer: 'host/searchOperators?searchOperator=warr' },
             body: {
@@ -186,7 +186,7 @@ describe('searchOperators', () => {
             errors: [{ errorMessage: 'Select at least one operator to add', id: 'add-operator-checkbox-0' }],
         };
 
-        searchOperators(req, res);
+        await searchOperators(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -198,7 +198,7 @@ describe('searchOperators', () => {
         });
     });
 
-    it("should succesfully remove from the selected operators when the user selects from the list and clicks the 'Remove Operator' button", () => {
+    it("should succesfully remove from the selected operators when the user selects from the list and clicks the 'Remove Operator' button", async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 operatorsToRemove: ['MCTR#Manchester Community Transport', 'MCTR2#Manchester Community Transport 2'],
@@ -234,7 +234,7 @@ describe('searchOperators', () => {
             ],
         };
 
-        searchOperators(req, res);
+        await searchOperators(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -246,7 +246,7 @@ describe('searchOperators', () => {
         });
     });
 
-    it("should redirect with errors when the user tries to remove selected operators and clicks the 'Continue' button", () => {
+    it("should redirect with errors when the user tries to remove selected operators and clicks the 'Continue' button", async () => {
         const mockSelectedOperators: Operator[] = [{ nocCode: 'WBTR', name: "Warrington's Own Buses" }];
         const { req, res } = getMockRequestAndResponse({
             body: {
@@ -271,7 +271,7 @@ describe('searchOperators', () => {
             ],
         };
 
-        searchOperators(req, res);
+        await searchOperators(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -283,7 +283,7 @@ describe('searchOperators', () => {
         });
     });
 
-    it("should redirect with errors when the user clicks the 'Remove Operator' button without making a selection", () => {
+    it("should redirect with errors when the user clicks the 'Remove Operator' button without making a selection", async () => {
         const mockSelectedOperators: Operator[] = [{ nocCode: 'WBTR', name: "Warrington's Own Buses" }];
         const { req, res } = getMockRequestAndResponse({
             body: {
@@ -302,7 +302,7 @@ describe('searchOperators', () => {
             errors: [{ errorMessage: 'Select at least one operator to remove', id: 'remove-operator-checkbox-0' }],
         };
 
-        searchOperators(req, res);
+        await searchOperators(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -314,7 +314,7 @@ describe('searchOperators', () => {
         });
     });
 
-    it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a geoZone multi op ticket', () => {
+    it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a geoZone multi op ticket', async () => {
         const mockSelectedOperators: Operator[] = [
             {
                 nocCode: 'MCTR',
@@ -348,7 +348,7 @@ describe('searchOperators', () => {
             selectedOperators: mockSelectedOperators,
         };
 
-        searchOperators(req, res);
+        await searchOperators(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
@@ -360,7 +360,7 @@ describe('searchOperators', () => {
         });
     });
 
-    it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a multipleServices multi op ticket', () => {
+    it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a multipleServices multi op ticket', async () => {
         const mockSelectedOperators: Operator[] = [
             {
                 nocCode: 'MCTR',
@@ -394,7 +394,7 @@ describe('searchOperators', () => {
             selectedOperators: mockSelectedOperators,
         };
 
-        searchOperators(req, res);
+        await searchOperators(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
