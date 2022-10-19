@@ -31,6 +31,7 @@ import {
     DbProduct,
 } from 'fdbt-types/dbTypes';
 import { convertDateFormat } from '../utils';
+import _ from 'lodash';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -393,6 +394,14 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
 
         const queryResults = await executeQuery<NaptanInfo[]>(batchQuery, atcoCodes);
         if (queryResults.length !== atcoCodes.length) {
+            const queryResultsAtcos = queryResults.map((qr) => qr.atcoCode);
+            const missingAtcosFromDb = _.difference(atcoCodes, queryResultsAtcos);
+
+            logger.info('', {
+                context: 'data.auroradb',
+                message: `The missing atco's are: ${missingAtcosFromDb}`,
+            });
+
             throw new Error('Not all ATCO codes returned stops, some must be invalid.');
         }
 
