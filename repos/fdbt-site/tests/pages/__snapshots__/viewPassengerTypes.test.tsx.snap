@@ -9,7 +9,7 @@ exports[`pages view passenger types should render correctly when groups and indi
 >
   <div>
     <ErrorSummary
-      errors={null}
+      errors={Array []}
     />
   </div>
   <div
@@ -120,7 +120,7 @@ exports[`pages view passenger types should render correctly when no individual o
 >
   <div>
     <ErrorSummary
-      errors={null}
+      errors={Array []}
     />
   </div>
   <div
@@ -174,7 +174,7 @@ exports[`pages view passenger types should render correctly when only individual
 >
   <div>
     <ErrorSummary
-      errors={null}
+      errors={Array []}
     />
   </div>
   <div
@@ -254,7 +254,7 @@ exports[`pages view passenger types should render correctly when only passenger 
 >
   <div>
     <ErrorSummary
-      errors={null}
+      errors={Array []}
     />
   </div>
   <div
