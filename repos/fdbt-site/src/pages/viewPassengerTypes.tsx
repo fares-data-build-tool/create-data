@@ -3,7 +3,11 @@ import ErrorSummary from '../components/ErrorSummary';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 import PassengerTypeCard from '../components/PassengerTypeCard';
 import UnableToDeletePopup from '../components/UnableToDeletePopup';
-import { GS_PASSENGER_GROUP_ATTRIBUTE, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, VIEW_PASSENGER_TYPE } from '../constants/attributes';
+import {
+    GS_PASSENGER_GROUP_ATTRIBUTE,
+    MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    VIEW_PASSENGER_TYPE,
+} from '../constants/attributes';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import { ErrorInfo, FullGroupPassengerType, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
@@ -20,7 +24,7 @@ interface PassengerTypeProps {
     singlePassengerTypes: SinglePassengerType[];
     groupPassengerTypes: FullGroupPassengerType[];
     referer: string | null;
-    viewPassengerType: { errors: ErrorInfo[]; } | null;
+    viewPassengerType: { errors: ErrorInfo[] } | null;
 }
 
 const ViewPassengerTypes = ({
@@ -28,7 +32,7 @@ const ViewPassengerTypes = ({
     groupPassengerTypes,
     csrfToken,
     referer,
-    viewPassengerType
+    viewPassengerType,
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         passengerTypeName: string;
@@ -36,7 +40,7 @@ const ViewPassengerTypes = ({
         isGroup: boolean;
         groupsInUse?: string[];
     }>();
-    
+
     const deleteActionHandler = (id: number, name: string, isGroup: boolean): void => {
         const groupsInUse = groupPassengerTypes.flatMap((group) =>
             group.groupPassengerType.companions.some((individual) => individual.name === name) ? group.name : [],
@@ -61,7 +65,9 @@ const ViewPassengerTypes = ({
 
     return (
         <BaseLayout title={title} description={description} showNavigation referer={referer}>
-            <div><ErrorSummary errors={viewPassengerType?.errors || null}/></div>
+            <div>
+                <ErrorSummary errors={viewPassengerType?.errors || null} />
+            </div>
             <div className="govuk-grid-row" data-card-count={singlePassengerTypes.length + groupPassengerTypes.length}>
                 <div className="govuk-grid-column-one-quarter">
                     <SubNavigation />
@@ -215,7 +221,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
-    const viewPassengerType = getSessionAttribute(ctx.req,VIEW_PASSENGER_TYPE) 
+    const viewPassengerType = getSessionAttribute(ctx.req, VIEW_PASSENGER_TYPE);
 
     updateSessionAttribute(ctx.req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
@@ -227,7 +233,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             singlePassengerTypes: singlePassengerTypes,
             groupPassengerTypes,
             referer: extractGlobalSettingsReferer(ctx),
-            viewPassengerType: viewPassengerType || null
+            viewPassengerType: viewPassengerType || null,
         },
     };
 };
