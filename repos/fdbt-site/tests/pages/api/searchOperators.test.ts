@@ -363,16 +363,12 @@ describe('searchOperators', () => {
     it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a multipleServices multi op ticket', async () => {
         const mockSelectedOperators: Operator[] = [
             {
-                nocCode: 'MCTR',
-                name: 'Manchester Community Transport',
+                nocCode: 'BLAC',
+                name: 'Blackpool Transport',
             },
             {
-                nocCode: 'MCTR2',
-                name: 'Manchester Community Transport 2',
-            },
-            {
-                nocCode: 'MCTR3',
-                name: 'Manchester Community Transport 3',
+                nocCode: 'LNUD',
+                name: 'The Blackburn Bus Company',
             },
         ];
         const { req, res } = getMockRequestAndResponse({
