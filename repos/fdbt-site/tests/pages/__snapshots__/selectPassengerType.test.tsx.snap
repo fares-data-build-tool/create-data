@@ -165,6 +165,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
               }
             }
             defaultChecked={false}
+            index={0}
             key="3"
           />
           <PassengerTypeCard
@@ -182,6 +183,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
               }
             }
             defaultChecked={false}
+            index={1}
             key="2"
           />
         </div>
@@ -308,6 +310,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            index={0}
             key="3"
           />
           <PassengerTypeCard
@@ -325,6 +328,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            index={1}
             key="2"
           />
         </div>
@@ -370,6 +374,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={true}
+            index={0}
             key="1"
           />
           <PassengerTypeCard
@@ -396,6 +401,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            index={1}
             key="4"
           />
         </div>
@@ -516,6 +522,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            index={0}
             key="3"
           />
           <PassengerTypeCard
@@ -533,6 +540,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            index={1}
             key="2"
           />
         </div>
@@ -578,6 +586,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            index={0}
             key="1"
           />
           <PassengerTypeCard
@@ -604,6 +613,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
               }
             }
             defaultChecked={false}
+            index={1}
             key="4"
           />
         </div>
