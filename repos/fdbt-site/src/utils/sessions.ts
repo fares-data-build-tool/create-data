@@ -60,7 +60,7 @@ import {
     GS_REFERER,
     GS_PURCHASE_METHOD_ATTRIBUTE,
     GS_OPERATOR_DETAILS_ATTRIBUTE,
-    PRODUCTS_USING_PASSENGER_TYPE
+    VIEW_PASSENGER_TYPE
 } from '../constants/attributes';
 import {
     CompanionInfo,
@@ -201,7 +201,7 @@ export interface SessionAttributeTypes {
     [UNASSIGNED_INBOUND_STOPS_ATTRIBUTE]: UnassignedStop[];
     [GS_REFERER]: string;
     [CSV_ZONE_FILE_NAME]: string;
-    [PRODUCTS_USING_PASSENGER_TYPE]: { errors: ErrorInfo[] , productsUsingPassengerType: string[]; passengerName: string }
+    [VIEW_PASSENGER_TYPE]: { errors: ErrorInfo[] }
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

@@ -4,7 +4,7 @@ import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiU
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getProductsMatchingJson } from 'src/data/s3';
 import { updateSessionAttribute } from 'src/utils/sessions';
-import { PRODUCTS_USING_PASSENGER_TYPE } from 'src/constants/attributes';
+import { VIEW_PASSENGER_TYPE} from 'src/constants/attributes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -43,10 +43,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const { name } = passengerDetails || ""
             const errorMessage = `You cannot delete ${name} because ${productNames.some(p => p!=='missing') ? `it is part of the following product(s): ${productNames?.join(', ')}.`: 'it is in use in a product(s).'} `
             const errors: ErrorInfo[] = [{ id: '/viewPassengerTypes', errorMessage}];
-            updateSessionAttribute(req, PRODUCTS_USING_PASSENGER_TYPE, {
+            updateSessionAttribute(req, VIEW_PASSENGER_TYPE, {
                 errors,
-                productsUsingPassengerType : productNames,
-                passengerName: name
             });
             redirectTo(res, `/viewPassengerTypes?cannotDelete=${name}`);
             return;
