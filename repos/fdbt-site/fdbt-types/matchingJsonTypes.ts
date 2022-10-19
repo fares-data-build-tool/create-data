@@ -1,4 +1,5 @@
 export interface PointToPointCarnetProductDetails extends BaseProduct {
+    productName: string;
     carnetDetails: CarnetDetails;
 }
 
@@ -32,6 +33,7 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
 }
 
 export interface FlatFareProductDetails extends BaseProduct {
+    productName: string;
     productPrice: string;
     carnetDetails?: CarnetDetails;
 }
@@ -238,6 +240,7 @@ export interface Product {
 }
 
 export interface ProductDetails extends BaseProduct {
+    productName: string;
     productPrice: string;
     productDuration: string;
     productValidity: string;
@@ -270,7 +273,6 @@ export interface TicketPeriod {
 }
 
 export interface BaseProduct {
-    productName: string;
     salesOfferPackages: SalesOfferPackage[];
 }
 

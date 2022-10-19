@@ -373,7 +373,7 @@ export interface TicketPeriodWithInput extends TicketPeriod {
 }
 
 export interface ProductWithSalesOfferPackages extends BaseProduct {
-
+    productName: string;
 }
 
 export interface ProductData {
