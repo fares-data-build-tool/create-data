@@ -201,7 +201,7 @@ export interface SessionAttributeTypes {
     [UNASSIGNED_INBOUND_STOPS_ATTRIBUTE]: UnassignedStop[];
     [GS_REFERER]: string;
     [CSV_ZONE_FILE_NAME]: string;
-    [VIEW_PASSENGER_TYPE]: { errors: ErrorInfo[] };
+    [VIEW_PASSENGER_TYPE]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

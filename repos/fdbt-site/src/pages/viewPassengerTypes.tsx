@@ -24,7 +24,7 @@ interface PassengerTypeProps {
     singlePassengerTypes: SinglePassengerType[];
     groupPassengerTypes: FullGroupPassengerType[];
     referer: string | null;
-    viewPassengerType: { errors: ErrorInfo[] } | null;
+    viewPassengerTypeErrors: ErrorInfo[];
 }
 
 const ViewPassengerTypes = ({
@@ -32,7 +32,7 @@ const ViewPassengerTypes = ({
     groupPassengerTypes,
     csrfToken,
     referer,
-    viewPassengerType,
+    viewPassengerTypeErrors = [],
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         passengerTypeName: string;
@@ -66,7 +66,7 @@ const ViewPassengerTypes = ({
     return (
         <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div>
-                <ErrorSummary errors={viewPassengerType?.errors || null} />
+                <ErrorSummary errors={viewPassengerTypeErrors} />
             </div>
             <div className="govuk-grid-row" data-card-count={singlePassengerTypes.length + groupPassengerTypes.length}>
                 <div className="govuk-grid-column-one-quarter">
@@ -233,7 +233,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             singlePassengerTypes: singlePassengerTypes,
             groupPassengerTypes,
             referer: extractGlobalSettingsReferer(ctx),
-            viewPassengerType: viewPassengerType || null,
+            viewPassengerTypeErrors: viewPassengerType || [],
         },
     };
 };

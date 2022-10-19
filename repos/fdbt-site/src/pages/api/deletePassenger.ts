@@ -6,10 +6,10 @@ import {
     getPassengerTypeById,
 } from '../../data/auroradb';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils/index';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { getProductsMatchingJson } from 'src/data/s3';
-import { updateSessionAttribute } from 'src/utils/sessions';
-import { VIEW_PASSENGER_TYPE } from 'src/constants/attributes';
+import { ErrorInfo, NextApiRequestWithSession, SinglePassengerType } from '../../interfaces';
+import { getProductsMatchingJson } from '../../data/s3';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { VIEW_PASSENGER_TYPE } from '../../constants/attributes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -36,34 +36,19 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const products = await getAllProductsByNoc(nationalOperatorCode);
         const matchingJsonLinks = products.map((product) => product.matchingJsonLink);
         const tickets = await Promise.all(
-            matchingJsonLinks?.map(async (link) => {
+            matchingJsonLinks.map(async (link) => {
                 return await getProductsMatchingJson(link);
             }),
         );
 
-        const productsUsingPassengerType = tickets?.filter((t) => t?.passengerType?.id === id);
-        const productNames = productsUsingPassengerType
-            ?.map((ticket) =>
-                ticket.products[0]
-                    ? 'productName' in ticket.products[0]
-                        ? ticket.products[0].productName
-                        : 'missing'
-                    : '',
-            )
-            .filter((product) => product !== 'missing');
+        const productsUsingPassengerType = tickets.filter((t) => t.passengerType.id === id);
 
-        if (productsUsingPassengerType && productsUsingPassengerType.length > 0) {
-            const passengerDetails: any = await getPassengerTypeById(id, nationalOperatorCode);
-            const { name } = passengerDetails || '';
-            const errorMessage = `You cannot delete ${name} because ${
-                productNames.some((p) => p !== 'missing')
-                    ? `it is part of the following product(s): ${productNames?.join(', ')}.`
-                    : 'it is in use in a product(s).'
-            } `;
+        if (productsUsingPassengerType.length > 0) {
+            const passengerDetails = (await getPassengerTypeById(id, nationalOperatorCode)) as SinglePassengerType;
+            const { name } = passengerDetails;
+            const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingPassengerType.length} products.`;
             const errors: ErrorInfo[] = [{ id: '/viewPassengerTypes', errorMessage }];
-            updateSessionAttribute(req, VIEW_PASSENGER_TYPE, {
-                errors,
-            });
+            updateSessionAttribute(req, VIEW_PASSENGER_TYPE, errors);
             redirectTo(res, `/viewPassengerTypes?cannotDelete=${name}`);
             return;
         }
@@ -73,7 +58,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         redirectTo(res, '/viewPassengerTypes');
     } catch (error) {
         const message = 'There was a problem deleting the selected passenger or group';
-
         redirectToError(res, message, 'api.deletePassenger', error);
     }
 };
