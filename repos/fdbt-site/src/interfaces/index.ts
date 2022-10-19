@@ -609,6 +609,7 @@ export interface ProductDetailsElement {
     editLink?: string;
     generateLink?: string;
     id?: string;
+    editLabel?: string;
 }
 
 export interface RadioOption {

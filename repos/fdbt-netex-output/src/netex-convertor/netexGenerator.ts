@@ -16,6 +16,7 @@ import {
     ScheduledStopPoints,
     Ticket,
     assertNever,
+    isReturnTicket,
 } from '../types';
 import {
     getGeoZoneFareTable,
@@ -39,6 +40,7 @@ import {
     getPreassignedFareProduct,
     getPriceGroups,
     combineFareZones,
+    getAdditionalReturnLines,
 } from './point-to-point-tickets/pointToPointTicketNetexHelpers';
 import {
     convertJsonToXml,
@@ -82,9 +84,9 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref =
             coreData.nocCodeFormat;
 
-        if (coreData.lineName) {
+        if (coreData.lineIdName) {
             publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.LineRef.ref =
-                coreData.lineName;
+                coreData.lineIdName;
         }
 
         const ticketTypeInsert =
@@ -241,17 +243,26 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
         if ('lineName' in ticket) {
             serviceFrameToUpdate.id = `epd:UK:${ticket.nocCode}:ServiceFrame_UK_PI_NETWORK:${coreData.lineIdName}:op`;
-            serviceFrameToUpdate.lines.Line.id = coreData.lineIdName;
-            serviceFrameToUpdate.lines.Line.Name.$t = coreData.operatorPublicNameLineNameFormat;
-            serviceFrameToUpdate.lines.Line.PublicCode.$t = coreData.lineName;
-            serviceFrameToUpdate.lines.Line.PrivateCode.type = 'txc:Line@id';
-            serviceFrameToUpdate.lines.Line.PrivateCode.$t = coreData.lineIdName;
-            serviceFrameToUpdate.lines.Line.OperatorRef.ref = coreData.nocCodeFormat;
-            serviceFrameToUpdate.lines.Line.OperatorRef.$t = coreData.opIdNocFormat;
-            serviceFrameToUpdate.lines.Line.Description.$t = ticket.serviceDescription;
+
+            if (isReturnTicket(ticket) && ticket.additionalServices && ticket.additionalServices.length > 0) {
+                serviceFrameToUpdate.lines.Line = getAdditionalReturnLines(
+                    ticket,
+                    coreData,
+                    ticket.additionalServices[0],
+                );
+            } else {
+                serviceFrameToUpdate.lines.Line.id = coreData.lineIdName;
+                serviceFrameToUpdate.lines.Line.Name.$t = coreData.operatorPublicNameLineNameFormat;
+                serviceFrameToUpdate.lines.Line.PublicCode.$t = coreData.lineName;
+                serviceFrameToUpdate.lines.Line.PrivateCode.type = 'txc:Line@id';
+                serviceFrameToUpdate.lines.Line.PrivateCode.$t = coreData.lineIdName;
+                serviceFrameToUpdate.lines.Line.OperatorRef.ref = coreData.nocCodeFormat;
+                serviceFrameToUpdate.lines.Line.OperatorRef.$t = coreData.opIdNocFormat;
+                serviceFrameToUpdate.lines.Line.Description.$t = ticket.serviceDescription;
+            }
 
             // do we have a return
-            if ('inboundFareZones' in ticket) {
+            if (isReturnTicket(ticket)) {
                 const outboundStops = getPointToPointScheduledStopPointsList(ticket.outboundFareZones);
 
                 const inboundStops = getPointToPointScheduledStopPointsList(ticket.inboundFareZones);
@@ -335,6 +346,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         const fareStructuresElements = getFareStructuresElements(
             ticket,
             coreData.isCarnet,
+            coreData.lineIdName,
             coreData.lineName,
             coreData.placeholderGroupOfProductsName,
             `${coreData.operatorIdentifier}@groupOfLines@1`,
@@ -373,8 +385,8 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             tariff.qualityStructureFactors = getTimeRestrictions(ticket.timeRestriction);
         }
 
-        if (coreData.lineName) {
-            tariff.LineRef.ref = coreData.lineName;
+        if (coreData.lineIdName) {
+            tariff.LineRef.ref = coreData.lineIdName;
         }
 
         if ('lineName' in ticket) {
