@@ -42,13 +42,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         );
 
         const productsUsingPassengerType = tickets?.filter((t) => t?.passengerType?.id === id);
-        const productNames = productsUsingPassengerType?.map((ticket) =>
-            ticket.products[0]
-                ? 'productName' in ticket.products[0]
-                    ? ticket.products[0].productName
-                    : 'missing'
-                : '',
-        ).filter(product => (product !== 'missing'));
+        const productNames = productsUsingPassengerType
+            ?.map((ticket) =>
+                ticket.products[0]
+                    ? 'productName' in ticket.products[0]
+                        ? ticket.products[0].productName
+                        : 'missing'
+                    : '',
+            )
+            .filter((product) => product !== 'missing');
 
         if (productsUsingPassengerType && productsUsingPassengerType.length > 0) {
             const passengerDetails: any = await getPassengerTypeById(id, nationalOperatorCode);
