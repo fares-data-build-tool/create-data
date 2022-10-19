@@ -1,5 +1,5 @@
 import startCase from 'lodash/startCase';
-import { PointToPointPeriodTicket } from 'fdbt-types/matchingJsonTypes';
+import { PointToPointPeriodTicket, ReturnTicket, SelectedService } from 'fdbt-types/matchingJsonTypes';
 import {
     FareZone,
     FareZoneList,
@@ -12,6 +12,7 @@ import {
     BaseProduct,
     NetexSalesOfferPackage,
     isReturnTicket,
+    CoreData,
 } from '../../types';
 import {
     NetexObject,
@@ -423,7 +424,7 @@ export const getFareTables = (
             specifics: {
                 LineRef: {
                     version: '1.0',
-                    ref: matchingData.lineName,
+                    ref: matchingData.lineId,
                 },
             },
             columns: {
@@ -489,9 +490,49 @@ export const combineFareZones = (outbound: FareZone[], inbound: FareZone[]): Far
 
 export const getLinesElement = (
     ticket: PointToPointTicket | PointToPointPeriodTicket,
+    lineIdName: string,
     lineName: string,
 ): NetexObject => {
     const typeOfPointToPoint = ticket.type;
+
+    if (isReturnTicket(ticket) && ticket.additionalServices && ticket.additionalServices.length > 0) {
+        const lineRefs = [
+            {
+                version: '1.0',
+                ref: lineIdName,
+            },
+            {
+                version: '1.0',
+                ref: ticket.additionalServices[0].lineId,
+            },
+        ];
+
+        return {
+            version: '1.0',
+            id: `Tariff@${typeOfPointToPoint}@lines`,
+            Name: { $t: `O/D pairs for ${lineName}` },
+            TypeOfFareStructureElementRef: {
+                versionRef: 'fxc:v1.0',
+                ref: 'fxc:access',
+            },
+            distanceMatrixElements: {
+                DistanceMatrixElement: getDistanceMatrixElements(
+                    combineFareZones(ticket.outboundFareZones, ticket.inboundFareZones),
+                ),
+            },
+            GenericParameterAssignment: {
+                version: '1.0',
+                order: '01',
+                id: `Tariff@${typeOfPointToPoint}@lines`,
+                TypeOfAccessRightAssignmentRef: {
+                    version: 'fxc:v1.0',
+                    ref: 'fxc:can_access',
+                },
+                ValidityParameterGroupingType: { $t: 'XOR' },
+                validityParameters: { LineRef: lineRefs },
+            },
+        };
+    }
 
     return {
         version: '1.0',
@@ -518,7 +559,7 @@ export const getLinesElement = (
             validityParameters: {
                 LineRef: {
                     version: '1.0',
-                    ref: lineName,
+                    ref: lineIdName,
                 },
             },
         },
@@ -632,4 +673,40 @@ export const getPointToPointConditionsElement = (ticket: PointToPointTicket): Ne
             },
         },
     };
+};
+
+export const getAdditionalReturnLines = (
+    ticket: ReturnTicket | PointToPointPeriodTicket,
+    coreData: CoreData,
+    additionalService: SelectedService,
+): NetexObject[] => {
+    const firstLine = {
+        version: '1.0',
+        id: coreData.lineIdName,
+        Name: { $t: coreData.operatorPublicNameLineNameFormat },
+        Description: { $t: ticket.serviceDescription },
+        PublicCode: { $t: coreData.lineName },
+        PrivateCode: { type: 'txc:Line@id', $t: coreData.lineIdName },
+        OperatorRef: {
+            version: '1.0',
+            ref: coreData.nocCodeFormat,
+            $t: coreData.opIdNocFormat,
+        },
+        LineType: { $t: 'local' },
+    };
+    const secondLine = {
+        version: '1.0',
+        id: additionalService.lineId,
+        Name: { $t: `${ticket.operatorName} ${additionalService.lineName}` },
+        Description: { $t: additionalService.serviceDescription },
+        PublicCode: { $t: additionalService.lineName },
+        PrivateCode: { type: 'txc:Line@id', $t: additionalService.lineId },
+        OperatorRef: {
+            version: '1.0',
+            ref: coreData.nocCodeFormat,
+            $t: coreData.opIdNocFormat,
+        },
+        LineType: { $t: 'local' },
+    };
+    return [firstLine, secondLine];
 };

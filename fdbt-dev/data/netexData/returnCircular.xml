@@ -16,7 +16,7 @@
         <NetworkFilterByValue>
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
-            <LineRef version="1.0" ref="709"/>
+            <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
             <BrandingRef version="1.0" ref="op:WBTR@brand"/>
           </objectReferences>
         </NetworkFilterByValue>
@@ -122,7 +122,7 @@
           <Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="709">
+            <Line version="1.0" id="PK1146649_RJ1_Outbound">
               <Name>Blackpool Transport 709</Name>
               <Description>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Description>
               <PublicCode>709</PublicCode>
@@ -263,7 +263,7 @@
               </validityConditions>
               <Name>Tariff for Another product</Name>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
-              <LineRef version="1.0" ref="709"/>
+              <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <TariffBasis>zoneToZone</TariffBasis>
               <qualityStructureFactors>
@@ -539,7 +539,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterAssignmentType>EQ</ValidityParameterAssignmentType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="709"/>
+                      <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -763,7 +763,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@student@c1@Shott_Drive" order="1">
@@ -1092,7 +1092,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@student@c1@Shott_Drive" order="1">
@@ -1421,7 +1421,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@student@c1@Shott_Drive" order="1">
@@ -1750,7 +1750,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@student@c1@Shott_Drive" order="1">
@@ -2079,7 +2079,7 @@
                 <TariffRef version="1.0" ref="Tariff@return@PK1146649_RJ1_Outbound"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="709"/>
+                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@student@c1@Shott_Drive" order="1">
@@ -3575,7 +3575,7 @@
             </UserProfile>
             <UserProfile version="fxc:v1.0" id="fxc:senior">
               <Name>Senior</Name>
-              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
               <UserType>senior</UserType>
               <MinimumAge>60</MinimumAge>
             </UserProfile>

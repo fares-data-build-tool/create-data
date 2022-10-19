@@ -31,6 +31,7 @@ import {
     DbProduct,
 } from 'fdbt-types/dbTypes';
 import { convertDateFormat } from '../utils';
+import _ from 'lodash';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -225,6 +226,45 @@ export const getBodsServiceByNocAndId = async (
     }
 };
 
+export const getBodsServiceByNocAndLineId = async (
+    nationalOperatorCode: string,
+    lineId: string,
+): Promise<MyFaresService> => {
+    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
+
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for given national operator code and lineId',
+        nationalOperatorCode,
+        lineId,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, lineName, lineId, origin, destination, startDate, endDate
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND lineId = ? AND dataSource = 'bods';
+        `;
+
+        const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter, lineId]);
+        if (queryResults.length !== 1) {
+            throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
+        }
+
+        return {
+            id: queryResults[0].id,
+            origin: queryResults[0].origin,
+            destination: queryResults[0].destination,
+            lineName: queryResults[0].lineName,
+            startDate: convertDateFormat(queryResults[0].startDate),
+            endDate: queryResults[0].endDate ? convertDateFormat(queryResults[0].endDate) : undefined,
+            lineId: queryResults[0].lineId,
+        };
+    } catch (error) {
+        throw new Error(`Could not retrieve individual service from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const getBodsServiceDirectionDescriptionsByNocAndServiceId = async (
     nationalOperatorCode: string,
     serviceId: string,
@@ -354,6 +394,14 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
 
         const queryResults = await executeQuery<NaptanInfo[]>(batchQuery, atcoCodes);
         if (queryResults.length !== atcoCodes.length) {
+            const queryResultsAtcos = queryResults.map((qr) => qr.atcoCode);
+            const missingAtcosFromDb = _.difference(atcoCodes, queryResultsAtcos);
+
+            logger.info('', {
+                context: 'data.auroradb',
+                message: `The missing atco's are: ${missingAtcosFromDb}`,
+            });
+
             throw new Error('Not all ATCO codes returned stops, some must be invalid.');
         }
 

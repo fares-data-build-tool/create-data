@@ -45,6 +45,7 @@ import {
     SAVED_PASSENGER_GROUPS_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
+    RETURN_SERVICE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     SOP_ATTRIBUTE,
     SOP_INFO_ATTRIBUTE,
@@ -124,6 +125,7 @@ import {
     PremadeTimeRestriction,
     Direction,
     Errors,
+    BasicService,
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -168,6 +170,7 @@ export interface SessionAttributeTypes {
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
+    [RETURN_SERVICE_ATTRIBUTE]: BasicService | WithErrors<BasicService>;
     [DIRECTION_ATTRIBUTE]: Direction | Errors;
     [TICKET_REPRESENTATION_ATTRIBUTE]: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;

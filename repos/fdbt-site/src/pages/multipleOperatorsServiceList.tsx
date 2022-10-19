@@ -21,7 +21,6 @@ import {
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import { redirectTo } from '../utils/apiUtils';
-import SwitchDataSource from '../components/SwitchDataSource';
 
 const pageTitle = 'Multiple Operators Service List - Create Fares Data Service';
 const pageDescription = 'Multiple Operators Service List selection page of the Create Fares Data Service';
@@ -46,12 +45,13 @@ const MultipleOperatorsServiceList = ({
     dataSourceAttribute,
 }: MultipleOperatorsServiceListProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
-        <SwitchDataSource
+        {/* removed as TNDS is being disabled until further notice */}
+        {/* <SwitchDataSource
             dataSourceAttribute={dataSourceAttribute}
             pageUrl="/multipleOperatorsServiceList"
             attributeVersion="multiOperator"
             csrfToken={csrfToken}
-        />
+        /> */}
         <CsrfForm action="/api/multipleOperatorsServiceList" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
@@ -180,19 +180,20 @@ export const getServerSideProps = async (
 
     if (!dataSourceAttribute) {
         const services = await getAllServicesByNocCode(operatorToUse.nocCode);
-        if (services.length === 0) {
+        const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
+
+        if (!hasBodsServices) {
             if (ctx.res) {
                 redirectTo(ctx.res, '/noServices');
             } else {
                 throw new Error(`No services found for NOC Code: ${operatorToUse.nocCode}`);
             }
         }
-        const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
-        const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
+        // const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
         updateSessionAttribute(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, {
             source: hasBodsServices ? 'bods' : 'tnds',
             hasBods: hasBodsServices,
-            hasTnds: hasTndsServices,
+            hasTnds: false,
         });
         dataSourceAttribute = getSessionAttribute(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
     }

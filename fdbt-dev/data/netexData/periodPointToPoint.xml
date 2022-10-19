@@ -16,7 +16,7 @@
         <NetworkFilterByValue>
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-            <LineRef version="1.0" ref="2"/>
+            <LineRef version="1.0" ref="YpQjUw"/>
             <BrandingRef version="1.0" ref="op:BLAC@brand"/>
             <PreassignedFareProductRef version="1.0" ref="Trip@Period_Point_to_Point"/>
             <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
@@ -124,7 +124,7 @@
           <Description>This frame contains the stop and line definitions for the service. It could also be exchanged separately.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="2">
+            <Line version="1.0" id="YpQjUw">
               <Name>Blackpool Transport 2</Name>
               <Description>POULTON - BLACKPOOL via Victoria Hospital Outpatients</Description>
               <PublicCode>2</PublicCode>
@@ -1070,7 +1070,7 @@
               </validityConditions>
               <Name>Tariff for Period Point to Point</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-              <LineRef version="1.0" ref="2"/>
+              <LineRef version="1.0" ref="YpQjUw"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <TariffBasis>zoneToZone</TariffBasis>
               <timeIntervals>
@@ -1149,7 +1149,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterAssignmentType>EQ</ValidityParameterAssignmentType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="2"/>
+                      <LineRef version="1.0" ref="YpQjUw"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
@@ -1299,7 +1299,7 @@
                 <TariffRef version="1.0" ref="Tariff@period@YpQjUw"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="2"/>
+                <LineRef version="1.0" ref="YpQjUw"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c1@Shott_Drive" order="1">
@@ -1368,7 +1368,7 @@
                 <TariffRef version="1.0" ref="Tariff@period@YpQjUw"/>
               </usedIn>
               <specifics>
-                <LineRef version="1.0" ref="2"/>
+                <LineRef version="1.0" ref="YpQjUw"/>
               </specifics>
               <columns>
                 <FareTableColumn version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c1@Shott_Drive" order="1">
@@ -2604,7 +2604,7 @@
             </UserProfile>
             <UserProfile version="fxc:v1.0" id="fxc:senior">
               <Name>Senior</Name>
-              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
+              <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:senior"/>
               <UserType>senior</UserType>
               <MinimumAge>60</MinimumAge>
             </UserProfile>

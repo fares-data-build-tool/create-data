@@ -287,6 +287,7 @@ describe('Shared Helpers', () => {
                 flatFareTicket,
                 false,
                 '',
+                '',
                 placeHolderText,
                 'groupOfLinesRef',
             );
@@ -310,6 +311,7 @@ describe('Shared Helpers', () => {
             const result = sharedHelpers.getFareStructuresElements(
                 periodMultipleServicesTicket,
                 false,
+                '',
                 '',
                 placeHolderText,
                 'groupOfLinesRef',
@@ -335,6 +337,7 @@ describe('Shared Helpers', () => {
                 geoUserPeriodTicket,
                 false,
                 '',
+                '',
                 placeHolderText,
                 'groupOfLinesRef',
             );
@@ -357,6 +360,7 @@ describe('Shared Helpers', () => {
             const geoResult = sharedHelpers.getFareStructuresElements(
                 geoUserPeriodTicket,
                 false,
+                '',
                 '',
                 placeHolderText,
                 'groupOfLinesRef',

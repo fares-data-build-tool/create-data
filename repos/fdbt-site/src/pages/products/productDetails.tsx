@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import { convertDateFormat, getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../../utils';
+import { convertDateFormat, getAndValidateNoc, getCsrfToken, isReturnTicket, sentenceCaseString } from '../../utils';
 import {
     getBodsServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
@@ -8,6 +8,7 @@ import {
     getTimeRestrictionByIdAndNoc,
     getBodsServiceDirectionDescriptionsByNocAndServiceId,
     getServiceByIdAndDataSource,
+    getBodsServiceByNocAndLineId,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
@@ -154,7 +155,7 @@ const ProductDetails = ({
                                 <dt className="govuk-summary-list__key">{element.name}</dt>
 
                                 <dd className="govuk-summary-list__value">
-                                    {element.editLink !== undefined ? getEditableValue(element) : getReadValue(element)}
+                                    {element.editLink ? getEditableValue(element) : getReadValue(element)}
                                 </dd>
                             </div>
                         </dl>
@@ -198,7 +199,7 @@ const getEditableValue = (element: ProductDetailsElement) => {
                 );
             })}
 
-            <a href={element.editLink}>Edit</a>
+            <a href={element.editLink}>{element.editLabel ? element.editLabel : 'Edit'}</a>
         </div>
     );
 };
@@ -250,12 +251,31 @@ const createProductDetails = async (
 
         const pointToPointService = await getBodsServiceByNocAndId(noc, serviceId);
 
+        const additionalService =
+            isReturnTicket(ticket) && ticket.additionalServices && ticket.additionalServices.length > 0
+                ? await getBodsServiceByNocAndLineId(noc, ticket.additionalServices[0].lineId)
+                : undefined;
+
         productDetailsElements.push({
             name: 'Service',
             content: [
                 `${pointToPointService.lineName} - ${pointToPointService.origin} to ${pointToPointService.destination}`,
             ],
+            editLink:
+                isReturnTicket(ticket) && !additionalService ? `/returnService?selectedServiceId=${serviceId}` : '',
+            editLabel: isReturnTicket(ticket) && !additionalService ? 'Add service' : '',
         });
+
+        if (additionalService) {
+            productDetailsElements.push({
+                name: 'Additional Service(s)',
+                content: [
+                    additionalService
+                        ? `${additionalService.lineName} - ${additionalService.origin} to ${additionalService.destination}`
+                        : '',
+                ],
+            });
+        }
 
         requiresAttention = servicesRequiringAttention?.includes(serviceId) ?? false;
 
