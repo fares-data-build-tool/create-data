@@ -74,12 +74,11 @@ export const generateFileName = (ticket: Ticket): string => {
     return `FX-PI-01_UK_${nocOrSchemeName}_${lineOrNetworkFare}_${productName}_${creationDate}_${startDate}`;
 };
 
-export const checkToSeeIfFileNameExists = async (fileName: string): Promise<string> => {
+export const getFinalNetexName = async (fileName: string): Promise<string> => {
     let placeHolderFileName = fileName;
-    let cannotProceed = true;
     let counter = 1;
 
-    while (cannotProceed) {
+    while (true) {
         const fileNameTaken = await fileNameExistsAlready(placeHolderFileName);
         if (fileNameTaken) {
             if (counter > 1) {
@@ -89,7 +88,7 @@ export const checkToSeeIfFileNameExists = async (fileName: string): Promise<stri
             }
             counter++;
         } else {
-            cannotProceed = false;
+            break;
         }
     }
 
@@ -154,7 +153,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             const filePrefix = getS3FilePrefix(s3FileName, nocIdentifier);
             const fileNameEnding = generateFileName(ticket);
             const fileNameWithPrefixs = `${filePrefix}/${fileNameEnding}`;
-            fileName = `${await checkToSeeIfFileNameExists(fileNameWithPrefixs)}.xml`;
+            fileName = `${await getFinalNetexName(fileNameWithPrefixs)}.xml`;
         } else {
             fileName = s3FileName.replace('.json', '.xml');
         }

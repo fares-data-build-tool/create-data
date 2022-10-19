@@ -5,7 +5,7 @@ import {
     buildNocList,
     getS3FilePrefix,
     getSchemeNocIdentifier,
-    checkToSeeIfFileNameExists,
+    getFinalNetexName,
 } from './handler';
 import {
     singleTicket,
@@ -441,7 +441,7 @@ describe('checkToSeeIfFileNameExists', () => {
     it('returns the filename with no changes if it is unique inside the unvalidated bucket', async () => {
         jest.spyOn(s3, 'fileNameExistsAlready').mockImplementation(() => Promise.resolve(false));
         const fileName = 'FX-PI-01_UK_MCTR_LINE-FARE_Best-Product_2022-10-18_2010-12-17';
-        const result = await checkToSeeIfFileNameExists(fileName);
+        const result = await getFinalNetexName(fileName);
         expect(result).toBe(fileName);
     });
 
@@ -450,7 +450,7 @@ describe('checkToSeeIfFileNameExists', () => {
             .mockImplementationOnce(() => Promise.resolve(true))
             .mockImplementationOnce(() => Promise.resolve(false));
         const fileName = 'FX-PI-01_UK_MCTR_LINE-FARE_Best-Product_2022-10-18_2010-12-17';
-        const result = await checkToSeeIfFileNameExists(fileName);
+        const result = await getFinalNetexName(fileName);
         expect(result).toBe(`${fileName}_1`);
     });
 
@@ -461,7 +461,7 @@ describe('checkToSeeIfFileNameExists', () => {
             .mockImplementationOnce(() => Promise.resolve(true))
             .mockImplementationOnce(() => Promise.resolve(false));
         const fileName = 'FX-PI-01_UK_MCTR_LINE-FARE_Best-Product_2022-10-18_2010-12-17';
-        const result = await checkToSeeIfFileNameExists(fileName);
+        const result = await getFinalNetexName(fileName);
         expect(result).toBe(`${fileName}_3`);
     });
 });
