@@ -156,7 +156,7 @@ const otherProductsTable = (
             </table>
             {otherProducts.length === 0 ? (
                 <span className="govuk-body">
-                    <i>You currently have multi-service products</i>
+                    <i>You currently have no multi-service products</i>
                 </span>
             ) : null}
         </>

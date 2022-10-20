@@ -98,7 +98,7 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
           className="govuk-body"
         >
           <i>
-            You currently have multi-service products
+            You currently have no multi-service products
           </i>
         </span>
       </div>
