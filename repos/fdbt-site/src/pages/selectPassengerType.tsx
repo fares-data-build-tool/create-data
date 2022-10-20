@@ -66,9 +66,10 @@ const SelectPassengerType = ({
                                 <h3 className="govuk-heading-m">Individuals</h3>
 
                                 <div className="card-row" id="individual-passengers">
-                                    {savedPassengerTypes.map((passengerType) => (
+                                    {savedPassengerTypes.map((passengerType, index) => (
                                         <PassengerTypeCard
                                             defaultChecked={selectedId === passengerType.id}
+                                            index={index}
                                             contents={passengerType}
                                             key={passengerType.id.toString()}
                                         />
@@ -79,9 +80,10 @@ const SelectPassengerType = ({
                                 <div className="card-row">
                                     {savedGroups.length ? (
                                         <>
-                                            {savedGroups.map((passengerTypeGroup) => (
+                                            {savedGroups.map((passengerTypeGroup, index) => (
                                                 <PassengerTypeCard
                                                     contents={passengerTypeGroup}
+                                                    index={index}
                                                     key={passengerTypeGroup.id.toString()}
                                                     defaultChecked={selectedId === passengerTypeGroup.id}
                                                 />

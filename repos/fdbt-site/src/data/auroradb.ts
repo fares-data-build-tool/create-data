@@ -12,6 +12,7 @@ import {
     PremadeTimeRestriction,
     SalesOfferPackage,
     ServiceType,
+    ServiceCount,
     SinglePassengerType,
     Stop,
     GroupPassengerTypeDb,
@@ -155,6 +156,31 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
     }
 };
 
+export const operatorHasBodsServices = async (nationalOperatorCode: string): Promise<boolean> => {
+    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
+
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving number of services for given national operator code',
+        noc: nationalOperatorCode,
+    });
+
+    try {
+        const queryInput = `
+        SELECT count(id) as serviceCount
+        FROM txcOperatorLine
+        WHERE nocCode = ?  AND dataSource = 'bods'
+        ORDER BY CAST(lineName AS UNSIGNED), lineName;
+        `;
+
+        const queryResults = await executeQuery<ServiceCount[]>(queryInput, [nocCodeParameter]);
+        const hasService = queryResults[0].serviceCount !== 0;
+        return hasService;
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promise<MyFaresService[]> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 
@@ -173,7 +199,6 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
         `;
 
         const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter]);
-
         return (
             queryResults.map((item) => ({
                 ...item,

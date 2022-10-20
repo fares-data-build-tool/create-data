@@ -7,7 +7,13 @@ describe('pages', () => {
     describe('view passenger types', () => {
         it('should render correctly when no individual or group passenger types', () => {
             const tree = shallow(
-                <ViewPassengerTypes singlePassengerTypes={[]} groupPassengerTypes={[]} csrfToken={''} referer={null} />,
+                <ViewPassengerTypes
+                    singlePassengerTypes={[]}
+                    groupPassengerTypes={[]}
+                    csrfToken={''}
+                    referer={null}
+                    viewPassengerTypeErrors={[]}
+                />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -32,6 +38,38 @@ describe('pages', () => {
                     groupPassengerTypes={[]}
                     csrfToken={''}
                     referer={'hello'}
+                    viewPassengerTypeErrors={[]}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly when only individual passenger types, and an error', () => {
+            const passengerType = {
+                id: 1,
+                name: 'Regular Child',
+                passengerType: {
+                    id: 1,
+                    passengerType: 'child',
+                    ageRangeMin: '5',
+                    ageRangeMax: '16',
+                    proofDocuments: ['studentCard'],
+                },
+            };
+
+            const tree = shallow(
+                <ViewPassengerTypes
+                    singlePassengerTypes={[passengerType]}
+                    groupPassengerTypes={[]}
+                    csrfToken={''}
+                    referer={'hello'}
+                    viewPassengerTypeErrors={[
+                        {
+                            errorMessage: 'You cannot delete Regular Child because it is being used in 3 products.',
+                            id: 'passenger-card-0',
+                        },
+                    ]}
                 />,
             );
 
@@ -71,6 +109,7 @@ describe('pages', () => {
                     groupPassengerTypes={[passengerTypeGroup]}
                     csrfToken={''}
                     referer={null}
+                    viewPassengerTypeErrors={[]}
                 />,
             );
 
@@ -125,6 +164,7 @@ describe('pages', () => {
                     groupPassengerTypes={passengerTypeGroups}
                     csrfToken={''}
                     referer={'hello'}
+                    viewPassengerTypeErrors={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
