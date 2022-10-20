@@ -9,7 +9,7 @@ import {
     expectedPeriodMultipleServicesTicketWithMultipleProducts,
     getMockContext,
 } from '../../testData/mockData';
-import MultiOperatorProducts, { getServerSideProps }  from '../../../src/pages/products/multiOperatorProducts';
+import MultiOperatorProducts, { getServerSideProps } from '../../../src/pages/products/multiOperatorProducts';
 
 jest.mock('../../../src/data/auroradb');
 jest.mock('../../../src/data/s3');
