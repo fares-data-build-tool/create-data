@@ -409,7 +409,7 @@ describe('searchOperators', () => {
             Location: '/saveOperatorGroup',
         });
     });
-    it("should redirect with errors when the user clicks the 'Confirm operators and continue' button and Bods has no services", async () => {
+    it("should redirect with errors when the user clicks the 'Confirm operators and continue' button and one of the selected operators has no bods services", async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(false);
         const mockSelectedOperators: Operator[] = [
             { nocCode: 'BLAC', name: 'Blackpool Transport' },
@@ -429,7 +429,11 @@ describe('searchOperators', () => {
         const expectedSessionAttributeCall: MultipleOperatorsAttributeWithErrors = {
             selectedOperators: mockSelectedOperators,
             errors: [
-                { errorMessage: 'Some of the selected operators have no services', id: 'remove-operator-checkbox-0' },
+                {
+                    errorMessage:
+                        'Some of the selected operators have no services. To continue you must only select operators which have services in BODS',
+                    id: 'remove-operator-checkbox-0',
+                },
                 { errorMessage: 'Blackpool Transport', id: 'remove-operator-checkbox-0' },
                 { errorMessage: 'The Blackburn Bus Company', id: 'remove-operator-checkbox-0' },
             ],
@@ -446,7 +450,7 @@ describe('searchOperators', () => {
             Location: '/searchOperators',
         });
     });
-    it("should redirect to /saveOperatorGroup when clicking  'Confirm operators and continue' button and Bods has services", async () => {
+    it("should redirect to /saveOperatorGroup when clicking 'Confirm operators and continue' button and all of the operators have bods services", async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
         const mockSelectedOperators: Operator[] = [
             { nocCode: 'BLACK', name: 'Blackpool Transport' },

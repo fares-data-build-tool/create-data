@@ -37,7 +37,7 @@ export const isSearchInputValid = (searchText: string): boolean => {
 };
 
 export const getOperatorsWithoutServices = async (selectedOperators: Operator[]): Promise<string[]> => {
-    const results = Promise.all(
+    const results = await Promise.all(
         selectedOperators.map(async (operator) => {
             const nocCode = operator.nocCode;
             const hasService = await operatorHasBodsServices(nocCode);
@@ -47,7 +47,7 @@ export const getOperatorsWithoutServices = async (selectedOperators: Operator[])
             return '';
         }),
     );
-    return (await results).filter((item) => item !== '');
+    return results.filter((item) => item !== '');
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -136,10 +136,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const operatorsWithNoServices = await getOperatorsWithoutServices(selectedOperators);
             if (operatorsWithNoServices.length > 0) {
                 errors.push({
-                    errorMessage: `Some of the selected operators have no services`,
+                    errorMessage: `Some of the selected operators have no services. To continue you must only select operators which have services in BODS`,
                     id: removeOperatorsErrorId,
                 });
-                operatorsWithNoServices.map((names) => {
+                operatorsWithNoServices.forEach((names) => {
                     errors.push({ errorMessage: names, id: removeOperatorsErrorId });
                 });
                 updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
