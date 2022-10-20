@@ -10,8 +10,6 @@ import { Operator, MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErr
 import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as auroradb from '../../../src/data/auroradb';
 
-// jest.mock('../../../src/data/auroradb.ts');
-
 describe('searchOperators', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
 
@@ -319,6 +317,7 @@ describe('searchOperators', () => {
     });
 
     it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a geoZone multi op ticket', async () => {
+        jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
         const mockSelectedOperators: Operator[] = [
             {
                 nocCode: 'MCTR',
@@ -365,6 +364,7 @@ describe('searchOperators', () => {
     });
 
     it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a multipleServices multi op ticket', async () => {
+        jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
         const mockSelectedOperators: Operator[] = [
             {
                 nocCode: 'MCTR',
