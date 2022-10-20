@@ -218,7 +218,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         )
     ).flat();
 
-    const otherProducts= allOtherProducts.filter(product => product.type !== 'multiOperator')
+    const otherProducts = allOtherProducts.filter((product) => product.type !== 'multiOperator');
     return { props: { otherProducts, csrfToken: getCsrfToken(ctx) } };
 };
 
