@@ -5,7 +5,7 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
   <BaseLayout
     description="View and access your other products in one place."
     showNavigation={true}
-    title="Other Products - Create Fares Data Service"
+    title="Other products - Create Fares Data Service"
   >
     <div
       className="govuk-grid-row"
@@ -112,7 +112,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
   <BaseLayout
     description="View and access your other products in one place."
     showNavigation={true}
-    title="Other Products - Create Fares Data Service"
+    title="Other products - Create Fares Data Service"
   >
     <div
       className="govuk-grid-row"

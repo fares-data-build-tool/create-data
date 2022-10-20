@@ -9,7 +9,7 @@ import { getTag } from '../products/services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 
-const title = 'Other Products - Create Fares Data Service';
+const title = 'Other products - Create Fares Data Service';
 const description = 'View and access your other products in one place.';
 
 interface OtherProductsProps {
