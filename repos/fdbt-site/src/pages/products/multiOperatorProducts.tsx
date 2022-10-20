@@ -9,7 +9,7 @@ import { getTag } from './services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 
-const title = 'Multi-operator Products - Create Fares Data Service';
+const title = 'Multi-operator products - Create Fares Data Service';
 const description = 'View and access your multi-operator products in one place.';
 
 interface MultiOperatorProductsProps {

@@ -5,7 +5,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when no non
   <BaseLayout
     description="View and access your multi-operator products in one place."
     showNavigation={true}
-    title="Multi-operator Products - Create Fares Data Service"
+    title="Multi-operator products - Create Fares Data Service"
   >
     <div
       className="govuk-grid-row"
@@ -112,7 +112,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when some n
   <BaseLayout
     description="View and access your multi-operator products in one place."
     showNavigation={true}
-    title="Multi-operator Products - Create Fares Data Service"
+    title="Multi-operator products - Create Fares Data Service"
   >
     <div
       className="govuk-grid-row"
