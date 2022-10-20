@@ -62,6 +62,11 @@ exports[`pages globalSettings should render correctly 1`] = `
           href="/manageOperatorDetails"
           name="Operator details"
         />
+        <SettingOverview
+          description="Define your operator groups - these will be used in multi operator tickets"
+          href="/viewOperatorGroups"
+          name="Operator groups"
+        />
       </div>
     </div>
   </BaseLayout>

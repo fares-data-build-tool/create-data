@@ -117,3 +117,5 @@ export const MATCHING_JSON_META_DATA_ATTRIBUTE = 'fdbt-matching-json-meta-data';
 export const RETURN_SERVICE_ATTRIBUTE = 'fdbt-return-service';
 
 export const VIEW_PASSENGER_TYPE = 'fdbt-products-using-passenger-type';
+
+export const MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE = 'fdbt-manage-operator-group-errors';
