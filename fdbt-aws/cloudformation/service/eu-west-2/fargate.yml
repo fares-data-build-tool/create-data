@@ -67,6 +67,7 @@ Conditions:
   IsTest: !Equals [!Ref Stage, "test"]
   IsProd: !Equals [!Ref Stage, "prod"]
   IsNotProd: !Not [!Equals [!Ref Stage, "prod"]]
+  IsPreProd: !Equals [!Ref Stage, "preprod"]
 
 Resources:
   # ECS Resources
@@ -236,7 +237,7 @@ Resources:
         Fn::ImportValue: !Sub ${Stage}:EcsSiteScalingRoleArn
       ScheduledActions:
         Fn::If:
-          - IsNotProd
+          - IsPreProd
           - - Schedule: "cron(0 19 ? * MON-FRI *)"
               ScheduledActionName: SiteScaleIn
               ScalableTargetAction:
@@ -262,7 +263,7 @@ Resources:
         Fn::ImportValue: !Sub ${Stage}:EcsSiteScalingRoleArn
       ScheduledActions:
         Fn::If:
-          - IsNotProd
+          - IsPreProd
           - - Schedule: "cron(0 19 ? * MON-FRI *)"
               ScheduledActionName: MonitoringScaleIn
               ScalableTargetAction:
