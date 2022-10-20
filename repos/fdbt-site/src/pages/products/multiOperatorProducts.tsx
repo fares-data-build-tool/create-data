@@ -180,42 +180,38 @@ export const getServerSideProps = async (
         await Promise.all(
             multiOperatorProductsFromDb.map(async (product) => {
                 const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
-                if ('products' in matchingJson) {
-                    return Promise.all(
-                        matchingJson.products?.map(async (innerProduct) => {
-                            const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
-                            const duration =
-                                'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
-                            const quantity =
-                                ('carnetDetails' in innerProduct ? innerProduct.carnetDetails?.quantity : '1') || '1';
-                            const type = `${matchingJson.type}${matchingJson.carnet ? ' carnet' : ''}`;
-                            const passengerType =
-                                (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
-                                (await getGroupPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
-                                '';
-                            const { id } = product;
+                return Promise.all(
+                    matchingJson.products?.map(async (innerProduct) => {
+                        const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
+                        const duration = 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
+                        const quantity =
+                            ('carnetDetails' in innerProduct ? innerProduct.carnetDetails?.quantity : '1') || '1';
+                        const type = `${matchingJson.type}${matchingJson.carnet ? ' carnet' : ''}`;
+                        const passengerType =
+                            (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
+                            (await getGroupPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
+                            '';
+                        const { id } = product;
 
-                            const startDate = matchingJson.ticketPeriod.startDate
-                                ? convertDateFormat(matchingJson.ticketPeriod.startDate)
-                                : '-';
-                            const endDate = matchingJson.ticketPeriod.endDate
-                                ? convertDateFormat(matchingJson.ticketPeriod.endDate)
-                                : '-';
-                            return {
-                                productDescription,
-                                type,
-                                duration,
-                                quantity,
-                                passengerType,
-                                startDate,
-                                endDate,
-                                id,
-                                carnet: 'carnetDetails' in innerProduct && !!innerProduct.carnetDetails,
-                            };
-                        }),
-                    );
-                }
-                return [];
+                        const startDate = matchingJson.ticketPeriod.startDate
+                            ? convertDateFormat(matchingJson.ticketPeriod.startDate)
+                            : '-';
+                        const endDate = matchingJson.ticketPeriod.endDate
+                            ? convertDateFormat(matchingJson.ticketPeriod.endDate)
+                            : '-';
+                        return {
+                            productDescription,
+                            type,
+                            duration,
+                            quantity,
+                            passengerType,
+                            startDate,
+                            endDate,
+                            id,
+                            carnet: 'carnetDetails' in innerProduct && !!innerProduct.carnetDetails,
+                        };
+                    }),
+                );
             }),
         )
     ).flat();
