@@ -100,6 +100,8 @@ export const GS_PURCHASE_METHOD_ATTRIBUTE = 'fdbt-global-settings-purchase-metho
 
 export const GS_FARE_DAY_END_ATTRIBUTE = 'fdbt-global-settings-fare-day-end';
 
+export const GS_OPERATOR_GROUP_ATTRIBUTE = 'fdbt-global-settings-operator-group';
+
 export const UNASSIGNED_STOPS_ATTRIBUTE = 'fdbt-unassigned-stops';
 
 export const UNASSIGNED_INBOUND_STOPS_ATTRIBUTE = 'fdbt-unassigned-inbound-stops';
