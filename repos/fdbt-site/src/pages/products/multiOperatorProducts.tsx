@@ -50,8 +50,7 @@ const MultiOperatorProducts = ({ multiOperatorProducts, csrfToken }: MultiOperat
                         {MultiOperatorProductsTable(multiOperatorProducts, deleteActionHandler, csrfToken)}
 
                         {popUpState && (
-                            <DeleteConfirmationPopup
-                                entityType=""
+                            <DeleteConfirmationPopup                                
                                 entityName={popUpState.name}
                                 deleteUrl={buildDeleteUrl(popUpState.productId, csrfToken)}
                                 cancelActionHandler={(): void => {
