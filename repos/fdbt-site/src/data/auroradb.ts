@@ -156,7 +156,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
     }
 };
 
-export const checkBodshasServicesByNoc = async (nationalOperatorCode: string): Promise<boolean> => {
+export const operatorHasBodsServices = async (nationalOperatorCode: string): Promise<boolean> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 
     logger.info('', {
@@ -174,11 +174,8 @@ export const checkBodshasServicesByNoc = async (nationalOperatorCode: string): P
         `;
 
         const queryResults = await executeQuery<ServiceCount[]>(queryInput, [nocCodeParameter]);
-        const hasService = queryResults[0].serviceCount ? queryResults[0].serviceCount : 0;
-        if (hasService > 0) {
-            return true;
-        }
-        return false;
+        const hasService = queryResults[0].serviceCount !== 0;
+        return hasService;
     } catch (error) {
         throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
     }
