@@ -61,6 +61,7 @@ import {
     GS_PURCHASE_METHOD_ATTRIBUTE,
     GS_OPERATOR_DETAILS_ATTRIBUTE,
     VIEW_PASSENGER_TYPE,
+    MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CompanionInfo,
@@ -127,6 +128,7 @@ import {
     Direction,
     Errors,
     BasicService,
+    ManageOperatorGroupWithErrors,
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -170,6 +172,7 @@ export interface SessionAttributeTypes {
     [PASSENGER_TYPE_ATTRIBUTE]: PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;
+    [MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE]: ManageOperatorGroupWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [RETURN_SERVICE_ATTRIBUTE]: BasicService | WithErrors<BasicService>;
     [DIRECTION_ATTRIBUTE]: Direction | Errors;

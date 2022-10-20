@@ -51,7 +51,6 @@ const OtherProducts = ({ otherProducts, csrfToken }: OtherProductsProps): ReactE
 
                         {popUpState && (
                             <DeleteConfirmationPopup
-                                entityType=""
                                 entityName={popUpState.name}
                                 deleteUrl={buildDeleteUrl(popUpState.productId, csrfToken)}
                                 cancelActionHandler={(): void => {

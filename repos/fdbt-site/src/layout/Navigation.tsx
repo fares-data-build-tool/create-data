@@ -69,6 +69,7 @@ const Navigation = (): ReactElement => (
                         'viewTimeRestrictions',
                         'manageFareDayEnd',
                         'manageOperatorDetails',
+                        'viewOperatorGroups',
                     ])
                         ? 'app-navigation__list-item--current'
                         : ''
