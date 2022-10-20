@@ -422,7 +422,9 @@ describe('generateFileName', () => {
         const result = generateFileName(singleTicket);
 
         expect(result).toBe(
-            `FX-PI-01_UK_MCTR_LINE-FARE_Best-Product_${mockDate}_${singleTicket.ticketPeriod.startDate.split('T')[0]}`,
+            `FX-PI-01_UK_MCTR_LINE-FARE_237_O_Best-Product_${mockDate}_${
+                singleTicket.ticketPeriod.startDate.split('T')[0]
+            }`,
         );
         expect(result).not.toContain(' ');
     });

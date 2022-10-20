@@ -3,7 +3,7 @@ import AWS, { SNS } from 'aws-sdk';
 import libxslt from 'libxslt';
 import * as db from '../data/auroradb';
 import * as s3 from '../data/s3';
-import { isSchemeOperatorTicket, Ticket } from '../types/index';
+import { isPointToPointTicket, isSchemeOperatorTicket, isSingleTicket, Ticket } from '../types/index';
 import netexGenerator from './netexGenerator';
 import { Operator } from '../../src/types/index';
 import { getProductType } from './sharedHelpers';
@@ -71,7 +71,22 @@ export const generateFileName = (ticket: Ticket): string => {
     const productName = ticket.products[0].productName.replace(' ', '-');
     const creationDate = new Date(Date.now()).toISOString().split('T')[0];
     const startDate = ticket.ticketPeriod.startDate.split('T')[0];
-    return `FX-PI-01_UK_${nocOrSchemeName}_${lineOrNetworkFare}_${productName}_${creationDate}_${startDate}`;
+
+    let pointToPointInsert = '';
+
+    if (isPointToPointTicket(ticket)) {
+        if (isSingleTicket(ticket)) {
+            const directionLetter =
+                ticket.journeyDirection === 'inbound' || ticket.journeyDirection === 'clockwise' ? 'I' : 'O';
+            pointToPointInsert = `${ticket.lineName}_${directionLetter}_`;
+        } else {
+            pointToPointInsert = `${ticket.lineName}_`;
+        }
+    }
+
+    return `FX-PI-01_UK_${nocOrSchemeName}_${lineOrNetworkFare}_${
+        pointToPointInsert ? pointToPointInsert : ''
+    }${productName}_${creationDate}_${startDate}`;
 };
 
 export const getFinalNetexName = async (fileName: string): Promise<string> => {
@@ -79,7 +94,7 @@ export const getFinalNetexName = async (fileName: string): Promise<string> => {
     let counter = 1;
 
     while (true) {
-        const fileNameTaken = await fileNameExistsAlready(placeHolderFileName);
+        const fileNameTaken = await fileNameExistsAlready(`${placeHolderFileName}.xml`);
         if (fileNameTaken) {
             placeHolderFileName = `${fileName}_${counter}`;
             counter++;
