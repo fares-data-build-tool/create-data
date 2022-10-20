@@ -564,6 +564,9 @@ export interface ServiceType {
     serviceCode: string;
     dataSource?: string;
 }
+export interface ServiceCount {
+    serviceCount: number;
+}
 
 export interface ServicesInfo extends ServiceType {
     checked?: boolean;
