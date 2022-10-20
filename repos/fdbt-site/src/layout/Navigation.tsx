@@ -42,7 +42,7 @@ const Navigation = (): ReactElement => (
                     href="/products/multiOperatorProducts"
                     data-topnav="Multi-operator Products"
                 >
-                    Multi-operator Products
+                    Multi-operator products
                 </a>
             </li>
 

@@ -98,7 +98,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when no non
           className="govuk-body"
         >
           <i>
-            You currently have no multi-service products
+            You currently have no multi-operator products
           </i>
         </span>
       </div>

@@ -156,7 +156,7 @@ const MultiOperatorProductsTable = (
             </table>
             {multiOperatorProducts.length === 0 ? (
                 <span className="govuk-body">
-                    <i>You currently have no multi-service products</i>
+                    <i>You currently have no multi-operator products</i>
                 </span>
             ) : null}
         </>
