@@ -10,7 +10,7 @@ import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 
 const title = 'Multi-operator Products - Create Fares Data Service';
-const description = 'View and access your other products in one place.';
+const description = 'View and access your multi-operator products in one place.';
 
 interface MultiOperatorProductsProps {
     multiOperatorProducts: MyFaresOtherFaresProduct[];

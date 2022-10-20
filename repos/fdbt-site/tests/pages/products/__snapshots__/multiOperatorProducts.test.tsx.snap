@@ -1,0 +1,431 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`myfares pages multiOperatorProducts should render correctly when no non-Point-to-Point products exist 1`] = `
+<Fragment>
+  <BaseLayout
+    description="View and access your multi-operator products in one place."
+    showNavigation={true}
+    title="Multi-operator Products - Create Fares Data Service"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <div
+          className="dft-flex dft-flex-justify-space-between"
+        >
+          <h1
+            className="govuk-heading-xl govuk-!-margin-bottom-3"
+          >
+            Multi-operator Products
+          </h1>
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/fareType"
+          >
+            Create new product
+          </a>
+        </div>
+        <table
+          className="govuk-table"
+        >
+          <thead
+            className="govuk-table__head"
+          >
+            <tr
+              className="govuk-table__row"
+            >
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Product description
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Type
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Duration
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Passenger type
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Start date
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                End date
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Product status
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
+            </tr>
+          </thead>
+          <tbody
+            className="govuk-table__body"
+          />
+        </table>
+        <span
+          className="govuk-body"
+        >
+          <i>
+            You currently have no multi-service products
+          </i>
+        </span>
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`myfares pages multiOperatorProducts should render correctly when some non-Point-to-Point products exist 1`] = `
+<Fragment>
+  <BaseLayout
+    description="View and access your multi-operator products in one place."
+    showNavigation={true}
+    title="Multi-operator Products - Create Fares Data Service"
+  >
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <div
+          className="dft-flex dft-flex-justify-space-between"
+        >
+          <h1
+            className="govuk-heading-xl govuk-!-margin-bottom-3"
+          >
+            Multi-operator Products
+          </h1>
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/fareType"
+          >
+            Create new product
+          </a>
+        </div>
+        <table
+          className="govuk-table"
+        >
+          <thead
+            className="govuk-table__head"
+          >
+            <tr
+              className="govuk-table__row"
+            >
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Product description
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Type
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Duration
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Passenger type
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Start date
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                End date
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              >
+                Product status
+              </th>
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
+              <th
+                className="govuk-table__header"
+                scope="col"
+              />
+            </tr>
+          </thead>
+          <tbody
+            className="govuk-table__body"
+          >
+            <tr
+              className="govuk-table__row"
+              key="product-0"
+            >
+              <td
+                className="govuk-table__cell dft-table-wrap-anywhere"
+              >
+                <a
+                  href="/products/productDetails?productId=1"
+                  id="product-link-0"
+                >
+                  First product
+                </a>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                Flat fare
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                1 trip
+              </td>
+              <td
+                className="govuk-table__cell dft-table-wrap-anywhere"
+              >
+                Infant
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                11/04/2020
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                02/09/2090
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <strong
+                  className="govuk-tag govuk-tag--turquoise dft-table-tag"
+                >
+                  Active
+                </strong>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <form>
+                  <button
+                    className="govuk-link govuk-body button-link"
+                    formAction="/api/copyProduct?id=1&_csrf="
+                    formMethod="post"
+                    id="copy-product-button"
+                    type="submit"
+                  >
+                    Copy
+                  </button>
+                </form>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <button
+                  className="govuk-link govuk-body button-link"
+                  onClick={[Function]}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr
+              className="govuk-table__row"
+              key="product-1"
+            >
+              <td
+                className="govuk-table__cell dft-table-wrap-anywhere"
+              >
+                <a
+                  href="/products/productDetails?productId=2"
+                  id="product-link-1"
+                >
+                  The greatest product eveer!
+                </a>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                Period
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                3 days
+              </td>
+              <td
+                className="govuk-table__cell dft-table-wrap-anywhere"
+              >
+                Infant
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                11/12/2021
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                02/09/2023
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <strong
+                  className="govuk-tag govuk-tag--turquoise dft-table-tag"
+                >
+                  Active
+                </strong>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <form>
+                  <button
+                    className="govuk-link govuk-body button-link"
+                    formAction="/api/copyProduct?id=2&_csrf="
+                    formMethod="post"
+                    id="copy-product-button"
+                    type="submit"
+                  >
+                    Copy
+                  </button>
+                </form>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <button
+                  className="govuk-link govuk-body button-link"
+                  onClick={[Function]}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr
+              className="govuk-table__row"
+              key="product-2"
+            >
+              <td
+                className="govuk-table__cell dft-table-wrap-anywhere"
+              >
+                <a
+                  href="/products/productDetails?productId=3"
+                  id="product-link-2"
+                >
+                  The greatest product eveer!
+                </a>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                Period
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                3 days
+              </td>
+              <td
+                className="govuk-table__cell dft-table-wrap-anywhere"
+              >
+                Adult
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                11/12/2021
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                02/09/2023
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <strong
+                  className="govuk-tag govuk-tag--turquoise dft-table-tag"
+                >
+                  Active
+                </strong>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <form>
+                  <button
+                    className="govuk-link govuk-body button-link"
+                    formAction="/api/copyProduct?id=3&_csrf="
+                    formMethod="post"
+                    id="copy-product-button"
+                    type="submit"
+                  >
+                    Copy
+                  </button>
+                </form>
+              </td>
+              <td
+                className="govuk-table__cell"
+              >
+                <button
+                  className="govuk-link govuk-body button-link"
+                  onClick={[Function]}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;
