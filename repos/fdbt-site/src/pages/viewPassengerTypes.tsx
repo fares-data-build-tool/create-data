@@ -163,9 +163,10 @@ const IndividualPassengerTypes = ({
             <h2 className="govuk-heading-l">Individual</h2>
 
             <div className="card-row">
-                {singlePassengerTypes.map((singlePassengerType) => (
+                {singlePassengerTypes.map((singlePassengerType, index) => (
                     <PassengerTypeCard
                         contents={singlePassengerType}
+                        index={index}
                         deleteActionHandler={deleteActionHandler}
                         key={singlePassengerType.id.toString()}
                         defaultChecked={false}
@@ -203,9 +204,10 @@ const PassengerTypeGroups = ({ deleteActionHandler, passengerTypeGroups }: Passe
             <h2 className="govuk-heading-l">Groups</h2>
 
             <div className="card-row">
-                {passengerTypeGroups.map((passengerTypeGroup) => (
+                {passengerTypeGroups.map((passengerTypeGroup, index) => (
                     <PassengerTypeCard
                         contents={passengerTypeGroup}
+                        index={index}
                         deleteActionHandler={deleteActionHandler}
                         key={passengerTypeGroup.id}
                         defaultChecked={false}

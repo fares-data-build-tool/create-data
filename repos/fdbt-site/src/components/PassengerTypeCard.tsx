@@ -4,15 +4,21 @@ import { getProofDocumentsString, sentenceCaseString } from '../utils';
 
 interface PassengerTypeCardProps {
     contents: FullGroupPassengerType | SinglePassengerType;
+    index: number;
     deleteActionHandler?: (id: number, name: string, isGroup: boolean) => void;
     defaultChecked: boolean;
 }
 
-const PassengerTypeCard = ({ contents, deleteActionHandler, defaultChecked }: PassengerTypeCardProps): ReactElement => {
+const PassengerTypeCard = ({
+    contents,
+    index,
+    deleteActionHandler,
+    defaultChecked,
+}: PassengerTypeCardProps): ReactElement => {
     const { name, id } = contents;
     const isGroup = 'groupPassengerType' in contents;
     return (
-        <div className="card">
+        <div className="card" id={`${isGroup ? 'group-card' : 'passenger-card'}-${index}`}>
             <div className="card__body">
                 {deleteActionHandler ? (
                     <div className="card__actions">
