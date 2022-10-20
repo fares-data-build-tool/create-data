@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`myfares pages otherProducts should render correctly when no non-Point-to-Point products exist 1`] = `
+exports[`myfares pages multiOperatorProducts should render correctly when no non-Point-to-Point products exist 1`] = `
 <Fragment>
   <BaseLayout
-    description="View and access your other products in one place."
+    description="View and access your multi-operator products in one place."
     showNavigation={true}
-    title="Other products - Create Fares Data Service"
+    title="Multi-operator products - Create Fares Data Service"
   >
     <div
       className="govuk-grid-row"
@@ -19,7 +19,7 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
           <h1
             className="govuk-heading-xl govuk-!-margin-bottom-3"
           >
-            Other products
+            Multi-operator Products
           </h1>
           <a
             className="govuk-button"
@@ -98,7 +98,7 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
           className="govuk-body"
         >
           <i>
-            You currently have no multi-service products
+            You currently have no multi-operator products
           </i>
         </span>
       </div>
@@ -107,12 +107,12 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
 </Fragment>
 `;
 
-exports[`myfares pages otherProducts should render correctly when some non-Point-to-Point products exist 1`] = `
+exports[`myfares pages multiOperatorProducts should render correctly when some non-Point-to-Point products exist 1`] = `
 <Fragment>
   <BaseLayout
-    description="View and access your other products in one place."
+    description="View and access your multi-operator products in one place."
     showNavigation={true}
-    title="Other products - Create Fares Data Service"
+    title="Multi-operator products - Create Fares Data Service"
   >
     <div
       className="govuk-grid-row"
@@ -126,7 +126,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
           <h1
             className="govuk-heading-xl govuk-!-margin-bottom-3"
           >
-            Other products
+            Multi-operator Products
           </h1>
           <a
             className="govuk-button"

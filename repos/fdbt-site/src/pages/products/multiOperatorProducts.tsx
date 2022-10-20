@@ -5,15 +5,15 @@ import { BaseLayout } from '../../layout/Layout';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString, getCsrfToken } from '../../utils';
 import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
-import { getTag } from '../products/services';
+import { getTag } from './services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 
-const title = 'Other products - Create Fares Data Service';
-const description = 'View and access your other products in one place.';
+const title = 'Multi-operator products - Create Fares Data Service';
+const description = 'View and access your multi-operator products in one place.';
 
-interface OtherProductsProps {
-    otherProducts: MyFaresOtherFaresProduct[];
+interface MultiOperatorProductsProps {
+    multiOperatorProducts: MyFaresOtherFaresProduct[];
     csrfToken: string;
 }
 
@@ -21,7 +21,7 @@ const buildCopyUrl = (productId: string, csrfToken: string) => {
     return `/api/copyProduct?id=${productId}&_csrf=${csrfToken}`;
 };
 
-const OtherProducts = ({ otherProducts, csrfToken }: OtherProductsProps): ReactElement => {
+const MultiOperatorProducts = ({ multiOperatorProducts, csrfToken }: MultiOperatorProductsProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         name: string;
         productId: number;
@@ -40,14 +40,14 @@ const OtherProducts = ({ otherProducts, csrfToken }: OtherProductsProps): ReactE
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
-                            <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Other products</h1>
+                            <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Multi-operator Products</h1>
 
                             <a href="/fareType" className="govuk-button" data-module="govuk-button">
                                 Create new product
                             </a>
                         </div>
 
-                        {otherProductsTable(otherProducts, deleteActionHandler, csrfToken)}
+                        {MultiOperatorProductsTable(multiOperatorProducts, deleteActionHandler, csrfToken)}
 
                         {popUpState && (
                             <DeleteConfirmationPopup
@@ -71,8 +71,8 @@ export const buildDeleteUrl = (idToDelete: number, csrfToken: string): string =>
     return `/api/deleteProduct?id=${idToDelete}&_csrf=${csrfToken}`;
 };
 
-const otherProductsTable = (
-    otherProducts: MyFaresOtherFaresProduct[],
+const MultiOperatorProductsTable = (
+    multiOperatorProducts: MyFaresOtherFaresProduct[],
     deleteActionHandler: (productId: number, name: string) => void,
     csrfToken: string,
 ): React.ReactElement => {
@@ -107,8 +107,8 @@ const otherProductsTable = (
                     </tr>
                 </thead>
                 <tbody className="govuk-table__body">
-                    {otherProducts.length > 0
-                        ? otherProducts.map((product, index) => (
+                    {multiOperatorProducts.length > 0
+                        ? multiOperatorProducts.map((product, index) => (
                               <tr className="govuk-table__row" key={`product-${index}`}>
                                   <td className="govuk-table__cell dft-table-wrap-anywhere">
                                       <a
@@ -154,29 +154,31 @@ const otherProductsTable = (
                         : null}
                 </tbody>
             </table>
-            {otherProducts.length === 0 ? (
+            {multiOperatorProducts.length === 0 ? (
                 <span className="govuk-body">
-                    <i>You currently have no multi-service products</i>
+                    <i>You currently have no multi-operator products</i>
                 </span>
             ) : null}
         </>
     );
 };
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: OtherProductsProps }> => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: MultiOperatorProductsProps }> => {
     const noc = getAndValidateNoc(ctx);
-    const otherProductsFromDb: MyFaresOtherProduct[] = await getOtherProductsByNoc(noc);
+    const multiOperatorProductsFromDb: MyFaresOtherProduct[] = await getOtherProductsByNoc(noc);
 
-    if (process.env.STAGE !== 'test' && otherProductsFromDb.length > 50) {
+    if (process.env.STAGE !== 'test' && multiOperatorProductsFromDb.length > 50) {
         logger.info('User has more than 50 other products', {
             noc: noc,
-            otherProductsCount: otherProductsFromDb.length,
+            MultiOperatorProductsCount: multiOperatorProductsFromDb.length,
         });
     }
 
-    const allOtherProducts: MyFaresOtherFaresProduct[] = (
+    const otherProducts: MyFaresOtherFaresProduct[] = (
         await Promise.all(
-            otherProductsFromDb.map(async (product) => {
+            multiOperatorProductsFromDb.map(async (product) => {
                 const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
                 return Promise.all(
                     matchingJson.products?.map(async (innerProduct) => {
@@ -214,8 +216,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         )
     ).flat();
 
-    const otherProducts = allOtherProducts.filter((product) => product.type !== 'multiOperator');
-    return { props: { otherProducts, csrfToken: getCsrfToken(ctx) } };
+    const multiOperatorProducts = otherProducts.filter((product) => product.type === 'multiOperator');
+    return { props: { multiOperatorProducts, csrfToken: getCsrfToken(ctx) } };
 };
 
-export default OtherProducts;
+export default MultiOperatorProducts;
