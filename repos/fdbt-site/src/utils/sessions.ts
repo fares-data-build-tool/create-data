@@ -61,6 +61,7 @@ import {
     GS_PURCHASE_METHOD_ATTRIBUTE,
     GS_OPERATOR_DETAILS_ATTRIBUTE,
     VIEW_PASSENGER_TYPE,
+    VIEW_PURCHASE_METHOD,
     MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
 } from '../constants/attributes';
 import {
@@ -205,6 +206,7 @@ export interface SessionAttributeTypes {
     [GS_REFERER]: string;
     [CSV_ZONE_FILE_NAME]: string;
     [VIEW_PASSENGER_TYPE]: ErrorInfo[];
+    [VIEW_PURCHASE_METHOD]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
