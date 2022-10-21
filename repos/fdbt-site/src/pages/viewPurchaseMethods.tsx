@@ -6,8 +6,8 @@ import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { formatSOPArray, getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { sopTicketFormatConverter } from './salesConfirmation';
-import { VIEW_PURCHASE_METHOD } from 'src/constants/attributes';
-import { getSessionAttribute, updateSessionAttribute } from 'src/utils/sessions';
+import { VIEW_PURCHASE_METHOD } from '../constants/attributes';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Purchase methods';
 const description =
