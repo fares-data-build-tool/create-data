@@ -9,6 +9,7 @@ import { Operator } from '../../src/types/index';
 import { getProductType } from './sharedHelpers';
 import { SchemeOperatorTicket } from 'fdbt-types/matchingJsonTypes';
 import { fileNameExistsAlready } from '../data/s3';
+import { v4 as uuidv4 } from 'uuid';
 
 export const xsl = `
     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -84,9 +85,11 @@ export const generateFileName = (ticket: Ticket): string => {
         }
     }
 
+    const uuid = uuidv4().substring(0, 4);
+
     return `FX-PI-01_UK_${nocOrSchemeName}_${lineOrNetworkFare}_${
         pointToPointInsert ? pointToPointInsert : ''
-    }${productName}_${creationDate}_${startDate}`;
+    }${productName}_${creationDate}_${startDate}_${uuid}`;
 };
 
 export const getFinalNetexName = async (fileName: string): Promise<string> => {
