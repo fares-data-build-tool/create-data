@@ -28,7 +28,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }),
         );
 
-        let productsUsingPurchaseMethod = [];
+        const productsUsingPurchaseMethod = [];
         for (const ticket of tickets) {
             for (const salesOfferPackage of ticket.products[0].salesOfferPackages) {
                 if (salesOfferPackage.id === id) {
