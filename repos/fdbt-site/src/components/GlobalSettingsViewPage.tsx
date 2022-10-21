@@ -63,7 +63,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
         <>
             <div className="card-row">
                 {entities.map((entity) => (
-                    <div className="card" key={entity.id}>
+                    <div className="card" key={entity.id} id={`${entity.id}`}>
                         <div className={'card__body ' + entityDescription.replace(/ /g, '-')}>
                             <div className="card__actions">
                                 <ul className="actions__list">
