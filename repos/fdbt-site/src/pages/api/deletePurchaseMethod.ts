@@ -40,7 +40,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (productsUsingPurchaseMethod.length > 0) {
             const purchaseDetails = await getSalesOfferPackageByIdAndNoc(id, nocCode);
             const { name } = purchaseDetails;
-            const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingPurchaseMethod.length} products.`;
+            const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingPurchaseMethod.length} product(s).`;
             const errors: ErrorInfo[] = [{ id: `${id}`, errorMessage }];
             updateSessionAttribute(req, VIEW_PURCHASE_METHOD, errors);
             redirectTo(res, `/viewPurchaseMethods?cannotDelete=${name}`);

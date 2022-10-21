@@ -46,7 +46,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (productsUsingPassengerType.length > 0) {
             const passengerDetails = (await getPassengerTypeById(id, nationalOperatorCode)) as SinglePassengerType;
             const { name } = passengerDetails;
-            const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingPassengerType.length} products.`;
+            const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingPassengerType.length} product(s).`;
             const errors: ErrorInfo[] = [{ id: 'passenger-card-0', errorMessage }];
             updateSessionAttribute(req, VIEW_PASSENGER_TYPE, errors);
             redirectTo(res, `/viewPassengerTypes?cannotDelete=${name}`);

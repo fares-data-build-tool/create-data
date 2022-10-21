@@ -1,10 +1,12 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 import { GlobalSettingsViewPage } from '../components/GlobalSettingsViewPage';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
-import { NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { DbTimeBand } from 'fdbt-types/matchingJsonTypes';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { VIEW_TIME_RESTRICTION } from '../constants/attributes';
 
 const title = 'Time restrictions';
 const description = 'Define certain days and time periods that your tickets can be used within.';
@@ -24,6 +26,7 @@ interface TimeRestrictionProps {
     csrfToken: string;
     timeRestrictions: PremadeTimeRestriction[];
     referer: string | null;
+    viewTimeRestrictionErrors: ErrorInfo[];
 }
 
 const formatTime = (time: string | object): string =>
@@ -44,7 +47,12 @@ const formatDayRestriction = (timeRestriction: PremadeTimeRestriction, day: stri
     );
 };
 
-const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRestrictionProps): ReactElement => {
+const ViewTimeRestrictions = ({
+    timeRestrictions,
+    referer,
+    csrfToken,
+    viewTimeRestrictionErrors,
+}: TimeRestrictionProps): ReactElement => {
     return (
         <>
             <GlobalSettingsViewPage
@@ -55,6 +63,7 @@ const ViewTimeRestrictions = ({ timeRestrictions, referer, csrfToken }: TimeRest
                 title={title}
                 description={description}
                 CardBody={TimeRestrictionCardBody}
+                errors={viewTimeRestrictionErrors}
             />
         </>
     );
@@ -89,12 +98,16 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
+    const viewTimeRestriction = getSessionAttribute(ctx.req, VIEW_TIME_RESTRICTION);
+
+    updateSessionAttribute(ctx.req, VIEW_TIME_RESTRICTION, undefined);
 
     return {
         props: {
             timeRestrictions,
             referer: extractGlobalSettingsReferer(ctx),
             csrfToken,
+            viewTimeRestrictionErrors: viewTimeRestriction || [],
         },
     };
 };

@@ -123,3 +123,5 @@ export const VIEW_PASSENGER_TYPE = 'fdbt-products-using-passenger-type';
 export const VIEW_PURCHASE_METHOD = 'fdbt-products-using-purchase-method';
 
 export const MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE = 'fdbt-manage-operator-group-errors';
+
+export const VIEW_TIME_RESTRICTION = 'fdbt-products-using-time-restriction';
