@@ -120,7 +120,6 @@ export const GlobalSettingsViewPage = <T extends Entity>({
 
                         {popUpState && (
                             <DeleteConfirmationPopup
-                                entityType={entityDescription}
                                 entityName={popUpState.entityName}
                                 deleteUrl={buildDeleteUrl(popUpState.entityId, csrfToken)}
                                 cancelActionHandler={cancelActionHandler}

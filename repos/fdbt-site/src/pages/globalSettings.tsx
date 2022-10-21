@@ -7,6 +7,7 @@ import {
     getTimeRestrictionByNocCode,
     getFareDayEnd,
     getOperatorDetails,
+    getOperatorGroupsByNoc,
 } from '../data/auroradb';
 import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
@@ -68,6 +69,12 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
                             count={globalSettingsCounts.operatorDetailsSet}
                         />
+                        <SettingOverview
+                            href="/viewOperatorGroups"
+                            name="Operator groups"
+                            description="Define your operator groups - these will be used in multi operator tickets"
+                            count={globalSettingsCounts.operatorGroupsCount}
+                        />
                     </div>
                 </div>
             </BaseLayout>
@@ -90,6 +97,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const purchaseMethodsCount = await getSalesOfferPackagesByNocCode(noc);
     const fareDayEnd = await getFareDayEnd(noc);
     const operatorDetails = await getOperatorDetails(noc);
+    const operatorGroups = await getOperatorGroupsByNoc(noc);
 
     const globalSettingsCounts: GlobalSettingsCounts = {
         passengerTypesCount: savedPassengerTypes.length + savedGroupPassengerTypes.length,
@@ -97,6 +105,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         purchaseMethodsCount: purchaseMethodsCount.length,
         fareDayEndSet: !!fareDayEnd,
         operatorDetailsSet: !!operatorDetails,
+        operatorGroupsCount: operatorGroups.length,
     };
 
     return { props: { globalSettingsCounts, referer } };

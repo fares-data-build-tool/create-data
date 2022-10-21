@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 
 interface PopUpProps {
-    entityType: string;
     entityName: string;
     deleteUrl: string;
     cancelActionHandler: React.MouseEventHandler<HTMLButtonElement>;
@@ -9,7 +8,6 @@ interface PopUpProps {
 }
 
 const DeleteConfirmationPopup = ({
-    entityType,
     entityName,
     deleteUrl,
     cancelActionHandler,
@@ -21,10 +19,11 @@ const DeleteConfirmationPopup = ({
                 <h1 className="govuk-heading-m">Are you sure you want to delete {entityName.trim()}?</h1>
 
                 <span className="govuk-hint" id="delete-hint">
-                    {hintText || (
+                    {hintText && (
                         <>
-                            If you delete this {entityType}, any fares previously associated with this {entityType} will
-                            no longer be exportable.
+                            <span className="govuk-hint" id="delete-hint">
+                                {hintText}
+                            </span>
                         </>
                     )}
                 </span>

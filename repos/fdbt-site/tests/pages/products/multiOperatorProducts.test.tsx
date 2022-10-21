@@ -3,13 +3,13 @@ import * as React from 'react';
 import { getProductsMatchingJson } from '../../../src/data/s3';
 import { getOtherProductsByNoc, getPassengerTypeById } from '../../../src/data/auroradb';
 import { MyFaresOtherFaresProduct } from '../../../src/interfaces';
-import OtherProducts, { getServerSideProps } from '../../../src/pages/products/otherProducts';
 import {
     expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
     expectedPeriodMultipleServicesTicketWithMultipleProducts,
     getMockContext,
-} from '../../../tests/testData/mockData';
+} from '../../testData/mockData';
+import MultiOperatorProducts, { getServerSideProps } from '../../../src/pages/products/multiOperatorProducts';
 
 jest.mock('../../../src/data/auroradb');
 jest.mock('../../../src/data/s3');
@@ -96,15 +96,15 @@ const testProducts: MyFaresOtherFaresProduct[] = [
 ];
 
 describe('myfares pages', () => {
-    describe('otherProducts', () => {
+    describe('multiOperatorProducts', () => {
         it('should render correctly when some non-Point-to-Point products exist', () => {
-            const tree = shallow(<OtherProducts otherProducts={testProducts} csrfToken="" />);
+            const tree = shallow(<MultiOperatorProducts multiOperatorProducts={testProducts} csrfToken="" />);
 
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly when no non-Point-to-Point products exist', () => {
-            const tree = shallow(<OtherProducts otherProducts={[]} csrfToken={''} />);
+            const tree = shallow(<MultiOperatorProducts multiOperatorProducts={[]} csrfToken={''} />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -117,72 +117,39 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     csrfToken: '',
-                    otherProducts: [
+                    multiOperatorProducts: [
                         {
                             carnet: false,
                             duration: '5 weeks',
-                            id: 1,
-                            endDate: '18/12/2020',
-                            passengerType: 'My best passenger',
-                            productDescription: 'Weekly Ticket',
-                            quantity: '1',
-                            startDate: '17/12/2020',
-                            type: 'period',
-                        },
-                        {
-                            carnet: false,
-                            duration: '1 year',
-                            id: 1,
-                            endDate: '18/12/2020',
-                            passengerType: 'My other passenger',
-                            productDescription: 'Day Ticket',
-                            quantity: '1',
-                            startDate: '17/12/2020',
-                            type: 'period',
-                        },
-                        {
-                            carnet: false,
-                            duration: '28 months',
-                            id: 1,
-                            endDate: '18/12/2020',
-                            passengerType: 'My last passenger',
-                            productDescription: 'Monthly Ticket',
-                            quantity: '1',
-                            startDate: '17/12/2020',
-                            type: 'period',
-                        },
-                        {
-                            carnet: false,
-                            duration: '5 weeks',
-                            id: 3,
+                            id: 2,
                             endDate: '18/12/2020',
                             passengerType: '',
                             productDescription: 'Weekly Ticket',
                             quantity: '1',
                             startDate: '17/12/2020',
-                            type: 'period',
+                            type: 'multiOperator',
                         },
                         {
                             carnet: false,
                             duration: '1 year',
-                            id: 3,
                             endDate: '18/12/2020',
+                            id: 2,
                             passengerType: '',
                             productDescription: 'Day Ticket',
                             quantity: '1',
                             startDate: '17/12/2020',
-                            type: 'period',
+                            type: 'multiOperator',
                         },
                         {
                             carnet: false,
                             duration: '28 months',
-                            id: 3,
                             endDate: '18/12/2020',
                             passengerType: '',
+                            id: 2,
                             productDescription: 'Monthly Ticket',
                             quantity: '1',
                             startDate: '17/12/2020',
-                            type: 'period',
+                            type: 'multiOperator',
                         },
                     ],
                 },

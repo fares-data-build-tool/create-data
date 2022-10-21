@@ -42,7 +42,6 @@ export const fileNameExistsAlready = async (fileName: string): Promise<boolean> 
         return !!JSON.parse(dataAsString);
     } catch (err) {
         return false;
-        throw new Error(`Error in retrieving data. ${(err as Error).stack}`);
     }
 };
 
