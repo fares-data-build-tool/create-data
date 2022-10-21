@@ -421,10 +421,10 @@ describe('generateFileName', () => {
     it('returns the formatted file name with no whitespace', () => {
         const result = generateFileName(singleTicket);
 
-        expect(result).toBe(
+        expect(result).toContain(
             `FX-PI-01_UK_MCTR_LINE-FARE_237_O_Best-Product_${mockDate}_${
                 singleTicket.ticketPeriod.startDate.split('T')[0]
-            }`,
+            }_`,
         );
         expect(result).not.toContain(' ');
     });
