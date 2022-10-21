@@ -1,8 +1,10 @@
 import { capitalize } from 'lodash';
 import React, { FunctionComponent, ReactElement, useState } from 'react';
+import { ErrorInfo } from 'src/interfaces';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
+import ErrorSummary from './ErrorSummary';
 
 type Entity = { id: number; name: string };
 
@@ -14,6 +16,7 @@ interface GlobalSettingsViewPageProps<T extends Entity> {
     description: string;
     entityDescription: string;
     CardBody: FunctionComponent<{ entity: T }>;
+    errors?: ErrorInfo[];
 }
 
 export const GlobalSettingsViewPage = <T extends Entity>({
@@ -24,6 +27,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
     description,
     entityDescription,
     CardBody,
+    errors = [],
 }: GlobalSettingsViewPageProps<T>): ReactElement => {
     const entityUrl = entityDescription
         .split(' ')
@@ -99,6 +103,9 @@ export const GlobalSettingsViewPage = <T extends Entity>({
 
     return (
         <BaseLayout title={title} description={description} showNavigation referer={referer}>
+            <div>
+                <ErrorSummary errors={errors} />
+            </div>
             <div className="govuk-width-container" data-card-count={entities.length}>
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
