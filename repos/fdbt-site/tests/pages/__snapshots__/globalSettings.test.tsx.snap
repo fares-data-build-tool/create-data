@@ -57,15 +57,15 @@ exports[`pages globalSettings should render correctly 1`] = `
           name="Fare day end"
         />
         <SettingOverview
+          description="Define your operator groups - these will be used in multi operator tickets"
+          href="/viewOperatorGroups"
+          name="Operator groups"
+        />
+        <SettingOverview
           count={true}
           description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
           href="/manageOperatorDetails"
           name="Operator details"
-        />
-        <SettingOverview
-          description="Define your operator groups - these will be used in multi operator tickets"
-          href="/viewOperatorGroups"
-          name="Operator groups"
         />
       </div>
     </div>

@@ -1,7 +1,9 @@
 import { NextApiResponse } from 'next';
-import { deleteProductByNocCodeAndId } from '../../data/auroradb';
+import { deleteProductByNocCodeAndId, getProductById } from '../../data/auroradb';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
+import { deleteFromS3 } from '../../data/s3';
+import { MATCHING_DATA_BUCKET_NAME } from '../../constants';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -13,6 +15,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const nationalOperatorCode = getAndValidateNoc(req, res);
 
+        const product = await getProductById(nationalOperatorCode, id.toString());
+        const { matchingJsonLink } = product;
+
+        await deleteFromS3(matchingJsonLink, MATCHING_DATA_BUCKET_NAME);
         await deleteProductByNocCodeAndId(id, nationalOperatorCode);
 
         redirectTo(res, req.headers.referer ?? '/products/services');
