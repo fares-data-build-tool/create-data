@@ -176,7 +176,6 @@ Resources:
                 Action:
                   - "s3:DeleteObject"
                 Resource:
-                  - !Sub arn:aws:s3:::fdbt-matching-data-${Stage}/*
                   - !Sub arn:aws:s3:::fdbt-products-data-${Stage}/*
               - Effect: Allow
                 Action:
