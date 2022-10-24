@@ -63,6 +63,7 @@ import {
     VIEW_PASSENGER_TYPE,
     VIEW_PURCHASE_METHOD,
     MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
+    VIEW_TIME_RESTRICTION,
 } from '../constants/attributes';
 import {
     CompanionInfo,
@@ -207,6 +208,7 @@ export interface SessionAttributeTypes {
     [CSV_ZONE_FILE_NAME]: string;
     [VIEW_PASSENGER_TYPE]: ErrorInfo[];
     [VIEW_PURCHASE_METHOD]: ErrorInfo[];
+    [VIEW_TIME_RESTRICTION]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
