@@ -64,16 +64,16 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             count={globalSettingsCounts.fareDayEndSet}
                         />
                         <SettingOverview
-                            href="/manageOperatorDetails"
-                            name="Operator details"
-                            description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
-                            count={globalSettingsCounts.operatorDetailsSet}
-                        />
-                        <SettingOverview
                             href="/viewOperatorGroups"
                             name="Operator groups"
                             description="Define your operator groups - these will be used in multi operator tickets"
                             count={globalSettingsCounts.operatorGroupsCount}
+                        />
+                        <SettingOverview
+                            href="/manageOperatorDetails"
+                            name="Operator details"
+                            description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
+                            count={globalSettingsCounts.operatorDetailsSet}
                         />
                     </div>
                 </div>

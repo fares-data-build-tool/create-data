@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { deleteProductByNocCodeAndId } from '../../data/auroradb';
+import { deleteProductByNocCodeAndId, getProductById } from '../../data/auroradb';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
 
@@ -12,6 +12,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const nationalOperatorCode = getAndValidateNoc(req, res);
+
+        const product = await getProductById(nationalOperatorCode, id.toString());
+        const { matchingJsonLink } = product;
 
         await deleteProductByNocCodeAndId(id, nationalOperatorCode);
 
