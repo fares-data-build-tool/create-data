@@ -60,6 +60,10 @@ import {
     GS_REFERER,
     GS_PURCHASE_METHOD_ATTRIBUTE,
     GS_OPERATOR_DETAILS_ATTRIBUTE,
+    VIEW_PASSENGER_TYPE,
+    VIEW_PURCHASE_METHOD,
+    MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
+    VIEW_TIME_RESTRICTION,
 } from '../constants/attributes';
 import {
     CompanionInfo,
@@ -126,6 +130,7 @@ import {
     Direction,
     Errors,
     BasicService,
+    ManageOperatorGroupWithErrors,
 } from '../interfaces';
 
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -169,6 +174,7 @@ export interface SessionAttributeTypes {
     [PASSENGER_TYPE_ATTRIBUTE]: PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;
+    [MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE]: ManageOperatorGroupWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [RETURN_SERVICE_ATTRIBUTE]: BasicService | WithErrors<BasicService>;
     [DIRECTION_ATTRIBUTE]: Direction | Errors;
@@ -200,6 +206,9 @@ export interface SessionAttributeTypes {
     [UNASSIGNED_INBOUND_STOPS_ATTRIBUTE]: UnassignedStop[];
     [GS_REFERER]: string;
     [CSV_ZONE_FILE_NAME]: string;
+    [VIEW_PASSENGER_TYPE]: ErrorInfo[];
+    [VIEW_PURCHASE_METHOD]: ErrorInfo[];
+    [VIEW_TIME_RESTRICTION]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

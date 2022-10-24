@@ -257,3 +257,16 @@ export const getS3Exports = async (noc: string): Promise<string[]> => {
         }) || []
     );
 };
+
+export const deleteFromS3 = async (key: string, bucketName: string): Promise<void> => {
+    try {
+        logger.info('', {
+            context: 'data.s3',
+            message: `Deleting ${key} in ${bucketName}`,
+        });
+        const bucketParams = { Bucket: bucketName, Key: key };
+        await s3.deleteObject(bucketParams).promise();
+    } catch (error) {
+        throw new Error(`Deletion of ${key} in ${bucketName} unsuccessful: ${(error as Error).stack}`);
+    }
+};

@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages view operator groups should render correctly on operator group 1`] = `
+<BaseLayout
+  description="View and edit your operator groups."
+  referer="hello"
+  showNavigation={true}
+  title="Operator Groups - Create Fares Data Service"
+>
+  <div
+    className="govuk-grid-row"
+    data-card-count={1}
+  >
+    <div
+      className="govuk-grid-column-one-quarter"
+    >
+      <SubNavigation />
+    </div>
+    <div
+      className="govuk-grid-column-three-quarters"
+    >
+      <h1
+        className="govuk-heading-xl"
+      >
+        Operator Groups
+      </h1>
+      <p
+        className="govuk-body govuk-!-margin-bottom-8"
+      >
+        Define a group of operators for use in a multioperator product
+      </p>
+      <div>
+        <div
+          className="card-row"
+        >
+          <div
+            className="card"
+          >
+            <div
+              className="card__body"
+            >
+              <div
+                className="card__actions"
+              >
+                <ul
+                  className="actions__list"
+                >
+                  <li
+                    className="actions__item"
+                  >
+                    <a
+                      className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
+                      href="/manageOperatorGroup?id=1"
+                    >
+                      Edit
+                    </a>
+                  </li>
+                  <li
+                    className="actions__item"
+                  >
+                    <button
+                      className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                      onClick={[Function]}
+                    >
+                      Delete
+                    </button>
+                  </li>
+                </ul>
+              </div>
+              <h4
+                className="govuk-heading-m govuk-!-padding-bottom-6"
+              >
+                first operator group
+              </h4>
+              <p
+                className="govuk-body-s govuk-!-margin-bottom-2"
+              >
+                <span
+                  className="govuk-!-font-weight-bold"
+                />
+                 
+                First operator
+                 - 
+                FOP
+              </p>
+            </div>
+          </div>
+        </div>
+        <a
+          aria-disabled={true}
+          className="govuk-button govuk-button"
+          data-module="govuk-button"
+          href="/manageOperatorGroup"
+        >
+          Add a operator group
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages view operator groups should render correctly when no operator groups 1`] = `
+<BaseLayout
+  description="View and edit your operator groups."
+  referer={null}
+  showNavigation={true}
+  title="Operator Groups - Create Fares Data Service"
+>
+  <div
+    className="govuk-grid-row"
+    data-card-count={0}
+  >
+    <div
+      className="govuk-grid-column-one-quarter"
+    >
+      <SubNavigation />
+    </div>
+    <div
+      className="govuk-grid-column-three-quarters"
+    >
+      <h1
+        className="govuk-heading-xl"
+      >
+        Operator Groups
+      </h1>
+      <p
+        className="govuk-body govuk-!-margin-bottom-8"
+      >
+        Define a group of operators for use in a multioperator product
+      </p>
+      <div>
+        <NoOperatorGroups />
+        <a
+          aria-disabled={true}
+          className="govuk-button govuk-button"
+          data-module="govuk-button"
+          href="/manageOperatorGroup"
+        >
+          Add a operator group
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;

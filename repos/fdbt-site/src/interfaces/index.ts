@@ -91,6 +91,7 @@ export interface Operator {
 export interface OperatorGroup {
     name: string;
     operators: Operator[];
+    id: number;
 }
 
 export interface MultiOperatorInfo {
@@ -206,6 +207,7 @@ export interface GlobalSettingsCounts {
     timeRestrictionsCount: number;
     fareDayEndSet: boolean;
     operatorDetailsSet: boolean;
+    operatorGroupsCount: number;
 }
 
 export interface PassengerAttributes {
@@ -423,6 +425,11 @@ export interface ManagePassengerTypeWithErrors {
     errors: ErrorInfo[];
 }
 
+export interface ManageOperatorGroupWithErrors {
+    inputs: OperatorGroup;
+    errors: ErrorInfo[];
+}
+
 export interface TimeRestrictionsDefinition extends TimeRestriction {
     timeRestrictionChoice?: string;
 }
@@ -563,6 +570,9 @@ export interface ServiceType {
     destination?: string;
     serviceCode: string;
     dataSource?: string;
+}
+export interface ServiceCount {
+    serviceCount: number;
 }
 
 export interface ServicesInfo extends ServiceType {

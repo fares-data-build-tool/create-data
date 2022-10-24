@@ -34,6 +34,20 @@ const Navigation = (): ReactElement => (
 
             <li
                 className={`app-navigation__list-item ${
+                    isActivePage(['/products/multiOperatorProducts']) ? 'app-navigation__list-item--current' : ''
+                }`}
+            >
+                <a
+                    className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
+                    href="/products/multiOperatorProducts"
+                    data-topnav="Multi-operator Products"
+                >
+                    Multi-operator products
+                </a>
+            </li>
+
+            <li
+                className={`app-navigation__list-item ${
                     isActivePage(['products/exports']) ? 'app-navigation__list-item--current' : ''
                 }`}
             >
@@ -55,6 +69,7 @@ const Navigation = (): ReactElement => (
                         'viewTimeRestrictions',
                         'manageFareDayEnd',
                         'manageOperatorDetails',
+                        'viewOperatorGroups',
                     ])
                         ? 'app-navigation__list-item--current'
                         : ''

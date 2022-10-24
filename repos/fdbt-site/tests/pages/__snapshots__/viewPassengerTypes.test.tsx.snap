@@ -7,6 +7,11 @@ exports[`pages view passenger types should render correctly when groups and indi
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={2}
@@ -113,6 +118,11 @@ exports[`pages view passenger types should render correctly when no individual o
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={0}
@@ -162,6 +172,98 @@ exports[`pages view passenger types should render correctly when only individual
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
+  <div
+    className="govuk-grid-row"
+    data-card-count={1}
+  >
+    <div
+      className="govuk-grid-column-one-quarter"
+    >
+      <SubNavigation />
+    </div>
+    <div
+      className="govuk-grid-column-three-quarters"
+    >
+      <h1
+        className="govuk-heading-xl"
+      >
+        Passenger types
+      </h1>
+      <p
+        className="govuk-body govuk-!-margin-bottom-8"
+      >
+        Define age range and required proof documents of your passengers as well as passenger groups
+      </p>
+      <div>
+        <IndividualPassengerTypes
+          deleteActionHandler={[Function]}
+          singlePassengerTypes={
+            Array [
+              Object {
+                "id": 1,
+                "name": "Regular Child",
+                "passengerType": Object {
+                  "ageRangeMax": "16",
+                  "ageRangeMin": "5",
+                  "id": 1,
+                  "passengerType": "child",
+                  "proofDocuments": Array [
+                    "studentCard",
+                  ],
+                },
+              },
+            ]
+          }
+        />
+        <a
+          className="govuk-button govuk-button"
+          data-module="govuk-button"
+          href="/managePassengerTypes"
+        >
+          Add a passenger type
+        </a>
+      </div>
+      <div
+        className="govuk-!-margin-top-4"
+      >
+        <NoPassengerTypeGroups />
+        <a
+          className="govuk-button"
+          data-module="govuk-button"
+          href="/managePassengerGroup"
+        >
+          Add a passenger group
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages view passenger types should render correctly when only individual passenger types, and an error 1`] = `
+<BaseLayout
+  description="View and edit your passenger types."
+  referer="hello"
+  showNavigation={true}
+  title="Passenger Types - Create Fares Data Service"
+>
+  <div>
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "You cannot delete Regular Child because it is being used in 3 products.",
+            "id": "passenger-card-0",
+          },
+        ]
+      }
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={1}
@@ -237,6 +339,11 @@ exports[`pages view passenger types should render correctly when only passenger 
   showNavigation={true}
   title="Passenger Types - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={1}

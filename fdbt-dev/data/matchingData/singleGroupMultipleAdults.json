@@ -8,6 +8,7 @@
     "email": "test@example.com",
     "uuid": "BLACc1363964",
     "termTime": false,
+    "journeyDirection": "outbound",
     "timeRestriction": [
       {
         "day": "bankHoliday",

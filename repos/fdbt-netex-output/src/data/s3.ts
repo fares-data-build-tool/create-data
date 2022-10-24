@@ -28,6 +28,23 @@ export const getFileFromS3 = async (params: S3ObjectParameters): Promise<string>
     return data.Body?.toString('utf-8') ?? '';
 };
 
+export const fileNameExistsAlready = async (fileName: string): Promise<boolean> => {
+    try {
+        const s3BucketName = process.env.UNVALIDATED_NETEX_BUCKET as string;
+
+        const params: S3ObjectParameters = {
+            Bucket: s3BucketName,
+            Key: fileName,
+        };
+
+        const dataAsString: string = await getFileFromS3(params);
+
+        return !!JSON.parse(dataAsString);
+    } catch (err) {
+        return false;
+    }
+};
+
 export const fetchDataFromS3 = async <T>(event: S3Event, isEmailer = false): Promise<T> => {
     try {
         const s3BucketName: string = !isEmailer
@@ -47,7 +64,7 @@ export const fetchDataFromS3 = async <T>(event: S3Event, isEmailer = false): Pro
 
         return JSON.parse(dataAsString);
     } catch (err) {
-        throw new Error(`Error in retrieving data. ${err.stack}`);
+        throw new Error(`Error in retrieving data. ${(err as Error).stack}`);
     }
 };
 
@@ -64,6 +81,6 @@ export const uploadNetexToS3 = async (netex: string, fileName: string): Promise<
             })
             .promise();
     } catch (err) {
-        throw new Error(`Error uploading netex to S3. ${err.stack}`);
+        throw new Error(`Error uploading netex to S3. ${(err as Error).stack}`);
     }
 };

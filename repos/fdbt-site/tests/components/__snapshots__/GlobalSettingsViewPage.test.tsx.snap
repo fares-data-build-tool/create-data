@@ -7,6 +7,11 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] 
   showNavigation={true}
   title="my title"
 >
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
   <div
     className="govuk-width-container"
     data-card-count={3}
@@ -37,6 +42,7 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] 
         >
           <div
             className="card"
+            id="7"
             key="7"
           >
             <div
@@ -82,6 +88,7 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] 
           </div>
           <div
             className="card"
+            id="17"
             key="17"
           >
             <div
@@ -127,6 +134,7 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] 
           </div>
           <div
             className="card"
+            id="1"
             key="1"
           >
             <div
@@ -192,6 +200,11 @@ exports[`GlobalSettingsViewPage should render correctly when no entities 1`] = `
   showNavigation={true}
   title="my title"
 >
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
   <div
     className="govuk-width-container"
     data-card-count={0}

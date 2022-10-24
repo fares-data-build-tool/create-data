@@ -78,7 +78,6 @@ const PointToPointProducts = ({
 
                         {popUpState && (
                             <DeleteConfirmationPopup
-                                entityType=""
                                 entityName={popUpState.name}
                                 deleteUrl={buildDeleteUrl(popUpState.productId, csrfToken)}
                                 cancelActionHandler={(): void => {

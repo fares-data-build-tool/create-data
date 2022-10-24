@@ -100,6 +100,8 @@ export const GS_PURCHASE_METHOD_ATTRIBUTE = 'fdbt-global-settings-purchase-metho
 
 export const GS_FARE_DAY_END_ATTRIBUTE = 'fdbt-global-settings-fare-day-end';
 
+export const GS_OPERATOR_GROUP_ATTRIBUTE = 'fdbt-global-settings-operator-group';
+
 export const UNASSIGNED_STOPS_ATTRIBUTE = 'fdbt-unassigned-stops';
 
 export const UNASSIGNED_INBOUND_STOPS_ATTRIBUTE = 'fdbt-unassigned-inbound-stops';
@@ -115,3 +117,11 @@ export const MATCHING_JSON_ATTRIBUTE = 'fdbt-matching-json';
 export const MATCHING_JSON_META_DATA_ATTRIBUTE = 'fdbt-matching-json-meta-data';
 
 export const RETURN_SERVICE_ATTRIBUTE = 'fdbt-return-service';
+
+export const VIEW_PASSENGER_TYPE = 'fdbt-products-using-passenger-type';
+
+export const VIEW_PURCHASE_METHOD = 'fdbt-products-using-purchase-method';
+
+export const MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE = 'fdbt-manage-operator-group-errors';
+
+export const VIEW_TIME_RESTRICTION = 'fdbt-products-using-time-restriction';

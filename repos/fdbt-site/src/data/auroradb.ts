@@ -12,6 +12,7 @@ import {
     PremadeTimeRestriction,
     SalesOfferPackage,
     ServiceType,
+    ServiceCount,
     SinglePassengerType,
     Stop,
     GroupPassengerTypeDb,
@@ -79,6 +80,7 @@ interface RawOperatorGroup {
     nocCode: string;
     name: string;
     contents: string;
+    id: number;
 }
 
 export const getAuroraDBClient = (): Pool => {
@@ -155,6 +157,31 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
     }
 };
 
+export const operatorHasBodsServices = async (nationalOperatorCode: string): Promise<boolean> => {
+    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
+
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving number of services for given national operator code',
+        noc: nationalOperatorCode,
+    });
+
+    try {
+        const queryInput = `
+        SELECT count(id) as serviceCount
+        FROM txcOperatorLine
+        WHERE nocCode = ?  AND dataSource = 'bods'
+        ORDER BY CAST(lineName AS UNSIGNED), lineName;
+        `;
+
+        const queryResults = await executeQuery<ServiceCount[]>(queryInput, [nocCodeParameter]);
+        const hasService = queryResults[0].serviceCount !== 0;
+        return hasService;
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promise<MyFaresService[]> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 
@@ -173,7 +200,6 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
         `;
 
         const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter]);
-
         return (
             queryResults.map((item) => ({
                 ...item,
@@ -751,7 +777,7 @@ export const getOperatorGroupsByNoc = async (nocCode: string): Promise<OperatorG
 
     try {
         const queryInput = `
-            SELECT contents, name
+            SELECT id, contents, name
             FROM operatorGroup
             WHERE nocCode = ?
         `;
@@ -759,6 +785,7 @@ export const getOperatorGroupsByNoc = async (nocCode: string): Promise<OperatorG
         const queryResults = await executeQuery<RawOperatorGroup[]>(queryInput, [nocCode]);
 
         return queryResults.map((item) => ({
+            id: item.id,
             name: item.name,
             operators: JSON.parse(item.contents),
         }));
@@ -777,7 +804,7 @@ export const getOperatorGroupsByNameAndNoc = async (name: string, nocCode: strin
 
     try {
         const queryInput = `
-            SELECT contents
+            SELECT id, contents
             FROM operatorGroup
             WHERE name = ?
             AND nocCode = ?
@@ -786,12 +813,58 @@ export const getOperatorGroupsByNameAndNoc = async (name: string, nocCode: strin
         const queryResults = await executeQuery<RawOperatorGroup[]>(queryInput, [name, nocCode]);
 
         return queryResults.map((item) => ({
+            id: item.id,
             name,
             nocCode,
             operators: JSON.parse(item.contents),
         }));
     } catch (error) {
         throw new Error(`Could not retrieve operator group by name and nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getOperatorGroupByNocAndId = async (id: number, noc: string): Promise<OperatorGroup | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving operator group for a given id',
+        id,
+        noc,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, name, contents, nocCode
+            FROM passengerType
+            WHERE id = ?
+            AND nocCode = ?`;
+
+        const queryResults = await executeQuery<OperatorGroup[]>(queryInput, [id, noc]);
+
+        if (queryResults.length > 1) {
+            throw new Error("Didn't expect more than one operator group with the same id");
+        }
+
+        return queryResults[0];
+    } catch (error) {
+        throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
+    }
+};
+
+export const deleteOperatorGroupByNocCodeAndId = async (id: number, nocCode: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'deleting operator group',
+        id,
+    });
+
+    const deleteQuery = `
+            DELETE FROM operatorGroup
+            WHERE id = ?
+            AND nocCode = ?`;
+    try {
+        await executeQuery(deleteQuery, [id, nocCode]);
+    } catch (error) {
+        throw new Error(`Could not delete operator group from the operator group table. ${error.stack}`);
     }
 };
 

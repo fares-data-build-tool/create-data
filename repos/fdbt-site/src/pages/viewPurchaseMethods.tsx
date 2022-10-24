@@ -2,10 +2,12 @@ import React, { FunctionComponent, ReactElement } from 'react';
 import { FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
 import { GlobalSettingsViewPage } from '../components/GlobalSettingsViewPage';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
-import { NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { formatSOPArray, getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { sopTicketFormatConverter } from './salesConfirmation';
+import { VIEW_PURCHASE_METHOD } from '../constants/attributes';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Purchase methods';
 const description =
@@ -15,9 +17,15 @@ interface PurchaseMethodProps {
     csrfToken: string;
     purchaseMethods: FromDb<SalesOfferPackage>[];
     referer: string | null;
+    viewPurchaseMethodErrors: ErrorInfo[];
 }
 
-const ViewPurchaseMethods = ({ purchaseMethods, referer, csrfToken }: PurchaseMethodProps): ReactElement => {
+const ViewPurchaseMethods = ({
+    purchaseMethods,
+    referer,
+    csrfToken,
+    viewPurchaseMethodErrors,
+}: PurchaseMethodProps): ReactElement => {
     return (
         <>
             <GlobalSettingsViewPage
@@ -28,6 +36,7 @@ const ViewPurchaseMethods = ({ purchaseMethods, referer, csrfToken }: PurchaseMe
                 title={title}
                 description={description}
                 CardBody={PurchaseMethodCardBody}
+                errors={viewPurchaseMethodErrors}
             />
         </>
     );
@@ -57,12 +66,16 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const purchaseMethods = await getSalesOfferPackagesByNocCode(nationalOperatorCode);
+    const viewPurchaseMethod = getSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD);
+
+    updateSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD, undefined);
 
     return {
         props: {
             purchaseMethods: purchaseMethods,
             referer: extractGlobalSettingsReferer(ctx),
             csrfToken,
+            viewPurchaseMethodErrors: viewPurchaseMethod || [],
         },
     };
 };

@@ -472,7 +472,7 @@ export const completeOperatorSearch = (isMultiService: boolean): void => {
                 clickElementById('reuse-operator-group-no');
                 continueButtonClick();
             }
-            getElementById(`search-input`).type('bus');
+            getElementById(`search-input`).type('north');
             clickElementById('search-button');
 
             getElementById('add-operator-checkbox-0').click();
