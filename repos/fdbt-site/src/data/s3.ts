@@ -272,7 +272,7 @@ export const deleteFromS3 = async (key: string, bucketName: string): Promise<voi
     }
 };
 
-const listBucketObjects = async (s3: S3, bucket: string): Promise<ObjectList> => {
+const listBucketObjects = async (bucket: string): Promise<ObjectList> => {
     const objects: {}[] = [];
 
     const getObjectsWithPaginationToken = async (continuationToken: string | undefined) => {
@@ -298,7 +298,8 @@ const listBucketObjects = async (s3: S3, bucket: string): Promise<ObjectList> =>
 };
 
 export const deleteExport = async (bucket: string, exportName: string): Promise<void> => {
-    const toDelete = (await listBucketObjects(s3, bucket)).filter((obj) => obj.Key?.includes(exportName));
+    const toDelete = (await listBucketObjects(bucket)).filter((obj) => obj.Key?.includes(exportName));
+
     const deleteParams: DeleteObjectsRequest = {
         Bucket: bucket,
         Delete: {
