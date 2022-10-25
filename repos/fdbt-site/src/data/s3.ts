@@ -299,6 +299,7 @@ const listBucketObjects = async (bucket: string): Promise<ObjectList> => {
 
 export const deleteExport = async (bucket: string, exportName: string): Promise<void> => {
     const toDelete = (await listBucketObjects(bucket)).filter((obj) => obj.Key?.includes(exportName));
+
     const deleteParams: DeleteObjectsRequest = {
         Bucket: bucket,
         Delete: {

@@ -8,12 +8,14 @@ import logger from '../../utils/logger';
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const { exportName } = req.body;
+
         logger.info('', {
             context: 'cancelExport.ts',
             message: `Cancelling export for ${exportName}`,
             MATCHING_DATA_BUCKET_NAME,
-            NETEX_BUCKET_NAME
+            NETEX_BUCKET_NAME,
         });
+        
         await deleteExport(exportName, MATCHING_DATA_BUCKET_NAME);
         await deleteExport(exportName, NETEX_BUCKET_NAME);
         redirectTo(res, '/products/exports');
