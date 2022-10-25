@@ -18,6 +18,7 @@ interface PurchaseMethodProps {
     purchaseMethods: FromDb<SalesOfferPackage>[];
     referer: string | null;
     viewPurchaseMethodErrors: ErrorInfo[];
+    isDevOrTest: boolean;
 }
 
 const ViewPurchaseMethods = ({
@@ -25,6 +26,7 @@ const ViewPurchaseMethods = ({
     referer,
     csrfToken,
     viewPurchaseMethodErrors,
+    isDevOrTest,
 }: PurchaseMethodProps): ReactElement => {
     return (
         <>
@@ -37,6 +39,7 @@ const ViewPurchaseMethods = ({
                 description={description}
                 CardBody={PurchaseMethodCardBody}
                 errors={viewPurchaseMethodErrors}
+                isDevOrTest={isDevOrTest}
             />
         </>
     );
@@ -67,6 +70,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const purchaseMethods = await getSalesOfferPackagesByNocCode(nationalOperatorCode);
     const viewPurchaseMethod = getSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD);
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const isTest = process.env.STAGE === 'test';
 
     updateSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD, undefined);
 
@@ -76,6 +81,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             referer: extractGlobalSettingsReferer(ctx),
             csrfToken,
             viewPurchaseMethodErrors: viewPurchaseMethod || [],
+            isDevOrTest: isDevelopment || isTest,
         },
     };
 };
