@@ -12,7 +12,11 @@ const link = (pageLink: string, text: string) => (
     </li>
 );
 
-const SubNavigation = (): ReactElement => {
+interface SubNavigationProps {
+    isDevOrTest: boolean;
+}
+
+const SubNavigation = ({ isDevOrTest }: SubNavigationProps): ReactElement => {
     return (
         <div className="app-pane__subnav">
             <nav className="app-subnav" aria-labelledby="app-subnav-heading">
@@ -26,7 +30,7 @@ const SubNavigation = (): ReactElement => {
                     {link('/viewPurchaseMethods', 'Purchase methods')}
                     {link('/viewTimeRestrictions', 'Time restrictions')}
                     {link('/manageFareDayEnd', 'Fare day end')}
-                    {link('/viewOperatorGroups', 'Operator groups')}
+                    {isDevOrTest && link('/viewOperatorGroups', 'Operator groups')}
                     {link('/manageOperatorDetails', 'Operator details')}
                 </ul>
             </nav>
