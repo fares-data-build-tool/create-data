@@ -21,15 +21,16 @@ const description = 'View and access your settings in one place.';
 interface GlobalSettingsProps {
     globalSettingsCounts: GlobalSettingsCounts;
     referer: string | null;
+    isDevOrTest: boolean;
 }
 
-const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps): ReactElement => {
+const GlobalSettings = ({ globalSettingsCounts, referer, isDevOrTest }: GlobalSettingsProps): ReactElement => {
     return (
         <>
             <BaseLayout title={title} description={description} showNavigation referer={referer}>
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
-                        <SubNavigation />
+                        <SubNavigation isDevOrTest={isDevOrTest} />
                     </div>
 
                     <div className="govuk-grid-column-three-quarters">
@@ -63,12 +64,15 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             description="If your fare day extends past midnight, define its end time"
                             count={globalSettingsCounts.fareDayEndSet}
                         />
-                        <SettingOverview
-                            href="/viewOperatorGroups"
-                            name="Operator groups"
-                            description="Define your operator groups - these will be used in multi operator tickets"
-                            count={globalSettingsCounts.operatorGroupsCount}
-                        />
+                        {isDevOrTest && (
+                            <SettingOverview
+                                href="/viewOperatorGroups"
+                                name="Operator groups"
+                                description="Define your operator groups - these will be used in multi operator tickets"
+                                count={globalSettingsCounts.operatorGroupsCount}
+                            />
+                        )}
+
                         <SettingOverview
                             href="/manageOperatorDetails"
                             name="Operator details"
@@ -84,6 +88,8 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: GlobalSettingsProps }> => {
     const noc = getAndValidateNoc(ctx);
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const isTest = process.env.STAGE === 'test';
 
     if (!noc) {
         throw new Error('No NOC found for user.');
@@ -108,7 +114,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         operatorGroupsCount: operatorGroups.length,
     };
 
-    return { props: { globalSettingsCounts, referer } };
+    return { props: { globalSettingsCounts, referer, isDevOrTest: isDevelopment || isTest } };
 };
 
 export default GlobalSettings;
