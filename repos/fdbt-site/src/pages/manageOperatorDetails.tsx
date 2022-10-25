@@ -22,6 +22,7 @@ type ManageOperatorDetailsProps = {
     operatorDetails: OperatorDetails;
     referer: string | null;
     saved: boolean;
+    isDevOrTest: boolean;
 };
 
 const ManageOperatorDetails = ({
@@ -30,6 +31,7 @@ const ManageOperatorDetails = ({
     operatorDetails,
     referer,
     saved,
+    isDevOrTest,
 }: ManageOperatorDetailsProps): ReactElement => {
     const [showSaved, setShowSaved] = useState(saved);
 
@@ -81,7 +83,7 @@ const ManageOperatorDetails = ({
             <div className="govuk-width-container">
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
-                        <SubNavigation />
+                        <SubNavigation isDevOrTest={isDevOrTest} />
                     </div>
                     <div className="govuk-grid-column-three-quarters">
                         <ErrorSummary errors={errors} />
@@ -139,6 +141,8 @@ export const getServerSideProps = async (
     const attribute = getSessionAttribute(ctx.req, GS_OPERATOR_DETAILS_ATTRIBUTE);
     const noc = getAndValidateNoc(ctx);
     const schemeOp = isSchemeOperator(ctx);
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const isTest = process.env.STAGE === 'test';
 
     const operatorDetails =
         attribute && 'input' in attribute
@@ -184,6 +188,7 @@ export const getServerSideProps = async (
             csrfToken: getCsrfToken(ctx),
             referer: extractGlobalSettingsReferer(ctx),
             saved: !!saved,
+            isDevOrTest: isDevelopment || isTest,
         },
     };
 };
