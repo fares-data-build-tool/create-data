@@ -15,7 +15,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             MATCHING_DATA_BUCKET_NAME,
             NETEX_BUCKET_NAME,
         });
-        
+
         await deleteExport(exportName, MATCHING_DATA_BUCKET_NAME);
         await deleteExport(exportName, NETEX_BUCKET_NAME);
         redirectTo(res, '/products/exports');
