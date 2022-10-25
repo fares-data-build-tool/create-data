@@ -12,8 +12,7 @@ import { getCsrfToken } from '../utils';
 import { removeExcessWhiteSpace } from '../utils/apiUtils/validator';
 import { isSearchInputValid } from './api/searchOperators';
 import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
-import Table from '@govuk-react/table';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const title = 'Search Operators - Create Fares Data Service';
 const description = 'Search Operators page for the Create Fares Data Service';
@@ -51,45 +50,50 @@ export const showSelectedOperators = (
     };
     return (
         <div>
-            <legend className="govuk-fieldset__legend--s">
-                <h2 className="govuk-fieldset__heading" id="selected-operators">
-                    Selectec operators
-                </h2>
-            </legend>
+            <legend className="govuk-fieldset__legend--s"></legend>
             <div className="">
                 <>
                     <div className="">
-                        <Table>
-                            <Table.Row className="selectedOperators-header-color border-collaps">
-                                <Table.Cell>{selectedOperators.length} Added</Table.Cell>
-                                <Table.Cell className="govuk-link">
-                                    <button
-                                        className="selectedOperators-header-color govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
-                                        onClick={() => removeOperator('all')}
-                                        name="removeOperator"
-                                    >
-                                        Remove all
-                                    </button>
-                                </Table.Cell>
-                            </Table.Row>
-                            {selectedOperators.map((operator, index) => (
-                                <Table.Row key={index} className="selectedOperators border-collaps">
-                                    <Table.Cell>
-                                        {operator.name} - {operator.nocCode}
-                                    </Table.Cell>
-                                    <Table.Cell className="govuk-link">
+                        <table>
+                            <caption className="govuk-table__caption govuk-table__caption--m">
+                                Selected operator(s)
+                            </caption>
+                            <thead className=" selectedOperators-header-color govuk-table__head">
+                                <tr className="govuk-table__row">
+                                    <th scope="col" className="govuk-table__header">
+                                        {selectedOperators.length} Added
+                                    </th>
+                                    <th scope="col" className="govuk-table__header">
                                         <button
-                                            className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
-                                            onClick={() => removeOperator(operator.nocCode)}
+                                            className="selectedOperators-header-color govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
+                                            onClick={() => removeOperator('all')}
                                             name="removeOperator"
-                                            value={operator.name}
                                         >
-                                            Remove
+                                            Remove all
                                         </button>
-                                    </Table.Cell>
-                                </Table.Row>
-                            ))}
-                        </Table>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="govuk-table__body">
+                                {selectedOperators.map((operator, index) => (
+                                    <tr key={index} className="selectedOperators border-collaps">
+                                        <td>
+                                            {operator.name} - {operator.nocCode}
+                                        </td>
+                                        <td className="govuk-link">
+                                            <button
+                                                className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
+                                                onClick={() => removeOperator(operator.nocCode)}
+                                                name="removeOperator"
+                                                value={operator.name}
+                                            >
+                                                Remove
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 </>
             </div>
