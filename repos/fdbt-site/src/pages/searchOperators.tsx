@@ -49,54 +49,46 @@ export const showSelectedOperators = (
         }
     };
     return (
-        <div>
-            <div className="">
-                <>
-                    <div className="">
-                        <table className="border-collaps width-100 padding-top-140">
-                            <caption className="govuk-table__caption govuk-table__caption--m">
-                                Selected operator(s)
-                            </caption>
-                            <thead className="selectedOperators-header-color">
-                                <tr className="">
-                                    <th scope="col" className="left-padding govuk-table__header ">
-                                        {selectedOperators.length} added
-                                    </th>
-                                    <th scope="cor" className="govuk-table__header text-align-right">
-                                        <button
-                                            className="selectedOperators-button button-link govuk-!-margin-left-2"
-                                            onClick={() => removeOperator('all')}
-                                            name="removeOperator"
-                                        >
-                                            Remove all
-                                        </button>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="govuk-table__body">
-                                {selectedOperators.map((operator, index) => (
-                                    <tr key={index} className="border-top">
-                                        <td className="govuk-label govuk-!-font-size-16">
-                                            {operator.name} - {operator.nocCode}
-                                        </td>
-                                        <td className="govuk-link text-align-center ">
-                                            <button
-                                                className="govuk-link  align-top button-link govuk-!-margin-left-2"
-                                                onClick={() => removeOperator(operator.nocCode)}
-                                                name="removeOperator"
-                                                value={operator.name}
-                                            >
-                                                Remove
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </>
-            </div>
-        </div>
+        <>
+            <table className="border-collaps width-100 padding-top-140">
+                <caption className="govuk-table__caption govuk-table__caption--m">Selected operator(s)</caption>
+                <thead className="selectedOperators-header-color">
+                    <tr className="">
+                        <th scope="col" className="left-padding govuk-table__header ">
+                            {selectedOperators.length} added
+                        </th>
+                        <th scope="cor" className="govuk-table__header text-align-right">
+                            <button
+                                className="selectedOperators-button button-link govuk-!-margin-left-2"
+                                onClick={() => removeOperator('all')}
+                                name="removeOperator"
+                            >
+                                Remove all
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody className="govuk-table__body">
+                    {selectedOperators.map((operator, index) => (
+                        <tr key={index} className="border-top">
+                            <td className="govuk-label govuk-!-font-size-16">
+                                {operator.name} - {operator.nocCode}
+                            </td>
+                            <td className="govuk-link text-align-center ">
+                                <button
+                                    className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                                    onClick={() => removeOperator(operator.nocCode)}
+                                    name="removeOperator"
+                                    value={operator.name}
+                                >
+                                    Remove
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </>
     );
 };
 
@@ -191,7 +183,8 @@ export const showSearchResults = (
             addOperatorsErrors.push(err);
         }
     });
-
+    const [searchResultsCount, setSearchResultsCount] = useState(searchResults.length);
+    const [showSearchResultsLine, setShowSeearchResultsLine] = useState(true);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const formattedoperatorToAdd = [event.target.value].map((item: string) => ({
             nocCode: item.split('#')[0],
@@ -200,29 +193,39 @@ export const showSearchResults = (
         const newSelectedOperators = [...selectedOperators, ...formattedoperatorToAdd];
         const newUniqtSelectedOperators = uniqBy(newSelectedOperators, 'nocCode');
         setSelectedOperators(newUniqtSelectedOperators);
+        if (searchResults.length > 0) {
+            const newCount = searchResultsCount - 1;
+            setSearchResultsCount(newCount);
+        }
         if (event.target.parentElement) {
             event.target.parentElement.remove();
         }
-        // event.target.parentElement.className = 'hidden';
     };
+    if (searchResults.length > 0 && searchResultsCount == 0) {
+        setSearchResultsCount(-1);
+        setShowSeearchResultsLine(false);
+    }
+
     return (
         <div className={`govuk-form-group ${addOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby="operator-search-results">
                 <legend className="govuk-fieldset__legend">
-                    <h2 className="govuk-body-l govuk-!-margin-bottom-0" id="operator-search-results">
-                        Your search for &apos;<strong>{searchText}</strong>&apos; returned
-                        <strong>
-                            {' '}
-                            {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
-                        </strong>
-                    </h2>
+                    {showSearchResultsLine && (
+                        <h2 className="govuk-body-l govuk-!-margin-bottom-0" id="operator-search-results">
+                            Your search for &apos;<strong>{searchText}</strong>&apos; returned
+                            <strong>
+                                {' '}
+                                {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
+                            </strong>
+                        </h2>
+                    )}
                 </legend>
                 <FormElementWrapper errors={addOperatorsErrors} errorId={addOperatorsErrorId} errorClass="">
                     <>
                         <div className="govuk-checkboxes">
                             <p className="govuk-hint" id="traveline-hint-text">
-                                Select the operators results and click add operator(s). This data is taken from the
-                                Traveline National Dataset.
+                                Select the operators results and click add operator(s). This data is taken from Bus Open
+                                Data Service (BODS)
                             </p>
                             <p className="govuk-hint" id="noc-hint-text">
                                 You will see that all operator names are followed by a series of characters. These
@@ -267,10 +270,6 @@ const SearchOperators = ({
     const selectedOperatorsToDisplay = preSelectedOperators.length > 0;
     const searchResultsToDisplay = searchResults.length > 0 || errors.find((err) => err.id === addOperatorsErrorId);
     const [selectedOperators, setSelectedOperators] = useState<Operator[]>(preSelectedOperators);
-    // selectedOperators = selectedOperators.filter((entry) => {
-    // return entry.nocCode !== 'BLAC';
-    // });
-
     return (
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
