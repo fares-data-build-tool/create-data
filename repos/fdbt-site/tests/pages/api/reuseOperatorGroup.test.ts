@@ -47,15 +47,13 @@ describe('reuseOperatorGroup', () => {
                 nocCode: 'BOS',
             },
         ];
-        getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue(
-            {
-                id: 1,
-                name: 'Best Ops',
-                operators: testOperators,
-            },
-        );
+        getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue({
+            id: 1,
+            name: 'Best Ops',
+            operators: testOperators,
+        });
         const { req, res } = getMockRequestAndResponse({
-            body: { operatorGroupId: '1'},
+            body: { operatorGroupId: '1' },
             mockWriteHeadFn: writeHeadMock,
         });
         await reuseOperatorGroup(req, res);
@@ -64,7 +62,7 @@ describe('reuseOperatorGroup', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
             selectedOperators: testOperators,
-            id: 1
+            id: 1,
         });
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleProducts' });
     });
@@ -85,17 +83,15 @@ describe('reuseOperatorGroup', () => {
                 nocCode: 'BOS',
             },
         ];
-        getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue(
-            {
-                id: 1,
-                name: 'Best Ops',
-                operators: testOperators,
-            },
-        );
+        getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue({
+            id: 1,
+            name: 'Best Ops',
+            operators: testOperators,
+        });
         const isSchemeOperatorSpy = jest.spyOn(index, 'isSchemeOperator');
         isSchemeOperatorSpy.mockImplementation(() => true);
         const { req, res } = getMockRequestAndResponse({
-            body: { operatorGroupId: '1'},
+            body: { operatorGroupId: '1' },
             session: {
                 [TICKET_REPRESENTATION_ATTRIBUTE]: {
                     name: 'multipleServices',
