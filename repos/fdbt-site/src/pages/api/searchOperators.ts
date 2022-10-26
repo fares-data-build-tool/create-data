@@ -64,6 +64,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             } else {
                 selectedOperators = [];
             }
+            console.log('just before update Session ');
             updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
 
             const refinedSearch = removeExcessWhiteSpace(searchText);
@@ -89,25 +90,39 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
+        // updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
 
         if (continueButtonClick) {
-            if (userSelectedOperators) {
-                const rawList: string[] =
-                    typeof userSelectedOperators === 'string' ? [userSelectedOperators] : userSelectedOperators;
-                selectedOperators = addOperatorsToPreviouslySelectedOperators(rawList);
-                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
-            } else {
+            // if (userSelectedOperators) {
+            //     const rawList: string[] =
+            //         typeof userSelectedOperators === 'string' ? [userSelectedOperators] : userSelectedOperators;
+            //     selectedOperators = addOperatorsToPreviouslySelectedOperators(rawList);
+            //     updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
+            // } else {
+            //     selectedOperators = [];
+            //     errors.push({
+            //         errorMessage: `Select at least one operator`,
+            //         id: removeOperatorsErrorId,
+            //     });
+
+            //     updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
+            //     redirectTo(res, '/searchOperators');
+            //     return;
+            // }
+            if (!userSelectedOperators) {
                 selectedOperators = [];
                 errors.push({
                     errorMessage: `Select at least one operator`,
                     id: removeOperatorsErrorId,
                 });
-
+                console.log('updated Session');
                 updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
                 redirectTo(res, '/searchOperators');
                 return;
             }
+            const rawList: string[] =
+                typeof userSelectedOperators === 'string' ? [userSelectedOperators] : userSelectedOperators;
+            selectedOperators = addOperatorsToPreviouslySelectedOperators(rawList);
             const operatorsWithNoServices = await getOperatorsWithoutServices(selectedOperators);
             if (operatorsWithNoServices.length > 0) {
                 errors.push({
@@ -117,10 +132,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 operatorsWithNoServices.forEach((names) => {
                     errors.push({ errorMessage: names, id: removeOperatorsErrorId });
                 });
+                console.log('updated Session');
                 updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
                 redirectTo(res, '/searchOperators');
                 return;
             }
+            console.log('updated Session');
+            updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
             redirectTo(res, '/saveOperatorGroup');
             return;
         }

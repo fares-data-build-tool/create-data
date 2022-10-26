@@ -239,12 +239,13 @@ describe('searchOperators', () => {
         });
     });
 
-    it("should redirect with errors when the user tries to remove selected operators and clicks the 'Continue' button", async () => {
-        const mockSelectedOperators: Operator[] = [{ nocCode: 'WBTR', name: "Warrington's Own Buses" }];
+    it.only("should redirect with errors when the user tries to remove selected operators and clicks the 'Continue' button", async () => {
+        const mockUserSelectedOperators: string[] = [];
+        const mockSelectedOperators: Operator[] = [];
         const { req, res } = getMockRequestAndResponse({
             body: {
                 continueButtonClick: 'Continue',
-                operatorsToRemove: "WBTR#Warrington's Own Buses",
+                userSelectedOperators: mockUserSelectedOperators,
                 searchText: '',
             },
             session: {
@@ -258,7 +259,7 @@ describe('searchOperators', () => {
             selectedOperators: mockSelectedOperators,
             errors: [
                 {
-                    errorMessage: "Click the 'Remove Operator(s)' button to remove operators",
+                    errorMessage: 'Select at least one operator',
                     id: 'remove-operator-checkbox-0',
                 },
             ],
@@ -276,56 +277,18 @@ describe('searchOperators', () => {
         });
     });
 
-    it("should redirect with errors when the user clicks the 'Remove Operator' button without making a selection", async () => {
-        const mockSelectedOperators: Operator[] = [{ nocCode: 'WBTR', name: "Warrington's Own Buses" }];
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                removeOperators: 'Remove Operators',
-                searchText: '',
-            },
-            session: {
-                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                    selectedOperators: mockSelectedOperators,
-                },
-            },
-        });
-
-        const expectedSessionAttributeCall: MultipleOperatorsAttributeWithErrors = {
-            selectedOperators: mockSelectedOperators,
-            errors: [{ errorMessage: 'Select at least one operator to remove', id: 'remove-operator-checkbox-0' }],
-        };
-
-        await searchOperators(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-            req,
-            MULTIPLE_OPERATOR_ATTRIBUTE,
-            expectedSessionAttributeCall,
-        );
-        expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/searchOperators',
-        });
-    });
-
     it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a geoZone multi op ticket', async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
+        const mockUserSelectedOperators: string[] = ['BLAC#Blackpool Transport', 'LNUD#The Blackburn Bus Company'];
         const mockSelectedOperators: Operator[] = [
-            {
-                nocCode: 'MCTR',
-                name: 'Manchester Community Transport',
-            },
-            {
-                nocCode: 'MCTR2',
-                name: 'Manchester Community Transport 2',
-            },
-            {
-                nocCode: 'MCTR3',
-                name: 'Manchester Community Transport 3',
-            },
+            { nocCode: 'BLAC', name: 'Blackpool Transport' },
+            { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
         ];
+
         const { req, res } = getMockRequestAndResponse({
             body: {
                 continueButtonClick: 'Continue',
+                userSelectedOperators: mockUserSelectedOperators,
                 searchText: '',
             },
             session: {
@@ -356,23 +319,15 @@ describe('searchOperators', () => {
 
     it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a multipleServices multi op ticket', async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
+        const mockUserSelectedOperators: string[] = ['BLAC#Blackpool Transport', 'LNUD#The Blackburn Bus Company'];
         const mockSelectedOperators: Operator[] = [
-            {
-                nocCode: 'MCTR',
-                name: 'Manchester Community Transport',
-            },
-            {
-                nocCode: 'MCTR2',
-                name: 'Manchester Community Transport 2',
-            },
-            {
-                nocCode: 'MCTR3',
-                name: 'Manchester Community Transport 3',
-            },
+            { nocCode: 'BLAC', name: 'Blackpool Transport' },
+            { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
         ];
         const { req, res } = getMockRequestAndResponse({
             body: {
                 continueButtonClick: 'Continue',
+                userSelectedOperators: mockUserSelectedOperators,
                 searchText: '',
             },
             session: {
@@ -402,7 +357,7 @@ describe('searchOperators', () => {
     });
     it("should redirect with errors when the user clicks the 'Confirm operators and continue' button and one of the selected operators has no bods services", async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(false);
-        const mockUserSelectedOperators: string[] = ['BLACK#Blackpool Transport', 'LNUD#The Blackburn Bus Company'];
+        const mockUserSelectedOperators: string[] = ['BLAC#Blackpool Transport', 'LNUD#The Blackburn Bus Company'];
         const mockSelectedOperators: Operator[] = [
             { nocCode: 'BLAC', name: 'Blackpool Transport' },
             { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
@@ -410,6 +365,7 @@ describe('searchOperators', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 continueButtonClick: 'Continue',
+                userSelectedOperators: mockUserSelectedOperators,
                 searchText: '',
             },
             session: {
