@@ -282,12 +282,7 @@ const listBucketObjects = async (bucket: string): Promise<ObjectList> => {
         };
 
         const listObjectsResponse = await s3.listObjectsV2(params).promise();
-        logger.info('', {
-            context: 'listBucketObjects',
-            message: '1',
-            listObjResp: listObjectsResponse.Contents,
-        });
-
+       
         if (listObjectsResponse.Contents) {
             objects.push(...listObjectsResponse.Contents);
 
@@ -299,24 +294,12 @@ const listBucketObjects = async (bucket: string): Promise<ObjectList> => {
 
     await getObjectsWithPaginationToken(undefined);
 
-    logger.info('', {
-        context: 'listBucketObjects',
-        message: '2',
-        objects,
-    });
-
     return objects;
 };
 
-export const deleteExport = async (bucket: string, exportName: string): Promise<void> => {
+export const deleteExport = async (exportName: string, bucket: string): Promise<void> => {
     const allObjectsInBucket = await listBucketObjects(bucket);
     const objectsInExport = allObjectsInBucket.filter((obj) => obj.Key?.includes(exportName));
-
-    logger.info('', {
-        context: 'deleteExport',
-        message: '3',
-        objectsInExport,
-    });
 
     const deleteParams: DeleteObjectsRequest = {
         Bucket: bucket,
@@ -326,12 +309,6 @@ export const deleteExport = async (bucket: string, exportName: string): Promise<
             })) as ObjectIdentifierList,
         },
     };
-
-    logger.info('', {
-        context: 'deleteExport',
-        message: '4',
-        deleteParams,
-    });
 
     await s3.deleteObjects(deleteParams).promise();
 };
