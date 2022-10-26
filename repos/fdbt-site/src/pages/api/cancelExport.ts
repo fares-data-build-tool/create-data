@@ -17,7 +17,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         await deleteExport(exportName, MATCHING_DATA_BUCKET_NAME);
         await deleteExport(exportName, NETEX_BUCKET_NAME);
         await deleteExport(exportName, UNVALIDATED_NETEX_BUCKET_NAME);
-        
+
         redirectTo(res, '/products/exports');
     } catch (error) {
         const message = 'There was a problem cancelling the export:';
