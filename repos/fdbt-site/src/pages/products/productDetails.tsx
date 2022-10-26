@@ -495,7 +495,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         fareTriangleModified,
     );
 
-    const backHref = serviceId ? `/products/pointToPointProducts?serviceId=${serviceId}` : '/products/otherProducts';
+    const backHref = serviceId
+        ? `/products/pointToPointProducts?serviceId=${serviceId}`
+        : ticket.type === 'multiOperator'
+        ? '/products/multiOperatorProducts'
+        : '/products/otherProducts';
 
     const lineId =
         typeof serviceId === 'string' ? (await getServiceByIdAndDataSource(noc, Number(serviceId), 'bods')).lineId : '';
