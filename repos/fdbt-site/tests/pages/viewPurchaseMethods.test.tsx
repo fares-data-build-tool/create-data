@@ -13,7 +13,13 @@ describe('pages', () => {
     describe('view purchase methods', () => {
         it('should render correctly with purchase methods', () => {
             const tree = shallow(
-                <ViewPurchaseMethods csrfToken={''} purchaseMethods={purchaseMethods} referer={'hello'} />,
+                <ViewPurchaseMethods
+                    csrfToken={''}
+                    purchaseMethods={purchaseMethods}
+                    referer={'hello'}
+                    isDevOrTest={false}
+                    viewPurchaseMethodErrors={[]}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
