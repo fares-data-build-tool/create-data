@@ -13,6 +13,7 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={null}
                     viewPassengerTypeErrors={[]}
+                    isDevOrTest={false}
                 />,
             );
 
@@ -39,6 +40,7 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={'hello'}
                     viewPassengerTypeErrors={[]}
+                    isDevOrTest={false}
                 />,
             );
 
@@ -70,6 +72,7 @@ describe('pages', () => {
                             id: 'passenger-card-0',
                         },
                     ]}
+                    isDevOrTest={false}
                 />,
             );
 
@@ -110,6 +113,7 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={null}
                     viewPassengerTypeErrors={[]}
+                    isDevOrTest={false}
                 />,
             );
 
@@ -165,6 +169,7 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={'hello'}
                     viewPassengerTypeErrors={[]}
+                    isDevOrTest={false}
                 />,
             );
             expect(tree).toMatchSnapshot();

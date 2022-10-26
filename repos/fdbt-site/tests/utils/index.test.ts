@@ -7,6 +7,7 @@ import {
     getAttributeFromIdToken,
     getAndValidateSchemeOpRegion,
     isSchemeOperator,
+    objectKeyMatchesExportNameExactly,
 } from '../../src/utils';
 import { Stop } from '../../src/interfaces';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
@@ -169,6 +170,40 @@ describe('index', () => {
             ['default', 'Default'],
         ])('should turn %s into %s', (input, expectedOutput) => {
             expect(sentenceCaseString(input)).toBe(expectedOutput);
+        });
+    });
+
+    describe('objectKeyMatchesExportNameExactly', () => {
+        it('returns true if the object key exactly matches', () => {
+            const objectKey = 'BLAC/exports/BLAC_2022_09_29/BLACa425b06c_1664468477977.json';
+            const exportName = 'BLAC_2022_09_29';
+            const result = objectKeyMatchesExportNameExactly(objectKey, exportName);
+
+            expect(result).toBeTruthy();
+        });
+
+        it('returns false if the object key has an extra number on the end', () => {
+            const objectKey = 'BLAC/exports/BLAC_2022_09_29_1/BLACa425b06c_1664468477977.json';
+            const exportName = 'BLAC_2022_09_29';
+            const result = objectKeyMatchesExportNameExactly(objectKey, exportName);
+
+            expect(result).toBeFalsy();
+        });
+
+        it('returns false if the object key is completely different', () => {
+            const objectKey = 'BLAC/exports/BLAC_2021_02_23/BLACa425b06c_1664468477977.json';
+            const exportName = 'BLAC_2022_09_29';
+            const result = objectKeyMatchesExportNameExactly(objectKey, exportName);
+
+            expect(result).toBeFalsy();
+        });
+
+        it('returns true if the object key is the same and its a zip instead', () => {
+            const objectKey = 'BLAC/zips/BLAC_2022_09_29/BLAC_2022_09_29.zip';
+            const exportName = 'BLAC_2022_09_29';
+            const result = objectKeyMatchesExportNameExactly(objectKey, exportName);
+
+            expect(result).toBeTruthy();
         });
     });
 });
