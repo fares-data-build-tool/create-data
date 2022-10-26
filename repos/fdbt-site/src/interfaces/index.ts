@@ -173,6 +173,7 @@ export interface SchoolFareTypeAttribute {
 
 export interface MultipleOperatorsAttribute {
     selectedOperators: Operator[];
+    id: number;
 }
 
 export interface MultipleOperatorsAttributeWithErrors extends MultipleOperatorsAttribute {

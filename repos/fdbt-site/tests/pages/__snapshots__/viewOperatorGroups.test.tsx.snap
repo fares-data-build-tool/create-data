@@ -33,58 +33,24 @@ exports[`pages view operator groups should render correctly on operator group 1`
         <div
           className="card-row"
         >
-          <div
-            className="card"
-          >
-            <div
-              className="card__body"
-            >
-              <div
-                className="card__actions"
-              >
-                <ul
-                  className="actions__list"
-                >
-                  <li
-                    className="actions__item"
-                  >
-                    <a
-                      className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                      href="/manageOperatorGroup?id=1"
-                    >
-                      Edit
-                    </a>
-                  </li>
-                  <li
-                    className="actions__item"
-                  >
-                    <button
-                      className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                      onClick={[Function]}
-                    >
-                      Delete
-                    </button>
-                  </li>
-                </ul>
-              </div>
-              <h4
-                className="govuk-heading-m govuk-!-padding-bottom-6"
-              >
-                first operator group
-              </h4>
-              <p
-                className="govuk-body-s govuk-!-margin-bottom-2"
-              >
-                <span
-                  className="govuk-!-font-weight-bold"
-                />
-                 
-                First operator
-                 - 
-                FOP
-              </p>
-            </div>
-          </div>
+          <OperatorGroupCard
+            defaultChecked={false}
+            deleteActionHandler={[Function]}
+            index={0}
+            key="1"
+            operatorGroup={
+              Object {
+                "id": 1,
+                "name": "first operator group",
+                "operators": Array [
+                  Object {
+                    "name": "First operator",
+                    "nocCode": "FOP",
+                  },
+                ],
+              }
+            }
+          />
         </div>
         <a
           aria-disabled={true}
