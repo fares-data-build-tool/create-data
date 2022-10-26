@@ -19,7 +19,7 @@ interface GlobalSettingsProps {
 }
 
 const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
-    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 5000 });
+    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000 });
 
     const exports: Export[] | undefined = data?.exports;
 
@@ -27,7 +27,12 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
         ? exports.some((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)
         : false;
 
+    const nameOfExportInProgress: string | undefined = exports
+        ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)?.name
+        : undefined;
+
     const [showPopup, setShowPopup] = useState(false);
+    const [showCancelPopup, setShowCancelPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
 
     const exportAllowed = operatorHasProducts && !anExportIsInProgress && exports && !buttonClicked;
@@ -39,24 +44,45 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
                             <h1 className="govuk-heading-xl">Export your data</h1>{' '}
-                            <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
-                                <button
-                                    type="submit"
-                                    className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
-                                    onClick={() => {
-                                        setShowPopup(true);
-                                        setButtonClicked(true);
-                                    }}
-                                >
-                                    Export all fares
-                                </button>
-                            </CsrfForm>
+                            {!anExportIsInProgress ? (
+                                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
+                                    <button
+                                        type="submit"
+                                        className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
+                                        onClick={() => {
+                                            setShowPopup(true);
+                                            setButtonClicked(true);
+                                        }}
+                                    >
+                                        Export all fares
+                                    </button>
+                                </CsrfForm>
+                            ) : (
+                                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
+                                    <input type="hidden" name="exportName" value={nameOfExportInProgress} />
+                                    <button
+                                        type="submit"
+                                        className="govuk-button govuk-button--warning"
+                                        onClick={() => {
+                                            setShowCancelPopup(true);
+                                            setButtonClicked(true);
+                                        }}
+                                    >
+                                        Cancel export in progress
+                                    </button>
+                                </CsrfForm>
+                            )}
                         </div>
                         <div className="govuk-grid-row">
                             <div className="govuk-grid-column-two-thirds">
                                 {!operatorHasProducts ? (
                                     <div className="govuk-inset-text govuk-!-margin-top-0">
                                         Export is disabled as you have no products.
+                                    </div>
+                                ) : null}
+                                {anExportIsInProgress ? (
+                                    <div className="govuk-inset-text govuk-!-margin-top-0">
+                                        Only click the cancel export button if you are sure it has frozen.
                                     </div>
                                 ) : null}
                                 <p className="govuk-body-m govuk-!-margin-bottom-9">
@@ -129,6 +155,13 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                 title="We are preparing your export"
                                 text="Your export will take a few seconds to show in the table below."
                                 okActionHandler={() => setShowPopup(false)}
+                            />
+                        )}
+                        {showCancelPopup && (
+                            <InfoPopup
+                                title="Your current export has been cancelled"
+                                text="If you think you know which product is to blame for your export failing, try deleting it. Otherwise, let us know via the contact page."
+                                okActionHandler={() => setShowCancelPopup(false)}
                             />
                         )}
                     </div>

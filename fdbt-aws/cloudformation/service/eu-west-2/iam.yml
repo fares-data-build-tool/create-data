@@ -177,6 +177,7 @@ Resources:
                   - "s3:DeleteObject"
                 Resource:
                   - !Sub arn:aws:s3:::fdbt-products-data-${Stage}/*
+                  - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}/*
               - Effect: Allow
                 Action:
                   - "s3:GetObject"
