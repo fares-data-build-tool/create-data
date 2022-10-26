@@ -15,7 +15,7 @@
         <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+            <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
             <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
             <BrandingRef version="1.0" ref="op:WBTR@brand"/>
           </objectReferences>
@@ -55,13 +55,13 @@
           <codespaces>
             <Codespace id="op_data">
               <Xmlns>op</Xmlns>
-              <XmlnsUrl>http://www.blackpooltransport.com</XmlnsUrl>
+              <XmlnsUrl>http://warringtonsownbuses.co.uk/</XmlnsUrl>
               <Description>Operator data</Description>
             </Codespace>
           </codespaces>
           <dataSources>
             <DataSource id="op:src" version="1.0">
-              <Email>enquiries@blackpooltransport.com</Email>
+              <Email>travelcentre@warringtonsownbuses.co.uk</Email>
             </DataSource>
           </dataSources>
           <responsibilitySets>
@@ -92,7 +92,7 @@
               <values>
                 <Branding version="1.0" id="op:WBTR@brand">
                   <Name>Warrington's Own Buses</Name>
-                  <Url>http://www.blackpooltransport.com</Url>
+                  <Url>http://warringtonsownbuses.co.uk/</Url>
                 </Branding>
               </values>
             </ValueSet>
@@ -102,18 +102,18 @@
               <PublicCode>WBTR</PublicCode>
               <Name>Warrington's Own Buses</Name>
               <ShortName>Warrington's Own Buses</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <TradingName>Warrington Borough Transport Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01925634296</Phone>
+                <Url>http://warringtonsownbuses.co.uk/</Url>
               </ContactDetails>
               <OrganisationType>operator</OrganisationType>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>Wilderspool Causeway, Warrington, Cheshire WA4 6PT</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
               <CustomerServiceContactDetails>
-                <Email>enquiries@blackpooltransport.com</Email>
+                <Email>travelcentre@warringtonsownbuses.co.uk</Email>
               </CustomerServiceContactDetails>
             </Operator>
           </organisations>
@@ -123,11 +123,11 @@
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
             <Line version="1.0" id="PK1146649_RJ1_Outbound">
-              <Name>Blackpool Transport 709</Name>
+              <Name>Warrington's Own Buses 709</Name>
               <Description>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Description>
               <PublicCode>709</PublicCode>
               <PrivateCode type="txc:Line@id">PK1146649_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
               <LineType>local</LineType>
             </Line>
           </lines>
@@ -262,7 +262,7 @@
                 </ValidBetween>
               </validityConditions>
               <Name>Tariff for Another product</Name>
-              <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
               <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <TariffBasis>zoneToZone</TariffBasis>
