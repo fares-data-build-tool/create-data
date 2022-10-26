@@ -282,7 +282,7 @@ const listBucketObjects = async (bucket: string): Promise<ObjectList> => {
         };
 
         const listObjectsResponse = await s3.listObjectsV2(params).promise();
-       
+
         if (listObjectsResponse.Contents) {
             objects.push(...listObjectsResponse.Contents);
 
