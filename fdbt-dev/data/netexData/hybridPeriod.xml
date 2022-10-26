@@ -15,7 +15,7 @@
         <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+            <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
             <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
             <PreassignedFareProductRef version="1.0" ref="op:Pass@Best_product_one_anyone"/>
             <BrandingRef version="1.0" ref="op:WBTR@brand"/>
@@ -56,7 +56,7 @@
           <codespaces>
             <Codespace id="op_data">
               <Xmlns>op</Xmlns>
-              <XmlnsUrl>http://www.blackpooltransport.com</XmlnsUrl>
+              <XmlnsUrl>http://warringtonsownbuses.co.uk/</XmlnsUrl>
               <Description>Operator data</Description>
             </Codespace>
           </codespaces>
@@ -67,7 +67,7 @@
           </FrameDefaults>
           <dataSources>
             <DataSource id="op:src" version="1.0">
-              <Email>enquiries@blackpooltransport.com</Email>
+              <Email>travelcentre@warringtonsownbuses.co.uk</Email>
             </DataSource>
           </dataSources>
           <responsibilitySets>
@@ -98,7 +98,7 @@
               <values>
                 <Branding version="1.0" id="op:WBTR@brand">
                   <Name>Test Operator</Name>
-                  <Url>http://www.blackpooltransport.com</Url>
+                  <Url>http://warringtonsownbuses.co.uk/</Url>
                 </Branding>
               </values>
             </ValueSet>
@@ -108,18 +108,18 @@
               <PublicCode>WBTR</PublicCode>
               <Name>Test Operator</Name>
               <ShortName>Test Operator</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <TradingName>Warrington Borough Transport Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01925634296</Phone>
+                <Url>http://warringtonsownbuses.co.uk/</Url>
               </ContactDetails>
               <OrganisationType>operator</OrganisationType>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>Wilderspool Causeway, Warrington, Cheshire WA4 6PT</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
               <CustomerServiceContactDetails>
-                <Email>enquiries@blackpooltransport.com</Email>
+                <Email>travelcentre@warringtonsownbuses.co.uk</Email>
               </CustomerServiceContactDetails>
             </Operator>
           </organisations>
@@ -202,7 +202,7 @@
                 </ValidBetween>
               </validityConditions>
               <Name>Tariff for Best product one</Name>
-              <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
               <TariffBasis>zone</TariffBasis>
               <timeIntervals>
@@ -279,7 +279,7 @@
               <Name>Best product one</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-              <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@Best_product_one_anyone@travel">
                   <Name>Rides available for specified durations</Name>
@@ -484,7 +484,7 @@
             <Line version="1.0" id="SL1">
               <Name>Line 1</Name>
               <Description>Warrington - Latchford/Westy (Circ)</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://warringtonsownbuses.co.uk/</Url>
               <PublicCode>1</PublicCode>
               <PrivateCode type="txc:Line@id">SL1</PrivateCode>
               <OperatorRef version="1.0" ref="noc:WBTR"/>
