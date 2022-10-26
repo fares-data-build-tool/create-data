@@ -114,33 +114,36 @@
 }
 .selectedOperators-header-color {
     background-color: #dddde2;
-    
+   
+    }
+
+.selectedOperators-button {
     white-space: nowrap;
+    background-color: #dddde2;
+    margin: 0px 5px 0px 0px !important;
+}
+
+.text-align-right {
+    text-align: right;
     
-      
+}
     
-    }
-    
-      
-    
-    .selectedOperators {
-    
-    padding: 10px 10px;
-    
-    }
-    
-    .XhOnS {
-    
-    border-bottom: 0px solid #bfc1c3 !important;
-    
-    }
-    
-    .selectedOperators.border-collaps.XhOnS {
-    
-    border-collapse: collapse;
-    
-    // padding: 40px 50px 50px 0;
-    
-    border-bottom: 0px solid #bfc1c3 !important;
-    
-    }
+.border-collaps {
+    border-collapse: collapse !important;
+    border-style : hidden!important;
+}
+.width-100 {
+    width: 100%;
+}
+
+.border-top {
+    border-top: 5px solid #ffffff;
+}
+.left-padding {
+    padding-left: 5px !important;
+}
+
+
+.padding-top-140 {
+    margin-top: 140px;
+}
