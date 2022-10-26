@@ -298,6 +298,7 @@ const listBucketObjects = async (bucket: string): Promise<ObjectList> => {
     return objects;
 };
 
+
 export const deleteExport = async (exportName: string, bucket: string): Promise<void> => {
     const allObjectsInBucket = await listBucketObjects(bucket);
     const objectsInExport = allObjectsInBucket.filter((obj) =>
