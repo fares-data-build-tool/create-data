@@ -14,7 +14,9 @@ exports[`pages view operator groups should render correctly on operator group 1`
     <div
       className="govuk-grid-column-one-quarter"
     >
-      <SubNavigation />
+      <SubNavigation
+        isDevOrTest={false}
+      />
     </div>
     <div
       className="govuk-grid-column-three-quarters"
@@ -114,7 +116,9 @@ exports[`pages view operator groups should render correctly when no operator gro
     <div
       className="govuk-grid-column-one-quarter"
     >
-      <SubNavigation />
+      <SubNavigation
+        isDevOrTest={false}
+      />
     </div>
     <div
       className="govuk-grid-column-three-quarters"

@@ -64,6 +64,7 @@ describe('reuseOperatorGroup', () => {
             {
                 name: 'Best Ops',
                 operators: testOperators,
+                id: 3,
             },
         ]);
         const { req, res } = getMockRequestAndResponse({
@@ -111,6 +112,7 @@ describe('reuseOperatorGroup', () => {
             {
                 name: 'Best Ops',
                 operators: testOperators,
+                id: 4,
             },
         ]);
         const isSchemeOperatorSpy = jest.spyOn(index, 'isSchemeOperator');

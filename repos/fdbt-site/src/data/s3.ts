@@ -12,6 +12,7 @@ import { Ticket, UserFareStages, UserFareZone } from '../interfaces';
 import logger from '../utils/logger';
 import { triggerZipper } from '../utils/apiUtils/export';
 import { DeleteObjectsRequest, ListObjectsV2Request, ObjectIdentifierList, ObjectList } from 'aws-sdk/clients/s3';
+import { objectKeyMatchesExportNameExactly } from '../utils';
 
 const getS3Client = (): S3 => {
     let options: S3.ClientConfiguration = {
@@ -299,7 +300,9 @@ const listBucketObjects = async (bucket: string): Promise<ObjectList> => {
 
 export const deleteExport = async (exportName: string, bucket: string): Promise<void> => {
     const allObjectsInBucket = await listBucketObjects(bucket);
-    const objectsInExport = allObjectsInBucket.filter((obj) => obj.Key?.includes(exportName));
+    const objectsInExport = allObjectsInBucket.filter((obj) =>
+        objectKeyMatchesExportNameExactly(obj.Key as string, exportName),
+    );
 
     const deleteParams: DeleteObjectsRequest = {
         Bucket: bucket,

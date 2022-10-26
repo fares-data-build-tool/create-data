@@ -241,3 +241,9 @@ export const convertDateFormat = (date: string): string => {
 };
 
 export const isReturnTicket = (ticket: Ticket | TicketWithIds): ticket is ReturnTicket => ticket.type === 'return';
+
+export const objectKeyMatchesExportNameExactly = (objectKey: string, exportName: string): boolean => {
+    const parts = objectKey.split('/');
+    const exportNamePart = parts[2];
+    return exportNamePart === exportName;
+};
