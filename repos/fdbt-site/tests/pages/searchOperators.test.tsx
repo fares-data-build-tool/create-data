@@ -29,7 +29,7 @@ describe('pages', () => {
 
         it('should render just the search input when the user first visits the page', () => {
             const tree = shallow(
-                <SearchOperators errors={[]} searchText="" searchResults={[]} selectedOperators={[]} csrfToken="" />,
+                <SearchOperators errors={[]} searchText="" searchResults={[]} preSelectedOperators={[]} csrfToken="" />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -41,7 +41,7 @@ describe('pages', () => {
                     errors={[]}
                     searchText="blac"
                     searchResults={[{ nocCode: 'BLAC', name: 'Blackpool' }]}
-                    selectedOperators={[]}
+                    preSelectedOperators={[]}
                     csrfToken=""
                 />,
             );
@@ -55,7 +55,7 @@ describe('pages', () => {
                     errors={[{ errorMessage: 'Search requires a minimum of three characters', id: 'search-input' }]}
                     searchText=""
                     searchResults={[]}
-                    selectedOperators={[]}
+                    preSelectedOperators={[]}
                     csrfToken=""
                 />,
             );
@@ -69,7 +69,7 @@ describe('pages', () => {
                     errors={[]}
                     searchText="blac"
                     searchResults={[{ nocCode: 'BLAC', name: 'Blackpool' }]}
-                    selectedOperators={[]}
+                    preSelectedOperators={[]}
                     csrfToken=""
                 />,
             );
@@ -83,7 +83,7 @@ describe('pages', () => {
                     errors={[]}
                     searchText=""
                     searchResults={[]}
-                    selectedOperators={mockOperators}
+                    preSelectedOperators={mockOperators}
                     csrfToken=""
                 />,
             );
@@ -97,7 +97,7 @@ describe('pages', () => {
                     errors={[]}
                     searchText=""
                     searchResults={[]}
-                    selectedOperators={mockOperators}
+                    preSelectedOperators={mockOperators}
                     csrfToken=""
                 />,
             );
@@ -111,7 +111,7 @@ describe('pages', () => {
                     errors={[]}
                     searchText="warri"
                     searchResults={[mockOperators[0]]}
-                    selectedOperators={mockOperators}
+                    preSelectedOperators={mockOperators}
                     csrfToken=""
                 />,
             );
@@ -128,7 +128,7 @@ describe('pages', () => {
                         errors: [],
                         searchText: '',
                         searchResults: [],
-                        selectedOperators: [],
+                        preSelectedOperators: [],
                         csrfToken: '',
                     },
                 };
@@ -150,7 +150,7 @@ describe('pages', () => {
                         errors: mockErrors,
                         searchText: '',
                         searchResults: [],
-                        selectedOperators: [],
+                        preSelectedOperators: [],
                         csrfToken: '',
                     },
                 };
@@ -173,7 +173,7 @@ describe('pages', () => {
                         errors: mockErrors,
                         searchText: 'asda',
                         searchResults: [],
-                        selectedOperators: [],
+                        preSelectedOperators: [],
                         csrfToken: '',
                     },
                 };
@@ -193,7 +193,7 @@ describe('pages', () => {
                         errors: [],
                         searchText: 'blac',
                         searchResults: mockOperators,
-                        selectedOperators: [],
+                        preSelectedOperators: [],
                         csrfToken: '',
                     },
                 };
@@ -214,7 +214,7 @@ describe('pages', () => {
                         errors: [],
                         searchText: 'blac',
                         searchResults: mockOperators,
-                        selectedOperators: [],
+                        preSelectedOperators: [],
                         csrfToken: '',
                     },
                 };

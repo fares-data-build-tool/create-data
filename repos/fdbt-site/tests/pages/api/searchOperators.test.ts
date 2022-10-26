@@ -38,18 +38,9 @@ describe('searchOperators', () => {
 
     describe('addOperatorsToPreviouslySelectedOperators', () => {
         it('should add operators to the list of selected operators', () => {
-            const mockOperatorsToAdd = ['BLAC#Blackpool Transport', "WBTR#Warrington's Own Buses"];
-            const mockSelectedOperators: Operator[] = [
-                { name: 'IW Bus Co', nocCode: 'IWBusCo' },
-                { name: "Warrington's Own Buses", nocCode: 'WBTR' },
-            ];
-            const expectedUpdatedList: Operator[] = [
-                { name: 'IW Bus Co', nocCode: 'IWBusCo' },
-                { name: "Warrington's Own Buses", nocCode: 'WBTR' },
-                { name: 'Blackpool Transport', nocCode: 'BLAC' },
-            ];
-            const updatedList = addOperatorsToPreviouslySelectedOperators(mockOperatorsToAdd, mockSelectedOperators);
-            expect(updatedList).toEqual(expectedUpdatedList);
+            const mockNewOperators = ['BLAC#Blackpool Transport', "WBTR#Warrington's Own Buses"];
+            const updatedList = addOperatorsToPreviouslySelectedOperators(mockNewOperators);
+            expect(updatedList).toEqual(mockNewOperators);
         });
     });
 
@@ -411,6 +402,7 @@ describe('searchOperators', () => {
     });
     it("should redirect with errors when the user clicks the 'Confirm operators and continue' button and one of the selected operators has no bods services", async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(false);
+        const mockUserSelectedOperators: string[] = ['BLACK#Blackpool Transport', 'LNUD#The Blackburn Bus Company'];
         const mockSelectedOperators: Operator[] = [
             { nocCode: 'BLAC', name: 'Blackpool Transport' },
             { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
@@ -456,9 +448,11 @@ describe('searchOperators', () => {
             { nocCode: 'BLACK', name: 'Blackpool Transport' },
             { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
         ];
+        const mockUserSelectedOperators: string[] = ['BLACK#Blackpool Transport', 'LNUD#The Blackburn Bus Company'];
         const { req, res } = getMockRequestAndResponse({
             body: {
                 continueButtonClick: 'Continue',
+                userSelectedOperators: mockUserSelectedOperators,
                 searchText: '',
             },
             session: {

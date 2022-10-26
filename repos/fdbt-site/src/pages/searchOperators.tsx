@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef } from 'react';
+import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import uniqBy from 'lodash/uniqBy';
 import { ErrorInfo, NextPageContextWithSession, Operator } from '../interfaces';
@@ -351,6 +351,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             });
         }
         const results = await getSearchOperatorsBySearchText(searchText);
+
         const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 
         if (!operatorAttribute?.name) {
