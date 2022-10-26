@@ -54,7 +54,7 @@ export const showSelectedOperators = (
                 <caption className="govuk-table__caption govuk-table__caption--m">Selected operator(s)</caption>
                 <thead className="selectedOperators-header-color">
                     <tr className="">
-                        <th scope="col" className="left-padding govuk-table__header ">
+                        <th scope="col" className="left-padding govuk-table__header font-gds-transport">
                             {selectedOperators.length} added
                         </th>
                         <th scope="cor" className="govuk-table__header text-align-right">

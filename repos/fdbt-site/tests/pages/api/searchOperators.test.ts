@@ -38,9 +38,19 @@ describe('searchOperators', () => {
 
     describe('addOperatorsToPreviouslySelectedOperators', () => {
         it('should add operators to the list of selected operators', () => {
+            const mockUpdatedList = [
+                {
+                    name: 'Blackpool Transport',
+                    nocCode: 'BLAC',
+                },
+                {
+                    name: "Warrington's Own Buses",
+                    nocCode: 'WBTR',
+                },
+            ];
             const mockNewOperators = ['BLAC#Blackpool Transport', "WBTR#Warrington's Own Buses"];
             const updatedList = addOperatorsToPreviouslySelectedOperators(mockNewOperators);
-            expect(updatedList).toEqual(mockNewOperators);
+            expect(updatedList).toEqual(mockUpdatedList);
         });
     });
 
@@ -95,183 +105,6 @@ describe('searchOperators', () => {
             expectedSessionAttributeCall,
         );
 
-        expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/searchOperators',
-        });
-    });
-
-    it("should succesfully add to the selected operators when the user selects from the search results and clicks the 'Add Opertator' button", async () => {
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                addOperators: 'Add Operator(s)',
-                operatorsToAdd: "WBTR#Warrington's Own Buses",
-                searchText: '',
-            },
-        });
-
-        const expectedSessionAttributeCall: MultipleOperatorsAttribute = {
-            selectedOperators: [
-                {
-                    nocCode: 'WBTR',
-                    name: "Warrington's Own Buses",
-                },
-            ],
-        };
-
-        await searchOperators(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-            req,
-            MULTIPLE_OPERATOR_ATTRIBUTE,
-            expectedSessionAttributeCall,
-        );
-        expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/searchOperators',
-        });
-    });
-
-    it("should redirect with errors when the user tries to add to the selected operators and clicks the 'Continue' button", async () => {
-        const mockSelectedOperators: Operator[] = [{ nocCode: 'MCTR', name: 'Manchester Community Transport' }];
-        const { req, res } = getMockRequestAndResponse({
-            requestHeaders: { referer: 'host/searchOperators?searchOperator=warr' },
-            body: {
-                continueButtonClick: 'Continue',
-                operatorsToAdd: "WBTR#Warrington's Own Buses",
-                searchText: '',
-            },
-            session: {
-                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                    selectedOperators: mockSelectedOperators,
-                },
-            },
-        });
-
-        const expectedSessionAttributeCall: MultipleOperatorsAttributeWithErrors = {
-            selectedOperators: mockSelectedOperators,
-            errors: [
-                { errorMessage: "Click the 'Add Operator(s)' button to add operators", id: 'add-operator-checkbox-0' },
-            ],
-        };
-
-        await searchOperators(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-            req,
-            MULTIPLE_OPERATOR_ATTRIBUTE,
-            expectedSessionAttributeCall,
-        );
-        expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/searchOperators?searchOperator=warr',
-        });
-    });
-
-    it("should redirect with errors when the user clicks the 'Add Operator' button without making a selection", async () => {
-        const { req, res } = getMockRequestAndResponse({
-            requestHeaders: { referer: 'host/searchOperators?searchOperator=warr' },
-            body: {
-                addOperators: 'Add Operator(s)',
-                searchText: '',
-            },
-        });
-
-        const expectedSessionAttributeCall: MultipleOperatorsAttributeWithErrors = {
-            selectedOperators: [],
-            errors: [{ errorMessage: 'Select at least one operator to add', id: 'add-operator-checkbox-0' }],
-        };
-
-        await searchOperators(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-            req,
-            MULTIPLE_OPERATOR_ATTRIBUTE,
-            expectedSessionAttributeCall,
-        );
-        expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/searchOperators?searchOperator=warr',
-        });
-    });
-
-    it("should succesfully remove from the selected operators when the user selects from the list and clicks the 'Remove Operator' button", async () => {
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                operatorsToRemove: ['MCTR#Manchester Community Transport', 'MCTR2#Manchester Community Transport 2'],
-                removeOperators: 'Remove Operators',
-                searchText: '',
-            },
-            session: {
-                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                    selectedOperators: [
-                        {
-                            nocCode: 'MCTR',
-                            name: 'Manchester Community Transport',
-                        },
-                        {
-                            nocCode: 'MCTR2',
-                            name: 'Manchester Community Transport 2',
-                        },
-                        {
-                            nocCode: 'MCTR3',
-                            name: 'Manchester Community Transport 3',
-                        },
-                    ],
-                },
-            },
-        });
-
-        const expectedSessionAttributeCall: MultipleOperatorsAttribute = {
-            selectedOperators: [
-                {
-                    nocCode: 'MCTR3',
-                    name: 'Manchester Community Transport 3',
-                },
-            ],
-        };
-
-        await searchOperators(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-            req,
-            MULTIPLE_OPERATOR_ATTRIBUTE,
-            expectedSessionAttributeCall,
-        );
-        expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/searchOperators',
-        });
-    });
-
-    it.only("should redirect with errors when the user tries to remove selected operators and clicks the 'Continue' button", async () => {
-        const mockUserSelectedOperators: string[] = [];
-        const mockSelectedOperators: Operator[] = [];
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                continueButtonClick: 'Continue',
-                userSelectedOperators: mockUserSelectedOperators,
-                searchText: '',
-            },
-            session: {
-                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                    selectedOperators: mockSelectedOperators,
-                },
-            },
-        });
-
-        const expectedSessionAttributeCall: MultipleOperatorsAttributeWithErrors = {
-            selectedOperators: mockSelectedOperators,
-            errors: [
-                {
-                    errorMessage: 'Select at least one operator',
-                    id: 'remove-operator-checkbox-0',
-                },
-            ],
-        };
-
-        await searchOperators(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-            req,
-            MULTIPLE_OPERATOR_ATTRIBUTE,
-            expectedSessionAttributeCall,
-        );
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/searchOperators',
         });

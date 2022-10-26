@@ -153,7 +153,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             className=""
           >
             <th
-              className="left-padding govuk-table__header "
+              className="left-padding govuk-table__header font-gds-transport"
               scope="col"
             >
               0
@@ -303,7 +303,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             className=""
           >
             <th
-              className="left-padding govuk-table__header "
+              className="left-padding govuk-table__header font-gds-transport"
               scope="col"
             >
               3
@@ -538,7 +538,7 @@ exports[`pages searchOperator should render an input error when the user makes a
             className=""
           >
             <th
-              className="left-padding govuk-table__header "
+              className="left-padding govuk-table__header font-gds-transport"
               scope="col"
             >
               0
@@ -664,7 +664,7 @@ exports[`pages searchOperator should render just the search input when the user 
             className=""
           >
             <th
-              className="left-padding govuk-table__header "
+              className="left-padding govuk-table__header font-gds-transport"
               scope="col"
             >
               0
@@ -814,7 +814,7 @@ exports[`pages searchOperator should render the search input and a list of selec
             className=""
           >
             <th
-              className="left-padding govuk-table__header "
+              className="left-padding govuk-table__header font-gds-transport"
               scope="col"
             >
               3
@@ -1102,7 +1102,7 @@ exports[`pages searchOperator should render the search input and search results 
             className=""
           >
             <th
-              className="left-padding govuk-table__header "
+              className="left-padding govuk-table__header font-gds-transport"
               scope="col"
             >
               0
@@ -1323,7 +1323,7 @@ exports[`pages searchOperator should render the search input, search results and
             className=""
           >
             <th
-              className="left-padding govuk-table__header "
+              className="left-padding govuk-table__header font-gds-transport"
               scope="col"
             >
               3
