@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'develop'
+    - feature/CFDS-83_cancel_exports_button
     paths:
     - repos/fdbt-site/**
   workflow_dispatch:
