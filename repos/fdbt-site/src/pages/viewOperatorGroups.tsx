@@ -75,7 +75,7 @@ const ViewOperatorGroups = ({
                                                         <li className="actions__item">
                                                             <a
                                                                 className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                                                href={`/manageOperatorGroup?id=${operatorGroup.id}`}
+                                                                href={`/searchOperators?id=${operatorGroup.id}`}
                                                             >
                                                                 Edit
                                                             </a>
@@ -124,7 +124,7 @@ const ViewOperatorGroups = ({
                         <a
                             className="govuk-button govuk-button"
                             data-module="govuk-button"
-                            href="/manageOperatorGroup"
+                            href="/searchOperators"
                             aria-disabled
                         >
                             Add a operator group

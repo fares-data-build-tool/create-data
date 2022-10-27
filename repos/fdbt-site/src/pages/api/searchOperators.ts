@@ -117,7 +117,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
             updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
-            redirectTo(res, '/saveOperatorGroup');
+            redirectTo(res, '/viewOperatorGroups');
             return;
         }
 

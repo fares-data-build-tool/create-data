@@ -110,7 +110,7 @@ describe('searchOperators', () => {
         });
     });
 
-    it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a geoZone multi op ticket', async () => {
+    it('should redirect to /viewOperatorGroups when the user has successfully selected operators for a geoZone multi op ticket', async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
         const mockUserSelectedOperators: string[] = ['BLAC#Blackpool Transport', 'LNUD#The Blackburn Bus Company'];
         const mockSelectedOperators: Operator[] = [
@@ -146,11 +146,11 @@ describe('searchOperators', () => {
             expectedSessionAttributeCall,
         );
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/saveOperatorGroup',
+            Location: '/viewOperatorGroups',
         });
     });
 
-    it('should redirect to /saveOperatorGroup when the user has successfully selected operators for a multipleServices multi op ticket', async () => {
+    it('should redirect to /viewOperatorGroups when the user has successfully selected operators for a multipleServices multi op ticket', async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
         const mockUserSelectedOperators: string[] = ['BLAC#Blackpool Transport', 'LNUD#The Blackburn Bus Company'];
         const mockSelectedOperators: Operator[] = [
@@ -185,7 +185,7 @@ describe('searchOperators', () => {
             expectedSessionAttributeCall,
         );
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/saveOperatorGroup',
+            Location: '/viewOperatorGroups',
         });
     });
     it("should redirect with errors when the user clicks the 'Confirm operators and continue' button and one of the selected operators has no bods services", async () => {
@@ -231,7 +231,7 @@ describe('searchOperators', () => {
             Location: '/searchOperators',
         });
     });
-    it("should redirect to /saveOperatorGroup when clicking 'Confirm operators and continue' button and all of the operators have bods services", async () => {
+    it("should redirect to /viewOperatorGroups when clicking 'Confirm operators and continue' button and all of the operators have bods services", async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
         const mockSelectedOperators: Operator[] = [
             { nocCode: 'BLACK', name: 'Blackpool Transport' },
@@ -262,7 +262,7 @@ describe('searchOperators', () => {
             expectedSessionAttributeCall,
         );
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/saveOperatorGroup',
+            Location: '/viewOperatorGroups',
         });
     });
 });

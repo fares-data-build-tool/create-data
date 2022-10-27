@@ -52,7 +52,7 @@ exports[`pages view operator groups should render correctly on operator group 1`
                   >
                     <a
                       className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                      href="/manageOperatorGroup?id=1"
+                      href="/searchOperators?id=1"
                     >
                       Edit
                     </a>
@@ -92,7 +92,7 @@ exports[`pages view operator groups should render correctly on operator group 1`
           aria-disabled={true}
           className="govuk-button govuk-button"
           data-module="govuk-button"
-          href="/manageOperatorGroup"
+          href="/searchOperators"
         >
           Add a operator group
         </a>
@@ -139,7 +139,7 @@ exports[`pages view operator groups should render correctly when no operator gro
           aria-disabled={true}
           className="govuk-button govuk-button"
           data-module="govuk-button"
-          href="/manageOperatorGroup"
+          href="/searchOperators"
         >
           Add a operator group
         </a>
