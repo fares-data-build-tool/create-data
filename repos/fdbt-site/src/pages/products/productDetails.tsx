@@ -8,7 +8,6 @@ import {
     getTimeRestrictionByIdAndNoc,
     getBodsServiceDirectionDescriptionsByNocAndServiceId,
     getServiceByIdAndDataSource,
-    getBodsServiceByNocAndLineId,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
@@ -253,7 +252,7 @@ const createProductDetails = async (
 
         const additionalService =
             isReturnTicket(ticket) && ticket.additionalServices && ticket.additionalServices.length > 0
-                ? await getBodsServiceByNocAndLineId(noc, ticket.additionalServices[0].lineId)
+                ? await getBodsServiceByNocAndId(noc, ticket.additionalServices[0].serviceId.toString())
                 : undefined;
 
         productDetailsElements.push({
