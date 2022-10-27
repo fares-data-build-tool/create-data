@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages confirmRegistration should render correctly without data when operator has no products 1`] = `
+exports[`pages exports should render correctly without data when operator has no products 1`] = `
 <Fragment>
   <BaseLayout
     description="View and access your settings in one place."
@@ -73,7 +73,7 @@ exports[`pages confirmRegistration should render correctly without data when ope
 </Fragment>
 `;
 
-exports[`pages confirmRegistration should render the export button correctly when operator has products 1`] = `
+exports[`pages exports should render the export button correctly when operator has products 1`] = `
 <Fragment>
   <BaseLayout
     description="View and access your settings in one place."
