@@ -63,6 +63,7 @@ describe('reuseOperatorGroup', () => {
                 nocCode: 'BOS',
             },
         ];
+
         getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue({
             id: 1,
             name: 'Best Ops',
@@ -99,6 +100,7 @@ describe('reuseOperatorGroup', () => {
                 nocCode: 'BOS',
             },
         ];
+
         getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue({
             id: 1,
             name: 'Best Ops',

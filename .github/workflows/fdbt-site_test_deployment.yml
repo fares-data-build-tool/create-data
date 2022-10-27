@@ -59,15 +59,10 @@ jobs:
         echo "Linting"
         npm run lint
 
-    # - name: compile-typescript
-    #   run: |
-    #     echo "Compiling typescript for site"
-    #     ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
-    #     cd cypress_tests
-    #     npm ci
-    #     ./node_modules/.bin/tsc
-
-    # build-and-push-image (tfn-fdbt-core) 
+    - name: compile-typescript
+      run: |
+        echo "Compiling typescript for site"
+        ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1

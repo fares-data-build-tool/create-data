@@ -6,7 +6,9 @@ import ViewOperatorGroups from '../../src/pages/viewOperatorGroups';
 describe('pages', () => {
     describe('view operator groups', () => {
         it('should render correctly when no operator groups', () => {
-            const tree = shallow(<ViewOperatorGroups operatorGroups={[]} csrfToken={''} referer={null} />);
+            const tree = shallow(
+                <ViewOperatorGroups operatorGroups={[]} csrfToken={''} referer={null} isDevOrTest={false} />,
+            );
 
             expect(tree).toMatchSnapshot();
         });
@@ -24,7 +26,12 @@ describe('pages', () => {
             };
 
             const tree = shallow(
-                <ViewOperatorGroups operatorGroups={[operatorGroup]} csrfToken={''} referer={'hello'} />,
+                <ViewOperatorGroups
+                    operatorGroups={[operatorGroup]}
+                    csrfToken={''}
+                    referer={'hello'}
+                    isDevOrTest={false}
+                />,
             );
 
             expect(tree).toMatchSnapshot();
