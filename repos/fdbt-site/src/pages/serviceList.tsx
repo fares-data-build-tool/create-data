@@ -48,6 +48,10 @@ const ServiceList = ({
     additional,
 }: ServiceListProps): ReactElement => {
     const multiOperatorText = multiOperator ? 'of your ' : '';
+    const seen: string[] = [];
+    const uniqueServiceLists =
+        serviceList?.filter((item) => (seen.includes(item.lineId) ? false : seen.push(item.lineId))) ?? [];
+
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
             {/* removed as TNDS is being disabled until further notice */}
@@ -95,11 +99,10 @@ const ServiceList = ({
                                 addFormGroupError={false}
                             >
                                 <div className="govuk-checkboxes">
-                                    {serviceList.map((service, index) => {
+                                    {uniqueServiceLists.map((service, index) => {
                                         const {
                                             lineName,
                                             lineId,
-                                            startDate,
                                             serviceCode,
                                             description,
                                             checked,
@@ -109,10 +112,8 @@ const ServiceList = ({
 
                                         const checkboxTitles =
                                             dataSourceAttribute.source === 'tnds'
-                                                ? `${lineName} - ${description} (Start Date ${startDate})`
-                                                : `${lineName} ${origin || 'N/A'} - ${
-                                                      destination || 'N/A'
-                                                  } (Start date ${startDate})`;
+                                                ? `${lineName} - ${description}`
+                                                : `${lineName} ${origin || 'N/A'} - ${destination || 'N/A'}`;
 
                                         const checkBoxValues = `${description}`;
 
@@ -121,7 +122,7 @@ const ServiceList = ({
                                                 <input
                                                     className="govuk-checkboxes__input"
                                                     id={`checkbox-${index}`}
-                                                    name={`${lineName}#${lineId}#${serviceCode}#${startDate}`}
+                                                    name={`${lineName}#${lineId}#${serviceCode}`}
                                                     type="checkbox"
                                                     value={checkBoxValues}
                                                     defaultChecked={checked}

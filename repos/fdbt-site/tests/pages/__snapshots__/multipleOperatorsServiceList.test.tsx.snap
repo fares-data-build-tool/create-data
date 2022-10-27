@@ -52,8 +52,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with bods da
           <b>
             Bus Open Data Service (BODS)
           </b>
-          . If the service you are looking for is not listed, contact the BODS help desk for advice
-           
+          . If the service you are looking for is not listed, contact the BODS help desk for advice 
           <a
             href="/contact"
           >
@@ -78,7 +77,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with bods da
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"
-                name="TO#123#3h3vb32ik#NW_05_BLAC_123_1#05/02/2020"
+                name="TO#123#3h3vb32ik#NW_05_BLAC_123_1"
                 type="checkbox"
                 value="IW Bus Service 123"
               />
@@ -86,45 +85,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with bods da
                 className="govuk-label govuk-checkboxes__label"
                 htmlFor="checkbox-0"
               >
-                123 N/A - N/A (Start date 05/02/2020)
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-X1"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="checkbox-1"
-                name="TO#X1#3h3vb32ik#NW_05_BLAC_X1_1#06/02/2020"
-                type="checkbox"
-                value="Big Blue Bus Service X1"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-1"
-              >
-                X1 N/A - N/A (Start date 06/02/2020)
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Infinity Line"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="checkbox-2"
-                name="TO#Infinity Line#3h3vb32ik#WY_13_IWBT_07_1#07/02/2020"
-                type="checkbox"
-                value="This is some kind of bus service"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-2"
-              >
-                Infinity Line N/A - N/A (Start date 07/02/2020)
+                123 N/A - N/A
               </label>
             </div>
           </div>
@@ -200,8 +161,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
           <b>
             Traveline National Dataset (TNDS)
           </b>
-          . If the service you are looking for is not listed, contact the BODS help desk for advice
-           
+          . If the service you are looking for is not listed, contact the BODS help desk for advice 
           <a
             href="/contact"
           >
@@ -233,7 +193,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"
-                name="TO#123#3h3vb32ik#NW_05_BLAC_123_1#05/02/2020"
+                name="TO#123#3h3vb32ik#NW_05_BLAC_123_1"
                 type="checkbox"
                 value="IW Bus Service 123"
               />
@@ -241,45 +201,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
                 className="govuk-label govuk-checkboxes__label"
                 htmlFor="checkbox-0"
               >
-                123 - IW Bus Service 123 (Start Date 05/02/2020)
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-X1"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="checkbox-1"
-                name="TO#X1#3h3vb32ik#NW_05_BLAC_X1_1#06/02/2020"
-                type="checkbox"
-                value="Big Blue Bus Service X1"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-1"
-              >
-                X1 - Big Blue Bus Service X1 (Start Date 06/02/2020)
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Infinity Line"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="checkbox-2"
-                name="TO#Infinity Line#3h3vb32ik#WY_13_IWBT_07_1#07/02/2020"
-                type="checkbox"
-                value="This is some kind of bus service"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-2"
-              >
-                Infinity Line - This is some kind of bus service (Start Date 07/02/2020)
+                123 - IW Bus Service 123
               </label>
             </div>
           </div>
@@ -348,8 +270,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with tnds da
           <b>
             Traveline National Dataset (TNDS)
           </b>
-          . If the service you are looking for is not listed, contact the BODS help desk for advice
-           
+          . If the service you are looking for is not listed, contact the BODS help desk for advice 
           <a
             href="/contact"
           >
@@ -374,7 +295,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with tnds da
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"
-                name="TO#123#3h3vb32ik#NW_05_BLAC_123_1#05/02/2020"
+                name="TO#123#3h3vb32ik#NW_05_BLAC_123_1"
                 type="checkbox"
                 value="IW Bus Service 123"
               />
@@ -382,45 +303,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with tnds da
                 className="govuk-label govuk-checkboxes__label"
                 htmlFor="checkbox-0"
               >
-                123 - IW Bus Service 123 (Start Date 05/02/2020)
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-X1"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="checkbox-1"
-                name="TO#X1#3h3vb32ik#NW_05_BLAC_X1_1#06/02/2020"
-                type="checkbox"
-                value="Big Blue Bus Service X1"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-1"
-              >
-                X1 - Big Blue Bus Service X1 (Start Date 06/02/2020)
-              </label>
-            </div>
-            <div
-              className="govuk-checkboxes__item"
-              key="checkbox-item-Infinity Line"
-            >
-              <input
-                className="govuk-checkboxes__input"
-                defaultChecked={false}
-                id="checkbox-2"
-                name="TO#Infinity Line#3h3vb32ik#WY_13_IWBT_07_1#07/02/2020"
-                type="checkbox"
-                value="This is some kind of bus service"
-              />
-              <label
-                className="govuk-label govuk-checkboxes__label"
-                htmlFor="checkbox-2"
-              >
-                Infinity Line - This is some kind of bus service (Start Date 07/02/2020)
+                123 - IW Bus Service 123
               </label>
             </div>
           </div>
