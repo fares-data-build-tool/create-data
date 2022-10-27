@@ -23,27 +23,28 @@ const ReuseOperatorGroup = ({ errors = [], csrfToken, operatorGroups }: ReuseOpe
         <CsrfForm action="/api/reuseOperatorGroup" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <div>
-                    <fieldset className="govuk-fieldset" aria-describedby="passenger-type-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l"></legend>
+                <div className="govuk-form-group ">
+                    <fieldset className="govuk-fieldset" aria-describedby="operator-group-page-heading">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 className="govuk-fieldset__heading" id="reuse-operator-group-page-heading">
+                                Select a operator group
+                            </h1>
+                        </legend>
+                        <div className="govuk-warning-text">
+                            <span className="govuk-warning-text__icon govuk-!-margin-top-1" aria-hidden="true">
+                                !
+                            </span>
+                            <strong className="govuk-warning-text__text">
+                                <span className="govuk-warning-text__assistive">Warning</span>
+                                You can create new operator group in your{' '}
+                                <a className="govuk-link" href="/viewOperatorGroups">
+                                    operator settings.
+                                </a>{' '}
+                                <br />
+                                Don&apos;t worry you can navigate back to this page when you are finished.
+                            </strong>
+                        </div>
                     </fieldset>
-                    <h1 className="govuk-heading-l" id="reuse-operator-group-page-heading">
-                        Select a operator group
-                    </h1>
-                    <div className="govuk-warning-text">
-                        <span className="govuk-warning-text__icon govuk-!-margin-top-1" aria-hidden="true">
-                            !
-                        </span>
-                        <strong className="govuk-warning-text__text">
-                            <span className="govuk-warning-text__assistive">Warning</span>
-                            You can create new operator group in your{' '}
-                            <a className="govuk-link" href="/viewOperatorGroup">
-                                operator settings.
-                            </a>{' '}
-                            <br />
-                            Don&apos;t worry you can navigate back to this page when you are finished.
-                        </strong>
-                    </div>
                     {operatorGroups.length === 0 ? (
                         <>
                             <span className="govuk-body">

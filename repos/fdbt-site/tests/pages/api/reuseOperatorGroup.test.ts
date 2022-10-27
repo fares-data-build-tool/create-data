@@ -31,6 +31,22 @@ describe('reuseOperatorGroup', () => {
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/reuseOperatorGroup' });
     });
 
+    it('should redirect back to reuseOperatorGroup with errors if the user post the invalid operator group id', async () => {
+        const getOperatorGroupByNocAndId = jest.spyOn(auroradb, 'getOperatorGroupByNocAndId');
+
+        getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue(undefined);
+        const { req, res } = getMockRequestAndResponse({
+            body: { operatorGroupId: '99' },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await reuseOperatorGroup(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
+            { errorMessage: 'Select a valid operator group', id: 'operatorGroup' },
+        ]);
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/reuseOperatorGroup' });
+    });
+
     it('should update the MULTIPLE_OPERATOR_ATTRIBUTE with the selected operator group operators if selected', async () => {
         const getOperatorGroupByNocAndId = jest.spyOn(auroradb, 'getOperatorGroupByNocAndId');
         const testOperators = [

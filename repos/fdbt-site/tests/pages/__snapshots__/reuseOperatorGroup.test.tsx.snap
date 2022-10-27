@@ -14,51 +14,54 @@ exports[`pages reuseOperatorGroup should render coorectly when one operator grou
     <ErrorSummary
       errors={Array []}
     />
-    <div>
+    <div
+      className="govuk-form-group "
+    >
       <fieldset
-        aria-describedby="passenger-type-page-heading"
+        aria-describedby="operator-group-page-heading"
         className="govuk-fieldset"
       >
         <legend
           className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        />
-      </fieldset>
-      <h1
-        className="govuk-heading-l"
-        id="reuse-operator-group-page-heading"
-      >
-        Select a operator group
-      </h1>
-      <div
-        className="govuk-warning-text"
-      >
-        <span
-          aria-hidden="true"
-          className="govuk-warning-text__icon govuk-!-margin-top-1"
         >
-          !
-        </span>
-        <strong
-          className="govuk-warning-text__text"
+          <h1
+            className="govuk-fieldset__heading"
+            id="reuse-operator-group-page-heading"
+          >
+            Select a operator group
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
         >
           <span
-            className="govuk-warning-text__assistive"
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
           >
-            Warning
+            !
           </span>
-          You can create new operator group in your
-           
-          <a
-            className="govuk-link"
-            href="/viewOperatorGroup"
+          <strong
+            className="govuk-warning-text__text"
           >
-            operator settings.
-          </a>
-           
-          <br />
-          Don't worry you can navigate back to this page when you are finished.
-        </strong>
-      </div>
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create new operator group in your
+             
+            <a
+              className="govuk-link"
+              href="/viewOperatorGroups"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+      </fieldset>
       <div
         className="card-row"
         id="individual-passengers"
@@ -112,51 +115,54 @@ exports[`pages reuseOperatorGroup should render correctly 1`] = `
     <ErrorSummary
       errors={Array []}
     />
-    <div>
+    <div
+      className="govuk-form-group "
+    >
       <fieldset
-        aria-describedby="passenger-type-page-heading"
+        aria-describedby="operator-group-page-heading"
         className="govuk-fieldset"
       >
         <legend
           className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        />
-      </fieldset>
-      <h1
-        className="govuk-heading-l"
-        id="reuse-operator-group-page-heading"
-      >
-        Select a operator group
-      </h1>
-      <div
-        className="govuk-warning-text"
-      >
-        <span
-          aria-hidden="true"
-          className="govuk-warning-text__icon govuk-!-margin-top-1"
         >
-          !
-        </span>
-        <strong
-          className="govuk-warning-text__text"
+          <h1
+            className="govuk-fieldset__heading"
+            id="reuse-operator-group-page-heading"
+          >
+            Select a operator group
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
         >
           <span
-            className="govuk-warning-text__assistive"
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
           >
-            Warning
+            !
           </span>
-          You can create new operator group in your
-           
-          <a
-            className="govuk-link"
-            href="/viewOperatorGroup"
+          <strong
+            className="govuk-warning-text__text"
           >
-            operator settings.
-          </a>
-           
-          <br />
-          Don't worry you can navigate back to this page when you are finished.
-        </strong>
-      </div>
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create new operator group in your
+             
+            <a
+              className="govuk-link"
+              href="/viewOperatorGroups"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+      </fieldset>
       <span
         className="govuk-body"
       >
@@ -203,51 +209,54 @@ exports[`pages reuseOperatorGroup should render errors when user does not select
         ]
       }
     />
-    <div>
+    <div
+      className="govuk-form-group "
+    >
       <fieldset
-        aria-describedby="passenger-type-page-heading"
+        aria-describedby="operator-group-page-heading"
         className="govuk-fieldset"
       >
         <legend
           className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        />
-      </fieldset>
-      <h1
-        className="govuk-heading-l"
-        id="reuse-operator-group-page-heading"
-      >
-        Select a operator group
-      </h1>
-      <div
-        className="govuk-warning-text"
-      >
-        <span
-          aria-hidden="true"
-          className="govuk-warning-text__icon govuk-!-margin-top-1"
         >
-          !
-        </span>
-        <strong
-          className="govuk-warning-text__text"
+          <h1
+            className="govuk-fieldset__heading"
+            id="reuse-operator-group-page-heading"
+          >
+            Select a operator group
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
         >
           <span
-            className="govuk-warning-text__assistive"
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
           >
-            Warning
+            !
           </span>
-          You can create new operator group in your
-           
-          <a
-            className="govuk-link"
-            href="/viewOperatorGroup"
+          <strong
+            className="govuk-warning-text__text"
           >
-            operator settings.
-          </a>
-           
-          <br />
-          Don't worry you can navigate back to this page when you are finished.
-        </strong>
-      </div>
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create new operator group in your
+             
+            <a
+              className="govuk-link"
+              href="/viewOperatorGroups"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+      </fieldset>
       <div
         className="card-row"
         id="individual-passengers"

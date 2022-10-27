@@ -31,6 +31,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 id: multipleOperators.id,
             });
             updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
+        } else {
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
+                { errorMessage: 'Select a valid operator group', id: 'operatorGroup' },
+            ]);
+            redirectTo(res, '/reuseOperatorGroup');
+            return;
         }
 
         const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
