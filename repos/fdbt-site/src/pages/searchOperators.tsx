@@ -71,10 +71,10 @@ export const showSelectedOperators = (
                 <tbody className="govuk-table__body">
                     {selectedOperators.map((operator, index) => (
                         <tr key={index} className="border-top">
-                            <td className="govuk-label govuk-!-font-size-16">
+                            <td className="govuk-label govuk-!-font-size-16" key={`td0-${index}`}>
                                 {operator.name} - {operator.nocCode}
                             </td>
-                            <td className="govuk-link text-align-center ">
+                            <td className="govuk-link text-align-center " key={`td1-${index}`}>
                                 <button
                                     className="govuk-link  align-top button-link govuk-!-margin-left-2"
                                     onClick={() => removeOperator(operator.nocCode)}
@@ -188,8 +188,9 @@ export const showSearchResults = (
     );
     const [showSearchResultsLine, setShowSearchResultsLine] = useState(true);
     const [searchResults, setSearchResults] = useState(databaseSearchResults);
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const operatorToAdd = event.target.value;
+    const handleChange = (event: React.MouseEvent<HTMLInputElement>) => {
+        // console.log(event.currentTarget);
+        const operatorToAdd = event.currentTarget.value;
         const formattedOperatorToAdd = { nocCode: operatorToAdd.split('#')[0], name: operatorToAdd.split('#')[1] };
         const newSelectedOperators = [...selectedOperators, formattedOperatorToAdd];
         const newUniqtSelectedOperators = uniqBy(newSelectedOperators, 'nocCode');
@@ -239,7 +240,7 @@ export const showSearchResults = (
                                             id={`add-operator-checkbox-${index}`}
                                             name="userSelectedOperators"
                                             type="checkbox"
-                                            onChange={handleChange}
+                                            onClick={handleChange}
                                             value={`${nocCode}#${name}`}
                                         />
                                         <label
