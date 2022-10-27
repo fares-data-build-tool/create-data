@@ -18,7 +18,7 @@ export const removeOperatorsFromPreviouslySelectedOperators = (
 };
 
 export const addOperatorsToPreviouslySelectedOperators = (rawList: string[]): Operator[] => {
-    if (rawList.length == 0) {
+    if (rawList.length === 0) {
         const selectedOperators: Operator[] = [];
         return selectedOperators;
     }

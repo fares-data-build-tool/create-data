@@ -40,8 +40,8 @@ export const showSelectedOperators = (
             removeOperatorsErrors.push(err);
         }
     });
-    const removeOperator = (nocCode: string) => {
-        if (nocCode === 'all') {
+    const removeOperator = (nocCode: string, removeAll?: boolean) => {
+        if (removeAll) {
             setSelectedOperators([]);
         } else {
             const newSelectedOperators = selectedOperators.filter((operator) => operator.nocCode !== nocCode);
@@ -50,7 +50,7 @@ export const showSelectedOperators = (
     };
     return (
         <>
-            <table className="border-collaps width-100 padding-top-140">
+            <table className="border-collaps width-100 margin-top-140">
                 <caption className="govuk-table__caption govuk-table__caption--m">Selected operator(s)</caption>
                 <thead className="selectedOperators-header-color">
                     <tr className="">
@@ -60,7 +60,7 @@ export const showSelectedOperators = (
                         <th scope="cor" className="govuk-table__header text-align-right">
                             <button
                                 className="selectedOperators-button button-link govuk-!-margin-left-2"
-                                onClick={() => removeOperator('all')}
+                                onClick={() => removeOperator('', true)}
                                 name="removeOperator"
                             >
                                 Remove all
@@ -172,7 +172,7 @@ export const renderSearchBox = (
 
 export const showSearchResults = (
     searchText: string,
-    searchResults: Operator[],
+    databaseSearchResults: Operator[],
     errors: ErrorInfo[],
     selectedOperators: Operator[],
     setSelectedOperators: React.Dispatch<React.SetStateAction<Operator[]>>,
@@ -183,28 +183,27 @@ export const showSearchResults = (
             addOperatorsErrors.push(err);
         }
     });
-    const [searchResultsCount, setSearchResultsCount] = useState(searchResults.length);
-    const [showSearchResultsLine, setShowSeearchResultsLine] = useState(true);
+    const [searchResultsCount, setSearchResultsCount] = useState(
+        databaseSearchResults ? databaseSearchResults.length : 0,
+    );
+    const [showSearchResultsLine, setShowSearchResultsLine] = useState(true);
+    const [searchResults, setSearchResults] = useState(databaseSearchResults);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const formattedoperatorToAdd = [event.target.value].map((item: string) => ({
-            nocCode: item.split('#')[0],
-            name: item.split('#')[1],
-        }));
-        const newSelectedOperators = [...selectedOperators, ...formattedoperatorToAdd];
+        const operatorToAdd = event.target.value;
+        const formattedOperatorToAdd = { nocCode: operatorToAdd.split('#')[0], name: operatorToAdd.split('#')[1] };
+        const newSelectedOperators = [...selectedOperators, formattedOperatorToAdd];
         const newUniqtSelectedOperators = uniqBy(newSelectedOperators, 'nocCode');
         setSelectedOperators(newUniqtSelectedOperators);
-        if (searchResults.length > 0) {
-            const newCount = searchResultsCount - 1;
-            setSearchResultsCount(newCount);
-        }
-        if (event.target.parentElement) {
-            event.target.parentElement.remove();
-        }
+        // if (searchResults.length > 0) {
+        //     const newCount = searchResultsCount - 1;
+        //     setSearchResultsCount(newCount);
+        // }
+        setSearchResults(searchResults.filter((operator) => operator.nocCode !== formattedOperatorToAdd.nocCode));
     };
-    if (searchResults.length > 0 && searchResultsCount == 0) {
-        setSearchResultsCount(-1);
-        setShowSeearchResultsLine(false);
-    }
+    // if (databaseSearchResults.length > 0 && searchResultsCount === 0) {
+    //     setSearchResultsCount(-1);
+    //     setShowSearchResultsLine(false);
+    // }
 
     return (
         <div className={`govuk-form-group ${addOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
@@ -215,7 +214,7 @@ export const showSearchResults = (
                             Your search for &apos;<strong>{searchText}</strong>&apos; returned
                             <strong>
                                 {' '}
-                                {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
+                                {databaseSearchResults.length} result{databaseSearchResults.length !== 1 ? 's' : ''}
                             </strong>
                         </h2>
                     )}
@@ -267,7 +266,8 @@ const SearchOperators = ({
     preSelectedOperators,
     csrfToken,
 }: SearchOperatorProps): ReactElement => {
-    const selectedOperatorsToDisplay = preSelectedOperators.length > 0;
+    const operatorsAdded = preSelectedOperators.length > 0;
+    const databaseSearchResults = searchResults ? searchResults : [];
     const searchResultsToDisplay = searchResults.length > 0 || errors.find((err) => err.id === addOperatorsErrorId);
     const [selectedOperators, setSelectedOperators] = useState<Operator[]>(preSelectedOperators);
     return (
@@ -276,10 +276,16 @@ const SearchOperators = ({
                 <div className="govuk-grid-column-two-thirds">
                     <ErrorSummary errors={errors} />
                     <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
-                        {renderSearchBox(selectedOperatorsToDisplay, errors, selectedOperators)}
+                        {renderSearchBox(operatorsAdded, errors, selectedOperators)}
                     </CsrfForm>
                     {searchResultsToDisplay
-                        ? showSearchResults(searchText, searchResults, errors, selectedOperators, setSelectedOperators)
+                        ? showSearchResults(
+                              searchText,
+                              databaseSearchResults,
+                              errors,
+                              selectedOperators,
+                              setSelectedOperators,
+                          )
                         : null}
                 </div>
                 <div className="govuk-grid-column-one-third selectedOperators">
@@ -372,8 +378,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ];
         }
     }
-    const preSelectedOperators = selectedOperators;
-    return { props: { errors, searchText, searchResults, preSelectedOperators, csrfToken } };
+    return { props: { errors, searchText, searchResults, preSelectedOperators: selectedOperators, csrfToken } };
 };
 
 export default SearchOperators;
