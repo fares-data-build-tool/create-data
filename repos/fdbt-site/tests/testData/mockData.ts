@@ -54,6 +54,7 @@ import {
     Stop,
     TimeRestriction,
     UserFareStages,
+    OperatorGroup,
 } from '../../src/interfaces';
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
@@ -5652,6 +5653,17 @@ export const mockFieldSetForReuseOperatorGroupWithErrorsIfOptionNotSelected: Rad
         },
     ],
     radioError: [],
+};
+
+export const mockDataOperatorGroup: OperatorGroup = {
+    id: 1,
+    name: 'Regular Child',
+    operators: [
+        {
+            name: 'First operator',
+            nocCode: 'FOP',
+        },
+    ],
 };
 
 export const mockDataSplitOutProducts = [

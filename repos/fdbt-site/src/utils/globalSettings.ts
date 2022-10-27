@@ -14,7 +14,7 @@ export const extractGlobalSettingsReferer = (ctx: NextPageContextWithSession): s
             'selectPurchaseMethods',
             'selectPeriodValidity',
             'fareType',
-            'selectOperatorGroup',
+            'reuseOperatorGroup',
         ].includes(refererPage)
     ) {
         updateSessionAttribute(ctx.req, GS_REFERER, refererPage);

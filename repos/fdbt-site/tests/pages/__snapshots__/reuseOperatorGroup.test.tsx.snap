@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages reuseOperatorGroup should render correctly 1`] = `
+exports[`pages reuseOperatorGroup should render coorectly when one operator group is specified 1`] = `
 <TwoThirdsLayout
-  description="Reuse Operator Group page of the Create Fares Data Service"
+  description="Select Operator Group page of the Create Fares Data Service"
   errors={Array []}
-  title="Reuse Operator Group - Create Fares Data Service"
+  title="Select Operator Group - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/reuseOperatorGroup"
@@ -14,85 +14,98 @@ exports[`pages reuseOperatorGroup should render correctly 1`] = `
     <ErrorSummary
       errors={Array []}
     />
-    <div>
-      <h1
-        className="govuk-heading-l"
-        id="reuse-operator-group-page-heading"
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-group-page-heading"
+        className="govuk-fieldset"
       >
-        Would you like to reuse a saved list of operators that this ticket covers?
-      </h1>
-      <span
-        className="govuk-hint"
-        id="reuse-operator-group-hint"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="reuse-operator-group-page-heading"
+          >
+            Select a operator group
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create new operator group in your
+             
+            <a
+              className="govuk-link"
+              href="/viewOperatorGroups"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+      </fieldset>
+      <div
+        className="card-row"
+        id="individual-passengers"
       >
-        You can reuse a saved operator group to save yourself time searching for each operator individually
-      </span>
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Do you want to reuse a saved operator group?",
-              "hidden": true,
-              "id": "reuse-operator-group-heading",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "reuse-operator-group",
-                "id": "reuse-operator-group-yes",
-                "inputErrors": Array [],
-                "inputHint": Object {
-                  "content": "Select an operator group from the dropdown",
-                  "hidden": true,
-                  "id": "choose-time-restriction-hint",
+        <OperatorGroupCard
+          defaultChecked={false}
+          index={0}
+          key="1"
+          operatorGroup={
+            Object {
+              "id": 1,
+              "name": "Regular Child",
+              "operators": Array [
+                Object {
+                  "name": "First operator",
+                  "nocCode": "FOP",
                 },
-                "inputType": "dropdown",
-                "inputs": Array [
-                  Object {
-                    "id": "operator-group-0",
-                    "label": "Best Ops",
-                    "name": "Best Ops",
-                  },
-                ],
-                "label": "Yes",
-                "name": "reuseGroupChoice",
-                "selectIdentifier": "premadeOperatorGroup",
-                "value": "Yes",
-              },
-              Object {
-                "id": "reuse-operator-group-no",
-                "label": "No",
-                "name": "reuseGroupChoice",
-                "value": "No",
-              },
-            ],
+              ],
+            }
           }
-        }
-        key="reuse-operator-group-heading"
-      />
+        />
+      </div>
     </div>
     <input
-      className="govuk-button"
+      className="govuk-button govuk-!-margin-right-2"
       id="continue-button"
       type="submit"
       value="Continue"
     />
+    <a
+      className="govuk-button govuk-button--secondary"
+      href="/viewOperatorGroups"
+    >
+      Create new
+    </a>
   </CsrfForm>
 </TwoThirdsLayout>
 `;
 
-exports[`pages reuseOperatorGroup should render errors when user does not provide a group name 1`] = `
+exports[`pages reuseOperatorGroup should render correctly 1`] = `
 <TwoThirdsLayout
-  description="Reuse Operator Group page of the Create Fares Data Service"
-  errors={
-    Array [
-      Object {
-        "errorMessage": "Choose a premade operator group from the options below",
-        "id": "premadeOperatorGroup",
-      },
-    ]
-  }
-  title="Reuse Operator Group - Create Fares Data Service"
+  description="Select Operator Group page of the Create Fares Data Service"
+  errors={Array []}
+  title="Select Operator Group - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/reuseOperatorGroup"
@@ -100,99 +113,86 @@ exports[`pages reuseOperatorGroup should render errors when user does not provid
     method="post"
   >
     <ErrorSummary
-      errors={
-        Array [
-          Object {
-            "errorMessage": "Choose a premade operator group from the options below",
-            "id": "premadeOperatorGroup",
-          },
-        ]
-      }
+      errors={Array []}
     />
-    <div>
-      <h1
-        className="govuk-heading-l"
-        id="reuse-operator-group-page-heading"
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-group-page-heading"
+        className="govuk-fieldset"
       >
-        Would you like to reuse a saved list of operators that this ticket covers?
-      </h1>
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="reuse-operator-group-page-heading"
+          >
+            Select a operator group
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create new operator group in your
+             
+            <a
+              className="govuk-link"
+              href="/viewOperatorGroups"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+      </fieldset>
       <span
-        className="govuk-hint"
-        id="reuse-operator-group-hint"
+        className="govuk-body"
       >
-        You can reuse a saved operator group to save yourself time searching for each operator individually
+        <i>
+          You currently have no operator group
+        </i>
       </span>
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Do you want to reuse a saved operator group?",
-              "hidden": true,
-              "id": "reuse-operator-group-heading",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "reuse-operator-group",
-                "id": "reuse-operator-group-yes",
-                "inputErrors": Array [
-                  Object {
-                    "errorMessage": "Choose a premade operator group from the options below",
-                    "id": "premadeOperatorGroup",
-                  },
-                ],
-                "inputHint": Object {
-                  "content": "Select an operator group from the dropdown",
-                  "hidden": true,
-                  "id": "choose-time-restriction-hint",
-                },
-                "inputType": "dropdown",
-                "inputs": Array [
-                  Object {
-                    "id": "operator-group-0",
-                    "label": "Best Ops",
-                    "name": "Best Ops",
-                  },
-                ],
-                "label": "Yes",
-                "name": "reuseGroupChoice",
-                "selectIdentifier": "premadeOperatorGroup",
-                "value": "Yes",
-              },
-              Object {
-                "id": "reuse-operator-group-no",
-                "label": "No",
-                "name": "reuseGroupChoice",
-                "value": "No",
-              },
-            ],
-          }
-        }
-        key="reuse-operator-group-heading"
-      />
     </div>
-    <input
-      className="govuk-button"
-      id="continue-button"
-      type="submit"
-      value="Continue"
-    />
+    <a
+      className="govuk-button govuk-button--secondary"
+      href="/viewOperatorGroups"
+    >
+      Create new
+    </a>
   </CsrfForm>
 </TwoThirdsLayout>
 `;
 
 exports[`pages reuseOperatorGroup should render errors when user does not select a radio button 1`] = `
 <TwoThirdsLayout
-  description="Reuse Operator Group page of the Create Fares Data Service"
+  description="Select Operator Group page of the Create Fares Data Service"
   errors={
     Array [
       Object {
-        "errorMessage": "Choose one of the options below",
-        "id": "conditional-form-group",
+        "errorMessage": "Choose an operator group from the options below",
+        "id": "operatorGroup-0",
       },
     ]
   }
-  title="Reuse Operator Group - Create Fares Data Service"
+  title="Select Operator Group - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/reuseOperatorGroup"
@@ -203,80 +203,95 @@ exports[`pages reuseOperatorGroup should render errors when user does not select
       errors={
         Array [
           Object {
-            "errorMessage": "Choose one of the options below",
-            "id": "conditional-form-group",
+            "errorMessage": "Choose an operator group from the options below",
+            "id": "operatorGroup-0",
           },
         ]
       }
     />
-    <div>
-      <h1
-        className="govuk-heading-l"
-        id="reuse-operator-group-page-heading"
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-group-page-heading"
+        className="govuk-fieldset"
       >
-        Would you like to reuse a saved list of operators that this ticket covers?
-      </h1>
-      <span
-        className="govuk-hint"
-        id="reuse-operator-group-hint"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="reuse-operator-group-page-heading"
+          >
+            Select a operator group
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create new operator group in your
+             
+            <a
+              className="govuk-link"
+              href="/viewOperatorGroups"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+      </fieldset>
+      <div
+        className="card-row"
+        id="individual-passengers"
       >
-        You can reuse a saved operator group to save yourself time searching for each operator individually
-      </span>
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Do you want to reuse a saved operator group?",
-              "hidden": true,
-              "id": "reuse-operator-group-heading",
-            },
-            "radioError": Array [
-              Object {
-                "errorMessage": "Choose one of the options below",
-                "id": "conditional-form-group",
-              },
-            ],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "reuse-operator-group",
-                "id": "reuse-operator-group-yes",
-                "inputErrors": Array [],
-                "inputHint": Object {
-                  "content": "Select an operator group from the dropdown",
-                  "hidden": true,
-                  "id": "choose-time-restriction-hint",
+        <OperatorGroupCard
+          defaultChecked={false}
+          index={0}
+          key="1"
+          operatorGroup={
+            Object {
+              "id": 1,
+              "name": "Regular Child",
+              "operators": Array [
+                Object {
+                  "name": "First operator",
+                  "nocCode": "FOP",
                 },
-                "inputType": "dropdown",
-                "inputs": Array [
-                  Object {
-                    "id": "operator-group-0",
-                    "label": "Best Ops",
-                    "name": "Best Ops",
-                  },
-                ],
-                "label": "Yes",
-                "name": "reuseGroupChoice",
-                "selectIdentifier": "premadeOperatorGroup",
-                "value": "Yes",
-              },
-              Object {
-                "id": "reuse-operator-group-no",
-                "label": "No",
-                "name": "reuseGroupChoice",
-                "value": "No",
-              },
-            ],
+              ],
+            }
           }
-        }
-        key="reuse-operator-group-heading"
-      />
+        />
+      </div>
     </div>
     <input
-      className="govuk-button"
+      className="govuk-button govuk-!-margin-right-2"
       id="continue-button"
       type="submit"
       value="Continue"
     />
+    <a
+      className="govuk-button govuk-button--secondary"
+      href="/viewOperatorGroups"
+    >
+      Create new
+    </a>
   </CsrfForm>
 </TwoThirdsLayout>
 `;
