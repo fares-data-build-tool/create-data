@@ -45,6 +45,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     lineName: service.lineName,
                     lineId: service.lineId,
                     serviceDescription: service.serviceDescription,
+                    serviceId: serviceId,
                 },
             ],
         };
