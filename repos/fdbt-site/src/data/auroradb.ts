@@ -834,17 +834,25 @@ export const getOperatorGroupByNocAndId = async (id: number, noc: string): Promi
     try {
         const queryInput = `
             SELECT id, name, contents, nocCode
-            FROM passengerType
+            FROM operatorGroup
             WHERE id = ?
             AND nocCode = ?`;
 
-        const queryResults = await executeQuery<OperatorGroup[]>(queryInput, [id, noc]);
+        const queryResults = await executeQuery<RawOperatorGroup[]>(queryInput, [id, noc]);
 
         if (queryResults.length > 1) {
             throw new Error("Didn't expect more than one operator group with the same id");
         }
 
-        return queryResults[0];
+        const data = queryResults[0];
+
+        return data
+            ? ({
+                  id: data.id,
+                  name: data.name,
+                  operators: JSON.parse(data.contents),
+              } as OperatorGroup)
+            : undefined;
     } catch (error) {
         throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
     }
