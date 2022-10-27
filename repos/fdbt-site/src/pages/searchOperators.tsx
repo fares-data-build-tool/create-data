@@ -194,16 +194,16 @@ export const showSearchResults = (
         const newSelectedOperators = [...selectedOperators, formattedOperatorToAdd];
         const newUniqtSelectedOperators = uniqBy(newSelectedOperators, 'nocCode');
         setSelectedOperators(newUniqtSelectedOperators);
-        // if (searchResults.length > 0) {
-        //     const newCount = searchResultsCount - 1;
-        //     setSearchResultsCount(newCount);
-        // }
+        if (searchResults.length > 0) {
+            const newCount = searchResultsCount - 1;
+            setSearchResultsCount(newCount);
+        }
         setSearchResults(searchResults.filter((operator) => operator.nocCode !== formattedOperatorToAdd.nocCode));
     };
-    // if (databaseSearchResults.length > 0 && searchResultsCount === 0) {
-    //     setSearchResultsCount(-1);
-    //     setShowSearchResultsLine(false);
-    // }
+    if (databaseSearchResults.length > 0 && searchResultsCount === 0) {
+        setSearchResultsCount(-1);
+        setShowSearchResultsLine(false);
+    }
 
     return (
         <div className={`govuk-form-group ${addOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
