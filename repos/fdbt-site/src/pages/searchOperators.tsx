@@ -188,18 +188,15 @@ export const showSearchResults = (
     );
     const [showSearchResultsLine, setShowSearchResultsLine] = useState(true);
     const [searchResults, setSearchResults] = useState(databaseSearchResults);
-    const handleChange = (event: React.MouseEvent<HTMLInputElement>) => {
-        // console.log(event.currentTarget);
-        const operatorToAdd = event.currentTarget.value;
-        const formattedOperatorToAdd = { nocCode: operatorToAdd.split('#')[0], name: operatorToAdd.split('#')[1] };
-        const newSelectedOperators = [...selectedOperators, formattedOperatorToAdd];
+    const addOperator = (operatorNocCode: string, operatorName: string) => {
+        const newSelectedOperators = [...selectedOperators, {nocCode: operatorNocCode, name: operatorName}];
         const newUniqtSelectedOperators = uniqBy(newSelectedOperators, 'nocCode');
         setSelectedOperators(newUniqtSelectedOperators);
         if (searchResults.length > 0) {
             const newCount = searchResultsCount - 1;
             setSearchResultsCount(newCount);
         }
-        setSearchResults(searchResults.filter((operator) => operator.nocCode !== formattedOperatorToAdd.nocCode));
+        setSearchResults(searchResults.filter((operator) => operator.nocCode !== operatorNocCode));
     };
     if (databaseSearchResults.length > 0 && searchResultsCount === 0) {
         setSearchResultsCount(-1);
@@ -225,7 +222,7 @@ export const showSearchResults = (
                         <div className="govuk-checkboxes">
                             <p className="govuk-hint" id="traveline-hint-text">
                                 Select the operators results and click add operator(s). This data is taken from Bus Open
-                                Data Service (BODS)
+                                Data Service (BODS).
                             </p>
                             <p className="govuk-hint" id="noc-hint-text">
                                 You will see that all operator names are followed by a series of characters. These
@@ -235,17 +232,10 @@ export const showSearchResults = (
                                 const { nocCode, name } = operator;
                                 return (
                                     <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
-                                        <input
-                                            className="govuk-checkboxes__input"
-                                            id={`add-operator-checkbox-${index}`}
-                                            name="userSelectedOperators"
-                                            type="checkbox"
-                                            onClick={handleChange}
-                                            value={`${nocCode}#${name}`}
-                                        />
                                         <label
                                             className="govuk-label govuk-checkboxes__label"
                                             htmlFor={`add-operator-checkbox-${index}`}
+                                            onClick={() => addOperator(operator.nocCode, operator.name)}
                                         >
                                             {name} - {nocCode}
                                         </label>
