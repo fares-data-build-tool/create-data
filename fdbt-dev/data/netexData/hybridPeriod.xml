@@ -352,7 +352,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Best_product_one@Onboard_(cash)@anyone@product-0@SOP-0@zone">
-                  <Name>Best product one - Onboard (cash)  - anyone</Name>
+                  <Name>FareTable for Best product one</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:WBTR_products@Test_Town_Centre"/>
                   </specifics>
@@ -386,7 +386,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Best_product_one@Onboard_(contactless)@anyone@product-0@SOP-1@zone">
-                  <Name>Best product one - Onboard (contactless)  - anyone</Name>
+                  <Name>FareTable for Best product one</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:WBTR_products@Test_Town_Centre"/>
                   </specifics>
@@ -420,7 +420,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Best_product_one@Onboard_(cash)@anyone@product-0@SOP-0@service">
-                  <Name>Best product one - Onboard (cash)  - anyone</Name>
+                  <Name>FareTable for Best product one</Name>
                   <includes>
                     <FareTable version="1.0" id="op:Best_product_one@Onboard_(cash)@anyone@service@nested">
                       <pricesFor>
@@ -451,7 +451,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Best_product_one@Onboard_(contactless)@anyone@product-0@SOP-1@service">
-                  <Name>Best product one - Onboard (contactless)  - anyone</Name>
+                  <Name>FareTable for Best product one</Name>
                   <includes>
                     <FareTable version="1.0" id="op:Best_product_one@Onboard_(contactless)@anyone@service@nested">
                       <pricesFor>

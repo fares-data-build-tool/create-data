@@ -204,6 +204,7 @@ export const getInnerFareTables = (
     type: string,
     userType: string,
     salesOfferPackageName: string,
+    productName: string,
 ): {}[] =>
     columns.flatMap((zone, columnNum) => {
         let rowCount = columns.length - columnNum;
@@ -214,7 +215,7 @@ export const getInnerFareTables = (
         return {
             id: columnRef,
             version: '1.0',
-            Name: { $t: zone.name },
+            Name: { $t: `FareTable for ${productName}` },
             Description: { $t: `Column ${columnNum + 1}` },
             cells: {
                 Cell: zone.prices.flatMap(price =>
@@ -402,7 +403,7 @@ export const getFareTables = (
         return {
             id: `Trip@${matchingData.type}-SOP@${salesOfferPackage.name}@Line_${lineIdName}@${matchingData.passengerType}`,
             version: '1.0',
-            Name: { $t: matchingData.serviceDescription },
+            Name: { $t: `FareTable for ${matchingData.products[0].productName}` },
             Description: {
                 $t: `${matchingData.passengerType} ${matchingData.type} fares - Organised as a fare triangle`,
             },
@@ -454,6 +455,7 @@ export const getFareTables = (
                     matchingData.type,
                     matchingData.passengerType,
                     salesOfferPackage.name,
+                    matchingData.products[0].productName,
                 ),
             },
         };

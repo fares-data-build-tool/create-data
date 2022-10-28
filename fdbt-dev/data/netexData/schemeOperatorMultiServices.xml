@@ -369,7 +369,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Week_Rider@Cash_On_Board@adult@product-0@SOP-0@service">
-                  <Name>Week Rider - Cash On Board  - adult</Name>
+                  <Name>FareTable for Week Rider</Name>
                   <includes>
                     <FareTable version="1.0" id="op:Week_Rider@Cash_On_Board@adult@service@nested">
                       <pricesFor>
@@ -400,7 +400,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Week_Rider@Online@adult@product-0@SOP-1@service">
-                  <Name>Week Rider - Online  - adult</Name>
+                  <Name>FareTable for Week Rider</Name>
                   <includes>
                     <FareTable version="1.0" id="op:Week_Rider@Online@adult@service@nested">
                       <pricesFor>

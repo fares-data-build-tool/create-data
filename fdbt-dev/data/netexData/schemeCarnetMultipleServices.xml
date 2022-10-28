@@ -301,7 +301,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:test@Purchase_method@child@product-0@SOP-0@service">
-                  <Name>test - Purchase method  - child</Name>
+                  <Name>FareTable for test</Name>
                   <includes>
                     <FareTable version="1.0" id="op:test@Purchase_method@child@service@nested">
                       <pricesFor>

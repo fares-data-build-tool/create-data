@@ -2158,7 +2158,7 @@
           </priceGroups>
           <fareTables>
             <FareTable id="Trip@single-SOP@Onboard_(cash)@Line_PK1146649_RJ1_Outbound@group" version="1.0">
-              <Name>CLEVELEYS - MERESIDE via Blackpool</Name>
+              <Name>FareTable for Best product</Name>
               <Description>group single fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Best_product"/>
@@ -2291,7 +2291,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c1@Test_Stage_1" version="1.0">
-                  <Name>Test Stage 1</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_1" order="1">
@@ -2449,7 +2449,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c2@Test_Stage_2" version="1.0">
-                  <Name>Test Stage 2</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_2" order="1">
@@ -2599,7 +2599,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c3@Test_Stage_3" version="1.0">
-                  <Name>Test Stage 3</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 3</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_3" order="1">
@@ -2741,7 +2741,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c4@Test_Stage_4" version="1.0">
-                  <Name>Test Stage 4</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 4</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_4" order="1">
@@ -2875,7 +2875,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c5@Test_Stage_5" version="1.0">
-                  <Name>Test Stage 5</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 5</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_5" order="1">
@@ -3001,7 +3001,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c6@Test_Stage_6" version="1.0">
-                  <Name>Test Stage 6</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 6</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_6" order="1">
@@ -3119,7 +3119,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c7@Test_Stage_7" version="1.0">
-                  <Name>Test Stage 7</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 7</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_7" order="1">
@@ -3229,7 +3229,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c8@Test_Stage_8" version="1.0">
-                  <Name>Test Stage 8</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 8</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_8" order="1">
@@ -3331,7 +3331,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c9@Test_Stage_9" version="1.0">
-                  <Name>Test Stage 9</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 9</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_9" order="1">
@@ -3425,7 +3425,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c10@Test_Stage_10" version="1.0">
-                  <Name>Test Stage 10</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 10</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_10" order="1">
@@ -3511,7 +3511,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c11@Test_Stage_11" version="1.0">
-                  <Name>Test Stage 11</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 11</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_11" order="1">
@@ -3589,7 +3589,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c12@Test_Stage_12" version="1.0">
-                  <Name>Test Stage 12</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 12</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_12" order="1">
@@ -3659,7 +3659,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c13@Test_Stage_13" version="1.0">
-                  <Name>Test Stage 13</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 13</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_13" order="1">
@@ -3721,7 +3721,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c14@Test_Stage_14" version="1.0">
-                  <Name>Test Stage 14</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 14</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_14" order="1">
@@ -3775,7 +3775,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c15@Test_Stage_15" version="1.0">
-                  <Name>Test Stage 15</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 15</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_15" order="1">
@@ -3821,7 +3821,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c16@Test_Stage_16" version="1.0">
-                  <Name>Test Stage 16</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 16</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_16" order="1">
@@ -3859,7 +3859,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c17@Test_Stage_17" version="1.0">
-                  <Name>Test Stage 17</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 17</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_17" order="1">
@@ -3889,7 +3889,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c18@Test_Stage_18" version="1.0">
-                  <Name>Test Stage 18</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 18</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_18" order="1">
@@ -3911,7 +3911,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c19@Test_Stage_19" version="1.0">
-                  <Name>Test Stage 19</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 19</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Test_Stage_19" order="1">
@@ -3927,7 +3927,7 @@
               </includes>
             </FareTable>
             <FareTable id="Trip@single-SOP@Onboard_(contactless)@Line_PK1146649_RJ1_Outbound@group" version="1.0">
-              <Name>CLEVELEYS - MERESIDE via Blackpool</Name>
+              <Name>FareTable for Best product</Name>
               <Description>group single fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Best_product"/>
@@ -4060,7 +4060,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c1@Test_Stage_1" version="1.0">
-                  <Name>Test Stage 1</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_1" order="1">
@@ -4218,7 +4218,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c2@Test_Stage_2" version="1.0">
-                  <Name>Test Stage 2</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_2" order="1">
@@ -4368,7 +4368,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c3@Test_Stage_3" version="1.0">
-                  <Name>Test Stage 3</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 3</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_3" order="1">
@@ -4510,7 +4510,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c4@Test_Stage_4" version="1.0">
-                  <Name>Test Stage 4</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 4</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_4" order="1">
@@ -4644,7 +4644,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c5@Test_Stage_5" version="1.0">
-                  <Name>Test Stage 5</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 5</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_5" order="1">
@@ -4770,7 +4770,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c6@Test_Stage_6" version="1.0">
-                  <Name>Test Stage 6</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 6</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_6" order="1">
@@ -4888,7 +4888,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c7@Test_Stage_7" version="1.0">
-                  <Name>Test Stage 7</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 7</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_7" order="1">
@@ -4998,7 +4998,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c8@Test_Stage_8" version="1.0">
-                  <Name>Test Stage 8</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 8</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_8" order="1">
@@ -5100,7 +5100,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c9@Test_Stage_9" version="1.0">
-                  <Name>Test Stage 9</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 9</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_9" order="1">
@@ -5194,7 +5194,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c10@Test_Stage_10" version="1.0">
-                  <Name>Test Stage 10</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 10</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_10" order="1">
@@ -5280,7 +5280,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c11@Test_Stage_11" version="1.0">
-                  <Name>Test Stage 11</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 11</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_11" order="1">
@@ -5358,7 +5358,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c12@Test_Stage_12" version="1.0">
-                  <Name>Test Stage 12</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 12</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_12" order="1">
@@ -5428,7 +5428,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c13@Test_Stage_13" version="1.0">
-                  <Name>Test Stage 13</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 13</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_13" order="1">
@@ -5490,7 +5490,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c14@Test_Stage_14" version="1.0">
-                  <Name>Test Stage 14</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 14</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_14" order="1">
@@ -5544,7 +5544,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c15@Test_Stage_15" version="1.0">
-                  <Name>Test Stage 15</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 15</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_15" order="1">
@@ -5590,7 +5590,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c16@Test_Stage_16" version="1.0">
-                  <Name>Test Stage 16</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 16</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_16" order="1">
@@ -5628,7 +5628,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c17@Test_Stage_17" version="1.0">
-                  <Name>Test Stage 17</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 17</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_17" order="1">
@@ -5658,7 +5658,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c18@Test_Stage_18" version="1.0">
-                  <Name>Test Stage 18</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 18</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_18" order="1">
@@ -5680,7 +5680,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c19@Test_Stage_19" version="1.0">
-                  <Name>Test Stage 19</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 19</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Test_Stage_19" order="1">
@@ -5696,7 +5696,7 @@
               </includes>
             </FareTable>
             <FareTable id="Trip@single-SOP@Online_(smart_card)@Line_PK1146649_RJ1_Outbound@group" version="1.0">
-              <Name>CLEVELEYS - MERESIDE via Blackpool</Name>
+              <Name>FareTable for Best product</Name>
               <Description>group single fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Best_product"/>
@@ -5829,7 +5829,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c1@Test_Stage_1" version="1.0">
-                  <Name>Test Stage 1</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_1" order="1">
@@ -5987,7 +5987,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c2@Test_Stage_2" version="1.0">
-                  <Name>Test Stage 2</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_2" order="1">
@@ -6137,7 +6137,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c3@Test_Stage_3" version="1.0">
-                  <Name>Test Stage 3</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 3</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_3" order="1">
@@ -6279,7 +6279,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c4@Test_Stage_4" version="1.0">
-                  <Name>Test Stage 4</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 4</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_4" order="1">
@@ -6413,7 +6413,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c5@Test_Stage_5" version="1.0">
-                  <Name>Test Stage 5</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 5</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_5" order="1">
@@ -6539,7 +6539,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c6@Test_Stage_6" version="1.0">
-                  <Name>Test Stage 6</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 6</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_6" order="1">
@@ -6657,7 +6657,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c7@Test_Stage_7" version="1.0">
-                  <Name>Test Stage 7</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 7</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_7" order="1">
@@ -6767,7 +6767,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c8@Test_Stage_8" version="1.0">
-                  <Name>Test Stage 8</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 8</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_8" order="1">
@@ -6869,7 +6869,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c9@Test_Stage_9" version="1.0">
-                  <Name>Test Stage 9</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 9</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_9" order="1">
@@ -6963,7 +6963,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c10@Test_Stage_10" version="1.0">
-                  <Name>Test Stage 10</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 10</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_10" order="1">
@@ -7049,7 +7049,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c11@Test_Stage_11" version="1.0">
-                  <Name>Test Stage 11</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 11</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_11" order="1">
@@ -7127,7 +7127,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c12@Test_Stage_12" version="1.0">
-                  <Name>Test Stage 12</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 12</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_12" order="1">
@@ -7197,7 +7197,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c13@Test_Stage_13" version="1.0">
-                  <Name>Test Stage 13</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 13</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_13" order="1">
@@ -7259,7 +7259,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c14@Test_Stage_14" version="1.0">
-                  <Name>Test Stage 14</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 14</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_14" order="1">
@@ -7313,7 +7313,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c15@Test_Stage_15" version="1.0">
-                  <Name>Test Stage 15</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 15</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_15" order="1">
@@ -7359,7 +7359,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c16@Test_Stage_16" version="1.0">
-                  <Name>Test Stage 16</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 16</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_16" order="1">
@@ -7397,7 +7397,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c17@Test_Stage_17" version="1.0">
-                  <Name>Test Stage 17</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 17</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_17" order="1">
@@ -7427,7 +7427,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c18@Test_Stage_18" version="1.0">
-                  <Name>Test Stage 18</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 18</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_18" order="1">
@@ -7449,7 +7449,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c19@Test_Stage_19" version="1.0">
-                  <Name>Test Stage 19</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 19</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Test_Stage_19" order="1">
@@ -7465,7 +7465,7 @@
               </includes>
             </FareTable>
             <FareTable id="Trip@single-SOP@Mobile_App@Line_PK1146649_RJ1_Outbound@group" version="1.0">
-              <Name>CLEVELEYS - MERESIDE via Blackpool</Name>
+              <Name>FareTable for Best product</Name>
               <Description>group single fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Best_product"/>
@@ -7598,7 +7598,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c1@Test_Stage_1" version="1.0">
-                  <Name>Test Stage 1</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_1" order="1">
@@ -7756,7 +7756,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c2@Test_Stage_2" version="1.0">
-                  <Name>Test Stage 2</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_2" order="1">
@@ -7906,7 +7906,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c3@Test_Stage_3" version="1.0">
-                  <Name>Test Stage 3</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 3</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_3" order="1">
@@ -8048,7 +8048,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c4@Test_Stage_4" version="1.0">
-                  <Name>Test Stage 4</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 4</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_4" order="1">
@@ -8182,7 +8182,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c5@Test_Stage_5" version="1.0">
-                  <Name>Test Stage 5</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 5</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_5" order="1">
@@ -8308,7 +8308,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c6@Test_Stage_6" version="1.0">
-                  <Name>Test Stage 6</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 6</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_6" order="1">
@@ -8426,7 +8426,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c7@Test_Stage_7" version="1.0">
-                  <Name>Test Stage 7</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 7</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_7" order="1">
@@ -8536,7 +8536,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c8@Test_Stage_8" version="1.0">
-                  <Name>Test Stage 8</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 8</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_8" order="1">
@@ -8638,7 +8638,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c9@Test_Stage_9" version="1.0">
-                  <Name>Test Stage 9</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 9</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_9" order="1">
@@ -8732,7 +8732,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c10@Test_Stage_10" version="1.0">
-                  <Name>Test Stage 10</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 10</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_10" order="1">
@@ -8818,7 +8818,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c11@Test_Stage_11" version="1.0">
-                  <Name>Test Stage 11</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 11</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_11" order="1">
@@ -8896,7 +8896,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c12@Test_Stage_12" version="1.0">
-                  <Name>Test Stage 12</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 12</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_12" order="1">
@@ -8966,7 +8966,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c13@Test_Stage_13" version="1.0">
-                  <Name>Test Stage 13</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 13</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_13" order="1">
@@ -9028,7 +9028,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c14@Test_Stage_14" version="1.0">
-                  <Name>Test Stage 14</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 14</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_14" order="1">
@@ -9082,7 +9082,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c15@Test_Stage_15" version="1.0">
-                  <Name>Test Stage 15</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 15</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_15" order="1">
@@ -9128,7 +9128,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c16@Test_Stage_16" version="1.0">
-                  <Name>Test Stage 16</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 16</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_16" order="1">
@@ -9166,7 +9166,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c17@Test_Stage_17" version="1.0">
-                  <Name>Test Stage 17</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 17</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_17" order="1">
@@ -9196,7 +9196,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c18@Test_Stage_18" version="1.0">
-                  <Name>Test Stage 18</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 18</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_18" order="1">
@@ -9218,7 +9218,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c19@Test_Stage_19" version="1.0">
-                  <Name>Test Stage 19</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 19</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Test_Stage_19" order="1">
@@ -9234,7 +9234,7 @@
               </includes>
             </FareTable>
             <FareTable id="Trip@single-SOP@All_Encompassing@Line_PK1146649_RJ1_Outbound@group" version="1.0">
-              <Name>CLEVELEYS - MERESIDE via Blackpool</Name>
+              <Name>FareTable for Best product</Name>
               <Description>group single fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Best_product"/>
@@ -9367,7 +9367,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c1@Test_Stage_1" version="1.0">
-                  <Name>Test Stage 1</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_1" order="1">
@@ -9525,7 +9525,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c2@Test_Stage_2" version="1.0">
-                  <Name>Test Stage 2</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_2" order="1">
@@ -9675,7 +9675,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c3@Test_Stage_3" version="1.0">
-                  <Name>Test Stage 3</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 3</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_3" order="1">
@@ -9817,7 +9817,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c4@Test_Stage_4" version="1.0">
-                  <Name>Test Stage 4</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 4</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_4" order="1">
@@ -9951,7 +9951,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c5@Test_Stage_5" version="1.0">
-                  <Name>Test Stage 5</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 5</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_5" order="1">
@@ -10077,7 +10077,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c6@Test_Stage_6" version="1.0">
-                  <Name>Test Stage 6</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 6</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_6" order="1">
@@ -10195,7 +10195,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c7@Test_Stage_7" version="1.0">
-                  <Name>Test Stage 7</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 7</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_7" order="1">
@@ -10305,7 +10305,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c8@Test_Stage_8" version="1.0">
-                  <Name>Test Stage 8</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 8</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_8" order="1">
@@ -10407,7 +10407,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c9@Test_Stage_9" version="1.0">
-                  <Name>Test Stage 9</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 9</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_9" order="1">
@@ -10501,7 +10501,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c10@Test_Stage_10" version="1.0">
-                  <Name>Test Stage 10</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 10</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_10" order="1">
@@ -10587,7 +10587,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c11@Test_Stage_11" version="1.0">
-                  <Name>Test Stage 11</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 11</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_11" order="1">
@@ -10665,7 +10665,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c12@Test_Stage_12" version="1.0">
-                  <Name>Test Stage 12</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 12</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_12" order="1">
@@ -10735,7 +10735,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c13@Test_Stage_13" version="1.0">
-                  <Name>Test Stage 13</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 13</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_13" order="1">
@@ -10797,7 +10797,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c14@Test_Stage_14" version="1.0">
-                  <Name>Test Stage 14</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 14</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_14" order="1">
@@ -10851,7 +10851,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c15@Test_Stage_15" version="1.0">
-                  <Name>Test Stage 15</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 15</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_15" order="1">
@@ -10897,7 +10897,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c16@Test_Stage_16" version="1.0">
-                  <Name>Test Stage 16</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 16</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_16" order="1">
@@ -10935,7 +10935,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c17@Test_Stage_17" version="1.0">
-                  <Name>Test Stage 17</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 17</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_17" order="1">
@@ -10965,7 +10965,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c18@Test_Stage_18" version="1.0">
-                  <Name>Test Stage 18</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 18</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_18" order="1">
@@ -10987,7 +10987,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c19@Test_Stage_19" version="1.0">
-                  <Name>Test Stage 19</Name>
+                  <Name>FareTable for Best product</Name>
                   <Description>Column 19</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@single-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Test_Stage_19" order="1">
