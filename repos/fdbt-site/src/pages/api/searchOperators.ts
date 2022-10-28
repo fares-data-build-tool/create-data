@@ -8,16 +8,7 @@ import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { removeOperatorsErrorId, searchInputId } from '../searchOperators';
 import { operatorHasBodsServices } from '../../data/auroradb';
 
-export const removeOperatorsFromPreviouslySelectedOperators = (
-    rawList: string[],
-    selectedOperators: Operator[],
-): Operator[] => {
-    const listToRemove = new Set(rawList.map((item) => item.split('#')[0]));
-    const updatedList = selectedOperators.filter((operator) => !listToRemove.has(operator.nocCode));
-    return updatedList;
-};
-
-export const addOperatorsToPreviouslySelectedOperators = (rawList: string[]): Operator[] => {
+export const replaceSelectedOperatorsWithUserSelectedOperators = (rawList: string[]): Operator[] => {
     if (rawList.length === 0) {
         const selectedOperators: Operator[] = [];
         return selectedOperators;
@@ -60,11 +51,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (userSelectedOperators) {
                 const rawList: string[] =
                     typeof userSelectedOperators === 'string' ? [userSelectedOperators] : userSelectedOperators;
-                selectedOperators = addOperatorsToPreviouslySelectedOperators(rawList);
+                selectedOperators = replaceSelectedOperatorsWithUserSelectedOperators(rawList);
             } else {
                 selectedOperators = [];
             }
-            updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
 
             const refinedSearch = removeExcessWhiteSpace(searchText);
             if (refinedSearch.length < 3) {
@@ -78,6 +68,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     id: searchInputId,
                 });
             } else {
+                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
                 redirectTo(res, `/searchOperators?searchOperator=${refinedSearch}`);
                 return;
             }
@@ -102,7 +93,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
             const rawList: string[] =
                 typeof userSelectedOperators === 'string' ? [userSelectedOperators] : userSelectedOperators;
-            selectedOperators = addOperatorsToPreviouslySelectedOperators(rawList);
+            selectedOperators = replaceSelectedOperatorsWithUserSelectedOperators(rawList);
             const operatorsWithNoServices = await getOperatorsWithoutServices(selectedOperators);
             if (operatorsWithNoServices.length > 0) {
                 errors.push({

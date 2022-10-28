@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import uniqBy from 'lodash/uniqBy';
@@ -18,8 +19,8 @@ const title = 'Search Operators - Create Fares Data Service';
 const description = 'Search Operators page for the Create Fares Data Service';
 
 export const searchInputId = 'search-input';
-export const addOperatorsErrorId = 'add-operator-checkbox-0';
-export const removeOperatorsErrorId = 'remove-operator-checkbox-0';
+export const addOperatorsErrorId = 'add-operator-0';
+export const removeOperatorsErrorId = 'remove-operator-0';
 
 export interface SearchOperatorProps {
     searchText: string;
@@ -50,44 +51,49 @@ export const showSelectedOperators = (
     };
     return (
         <>
-            <table className="border-collaps width-100 margin-top-140">
-                <caption className="govuk-table__caption govuk-table__caption--m">Selected operator(s)</caption>
-                <thead className="selectedOperators-header-color">
-                    <tr className="">
-                        <th scope="col" className="left-padding govuk-table__header font-gds-transport">
-                            {selectedOperators.length} added
-                        </th>
-                        <th scope="cor" className="govuk-table__header text-align-right">
-                            <button
-                                className="selectedOperators-button button-link govuk-!-margin-left-2"
-                                onClick={() => removeOperator('', true)}
-                                name="removeOperator"
+            <div className={`${removeOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                <table className="border-collapse width-100 margin-top-140">
+                    <caption className={`govuk-table__caption govuk-table__caption--m `}>Selected operator(s)</caption>
+                    <thead className="selectedOperators-header-color">
+                        <tr className="">
+                            <th
+                                scope="col"
+                                className={`left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16`}
                             >
-                                Remove all
-                            </button>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody className="govuk-table__body">
-                    {selectedOperators.map((operator, index) => (
-                        <tr key={index} className="border-top">
-                            <td className="govuk-label govuk-!-font-size-16" key={`td0-${index}`}>
-                                {operator.name} - {operator.nocCode}
-                            </td>
-                            <td className="govuk-link text-align-center " key={`td1-${index}`}>
+                                {selectedOperators.length} added
+                            </th>
+                            <th scope="cor" className="govuk-table__header text-align-right">
                                 <button
-                                    className="govuk-link  align-top button-link govuk-!-margin-left-2"
-                                    onClick={() => removeOperator(operator.nocCode)}
+                                    className="selectedOperators-button button-link govuk-!-margin-left-2"
+                                    onClick={() => removeOperator('', true)}
                                     name="removeOperator"
-                                    value={operator.name}
                                 >
-                                    Remove
+                                    Remove all
                                 </button>
-                            </td>
+                            </th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody className="govuk-table__body">
+                        {selectedOperators.map((operator, index) => (
+                            <tr key={index} className="border-top">
+                                <td className="govuk-label govuk-!-font-size-16" key={`td0-${index}`}>
+                                    {operator.name} - {operator.nocCode}
+                                </td>
+                                <td className="govuk-link text-align-center " key={`td1-${index}`}>
+                                    <button
+                                        className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                                        onClick={() => removeOperator(operator.nocCode)}
+                                        name="removeOperator"
+                                        value={operator.name}
+                                    >
+                                        Remove
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </>
     );
 };
@@ -150,7 +156,7 @@ export const renderSearchBox = (
                     return (
                         <>
                             <input
-                                id={`add-operator-checkbox-${index}`}
+                                id={`add-operator-${index}`}
                                 name="userSelectedOperators"
                                 type="hidden"
                                 value={`${nocCode}#${name}`}
@@ -186,28 +192,22 @@ export const showSearchResults = (
     const [searchResultsCount, setSearchResultsCount] = useState(
         databaseSearchResults ? databaseSearchResults.length : 0,
     );
-    const [showSearchResultsLine, setShowSearchResultsLine] = useState(true);
     const [searchResults, setSearchResults] = useState(databaseSearchResults);
     const addOperator = (operatorNocCode: string, operatorName: string) => {
-        const newSelectedOperators = [...selectedOperators, {nocCode: operatorNocCode, name: operatorName}];
+        const newSelectedOperators = [...selectedOperators, { nocCode: operatorNocCode, name: operatorName }];
         const newUniqtSelectedOperators = uniqBy(newSelectedOperators, 'nocCode');
         setSelectedOperators(newUniqtSelectedOperators);
         if (searchResults.length > 0) {
-            const newCount = searchResultsCount - 1;
-            setSearchResultsCount(newCount);
+            setSearchResultsCount(searchResultsCount - 1);
         }
         setSearchResults(searchResults.filter((operator) => operator.nocCode !== operatorNocCode));
     };
-    if (databaseSearchResults.length > 0 && searchResultsCount === 0) {
-        setSearchResultsCount(-1);
-        setShowSearchResultsLine(false);
-    }
 
     return (
         <div className={`govuk-form-group ${addOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby="operator-search-results">
                 <legend className="govuk-fieldset__legend">
-                    {showSearchResultsLine && (
+                    {searchResultsCount !== 0 && (
                         <h2 className="govuk-body-l govuk-!-margin-bottom-0" id="operator-search-results">
                             Your search for &apos;<strong>{searchText}</strong>&apos; returned
                             <strong>
@@ -233,6 +233,8 @@ export const showSearchResults = (
                                 return (
                                     <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
                                         <label
+                                            // eslint-disable-next-line jsx-a11y/aria-role
+                                            role="input"
                                             className="govuk-label govuk-checkboxes__label"
                                             htmlFor={`add-operator-checkbox-${index}`}
                                             onClick={() => addOperator(operator.nocCode, operator.name)}
@@ -289,7 +291,7 @@ const SearchOperators = ({
                                 return (
                                     <>
                                         <input
-                                            id={`add-operator-checkbox-${index}`}
+                                            id={`add-operator-${index}`}
                                             name="userSelectedOperators"
                                             type="hidden"
                                             value={`${nocCode}#${name}`}
