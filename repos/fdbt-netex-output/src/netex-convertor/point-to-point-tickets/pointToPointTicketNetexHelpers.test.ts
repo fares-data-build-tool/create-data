@@ -1750,7 +1750,7 @@ describe('Netex Helpers', () => {
                 singleTicket.type,
                 singleTicket.passengerType,
                 'salesOfferPackageName',
-                productNameForPlainText
+                productNameForPlainText,
             );
 
             const cells = fareTables.flatMap((table: NetexObject) => {

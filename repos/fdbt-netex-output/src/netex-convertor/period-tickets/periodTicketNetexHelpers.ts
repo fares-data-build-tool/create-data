@@ -410,7 +410,7 @@ const getFlatFareList = (
                         version: '1.0',
                         id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}`,
                         Name: {
-                            $t:`FareTable for ${product.productName}`,
+                            $t: `FareTable for ${product.productName}`,
                         },
                         prices: {
                             DistanceMatrixElementPrice: {
