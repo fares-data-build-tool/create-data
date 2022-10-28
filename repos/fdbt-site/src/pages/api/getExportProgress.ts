@@ -43,6 +43,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 const exportStarted = await getFileCreationDate(MATCHING_DATA_BUCKET_NAME, prefix);
 
+                logger.info('', {
+                    context: 'api.getExportProgress.getFileCreationDate',
+                    message: `Export start time was: ${exportStarted}`,
+                });
+
                 return { name, matchingDataCount, netexCount, signedUrl, exportStarted };
             }),
         );

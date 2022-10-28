@@ -37,7 +37,7 @@ export const exportStartedOverAnHourAgo = (netexExport: Export | undefined): boo
 };
 
 const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
-    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000 });
+    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 5000 });
 
     const exports: Export[] | undefined = data?.exports;
 
@@ -49,7 +49,8 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
         ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)
         : undefined;
 
-    const exportInProgressStartedOverAnHourAgo = exports ? exportStartedOverAnHourAgo(exportInProgress) : false;
+    const exportInProgressStartedOverAnHourAgo =
+        exports && exportInProgress ? exportStartedOverAnHourAgo(exportInProgress) : false;
 
     const [showPopup, setShowPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
