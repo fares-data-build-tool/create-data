@@ -36,17 +36,21 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 const signedUrl = complete ? await retrieveExportZip(noc, name) : undefined;
 
-                logger.info('', {
-                    context: 'api.getExportProgress',
-                    message: 'Getting export start time',
-                });
+                let exportStarted = undefined;
 
-                const exportStarted = await getFileCreationDate(MATCHING_DATA_BUCKET_NAME, prefix);
+                if (matchingDataCount > 0 && !complete) {
+                    logger.info('', {
+                        context: 'api.getExportProgress',
+                        message: 'Getting export start time',
+                    });
 
-                logger.info('', {
-                    context: 'api.getExportProgress.getFileCreationDate',
-                    message: `Export start time was: ${exportStarted}`,
-                });
+                    exportStarted = await getFileCreationDate(MATCHING_DATA_BUCKET_NAME, prefix);
+
+                    logger.info('', {
+                        context: 'api.getExportProgress.getFileCreationDate',
+                        message: `Export start time was: ${exportStarted}`,
+                    });
+                }
 
                 return { name, matchingDataCount, netexCount, signedUrl, exportStarted };
             }),
