@@ -241,7 +241,7 @@ export const getGeoZoneFareTable = (
                         version: '1.0',
                         id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}@product-${indexProduct}@SOP-${indexSop}@zone`,
                         Name: {
-                            $t: `${product.productName} - ${salesOfferPackage.name}  - ${userPeriodTicket.passengerType}`,
+                            $t: `FareTable for ${product.productName}`,
                         },
                         specifics: {
                             TariffZoneRef: {
@@ -337,7 +337,7 @@ const getMultiServiceList = (
                         version: '1.0',
                         id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}@product-${indexOne}@SOP-${indexTwo}@service`,
                         Name: {
-                            $t: `${product.productName} - ${salesOfferPackage.name}  - ${userPeriodTicket.passengerType}`,
+                            $t: `FareTable for ${product.productName}`,
                         },
                         includes: {
                             FareTable: {
@@ -410,7 +410,7 @@ const getFlatFareList = (
                         version: '1.0',
                         id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}`,
                         Name: {
-                            $t: `${product.productName} - ${salesOfferPackage.name} - ${userPeriodTicket.passengerType}`,
+                            $t: `FareTable for ${product.productName}`,
                         },
                         prices: {
                             DistanceMatrixElementPrice: {

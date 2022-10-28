@@ -1743,12 +1743,14 @@ describe('Netex Helpers', () => {
 
     describe('getFareTables', () => {
         it('gets the fare tables for all fare zones and price groups', () => {
+            const productNameForPlainText = 'adult - single';
             const fareTables = netexHelpers.getInnerFareTables(
                 fareZones.slice(0, -1),
                 lineIdName,
                 singleTicket.type,
                 singleTicket.passengerType,
                 'salesOfferPackageName',
+                productNameForPlainText,
             );
 
             const cells = fareTables.flatMap((table: NetexObject) => {
