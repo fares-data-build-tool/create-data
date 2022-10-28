@@ -245,19 +245,24 @@ export const getS3FolderCount = async (bucketName: string, path: string): Promis
 };
 
 export const getFileCreationDate = async (bucketName: string, path: string): Promise<Date | undefined> => {
-    const response = await s3
-        .listObjectsV2({
-            Bucket: bucketName,
-            Prefix: path,
-            Delimiter: '/',
-        })
-        .promise();
+    try {
+        const response = await s3
+            .listObjectsV2({
+                Bucket: bucketName,
+                Prefix: path,
+                Delimiter: '/',
+            })
+            .promise();
 
-    if (!response.Contents || !(response.Contents?.length > 0)) {
+        if (!response.Contents || !(response.Contents?.length > 0)) {
+            return undefined;
+        }
+
+        return response.Contents[0].LastModified;
+    } catch (error) {
+        logger.info('', error);
         return undefined;
     }
-
-    return response.Contents[0].LastModified;
 };
 
 export const getS3Exports = async (noc: string): Promise<string[]> => {
