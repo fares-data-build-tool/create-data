@@ -8,6 +8,7 @@ import { getAllProductsByNoc as getAllProductsByNoc } from '../../data/auroradb'
 import useSWR from 'swr';
 import { Export } from '../api/getExportProgress';
 import InfoPopup from '../../components/InfoPopup';
+import logger from '../../utils/logger';
 
 const title = 'Exports';
 const description = 'View and access your settings in one place.';
@@ -37,7 +38,11 @@ export const exportStartedOverAnHourAgo = (netexExport: Export | undefined): boo
 };
 
 const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
-    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 5000 });
+    const { data, error } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 5000 });
+
+    if (error) {
+        logger.error('', { error });
+    }
 
     const exports: Export[] | undefined = data?.exports;
 
