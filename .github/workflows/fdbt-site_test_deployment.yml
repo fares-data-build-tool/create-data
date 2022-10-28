@@ -126,7 +126,7 @@ jobs:
         
     - name: Wait for Service stability
       run: |
-        aws ecs wait services-stable --services ${{ env.ECS_SERVICE }}
+        aws ecs wait services-stable --cluster ${{ env.ECS_CLUSTER }} --services ${{ env.ECS_SERVICE }}
 
     - name: run-ui-tests
       env:
