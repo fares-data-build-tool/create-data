@@ -18,6 +18,24 @@ interface GlobalSettingsProps {
     operatorHasProducts: boolean;
 }
 
+export const exportStartedOverAnHourAgo = (netexExport: Export | undefined): boolean => {
+    if (!netexExport) {
+        return false;
+    }
+
+    const { exportStarted } = netexExport;
+
+    if (!exportStarted) {
+        return false;
+    }
+
+    const currentDate = new Date();
+
+    const hoursDifference = Math.abs(currentDate.getTime() - exportStarted.getTime()) / 360000;
+
+    return hoursDifference > 0;
+};
+
 const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
     const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000 });
 
@@ -27,12 +45,11 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
         ? exports.some((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)
         : false;
 
-    const nameOfExportInProgress: string | undefined = exports
-        ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)?.name
+    const exportInProgress: Export | undefined = exports
+        ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)
         : undefined;
 
     const [showPopup, setShowPopup] = useState(false);
-    const [showCancelPopup, setShowCancelPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
 
     const exportAllowed = operatorHasProducts && !anExportIsInProgress && exports && !buttonClicked;
@@ -57,21 +74,14 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                         Export all fares
                                     </button>
                                 </CsrfForm>
-                            ) : (
+                            ) : exportStartedOverAnHourAgo(exportInProgress) ? (
                                 <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
-                                    <input type="hidden" name="exportName" value={nameOfExportInProgress} />
-                                    <button
-                                        type="submit"
-                                        className="govuk-button govuk-button--warning"
-                                        onClick={() => {
-                                            setShowCancelPopup(true);
-                                            setButtonClicked(true);
-                                        }}
-                                    >
+                                    <input type="hidden" name="exportName" value={exportInProgress?.name} />
+                                    <button type="submit" className="govuk-button govuk-button--warning">
                                         Cancel export in progress
                                     </button>
                                 </CsrfForm>
-                            )}
+                            ) : null}
                         </div>
                         <div className="govuk-grid-row">
                             <div className="govuk-grid-column-two-thirds">
@@ -80,9 +90,12 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                         Export is disabled as you have no products.
                                     </div>
                                 ) : null}
-                                {anExportIsInProgress ? (
+                                {anExportIsInProgress && exportStartedOverAnHourAgo(exportInProgress) ? (
                                     <div className="govuk-inset-text govuk-!-margin-top-0">
-                                        Only click the cancel export button if you are sure it has frozen.
+                                        The cancel export button is available as it is likely your export has failed. If
+                                        you think you know which product is to blame for your export failing, cancel
+                                        your export, then try deleting the product and clicking export again. Otherwise,
+                                        let us know via the contact page.
                                     </div>
                                 ) : null}
                                 <p className="govuk-body-m govuk-!-margin-bottom-9">
@@ -155,13 +168,6 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                 title="We are preparing your export"
                                 text="Your export will take a few seconds to show in the table below."
                                 okActionHandler={() => setShowPopup(false)}
-                            />
-                        )}
-                        {showCancelPopup && (
-                            <InfoPopup
-                                title="Your current export has been cancelled"
-                                text="If you think you know which product is to blame for your export failing, try deleting it. Otherwise, let us know via the contact page."
-                                okActionHandler={() => setShowCancelPopup(false)}
                             />
                         )}
                     </div>

@@ -26,26 +26,29 @@ describe('reuseOperatorGroup', () => {
         await reuseOperatorGroup(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
-            { errorMessage: 'Choose one of the options below', id: 'conditional-form-group' },
+            { errorMessage: 'Choose an operator group from the options below', id: 'operatorGroup' },
         ]);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/reuseOperatorGroup' });
     });
 
-    it('should redirect back to reuseOperatorGroup with errors if the user selects yes but does not select an operator group name', async () => {
+    it('should redirect back to reuseOperatorGroup with errors if the user post the invalid operator group id', async () => {
+        const getOperatorGroupByNocAndId = jest.spyOn(auroradb, 'getOperatorGroupByNocAndId');
+
+        getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue(undefined);
         const { req, res } = getMockRequestAndResponse({
-            body: { reuseGroupChoice: 'Yes' },
+            body: { operatorGroupId: '99' },
             mockWriteHeadFn: writeHeadMock,
         });
         await reuseOperatorGroup(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
-            { errorMessage: 'Choose a premade operator group from the options below', id: 'premadeOperatorGroup' },
+            { errorMessage: 'Select a valid operator group', id: 'operatorGroup' },
         ]);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/reuseOperatorGroup' });
     });
 
-    it('should update the MULTIPLE_OPERATOR_ATTRIBUTE with the selected operator group operators if chosen in dropdown', async () => {
-        const getOperatorGroupsByNameAndNocSpy = jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc');
+    it('should update the MULTIPLE_OPERATOR_ATTRIBUTE with the selected operator group operators if selected', async () => {
+        const getOperatorGroupByNocAndId = jest.spyOn(auroradb, 'getOperatorGroupByNocAndId');
         const testOperators = [
             {
                 name: 'Best Op 1',
@@ -60,40 +63,29 @@ describe('reuseOperatorGroup', () => {
                 nocCode: 'BOS',
             },
         ];
-        getOperatorGroupsByNameAndNocSpy.mockImplementation().mockResolvedValue([
-            {
-                name: 'Best Ops',
-                operators: testOperators,
-                id: 3,
-            },
-        ]);
+
+        getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue({
+            id: 1,
+            name: 'Best Ops',
+            operators: testOperators,
+        });
         const { req, res } = getMockRequestAndResponse({
-            body: { reuseGroupChoice: 'Yes', premadeOperatorGroup: 'Best Ops' },
+            body: { operatorGroupId: '1' },
             mockWriteHeadFn: writeHeadMock,
         });
         await reuseOperatorGroup(req, res);
 
-        expect(getOperatorGroupsByNameAndNocSpy).toBeCalledWith('Best Ops', 'TEST');
+        expect(getOperatorGroupByNocAndId).toBeCalledWith(1, 'TEST');
         expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
             selectedOperators: testOperators,
+            id: 1,
         });
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleProducts' });
     });
 
-    it('should do nothing but redirect on to searchOperators if no is selected', async () => {
-        const { req, res } = getMockRequestAndResponse({
-            body: { reuseGroupChoice: 'No' },
-            mockWriteHeadFn: writeHeadMock,
-        });
-        await reuseOperatorGroup(req, res);
-
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/searchOperators' });
-    });
-
     it('should redirect to /multipleOperatorsServiceList if operator group reused, is scheme operator, and fareType is flat fare', async () => {
-        const getOperatorGroupsByNameAndNocSpy = jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc');
+        const getOperatorGroupByNocAndId = jest.spyOn(auroradb, 'getOperatorGroupByNocAndId');
         const testOperators = [
             {
                 name: 'Best Op 1',
@@ -108,17 +100,16 @@ describe('reuseOperatorGroup', () => {
                 nocCode: 'BOS',
             },
         ];
-        getOperatorGroupsByNameAndNocSpy.mockImplementation().mockResolvedValue([
-            {
-                name: 'Best Ops',
-                operators: testOperators,
-                id: 4,
-            },
-        ]);
+
+        getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue({
+            id: 1,
+            name: 'Best Ops',
+            operators: testOperators,
+        });
         const isSchemeOperatorSpy = jest.spyOn(index, 'isSchemeOperator');
         isSchemeOperatorSpy.mockImplementation(() => true);
         const { req, res } = getMockRequestAndResponse({
-            body: { reuseGroupChoice: 'Yes', premadeOperatorGroup: 'Best Ops' },
+            body: { operatorGroupId: '1' },
             session: {
                 [TICKET_REPRESENTATION_ATTRIBUTE]: {
                     name: 'multipleServices',

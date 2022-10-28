@@ -10,6 +10,7 @@ import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { updateSessionAttribute } from '../utils/sessions';
 import { FromDb } from 'fdbt-types/matchingJsonTypes';
 import { GS_OPERATOR_GROUP_ATTRIBUTE, MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE } from '../constants/attributes';
+import OperatorGroupCard from '../components/OperatorGroupCard';
 
 const title = 'Operator Groups - Create Fares Data Service';
 const description = 'View and edit your operator groups.';
@@ -66,56 +67,23 @@ const ViewOperatorGroups = ({
                             <NoOperatorGroups />
                         ) : (
                             <div className="card-row">
-                                {operatorGroups.map((operatorGroup) => (
+                                {operatorGroups.map((operatorGroup, index) => (
                                     <>
-                                        <div className="card">
-                                            <div className="card__body">
-                                                <div className="card__actions">
-                                                    <ul className="actions__list">
-                                                        <li className="actions__item">
-                                                            <a
-                                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                                                href={`/searchOperators?id=${operatorGroup.id}`}
-                                                            >
-                                                                Edit
-                                                            </a>
-                                                        </li>
+                                        <OperatorGroupCard
+                                            index={index}
+                                            operatorGroup={operatorGroup}
+                                            key={operatorGroup.id.toString()}
+                                            defaultChecked={false}
+                                            deleteActionHandler={deleteActionHandler}
+                                        />
 
-                                                        <li className="actions__item">
-                                                            <button
-                                                                className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                                                onClick={() =>
-                                                                    deleteActionHandler(
-                                                                        operatorGroup.id,
-                                                                        operatorGroup.name,
-                                                                    )
-                                                                }
-                                                            >
-                                                                Delete
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                {popUpState && (
-                                                    <DeleteConfirmationPopup
-                                                        entityName={operatorGroup.name}
-                                                        deleteUrl={buildDeleteUrl(operatorGroup.id, csrfToken)}
-                                                        cancelActionHandler={cancelActionHandler}
-                                                    />
-                                                )}
-                                                <h4 className="govuk-heading-m govuk-!-padding-bottom-6">
-                                                    {operatorGroup.name}
-                                                </h4>
-                                                {operatorGroup.operators.map((content) => (
-                                                    <>
-                                                        <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                                            <span className="govuk-!-font-weight-bold"></span>{' '}
-                                                            {content.name} - {content.nocCode}
-                                                        </p>
-                                                    </>
-                                                ))}
-                                            </div>
-                                        </div>
+                                        {popUpState && (
+                                            <DeleteConfirmationPopup
+                                                entityName={popUpState.operatorGroupName}
+                                                deleteUrl={buildDeleteUrl(popUpState.operatorGroupId, csrfToken)}
+                                                cancelActionHandler={cancelActionHandler}
+                                            />
+                                        )}
                                     </>
                                 ))}
                             </div>

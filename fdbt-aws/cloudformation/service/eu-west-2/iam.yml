@@ -195,6 +195,7 @@ Resources:
                   - !Sub arn:aws:s3:::fdbt-matching-data-${Stage}
                   - !Sub arn:aws:s3:::fdbt-products-data-${Stage}
                   - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}
+                  - !Sub arn:aws:s3:::fdbt-unvalidated-netex-data-${Stage}
               - Effect: Allow
                 Action:
                   - "s3:PutObject"

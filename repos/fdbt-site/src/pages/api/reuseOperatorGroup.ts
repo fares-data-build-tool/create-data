@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { getAndValidateNoc, isSchemeOperator, redirectTo, redirectToError } from '../../utils/apiUtils/index';
-import { getOperatorGroupsByNameAndNoc } from '../../data/auroradb';
+import { getOperatorGroupByNocAndId } from '../../data/auroradb';
 import {
     FARE_TYPE_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
@@ -12,33 +12,32 @@ import { updateSessionAttribute, getSessionAttribute } from '../../utils/session
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const { reuseGroupChoice, premadeOperatorGroup } = req.body;
-        if (!reuseGroupChoice) {
-            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
-                { errorMessage: 'Choose one of the options below', id: 'conditional-form-group' },
-            ]);
-            redirectTo(res, '/reuseOperatorGroup');
-            return;
-        }
-
-        if (reuseGroupChoice === 'No') {
-            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
-            redirectTo(res, '/searchOperators');
-            return;
-        }
-
-        if (!premadeOperatorGroup) {
-            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
-                { errorMessage: 'Choose a premade operator group from the options below', id: 'premadeOperatorGroup' },
-            ]);
-            redirectTo(res, '/reuseOperatorGroup');
-            return;
-        }
-
+        const selectedOperatorGroup = Number(req.body.operatorGroupId);
         const noc = getAndValidateNoc(req, res);
-        const selectedOperators = (await getOperatorGroupsByNameAndNoc(premadeOperatorGroup, noc))[0].operators;
-        updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
-        updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
+
+        if (!selectedOperatorGroup) {
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
+                { errorMessage: 'Choose an operator group from the options below', id: 'operatorGroup' },
+            ]);
+            redirectTo(res, '/reuseOperatorGroup');
+            return;
+        }
+
+        const multipleOperators = await getOperatorGroupByNocAndId(selectedOperatorGroup, noc);
+
+        if (multipleOperators) {
+            updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
+                selectedOperators: multipleOperators.operators,
+                id: multipleOperators.id,
+            });
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
+        } else {
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
+                { errorMessage: 'Select a valid operator group', id: 'operatorGroup' },
+            ]);
+            redirectTo(res, '/reuseOperatorGroup');
+            return;
+        }
 
         const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
