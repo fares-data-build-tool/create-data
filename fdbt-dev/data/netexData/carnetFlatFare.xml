@@ -396,7 +396,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(cash)@senior">
-                  <Name>Weekly Rider - Onboard (cash) - senior</Name>
+                  <Name>FareTable for Weekly Rider</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Onboard_(cash)@senior">
                       <Amount>14</Amount>
@@ -417,7 +417,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(contactless)@senior">
-                  <Name>Weekly Rider - Onboard (contactless) - senior</Name>
+                  <Name>FareTable for Weekly Rider</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Onboard_(contactless)@senior">
                       <Amount>14</Amount>
@@ -438,7 +438,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Online_(smart_card)@senior">
-                  <Name>Weekly Rider - Online (smart card) - senior</Name>
+                  <Name>FareTable for Weekly Rider</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Online_(smart_card)@senior">
                       <Amount>14</Amount>
@@ -459,7 +459,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Mobile_App@senior">
-                  <Name>Weekly Rider - Mobile App - senior</Name>
+                  <Name>FareTable for Weekly Rider</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Mobile_App@senior">
                       <Amount>14</Amount>
@@ -480,7 +480,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@All_Encompassing@senior">
-                  <Name>Weekly Rider - All Encompassing - senior</Name>
+                  <Name>FareTable for Weekly Rider</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@All_Encompassing@senior">
                       <Amount>14</Amount>
@@ -501,7 +501,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@School_Service_Payment_Methods@senior">
-                  <Name>Weekly Rider - School Service Payment Methods - senior</Name>
+                  <Name>FareTable for Weekly Rider</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@School_Service_Payment_Methods@senior">
                       <Amount>14</Amount>

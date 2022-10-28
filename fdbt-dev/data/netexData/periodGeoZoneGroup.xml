@@ -497,7 +497,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@group@product-0@SOP-0@zone">
-                  <Name>Product 1 - Onboard (cash)  - group</Name>
+                  <Name>FareTable for Product 1</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>
@@ -531,7 +531,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@group@product-0@SOP-1@zone">
-                  <Name>Product 1 - Onboard (contactless)  - group</Name>
+                  <Name>FareTable for Product 1</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>
@@ -565,7 +565,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@group@product-0@SOP-2@zone">
-                  <Name>Product 1 - Online (smart card)  - group</Name>
+                  <Name>FareTable for Product 1</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>
@@ -599,7 +599,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Mobile_App@group@product-0@SOP-3@zone">
-                  <Name>Product 1 - Mobile App  - group</Name>
+                  <Name>FareTable for Product 1</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>
