@@ -285,7 +285,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:test@Onboard_(cash)@anyone">
-                  <Name>test - Onboard (cash) - anyone</Name>
+                  <Name>FareTable for test</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:test@Onboard_(cash)@anyone">
                       <Amount>4.99</Amount>
@@ -305,7 +305,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:test@Onboard_(contactless)@anyone">
-                  <Name>test - Onboard (contactless) - anyone</Name>
+                  <Name>FareTable for test</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:test@Onboard_(contactless)@anyone">
                       <Amount>8.88</Amount>
@@ -325,7 +325,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:test@Online_(smart_card)@anyone">
-                  <Name>test - Online (smart card) - anyone</Name>
+                  <Name>FareTable for test</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:test@Online_(smart_card)@anyone">
                       <Amount>9.99</Amount>

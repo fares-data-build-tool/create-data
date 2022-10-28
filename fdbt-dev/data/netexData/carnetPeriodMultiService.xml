@@ -402,7 +402,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Test_Product_1@Online_(smart_card)@youngPerson@product-0@SOP-0@service">
-                  <Name>Test Product 1 - Online (smart card)  - youngPerson</Name>
+                  <Name>FareTable for Test Product 1</Name>
                   <includes>
                     <FareTable version="1.0" id="op:Test_Product_1@Online_(smart_card)@youngPerson@service@nested">
                       <pricesFor>
@@ -434,7 +434,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Test_Product_1@Mobile_App@youngPerson@product-0@SOP-1@service">
-                  <Name>Test Product 1 - Mobile App  - youngPerson</Name>
+                  <Name>FareTable for Test Product 1</Name>
                   <includes>
                     <FareTable version="1.0" id="op:Test_Product_1@Mobile_App@youngPerson@service@nested">
                       <pricesFor>
@@ -466,7 +466,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Test_Product_1@School_Service_Payment_Methods@youngPerson@product-0@SOP-2@service">
-                  <Name>Test Product 1 - School Service Payment Methods  - youngPerson</Name>
+                  <Name>FareTable for Test Product 1</Name>
                   <includes>
                     <FareTable version="1.0" id="op:Test_Product_1@School_Service_Payment_Methods@youngPerson@service@nested">
                       <pricesFor>

@@ -369,7 +369,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:JTest00@Onboard_(cash)@adult@product-0@SOP-0@zone">
-                  <Name>JTest00 - Onboard (cash)  - adult</Name>
+                  <Name>FareTable for JTest00</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>
@@ -402,7 +402,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:JTest00@Onboard_(contactless)@adult@product-0@SOP-1@zone">
-                  <Name>JTest00 - Onboard (contactless)  - adult</Name>
+                  <Name>FareTable for JTest00</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>
