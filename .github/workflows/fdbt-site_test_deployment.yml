@@ -124,10 +124,9 @@ jobs:
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
         
-    - name: Wait for Service stability
-      run: |
-        aws ecs wait services-stable --cluster ${{ env.ECS_CLUSTER }} --services ${{ env.ECS_SERVICE }}
-
+    - name: Sleep for 10 mins
+      run: sleep 10m
+      shell: bash
     - name: run-ui-tests
       env:
         CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
