@@ -2,7 +2,12 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
-import SearchOperators, { getServerSideProps, SearchOperatorProps } from '../../src/pages/searchOperators';
+import SearchOperators, {
+    getServerSideProps,
+    SearchOperatorProps,
+    ShowSelectedOperators,
+    ShowSearchResults,
+} from '../../src/pages/searchOperators';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import { ErrorInfo, Operator } from '../../src/interfaces';
 
@@ -29,7 +34,13 @@ describe('pages', () => {
 
         it('should render just the search input when the user first visits the page', () => {
             const tree = shallow(
-                <SearchOperators errors={[]} searchText="" searchResults={[]} preSelectedOperators={[]} csrfToken="" />,
+                <SearchOperators
+                    errors={[]}
+                    searchText=""
+                    databaseSearchResults={[]}
+                    preSelectedOperators={[]}
+                    csrfToken=""
+                />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -40,7 +51,7 @@ describe('pages', () => {
                 <SearchOperators
                     errors={[]}
                     searchText="blac"
-                    searchResults={[{ nocCode: 'BLAC', name: 'Blackpool' }]}
+                    databaseSearchResults={[{ nocCode: 'BLAC', name: 'Blackpool' }]}
                     preSelectedOperators={[]}
                     csrfToken=""
                 />,
@@ -54,7 +65,7 @@ describe('pages', () => {
                 <SearchOperators
                     errors={[{ errorMessage: 'Search requires a minimum of three characters', id: 'search-input' }]}
                     searchText=""
-                    searchResults={[]}
+                    databaseSearchResults={[]}
                     preSelectedOperators={[]}
                     csrfToken=""
                 />,
@@ -68,7 +79,7 @@ describe('pages', () => {
                 <SearchOperators
                     errors={[]}
                     searchText="blac"
-                    searchResults={[{ nocCode: 'BLAC', name: 'Blackpool' }]}
+                    databaseSearchResults={[{ nocCode: 'BLAC', name: 'Blackpool' }]}
                     preSelectedOperators={[]}
                     csrfToken=""
                 />,
@@ -82,7 +93,7 @@ describe('pages', () => {
                 <SearchOperators
                     errors={[]}
                     searchText=""
-                    searchResults={[]}
+                    databaseSearchResults={[]}
                     preSelectedOperators={mockOperators}
                     csrfToken=""
                 />,
@@ -96,7 +107,7 @@ describe('pages', () => {
                 <SearchOperators
                     errors={[]}
                     searchText=""
-                    searchResults={[]}
+                    databaseSearchResults={[]}
                     preSelectedOperators={mockOperators}
                     csrfToken=""
                 />,
@@ -110,7 +121,7 @@ describe('pages', () => {
                 <SearchOperators
                     errors={[]}
                     searchText="warri"
-                    searchResults={[mockOperators[0]]}
+                    databaseSearchResults={[mockOperators[0]]}
                     preSelectedOperators={mockOperators}
                     csrfToken=""
                 />,
@@ -127,7 +138,7 @@ describe('pages', () => {
                     props: {
                         errors: [],
                         searchText: '',
-                        searchResults: [],
+                        databaseSearchResults: [],
                         preSelectedOperators: [],
                         csrfToken: '',
                     },
@@ -149,7 +160,7 @@ describe('pages', () => {
                     props: {
                         errors: mockErrors,
                         searchText: '',
-                        searchResults: [],
+                        databaseSearchResults: [],
                         preSelectedOperators: [],
                         csrfToken: '',
                     },
@@ -172,7 +183,7 @@ describe('pages', () => {
                     props: {
                         errors: mockErrors,
                         searchText: 'asda',
-                        searchResults: [],
+                        databaseSearchResults: [],
                         preSelectedOperators: [],
                         csrfToken: '',
                     },
@@ -192,7 +203,7 @@ describe('pages', () => {
                     props: {
                         errors: [],
                         searchText: 'blac',
-                        searchResults: mockOperators,
+                        databaseSearchResults: mockOperators,
                         preSelectedOperators: [],
                         csrfToken: '',
                     },
@@ -213,7 +224,7 @@ describe('pages', () => {
                     props: {
                         errors: [],
                         searchText: 'blac',
-                        searchResults: mockOperators,
+                        databaseSearchResults: mockOperators,
                         preSelectedOperators: [],
                         csrfToken: '',
                     },
@@ -232,6 +243,64 @@ describe('pages', () => {
 
                 expect(getSearchOperatorsBySearchTextSpy).toHaveBeenCalled();
                 expect(result).toEqual(mockProps);
+            });
+        });
+
+        describe('Update selectedOperators', () => {
+            it('should remove selected operator from selectedOperator list', () => {
+                const setSelectedOperators = jest.fn();
+                const mocSelectedOperators: Operator[] = [
+                    { nocCode: 'BLAC', name: 'Blackpool Transport' },
+                    { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
+                ];
+                const mocErrors: ErrorInfo[] = [];
+                const wrapper = shallow(ShowSelectedOperators(mocSelectedOperators, setSelectedOperators, mocErrors));
+                wrapper.find('#remove-0').simulate('click');
+                expect(setSelectedOperators).toBeCalledWith([{ nocCode: 'LNUD', name: 'The Blackburn Bus Company' }]);
+            });
+            it('should remove all operators from selectedOperator list', () => {
+                const setSelectedOperators = jest.fn();
+                const mocSelectedOperators: Operator[] = [
+                    { nocCode: 'BLAC', name: 'Blackpool Transport' },
+                    { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
+                ];
+                const mocErrors: ErrorInfo[] = [];
+                const wrapper = shallow(ShowSelectedOperators(mocSelectedOperators, setSelectedOperators, mocErrors));
+                wrapper.find('#removeAll').simulate('click');
+                expect(setSelectedOperators).toBeCalledWith([]);
+            });
+            it('should add operators to selectedOperator list', () => {
+                const mocksearchText = 'blac';
+                const mockErrors: ErrorInfo[] = [];
+                const mockDatabaseSearchResultsCount = 2;
+                const mockSelectedOperators: Operator[] = [];
+                const setSelectedOperators = jest.fn();
+                const mockSearchResultsCount = 2;
+                const setSearchResultsCount = jest.fn();
+                const mocksearchResults: Operator[] = [
+                    { nocCode: 'BLAC', name: 'Blackpool Transport' },
+                    { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
+                ];
+                const setSearchResults = jest.fn();
+
+                const wrapper = shallow(
+                    ShowSearchResults(
+                        mocksearchText,
+                        mockErrors,
+                        mockDatabaseSearchResultsCount,
+                        mockSelectedOperators,
+                        setSelectedOperators,
+                        mockSearchResultsCount,
+                        setSearchResultsCount,
+                        mocksearchResults,
+                        setSearchResults,
+                    ),
+                );
+
+                wrapper.find('#operator-to-add-0').simulate('click');
+                expect(setSelectedOperators).toBeCalledWith([{ nocCode: 'BLAC', name: 'Blackpool Transport' }]);
+                expect(setSearchResultsCount).toBeCalledWith(1);
+                expect(setSearchResults).toBeCalledWith([{ nocCode: 'LNUD', name: 'The Blackburn Bus Company' }]);
             });
         });
     });

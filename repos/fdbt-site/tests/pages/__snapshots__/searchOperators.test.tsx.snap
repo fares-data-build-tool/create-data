@@ -116,6 +116,7 @@ exports[`pages searchOperator should render a selection error when the user trie
                 <label
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="add-operator-checkbox-0"
+                  id="operator-to-add-0"
                   onClick={[Function]}
                   role="input"
                 >
@@ -162,6 +163,7 @@ exports[`pages searchOperator should render a selection error when the user trie
               >
                 <button
                   className="selectedOperators-button button-link govuk-!-margin-left-2"
+                  id="removeAll"
                   name="removeOperator"
                   onClick={[Function]}
                 >
@@ -316,6 +318,7 @@ exports[`pages searchOperator should render a selection error when the user trie
               >
                 <button
                   className="selectedOperators-button button-link govuk-!-margin-left-2"
+                  id="removeAll"
                   name="removeOperator"
                   onClick={[Function]}
                 >
@@ -345,6 +348,7 @@ exports[`pages searchOperator should render a selection error when the user trie
               >
                 <button
                   className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  id="remove-0"
                   name="removeOperator"
                   onClick={[Function]}
                   value="Warrington's Own Buses"
@@ -371,6 +375,7 @@ exports[`pages searchOperator should render a selection error when the user trie
               >
                 <button
                   className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  id="remove-1"
                   name="removeOperator"
                   onClick={[Function]}
                   value="Blackpool Transport"
@@ -397,6 +402,7 @@ exports[`pages searchOperator should render a selection error when the user trie
               >
                 <button
                   className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  id="remove-2"
                   name="removeOperator"
                   onClick={[Function]}
                   value="IW Bus Co"
@@ -561,6 +567,7 @@ exports[`pages searchOperator should render an input error when the user makes a
               >
                 <button
                   className="selectedOperators-button button-link govuk-!-margin-left-2"
+                  id="removeAll"
                   name="removeOperator"
                   onClick={[Function]}
                 >
@@ -691,6 +698,7 @@ exports[`pages searchOperator should render just the search input when the user 
               >
                 <button
                   className="selectedOperators-button button-link govuk-!-margin-left-2"
+                  id="removeAll"
                   name="removeOperator"
                   onClick={[Function]}
                 >
@@ -845,6 +853,7 @@ exports[`pages searchOperator should render the search input and a list of selec
               >
                 <button
                   className="selectedOperators-button button-link govuk-!-margin-left-2"
+                  id="removeAll"
                   name="removeOperator"
                   onClick={[Function]}
                 >
@@ -874,6 +883,7 @@ exports[`pages searchOperator should render the search input and a list of selec
               >
                 <button
                   className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  id="remove-0"
                   name="removeOperator"
                   onClick={[Function]}
                   value="Warrington's Own Buses"
@@ -900,6 +910,7 @@ exports[`pages searchOperator should render the search input and a list of selec
               >
                 <button
                   className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  id="remove-1"
                   name="removeOperator"
                   onClick={[Function]}
                   value="Blackpool Transport"
@@ -926,6 +937,7 @@ exports[`pages searchOperator should render the search input and a list of selec
               >
                 <button
                   className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  id="remove-2"
                   name="removeOperator"
                   onClick={[Function]}
                   value="IW Bus Co"
@@ -1091,6 +1103,7 @@ exports[`pages searchOperator should render the search input and search results 
                 <label
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="add-operator-checkbox-0"
+                  id="operator-to-add-0"
                   onClick={[Function]}
                   role="input"
                 >
@@ -1137,6 +1150,7 @@ exports[`pages searchOperator should render the search input and search results 
               >
                 <button
                   className="selectedOperators-button button-link govuk-!-margin-left-2"
+                  id="removeAll"
                   name="removeOperator"
                   onClick={[Function]}
                 >
@@ -1310,6 +1324,7 @@ exports[`pages searchOperator should render the search input, search results and
                 <label
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="add-operator-checkbox-0"
+                  id="operator-to-add-0"
                   onClick={[Function]}
                   role="input"
                 >
@@ -1356,6 +1371,7 @@ exports[`pages searchOperator should render the search input, search results and
               >
                 <button
                   className="selectedOperators-button button-link govuk-!-margin-left-2"
+                  id="removeAll"
                   name="removeOperator"
                   onClick={[Function]}
                 >
@@ -1385,6 +1401,7 @@ exports[`pages searchOperator should render the search input, search results and
               >
                 <button
                   className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  id="remove-0"
                   name="removeOperator"
                   onClick={[Function]}
                   value="Warrington's Own Buses"
@@ -1411,6 +1428,7 @@ exports[`pages searchOperator should render the search input, search results and
               >
                 <button
                   className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  id="remove-1"
                   name="removeOperator"
                   onClick={[Function]}
                   value="Blackpool Transport"
@@ -1437,6 +1455,7 @@ exports[`pages searchOperator should render the search input, search results and
               >
                 <button
                   className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  id="remove-2"
                   name="removeOperator"
                   onClick={[Function]}
                   value="IW Bus Co"

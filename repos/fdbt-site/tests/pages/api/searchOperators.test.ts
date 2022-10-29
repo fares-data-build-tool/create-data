@@ -3,7 +3,6 @@ import searchOperators, {
     replaceSelectedOperatorsWithUserSelectedOperators,
     isSearchInputValid,
 } from '../../../src/pages/api/searchOperators';
-
 import * as session from '../../../src/utils/sessions';
 import { Operator, MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../../../src/interfaces';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../../src/constants/attributes';

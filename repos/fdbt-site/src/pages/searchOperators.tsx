@@ -25,12 +25,12 @@ export const removeOperatorsErrorId = 'remove-operator-0';
 export interface SearchOperatorProps {
     searchText: string;
     errors: ErrorInfo[];
-    searchResults: Operator[];
+    databaseSearchResults: Operator[];
     preSelectedOperators: Operator[];
     csrfToken: string;
 }
 
-export const showSelectedOperators = (
+export const ShowSelectedOperators = (
     selectedOperators: Operator[],
     setSelectedOperators: React.Dispatch<React.SetStateAction<Operator[]>>,
     errors: ErrorInfo[],
@@ -50,51 +50,51 @@ export const showSelectedOperators = (
         }
     };
     return (
-        <>
-            <div className={`${removeOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                <table className="border-collapse width-100 margin-top-140">
-                    <caption className={`govuk-table__caption govuk-table__caption--m `}>Selected operator(s)</caption>
-                    <thead className="selectedOperators-header-color">
-                        <tr className="">
-                            <th
-                                scope="col"
-                                className={`left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16`}
+        <div className="">
+            <table className="border-collapse width-100 margin-top-140">
+                <caption className={`govuk-table__caption govuk-table__caption--m `}>Selected operator(s)</caption>
+                <thead className="selectedOperators-header-color">
+                    <tr className="">
+                        <th
+                            scope="col"
+                            className={`left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16`}
+                        >
+                            {selectedOperators.length} added
+                        </th>
+                        <th scope="cor" className="govuk-table__header text-align-right">
+                            <button
+                                id="removeAll"
+                                className="selectedOperators-button button-link govuk-!-margin-left-2"
+                                onClick={() => removeOperator('', true)}
+                                name="removeOperator"
                             >
-                                {selectedOperators.length} added
-                            </th>
-                            <th scope="cor" className="govuk-table__header text-align-right">
+                                Remove all
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody className="govuk-table__body">
+                    {selectedOperators.map((operator, index) => (
+                        <tr key={index} className="border-top">
+                            <td className="govuk-label govuk-!-font-size-16" key={`td0-${index}`}>
+                                {operator.name} - {operator.nocCode}
+                            </td>
+                            <td className="govuk-link text-align-center " key={`td1-${index}`}>
                                 <button
-                                    className="selectedOperators-button button-link govuk-!-margin-left-2"
-                                    onClick={() => removeOperator('', true)}
+                                    id={`remove-${index}`}
+                                    className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                                    onClick={() => removeOperator(operator.nocCode)}
                                     name="removeOperator"
+                                    value={operator.name}
                                 >
-                                    Remove all
+                                    Remove
                                 </button>
-                            </th>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody className="govuk-table__body">
-                        {selectedOperators.map((operator, index) => (
-                            <tr key={index} className="border-top">
-                                <td className="govuk-label govuk-!-font-size-16" key={`td0-${index}`}>
-                                    {operator.name} - {operator.nocCode}
-                                </td>
-                                <td className="govuk-link text-align-center " key={`td1-${index}`}>
-                                    <button
-                                        className="govuk-link  align-top button-link govuk-!-margin-left-2"
-                                        onClick={() => removeOperator(operator.nocCode)}
-                                        name="removeOperator"
-                                        value={operator.name}
-                                    >
-                                        Remove
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 
@@ -176,12 +176,16 @@ export const renderSearchBox = (
     );
 };
 
-export const showSearchResults = (
+export const ShowSearchResults = (
     searchText: string,
-    databaseSearchResults: Operator[],
     errors: ErrorInfo[],
+    databaseSearchResultsCount: number,
     selectedOperators: Operator[],
     setSelectedOperators: React.Dispatch<React.SetStateAction<Operator[]>>,
+    searchResultsCount: number,
+    setSearchResultsCount: React.Dispatch<React.SetStateAction<number>>,
+    searchResults: Operator[],
+    setSearchResults: React.Dispatch<React.SetStateAction<Operator[]>>,
 ): ReactElement => {
     const addOperatorsErrors: ErrorInfo[] = [];
     errors.forEach((err) => {
@@ -189,10 +193,7 @@ export const showSearchResults = (
             addOperatorsErrors.push(err);
         }
     });
-    const [searchResultsCount, setSearchResultsCount] = useState(
-        databaseSearchResults ? databaseSearchResults.length : 0,
-    );
-    const [searchResults, setSearchResults] = useState(databaseSearchResults);
+
     const addOperator = (operatorNocCode: string, operatorName: string) => {
         const newSelectedOperators = [...selectedOperators, { nocCode: operatorNocCode, name: operatorName }];
         const newUniqtSelectedOperators = uniqBy(newSelectedOperators, 'nocCode');
@@ -212,7 +213,7 @@ export const showSearchResults = (
                             Your search for &apos;<strong>{searchText}</strong>&apos; returned
                             <strong>
                                 {' '}
-                                {databaseSearchResults.length} result{databaseSearchResults.length !== 1 ? 's' : ''}
+                                {databaseSearchResultsCount} result{databaseSearchResultsCount !== 1 ? 's' : ''}
                             </strong>
                         </h2>
                     )}
@@ -233,6 +234,7 @@ export const showSearchResults = (
                                 return (
                                     <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
                                         <label
+                                            id={`operator-to-add-${index}`}
                                             // eslint-disable-next-line jsx-a11y/aria-role
                                             role="input"
                                             className="govuk-label govuk-checkboxes__label"
@@ -255,14 +257,17 @@ export const showSearchResults = (
 const SearchOperators = ({
     searchText,
     errors,
-    searchResults,
+    databaseSearchResults,
     preSelectedOperators,
     csrfToken,
 }: SearchOperatorProps): ReactElement => {
     const operatorsAdded = preSelectedOperators.length > 0;
-    const databaseSearchResults = searchResults ? searchResults : [];
-    const searchResultsToDisplay = searchResults.length > 0 || errors.find((err) => err.id === addOperatorsErrorId);
+    const searchResultsToDisplay =
+        databaseSearchResults.length > 0 || errors.find((err) => err.id === addOperatorsErrorId);
+    const databaseSearchResultsCount = databaseSearchResults ? databaseSearchResults.length : 0;
     const [selectedOperators, setSelectedOperators] = useState<Operator[]>(preSelectedOperators);
+    const [searchResultsCount, setSearchResultsCount] = useState(databaseSearchResultsCount);
+    const [searchResults, setSearchResults] = useState(databaseSearchResults);
     return (
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
@@ -272,17 +277,21 @@ const SearchOperators = ({
                         {renderSearchBox(operatorsAdded, errors, selectedOperators)}
                     </CsrfForm>
                     {searchResultsToDisplay
-                        ? showSearchResults(
+                        ? ShowSearchResults(
                               searchText,
-                              databaseSearchResults,
                               errors,
+                              databaseSearchResultsCount,
                               selectedOperators,
                               setSelectedOperators,
+                              searchResultsCount,
+                              setSearchResultsCount,
+                              searchResults,
+                              setSearchResults,
                           )
                         : null}
                 </div>
                 <div className="govuk-grid-column-one-third selectedOperators">
-                    {showSelectedOperators(selectedOperators, setSelectedOperators, errors)}
+                    {ShowSelectedOperators(selectedOperators, setSelectedOperators, errors)}
 
                     <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
                         <div>
@@ -371,7 +380,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ];
         }
     }
-    return { props: { errors, searchText, searchResults, preSelectedOperators: selectedOperators, csrfToken } };
+    return {
+        props: {
+            errors,
+            searchText,
+            databaseSearchResults: searchResults,
+            preSelectedOperators: selectedOperators,
+            csrfToken,
+        },
+    };
 };
 
 export default SearchOperators;
