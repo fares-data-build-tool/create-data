@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { getAndValidateNoc, redirectToError } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { getFileCreationDate, getS3Exports, getS3FolderCount, retrieveExportZip } from '../../data/s3';
+import { getS3Exports, getS3FolderCount, retrieveExportZip } from '../../data/s3';
 import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 import logger from '../../utils/logger';
 
@@ -10,7 +10,6 @@ export interface Export {
     matchingDataCount: number;
     netexCount: number;
     signedUrl?: string;
-    exportStarted?: Date;
 }
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -36,14 +35,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 const signedUrl = complete ? await retrieveExportZip(noc, name) : undefined;
 
-                logger.info('', {
-                    context: 'api.getExportProgress',
-                    message: 'Getting export start time',
-                });
-
-                const exportStarted = await getFileCreationDate(MATCHING_DATA_BUCKET_NAME, prefix);
-
-                return { name, matchingDataCount, netexCount, signedUrl, exportStarted };
+                return { name, matchingDataCount, netexCount, signedUrl };
             }),
         );
 
