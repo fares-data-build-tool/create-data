@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
+import uniqBy from 'lodash/uniqBy';
 import { ErrorInfo, NextPageContextWithSession, Operator } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
@@ -11,82 +13,96 @@ import { getCsrfToken } from '../utils';
 import { removeExcessWhiteSpace } from '../utils/apiUtils/validator';
 import { isSearchInputValid } from './api/searchOperators';
 import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
+import { useState } from 'react';
 
 const title = 'Search Operators - Create Fares Data Service';
 const description = 'Search Operators page for the Create Fares Data Service';
 
 export const searchInputId = 'search-input';
-export const addOperatorsErrorId = 'add-operator-checkbox-0';
-export const removeOperatorsErrorId = 'remove-operator-checkbox-0';
+export const addOperatorsErrorId = 'add-operator-0';
+export const removeOperatorsErrorId = 'remove-operator-0';
 
 export interface SearchOperatorProps {
     searchText: string;
     errors: ErrorInfo[];
-    searchResults: Operator[];
-    selectedOperators: Operator[];
+    databaseSearchResults: Operator[];
+    preSelectedOperators: Operator[];
     csrfToken: string;
 }
 
-export const showSelectedOperators = (selectedOperators: Operator[], errors: ErrorInfo[]): ReactElement => {
+export const ShowSelectedOperators = (
+    selectedOperators: Operator[],
+    setSelectedOperators: React.Dispatch<React.SetStateAction<Operator[]>>,
+    errors: ErrorInfo[],
+): ReactElement => {
     const removeOperatorsErrors: ErrorInfo[] = [];
     errors.forEach((err) => {
         if (err.id === removeOperatorsErrorId) {
             removeOperatorsErrors.push(err);
         }
     });
+    const removeOperator = (nocCode: string, removeAll?: boolean) => {
+        if (removeAll) {
+            setSelectedOperators([]);
+        } else {
+            const newSelectedOperators = selectedOperators.filter((operator) => operator.nocCode !== nocCode);
+            setSelectedOperators(newSelectedOperators);
+        }
+    };
     return (
-        <div className={`govuk-form-group ${removeOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-            <fieldset className="govuk-fieldset">
-                <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                    <h1 className="govuk-fieldset__heading" id="selected-operators">
-                        Here&apos;s what you have added
-                    </h1>
-                </legend>
-                <fieldset className="govuk-fieldset">
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
-                        <h2 className="govuk-fieldset__heading govuk-visually-hidden">Remove selected operators</h2>
-                    </legend>
-                    <div className="govuk-inset-text">
-                        <FormElementWrapper
-                            errors={removeOperatorsErrors}
-                            errorId={removeOperatorsErrorId}
-                            errorClass=""
+        <div className="margin-top-140">
+            <table className="border-collapse width-100 0">
+                <caption className={`govuk-table__caption govuk-table__caption--m `}>Selected operator(s)</caption>
+                <thead className="selectedOperators-header-color">
+                    <tr>
+                        <th
+                            scope="col"
+                            className={`left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16`}
                         >
-                            <div className="govuk-checkboxes">
-                                {selectedOperators.map((operator, index) => (
-                                    <div key={operator.nocCode} className="govuk-checkboxes__item">
-                                        <input
-                                            className="govuk-checkboxes__input"
-                                            id={`remove-operator-checkbox-${index}`}
-                                            name="operatorsToRemove"
-                                            value={`${operator.nocCode}#${operator.name}`}
-                                            type="checkbox"
-                                        />
-                                        <label
-                                            className="govuk-label govuk-checkboxes__label"
-                                            htmlFor={`remove-operator-checkbox-${index}`}
-                                        >
-                                            {operator.name} - {operator.nocCode}
-                                        </label>
-                                    </div>
-                                ))}
-                            </div>
-                        </FormElementWrapper>
-                        <input
-                            type="submit"
-                            name="removeOperators"
-                            value={selectedOperators.length > 1 ? 'Remove Operators' : 'Remove Operator'}
-                            id="remove-operators-button"
-                            className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
-                        />
-                    </div>
-                </fieldset>
-            </fieldset>
+                            {selectedOperators.length} added
+                        </th>
+                        <th scope="cor" className="govuk-table__header text-align-right">
+                            <button
+                                id="removeAll"
+                                className="selectedOperators-button button-link govuk-!-margin-left-2"
+                                onClick={() => removeOperator('', true)}
+                                name="removeOperator"
+                            >
+                                Remove all
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody className="govuk-table__body">
+                    {selectedOperators.map((operator, index) => (
+                        <tr key={`selected-operator-${index}`}>
+                            <td className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1" key={`td0-${index}`}>
+                                {operator.name} - {operator.nocCode}
+                            </td>
+                            <td className="govuk-link text-align-right" key={`td1-${index}`}>
+                                <button
+                                    id={`remove-${index}`}
+                                    className="govuk-link button-link"
+                                    onClick={() => removeOperator(operator.nocCode)}
+                                    name="removeOperator"
+                                    value={operator.name}
+                                >
+                                    Remove
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };
 
-export const renderSearchBox = (operatorsAdded: boolean, errors: ErrorInfo[]): ReactElement => {
+export const renderSearchBox = (
+    operatorsAdded: boolean,
+    errors: ErrorInfo[],
+    selectedOperators: Operator[],
+): ReactElement => {
     const fieldsetProps = {
         legend: {
             className: operatorsAdded ? 'govuk-fieldset__legend--m' : 'govuk-fieldset__legend--l',
@@ -131,6 +147,24 @@ export const renderSearchBox = (operatorsAdded: boolean, errors: ErrorInfo[]): R
                     type="text"
                 />
                 <input
+                    type="hidden"
+                    name="selectedOperators"
+                    value={selectedOperators.map((operator) => `${operator.nocCode}#${operator.name}`)}
+                />
+                {selectedOperators.map((operator, index) => {
+                    const { nocCode, name } = operator;
+                    return (
+                        <>
+                            <input
+                                id={`add-operator-${index}`}
+                                name="userSelectedOperators"
+                                type="hidden"
+                                value={`${nocCode}#${name}`}
+                            />
+                        </>
+                    );
+                })}
+                <input
                     type="submit"
                     value="Search"
                     name="search"
@@ -142,31 +176,54 @@ export const renderSearchBox = (operatorsAdded: boolean, errors: ErrorInfo[]): R
     );
 };
 
-export const showSearchResults = (searchText: string, searchResults: Operator[], errors: ErrorInfo[]): ReactElement => {
+export const ShowSearchResults = (
+    searchText: string,
+    errors: ErrorInfo[],
+    databaseSearchResultsCount: number,
+    selectedOperators: Operator[],
+    setSelectedOperators: React.Dispatch<React.SetStateAction<Operator[]>>,
+    searchResultsCount: number,
+    setSearchResultsCount: React.Dispatch<React.SetStateAction<number>>,
+    searchResults: Operator[],
+    setSearchResults: React.Dispatch<React.SetStateAction<Operator[]>>,
+): ReactElement => {
     const addOperatorsErrors: ErrorInfo[] = [];
     errors.forEach((err) => {
         if (err.id === addOperatorsErrorId) {
             addOperatorsErrors.push(err);
         }
     });
+
+    const addOperator = (operatorNocCode: string, operatorName: string) => {
+        const newSelectedOperators = [...selectedOperators, { nocCode: operatorNocCode, name: operatorName }];
+        const newUniqtSelectedOperators = uniqBy(newSelectedOperators, 'nocCode');
+        setSelectedOperators(newUniqtSelectedOperators);
+        if (searchResults.length > 0) {
+            setSearchResultsCount(searchResultsCount - 1);
+        }
+        setSearchResults(searchResults.filter((operator) => operator.nocCode !== operatorNocCode));
+    };
+
     return (
         <div className={`govuk-form-group ${addOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby="operator-search-results">
                 <legend className="govuk-fieldset__legend">
-                    <h2 className="govuk-body-l govuk-!-margin-bottom-0" id="operator-search-results">
-                        Your search for &apos;<strong>{searchText}</strong>&apos; returned
-                        <strong>
-                            {' '}
-                            {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
-                        </strong>
-                    </h2>
+                    {searchResultsCount !== 0 && (
+                        <h2 className="govuk-body-l govuk-!-margin-bottom-0" id="operator-search-results">
+                            Your search for &apos;<strong>{searchText}</strong>&apos; returned
+                            <strong>
+                                {' '}
+                                {databaseSearchResultsCount} result{databaseSearchResultsCount !== 1 ? 's' : ''}
+                            </strong>
+                        </h2>
+                    )}
                 </legend>
                 <FormElementWrapper errors={addOperatorsErrors} errorId={addOperatorsErrorId} errorClass="">
                     <>
                         <div className="govuk-checkboxes">
                             <p className="govuk-hint" id="traveline-hint-text">
-                                Select the operators results and click add operator(s). This data is taken from the
-                                Traveline National Dataset.
+                                Select the operators results and click add operator(s). This data is taken from Bus Open
+                                Data Service (BODS).
                             </p>
                             <p className="govuk-hint" id="noc-hint-text">
                                 You will see that all operator names are followed by a series of characters. These
@@ -176,16 +233,13 @@ export const showSearchResults = (searchText: string, searchResults: Operator[],
                                 const { nocCode, name } = operator;
                                 return (
                                     <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
-                                        <input
-                                            className="govuk-checkboxes__input"
-                                            id={`add-operator-checkbox-${index}`}
-                                            name="operatorsToAdd"
-                                            type="checkbox"
-                                            value={`${nocCode}#${name}`}
-                                        />
                                         <label
+                                            id={`operator-to-add-${index}`}
+                                            // eslint-disable-next-line jsx-a11y/aria-role
+                                            role="input"
                                             className="govuk-label govuk-checkboxes__label"
                                             htmlFor={`add-operator-checkbox-${index}`}
+                                            onClick={() => addOperator(operator.nocCode, operator.name)}
                                         >
                                             {name} - {nocCode}
                                         </label>
@@ -195,15 +249,6 @@ export const showSearchResults = (searchText: string, searchResults: Operator[],
                         </div>
                     </>
                 </FormElementWrapper>
-                <div className="govuk-!-margin-top-7">
-                    <input
-                        type="submit"
-                        name="addOperators"
-                        value="Add Operator(s)"
-                        id="add-operator-button"
-                        className="govuk-button govuk-button--secondary"
-                    />
-                </div>
             </fieldset>
         </div>
     );
@@ -212,50 +257,66 @@ export const showSearchResults = (searchText: string, searchResults: Operator[],
 const SearchOperators = ({
     searchText,
     errors,
-    searchResults,
-    selectedOperators,
+    databaseSearchResults,
+    preSelectedOperators,
     csrfToken,
 }: SearchOperatorProps): ReactElement => {
-    const selectedOperatorsToDisplay = selectedOperators.length > 0;
-    const searchResultsToDisplay = searchResults.length > 0 || errors.find((err) => err.id === addOperatorsErrorId);
+    const operatorsAdded = preSelectedOperators.length > 0;
+    const searchResultsToDisplay =
+        databaseSearchResults.length > 0 || errors.find((err) => err.id === addOperatorsErrorId);
+    const databaseSearchResultsCount = databaseSearchResults ? databaseSearchResults.length : 0;
+    const [selectedOperators, setSelectedOperators] = useState<Operator[]>(preSelectedOperators);
+    const [searchResultsCount, setSearchResultsCount] = useState(databaseSearchResultsCount);
+    const [searchResults, setSearchResults] = useState(databaseSearchResults);
     return (
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">
                     <ErrorSummary errors={errors} />
-                    {selectedOperatorsToDisplay ? (
-                        <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
-                            {showSelectedOperators(selectedOperators, errors)}
-                        </CsrfForm>
-                    ) : null}
                     <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
-                        {renderSearchBox(selectedOperatorsToDisplay, errors)}
+                        {renderSearchBox(operatorsAdded, errors, selectedOperators)}
                     </CsrfForm>
-                    {searchResultsToDisplay ? (
-                        <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
-                            {showSearchResults(searchText, searchResults, errors)}
-                        </CsrfForm>
-                    ) : null}
-                    {selectedOperatorsToDisplay ? (
-                        <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
-                            <div>
-                                <input
-                                    type="submit"
-                                    value="Confirm operators and continue"
-                                    name="continueButtonClick"
-                                    id="continue-button"
-                                    className="govuk-button"
-                                />
-                            </div>
-                        </CsrfForm>
-                    ) : null}
+                    {searchResultsToDisplay
+                        ? ShowSearchResults(
+                              searchText,
+                              errors,
+                              databaseSearchResultsCount,
+                              selectedOperators,
+                              setSelectedOperators,
+                              searchResultsCount,
+                              setSearchResultsCount,
+                              searchResults,
+                              setSearchResults,
+                          )
+                        : null}
                 </div>
-                <div className="govuk-grid-column-one-third">
-                    <h3 className="govuk-heading-s">What is a National Operator Code (NOC)?</h3>
-                    <p className="govuk-body">
-                        A National Operator Code (NOC) is a unique identifier given to every bus operator in England. No
-                        two operators can have the same NOC.
-                    </p>
+                <div className="govuk-grid-column-one-third selectedOperators">
+                    {ShowSelectedOperators(selectedOperators, setSelectedOperators, errors)}
+
+                    <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
+                        <div>
+                            {selectedOperators.map((operator, index) => {
+                                const { nocCode, name } = operator;
+                                return (
+                                    <>
+                                        <input
+                                            id={`add-operator-${index}`}
+                                            name="userSelectedOperators"
+                                            type="hidden"
+                                            value={`${nocCode}#${name}`}
+                                        />
+                                    </>
+                                );
+                            })}
+                            <input
+                                type="submit"
+                                value="Confirm operators and continue"
+                                name="continueButtonClick"
+                                id="continue-button"
+                                className="govuk-button width-100"
+                            />
+                        </div>
+                    </CsrfForm>
                 </div>
             </div>
         </BaseLayout>
@@ -298,6 +359,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             });
         }
         const results = await getSearchOperatorsBySearchText(searchText);
+
         const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 
         if (!operatorAttribute?.name) {
@@ -318,8 +380,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ];
         }
     }
-
-    return { props: { errors, searchText, searchResults, selectedOperators, csrfToken } };
+    return {
+        props: {
+            errors,
+            searchText,
+            databaseSearchResults: searchResults,
+            preSelectedOperators: selectedOperators,
+            csrfToken,
+        },
+    };
 };
 
 export default SearchOperators;

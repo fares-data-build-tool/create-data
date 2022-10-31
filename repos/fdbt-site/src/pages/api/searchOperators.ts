@@ -5,37 +5,20 @@ import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../constants/attributes';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
-import { addOperatorsErrorId, removeOperatorsErrorId, searchInputId } from '../searchOperators';
+import { searchInputId } from '../searchOperators';
 import { operatorHasBodsServices } from '../../data/auroradb';
 
-export const removeOperatorsFromPreviouslySelectedOperators = (
-    rawList: string[],
-    selectedOperators: Operator[],
-): Operator[] => {
-    const listToRemove = new Set(rawList.map((item) => item.split('#')[0]));
-    const updatedList = selectedOperators.filter((operator) => !listToRemove.has(operator.nocCode));
-    return updatedList;
-};
-
-export const addOperatorsToPreviouslySelectedOperators = (
-    rawList: string[],
-    selectedOperators: Operator[],
-): Operator[] => {
+export const replaceSelectedOperatorsWithUserSelectedOperators = (rawList: string[]): Operator[] => {
+    if (rawList.length === 0) {
+        return [];
+    }
     const formattedRawList = rawList.map((item) => ({
         nocCode: item.split('#')[0],
         name: item.split('#')[1],
     }));
-    const combinedLists = selectedOperators.concat(formattedRawList);
-    const updatedList = uniqBy(combinedLists, 'nocCode');
-
+    const updatedList = uniqBy(formattedRawList, 'nocCode');
     return updatedList;
 };
-
-export const isSearchInputValid = (searchText: string): boolean => {
-    const searchRegex = new RegExp(/^[a-zA-Z0-9\-:\s]+$/g);
-    return searchRegex.test(searchText);
-};
-
 export const getOperatorsWithoutServices = async (selectedOperators: Operator[]): Promise<string[]> => {
     const results = await Promise.all(
         selectedOperators.map(async (operator) => {
@@ -50,44 +33,28 @@ export const getOperatorsWithoutServices = async (selectedOperators: Operator[])
     return results.filter((item) => item !== '');
 };
 
+export const isSearchInputValid = (searchText: string): boolean => {
+    const searchRegex = new RegExp(/^[a-zA-Z0-9\-:\s]+$/g);
+    return searchRegex.test(searchText);
+};
+
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const errors: ErrorInfo[] = [];
-        const {
-            search,
-            searchText,
-            addOperators,
-            operatorsToAdd,
-            removeOperators,
-            operatorsToRemove,
-            continueButtonClick,
-        } = req.body;
+        const { search, searchText, userSelectedOperators, continueButtonClick } = req.body;
 
         const multiOperatorAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
         let selectedOperators = multiOperatorAttribute ? multiOperatorAttribute.selectedOperators : [];
 
-        if (removeOperators) {
-            if (!operatorsToRemove) {
-                errors.push({
-                    errorMessage: 'Select at least one operator to remove',
-                    id: removeOperatorsErrorId,
-                });
-            } else {
+        if (search) {
+            if (userSelectedOperators) {
                 const rawList: string[] =
-                    typeof operatorsToRemove === 'string' ? [operatorsToRemove] : operatorsToRemove;
-                selectedOperators = removeOperatorsFromPreviouslySelectedOperators(rawList, selectedOperators);
+                    typeof userSelectedOperators === 'string' ? [userSelectedOperators] : userSelectedOperators;
+                selectedOperators = replaceSelectedOperatorsWithUserSelectedOperators(rawList);
+            } else {
+                selectedOperators = [];
             }
-        } else if (addOperators) {
-            if (!operatorsToAdd) {
-                const previousSearch = req.headers.referer?.split('?searchOperator=')[1] || '';
-                errors.push({ errorMessage: 'Select at least one operator to add', id: addOperatorsErrorId });
-                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
-                redirectTo(res, `/searchOperators?searchOperator=${previousSearch}`);
-                return;
-            }
-            const rawList: string[] = typeof operatorsToAdd === 'string' ? [operatorsToAdd] : operatorsToAdd;
-            selectedOperators = addOperatorsToPreviouslySelectedOperators(rawList, selectedOperators);
-        } else if (search) {
+
             const refinedSearch = removeExcessWhiteSpace(searchText);
             if (refinedSearch.length < 3) {
                 errors.push({
@@ -100,26 +67,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     id: searchInputId,
                 });
             } else {
+                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
                 redirectTo(res, `/searchOperators?searchOperator=${refinedSearch}`);
-                return;
-            }
-        }
-
-        if (continueButtonClick) {
-            if (operatorsToRemove) {
-                errors.push({
-                    errorMessage: "Click the 'Remove Operator(s)' button to remove operators",
-                    id: removeOperatorsErrorId,
-                });
-            }
-            if (operatorsToAdd) {
-                const previousSearch = req.headers.referer?.split('?searchOperator=')[1] || '';
-                errors.push({
-                    errorMessage: "Click the 'Add Operator(s)' button to add operators",
-                    id: addOperatorsErrorId,
-                });
-                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
-                redirectTo(res, `/searchOperators?searchOperator=${previousSearch}`);
                 return;
             }
         }
@@ -130,23 +79,35 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
-
         if (continueButtonClick) {
-            const operatorsWithNoServices = await getOperatorsWithoutServices(selectedOperators);
-            if (operatorsWithNoServices.length > 0) {
+            if (!userSelectedOperators) {
+                selectedOperators = [];
                 errors.push({
-                    errorMessage: `Some of the selected operators have no services. To continue you must only select operators which have services in BODS`,
-                    id: removeOperatorsErrorId,
-                });
-                operatorsWithNoServices.forEach((names) => {
-                    errors.push({ errorMessage: names, id: removeOperatorsErrorId });
+                    errorMessage: `Select at least one operator`,
+                    id: searchInputId,
                 });
                 updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
                 redirectTo(res, '/searchOperators');
                 return;
             }
-            redirectTo(res, '/saveOperatorGroup');
+            const rawList: string[] =
+                typeof userSelectedOperators === 'string' ? [userSelectedOperators] : userSelectedOperators;
+            selectedOperators = replaceSelectedOperatorsWithUserSelectedOperators(rawList);
+            const operatorsWithNoServices = await getOperatorsWithoutServices(selectedOperators);
+            if (operatorsWithNoServices.length > 0) {
+                errors.push({
+                    errorMessage: `Some of the selected operators have no services. To continue you must only select operators which have services in BODS`,
+                    id: searchInputId,
+                });
+                operatorsWithNoServices.forEach((names) => {
+                    errors.push({ errorMessage: names, id: searchInputId });
+                });
+                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
+                redirectTo(res, '/searchOperators');
+                return;
+            }
+            updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
+            redirectTo(res, '/viewOperatorGroups');
             return;
         }
 

@@ -1,27 +1,22 @@
 .file-attachment {
     display: flex;
     margin-top: 40px;
-
     .file-attachment-thumbnail {
         margin-right: 20px;
         outline: 5px solid rgba(11, 12, 12, 0.1);
         box-shadow: 0 2px 2px rgba(11, 12, 12, 0.4);
     }
-
     .file-attachment-metadata {
         font-family: Arial, Helvetica, sans-serif;
         font-size: 14px;
-
         abbr[title] {
             text-decoration: none;
         }
     }
 }
-
 .govuk-currency-input {
     &__inner {
         position: relative;
-
         &__unit {
             font-family: Arial, Helvetica, sans-serif;
             position: absolute;
@@ -32,49 +27,40 @@
             transform: translateY(-50%);
             line-height: normal;
         }
-
         &__input {
             padding-left: 22px;
         }
     }
 }
-
 .flex-container {
     display: flex;
     align-items: flex-end;
 }
-
 .padding {
     padding-left: 15px;
 }
-
 .pagination {
     padding: 0;
 }
-
 .pagination__item {
     display: inline-block;
     list-style: none;
 }
-
 .pagination__link {
     display: block;
     padding: 5px 10px;
     text-decoration: none;
-
     &:hover,
     &:focus {
         background: #f8f8f8;
         outline: 3px solid #ffbf47;
     }
-
     &.current {
         color: #0b0c0c;
         font-weight: 700;
         border: none;
         pointer-events: none;
         cursor: default;
-
         &:hover,
         &:focus {
             color: #0b0c0c;
@@ -82,17 +68,14 @@
         }
     }
 }
-
 .pagination__summary {
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     padding: 8px 0;
-
     @media (min-width: 642px) {
         float: right;
     }
 }
-
 .information_box__success {
     display: block;
     padding: 20px;
@@ -100,7 +83,6 @@
     border: 5px solid;
     border-color: govuk-colour('green');
 }
-
 .information_box__warning {
     display: block;
     padding: 20px;
@@ -108,21 +90,17 @@
     border: 5px solid;
     border-color: govuk-colour('red');
 }
-
 .expiry-selector-units {
     border-left: 0;
 }
-
 .expiry-selector-wrapper {
     display: flex;
 }
-
 .new-tag {
     background-color: #cce2d9;
     color: #055934;
     margin-right: 10px;
 }
-
 .button-link {
     color: govuk-colour('blue');
     background-color: govuk-colour('white');
@@ -130,8 +108,31 @@
     border: 0;
     text-decoration: underline;
     cursor: pointer;
-
     &:hover {
         color: govuk-shade(govuk-colour('red'), 20%);
     }
+}
+.selectedOperators-header-color {
+    background-color: #dddde2;
+}
+.selectedOperators-button {
+    white-space: nowrap;
+    background-color: #dddde2;
+    margin: 0px 5px 0px 0px !important;
+}
+.text-align-right {
+    text-align: right;
+}
+.border-collapse {
+    border-collapse: collapse !important;
+    border-style: hidden !important;
+}
+.width-100 {
+    width: 100%;
+}
+.left-padding {
+    padding-left: 5px !important;
+}
+.margin-top-140 {
+    margin-top: 140px;
 }

@@ -92,7 +92,7 @@ const ViewOperatorGroups = ({
                         <a
                             className="govuk-button govuk-button"
                             data-module="govuk-button"
-                            href="/manageOperatorGroup"
+                            href="/searchOperators"
                             aria-disabled
                         >
                             Add a operator group
