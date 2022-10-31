@@ -16,27 +16,10 @@ const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).th
 interface GlobalSettingsProps {
     csrf: string;
     operatorHasProducts: boolean;
+    isDevOrTest: boolean;
 }
 
-export const exportStartedOverAnHourAgo = (netexExport: Export | undefined): boolean => {
-    if (!netexExport) {
-        return false;
-    }
-
-    const { exportStarted } = netexExport;
-
-    if (!exportStarted) {
-        return false;
-    }
-
-    const currentDate = new Date();
-
-    const hoursDifference = Math.abs(currentDate.getTime() - exportStarted.getTime()) / 360000;
-
-    return hoursDifference > 0;
-};
-
-const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
+const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps): ReactElement => {
     const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000 });
 
     const exports: Export[] | undefined = data?.exports;
@@ -48,8 +31,6 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
     const exportInProgress: Export | undefined = exports
         ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)
         : undefined;
-
-    const exportInProgressStartedOverAnHourAgo = exports ? exportStartedOverAnHourAgo(exportInProgress) : false;
 
     const [showPopup, setShowPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
@@ -76,28 +57,25 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                         Export all fares
                                     </button>
                                 </CsrfForm>
-                            ) : exportInProgressStartedOverAnHourAgo ? (
+                            ) : (
                                 <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
                                     <input type="hidden" name="exportName" value={exportInProgress?.name} />
-                                    <button type="submit" className="govuk-button govuk-button--warning">
+                                    <button
+                                        type="submit"
+                                        className={`govuk-button govuk-button--warning${
+                                            !isDevOrTest ? ' govuk-visually-hidden' : ''
+                                        }`}
+                                    >
                                         Cancel export in progress
                                     </button>
                                 </CsrfForm>
-                            ) : null}
+                            )}
                         </div>
                         <div className="govuk-grid-row">
                             <div className="govuk-grid-column-two-thirds">
                                 {!operatorHasProducts ? (
                                     <div className="govuk-inset-text govuk-!-margin-top-0">
                                         Export is disabled as you have no products.
-                                    </div>
-                                ) : null}
-                                {anExportIsInProgress && exportInProgressStartedOverAnHourAgo ? (
-                                    <div className="govuk-inset-text govuk-!-margin-top-0">
-                                        The cancel export button is available as it is likely your export has failed. If
-                                        you think you know which product is to blame for your export failing, cancel
-                                        your export, then try deleting the product and clicking export again. Otherwise,
-                                        let us know via the contact page.
                                     </div>
                                 ) : null}
                                 <p className="govuk-body-m govuk-!-margin-bottom-9">
@@ -182,12 +160,15 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: GlobalSettingsProps }> => {
     const noc = getAndValidateNoc(ctx);
 
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const isTest = process.env.STAGE === 'test';
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
             operatorHasProducts,
+            isDevOrTest: isDevelopment || isTest,
         },
     };
 };
