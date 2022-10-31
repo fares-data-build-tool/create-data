@@ -192,10 +192,10 @@ describe('searchOperators', () => {
                 {
                     errorMessage:
                         'Some of the selected operators have no services. To continue you must only select operators which have services in BODS',
-                    id: 'remove-operator-0',
+                    id: 'search-input',
                 },
-                { errorMessage: 'Blackpool Transport', id: 'remove-operator-0' },
-                { errorMessage: 'The Blackburn Bus Company', id: 'remove-operator-0' },
+                { errorMessage: 'Blackpool Transport', id: 'search-input' },
+                { errorMessage: 'The Blackburn Bus Company', id: 'search-input' },
             ],
         };
 
@@ -303,11 +303,11 @@ describe('searchOperators', () => {
                     {
                         errorMessage:
                             'Some of the selected operators have no services. To continue you must only select operators which have services in BODS',
-                        id: 'remove-operator-0',
+                        id: 'search-input',
                     },
                     {
                         errorMessage: 'Blackpool Transport',
-                        id: 'remove-operator-0',
+                        id: 'search-input',
                     },
                 ],
             };

@@ -5,13 +5,12 @@ import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../constants/attributes';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
-import { removeOperatorsErrorId, searchInputId } from '../searchOperators';
+import { searchInputId } from '../searchOperators';
 import { operatorHasBodsServices } from '../../data/auroradb';
 
 export const replaceSelectedOperatorsWithUserSelectedOperators = (rawList: string[]): Operator[] => {
     if (rawList.length === 0) {
-        const selectedOperators: Operator[] = [];
-        return selectedOperators;
+        return [];
     }
     const formattedRawList = rawList.map((item) => ({
         nocCode: item.split('#')[0],
@@ -85,7 +84,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 selectedOperators = [];
                 errors.push({
                     errorMessage: `Select at least one operator`,
-                    id: removeOperatorsErrorId,
+                    id: searchInputId,
                 });
                 updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
                 redirectTo(res, '/searchOperators');
@@ -98,10 +97,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (operatorsWithNoServices.length > 0) {
                 errors.push({
                     errorMessage: `Some of the selected operators have no services. To continue you must only select operators which have services in BODS`,
-                    id: removeOperatorsErrorId,
+                    id: searchInputId,
                 });
                 operatorsWithNoServices.forEach((names) => {
-                    errors.push({ errorMessage: names, id: removeOperatorsErrorId });
+                    errors.push({ errorMessage: names, id: searchInputId });
                 });
                 updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
                 redirectTo(res, '/searchOperators');

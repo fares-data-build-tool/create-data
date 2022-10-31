@@ -134,10 +134,10 @@ exports[`pages searchOperator should render a selection error when the user trie
       className="govuk-grid-column-one-third selectedOperators"
     >
       <div
-        className=""
+        className="margin-top-140"
       >
         <table
-          className="border-collapse width-100 margin-top-140"
+          className="border-collapse width-100 0"
         >
           <caption
             className="govuk-table__caption govuk-table__caption--m "
@@ -147,9 +147,7 @@ exports[`pages searchOperator should render a selection error when the user trie
           <thead
             className="selectedOperators-header-color"
           >
-            <tr
-              className=""
-            >
+            <tr>
               <th
                 className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                 scope="col"
@@ -289,10 +287,10 @@ exports[`pages searchOperator should render a selection error when the user trie
       className="govuk-grid-column-one-third selectedOperators"
     >
       <div
-        className=""
+        className="margin-top-140"
       >
         <table
-          className="border-collapse width-100 margin-top-140"
+          className="border-collapse width-100 0"
         >
           <caption
             className="govuk-table__caption govuk-table__caption--m "
@@ -302,9 +300,7 @@ exports[`pages searchOperator should render a selection error when the user trie
           <thead
             className="selectedOperators-header-color"
           >
-            <tr
-              className=""
-            >
+            <tr>
               <th
                 className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                 scope="col"
@@ -331,11 +327,10 @@ exports[`pages searchOperator should render a selection error when the user trie
             className="govuk-table__body"
           >
             <tr
-              className="border-top"
-              key="0"
+              key="selected-operator-0"
             >
               <td
-                className="govuk-label govuk-!-font-size-16"
+                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
                 key="td0-0"
               >
                 Warrington's Own Buses
@@ -343,11 +338,11 @@ exports[`pages searchOperator should render a selection error when the user trie
                 WBTR
               </td>
               <td
-                className="govuk-link text-align-center "
+                className="govuk-link text-align-right"
                 key="td1-0"
               >
                 <button
-                  className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  className="govuk-link button-link"
                   id="remove-0"
                   name="removeOperator"
                   onClick={[Function]}
@@ -358,11 +353,10 @@ exports[`pages searchOperator should render a selection error when the user trie
               </td>
             </tr>
             <tr
-              className="border-top"
-              key="1"
+              key="selected-operator-1"
             >
               <td
-                className="govuk-label govuk-!-font-size-16"
+                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
                 key="td0-1"
               >
                 Blackpool Transport
@@ -370,11 +364,11 @@ exports[`pages searchOperator should render a selection error when the user trie
                 BLAC
               </td>
               <td
-                className="govuk-link text-align-center "
+                className="govuk-link text-align-right"
                 key="td1-1"
               >
                 <button
-                  className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  className="govuk-link button-link"
                   id="remove-1"
                   name="removeOperator"
                   onClick={[Function]}
@@ -385,11 +379,10 @@ exports[`pages searchOperator should render a selection error when the user trie
               </td>
             </tr>
             <tr
-              className="border-top"
-              key="2"
+              key="selected-operator-2"
             >
               <td
-                className="govuk-label govuk-!-font-size-16"
+                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
                 key="td0-2"
               >
                 IW Bus Co
@@ -397,11 +390,11 @@ exports[`pages searchOperator should render a selection error when the user trie
                 IWBusCo
               </td>
               <td
-                className="govuk-link text-align-center "
+                className="govuk-link text-align-right"
                 key="td1-2"
               >
                 <button
-                  className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  className="govuk-link button-link"
                   id="remove-2"
                   name="removeOperator"
                   onClick={[Function]}
@@ -538,10 +531,10 @@ exports[`pages searchOperator should render an input error when the user makes a
       className="govuk-grid-column-one-third selectedOperators"
     >
       <div
-        className=""
+        className="margin-top-140"
       >
         <table
-          className="border-collapse width-100 margin-top-140"
+          className="border-collapse width-100 0"
         >
           <caption
             className="govuk-table__caption govuk-table__caption--m "
@@ -551,9 +544,7 @@ exports[`pages searchOperator should render an input error when the user makes a
           <thead
             className="selectedOperators-header-color"
           >
-            <tr
-              className=""
-            >
+            <tr>
               <th
                 className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                 scope="col"
@@ -669,10 +660,10 @@ exports[`pages searchOperator should render just the search input when the user 
       className="govuk-grid-column-one-third selectedOperators"
     >
       <div
-        className=""
+        className="margin-top-140"
       >
         <table
-          className="border-collapse width-100 margin-top-140"
+          className="border-collapse width-100 0"
         >
           <caption
             className="govuk-table__caption govuk-table__caption--m "
@@ -682,9 +673,7 @@ exports[`pages searchOperator should render just the search input when the user 
           <thead
             className="selectedOperators-header-color"
           >
-            <tr
-              className=""
-            >
+            <tr>
               <th
                 className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                 scope="col"
@@ -824,10 +813,10 @@ exports[`pages searchOperator should render the search input and a list of selec
       className="govuk-grid-column-one-third selectedOperators"
     >
       <div
-        className=""
+        className="margin-top-140"
       >
         <table
-          className="border-collapse width-100 margin-top-140"
+          className="border-collapse width-100 0"
         >
           <caption
             className="govuk-table__caption govuk-table__caption--m "
@@ -837,9 +826,7 @@ exports[`pages searchOperator should render the search input and a list of selec
           <thead
             className="selectedOperators-header-color"
           >
-            <tr
-              className=""
-            >
+            <tr>
               <th
                 className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                 scope="col"
@@ -866,11 +853,10 @@ exports[`pages searchOperator should render the search input and a list of selec
             className="govuk-table__body"
           >
             <tr
-              className="border-top"
-              key="0"
+              key="selected-operator-0"
             >
               <td
-                className="govuk-label govuk-!-font-size-16"
+                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
                 key="td0-0"
               >
                 Warrington's Own Buses
@@ -878,11 +864,11 @@ exports[`pages searchOperator should render the search input and a list of selec
                 WBTR
               </td>
               <td
-                className="govuk-link text-align-center "
+                className="govuk-link text-align-right"
                 key="td1-0"
               >
                 <button
-                  className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  className="govuk-link button-link"
                   id="remove-0"
                   name="removeOperator"
                   onClick={[Function]}
@@ -893,11 +879,10 @@ exports[`pages searchOperator should render the search input and a list of selec
               </td>
             </tr>
             <tr
-              className="border-top"
-              key="1"
+              key="selected-operator-1"
             >
               <td
-                className="govuk-label govuk-!-font-size-16"
+                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
                 key="td0-1"
               >
                 Blackpool Transport
@@ -905,11 +890,11 @@ exports[`pages searchOperator should render the search input and a list of selec
                 BLAC
               </td>
               <td
-                className="govuk-link text-align-center "
+                className="govuk-link text-align-right"
                 key="td1-1"
               >
                 <button
-                  className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  className="govuk-link button-link"
                   id="remove-1"
                   name="removeOperator"
                   onClick={[Function]}
@@ -920,11 +905,10 @@ exports[`pages searchOperator should render the search input and a list of selec
               </td>
             </tr>
             <tr
-              className="border-top"
-              key="2"
+              key="selected-operator-2"
             >
               <td
-                className="govuk-label govuk-!-font-size-16"
+                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
                 key="td0-2"
               >
                 IW Bus Co
@@ -932,11 +916,11 @@ exports[`pages searchOperator should render the search input and a list of selec
                 IWBusCo
               </td>
               <td
-                className="govuk-link text-align-center "
+                className="govuk-link text-align-right"
                 key="td1-2"
               >
                 <button
-                  className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  className="govuk-link button-link"
                   id="remove-2"
                   name="removeOperator"
                   onClick={[Function]}
@@ -1121,10 +1105,10 @@ exports[`pages searchOperator should render the search input and search results 
       className="govuk-grid-column-one-third selectedOperators"
     >
       <div
-        className=""
+        className="margin-top-140"
       >
         <table
-          className="border-collapse width-100 margin-top-140"
+          className="border-collapse width-100 0"
         >
           <caption
             className="govuk-table__caption govuk-table__caption--m "
@@ -1134,9 +1118,7 @@ exports[`pages searchOperator should render the search input and search results 
           <thead
             className="selectedOperators-header-color"
           >
-            <tr
-              className=""
-            >
+            <tr>
               <th
                 className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                 scope="col"
@@ -1342,10 +1324,10 @@ exports[`pages searchOperator should render the search input, search results and
       className="govuk-grid-column-one-third selectedOperators"
     >
       <div
-        className=""
+        className="margin-top-140"
       >
         <table
-          className="border-collapse width-100 margin-top-140"
+          className="border-collapse width-100 0"
         >
           <caption
             className="govuk-table__caption govuk-table__caption--m "
@@ -1355,9 +1337,7 @@ exports[`pages searchOperator should render the search input, search results and
           <thead
             className="selectedOperators-header-color"
           >
-            <tr
-              className=""
-            >
+            <tr>
               <th
                 className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                 scope="col"
@@ -1384,11 +1364,10 @@ exports[`pages searchOperator should render the search input, search results and
             className="govuk-table__body"
           >
             <tr
-              className="border-top"
-              key="0"
+              key="selected-operator-0"
             >
               <td
-                className="govuk-label govuk-!-font-size-16"
+                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
                 key="td0-0"
               >
                 Warrington's Own Buses
@@ -1396,11 +1375,11 @@ exports[`pages searchOperator should render the search input, search results and
                 WBTR
               </td>
               <td
-                className="govuk-link text-align-center "
+                className="govuk-link text-align-right"
                 key="td1-0"
               >
                 <button
-                  className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  className="govuk-link button-link"
                   id="remove-0"
                   name="removeOperator"
                   onClick={[Function]}
@@ -1411,11 +1390,10 @@ exports[`pages searchOperator should render the search input, search results and
               </td>
             </tr>
             <tr
-              className="border-top"
-              key="1"
+              key="selected-operator-1"
             >
               <td
-                className="govuk-label govuk-!-font-size-16"
+                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
                 key="td0-1"
               >
                 Blackpool Transport
@@ -1423,11 +1401,11 @@ exports[`pages searchOperator should render the search input, search results and
                 BLAC
               </td>
               <td
-                className="govuk-link text-align-center "
+                className="govuk-link text-align-right"
                 key="td1-1"
               >
                 <button
-                  className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  className="govuk-link button-link"
                   id="remove-1"
                   name="removeOperator"
                   onClick={[Function]}
@@ -1438,11 +1416,10 @@ exports[`pages searchOperator should render the search input, search results and
               </td>
             </tr>
             <tr
-              className="border-top"
-              key="2"
+              key="selected-operator-2"
             >
               <td
-                className="govuk-label govuk-!-font-size-16"
+                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
                 key="td0-2"
               >
                 IW Bus Co
@@ -1450,11 +1427,11 @@ exports[`pages searchOperator should render the search input, search results and
                 IWBusCo
               </td>
               <td
-                className="govuk-link text-align-center "
+                className="govuk-link text-align-right"
                 key="td1-2"
               >
                 <button
-                  className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                  className="govuk-link button-link"
                   id="remove-2"
                   name="removeOperator"
                   onClick={[Function]}

@@ -50,11 +50,11 @@ export const ShowSelectedOperators = (
         }
     };
     return (
-        <div className="">
-            <table className="border-collapse width-100 margin-top-140">
+        <div className="margin-top-140">
+            <table className="border-collapse width-100 0">
                 <caption className={`govuk-table__caption govuk-table__caption--m `}>Selected operator(s)</caption>
                 <thead className="selectedOperators-header-color">
-                    <tr className="">
+                    <tr>
                         <th
                             scope="col"
                             className={`left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16`}
@@ -75,14 +75,14 @@ export const ShowSelectedOperators = (
                 </thead>
                 <tbody className="govuk-table__body">
                     {selectedOperators.map((operator, index) => (
-                        <tr key={index} className="border-top">
-                            <td className="govuk-label govuk-!-font-size-16" key={`td0-${index}`}>
+                        <tr key={`selected-operator-${index}`}>
+                            <td className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1" key={`td0-${index}`}>
                                 {operator.name} - {operator.nocCode}
                             </td>
-                            <td className="govuk-link text-align-center " key={`td1-${index}`}>
+                            <td className="govuk-link text-align-right" key={`td1-${index}`}>
                                 <button
                                     id={`remove-${index}`}
-                                    className="govuk-link  align-top button-link govuk-!-margin-left-2"
+                                    className="govuk-link button-link"
                                     onClick={() => removeOperator(operator.nocCode)}
                                     name="removeOperator"
                                     value={operator.name}
