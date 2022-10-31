@@ -16,7 +16,9 @@ exports[`pages manage operator details should render correctly 1`] = `
       <div
         className="govuk-grid-column-one-quarter"
       >
-        <SubNavigation />
+        <SubNavigation
+          isDevOrTest={false}
+        />
       </div>
       <div
         className="govuk-grid-column-three-quarters"
@@ -340,7 +342,9 @@ exports[`pages manage operator details should render error state if error 1`] = 
       <div
         className="govuk-grid-column-one-quarter"
       >
-        <SubNavigation />
+        <SubNavigation
+          isDevOrTest={false}
+        />
       </div>
       <div
         className="govuk-grid-column-three-quarters"
@@ -1123,7 +1127,9 @@ exports[`pages manage operator details should render popup if saved 1`] = `
       <div
         className="govuk-grid-column-one-quarter"
       >
-        <SubNavigation />
+        <SubNavigation
+          isDevOrTest={false}
+        />
       </div>
       <div
         className="govuk-grid-column-three-quarters"

@@ -467,7 +467,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(cash)@group">
-                  <Name>Weekly Rider - Onboard (cash) - group</Name>
+                  <Name>FareTable for Weekly Rider</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Onboard_(cash)@group">
                       <Amount>14</Amount>
@@ -487,7 +487,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(contactless)@group">
-                  <Name>Weekly Rider - Onboard (contactless) - group</Name>
+                  <Name>FareTable for Weekly Rider</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Onboard_(contactless)@group">
                       <Amount>14</Amount>
@@ -507,7 +507,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Online_(smart_card)@group">
-                  <Name>Weekly Rider - Online (smart card) - group</Name>
+                  <Name>FareTable for Weekly Rider</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Online_(smart_card)@group">
                       <Amount>14</Amount>
@@ -527,7 +527,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@Mobile_App@group">
-                  <Name>Weekly Rider - Mobile App - group</Name>
+                  <Name>FareTable for Weekly Rider</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Mobile_App@group">
                       <Amount>14</Amount>
@@ -547,7 +547,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:Weekly_Rider@All_Encompassing@group">
-                  <Name>Weekly Rider - All Encompassing - group</Name>
+                  <Name>FareTable for Weekly Rider</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@All_Encompassing@group">
                       <Amount>14</Amount>

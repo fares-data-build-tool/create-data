@@ -54,6 +54,7 @@ import {
     Stop,
     TimeRestriction,
     UserFareStages,
+    OperatorGroup,
 } from '../../src/interfaces';
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
@@ -1710,6 +1711,7 @@ export const expectedReturnTicketWithAdditionalService: WithIds<ReturnTicket> = 
             serviceCode: 'NW_05_BLAC_12A_1',
             startDate: '13/05/2020',
             serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+            serviceId: 1,
         },
     ],
     products: [
@@ -5652,6 +5654,17 @@ export const mockFieldSetForReuseOperatorGroupWithErrorsIfOptionNotSelected: Rad
         },
     ],
     radioError: [],
+};
+
+export const mockDataOperatorGroup: OperatorGroup = {
+    id: 1,
+    name: 'Regular Child',
+    operators: [
+        {
+            name: 'First operator',
+            nocCode: 'FOP',
+        },
+    ],
 };
 
 export const mockDataSplitOutProducts = [

@@ -106,29 +106,29 @@
           <organisations>
             <Operator version="1.0" id="noc:WBTR">
               <PublicCode>WBTR</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <Name>Warrington's Own Buses</Name>
+              <ShortName>Warrington's Own Buses</ShortName>
+              <TradingName>Warrington Borough Transport Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01925634296</Phone>
+                <Url>http://warringtonsownbuses.co.uk/</Url>
               </ContactDetails>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>Wilderspool Causeway, Warrington, Cheshire WA4 6PT</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
             <Operator version="1.0" id="noc:DCCL">
               <PublicCode>DCCL</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <Name>Durham County Council</Name>
+              <ShortName>Durham County Council</ShortName>
+              <TradingName>Durham County Council</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>0300 026 0000</Phone>
+                <Url>http://www.durhamCountyCouncil.co.uk/</Url>
               </ContactDetails>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>County Hall, Aykley Heads, Durham DH1 5UL</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
@@ -151,8 +151,8 @@
             <GroupOfOperators version="1.0" id="operators@bus">
               <Name>Bus Operators</Name>
               <members>
-                <OperatorRef version="1.0" ref="noc:WBTR">Blackpool Transport</OperatorRef>
-                <OperatorRef version="1.0" ref="noc:DCCL">Blackpool Transport</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:WBTR">Warrington's Own Buses</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:DCCL">Durham County Council</OperatorRef>
                 <OperatorRef version="1.0" ref="noc:BLAC">Blackpool Transport</OperatorRef>
               </members>
             </GroupOfOperators>
@@ -382,7 +382,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Test_Product_1@Online_(smart_card)@youngPerson@product-0@SOP-0@service">
-                  <Name>Test Product 1 - Online (smart card)  - youngPerson</Name>
+                  <Name>FareTable for Test Product 1</Name>
                   <includes>
                     <FareTable version="1.0" id="op:Test_Product_1@Online_(smart_card)@youngPerson@service@nested">
                       <pricesFor>
@@ -413,7 +413,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Test_Product_1@Mobile_App@youngPerson@product-0@SOP-1@service">
-                  <Name>Test Product 1 - Mobile App  - youngPerson</Name>
+                  <Name>FareTable for Test Product 1</Name>
                   <includes>
                     <FareTable version="1.0" id="op:Test_Product_1@Mobile_App@youngPerson@service@nested">
                       <pricesFor>
@@ -446,7 +446,7 @@
             <Line version="1.0" id="AD1146649_RJ1_Outbound">
               <Name>Line 5</Name>
               <Description>LONDON - ESSEX - BIRMINGHAM</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://warringtonsownbuses.co.uk/</Url>
               <PublicCode>5</PublicCode>
               <PrivateCode type="txc:Line@id">AD1146649_RJ1_Outbound</PrivateCode>
               <OperatorRef version="1.0" ref="noc:WBTR"/>
@@ -455,7 +455,7 @@
             <Line version="1.0" id="FD1146649_RJ1_Outbound">
               <Name>Line 4</Name>
               <Description>EDINBURGH - GLASGOW - LEEDS</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://warringtonsownbuses.co.uk/</Url>
               <PublicCode>4</PublicCode>
               <PrivateCode type="txc:Line@id">FD1146649_RJ1_Outbound</PrivateCode>
               <OperatorRef version="1.0" ref="noc:WBTR"/>
@@ -464,7 +464,7 @@
             <Line version="1.0" id="XC1146649_RJ1_Outbound">
               <Name>Line 7</Name>
               <Description>HULL - WIGAN - BOLTON</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://warringtonsownbuses.co.uk/</Url>
               <PublicCode>7</PublicCode>
               <PrivateCode type="txc:Line@id">XC1146649_RJ1_Outbound</PrivateCode>
               <OperatorRef version="1.0" ref="noc:WBTR"/>
@@ -473,7 +473,7 @@
             <Line version="1.0" id="PK1146639_RJ1_Outbound">
               <Name>Line 663</Name>
               <Description>LEEDS - WAKEFIELD - YORK</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://www.durhamCountyCouncil.co.uk/</Url>
               <PublicCode>663</PublicCode>
               <PrivateCode type="txc:Line@id">PK1146639_RJ1_Outbound</PrivateCode>
               <OperatorRef version="1.0" ref="noc:DCCL"/>
@@ -482,7 +482,7 @@
             <Line version="1.0" id="PK133146649_RJ1_Outbound">
               <Name>Line 77</Name>
               <Description>BEESTON - HUNSLET - CITY CENTRE</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://www.durhamCountyCouncil.co.uk/</Url>
               <PublicCode>77</PublicCode>
               <PrivateCode type="txc:Line@id">PK133146649_RJ1_Outbound</PrivateCode>
               <OperatorRef version="1.0" ref="noc:DCCL"/>
@@ -491,7 +491,7 @@
             <Line version="1.0" id="PK121146649_RJ1_Outbound">
               <Name>Line 65</Name>
               <Description>LIVERPOOL - MANCHESTER - BOLTON</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://www.durhamCountyCouncil.co.uk/</Url>
               <PublicCode>65</PublicCode>
               <PrivateCode type="txc:Line@id">PK121146649_RJ1_Outbound</PrivateCode>
               <OperatorRef version="1.0" ref="noc:DCCL"/>

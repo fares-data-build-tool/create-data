@@ -15,7 +15,7 @@
         <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+            <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
             <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
             <BrandingRef version="1.0" ref="op:WBTR@brand"/>
           </objectReferences>
@@ -55,13 +55,13 @@
           <codespaces>
             <Codespace id="op_data">
               <Xmlns>op</Xmlns>
-              <XmlnsUrl>http://www.blackpooltransport.com</XmlnsUrl>
+              <XmlnsUrl>http://warringtonsownbuses.co.uk/</XmlnsUrl>
               <Description>Operator data</Description>
             </Codespace>
           </codespaces>
           <dataSources>
             <DataSource id="op:src" version="1.0">
-              <Email>enquiries@blackpooltransport.com</Email>
+              <Email>travelcentre@warringtonsownbuses.co.uk</Email>
             </DataSource>
           </dataSources>
           <responsibilitySets>
@@ -92,7 +92,7 @@
               <values>
                 <Branding version="1.0" id="op:WBTR@brand">
                   <Name>Warrington's Own Buses</Name>
-                  <Url>http://www.blackpooltransport.com</Url>
+                  <Url>http://warringtonsownbuses.co.uk/</Url>
                 </Branding>
               </values>
             </ValueSet>
@@ -102,18 +102,18 @@
               <PublicCode>WBTR</PublicCode>
               <Name>Warrington's Own Buses</Name>
               <ShortName>Warrington's Own Buses</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <TradingName>Warrington Borough Transport Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01925634296</Phone>
+                <Url>http://warringtonsownbuses.co.uk/</Url>
               </ContactDetails>
               <OrganisationType>operator</OrganisationType>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>Wilderspool Causeway, Warrington, Cheshire WA4 6PT</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
               <CustomerServiceContactDetails>
-                <Email>enquiries@blackpooltransport.com</Email>
+                <Email>travelcentre@warringtonsownbuses.co.uk</Email>
               </CustomerServiceContactDetails>
             </Operator>
           </organisations>
@@ -123,11 +123,11 @@
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
             <Line version="1.0" id="PK1146649_RJ1_Outbound">
-              <Name>Blackpool Transport 709</Name>
+              <Name>Warrington's Own Buses 709</Name>
               <Description>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Description>
               <PublicCode>709</PublicCode>
               <PrivateCode type="txc:Line@id">PK1146649_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
               <LineType>local</LineType>
             </Line>
           </lines>
@@ -262,7 +262,7 @@
                 </ValidBetween>
               </validityConditions>
               <Name>Tariff for Another product</Name>
-              <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
               <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <TariffBasis>zoneToZone</TariffBasis>
@@ -790,7 +790,7 @@
           </priceGroups>
           <fareTables>
             <FareTable id="Trip@return-SOP@Onboard_(cash)@Line_PK1146649_RJ1_Outbound@group" version="1.0">
-              <Name>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Name>
+              <Name>FareTable for Another product</Name>
               <Description>group return fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
@@ -851,7 +851,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c1@Shott_Drive" version="1.0">
-                  <Name>Shott Drive</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Shott_Drive" order="1">
@@ -913,7 +913,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c2@The_Stag_pub" version="1.0">
-                  <Name>The Stag pub</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@The_Stag_pub" order="1">
@@ -967,7 +967,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c3@Frederick_Drive" version="1.0">
-                  <Name>Frederick Drive</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 3</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Frederick_Drive" order="1">
@@ -1013,7 +1013,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c4@Red_Lane" version="1.0">
-                  <Name>Red Lane</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 4</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Red_Lane" order="1">
@@ -1051,7 +1051,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c5@Rail_Station" version="1.0">
-                  <Name>Rail Station</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 5</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Rail_Station" order="1">
@@ -1081,7 +1081,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c6@Redtree_Street" version="1.0">
-                  <Name>Redtree Street</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 6</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Redtree_Street" order="1">
@@ -1103,7 +1103,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@c7@Park_Lane" version="1.0">
-                  <Name>Park Lane</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 7</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(cash)@PK1146649_RJ1_Outbound@group@Park_Lane" order="1">
@@ -1119,7 +1119,7 @@
               </includes>
             </FareTable>
             <FareTable id="Trip@return-SOP@Onboard_(contactless)@Line_PK1146649_RJ1_Outbound@group" version="1.0">
-              <Name>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Name>
+              <Name>FareTable for Another product</Name>
               <Description>group return fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
@@ -1180,7 +1180,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c1@Shott_Drive" version="1.0">
-                  <Name>Shott Drive</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Shott_Drive" order="1">
@@ -1242,7 +1242,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c2@The_Stag_pub" version="1.0">
-                  <Name>The Stag pub</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@The_Stag_pub" order="1">
@@ -1296,7 +1296,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c3@Frederick_Drive" version="1.0">
-                  <Name>Frederick Drive</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 3</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Frederick_Drive" order="1">
@@ -1342,7 +1342,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c4@Red_Lane" version="1.0">
-                  <Name>Red Lane</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 4</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Red_Lane" order="1">
@@ -1380,7 +1380,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c5@Rail_Station" version="1.0">
-                  <Name>Rail Station</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 5</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Rail_Station" order="1">
@@ -1410,7 +1410,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c6@Redtree_Street" version="1.0">
-                  <Name>Redtree Street</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 6</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Redtree_Street" order="1">
@@ -1432,7 +1432,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@c7@Park_Lane" version="1.0">
-                  <Name>Park Lane</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 7</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Onboard_(contactless)@PK1146649_RJ1_Outbound@group@Park_Lane" order="1">
@@ -1448,7 +1448,7 @@
               </includes>
             </FareTable>
             <FareTable id="Trip@return-SOP@Online_(smart_card)@Line_PK1146649_RJ1_Outbound@group" version="1.0">
-              <Name>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Name>
+              <Name>FareTable for Another product</Name>
               <Description>group return fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
@@ -1509,7 +1509,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c1@Shott_Drive" version="1.0">
-                  <Name>Shott Drive</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Shott_Drive" order="1">
@@ -1571,7 +1571,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c2@The_Stag_pub" version="1.0">
-                  <Name>The Stag pub</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@The_Stag_pub" order="1">
@@ -1625,7 +1625,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c3@Frederick_Drive" version="1.0">
-                  <Name>Frederick Drive</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 3</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Frederick_Drive" order="1">
@@ -1671,7 +1671,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c4@Red_Lane" version="1.0">
-                  <Name>Red Lane</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 4</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Red_Lane" order="1">
@@ -1709,7 +1709,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c5@Rail_Station" version="1.0">
-                  <Name>Rail Station</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 5</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Rail_Station" order="1">
@@ -1739,7 +1739,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c6@Redtree_Street" version="1.0">
-                  <Name>Redtree Street</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 6</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Redtree_Street" order="1">
@@ -1761,7 +1761,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@c7@Park_Lane" version="1.0">
-                  <Name>Park Lane</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 7</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Online_(smart_card)@PK1146649_RJ1_Outbound@group@Park_Lane" order="1">
@@ -1777,7 +1777,7 @@
               </includes>
             </FareTable>
             <FareTable id="Trip@return-SOP@Mobile_App@Line_PK1146649_RJ1_Outbound@group" version="1.0">
-              <Name>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Name>
+              <Name>FareTable for Another product</Name>
               <Description>group return fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
@@ -1838,7 +1838,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c1@Shott_Drive" version="1.0">
-                  <Name>Shott Drive</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Shott_Drive" order="1">
@@ -1900,7 +1900,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c2@The_Stag_pub" version="1.0">
-                  <Name>The Stag pub</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@The_Stag_pub" order="1">
@@ -1954,7 +1954,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c3@Frederick_Drive" version="1.0">
-                  <Name>Frederick Drive</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 3</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Frederick_Drive" order="1">
@@ -2000,7 +2000,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c4@Red_Lane" version="1.0">
-                  <Name>Red Lane</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 4</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Red_Lane" order="1">
@@ -2038,7 +2038,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c5@Rail_Station" version="1.0">
-                  <Name>Rail Station</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 5</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Rail_Station" order="1">
@@ -2068,7 +2068,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c6@Redtree_Street" version="1.0">
-                  <Name>Redtree Street</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 6</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Redtree_Street" order="1">
@@ -2090,7 +2090,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@c7@Park_Lane" version="1.0">
-                  <Name>Park Lane</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 7</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@Mobile_App@PK1146649_RJ1_Outbound@group@Park_Lane" order="1">
@@ -2106,7 +2106,7 @@
               </includes>
             </FareTable>
             <FareTable id="Trip@return-SOP@All_Encompassing@Line_PK1146649_RJ1_Outbound@group" version="1.0">
-              <Name>Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road</Name>
+              <Name>FareTable for Another product</Name>
               <Description>group return fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
@@ -2167,7 +2167,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c1@Shott_Drive" version="1.0">
-                  <Name>Shott Drive</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Shott_Drive" order="1">
@@ -2229,7 +2229,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c2@The_Stag_pub" version="1.0">
-                  <Name>The Stag pub</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@The_Stag_pub" order="1">
@@ -2283,7 +2283,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c3@Frederick_Drive" version="1.0">
-                  <Name>Frederick Drive</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 3</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Frederick_Drive" order="1">
@@ -2329,7 +2329,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c4@Red_Lane" version="1.0">
-                  <Name>Red Lane</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 4</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Red_Lane" order="1">
@@ -2367,7 +2367,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c5@Rail_Station" version="1.0">
-                  <Name>Rail Station</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 5</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Rail_Station" order="1">
@@ -2397,7 +2397,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c6@Redtree_Street" version="1.0">
-                  <Name>Redtree Street</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 6</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Redtree_Street" order="1">
@@ -2419,7 +2419,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@c7@Park_Lane" version="1.0">
-                  <Name>Park Lane</Name>
+                  <Name>FareTable for Another product</Name>
                   <Description>Column 7</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@return-SOP@All_Encompassing@PK1146649_RJ1_Outbound@group@Park_Lane" order="1">

@@ -102,29 +102,29 @@
           <organisations>
             <Operator version="1.0" id="noc:WBTR">
               <PublicCode>WBTR</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <Name>Warrington's Own Buses</Name>
+              <ShortName>Warrington's Own Buses</ShortName>
+              <TradingName>Warrington Borough Transport Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01925634296</Phone>
+                <Url>http://warringtonsownbuses.co.uk/</Url>
               </ContactDetails>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>Wilderspool Causeway, Warrington, Cheshire WA4 6PT</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
             <Operator version="1.0" id="noc:NWBT">
               <PublicCode>NWBT</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <Name>Pilkingtonbus</Name>
+              <ShortName>Pilkingtonbus</ShortName>
+              <TradingName>Boomerang Travel Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01254237083</Phone>
+                <Url>http://pilkingtonbus.com/</Url>
               </ContactDetails>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>Argyle Street, Accrington, Lancashire BB5 1DQ</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
@@ -141,8 +141,8 @@
             <GroupOfOperators version="1.0" id="operators@bus">
               <Name>Bus Operators</Name>
               <members>
-                <OperatorRef version="1.0" ref="noc:WBTR">Blackpool Transport</OperatorRef>
-                <OperatorRef version="1.0" ref="noc:NWBT">Blackpool Transport</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:WBTR">Warrington's Own Buses</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:NWBT">Pilkingtonbus</OperatorRef>
               </members>
             </GroupOfOperators>
           </groupsOfOperators>
@@ -369,7 +369,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Week_Rider@Cash_On_Board@adult@product-0@SOP-0@service">
-                  <Name>Week Rider - Cash On Board  - adult</Name>
+                  <Name>FareTable for Week Rider</Name>
                   <includes>
                     <FareTable version="1.0" id="op:Week_Rider@Cash_On_Board@adult@service@nested">
                       <pricesFor>
@@ -400,7 +400,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Week_Rider@Online@adult@product-0@SOP-1@service">
-                  <Name>Week Rider - Online  - adult</Name>
+                  <Name>FareTable for Week Rider</Name>
                   <includes>
                     <FareTable version="1.0" id="op:Week_Rider@Online@adult@service@nested">
                       <pricesFor>
@@ -433,7 +433,7 @@
             <Line version="1.0" id="Mon1JJ">
               <Name>Line 1</Name>
               <Description>Warrington - Latchford/Westy (Circ)</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://warringtonsownbuses.co.uk/</Url>
               <PublicCode>1</PublicCode>
               <PrivateCode type="txc:Line@id">Mon1JJ</PrivateCode>
               <OperatorRef version="1.0" ref="noc:WBTR"/>
@@ -442,7 +442,7 @@
             <Line version="1.0" id="rLjpBT">
               <Name>Line 15</Name>
               <Description>BURNLEY - BURNLEY via Rose Hill Road, Moorland Road</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://pilkingtonbus.com/</Url>
               <PublicCode>15</PublicCode>
               <PrivateCode type="txc:Line@id">rLjpBT</PrivateCode>
               <OperatorRef version="1.0" ref="noc:NWBT"/>
@@ -451,7 +451,7 @@
             <Line version="1.0" id="M0L2FP">
               <Name>Line 65</Name>
               <Description>BURNLEY - NELSON via Sycamore Avenue, Lowerhouse, Slade Lane, Higham, Barrowford</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://pilkingtonbus.com/</Url>
               <PublicCode>65</PublicCode>
               <PrivateCode type="txc:Line@id">M0L2FP</PrivateCode>
               <OperatorRef version="1.0" ref="noc:NWBT"/>
@@ -460,7 +460,7 @@
             <Line version="1.0" id="BptR81">
               <Name>Line 67</Name>
               <Description>CLITHEROE - NELSON via Waddington, West Bradford, Grindleton, Downham, Blacko</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://pilkingtonbus.com/</Url>
               <PublicCode>67</PublicCode>
               <PrivateCode type="txc:Line@id">BptR81</PrivateCode>
               <OperatorRef version="1.0" ref="noc:NWBT"/>

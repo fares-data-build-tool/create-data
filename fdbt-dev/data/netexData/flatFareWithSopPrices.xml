@@ -15,7 +15,7 @@
         <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+            <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
             <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
             <PreassignedFareProductRef version="1.0" ref="op:Pass@test_anyone"/>
             <BrandingRef version="1.0" ref="op:WBTR@brand"/>
@@ -56,7 +56,7 @@
           <codespaces>
             <Codespace id="op_data">
               <Xmlns>op</Xmlns>
-              <XmlnsUrl>http://www.blackpooltransport.com</XmlnsUrl>
+              <XmlnsUrl>http://warringtonsownbuses.co.uk/</XmlnsUrl>
               <Description>Operator data</Description>
             </Codespace>
           </codespaces>
@@ -67,7 +67,7 @@
           </FrameDefaults>
           <dataSources>
             <DataSource id="op:src" version="1.0">
-              <Email>enquiries@blackpooltransport.com</Email>
+              <Email>travelcentre@warringtonsownbuses.co.uk</Email>
             </DataSource>
           </dataSources>
           <responsibilitySets>
@@ -98,7 +98,7 @@
               <values>
                 <Branding version="1.0" id="op:WBTR@brand">
                   <Name>Test Operator</Name>
-                  <Url>http://www.blackpooltransport.com</Url>
+                  <Url>http://warringtonsownbuses.co.uk/</Url>
                 </Branding>
               </values>
             </ValueSet>
@@ -108,18 +108,18 @@
               <PublicCode>WBTR</PublicCode>
               <Name>Test Operator</Name>
               <ShortName>Test Operator</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <TradingName>Warrington Borough Transport Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01925634296</Phone>
+                <Url>http://warringtonsownbuses.co.uk/</Url>
               </ContactDetails>
               <OrganisationType>operator</OrganisationType>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>Wilderspool Causeway, Warrington, Cheshire WA4 6PT</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
               <CustomerServiceContactDetails>
-                <Email>enquiries@blackpooltransport.com</Email>
+                <Email>travelcentre@warringtonsownbuses.co.uk</Email>
               </CustomerServiceContactDetails>
             </Operator>
           </organisations>
@@ -140,7 +140,7 @@
                 </ValidBetween>
               </validityConditions>
               <Name>Tariff for test</Name>
-              <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
               <TariffBasis>flat</TariffBasis>
               <fareStructureElements>
@@ -193,7 +193,7 @@
               <Name>test</Name>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
-              <OperatorRef version="1.0" ref="noc:WBTR">noc:135742</OperatorRef>
+              <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@test_anyone@travel">
                   <Name>Rides available for specified durations</Name>
@@ -285,7 +285,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:test@Onboard_(cash)@anyone">
-                  <Name>test - Onboard (cash) - anyone</Name>
+                  <Name>FareTable for test</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:test@Onboard_(cash)@anyone">
                       <Amount>4.99</Amount>
@@ -305,7 +305,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:test@Onboard_(contactless)@anyone">
-                  <Name>test - Onboard (contactless) - anyone</Name>
+                  <Name>FareTable for test</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:test@Onboard_(contactless)@anyone">
                       <Amount>8.88</Amount>
@@ -325,7 +325,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:test@Online_(smart_card)@anyone">
-                  <Name>test - Online (smart card) - anyone</Name>
+                  <Name>FareTable for test</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:test@Online_(smart_card)@anyone">
                       <Amount>9.99</Amount>
@@ -343,7 +343,7 @@
             <Line version="1.0" id="lzkklu">
               <Name>Line 1</Name>
               <Description>Warrington - Latchford/Westy (Circ)</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://warringtonsownbuses.co.uk/</Url>
               <PublicCode>1</PublicCode>
               <PrivateCode type="txc:Line@id">lzkklu</PrivateCode>
               <OperatorRef version="1.0" ref="noc:WBTR"/>
@@ -352,7 +352,7 @@
             <Line version="1.0" id="wido2q">
               <Name>Line 2</Name>
               <Description>Warrington - Westy/Latchford (Circ)</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://warringtonsownbuses.co.uk/</Url>
               <PublicCode>2</PublicCode>
               <PrivateCode type="txc:Line@id">wido2q</PrivateCode>
               <OperatorRef version="1.0" ref="noc:WBTR"/>
@@ -361,7 +361,7 @@
             <Line version="1.0" id="TgBKhM">
               <Name>Line 3</Name>
               <Description>Warrington - Martinscroft</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://warringtonsownbuses.co.uk/</Url>
               <PublicCode>3</PublicCode>
               <PrivateCode type="txc:Line@id">TgBKhM</PrivateCode>
               <OperatorRef version="1.0" ref="noc:WBTR"/>

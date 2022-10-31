@@ -3,14 +3,14 @@ import { shallow } from 'enzyme';
 import Exports from '../../../src/pages/products/exports';
 
 describe('pages', () => {
-    describe('confirmRegistration', () => {
+    describe('exports', () => {
         it('should render correctly without data when operator has no products', () => {
-            const tree = shallow(<Exports csrf={''} operatorHasProducts={false} />);
+            const tree = shallow(<Exports csrf={''} operatorHasProducts={false} isDevOrTest={false} />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render the export button correctly when operator has products', () => {
-            const tree = shallow(<Exports csrf={''} operatorHasProducts={true} />);
+            const tree = shallow(<Exports csrf={''} operatorHasProducts={true} isDevOrTest={false} />);
             expect(tree).toMatchSnapshot();
         });
     });

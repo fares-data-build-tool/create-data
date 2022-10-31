@@ -85,6 +85,7 @@ describe('returnService', () => {
                         lineName: '17',
                         serviceDescription:
                             '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
+                        serviceId: 4,
                     },
                 ],
             },

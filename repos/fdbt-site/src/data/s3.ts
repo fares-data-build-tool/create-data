@@ -11,6 +11,8 @@ import {
 import { Ticket, UserFareStages, UserFareZone } from '../interfaces';
 import logger from '../utils/logger';
 import { triggerZipper } from '../utils/apiUtils/export';
+import { DeleteObjectsRequest, ListObjectsV2Request, ObjectIdentifierList, ObjectList } from 'aws-sdk/clients/s3';
+import { objectKeyMatchesExportNameExactly } from '../utils';
 
 const getS3Client = (): S3 => {
     let options: S3.ClientConfiguration = {
@@ -269,4 +271,47 @@ export const deleteFromS3 = async (key: string, bucketName: string): Promise<voi
     } catch (error) {
         throw new Error(`Deletion of ${key} in ${bucketName} unsuccessful: ${(error as Error).stack}`);
     }
+};
+
+const listBucketObjects = async (bucket: string): Promise<ObjectList> => {
+    const objects: {}[] = [];
+
+    const getObjectsWithPaginationToken = async (continuationToken: string | undefined) => {
+        const params: ListObjectsV2Request = {
+            Bucket: bucket,
+            ContinuationToken: continuationToken,
+        };
+
+        const listObjectsResponse = await s3.listObjectsV2(params).promise();
+
+        if (listObjectsResponse.Contents) {
+            objects.push(...listObjectsResponse.Contents);
+
+            if (listObjectsResponse.NextContinuationToken) {
+                await getObjectsWithPaginationToken(listObjectsResponse.NextContinuationToken);
+            }
+        }
+    };
+
+    await getObjectsWithPaginationToken(undefined);
+
+    return objects;
+};
+
+export const deleteExport = async (exportName: string, bucket: string): Promise<void> => {
+    const allObjectsInBucket = await listBucketObjects(bucket);
+    const objectsInExport = allObjectsInBucket.filter((obj) =>
+        objectKeyMatchesExportNameExactly(obj.Key as string, exportName),
+    );
+
+    const deleteParams: DeleteObjectsRequest = {
+        Bucket: bucket,
+        Delete: {
+            Objects: objectsInExport.map((obj) => ({
+                Key: obj.Key,
+            })) as ObjectIdentifierList,
+        },
+    };
+
+    await s3.deleteObjects(deleteParams).promise();
 };

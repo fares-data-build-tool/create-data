@@ -19,7 +19,9 @@ exports[`pages view passenger types should render correctly when groups and indi
     <div
       className="govuk-grid-column-one-quarter"
     >
-      <SubNavigation />
+      <SubNavigation
+        isDevOrTest={false}
+      />
     </div>
     <div
       className="govuk-grid-column-three-quarters"
@@ -130,7 +132,9 @@ exports[`pages view passenger types should render correctly when no individual o
     <div
       className="govuk-grid-column-one-quarter"
     >
-      <SubNavigation />
+      <SubNavigation
+        isDevOrTest={false}
+      />
     </div>
     <div
       className="govuk-grid-column-three-quarters"
@@ -184,7 +188,9 @@ exports[`pages view passenger types should render correctly when only individual
     <div
       className="govuk-grid-column-one-quarter"
     >
-      <SubNavigation />
+      <SubNavigation
+        isDevOrTest={false}
+      />
     </div>
     <div
       className="govuk-grid-column-three-quarters"
@@ -271,7 +277,9 @@ exports[`pages view passenger types should render correctly when only individual
     <div
       className="govuk-grid-column-one-quarter"
     >
-      <SubNavigation />
+      <SubNavigation
+        isDevOrTest={false}
+      />
     </div>
     <div
       className="govuk-grid-column-three-quarters"
@@ -351,7 +359,9 @@ exports[`pages view passenger types should render correctly when only passenger 
     <div
       className="govuk-grid-column-one-quarter"
     >
-      <SubNavigation />
+      <SubNavigation
+        isDevOrTest={false}
+      />
     </div>
     <div
       className="govuk-grid-column-three-quarters"

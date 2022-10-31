@@ -106,43 +106,43 @@
           <organisations>
             <Operator version="1.0" id="noc:WBTR">
               <PublicCode>WBTR</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <Name>Warrington's Own Buses</Name>
+              <ShortName>Warrington's Own Buses</ShortName>
+              <TradingName>Warrington Borough Transport Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01925634296</Phone>
+                <Url>http://warringtonsownbuses.co.uk/</Url>
               </ContactDetails>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>Wilderspool Causeway, Warrington, Cheshire WA4 6PT</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
             <Operator version="1.0" id="noc:DCCL">
               <PublicCode>DCCL</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <Name>Durham County Council</Name>
+              <ShortName>Durham County Council</ShortName>
+              <TradingName>Durham County Council</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>0300 026 0000</Phone>
+                <Url>http://www.durhamCountyCouncil.co.uk/</Url>
               </ContactDetails>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>County Hall, Aykley Heads, Durham DH1 5UL</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
             <Operator version="1.0" id="noc:HCTY">
               <PublicCode>HCTY</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <Name>Connexions Buses</Name>
+              <ShortName>Connexions Buses</ShortName>
+              <TradingName>Harrogate Coach Travel Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01423339600</Phone>
+                <Url>http://www.connexionsbuses.com/</Url>
               </ContactDetails>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>Unit 3, South Field Lane, Tockwith, York YO26 7QP</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
@@ -165,9 +165,9 @@
             <GroupOfOperators version="1.0" id="operators@bus">
               <Name>Bus Operators</Name>
               <members>
-                <OperatorRef version="1.0" ref="noc:WBTR">Blackpool Transport</OperatorRef>
-                <OperatorRef version="1.0" ref="noc:DCCL">Blackpool Transport</OperatorRef>
-                <OperatorRef version="1.0" ref="noc:HCTY">Blackpool Transport</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:WBTR">Warrington's Own Buses</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:DCCL">Durham County Council</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:HCTY">Connexions Buses</OperatorRef>
                 <OperatorRef version="1.0" ref="noc:BLAC">Blackpool Transport</OperatorRef>
               </members>
             </GroupOfOperators>
@@ -486,7 +486,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@adult@product-0@SOP-0@zone">
-                  <Name>Product 1 - Onboard (cash)  - adult</Name>
+                  <Name>FareTable for Product 1</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>
@@ -520,7 +520,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@adult@product-0@SOP-1@zone">
-                  <Name>Product 1 - Onboard (contactless)  - adult</Name>
+                  <Name>FareTable for Product 1</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>
@@ -554,7 +554,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@adult@product-0@SOP-2@zone">
-                  <Name>Product 1 - Online (smart card)  - adult</Name>
+                  <Name>FareTable for Product 1</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>
@@ -588,7 +588,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Mobile_App@adult@product-0@SOP-3@zone">
-                  <Name>Product 1 - Mobile App  - adult</Name>
+                  <Name>FareTable for Product 1</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>

@@ -26,6 +26,9 @@ export interface SelectedService {
     serviceDescription: string;
 }
 
+export interface AdditionalService extends SelectedService {
+    serviceId: number;
+}
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
     termTime: boolean;
@@ -224,7 +227,7 @@ export interface ReturnTicket extends BasePointToPointTicket {
     inboundFareZones: FareZone[];
     outboundFareZones: FareZone[];
     returnPeriodValidity?: ReturnPeriodValidity;
-    additionalServices?: SelectedService[];
+    additionalServices?: AdditionalService[];
 }
 
 export interface Product {

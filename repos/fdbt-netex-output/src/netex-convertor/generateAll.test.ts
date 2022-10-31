@@ -4,6 +4,7 @@ import { buildNocList, xsl } from './handler';
 import netexGenerator from './netexGenerator';
 import libxslt from 'libxslt';
 import * as db from '../data/auroradb';
+import { allOperatorData } from './test-data/operatorData';
 
 describe('generateAll', () => {
     jest.spyOn(global.Date, 'now').mockImplementation(() => 1625753009685);
@@ -41,20 +42,13 @@ describe('generateAll', () => {
             nocs.push(baseNoc);
         }
 
-        const operatorData: Operator[] = nocs.map(noc => ({
-            nocCode: noc,
-            opId: '135742',
-            vosaPsvLicenseName: 'Blackpool Transport Services Ltd',
-            operatorName: 'Blackpool Transport',
-            url: 'www.blackpooltransport.com#http://www.blackpooltransport.com#',
-            email: 'enquiries@blackpooltransport.com',
-            contactNumber: '01253 473001',
-            street: 'Rigby Road, Blackpool FY1 5DD',
-            town: '',
-            postcode: '',
-            county: '',
-            mode: 'Bus',
-        }));
+        const operatorData: Operator[] = [];
+        nocs.forEach(noc => {
+            const findOperatorByNoc = allOperatorData.find(operator => operator.nocCode === noc);
+            if (findOperatorByNoc) {
+                operatorData.push(findOperatorByNoc);
+            }
+        });
 
         const netexGen = await netexGenerator(ticket, operatorData);
         const generatedNetex = await netexGen.generate();

@@ -59,6 +59,7 @@ describe('saveOperatorGroup', () => {
                         nocCode: 'OO',
                     },
                 ],
+                id: 3,
             },
         ]);
         const groupNameWithSpaces = '     Best test    group      ';

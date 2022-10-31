@@ -102,15 +102,15 @@
           <organisations>
             <Operator version="1.0" id="noc:HCTY">
               <PublicCode>HCTY</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <Name>Connexions Buses</Name>
+              <ShortName>Connexions Buses</ShortName>
+              <TradingName>Harrogate Coach Travel Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01423339600</Phone>
+                <Url>http://www.connexionsbuses.com/</Url>
               </ContactDetails>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>Unit 3, South Field Lane, Tockwith, York YO26 7QP</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
@@ -127,7 +127,7 @@
             <GroupOfOperators version="1.0" id="operators@bus">
               <Name>Bus Operators</Name>
               <members>
-                <OperatorRef version="1.0" ref="noc:HCTY">Blackpool Transport</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:HCTY">Connexions Buses</OperatorRef>
               </members>
             </GroupOfOperators>
           </groupsOfOperators>
@@ -346,7 +346,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:jakes@Onboard_(cash)@anyone@product-0@SOP-0@zone">
-                  <Name>jakes - Onboard (cash)  - anyone</Name>
+                  <Name>FareTable for jakes</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:Test_Scheme_Op-SE_products@Test_Town_Centre"/>
                   </specifics>

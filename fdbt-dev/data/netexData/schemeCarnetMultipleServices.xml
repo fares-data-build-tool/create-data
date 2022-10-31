@@ -102,29 +102,29 @@
           <organisations>
             <Operator version="1.0" id="noc:PBLT">
               <PublicCode>PBLT</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <Name>Preston Bus</Name>
+              <ShortName>Preston Bus</ShortName>
+              <TradingName>Preston Bus Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01772253671</Phone>
+                <Url>http://www.prestonbus.co.uk/</Url>
               </ContactDetails>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>221 Deepdale Road, Preston PR1 6NY</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
             <Operator version="1.0" id="noc:NWBT">
               <PublicCode>NWBT</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
-              <TradingName>Blackpool Transport Services Ltd</TradingName>
+              <Name>Pilkingtonbus</Name>
+              <ShortName>Pilkingtonbus</ShortName>
+              <TradingName>Boomerang Travel Ltd</TradingName>
               <ContactDetails>
-                <Phone>01253 473001</Phone>
-                <Url>http://www.blackpooltransport.com</Url>
+                <Phone>01254237083</Phone>
+                <Url>http://pilkingtonbus.com/</Url>
               </ContactDetails>
               <Address>
-                <Street>Rigby Road, Blackpool FY1 5DD</Street>
+                <Street>Argyle Street, Accrington, Lancashire BB5 1DQ</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
             </Operator>
@@ -141,8 +141,8 @@
             <GroupOfOperators version="1.0" id="operators@bus">
               <Name>Bus Operators</Name>
               <members>
-                <OperatorRef version="1.0" ref="noc:PBLT">Blackpool Transport</OperatorRef>
-                <OperatorRef version="1.0" ref="noc:NWBT">Blackpool Transport</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:PBLT">Preston Bus</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:NWBT">Pilkingtonbus</OperatorRef>
               </members>
             </GroupOfOperators>
           </groupsOfOperators>
@@ -301,7 +301,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:test@Purchase_method@child@product-0@SOP-0@service">
-                  <Name>test - Purchase method  - child</Name>
+                  <Name>FareTable for test</Name>
                   <includes>
                     <FareTable version="1.0" id="op:test@Purchase_method@child@service@nested">
                       <pricesFor>
@@ -335,7 +335,7 @@
             <Line version="1.0" id="lDJRAS">
               <Name>Line 3</Name>
               <Description>CLITHEROE - CLITHEROE via Pimlico, Chatburn, Pimlico</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://www.prestonbus.co.uk/</Url>
               <PublicCode>3</PublicCode>
               <PrivateCode type="txc:Line@id">lDJRAS</PrivateCode>
               <OperatorRef version="1.0" ref="noc:PBLT"/>
@@ -344,7 +344,7 @@
             <Line version="1.0" id="A2EHwY">
               <Name>Line 5</Name>
               <Description>ORMSKIRK - TOWN GREEN CIRCULAR</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://www.prestonbus.co.uk/</Url>
               <PublicCode>5</PublicCode>
               <PrivateCode type="txc:Line@id">A2EHwY</PrivateCode>
               <OperatorRef version="1.0" ref="noc:PBLT"/>
@@ -353,7 +353,7 @@
             <Line version="1.0" id="DnmNdy">
               <Name>Line 4</Name>
               <Description>CLITHEROE - PEEL PARK CIRCULAR via Claremont Ave, Standen Rd, Langshaw Dr, Turner St, Victoria St</Description>
-              <Url>http://www.blackpooltransport.com</Url>
+              <Url>http://pilkingtonbus.com/</Url>
               <PublicCode>4</PublicCode>
               <PrivateCode type="txc:Line@id">DnmNdy</PrivateCode>
               <OperatorRef version="1.0" ref="noc:NWBT"/>

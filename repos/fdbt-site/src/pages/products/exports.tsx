@@ -16,16 +16,21 @@ const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).th
 interface GlobalSettingsProps {
     csrf: string;
     operatorHasProducts: boolean;
+    isDevOrTest: boolean;
 }
 
-const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
-    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 5000 });
+const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps): ReactElement => {
+    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000 });
 
     const exports: Export[] | undefined = data?.exports;
 
     const anExportIsInProgress: boolean = exports
         ? exports.some((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)
         : false;
+
+    const exportInProgress: Export | undefined = exports
+        ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)
+        : undefined;
 
     const [showPopup, setShowPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
@@ -39,18 +44,32 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
                             <h1 className="govuk-heading-xl">Export your data</h1>{' '}
-                            <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
-                                <button
-                                    type="submit"
-                                    className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
-                                    onClick={() => {
-                                        setShowPopup(true);
-                                        setButtonClicked(true);
-                                    }}
-                                >
-                                    Export all fares
-                                </button>
-                            </CsrfForm>
+                            {!anExportIsInProgress ? (
+                                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
+                                    <button
+                                        type="submit"
+                                        className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
+                                        onClick={() => {
+                                            setShowPopup(true);
+                                            setButtonClicked(true);
+                                        }}
+                                    >
+                                        Export all fares
+                                    </button>
+                                </CsrfForm>
+                            ) : (
+                                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
+                                    <input type="hidden" name="exportName" value={exportInProgress?.name} />
+                                    <button
+                                        type="submit"
+                                        className={`govuk-button govuk-button--warning${
+                                            !isDevOrTest ? ' govuk-visually-hidden' : ''
+                                        }`}
+                                    >
+                                        Cancel export in progress
+                                    </button>
+                                </CsrfForm>
+                            )}
                         </div>
                         <div className="govuk-grid-row">
                             <div className="govuk-grid-column-two-thirds">
@@ -141,12 +160,15 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: GlobalSettingsProps }> => {
     const noc = getAndValidateNoc(ctx);
 
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const isTest = process.env.STAGE === 'test';
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
             operatorHasProducts,
+            isDevOrTest: isDevelopment || isTest,
         },
     };
 };

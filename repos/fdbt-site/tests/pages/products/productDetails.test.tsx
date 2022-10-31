@@ -423,7 +423,7 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
-                    backHref: `/products/otherProducts`,
+                    backHref: '/products/multiOperatorProducts',
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
