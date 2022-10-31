@@ -346,7 +346,7 @@
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:jakes@Onboard_(cash)@anyone@product-0@SOP-0@zone">
-                  <Name>jakes - Onboard (cash)  - anyone</Name>
+                  <Name>FareTable for jakes</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:Test_Scheme_Op-SE_products@Test_Town_Centre"/>
                   </specifics>

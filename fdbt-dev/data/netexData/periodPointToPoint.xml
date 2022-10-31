@@ -1288,7 +1288,7 @@
           </priceGroups>
           <fareTables>
             <FareTable id="Trip@period-SOP@Onboard_(cash)@Line_YpQjUw@anyone" version="1.0">
-              <Name>POULTON - BLACKPOOL via Victoria Hospital Outpatients</Name>
+              <Name>FareTable for Period Point to Point</Name>
               <Description>anyone period fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Period_Point_to_Point"/>
@@ -1319,7 +1319,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c1@Shott_Drive" version="1.0">
-                  <Name>Shott Drive</Name>
+                  <Name>FareTable for Period Point to Point</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@Shott_Drive" order="1">
@@ -1341,7 +1341,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@c2@The_Stag_pub" version="1.0">
-                  <Name>The Stag pub</Name>
+                  <Name>FareTable for Period Point to Point</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@period-SOP@Onboard_(cash)@YpQjUw@anyone@The_Stag_pub" order="1">
@@ -1357,7 +1357,7 @@
               </includes>
             </FareTable>
             <FareTable id="Trip@period-SOP@Onboard_(contactless)@Line_YpQjUw@anyone" version="1.0">
-              <Name>POULTON - BLACKPOOL via Victoria Hospital Outpatients</Name>
+              <Name>FareTable for Period Point to Point</Name>
               <Description>anyone period fares - Organised as a fare triangle</Description>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="Trip@Period_Point_to_Point"/>
@@ -1388,7 +1388,7 @@
               </rows>
               <includes>
                 <FareTable id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c1@Shott_Drive" version="1.0">
-                  <Name>Shott Drive</Name>
+                  <Name>FareTable for Period Point to Point</Name>
                   <Description>Column 1</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@Shott_Drive" order="1">
@@ -1410,7 +1410,7 @@
                   </cells>
                 </FareTable>
                 <FareTable id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@c2@The_Stag_pub" version="1.0">
-                  <Name>The Stag pub</Name>
+                  <Name>FareTable for Period Point to Point</Name>
                   <Description>Column 2</Description>
                   <cells>
                     <Cell version="1.0" id="Trip@period-SOP@Onboard_(contactless)@YpQjUw@anyone@The_Stag_pub" order="1">

@@ -49,6 +49,8 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
         ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)
         : undefined;
 
+    const exportInProgressStartedOverAnHourAgo = exports ? exportStartedOverAnHourAgo(exportInProgress) : false;
+
     const [showPopup, setShowPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
 
@@ -74,7 +76,7 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                         Export all fares
                                     </button>
                                 </CsrfForm>
-                            ) : exportStartedOverAnHourAgo(exportInProgress) ? (
+                            ) : exportInProgressStartedOverAnHourAgo ? (
                                 <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
                                     <input type="hidden" name="exportName" value={exportInProgress?.name} />
                                     <button type="submit" className="govuk-button govuk-button--warning">
@@ -90,7 +92,7 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                         Export is disabled as you have no products.
                                     </div>
                                 ) : null}
-                                {anExportIsInProgress && exportStartedOverAnHourAgo(exportInProgress) ? (
+                                {anExportIsInProgress && exportInProgressStartedOverAnHourAgo ? (
                                     <div className="govuk-inset-text govuk-!-margin-top-0">
                                         The cancel export button is available as it is likely your export has failed. If
                                         you think you know which product is to blame for your export failing, cancel

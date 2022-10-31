@@ -270,7 +270,7 @@
               </limitations>
               <includes>
                 <FareTable version="1.0" id="op:test@Onboard_(cash)@adult">
-                  <Name>test - Onboard (cash) - adult</Name>
+                  <Name>FareTable for test</Name>
                   <prices>
                     <DistanceMatrixElementPrice version="1.0" id="op:test@Onboard_(cash)@adult">
                       <Amount>2.99</Amount>
