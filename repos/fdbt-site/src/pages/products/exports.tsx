@@ -40,8 +40,9 @@ const getTag = (exportDetails: Export): ReactElement => {
     }
 
     if (exportDetails.exportFailed) {
+        const numberOfFilesMissing = exportDetails.numberOfFilesExpected - exportDetails.netexCount;
         return (
-            <strong className="govuk-tag govuk-tag--red">{`EXPORT FAILED ${exportDetails.netexCount} / ${exportDetails.numberOfFilesExpected}`}</strong>
+            <strong className="govuk-tag govuk-tag--red">{`EXPORT FAILED - ${numberOfFilesMissing} files failed`}</strong>
         );
     }
 
