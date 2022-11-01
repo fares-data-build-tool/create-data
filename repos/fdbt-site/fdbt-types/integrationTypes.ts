@@ -2,4 +2,4 @@ export type ExportLambdaBody = { paths: string[]; noc: string; exportPrefix: str
 
 export type ZipperLambdaBody = { exportName: string; noc: string };
 
-export type ExportMetadata = { date: Date; numberOfExpectedNetexFiles: number };
+export type ExportMetadata = { date: string; numberOfExpectedNetexFiles: number };
