@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
-import { getAndValidateNoc, redirectToError } from '../../utils/apiUtils';
+import { dateIsOverAnHourAgo, getAndValidateNoc, redirectToError } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { getS3Exports, getS3FolderCount, retrieveExportZip } from '../../data/s3';
+import { getExportMetaData, getS3Exports, getS3FolderCount, retrieveExportZip } from '../../data/s3';
 import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 import logger from '../../utils/logger';
 
@@ -9,6 +9,7 @@ export interface Export {
     name: string;
     matchingDataCount: number;
     netexCount: number;
+    exportFailed: boolean;
     signedUrl?: string;
 }
 
@@ -35,7 +36,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 const signedUrl = complete ? await retrieveExportZip(noc, name) : undefined;
 
-                return { name, matchingDataCount, netexCount, signedUrl };
+                const metadata = await getExportMetaData(`${noc}/exports/${name}.json`);
+
+                let exportFailed = false;
+
+                if (dateIsOverAnHourAgo(metadata.date) && metadata.numberOfExpectedNetexFiles !== netexCount) {
+                    exportFailed = true;
+                }
+
+                return { name, matchingDataCount, netexCount, signedUrl, exportFailed };
             }),
         );
 

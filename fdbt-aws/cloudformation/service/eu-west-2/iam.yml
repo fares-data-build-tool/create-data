@@ -180,6 +180,7 @@ Resources:
                   - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}/*
                   - !Sub arn:aws:s3:::fdbt-matching-data-${Stage}/*
                   - !Sub arn:aws:s3:::fdbt-unvalidated-netex-data-${Stage}/*
+                  - !Sub arn:aws:s3:::fdbt-export-metadata-${Stage}/*
               - Effect: Allow
                 Action:
                   - "s3:GetObject"
@@ -207,6 +208,7 @@ Resources:
                   - "s3:GetObject"
                 Resource:
                   - !Sub arn:aws:s3:::fdbt-netex-data-${Stage}/*
+                  - !Sub arn:aws:s3:::fdbt-export-metadata-${Stage}/*
               - Effect: Allow
                 Action:
                   - "ssm:GetParameter"

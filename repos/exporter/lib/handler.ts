@@ -36,13 +36,16 @@ const s3: S3 = new S3(
 
 const PRODUCTS_BUCKET = process.env.PRODUCTS_BUCKET;
 const MATCHING_DATA_BUCKET = process.env.MATCHING_DATA_BUCKET;
+const EXPORT_METADATA_BUCKET = process.env.EXPORT_METADATA_BUCKET;
 
 export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPrefix }) => {
     // populate the values from global settings using the IDs and write to matching data bucket
     console.log(`triggered export lambda... ${paths.toString()} noc: ${noc}`);
 
-    if (!PRODUCTS_BUCKET || !MATCHING_DATA_BUCKET) {
-        throw new Error('Need to set MATCHING_DATA_BUCKET and PRODUCTS_BUCKET');
+    if (!PRODUCTS_BUCKET || !MATCHING_DATA_BUCKET || !EXPORT_METADATA_BUCKET) {
+        throw new Error(
+            `Bucket details missing. Products bucket: ${PRODUCTS_BUCKET}, Matching data bucket: ${MATCHING_DATA_BUCKET}, Export metadata bucket: ${EXPORT_METADATA_BUCKET}`,
+        );
     }
 
     await Promise.all(
@@ -131,6 +134,18 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
             await s3
                 .putObject({ Key: destPath, Bucket: MATCHING_DATA_BUCKET, Body: JSON.stringify(fullTicket) })
+                .promise();
+
+            const date = new Date();
+            const numberOfExpectedNetexFiles = fullProducts.length;
+            const metadata = { date, numberOfExpectedNetexFiles };
+
+            await s3
+                .putObject({
+                    Key: `${noc}/exports/${exportPrefix}.json`,
+                    Bucket: EXPORT_METADATA_BUCKET,
+                    Body: JSON.stringify(metadata),
+                })
                 .promise();
         }),
     );

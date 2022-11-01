@@ -37,6 +37,8 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
 
     const exportAllowed = operatorHasProducts && !anExportIsInProgress && exports && !buttonClicked;
 
+    const showCancelButton = anExportIsInProgress && exportInProgress?.exportFailed;
+
     return (
         <>
             <BaseLayout title={title} description={description} showNavigation>
@@ -57,7 +59,7 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
                                         Export all fares
                                     </button>
                                 </CsrfForm>
-                            ) : (
+                            ) : showCancelButton ? (
                                 <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
                                     <input type="hidden" name="exportName" value={exportInProgress?.name} />
                                     <button
@@ -69,7 +71,7 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
                                         Cancel export in progress
                                     </button>
                                 </CsrfForm>
-                            )}
+                            ) : null}
                         </div>
                         <div className="govuk-grid-row">
                             <div className="govuk-grid-column-two-thirds">
@@ -119,7 +121,9 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
                                             <tr className="govuk-table__row" key={exportDetails.name}>
                                                 <td className="govuk-table__cell">{exportDetails.name}</td>
                                                 <td className="govuk-table__cell">
-                                                    {complete ? (
+                                                    {exportDetails.exportFailed ? (
+                                                        <strong className="govuk-tag govuk-tag--red">{`EXPORT FAILED ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
+                                                    ) : complete ? (
                                                         signedUrl ? (
                                                             <strong className="govuk-tag govuk-tag--green">{`EXPORT COMPLETE ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
                                                         ) : (

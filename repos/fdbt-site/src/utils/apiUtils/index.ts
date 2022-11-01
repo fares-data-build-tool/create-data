@@ -258,3 +258,11 @@ export const validatePassword = (
 
     return null;
 };
+
+export const dateIsOverAnHourAgo = (inputDate: Date): boolean => {
+    const currentDate = new Date();
+
+    const hoursDifference = Math.abs(currentDate.getTime() - inputDate.getTime()) / 360000;
+
+    return hoursDifference > 0;
+};

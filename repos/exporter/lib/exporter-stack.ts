@@ -14,6 +14,7 @@ export class ExporterStack extends cdk.Stack {
     private readonly stage: string;
     private readonly matchingDataBucket: IBucket;
     private readonly productsBucket: IBucket;
+    private readonly exportMetadataBucket: IBucket;
 
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
@@ -46,6 +47,12 @@ export class ExporterStack extends cdk.Stack {
             this,
             `fdbt-matching-data-${this.stage}`,
             `fdbt-matching-data-${this.stage}`,
+        );
+
+        this.exportMetadataBucket = Bucket.fromBucketName(
+            this,
+            `fdbt-export-metadata-${this.stage}`,
+            `fdbt-export-metadata-${this.stage}`,
         );
 
         this.addNeedsAttentionLambda(securityGroup, vpc, vpcSubnets);
@@ -94,6 +101,7 @@ export class ExporterStack extends cdk.Stack {
             environment: {
                 PRODUCTS_BUCKET: this.productsBucket.bucketName,
                 MATCHING_DATA_BUCKET: this.matchingDataBucket.bucketName,
+                EXPORT_METADATA_BUCKET: this.exportMetadataBucket.bucketName,
                 RDS_HOST: Fn.importValue(`${this.stage}:RdsClusterInternalEndpoint`),
                 STAGE: this.stage,
             },
@@ -116,6 +124,7 @@ export class ExporterStack extends cdk.Stack {
 
         this.productsBucket.grantRead(exporterFunction);
         this.matchingDataBucket.grantWrite(exporterFunction);
+        this.exportMetadataBucket.grantWrite(exporterFunction);
 
         const netexBucket = Bucket.fromBucketName(this, 'netex-bucket', `fdbt-netex-data-${this.stage}`);
         const zipperFunction = new NodejsFunction(this, `zipper-${this.stage}`, {

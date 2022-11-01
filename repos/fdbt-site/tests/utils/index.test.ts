@@ -12,6 +12,7 @@ import {
 import { Stop } from '../../src/interfaces';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
+import { dateIsOverAnHourAgo } from '../../src/utils/apiUtils';
 
 describe('index', () => {
     describe('getHost', () => {
@@ -204,6 +205,21 @@ describe('index', () => {
             const result = objectKeyMatchesExportNameExactly(objectKey, exportName);
 
             expect(result).toBeTruthy();
+        });
+    });
+
+    describe('dateIsOverAnHourAgo', () => {
+        it('returns true if the date is over an hour ago', () => {
+            const result = dateIsOverAnHourAgo(new Date('2022-06-17T03:24:00'));
+
+            expect(result).toBeTruthy();
+        });
+
+        it('returns false if the date is less than an hour ago', () => {
+            const date = new Date();
+            const result = dateIsOverAnHourAgo(date);
+
+            expect(result).toBeFalsy();
         });
     });
 });

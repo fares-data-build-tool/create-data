@@ -7,12 +7,14 @@ import {
     NETEX_BUCKET_NAME,
     MATCHING_DATA_BUCKET_NAME,
     PRODUCTS_DATA_BUCKET_NAME,
+    EXPORT_METADATA_BUCKET_NAME,
 } from '../constants';
 import { Ticket, UserFareStages, UserFareZone } from '../interfaces';
 import logger from '../utils/logger';
 import { triggerZipper } from '../utils/apiUtils/export';
 import { DeleteObjectsRequest, ListObjectsV2Request, ObjectIdentifierList, ObjectList } from 'aws-sdk/clients/s3';
 import { objectKeyMatchesExportNameExactly } from '../utils';
+import { ExportMetadata } from 'fdbt-types/integrationTypes';
 
 const getS3Client = (): S3 => {
     let options: S3.ClientConfiguration = {
@@ -314,4 +316,20 @@ export const deleteExport = async (exportName: string, bucket: string): Promise<
     };
 
     await s3.deleteObjects(deleteParams).promise();
+};
+
+export const getExportMetaData = async (key: string): Promise<ExportMetadata> => {
+    try {
+        const request: AWS.S3.GetObjectRequest = {
+            Bucket: EXPORT_METADATA_BUCKET_NAME,
+            Key: key,
+        };
+
+        const response = await s3.getObject(request).promise();
+        const dataAsString = response.Body?.toString('utf-8') ?? '';
+
+        return JSON.parse(dataAsString) as ExportMetadata;
+    } catch (error) {
+        throw new Error(`Failed to get matching data for key: ${key}, ${error.stack}`);
+    }
 };
