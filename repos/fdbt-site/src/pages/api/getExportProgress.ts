@@ -51,6 +51,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 let exportFailed = false;
 
+                logger.info('', {
+                    context: 'api.getExportProgress',
+                    message: 'Metadata',
+                    metadata,
+                });
+
                 if (
                     metadata &&
                     dateIsOverAnHourAgo(metadata.date) &&
