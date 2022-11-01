@@ -135,20 +135,24 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             await s3
                 .putObject({ Key: destPath, Bucket: MATCHING_DATA_BUCKET, Body: JSON.stringify(fullTicket) })
                 .promise();
-
-            const date = new Date();
-            const numberOfExpectedNetexFiles = fullProducts.length;
-            const metadata = { date, numberOfExpectedNetexFiles };
-
-            await s3
-                .putObject({
-                    Key: `${noc}/exports/${exportPrefix}.json`,
-                    Bucket: EXPORT_METADATA_BUCKET,
-                    Body: JSON.stringify(metadata),
-                })
-                .promise();
         }),
     );
+
+    const date = new Date();
+    const numberOfExpectedNetexFiles = paths.length;
+    const metadata = { date, numberOfExpectedNetexFiles };
+
+    console.log(
+        `putting metadata: ${metadata} in metadata bucket: ${EXPORT_METADATA_BUCKET} key: ${noc}/exports/${exportPrefix}.json`,
+    );
+
+    await s3
+        .putObject({
+            Key: `${noc}/exports/${exportPrefix}.json`,
+            Bucket: EXPORT_METADATA_BUCKET,
+            Body: JSON.stringify(metadata),
+        })
+        .promise();
 
     console.log(`done ${paths.toString()}`);
 };

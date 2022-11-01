@@ -330,6 +330,21 @@ export const getExportMetaData = async (key: string): Promise<ExportMetadata> =>
 
         return JSON.parse(dataAsString) as ExportMetadata;
     } catch (error) {
-        throw new Error(`Failed to get matching data for key: ${key}, ${error.stack}`);
+        throw new Error(`Failed to get export metadata for key: ${key}, ${error.stack}`);
+    }
+};
+
+export const checkIfMetaDataExists = async (key: string): Promise<boolean> => {
+    try {
+        const request: AWS.S3.HeadObjectRequest = {
+            Bucket: EXPORT_METADATA_BUCKET_NAME,
+            Key: key,
+        };
+
+        await s3.headObject(request).promise();
+        return true;
+    } catch (error) {
+        console.log(`Metadata does not exist for ${key}`);
+        return false;
     }
 };
