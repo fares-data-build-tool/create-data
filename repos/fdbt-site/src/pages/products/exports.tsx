@@ -19,17 +19,48 @@ interface GlobalSettingsProps {
     isDevOrTest: boolean;
 }
 
+const getTag = (exportDetails: Export): ReactElement => {
+    if (exportDetails.netexCount === 0) {
+        return (
+            <strong className="govuk-tag govuk-tag--blue">
+                {`LOADING PRODUCTS (${exportDetails.numberOfFilesExpected})`}
+            </strong>
+        );
+    }
+
+    if (exportDetails.netexCount === exportDetails.numberOfFilesExpected) {
+        if (exportDetails.signedUrl) {
+            return (
+                <strong className="govuk-tag govuk-tag--green">{`EXPORT COMPLETE ${exportDetails.netexCount} / ${exportDetails.numberOfFilesExpected}`}</strong>
+            );
+        }
+        return (
+            <strong className="govuk-tag govuk-tag--blue">{`EXPORT ZIPPING ${exportDetails.netexCount} / ${exportDetails.numberOfFilesExpected}`}</strong>
+        );
+    }
+
+    if (exportDetails.exportFailed) {
+        return (
+            <strong className="govuk-tag govuk-tag--red">{`EXPORT FAILED ${exportDetails.netexCount} / ${exportDetails.numberOfFilesExpected}`}</strong>
+        );
+    }
+
+    return (
+        <strong className="govuk-tag govuk-tag--blue">{`IN PROGRESS ${exportDetails.netexCount} / ${exportDetails.numberOfFilesExpected}`}</strong>
+    );
+};
+
 const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps): ReactElement => {
     const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000 });
 
     const exports: Export[] | undefined = data?.exports;
 
     const anExportIsInProgress: boolean = exports
-        ? exports.some((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)
+        ? exports.some((exportDetails) => exportDetails.netexCount !== exportDetails.numberOfFilesExpected)
         : false;
 
     const exportInProgress: Export | undefined = exports
-        ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.matchingDataCount)
+        ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.numberOfFilesExpected)
         : undefined;
 
     const [showPopup, setShowPopup] = useState(false);
@@ -115,30 +146,14 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
 
                                 <tbody className="govuk-table__body">
                                     {exports?.map((exportDetails) => {
-                                        const complete = exportDetails.netexCount === exportDetails.matchingDataCount;
-                                        const signedUrl = exportDetails.signedUrl;
                                         return (
                                             <tr className="govuk-table__row" key={exportDetails.name}>
                                                 <td className="govuk-table__cell">{exportDetails.name}</td>
+                                                <td className="govuk-table__cell">{getTag(exportDetails)}</td>
                                                 <td className="govuk-table__cell">
-                                                    {exportDetails.exportFailed ? (
-                                                        <strong className="govuk-tag govuk-tag--red">{`EXPORT FAILED ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
-                                                    ) : complete ? (
-                                                        signedUrl ? (
-                                                            <strong className="govuk-tag govuk-tag--green">{`EXPORT COMPLETE ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
-                                                        ) : (
-                                                            <strong className="govuk-tag govuk-tag--blue">{`EXPORT ZIPPING ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
-                                                        )
-                                                    ) : exportDetails.netexCount === 0 ? (
-                                                        <strong className="govuk-tag govuk-tag--blue">
-                                                            {`LOADING PRODUCTS (${exportDetails.matchingDataCount})`}
-                                                        </strong>
-                                                    ) : (
-                                                        <strong className="govuk-tag govuk-tag--blue">{`IN PROGRESS ${exportDetails.netexCount} / ${exportDetails.matchingDataCount}`}</strong>
-                                                    )}
-                                                </td>
-                                                <td className="govuk-table__cell">
-                                                    {signedUrl ? <a href={signedUrl}>Download file</a> : null}
+                                                    {exportDetails.signedUrl ? (
+                                                        <a href={exportDetails.signedUrl}>Download file</a>
+                                                    ) : null}
                                                 </td>
                                             </tr>
                                         );

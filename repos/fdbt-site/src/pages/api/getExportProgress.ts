@@ -13,7 +13,7 @@ import logger from '../../utils/logger';
 
 export interface Export {
     name: string;
-    matchingDataCount: number;
+    numberOfFilesExpected: number;
     netexCount: number;
     exportFailed: boolean;
     signedUrl?: string;
@@ -38,15 +38,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 const matchingDataCount = await getS3FolderCount(MATCHING_DATA_BUCKET_NAME, prefix);
                 const netexCount = await getS3FolderCount(NETEX_BUCKET_NAME, prefix);
 
-                const complete = matchingDataCount === netexCount;
-
-                const signedUrl = complete ? await retrieveExportZip(noc, name) : undefined;
+                let numberOfFilesExpected = matchingDataCount;
 
                 let metadata = undefined;
                 const metaDataExists = await checkIfMetaDataExists(`${noc}/exports/${name}.json`);
 
                 if (metaDataExists) {
                     metadata = await getExportMetaData(`${noc}/exports/${name}.json`);
+                    numberOfFilesExpected = metadata.numberOfExpectedNetexFiles;
                 }
 
                 let exportFailed = false;
@@ -59,7 +58,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     exportFailed = true;
                 }
 
-                return { name, matchingDataCount, netexCount, signedUrl, exportFailed };
+                const complete = matchingDataCount === netexCount;
+                const signedUrl = complete ? await retrieveExportZip(noc, name) : undefined;
+
+                return { name, numberOfFilesExpected, netexCount, signedUrl, exportFailed };
             }),
         );
 
