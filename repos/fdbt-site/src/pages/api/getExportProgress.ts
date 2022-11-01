@@ -1,7 +1,13 @@
 import { NextApiResponse } from 'next';
 import { dateIsOverAnHourAgo, getAndValidateNoc, redirectToError } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { checkIfMetaDataExists, getExportMetaData, getS3Exports, getS3FolderCount, retrieveExportZip } from '../../data/s3';
+import {
+    checkIfMetaDataExists,
+    getExportMetaData,
+    getS3Exports,
+    getS3FolderCount,
+    retrieveExportZip,
+} from '../../data/s3';
 import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 import logger from '../../utils/logger';
 
@@ -36,7 +42,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 const signedUrl = complete ? await retrieveExportZip(noc, name) : undefined;
 
-
                 let metadata = undefined;
                 const metaDataExists = await checkIfMetaDataExists(`${noc}/exports/${name}.json`);
 
@@ -46,7 +51,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 let exportFailed = false;
 
-                if (metadata && dateIsOverAnHourAgo(metadata.date) && metadata.numberOfExpectedNetexFiles !== netexCount) {
+                if (
+                    metadata &&
+                    dateIsOverAnHourAgo(metadata.date) &&
+                    metadata.numberOfExpectedNetexFiles !== netexCount
+                ) {
                     exportFailed = true;
                 }
 

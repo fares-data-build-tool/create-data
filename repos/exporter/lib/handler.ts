@@ -44,7 +44,9 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
     if (!PRODUCTS_BUCKET || !MATCHING_DATA_BUCKET || !EXPORT_METADATA_BUCKET) {
         throw new Error(
-            `Bucket details missing. Products bucket: ${PRODUCTS_BUCKET}, Matching data bucket: ${MATCHING_DATA_BUCKET}, Export metadata bucket: ${EXPORT_METADATA_BUCKET}`,
+            `Bucket details missing. Products bucket: ${PRODUCTS_BUCKET || '<missing>'}, Matching data bucket: ${
+                MATCHING_DATA_BUCKET || '<missing>'
+            }, Export metadata bucket: ${EXPORT_METADATA_BUCKET || '<missing>'}`,
         );
     }
 
@@ -143,7 +145,9 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
     const metadata = { date, numberOfExpectedNetexFiles };
 
     console.log(
-        `putting metadata: ${metadata} in metadata bucket: ${EXPORT_METADATA_BUCKET} key: ${noc}/exports/${exportPrefix}.json`,
+        `putting metadata: date - ${metadata.date.toDateString()} numberOfExpectedNetexFiles - ${
+            metadata.numberOfExpectedNetexFiles
+        } in metadata bucket: ${EXPORT_METADATA_BUCKET} key: ${noc}/exports/${exportPrefix}.json`,
     );
 
     await s3

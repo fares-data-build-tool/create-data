@@ -344,7 +344,10 @@ export const checkIfMetaDataExists = async (key: string): Promise<boolean> => {
         await s3.headObject(request).promise();
         return true;
     } catch (error) {
-        console.log(`Metadata does not exist for ${key}`);
+        logger.info('', {
+            context: 'data.s3.checkIfMetaDataExists',
+            message: `Metadata does not exist for ${key}`,
+        });
         return false;
     }
 };
