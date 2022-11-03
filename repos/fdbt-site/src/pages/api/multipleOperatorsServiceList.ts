@@ -28,6 +28,7 @@ export const getSelectedServicesAndNocCodeFromRequest = (requestBody: {
         } else {
             serviceDescription = description;
         }
+
         return {
             nocCode,
             lineName: splitStrings[0],
@@ -75,12 +76,15 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const { selectAll } = req.body;
 
         const isSelected = selectAll === selectAllText;
-
+        console.log('!!!!!!!!!!!!!!!!!req.body');
+        console.log(req.body);
         if (selectAll && queryString) {
+            console.log('triggered from inside if selectAll', queryString);
             redirectTo(res, `${redirectUrl}?selectAll=${isSelected}`);
             return;
         }
         const multiOpDataOnSession = getSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
+        console.log('!!!!!!!!!!!!multiOPDataSession', multiOpDataOnSession);
         let multiOpDataToReAddToSession: MultiOperatorInfo[] = [];
         if (isMultiOperatorInfoWithErrors(multiOpDataOnSession)) {
             multiOpDataToReAddToSession = multiOpDataOnSession.multiOperatorInfo;

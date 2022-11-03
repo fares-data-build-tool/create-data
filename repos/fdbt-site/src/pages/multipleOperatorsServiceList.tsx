@@ -53,20 +53,14 @@ interface MultipleOperatorsServiceListProps {
 export const showSelectedOperators = (
     multiOperatorData: MultiOperatorInfo[],
     setMultiOperatorData: React.Dispatch<React.SetStateAction<MultiOperatorInfo[]>>,
-    activeOperator,
-    setActiveOperator,
-    removeServices,
+    activeOperator: MultiOperatorInfo,
+    setActiveOperator: React.Dispatch<React.SetStateAction<MultiOperatorInfo>>,
+    removeServices: {
+        (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, lineId: string, nocCode: string, all?: boolean): void;
+    },
 ): ReactElement => {
-    const test = activeOperator.name === 'Blackpool Transport' ? true : false;
-    console.log('!!!!!!!!!!!!!!!!!!!!!', test);
-
-    // useEffect() => {
-
-    // ,[]}
-    console.log(multiOperatorData, typeof multiOperatorData);
     const operatorsList = multiOperatorData.map((operator) => operator.name);
-    // addEventListener('toggle', (event) => {});
-    const handleOperatorChange = (event, index: number) => {
+    const handleOperatorChange = (event: React.MouseEvent<HTMLElement, MouseEvent>, index: number) => {
         // event.preventDefault();
         // const details = document.querySelector(`#details-${activeOperator.nocCode}`);
         // console.log(details);
@@ -96,6 +90,7 @@ export const showSelectedOperators = (
                                     id={`details-${operator.nocCode}`}
                                     className="govuk-details margin-bottom-0"
                                     data-module="govuk-details"
+                                    open={operator.name === activeOperator.name}
                                 >
                                     <summary
                                         className="govuk-details__summary width-x"
@@ -139,7 +134,7 @@ export const showSelectedOperators = (
                                                                     )
                                                                 }
                                                                 name="removeOperator"
-                                                                value="2C Zhaishi Miaozu Dongzuxiang - Bimbaletes Aguascalientes (El Ãlamo)"
+                                                                // value="2C Zhaishi Miaozu Dongzuxiang - Bimbaletes Aguascalientes (El Ãlamo)"
                                                             >
                                                                 Remove
                                                             </button>
@@ -168,27 +163,7 @@ const MultipleOperatorsServiceList = ({
     errors,
 }: // dataSourceAttribute,
 MultipleOperatorsServiceListProps): ReactElement => {
-    const seen: string[] = [];
-    const buttonText = 'value';
-    const testobj = [
-        {
-            nocCode: 'B1',
-            name: 'B1 name',
-            dataSource: 'dataSource',
-            services: [1, 3, 4],
-            selectedServices: [],
-        },
-        {
-            nocCode: 'c1',
-            name: 'c1 name',
-            dataSource: 'dataSource',
-            services: [2, 4, 6],
-            selectedServices: [],
-        },
-    ];
-    const [testOB, setTest] = useState(testobj);
-
-    testOB.find((item) => item.nocCode === 'c1');
+    // const seen: string[] = [];
 
     const operatorsList = preMultiOperatorData.map((item) => item.name);
 
@@ -196,19 +171,12 @@ MultipleOperatorsServiceListProps): ReactElement => {
     const [activeOperator, setActiveOperator] = useState(multiOperatorData[0]);
     const [updateOperator, setUpdateOperator] = useState(activeOperator);
 
-    let index = testOB
-        .map(function (e) {
-            return e.name;
-        })
-        .indexOf('c1 name');
-
-    const addServices = (event, lineId: string, all?) => {
-        const newService: SelectedService = [];
+    const addServices = (event: React.MouseEvent<HTMLInputElement, MouseEvent>, lineId: string, all?: string) => {
+        const newService: SelectedService[] = [];
 
         activeOperator.services.forEach((service) => {
             if (all) {
                 const addOrRemoveAll = all == 'addAll' ? (service.selected = true) : (service.selected = false);
-                console.log('REMOVE ALLLLLLL');
             } else {
                 if (service.lineId === lineId) {
                     service.selected = !service.selected;
@@ -228,8 +196,13 @@ MultipleOperatorsServiceListProps): ReactElement => {
         setMultiOperatorData(multiOperatorData);
         event.preventDefault();
     };
-    const removeServices = (event, lineId: string, nocCode: string, all = false) => {
-        const newService: SelectedService = [];
+    const removeServices = (
+        event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+        lineId: string,
+        nocCode: string,
+        all = false,
+    ) => {
+        const newService: SelectedService[] = [];
 
         const operatorToRemoveServiceFromIndex = multiOperatorData.findIndex(
             (newActiveoperator) => newActiveoperator.nocCode === nocCode,
@@ -290,9 +263,6 @@ MultipleOperatorsServiceListProps): ReactElement => {
                             <div className="govuk-grid-row">
                                 <div className="govuk-grid-column-two-thirds">
                                     <input
-                                        type=""
-                                        name="selectAll"
-                                        value="Select All"
                                         onClick={(event) => addServices(event, '0', 'addAll')}
                                         id="select-all-button"
                                         className="govuk-button govuk-button--secondary"
@@ -319,8 +289,10 @@ MultipleOperatorsServiceListProps): ReactElement => {
                                                     selected,
                                                     origin,
                                                     destination,
+                                                    startDate,
                                                 } = service;
                                                 const nocCode = activeOperator.nocCode;
+                                                console.log(startDate);
 
                                                 const checkboxTitles =
                                                     activeOperator.dataSource === 'tnds'
@@ -335,8 +307,8 @@ MultipleOperatorsServiceListProps): ReactElement => {
                                                         >
                                                             <label
                                                                 id={`operator-to-add-${index}`}
-                                                                // eslint-disable-next-line jsx-a11y/aria-role
-                                                                role="input"
+                                                                // eslint-disable-next-line jsx-a11y/aria-role, jsx-a11y/no-noninteractive-element-to-interactive-role
+                                                                role="button"
                                                                 className="govuk-label govuk-checkboxes__label"
                                                                 htmlFor={`add-operator-checkbox-${index}`}
                                                                 name={`${nocCode}#${lineName}#${lineId}#${serviceCode}`}
@@ -361,9 +333,42 @@ MultipleOperatorsServiceListProps): ReactElement => {
                                         setActiveOperator,
                                         removeServices,
                                     )}
+                                    {
+                                        // export interface SelectedService {
+                                        //     lineName: string;
+                                        //     lineId: string;
+                                        //     serviceCode: string;
+                                        //     startDate: string;
+                                        //     description: string;
+                                        //     origin?: string;
+                                        //     destination?: string;
+                                        //     selected?: boolean;
+                                        // }
+
+                                        // export interface MultiOperatorInfo {
+                                        //     nocCode: string;
+                                        //     services: SelectedService[];
+                                        //     name?: string;
+                                        //     dataSource?: string;
+                                        //     selectedServices?: SelectedService[];
+                                        // }
+                                        multiOperatorData.map((operator, index) => {
+                                            const { nocCode, services,name, } = operator;
+                                            return (
+                                                <>
+                                                    <input
+                                                        id={`add-operator-${index}`}
+                                                        name="userSelectedOperators"
+                                                        type="hidden"
+                                                        value={`${nocCode}#${name}`}
+                                                    />
+                                                </>
+                                            );
+                                        })
+                                    }
                                     <input
                                         type="submit"
-                                        value="Confirm services and continue"
+                                        // value="Confirm services and continue"
                                         id="continue-button"
                                         className="govuk-button govuk-!-width-full"
                                     />
@@ -387,7 +392,7 @@ export const getServerSideProps = async (
     const completedOperatorInfo = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
 
     // {"searchedOperators":[{"nocCode":"BLAC","name":"Blackpool Transport"},{"nocCode":"LNUD","name":"Testing another compnay"}]}
-    const dataSourceAttribute = async (nocCode) => {
+    const dataSourceAttribute = async (nocCode: string) => {
         const services = await geServiceDataSource(nocCode);
         const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
 
@@ -402,6 +407,8 @@ export const getServerSideProps = async (
         searchedOperators.map(async (operator): Promise<MultiOperatorInfo> => {
             const dataSource = (await dataSourceAttribute(operator.nocCode)).source;
             const dbServices = await getServicesByNocCodeAndDataSource(operator.nocCode, dataSource);
+            // console.log("!!!!!!!!!!!dbServices");
+            // console.log(dbServices[0]);
             return {
                 nocCode: operator.nocCode,
                 name: operator.name,
