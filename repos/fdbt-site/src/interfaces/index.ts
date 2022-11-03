@@ -97,6 +97,9 @@ export interface OperatorGroup {
 export interface MultiOperatorInfo {
     nocCode: string;
     services: SelectedService[];
+    name?: string;
+    dataSource?: string;
+    selectedServices?: SelectedService[];
 }
 
 export interface TermTimeAttribute {

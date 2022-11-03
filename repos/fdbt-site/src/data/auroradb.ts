@@ -354,6 +354,33 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
         throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
     }
 };
+export const geServiceDataSource = async (nocCode: string): Promise<ServiceType[]> => {
+    const nocCodeParameter = replaceInternalNocCode(nocCode);
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for given noc',
+        noc: nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT dataSource
+            FROM txcOperatorLine
+            WHERE nocCode = ?
+            group by dataSource;
+        `;
+
+        const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter]);
+
+        return (
+            queryResults.map((item) => ({
+                ...item,
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
 
 export const getOperatorNameByNocCode = async (nocCode: string): Promise<string> => {
     const nocCodeParameter = replaceInternalNocCode(nocCode);

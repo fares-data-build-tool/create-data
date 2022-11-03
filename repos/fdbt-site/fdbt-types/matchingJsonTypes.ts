@@ -24,7 +24,22 @@ export interface SelectedService {
     lineId: string;
     serviceCode: string;
     startDate: string;
+    description: string;
+    origin?: string;
+    destination?: string;
+    selected?: boolean;
+}
+
+export interface SelectedServiceWithNocCode {
+    nocCode: string;
+    lineName: string;
+    lineId: string;
+    serviceCode: string;
+    startDate: string;
     serviceDescription: string;
+}
+export interface SelectedServiceByNocCode {
+    [key: string]: SelectedServiceWithNocCode[];
 }
 
 export interface AdditionalService extends SelectedService {
