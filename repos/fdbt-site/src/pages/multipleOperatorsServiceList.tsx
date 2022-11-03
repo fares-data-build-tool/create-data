@@ -67,6 +67,26 @@ export const showSelectedOperators = (
         // details?.setAttribute('open', '');
         setActiveOperator(multiOperatorData[index]);
     };
+
+    const onToggle = (event) => {
+        event.preventDefault();
+    };
+
+    const shouldBeOpen = (e, index, operator) => {
+        // e.preventDefault();
+        if (operator.name === activeOperator.name) {
+            operator.open= true
+            // return true;
+        }
+        else if (operator.open == true) {
+            operator.open=!operator.open;
+        }
+        else{
+            operator.open= false
+        }
+        // return false
+    };
+
     return (
         <div className="">
             <table className="border-collapse govuk-!-width-full">
@@ -90,7 +110,8 @@ export const showSelectedOperators = (
                                     id={`details-${operator.nocCode}`}
                                     className="govuk-details margin-bottom-0"
                                     data-module="govuk-details"
-                                    open={operator.name === activeOperator.name}
+                                    open={operator.open}
+                                    onClick={e=> shouldBeOpen(e, index, operator)}
                                 >
                                     <summary
                                         className="govuk-details__summary width-x"
@@ -417,7 +438,7 @@ export const getServerSideProps = async (
             };
         }),
     );
-
+        multiOperatorData[0].open = true
     return {
         props: {
             preMultiOperatorData: multiOperatorData,
