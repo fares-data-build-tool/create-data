@@ -627,7 +627,7 @@ describe('userData', () => {
                         },
                     },
                     ...(fareType === 'multiOperator' && {
-                        [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
+                        [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators, id: 1 },
                     }),
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                 },
@@ -1089,6 +1089,10 @@ describe('userData', () => {
                         },
                     ],
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
+                    [MULTIPLE_OPERATOR_ATTRIBUTE]: {
+                        selectedOperators: [{ name: 'Blackpool Transport', nocCode: 'BLAC' }],
+                        id: 1,
+                    },
                 },
             });
             const result = getMultipleServicesTicketJson(req, res);

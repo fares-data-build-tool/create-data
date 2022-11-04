@@ -2556,6 +2556,7 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: WithIds<Mul
         },
     ],
     additionalNocs: ['MCTR', 'WBTR', 'BLAC'],
+    operatorGroupId: 1,
 };
 
 export const expectedPeriodMultipleServicesTicketWithMultipleProducts: WithIds<PeriodMultipleServicesTicket> = {
@@ -2766,6 +2767,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
             startDate: '2020-12-17T09:30:46.0Z',
             endDate: '2020-12-18T09:30:46.0Z',
         },
+        operatorGroupId: 1,
         products: [
             {
                 productName: 'Weekly Ticket',
@@ -5433,118 +5435,6 @@ export const mockFullTimeRestrictionAttribute: FullTimeRestrictionAttribute = {
     fullTimeRestrictions: mockFullTimeRestriction,
     errors: [],
     id: 2,
-};
-
-export const mockFieldSetForSaveOperatorGroup: RadioConditionalInputFieldset = {
-    heading: {
-        id: 'save-operators-hidden-heading',
-        content: 'Do you want to save your group of operators for later use?',
-        hidden: true,
-    },
-    radios: [
-        {
-            id: 'yes-save',
-            name: 'saveGroup',
-            value: 'yes',
-            dataAriaControls: 'save-operators-required-conditional',
-            label: 'Yes',
-            inputHint: {
-                id: 'save-group-name-hint',
-                content: 'Provide a name to remember your group of operators by',
-                hidden: true,
-            },
-            inputType: 'text',
-            inputs: [
-                {
-                    id: 'operator-group-name-input',
-                    name: 'groupName',
-                    label: 'Operator group name',
-                    defaultValue: '',
-                },
-            ],
-            inputErrors: [],
-        },
-        { id: 'no-save', name: 'saveGroup', value: 'no', label: 'No' },
-    ],
-    radioError: [],
-};
-
-export const mockFieldSetForSaveOperatorGroupWithErrorsIfRadioNotSelected: RadioConditionalInputFieldset = {
-    heading: {
-        id: 'save-operators-hidden-heading',
-        content: 'Do you want to save your group of operators for later use?',
-        hidden: true,
-    },
-    radios: [
-        {
-            id: 'yes-save',
-            name: 'saveGroup',
-            value: 'yes',
-            dataAriaControls: 'save-operators-required-conditional',
-            label: 'Yes',
-            inputHint: {
-                id: 'save-group-name-hint',
-                content: 'Provide a name to remember your group of operators by',
-                hidden: true,
-            },
-            inputType: 'text',
-            inputs: [
-                {
-                    id: 'operator-group-name-input',
-                    name: 'groupName',
-                    label: 'Operator group name',
-                    defaultValue: '',
-                },
-            ],
-            inputErrors: [],
-        },
-        { id: 'no-save', name: 'saveGroup', value: 'no', label: 'No' },
-    ],
-    radioError: [
-        {
-            errorMessage: 'Choose one of the options below',
-            id: 'yes-save',
-        },
-    ],
-};
-
-export const mockFieldSetForSaveOperatorGroupWithErrorsIfNameMissing: RadioConditionalInputFieldset = {
-    heading: {
-        id: 'save-operators-hidden-heading',
-        content: 'Do you want to save your group of operators for later use?',
-        hidden: true,
-    },
-    radios: [
-        {
-            id: 'yes-save',
-            name: 'saveGroup',
-            value: 'yes',
-            dataAriaControls: 'save-operators-required-conditional',
-            label: 'Yes',
-            inputHint: {
-                id: 'save-group-name-hint',
-                content: 'Provide a name to remember your group of operators by',
-                hidden: true,
-            },
-            inputType: 'text',
-            inputs: [
-                {
-                    id: 'operator-group-name-input',
-                    name: 'groupName',
-                    label: 'Operator group name',
-                    defaultValue: '',
-                },
-            ],
-            inputErrors: [
-                {
-                    errorMessage: 'Provide a name for the operator group',
-                    id: 'operator-group-name-input',
-                },
-            ],
-        },
-        { id: 'no-save', name: 'saveGroup', value: 'no', label: 'No' },
-    ],
-    radioError: [],
 };
 
 export const mockFieldSetForReuseOperatorGroup: RadioConditionalInputFieldset = {
