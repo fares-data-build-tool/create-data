@@ -4,7 +4,7 @@ import { MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/attribute
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { SelectedServiceWithNocCode, SelectedServiceByNocCode } from 'fdbt-types/matchingJsonTypes';
 import { MultiOperatorInfo, NextApiRequestWithSession } from 'src/interfaces';
-import { updateSessionAttribute } from 'src/utils/sessions';
+import { updateSessionAttribute } from '../../../src/utils/sessions';
 
 const errorId = 'checkbox-0';
 
