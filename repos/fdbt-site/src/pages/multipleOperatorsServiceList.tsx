@@ -346,6 +346,11 @@ export const getServerSideProps = async (
     const csrfToken = getCsrfToken(ctx);
     const searchedOperators = (getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute)
         .selectedOperators;
+    //[{"nocCode":"BLAC","name":"Blackpool Transport"},{"nocCode":"LNUD","name":"Testing ops"}]
+    // const searchedOperators = [
+    //     { name: 'company name1', nocCode: 'BLAC' },
+    //     { name: 'company name2', nocCode: 'LNUD' },
+    // ];
 
     const completedOperatorInfo = getSessionAttribute(
         ctx.req,
@@ -416,7 +421,6 @@ export const getServerSideProps = async (
         multiOperatorData = updateMultiOperatorDataWithSelectedServices(multiOperatorData, selectedServicesFromSession);
     }
     multiOperatorData[0].open = true;
-
     return {
         props: {
             preMultiOperatorData: multiOperatorData,
