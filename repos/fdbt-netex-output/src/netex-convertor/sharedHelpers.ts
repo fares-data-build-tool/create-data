@@ -422,9 +422,11 @@ export const getFareStructuresElements = (
             };
         } else if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket)) {
             availabilityElementId = `Tariff@${product.productName}@access_lines`;
-            validityParametersObject = groupOfLinesRef
-                ? { GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef } }
-                : { LineRef: getLineRefList(ticket) };
+            const lines = getLineRefList(ticket);
+            validityParametersObject =
+                groupOfLinesRef && lines.length > 1
+                    ? { GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef } }
+                    : { LineRef: lines };
         }
 
         if (isHybridTicket(ticket) && isProductDetails(product)) {
