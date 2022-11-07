@@ -768,6 +768,38 @@ export const insertOperatorGroup = async (nocCode: string, operators: Operator[]
     }
 };
 
+export const updateOperatorGroup = async (
+    id: number,
+    nocCode: string,
+    operators: Operator[],
+    name: string,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'updating operator group for given name and nocCode',
+        nocCode,
+        name,
+        id,
+        operators,
+    });
+
+    const contents = JSON.stringify(operators);
+
+    const updateQuery = `UPDATE operatorGroup
+                        SET name = ?, 
+                        contents = ?
+                        WHERE id = ? AND nocCode = ?; `;
+    try {
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [name, contents, id, nocCode]);
+
+        if (meta.affectedRows !== 1) {
+            throw Error(`Did not update a single row: ${meta}`);
+        }
+    } catch (error) {
+        throw new Error(`Could not update operator group into the operatorGroup table. ${error.stack}`);
+    }
+};
+
 export const getOperatorGroupsByNoc = async (nocCode: string): Promise<OperatorGroup[]> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -794,7 +826,10 @@ export const getOperatorGroupsByNoc = async (nocCode: string): Promise<OperatorG
     }
 };
 
-export const getOperatorGroupsByNameAndNoc = async (name: string, nocCode: string): Promise<OperatorGroup[]> => {
+export const getOperatorGroupsByNameAndNoc = async (
+    name: string,
+    nocCode: string,
+): Promise<OperatorGroup | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving operator groups for given name and nocCode',
@@ -812,12 +847,20 @@ export const getOperatorGroupsByNameAndNoc = async (name: string, nocCode: strin
 
         const queryResults = await executeQuery<RawOperatorGroup[]>(queryInput, [name, nocCode]);
 
-        return queryResults.map((item) => ({
-            id: item.id,
-            name,
-            nocCode,
-            operators: JSON.parse(item.contents),
-        }));
+        if (queryResults.length > 1) {
+            throw new Error("Didn't expect more than one passenger type with the same national operator code and name");
+        }
+
+        const data = queryResults[0];
+
+        return data
+            ? ({
+                  id: data.id,
+                  name,
+                  nocCode,
+                  operators: JSON.parse(queryResults[0].contents),
+              } as OperatorGroup)
+            : undefined;
     } catch (error) {
         throw new Error(`Could not retrieve operator group by name and nocCode from AuroraDB: ${error.stack}`);
     }
@@ -854,7 +897,7 @@ export const getOperatorGroupByNocAndId = async (id: number, noc: string): Promi
               } as OperatorGroup)
             : undefined;
     } catch (error) {
-        throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
+        throw new Error(`Could not retrieve operator group by id from AuroraDB: ${error}`);
     }
 };
 
