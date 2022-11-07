@@ -151,9 +151,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="lzkklu"/>
-                      <LineRef version="1.0" ref="wido2q"/>
-                      <LineRef version="1.0" ref="TgBKhM"/>
+                      <GroupOfLinesRef version="1.0" ref="WBTR@groupOfLines@1"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
