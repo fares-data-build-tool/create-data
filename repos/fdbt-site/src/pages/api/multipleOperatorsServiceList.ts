@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
 import { MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/attributes';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
-import { SelectedServiceWithNocCode, SelectedServiceByNocCode } from 'fdbt-types/matchingJsonTypes';
+import { ServiceWithNocCode, SelectedServiceByNocCode } from 'fdbt-types/matchingJsonTypes';
 import { MultiOperatorInfo, NextApiRequestWithSession } from 'src/interfaces';
 import { updateSessionAttribute } from '../../../src/utils/sessions';
 
@@ -12,8 +12,8 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
     [key: string]: string | string[];
 }): MultiOperatorInfo[] => {
     let nocCode = '';
-    const serviceDetails: SelectedServiceWithNocCode[] = [];
-    const convertServiceDetails = (value: string, description: string | string[]): SelectedServiceWithNocCode => {
+    const serviceDetails: ServiceWithNocCode[] = [];
+    const convertServiceDetails = (value: string, description: string | string[]): ServiceWithNocCode => {
         let splitStrings = [];
         let serviceDescription: string;
         [nocCode, ...splitStrings] = value.split('#');
@@ -24,12 +24,12 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
         }
 
         return {
-            nocCode,
+            nocCode: nocCode,
             lineName: splitStrings[0],
             lineId: splitStrings[1],
             serviceCode: splitStrings[2],
             startDate: splitStrings[3],
-            serviceDescription,
+            serviceDescription: serviceDescription,
         };
     };
     //input
@@ -52,14 +52,14 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
     // {SelectedServices} to {MultiOperatorInfo}
     const multiOperatorsService: SelectedServiceByNocCode[] = [];
     // export interface SelectedServiceByNocCode {
-    //     [key: string]: SelectedServiceWithNocCode[];
+    //     [key: string]: ServiceWithNocCode[];
     // }
 
     const getIndexOfMultiOperatorsService = (noc: string): number => {
         const index = multiOperatorsService.findIndex((serviceDetails) => Object.keys(serviceDetails).includes(noc));
         return index;
     };
-    serviceDetails.forEach((service: SelectedServiceWithNocCode) => {
+    serviceDetails.forEach((service: ServiceWithNocCode) => {
         const indexOfFound = service?.nocCode ? getIndexOfMultiOperatorsService(service.nocCode) : -1;
         if (indexOfFound === -1) {
             multiOperatorsService.push({ [`${service.nocCode}`]: [service] });

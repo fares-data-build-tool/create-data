@@ -79,7 +79,7 @@ exports[`pages multipleOperatorsServiceList should render correctly multiOperato
             <label
               className="govuk-label govuk-checkboxes__label"
               htmlFor="add-operator-checkbox-0"
-              id="operator-to-add-0"
+              id="service-to-add-0"
               onClick={[Function]}
               role="button"
             >
@@ -93,7 +93,7 @@ exports[`pages multipleOperatorsServiceList should render correctly multiOperato
             <label
               className="govuk-label govuk-checkboxes__label"
               htmlFor="add-operator-checkbox-1"
-              id="operator-to-add-1"
+              id="service-to-add-1"
               onClick={[Function]}
               role="button"
             >
@@ -146,7 +146,7 @@ exports[`pages multipleOperatorsServiceList should render correctly multiOperato
                   <details
                     className="govuk-details margin-bottom-0"
                     data-module="govuk-details"
-                    id="details-BLACC"
+                    id="details-BLAC"
                     onClick={[Function]}
                     role="button"
                   >
@@ -342,7 +342,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
             <label
               className="govuk-label govuk-checkboxes__label"
               htmlFor="add-operator-checkbox-0"
-              id="operator-to-add-0"
+              id="service-to-add-0"
               onClick={[Function]}
               role="button"
             >
@@ -356,7 +356,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
             <label
               className="govuk-label govuk-checkboxes__label"
               htmlFor="add-operator-checkbox-1"
-              id="operator-to-add-1"
+              id="service-to-add-1"
               onClick={[Function]}
               role="button"
             >
@@ -409,7 +409,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
                   <details
                     className="govuk-details margin-bottom-0"
                     data-module="govuk-details"
-                    id="details-BLACC"
+                    id="details-BLAC"
                     onClick={[Function]}
                     role="button"
                   >

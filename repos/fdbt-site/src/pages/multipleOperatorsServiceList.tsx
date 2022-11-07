@@ -7,7 +7,7 @@ import { isMultiOperatorInfoWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import { BaseLayout } from '../layout/Layout';
 
-import { getServicesByNocCodeAndDataSource, geServiceDataSource } from '../data/auroradb';
+import { geServiceDataSource, getServicesByNocCodeAndDataSourceAndDescription } from '../data/auroradb';
 import {
     ErrorInfo,
     NextPageContextWithSession,
@@ -17,7 +17,7 @@ import {
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
-import { SelectedService, SelectedServiceWithNocCode } from 'fdbt-types/matchingJsonTypes';
+import { ServiceWithNocCode } from 'fdbt-types/matchingJsonTypes';
 
 const pageTitle = 'Multiple Operators Service List - Create Fares Data Service';
 const pageDescription = 'Multiple Operators Service List selection page of the Create Fares Data Service';
@@ -40,18 +40,14 @@ export const showSelectedOperators = (
     const handleOperatorChange = (_event: React.MouseEvent<HTMLElement, MouseEvent>, index: number) => {
         setActiveOperator(multiOperatorData[index]);
     };
-
     const shouldBeOpen = (operator: MultiOperatorInfo) => {
-        // e.preventDefault();
         if (operator.name === activeOperator.name) {
             operator.open = true;
-            // return true;
         } else if (operator.open == true) {
             operator.open = !operator.open;
         } else {
             operator.open = false;
         }
-        // return false
     };
 
     return (
@@ -101,7 +97,7 @@ export const showSelectedOperators = (
                                         {operator.services?.map((service, index) => {
                                             const checkboxTitles =
                                                 operator.dataSource === 'tnds'
-                                                    ? `${service.lineName} - ${service.description}`
+                                                    ? `${service.lineName} - ${service.serviceDescription}`
                                                     : `${service.lineName} ${service.origin || 'N/A'} - ${
                                                           service.destination || 'N/A'
                                                       }`;
@@ -156,17 +152,20 @@ const MultipleOperatorsServiceList = ({
     const [activeOperator, setActiveOperator] = useState(multiOperatorData[0]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [updateOperator, setUpdateOperator] = useState(activeOperator);
+    console.log(updateOperator);
 
     const addServices = (
         event: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.MouseEvent<HTMLLabelElement, MouseEvent>,
         lineId: string,
         all?: string,
     ) => {
-        const newService: SelectedService[] = [];
+        const newService: ServiceWithNocCode[] = [];
 
-        activeOperator.services.forEach((service) => {
+        activeOperator.services.forEach((service: ServiceWithNocCode) => {
             if (all) {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const addOrRemoveAll = all == 'addAll' ? (service.selected = true) : (service.selected = false);
+                console.log(addOrRemoveAll);
             } else {
                 if (service.lineId === lineId) {
                     service.selected = !service.selected;
@@ -192,7 +191,7 @@ const MultipleOperatorsServiceList = ({
         nocCode: string,
         all = false,
     ) => {
-        const newService: SelectedServiceWithNocCode[] = [];
+        const newService: ServiceWithNocCode[] = [];
 
         const operatorToRemoveServiceFromIndex = multiOperatorData.findIndex(
             (newActiveoperator) => newActiveoperator.nocCode === nocCode,
@@ -264,10 +263,10 @@ const MultipleOperatorsServiceList = ({
 
                         <div className="govuk-checkboxes">
                             {activeOperator.services.map((service, index) => {
-                                const { lineName, description, selected, origin, destination } = service;
+                                const { lineName, serviceDescription, selected, origin, destination } = service;
                                 const checkboxTitles =
                                     activeOperator.dataSource === 'tnds'
-                                        ? `${lineName} - ${description}`
+                                        ? `${lineName} - ${serviceDescription}`
                                         : `${lineName} ${origin || 'N/A'} - ${destination || 'N/A'}`;
                                 if (!selected) {
                                     return (
@@ -298,8 +297,14 @@ const MultipleOperatorsServiceList = ({
                                 {multiOperatorData.map((operator, index) => {
                                     const { nocCode, services } = operator;
                                     const selectedServices = services.map((service, index2) => {
-                                        const { lineName, lineId, serviceCode, description, selected, startDate } =
-                                            service;
+                                        const {
+                                            lineName,
+                                            lineId,
+                                            serviceCode,
+                                            serviceDescription,
+                                            selected,
+                                            startDate,
+                                        } = service;
                                         if (selected) {
                                             return (
                                                 <input
@@ -307,7 +312,7 @@ const MultipleOperatorsServiceList = ({
                                                     id={`add-OP${index}`}
                                                     name={`${nocCode}#${lineName}#${lineId}#${serviceCode}#${serviceCode}#${startDate}`}
                                                     type="hidden"
-                                                    value={`${description}`}
+                                                    value={`${serviceDescription}`}
                                                 />
                                             );
                                         } else {
@@ -346,11 +351,6 @@ export const getServerSideProps = async (
     const csrfToken = getCsrfToken(ctx);
     const searchedOperators = (getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute)
         .selectedOperators;
-    //[{"nocCode":"BLAC","name":"Blackpool Transport"},{"nocCode":"LNUD","name":"Testing ops"}]
-    // const searchedOperators = [
-    //     { name: 'company name1', nocCode: 'BLAC' },
-    //     { name: 'company name2', nocCode: 'LNUD' },
-    // ];
 
     const completedOperatorInfo = getSessionAttribute(
         ctx.req,
@@ -367,73 +367,28 @@ export const getServerSideProps = async (
         };
     };
 
-    // let multiOperatorData = await Promise.all(
-    //     searchedOperators.map(async (operator): Promise<MultiOperatorInfo> => {
-    //         const dataSource = (await dataSourceAttribute(operator.nocCode)).source;
-    //         const dbServices = await getServicesByNocCodeAndDataSource(operator.nocCode, dataSource);
-    //         return {
-    //             nocCode: operator.nocCode,
-    //             name: operator.name,
-    //             dataSource: dataSource,
-    //             services: dbServices.map((obj) => ({ ...obj, selected: false })),
-    //         };
-    //     }),
-    // );
-    let multiOperatorData: MultiOperatorInfo[] = [
-        {
-            nocCode: 'BLAC',
-            name: 'Blackpool Transport',
-            dataSource: 'bods',
-            services: [
-                {
-                    lineName: '1',
-                    lineId: '4YyoI0',
-                    startDate: '05/04/2020',
-                    description: 'FLEETWOOD - BLACKPOOL via Promenade',
-                    origin: 'Ballarat west',
-                    destination: 'Florinas North',
-                    serviceCode: 'NW_05_BLAC_1_1',
-                    selected: false,
-                },
-                {
-                    lineName: '2',
-                    lineId: 'YpQjUw',
-                    startDate: '05/04/2020',
-                    description: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
-                    origin: 'Ballarat East',
-                    destination: 'Florinas',
-                    serviceCode: 'NW_05_BLAC_2_1',
-                    selected: false,
-                },
-            ],
-        },
-        {
-            nocCode: 'LNUD',
-            name: 'Testing ops',
-            dataSource: 'bods',
-            services: [
-                {
-                    lineName: '259',
-                    lineId: 'vHaXmz',
-                    startDate: '25/03/2020',
-                    description: 'Brighouse - East Bierley',
-                    origin: 'Campora',
-                    destination: 'Buli',
-                    serviceCode: 'YWAO259',
-                    selected: false,
-                },
-            ],
-        },
-    ];
+    let multiOperatorData = await Promise.all(
+        searchedOperators.map(async (operator): Promise<MultiOperatorInfo> => {
+            const dataSource = (await dataSourceAttribute(operator.nocCode)).source;
+            const dbServices = await getServicesByNocCodeAndDataSourceAndDescription(operator.nocCode, dataSource);
+
+            return {
+                nocCode: operator.nocCode,
+                name: operator.name,
+                dataSource: dataSource,
+                services: dbServices.map((obj) => ({ ...obj, selected: false })) as ServiceWithNocCode[],
+            };
+        }),
+    );
     const updateMultiOperatorDataWithSelectedServices = (
         multiOperatorDataToUpdate: MultiOperatorInfo[],
         MultiOperatorDataWithSelectedServices: MultiOperatorInfo[],
     ) => {
         MultiOperatorDataWithSelectedServices.forEach((operator) => {
             const findMatchingOperatorIndex = multiOperatorDataToUpdate.findIndex(
-                (el) => el.nocCode === operator.nocCode,
+                (operatorInfo) => operatorInfo.nocCode === operator.nocCode,
             );
-            let newServices: SelectedService[] = [];
+            let newServices: ServiceWithNocCode[] = [];
             multiOperatorDataToUpdate[findMatchingOperatorIndex].services.forEach((el) => {
                 operator.services.forEach((el2) => {
                     if (el.lineId === el2.lineId) {

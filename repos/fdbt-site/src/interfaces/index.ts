@@ -14,7 +14,7 @@ import {
     Product,
     SalesOfferPackage,
     SelectedService,
-    SelectedServiceWithNocCode,
+    ServiceWithNocCode,
     TicketType,
 } from 'fdbt-types/matchingJsonTypes';
 
@@ -97,7 +97,7 @@ export interface OperatorGroup {
 
 export interface MultiOperatorInfo {
     nocCode: string;
-    services: SelectedServiceWithNocCode[];
+    services: ServiceWithNocCode[];
     name?: string;
     dataSource?: string;
     open?: boolean;
@@ -566,7 +566,7 @@ export interface ServiceWithErrors {
 }
 
 export interface ServiceType {
-    id: number;
+    id?: number;
     lineName: string;
     lineId: string;
     startDate: string;
