@@ -8,7 +8,7 @@ import { updateSessionAttribute } from 'src/utils/sessions';
 
 const errorId = 'checkbox-0';
 
-export const getSelectedServicesAndNocCodeFromRequest = (requestBody: {
+export const getMultiOperatorsDataFromRequest = (requestBody: {
     [key: string]: string | string[];
 }): MultiOperatorInfo[] => {
     let nocCode = '';
@@ -100,7 +100,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const OperatorCount = requestBody.OperatorCount ? parseInt(requestBody.OperatorCount) : 0;
         delete requestBody.confirm;
         delete requestBody.OperatorCount;
-        const ListOfMultiOperatorsData = getSelectedServicesAndNocCodeFromRequest(requestBody);
+        const ListOfMultiOperatorsData = getMultiOperatorsDataFromRequest(requestBody);
         if (OperatorCount !== ListOfMultiOperatorsData.length) {
             updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
                 multiOperatorInfo: ListOfMultiOperatorsData.length > 0 ? ListOfMultiOperatorsData : [],
