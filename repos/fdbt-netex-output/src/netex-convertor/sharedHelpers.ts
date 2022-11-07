@@ -451,14 +451,24 @@ export const getFareStructuresElements = (
 
         if ('productDuration' in product) {
             return [
-                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction, groupOfLinesRef),
+                getPeriodAvailabilityElement(
+                    availabilityElementId,
+                    validityParametersObject,
+                    hasTimeRestriction,
+                    groupOfLinesRef,
+                ),
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
         }
 
         return [
-            getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction, groupOfLinesRef),
+            getPeriodAvailabilityElement(
+                availabilityElementId,
+                validityParametersObject,
+                hasTimeRestriction,
+                groupOfLinesRef,
+            ),
             getPeriodConditionsElement(ticket, product),
         ];
     });
