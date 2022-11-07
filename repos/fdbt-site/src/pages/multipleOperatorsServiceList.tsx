@@ -114,7 +114,7 @@ export const showSelectedOperators = (
                                                         </div>
                                                         <div className="govuk-grid-column-one-quarter">
                                                             <button
-                                                                id={`remove-${index}`}
+                                                                id={`remove-from-${operator.nocCode}-${index}`}
                                                                 className="govuk-link button-link"
                                                                 onClick={(event) =>
                                                                     removeServices(
@@ -273,7 +273,7 @@ const MultipleOperatorsServiceList = ({
                                     return (
                                         <div className="govuk-checkboxes__item" key={`checkbox-item-${index}`}>
                                             <label
-                                                id={`operator-to-add-${index}`}
+                                                id={`service-to-add-${index}`}
                                                 // eslint-disable-next-line jsx-a11y/aria-role, jsx-a11y/no-noninteractive-element-to-interactive-role
                                                 role="button"
                                                 className="govuk-label govuk-checkboxes__label"
@@ -367,18 +367,64 @@ export const getServerSideProps = async (
         };
     };
 
-    let multiOperatorData = await Promise.all(
-        searchedOperators.map(async (operator): Promise<MultiOperatorInfo> => {
-            const dataSource = (await dataSourceAttribute(operator.nocCode)).source;
-            const dbServices = await getServicesByNocCodeAndDataSource(operator.nocCode, dataSource);
-            return {
-                nocCode: operator.nocCode,
-                name: operator.name,
-                dataSource: dataSource,
-                services: dbServices.map((obj) => ({ ...obj, selected: false })),
-            };
-        }),
-    );
+    // let multiOperatorData = await Promise.all(
+    //     searchedOperators.map(async (operator): Promise<MultiOperatorInfo> => {
+    //         const dataSource = (await dataSourceAttribute(operator.nocCode)).source;
+    //         const dbServices = await getServicesByNocCodeAndDataSource(operator.nocCode, dataSource);
+    //         return {
+    //             nocCode: operator.nocCode,
+    //             name: operator.name,
+    //             dataSource: dataSource,
+    //             services: dbServices.map((obj) => ({ ...obj, selected: false })),
+    //         };
+    //     }),
+    // );
+    let multiOperatorData: MultiOperatorInfo[] = [
+        {
+            nocCode: 'BLAC',
+            name: 'Blackpool Transport',
+            dataSource: 'bods',
+            services: [
+                {
+                    lineName: '1',
+                    lineId: '4YyoI0',
+                    startDate: '05/04/2020',
+                    description: 'FLEETWOOD - BLACKPOOL via Promenade',
+                    origin: 'Ballarat west',
+                    destination: 'Florinas North',
+                    serviceCode: 'NW_05_BLAC_1_1',
+                    selected: false,
+                },
+                {
+                    lineName: '2',
+                    lineId: 'YpQjUw',
+                    startDate: '05/04/2020',
+                    description: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
+                    origin: 'Ballarat East',
+                    destination: 'Florinas',
+                    serviceCode: 'NW_05_BLAC_2_1',
+                    selected: false,
+                },
+            ],
+        },
+        {
+            nocCode: 'LNUD',
+            name: 'Testing ops',
+            dataSource: 'bods',
+            services: [
+                {
+                    lineName: '259',
+                    lineId: 'vHaXmz',
+                    startDate: '25/03/2020',
+                    description: 'Brighouse - East Bierley',
+                    origin: 'Campora',
+                    destination: 'Buli',
+                    serviceCode: 'YWAO259',
+                    selected: false,
+                },
+            ],
+        },
+    ];
     const updateMultiOperatorDataWithSelectedServices = (
         multiOperatorDataToUpdate: MultiOperatorInfo[],
         MultiOperatorDataWithSelectedServices: MultiOperatorInfo[],

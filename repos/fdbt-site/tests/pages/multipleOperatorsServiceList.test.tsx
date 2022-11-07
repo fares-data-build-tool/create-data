@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import MultipleOperatorsServiceList, { getServerSideProps } from '../../src/pages/multipleOperatorsServiceList';
+import MultipleOperatorsServiceList, {
+    getServerSideProps,
+    showSelectedOperators,
+} from '../../src/pages/multipleOperatorsServiceList';
 import { getMockContext } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
 import * as sessions from '../../src/utils/sessions';
@@ -11,6 +14,7 @@ import {
     MULTI_OP_TXC_SOURCE_ATTRIBUTE,
 } from '../../src/constants/attributes';
 import { SelectedService, SelectedServiceWithNocCode } from 'fdbt-types/matchingJsonTypes';
+import Services from 'src/pages/products/services';
 
 describe('pages', () => {
     describe('multipleOperatorsServiceList', () => {
@@ -206,7 +210,7 @@ describe('pages', () => {
         });
 
         describe('getServerSideProps', () => {
-            it.only('should return expected props to the page when the page is first visited by the user', async () => {
+            it('should return expected props to the page when the page is first visited by the user', async () => {
                 const ctx = getMockContext({
                     session: {
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: {
@@ -217,15 +221,11 @@ describe('pages', () => {
                         },
                     },
                 });
-                const expectedCheckedServiceList: MultiOperatorInfo[] = mockMultiOperatorData.map(
-                    (mocOperatorData) => ({
-                        ...mocOperatorData,
-                    }),
-                );
+                const expectedCheckedServiceList: MultiOperatorInfo[] = mockMultiOperatorData;
                 expectedCheckedServiceList[0].open = true;
                 const result = await getServerSideProps(ctx);
                 expect(result.props.errors.length).toBe(0);
-                expect(result.props.preMultiOperatorData).toEqual(expectedCheckedServiceList);
+                expect(result.props.preMultiOperatorData).toEqual(mockMultiOperatorData);
             });
 
             it('should return expected props to the page when the page is visited by the user for a second time', async () => {
@@ -257,123 +257,75 @@ describe('pages', () => {
                 expect(result.props.operatorName).toBe('Test2' || 'Test3');
                 expect(result.props.nocCode).toBe('N2' || 'N3');
             });
-
-            it('should return expected props to the page when the page is visited by the user for the third time', async () => {
-                const ctx = getMockContext({
-                    session: {
-                        [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                            selectedOperators: [
-                                { name: 'Test1', nocCode: 'N1' },
-                                { name: 'Test2', nocCode: 'N2' },
-                                { name: 'Test3', nocCode: 'N3' },
-                            ],
-                        },
-                        [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
-                            {
-                                nocCode: 'N1',
-                                services: ['service one', 'service two'],
-                            },
-                            {
-                                nocCode: 'N2',
-                                services: ['service one', 'service two'],
-                            },
-                        ],
-                    },
-                });
-                const result = await getServerSideProps(ctx);
-                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
-                    ...mockService,
-                    checked: false,
+        });
+        describe('function name', () => {
+            it('should remove service to Operator list', () => {
+                // const setSearchResults = jest.fn();
+                const mockActiveOperator: MultiOperatorInfo = mockMultiOperatorData[0];
+                const mockSetActiveOperator = jest.fn();
+                const mockRemoveServices = jest.fn();
+                // multiOperatorData: MultiOperatorInfo[],
+                // activeOperator: MultiOperatorInfo,
+                // setActiveOperator: React.Dispatch<React.SetStateAction<MultiOperatorInfo>>,
+                // removeServices: {
+                //     (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, lineId: string, nocCode: string, all?: boolean): void;
+                // },
+                const mockOperatorsWithSelectedServices = mockMultiOperatorData.map((operatorData) => ({
+                    ...operatorData,
+                    services: operatorData.services.map((service) => ({ ...service, selected: true })),
                 }));
-                expect(result.props.errors.length).toBe(0);
-                expect(result.props.serviceList).toEqual(expectedCheckedServiceList);
-                expect(result.props.buttonText).toEqual('Select All Services');
-                expect(result.props.operatorName).toBe('Test3');
-                expect(result.props.nocCode).toBe('N3');
-            });
+                // console.log(expectedMultiOperatorData[0].services[0]);
+                const expectedLineId = mockMultiOperatorData[0].services[0].lineId;
+                const expectedNocCode = mockMultiOperatorData[0].nocCode;
 
-            it('should return expected props to the page when the page is visited by the user for the fourth time having finished all their operators', async () => {
-                const ctx = getMockContext({
-                    session: {
-                        [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                            selectedOperators: [
-                                { name: 'Test1', nocCode: 'N1' },
-                                { name: 'Test2', nocCode: 'N2' },
-                                { name: 'Test3', nocCode: 'N3' },
-                            ],
-                        },
-                        [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
-                            {
-                                nocCode: 'N1',
-                                services: ['service one', 'service two'],
-                            },
-                            {
-                                nocCode: 'N2',
-                                services: ['service one', 'service two'],
-                            },
-                            {
-                                nocCode: 'N3',
-                                services: ['service one', 'service two'],
-                            },
-                        ],
-                    },
-                });
-                const result = await getServerSideProps(ctx);
-                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
-                    ...mockService,
-                    checked: false,
-                }));
-                expect(result.props.errors.length).toBe(0);
-                expect(result.props.serviceList).toEqual(expectedCheckedServiceList);
-                expect(result.props.buttonText).toEqual('Select All Services');
-                expect(result.props.operatorName).toBe('Test1' || 'Test2' || 'Test3');
-                expect(result.props.nocCode).toBe('N1' || 'N2' || 'N3');
-            });
+                const wrapper = shallow(
+                    showSelectedOperators(
+                        mockOperatorsWithSelectedServices,
+                        mockActiveOperator,
+                        mockSetActiveOperator,
+                        mockRemoveServices,
+                    ),
+                );
 
-            it('should return expected props to the page when the page is visited by the user with errors on the session attribute', async () => {
-                const ctx = getMockContext({
-                    session: {
-                        [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                            selectedOperators: [
-                                { name: 'Test1', nocCode: 'N1' },
-                                { name: 'Test2', nocCode: 'N2' },
-                                { name: 'Test3', nocCode: 'N3' },
-                            ],
-                        },
-                        [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: {
-                            multiOperatorInfo: [
-                                {
-                                    nocCode: 'N1',
-                                    services: ['service one', 'service two'],
-                                },
-                            ],
-                            errors: mockError,
-                        },
-                    },
-                });
-                const result = await getServerSideProps(ctx);
-                expect(result.props.errors).toStrictEqual(mockError);
+                wrapper.find('#remove-from-BLAC-0').simulate('click');
+                expect(mockRemoveServices).toBeCalledWith(undefined, expectedLineId, expectedNocCode);
+                // expect(setSearchResultsCount).toBeCalledWith(1);
+                // expect(setSearchResults).toBeCalledWith([{ nocCode: 'LNUD', name: 'The Blackburn Bus Company' }]);
             });
+            it.only('should add service to Operator list', () => {
+                // const useStateSpy = jest.spyOn(React, 'useState');
+                // const setState = jest.fn();
+                // useStateSpy.mockImplementation((initialState) => [initialState, useStateSpy]);
+                // const setSearchResults = jest.fn();
+                // const mockActiveOperator: MultiOperatorInfo = mockMultiOperatorData[0];
+                // const mockSetActiveOperator = jest.fn();
+                const mockAddServices = jest.fn();
+                // multiOperatorData: MultiOperatorInfo[],
+                // activeOperator: MultiOperatorInfo,
+                // setActiveOperator: React.Dispatch<React.SetStateAction<MultiOperatorInfo>>,
+                // removeServices: {
+                //     (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, lineId: string, nocCode: string, all?: boolean): void;
+                // },
+                // const mockOperatorsWithSelectedServices = mockMultiOperatorData.map((operatorData) => ({
+                //     ...operatorData,
+                //     services: operatorData.services.map((service) => ({ ...service, selected: true })),
+                // }));
+                // console.log(expectedMultiOperatorData[0].services[0]);
+                const expectedLineId = mockMultiOperatorData[0].services[0].lineId;
+                // const expectedNocCode = mockMultiOperatorData[0].nocCode;
 
-            it('should create a multi op TXC attribute according to whether the chosen operators NOC has services', async () => {
-                const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
-                const ctx = getMockContext({
-                    session: {
-                        [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                            selectedOperators: [
-                                { name: 'Test1', nocCode: 'N1' },
-                                { name: 'Test2', nocCode: 'N2' },
-                                { name: 'Test3', nocCode: 'N3' },
-                            ],
-                        },
-                    },
-                });
-                await getServerSideProps(ctx);
-                expect(updateSessionAttributeSpy).toBeCalledWith(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, {
-                    source: 'tnds',
-                    hasBods: false,
-                    hasTnds: false,
-                });
+                const wrapper = shallow(
+                    MultipleOperatorsServiceList({
+                        preMultiOperatorData: mockMultiOperatorData,
+                        csrfToken: '',
+                        errors: [],
+                    }),
+                );
+
+                wrapper.find('#service-to-add-0').simulate('click');
+                expect(setState).toBeCalledWith(undefined, expectedLineId);
+                // expect(setSearchResultsCount).toBeCalledWith(1);
+                // expect(setSearchResults).toBeCalledWith([{ nocCode: 'LNUD', name: 'The Blackburn Bus Company' }]);
             });
         });
     });
