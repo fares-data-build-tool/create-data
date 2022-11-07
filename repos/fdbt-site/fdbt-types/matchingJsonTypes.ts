@@ -31,12 +31,16 @@ export interface SelectedService {
 }
 
 export interface SelectedServiceWithNocCode {
-    nocCode: string;
+    nocCode?: string;
     lineName: string;
     lineId: string;
     serviceCode: string;
     startDate: string;
-    serviceDescription: string;
+    serviceDescription?: string;
+    selected?: boolean;
+    destination?: string;
+    description?: string;
+    origin?: string;
 }
 export interface SelectedServiceByNocCode {
     [key: string]: SelectedServiceWithNocCode[];

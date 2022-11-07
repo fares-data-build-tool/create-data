@@ -1,16 +1,10 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
-import {
-    MULTI_OP_TXC_SOURCE_ATTRIBUTE,
-    MULTIPLE_OPERATOR_ATTRIBUTE,
-    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
-} from '../../constants/attributes';
+import { MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/attributes';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { NextApiRequestWithSession, MultiOperatorInfo, MultipleOperatorsAttribute } from '../../interfaces';
-import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
 import { SelectedServiceWithNocCode, SelectedServiceByNocCode } from 'fdbt-types/matchingJsonTypes';
-import { object } from 'yup';
+import { MultiOperatorInfo, NextApiRequestWithSession } from 'src/interfaces';
+import { updateSessionAttribute } from 'src/utils/sessions';
 
 const errorId = 'checkbox-0';
 
@@ -38,22 +32,44 @@ export const getSelectedServicesAndNocCodeFromRequest = (requestBody: {
             serviceDescription,
         };
     };
+    //input
+    //<NocCode>#<lineid>>#<serviceCode>#<startDate>: <serviceDescription>
+    //output
+    // nocCode,
+    // lineName: splitStrings[0],
+    // lineId: splitStrings[1],
+    // serviceCode: splitStrings[2],
+    // startDate: splitStrings[3],
+    // serviceDescription,
 
-    Object.entries(requestBody).forEach((e) => {
-        const value = convertServiceDetails(e[0], e[1]);
-        serviceDetails.push(value);
-    });
+    Object.entries(requestBody)
+        .filter((item) => item[0] !== 'OperatorCount')
+        .forEach((e) => {
+            // console.log(e[0], e[1]);
+            const value = convertServiceDetails(e[0], e[1]);
+            serviceDetails.push(value);
+        });
+    // {SelectedServices} to {MultiOperatorInfo}
     const multiOperatorsService: SelectedServiceByNocCode[] = [];
+    // export interface SelectedServiceByNocCode {
+    //     [key: string]: SelectedServiceWithNocCode[];
+    // }
+
     const getIndexOfMultiOperatorsService = (noc: string): number => {
         const index = multiOperatorsService.findIndex((serviceDetails) => Object.keys(serviceDetails).includes(noc));
         return index;
     };
-    serviceDetails.forEach((service) => {
-        const indexOfFound = getIndexOfMultiOperatorsService(service.nocCode);
+    serviceDetails.forEach((service: SelectedServiceWithNocCode) => {
+        const indexOfFound = service?.nocCode ? getIndexOfMultiOperatorsService(service.nocCode) : -1;
         if (indexOfFound === -1) {
-            multiOperatorsService.push({ [service.nocCode]: [service] });
+            multiOperatorsService.push({ [`${service.nocCode}`]: [service] });
         } else {
-            multiOperatorsService[indexOfFound][service.nocCode].push(service);
+            if (indexOfFound > -1 && service?.nocCode) {
+                multiOperatorsService[indexOfFound][service.nocCode].push(service);
+            } else {
+                // eslint-disable-next-line no-console
+                console.log(`indexOfFound is ${indexOfFound}`);
+            }
         }
     });
     const newListOfMultiOperatorsData: MultiOperatorInfo[] = [];
@@ -68,45 +84,33 @@ export const getSelectedServicesAndNocCodeFromRequest = (requestBody: {
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const redirectUrl = '/multipleOperatorsServiceList';
-    const selectAllText = 'Select All Services';
 
     try {
-        const refererUrl = req?.headers?.referer;
-        const queryString = refererUrl?.substring(refererUrl?.indexOf('?') + 1);
-        const { selectAll } = req.body;
-
-        const isSelected = selectAll === selectAllText;
-        console.log('!!!!!!!!!!!!!!!!!req.body');
-        console.log(req.body);
-        if (selectAll && queryString) {
-            console.log('triggered from inside if selectAll', queryString);
-            redirectTo(res, `${redirectUrl}?selectAll=${isSelected}`);
-            return;
-        }
-        const multiOpDataOnSession = getSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
-        console.log('!!!!!!!!!!!!multiOPDataSession', multiOpDataOnSession);
-        let multiOpDataToReAddToSession: MultiOperatorInfo[] = [];
-        if (isMultiOperatorInfoWithErrors(multiOpDataOnSession)) {
-            multiOpDataToReAddToSession = multiOpDataOnSession.multiOperatorInfo;
-        } else if (multiOpDataOnSession) {
-            multiOpDataToReAddToSession = multiOpDataOnSession;
-        }
-        if ((!req.body || Object.keys(req.body).length === 0) && !selectAll) {
+        if (!req.body || Object.keys(req.body).length === 0) {
             updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
-                multiOperatorInfo: multiOpDataToReAddToSession,
+                multiOperatorInfo: [],
                 errors: [{ id: errorId, errorMessage: 'Choose at least one service from the options' }],
             });
-            redirectTo(res, `${redirectUrl}?selectAll=false`);
+            redirectTo(res, `${redirectUrl}`);
             return;
         }
 
-        updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, multiOpDataToReAddToSession);
+        const requestBody: { [key: string]: string } = req.body;
 
-        const requestBody: { [key: string]: string | string[] } = req.body;
-
+        const OperatorCount = requestBody.OperatorCount ? parseInt(requestBody.OperatorCount) : 0;
+        delete requestBody.confirm;
+        delete requestBody.OperatorCount;
         const ListOfMultiOperatorsData = getSelectedServicesAndNocCodeFromRequest(requestBody);
+        if (OperatorCount !== ListOfMultiOperatorsData.length) {
+            updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
+                multiOperatorInfo: ListOfMultiOperatorsData.length > 0 ? ListOfMultiOperatorsData : [],
+                errors: [{ id: errorId, errorMessage: 'All operators need to have at least one service' }],
+            });
+            redirectTo(res, `${redirectUrl}`);
+            return;
+        }
+
         updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, ListOfMultiOperatorsData);
-        updateSessionAttribute(req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, undefined);
         redirectTo(res, '/multipleProducts');
         return;
     } catch (error) {

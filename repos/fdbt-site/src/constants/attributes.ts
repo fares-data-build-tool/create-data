@@ -67,7 +67,6 @@ export const PRODUCT_DATE_ATTRIBUTE = 'fdbt-product-date-attribute';
 export const MULTIPLE_OPERATOR_ATTRIBUTE = 'fdbt-multiple-operator-attribute';
 
 export const MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE = 'fdbt-multiple-operators-services-attribute';
-
 export const FULL_TIME_RESTRICTIONS_ATTRIBUTE = 'fdbt-full-time-restrictions-attribute';
 
 export const TERM_TIME_ATTRIBUTE = 'fdbt-term-time';
