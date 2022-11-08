@@ -173,6 +173,7 @@ export const getServicesByNocCodeAndDataSourceAndDescription = async (
             SELECT id, lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = ? AND (endDate IS NULL OR CURDATE() <= endDate)
+            group by lineId ,serviceDescription
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
