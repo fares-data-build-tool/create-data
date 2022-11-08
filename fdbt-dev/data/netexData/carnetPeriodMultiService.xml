@@ -237,20 +237,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ2_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ4_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ19_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ01_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ02_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ05_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ9_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ014_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ018_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ011_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ003_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ007_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146649_RJ006_Outbound"/>
+                      <GroupOfLinesRef version="1.0" ref="BLAC@groupOfLines@1"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>

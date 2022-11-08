@@ -64,6 +64,7 @@ import {
     VIEW_PURCHASE_METHOD,
     MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
     VIEW_TIME_RESTRICTION,
+    VIEW_OPERATOR_GROUP,
 } from '../constants/attributes';
 import {
     CompanionInfo,
@@ -209,6 +210,7 @@ export interface SessionAttributeTypes {
     [VIEW_PASSENGER_TYPE]: ErrorInfo[];
     [VIEW_PURCHASE_METHOD]: ErrorInfo[];
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
+    [VIEW_OPERATOR_GROUP]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

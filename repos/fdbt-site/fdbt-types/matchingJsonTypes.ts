@@ -132,6 +132,7 @@ export interface SchemeOperatorMultiServiceTicket extends BaseSchemeOperatorTick
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
     additionalNocs: string[];
+    operatorGroupId?: number;
 }
 
 export interface BaseTicket<T extends TicketType = TicketType> {
