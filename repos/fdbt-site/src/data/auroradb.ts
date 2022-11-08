@@ -386,7 +386,7 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
         throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
     }
 };
-export const geServiceDataSource = async (nocCode: string): Promise<ServiceType[]> => {
+export const getServiceDataSource = async (nocCode: string): Promise<ServiceType[]> => {
     const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
         context: 'data.auroradb',

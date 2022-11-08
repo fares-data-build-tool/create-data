@@ -99,7 +99,7 @@ describe('multiOperatorServiceList tests', () => {
     it('should redirect and produce error when operator count does not match number of multi operator data', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                OperatorCount: 1,
+                operatorCount: 1,
                 confirm: true,
                 'BLAC#237#123#abc#12/06/2020': 'Some description',
                 'LNUD#145#12345#cdb#10/07/2021': 'Some description 2',
@@ -157,7 +157,7 @@ describe('multiOperatorServiceList tests', () => {
     it('should redirect to multi products page', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                OperatorCount: 2,
+                operatorCount: 2,
                 confirm: true,
                 'BLAC#237#123#abc#12/06/2020': 'Some description',
                 'LNUD#145#12345#cdb#10/07/2021': 'Some description 2',

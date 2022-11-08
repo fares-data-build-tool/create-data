@@ -32,28 +32,15 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
             serviceDescription: serviceDescription,
         };
     };
-    //input
-    //<NocCode>#<lineid>>#<serviceCode>#<startDate>: <serviceDescription>
-    //output
-    // nocCode,
-    // lineName: splitStrings[0],
-    // lineId: splitStrings[1],
-    // serviceCode: splitStrings[2],
-    // startDate: splitStrings[3],
-    // serviceDescription,
+    console.log(requestBody);
 
     Object.entries(requestBody)
-        .filter((item) => item[0] !== 'OperatorCount')
+        .filter((item) => item[0] !== 'operatorCount')
         .forEach((e) => {
-            // console.log(e[0], e[1]);
             const value = convertServiceDetails(e[0], e[1]);
             serviceDetails.push(value);
         });
-    // {SelectedServices} to {MultiOperatorInfo}
     const multiOperatorsService: SelectedServiceByNocCode[] = [];
-    // export interface SelectedServiceByNocCode {
-    //     [key: string]: ServiceWithNocCode[];
-    // }
 
     const getIndexOfMultiOperatorsService = (noc: string): number => {
         const index = multiOperatorsService.findIndex((serviceDetails) => Object.keys(serviceDetails).includes(noc));
@@ -97,20 +84,20 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const requestBody: { [key: string]: string } = req.body;
 
-        const OperatorCount = requestBody.OperatorCount ? parseInt(requestBody.OperatorCount) : 0;
+        const operatorCount = requestBody.operatorCount ? parseInt(requestBody.operatorCount) : 0;
         delete requestBody.confirm;
-        delete requestBody.OperatorCount;
-        const ListOfMultiOperatorsData = getMultiOperatorsDataFromRequest(requestBody);
-        if (OperatorCount !== ListOfMultiOperatorsData.length) {
+        delete requestBody.operatorCount;
+        const listOfMultiOperatorsData = getMultiOperatorsDataFromRequest(requestBody);
+        if (operatorCount !== listOfMultiOperatorsData.length) {
             updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
-                multiOperatorInfo: ListOfMultiOperatorsData.length > 0 ? ListOfMultiOperatorsData : [],
+                multiOperatorInfo: listOfMultiOperatorsData.length > 0 ? listOfMultiOperatorsData : [],
                 errors: [{ id: errorId, errorMessage: 'All operators need to have at least one service' }],
             });
             redirectTo(res, `${redirectUrl}`);
             return;
         }
 
-        updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, ListOfMultiOperatorsData);
+        updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, listOfMultiOperatorsData);
         redirectTo(res, '/multipleProducts');
         return;
     } catch (error) {

@@ -7,7 +7,7 @@ import { isMultiOperatorInfoWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import { BaseLayout } from '../layout/Layout';
 
-import { geServiceDataSource, getServicesByNocCodeAndDataSourceAndDescription } from '../data/auroradb';
+import { getServiceDataSource, getServicesByNocCodeAndDataSourceAndDescription } from '../data/auroradb';
 import {
     ErrorInfo,
     NextPageContextWithSession,
@@ -323,7 +323,7 @@ const MultipleOperatorsServiceList = ({
                                 {
                                     <input
                                         id="Operator-Count"
-                                        name="OperatorCount"
+                                        name="operatorCount"
                                         type="hidden"
                                         value={`${multiOperatorData.length}`}
                                     />
@@ -356,7 +356,7 @@ export const getServerSideProps = async (
         MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     ) as MultiOperatorInfoWithErrors;
     const dataSourceAttribute = async (nocCode: string) => {
-        const services = await geServiceDataSource(nocCode);
+        const services = await getServiceDataSource(nocCode);
         const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
 
         return {
