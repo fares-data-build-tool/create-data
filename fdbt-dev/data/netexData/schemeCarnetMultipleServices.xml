@@ -190,9 +190,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="lDJRAS"/>
-                      <LineRef version="1.0" ref="A2EHwY"/>
-                      <LineRef version="1.0" ref="DnmNdy"/>
+                      <GroupOfLinesRef version="1.0" ref="Test_Scheme_Op-SE@groupOfLines@1"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>

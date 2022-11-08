@@ -233,26 +233,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="AD1146649_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="FD1146649_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="XC1146649_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="PK1146639_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="PK133146649_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="PK121146649_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="AD11466334_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="AD1146567_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="AD114878_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="AG245453_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="AA2454563_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="AZ2451113_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="AW245466666_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="SG2423D3_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="AG24D5G3_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="SSSG24453_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="SSSG2321453_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="SSSG24467H_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="SSSG251D67H_RJ1_Outbound"/>
-                      <LineRef version="1.0" ref="SDDSG24447H_RJ1_Outbound"/>
+                      <GroupOfLinesRef version="1.0" ref="BLAC@groupOfLines@1"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
