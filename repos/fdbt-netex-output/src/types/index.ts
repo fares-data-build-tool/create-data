@@ -447,6 +447,11 @@ export type {
     GeoZoneTicket,
 };
 
+export interface ValidBetween {
+    FromDate: object;
+    ToDate?: object;
+}
+
 export const assertNever = (never: never): never => {
     throw new Error(`This should never happen!! ${never}`);
 };
