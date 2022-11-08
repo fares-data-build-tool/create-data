@@ -27,6 +27,17 @@ export interface SelectedService {
     serviceDescription: string;
 }
 
+export interface ServiceWithNocCode extends SelectedService {
+    nocCode?: string;
+    selected?: boolean;
+    destination?: string;
+    origin?: string;
+}
+
+export interface SelectedServiceByNocCode {
+    [key: string]: ServiceWithNocCode[];
+}
+
 export interface AdditionalService extends SelectedService {
     serviceId: number;
 }

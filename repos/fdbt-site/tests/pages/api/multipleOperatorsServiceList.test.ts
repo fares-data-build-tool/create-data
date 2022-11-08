@@ -1,25 +1,81 @@
-import {
-    MULTI_OP_TXC_SOURCE_ATTRIBUTE,
-    MULTIPLE_OPERATOR_ATTRIBUTE,
-    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
-} from '../../../src/constants/attributes';
+import { MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import multipleOperatorsServiceList, {
-    getSelectedServicesAndNocCodeFromRequest,
+import getMultiOperatorServiceList, {
+    getMultiOperatorsDataFromRequest,
 } from '../../../src/pages/api/multipleOperatorsServiceList';
-
 import * as sessions from '../../../src/utils/sessions';
 
-describe('multipleOperatorsServiceList', () => {
-    const selectAllFalseUrl = '/multipleOperatorsServiceList?selectAll=false';
-    const writeHeadMock = jest.fn();
-    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+describe('getMultiOperatorsDataFromRequests tests', () => {
+    it('should return operator data for one operator', () => {
+        const response = getMultiOperatorsDataFromRequest({ 'BLAC#237#123#abc#12/06/2020': 'Some description' });
+        expect(response).toEqual([
+            {
+                nocCode: 'BLAC',
+                services: [
+                    {
+                        lineId: '123',
+                        lineName: '237',
+                        nocCode: 'BLAC',
+                        serviceCode: 'abc',
+                        serviceDescription: 'Some description',
+                        startDate: '12/06/2020',
+                    },
+                ],
+            },
+        ]);
+    });
 
+    it('should return operator data for more than one operator', () => {
+        const response = getMultiOperatorsDataFromRequest({
+            'BLAC#237#123#abc#12/06/2020': 'Some description',
+            'LNUD#145#12345#cdb#10/07/2021': 'Some description 2',
+        });
+        expect(response).toEqual([
+            {
+                nocCode: 'BLAC',
+                services: [
+                    {
+                        lineId: '123',
+                        lineName: '237',
+                        nocCode: 'BLAC',
+                        serviceCode: 'abc',
+                        serviceDescription: 'Some description',
+                        startDate: '12/06/2020',
+                    },
+                ],
+            },
+            {
+                nocCode: 'LNUD',
+                services: [
+                    {
+                        lineId: '12345',
+                        lineName: '145',
+                        nocCode: 'LNUD',
+                        serviceCode: 'cdb',
+                        serviceDescription: 'Some description 2',
+                        startDate: '10/07/2021',
+                    },
+                ],
+            },
+        ]);
+    });
+
+    it('should return no data when there is no operator info', () => {
+        const response = getMultiOperatorsDataFromRequest({});
+        expect(response).toEqual([]);
+    });
+});
+
+describe('multiOperatorServiceList tests', () => {
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     beforeEach(() => {
         jest.resetAllMocks();
     });
+    const selectAllFalseUrl = '/multipleOperatorsServiceList?selectAll=false';
+    const writeHeadMock = jest.fn();
+    const errorId = 'checkbox-0';
 
-    it('redirects back to /multipleOperatorsServiceList if there are errors', () => {
+    it('should redirect and produce error when response body is empty', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
             uuid: {},
@@ -28,162 +84,123 @@ describe('multipleOperatorsServiceList', () => {
             requestHeaders: {
                 referer: `http://localhost:5000${selectAllFalseUrl}`,
             },
-            session: {
-                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                    selectedOperators: [
-                        { name: 'Test1', nocCode: 'N1' },
-                        { name: 'Test2', nocCode: 'N2' },
-                        { name: 'Test3', nocCode: 'N3' },
-                    ],
-                },
-            },
+            session: {},
         });
-
-        multipleOperatorsServiceList(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: selectAllFalseUrl,
-        });
+        getMultiOperatorServiceList(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
             multiOperatorInfo: [],
-            errors: [{ id: 'checkbox-0', errorMessage: 'Choose at least one service from the options' }],
+            errors: [{ id: errorId, errorMessage: 'Choose at least one service from the options' }],
+        });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/multipleOperatorsServiceList',
         });
     });
 
-    it('should change the query string for select all to true when select all button is selected', () => {
-        const selectAllTrueUrl = '/multipleOperatorsServiceList?selectAll=true';
+    it('should redirect and produce error when operator count does not match number of multi operator data', () => {
         const { req, res } = getMockRequestAndResponse({
-            body: { selectAll: 'Select All Services' },
+            body: {
+                operatorCount: 1,
+                confirm: true,
+                'BLAC#237#123#abc#12/06/2020': 'Some description',
+                'LNUD#145#12345#cdb#10/07/2021': 'Some description 2',
+            },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             mockEndFn: jest.fn(),
             requestHeaders: {
                 referer: `http://localhost:5000${selectAllFalseUrl}`,
             },
-            session: {
-                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                    selectedOperators: [
-                        { name: 'Test1', nocCode: 'N1' },
-                        { name: 'Test2', nocCode: 'N2' },
-                        { name: 'Test3', nocCode: 'N3' },
+            session: {},
+        });
+        getMultiOperatorServiceList(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
+            multiOperatorInfo: [
+                {
+                    nocCode: 'BLAC',
+                    services: [
+                        {
+                            lineId: '123',
+                            lineName: '237',
+                            nocCode: 'BLAC',
+                            serviceCode: 'abc',
+                            serviceDescription: 'Some description',
+                            startDate: '12/06/2020',
+                        },
                     ],
                 },
-            },
+                {
+                    nocCode: 'LNUD',
+                    services: [
+                        {
+                            lineId: '12345',
+                            lineName: '145',
+                            nocCode: 'LNUD',
+                            serviceCode: 'cdb',
+                            serviceDescription: 'Some description 2',
+                            startDate: '10/07/2021',
+                        },
+                    ],
+                },
+            ],
+            errors: [
+                {
+                    id: errorId,
+                    errorMessage: 'All operators need to have at least one service',
+                },
+            ],
         });
-
-        multipleOperatorsServiceList(req, res);
-
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: selectAllTrueUrl,
+            Location: '/multipleOperatorsServiceList',
         });
     });
 
-    it('redirects to /multipleProducts if input is valid with no errors, and deletes TXC multiOp session attribute', () => {
-        const serviceInfo = {
-            'MCTR#237#dsdwgwe223#11-237-_-y08-1#07/04/2020': 'Ashton Under Lyne - Glossop',
-            'MCTR#391#dsdwgwe223#NW_01_MCT_391_1#23/04/2019': 'Macclesfield - Bollington - Poynton - Stockport',
-            'MCTR#232#dsdwgwe223#NW_04_MCTR_232_1#06/04/2020': 'Ashton - Hurst Cross - Broadoak Circular',
-        };
-
+    it('should redirect to multi products page', () => {
         const { req, res } = getMockRequestAndResponse({
-            body: { ...serviceInfo },
+            body: {
+                operatorCount: 2,
+                confirm: true,
+                'BLAC#237#123#abc#12/06/2020': 'Some description',
+                'LNUD#145#12345#cdb#10/07/2021': 'Some description 2',
+            },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             mockEndFn: jest.fn(),
             requestHeaders: {
                 referer: `http://localhost:5000${selectAllFalseUrl}`,
             },
-            session: {
-                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                    selectedOperators: [
-                        { name: 'Test1', nocCode: 'N1' },
-                        { name: 'Test2', nocCode: 'N2' },
-                        { name: 'Test3', nocCode: 'N3' },
-                    ],
-                },
-                [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
-                    {
-                        nocCode: 'N1',
-                        services: [],
-                    },
-                    {
-                        nocCode: 'N2',
-                        services: [],
-                    },
-                ],
-            },
+            session: {},
         });
-
-        multipleOperatorsServiceList(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/multipleProducts',
-        });
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, [
+        getMultiOperatorServiceList(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, [
             {
-                nocCode: 'MCTR',
+                nocCode: 'BLAC',
                 services: [
                     {
+                        lineId: '123',
                         lineName: '237',
-                        lineId: 'dsdwgwe223',
-                        serviceCode: '11-237-_-y08-1',
-                        serviceDescription: 'Ashton Under Lyne - Glossop',
-                        startDate: '07/04/2020',
-                    },
-                    {
-                        lineName: '391',
-                        lineId: 'dsdwgwe223',
-                        serviceCode: 'NW_01_MCT_391_1',
-                        serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
-                        startDate: '23/04/2019',
-                    },
-                    {
-                        lineName: '232',
-                        lineId: 'dsdwgwe223',
-                        serviceCode: 'NW_04_MCTR_232_1',
-                        serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
-                        startDate: '06/04/2020',
+                        nocCode: 'BLAC',
+                        serviceCode: 'abc',
+                        serviceDescription: 'Some description',
+                        startDate: '12/06/2020',
                     },
                 ],
             },
-            { nocCode: 'N1', services: [] },
-            { nocCode: 'N2', services: [] },
+            {
+                nocCode: 'LNUD',
+                services: [
+                    {
+                        lineId: '12345',
+                        lineName: '145',
+                        nocCode: 'LNUD',
+                        serviceCode: 'cdb',
+                        serviceDescription: 'Some description 2',
+                        startDate: '10/07/2021',
+                    },
+                ],
+            },
         ]);
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, undefined);
-    });
-    describe('getSelectedServicesAndNocCodeFromRequest', () => {
-        it('returns an object with services and nocCode from a request', () => {
-            const serviceInfo = {
-                'MCTR#237#strfg323#11-237-_-y08-1#07/04/2020': 'Ashton Under Lyne - Glossop',
-                'MCTR#391#strfg323#NW_01_MCT_391_1#23/04/2019': 'Macclesfield - Bollington - Poynton - Stockport',
-                'MCTR#232#strfg323#NW_04_MCTR_232_1#06/04/2020': 'Ashton - Hurst Cross - Broadoak Circular',
-            };
-            const result = getSelectedServicesAndNocCodeFromRequest(serviceInfo);
-
-            expect(result.nocCode).toBe('MCTR');
-            expect(result.selectedServices).toStrictEqual([
-                {
-                    lineName: '237',
-                    lineId: 'strfg323',
-                    serviceCode: '11-237-_-y08-1',
-                    startDate: '07/04/2020',
-                    serviceDescription: 'Ashton Under Lyne - Glossop',
-                },
-                {
-                    lineName: '391',
-                    lineId: 'strfg323',
-                    serviceCode: 'NW_01_MCT_391_1',
-                    startDate: '23/04/2019',
-                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
-                },
-                {
-                    lineName: '232',
-                    lineId: 'strfg323',
-                    serviceCode: 'NW_04_MCTR_232_1',
-                    startDate: '06/04/2020',
-                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
-                },
-            ]);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/multipleProducts',
         });
     });
 });
