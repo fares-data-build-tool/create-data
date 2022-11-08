@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { OperatorGroup } from '../../src/interfaces';
+import { ErrorInfo, OperatorGroup } from '../../src/interfaces';
 import ViewOperatorGroups from '../../src/pages/viewOperatorGroups';
 
 describe('pages', () => {

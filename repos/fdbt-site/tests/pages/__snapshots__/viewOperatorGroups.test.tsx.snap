@@ -8,7 +8,9 @@ exports[`pages view operator groups should render correctly on operator group 1`
   title="Operator Groups - Create Fares Data Service"
 >
   <div>
-    <ErrorSummary />
+    <ErrorSummary
+      errors={Array []}
+    />
   </div>
   <div
     className="govuk-grid-row"
@@ -79,7 +81,9 @@ exports[`pages view operator groups should render correctly when no operator gro
   title="Operator Groups - Create Fares Data Service"
 >
   <div>
-    <ErrorSummary />
+    <ErrorSummary
+      errors={Array []}
+    />
   </div>
   <div
     className="govuk-grid-row"
