@@ -152,7 +152,7 @@ const MultipleOperatorsServiceList = ({
     const [activeOperator, setActiveOperator] = useState(multiOperatorData[0]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [updateOperator, setUpdateOperator] = useState(activeOperator);
-    console.log(updateOperator);
+    // console.log(updateOperator);
 
     const addServices = (
         event: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.MouseEvent<HTMLLabelElement, MouseEvent>,
@@ -162,10 +162,8 @@ const MultipleOperatorsServiceList = ({
         const newService: ServiceWithNocCode[] = [];
 
         activeOperator.services.forEach((service: ServiceWithNocCode) => {
-            if (all) {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const addOrRemoveAll = all == 'addAll' ? (service.selected = true) : (service.selected = false);
-                console.log(addOrRemoveAll);
+            if (all && all === 'addAll') {
+                service.selected = true;
             } else {
                 if (service.lineId === lineId) {
                     service.selected = !service.selected;
@@ -207,7 +205,8 @@ const MultipleOperatorsServiceList = ({
             }
             newService.push(service);
         });
-        const newOperator = { ...operatorToRemoveServiceFrom, services: newService };
+        let newOperator = updateOperator;
+        newOperator = { ...operatorToRemoveServiceFrom, services: newService };
         setUpdateOperator(newOperator);
         const newSomething = multiOperatorData;
         newSomething[operatorToRemoveServiceFromIndex] = newOperator;
