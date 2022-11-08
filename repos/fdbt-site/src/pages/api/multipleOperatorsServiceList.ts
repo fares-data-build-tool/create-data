@@ -32,7 +32,6 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
             serviceDescription: serviceDescription,
         };
     };
-    console.log(requestBody);
 
     Object.entries(requestBody)
         .filter((item) => item[0] !== 'operatorCount')
