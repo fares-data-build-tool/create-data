@@ -29,6 +29,10 @@
   </PublicationRequest>
   <dataObjects>
     <CompositeFrame version="1.0" id="epd:UK:WBTR:CompositeFrame_UK_PI_LINE_FARE_OFFER:Pass@WBTR_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
+      <ValidBetween>
+        <FromDate>2021-07-06T00:00:00.000Z</FromDate>
+        <ToDate>2121-07-06T23:59:59.999Z</ToDate>
+      </ValidBetween>
       <Name>Fares for Test Operator</Name>
       <Description>Flat fare ticket for Test Operator</Description>
       <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
