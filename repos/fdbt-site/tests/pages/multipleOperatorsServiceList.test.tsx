@@ -99,10 +99,7 @@ describe('pages', () => {
                 ],
             },
         ];
-        const getServicesByNocCodeAndDataSourceAndDescriptionSpy = jest.spyOn(
-            aurora,
-            'getServicesByNocCodeAndDataSourceAndDescription',
-        );
+        const getServicesGoupedByDescriptionSpy = jest.spyOn(aurora, 'getServicesGoupedByDescription');
 
         const getServiceDataSourceSpy: jest.SpyInstance<Promise<object[]>> = jest.spyOn(aurora, 'getServiceDataSource');
 
@@ -111,12 +108,8 @@ describe('pages', () => {
             getServiceDataSourceSpy.mockImplementation(() => Promise.resolve(mockDataSource));
 
             // getServicesByNocCodeAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockBlackServices));
-            getServicesByNocCodeAndDataSourceAndDescriptionSpy.mockImplementationOnce(() =>
-                Promise.resolve(mockBlackServices),
-            );
-            getServicesByNocCodeAndDataSourceAndDescriptionSpy.mockImplementationOnce(() =>
-                Promise.resolve(mockLNUDServices),
-            );
+            getServicesGoupedByDescriptionSpy.mockImplementationOnce(() => Promise.resolve(mockBlackServices));
+            getServicesGoupedByDescriptionSpy.mockImplementationOnce(() => Promise.resolve(mockLNUDServices));
         });
 
         afterEach(() => {
