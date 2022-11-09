@@ -28,6 +28,9 @@
   </PublicationRequest>
   <dataObjects>
     <CompositeFrame version="1.0" id="epd:UK:BLAC:CompositeFrame_UK_PI_LINE_FARE_OFFER:Trip@PK1146649_RJ1_12345:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
+      <ValidBetween>
+        <FromDate>2010-12-17T00:00:00.000Z</FromDate>
+      </ValidBetween>
       <Name>Fares for PK1146649_RJ1_12345</Name>
       <Description>BLAC PK1146649_RJ1_12345 is accessible as a return trip fare. Prices are given zone to zone, where each zone is a linear group of stops, i.e. fare stage.</Description>
       <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP" version="fxc:v1.0"/>
