@@ -53,8 +53,6 @@ const getTag = (exportDetails: Export): ReactElement => {
 
 const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps): ReactElement => {
     const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000 });
-    // eslint-disable-next-line no-console
-    console.log(data);
 
     const exports: Export[] | undefined = data?.exports;
 

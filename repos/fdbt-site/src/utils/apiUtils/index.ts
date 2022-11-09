@@ -260,9 +260,8 @@ export const validatePassword = (
 };
 
 export const dateIsOverAnHourAgo = (inputDate: Date): boolean => {
-    const currentDate = new Date();
-
-    const hoursDifference = Math.abs(currentDate.getTime() - inputDate.getTime()) / 3600000;
-
-    return hoursDifference > 0;
+    const hourInMilliseconds = 60 * 60 * 1000;
+    const date = new Date(inputDate).getTime();
+    const oneHourAgo = Date.now() - hourInMilliseconds;
+    return date < oneHourAgo;
 };
