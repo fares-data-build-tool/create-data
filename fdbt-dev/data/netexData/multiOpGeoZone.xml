@@ -211,7 +211,7 @@
                 <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:45019529">Midgley Road Spring Villas, Midgley Road, Mytholmroyd</ScheduledStopPointRef>
               </members>
               <types>
-                <TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0"/>
+                <TypeOfZoneRef ref="fxc:fare_zone@multi_operator" version="fxc:v1.0"/>
               </types>
               <projections>
                 <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0076467">Park Street, Macclesfield, </TopographicProjectionRef>

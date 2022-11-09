@@ -314,6 +314,12 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             networkFareFrameToUpdate.fareZones.FareZone.projections.TopographicProjectionRef = getTopographicProjectionRefList(
                 ticket.stops,
             );
+            if (isMultiOperatorGeoZoneTicket(ticket)) {
+                networkFareFrameToUpdate.fareZones.FareZone.types.TypeOfZoneRef = {
+                    ref: 'fxc:fare_zone@multi_operator',
+                    version: 'fxc:v1.0',
+                };
+            }
 
             return networkFareFrameToUpdate;
         }
