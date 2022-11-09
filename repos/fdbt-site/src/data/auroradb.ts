@@ -157,7 +157,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
     }
 };
 
-export const getServicesGroupedByDescriptionSpy = async (
+export const getServicesGroupedByDescription = async (
     nocCode: string,
     source: string,
 ): Promise<ServiceWithNocCode[]> => {

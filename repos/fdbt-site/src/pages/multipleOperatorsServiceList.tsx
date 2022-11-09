@@ -7,7 +7,7 @@ import { isMultiOperatorInfoWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import { BaseLayout } from '../layout/Layout';
 
-import { getServiceDataSource, getServicesGroupedByDescriptionSpy } from '../data/auroradb';
+import { getServiceDataSource, getServicesGroupedByDescription } from '../data/auroradb';
 import {
     ErrorInfo,
     NextPageContextWithSession,
@@ -369,7 +369,7 @@ export const getServerSideProps = async (
     let multiOperatorData = await Promise.all(
         searchedOperators.map(async (operator): Promise<MultiOperatorInfo> => {
             const dataSource = (await dataSourceAttribute(operator.nocCode)).source;
-            const dbServices = await getServicesGroupedByDescriptionSpy(operator.nocCode, dataSource);
+            const dbServices = await getServicesGroupedByDescription(operator.nocCode, dataSource);
 
             return {
                 nocCode: operator.nocCode,

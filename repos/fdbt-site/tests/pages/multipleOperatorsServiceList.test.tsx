@@ -99,15 +99,15 @@ describe('pages', () => {
                 ],
             },
         ];
-        const getServicesGroupedByDescriptionSpySpy = jest.spyOn(aurora, 'getServicesGroupedByDescriptionSpy');
+        const getServicesGroupedByDescriptionSpy = jest.spyOn(aurora, 'getServicesGroupedByDescription');
 
         const getServiceDataSourceSpy: jest.SpyInstance<Promise<object[]>> = jest.spyOn(aurora, 'getServiceDataSource');
 
         beforeEach(() => {
             getServiceDataSourceSpy.mockImplementation(() => Promise.resolve(mockDataSource));
 
-            getServicesGroupedByDescriptionSpySpy.mockImplementationOnce(() => Promise.resolve(mockBlackServices));
-            getServicesGroupedByDescriptionSpySpy.mockImplementationOnce(() => Promise.resolve(mockLNUDServices));
+            getServicesGroupedByDescriptionSpy.mockImplementationOnce(() => Promise.resolve(mockBlackServices));
+            getServicesGroupedByDescriptionSpy.mockImplementationOnce(() => Promise.resolve(mockLNUDServices));
         });
 
         afterEach(() => {
