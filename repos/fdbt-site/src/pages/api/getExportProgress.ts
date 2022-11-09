@@ -60,6 +60,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 const complete = matchingDataCount === netexCount;
                 const signedUrl = complete ? await retrieveExportZip(noc, name) : undefined;
+                console.log('signedUrl', signedUrl);
 
                 return { name, numberOfFilesExpected, netexCount, signedUrl, exportFailed };
             }),
