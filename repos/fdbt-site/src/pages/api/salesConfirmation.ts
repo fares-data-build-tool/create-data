@@ -71,6 +71,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (userDataJson) {
+            console.log(userDataJson);
             const carnetAttribute = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
             const dataFormat = getSessionAttribute(req, TXC_SOURCE_ATTRIBUTE)?.source;
 

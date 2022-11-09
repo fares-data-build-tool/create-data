@@ -6,11 +6,9 @@ import MultipleOperatorsServiceList, {
 } from '../../src/pages/multipleOperatorsServiceList';
 import { getMockContext } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
-// import * as sessions from '../../src/utils/sessions';
 import { ErrorInfo, MultiOperatorInfo } from '../../src/interfaces';
 import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import { ServiceWithNocCode } from 'fdbt-types/matchingJsonTypes';
-// import Services from 'src/pages/products/services';
 
 describe('pages', () => {
     describe('multipleOperatorsServiceList', () => {
@@ -107,10 +105,8 @@ describe('pages', () => {
         const getServiceDataSourceSpy: jest.SpyInstance<Promise<object[]>> = jest.spyOn(aurora, 'getServiceDataSource');
 
         beforeEach(() => {
-            // getServicesByNocCodeAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockServices));
             getServiceDataSourceSpy.mockImplementation(() => Promise.resolve(mockDataSource));
 
-            // getServicesByNocCodeAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockBlackServices));
             getServicesByNocCodeAndDataSourceAndDescriptionSpy.mockImplementationOnce(() =>
                 Promise.resolve(mockBlackServices),
             );
@@ -168,7 +164,7 @@ describe('pages', () => {
                 const mockOperatorsWithSelectedServices = mockMultiOperatorData.map((operatorData) => ({
                     ...operatorData,
                     services: operatorData.services.map(
-                        (service) => ({ ...service, selected: true } as ServiceWithNocCode),
+                        (service) => ({ ...service, selected: true }),
                     ),
                 }));
                 const expectedLineId = mockMultiOperatorData[0].services[0].lineId;

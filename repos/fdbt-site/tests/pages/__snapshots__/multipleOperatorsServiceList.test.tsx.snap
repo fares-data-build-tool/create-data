@@ -236,7 +236,7 @@ exports[`pages multipleOperatorsServiceList should render correctly multiOperato
         >
           <div>
             <input
-              id="Operator-Count"
+              id="operator-count"
               name="operatorCount"
               type="hidden"
               value="2"
@@ -499,7 +499,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
         >
           <div>
             <input
-              id="Operator-Count"
+              id="operator-count"
               name="operatorCount"
               type="hidden"
               value="2"

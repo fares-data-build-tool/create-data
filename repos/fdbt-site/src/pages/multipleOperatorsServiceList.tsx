@@ -8,13 +8,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import { BaseLayout } from '../layout/Layout';
 
 import { getServiceDataSource, getServicesByNocCodeAndDataSourceAndDescription } from '../data/auroradb';
-import {
-    ErrorInfo,
-    NextPageContextWithSession,
-    MultiOperatorInfo,
-    MultipleOperatorsAttribute,
-    MultiOperatorInfoWithErrors,
-} from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, MultiOperatorInfo } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import { ServiceWithNocCode } from 'fdbt-types/matchingJsonTypes';
@@ -33,17 +27,15 @@ export const showSelectedOperators = (
     activeOperator: MultiOperatorInfo,
     setActiveOperator: React.Dispatch<React.SetStateAction<MultiOperatorInfo>>,
     removeServices: {
-        (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, lineId: string, nocCode: string, all?: boolean): void;
+        (lineId: string, nocCode: string, removeAll: boolean): void;
     },
 ): ReactElement => {
     const operatorsList = multiOperatorData.map((operator) => operator.name);
-    const handleOperatorChange = (_event: React.MouseEvent<HTMLElement, MouseEvent>, index: number) => {
-        setActiveOperator(multiOperatorData[index]);
-    };
+
     const shouldBeOpen = (operator: MultiOperatorInfo) => {
         if (operator.name === activeOperator.name) {
             operator.open = true;
-        } else if (operator.open == true) {
+        } else if (operator.open === true) {
             operator.open = !operator.open;
         } else {
             operator.open = false;
@@ -51,7 +43,7 @@ export const showSelectedOperators = (
     };
 
     return (
-        <div className="">
+        <div>
             <table className="border-collapse govuk-!-width-full">
                 <caption className={`govuk-table__caption govuk-table__caption--m `}>Selected Services(s)</caption>
                 <thead className="selectedOperators-header-color">
@@ -81,15 +73,15 @@ export const showSelectedOperators = (
                                     <summary
                                         className="govuk-details__summary width-x"
                                         role="button"
-                                        onClick={(event) => handleOperatorChange(event, index)}
+                                        onClick={() => setActiveOperator(multiOperatorData[index])}
                                     >
                                         <span className="govuk-details__summary-text"> {operator.name}</span>
                                     </summary>
                                     <div className="govuk-details__text">
                                         <button
                                             id="removeAll"
-                                            className="selectedOperators-button button-link govuk-!-margin-left-2"
-                                            onClick={(event) => removeServices(event, '0', operator.nocCode, true)}
+                                            className="govuk-!-margin-right-2 button-link govuk-!-margin-left-2"
+                                            onClick={() => removeServices('0', operator.nocCode, true)}
                                             name="removeOperator"
                                         >
                                             Remove all
@@ -105,22 +97,21 @@ export const showSelectedOperators = (
                                             if (service.selected) {
                                                 return (
                                                     <div className="govuk-grid-row" key={index}>
-                                                        <div className="govuk-grid-column-three-quarters">
+                                                        <div className="govuk-grid-column-three-quarters govuk-!-margin-top-2">
                                                             {checkboxTitles}
                                                         </div>
-                                                        <div className="govuk-grid-column-one-quarter">
+                                                        <div className="govuk-grid-column-one-quarter govuk-!-margin-top-2">
                                                             <button
                                                                 id={`remove-from-${operator.nocCode}-${index}`}
                                                                 className="govuk-link button-link"
-                                                                onClick={(event) =>
+                                                                onClick={() =>
                                                                     removeServices(
-                                                                        event,
                                                                         service.lineId,
                                                                         operator.nocCode,
+                                                                        false,
                                                                     )
                                                                 }
                                                                 name="removeOperator"
-                                                                // value="2C Zhaishi Miaozu Dongzuxiang - Bimbaletes Aguascalientes (El Ãlamo)"
                                                             >
                                                                 Remove
                                                             </button>
@@ -134,7 +125,6 @@ export const showSelectedOperators = (
                                     </div>
                                 </details>
                             </td>
-                            <td className="govuk-link text-align-right" key={`td1-${index}`}></td>
                         </tr>
                     ))}
                 </tbody>
@@ -150,45 +140,33 @@ const MultipleOperatorsServiceList = ({
 }: MultipleOperatorsServiceListProps): ReactElement => {
     const [multiOperatorData, setMultiOperatorData] = useState(preMultiOperatorData);
     const [activeOperator, setActiveOperator] = useState(multiOperatorData[0]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [updateOperator, setUpdateOperator] = useState(activeOperator);
-    // console.log(updateOperator);
+    const [updatedOperator, setUpdatedOperator] = useState(activeOperator);
 
-    const addServices = (
-        event: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.MouseEvent<HTMLLabelElement, MouseEvent>,
-        lineId: string,
-        all?: string,
-    ) => {
-        const newService: ServiceWithNocCode[] = [];
+    const addServices = (lineId: string, addAll: boolean) => {
+        const newServices: ServiceWithNocCode[] = [];
 
         activeOperator.services.forEach((service: ServiceWithNocCode) => {
-            if (all && all === 'addAll') {
+            if (addAll) {
                 service.selected = true;
             } else {
                 if (service.lineId === lineId) {
                     service.selected = !service.selected;
                 }
             }
-            newService.push(service);
+            newServices.push(service);
         });
 
-        const newActiveoperator = { ...activeOperator, services: newService };
+        const newActiveoperator = { ...activeOperator, services: newServices };
         setActiveOperator(newActiveoperator);
         const activeOperatorIndex = multiOperatorData.findIndex(
             (newActiveoperator) => newActiveoperator.nocCode === activeOperator.nocCode,
         );
 
-        const newSomething = multiOperatorData;
-        newSomething[activeOperatorIndex] = newActiveoperator;
+        multiOperatorData[activeOperatorIndex] = newActiveoperator;
         setMultiOperatorData(multiOperatorData);
-        event.preventDefault();
     };
-    const removeServices = (
-        event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-        lineId: string,
-        nocCode: string,
-        all = false,
-    ) => {
+
+    const removeServices = (lineId: string, nocCode: string, removeAll: boolean) => {
         const newService: ServiceWithNocCode[] = [];
 
         const operatorToRemoveServiceFromIndex = multiOperatorData.findIndex(
@@ -196,22 +174,21 @@ const MultipleOperatorsServiceList = ({
         );
         const operatorToRemoveServiceFrom = multiOperatorData[operatorToRemoveServiceFromIndex];
         operatorToRemoveServiceFrom.services.forEach((service) => {
-            if (all) {
+            if (removeAll) {
                 service.selected = false;
             } else {
                 if (service.lineId === lineId) {
-                    service.selected = !service.selected;
+                    service.selected = false;
                 }
             }
             newService.push(service);
         });
-        let newOperator = updateOperator;
+        let newOperator = updatedOperator;
         newOperator = { ...operatorToRemoveServiceFrom, services: newService };
-        setUpdateOperator(newOperator);
-        const newSomething = multiOperatorData;
-        newSomething[operatorToRemoveServiceFromIndex] = newOperator;
-        setMultiOperatorData(newSomething);
-        event.preventDefault();
+        setUpdatedOperator(newOperator);
+
+        multiOperatorData[operatorToRemoveServiceFromIndex] = newOperator;
+        setMultiOperatorData(multiOperatorData);
     };
 
     return (
@@ -225,7 +202,7 @@ const MultipleOperatorsServiceList = ({
         /> */}
 
             <ErrorSummary errors={errors} />
-            <div className={` ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+            <div className={errors.length > 0 ? 'govuk-form-group--error' : ''}>
                 <div>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
                         <h1 className="govuk-heading-l" id="service-list-page-heading">
@@ -248,7 +225,7 @@ const MultipleOperatorsServiceList = ({
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-two-thirds">
                         <button
-                            onClick={(event) => addServices(event, '0', 'addAll')}
+                            onClick={() => addServices('0', true)}
                             id="select-all-button"
                             className="govuk-button govuk-button--secondary"
                         >
@@ -276,8 +253,7 @@ const MultipleOperatorsServiceList = ({
                                                 role="button"
                                                 className="govuk-label govuk-checkboxes__label"
                                                 htmlFor={`add-operator-checkbox-${index}`}
-                                                // name={`${nocCode}#${lineName}#${lineId}#${serviceCode}`}
-                                                onClick={(event) => addServices(event, service.lineId)}
+                                                onClick={() => addServices(service.lineId, false)}
                                             >
                                                 {checkboxTitles}
                                             </label>
@@ -304,6 +280,7 @@ const MultipleOperatorsServiceList = ({
                                             selected,
                                             startDate,
                                         } = service;
+
                                         if (selected) {
                                             return (
                                                 <input
@@ -322,7 +299,7 @@ const MultipleOperatorsServiceList = ({
                                 })}
                                 {
                                     <input
-                                        id="Operator-Count"
+                                        id="operator-count"
                                         name="operatorCount"
                                         type="hidden"
                                         value={`${multiOperatorData.length}`}
@@ -348,26 +325,27 @@ export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: MultipleOperatorsServiceListProps }> => {
     const csrfToken = getCsrfToken(ctx);
-    const searchedOperators = (getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute)
-        .selectedOperators;
+    const searchedOperatorsAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE);
 
-    const completedOperatorInfo = getSessionAttribute(
-        ctx.req,
-        MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
-    ) as MultiOperatorInfoWithErrors;
+    if (!searchedOperatorsAttribute) {
+        throw new Error('List of operators not found in session');
+    }
+
+    const { selectedOperators } = searchedOperatorsAttribute;
+
+    const completedOperatorInfo = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
+
     const dataSourceAttribute = async (nocCode: string) => {
         const services = await getServiceDataSource(nocCode);
         const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
 
         return {
             source: hasBodsServices ? 'bods' : 'tnds',
-            hasBods: hasBodsServices,
-            hasTnds: false,
         };
     };
 
     let multiOperatorData = await Promise.all(
-        searchedOperators.map(async (operator): Promise<MultiOperatorInfo> => {
+        selectedOperators.map(async (operator): Promise<MultiOperatorInfo> => {
             const dataSource = (await dataSourceAttribute(operator.nocCode)).source;
             const dbServices = await getServicesByNocCodeAndDataSourceAndDescription(operator.nocCode, dataSource);
 
@@ -375,15 +353,15 @@ export const getServerSideProps = async (
                 nocCode: operator.nocCode,
                 name: operator.name,
                 dataSource: dataSource,
-                services: dbServices.map((obj) => ({ ...obj, selected: false })) as ServiceWithNocCode[],
+                services: dbServices.map((obj) => ({ ...obj, selected: false })),
             };
         }),
     );
     const updateMultiOperatorDataWithSelectedServices = (
         multiOperatorDataToUpdate: MultiOperatorInfo[],
-        MultiOperatorDataWithSelectedServices: MultiOperatorInfo[],
+        multiOperatorDataWithSelectedServices: MultiOperatorInfo[],
     ) => {
-        MultiOperatorDataWithSelectedServices.forEach((operator) => {
+        multiOperatorDataWithSelectedServices.forEach((operator) => {
             const findMatchingOperatorIndex = multiOperatorDataToUpdate.findIndex(
                 (operatorInfo) => operatorInfo.nocCode === operator.nocCode,
             );
@@ -410,17 +388,20 @@ export const getServerSideProps = async (
     const previouslySelectedServices = isMultiOperatorInfoWithErrors(completedOperatorInfo)
         ? completedOperatorInfo.multiOperatorInfo
         : [];
+
     if (previouslySelectedServices.length > 0) {
         multiOperatorData = updateMultiOperatorDataWithSelectedServices(multiOperatorData, previouslySelectedServices);
     }
 
     const multiOperatorDataSessionData =
         getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) || undefined;
-    if (multiOperatorDataSessionData && completedOperatorInfo?.errors === undefined) {
+
+    if (multiOperatorDataSessionData && !isMultiOperatorInfoWithErrors(completedOperatorInfo)) {
         const selectedServicesFromSession = Object.values(multiOperatorDataSessionData);
         multiOperatorData = updateMultiOperatorDataWithSelectedServices(multiOperatorData, selectedServicesFromSession);
     }
     multiOperatorData[0].open = true;
+
     return {
         props: {
             preMultiOperatorData: multiOperatorData,

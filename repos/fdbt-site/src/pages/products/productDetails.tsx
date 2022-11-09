@@ -357,6 +357,7 @@ const createProductDetails = async (
                 content: [
                     additionalOperator.selectedServices.map((selectedService) => selectedService.lineName).join(', '),
                 ],
+                editLink: '/multipleOperatorsServiceList',
             });
         });
     }
