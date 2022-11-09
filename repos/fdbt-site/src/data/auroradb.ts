@@ -157,10 +157,11 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
     }
 };
 
-export const getServicesByNocCodeAndDataSourceAndDescription = async (
+export const getServicesGroupedByDescription = async (
     nocCode: string,
     source: string,
 ): Promise<ServiceWithNocCode[]> => {
+    //grouped by service description which combines (lineName, origin, destination)
     const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
         context: 'data.auroradb',
@@ -173,7 +174,7 @@ export const getServicesByNocCodeAndDataSourceAndDescription = async (
             SELECT id, lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = ? AND (endDate IS NULL OR CURDATE() <= endDate)
-            group by lineId, serviceDescription
+            group by lineId, origin, destination
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
