@@ -59,10 +59,8 @@ import {
     expectedNonCircularReturnTicket,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
     expectedPeriodMultipleServicesTicketWithMultipleProducts,
-    expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
     expectedPointToPointPeriodTicket,
     expectedProductDetailsArray,
-    expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
     expectedSchemeOperatorTicket,
     expectedSchemeOperatorTicketAfterGeoZoneAdjustment,
     expectedSingleTicket,
@@ -76,6 +74,8 @@ import {
     userFareStages,
     zoneStops,
     expectedSchemeOperatorMultiServicesTicket,
+    expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInServices,
+    expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
 } from '../../../testData/mockData';
 
 describe('userData', () => {
@@ -1019,6 +1019,7 @@ describe('userData', () => {
                                     serviceCode: '11-444-_-y08-1',
                                     serviceDescription: 'Test Under Lyne - Glossop',
                                     startDate: '07/04/2020',
+                                    selected: false,
                                 },
                                 {
                                     nocCode: 'WBTR',
@@ -1027,6 +1028,7 @@ describe('userData', () => {
                                     serviceCode: 'NW_01_MCT_391_1',
                                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                                     startDate: '23/04/2019',
+                                    selected: false,
                                 },
                                 {
                                     nocCode: 'WBTR',
@@ -1035,6 +1037,7 @@ describe('userData', () => {
                                     serviceCode: 'NW_04_MCTR_232_1',
                                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                                     startDate: '06/04/2020',
+                                    selected: false,
                                 },
                             ],
                         },
@@ -1048,6 +1051,7 @@ describe('userData', () => {
                                     serviceCode: '11-444-_-y08-1',
                                     serviceDescription: 'Test Under Lyne - Glossop',
                                     startDate: '07/04/2020',
+                                    selected: false,
                                 },
                                 {
                                     nocCode: 'BLAC',
@@ -1056,6 +1060,7 @@ describe('userData', () => {
                                     serviceCode: 'NW_01_MCT_391_1',
                                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                                     startDate: '23/04/2019',
+                                    selected: false,
                                 },
                                 {
                                     nocCode: 'BLAC',
@@ -1064,6 +1069,7 @@ describe('userData', () => {
                                     serviceCode: 'NW_04_MCTR_232_1',
                                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                                     startDate: '06/04/2020',
+                                    selected: false,
                                 },
                             ],
                         },
@@ -1077,6 +1083,7 @@ describe('userData', () => {
                                     serviceCode: '11-444-_-y08-1',
                                     serviceDescription: 'Test Under Lyne - Glossop',
                                     startDate: '07/04/2020',
+                                    selected: false,
                                 },
                                 {
                                     nocCode: 'LEDS',
@@ -1085,6 +1092,7 @@ describe('userData', () => {
                                     serviceCode: 'NW_01_MCT_391_1',
                                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                                     startDate: '23/04/2019',
+                                    selected: false,
                                 },
                                 {
                                     nocCode: 'LEDS',
@@ -1093,6 +1101,7 @@ describe('userData', () => {
                                     serviceCode: 'NW_04_MCTR_232_1',
                                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                                     startDate: '06/04/2020',
+                                    selected: false,
                                 },
                             ],
                         },
@@ -1625,6 +1634,7 @@ describe('userData', () => {
                         serviceCode: '11-444-_-y08-1',
                         serviceDescription: 'Test Under Lyne - Glossop',
                         startDate: '07/04/2020',
+                        selected: false,
                     },
                     {
                         nocCode: 'WBTR',
@@ -1633,6 +1643,7 @@ describe('userData', () => {
                         serviceCode: 'NW_01_MCT_391_1',
                         serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                         startDate: '23/04/2019',
+                        selected: false,
                     },
                     {
                         nocCode: 'WBTR',
@@ -1641,6 +1652,7 @@ describe('userData', () => {
                         serviceCode: 'NW_04_MCTR_232_1',
                         serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                         startDate: '06/04/2020',
+                        selected: false,
                     },
                 ],
             },
@@ -1654,6 +1666,7 @@ describe('userData', () => {
                         serviceCode: '11-444-_-y08-1',
                         serviceDescription: 'Test Under Lyne - Glossop',
                         startDate: '07/04/2020',
+                        selected: false,
                     },
                     {
                         nocCode: 'BLAC',
@@ -1662,6 +1675,7 @@ describe('userData', () => {
                         serviceCode: 'NW_01_MCT_391_1',
                         serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                         startDate: '23/04/2019',
+                        selected: false,
                     },
                     {
                         nocCode: 'BLAC',
@@ -1670,6 +1684,7 @@ describe('userData', () => {
                         serviceCode: 'NW_04_MCTR_232_1',
                         serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                         startDate: '06/04/2020',
+                        selected: false,
                     },
                 ],
             },
@@ -1683,6 +1698,7 @@ describe('userData', () => {
                         serviceCode: '11-444-_-y08-1',
                         serviceDescription: 'Test Under Lyne - Glossop',
                         startDate: '07/04/2020',
+                        selected: false,
                     },
                     {
                         nocCode: 'LEDS',
@@ -1691,6 +1707,7 @@ describe('userData', () => {
                         serviceCode: 'NW_01_MCT_391_1',
                         serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                         startDate: '23/04/2019',
+                        selected: false,
                     },
                     {
                         nocCode: 'LEDS',
@@ -1699,6 +1716,7 @@ describe('userData', () => {
                         serviceCode: 'NW_04_MCTR_232_1',
                         serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                         startDate: '06/04/2020',
+                        selected: false,
                     },
                 ],
             },
@@ -1825,7 +1843,7 @@ describe('userData', () => {
                 },
             });
             const result = await adjustSchemeOperatorJson(req, res, expectedSchemeOperatorTicket('flatFare'));
-            expect(result).toEqual(expectedSchemeOperatorAfterFlatFareAdjustmentTicket);
+            expect(result).toEqual(expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInServices);
         });
         it('should adjust SchemeOperatorTicket json for a multi service ticket', async () => {
             const { req, res } = getMockRequestAndResponse({

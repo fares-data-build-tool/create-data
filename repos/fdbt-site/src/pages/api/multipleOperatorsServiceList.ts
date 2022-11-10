@@ -36,6 +36,7 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
             serviceCode: splitStrings[2],
             startDate: splitStrings[3],
             serviceDescription: serviceDescription,
+            selected: false,
         };
     };
 

@@ -162,6 +162,7 @@ describe('pages', () => {
                             serviceCode: '11-237-_-y08-1',
                             startDate: '07/04/2020',
                             serviceDescription: 'Ashton Under Lyne - Glossop',
+                            selected: false,
                         },
                         {
                             nocCode: 'BLAC',
@@ -170,6 +171,7 @@ describe('pages', () => {
                             serviceCode: 'NW_01_MCT_391_1',
                             startDate: '23/04/2019',
                             serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                            selected: false,
                         },
                         {
                             nocCode: 'BLAC',
@@ -178,6 +180,7 @@ describe('pages', () => {
                             serviceCode: 'NW_04_MCTR_232_1',
                             startDate: '06/04/2020',
                             serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                            selected: false,
                         },
                     ],
                 },
@@ -191,6 +194,7 @@ describe('pages', () => {
                             serviceCode: 'NW_05_BLAC_12A_1',
                             serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
                             startDate: '13/05/2020',
+                            selected: false,
                         },
                         {
                             nocCode: 'MCT',
@@ -199,6 +203,7 @@ describe('pages', () => {
                             serviceCode: 'NW_05_BLAC_6_1',
                             serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
                             startDate: '08/05/2020',
+                            selected: false,
                         },
                         {
                             nocCode: 'MCT',
@@ -207,6 +212,7 @@ describe('pages', () => {
                             serviceCode: 'NW_05_BLAC_101_1',
                             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
                             startDate: '06/05/2020',
+                            selected: false,
                         },
                     ],
                 },
