@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "Shared types for FDBT",
   "license": "ISC",
-  "type": "module",
   "scripts": {
     "build": "tsc"
   },
