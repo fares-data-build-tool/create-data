@@ -157,7 +157,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
     }
 };
 
-export const getServicesByNocCodeAndDataSourceAndDescription = async (
+export const getServicesByNocCodeAndDataSourceWithGrouping = async (
     nocCode: string,
     source: string,
 ): Promise<ServiceWithNocCode[]> => {
@@ -173,7 +173,7 @@ export const getServicesByNocCodeAndDataSourceAndDescription = async (
             SELECT id, lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = ? AND (endDate IS NULL OR CURDATE() <= endDate)
-            group by lineId, serviceDescription
+            group by lineId, origin, destination
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
@@ -381,33 +381,6 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
             queryResults.map((item) => ({
                 ...item,
                 startDate: convertDateFormat(item.startDate),
-            })) || []
-        );
-    } catch (error) {
-        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
-    }
-};
-export const getServiceDataSource = async (nocCode: string): Promise<ServiceType[]> => {
-    const nocCodeParameter = replaceInternalNocCode(nocCode);
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving services for given noc',
-        noc: nocCode,
-    });
-
-    try {
-        const queryInput = `
-            SELECT dataSource
-            FROM txcOperatorLine
-            WHERE nocCode = ?
-            group by dataSource;
-        `;
-
-        const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter]);
-
-        return (
-            queryResults.map((item) => ({
-                ...item,
             })) || []
         );
     } catch (error) {

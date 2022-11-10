@@ -58,7 +58,7 @@ exports[`pages view passenger types should render correctly when groups and indi
           }
         />
         <a
-          className="govuk-button govuk-button"
+          className="govuk-button"
           data-module="govuk-button"
           href="/managePassengerTypes"
         >
@@ -152,7 +152,7 @@ exports[`pages view passenger types should render correctly when no individual o
       <div>
         <NoIndividualPassengerTypes />
         <a
-          className="govuk-button govuk-button"
+          className="govuk-button"
           data-module="govuk-button"
           href="/managePassengerTypes"
         >
@@ -227,7 +227,7 @@ exports[`pages view passenger types should render correctly when only individual
           }
         />
         <a
-          className="govuk-button govuk-button"
+          className="govuk-button"
           data-module="govuk-button"
           href="/managePassengerTypes"
         >
@@ -316,7 +316,7 @@ exports[`pages view passenger types should render correctly when only individual
           }
         />
         <a
-          className="govuk-button govuk-button"
+          className="govuk-button"
           data-module="govuk-button"
           href="/managePassengerTypes"
         >
@@ -379,7 +379,7 @@ exports[`pages view passenger types should render correctly when only passenger 
       <div>
         <NoIndividualPassengerTypes />
         <a
-          className="govuk-button govuk-button"
+          className="govuk-button"
           data-module="govuk-button"
           href="/managePassengerTypes"
         >

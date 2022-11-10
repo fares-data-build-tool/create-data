@@ -91,11 +91,7 @@ const ViewPassengerTypes = ({
                             />
                         )}
 
-                        <a
-                            className="govuk-button govuk-button"
-                            data-module="govuk-button"
-                            href="/managePassengerTypes"
-                        >
+                        <a className="govuk-button" data-module="govuk-button" href="/managePassengerTypes">
                             Add a passenger type
                         </a>
                     </div>
