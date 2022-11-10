@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'feat/CFDS-74_failed_exports'
+    - 'develop'
     paths:
     - repos/exporter/**
   workflow_dispatch:
