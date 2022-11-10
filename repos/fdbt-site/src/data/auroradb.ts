@@ -161,6 +161,7 @@ export const getServicesByNocCodeAndDataSourceWithGrouping = async (
     nocCode: string,
     source: string,
 ): Promise<ServiceWithNocCode[]> => {
+    //grouped by service description which combines (lineName, origin, destination)
     const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
         context: 'data.auroradb',
