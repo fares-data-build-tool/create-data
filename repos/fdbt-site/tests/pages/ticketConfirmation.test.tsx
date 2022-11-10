@@ -156,6 +156,7 @@ describe('pages', () => {
                     nocCode: 'BLAC',
                     services: [
                         {
+                            nocCode: 'BLAC',
                             lineName: '237',
                             lineId: 'strfg323',
                             serviceCode: '11-237-_-y08-1',
@@ -163,6 +164,7 @@ describe('pages', () => {
                             serviceDescription: 'Ashton Under Lyne - Glossop',
                         },
                         {
+                            nocCode: 'BLAC',
                             lineName: '391',
                             lineId: 'strfg323',
                             serviceCode: 'NW_01_MCT_391_1',
@@ -170,6 +172,7 @@ describe('pages', () => {
                             serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                         },
                         {
+                            nocCode: 'BLAC',
                             lineName: '232',
                             lineId: 'strfg323',
                             serviceCode: 'NW_04_MCTR_232_1',
@@ -182,6 +185,7 @@ describe('pages', () => {
                     nocCode: 'MCT',
                     services: [
                         {
+                            nocCode: 'MCT',
                             lineId: '3h3vb32ik',
                             lineName: '12A',
                             serviceCode: 'NW_05_BLAC_12A_1',
@@ -189,6 +193,7 @@ describe('pages', () => {
                             startDate: '13/05/2020',
                         },
                         {
+                            nocCode: 'MCT',
                             lineName: '6',
                             lineId: '3h3vb32ik',
                             serviceCode: 'NW_05_BLAC_6_1',
@@ -196,6 +201,7 @@ describe('pages', () => {
                             startDate: '08/05/2020',
                         },
                         {
+                            nocCode: 'MCT',
                             lineId: '3h3v22ik',
                             lineName: '101',
                             serviceCode: 'NW_05_BLAC_101_1',

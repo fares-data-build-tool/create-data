@@ -1013,6 +1013,7 @@ describe('userData', () => {
                             nocCode: 'WBTR',
                             services: [
                                 {
+                                    nocCode: 'WBTR',
                                     lineName: '343',
                                     lineId: '3h3vsergesrhg',
                                     serviceCode: '11-444-_-y08-1',
@@ -1020,6 +1021,7 @@ describe('userData', () => {
                                     startDate: '07/04/2020',
                                 },
                                 {
+                                    nocCode: 'WBTR',
                                     lineName: '444',
                                     lineId: '3h3vtrhtherhed',
                                     serviceCode: 'NW_01_MCT_391_1',
@@ -1027,6 +1029,7 @@ describe('userData', () => {
                                     startDate: '23/04/2019',
                                 },
                                 {
+                                    nocCode: 'WBTR',
                                     lineName: '543',
                                     lineId: '3h3vb32ik',
                                     serviceCode: 'NW_04_MCTR_232_1',
@@ -1039,6 +1042,7 @@ describe('userData', () => {
                             nocCode: 'BLAC',
                             services: [
                                 {
+                                    nocCode: 'BLAC',
                                     lineName: '100',
                                     lineId: '3h3rthsrty56y5',
                                     serviceCode: '11-444-_-y08-1',
@@ -1046,6 +1050,7 @@ describe('userData', () => {
                                     startDate: '07/04/2020',
                                 },
                                 {
+                                    nocCode: 'BLAC',
                                     lineName: '101',
                                     lineId: '3h34t43deefsf',
                                     serviceCode: 'NW_01_MCT_391_1',
@@ -1053,6 +1058,7 @@ describe('userData', () => {
                                     startDate: '23/04/2019',
                                 },
                                 {
+                                    nocCode: 'BLAC',
                                     lineName: '102',
                                     lineId: '34tvwevdsvb32ik',
                                     serviceCode: 'NW_04_MCTR_232_1',
@@ -1065,6 +1071,7 @@ describe('userData', () => {
                             nocCode: 'LEDS',
                             services: [
                                 {
+                                    nocCode: 'LEDS',
                                     lineName: '63',
                                     lineId: '45t34gvfdx2ik',
                                     serviceCode: '11-444-_-y08-1',
@@ -1072,6 +1079,7 @@ describe('userData', () => {
                                     startDate: '07/04/2020',
                                 },
                                 {
+                                    nocCode: 'LEDS',
                                     lineName: '64',
                                     lineId: 'q45g4rgergik',
                                     serviceCode: 'NW_01_MCT_391_1',
@@ -1079,6 +1087,7 @@ describe('userData', () => {
                                     startDate: '23/04/2019',
                                 },
                                 {
+                                    nocCode: 'LEDS',
                                     lineName: '65',
                                     lineId: 'q34ttfwerfsxfc',
                                     serviceCode: 'NW_04_MCTR_232_1',
@@ -1610,6 +1619,7 @@ describe('userData', () => {
                 nocCode: 'WBTR',
                 services: [
                     {
+                        nocCode: 'WBTR',
                         lineName: '343',
                         lineId: '3h3vsergesrhg',
                         serviceCode: '11-444-_-y08-1',
@@ -1617,6 +1627,7 @@ describe('userData', () => {
                         startDate: '07/04/2020',
                     },
                     {
+                        nocCode: 'WBTR',
                         lineName: '444',
                         lineId: '3h3vtrhtherhed',
                         serviceCode: 'NW_01_MCT_391_1',
@@ -1624,6 +1635,7 @@ describe('userData', () => {
                         startDate: '23/04/2019',
                     },
                     {
+                        nocCode: 'WBTR',
                         lineName: '543',
                         lineId: '3h3vb32ik',
                         serviceCode: 'NW_04_MCTR_232_1',
@@ -1636,6 +1648,7 @@ describe('userData', () => {
                 nocCode: 'BLAC',
                 services: [
                     {
+                        nocCode: 'BLAC',
                         lineName: '100',
                         lineId: '3h3rthsrty56y5',
                         serviceCode: '11-444-_-y08-1',
@@ -1643,6 +1656,7 @@ describe('userData', () => {
                         startDate: '07/04/2020',
                     },
                     {
+                        nocCode: 'BLAC',
                         lineName: '101',
                         lineId: '3h34t43deefsf',
                         serviceCode: 'NW_01_MCT_391_1',
@@ -1650,6 +1664,7 @@ describe('userData', () => {
                         startDate: '23/04/2019',
                     },
                     {
+                        nocCode: 'BLAC',
                         lineName: '102',
                         lineId: '34tvwevdsvb32ik',
                         serviceCode: 'NW_04_MCTR_232_1',
@@ -1662,6 +1677,7 @@ describe('userData', () => {
                 nocCode: 'LEDS',
                 services: [
                     {
+                        nocCode: 'LEDS',
                         lineName: '63',
                         lineId: '45t34gvfdx2ik',
                         serviceCode: '11-444-_-y08-1',
@@ -1669,6 +1685,7 @@ describe('userData', () => {
                         startDate: '07/04/2020',
                     },
                     {
+                        nocCode: 'LEDS',
                         lineName: '64',
                         lineId: 'q45g4rgergik',
                         serviceCode: 'NW_01_MCT_391_1',
@@ -1676,6 +1693,7 @@ describe('userData', () => {
                         startDate: '23/04/2019',
                     },
                     {
+                        nocCode: 'LEDS',
                         lineName: '65',
                         lineId: 'q34ttfwerfsxfc',
                         serviceCode: 'NW_04_MCTR_232_1',
