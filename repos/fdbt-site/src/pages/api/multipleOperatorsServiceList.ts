@@ -48,16 +48,21 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
 
     const selectedServices: SelectedServiceByNocCode[] = [];
 
-    const getIndexOfMultiOperatorsService = (noc: string): number => {
+    const getIndexOfMultiOperatorsService = (noc: string | undefined): number => {
+        if (!noc) {
+            return -1;
+        }
         const index = selectedServices.findIndex((serviceDetails) => Object.keys(serviceDetails).includes(noc));
         return index;
     };
     serviceDetails.forEach((service: ServiceWithNocCode) => {
         const indexOfFound = getIndexOfMultiOperatorsService(service.nocCode);
-        if (indexOfFound === -1) {
-            selectedServices.push({ [`${service.nocCode}`]: [service] });
-        } else {
-            selectedServices[indexOfFound][service.nocCode].push(service);
+        if (service.nocCode) {
+            if (indexOfFound === -1) {
+                selectedServices.push({ [`${service.nocCode}`]: [service] });
+            } else {
+                selectedServices[indexOfFound][service.nocCode].push(service);
+            }
         }
     });
     const newListOfMultiOperatorsData: MultiOperatorInfo[] = selectedServices.flatMap((selectedService) => {
