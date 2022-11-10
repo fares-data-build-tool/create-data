@@ -71,48 +71,22 @@ describe('multiOperatorServiceList tests', () => {
     beforeEach(() => {
         jest.resetAllMocks();
     });
-    const selectAllFalseUrl = '/multipleOperatorsServiceList?selectAll=false';
     const writeHeadMock = jest.fn();
-    const errorId = 'checkbox-0';
+    const errorId = 'service-to-add-1';
 
-    it('should redirect and produce error when response body is empty', () => {
-        const { req, res } = getMockRequestAndResponse({
-            body: {},
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-            mockEndFn: jest.fn(),
-            requestHeaders: {
-                referer: `http://localhost:5000${selectAllFalseUrl}`,
-            },
-            session: {},
-        });
-        getMultiOperatorServiceList(req, res);
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
-            multiOperatorInfo: [],
-            errors: [{ id: errorId, errorMessage: 'Choose at least one service from the options' }],
-        });
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/multipleOperatorsServiceList',
-        });
-    });
-
-    it('should redirect and produce error when operator count does not match number of multi operator data', () => {
+    it('should redirect and produce error when operator count does not match number of multi operator data', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 operatorCount: 1,
-                confirm: true,
                 'BLAC#237#123#abc#12/06/2020': 'Some description',
                 'LNUD#145#12345#cdb#10/07/2021': 'Some description 2',
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             mockEndFn: jest.fn(),
-            requestHeaders: {
-                referer: `http://localhost:5000${selectAllFalseUrl}`,
-            },
             session: {},
         });
-        getMultiOperatorServiceList(req, res);
+        await getMultiOperatorServiceList(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
             multiOperatorInfo: [
                 {
@@ -154,23 +128,19 @@ describe('multiOperatorServiceList tests', () => {
         });
     });
 
-    it('should redirect to multi products page', () => {
+    it('should redirect to multi products page', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 operatorCount: 2,
-                confirm: true,
                 'BLAC#237#123#abc#12/06/2020': 'Some description',
                 'LNUD#145#12345#cdb#10/07/2021': 'Some description 2',
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             mockEndFn: jest.fn(),
-            requestHeaders: {
-                referer: `http://localhost:5000${selectAllFalseUrl}`,
-            },
             session: {},
         });
-        getMultiOperatorServiceList(req, res);
+        await getMultiOperatorServiceList(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, [
             {
                 nocCode: 'BLAC',

@@ -357,6 +357,7 @@ const createProductDetails = async (
                 content: [
                     additionalOperator.selectedServices.map((selectedService) => selectedService.lineName).join(', '),
                 ],
+                editLink: '/multipleOperatorsServiceList',
             });
         });
     }
@@ -476,7 +477,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const ticket = await getProductsMatchingJson(matchingJsonLink);
 
     // store the ticket in the session so that it can be retrieved
-    // on the /csvUpload page.
+    // on the edit pages.
     updateSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE, ticket);
 
     updateSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE, {
