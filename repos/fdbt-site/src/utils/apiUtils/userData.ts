@@ -432,6 +432,11 @@ export const getGeoZoneTicketJson = async (
             ? multiOpAttribute.selectedOperators.map((operator) => operator.nocCode)
             : undefined;
 
+    const operatorGroupId =
+        basePeriodTicketAttributes.type === 'multiOperator' && multiOpAttribute && multiOpAttribute.id
+            ? multiOpAttribute.id
+            : undefined;
+
     if (zoneStops.length === 0) {
         throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
     }
@@ -441,6 +446,7 @@ export const getGeoZoneTicketJson = async (
         zoneName: fareZoneName,
         stops: zoneStops,
         ...(additionalNocs && { additionalNocs }),
+        ...(operatorGroupId && { operatorGroupId }),
     };
 };
 
@@ -471,11 +477,14 @@ export const getMultipleServicesTicketJson = (
                 selectedServices: operator.services,
             })),
         };
+        const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
+        const operatorGroupId = multiOpAttribute && multiOpAttribute.id ? multiOpAttribute.id : undefined;
         return {
             ...basePeriodTicketAttributes,
             selectedServices,
             additionalOperators: additionalOperatorsInfo.additionalOperators,
             termTime: isTermTime(req),
+            ...(operatorGroupId && { operatorGroupId }),
         };
     }
 

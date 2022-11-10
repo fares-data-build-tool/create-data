@@ -7,6 +7,11 @@ exports[`pages view operator groups should render correctly on operator group 1`
   showNavigation={true}
   title="Operator Groups - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={1}
@@ -75,6 +80,11 @@ exports[`pages view operator groups should render correctly when no operator gro
   showNavigation={true}
   title="Operator Groups - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={0}

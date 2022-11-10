@@ -9,7 +9,7 @@ import SearchOperators, {
     ShowSearchResults,
 } from '../../src/pages/searchOperators';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
-import { ErrorInfo, Operator } from '../../src/interfaces';
+import { ErrorInfo, Operator, OperatorAttribute, OperatorGroup } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('searchOperator', () => {
@@ -28,6 +28,12 @@ describe('pages', () => {
             },
         ];
 
+        const mockOperatorGroup: OperatorGroup = {
+            id: 1,
+            name: 'OperatorG Group',
+            operators: [mockOperators[0]],
+        };
+
         afterEach(() => {
             jest.resetAllMocks();
         });
@@ -40,6 +46,7 @@ describe('pages', () => {
                     databaseSearchResults={[]}
                     preSelectedOperators={[]}
                     csrfToken=""
+                    editMode={false}
                 />,
             );
 
@@ -54,6 +61,7 @@ describe('pages', () => {
                     databaseSearchResults={[{ nocCode: 'BLAC', name: 'Blackpool' }]}
                     preSelectedOperators={[]}
                     csrfToken=""
+                    editMode={false}
                 />,
             );
 
@@ -68,6 +76,7 @@ describe('pages', () => {
                     databaseSearchResults={[]}
                     preSelectedOperators={[]}
                     csrfToken=""
+                    editMode={false}
                 />,
             );
 
@@ -82,6 +91,7 @@ describe('pages', () => {
                     databaseSearchResults={[{ nocCode: 'BLAC', name: 'Blackpool' }]}
                     preSelectedOperators={[]}
                     csrfToken=""
+                    editMode={false}
                 />,
             );
 
@@ -96,6 +106,7 @@ describe('pages', () => {
                     databaseSearchResults={[]}
                     preSelectedOperators={mockOperators}
                     csrfToken=""
+                    editMode={false}
                 />,
             );
 
@@ -110,6 +121,7 @@ describe('pages', () => {
                     databaseSearchResults={[]}
                     preSelectedOperators={mockOperators}
                     csrfToken=""
+                    editMode={false}
                 />,
             );
 
@@ -124,6 +136,23 @@ describe('pages', () => {
                     databaseSearchResults={[mockOperators[0]]}
                     preSelectedOperators={mockOperators}
                     csrfToken=""
+                    editMode={false}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render the page in edit mode', () => {
+            const tree = shallow(
+                <SearchOperators
+                    errors={[]}
+                    searchText=""
+                    databaseSearchResults={[mockOperators[0]]}
+                    preSelectedOperators={mockOperators}
+                    csrfToken=""
+                    editMode={true}
+                    inputs={mockOperatorGroup}
                 />,
             );
 
@@ -132,7 +161,7 @@ describe('pages', () => {
 
         describe('getServerSideProps', () => {
             const getSearchOperatorsBySearchTextSpy = jest.spyOn(aurora, 'getSearchOperatorsBySearchText');
-
+            const getOperatorGroupByNocAndId = jest.spyOn(aurora, 'getOperatorGroupByNocAndId');
             it('should return base props when the page is first visited by the user', async () => {
                 const mockProps: { props: SearchOperatorProps } = {
                     props: {
@@ -141,6 +170,7 @@ describe('pages', () => {
                         databaseSearchResults: [],
                         preSelectedOperators: [],
                         csrfToken: '',
+                        editMode: false,
                     },
                 };
                 const ctx = getMockContext();
@@ -163,6 +193,7 @@ describe('pages', () => {
                         databaseSearchResults: [],
                         preSelectedOperators: [],
                         csrfToken: '',
+                        editMode: false,
                     },
                 };
                 const ctx = getMockContext({ session: { [MULTIPLE_OPERATOR_ATTRIBUTE]: { errors: mockErrors } } });
@@ -186,6 +217,7 @@ describe('pages', () => {
                         databaseSearchResults: [],
                         preSelectedOperators: [],
                         csrfToken: '',
+                        editMode: false,
                     },
                 };
                 const ctx = getMockContext({
@@ -206,6 +238,7 @@ describe('pages', () => {
                         databaseSearchResults: mockOperators,
                         preSelectedOperators: [],
                         csrfToken: '',
+                        editMode: false,
                     },
                 };
                 const ctx = getMockContext({
@@ -220,6 +253,10 @@ describe('pages', () => {
 
             it('should return props containing search results when the url query string contains a valid search term and the user is a scheme operator', async () => {
                 getSearchOperatorsBySearchTextSpy.mockImplementation().mockResolvedValue(mockOperators);
+                const operatorData: OperatorAttribute = {
+                    name: 'Test Op',
+                    nocCode: 'TESTSCHEME',
+                };
                 const mockProps: { props: SearchOperatorProps } = {
                     props: {
                         errors: [],
@@ -227,12 +264,13 @@ describe('pages', () => {
                         databaseSearchResults: mockOperators,
                         preSelectedOperators: [],
                         csrfToken: '',
+                        editMode: false,
                     },
                 };
                 const ctx = getMockContext({
                     session: {
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: undefined,
-                        [OPERATOR_ATTRIBUTE]: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
+                        [OPERATOR_ATTRIBUTE]: operatorData,
                     },
                     query: { searchOperator: 'blac' },
                     cookies: {
@@ -242,6 +280,26 @@ describe('pages', () => {
                 const result = await getServerSideProps(ctx);
 
                 expect(getSearchOperatorsBySearchTextSpy).toHaveBeenCalled();
+                expect(result).toEqual(mockProps);
+            });
+
+            it('should return base props when the page is visited in edit mode', async () => {
+                const mockProps: { props: SearchOperatorProps } = {
+                    props: {
+                        errors: [],
+                        searchText: '',
+                        databaseSearchResults: [],
+                        preSelectedOperators: [mockOperators[0]],
+                        csrfToken: '',
+                        editMode: true,
+                        inputs: mockOperatorGroup,
+                    },
+                };
+
+                getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue(mockOperatorGroup);
+                const ctx = getMockContext({ query: { id: '1' } });
+                const result = await getServerSideProps(ctx);
+
                 expect(result).toEqual(mockProps);
             });
         });
@@ -254,7 +312,10 @@ describe('pages', () => {
                     { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
                 ];
                 const mocErrors: ErrorInfo[] = [];
-                const wrapper = shallow(ShowSelectedOperators(mocSelectedOperators, setSelectedOperators, mocErrors));
+                const operatorGroupName = '';
+                const wrapper = shallow(
+                    ShowSelectedOperators(mocSelectedOperators, setSelectedOperators, mocErrors, operatorGroupName),
+                );
                 wrapper.find('#remove-0').simulate('click');
                 expect(setSelectedOperators).toBeCalledWith([{ nocCode: 'LNUD', name: 'The Blackburn Bus Company' }]);
             });
@@ -265,7 +326,10 @@ describe('pages', () => {
                     { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
                 ];
                 const mocErrors: ErrorInfo[] = [];
-                const wrapper = shallow(ShowSelectedOperators(mocSelectedOperators, setSelectedOperators, mocErrors));
+                const operatorGroupName = '';
+                const wrapper = shallow(
+                    ShowSelectedOperators(mocSelectedOperators, setSelectedOperators, mocErrors, operatorGroupName),
+                );
                 wrapper.find('#removeAll').simulate('click');
                 expect(setSelectedOperators).toBeCalledWith([]);
             });
