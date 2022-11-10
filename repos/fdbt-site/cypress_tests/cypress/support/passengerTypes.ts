@@ -28,7 +28,7 @@ export const enterPassengerTypeDetails = ({ type, minAge, maxAge, documents, nam
     getElementByName('name').clear().type(name);
 };
 
-const addSinglePassengerType = (passengerType: PassengerType) => {
+export const addSinglePassengerType = (passengerType: PassengerType) => {
     cy.contains('Add a passenger type').click();
     enterPassengerTypeDetails(passengerType);
     cy.contains('Add passenger type').click();

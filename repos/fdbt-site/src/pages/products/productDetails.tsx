@@ -198,7 +198,9 @@ const getEditableValue = (element: ProductDetailsElement) => {
                 );
             })}
 
-            <a href={element.editLink}>{element.editLabel ? element.editLabel : 'Edit'}</a>
+            <a id={`${element.name.replace(' ', '-')}-link`} href={element.editLink}>
+                {element.editLabel ? element.editLabel : 'Edit'}
+            </a>
         </div>
     );
 };

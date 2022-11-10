@@ -4,7 +4,7 @@ import {
     clickElementByText,
     getHomePage,
 } from '../../support/helpers';
-import { completeMyFaresOtherProductsPages, completeMyFaresPointToPointProductsPages } from '../../support/steps';
+import { completeMyFaresOtherProductsPages, completeMyFaresPointToPointProductsPages, editServicesOtherProductsPage } from '../../support/steps';
 
 describe('The my fares point to point products pages', () => {
     it('allows for navigation through the point to point products pages', () => {
@@ -35,5 +35,12 @@ describe('The my fares other products pages', () => {
         clickElementById('account-link');
         clickElementByText('Other products');
         completeMyFaresOtherProductsPages();
+    });
+    it('allows the user the edit other product services', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Other products');
+        completeMyFaresOtherProductsPages();
+        editServicesOtherProductsPage()
     });
 });

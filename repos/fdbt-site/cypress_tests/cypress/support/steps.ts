@@ -22,6 +22,7 @@ import {
     clickRandomElementInTable,
     clickElementByText,
     retryRouteChoiceOnReturnProductError,
+    clearDates,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -348,6 +349,27 @@ export const completeMyFaresOtherProductsPages = (): void => {
         getElementById('product-name').should('not.be.empty');
         getElementById('product-status').should('not.be.empty');
         getElementById('fare-type').should('not.be.empty');
+        clickElementByText('Back');
+    }
+};
+
+export const editServicesOtherProductsPage = (): void => {
+    for (let i = 0; i < 3; i++) {
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        getElementById('product-name').should('not.be.empty');
+        getElementById('product-status').should('not.be.empty');
+        getElementById('fare-type').should('not.be.empty');
+        clickElementById('Services-link')
+        randomlyChooseAndSelectServices();
+        continueButtonClick();
+        clickElementById('Passenger-type-link')
+        randomlyDetermineUserType()
+        clickElementById('Start-date-link')
+        clearDates()
+        completeProductDateInformationPage()
+        clickElementById('End-date-link')
+        clearDates()
+        completeProductDateInformationPage()
         clickElementByText('Back');
     }
 };

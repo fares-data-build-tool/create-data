@@ -525,3 +525,12 @@ export const retryRouteChoiceOnReturnProductError = (): void => {
         }
     });
 };
+
+export const clearDates = (): void => {
+    getElementById('start-day-input').clear();
+    getElementById('start-month-input').clear();
+    getElementById('start-year-input').clear();
+    getElementById('end-day-input').clear();
+    getElementById('end-month-input').clear();
+    getElementById('end-year-input').clear();
+};
