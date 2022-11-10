@@ -29,6 +29,7 @@ describe('pages', () => {
                 origin: 'Ballarat west',
                 destination: 'Florinas North',
                 serviceCode: 'NW_05_BLAC_1_1',
+                selected: false,
             },
             {
                 nocCode: 'BLAC',
@@ -39,6 +40,7 @@ describe('pages', () => {
                 origin: 'Ballarat East',
                 destination: 'Florinas',
                 serviceCode: 'NW_05_BLAC_2_1',
+                selected: false,
             },
         ];
         const mockLNUDServices: ServiceWithNocCode[] = [
@@ -51,6 +53,7 @@ describe('pages', () => {
                 origin: 'Campora',
                 destination: 'Buli',
                 serviceCode: 'YWAO259',
+                selected: false,
             },
         ];
         const mockMultiOperatorData: MultiOperatorInfo[] = [

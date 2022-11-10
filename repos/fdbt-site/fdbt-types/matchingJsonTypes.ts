@@ -29,7 +29,7 @@ export interface SelectedService {
 
 export interface ServiceWithNocCode extends SelectedService {
     nocCode: string;
-    selected?: boolean;
+    selected: boolean;
     destination?: string;
     origin?: string;
 }
