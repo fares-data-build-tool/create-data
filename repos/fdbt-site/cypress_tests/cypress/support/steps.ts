@@ -360,21 +360,21 @@ export const editServicesOtherProductsPage = (): void => {
         getElementById('product-name').should('not.be.empty');
         getElementById('product-status').should('not.be.empty');
         getElementById('fare-type').should('not.be.empty');
-        clickElementById('Services-link');
-        randomlyChooseAndSelectServices();
-        continueButtonClick();
-        clickElementById('Passenger-type-link');
-        randomlyDetermineUserType();
-        clickElementById('Start-date-link');
-        clearDates();
-        completeProductDateInformationPage();
-        clickElementById('End-date-link');
-        clearDates();
-        completeProductDateInformationPage();
-        clickElementById('Time-restriction-link');
-        randomlyDecideTimeRestrictions();
-        clickElementById('Purchase-methods-link');
-        randomlyDeterminePurchaseType();
+        if (cy.get('.govuk-grid-column-two-thirds').find('[id=Services-link]')) {
+            clickElementById('Services-link');
+            randomlyChooseAndSelectServices();
+            continueButtonClick();
+        }
+        clickElementByText('Back');
+    }
+};
+
+export const editProductNameOtherProductsPage = () => {
+    for (let i = 0; i < 3; i++) {
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        getElementById('product-name').should('not.be.empty');
+        getElementById('product-status').should('not.be.empty');
+        getElementById('fare-type').should('not.be.empty');
         clickElementById('edit-product-name');
         let oldProductName;
         cy.get('.popup')
@@ -389,6 +389,68 @@ export const editServicesOtherProductsPage = (): void => {
             cy.get('.popup').find('[id=product-name]').clear().type(newProductName);
             clickElementByText('Save');
         }
+        clickElementByText('Back');
+    }
+};
+
+export const editPassengerTypeOtherProductsPage = () => {
+    for (let i = 0; i < 3; i++) {
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        getElementById('product-name').should('not.be.empty');
+        getElementById('product-status').should('not.be.empty');
+        getElementById('fare-type').should('not.be.empty');
+        clickElementById('Passenger-type-link');
+        randomlyDetermineUserType();
+        clickElementByText('Back');
+    }
+};
+
+export const editStartDateOtherProductsPage = () => {
+    for (let i = 0; i < 3; i++) {
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        getElementById('product-name').should('not.be.empty');
+        getElementById('product-status').should('not.be.empty');
+        getElementById('fare-type').should('not.be.empty');
+        clickElementById('Start-date-link');
+        clearDates();
+        completeProductDateInformationPage();
+        clickElementByText('Back');
+    }
+};
+
+export const editEndDateOtherProductsPage = () => {
+    for (let i = 0; i < 3; i++) {
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        getElementById('product-name').should('not.be.empty');
+        getElementById('product-status').should('not.be.empty');
+        getElementById('fare-type').should('not.be.empty');
+        clickElementById('End-date-link');
+        clearDates();
+        completeProductDateInformationPage();
+        clickElementByText('Back');
+    }
+};
+
+export const editTimeRestrictionOtherProductsPage = () => {
+    for (let i = 0; i < 3; i++) {
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        getElementById('product-name').should('not.be.empty');
+        getElementById('product-status').should('not.be.empty');
+        getElementById('fare-type').should('not.be.empty');
+        clickElementById('Time-restriction-link');
+        randomlyDecideTimeRestrictions();
+        clickElementByText('Back');
+    }
+};
+
+export const editPurchaseMethodOtherProductsPage = () => {
+    for (let i = 0; i < 3; i++) {
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        getElementById('product-name').should('not.be.empty');
+        getElementById('product-status').should('not.be.empty');
+        getElementById('fare-type').should('not.be.empty');
+        clickElementById('Purchase-methods-link');
+        randomlyDeterminePurchaseType();
         clickElementByText('Back');
     }
 };
