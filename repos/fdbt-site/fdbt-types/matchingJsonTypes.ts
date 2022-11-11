@@ -28,8 +28,8 @@ export interface SelectedService {
 }
 
 export interface ServiceWithNocCode extends SelectedService {
-    nocCode: string;
-    selected: boolean;
+    nocCode?: string;
+    selected?: boolean;
     destination?: string;
     origin?: string;
 }
@@ -132,7 +132,7 @@ export interface SchemeOperatorMultiServiceTicket extends BaseSchemeOperatorTick
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
     additionalNocs: string[];
-    operatorGroupId: number;
+    operatorGroupId?: number;
 }
 
 export interface BaseTicket<T extends TicketType = TicketType> {

@@ -1,6 +1,7 @@
 import { NextApiResponse } from 'next';
 import {
     deleteOperatorGroupByNocCodeAndId,
+    // deleteOperatorGroupByNocCodeAndId,
     getAllProductsByNoc,
     getOperatorGroupByNocAndId,
 } from '../../data/auroradb';
@@ -29,9 +30,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }),
         );
 
-        const ticketsWithOperatorGroup = tickets.filter(
-            (ticket) => 'operatorGroupId' in ticket && ticket.operatorGroupId === id,
-        );
+        const ticketsWithOperatorGroup = tickets.filter((t) => 'operatorGroupId' in t && t.operatorGroupId === id);
         const productNames = ticketsWithOperatorGroup
             .map((ticket) =>
                 ticket.products[0]
@@ -62,8 +61,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         redirectTo(res, '/viewOperatorGroups');
     } catch (error) {
-        const message = 'There was a problem deleting the selected operator group:';
+        const message = 'There was a problem deleting the selected SOP:';
 
-        redirectToError(res, message, 'api.deleteOperatorGroup', error);
+        redirectToError(res, message, 'api.deletePurchaseMethod', error);
     }
 };

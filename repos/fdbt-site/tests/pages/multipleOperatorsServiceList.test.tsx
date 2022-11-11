@@ -6,9 +6,11 @@ import MultipleOperatorsServiceList, {
 } from '../../src/pages/multipleOperatorsServiceList';
 import { getMockContext } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
+// import * as sessions from '../../src/utils/sessions';
 import { ErrorInfo, MultiOperatorInfo } from '../../src/interfaces';
 import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import { ServiceWithNocCode } from 'fdbt-types/matchingJsonTypes';
+// import Services from 'src/pages/products/services';
 
 describe('pages', () => {
     describe('multipleOperatorsServiceList', () => {
@@ -19,9 +21,9 @@ describe('pages', () => {
             },
         ];
 
+        const mockDataSource = [{ dataSource: 'bods' }];
         const mockBlackServices: ServiceWithNocCode[] = [
             {
-                nocCode: 'BLAC',
                 lineName: '1',
                 lineId: '4YyoI0',
                 startDate: '05/04/2020',
@@ -29,10 +31,8 @@ describe('pages', () => {
                 origin: 'Ballarat west',
                 destination: 'Florinas North',
                 serviceCode: 'NW_05_BLAC_1_1',
-                selected: false,
             },
             {
-                nocCode: 'BLAC',
                 lineName: '2',
                 lineId: 'YpQjUw',
                 startDate: '05/04/2020',
@@ -40,12 +40,10 @@ describe('pages', () => {
                 origin: 'Ballarat East',
                 destination: 'Florinas',
                 serviceCode: 'NW_05_BLAC_2_1',
-                selected: false,
             },
         ];
         const mockLNUDServices: ServiceWithNocCode[] = [
             {
-                nocCode: 'LNUD',
                 lineName: '259',
                 lineId: 'vHaXmz',
                 startDate: '25/03/2020',
@@ -53,16 +51,15 @@ describe('pages', () => {
                 origin: 'Campora',
                 destination: 'Buli',
                 serviceCode: 'YWAO259',
-                selected: false,
             },
         ];
         const mockMultiOperatorData: MultiOperatorInfo[] = [
             {
                 nocCode: 'BLAC',
                 name: 'Blackpool Transport',
+                dataSource: 'bods',
                 services: [
                     {
-                        nocCode: 'BLAC',
                         lineName: '1',
                         lineId: '4YyoI0',
                         startDate: '05/04/2020',
@@ -73,7 +70,6 @@ describe('pages', () => {
                         selected: false,
                     },
                     {
-                        nocCode: 'BLAC',
                         lineName: '2',
                         lineId: 'YpQjUw',
                         startDate: '05/04/2020',
@@ -88,9 +84,9 @@ describe('pages', () => {
             {
                 nocCode: 'LNUD',
                 name: 'Testing ops',
+                dataSource: 'bods',
                 services: [
                     {
-                        nocCode: 'LNUD',
                         lineName: '259',
                         lineId: 'vHaXmz',
                         startDate: '25/03/2020',
@@ -103,18 +99,15 @@ describe('pages', () => {
                 ],
             },
         ];
-        const getServicesByNocCodeAndDataSourceAndDescriptionSpy = jest.spyOn(
-            aurora,
-            'getServicesByNocCodeAndDataSourceWithGrouping',
-        );
+        const getServicesGroupedByDescriptionSpy = jest.spyOn(aurora, 'getServicesGroupedByDescription');
+
+        const getServiceDataSourceSpy: jest.SpyInstance<Promise<object[]>> = jest.spyOn(aurora, 'getServiceDataSource');
 
         beforeEach(() => {
-            getServicesByNocCodeAndDataSourceAndDescriptionSpy.mockImplementationOnce(() =>
-                Promise.resolve(mockBlackServices),
-            );
-            getServicesByNocCodeAndDataSourceAndDescriptionSpy.mockImplementationOnce(() =>
-                Promise.resolve(mockLNUDServices),
-            );
+            getServiceDataSourceSpy.mockImplementation(() => Promise.resolve(mockDataSource));
+
+            getServicesGroupedByDescriptionSpy.mockImplementationOnce(() => Promise.resolve(mockBlackServices));
+            getServicesGroupedByDescriptionSpy.mockImplementationOnce(() => Promise.resolve(mockLNUDServices));
         });
 
         afterEach(() => {
@@ -165,7 +158,9 @@ describe('pages', () => {
                 const mockRemoveServices = jest.fn();
                 const mockOperatorsWithSelectedServices = mockMultiOperatorData.map((operatorData) => ({
                     ...operatorData,
-                    services: operatorData.services.map((service) => ({ ...service, selected: true })),
+                    services: operatorData.services.map(
+                        (service) => ({ ...service, selected: true } as ServiceWithNocCode),
+                    ),
                 }));
                 const expectedLineId = mockMultiOperatorData[0].services[0].lineId;
                 const expectedNocCode = mockMultiOperatorData[0].nocCode;
@@ -180,7 +175,7 @@ describe('pages', () => {
                 );
 
                 wrapper.find('#remove-from-BLAC-0').simulate('click');
-                expect(mockRemoveServices).toBeCalledWith(expectedLineId, expectedNocCode, false);
+                expect(mockRemoveServices).toBeCalledWith(undefined, expectedLineId, expectedNocCode);
             });
         });
     });
