@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react';
 import { MATCHING_ATTRIBUTE } from '../constants/attributes';
-import { BasicService, NextPageContextWithSession, Stop, UserFareStages } from '../interfaces';
+import { BasicService, NextPageContextWithSession, UserFareStages } from '../interfaces';
 import MatchingBase from '../components/MatchingBase';
 import { getSessionAttribute } from '../utils/sessions';
 import { getMatchingProps } from '../utils/apiUtils/matching';
+import { Stop } from '../interfaces/matchingJsonTypes';
 
 const title = 'Matching - Create Fares Data Service';
 const description = 'Matching page of the Create Fares Data Service';

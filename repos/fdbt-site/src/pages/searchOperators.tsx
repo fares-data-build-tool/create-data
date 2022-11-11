@@ -91,17 +91,17 @@ export const ShowSelectedOperators = (
                     />
                 </fieldset>
             </div>
-            <table className="border-collaps width-100">
+            <table className="border-collapse width-100">
                 <caption className="govuk-table__caption govuk-table__caption--m">Selected operator(s)</caption>
                 <thead className="selectedOperators-header-color">
                     <tr>
                         <th
                             scope="col"
-                            className={`left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16`}
+                            className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                         >
                             {selectedOperators.length} added
                         </th>
-                        <th scope="cor" className="govuk-table__header text-align-right">
+                        <th scope="col" className="govuk-table__header text-align-right">
                             <button
                                 id="removeAll"
                                 className="selectedOperators-button button-link govuk-!-margin-left-2"
@@ -142,6 +142,7 @@ export const renderSearchBox = (
     operatorsAdded: boolean,
     errors: ErrorInfo[],
     selectedOperators: Operator[],
+    searchText: string,
 ): ReactElement => {
     const fieldsetProps = {
         legend: {
@@ -185,6 +186,7 @@ export const renderSearchBox = (
                     id={searchInputId}
                     name="searchText"
                     type="text"
+                    defaultValue={searchText}
                 />
                 <input
                     type="hidden"
@@ -322,7 +324,7 @@ const SearchOperators = ({
                     ) : null}
                     <ErrorSummary errors={errors} />
                     <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
-                        {renderSearchBox(operatorsAdded, errors, selectedOperators)}
+                        {renderSearchBox(operatorsAdded, errors, selectedOperators, searchText)}
                         <input name="id" type="hidden" value={id} readOnly />
                     </CsrfForm>
                     {searchResultsToDisplay

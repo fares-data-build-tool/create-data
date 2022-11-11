@@ -21,9 +21,9 @@ import {
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
-import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
 import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
+import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -360,6 +360,7 @@ const createProductDetails = async (
                 content: [
                     additionalOperator.selectedServices.map((selectedService) => selectedService.lineName).join(', '),
                 ],
+                editLink: '/multipleOperatorsServiceList',
             });
         });
     }
@@ -479,7 +480,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const ticket = await getProductsMatchingJson(matchingJsonLink);
 
     // store the ticket in the session so that it can be retrieved
-    // on the /csvUpload page.
+    // on the edit pages.
     updateSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE, ticket);
 
     updateSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE, {

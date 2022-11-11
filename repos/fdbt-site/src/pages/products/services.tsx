@@ -5,11 +5,11 @@ import {
     NextPageContextWithSession,
     EntityStatus,
 } from '../../interfaces/index';
-import { MyFaresProduct } from 'fdbt-types/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import { getPointToPointProducts, getBodsServicesByNoc } from '../../data/auroradb';
 import { getAndValidateNoc } from '../../utils';
 import moment from 'moment';
+import { MyFaresProduct } from '../../interfaces/dbTypes';
 
 const title = 'Services - Create Fares Data Service';
 const description = 'View and access your services in one place.';

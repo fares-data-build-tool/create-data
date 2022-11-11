@@ -6,11 +6,12 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../constants/attributes';
 import { getGroupPassengerTypeById, getPassengerTypesByNocCode } from '../data/auroradb';
-import { ErrorInfo, GroupPassengerTypeDb, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import { getAndValidateNoc } from '../utils';
 import { getGlobalSettingsManageProps, GlobalSettingsManageProps } from '../utils/globalSettings';
 import { getSessionAttribute } from '../utils/sessions';
+import { GroupPassengerTypeDb, SinglePassengerType } from '../interfaces/dbTypes';
 
 const title = 'Manage Passenger Group - Create Fares Data Service';
 const description = 'Manage Passenger Group page of the Create Fares Data Service';

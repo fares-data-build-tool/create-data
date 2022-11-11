@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from '../../utils/apiUtils';
-import { ErrorInfo, NextApiRequestWithSession, CarnetProductInfo, CarnetExpiryUnit } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { MULTIPLE_PRODUCT_ATTRIBUTE, CARNET_PRODUCT_DETAILS_ATTRIBUTE } from '../../constants/attributes';
 import {
     removeExcessWhiteSpace,
@@ -9,6 +9,7 @@ import {
     isValidInputDuration,
 } from '../../utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
+import { CarnetProductInfo, CarnetExpiryUnit } from '../../interfaces/matchingJsonTypes';
 
 const getProductDetails = (req: NextApiRequestWithSession): CarnetProductInfo => {
     const productDetails = { ...req.body };

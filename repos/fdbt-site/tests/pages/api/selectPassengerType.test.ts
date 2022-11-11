@@ -11,8 +11,8 @@ import * as sessions from '../../../src/utils/sessions';
 import * as userData from '../../../src/utils/apiUtils/userData';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { GROUP_PASSENGER_TYPE } from '../../../src/constants';
-import { GroupPassengerTypeDb } from 'fdbt-types/dbTypes';
 import { expectedSingleTicket } from '../../testData/mockData';
+import { GroupPassengerTypeDb } from '../../../src/interfaces/dbTypes';
 
 const groupDbResult: GroupPassengerTypeDb = {
     id: 3,

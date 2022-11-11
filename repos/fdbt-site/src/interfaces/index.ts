@@ -2,21 +2,21 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { ReactElement } from 'react';
-import { DbTimeRestriction, SinglePassengerType } from 'fdbt-types/dbTypes';
+import { DbTimeRestriction, SinglePassengerType } from './dbTypes';
 import {
-    BaseProduct,
     CarnetDetails,
-    CompanionInfo,
-    ExpiryUnit,
-    FullTimeRestriction,
+    ServiceWithNocCode,
+    SelectedService,
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
-    Product,
+    FullTimeRestriction,
     SalesOfferPackage,
-    SelectedService,
-    ServiceWithNocCode,
+    BaseProduct,
+    Product,
+    CompanionInfo,
     TicketType,
-} from 'fdbt-types/matchingJsonTypes';
+    ExpiryUnit,
+} from './matchingJsonTypes';
 
 // Session Attributes and Cookies
 
@@ -315,7 +315,7 @@ export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServi
         nocCode: string;
         selectedServices: SelectedService[];
     }[];
-    operatorGroupId?: number;
+    operatorGroupId: number;
 }
 
 // Matching Data (created by the user on the site)
@@ -690,45 +690,3 @@ export interface TxcSourceAttribute {
     hasTnds: boolean;
     hasBods: boolean;
 }
-
-export type {
-    BasePointToPointTicket,
-    BaseProduct,
-    BaseTicket,
-    PointToPointPeriodProduct,
-    ReturnPeriodValidity,
-    CarnetDetails,
-    CarnetProductInfo,
-    FareZone,
-    FullTimeRestriction,
-    ReturnTicket,
-    SalesOfferPackage,
-    Stop,
-    TimeBand,
-    PeriodExpiry,
-    BaseSchemeOperatorTicket,
-    SingleTicket,
-    PointToPointTicket,
-    ProductDetails,
-    Product,
-    PointToPointPeriodTicket,
-    CompanionInfo,
-    GeoZoneTicket,
-    SchemeOperatorGeoZoneTicket,
-    SchemeOperatorFlatFareTicket,
-    PeriodHybridTicket,
-    Ticket,
-    MultiOperatorGeoZoneTicket,
-} from 'fdbt-types/matchingJsonTypes';
-
-export { ExpiryUnit, CarnetExpiryUnit } from 'fdbt-types/matchingJsonTypes';
-
-export type {
-    FullGroupPassengerType,
-    SinglePassengerType,
-    PassengerType,
-    GroupPassengerType,
-    GroupPassengerTypeDb,
-    CompanionReference,
-    GroupPassengerTypeReference,
-} from 'fdbt-types/dbTypes';

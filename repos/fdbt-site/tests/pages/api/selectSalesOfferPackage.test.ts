@@ -1,4 +1,3 @@
-import { ExpiryUnit } from 'fdbt-types/matchingJsonTypes';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
@@ -10,6 +9,7 @@ import selectSalesOfferPackages, { sanitiseReqBody } from '../../../src/pages/ap
 import * as session from '../../../src/utils/sessions';
 import { expectedSingleTicket, getMockRequestAndResponse } from '../../testData/mockData';
 import * as userData from '../../../src/utils/apiUtils/userData';
+import { ExpiryUnit } from '../../../src/interfaces/matchingJsonTypes';
 
 describe('selectSalesOfferPackage', () => {
     const writeHeadMock = jest.fn();

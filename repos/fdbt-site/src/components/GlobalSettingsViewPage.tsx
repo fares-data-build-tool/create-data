@@ -1,6 +1,6 @@
 import { capitalize } from 'lodash';
 import React, { FunctionComponent, ReactElement, useState } from 'react';
-import { ErrorInfo } from 'src/interfaces';
+import { ErrorInfo } from '../interfaces';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
