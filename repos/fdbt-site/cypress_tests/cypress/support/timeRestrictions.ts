@@ -17,7 +17,7 @@ const enterTimeRestrictionDetails = ({ days, name }: TimeRestriction) => {
     getElementByName('timeRestrictionName').clear().type(name);
 };
 
-export const addTimeRestriction = (passengerType: TimeRestriction) => {
+const addTimeRestriction = (passengerType: TimeRestriction) => {
     clickElementByText('Add a time restriction');
     enterTimeRestrictionDetails(passengerType);
     clickElementByText('Add time restriction');
