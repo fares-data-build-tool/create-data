@@ -20,6 +20,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
     </h1>
     <button
       className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
+      id="edit-product-name"
       onClick={[Function]}
     >
       Edit
@@ -91,6 +92,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
           </span>
           <a
             href="/selectPassengerType"
+            id="Passenger-type-link"
           >
             Edit
           </a>
@@ -201,6 +203,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
           </span>
           <a
             href="/selectPurchaseMethods"
+            id="Purchase-methods-link"
           >
             Edit
           </a>
@@ -234,6 +237,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
           </span>
           <a
             href="/productDateInformation"
+            id="Start-date-link"
           >
             Edit
           </a>
@@ -267,6 +271,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
           </span>
           <a
             href="/productDateInformation"
+            id="End-date-link"
           >
             Edit
           </a>
@@ -300,6 +305,7 @@ exports[`myfares pages productDetails should render correctly for a copied produ
     </h1>
     <button
       className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
+      id="edit-product-name"
       onClick={[Function]}
     >
       Edit
@@ -371,6 +377,7 @@ exports[`myfares pages productDetails should render correctly for a copied produ
           </span>
           <a
             href="/selectPassengerType"
+            id="Passenger-type-link"
           >
             Edit
           </a>
@@ -481,6 +488,7 @@ exports[`myfares pages productDetails should render correctly for a copied produ
           </span>
           <a
             href="/selectPurchaseMethods"
+            id="Purchase-methods-link"
           >
             Edit
           </a>
@@ -514,6 +522,7 @@ exports[`myfares pages productDetails should render correctly for a copied produ
           </span>
           <a
             href="/productDateInformation"
+            id="Start-date-link"
           >
             Edit
           </a>
@@ -547,6 +556,7 @@ exports[`myfares pages productDetails should render correctly for a copied produ
           </span>
           <a
             href="/productDateInformation"
+            id="End-date-link"
           >
             Edit
           </a>
@@ -580,6 +590,7 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
     </h1>
     <button
       className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
+      id="edit-product-name"
       onClick={[Function]}
     >
       Edit
@@ -651,6 +662,7 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
           </span>
           <a
             href="/selectPassengerType"
+            id="Passenger-type-link"
           >
             Edit
           </a>
@@ -761,6 +773,7 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
           </span>
           <a
             href="/selectPurchaseMethods"
+            id="Purchase-methods-link"
           >
             Edit
           </a>
@@ -794,6 +807,7 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
           </span>
           <a
             href="/productDateInformation"
+            id="Start-date-link"
           >
             Edit
           </a>
@@ -827,6 +841,7 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
           </span>
           <a
             href="/productDateInformation"
+            id="End-date-link"
           >
             Edit
           </a>
@@ -857,6 +872,7 @@ exports[`myfares pages productDetails should render correctly while the cannot g
     </h1>
     <button
       className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
+      id="edit-product-name"
       onClick={[Function]}
     >
       Edit
@@ -928,6 +944,7 @@ exports[`myfares pages productDetails should render correctly while the cannot g
           </span>
           <a
             href="/selectPassengerType"
+            id="Passenger-type-link"
           >
             Edit
           </a>
@@ -1062,6 +1079,7 @@ exports[`myfares pages productDetails should render correctly while the cannot g
           </span>
           <a
             href="/productDateInformation"
+            id="Start-date-link"
           >
             Edit
           </a>
@@ -1095,6 +1113,7 @@ exports[`myfares pages productDetails should render correctly while the cannot g
           </span>
           <a
             href="/productDateInformation"
+            id="End-date-link"
           >
             Edit
           </a>
