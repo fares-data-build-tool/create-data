@@ -97,7 +97,6 @@ export type TicketWithIds =
     | WithIds<SchemeOperatorGeoZoneTicket>
     | WithIds<SchemeOperatorFlatFareTicket>
     | WithIds<SchemeOperatorMultiServiceTicket>
-    | WithIds<MultiOperatorMultipleServicesTicket>
     | WithIds<MultiOperatorGeoZoneTicket>
     | WithIds<PointToPointPeriodTicket>
     | WithIds<PeriodHybridTicket>;
@@ -133,14 +132,6 @@ export interface SchemeOperatorMultiServiceTicket extends BaseSchemeOperatorTick
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
     additionalNocs: string[];
-    operatorGroupId: number;
-}
-
-export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
-    additionalOperators: {
-        nocCode: string;
-        selectedServices: SelectedService[];
-    }[];
     operatorGroupId: number;
 }
 
