@@ -4,6 +4,7 @@
     "description": "",
     "scripts": {
         "test": "jest",
+        "tsc": "./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage --watchAll",
         "test:ci": "CI=true jest --silent -w 1 --forceExit",
