@@ -389,6 +389,7 @@ export const editProductNameOtherProductsPage = () => {
             cy.get('.popup').find('[id=product-name]').clear().type(newProductName);
             clickElementByText('Save');
         }
+        cy.get('[id=product-name-header]').should('have.text', `${newProductName}`);
         clickElementByText('Back');
     }
 };

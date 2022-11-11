@@ -89,7 +89,7 @@ const ProductDetails = ({
                 <InformationSummary informationText="This is a copy of the product you selected. Edit one or more of the fields as required." />
             )}
             <div className="dft-flex">
-                <h1 className="govuk-heading-l" id="product-name">
+                <h1 className="govuk-heading-l" id="product-name-header">
                     {productName}
                 </h1>
 
@@ -119,7 +119,7 @@ const ProductDetails = ({
                                     <div className="dft-flex dft-flex-justify-space-between">
                                         {element.content.map((item) => {
                                             return (
-                                                <span key={item} id={element.id || undefined}>
+                                                <span key={item} id={element.name?.replace(' ','-') || undefined}>
                                                     {item}
                                                 </span>
                                             );
@@ -182,7 +182,7 @@ const ProductDetails = ({
 
 const getReadValue = (element: ProductDetailsElement) => {
     return element.content.map((item) => (
-        <span key={item} id={element.id || undefined}>
+        <span key={item} id={element.name?.replace(' ','-') || undefined}>
             {item}
         </span>
     ));
@@ -193,7 +193,7 @@ const getEditableValue = (element: ProductDetailsElement) => {
         <div className="dft-flex dft-flex-justify-space-between">
             {element.content.map((item) => {
                 return (
-                    <span key={item} id={element.id || undefined}>
+                    <span key={item} id={element.name?.replace(' ','-') || undefined}>
                         {item}
                     </span>
                 );
