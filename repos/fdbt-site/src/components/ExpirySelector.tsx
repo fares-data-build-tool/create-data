@@ -1,6 +1,7 @@
 import upperFirst from 'lodash/upperFirst';
 import React, { ReactElement } from 'react';
-import { ErrorInfo, ExpiryUnit, CarnetExpiryUnit } from '../interfaces';
+import { ErrorInfo } from '../interfaces';
+import { ExpiryUnit, CarnetExpiryUnit } from '../interfaces/matchingJsonTypes';
 import FormElementWrapper from './FormElementWrapper';
 
 interface DurationSelectorProps {

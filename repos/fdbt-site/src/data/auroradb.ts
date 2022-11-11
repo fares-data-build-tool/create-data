@@ -1,38 +1,42 @@
 import awsParamStore from 'aws-param-store';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
-import { FromDb, OperatorDetails } from 'fdbt-types/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
-    CompanionInfo,
-    GroupPassengerType,
     Operator,
     OperatorGroup,
-    PassengerType,
     PremadeTimeRestriction,
-    SalesOfferPackage,
     ServiceType,
     ServiceCount,
-    SinglePassengerType,
-    Stop,
-    GroupPassengerTypeDb,
-    GroupPassengerTypeReference,
-    FullGroupPassengerType,
     MyFaresService,
 } from '../interfaces';
 import logger from '../utils/logger';
-import {
-    DbTimeRestriction,
-    RawMyFaresProduct,
-    MyFaresOtherProduct,
-    RawSalesOfferPackage,
-    RawService,
-    MyFaresProduct,
-    RawJourneyPattern,
-    DbProduct,
-} from 'fdbt-types/dbTypes';
 import { convertDateFormat } from '../utils';
 import _ from 'lodash';
+import {
+    RawService,
+    RawJourneyPattern,
+    RawSalesOfferPackage,
+    DbTimeRestriction,
+    PassengerType,
+    GroupPassengerType,
+    GroupPassengerTypeReference,
+    SinglePassengerType,
+    GroupPassengerTypeDb,
+    FullGroupPassengerType,
+    MyFaresProduct,
+    RawMyFaresProduct,
+    MyFaresOtherProduct,
+    DbProduct,
+} from '../interfaces/dbTypes';
+import {
+    ServiceWithNocCode,
+    Stop,
+    FromDb,
+    SalesOfferPackage,
+    CompanionInfo,
+    OperatorDetails,
+} from '../interfaces/matchingJsonTypes';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -145,6 +149,40 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
         `;
 
         const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter, source]);
+
+        return (
+            queryResults.map((item) => ({
+                ...item,
+                startDate: convertDateFormat(item.startDate),
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getServicesByNocCodeAndDataSourceWithGrouping = async (
+    nocCode: string,
+    source: string,
+): Promise<ServiceWithNocCode[]> => {
+    //grouped by service description which combines (lineName, origin, destination)
+    const nocCodeParameter = replaceInternalNocCode(nocCode);
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for given noc',
+        noc: nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND dataSource = ? AND (endDate IS NULL OR CURDATE() <= endDate)
+            group by lineId, origin, destination
+            ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
+        `;
+
+        const queryResults = await executeQuery<ServiceWithNocCode[]>(queryInput, [nocCodeParameter, source]);
 
         return (
             queryResults.map((item) => ({
@@ -768,6 +806,38 @@ export const insertOperatorGroup = async (nocCode: string, operators: Operator[]
     }
 };
 
+export const updateOperatorGroup = async (
+    id: number,
+    nocCode: string,
+    operators: Operator[],
+    name: string,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'updating operator group for given name and nocCode',
+        nocCode,
+        name,
+        id,
+        operators,
+    });
+
+    const contents = JSON.stringify(operators);
+
+    const updateQuery = `UPDATE operatorGroup
+                        SET name = ?, 
+                        contents = ?
+                        WHERE id = ? AND nocCode = ?; `;
+    try {
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [name, contents, id, nocCode]);
+
+        if (meta.affectedRows !== 1) {
+            throw Error(`Did not update a single row: ${meta}`);
+        }
+    } catch (error) {
+        throw new Error(`Could not update operator group into the operatorGroup table. ${error.stack}`);
+    }
+};
+
 export const getOperatorGroupsByNoc = async (nocCode: string): Promise<OperatorGroup[]> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -794,7 +864,10 @@ export const getOperatorGroupsByNoc = async (nocCode: string): Promise<OperatorG
     }
 };
 
-export const getOperatorGroupsByNameAndNoc = async (name: string, nocCode: string): Promise<OperatorGroup[]> => {
+export const getOperatorGroupsByNameAndNoc = async (
+    name: string,
+    nocCode: string,
+): Promise<OperatorGroup | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving operator groups for given name and nocCode',
@@ -812,12 +885,20 @@ export const getOperatorGroupsByNameAndNoc = async (name: string, nocCode: strin
 
         const queryResults = await executeQuery<RawOperatorGroup[]>(queryInput, [name, nocCode]);
 
-        return queryResults.map((item) => ({
-            id: item.id,
-            name,
-            nocCode,
-            operators: JSON.parse(item.contents),
-        }));
+        if (queryResults.length > 1) {
+            throw new Error("Didn't expect more than one passenger type with the same national operator code and name");
+        }
+
+        const data = queryResults[0];
+
+        return data
+            ? ({
+                  id: data.id,
+                  name,
+                  nocCode,
+                  operators: JSON.parse(queryResults[0].contents),
+              } as OperatorGroup)
+            : undefined;
     } catch (error) {
         throw new Error(`Could not retrieve operator group by name and nocCode from AuroraDB: ${error.stack}`);
     }
@@ -854,7 +935,7 @@ export const getOperatorGroupByNocAndId = async (id: number, noc: string): Promi
               } as OperatorGroup)
             : undefined;
     } catch (error) {
-        throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
+        throw new Error(`Could not retrieve operator group by id from AuroraDB: ${error}`);
     }
 };
 

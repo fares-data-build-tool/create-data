@@ -1,4 +1,5 @@
-import { PassengerDetails, BasicService, Product, Stop, UserFareStages, ServicesInfo } from '.';
+import { PassengerDetails, BasicService, UserFareStages, ServicesInfo } from '.';
+import { Stop, Product } from './matchingJsonTypes';
 
 export interface Price {
     price: string;

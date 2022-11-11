@@ -27,6 +27,17 @@ export interface SelectedService {
     serviceDescription: string;
 }
 
+export interface ServiceWithNocCode extends SelectedService {
+    nocCode: string;
+    selected: boolean;
+    destination?: string;
+    origin?: string;
+}
+
+export interface SelectedServiceByNocCode {
+    [key: string]: ServiceWithNocCode[];
+}
+
 export interface AdditionalService extends SelectedService {
     serviceId: number;
 }
@@ -86,6 +97,7 @@ export type TicketWithIds =
     | WithIds<SchemeOperatorGeoZoneTicket>
     | WithIds<SchemeOperatorFlatFareTicket>
     | WithIds<SchemeOperatorMultiServiceTicket>
+    | WithIds<MultiOperatorMultipleServicesTicket>
     | WithIds<MultiOperatorGeoZoneTicket>
     | WithIds<PointToPointPeriodTicket>
     | WithIds<PeriodHybridTicket>;
@@ -121,6 +133,15 @@ export interface SchemeOperatorMultiServiceTicket extends BaseSchemeOperatorTick
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
     additionalNocs: string[];
+    operatorGroupId: number;
+}
+
+export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
+    additionalOperators: {
+        nocCode: string;
+        selectedServices: SelectedService[];
+    }[];
+    operatorGroupId: number;
 }
 
 export interface BaseTicket<T extends TicketType = TicketType> {

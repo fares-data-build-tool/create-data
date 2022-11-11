@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react';
 import { INBOUND_MATCHING_ATTRIBUTE } from '../constants/attributes';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService, NextPageContextWithSession, Stop, UserFareStages } from '../interfaces';
+import { BasicService, NextPageContextWithSession, UserFareStages } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
 import { getMatchingProps } from '../utils/apiUtils/matching';
+import { Stop } from '../interfaces/matchingJsonTypes';
 
 const heading = 'Inbound - Match stops to fare stages';
 const title = 'Inbound Matching - Create Fares Data Service';

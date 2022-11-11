@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import ViewTimeRestrictions, { TimeRestrictionCardBody } from '../../src/pages/viewTimeRestrictions';
-import { PremadeTimeRestriction } from 'src/interfaces';
+import { PremadeTimeRestriction } from '../../src/interfaces';
 
 const timeRestrictions: PremadeTimeRestriction[] = [
     {

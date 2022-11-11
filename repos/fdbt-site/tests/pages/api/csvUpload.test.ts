@@ -19,9 +19,9 @@ import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
 } from '../../../src/constants/attributes';
-import { ReturnTicket, SingleTicket, WithIds } from 'fdbt-types/matchingJsonTypes';
 import * as userData from '../../../src/utils/apiUtils/userData';
 import * as auroradb from '../../../src/data/auroradb';
+import { ReturnTicket, SingleTicket, WithIds } from '../../../src/interfaces/matchingJsonTypes';
 
 jest.mock('../../../src/data/auroradb');
 jest.spyOn(s3, 'putDataInS3');

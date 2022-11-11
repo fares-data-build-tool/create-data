@@ -1,105 +1,115 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
 import {
-    MULTI_OP_TXC_SOURCE_ATTRIBUTE,
-    MULTIPLE_OPERATOR_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
 } from '../../constants/attributes';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { NextApiRequestWithSession, MultiOperatorInfo, MultipleOperatorsAttribute } from '../../interfaces';
-import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
-import { SelectedService } from 'fdbt-types/matchingJsonTypes';
+import { MultiOperatorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { getSessionAttribute, updateSessionAttribute } from '../../../src/utils/sessions';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
+import { ServiceWithNocCode, SelectedServiceByNocCode } from '../../interfaces/matchingJsonTypes';
 
-const errorId = 'checkbox-0';
+const errorId = 'service-to-add-1';
+const redirectUrl = '/multipleOperatorsServiceList';
 
-export const getSelectedServicesAndNocCodeFromRequest = (requestBody: {
+export const getMultiOperatorsDataFromRequest = (requestBody: {
     [key: string]: string | string[];
-}): { selectedServices: SelectedService[]; nocCode: string } => {
+}): MultiOperatorInfo[] => {
     let nocCode = '';
-    const selectedServices: SelectedService[] = [];
-    Object.entries(requestBody).forEach((entry) => {
-        const nocCodeLineNameLineIdServiceCodeStartDate = entry[0];
-        const description = entry[1];
+    const serviceDetails: ServiceWithNocCode[] = [];
+    const convertServiceDetails = (value: string, description: string | string[]): ServiceWithNocCode => {
+        let splitStrings = [];
         let serviceDescription: string;
+        [nocCode, ...splitStrings] = value.split('#');
         if (isArray(description)) {
             [serviceDescription] = description;
         } else {
             serviceDescription = description;
         }
-        let splitStrings = [];
-        [nocCode, ...splitStrings] = nocCodeLineNameLineIdServiceCodeStartDate.split('#');
-        selectedServices.push({
+
+        return {
+            nocCode: nocCode,
             lineName: splitStrings[0],
             lineId: splitStrings[1],
             serviceCode: splitStrings[2],
             startDate: splitStrings[3],
-            serviceDescription,
+            serviceDescription: serviceDescription,
+            selected: false,
+        };
+    };
+
+    Object.entries(requestBody)
+        .filter((item) => item[0] !== 'operatorCount')
+        .forEach((e) => {
+            const value = convertServiceDetails(e[0], e[1]);
+            serviceDetails.push(value);
+        });
+
+    const selectedServices: SelectedServiceByNocCode[] = [];
+
+    const getIndexOfMultiOperatorsService = (noc: string): number => {
+        const index = selectedServices.findIndex((serviceDetails) => Object.keys(serviceDetails).includes(noc));
+        return index;
+    };
+    serviceDetails.forEach((service: ServiceWithNocCode) => {
+        const indexOfFound = getIndexOfMultiOperatorsService(service.nocCode);
+        if (indexOfFound === -1) {
+            selectedServices.push({ [`${service.nocCode}`]: [service] });
+        } else {
+            selectedServices[indexOfFound][service.nocCode].push(service);
+        }
+    });
+    const newListOfMultiOperatorsData: MultiOperatorInfo[] = selectedServices.flatMap((selectedService) => {
+        return Object.entries(selectedService).flatMap((keyValuePair) => {
+            return { nocCode: keyValuePair[0], services: keyValuePair[1] };
         });
     });
-    return {
-        selectedServices,
-        nocCode,
-    };
+
+    return newListOfMultiOperatorsData;
 };
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
-    const redirectUrl = '/multipleOperatorsServiceList';
-    const selectAllText = 'Select All Services';
-
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const refererUrl = req?.headers?.referer;
-        const queryString = refererUrl?.substring(refererUrl?.indexOf('?') + 1);
-        const { selectAll } = req.body;
+        const operatorCount = req.body.operatorCount ? parseInt(req.body.operatorCount) : 0;
+        delete req.body.operatorCount;
+        const listOfMultiOperatorsData = getMultiOperatorsDataFromRequest(req.body);
 
-        const isSelected = selectAll === selectAllText;
-
-        if (selectAll && queryString) {
-            redirectTo(res, `${redirectUrl}?selectAll=${isSelected}`);
-            return;
-        }
-        const multiOpDataOnSession = getSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
-        let multiOpDataToReAddToSession: MultiOperatorInfo[] = [];
-        if (isMultiOperatorInfoWithErrors(multiOpDataOnSession)) {
-            multiOpDataToReAddToSession = multiOpDataOnSession.multiOperatorInfo;
-        } else if (multiOpDataOnSession) {
-            multiOpDataToReAddToSession = multiOpDataOnSession;
-        }
-        if ((!req.body || Object.keys(req.body).length === 0) && !selectAll) {
+        if (operatorCount !== listOfMultiOperatorsData.length) {
             updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
-                multiOperatorInfo: multiOpDataToReAddToSession,
-                errors: [{ id: errorId, errorMessage: 'Choose at least one service from the options' }],
+                multiOperatorInfo: listOfMultiOperatorsData,
+                errors: [{ id: errorId, errorMessage: 'All operators need to have at least one service' }],
             });
-            redirectTo(res, `${redirectUrl}?selectAll=false`);
+            redirectTo(res, `${redirectUrl}`);
             return;
         }
 
-        updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, multiOpDataToReAddToSession);
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
-        const requestBody: { [key: string]: string | string[] } = req.body;
+        const inEditMode = ticket && matchingJsonMetaData;
 
-        const { selectedServices, nocCode } = getSelectedServicesAndNocCodeFromRequest(requestBody);
+        if (inEditMode) {
+            const updatedTicket = {
+                ...ticket,
+                additionalOperators: listOfMultiOperatorsData.map((operator) => ({
+                    nocCode: operator.nocCode,
+                    selectedServices: operator.services,
+                })),
+            };
 
-        if (nocCode === '') {
-            throw new Error('Could not find NOC code from request');
-        }
+            // put the now updated matching json into s3
+            // overriding the existing object
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
 
-        const newListOfMultiOperatorsData: MultiOperatorInfo[] = [];
-        const multiOperatorData: MultiOperatorInfo = {
-            nocCode,
-            services: selectedServices,
-        };
-        newListOfMultiOperatorsData.push(multiOperatorData);
-        multiOpDataToReAddToSession.forEach((operatorData) => newListOfMultiOperatorsData.push(operatorData));
-        updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, newListOfMultiOperatorsData);
-        const numberOfOperators = (getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute)
-            .selectedOperators.length;
-        // below update to session attribute is to reset it for the next operator in the list
-        updateSessionAttribute(req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, undefined);
-        if (newListOfMultiOperatorsData.length !== numberOfOperators) {
-            redirectTo(res, '/multipleOperatorsServiceList');
+            updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, undefined);
+
+            redirectTo(res, `/products/productDetails?productId=${matchingJsonMetaData.productId}`);
             return;
         }
+
+        updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, listOfMultiOperatorsData);
         redirectTo(res, '/multipleProducts');
         return;
     } catch (error) {

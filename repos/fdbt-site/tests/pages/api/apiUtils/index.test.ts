@@ -1,5 +1,4 @@
 import Cookies from 'cookies';
-import { TicketType } from 'fdbt-types/matchingJsonTypes';
 import { SchoolFareType } from '../../../../src/interfaces';
 import {
     setCookieOnResponseObject,
@@ -23,6 +22,7 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../../../src/constants/attributes';
 import * as sessions from '../../../../src/utils/sessions';
+import { TicketType } from '../../../../src/interfaces/matchingJsonTypes';
 
 describe('apiUtils', () => {
     const writeHeadMock = jest.fn();

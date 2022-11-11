@@ -7,6 +7,11 @@ exports[`pages view operator groups should render correctly on operator group 1`
   showNavigation={true}
   title="Operator Groups - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={1}
@@ -32,36 +37,37 @@ exports[`pages view operator groups should render correctly on operator group 1`
         Define a group of operators for use in a multioperator product
       </p>
       <div>
-        <div
-          className="card-row"
-        >
-          <OperatorGroupCard
-            defaultChecked={false}
-            deleteActionHandler={[Function]}
-            index={0}
-            key="1"
-            operatorGroup={
-              Object {
-                "id": 1,
-                "name": "first operator group",
-                "operators": Array [
-                  Object {
-                    "name": "First operator",
-                    "nocCode": "FOP",
-                  },
-                ],
+        <div>
+          <div
+            className="card-row"
+          >
+            <OperatorGroupCard
+              defaultChecked={false}
+              deleteActionHandler={[Function]}
+              index={0}
+              key="1"
+              operatorGroup={
+                Object {
+                  "id": 1,
+                  "name": "first operator group",
+                  "operators": Array [
+                    Object {
+                      "name": "First operator",
+                      "nocCode": "FOP",
+                    },
+                  ],
+                }
               }
-            }
-          />
+            />
+          </div>
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/searchOperators"
+          >
+            Add an operator group
+          </a>
         </div>
-        <a
-          aria-disabled={true}
-          className="govuk-button govuk-button"
-          data-module="govuk-button"
-          href="/searchOperators"
-        >
-          Add a operator group
-        </a>
       </div>
     </div>
   </div>
@@ -75,6 +81,11 @@ exports[`pages view operator groups should render correctly when no operator gro
   showNavigation={true}
   title="Operator Groups - Create Fares Data Service"
 >
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
   <div
     className="govuk-grid-row"
     data-card-count={0}
@@ -107,7 +118,7 @@ exports[`pages view operator groups should render correctly when no operator gro
           data-module="govuk-button"
           href="/searchOperators"
         >
-          Add a operator group
+          Add an operator group
         </a>
       </div>
     </div>

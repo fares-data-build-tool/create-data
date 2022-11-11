@@ -3,7 +3,7 @@ import { isArray } from 'lodash';
 import { NextApiResponse } from 'next';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../constants/attributes';
 import { getGroupPassengerTypesFromGlobalSettings, insertGroupPassengerType } from '../../data/auroradb';
-import { CompanionReference, ErrorInfo, GroupPassengerTypeDb, NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
 import {
@@ -12,6 +12,7 @@ import {
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
 import logger from '../../utils/logger';
+import { GroupPassengerTypeDb, CompanionReference } from '../../interfaces/dbTypes';
 
 export const formatRequestBody = (req: NextApiRequestWithSession): GroupPassengerTypeDb => {
     const id = req.body.groupId && Number(req.body.groupId);

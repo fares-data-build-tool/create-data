@@ -64,9 +64,9 @@ import {
     VIEW_PURCHASE_METHOD,
     MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
     VIEW_TIME_RESTRICTION,
+    VIEW_OPERATOR_GROUP,
 } from '../constants/attributes';
 import {
-    CompanionInfo,
     CsvUploadAttributeWithErrors,
     DefinePassengerTypeWithErrors,
     DurationValidInfo,
@@ -79,7 +79,6 @@ import {
     FareZoneWithErrors,
     ForgotPasswordAttribute,
     FullTimeRestrictionAttribute,
-    GroupPassengerType,
     GroupPassengerTypesCollection,
     GroupPassengerTypesCollectionWithErrors,
     GroupTicketAttribute,
@@ -95,14 +94,9 @@ import {
     MultipleProductAttributeWithErrors,
     NumberOfStagesAttributeWithError,
     OperatorAttribute,
-    PassengerType,
     PassengerTypeWithErrors,
-    PeriodExpiry,
-    CarnetProductInfo,
     ProductWithSalesOfferPackages,
-    ReturnPeriodValidity,
     ReturnPeriodValidityWithErrors,
-    SalesOfferPackage,
     SalesOfferPackageInfo,
     SalesOfferPackageInfoWithErrors,
     SalesOfferPackageWithErrors,
@@ -122,25 +116,29 @@ import {
     TxcSourceAttribute,
     UserAttribute,
     WithErrors,
-    PointToPointPeriodProduct,
     ManagePassengerTypeWithErrors,
     GlobalSettingsAttribute,
-    GroupPassengerTypeDb,
     PremadeTimeRestriction,
     Direction,
     Errors,
     BasicService,
     ManageOperatorGroupWithErrors,
 } from '../interfaces';
-
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
+    TicketWithIds,
+    MatchingJsonMetaData,
     FromDb,
     OperatorDetails,
-    MatchingJsonMetaData,
-    TicketWithIds,
     UnassignedStop,
-} from 'fdbt-types/matchingJsonTypes';
+    CarnetProductInfo,
+    CompanionInfo,
+    PeriodExpiry,
+    PointToPointPeriodProduct,
+    ReturnPeriodValidity,
+    SalesOfferPackage,
+} from '../interfaces/matchingJsonTypes';
+import { PassengerType, GroupPassengerType, GroupPassengerTypeDb } from '../interfaces/dbTypes';
 
 export interface SessionAttributeTypes {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -209,6 +207,7 @@ export interface SessionAttributeTypes {
     [VIEW_PASSENGER_TYPE]: ErrorInfo[];
     [VIEW_PURCHASE_METHOD]: ErrorInfo[];
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
+    [VIEW_OPERATOR_GROUP]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

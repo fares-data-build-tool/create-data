@@ -1,18 +1,7 @@
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import { NextApiResponse } from 'next';
-import {
-    BasePeriodTicket,
-    PeriodMultipleServicesTicket,
-    TicketType,
-    SchemeOperatorMultiServiceTicket,
-    WithIds,
-    PointToPointTicket,
-    WithBaseIds,
-    TicketWithIds,
-} from 'fdbt-types/matchingJsonTypes';
 import { getAndValidateNoc, getUuidFromSession, unescapeAndDecodeCookie, isSchemeOperator } from './index';
-
 import { ID_TOKEN_COOKIE, PRODUCTS_DATA_BUCKET_NAME } from '../../constants';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
@@ -47,27 +36,13 @@ import {
 } from '../../data/auroradb';
 import { getCsvZoneUploadData, getProductsMatchingJson, putStringInS3 } from '../../data/s3';
 import {
-    BaseTicket,
     CognitoIdToken,
-    GeoZoneTicket,
     MultiOperatorInfo,
     MultiOperatorMultipleServicesTicket,
     MultiProduct,
     NextApiRequestWithSession,
-    PeriodExpiry,
-    PeriodHybridTicket,
-    PointToPointPeriodProduct,
-    PointToPointPeriodTicket,
     ProductWithSalesOfferPackages,
-    ReturnTicket,
-    SalesOfferPackage,
-    SchemeOperatorFlatFareTicket,
-    SchemeOperatorGeoZoneTicket,
-    BaseSchemeOperatorTicket,
-    SingleTicket,
-    Stop,
     TermTimeAttribute,
-    Ticket,
     TicketPeriod,
     TicketPeriodWithInput,
     Direction,
@@ -82,7 +57,6 @@ import {
     isWithErrors,
     isTicketRepresentation,
 } from '../../interfaces/typeGuards';
-
 import logger from '../logger';
 import { getSessionAttribute, getRequiredSessionAttribute } from '../sessions';
 import { isFareZoneAttributeWithErrors } from '../../pages/csvZoneUpload';
@@ -90,6 +64,30 @@ import { isReturnPeriodValidityWithErrors } from '../../pages/returnValidity';
 import { isServiceListAttributeWithErrors } from '../../pages/serviceList';
 import { getFareZones } from './matching';
 import moment from 'moment';
+import {
+    TicketWithIds,
+    WithIds,
+    TicketType,
+    WithBaseIds,
+    BasePeriodTicket,
+    PeriodMultipleServicesTicket,
+    SchemeOperatorMultiServiceTicket,
+    BaseSchemeOperatorTicket,
+    BaseTicket,
+    GeoZoneTicket,
+    PeriodExpiry,
+    PeriodHybridTicket,
+    PointToPointPeriodProduct,
+    PointToPointPeriodTicket,
+    PointToPointTicket,
+    ReturnTicket,
+    SalesOfferPackage,
+    SchemeOperatorFlatFareTicket,
+    SchemeOperatorGeoZoneTicket,
+    SingleTicket,
+    Stop,
+    Ticket,
+} from '../../interfaces/matchingJsonTypes';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
@@ -432,6 +430,11 @@ export const getGeoZoneTicketJson = async (
             ? multiOpAttribute.selectedOperators.map((operator) => operator.nocCode)
             : undefined;
 
+    const operatorGroupId =
+        basePeriodTicketAttributes.type === 'multiOperator' && multiOpAttribute && multiOpAttribute.id
+            ? multiOpAttribute.id
+            : undefined;
+
     if (zoneStops.length === 0) {
         throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
     }
@@ -441,6 +444,7 @@ export const getGeoZoneTicketJson = async (
         zoneName: fareZoneName,
         stops: zoneStops,
         ...(additionalNocs && { additionalNocs }),
+        ...(operatorGroupId && { operatorGroupId }),
     };
 };
 
@@ -471,11 +475,14 @@ export const getMultipleServicesTicketJson = (
                 selectedServices: operator.services,
             })),
         };
+        const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
+        const operatorGroupId = multiOpAttribute && multiOpAttribute.id ? multiOpAttribute.id : undefined;
         return {
             ...basePeriodTicketAttributes,
             selectedServices,
             additionalOperators: additionalOperatorsInfo.additionalOperators,
             termTime: isTermTime(req),
+            ...(operatorGroupId && { operatorGroupId }),
         };
     }
 

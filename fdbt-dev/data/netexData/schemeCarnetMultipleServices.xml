@@ -29,6 +29,10 @@
   </PublicationRequest>
   <dataObjects>
     <CompositeFrame version="1.0" id="epd:UK:Test_Scheme_Op-SE:CompositeFrame_UK_PI_LINE_FARE_OFFER:Pass@Test_Scheme_Op-SE_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
+      <ValidBetween>
+        <FromDate>2021-09-02T00:00:00.000Z</FromDate>
+        <ToDate>2121-09-02T23:59:59.999Z</ToDate>
+      </ValidBetween>
       <Name>Fares for Test Scheme Op</Name>
       <Description>Period ticket for Test Scheme Op</Description>
       <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
@@ -190,9 +194,7 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <LineRef version="1.0" ref="lDJRAS"/>
-                      <LineRef version="1.0" ref="A2EHwY"/>
-                      <LineRef version="1.0" ref="DnmNdy"/>
+                      <GroupOfLinesRef version="1.0" ref="Test_Scheme_Op-SE@groupOfLines@1"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>

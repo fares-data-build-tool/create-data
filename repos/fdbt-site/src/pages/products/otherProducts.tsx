@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from 'react';
 import { MyFaresOtherFaresProduct, NextPageContextWithSession } from '../../interfaces/index';
-import { MyFaresOtherProduct } from 'fdbt-types/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString, getCsrfToken } from '../../utils';
 import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
@@ -8,6 +7,7 @@ import { getProductsMatchingJson } from '../../data/s3';
 import { getTag } from '../products/services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
+import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
 
 const title = 'Other products - Create Fares Data Service';
 const description = 'View and access your other products in one place.';

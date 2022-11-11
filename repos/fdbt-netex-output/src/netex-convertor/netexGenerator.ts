@@ -17,6 +17,7 @@ import {
     Ticket,
     assertNever,
     isReturnTicket,
+    ValidBetween,
 } from '../types';
 import {
     getGeoZoneFareTable,
@@ -138,6 +139,15 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         const compositeFrameToUpdate = { ...compositeFrame };
         const { nocCode } = baseOperatorInfo as Operator;
         const { lineIdName, ticketType } = coreData;
+
+        let validBetween: ValidBetween = {
+            FromDate: { $t: ticket.ticketPeriod.startDate },
+        };
+        if (ticket.ticketPeriod.endDate) {
+            validBetween = { ...validBetween, ToDate: { $t: ticket.ticketPeriod.endDate } };
+        }
+
+        compositeFrameToUpdate.ValidBetween = validBetween;
 
         if (isPointToPointTicket(ticket)) {
             compositeFrameToUpdate.id = `epd:UK:${nocCode}:CompositeFrame_UK_PI_LINE_FARE_OFFER:Trip@${coreData.lineIdName}:op`;
@@ -304,6 +314,12 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             networkFareFrameToUpdate.fareZones.FareZone.projections.TopographicProjectionRef = getTopographicProjectionRefList(
                 ticket.stops,
             );
+            if (isMultiOperatorGeoZoneTicket(ticket)) {
+                networkFareFrameToUpdate.fareZones.FareZone.types.TypeOfZoneRef = {
+                    ref: 'fxc:fare_zone@multi_operator',
+                    version: 'fxc:v1.0',
+                };
+            }
 
             return networkFareFrameToUpdate;
         }

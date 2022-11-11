@@ -44,6 +44,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue="blac"
               id="search-input"
               name="searchText"
               type="text"
@@ -62,6 +63,11 @@ exports[`pages searchOperator should render a selection error when the user trie
             />
           </fieldset>
         </div>
+        <input
+          name="id"
+          readOnly={true}
+          type="hidden"
+        />
       </CsrfForm>
       <div
         className="govuk-form-group "
@@ -133,53 +139,78 @@ exports[`pages searchOperator should render a selection error when the user trie
     <div
       className="govuk-grid-column-one-third selectedOperators"
     >
-      <div
-        className="margin-top-140"
-      >
-        <table
-          className="border-collapse width-100 0"
-        >
-          <caption
-            className="govuk-table__caption govuk-table__caption--m "
-          >
-            Selected operator(s)
-          </caption>
-          <thead
-            className="selectedOperators-header-color"
-          >
-            <tr>
-              <th
-                className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
-                scope="col"
-              >
-                0
-                 added
-              </th>
-              <th
-                className="govuk-table__header text-align-right"
-                scope="cor"
-              >
-                <button
-                  className="selectedOperators-button button-link govuk-!-margin-left-2"
-                  id="removeAll"
-                  name="removeOperator"
-                  onClick={[Function]}
-                >
-                  Remove all
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
-          />
-        </table>
-      </div>
       <CsrfForm
         action="/api/searchOperators"
         csrfToken=""
         method="post"
       >
+        <div>
+          <div
+            className="govuk-form-group "
+          >
+            <fieldset
+              aria-describedby="selected-operators"
+              className="govuk-fieldset"
+            >
+              <legend
+                className="govuk-fieldset__legend--m"
+              >
+                <h3
+                  className="govuk-fieldset__heading"
+                  id="operator-group-name-heading"
+                >
+                  Enter a name for this group
+                </h3>
+              </legend>
+              <input
+                className="govuk-input "
+                defaultValue=""
+                id="operator-group-name"
+                key="operator-group-name"
+                name="operatorGroupName"
+                type="text"
+              />
+            </fieldset>
+          </div>
+          <table
+            className="border-collapse width-100"
+          >
+            <caption
+              className="govuk-table__caption govuk-table__caption--m"
+            >
+              Selected operator(s)
+            </caption>
+            <thead
+              className="selectedOperators-header-color"
+            >
+              <tr>
+                <th
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  scope="col"
+                >
+                  0
+                   added
+                </th>
+                <th
+                  className="govuk-table__header text-align-right"
+                  scope="col"
+                >
+                  <button
+                    className="selectedOperators-button button-link govuk-!-margin-left-2"
+                    id="removeAll"
+                    name="removeOperator"
+                    onClick={[Function]}
+                  >
+                    Remove all
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            />
+          </table>
+        </div>
         <div>
           <input
             className="govuk-button width-100"
@@ -187,6 +218,11 @@ exports[`pages searchOperator should render a selection error when the user trie
             name="continueButtonClick"
             type="submit"
             value="Confirm operators and continue"
+          />
+          <input
+            name="id"
+            readOnly={true}
+            type="hidden"
           />
         </div>
       </CsrfForm>
@@ -239,6 +275,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue=""
               id="search-input"
               name="searchText"
               type="text"
@@ -281,137 +318,167 @@ exports[`pages searchOperator should render a selection error when the user trie
             />
           </fieldset>
         </div>
+        <input
+          name="id"
+          readOnly={true}
+          type="hidden"
+        />
       </CsrfForm>
     </div>
     <div
       className="govuk-grid-column-one-third selectedOperators"
     >
-      <div
-        className="margin-top-140"
-      >
-        <table
-          className="border-collapse width-100 0"
-        >
-          <caption
-            className="govuk-table__caption govuk-table__caption--m "
-          >
-            Selected operator(s)
-          </caption>
-          <thead
-            className="selectedOperators-header-color"
-          >
-            <tr>
-              <th
-                className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
-                scope="col"
-              >
-                3
-                 added
-              </th>
-              <th
-                className="govuk-table__header text-align-right"
-                scope="cor"
-              >
-                <button
-                  className="selectedOperators-button button-link govuk-!-margin-left-2"
-                  id="removeAll"
-                  name="removeOperator"
-                  onClick={[Function]}
-                >
-                  Remove all
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
-          >
-            <tr
-              key="selected-operator-0"
-            >
-              <td
-                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
-                key="td0-0"
-              >
-                Warrington's Own Buses
-                 - 
-                WBTR
-              </td>
-              <td
-                className="govuk-link text-align-right"
-                key="td1-0"
-              >
-                <button
-                  className="govuk-link button-link"
-                  id="remove-0"
-                  name="removeOperator"
-                  onClick={[Function]}
-                  value="Warrington's Own Buses"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-            <tr
-              key="selected-operator-1"
-            >
-              <td
-                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
-                key="td0-1"
-              >
-                Blackpool Transport
-                 - 
-                BLAC
-              </td>
-              <td
-                className="govuk-link text-align-right"
-                key="td1-1"
-              >
-                <button
-                  className="govuk-link button-link"
-                  id="remove-1"
-                  name="removeOperator"
-                  onClick={[Function]}
-                  value="Blackpool Transport"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-            <tr
-              key="selected-operator-2"
-            >
-              <td
-                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
-                key="td0-2"
-              >
-                IW Bus Co
-                 - 
-                IWBusCo
-              </td>
-              <td
-                className="govuk-link text-align-right"
-                key="td1-2"
-              >
-                <button
-                  className="govuk-link button-link"
-                  id="remove-2"
-                  name="removeOperator"
-                  onClick={[Function]}
-                  value="IW Bus Co"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
       <CsrfForm
         action="/api/searchOperators"
         csrfToken=""
         method="post"
       >
+        <div>
+          <div
+            className="govuk-form-group "
+          >
+            <fieldset
+              aria-describedby="selected-operators"
+              className="govuk-fieldset"
+            >
+              <legend
+                className="govuk-fieldset__legend--m"
+              >
+                <h3
+                  className="govuk-fieldset__heading"
+                  id="operator-group-name-heading"
+                >
+                  Enter a name for this group
+                </h3>
+              </legend>
+              <input
+                className="govuk-input "
+                defaultValue=""
+                id="operator-group-name"
+                key="operator-group-name"
+                name="operatorGroupName"
+                type="text"
+              />
+            </fieldset>
+          </div>
+          <table
+            className="border-collapse width-100"
+          >
+            <caption
+              className="govuk-table__caption govuk-table__caption--m"
+            >
+              Selected operator(s)
+            </caption>
+            <thead
+              className="selectedOperators-header-color"
+            >
+              <tr>
+                <th
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  scope="col"
+                >
+                  3
+                   added
+                </th>
+                <th
+                  className="govuk-table__header text-align-right"
+                  scope="col"
+                >
+                  <button
+                    className="selectedOperators-button button-link govuk-!-margin-left-2"
+                    id="removeAll"
+                    name="removeOperator"
+                    onClick={[Function]}
+                  >
+                    Remove all
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            >
+              <tr
+                key="selected-operator-0"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-0"
+                >
+                  Warrington's Own Buses
+                   - 
+                  WBTR
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-0"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-0"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="Warrington's Own Buses"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+              <tr
+                key="selected-operator-1"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-1"
+                >
+                  Blackpool Transport
+                   - 
+                  BLAC
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-1"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-1"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="Blackpool Transport"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+              <tr
+                key="selected-operator-2"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-2"
+                >
+                  IW Bus Co
+                   - 
+                  IWBusCo
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-2"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-2"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="IW Bus Co"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div>
           <input
             id="add-operator-0"
@@ -437,6 +504,11 @@ exports[`pages searchOperator should render a selection error when the user trie
             name="continueButtonClick"
             type="submit"
             value="Confirm operators and continue"
+          />
+          <input
+            name="id"
+            readOnly={true}
+            type="hidden"
           />
         </div>
       </CsrfForm>
@@ -507,6 +579,7 @@ exports[`pages searchOperator should render an input error when the user makes a
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters govuk-input--error"
+              defaultValue=""
               id="search-input"
               name="searchText"
               type="text"
@@ -525,58 +598,88 @@ exports[`pages searchOperator should render an input error when the user makes a
             />
           </fieldset>
         </div>
+        <input
+          name="id"
+          readOnly={true}
+          type="hidden"
+        />
       </CsrfForm>
     </div>
     <div
       className="govuk-grid-column-one-third selectedOperators"
     >
-      <div
-        className="margin-top-140"
-      >
-        <table
-          className="border-collapse width-100 0"
-        >
-          <caption
-            className="govuk-table__caption govuk-table__caption--m "
-          >
-            Selected operator(s)
-          </caption>
-          <thead
-            className="selectedOperators-header-color"
-          >
-            <tr>
-              <th
-                className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
-                scope="col"
-              >
-                0
-                 added
-              </th>
-              <th
-                className="govuk-table__header text-align-right"
-                scope="cor"
-              >
-                <button
-                  className="selectedOperators-button button-link govuk-!-margin-left-2"
-                  id="removeAll"
-                  name="removeOperator"
-                  onClick={[Function]}
-                >
-                  Remove all
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
-          />
-        </table>
-      </div>
       <CsrfForm
         action="/api/searchOperators"
         csrfToken=""
         method="post"
       >
+        <div>
+          <div
+            className="govuk-form-group "
+          >
+            <fieldset
+              aria-describedby="selected-operators"
+              className="govuk-fieldset"
+            >
+              <legend
+                className="govuk-fieldset__legend--m"
+              >
+                <h3
+                  className="govuk-fieldset__heading"
+                  id="operator-group-name-heading"
+                >
+                  Enter a name for this group
+                </h3>
+              </legend>
+              <input
+                className="govuk-input "
+                defaultValue=""
+                id="operator-group-name"
+                key="operator-group-name"
+                name="operatorGroupName"
+                type="text"
+              />
+            </fieldset>
+          </div>
+          <table
+            className="border-collapse width-100"
+          >
+            <caption
+              className="govuk-table__caption govuk-table__caption--m"
+            >
+              Selected operator(s)
+            </caption>
+            <thead
+              className="selectedOperators-header-color"
+            >
+              <tr>
+                <th
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  scope="col"
+                >
+                  0
+                   added
+                </th>
+                <th
+                  className="govuk-table__header text-align-right"
+                  scope="col"
+                >
+                  <button
+                    className="selectedOperators-button button-link govuk-!-margin-left-2"
+                    id="removeAll"
+                    name="removeOperator"
+                    onClick={[Function]}
+                  >
+                    Remove all
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            />
+          </table>
+        </div>
         <div>
           <input
             className="govuk-button width-100"
@@ -584,6 +687,11 @@ exports[`pages searchOperator should render an input error when the user makes a
             name="continueButtonClick"
             type="submit"
             value="Confirm operators and continue"
+          />
+          <input
+            name="id"
+            readOnly={true}
+            type="hidden"
           />
         </div>
       </CsrfForm>
@@ -636,6 +744,7 @@ exports[`pages searchOperator should render just the search input when the user 
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue=""
               id="search-input"
               name="searchText"
               type="text"
@@ -654,58 +763,88 @@ exports[`pages searchOperator should render just the search input when the user 
             />
           </fieldset>
         </div>
+        <input
+          name="id"
+          readOnly={true}
+          type="hidden"
+        />
       </CsrfForm>
     </div>
     <div
       className="govuk-grid-column-one-third selectedOperators"
     >
-      <div
-        className="margin-top-140"
-      >
-        <table
-          className="border-collapse width-100 0"
-        >
-          <caption
-            className="govuk-table__caption govuk-table__caption--m "
-          >
-            Selected operator(s)
-          </caption>
-          <thead
-            className="selectedOperators-header-color"
-          >
-            <tr>
-              <th
-                className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
-                scope="col"
-              >
-                0
-                 added
-              </th>
-              <th
-                className="govuk-table__header text-align-right"
-                scope="cor"
-              >
-                <button
-                  className="selectedOperators-button button-link govuk-!-margin-left-2"
-                  id="removeAll"
-                  name="removeOperator"
-                  onClick={[Function]}
-                >
-                  Remove all
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
-          />
-        </table>
-      </div>
       <CsrfForm
         action="/api/searchOperators"
         csrfToken=""
         method="post"
       >
+        <div>
+          <div
+            className="govuk-form-group "
+          >
+            <fieldset
+              aria-describedby="selected-operators"
+              className="govuk-fieldset"
+            >
+              <legend
+                className="govuk-fieldset__legend--m"
+              >
+                <h3
+                  className="govuk-fieldset__heading"
+                  id="operator-group-name-heading"
+                >
+                  Enter a name for this group
+                </h3>
+              </legend>
+              <input
+                className="govuk-input "
+                defaultValue=""
+                id="operator-group-name"
+                key="operator-group-name"
+                name="operatorGroupName"
+                type="text"
+              />
+            </fieldset>
+          </div>
+          <table
+            className="border-collapse width-100"
+          >
+            <caption
+              className="govuk-table__caption govuk-table__caption--m"
+            >
+              Selected operator(s)
+            </caption>
+            <thead
+              className="selectedOperators-header-color"
+            >
+              <tr>
+                <th
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  scope="col"
+                >
+                  0
+                   added
+                </th>
+                <th
+                  className="govuk-table__header text-align-right"
+                  scope="col"
+                >
+                  <button
+                    className="selectedOperators-button button-link govuk-!-margin-left-2"
+                    id="removeAll"
+                    name="removeOperator"
+                    onClick={[Function]}
+                  >
+                    Remove all
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            />
+          </table>
+        </div>
         <div>
           <input
             className="govuk-button width-100"
@@ -713,6 +852,366 @@ exports[`pages searchOperator should render just the search input when the user 
             name="continueButtonClick"
             type="submit"
             value="Confirm operators and continue"
+          />
+          <input
+            name="id"
+            readOnly={true}
+            type="hidden"
+          />
+        </div>
+      </CsrfForm>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages searchOperator should render the page in edit mode 1`] = `
+<BaseLayout
+  description="Search Operators page for the Create Fares Data Service"
+  title="Search Operators - Create Fares Data Service"
+>
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <InformationSummary
+        informationText="Editing and saving new changes will be applied to all fares using this operator group."
+      />
+      <ErrorSummary
+        errors={Array []}
+      />
+      <CsrfForm
+        action="/api/searchOperators"
+        csrfToken=""
+        method="post"
+      >
+        <div
+          className="govuk-form-group "
+        >
+          <fieldset
+            aria-describedby="operator-search"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend--m"
+            >
+              <h2
+                className="govuk-fieldset__heading"
+                id="operator-search"
+              >
+                Search for more operators that the ticket covers
+              </h2>
+            </legend>
+            <label
+              className="govuk-label"
+              htmlFor="search-input"
+            >
+              Operator name
+            </label>
+            <input
+              className="govuk-input govuk-!-width-three-quarters"
+              defaultValue=""
+              id="search-input"
+              name="searchText"
+              type="text"
+            />
+            <input
+              name="selectedOperators"
+              type="hidden"
+              value={
+                Array [
+                  "WBTR#Warrington's Own Buses",
+                  "BLAC#Blackpool Transport",
+                  "IWBusCo#IW Bus Co",
+                ]
+              }
+            />
+            <input
+              id="add-operator-0"
+              name="userSelectedOperators"
+              type="hidden"
+              value="WBTR#Warrington's Own Buses"
+            />
+            <input
+              id="add-operator-1"
+              name="userSelectedOperators"
+              type="hidden"
+              value="BLAC#Blackpool Transport"
+            />
+            <input
+              id="add-operator-2"
+              name="userSelectedOperators"
+              type="hidden"
+              value="IWBusCo#IW Bus Co"
+            />
+            <input
+              className="govuk-button govuk-!-margin-left-5"
+              id="search-button"
+              name="search"
+              type="submit"
+              value="Search"
+            />
+          </fieldset>
+        </div>
+        <input
+          name="id"
+          readOnly={true}
+          type="hidden"
+          value={1}
+        />
+      </CsrfForm>
+      <div
+        className="govuk-form-group "
+      >
+        <fieldset
+          aria-describedby="operator-search-results"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend"
+          >
+            <h2
+              className="govuk-body-l govuk-!-margin-bottom-0"
+              id="operator-search-results"
+            >
+              Your search for '
+              <strong />
+              ' returned
+              <strong>
+                 
+                1
+                 result
+              </strong>
+            </h2>
+          </legend>
+          <FormElementWrapper
+            errorClass=""
+            errorId="add-operator-0"
+            errors={Array []}
+          >
+            <div
+              className="govuk-checkboxes"
+            >
+              <p
+                className="govuk-hint"
+                id="traveline-hint-text"
+              >
+                Select the operators results and click add operator(s). This data is taken from Bus Open Data Service (BODS).
+              </p>
+              <p
+                className="govuk-hint"
+                id="noc-hint-text"
+              >
+                You will see that all operator names are followed by a series of characters. These characters are the operator's National Operator Code (NOC).
+              </p>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Warrington's Own Buses"
+              >
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="add-operator-checkbox-0"
+                  id="operator-to-add-0"
+                  onClick={[Function]}
+                  role="input"
+                >
+                  Warrington's Own Buses
+                   - 
+                  WBTR
+                </label>
+              </div>
+            </div>
+          </FormElementWrapper>
+        </fieldset>
+      </div>
+    </div>
+    <div
+      className="govuk-grid-column-one-third selectedOperators"
+    >
+      <CsrfForm
+        action="/api/searchOperators"
+        csrfToken=""
+        method="post"
+      >
+        <div>
+          <div
+            className="govuk-form-group "
+          >
+            <fieldset
+              aria-describedby="selected-operators"
+              className="govuk-fieldset"
+            >
+              <legend
+                className="govuk-fieldset__legend--m"
+              >
+                <h3
+                  className="govuk-fieldset__heading"
+                  id="operator-group-name-heading"
+                >
+                  Enter a name for this group
+                </h3>
+              </legend>
+              <input
+                className="govuk-input "
+                defaultValue="OperatorG Group"
+                id="operator-group-name"
+                key="operator-group-name"
+                name="operatorGroupName"
+                type="text"
+              />
+            </fieldset>
+          </div>
+          <table
+            className="border-collapse width-100"
+          >
+            <caption
+              className="govuk-table__caption govuk-table__caption--m"
+            >
+              Selected operator(s)
+            </caption>
+            <thead
+              className="selectedOperators-header-color"
+            >
+              <tr>
+                <th
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  scope="col"
+                >
+                  3
+                   added
+                </th>
+                <th
+                  className="govuk-table__header text-align-right"
+                  scope="col"
+                >
+                  <button
+                    className="selectedOperators-button button-link govuk-!-margin-left-2"
+                    id="removeAll"
+                    name="removeOperator"
+                    onClick={[Function]}
+                  >
+                    Remove all
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            >
+              <tr
+                key="selected-operator-0"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-0"
+                >
+                  Warrington's Own Buses
+                   - 
+                  WBTR
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-0"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-0"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="Warrington's Own Buses"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+              <tr
+                key="selected-operator-1"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-1"
+                >
+                  Blackpool Transport
+                   - 
+                  BLAC
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-1"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-1"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="Blackpool Transport"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+              <tr
+                key="selected-operator-2"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-2"
+                >
+                  IW Bus Co
+                   - 
+                  IWBusCo
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-2"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-2"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="IW Bus Co"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <input
+            id="add-operator-0"
+            name="userSelectedOperators"
+            type="hidden"
+            value="WBTR#Warrington's Own Buses"
+          />
+          <input
+            id="add-operator-1"
+            name="userSelectedOperators"
+            type="hidden"
+            value="BLAC#Blackpool Transport"
+          />
+          <input
+            id="add-operator-2"
+            name="userSelectedOperators"
+            type="hidden"
+            value="IWBusCo#IW Bus Co"
+          />
+          <input
+            className="govuk-button width-100"
+            id="continue-button"
+            name="continueButtonClick"
+            type="submit"
+            value="Confirm operators and continue"
+          />
+          <input
+            name="id"
+            readOnly={true}
+            type="hidden"
+            value={1}
           />
         </div>
       </CsrfForm>
@@ -765,6 +1264,7 @@ exports[`pages searchOperator should render the search input and a list of selec
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue=""
               id="search-input"
               name="searchText"
               type="text"
@@ -807,137 +1307,167 @@ exports[`pages searchOperator should render the search input and a list of selec
             />
           </fieldset>
         </div>
+        <input
+          name="id"
+          readOnly={true}
+          type="hidden"
+        />
       </CsrfForm>
     </div>
     <div
       className="govuk-grid-column-one-third selectedOperators"
     >
-      <div
-        className="margin-top-140"
-      >
-        <table
-          className="border-collapse width-100 0"
-        >
-          <caption
-            className="govuk-table__caption govuk-table__caption--m "
-          >
-            Selected operator(s)
-          </caption>
-          <thead
-            className="selectedOperators-header-color"
-          >
-            <tr>
-              <th
-                className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
-                scope="col"
-              >
-                3
-                 added
-              </th>
-              <th
-                className="govuk-table__header text-align-right"
-                scope="cor"
-              >
-                <button
-                  className="selectedOperators-button button-link govuk-!-margin-left-2"
-                  id="removeAll"
-                  name="removeOperator"
-                  onClick={[Function]}
-                >
-                  Remove all
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
-          >
-            <tr
-              key="selected-operator-0"
-            >
-              <td
-                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
-                key="td0-0"
-              >
-                Warrington's Own Buses
-                 - 
-                WBTR
-              </td>
-              <td
-                className="govuk-link text-align-right"
-                key="td1-0"
-              >
-                <button
-                  className="govuk-link button-link"
-                  id="remove-0"
-                  name="removeOperator"
-                  onClick={[Function]}
-                  value="Warrington's Own Buses"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-            <tr
-              key="selected-operator-1"
-            >
-              <td
-                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
-                key="td0-1"
-              >
-                Blackpool Transport
-                 - 
-                BLAC
-              </td>
-              <td
-                className="govuk-link text-align-right"
-                key="td1-1"
-              >
-                <button
-                  className="govuk-link button-link"
-                  id="remove-1"
-                  name="removeOperator"
-                  onClick={[Function]}
-                  value="Blackpool Transport"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-            <tr
-              key="selected-operator-2"
-            >
-              <td
-                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
-                key="td0-2"
-              >
-                IW Bus Co
-                 - 
-                IWBusCo
-              </td>
-              <td
-                className="govuk-link text-align-right"
-                key="td1-2"
-              >
-                <button
-                  className="govuk-link button-link"
-                  id="remove-2"
-                  name="removeOperator"
-                  onClick={[Function]}
-                  value="IW Bus Co"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
       <CsrfForm
         action="/api/searchOperators"
         csrfToken=""
         method="post"
       >
+        <div>
+          <div
+            className="govuk-form-group "
+          >
+            <fieldset
+              aria-describedby="selected-operators"
+              className="govuk-fieldset"
+            >
+              <legend
+                className="govuk-fieldset__legend--m"
+              >
+                <h3
+                  className="govuk-fieldset__heading"
+                  id="operator-group-name-heading"
+                >
+                  Enter a name for this group
+                </h3>
+              </legend>
+              <input
+                className="govuk-input "
+                defaultValue=""
+                id="operator-group-name"
+                key="operator-group-name"
+                name="operatorGroupName"
+                type="text"
+              />
+            </fieldset>
+          </div>
+          <table
+            className="border-collapse width-100"
+          >
+            <caption
+              className="govuk-table__caption govuk-table__caption--m"
+            >
+              Selected operator(s)
+            </caption>
+            <thead
+              className="selectedOperators-header-color"
+            >
+              <tr>
+                <th
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  scope="col"
+                >
+                  3
+                   added
+                </th>
+                <th
+                  className="govuk-table__header text-align-right"
+                  scope="col"
+                >
+                  <button
+                    className="selectedOperators-button button-link govuk-!-margin-left-2"
+                    id="removeAll"
+                    name="removeOperator"
+                    onClick={[Function]}
+                  >
+                    Remove all
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            >
+              <tr
+                key="selected-operator-0"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-0"
+                >
+                  Warrington's Own Buses
+                   - 
+                  WBTR
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-0"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-0"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="Warrington's Own Buses"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+              <tr
+                key="selected-operator-1"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-1"
+                >
+                  Blackpool Transport
+                   - 
+                  BLAC
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-1"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-1"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="Blackpool Transport"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+              <tr
+                key="selected-operator-2"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-2"
+                >
+                  IW Bus Co
+                   - 
+                  IWBusCo
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-2"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-2"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="IW Bus Co"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div>
           <input
             id="add-operator-0"
@@ -963,6 +1493,11 @@ exports[`pages searchOperator should render the search input and a list of selec
             name="continueButtonClick"
             type="submit"
             value="Confirm operators and continue"
+          />
+          <input
+            name="id"
+            readOnly={true}
+            type="hidden"
           />
         </div>
       </CsrfForm>
@@ -1015,6 +1550,7 @@ exports[`pages searchOperator should render the search input and search results 
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue="blac"
               id="search-input"
               name="searchText"
               type="text"
@@ -1033,6 +1569,11 @@ exports[`pages searchOperator should render the search input and search results 
             />
           </fieldset>
         </div>
+        <input
+          name="id"
+          readOnly={true}
+          type="hidden"
+        />
       </CsrfForm>
       <div
         className="govuk-form-group "
@@ -1104,53 +1645,78 @@ exports[`pages searchOperator should render the search input and search results 
     <div
       className="govuk-grid-column-one-third selectedOperators"
     >
-      <div
-        className="margin-top-140"
-      >
-        <table
-          className="border-collapse width-100 0"
-        >
-          <caption
-            className="govuk-table__caption govuk-table__caption--m "
-          >
-            Selected operator(s)
-          </caption>
-          <thead
-            className="selectedOperators-header-color"
-          >
-            <tr>
-              <th
-                className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
-                scope="col"
-              >
-                0
-                 added
-              </th>
-              <th
-                className="govuk-table__header text-align-right"
-                scope="cor"
-              >
-                <button
-                  className="selectedOperators-button button-link govuk-!-margin-left-2"
-                  id="removeAll"
-                  name="removeOperator"
-                  onClick={[Function]}
-                >
-                  Remove all
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
-          />
-        </table>
-      </div>
       <CsrfForm
         action="/api/searchOperators"
         csrfToken=""
         method="post"
       >
+        <div>
+          <div
+            className="govuk-form-group "
+          >
+            <fieldset
+              aria-describedby="selected-operators"
+              className="govuk-fieldset"
+            >
+              <legend
+                className="govuk-fieldset__legend--m"
+              >
+                <h3
+                  className="govuk-fieldset__heading"
+                  id="operator-group-name-heading"
+                >
+                  Enter a name for this group
+                </h3>
+              </legend>
+              <input
+                className="govuk-input "
+                defaultValue=""
+                id="operator-group-name"
+                key="operator-group-name"
+                name="operatorGroupName"
+                type="text"
+              />
+            </fieldset>
+          </div>
+          <table
+            className="border-collapse width-100"
+          >
+            <caption
+              className="govuk-table__caption govuk-table__caption--m"
+            >
+              Selected operator(s)
+            </caption>
+            <thead
+              className="selectedOperators-header-color"
+            >
+              <tr>
+                <th
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  scope="col"
+                >
+                  0
+                   added
+                </th>
+                <th
+                  className="govuk-table__header text-align-right"
+                  scope="col"
+                >
+                  <button
+                    className="selectedOperators-button button-link govuk-!-margin-left-2"
+                    id="removeAll"
+                    name="removeOperator"
+                    onClick={[Function]}
+                  >
+                    Remove all
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            />
+          </table>
+        </div>
         <div>
           <input
             className="govuk-button width-100"
@@ -1158,6 +1724,11 @@ exports[`pages searchOperator should render the search input and search results 
             name="continueButtonClick"
             type="submit"
             value="Confirm operators and continue"
+          />
+          <input
+            name="id"
+            readOnly={true}
+            type="hidden"
           />
         </div>
       </CsrfForm>
@@ -1210,6 +1781,7 @@ exports[`pages searchOperator should render the search input, search results and
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue="warri"
               id="search-input"
               name="searchText"
               type="text"
@@ -1252,6 +1824,11 @@ exports[`pages searchOperator should render the search input, search results and
             />
           </fieldset>
         </div>
+        <input
+          name="id"
+          readOnly={true}
+          type="hidden"
+        />
       </CsrfForm>
       <div
         className="govuk-form-group "
@@ -1323,132 +1900,157 @@ exports[`pages searchOperator should render the search input, search results and
     <div
       className="govuk-grid-column-one-third selectedOperators"
     >
-      <div
-        className="margin-top-140"
-      >
-        <table
-          className="border-collapse width-100 0"
-        >
-          <caption
-            className="govuk-table__caption govuk-table__caption--m "
-          >
-            Selected operator(s)
-          </caption>
-          <thead
-            className="selectedOperators-header-color"
-          >
-            <tr>
-              <th
-                className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
-                scope="col"
-              >
-                3
-                 added
-              </th>
-              <th
-                className="govuk-table__header text-align-right"
-                scope="cor"
-              >
-                <button
-                  className="selectedOperators-button button-link govuk-!-margin-left-2"
-                  id="removeAll"
-                  name="removeOperator"
-                  onClick={[Function]}
-                >
-                  Remove all
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className="govuk-table__body"
-          >
-            <tr
-              key="selected-operator-0"
-            >
-              <td
-                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
-                key="td0-0"
-              >
-                Warrington's Own Buses
-                 - 
-                WBTR
-              </td>
-              <td
-                className="govuk-link text-align-right"
-                key="td1-0"
-              >
-                <button
-                  className="govuk-link button-link"
-                  id="remove-0"
-                  name="removeOperator"
-                  onClick={[Function]}
-                  value="Warrington's Own Buses"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-            <tr
-              key="selected-operator-1"
-            >
-              <td
-                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
-                key="td0-1"
-              >
-                Blackpool Transport
-                 - 
-                BLAC
-              </td>
-              <td
-                className="govuk-link text-align-right"
-                key="td1-1"
-              >
-                <button
-                  className="govuk-link button-link"
-                  id="remove-1"
-                  name="removeOperator"
-                  onClick={[Function]}
-                  value="Blackpool Transport"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-            <tr
-              key="selected-operator-2"
-            >
-              <td
-                className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
-                key="td0-2"
-              >
-                IW Bus Co
-                 - 
-                IWBusCo
-              </td>
-              <td
-                className="govuk-link text-align-right"
-                key="td1-2"
-              >
-                <button
-                  className="govuk-link button-link"
-                  id="remove-2"
-                  name="removeOperator"
-                  onClick={[Function]}
-                  value="IW Bus Co"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
       <CsrfForm
         action="/api/searchOperators"
         csrfToken=""
         method="post"
       >
+        <div>
+          <div
+            className="govuk-form-group "
+          >
+            <fieldset
+              aria-describedby="selected-operators"
+              className="govuk-fieldset"
+            >
+              <legend
+                className="govuk-fieldset__legend--m"
+              >
+                <h3
+                  className="govuk-fieldset__heading"
+                  id="operator-group-name-heading"
+                >
+                  Enter a name for this group
+                </h3>
+              </legend>
+              <input
+                className="govuk-input "
+                defaultValue=""
+                id="operator-group-name"
+                key="operator-group-name"
+                name="operatorGroupName"
+                type="text"
+              />
+            </fieldset>
+          </div>
+          <table
+            className="border-collapse width-100"
+          >
+            <caption
+              className="govuk-table__caption govuk-table__caption--m"
+            >
+              Selected operator(s)
+            </caption>
+            <thead
+              className="selectedOperators-header-color"
+            >
+              <tr>
+                <th
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  scope="col"
+                >
+                  3
+                   added
+                </th>
+                <th
+                  className="govuk-table__header text-align-right"
+                  scope="col"
+                >
+                  <button
+                    className="selectedOperators-button button-link govuk-!-margin-left-2"
+                    id="removeAll"
+                    name="removeOperator"
+                    onClick={[Function]}
+                  >
+                    Remove all
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            >
+              <tr
+                key="selected-operator-0"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-0"
+                >
+                  Warrington's Own Buses
+                   - 
+                  WBTR
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-0"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-0"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="Warrington's Own Buses"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+              <tr
+                key="selected-operator-1"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-1"
+                >
+                  Blackpool Transport
+                   - 
+                  BLAC
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-1"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-1"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="Blackpool Transport"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+              <tr
+                key="selected-operator-2"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-2"
+                >
+                  IW Bus Co
+                   - 
+                  IWBusCo
+                </td>
+                <td
+                  className="govuk-link text-align-right"
+                  key="td1-2"
+                >
+                  <button
+                    className="govuk-link button-link"
+                    id="remove-2"
+                    name="removeOperator"
+                    onClick={[Function]}
+                    value="IW Bus Co"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div>
           <input
             id="add-operator-0"
@@ -1474,6 +2076,11 @@ exports[`pages searchOperator should render the search input, search results and
             name="continueButtonClick"
             type="submit"
             value="Confirm operators and continue"
+          />
+          <input
+            name="id"
+            readOnly={true}
+            type="hidden"
           />
         </div>
       </CsrfForm>

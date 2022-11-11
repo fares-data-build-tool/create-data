@@ -1,4 +1,3 @@
-import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
 import { S3 } from 'aws-sdk';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import {
@@ -8,11 +7,12 @@ import {
     MATCHING_DATA_BUCKET_NAME,
     PRODUCTS_DATA_BUCKET_NAME,
 } from '../constants';
-import { Ticket, UserFareStages, UserFareZone } from '../interfaces';
+import { UserFareStages, UserFareZone } from '../interfaces';
 import logger from '../utils/logger';
 import { triggerZipper } from '../utils/apiUtils/export';
 import { DeleteObjectsRequest, ListObjectsV2Request, ObjectIdentifierList, ObjectList } from 'aws-sdk/clients/s3';
 import { objectKeyMatchesExportNameExactly } from '../utils';
+import { Ticket, TicketWithIds } from '../interfaces/matchingJsonTypes';
 
 const getS3Client = (): S3 => {
     let options: S3.ClientConfiguration = {

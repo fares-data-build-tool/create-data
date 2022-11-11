@@ -25,17 +25,12 @@ import {
     DIRECTION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
-    CarnetDetails,
-    CarnetExpiryUnit,
     ConfirmationElement,
     MultiOperatorInfo,
     MultipleOperatorsAttribute,
     MultipleProductAttribute,
     MultiProduct,
     NextPageContextWithSession,
-    PointToPointPeriodProduct,
-    Product,
-    ReturnPeriodValidity,
     SchoolFareTypeAttribute,
     Service,
     ServiceListAttribute,
@@ -47,6 +42,13 @@ import { isFareType, isPeriodExpiry, isWithErrors } from '../interfaces/typeGuar
 import TwoThirdsLayout from '../layout/Layout';
 import { getCsrfToken, sentenceCaseString, isSchemeOperator } from '../utils';
 import { getSessionAttribute, updateSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
+import {
+    CarnetDetails,
+    CarnetExpiryUnit,
+    ReturnPeriodValidity,
+    PointToPointPeriodProduct,
+    Product,
+} from '../interfaces/matchingJsonTypes';
 
 const title = 'Ticket Confirmation - Create Fares Data Service';
 const description = 'Ticket Confirmation page of the Create Fares Data Service';
