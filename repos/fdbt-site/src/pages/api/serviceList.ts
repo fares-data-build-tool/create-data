@@ -8,8 +8,8 @@ import {
     SERVICE_LIST_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { SelectedService } from 'fdbt-types/matchingJsonTypes';
 import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
+import { SelectedService } from '../../interfaces/matchingJsonTypes';
 
 const errorId = 'checkbox-0';
 

@@ -1,9 +1,10 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import periodValidity from '../../../src/pages/api/periodValidity';
-import { ErrorInfo, PeriodExpiry } from '../../../src/interfaces';
+import { ErrorInfo } from '../../../src/interfaces';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as db from '../../../src/data/auroradb';
+import { PeriodExpiry } from '../../../src/interfaces/matchingJsonTypes';
 
 describe('periodValidity', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');

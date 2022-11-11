@@ -1,5 +1,4 @@
 import React, { ChangeEventHandler, ReactElement, useState } from 'react';
-import { FromDb } from 'fdbt-types/matchingJsonTypes';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
@@ -17,7 +16,6 @@ import {
     NextPageContextWithSession,
     ProductInfo,
     ProductWithSalesOfferPackages,
-    SalesOfferPackage,
     SchoolFareTypeAttribute,
 } from '../interfaces';
 import { isFareType } from '../interfaces/typeGuards';
@@ -26,6 +24,7 @@ import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { removeAllWhiteSpace } from '../utils/apiUtils/validator';
 import { PurchaseMethodCardBody } from './viewPurchaseMethods';
+import { SalesOfferPackage, FromDb } from '../interfaces/matchingJsonTypes';
 
 const pageTitle = 'Select Purchase Methods - Create Fares Data Service';
 const pageDescription = 'Purchase Methods selection page of the Create Fares Data Service';

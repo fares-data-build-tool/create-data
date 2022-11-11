@@ -4,9 +4,9 @@ import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
-import { DbTimeBand } from 'fdbt-types/matchingJsonTypes';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { VIEW_TIME_RESTRICTION } from '../constants/attributes';
+import { DbTimeBand } from '../interfaces/matchingJsonTypes';
 
 const title = 'Time restrictions';
 const description = 'Define certain days and time periods that your tickets can be used within.';

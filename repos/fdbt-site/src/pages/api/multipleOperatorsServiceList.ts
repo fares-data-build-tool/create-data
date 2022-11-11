@@ -1,12 +1,18 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
-import { MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+} from '../../constants/attributes';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
-import { ServiceWithNocCode, SelectedServiceByNocCode } from 'fdbt-types/matchingJsonTypes';
-import { MultiOperatorInfo, NextApiRequestWithSession } from 'src/interfaces';
-import { updateSessionAttribute } from '../../../src/utils/sessions';
+import { MultiOperatorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { getSessionAttribute, updateSessionAttribute } from '../../../src/utils/sessions';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
+import { ServiceWithNocCode, SelectedServiceByNocCode } from '../../interfaces/matchingJsonTypes';
 
-const errorId = 'checkbox-0';
+const errorId = 'service-to-add-1';
+const redirectUrl = '/multipleOperatorsServiceList';
 
 export const getMultiOperatorsDataFromRequest = (requestBody: {
     [key: string]: string | string[];
@@ -30,6 +36,7 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
             serviceCode: splitStrings[2],
             startDate: splitStrings[3],
             serviceDescription: serviceDescription,
+            selected: false,
         };
     };
 
@@ -39,60 +46,66 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
             const value = convertServiceDetails(e[0], e[1]);
             serviceDetails.push(value);
         });
-    const multiOperatorsService: SelectedServiceByNocCode[] = [];
+
+    const selectedServices: SelectedServiceByNocCode[] = [];
 
     const getIndexOfMultiOperatorsService = (noc: string): number => {
-        const index = multiOperatorsService.findIndex((serviceDetails) => Object.keys(serviceDetails).includes(noc));
+        const index = selectedServices.findIndex((serviceDetails) => Object.keys(serviceDetails).includes(noc));
         return index;
     };
     serviceDetails.forEach((service: ServiceWithNocCode) => {
-        const indexOfFound = service?.nocCode ? getIndexOfMultiOperatorsService(service.nocCode) : -1;
+        const indexOfFound = getIndexOfMultiOperatorsService(service.nocCode);
         if (indexOfFound === -1) {
-            multiOperatorsService.push({ [`${service.nocCode}`]: [service] });
+            selectedServices.push({ [`${service.nocCode}`]: [service] });
         } else {
-            if (indexOfFound > -1 && service?.nocCode) {
-                multiOperatorsService[indexOfFound][service.nocCode].push(service);
-            } else {
-                // eslint-disable-next-line no-console
-                console.log(`indexOfFound is ${indexOfFound}`);
-            }
+            selectedServices[indexOfFound][service.nocCode].push(service);
         }
     });
-    const newListOfMultiOperatorsData: MultiOperatorInfo[] = [];
-    multiOperatorsService.forEach((obj) => {
-        Object.entries(obj).forEach((v) => {
-            newListOfMultiOperatorsData.push({ nocCode: v[0], services: v[1] });
+    const newListOfMultiOperatorsData: MultiOperatorInfo[] = selectedServices.flatMap((selectedService) => {
+        return Object.entries(selectedService).flatMap((keyValuePair) => {
+            return { nocCode: keyValuePair[0], services: keyValuePair[1] };
         });
     });
 
     return newListOfMultiOperatorsData;
 };
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
-    const redirectUrl = '/multipleOperatorsServiceList';
-
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        if (!req.body || Object.keys(req.body).length === 0) {
+        const operatorCount = req.body.operatorCount ? parseInt(req.body.operatorCount) : 0;
+        delete req.body.operatorCount;
+        const listOfMultiOperatorsData = getMultiOperatorsDataFromRequest(req.body);
+
+        if (operatorCount !== listOfMultiOperatorsData.length) {
             updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
-                multiOperatorInfo: [],
-                errors: [{ id: errorId, errorMessage: 'Choose at least one service from the options' }],
+                multiOperatorInfo: listOfMultiOperatorsData,
+                errors: [{ id: errorId, errorMessage: 'All operators need to have at least one service' }],
             });
             redirectTo(res, `${redirectUrl}`);
             return;
         }
 
-        const requestBody: { [key: string]: string } = req.body;
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
-        const operatorCount = requestBody.operatorCount ? parseInt(requestBody.operatorCount) : 0;
-        delete requestBody.confirm;
-        delete requestBody.operatorCount;
-        const listOfMultiOperatorsData = getMultiOperatorsDataFromRequest(requestBody);
-        if (operatorCount !== listOfMultiOperatorsData.length) {
-            updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
-                multiOperatorInfo: listOfMultiOperatorsData.length > 0 ? listOfMultiOperatorsData : [],
-                errors: [{ id: errorId, errorMessage: 'All operators need to have at least one service' }],
-            });
-            redirectTo(res, `${redirectUrl}`);
+        const inEditMode = ticket && matchingJsonMetaData;
+
+        if (inEditMode) {
+            const updatedTicket = {
+                ...ticket,
+                additionalOperators: listOfMultiOperatorsData.map((operator) => ({
+                    nocCode: operator.nocCode,
+                    selectedServices: operator.services,
+                })),
+            };
+
+            // put the now updated matching json into s3
+            // overriding the existing object
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+
+            updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, undefined);
+
+            redirectTo(res, `/products/productDetails?productId=${matchingJsonMetaData.productId}`);
             return;
         }
 

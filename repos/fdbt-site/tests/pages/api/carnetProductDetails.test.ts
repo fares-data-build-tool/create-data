@@ -1,8 +1,8 @@
-import { CarnetExpiryUnit, CarnetProductInfo } from '../../../src/interfaces/index';
 import carnetProductDetails from '../../../src/pages/api/carnetProductDetails';
 import { FARE_TYPE_ATTRIBUTE, CARNET_PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
+import { CarnetExpiryUnit, CarnetProductInfo } from '../../../src/interfaces/matchingJsonTypes';
 
 describe('carnetProductDetails', () => {
     const updateAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');

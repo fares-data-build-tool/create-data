@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import SelectPassengerType from '../../src/pages/selectPassengerType';
-import { FullGroupPassengerType, SinglePassengerType } from '../../src/interfaces';
+import { FullGroupPassengerType, SinglePassengerType } from '../../src/interfaces/dbTypes';
 
 describe('pages', () => {
     const savedGroups: FullGroupPassengerType[] = [

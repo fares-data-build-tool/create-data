@@ -9,12 +9,13 @@ import {
     VIEW_PASSENGER_TYPE,
 } from '../constants/attributes';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
-import { ErrorInfo, FullGroupPassengerType, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { SinglePassengerType, FullGroupPassengerType } from '../interfaces/dbTypes';
 
 const title = 'Passenger Types - Create Fares Data Service';
 const description = 'View and edit your passenger types.';
@@ -91,11 +92,7 @@ const ViewPassengerTypes = ({
                             />
                         )}
 
-                        <a
-                            className="govuk-button govuk-button"
-                            data-module="govuk-button"
-                            href="/managePassengerTypes"
-                        >
+                        <a className="govuk-button" data-module="govuk-button" href="/managePassengerTypes">
                             Add a passenger type
                         </a>
                     </div>

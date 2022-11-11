@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { ErrorInfo, NextApiRequestWithSession, PointToPointPeriodProduct } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { POINT_TO_POINT_PRODUCT_ATTRIBUTE } from '../../constants/attributes';
 import {
@@ -9,6 +9,7 @@ import {
     isValidInputDuration,
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
+import { PointToPointPeriodProduct } from '../../interfaces/matchingJsonTypes';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {

@@ -15,7 +15,7 @@ import {
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
-import { TimeRestrictionDay } from 'fdbt-types/matchingJsonTypes';
+import { TimeRestrictionDay } from '../../interfaces/matchingJsonTypes';
 
 const getTimeRestrictionContent = async (
     timeRestriction: string | undefined,

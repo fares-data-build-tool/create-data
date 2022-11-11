@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import GlobalSettings from '../../src/pages/globalSettings';
-import { GlobalSettingsCounts } from 'src/interfaces';
+import { GlobalSettingsCounts } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('globalSettings', () => {

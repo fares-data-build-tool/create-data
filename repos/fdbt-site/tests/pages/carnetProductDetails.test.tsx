@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import CarnetProductDetails, { getServerSideProps } from '../../src/pages/carnetProductDetails';
-import { CarnetExpiryUnit, CarnetProductInfo } from '../../src/interfaces';
 import { getMockContext } from '../testData/mockData';
 import { FARE_ZONE_ATTRIBUTE, OPERATOR_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../src/constants/attributes';
+import { CarnetProductInfo, CarnetExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
 
 const mockProductDetails: CarnetProductInfo = {
     productName: '',

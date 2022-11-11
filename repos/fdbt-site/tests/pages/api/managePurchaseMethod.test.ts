@@ -2,8 +2,8 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import managePurchaseMethod from '../../../src/pages/api/managePurchaseMethod';
 import * as session from '../../../src/utils/sessions';
 import { GS_PURCHASE_METHOD_ATTRIBUTE } from '../../../src/constants/attributes';
-import { SalesOfferPackage, FromDb } from 'fdbt-types/matchingJsonTypes';
 import * as db from '../../../src/data/auroradb';
+import { FromDb, SalesOfferPackage } from '../../../src/interfaces/matchingJsonTypes';
 
 jest.mock('../../../src/data/auroradb');
 const insertSpy = jest.spyOn(db, 'insertSalesOfferPackage');

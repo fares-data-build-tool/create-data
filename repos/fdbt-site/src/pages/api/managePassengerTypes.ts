@@ -6,12 +6,7 @@ import {
     insertSinglePassengerType,
     updateSinglePassengerType,
 } from '../../data/auroradb';
-import {
-    ErrorInfo,
-    ManagePassengerTypeWithErrors,
-    NextApiRequestWithSession,
-    SinglePassengerType,
-} from '../../interfaces';
+import { ErrorInfo, ManagePassengerTypeWithErrors, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
 import {
@@ -19,6 +14,7 @@ import {
     invalidCharactersArePresent,
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
+import { SinglePassengerType } from '../../interfaces/dbTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {

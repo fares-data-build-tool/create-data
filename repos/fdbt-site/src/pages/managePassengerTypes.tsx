@@ -5,10 +5,11 @@ import InformationSummary from '../components/InformationSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE } from '../constants/attributes';
 import { getPassengerTypeById } from '../data/auroradb';
-import { ErrorInfo, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import { getGlobalSettingsManageProps, GlobalSettingsManageProps } from '../utils/globalSettings';
 import { getSessionAttribute } from '../utils/sessions';
+import { SinglePassengerType } from '../interfaces/dbTypes';
 
 const title = 'Manage Passenger Types - Create Fares Data Service';
 const description = 'Manage Passenger Type page of the Create Fares Data Service';
