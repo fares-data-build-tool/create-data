@@ -119,7 +119,7 @@ const ProductDetails = ({
                                     <div className="dft-flex dft-flex-justify-space-between">
                                         {element.content.map((item) => {
                                             return (
-                                                <span key={item} id={element.name?.replace(' ','-') || undefined}>
+                                                <span key={item} id={element.name?.replace(' ', '-') || undefined}>
                                                     {item}
                                                 </span>
                                             );
@@ -182,7 +182,7 @@ const ProductDetails = ({
 
 const getReadValue = (element: ProductDetailsElement) => {
     return element.content.map((item) => (
-        <span key={item} id={element.name?.replace(' ','-') || undefined}>
+        <span key={item} id={element.name?.replace(' ', '-') || undefined}>
             {item}
         </span>
     ));
@@ -193,7 +193,7 @@ const getEditableValue = (element: ProductDetailsElement) => {
         <div className="dft-flex dft-flex-justify-space-between">
             {element.content.map((item) => {
                 return (
-                    <span key={item} id={element.name?.replace(' ','-') || undefined}>
+                    <span key={item} id={element.name?.replace(' ', '-') || undefined}>
                         {item}
                     </span>
                 );
