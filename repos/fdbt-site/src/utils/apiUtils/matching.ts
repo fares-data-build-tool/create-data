@@ -1,5 +1,5 @@
 import { NextApiRequest } from 'next';
-import { Stop, UserFareStages, NextPageContextWithSession } from '../../interfaces';
+import { UserFareStages, NextPageContextWithSession } from '../../interfaces';
 import { MatchingFareZones, MatchingFareZonesData, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import toposort from 'toposort';
 import { MatchingProps } from '../../pages/matching';
@@ -15,8 +15,8 @@ import { isService } from '../../interfaces/typeGuards';
 import logger from '../logger';
 import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { getUserFareStages } from '../../data/s3';
-import { RawJourneyPattern, StopPoint } from 'fdbt-types/dbTypes';
-import { UnassignedStop } from 'fdbt-types/matchingJsonTypes';
+import { RawJourneyPattern, StopPoint } from '../../interfaces/dbTypes';
+import { Stop, UnassignedStop } from '../../interfaces/matchingJsonTypes';
 
 export const getFareZones = (
     userFareStages: UserFareStages,

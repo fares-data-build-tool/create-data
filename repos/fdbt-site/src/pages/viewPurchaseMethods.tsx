@@ -1,5 +1,4 @@
 import React, { FunctionComponent, ReactElement } from 'react';
-import { FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
 import { GlobalSettingsViewPage } from '../components/GlobalSettingsViewPage';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
@@ -8,6 +7,7 @@ import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { sopTicketFormatConverter } from './salesConfirmation';
 import { VIEW_PURCHASE_METHOD } from '../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { FromDb, SalesOfferPackage } from '../interfaces/matchingJsonTypes';
 
 const title = 'Purchase methods';
 const description =

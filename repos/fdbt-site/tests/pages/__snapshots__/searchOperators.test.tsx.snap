@@ -44,6 +44,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue="blac"
               id="search-input"
               name="searchText"
               type="text"
@@ -172,7 +173,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             </fieldset>
           </div>
           <table
-            className="border-collaps width-100"
+            className="border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -184,7 +185,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             >
               <tr>
                 <th
-                  className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                   scope="col"
                 >
                   0
@@ -192,7 +193,7 @@ exports[`pages searchOperator should render a selection error when the user trie
                 </th>
                 <th
                   className="govuk-table__header text-align-right"
-                  scope="cor"
+                  scope="col"
                 >
                   <button
                     className="selectedOperators-button button-link govuk-!-margin-left-2"
@@ -274,6 +275,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue=""
               id="search-input"
               name="searchText"
               type="text"
@@ -360,7 +362,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             </fieldset>
           </div>
           <table
-            className="border-collaps width-100"
+            className="border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -372,7 +374,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             >
               <tr>
                 <th
-                  className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                   scope="col"
                 >
                   3
@@ -380,7 +382,7 @@ exports[`pages searchOperator should render a selection error when the user trie
                 </th>
                 <th
                   className="govuk-table__header text-align-right"
-                  scope="cor"
+                  scope="col"
                 >
                   <button
                     className="selectedOperators-button button-link govuk-!-margin-left-2"
@@ -577,6 +579,7 @@ exports[`pages searchOperator should render an input error when the user makes a
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters govuk-input--error"
+              defaultValue=""
               id="search-input"
               name="searchText"
               type="text"
@@ -639,7 +642,7 @@ exports[`pages searchOperator should render an input error when the user makes a
             </fieldset>
           </div>
           <table
-            className="border-collaps width-100"
+            className="border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -651,7 +654,7 @@ exports[`pages searchOperator should render an input error when the user makes a
             >
               <tr>
                 <th
-                  className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                   scope="col"
                 >
                   0
@@ -659,7 +662,7 @@ exports[`pages searchOperator should render an input error when the user makes a
                 </th>
                 <th
                   className="govuk-table__header text-align-right"
-                  scope="cor"
+                  scope="col"
                 >
                   <button
                     className="selectedOperators-button button-link govuk-!-margin-left-2"
@@ -741,6 +744,7 @@ exports[`pages searchOperator should render just the search input when the user 
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue=""
               id="search-input"
               name="searchText"
               type="text"
@@ -803,7 +807,7 @@ exports[`pages searchOperator should render just the search input when the user 
             </fieldset>
           </div>
           <table
-            className="border-collaps width-100"
+            className="border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -815,7 +819,7 @@ exports[`pages searchOperator should render just the search input when the user 
             >
               <tr>
                 <th
-                  className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                   scope="col"
                 >
                   0
@@ -823,7 +827,7 @@ exports[`pages searchOperator should render just the search input when the user 
                 </th>
                 <th
                   className="govuk-table__header text-align-right"
-                  scope="cor"
+                  scope="col"
                 >
                   <button
                     className="selectedOperators-button button-link govuk-!-margin-left-2"
@@ -908,6 +912,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue=""
               id="search-input"
               name="searchText"
               type="text"
@@ -1059,7 +1064,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
             </fieldset>
           </div>
           <table
-            className="border-collaps width-100"
+            className="border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -1071,7 +1076,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
             >
               <tr>
                 <th
-                  className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                   scope="col"
                 >
                   3
@@ -1079,7 +1084,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
                 </th>
                 <th
                   className="govuk-table__header text-align-right"
-                  scope="cor"
+                  scope="col"
                 >
                   <button
                     className="selectedOperators-button button-link govuk-!-margin-left-2"
@@ -1259,6 +1264,7 @@ exports[`pages searchOperator should render the search input and a list of selec
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue=""
               id="search-input"
               name="searchText"
               type="text"
@@ -1345,7 +1351,7 @@ exports[`pages searchOperator should render the search input and a list of selec
             </fieldset>
           </div>
           <table
-            className="border-collaps width-100"
+            className="border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -1357,7 +1363,7 @@ exports[`pages searchOperator should render the search input and a list of selec
             >
               <tr>
                 <th
-                  className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                   scope="col"
                 >
                   3
@@ -1365,7 +1371,7 @@ exports[`pages searchOperator should render the search input and a list of selec
                 </th>
                 <th
                   className="govuk-table__header text-align-right"
-                  scope="cor"
+                  scope="col"
                 >
                   <button
                     className="selectedOperators-button button-link govuk-!-margin-left-2"
@@ -1544,6 +1550,7 @@ exports[`pages searchOperator should render the search input and search results 
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue="blac"
               id="search-input"
               name="searchText"
               type="text"
@@ -1672,7 +1679,7 @@ exports[`pages searchOperator should render the search input and search results 
             </fieldset>
           </div>
           <table
-            className="border-collaps width-100"
+            className="border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -1684,7 +1691,7 @@ exports[`pages searchOperator should render the search input and search results 
             >
               <tr>
                 <th
-                  className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                   scope="col"
                 >
                   0
@@ -1692,7 +1699,7 @@ exports[`pages searchOperator should render the search input and search results 
                 </th>
                 <th
                   className="govuk-table__header text-align-right"
-                  scope="cor"
+                  scope="col"
                 >
                   <button
                     className="selectedOperators-button button-link govuk-!-margin-left-2"
@@ -1774,6 +1781,7 @@ exports[`pages searchOperator should render the search input, search results and
             </label>
             <input
               className="govuk-input govuk-!-width-three-quarters"
+              defaultValue="warri"
               id="search-input"
               name="searchText"
               type="text"
@@ -1926,7 +1934,7 @@ exports[`pages searchOperator should render the search input, search results and
             </fieldset>
           </div>
           <table
-            className="border-collaps width-100"
+            className="border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -1938,7 +1946,7 @@ exports[`pages searchOperator should render the search input, search results and
             >
               <tr>
                 <th
-                  className="left-padding govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                   scope="col"
                 >
                   3
@@ -1946,7 +1954,7 @@ exports[`pages searchOperator should render the search input, search results and
                 </th>
                 <th
                   className="govuk-table__header text-align-right"
-                  scope="cor"
+                  scope="col"
                 >
                   <button
                     className="selectedOperators-button button-link govuk-!-margin-left-2"

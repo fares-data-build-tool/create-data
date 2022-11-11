@@ -7,7 +7,6 @@ import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { FromDb } from 'fdbt-types/matchingJsonTypes';
 import {
     GS_OPERATOR_GROUP_ATTRIBUTE,
     MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
@@ -16,6 +15,7 @@ import {
 } from '../constants/attributes';
 import OperatorGroupCard from '../components/OperatorGroupCard';
 import ErrorSummary from '../components/ErrorSummary';
+import { FromDb } from '../interfaces/matchingJsonTypes';
 
 const title = 'Operator Groups - Create Fares Data Service';
 const description = 'View and edit your operator groups.';
@@ -74,41 +74,47 @@ const ViewOperatorGroups = ({
 
                     <div>
                         {!operatorGroups.length ? (
-                            <NoOperatorGroups />
+                            <>
+                                <NoOperatorGroups />
+                                <a
+                                    className="govuk-button govuk-button"
+                                    data-module="govuk-button"
+                                    href="/searchOperators"
+                                    aria-disabled
+                                >
+                                    Add an operator group
+                                </a>
+                            </>
                         ) : (
-                            <div className="card-row">
-                                {operatorGroups.map((operatorGroup, index) => (
-                                    <>
-                                        <OperatorGroupCard
-                                            index={index}
-                                            operatorGroup={operatorGroup}
-                                            key={operatorGroup.id.toString()}
-                                            defaultChecked={false}
-                                            deleteActionHandler={deleteActionHandler}
-                                        />
-
-                                        {popUpState && (
-                                            <DeleteConfirmationPopup
-                                                entityName={popUpState.operatorGroupName}
-                                                deleteUrl={buildDeleteUrl(popUpState.operatorGroupId, csrfToken)}
-                                                cancelActionHandler={cancelActionHandler}
+                            <div>
+                                <div className="card-row">
+                                    {operatorGroups.map((operatorGroup, index) => (
+                                        <>
+                                            <OperatorGroupCard
+                                                index={index}
+                                                operatorGroup={operatorGroup}
+                                                key={operatorGroup.id.toString()}
+                                                defaultChecked={false}
+                                                deleteActionHandler={deleteActionHandler}
                                             />
-                                        )}
-                                    </>
-                                ))}
+                                        </>
+                                    ))}
+                                </div>
+                                <a className="govuk-button" data-module="govuk-button" href="/searchOperators">
+                                    Add an operator group
+                                </a>
                             </div>
                         )}
-
-                        <a
-                            className="govuk-button govuk-button"
-                            data-module="govuk-button"
-                            href="/searchOperators"
-                            aria-disabled
-                        >
-                            Add a operator group
-                        </a>
                     </div>
                 </div>
+
+                {popUpState && (
+                    <DeleteConfirmationPopup
+                        entityName={popUpState.operatorGroupName}
+                        deleteUrl={buildDeleteUrl(popUpState.operatorGroupId, csrfToken)}
+                        cancelActionHandler={cancelActionHandler}
+                    />
+                )}
             </div>
         </BaseLayout>
     );

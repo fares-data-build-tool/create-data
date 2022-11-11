@@ -3,10 +3,11 @@ import React, { ReactElement, useState } from 'react';
 import WarningSummary from './WarningSummary';
 import FormElementWrapper from './FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { BasicService, ErrorInfo, Stop, FareStage, UserFareStages } from '../interfaces';
+import { BasicService, ErrorInfo, FareStage, UserFareStages } from '../interfaces';
 import CsrfForm from './CsrfForm';
 import { formatStopName } from '../utils';
 import ErrorSummary from './ErrorSummary';
+import { Stop } from '../interfaces/matchingJsonTypes';
 
 interface MatchingBaseProps {
     userFareStages: UserFareStages;

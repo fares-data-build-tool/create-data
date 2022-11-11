@@ -10,8 +10,8 @@ import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils';
 import { getOperatorDetails, getOperatorDetailsFromNocTable } from '../data/auroradb';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import SubNavigation from '../layout/SubNavigation';
-import { OperatorDetails } from 'fdbt-types/matchingJsonTypes';
 import InfoPopup from '../../src/components/InfoPopup';
+import { OperatorDetails } from '../../src/interfaces/matchingJsonTypes';
 
 const title = 'Manage Operator Details - Create Fares Data Service';
 const description = 'Manage Operator Details End page of the Create Fares Data Service';

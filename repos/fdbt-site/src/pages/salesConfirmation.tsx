@@ -2,12 +2,7 @@ import React, { ReactElement } from 'react';
 import { isArray, upperFirst } from 'lodash';
 import moment from 'moment';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
-import {
-    NextPageContextWithSession,
-    SalesOfferPackage,
-    ProductWithSalesOfferPackages,
-    ConfirmationElement,
-} from '../interfaces';
+import { NextPageContextWithSession, ProductWithSalesOfferPackages, ConfirmationElement } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
@@ -16,6 +11,7 @@ import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } fr
 import { formatSOPArray, getCsrfToken } from '../utils';
 import { ticketFormatsList } from './managePurchaseMethod';
 import { GetServerSidePropsResult } from 'next';
+import { SalesOfferPackage } from '../interfaces/matchingJsonTypes';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';

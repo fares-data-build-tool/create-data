@@ -6,13 +6,13 @@ import {
     ErrorInfo,
     NextPageContextWithSession,
     RadioConditionalInputFieldset,
-    ReturnPeriodValidity,
     ReturnPeriodValidityWithErrors,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { RETURN_VALIDITY_ATTRIBUTE } from '../constants/attributes';
 import { getCsrfToken, getErrorsByIds } from '../utils';
+import { ReturnPeriodValidity } from '../interfaces/matchingJsonTypes';
 
 const title = 'Return Validity - Create Fares Data Service';
 const description = 'Return Validity page of the Create Fares Data Service';

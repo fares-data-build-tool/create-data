@@ -18,7 +18,7 @@ import {
     sortingWithoutSequenceNumbers,
 } from '../../../src/utils/apiUtils/matching';
 import * as s3 from '../../../src/data/s3';
-import { RawJourneyPattern } from '../../../fdbt-types/dbTypes';
+import { RawJourneyPattern } from '../../../src/interfaces/dbTypes';
 
 describe('matching', () => {
     describe('getMatchingProps', () => {
