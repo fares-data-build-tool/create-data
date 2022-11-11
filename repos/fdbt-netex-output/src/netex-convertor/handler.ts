@@ -129,8 +129,9 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
     let s3FileName = '';
 
     try {
-        s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
         const ticket = await s3.fetchDataFromS3<Ticket>(event);
+
+        s3FileName = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
 
         const { type } = ticket;
 

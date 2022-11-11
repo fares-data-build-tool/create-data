@@ -11,7 +11,6 @@ import {
     InputMethodInfo,
     MultiOperatorInfo,
     MultiOperatorInfoWithErrors,
-    MultiOperatorMultipleServicesTicket,
     MultipleOperatorsAttribute,
     MultipleOperatorsAttributeWithErrors,
     PassengerType,
@@ -156,11 +155,3 @@ export const isProductInfo = (
 export const isPeriodExpiry = (
     periodExpiryAttribute: PeriodExpiry | ErrorInfo[] | undefined,
 ): periodExpiryAttribute is PeriodExpiry => !!periodExpiryAttribute && 'productValidity' in periodExpiryAttribute;
-
-export const isMultiOperatorMultipleServicesTicket = (
-    ticket: Ticket | WithIds<Ticket>,
-): ticket is MultiOperatorMultipleServicesTicket =>
-    !!(ticket as MultiOperatorMultipleServicesTicket).nocCode &&
-    (ticket as MultiOperatorMultipleServicesTicket).additionalOperators &&
-    (ticket as MultiOperatorMultipleServicesTicket).additionalOperators.length > 0 &&
-    'selectedServices' in ticket;

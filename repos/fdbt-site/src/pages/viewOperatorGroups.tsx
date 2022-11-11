@@ -74,47 +74,41 @@ const ViewOperatorGroups = ({
 
                     <div>
                         {!operatorGroups.length ? (
-                            <>
-                                <NoOperatorGroups />
-                                <a
-                                    className="govuk-button govuk-button"
-                                    data-module="govuk-button"
-                                    href="/searchOperators"
-                                    aria-disabled
-                                >
-                                    Add an operator group
-                                </a>
-                            </>
+                            <NoOperatorGroups />
                         ) : (
-                            <div>
-                                <div className="card-row">
-                                    {operatorGroups.map((operatorGroup, index) => (
-                                        <>
-                                            <OperatorGroupCard
-                                                index={index}
-                                                operatorGroup={operatorGroup}
-                                                key={operatorGroup.id.toString()}
-                                                defaultChecked={false}
-                                                deleteActionHandler={deleteActionHandler}
+                            <div className="card-row">
+                                {operatorGroups.map((operatorGroup, index) => (
+                                    <>
+                                        <OperatorGroupCard
+                                            index={index}
+                                            operatorGroup={operatorGroup}
+                                            key={operatorGroup.id.toString()}
+                                            defaultChecked={false}
+                                            deleteActionHandler={deleteActionHandler}
+                                        />
+
+                                        {popUpState && (
+                                            <DeleteConfirmationPopup
+                                                entityName={popUpState.operatorGroupName}
+                                                deleteUrl={buildDeleteUrl(popUpState.operatorGroupId, csrfToken)}
+                                                cancelActionHandler={cancelActionHandler}
                                             />
-                                        </>
-                                    ))}
-                                </div>
-                                <a className="govuk-button" data-module="govuk-button" href="/searchOperators">
-                                    Add an operator group
-                                </a>
+                                        )}
+                                    </>
+                                ))}
                             </div>
                         )}
+
+                        <a
+                            className="govuk-button govuk-button"
+                            data-module="govuk-button"
+                            href="/searchOperators"
+                            aria-disabled
+                        >
+                            Add a operator group
+                        </a>
                     </div>
                 </div>
-
-                {popUpState && (
-                    <DeleteConfirmationPopup
-                        entityName={popUpState.operatorGroupName}
-                        deleteUrl={buildDeleteUrl(popUpState.operatorGroupId, csrfToken)}
-                        cancelActionHandler={cancelActionHandler}
-                    />
-                )}
             </div>
         </BaseLayout>
     );

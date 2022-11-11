@@ -377,8 +377,7 @@ describe('netexConvertorHandler', () => {
             await netexConvertorHandler(event);
         } catch {
             const expectedObject = {
-                Message:
-                    'There was an error when converting the NeTEx file: MCTR/exports/MCTR_2022_09_30/MCTRd00f5a99_1664555550706.json',
+                Message: 'There was an error when converting the NeTEx file: ',
                 MessageAttributes: {
                     NewStateValue: {
                         DataType: 'String',

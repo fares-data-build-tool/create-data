@@ -315,7 +315,7 @@ export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServi
         nocCode: string;
         selectedServices: SelectedService[];
     }[];
-    operatorGroupId: number;
+    operatorGroupId?: number;
 }
 
 // Matching Data (created by the user on the site)
