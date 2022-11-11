@@ -7,7 +7,7 @@ import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
-import { ErrorInfo, NextPageContextWithSession, CarnetProductInfo } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ExpirySelector from '../components/ExpirySelector';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormErrorBlock, FormGroupWrapper } from '../components/FormElementWrapper';
@@ -15,6 +15,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
 import { isFareType, isPassengerType, isWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
+import { CarnetProductInfo } from '../interfaces/matchingJsonTypes';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details entry page of the Create Fares Data Service';

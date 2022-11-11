@@ -1,38 +1,42 @@
 import awsParamStore from 'aws-param-store';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
-import { FromDb, OperatorDetails, ServiceWithNocCode } from 'fdbt-types/matchingJsonTypes';
 import { INTERNAL_NOC } from '../constants';
 import {
-    CompanionInfo,
-    GroupPassengerType,
     Operator,
     OperatorGroup,
-    PassengerType,
     PremadeTimeRestriction,
-    SalesOfferPackage,
     ServiceType,
     ServiceCount,
-    SinglePassengerType,
-    Stop,
-    GroupPassengerTypeDb,
-    GroupPassengerTypeReference,
-    FullGroupPassengerType,
     MyFaresService,
 } from '../interfaces';
 import logger from '../utils/logger';
-import {
-    DbTimeRestriction,
-    RawMyFaresProduct,
-    MyFaresOtherProduct,
-    RawSalesOfferPackage,
-    RawService,
-    MyFaresProduct,
-    RawJourneyPattern,
-    DbProduct,
-} from 'fdbt-types/dbTypes';
 import { convertDateFormat } from '../utils';
 import _ from 'lodash';
+import {
+    RawService,
+    RawJourneyPattern,
+    RawSalesOfferPackage,
+    DbTimeRestriction,
+    PassengerType,
+    GroupPassengerType,
+    GroupPassengerTypeReference,
+    SinglePassengerType,
+    GroupPassengerTypeDb,
+    FullGroupPassengerType,
+    MyFaresProduct,
+    RawMyFaresProduct,
+    MyFaresOtherProduct,
+    DbProduct,
+} from '../interfaces/dbTypes';
+import {
+    ServiceWithNocCode,
+    Stop,
+    FromDb,
+    SalesOfferPackage,
+    CompanionInfo,
+    OperatorDetails,
+} from '../interfaces/matchingJsonTypes';
 
 interface ServiceQueryData {
     operatorShortName: string;

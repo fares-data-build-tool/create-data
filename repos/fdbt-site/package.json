@@ -4,6 +4,7 @@
     "description": "",
     "scripts": {
         "test": "jest",
+        "tsc": "./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage --watchAll",
         "test:ci": "CI=true jest --silent -w 1 --forceExit",
@@ -55,7 +56,6 @@
         "express": "^4.17.1",
         "express-session": "^1.17.1",
         "express-winston": "^4.0.3",
-        "fdbt-types": "file:./fdbt-types",
         "formidable": "^1.2.2",
         "govuk-frontend": "^3.13.0",
         "helmet": "^3.22.0",

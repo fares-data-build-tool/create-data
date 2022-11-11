@@ -1,12 +1,9 @@
-import { FlatFareTicket, PeriodMultipleServicesTicket, Ticket, WithIds } from 'fdbt-types/matchingJsonTypes';
 import {
-    CarnetProductInfo,
     ErrorInfo,
     FareStagesAttribute,
     FareStagesAttributeWithErrors,
     FareType,
     FareTypeWithErrors,
-    GeoZoneTicket,
     InputCheck,
     InputMethodInfo,
     MultiOperatorInfo,
@@ -14,16 +11,12 @@ import {
     MultiOperatorMultipleServicesTicket,
     MultipleOperatorsAttribute,
     MultipleOperatorsAttributeWithErrors,
-    PassengerType,
     PassengerTypeWithErrors,
-    PeriodExpiry,
     PeriodTicket,
-    PointToPointTicket,
     ProductData,
     ProductInfo,
     ProductInfoWithErrors,
     ProductWithSalesOfferPackages,
-    SalesOfferPackage,
     SelectSalesOfferPackageWithError,
     Service,
     ServiceWithErrors,
@@ -34,6 +27,18 @@ import {
     WithErrors,
 } from '.';
 import { validFareTypes } from '../constants';
+import { PassengerType } from './dbTypes';
+import {
+    Ticket,
+    PeriodMultipleServicesTicket,
+    FlatFareTicket,
+    PointToPointTicket,
+    WithIds,
+    GeoZoneTicket,
+    SalesOfferPackage,
+    CarnetProductInfo,
+    PeriodExpiry,
+} from './matchingJsonTypes';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 

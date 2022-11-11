@@ -7,7 +7,6 @@ import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { FromDb } from 'fdbt-types/matchingJsonTypes';
 import {
     GS_OPERATOR_GROUP_ATTRIBUTE,
     MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
@@ -16,6 +15,7 @@ import {
 } from '../constants/attributes';
 import OperatorGroupCard from '../components/OperatorGroupCard';
 import ErrorSummary from '../components/ErrorSummary';
+import { FromDb } from '../interfaces/matchingJsonTypes';
 
 const title = 'Operator Groups - Create Fares Data Service';
 const description = 'View and edit your operator groups.';

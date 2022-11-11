@@ -8,7 +8,7 @@ import { getMockContext } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
 import { ErrorInfo, MultiOperatorInfo } from '../../src/interfaces';
 import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
-import { ServiceWithNocCode } from 'fdbt-types/matchingJsonTypes';
+import { ServiceWithNocCode } from '../../src/interfaces/matchingJsonTypes';
 
 describe('pages', () => {
     describe('multipleOperatorsServiceList', () => {

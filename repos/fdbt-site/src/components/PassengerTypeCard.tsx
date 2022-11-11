@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { FullGroupPassengerType, SinglePassengerType } from '../interfaces';
+import { FullGroupPassengerType, SinglePassengerType } from '../interfaces/dbTypes';
 import { getProofDocumentsString, sentenceCaseString } from '../utils';
 
 interface PassengerTypeCardProps {

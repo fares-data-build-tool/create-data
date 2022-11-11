@@ -2,8 +2,9 @@ import { NextApiResponse } from 'next';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
-import { ErrorInfo, NextApiRequestWithSession, PeriodExpiry } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getFareDayEnd } from '../../data/auroradb';
+import { PeriodExpiry } from '../../interfaces/matchingJsonTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
