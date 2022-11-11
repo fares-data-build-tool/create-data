@@ -40,7 +40,6 @@ describe('The my fares other products pages', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
-        completeMyFaresOtherProductsPages();
         editServicesOtherProductsPage()
     });
 });

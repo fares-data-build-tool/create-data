@@ -277,6 +277,17 @@ export const randomlyDetermineUserType = (): void => {
     continueButtonClick();
 };
 
+export const randomlyDeterminePurchaseType = (): void => {
+    cy.get('[class=govuk-checkboxes__input]')
+        .its('length')
+        .then((length) => {
+            const randomNumber = getRandomNumber(0, length - 1);
+            cy.get('[class=govuk-checkboxes__input]').eq(randomNumber).click();
+        });
+
+    continueButtonClick();
+};
+
 export const randomlyDecideTimeRestrictions = (): void => {
     if (getRandomNumber(0, 1) === 0) {
         clickElementById('valid-days-not-required');

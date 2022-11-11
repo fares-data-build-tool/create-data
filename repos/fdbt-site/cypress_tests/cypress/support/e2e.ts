@@ -124,7 +124,7 @@ const addTestPurchaseMethods = (): void => {
     });
 };
 
-const addTestTimeRestrictions = (): void => {
+export const addTestTimeRestrictions = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfTimeRestrictions = Number(element.attr('data-card-count'));
         cy.log(`There are ${numberOfTimeRestrictions} time restrictions`);

@@ -23,6 +23,7 @@ import {
     clickElementByText,
     retryRouteChoiceOnReturnProductError,
     clearDates,
+    randomlyDeterminePurchaseType,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -359,17 +360,35 @@ export const editServicesOtherProductsPage = (): void => {
         getElementById('product-name').should('not.be.empty');
         getElementById('product-status').should('not.be.empty');
         getElementById('fare-type').should('not.be.empty');
-        clickElementById('Services-link')
+        clickElementById('Services-link');
         randomlyChooseAndSelectServices();
         continueButtonClick();
-        clickElementById('Passenger-type-link')
-        randomlyDetermineUserType()
-        clickElementById('Start-date-link')
-        clearDates()
-        completeProductDateInformationPage()
-        clickElementById('End-date-link')
-        clearDates()
-        completeProductDateInformationPage()
+        clickElementById('Passenger-type-link');
+        randomlyDetermineUserType();
+        clickElementById('Start-date-link');
+        clearDates();
+        completeProductDateInformationPage();
+        clickElementById('End-date-link');
+        clearDates();
+        completeProductDateInformationPage();
+        clickElementById('Time-restriction-link');
+        randomlyDecideTimeRestrictions();
+        clickElementById('Purchase-methods-link');
+        randomlyDeterminePurchaseType();
+        clickElementById('edit-product-name');
+        let oldProductName;
+        cy.get('.popup')
+            .find('[id=product-name]')
+            .should(($input) => {
+                oldProductName = $input.val();
+            });
+        const newProductName = Math.random().toString(36).substring(2, 7);
+        if (oldProductName === newProductName) {
+            clickElementByText('Cancel');
+        } else {
+            cy.get('.popup').find('[id=product-name]').clear().type(newProductName);
+            clickElementByText('Save');
+        }
         clickElementByText('Back');
     }
 };

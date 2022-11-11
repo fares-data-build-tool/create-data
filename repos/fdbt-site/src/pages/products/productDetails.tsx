@@ -94,6 +94,7 @@ const ProductDetails = ({
                 </h1>
 
                 <button
+                    id="edit-product-name"
                     className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
                     onClick={() => setEditNamePopupOpen(true)}
                 >
