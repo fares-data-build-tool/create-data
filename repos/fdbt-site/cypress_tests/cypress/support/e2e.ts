@@ -1,4 +1,4 @@
-import { clickElementById, clickElementByText, getHomePage } from './helpers';
+import { clickElementById, clickElementByText, continueButtonClick, getHomePage } from './helpers';
 import { enterPassengerTypeDetails, addGroupPassengerType } from './passengerTypes';
 import { addPurchaseMethod } from './purchaseMethods';
 import { addTimeRestriction } from './timeRestrictions';
@@ -15,6 +15,8 @@ before(() => {
     addTestTimeRestrictions();
     clickElementByText('Fare day end');
     addTestFareDayEnd();
+    clickElementByText('Operator groups');
+    addTestOperatorGroups();
     cy.log('Global Settings set up for BLAC');
 
     // Disabling the below, as schemes are currently not fully supported
@@ -45,6 +47,17 @@ const addTestOperatorDetails = (): void => {
     clickElementById('county').clear().type('Home County');
     clickElementById('postcode').clear().type('AW23 8LE');
     clickElementByText('Save');
+};
+
+const addTestOperatorGroups = (): void => {
+    clickElementByText('Add an operator group');
+    clickElementById('search-input').clear().type('bus');
+    clickElementById('search-button')
+    cy.get('[class=govuk-checkboxes__item]').each((checkbox) => {
+        cy.wrap(checkbox).click();
+    });
+    clickElementById('operator-group-name').clear().type('test');
+    continueButtonClick()
 };
 
 const addTestFareDayEnd = (): void => {

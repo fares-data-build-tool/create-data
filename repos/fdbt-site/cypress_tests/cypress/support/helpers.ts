@@ -522,7 +522,7 @@ export const completeOperatorSearch = (isMultiService: boolean): void => {
         .should('match', /\/(searchOperators|reuseOperatorGroup)$/) // This is bassicly a wait to ensure we're on the correct page
         .then((url: string) => {
             if (url.includes('reuseOperatorGroup')) {
-                clickElementById('reuse-operator-group-no');
+                clickElementById('test-radio');
                 continueButtonClick();
             }
             getElementById(`search-input`).type('north');

@@ -363,7 +363,6 @@ export const editServicesOtherProductsPage = (): void => {
         clickElementById('selected-services-link');
         randomlyChooseAndSelectServices();
         cy.get('@input').then((input) => {
-            cy.log('Input :' + input); // should work just fine
             continueButtonClick();
             cy.get('[id=selected-services]').should('have.text', input.toString().split(',').join(', '));
         });
