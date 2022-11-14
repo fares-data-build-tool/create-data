@@ -362,8 +362,13 @@ export const editServicesOtherProductsPage = (): void => {
     if (cy.get('.govuk-grid-column-two-thirds').find('[id=selected-services-link]')) {
         clickElementById('selected-services-link');
         randomlyChooseAndSelectServices();
-        continueButtonClick();
+        cy.get('@input').then((input) => {
+            cy.log('Input :' + input); // should work just fine
+            continueButtonClick();
+            cy.get('[id=selected-services]').should('have.text', input.toString().split(',').join(', '));
+        });
     }
+
     clickElementByText('Back');
 };
 
@@ -420,7 +425,7 @@ export const editEndDateOtherProductsPage = () => {
     clickElementById('end-date-link');
     clearDates();
     let dateInput = completeProductDateInformationPage();
-    cy.get('[id=end-date]').should('have.text', dateInput.endDate || '-' );
+    cy.get('[id=end-date]').should('have.text', dateInput.endDate || '-');
     clickElementByText('Back');
 };
 

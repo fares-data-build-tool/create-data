@@ -321,17 +321,49 @@ export const randomlyDecideTermRestrictions = (): void => {
     continueButtonClick();
 };
 
-export const clickAllCheckboxes = (): void => {
-    cy.get('[class=govuk-checkboxes__input]').each((checkbox) => {
+export const clickAllCheckboxes = (): string[] => {
+    const input: string[] = [];
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
         cy.wrap(checkbox).click();
+
+        const name = checkbox.attr('name');
+        // console.log(name.split('#')[0]);
+        input[index] = name.split('#')[0];
+        cy.wrap(input).as('input');
+    });
+    return input;
+};
+
+export const getAllCheckboxesData = (): void => {
+    const input: string[] = [];
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
+        cy.wrap(checkbox).click();
+        const name = checkbox.attr('name');
+        input[index] = name.split('#')[0];
+        cy.wrap(input).as('input');
+    });
+};
+
+export const getAllButFirstCheckbox = (): void => {
+    const input: string[] = [];
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
+        if (index > 0) {
+            const name = checkbox.attr('name');
+            input[index] = name.split('#')[0];
+            cy.wrap(input).as('input');
+        }
     });
 };
 
 export const clickSomeCheckboxes = (): void => {
+    const input: string[] = [];
     cy.get('[class=govuk-checkboxes__input]').each((checkbox, index, checkboxes) => {
         const numberOfCheckboxes = checkboxes.length;
         if (numberOfCheckboxes === 1 || index !== numberOfCheckboxes - 1) {
             cy.wrap(checkbox).click();
+            const name = checkbox.attr('name');
+            input[index] = name.split('#')[0];
+            cy.wrap(input).as('input');
         }
     });
 };
@@ -383,6 +415,7 @@ export const randomlyChooseAndSelectServices = (): void => {
         case 1: {
             cy.log('Click Select All button and continue');
             clickElementById('select-all-button');
+            getAllCheckboxesData();
             break;
         }
         case 2: {
@@ -398,6 +431,7 @@ export const randomlyChooseAndSelectServices = (): void => {
         case 4: {
             cy.log('Click Select All button and then click first checkbox to deselect, then continue');
             clickElementById('select-all-button');
+            getAllButFirstCheckbox();
             clickFirstCheckboxIfMultiple();
             break;
         }
