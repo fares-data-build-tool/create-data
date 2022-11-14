@@ -93,20 +93,37 @@ describe('myfares pages', () => {
                     endDate={'18/10/2121'}
                     productDetailsElements={[
                         {
+                            id: 'services',
                             name: 'Service',
                             content: ['19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)'],
                         },
-                        { name: 'Passenger type', content: ['Adult Test'], editLink: '/selectPassengerType' },
-                        { name: 'Time restriction', content: ['N/A'] },
-                        { name: 'Quantity in bundle', content: ['2'] },
-                        { name: 'Carnet expiry', content: ['22 year(s)'] },
                         {
+                            id: 'passenger-type',
+                            name: 'Passenger type',
+                            content: ['Adult Test'],
+                            editLink: '/selectPassengerType',
+                        },
+                        { id: 'time-restriction', name: 'Time restriction', content: ['N/A'] },
+                        { id: 'quantity-in-bundle', name: 'Quantity in bundle', content: ['2'] },
+                        { id: 'carnet-expiry', name: 'Carnet expiry', content: ['22 year(s)'] },
+                        {
+                            id: 'purchase-methods',
                             name: 'Purchase methods',
                             content: ['SOP Test 1', 'SOP Test 2'],
                             editLink: '/selectPurchaseMethods',
                         },
-                        { name: 'Start date', content: ['18/10/2021'], editLink: '/productDateInformation' },
-                        { name: 'End date', content: ['18/10/2121'], editLink: '/productDateInformation' },
+                        {
+                            id: 'start-date',
+                            name: 'Start date',
+                            content: ['18/10/2021'],
+                            editLink: '/productDateInformation',
+                        },
+                        {
+                            id: 'end-date',
+                            name: 'End date',
+                            content: ['18/10/2121'],
+                            editLink: '/productDateInformation',
+                        },
                     ]}
                     productId="2"
                     copiedProduct
@@ -129,16 +146,32 @@ describe('myfares pages', () => {
                     endDate={'18/10/2121'}
                     productDetailsElements={[
                         {
+                            id: 'services',
                             name: 'Service',
                             content: ['19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)'],
                         },
-                        { name: 'Passenger type', content: ['Adult Test'], editLink: '/selectPassengerType' },
-                        { name: 'Time restriction', content: ['N/A'] },
-                        { name: 'Quantity in bundle', content: ['2'] },
-                        { name: 'Carnet expiry', content: ['22 year(s)'] },
-                        { name: 'Purchase methods', content: ['SOP Test 1', 'SOP Test 2'] },
-                        { name: 'Start date', content: ['18/10/2021'], editLink: '/productDateInformation' },
-                        { name: 'End date', content: ['18/10/2121'], editLink: '/productDateInformation' },
+                        {
+                            id: 'passenger-type',
+                            name: 'Passenger type',
+                            content: ['Adult Test'],
+                            editLink: '/selectPassengerType',
+                        },
+                        { id: 'time-restriction', name: 'Time restriction', content: ['N/A'] },
+                        { id: 'quantity-in-bundle', name: 'Quantity in bundle', content: ['2'] },
+                        { id: 'carnet-expiry', name: 'Carnet expiry', content: ['22 year(s)'] },
+                        { id: 'purchase-methods', name: 'Purchase methods', content: ['SOP Test 1', 'SOP Test 2'] },
+                        {
+                            id: 'start-date',
+                            name: 'Start date',
+                            content: ['18/10/2021'],
+                            editLink: '/productDateInformation',
+                        },
+                        {
+                            id: 'end-date',
+                            name: 'End date',
+                            content: ['18/10/2121'],
+                            editLink: '/productDateInformation',
+                        },
                     ]}
                     productId="2"
                     copiedProduct={false}
@@ -161,20 +194,37 @@ describe('myfares pages', () => {
                     endDate={'18/10/2121'}
                     productDetailsElements={[
                         {
+                            id: 'services',
                             name: 'Service',
                             content: ['19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)'],
                         },
-                        { name: 'Passenger type', content: ['Adult Test'], editLink: '/selectPassengerType' },
-                        { name: 'Time restriction', content: ['N/A'] },
-                        { name: 'Quantity in bundle', content: ['2'] },
-                        { name: 'Carnet expiry', content: ['22 year(s)'] },
                         {
+                            id: 'passenger-type',
+                            name: 'Passenger type',
+                            content: ['Adult Test'],
+                            editLink: '/selectPassengerType',
+                        },
+                        { id: 'time-restriction', name: 'Time restriction', content: ['N/A'] },
+                        { id: 'quantity-in-bundle', name: 'Quantity in bundle', content: ['2'] },
+                        { id: 'carnet-expiry', name: 'Carnet expiry', content: ['22 year(s)'] },
+                        {
+                            id: 'purchase-methods',
                             name: 'Purchase methods',
                             content: ['SOP Test 1', 'SOP Test 2'],
                             editLink: '/selectPurchaseMethods',
                         },
-                        { name: 'Start date', content: ['18/10/2021'], editLink: '/productDateInformation' },
-                        { name: 'End date', content: ['18/10/2121'], editLink: '/productDateInformation' },
+                        {
+                            id: 'start-date',
+                            name: 'Start date',
+                            content: ['18/10/2021'],
+                            editLink: '/productDateInformation',
+                        },
+                        {
+                            id: 'end-date',
+                            name: 'End date',
+                            content: ['18/10/2121'],
+                            editLink: '/productDateInformation',
+                        },
                     ]}
                     productId="2"
                     copiedProduct
