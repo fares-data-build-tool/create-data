@@ -355,103 +355,89 @@ export const completeMyFaresOtherProductsPages = (): void => {
 };
 
 export const editServicesOtherProductsPage = (): void => {
-    for (let i = 0; i < 3; i++) {
-        clickRandomElementInTable('govuk-table__body', 'product-link');
-        getElementById('product-name').should('not.be.empty');
-        getElementById('product-status').should('not.be.empty');
-        getElementById('fare-type').should('not.be.empty');
-        if (cy.get('.govuk-grid-column-two-thirds').find('[id=Services-link]')) {
-            clickElementById('Services-link');
-            randomlyChooseAndSelectServices();
-            continueButtonClick();
-        }
-        clickElementByText('Back');
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    if (cy.get('.govuk-grid-column-two-thirds').find('[id=Services-link]')) {
+        clickElementById('Services-link');
+        randomlyChooseAndSelectServices();
+        continueButtonClick();
     }
+    clickElementByText('Back');
 };
 
 export const editProductNameOtherProductsPage = () => {
-    for (let i = 0; i < 3; i++) {
-        clickRandomElementInTable('govuk-table__body', 'product-link');
-        getElementById('product-name').should('not.be.empty');
-        getElementById('product-status').should('not.be.empty');
-        getElementById('fare-type').should('not.be.empty');
-        clickElementById('edit-product-name');
-        let oldProductName;
-        cy.get('.popup')
-            .find('[id=product-name]')
-            .should(($input) => {
-                oldProductName = $input.val();
-            });
-        const newProductName = Math.random().toString(36).substring(2, 7);
-        if (oldProductName === newProductName) {
-            clickElementByText('Cancel');
-        } else {
-            cy.get('.popup').find('[id=product-name]').clear().type(newProductName);
-            clickElementByText('Save');
-        }
-        cy.get('[id=product-name-header]').should('have.text', `${newProductName}`);
-        clickElementByText('Back');
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    clickElementById('edit-product-name');
+    let oldProductName;
+    cy.get('.popup')
+        .find('[id=product-name]')
+        .should(($input) => {
+            oldProductName = $input.val();
+        });
+    const newProductName = Math.random().toString(36).substring(2, 7);
+    if (oldProductName === newProductName) {
+        clickElementByText('Cancel');
+    } else {
+        cy.get('.popup').find('[id=product-name]').clear().type(newProductName);
+        clickElementByText('Save');
     }
+    cy.get('[id=product-name-header]').should('have.text', `${newProductName}`);
+    clickElementByText('Back');
 };
 
 export const editPassengerTypeOtherProductsPage = () => {
-    for (let i = 0; i < 3; i++) {
-        clickRandomElementInTable('govuk-table__body', 'product-link');
-        getElementById('product-name').should('not.be.empty');
-        getElementById('product-status').should('not.be.empty');
-        getElementById('fare-type').should('not.be.empty');
-        clickElementById('Passenger-type-link');
-        randomlyDetermineUserType();
-        clickElementByText('Back');
-    }
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    clickElementById('Passenger-type-link');
+    randomlyDetermineUserType();
+    clickElementByText('Back');
 };
 
 export const editStartDateOtherProductsPage = () => {
-    for (let i = 0; i < 3; i++) {
-        clickRandomElementInTable('govuk-table__body', 'product-link');
-        getElementById('product-name').should('not.be.empty');
-        getElementById('product-status').should('not.be.empty');
-        getElementById('fare-type').should('not.be.empty');
-        clickElementById('Start-date-link');
-        clearDates();
-        completeProductDateInformationPage();
-        clickElementByText('Back');
-    }
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    clickElementById('Start-date-link');
+    clearDates();
+    completeProductDateInformationPage();
+    clickElementByText('Back');
 };
 
 export const editEndDateOtherProductsPage = () => {
-    for (let i = 0; i < 3; i++) {
-        clickRandomElementInTable('govuk-table__body', 'product-link');
-        getElementById('product-name').should('not.be.empty');
-        getElementById('product-status').should('not.be.empty');
-        getElementById('fare-type').should('not.be.empty');
-        clickElementById('End-date-link');
-        clearDates();
-        completeProductDateInformationPage();
-        clickElementByText('Back');
-    }
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    clickElementById('End-date-link');
+    clearDates();
+    completeProductDateInformationPage();
+    clickElementByText('Back');
 };
 
 export const editTimeRestrictionOtherProductsPage = () => {
-    for (let i = 0; i < 3; i++) {
-        clickRandomElementInTable('govuk-table__body', 'product-link');
-        getElementById('product-name').should('not.be.empty');
-        getElementById('product-status').should('not.be.empty');
-        getElementById('fare-type').should('not.be.empty');
-        clickElementById('Time-restriction-link');
-        randomlyDecideTimeRestrictions();
-        clickElementByText('Back');
-    }
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    clickElementById('Time-restriction-link');
+    randomlyDecideTimeRestrictions();
+    clickElementByText('Back');
 };
 
 export const editPurchaseMethodOtherProductsPage = () => {
-    for (let i = 0; i < 3; i++) {
-        clickRandomElementInTable('govuk-table__body', 'product-link');
-        getElementById('product-name').should('not.be.empty');
-        getElementById('product-status').should('not.be.empty');
-        getElementById('fare-type').should('not.be.empty');
-        clickElementById('Purchase-methods-link');
-        randomlyDeterminePurchaseType();
-        clickElementByText('Back');
-    }
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    clickElementById('Purchase-methods-link');
+    randomlyDeterminePurchaseType();
+    clickElementByText('Back');
 };
