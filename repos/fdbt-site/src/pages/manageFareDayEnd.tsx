@@ -26,17 +26,9 @@ type ManageFareDayEndProps = {
     fareDayEnd: string;
     referer: string | null;
     saved: boolean;
-    isDevOrTest: boolean;
 };
 
-const ManageFareDayEnd = ({
-    errors,
-    csrfToken,
-    fareDayEnd,
-    referer,
-    saved,
-    isDevOrTest,
-}: ManageFareDayEndProps): ReactElement => {
+const ManageFareDayEnd = ({ errors, csrfToken, fareDayEnd, referer, saved }: ManageFareDayEndProps): ReactElement => {
     const [showSaved, setShowSaved] = useState(saved);
 
     return (
@@ -44,7 +36,7 @@ const ManageFareDayEnd = ({
             <div className="govuk-width-container">
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
-                        <SubNavigation isDevOrTest={isDevOrTest} />
+                        <SubNavigation />
                     </div>
 
                     <div className="govuk-grid-column-three-quarters">
@@ -102,8 +94,6 @@ export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: ManageFareDayEndProps }> => {
     const attribute = getSessionAttribute(ctx.req, GS_FARE_DAY_END_ATTRIBUTE);
-    const isDevelopment = process.env.NODE_ENV === 'development';
-    const isTest = process.env.STAGE === 'test';
 
     const [fareDayEnd, errors] =
         attribute && 'input' in attribute
@@ -123,7 +113,6 @@ export const getServerSideProps = async (
             csrfToken: getCsrfToken(ctx),
             referer: extractGlobalSettingsReferer(ctx),
             saved: !!saved,
-            isDevOrTest: isDevelopment || isTest,
         },
     };
 };

@@ -14,9 +14,7 @@ describe('pages', () => {
                 operatorDetailsSet: true,
                 operatorGroupsCount: 2,
             };
-            const tree = shallow(
-                <GlobalSettings globalSettingsCounts={globalSettingsCounts} isDevOrTest referer="hello" />,
-            );
+            const tree = shallow(<GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -29,9 +27,7 @@ describe('pages', () => {
                 operatorDetailsSet: true,
                 operatorGroupsCount: 2,
             };
-            const tree = shallow(
-                <GlobalSettings globalSettingsCounts={globalSettingsCounts} isDevOrTest={false} referer="hello" />,
-            );
+            const tree = shallow(<GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" />);
             expect(tree).toMatchSnapshot();
         });
     });

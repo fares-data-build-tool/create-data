@@ -16,7 +16,6 @@ interface GlobalSettingsViewPageProps<T extends Entity> {
     description: string;
     entityDescription: string;
     CardBody: FunctionComponent<{ entity: T }>;
-    isDevOrTest: boolean;
     errors?: ErrorInfo[];
 }
 
@@ -29,7 +28,6 @@ export const GlobalSettingsViewPage = <T extends Entity>({
     entityDescription,
     CardBody,
     errors = [],
-    isDevOrTest,
 }: GlobalSettingsViewPageProps<T>): ReactElement => {
     const entityUrl = entityDescription
         .split(' ')
@@ -111,7 +109,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
             <div className="govuk-width-container" data-card-count={entities.length}>
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
-                        <SubNavigation isDevOrTest={isDevOrTest} />
+                        <SubNavigation />
                     </div>
 
                     <div className="govuk-grid-column-three-quarters">
