@@ -359,8 +359,8 @@ export const editServicesOtherProductsPage = (): void => {
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
-    if (cy.get('.govuk-grid-column-two-thirds').find('[id=Services-link]')) {
-        clickElementById('Services-link');
+    if (cy.get('.govuk-grid-column-two-thirds').find('[id=selected-services-link]')) {
+        clickElementById('selected-services-link');
         randomlyChooseAndSelectServices();
         continueButtonClick();
     }
@@ -395,7 +395,7 @@ export const editPassengerTypeOtherProductsPage = () => {
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
-    clickElementById('Passenger-type-link');
+    clickElementById('passenger-type-link');
     randomlyDetermineUserType();
     clickElementByText('Back');
 };
@@ -405,9 +405,10 @@ export const editStartDateOtherProductsPage = () => {
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
-    clickElementById('Start-date-link');
+    clickElementById('start-date-link');
     clearDates();
-    completeProductDateInformationPage();
+    let dateInput = completeProductDateInformationPage();
+    
     clickElementByText('Back');
 };
 
@@ -416,7 +417,7 @@ export const editEndDateOtherProductsPage = () => {
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
-    clickElementById('End-date-link');
+    clickElementById('end-date-link');
     clearDates();
     completeProductDateInformationPage();
     clickElementByText('Back');
@@ -427,7 +428,7 @@ export const editTimeRestrictionOtherProductsPage = () => {
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
-    clickElementById('Time-restriction-link');
+    clickElementById('time-restriction-link');
     randomlyDecideTimeRestrictions();
     clickElementByText('Back');
 };
@@ -437,7 +438,7 @@ export const editPurchaseMethodOtherProductsPage = () => {
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
-    clickElementById('Purchase-methods-link');
+    clickElementById('purchase-methods-link');
     randomlyDeterminePurchaseType();
     clickElementByText('Back');
 };

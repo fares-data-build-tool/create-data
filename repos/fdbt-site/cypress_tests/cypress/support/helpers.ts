@@ -6,6 +6,7 @@ import {
     FareType,
     selectFareType,
 } from './steps';
+import { DateInput } from './types';
 
 export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
@@ -406,13 +407,15 @@ export const randomlyChooseAndSelectServices = (): void => {
     }
 };
 
-export const completeProductDateInformationPage = (): void => {
+export const completeProductDateInformationPage = (): DateInput => {
     const randomSelector = getRandomNumber(1, 2);
+    let input;
     switch (randomSelector) {
         case 1: {
             getElementById('start-day-input').type('13');
             getElementById('start-month-input').type('10');
             getElementById('start-year-input').type('2010');
+            input = { startDate: '13/10/2010' };
             break;
         }
         case 2: {
@@ -422,6 +425,10 @@ export const completeProductDateInformationPage = (): void => {
             getElementById('end-day-input').type('7');
             getElementById('end-month-input').type('12');
             getElementById('end-year-input').type('2025');
+            input = {
+                startDate: '13/10/2010',
+                endDate: '7/20/2025',
+            };
             break;
         }
         default: {
@@ -429,6 +436,7 @@ export const completeProductDateInformationPage = (): void => {
         }
     }
     continueButtonClick();
+    return input;
 };
 
 export const isFinished = (): void => {

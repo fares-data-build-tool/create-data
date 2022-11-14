@@ -621,7 +621,7 @@ export interface ProductDetailsElement {
     content: string[];
     editLink?: string;
     generateLink?: string;
-    id?: string;
+    id: string;
     editLabel?: string;
 }
 
