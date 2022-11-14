@@ -1688,6 +1688,32 @@ export const insertProducts = async (
     }
 };
 
+export const updateProductDates = async (
+    productId: string,
+    startDate: string,
+    endDate: string | undefined = '',
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'upserting product dates',
+        productId,
+    });
+
+    try {
+        const updateQuery = `UPDATE products
+                             SET startDate = ?, endDate = ?
+                             WHERE id = ?`;
+
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [startDate, endDate, productId]);
+
+        if (meta.affectedRows > 1) {
+            throw new Error(`Updated too many rows when updating product dates ${meta}`);
+        }
+    } catch (error) {
+        throw new Error(`Could not update product dates in the product table. ${error}`);
+    }
+};
+
 export const deleteProductByNocCodeAndId = async (id: number, nocCode: string): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',

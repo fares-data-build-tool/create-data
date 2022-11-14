@@ -27,7 +27,6 @@ interface TimeRestrictionProps {
     timeRestrictions: PremadeTimeRestriction[];
     referer: string | null;
     viewTimeRestrictionErrors: ErrorInfo[];
-    isDevOrTest: boolean;
 }
 
 const formatTime = (time: string | object): string =>
@@ -53,7 +52,6 @@ const ViewTimeRestrictions = ({
     referer,
     csrfToken,
     viewTimeRestrictionErrors,
-    isDevOrTest,
 }: TimeRestrictionProps): ReactElement => {
     return (
         <>
@@ -66,7 +64,6 @@ const ViewTimeRestrictions = ({
                 description={description}
                 CardBody={TimeRestrictionCardBody}
                 errors={viewTimeRestrictionErrors}
-                isDevOrTest={isDevOrTest}
             />
         </>
     );
@@ -102,8 +99,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
     const viewTimeRestriction = getSessionAttribute(ctx.req, VIEW_TIME_RESTRICTION);
-    const isDevelopment = process.env.NODE_ENV === 'development';
-    const isTest = process.env.STAGE === 'test';
 
     updateSessionAttribute(ctx.req, VIEW_TIME_RESTRICTION, undefined);
 
@@ -113,7 +108,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             referer: extractGlobalSettingsReferer(ctx),
             csrfToken,
             viewTimeRestrictionErrors: viewTimeRestriction || [],
-            isDevOrTest: isDevelopment || isTest,
         },
     };
 };

@@ -7,13 +7,7 @@ describe('pages', () => {
     describe('view operator groups', () => {
         it('should render correctly when no operator groups', () => {
             const tree = shallow(
-                <ViewOperatorGroups
-                    operatorGroups={[]}
-                    csrfToken={''}
-                    referer={null}
-                    isDevOrTest={false}
-                    viewOperatorGroupErrors={[]}
-                />,
+                <ViewOperatorGroups operatorGroups={[]} csrfToken={''} referer={null} viewOperatorGroupErrors={[]} />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -36,7 +30,6 @@ describe('pages', () => {
                     operatorGroups={[operatorGroup]}
                     csrfToken={''}
                     referer={'hello'}
-                    isDevOrTest={false}
                     viewOperatorGroupErrors={[]}
                 />,
             );

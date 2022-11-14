@@ -14,9 +14,7 @@ exports[`pages globalSettings should render correctly in a non-test env 1`] = `
       <div
         className="govuk-grid-column-one-quarter"
       >
-        <SubNavigation
-          isDevOrTest={false}
-        />
+        <SubNavigation />
       </div>
       <div
         className="govuk-grid-column-three-quarters"
@@ -59,6 +57,12 @@ exports[`pages globalSettings should render correctly in a non-test env 1`] = `
           name="Fare day end"
         />
         <SettingOverview
+          count={2}
+          description="Define your operator groups - these will be used in multi operator tickets"
+          href="/viewOperatorGroups"
+          name="Operator groups"
+        />
+        <SettingOverview
           count={true}
           description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
           href="/manageOperatorDetails"
@@ -84,9 +88,7 @@ exports[`pages globalSettings should render correctly in test env 1`] = `
       <div
         className="govuk-grid-column-one-quarter"
       >
-        <SubNavigation
-          isDevOrTest={true}
-        />
+        <SubNavigation />
       </div>
       <div
         className="govuk-grid-column-three-quarters"

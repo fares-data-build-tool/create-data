@@ -20,57 +20,19 @@ describe('pages', () => {
     describe('fareType', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <FareType
-                    operatorName="Blackpool Transport"
-                    schemeOp={false}
-                    errors={[]}
-                    isDevelopment={false}
-                    isTest={false}
-                    csrfToken=""
-                />,
+                <FareType operatorName="Blackpool Transport" schemeOp={false} errors={[]} csrfToken="" />,
             );
             expect(tree).toMatchSnapshot();
-        });
-        it('should render correctly on test env', () => {
-            process.env.STAGE = 'test';
-            const tree = shallow(
-                <FareType
-                    operatorName="Blackpool Transport"
-                    schemeOp={false}
-                    errors={[]}
-                    isDevelopment
-                    isTest
-                    csrfToken=""
-                />,
-            );
-            expect(tree).toMatchSnapshot();
-            process.env.STAGE = undefined;
         });
 
         it('should render correctly for a scheme operator', () => {
-            const tree = shallow(
-                <FareType
-                    operatorName="Blackpool Transport"
-                    schemeOp
-                    errors={[]}
-                    isDevelopment={false}
-                    isTest={false}
-                    csrfToken=""
-                />,
-            );
+            const tree = shallow(<FareType operatorName="Blackpool Transport" schemeOp errors={[]} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render error messaging when errors are passed to the page', () => {
             const tree = shallow(
-                <FareType
-                    operatorName="Blackpool Transport"
-                    schemeOp={false}
-                    errors={mockErrors}
-                    isDevelopment={false}
-                    isTest={false}
-                    csrfToken=""
-                />,
+                <FareType operatorName="Blackpool Transport" schemeOp={false} errors={mockErrors} csrfToken="" />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -112,8 +74,6 @@ describe('pages', () => {
                         operatorName: expect.any(String),
                         schemeOp: false,
                         errors: [],
-                        isDevelopment: false,
-                        isTest: false,
                         csrfToken: '',
                     },
                 };
