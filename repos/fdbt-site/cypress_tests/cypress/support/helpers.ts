@@ -427,7 +427,7 @@ export const completeProductDateInformationPage = (): DateInput => {
             getElementById('end-year-input').type('2025');
             input = {
                 startDate: '13/10/2010',
-                endDate: '7/20/2025',
+                endDate: '07/12/2025',
             };
             break;
         }

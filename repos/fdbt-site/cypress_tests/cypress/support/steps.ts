@@ -419,7 +419,8 @@ export const editEndDateOtherProductsPage = () => {
     getElementById('fare-type').should('not.be.empty');
     clickElementById('end-date-link');
     clearDates();
-    completeProductDateInformationPage();
+    let dateInput = completeProductDateInformationPage();
+    cy.get('[id=end-date]').should('have.text', dateInput.endDate || '-' );
     clickElementByText('Back');
 };
 
