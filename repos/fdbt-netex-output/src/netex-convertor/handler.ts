@@ -69,7 +69,7 @@ export const generateFileName = (ticket: Ticket): string => {
     const productType = getProductType(ticket);
     const lineOrNetworkFare = getLineOrNetworkFare(productType);
     const nocOrSchemeName = isSchemeOperatorTicket(ticket) ? getSchemeNocIdentifier(ticket) : ticket.nocCode;
-    const productName = ticket.products[0].productName.replace(' ', '-');
+    const productName = ticket.products[0].productName.replace(' ', '-').replace('/', '-');
     const creationDate = new Date(Date.now()).toISOString().split('T')[0];
     const startDate = ticket.ticketPeriod.startDate.split('T')[0];
 

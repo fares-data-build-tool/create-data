@@ -17,7 +17,6 @@ describe('pages', () => {
                     csrfToken={''}
                     purchaseMethods={purchaseMethods}
                     referer={'hello'}
-                    isDevOrTest={false}
                     viewPurchaseMethodErrors={[]}
                 />,
             );

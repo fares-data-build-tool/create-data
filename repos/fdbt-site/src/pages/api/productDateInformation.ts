@@ -11,6 +11,7 @@ import { ErrorInfo, NextApiRequestWithSession, ProductDateInformation } from '..
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { invalidCharactersArePresent } from '../../../src/utils/apiUtils/validator';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
+import { updateProductDates } from '../../data/auroradb';
 
 export const combinedDateSchema = yup.object({
     endDate: yup.date().min(yup.ref('startDate'), 'The end date must be after the start date'),
@@ -149,10 +150,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 },
             };
             await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            await updateProductDates(matchingJsonMetaData.productId, startDate.toISOString(), endDate?.toISOString());
             redirectTo(
                 res,
-                `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
-                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                `/products/productDetails?productId=${matchingJsonMetaData.productId}${
+                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData.serviceId}` : ''
                 }`,
             );
             return;
