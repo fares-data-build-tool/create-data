@@ -25,7 +25,6 @@ interface ViewOperatorGroupsProps {
     operatorGroups: FromDb<OperatorGroup>[];
     referer: string | null;
     viewOperatorGroupErrors: ErrorInfo[];
-    isDevOrTest: boolean;
 }
 
 const ViewOperatorGroups = ({
@@ -33,7 +32,6 @@ const ViewOperatorGroups = ({
     csrfToken,
     referer,
     viewOperatorGroupErrors,
-    isDevOrTest,
 }: ViewOperatorGroupsProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         operatorGroupName: string;
@@ -63,7 +61,7 @@ const ViewOperatorGroups = ({
             </div>
             <div className="govuk-grid-row" data-card-count={operatorGroups.length}>
                 <div className="govuk-grid-column-one-quarter">
-                    <SubNavigation isDevOrTest={isDevOrTest} />
+                    <SubNavigation />
                 </div>
 
                 <div className="govuk-grid-column-three-quarters">
@@ -137,8 +135,6 @@ export const getServerSideProps = async (
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const operatorGroups = await getOperatorGroupsByNoc(nationalOperatorCode);
     const viewOperatorGroup = getSessionAttribute(ctx.req, VIEW_OPERATOR_GROUP);
-    const isDevelopment = process.env.NODE_ENV === 'development';
-    const isTest = process.env.STAGE === 'test';
 
     updateSessionAttribute(ctx.req, GS_OPERATOR_GROUP_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE, undefined);
@@ -151,7 +147,6 @@ export const getServerSideProps = async (
             operatorGroups,
             referer: extractGlobalSettingsReferer(ctx),
             viewOperatorGroupErrors: viewOperatorGroup || [],
-            isDevOrTest: isDevelopment || isTest,
         },
     };
 };

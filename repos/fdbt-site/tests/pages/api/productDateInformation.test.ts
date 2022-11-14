@@ -7,12 +7,15 @@ import {
 } from '../../../src/constants/attributes';
 import { expectedSingleTicket, getMockRequestAndResponse } from '../../testData/mockData';
 import * as userData from '../../../src/utils/apiUtils/userData';
+import * as aurora from '../../../src/data/auroradb';
 
 describe('productDataInformation', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
+    const auroraSpy = jest.spyOn(aurora, 'updateProductDates');
     s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
+    auroraSpy.mockImplementation(() => Promise.resolve());
     afterEach(() => {
         jest.resetAllMocks();
     });

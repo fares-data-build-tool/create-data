@@ -61,7 +61,6 @@ describe('pages', () => {
                     csrfToken={''}
                     timeRestrictions={[]}
                     referer={null}
-                    isDevOrTest={false}
                     viewTimeRestrictionErrors={[]}
                 />,
             );
@@ -74,7 +73,6 @@ describe('pages', () => {
                     csrfToken={''}
                     timeRestrictions={timeRestrictions}
                     referer={'hello'}
-                    isDevOrTest={false}
                     viewTimeRestrictionErrors={[]}
                 />,
             );
