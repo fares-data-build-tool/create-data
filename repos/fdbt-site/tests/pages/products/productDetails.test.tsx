@@ -374,8 +374,8 @@ describe('myfares pages', () => {
                             content: ['You created a fare triangle'],
                             editLink: '/csvUpload',
                         },
-                        { id: 'period-duration',  name: 'Period duration', content: ['7 weeks'] },
-                        { id: 'product-expiry',  name: 'Product expiry', content: ['24 hr'] },
+                        { id: 'period-duration', name: 'Period duration', content: ['7 weeks'] },
+                        { id: 'product-expiry', name: 'Product expiry', content: ['24 hr'] },
                         {
                             id: 'purchase-methods',
                             name: 'Purchase methods',
