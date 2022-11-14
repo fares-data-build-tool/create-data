@@ -2009,7 +2009,7 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
     });
 
     const query = `
-            SELECT matchingJsonLink, lineId, startDate, endDate
+            SELECT id, matchingJsonLink, lineId, startDate, endDate
             FROM products
             WHERE nocCode = ?
         `;
