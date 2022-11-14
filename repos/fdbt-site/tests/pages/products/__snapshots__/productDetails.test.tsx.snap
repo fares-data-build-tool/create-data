@@ -59,6 +59,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
         className="govuk-summary-list__value"
       >
         <span
+          id="services"
           key="19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)"
         >
           19 - STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)
@@ -86,13 +87,14 @@ exports[`myfares pages productDetails should render correctly 1`] = `
           className="dft-flex dft-flex-justify-space-between"
         >
           <span
+            id="passenger-type"
             key="Adult Test"
           >
             Adult Test
           </span>
           <a
             href="/selectPassengerType"
-            id="undefined-link"
+            id="passenger-type-link"
           >
             Edit
           </a>
@@ -117,6 +119,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
         className="govuk-summary-list__value"
       >
         <span
+          id="time-restriction"
           key="N/A"
         >
           N/A
@@ -141,6 +144,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
         className="govuk-summary-list__value"
       >
         <span
+          id="quantity-in-bundle"
           key="2"
         >
           2
@@ -165,6 +169,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
         className="govuk-summary-list__value"
       >
         <span
+          id="carnet-expiry"
           key="22 year(s)"
         >
           22 year(s)
@@ -192,18 +197,20 @@ exports[`myfares pages productDetails should render correctly 1`] = `
           className="dft-flex dft-flex-justify-space-between"
         >
           <span
+            id="purchase-methods"
             key="SOP Test 1"
           >
             SOP Test 1
           </span>
           <span
+            id="purchase-methods"
             key="SOP Test 2"
           >
             SOP Test 2
           </span>
           <a
             href="/selectPurchaseMethods"
-            id="undefined-link"
+            id="purchase-methods-link"
           >
             Edit
           </a>
@@ -231,13 +238,14 @@ exports[`myfares pages productDetails should render correctly 1`] = `
           className="dft-flex dft-flex-justify-space-between"
         >
           <span
+            id="start-date"
             key="18/10/2021"
           >
             18/10/2021
           </span>
           <a
             href="/productDateInformation"
-            id="undefined-link"
+            id="start-date-link"
           >
             Edit
           </a>
@@ -265,13 +273,14 @@ exports[`myfares pages productDetails should render correctly 1`] = `
           className="dft-flex dft-flex-justify-space-between"
         >
           <span
+            id="end-date"
             key="18/10/2121"
           >
             18/10/2121
           </span>
           <a
             href="/productDateInformation"
-            id="undefined-link"
+            id="end-date-link"
           >
             Edit
           </a>
