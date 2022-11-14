@@ -19,7 +19,6 @@ describe('GlobalSettingsViewPage', () => {
                 description="my description"
                 entityDescription="my entity description"
                 CardBody={CardBody}
-                isDevOrTest
             />,
         );
         expect(tree).toMatchSnapshot();
@@ -39,7 +38,6 @@ describe('GlobalSettingsViewPage', () => {
                 description="my description"
                 entityDescription="my entity description"
                 CardBody={CardBody}
-                isDevOrTest
             />,
         );
         expect(tree).toMatchSnapshot();
@@ -59,7 +57,6 @@ describe('GlobalSettingsViewPage', () => {
                 description="my description"
                 entityDescription="my entity description"
                 CardBody={CardBody}
-                isDevOrTest={false}
             />,
         );
         expect(tree).toMatchSnapshot();

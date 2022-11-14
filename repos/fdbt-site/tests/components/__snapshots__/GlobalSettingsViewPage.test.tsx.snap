@@ -22,9 +22,7 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] 
       <div
         className="govuk-grid-column-one-quarter"
       >
-        <SubNavigation
-          isDevOrTest={true}
-        />
+        <SubNavigation />
       </div>
       <div
         className="govuk-grid-column-three-quarters"
@@ -217,9 +215,7 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist and 
       <div
         className="govuk-grid-column-one-quarter"
       >
-        <SubNavigation
-          isDevOrTest={false}
-        />
+        <SubNavigation />
       </div>
       <div
         className="govuk-grid-column-three-quarters"
@@ -412,9 +408,7 @@ exports[`GlobalSettingsViewPage should render correctly when no entities 1`] = `
       <div
         className="govuk-grid-column-one-quarter"
       >
-        <SubNavigation
-          isDevOrTest={true}
-        />
+        <SubNavigation />
       </div>
       <div
         className="govuk-grid-column-three-quarters"
