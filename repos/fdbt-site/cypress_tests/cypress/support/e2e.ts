@@ -17,7 +17,7 @@ before(() => {
     addTestFareDayEnd();
     clickElementByText('Operator groups');
     addTestOperatorGroups();
-    cy.log('Global Settings set up for BLAC');
+    cy.log('Global Settings set up for LNUD');
 
     // Disabling the below, as schemes are currently not fully supported
     /*
