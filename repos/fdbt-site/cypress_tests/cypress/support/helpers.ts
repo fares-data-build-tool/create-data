@@ -358,7 +358,7 @@ export const clickAllCheckboxes = (): string[] => {
 export const getAllCheckboxesData = (): void => {
     const input: string[] = [];
     cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
-        cy.wrap(checkbox).click();
+        cy.wrap(checkbox);
         const name = checkbox.attr('name');
         input[index] = name.split('#')[0];
         cy.wrap(input).as('input');
