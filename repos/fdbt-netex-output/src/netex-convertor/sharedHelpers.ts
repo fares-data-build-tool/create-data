@@ -51,6 +51,10 @@ export interface NetexObject {
     [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
+export const replaceAll = (input: string, toRemove: string, replacement: string): string => {
+    return input.split(toRemove).join(replacement);
+};
+
 export const getCleanWebsite = (nocWebsite: string): string => {
     if (nocWebsite !== null) {
         const splitWebsite = nocWebsite.split('#');
