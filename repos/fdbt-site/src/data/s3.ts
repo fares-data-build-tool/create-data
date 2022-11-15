@@ -6,6 +6,7 @@ import {
     NETEX_BUCKET_NAME,
     MATCHING_DATA_BUCKET_NAME,
     PRODUCTS_DATA_BUCKET_NAME,
+    EXPORT_METADATA_BUCKET_NAME,
 } from '../constants';
 import { UserFareStages, UserFareZone } from '../interfaces';
 import logger from '../utils/logger';
@@ -13,6 +14,7 @@ import { triggerZipper } from '../utils/apiUtils/export';
 import { DeleteObjectsRequest, ListObjectsV2Request, ObjectIdentifierList, ObjectList } from 'aws-sdk/clients/s3';
 import { objectKeyMatchesExportNameExactly } from '../utils';
 import { Ticket, TicketWithIds } from '../interfaces/matchingJsonTypes';
+import { ExportMetadata } from '../interfaces/integrationTypes';
 
 const getS3Client = (): S3 => {
     let options: S3.ClientConfiguration = {
@@ -314,4 +316,38 @@ export const deleteExport = async (exportName: string, bucket: string): Promise<
     };
 
     await s3.deleteObjects(deleteParams).promise();
+};
+
+export const getExportMetaData = async (key: string): Promise<ExportMetadata> => {
+    try {
+        const request: AWS.S3.GetObjectRequest = {
+            Bucket: EXPORT_METADATA_BUCKET_NAME,
+            Key: key,
+        };
+
+        const response = await s3.getObject(request).promise();
+        const dataAsString = response.Body?.toString('utf-8') ?? '';
+
+        return JSON.parse(dataAsString) as ExportMetadata;
+    } catch (error) {
+        throw new Error(`Failed to get export metadata for key: ${key}, ${error.stack}`);
+    }
+};
+
+export const checkIfMetaDataExists = async (key: string): Promise<boolean> => {
+    try {
+        const request: AWS.S3.HeadObjectRequest = {
+            Bucket: EXPORT_METADATA_BUCKET_NAME,
+            Key: key,
+        };
+
+        await s3.headObject(request).promise();
+        return true;
+    } catch (error) {
+        logger.info('', {
+            context: 'data.s3.checkIfMetaDataExists',
+            message: `Metadata does not exist for ${key}`,
+        });
+        return false;
+    }
 };

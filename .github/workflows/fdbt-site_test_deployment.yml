@@ -127,6 +127,7 @@ jobs:
     - name: Sleep for 10 mins
       run: sleep 10m
       shell: bash
+
     - name: run-ui-tests
       env:
         CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
