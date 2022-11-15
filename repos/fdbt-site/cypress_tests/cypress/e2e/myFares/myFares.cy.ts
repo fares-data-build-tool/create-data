@@ -15,6 +15,7 @@ import {
     editPurchaseMethodOtherProductsPage,
     editServicesOtherProductsPage,
     editStartDateOtherProductsPage,
+    editStartDatePointToPointPage,
     editTimeRestrictionOtherProductsPage,
 } from '../../support/steps';
 
@@ -33,11 +34,17 @@ describe('The my fares point to point products pages', () => {
         clickElementByText('Services');
         completeMyFaresPointToPointProductsPages();
     });
-    it('allows the user the edit other product passenger type', () => {
+    it('allows the user the edit point to point product passenger type', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Services');
         editPassengerTypePointToPointPage();
+    });
+    it('allows the user the edit point to point product start date', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Services');
+        editStartDatePointToPointPage();
     });
 });
 
