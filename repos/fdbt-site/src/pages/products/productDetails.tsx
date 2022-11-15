@@ -89,11 +89,12 @@ const ProductDetails = ({
                 <InformationSummary informationText="This is a copy of the product you selected. Edit one or more of the fields as required." />
             )}
             <div className="dft-flex">
-                <h1 className="govuk-heading-l" id="product-name">
+                <h1 className="govuk-heading-l" id="product-name-header">
                     {productName}
                 </h1>
 
                 <button
+                    id="edit-product-name"
                     className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
                     onClick={() => setEditNamePopupOpen(true)}
                 >
@@ -198,7 +199,9 @@ const getEditableValue = (element: ProductDetailsElement) => {
                 );
             })}
 
-            <a href={element.editLink}>{element.editLabel ? element.editLabel : 'Edit'}</a>
+            <a id={`${element.id}-link`} href={element.editLink}>
+                {element.editLabel ? element.editLabel : 'Edit'}
+            </a>
         </div>
     );
 };
@@ -227,6 +230,7 @@ const createProductDetails = async (
 
     if ('selectedServices' in ticket) {
         productDetailsElements.push({
+            id: 'selected-services',
             name: 'additionalNocs' in ticket || 'additionalOperators' in ticket ? `${noc} Services` : 'Services',
             content: [
                 (
@@ -256,6 +260,7 @@ const createProductDetails = async (
                 : undefined;
 
         productDetailsElements.push({
+            id: 'services',
             name: 'Service',
             content: [
                 `${pointToPointService.lineName} - ${pointToPointService.origin} to ${pointToPointService.destination}`,
@@ -267,6 +272,7 @@ const createProductDetails = async (
 
         if (additionalService) {
             productDetailsElements.push({
+                id: 'additional-services',
                 name: 'Additional Service(s)',
                 content: [
                     additionalService
@@ -283,6 +289,7 @@ const createProductDetails = async (
                 await getBodsServiceDirectionDescriptionsByNocAndServiceId(noc, serviceId);
 
             productDetailsElements.push({
+                id: 'journey-direction',
                 name: 'Journey direction',
                 content: [
                     `${sentenceCaseString(ticket.journeyDirection)} - ${
@@ -296,12 +303,13 @@ const createProductDetails = async (
     }
 
     if ('zoneName' in ticket) {
-        productDetailsElements.push({ name: 'Zone', content: [ticket.zoneName] });
+        productDetailsElements.push({ id: 'zone', name: 'Zone', content: [ticket.zoneName] });
     }
 
     const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
 
     productDetailsElements.push({
+        id: 'passenger-type',
         name: 'Passenger type',
         content: [passengerTypeName],
         editLink: '/selectPassengerType',
@@ -315,17 +323,19 @@ const createProductDetails = async (
             : 'N/A';
 
         productDetailsElements.push({
+            id: 'time-restriction',
             name: 'Time restriction',
             content: [timeRestriction],
             editLink: '/selectTimeRestrictions',
         });
     } else {
-        productDetailsElements.push({ name: 'Only valid during term time', content: ['Yes'] });
+        productDetailsElements.push({ id: 'time-restriction', name: 'Only valid during term time', content: ['Yes'] });
     }
 
     // check to see if we have a point to point product
     if ('lineId' in ticket) {
         productDetailsElements.push({
+            id: 'fare-triangle',
             name: 'Fare triangle',
             content: [
                 fareTriangleModified
@@ -339,11 +349,13 @@ const createProductDetails = async (
     if ('additionalNocs' in ticket) {
         if ('schemeOperatorName' in ticket) {
             productDetailsElements.push({
+                id: 'multi-operator-group',
                 name: `Multi Operator Group`,
                 content: [ticket.additionalNocs.join(', ')],
             });
         } else {
             productDetailsElements.push({
+                id: 'multi-operator-group',
                 name: `Multi Operator Group`,
                 content: [`${noc}, ${ticket.additionalNocs.join(', ')}`],
             });
@@ -353,6 +365,7 @@ const createProductDetails = async (
     if ('additionalOperators' in ticket) {
         ticket.additionalOperators.forEach((additionalOperator) => {
             productDetailsElements.push({
+                id: 'additional-operators-services',
                 name: `${additionalOperator.nocCode} Services`,
                 content: [
                     additionalOperator.selectedServices.map((selectedService) => selectedService.lineName).join(', '),
@@ -365,9 +378,14 @@ const createProductDetails = async (
     const product = ticket.products[0];
 
     if ('carnetDetails' in product && product.carnetDetails) {
-        productDetailsElements.push({ name: 'Quantity in bundle', content: [product.carnetDetails.quantity] });
+        productDetailsElements.push({
+            id: 'quantity-in-bundle',
+            name: 'Quantity in bundle',
+            content: [product.carnetDetails.quantity],
+        });
 
         productDetailsElements.push({
+            id: 'carnet-expiry',
             name: 'Carnet expiry',
             content: [
                 product.carnetDetails.expiryUnit === 'no expiry'
@@ -384,6 +402,7 @@ const createProductDetails = async (
                 : 'N/A';
 
         productDetailsElements.push({
+            id: 'return-ticket-validity',
             name: 'Return ticket validity',
             content: [content],
             editLink: '/returnValidity',
@@ -391,14 +410,23 @@ const createProductDetails = async (
     }
 
     if ('productDuration' in product) {
-        productDetailsElements.push({ name: 'Period duration', content: [product.productDuration] });
+        productDetailsElements.push({
+            id: 'period-duration',
+            name: 'Period duration',
+            content: [product.productDuration],
+        });
     }
 
     if ('productValidity' in product && product.productValidity) {
-        productDetailsElements.push({ name: 'Product expiry', content: [sentenceCaseString(product.productValidity)] });
+        productDetailsElements.push({
+            id: 'product-expiry',
+            name: 'Product expiry',
+            content: [sentenceCaseString(product.productValidity)],
+        });
     }
 
     productDetailsElements.push({
+        id: 'purchase-methods',
         name: 'Purchase methods',
         content: await Promise.all(
             product.salesOfferPackages.map(async (sop) => {
@@ -439,9 +467,19 @@ const createProductDetails = async (
     };
     updateSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE, { dates, errors: [] });
 
-    productDetailsElements.push({ name: 'Start date', content: [startDate], editLink: '/productDateInformation' });
+    productDetailsElements.push({
+        id: 'start-date',
+        name: 'Start date',
+        content: [startDate],
+        editLink: '/productDateInformation',
+    });
 
-    productDetailsElements.push({ name: 'End date', content: [endDate ?? '-'], editLink: '/productDateInformation' });
+    productDetailsElements.push({
+        id: 'end-date',
+        name: 'End date',
+        content: [endDate ?? '-'],
+        editLink: '/productDateInformation',
+    });
 
     const productName =
         'productName' in product

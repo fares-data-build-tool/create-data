@@ -6,6 +6,7 @@ import {
     FareType,
     selectFareType,
 } from './steps';
+import { DateInput } from './types';
 
 export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
@@ -277,6 +278,17 @@ export const randomlyDetermineUserType = (): void => {
     continueButtonClick();
 };
 
+export const randomlyDeterminePurchaseType = (): void => {
+    cy.get('[class=govuk-checkboxes__input]')
+        .its('length')
+        .then((length) => {
+            const randomNumber = getRandomNumber(0, length - 1);
+            cy.get('[class=govuk-checkboxes__input]').eq(randomNumber).click();
+        });
+
+    continueButtonClick();
+};
+
 export const randomlyDecideTimeRestrictions = (): void => {
     if (getRandomNumber(0, 1) === 0) {
         clickElementById('valid-days-not-required');
@@ -309,17 +321,47 @@ export const randomlyDecideTermRestrictions = (): void => {
     continueButtonClick();
 };
 
-export const clickAllCheckboxes = (): void => {
-    cy.get('[class=govuk-checkboxes__input]').each((checkbox) => {
+export const clickAllCheckboxes = (): string[] => {
+    const input: string[] = [];
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
         cy.wrap(checkbox).click();
+        const name = checkbox.attr('name');        
+        input[index] = name.split('#')[0];
+        cy.wrap(input).as('input');
+    });
+    return input;
+};
+
+export const getAllCheckboxesData = (): void => {
+    const input: string[] = [];
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
+        cy.wrap(checkbox).click();
+        const name = checkbox.attr('name');
+        input[index] = name.split('#')[0];
+        cy.wrap(input).as('input');
+    });
+};
+
+export const getAllButFirstCheckbox = (): void => {
+    const input: string[] = [];
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
+        if (index > 0) {
+            const name = checkbox.attr('name');
+            input[index] = name.split('#')[0];
+            cy.wrap(input).as('input');
+        }
     });
 };
 
 export const clickSomeCheckboxes = (): void => {
+    const input: string[] = [];
     cy.get('[class=govuk-checkboxes__input]').each((checkbox, index, checkboxes) => {
         const numberOfCheckboxes = checkboxes.length;
         if (numberOfCheckboxes === 1 || index !== numberOfCheckboxes - 1) {
             cy.wrap(checkbox).click();
+            const name = checkbox.attr('name');
+            input[index] = name.split('#')[0];
+            cy.wrap(input).as('input');
         }
     });
 };
@@ -371,6 +413,7 @@ export const randomlyChooseAndSelectServices = (): void => {
         case 1: {
             cy.log('Click Select All button and continue');
             clickElementById('select-all-button');
+            getAllCheckboxesData();
             break;
         }
         case 2: {
@@ -386,6 +429,7 @@ export const randomlyChooseAndSelectServices = (): void => {
         case 4: {
             cy.log('Click Select All button and then click first checkbox to deselect, then continue');
             clickElementById('select-all-button');
+            getAllButFirstCheckbox();
             clickFirstCheckboxIfMultiple();
             break;
         }
@@ -395,13 +439,15 @@ export const randomlyChooseAndSelectServices = (): void => {
     }
 };
 
-export const completeProductDateInformationPage = (): void => {
+export const completeProductDateInformationPage = (): DateInput => {
     const randomSelector = getRandomNumber(1, 2);
+    let input;
     switch (randomSelector) {
         case 1: {
             getElementById('start-day-input').type('13');
             getElementById('start-month-input').type('10');
             getElementById('start-year-input').type('2010');
+            input = { startDate: '13/10/2010' };
             break;
         }
         case 2: {
@@ -411,6 +457,10 @@ export const completeProductDateInformationPage = (): void => {
             getElementById('end-day-input').type('7');
             getElementById('end-month-input').type('12');
             getElementById('end-year-input').type('2025');
+            input = {
+                startDate: '13/10/2010',
+                endDate: '07/12/2025',
+            };
             break;
         }
         default: {
@@ -418,6 +468,7 @@ export const completeProductDateInformationPage = (): void => {
         }
     }
     continueButtonClick();
+    return input;
 };
 
 export const isFinished = (): void => {
@@ -469,7 +520,7 @@ export const completeOperatorSearch = (isMultiService: boolean): void => {
         .should('match', /\/(searchOperators|reuseOperatorGroup)$/) // This is bassicly a wait to ensure we're on the correct page
         .then((url: string) => {
             if (url.includes('reuseOperatorGroup')) {
-                clickElementById('reuse-operator-group-no');
+                clickElementById('test-radio');
                 continueButtonClick();
             }
             getElementById(`search-input`).type('north');
@@ -524,4 +575,13 @@ export const retryRouteChoiceOnReturnProductError = (): void => {
             continueButtonClick();
         }
     });
+};
+
+export const clearDates = (): void => {
+    getElementById('start-day-input').clear();
+    getElementById('start-month-input').clear();
+    getElementById('start-year-input').clear();
+    getElementById('end-day-input').clear();
+    getElementById('end-month-input').clear();
+    getElementById('end-year-input').clear();
 };
