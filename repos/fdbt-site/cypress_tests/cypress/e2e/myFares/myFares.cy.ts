@@ -9,6 +9,7 @@ import {
     completeMyFaresOtherProductsPages,
     completeMyFaresPointToPointProductsPages,
     editEndDateOtherProductsPage,
+    editEndDatePointToPointPage,
     editPassengerTypeOtherProductsPage,
     editPassengerTypePointToPointPage,
     editProductNameOtherProductsPage,
@@ -45,6 +46,12 @@ describe('The my fares point to point products pages', () => {
         clickElementById('account-link');
         clickElementByText('Services');
         editStartDatePointToPointPage();
+    });
+    it('allows the user the edit point to point product end date', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Services');
+        editEndDatePointToPointPage();
     });
 });
 
