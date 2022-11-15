@@ -2,8 +2,10 @@ import 'cypress-file-upload';
 import {
     completeFlatFarePages,
     completeSalesPages,
+    completeSinglePages,
     defineUserTypeAndTimeRestrictions,
     FareType,
+    selectCarnetFareType,
     selectFareType,
 } from './steps';
 import { DateInput } from './types';
@@ -590,6 +592,18 @@ export const addFlatFareProductIfNotPresent = (): void => {
             cy.log('Flat fare product set up');
         }
     });
+};
+
+export const addSingleProduct = (): void => {
+    getHomePage();
+    clickElementById('account-link');
+    clickElementByText('Services');
+    clickElementByText('Create new product');
+    selectCarnetFareType('single');
+    defineUserTypeAndTimeRestrictions();
+    completeSinglePages(true, true);
+    completeSalesPages();
+    isFinished();
 };
 
 export const retryRouteChoiceOnReturnProductError = (): void => {

@@ -393,17 +393,42 @@ export const editProductNameOtherProductsPage = () => {
     clickElementByText('Back');
 };
 
-export const editPassengerTypeOtherProductsPage = () => {
-    clickRandomElementInTable('govuk-table__body', 'product-link');
-    getElementById('product-name').should('not.be.empty');
-    getElementById('product-status').should('not.be.empty');
-    getElementById('fare-type').should('not.be.empty');
+export const editPassengerType = () => {
     clickElementById('passenger-type-link');
     randomlyDetermineUserType();
     cy.get('@passengerType').then((passengerType) => {
         cy.get('[id=passenger-type]').should('have.text', passengerType.toString());
     });
     clickElementByText('Back');
+};
+
+export const editPassengerTypeOtherProductsPage = () => {
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    editPassengerType();
+};
+
+export const editPassengerTypePointToPointPage = () => {
+    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+        .invoke('index')
+        .then((i) => {
+            cy.wrap(i).as('index');
+        });
+    cy.get('@index').then((index) => {
+        cy.log(index.toString());
+        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+            .find('td a')
+            .eq(parseInt(index.toString()))
+            .click()
+            .then(() => {
+                clickElementByText('Product Test');
+                getElementById('service-name').should('not.be.empty');
+                getElementById('service-status').should('not.be.empty');
+                editPassengerType();
+            });
+    });
 };
 
 export const editStartDateOtherProductsPage = () => {

@@ -1,5 +1,6 @@
 import {
     addFlatFareProductIfNotPresent,
+    addSingleProduct,
     clickElementById,
     clickElementByText,
     getHomePage,
@@ -9,6 +10,7 @@ import {
     completeMyFaresPointToPointProductsPages,
     editEndDateOtherProductsPage,
     editPassengerTypeOtherProductsPage,
+    editPassengerTypePointToPointPage,
     editProductNameOtherProductsPage,
     editPurchaseMethodOtherProductsPage,
     editServicesOtherProductsPage,
@@ -17,6 +19,9 @@ import {
 } from '../../support/steps';
 
 describe('The my fares point to point products pages', () => {
+    before(()=>{
+        addSingleProduct()
+    })
     it('allows for navigation through the point to point products pages', () => {
         getHomePage();
         clickElementById('manage-fares-link');
@@ -27,6 +32,12 @@ describe('The my fares point to point products pages', () => {
         clickElementById('account-link');
         clickElementByText('Services');
         completeMyFaresPointToPointProductsPages();
+    });
+    it('allows the user the edit other product passenger type', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Services');
+        editPassengerTypePointToPointPage();
     });
 });
 
