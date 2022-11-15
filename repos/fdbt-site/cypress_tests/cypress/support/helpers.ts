@@ -348,7 +348,7 @@ export const clickAllCheckboxes = (): string[] => {
     const input: string[] = [];
     cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
         cy.wrap(checkbox).click();
-        const name = checkbox.attr('name');        
+        const name = checkbox.attr('name');
         input[index] = name.split('#')[0];
         cy.wrap(input).as('input');
     });
@@ -358,7 +358,7 @@ export const clickAllCheckboxes = (): string[] => {
 export const getAllCheckboxesData = (): void => {
     const input: string[] = [];
     cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
-        cy.wrap(checkbox).click();
+        cy.wrap(checkbox);
         const name = checkbox.attr('name');
         input[index] = name.split('#')[0];
         cy.wrap(input).as('input');
@@ -368,11 +368,13 @@ export const getAllCheckboxesData = (): void => {
 export const getAllButFirstCheckbox = (): void => {
     const input: string[] = [];
     cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
-        if (index > 0) {
-            const name = checkbox.attr('name');
-            input[index] = name.split('#')[0];
-            cy.wrap(input).as('input');
-        }
+        const name = checkbox.attr('name');
+        input[index] = name.split('#')[0];
+        cy.wrap(input).as('input');
+    });
+    cy.get('@input').then((input) => {
+        const newInputWithoutFirstItem = input.toString().split(',').slice(1);
+        cy.wrap(newInputWithoutFirstItem).as('input');
     });
 };
 
