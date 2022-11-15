@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { SinglePassengerType } from '../../src/interfaces';
+import { SinglePassengerType } from '../../src/interfaces/dbTypes';
 import ViewPassengerTypes from '../../src/pages/viewPassengerTypes';
 
 describe('pages', () => {
@@ -13,7 +13,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={null}
                     viewPassengerTypeErrors={[]}
-                    isDevOrTest={false}
                 />,
             );
 
@@ -40,7 +39,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={'hello'}
                     viewPassengerTypeErrors={[]}
-                    isDevOrTest={false}
                 />,
             );
 
@@ -72,7 +70,6 @@ describe('pages', () => {
                             id: 'passenger-card-0',
                         },
                     ]}
-                    isDevOrTest={false}
                 />,
             );
 
@@ -113,7 +110,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={null}
                     viewPassengerTypeErrors={[]}
-                    isDevOrTest={false}
                 />,
             );
 
@@ -169,7 +165,6 @@ describe('pages', () => {
                     csrfToken={''}
                     referer={'hello'}
                     viewPassengerTypeErrors={[]}
-                    isDevOrTest={false}
                 />,
             );
             expect(tree).toMatchSnapshot();

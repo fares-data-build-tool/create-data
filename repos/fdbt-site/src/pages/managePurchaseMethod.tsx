@@ -8,10 +8,10 @@ import { getSessionAttribute } from '../utils/sessions';
 import { GS_PURCHASE_METHOD_ATTRIBUTE } from '../constants/attributes';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { sentenceCaseString } from '../utils';
-import { FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
 import { GlobalSettingsManageProps, getGlobalSettingsManageProps } from '../utils/globalSettings';
 import { getSalesOfferPackageByIdAndNoc } from '../data/auroradb';
 import InformationSummary from '../components/InformationSummary';
+import { FromDb, SalesOfferPackage } from '../interfaces/matchingJsonTypes';
 
 const title = 'Manage Purchase Methods - Create Fares Data Service';
 const description = 'Manage Purchase Methods page of the Create Fares Data Service';

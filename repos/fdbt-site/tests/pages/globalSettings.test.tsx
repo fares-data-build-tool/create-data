@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import GlobalSettings from '../../src/pages/globalSettings';
-import { GlobalSettingsCounts } from 'src/interfaces';
+import { GlobalSettingsCounts } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('globalSettings', () => {
@@ -14,9 +14,7 @@ describe('pages', () => {
                 operatorDetailsSet: true,
                 operatorGroupsCount: 2,
             };
-            const tree = shallow(
-                <GlobalSettings globalSettingsCounts={globalSettingsCounts} isDevOrTest referer="hello" />,
-            );
+            const tree = shallow(<GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -29,9 +27,7 @@ describe('pages', () => {
                 operatorDetailsSet: true,
                 operatorGroupsCount: 2,
             };
-            const tree = shallow(
-                <GlobalSettings globalSettingsCounts={globalSettingsCounts} isDevOrTest={false} referer="hello" />,
-            );
+            const tree = shallow(<GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" />);
             expect(tree).toMatchSnapshot();
         });
     });

@@ -23,7 +23,6 @@ describe('pages', () => {
                     operatorDetails={operatorDetails}
                     referer={null}
                     saved={false}
-                    isDevOrTest={false}
                 />,
             );
 
@@ -47,7 +46,6 @@ describe('pages', () => {
                     operatorDetails={operatorDetails}
                     referer={null}
                     saved={false}
-                    isDevOrTest={false}
                 />,
             );
 
@@ -62,7 +60,6 @@ describe('pages', () => {
                     operatorDetails={operatorDetails}
                     referer={null}
                     saved={true}
-                    isDevOrTest={false}
                 />,
             );
 

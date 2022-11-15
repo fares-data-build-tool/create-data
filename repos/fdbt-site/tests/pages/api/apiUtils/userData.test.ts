@@ -3,7 +3,6 @@ import {
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
 } from './../../../../src/constants/attributes';
-import { TicketType } from 'fdbt-types/matchingJsonTypes';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -27,15 +26,7 @@ import {
 } from '../../../../src/constants/attributes';
 import * as auroradb from '../../../../src/data/auroradb';
 import * as s3 from '../../../../src/data/s3';
-import {
-    CarnetExpiryUnit,
-    ExpiryUnit,
-    MultipleProductAttribute,
-    MultiProduct,
-    Operator,
-    PeriodExpiry,
-    TicketPeriodWithInput,
-} from '../../../../src/interfaces';
+import { MultipleProductAttribute, MultiProduct, Operator, TicketPeriodWithInput } from '../../../../src/interfaces';
 import {
     adjustSchemeOperatorJson,
     getBaseTicketAttributes,
@@ -77,6 +68,7 @@ import {
     expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInServices,
     expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
 } from '../../../testData/mockData';
+import { CarnetExpiryUnit, ExpiryUnit, PeriodExpiry, TicketType } from '../../../../src/interfaces/matchingJsonTypes';
 
 describe('userData', () => {
     describe('isTermTime', () => {

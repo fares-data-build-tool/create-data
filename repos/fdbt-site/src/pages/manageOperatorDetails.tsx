@@ -10,8 +10,8 @@ import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils';
 import { getOperatorDetails, getOperatorDetailsFromNocTable } from '../data/auroradb';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import SubNavigation from '../layout/SubNavigation';
-import { OperatorDetails } from 'fdbt-types/matchingJsonTypes';
 import InfoPopup from '../../src/components/InfoPopup';
+import { OperatorDetails } from '../../src/interfaces/matchingJsonTypes';
 
 const title = 'Manage Operator Details - Create Fares Data Service';
 const description = 'Manage Operator Details End page of the Create Fares Data Service';
@@ -22,7 +22,6 @@ type ManageOperatorDetailsProps = {
     operatorDetails: OperatorDetails;
     referer: string | null;
     saved: boolean;
-    isDevOrTest: boolean;
 };
 
 const ManageOperatorDetails = ({
@@ -31,7 +30,6 @@ const ManageOperatorDetails = ({
     operatorDetails,
     referer,
     saved,
-    isDevOrTest,
 }: ManageOperatorDetailsProps): ReactElement => {
     const [showSaved, setShowSaved] = useState(saved);
 
@@ -83,7 +81,7 @@ const ManageOperatorDetails = ({
             <div className="govuk-width-container">
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
-                        <SubNavigation isDevOrTest={isDevOrTest} />
+                        <SubNavigation />
                     </div>
                     <div className="govuk-grid-column-three-quarters">
                         <ErrorSummary errors={errors} />
@@ -141,8 +139,6 @@ export const getServerSideProps = async (
     const attribute = getSessionAttribute(ctx.req, GS_OPERATOR_DETAILS_ATTRIBUTE);
     const noc = getAndValidateNoc(ctx);
     const schemeOp = isSchemeOperator(ctx);
-    const isDevelopment = process.env.NODE_ENV === 'development';
-    const isTest = process.env.STAGE === 'test';
 
     const operatorDetails =
         attribute && 'input' in attribute
@@ -188,7 +184,6 @@ export const getServerSideProps = async (
             csrfToken: getCsrfToken(ctx),
             referer: extractGlobalSettingsReferer(ctx),
             saved: !!saved,
-            isDevOrTest: isDevelopment || isTest,
         },
     };
 };

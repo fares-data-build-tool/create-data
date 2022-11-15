@@ -14,12 +14,12 @@ import {
 import { getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { ReturnTicket, SingleTicket, WithIds } from 'fdbt-types/matchingJsonTypes';
 import { getFareZones } from '../../../src/utils/apiUtils/matching';
 import { MatchingFareZones } from '../../../src/interfaces/matchingInterface';
 import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
 import { updateProductFareTriangleModifiedByNocCodeAndId } from '../../data/auroradb';
 import moment from 'moment';
+import { WithIds, SingleTicket, ReturnTicket } from '../../interfaces/matchingJsonTypes';
 
 const errorId = 'csv-upload';
 

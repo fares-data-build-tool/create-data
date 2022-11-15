@@ -3,12 +3,13 @@ import upperFirst from 'lodash/upperFirst';
 import ExpirySelector from '../components/ExpirySelector';
 import TwoThirdsLayout from '../layout/Layout';
 import { POINT_TO_POINT_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
-import { ErrorInfo, NextPageContextWithSession, PointToPointPeriodProduct } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormErrorBlock, FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
+import { PointToPointPeriodProduct } from '../interfaces/matchingJsonTypes';
 
 const title = 'Point to Point Period Product - Create Fares Data Service';
 const description = 'Point to point period product details entry page of the Create Fares Data Service';

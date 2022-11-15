@@ -9,12 +9,13 @@ import {
     VIEW_PASSENGER_TYPE,
 } from '../constants/attributes';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
-import { ErrorInfo, FullGroupPassengerType, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { SinglePassengerType, FullGroupPassengerType } from '../interfaces/dbTypes';
 
 const title = 'Passenger Types - Create Fares Data Service';
 const description = 'View and edit your passenger types.';
@@ -25,7 +26,6 @@ interface PassengerTypeProps {
     groupPassengerTypes: FullGroupPassengerType[];
     referer: string | null;
     viewPassengerTypeErrors: ErrorInfo[];
-    isDevOrTest: boolean;
 }
 
 const ViewPassengerTypes = ({
@@ -34,7 +34,6 @@ const ViewPassengerTypes = ({
     csrfToken,
     referer,
     viewPassengerTypeErrors = [],
-    isDevOrTest,
 }: PassengerTypeProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         passengerTypeName: string;
@@ -72,7 +71,7 @@ const ViewPassengerTypes = ({
             </div>
             <div className="govuk-grid-row" data-card-count={singlePassengerTypes.length + groupPassengerTypes.length}>
                 <div className="govuk-grid-column-one-quarter">
-                    <SubNavigation isDevOrTest={isDevOrTest} />
+                    <SubNavigation />
                 </div>
 
                 <div className="govuk-grid-column-three-quarters">
@@ -221,8 +220,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
     const viewPassengerType = getSessionAttribute(ctx.req, VIEW_PASSENGER_TYPE);
-    const isDevelopment = process.env.NODE_ENV === 'development';
-    const isTest = process.env.STAGE === 'test';
 
     updateSessionAttribute(ctx.req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
@@ -235,7 +232,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             groupPassengerTypes,
             referer: extractGlobalSettingsReferer(ctx),
             viewPassengerTypeErrors: viewPassengerType || [],
-            isDevOrTest: isDevelopment || isTest,
         },
     };
 };

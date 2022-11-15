@@ -5,8 +5,8 @@ import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { GS_OPERATOR_DETAILS_ATTRIBUTE } from '../../constants/attributes';
 import { invalidCharactersArePresent, invalidUrlInput, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { upsertOperatorDetails } from '../../data/auroradb';
-import { OperatorDetails } from 'fdbt-types/matchingJsonTypes';
 import { lowerCase, upperFirst } from 'lodash';
+import { OperatorDetails } from '../../interfaces/matchingJsonTypes';
 
 export const collectErrors = (operatorDetails: OperatorDetails): ErrorInfo[] => {
     const errors = Object.entries(operatorDetails)

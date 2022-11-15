@@ -1,8 +1,8 @@
-import { ReturnTicket, SingleTicket, TicketWithIds, WithIds } from 'fdbt-types/matchingJsonTypes';
 import moment from 'moment';
 import { NextApiResponse } from 'next';
 import { getProductIdByMatchingJsonLink, getServiceByIdAndDataSource } from '../../data/auroradb';
 import { NextApiRequestWithSession } from '../../interfaces';
+import { TicketWithIds, WithIds, SingleTicket, ReturnTicket } from '../../interfaces/matchingJsonTypes';
 import { isPointToPointTicket } from '../../interfaces/typeGuards';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
 import {

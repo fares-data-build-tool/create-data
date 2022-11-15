@@ -1,5 +1,4 @@
 import React, { FunctionComponent, ReactElement } from 'react';
-import { FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
 import { GlobalSettingsViewPage } from '../components/GlobalSettingsViewPage';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
@@ -8,6 +7,7 @@ import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { sopTicketFormatConverter } from './salesConfirmation';
 import { VIEW_PURCHASE_METHOD } from '../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { FromDb, SalesOfferPackage } from '../interfaces/matchingJsonTypes';
 
 const title = 'Purchase methods';
 const description =
@@ -18,7 +18,6 @@ interface PurchaseMethodProps {
     purchaseMethods: FromDb<SalesOfferPackage>[];
     referer: string | null;
     viewPurchaseMethodErrors: ErrorInfo[];
-    isDevOrTest: boolean;
 }
 
 const ViewPurchaseMethods = ({
@@ -26,7 +25,6 @@ const ViewPurchaseMethods = ({
     referer,
     csrfToken,
     viewPurchaseMethodErrors,
-    isDevOrTest,
 }: PurchaseMethodProps): ReactElement => {
     return (
         <>
@@ -39,7 +37,6 @@ const ViewPurchaseMethods = ({
                 description={description}
                 CardBody={PurchaseMethodCardBody}
                 errors={viewPurchaseMethodErrors}
-                isDevOrTest={isDevOrTest}
             />
         </>
     );
@@ -70,8 +67,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const purchaseMethods = await getSalesOfferPackagesByNocCode(nationalOperatorCode);
     const viewPurchaseMethod = getSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD);
-    const isDevelopment = process.env.NODE_ENV === 'development';
-    const isTest = process.env.STAGE === 'test';
 
     updateSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD, undefined);
 
@@ -81,7 +76,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             referer: extractGlobalSettingsReferer(ctx),
             csrfToken,
             viewPurchaseMethodErrors: viewPurchaseMethod || [],
-            isDevOrTest: isDevelopment || isTest,
         },
     };
 };

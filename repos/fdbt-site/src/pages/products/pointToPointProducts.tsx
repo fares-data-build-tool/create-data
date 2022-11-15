@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from 'react';
 import { MyFaresPointToPointProduct, MyFaresService, NextPageContextWithSession } from '../../interfaces/index';
-import { MyFaresProduct } from 'fdbt-types/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import {
     getBodsServiceByNocAndId,
@@ -16,6 +15,7 @@ import { getTag } from './services';
 import BackButton from '../../components/BackButton';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import { buildDeleteUrl } from './otherProducts';
+import { MyFaresProduct } from '../../interfaces/dbTypes';
 
 const title = 'Point To Point Products - Create Fares Data Service';
 const description = 'View and access your point to point products in one place.';

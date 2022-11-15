@@ -15,7 +15,7 @@ import { getOperatorGroupByNocAndId, getServicesByNocCodeAndDataSourceWithGroupi
 import { ErrorInfo, NextPageContextWithSession, MultiOperatorInfo, Operator } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
-import { ServiceWithNocCode } from 'fdbt-types/matchingJsonTypes';
+import { ServiceWithNocCode } from '../interfaces/matchingJsonTypes';
 
 const pageTitle = 'Multiple Operators Service List - Create Fares Data Service';
 const pageDescription = 'Multiple Operators Service List selection page of the Create Fares Data Service';

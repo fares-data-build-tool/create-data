@@ -29,7 +29,7 @@ import {
     splitUserDataJsonByProducts,
     insertDataToProductsBucketAndProductsTable,
 } from '../../utils/apiUtils/userData';
-import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
+import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {

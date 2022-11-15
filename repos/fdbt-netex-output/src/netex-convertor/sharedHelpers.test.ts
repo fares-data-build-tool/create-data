@@ -1,6 +1,6 @@
 import { FullTimeRestriction, GeoZoneTicket } from '../types';
 import * as sharedHelpers from './sharedHelpers';
-import { getTimeRestrictions, getEarliestTime, getProductType } from './sharedHelpers';
+import { getTimeRestrictions, getEarliestTime, getProductType, replaceAll } from './sharedHelpers';
 import {
     periodGeoZoneTicket,
     periodMultipleServicesTicket,
@@ -536,6 +536,18 @@ describe('Shared Helpers', () => {
             const result = getProductType(ticket);
 
             expect(result).toEqual(expectedResult);
+        });
+    });
+
+    describe('replaceAll', () => {
+        it('removes all instances of a character from a string', () => {
+            const result = replaceAll('example/filename/with/slashes', '/', '-');
+            expect(result).toEqual('example-filename-with-slashes');
+        });
+
+        it('leaves the string the same if it contains none of the string its looking to remove', () => {
+            const result = replaceAll('example/filename/with/slashes', '-', '/');
+            expect(result).toEqual('example/filename/with/slashes');
         });
     });
 });

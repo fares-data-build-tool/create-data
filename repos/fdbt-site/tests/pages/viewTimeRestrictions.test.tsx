@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import ViewTimeRestrictions, { TimeRestrictionCardBody } from '../../src/pages/viewTimeRestrictions';
-import { PremadeTimeRestriction } from 'src/interfaces';
+import { PremadeTimeRestriction } from '../../src/interfaces';
 
 const timeRestrictions: PremadeTimeRestriction[] = [
     {
@@ -61,7 +61,6 @@ describe('pages', () => {
                     csrfToken={''}
                     timeRestrictions={[]}
                     referer={null}
-                    isDevOrTest={false}
                     viewTimeRestrictionErrors={[]}
                 />,
             );
@@ -74,7 +73,6 @@ describe('pages', () => {
                     csrfToken={''}
                     timeRestrictions={timeRestrictions}
                     referer={'hello'}
-                    isDevOrTest={false}
                     viewTimeRestrictionErrors={[]}
                 />,
             );

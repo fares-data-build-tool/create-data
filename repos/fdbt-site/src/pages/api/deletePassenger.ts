@@ -6,10 +6,11 @@ import {
     getPassengerTypeById,
 } from '../../data/auroradb';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils/index';
-import { ErrorInfo, NextApiRequestWithSession, SinglePassengerType } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getProductsMatchingJson } from '../../data/s3';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { VIEW_PASSENGER_TYPE } from '../../constants/attributes';
+import { SinglePassengerType } from '../../interfaces/dbTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {

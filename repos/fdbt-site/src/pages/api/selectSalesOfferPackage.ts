@@ -9,16 +9,14 @@ import {
     ErrorInfo,
     NextApiRequestWithSession,
     ProductWithSalesOfferPackages,
-    SalesOfferPackage,
     SelectSalesOfferPackageWithError,
-    Ticket,
 } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { checkPriceIsValid, removeAllWhiteSpace, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { toArray } from '../../utils';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
-import { WithIds } from 'fdbt-types/matchingJsonTypes';
+import { SalesOfferPackage, Ticket, WithIds } from '../../interfaces/matchingJsonTypes';
 
 interface SanitisedBodyAndErrors {
     sanitisedBody: { [key: string]: SalesOfferPackage[] };

@@ -2,16 +2,27 @@
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import React from 'react';
-import { RawService } from 'fdbt-types/dbTypes';
+import { RawService } from '../../src/interfaces/dbTypes';
 import {
+    WithIds,
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
-    PointToPointPeriodTicket,
     FlatFareGeoZoneTicket,
-    WithIds,
     FlatFareMultipleServices,
     WithBaseIds,
-} from 'fdbt-types/matchingJsonTypes';
+    BaseSchemeOperatorTicket,
+    CarnetExpiryUnit,
+    ExpiryUnit,
+    FullTimeRestriction,
+    MultiOperatorGeoZoneTicket,
+    PointToPointPeriodTicket,
+    ReturnTicket,
+    SalesOfferPackage,
+    SchemeOperatorFlatFareTicket,
+    SchemeOperatorGeoZoneTicket,
+    SingleTicket,
+    Stop,
+} from '../../src/interfaces/matchingJsonTypes';
 import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
@@ -31,25 +42,14 @@ import {
 } from '../../src/constants/attributes';
 import {
     BasicService,
-    CarnetExpiryUnit,
     ErrorInfo,
-    ExpiryUnit,
-    FullTimeRestriction,
     FullTimeRestrictionAttribute,
-    MultiOperatorGeoZoneTicket,
     MultiProduct,
     MultiProductWithErrors,
     NextPageContextWithSession,
     RadioConditionalInputFieldset,
     RadioWithConditionalInputs,
-    ReturnTicket,
-    SalesOfferPackage,
-    SchemeOperatorFlatFareTicket,
-    SchemeOperatorGeoZoneTicket,
-    BaseSchemeOperatorTicket,
     ServiceDB,
-    SingleTicket,
-    Stop,
     TimeRestriction,
     UserFareStages,
     OperatorGroup,

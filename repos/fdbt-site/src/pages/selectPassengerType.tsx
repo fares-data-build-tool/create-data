@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react';
+import { FullGroupPassengerType, SinglePassengerType } from '../interfaces/dbTypes';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import PassengerTypeCard from '../components/PassengerTypeCard';
 import { PASSENGER_TYPE_ATTRIBUTE } from '../constants/attributes';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
-import { ErrorInfo, FullGroupPassengerType, NextPageContextWithSession, SinglePassengerType } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { isPassengerType, isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../utils';

@@ -3,7 +3,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as session from '../../../src/utils/sessions';
 import * as aurora from '../../../src/data/auroradb';
 import { GS_PASSENGER_GROUP_ATTRIBUTE } from '../../../src/constants/attributes';
-import { FullGroupPassengerType } from 'src/interfaces';
+import { FullGroupPassengerType } from '../../../src/interfaces/dbTypes';
 
 const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
 const getGroupPassengerTypesFromGlobalSettingsSpy = jest.spyOn(aurora, 'getGroupPassengerTypesFromGlobalSettings');

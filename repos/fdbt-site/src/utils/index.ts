@@ -22,13 +22,10 @@ import {
     CognitoIdToken,
     NextPageContextWithSession,
     DocumentContextWithSession,
-    Stop,
     ResponseWithLocals,
-    Ticket,
-    ReturnTicket,
 } from '../interfaces';
 import dateFormat from 'dateformat';
-import { TicketWithIds } from 'fdbt-types/matchingJsonTypes';
+import { Stop, Ticket, TicketWithIds, ReturnTicket } from '../interfaces/matchingJsonTypes';
 
 export const getProofDocumentsString = (documents: string[]): string =>
     documents.map((document) => sentenceCaseString(document)).join(', ');

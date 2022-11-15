@@ -10,13 +10,10 @@ import {
 } from '../constants/attributes';
 import {
     NextPageContextWithSession,
-    FullTimeRestriction,
     TermTimeAttribute,
     FullTimeRestrictionAttribute,
     ConfirmationElement,
-    PassengerType,
     SchoolFareTypeAttribute,
-    CompanionInfo,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -25,6 +22,8 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerTypeAttributeWithErrors, isFareType } from '../interfaces/typeGuards';
 import { getCsrfToken, sentenceCaseString, getAndValidateNoc } from '../utils';
 import { getPassengerTypeNameByIdAndNoc } from '../data/auroradb';
+import { PassengerType } from '../interfaces/dbTypes';
+import { CompanionInfo, FullTimeRestriction } from '../interfaces/matchingJsonTypes';
 
 const title = 'Fare Confirmation - Create Fares Data Service';
 const description = 'Fare Confirmation page of the Create Fares Data Service';

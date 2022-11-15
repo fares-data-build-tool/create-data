@@ -4,9 +4,9 @@ import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
-import { DbTimeBand } from 'fdbt-types/matchingJsonTypes';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { VIEW_TIME_RESTRICTION } from '../constants/attributes';
+import { DbTimeBand } from '../interfaces/matchingJsonTypes';
 
 const title = 'Time restrictions';
 const description = 'Define certain days and time periods that your tickets can be used within.';
@@ -27,7 +27,6 @@ interface TimeRestrictionProps {
     timeRestrictions: PremadeTimeRestriction[];
     referer: string | null;
     viewTimeRestrictionErrors: ErrorInfo[];
-    isDevOrTest: boolean;
 }
 
 const formatTime = (time: string | object): string =>
@@ -53,7 +52,6 @@ const ViewTimeRestrictions = ({
     referer,
     csrfToken,
     viewTimeRestrictionErrors,
-    isDevOrTest,
 }: TimeRestrictionProps): ReactElement => {
     return (
         <>
@@ -66,7 +64,6 @@ const ViewTimeRestrictions = ({
                 description={description}
                 CardBody={TimeRestrictionCardBody}
                 errors={viewTimeRestrictionErrors}
-                isDevOrTest={isDevOrTest}
             />
         </>
     );
@@ -102,8 +99,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
     const viewTimeRestriction = getSessionAttribute(ctx.req, VIEW_TIME_RESTRICTION);
-    const isDevelopment = process.env.NODE_ENV === 'development';
-    const isTest = process.env.STAGE === 'test';
 
     updateSessionAttribute(ctx.req, VIEW_TIME_RESTRICTION, undefined);
 
@@ -113,7 +108,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             referer: extractGlobalSettingsReferer(ctx),
             csrfToken,
             viewTimeRestrictionErrors: viewTimeRestriction || [],
-            isDevOrTest: isDevelopment || isTest,
         },
     };
 };

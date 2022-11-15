@@ -1,5 +1,5 @@
 import { Lambda } from 'aws-sdk';
-import { ExportLambdaBody, ZipperLambdaBody } from 'fdbt-types/integrationTypes';
+import { ExportLambdaBody, ZipperLambdaBody } from '../../interfaces/integrationTypes';
 
 const lambda = new Lambda({ region: 'eu-west-2' });
 

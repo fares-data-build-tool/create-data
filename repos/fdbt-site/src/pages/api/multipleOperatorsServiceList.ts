@@ -6,10 +6,10 @@ import {
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
 } from '../../constants/attributes';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
-import { ServiceWithNocCode, SelectedServiceByNocCode } from 'fdbt-types/matchingJsonTypes';
-import { MultiOperatorInfo, NextApiRequestWithSession } from 'src/interfaces';
+import { MultiOperatorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../../src/utils/sessions';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
+import { ServiceWithNocCode, SelectedServiceByNocCode } from '../../interfaces/matchingJsonTypes';
 
 const errorId = 'service-to-add-1';
 const redirectUrl = '/multipleOperatorsServiceList';

@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
+import { FromDb, SalesOfferPackage } from '../../src/interfaces/matchingJsonTypes';
 import ViewPurchaseMethods, { PurchaseMethodCardBody } from '../../src/pages/viewPurchaseMethods';
 import { expectedSalesOfferPackageArray } from '../testData/mockData';
 
@@ -17,7 +17,6 @@ describe('pages', () => {
                     csrfToken={''}
                     purchaseMethods={purchaseMethods}
                     referer={'hello'}
-                    isDevOrTest={false}
                     viewPurchaseMethodErrors={[]}
                 />,
             );

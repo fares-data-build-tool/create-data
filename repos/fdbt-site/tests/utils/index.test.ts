@@ -9,10 +9,10 @@ import {
     isSchemeOperator,
     objectKeyMatchesExportNameExactly,
 } from '../../src/utils';
-import { Stop } from '../../src/interfaces';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import { dateIsOverAnHourAgo } from '../../src/utils/apiUtils';
+import { Stop } from '../../src/interfaces/matchingJsonTypes';
 
 describe('index', () => {
     describe('getHost', () => {
