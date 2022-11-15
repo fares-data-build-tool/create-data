@@ -268,30 +268,49 @@ export const completeGroupPassengerDetailsPages = (): void => {
 };
 
 export const randomlyDetermineUserType = (): void => {
+    let passengerType;
     cy.get('[class=govuk-radios__input]')
         .its('length')
         .then((length) => {
             const randomNumber = getRandomNumber(0, length - 1);
-            cy.get('[class=govuk-radios__input]').eq(randomNumber).click();
+            cy.get('[class=govuk-radios__input]')
+                .eq(randomNumber)
+                .click()
+                .then(($radio) => {
+                    passengerType = $radio.attr('aria-label');
+                    cy.wrap(passengerType).as('passengerType');
+                });
         });
 
     continueButtonClick();
 };
 
 export const randomlyDeterminePurchaseType = (): void => {
+    let purchaseType: string;
     cy.get('[class=govuk-checkboxes__input]')
         .its('length')
         .then((length) => {
             const randomNumber = getRandomNumber(0, length - 1);
-            cy.get('[class=govuk-checkboxes__input]').eq(randomNumber).click();
+            cy.get('[class=govuk-checkboxes__input]')
+                .eq(randomNumber)
+                .click()
+                .then(($radio) => {
+                    purchaseType = $radio.attr('value');
+                    purchaseType = JSON.parse(purchaseType).name;
+                    cy.get(`[id=price-${randomNumber}]`).then(($radio) => {
+                        purchaseType = `${purchaseType} - £${$radio.attr('value')}`;
+                        cy.wrap(purchaseType).as('purchaseType');
+                    });
+                });
         });
-
     continueButtonClick();
 };
 
 export const randomlyDecideTimeRestrictions = (): void => {
+    let timeRestriction = 'N/A';
     if (getRandomNumber(0, 1) === 0) {
         clickElementById('valid-days-not-required');
+        cy.wrap(timeRestriction).as('timeRestriction');
     } else {
         // click yes button
         clickElementById('valid-days-required');
@@ -305,7 +324,11 @@ export const randomlyDecideTimeRestrictions = (): void => {
                 getElementById('conditional-time-restriction')
                     .find('[class=govuk-radios__input]')
                     .eq(randomNumber)
-                    .click();
+                    .click()
+                    .then(($radio) => {
+                        timeRestriction = $radio.attr('value');
+                        cy.wrap(timeRestriction).as('timeRestriction');
+                    });
             });
     }
 
