@@ -400,6 +400,9 @@ export const editPassengerTypeOtherProductsPage = () => {
     getElementById('fare-type').should('not.be.empty');
     clickElementById('passenger-type-link');
     randomlyDetermineUserType();
+    cy.get('@passengerType').then((passengerType) => {
+        cy.get('[id=passenger-type]').should('have.text', passengerType.toString());
+    });
     clickElementByText('Back');
 };
 
@@ -434,6 +437,9 @@ export const editTimeRestrictionOtherProductsPage = () => {
     getElementById('fare-type').should('not.be.empty');
     clickElementById('time-restriction-link');
     randomlyDecideTimeRestrictions();
+    cy.get('@timeRestriction').then((timeRestriction) => {
+        cy.get('[id=time-restriction]').should('have.text', timeRestriction.toString());
+    });
     clickElementByText('Back');
 };
 
@@ -444,5 +450,8 @@ export const editPurchaseMethodOtherProductsPage = () => {
     getElementById('fare-type').should('not.be.empty');
     clickElementById('purchase-methods-link');
     randomlyDeterminePurchaseType();
+    cy.get('@purchaseType').then((purchaseType) => {
+        cy.get('[id=purchase-methods]').should('have.text', purchaseType.toString());
+    });
     clickElementByText('Back');
 };
