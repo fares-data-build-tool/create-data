@@ -431,7 +431,7 @@ export const editPassengerTypePointToPointPage = () => {
     });
 };
 
-export const editStartDate = () => {
+const editStartDate = () => {
     clickElementById('start-date-link');
     clearDates();
     let dateInput = completeProductDateInformationPage();
@@ -467,16 +467,42 @@ export const editStartDatePointToPointPage = () => {
             });
     });
 };
-export const editEndDateOtherProductsPage = () => {
-    clickRandomElementInTable('govuk-table__body', 'product-link');
-    getElementById('product-name').should('not.be.empty');
-    getElementById('product-status').should('not.be.empty');
-    getElementById('fare-type').should('not.be.empty');
+
+const editEndDate = () => {
     clickElementById('end-date-link');
     clearDates();
     let dateInput = completeProductDateInformationPage();
     cy.get('[id=end-date]').should('have.text', dateInput.endDate || '-');
     clickElementByText('Back');
+};
+
+export const editEndDateOtherProductsPage = () => {
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    editEndDate();
+};
+
+export const editEndDatePointToPointPage = () => {
+    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+        .invoke('index')
+        .then((i) => {
+            cy.wrap(i).as('index');
+        });
+    cy.get('@index').then((index) => {
+        cy.log(index.toString());
+        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+            .find('td a')
+            .eq(parseInt(index.toString()))
+            .click()
+            .then(() => {
+                clickElementByText('Product Test');
+                getElementById('service-name').should('not.be.empty');
+                getElementById('service-status').should('not.be.empty');
+                editEndDate();
+            });
+    });
 };
 
 export const editTimeRestrictionOtherProductsPage = () => {
