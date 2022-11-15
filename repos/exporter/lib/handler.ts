@@ -20,7 +20,6 @@ import {
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
 import { DbTimeRestriction } from 'fdbt-types/dbTypes';
-import logger from './logger';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -41,12 +40,8 @@ const EXPORT_METADATA_BUCKET = process.env.EXPORT_METADATA_BUCKET;
 
 export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPrefix }) => {
     // populate the values from global settings using the IDs and write to matching data bucket
-    // console.log(`triggered export lambda... ${paths.toString()} noc: ${noc}`);
-    logger.info('', {
-        context: 'exporter.handler',
-        message: 'getting point to point products for given noc and lineId',
-        nocCode: `${noc}`,
-    });
+
+    console.log(`${noc} - Exporting ${paths.length} files for netex creation for export ${exportPrefix}`);
 
     if (!PRODUCTS_BUCKET || !MATCHING_DATA_BUCKET || !EXPORT_METADATA_BUCKET) {
         throw new Error(
@@ -164,7 +159,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
         })
         .promise();
 
-    console.log(`done ${paths.toString()}`);
+    console.log(`completed ${paths.length} files.`);
 };
 
 export const isBasePeriodTicket = (ticket: WithIds<Ticket>): ticket is WithIds<BasePeriodTicket> =>
