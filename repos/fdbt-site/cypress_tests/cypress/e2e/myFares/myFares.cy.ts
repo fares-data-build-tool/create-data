@@ -50,7 +50,13 @@ describe('The my fares other products pages', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
-        editServicesOtherProductsPage();
+        cy.get('[class=govuk-table__body]')
+            .contains('[class=govuk-table__row]', 'Flat fare')
+            .find('td a')
+            .click()
+            .then(() => {
+                editServicesOtherProductsPage();
+            });
     });
     it('allows the user the edit other product passenger type', () => {
         getHomePage();
