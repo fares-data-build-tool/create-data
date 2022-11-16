@@ -567,21 +567,8 @@ export const editFareTrianglePointToPointPage = () => {
                 clickElementByText('Product Test');
                 getElementById('service-name').should('not.be.empty');
                 getElementById('service-status').should('not.be.empty');
-                cy.get('[id=fare-triangle-link]')
-                    .invoke('attr', 'href')
-                    .then((href) => {
-                        cy.wrap(href).as('csvUpload');
-                        cy.get('[id=fare-triangle]')
-                            .invoke('text')
-                            .then((text) => {
-                                cy.wrap(text).as('dateUpdatedText');
-                            });
-                    });
-                cy.get('@csvUpload').then((csvUpload) => {
-                    const hrefValue = csvUpload.toString();
-                    clickElementById('fare-triangle-link');
-                    completeFareTrianglePages(hrefValue === '/csvUpload', true);
-                });
+                clickElementById('fare-triangle-link');
+                completeFareTrianglePages(true, true);
             });
     });
 };
