@@ -15,7 +15,9 @@ import {
     editPassengerTypeOtherProductsPage,
     editPassengerTypePointToPointPage,
     editProductNameOtherProductsPage,
+    editProductNamePointToPointPage,
     editPurchaseMethodOtherProductsPage,
+    editPurchaseMethodPointToPointPage,
     editServicesOtherProductsPage,
     editStartDateOtherProductsPage,
     editStartDatePointToPointPage,
@@ -77,8 +79,19 @@ describe('The my fares point to point products pages', () => {
                 expect(newDate).to.be.lte(new Date());
             });
     });
+    it('allows the user the edit point to point product name', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Services');
+        editProductNamePointToPointPage();
+    });
+    it('allows the user the edit point to point product purchase method', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Services');
+        editPurchaseMethodPointToPointPage();
+    });
 });
-// TO DO  PURCHASE METHODS, NAME, SERVICES Fare triangle has issues
 
 describe('The my fares other products pages', () => {
     before(() => {

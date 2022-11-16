@@ -370,11 +370,7 @@ export const editServicesOtherProductsPage = (): void => {
     clickElementByText('Back');
 };
 
-export const editProductNameOtherProductsPage = () => {
-    clickRandomElementInTable('govuk-table__body', 'product-link');
-    getElementById('product-name').should('not.be.empty');
-    getElementById('product-status').should('not.be.empty');
-    getElementById('fare-type').should('not.be.empty');
+export const editProductName = () => {
     clickElementById('edit-product-name');
     let oldProductName;
     cy.get('.popup')
@@ -391,6 +387,34 @@ export const editProductNameOtherProductsPage = () => {
     }
     cy.get('[id=product-name-header]').should('have.text', newProductName);
     clickElementByText('Back');
+};
+
+export const editProductNameOtherProductsPage = () => {
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    editProductName();
+};
+
+export const editProductNamePointToPointPage = () => {
+    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+        .invoke('index')
+        .then((i) => {
+            cy.wrap(i).as('index');
+        });
+    cy.get('@index').then((index) => {
+        cy.log(index.toString());
+        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+            .find(`[id=service-link-${index}]`)
+            .click()
+            .then(() => {
+                cy.get('[class=govuk-table__body]').find('a').click();
+                getElementById('service-name').should('not.be.empty');
+                getElementById('service-status').should('not.be.empty');
+                editProductName();
+            });
+    });
 };
 
 export const editPassengerType = () => {
@@ -422,7 +446,7 @@ export const editPassengerTypePointToPointPage = () => {
             .find(`[id=service-link-${index}]`)
             .click()
             .then(() => {
-                clickElementByText('Product Test');
+                cy.get('[class=govuk-table__body]').find('a').click();
                 getElementById('service-name').should('not.be.empty');
                 getElementById('service-status').should('not.be.empty');
                 editPassengerType();
@@ -458,7 +482,7 @@ export const editStartDatePointToPointPage = () => {
             .find(`[id=service-link-${index}]`)
             .click()
             .then(() => {
-                clickElementByText('Product Test');
+                cy.get('[class=govuk-table__body]').find('a').click();
                 getElementById('service-name').should('not.be.empty');
                 getElementById('service-status').should('not.be.empty');
                 editStartDate();
@@ -494,7 +518,7 @@ export const editEndDatePointToPointPage = () => {
             .find(`[id=service-link-${index}]`)
             .click()
             .then(() => {
-                clickElementByText('Product Test');
+                cy.get('[class=govuk-table__body]').find('a').click();
                 getElementById('service-name').should('not.be.empty');
                 getElementById('service-status').should('not.be.empty');
                 editEndDate();
@@ -531,7 +555,7 @@ export const editTimeRestrictionPointToPointPage = () => {
             .find(`[id=service-link-${index}]`)
             .click()
             .then(() => {
-                clickElementByText('Product Test');
+                cy.get('[class=govuk-table__body]').find('a').click();
                 getElementById('service-name').should('not.be.empty');
                 getElementById('service-status').should('not.be.empty');
                 editTimeRestriction();
@@ -539,17 +563,41 @@ export const editTimeRestrictionPointToPointPage = () => {
     });
 };
 
+export const editPurchaseMethod = (isOtherProduct?: boolean) => {
+    clickElementById('purchase-methods-link');
+    randomlyDeterminePurchaseType(isOtherProduct);
+    cy.get('@purchaseType').then((purchaseType) => {
+        cy.get('[id=purchase-methods]').should('have.text', purchaseType.toString());
+    });
+    clickElementByText('Back');
+};
+
 export const editPurchaseMethodOtherProductsPage = () => {
     clickRandomElementInTable('govuk-table__body', 'product-link');
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
-    clickElementById('purchase-methods-link');
-    randomlyDeterminePurchaseType();
-    cy.get('@purchaseType').then((purchaseType) => {
-        cy.get('[id=purchase-methods]').should('have.text', purchaseType.toString());
+    editPurchaseMethod(true);
+};
+
+export const editPurchaseMethodPointToPointPage = () => {
+    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+        .invoke('index')
+        .then((i) => {
+            cy.wrap(i).as('index');
+        });
+    cy.get('@index').then((index) => {
+        cy.log(index.toString());
+        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+            .find(`[id=service-link-${index}]`)
+            .click()
+            .then(() => {
+                cy.get('[class=govuk-table__body]').find('a').click();
+                getElementById('service-name').should('not.be.empty');
+                getElementById('service-status').should('not.be.empty');
+                editPurchaseMethod();
+            });
     });
-    clickElementByText('Back');
 };
 
 export const editFareTrianglePointToPointPage = () => {
@@ -564,7 +612,7 @@ export const editFareTrianglePointToPointPage = () => {
             .find(`[id=service-link-${index}]`)
             .click()
             .then(() => {
-                clickElementByText('Product Test');
+                cy.get('[class=govuk-table__body]').find('a').click();
                 getElementById('service-name').should('not.be.empty');
                 getElementById('service-status').should('not.be.empty');
                 clickElementById('fare-triangle-link');
