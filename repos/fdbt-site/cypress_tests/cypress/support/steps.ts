@@ -146,9 +146,9 @@ export const completeDirectionPageIfReached = (): void => {
         });
 };
 
-const completeFareTrianglePages = (csvUpload: boolean): void => {
+const completeFareTrianglePages = (csvUpload: boolean, isIndividualTest: boolean): void => {
     clickElementById(csvUpload ? 'csv-upload' : 'manual-entry');
-    continueButtonClick();
+    if (!isIndividualTest) continueButtonClick();
     if (csvUpload) {
         clickElementById('pence');
         uploadFile('csv-upload', 'fareTriangle.csv');
@@ -201,7 +201,7 @@ const completePointToPointPeriodProductDetail = (): void => {
 export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void => {
     completeServicePage();
     completeDirectionPageIfReached();
-    completeFareTrianglePages(csvUpload);
+    completeFareTrianglePages(csvUpload, false);
     completeMatchingPage();
 
     if (isCarnet) {
@@ -213,7 +213,7 @@ export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void
 
 export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPeriod: boolean): void => {
     completeServicePage();
-    completeFareTrianglePages(csvUpload);
+    completeFareTrianglePages(csvUpload, false);
     completeMatchingPage();
     completeMatchingPage();
 
@@ -505,17 +505,42 @@ export const editEndDatePointToPointPage = () => {
     });
 };
 
-export const editTimeRestrictionOtherProductsPage = () => {
-    clickRandomElementInTable('govuk-table__body', 'product-link');
-    getElementById('product-name').should('not.be.empty');
-    getElementById('product-status').should('not.be.empty');
-    getElementById('fare-type').should('not.be.empty');
+export const editTimeRestriction = () => {
     clickElementById('time-restriction-link');
     randomlyDecideTimeRestrictions();
     cy.get('@timeRestriction').then((timeRestriction) => {
         cy.get('[id=time-restriction]').should('have.text', timeRestriction.toString());
     });
     clickElementByText('Back');
+};
+
+export const editTimeRestrictionOtherProductsPage = () => {
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    editTimeRestriction();
+};
+
+export const editTimeRestrictionPointToPointPage = () => {
+    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+        .invoke('index')
+        .then((i) => {
+            cy.wrap(i).as('index');
+        });
+    cy.get('@index').then((index) => {
+        cy.log(index.toString());
+        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+            .find('td a')
+            .eq(parseInt(index.toString()))
+            .click()
+            .then(() => {
+                clickElementByText('Product Test');
+                getElementById('service-name').should('not.be.empty');
+                getElementById('service-status').should('not.be.empty');
+                editTimeRestriction();
+            });
+    });
 };
 
 export const editPurchaseMethodOtherProductsPage = () => {
@@ -529,4 +554,41 @@ export const editPurchaseMethodOtherProductsPage = () => {
         cy.get('[id=purchase-methods]').should('have.text', purchaseType.toString());
     });
     clickElementByText('Back');
+};
+
+export const editFareTrianglePointToPointPage = () => {
+    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+        .invoke('index')
+        .then((i) => {
+            cy.wrap(i).as('index');
+        });
+    cy.get('@index').then((index) => {
+        cy.log(index.toString());
+        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
+            .find('td a')
+            .eq(parseInt(index.toString()))
+            .click()
+            .then(() => {
+                clickElementByText('Product Test');
+                getElementById('service-name').should('not.be.empty');
+                getElementById('service-status').should('not.be.empty');
+                cy.get('[id=fare-triangle-link]')
+                    .invoke('attr', 'href')
+                    .then((href) => {
+                        cy.log(href);
+                        cy.wrap(href).as('csvUpload');
+                        cy.get('[id=fare-triangle]')
+                            .invoke('text')
+                            .then((text) => {
+                                cy.log(text);
+                                cy.wrap(text).as('dateUpdatedText');
+                            });
+                    });
+                cy.get('@csvUpload').then((csvUpload) => {
+                    const hrefValue = csvUpload.toString();
+                    clickElementById('fare-triangle-link');
+                    completeFareTrianglePages(hrefValue === '/csvUpload', true);
+                });
+            });
+    });
 };

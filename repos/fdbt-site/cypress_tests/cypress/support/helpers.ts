@@ -606,6 +606,18 @@ export const addSingleProduct = (): void => {
     isFinished();
 };
 
+export const addSingleProductWithManualCSV = (): void => {
+    getHomePage();
+    clickElementById('account-link');
+    clickElementByText('Services');
+    clickElementByText('Create new product');
+    selectCarnetFareType('single');
+    defineUserTypeAndTimeRestrictions();
+    completeSinglePages(false, true);
+    completeSalesPages();
+    isFinished();
+};
+
 export const retryRouteChoiceOnReturnProductError = (): void => {
     cy.get('main').then(($main) => {
         if ($main.text().includes('you cannot create a return product for this service')) {

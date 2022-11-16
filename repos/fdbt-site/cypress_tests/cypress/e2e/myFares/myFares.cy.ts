@@ -1,6 +1,7 @@
 import {
     addFlatFareProductIfNotPresent,
     addSingleProduct,
+    addSingleProductWithManualCSV,
     clickElementById,
     clickElementByText,
     getHomePage,
@@ -10,6 +11,7 @@ import {
     completeMyFaresPointToPointProductsPages,
     editEndDateOtherProductsPage,
     editEndDatePointToPointPage,
+    editFareTrianglePointToPointPage,
     editPassengerTypeOtherProductsPage,
     editPassengerTypePointToPointPage,
     editProductNameOtherProductsPage,
@@ -18,12 +20,14 @@ import {
     editStartDateOtherProductsPage,
     editStartDatePointToPointPage,
     editTimeRestrictionOtherProductsPage,
+    editTimeRestrictionPointToPointPage,
 } from '../../support/steps';
 
 describe('The my fares point to point products pages', () => {
-    before(()=>{
-        addSingleProduct()
-    })
+    before(() => {
+        addSingleProduct();
+        addSingleProductWithManualCSV();
+    });
     it('allows for navigation through the point to point products pages', () => {
         getHomePage();
         clickElementById('manage-fares-link');
@@ -53,7 +57,34 @@ describe('The my fares point to point products pages', () => {
         clickElementByText('Services');
         editEndDatePointToPointPage();
     });
+    it('allows the user the edit point to point product time restriction', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Services');
+        editTimeRestrictionPointToPointPage();
+    });
+    it('allows the user the edit point to point product fare triangle', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Services');
+        editFareTrianglePointToPointPage();
+        cy.get('@dateUpdatedText').then((dateUpdatedText) => {
+            const dateText = dateUpdatedText.toString().split(' ')[1];
+            const [day, month, year] = dateText.split('/');
+            const oldDate = new Date(+year, month - 1, +day);
+            cy.get('[id=fare-triangle]')
+                .invoke('text')
+                .then((text) => {
+                    cy.log(text);
+                    const dateTextNew = text.split(' ')[1];
+                    const [dayNew, monthNew, yearNew] = dateTextNew.split('/');
+                    const newDate = new Date(+yearNew, monthNew - 1, +dayNew);
+                    expect(newDate).to.be.lte(oldDate);
+                });
+        });
+    });
 });
+// TO DO  PURCHASE METHODS, NAME, SERVICES
 
 describe('The my fares other products pages', () => {
     before(() => {
