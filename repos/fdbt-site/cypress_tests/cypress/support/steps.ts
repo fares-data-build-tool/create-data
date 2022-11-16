@@ -419,8 +419,7 @@ export const editPassengerTypePointToPointPage = () => {
     cy.get('@index').then((index) => {
         cy.log(index.toString());
         cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find('td a')
-            .eq(parseInt(index.toString()))
+            .find(`[id=service-link-${index}]`)
             .click()
             .then(() => {
                 clickElementByText('Product Test');
@@ -456,8 +455,7 @@ export const editStartDatePointToPointPage = () => {
     cy.get('@index').then((index) => {
         cy.log(index.toString());
         cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find('td a')
-            .eq(parseInt(index.toString()))
+            .find(`[id=service-link-${index}]`)
             .click()
             .then(() => {
                 clickElementByText('Product Test');
@@ -493,8 +491,7 @@ export const editEndDatePointToPointPage = () => {
     cy.get('@index').then((index) => {
         cy.log(index.toString());
         cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find('td a')
-            .eq(parseInt(index.toString()))
+            .find(`[id=service-link-${index}]`)
             .click()
             .then(() => {
                 clickElementByText('Product Test');
@@ -531,8 +528,7 @@ export const editTimeRestrictionPointToPointPage = () => {
     cy.get('@index').then((index) => {
         cy.log(index.toString());
         cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find('td a')
-            .eq(parseInt(index.toString()))
+            .find(`[id=service-link-${index}]`)
             .click()
             .then(() => {
                 clickElementByText('Product Test');
@@ -565,8 +561,7 @@ export const editFareTrianglePointToPointPage = () => {
     cy.get('@index').then((index) => {
         cy.log(index.toString());
         cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find('td a')
-            .eq(parseInt(index.toString()))
+            .find(`[id=service-link-${index}]`)
             .click()
             .then(() => {
                 clickElementByText('Product Test');
@@ -575,12 +570,10 @@ export const editFareTrianglePointToPointPage = () => {
                 cy.get('[id=fare-triangle-link]')
                     .invoke('attr', 'href')
                     .then((href) => {
-                        cy.log(href);
                         cy.wrap(href).as('csvUpload');
                         cy.get('[id=fare-triangle]')
                             .invoke('text')
                             .then((text) => {
-                                cy.log(text);
                                 cy.wrap(text).as('dateUpdatedText');
                             });
                     });

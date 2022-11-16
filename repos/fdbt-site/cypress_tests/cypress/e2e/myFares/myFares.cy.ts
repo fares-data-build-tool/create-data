@@ -69,22 +69,26 @@ describe('The my fares point to point products pages', () => {
         clickElementByText('Services');
         editFareTrianglePointToPointPage();
         cy.get('@dateUpdatedText').then((dateUpdatedText) => {
-            const dateText = dateUpdatedText.toString().split(' ')[1];
-            const [day, month, year] = dateText.split('/');
-            const oldDate = new Date(+year, month - 1, +day);
-            cy.get('[id=fare-triangle]')
-                .invoke('text')
-                .then((text) => {
-                    cy.log(text);
-                    const dateTextNew = text.split(' ')[1];
-                    const [dayNew, monthNew, yearNew] = dateTextNew.split('/');
-                    const newDate = new Date(+yearNew, monthNew - 1, +dayNew);
-                    expect(newDate).to.be.lte(oldDate);
-                });
+            let dateText = dateUpdatedText.toString();
+            if (dateText !== 'You created a fare triangle') {
+                cy.log('Fare Triangle was CSV uploaded originally')
+                dateText = dateText.split(' ')[1];
+                const [day, month, year] = dateText.split('/');
+                const oldDate = new Date(+year, month - 1, +day);
+                cy.log('oldDate', oldDate.toDateString());
+                cy.get('[id=fare-triangle]')
+                    .invoke('text')
+                    .then((text) => {
+                        const dateTextNew = text.split(' ')[1];
+                        const [dayNew, monthNew, yearNew] = dateTextNew.split('/');
+                        const newDate = new Date(+yearNew, monthNew - 1, +dayNew);
+                        expect(newDate).to.be.lte(oldDate);
+                    });
+            }
         });
     });
 });
-// TO DO  PURCHASE METHODS, NAME, SERVICES
+// TO DO  PURCHASE METHODS, NAME, SERVICES Fare triangle has issues
 
 describe('The my fares other products pages', () => {
     before(() => {
