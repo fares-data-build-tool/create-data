@@ -3,7 +3,7 @@
 exports[`pages exports should render correctly without data when operator has no products 1`] = `
 <Fragment>
   <BaseLayout
-    description="View and access your settings in one place."
+    description="Export your products into NeTEx."
     showNavigation={true}
     title="Exports"
   >
@@ -22,19 +22,28 @@ exports[`pages exports should render correctly without data when operator has no
             Export your data
           </h1>
            
-          <CsrfForm
-            action="/api/exports"
-            csrfToken=""
-            method="post"
-          >
-            <button
-              className="govuk-button govuk-visually-hidden"
-              onClick={[Function]}
-              type="submit"
+          <div>
+            <CsrfForm
+              action="/api/exports"
+              csrfToken=""
+              method="post"
             >
-              Export all fares
-            </button>
-          </CsrfForm>
+              <button
+                className="govuk-button govuk-visually-hidden"
+                onClick={[Function]}
+                type="submit"
+              >
+                Export all fares
+              </button>
+            </CsrfForm>
+            <a
+              className="govuk-button govuk-visually-hidden"
+              data-module="govuk-button"
+              href="/products/selectExports"
+            >
+              Select products to export
+            </a>
+          </div>
         </div>
         <div
           className="govuk-grid-row"
@@ -76,7 +85,7 @@ exports[`pages exports should render correctly without data when operator has no
 exports[`pages exports should render the export button correctly when operator has products 1`] = `
 <Fragment>
   <BaseLayout
-    description="View and access your settings in one place."
+    description="Export your products into NeTEx."
     showNavigation={true}
     title="Exports"
   >
@@ -95,19 +104,28 @@ exports[`pages exports should render the export button correctly when operator h
             Export your data
           </h1>
            
-          <CsrfForm
-            action="/api/exports"
-            csrfToken=""
-            method="post"
-          >
-            <button
-              className="govuk-button govuk-visually-hidden"
-              onClick={[Function]}
-              type="submit"
+          <div>
+            <CsrfForm
+              action="/api/exports"
+              csrfToken=""
+              method="post"
             >
-              Export all fares
-            </button>
-          </CsrfForm>
+              <button
+                className="govuk-button govuk-visually-hidden"
+                onClick={[Function]}
+                type="submit"
+              >
+                Export all fares
+              </button>
+            </CsrfForm>
+            <a
+              className="govuk-button govuk-visually-hidden"
+              data-module="govuk-button"
+              href="/products/selectExports"
+            >
+              Select products to export
+            </a>
+          </div>
         </div>
         <div
           className="govuk-grid-row"
