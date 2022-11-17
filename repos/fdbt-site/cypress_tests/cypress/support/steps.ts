@@ -400,7 +400,7 @@ export const editProductNameOtherProductsPage = () => {
 };
 
 export const editProductNamePointToPointPage = () => {
-    cy.get('.active-products').each(($element, index) => {
+    cy.get(`[id^="active-products-"]`).each(($element, index) => {
         if ($element.text() === '1') {
             clickElementById(`service-link-${index}`);
             cy.get('[class=govuk-table__body]').find('a').click();
@@ -429,7 +429,7 @@ export const editPassengerTypeOtherProductsPage = () => {
 };
 
 export const editPassengerTypePointToPointPage = () => {
-    cy.get('.active-products').each(($element, index) => {
+    cy.get(`[id^="active-products-"]`).each(($element, index) => {
         if ($element.text() === '1') {
             clickElementById(`service-link-${index}`);
             cy.get('[class=govuk-table__body]').find('a').click();
@@ -457,7 +457,7 @@ export const editStartDateOtherProductsPage = () => {
 };
 
 export const editStartDatePointToPointPage = () => {
-    cy.get('.active-products').each(($element, index) => {
+    cy.get(`[id^="active-products-"]`).each(($element, index) => {
         if ($element.text() === '1') {
             clickElementById(`service-link-${index}`);
             cy.get('[class=govuk-table__body]').find('a').click();
@@ -485,7 +485,7 @@ export const editEndDateOtherProductsPage = () => {
 };
 
 export const editEndDatePointToPointPage = () => {
-    cy.get('.active-products').each(($element, index) => {
+    cy.get(`[id^="active-products-"]`).each(($element, index) => {
         if ($element.text() === '1') {
             clickElementById(`service-link-${index}`);
             cy.get('[class=govuk-table__body]').find('a').click();
@@ -514,7 +514,7 @@ export const editTimeRestrictionOtherProductsPage = () => {
 };
 
 export const editTimeRestrictionPointToPointPage = () => {
-    cy.get('.active-products').each(($element, index) => {
+    cy.get(`[id^="active-products-"]`).each(($element, index) => {
         if ($element.text() === '1') {
             clickElementById(`service-link-${index}`);
             cy.get('[class=govuk-table__body]').find('a').click();
@@ -543,7 +543,7 @@ export const editPurchaseMethodOtherProductsPage = () => {
 };
 
 export const editPurchaseMethodPointToPointPage = () => {
-    cy.get('.active-products').each(($element, index) => {
+    cy.get(`[id^="active-products-"]`).each(($element, index) => {
         if ($element.text() === '1') {
             clickElementById(`service-link-${index}`);
             cy.get('[class=govuk-table__body]').find('a').click();
@@ -555,7 +555,7 @@ export const editPurchaseMethodPointToPointPage = () => {
 };
 
 export const editFareTrianglePointToPointPage = () => {
-    cy.get('.active-products').each(($element, index) => {
+    cy.get(`[id^="active-products-"]`).each(($element, index) => {
         if ($element.text() === '1') {
             clickElementById(`service-link-${index}`);
             cy.get('[class=govuk-table__body]').find('a').click();

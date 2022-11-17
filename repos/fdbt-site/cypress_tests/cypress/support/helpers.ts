@@ -608,7 +608,7 @@ export const addSingleProductIfNotPresent = (): void => {
     getHomePage();
     clickElementById('account-link');
     clickElementByText('Services');
-    cy.get('.active-products').each(($element) => {
+    cy.get(`[id^="active-products-"]`).each(($element) => {
         if (parseInt($element.text()) > 0) {
             hasProduct.push($element.text());
             cy.wrap(hasProduct).as('hasProduct');
