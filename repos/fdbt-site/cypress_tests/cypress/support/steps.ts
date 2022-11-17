@@ -398,22 +398,14 @@ export const editProductNameOtherProductsPage = () => {
 };
 
 export const editProductNamePointToPointPage = () => {
-    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-        .invoke('index')
-        .then((i) => {
-            cy.wrap(i).as('index');
-        });
-    cy.get('@index').then((index) => {
-        cy.log(index.toString());
-        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find(`[id=service-link-${index}]`)
-            .click()
-            .then(() => {
-                cy.get('[class=govuk-table__body]').find('a').click();
-                getElementById('service-name').should('not.be.empty');
-                getElementById('service-status').should('not.be.empty');
-                editProductName();
-            });
+    cy.get('.active-products').each(($element, index) => {
+        if ($element.text() === '1') {
+            clickElementById(`service-link-${index}`);
+            cy.get('[class=govuk-table__body]').find('a').click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editProductName();
+        }
     });
 };
 
@@ -435,22 +427,14 @@ export const editPassengerTypeOtherProductsPage = () => {
 };
 
 export const editPassengerTypePointToPointPage = () => {
-    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-        .invoke('index')
-        .then((i) => {
-            cy.wrap(i).as('index');
-        });
-    cy.get('@index').then((index) => {
-        cy.log(index.toString());
-        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find(`[id=service-link-${index}]`)
-            .click()
-            .then(() => {
-                cy.get('[class=govuk-table__body]').find('a').click();
-                getElementById('service-name').should('not.be.empty');
-                getElementById('service-status').should('not.be.empty');
-                editPassengerType();
-            });
+    cy.get('.active-products').each(($element, index) => {
+        if ($element.text() === '1') {
+            clickElementById(`service-link-${index}`);
+            cy.get('[class=govuk-table__body]').find('a').click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editPassengerType();
+        }
     });
 };
 
@@ -471,22 +455,14 @@ export const editStartDateOtherProductsPage = () => {
 };
 
 export const editStartDatePointToPointPage = () => {
-    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-        .invoke('index')
-        .then((i) => {
-            cy.wrap(i).as('index');
-        });
-    cy.get('@index').then((index) => {
-        cy.log(index.toString());
-        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find(`[id=service-link-${index}]`)
-            .click()
-            .then(() => {
-                cy.get('[class=govuk-table__body]').find('a').click();
-                getElementById('service-name').should('not.be.empty');
-                getElementById('service-status').should('not.be.empty');
-                editStartDate();
-            });
+    cy.get('.active-products').each(($element, index) => {
+        if ($element.text() === '1') {
+            clickElementById(`service-link-${index}`);
+            cy.get('[class=govuk-table__body]').find('a').click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editStartDate();
+        }
     });
 };
 
@@ -507,22 +483,14 @@ export const editEndDateOtherProductsPage = () => {
 };
 
 export const editEndDatePointToPointPage = () => {
-    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-        .invoke('index')
-        .then((i) => {
-            cy.wrap(i).as('index');
-        });
-    cy.get('@index').then((index) => {
-        cy.log(index.toString());
-        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find(`[id=service-link-${index}]`)
-            .click()
-            .then(() => {
-                cy.get('[class=govuk-table__body]').find('a').click();
-                getElementById('service-name').should('not.be.empty');
-                getElementById('service-status').should('not.be.empty');
-                editEndDate();
-            });
+    cy.get('.active-products').each(($element, index) => {
+        if ($element.text() === '1') {
+            clickElementById(`service-link-${index}`);
+            cy.get('[class=govuk-table__body]').find('a').click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editEndDate();
+        }
     });
 };
 
@@ -544,22 +512,14 @@ export const editTimeRestrictionOtherProductsPage = () => {
 };
 
 export const editTimeRestrictionPointToPointPage = () => {
-    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-        .invoke('index')
-        .then((i) => {
-            cy.wrap(i).as('index');
-        });
-    cy.get('@index').then((index) => {
-        cy.log(index.toString());
-        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find(`[id=service-link-${index}]`)
-            .click()
-            .then(() => {
-                cy.get('[class=govuk-table__body]').find('a').click();
-                getElementById('service-name').should('not.be.empty');
-                getElementById('service-status').should('not.be.empty');
-                editTimeRestriction();
-            });
+    cy.get('.active-products').each(($element, index) => {
+        if ($element.text() === '1') {
+            clickElementById(`service-link-${index}`);
+            cy.get('[class=govuk-table__body]').find('a').click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editTimeRestriction();
+        }
     });
 };
 
@@ -581,42 +541,26 @@ export const editPurchaseMethodOtherProductsPage = () => {
 };
 
 export const editPurchaseMethodPointToPointPage = () => {
-    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-        .invoke('index')
-        .then((i) => {
-            cy.wrap(i).as('index');
-        });
-    cy.get('@index').then((index) => {
-        cy.log(index.toString());
-        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find(`[id=service-link-${index}]`)
-            .click()
-            .then(() => {
-                cy.get('[class=govuk-table__body]').find('a').click();
-                getElementById('service-name').should('not.be.empty');
-                getElementById('service-status').should('not.be.empty');
-                editPurchaseMethod();
-            });
+    cy.get('.active-products').each(($element, index) => {
+        if ($element.text() === '1') {
+            clickElementById(`service-link-${index}`);
+            cy.get('[class=govuk-table__body]').find('a').click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editPurchaseMethod();
+        }
     });
 };
 
 export const editFareTrianglePointToPointPage = () => {
-    cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-        .invoke('index')
-        .then((i) => {
-            cy.wrap(i).as('index');
-        });
-    cy.get('@index').then((index) => {
-        cy.log(index.toString());
-        cy.get('table tbody tr:has(td:nth-child(2):contains("1"))')
-            .find(`[id=service-link-${index}]`)
-            .click()
-            .then(() => {
-                cy.get('[class=govuk-table__body]').find('a').click();
-                getElementById('service-name').should('not.be.empty');
-                getElementById('service-status').should('not.be.empty');
-                clickElementById('fare-triangle-link');
-                completeFareTrianglePages(true, true);
-            });
+    cy.get('.active-products').each(($element, index) => {
+        if ($element.text() === '1') {
+            clickElementById(`service-link-${index}`);
+            cy.get('[class=govuk-table__body]').find('a').click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            clickElementById('fare-triangle-link');
+            completeFareTrianglePages(true, true);
+        }
     });
 };

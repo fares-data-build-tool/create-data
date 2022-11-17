@@ -606,9 +606,9 @@ export const addSingleProductIfNotPresent = (): void => {
     getHomePage();
     clickElementById('account-link');
     clickElementByText('Services');
-    cy.get('table > tbody > tr > td:nth-child(2)').each(($el) => {
-        if (parseInt($el.text()) > 0) {
-            hasProduct.push($el.text());
+    cy.get('.active-products').each(($element) => {
+        if (parseInt($element.text()) > 0) {
+            hasProduct.push($element.text());
             cy.wrap(hasProduct).as('hasProduct');
         }
     });
@@ -616,7 +616,7 @@ export const addSingleProductIfNotPresent = (): void => {
         if (hasProduct.length === 0) {
             const randomSelector = getRandomNumber(1, 2);
             if (randomSelector === 1) {
-                cy.log('Making a single product with CSV upload')
+                cy.log('Making a single product with CSV upload');
                 clickElementByText('Create new product');
                 selectCarnetFareType('single');
                 defineUserTypeAndTimeRestrictions();
@@ -624,7 +624,7 @@ export const addSingleProductIfNotPresent = (): void => {
                 completeSalesPages();
                 isFinished();
             } else {
-                cy.log('Making a single product with manual upload')
+                cy.log('Making a single product with manual upload');
                 clickElementByText('Create new product');
                 selectCarnetFareType('single');
                 defineUserTypeAndTimeRestrictions();
