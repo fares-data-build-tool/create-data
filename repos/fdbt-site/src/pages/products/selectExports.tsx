@@ -222,12 +222,9 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                             </li>
                                         </ul>
                                         <div className="govuk-tabs__panel" id="services">
+                                            <h2 className="govuk-heading-m govuk-!-margin-bottom-6">Services</h2>
                                             {servicesToDisplay.length > 0 ? (
                                                 <>
-                                                    <h2 className="govuk-heading-m govuk-!-margin-bottom-6">
-                                                        Services
-                                                    </h2>
-
                                                     <button
                                                         id="open-all-services"
                                                         className="govuk-button govuk-button--secondary"

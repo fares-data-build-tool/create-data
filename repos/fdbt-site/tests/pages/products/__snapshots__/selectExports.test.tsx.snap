@@ -642,6 +642,11 @@ exports[`selectExports renders fully when the user has products they can export,
                 className="govuk-tabs__panel"
                 id="services"
               >
+                <h2
+                  className="govuk-heading-m govuk-!-margin-bottom-6"
+                >
+                  Services
+                </h2>
                 <p
                   className="govuk-body-m govuk-!-margin-top-5"
                 >
