@@ -1,6 +1,6 @@
 import {
     addFlatFareProductIfNotPresent,
-    addSingleProductIfNone,
+    addSingleProductIfNotPresent,
     clickElementById,
     clickElementByText,
     getHomePage,
@@ -26,7 +26,7 @@ import {
 
 describe('The my fares point to point products pages', () => {
     before(() => {
-       addSingleProductIfNone()
+       addSingleProductIfNotPresent()
     });
     it('allows for navigation through the point to point products pages', () => {
         getHomePage();

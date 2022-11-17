@@ -600,7 +600,7 @@ export const addFlatFareProductIfNotPresent = (): void => {
     });
 };
 
-export const addSingleProductIfNone = (): void => {
+export const addSingleProductIfNotPresent = (): void => {
     let hasProduct: string[] = [];
     cy.wrap(hasProduct).as('hasProduct');
     getHomePage();
