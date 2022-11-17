@@ -149,6 +149,7 @@ exports[`pages multipleOperatorsServiceList should render correctly multiOperato
                   >
                     <summary
                       className="govuk-details__summary width-x"
+                      id="operator-0"
                       onClick={[Function]}
                       role="button"
                     >
@@ -190,6 +191,7 @@ exports[`pages multipleOperatorsServiceList should render correctly multiOperato
                   >
                     <summary
                       className="govuk-details__summary width-x"
+                      id="operator-1"
                       onClick={[Function]}
                       role="button"
                     >
@@ -399,6 +401,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
                   >
                     <summary
                       className="govuk-details__summary width-x"
+                      id="operator-0"
                       onClick={[Function]}
                       role="button"
                     >
@@ -440,6 +443,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
                   >
                     <summary
                       className="govuk-details__summary width-x"
+                      id="operator-1"
                       onClick={[Function]}
                       role="button"
                     >
