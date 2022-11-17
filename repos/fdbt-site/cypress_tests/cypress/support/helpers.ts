@@ -541,37 +541,10 @@ export const clickRandomElementInTable = (tableName: string, elementId: string):
 };
 
 export const completeOperatorSearch = (isMultiService: boolean): void => {
-    cy.url()
-        .should('match', /\/(searchOperators|reuseOperatorGroup)$/) // This is bassicly a wait to ensure we're on the correct page
-        .then((url: string) => {
-            if (url.includes('reuseOperatorGroup')) {
-                clickElementById('test-radio');
-                continueButtonClick();
-            }
-            getElementById(`search-input`).type('north');
-            clickElementById('search-button');
 
-            getElementById('add-operator-checkbox-0').click();
-            getElementById('add-operator-checkbox-1').click();
-            getElementById('add-operator-checkbox-2').click();
-            getElementById('add-operator-checkbox-3').click();
+    clickElementById('test-radio');
+    continueButtonClick();
 
-            clickElementById('add-operator-button');
-
-            getElementById('remove-operator-checkbox-3').click();
-            clickElementById('remove-operators-button');
-            continueButtonClick();
-
-            clickElementById('no-save');
-            continueButtonClick();
-
-            if (isMultiService) {
-                for (let i = 0; i < 3; i += 1) {
-                    randomlyChooseAndSelectServices();
-                    continueButtonClick();
-                }
-            }
-        });
 };
 
 export const addFlatFareProductIfNotPresent = (): void => {
@@ -609,4 +582,17 @@ export const clearDates = (): void => {
     getElementById('end-day-input').clear();
     getElementById('end-month-input').clear();
     getElementById('end-year-input').clear();
+};
+
+export const completeMultiServicePages = (): void => {
+    
+    cy.get('[class=govuk-checkboxes__item]').each((checkbox) => {
+        cy.wrap(checkbox).click();
+    });
+    
+    getElementById('operator-1').click();
+    cy.get('[class=govuk-checkboxes__item]').each((checkbox) => {
+        cy.wrap(checkbox).click();
+    });
+    continueButtonClick();
 };
