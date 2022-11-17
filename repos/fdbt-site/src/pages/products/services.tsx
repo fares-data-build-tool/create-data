@@ -75,7 +75,9 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                                 {service.lineName} - {service.origin} to {service.destination}
                             </a>
                         </td>
-                        <td id= {`active-products-${index}`} className="govuk-table__cell dft-text-align-centre">{service.products}</td>
+                        <td id={`active-products-${index}`} className="govuk-table__cell dft-text-align-centre">
+                            {service.products}
+                        </td>
                         <td className="govuk-table__cell dft-text-align-centre">{service.startDate}</td>
                         <td className="govuk-table__cell dft-text-align-centre">{service.endDate || '-'}</td>
                         <td className="govuk-table__cell dft-text-align-centre">
