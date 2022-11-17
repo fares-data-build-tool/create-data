@@ -73,7 +73,7 @@ describe('The my fares point to point products pages', () => {
             .then((text) => {
                 const dateTextNew = text.split(' ')[1];
                 const [dayNew, monthNew, yearNew] = dateTextNew.split('/');
-                const newDate = new Date(+yearNew, monthNew - 1, +dayNew);
+                const newDate = new Date(Number(yearNew), Number(monthNew) - 1, Number(dayNew));
                 expect(newDate).to.be.lte(new Date());
             });
     });
