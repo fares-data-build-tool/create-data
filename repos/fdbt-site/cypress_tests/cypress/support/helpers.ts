@@ -600,28 +600,41 @@ export const addFlatFareProductIfNotPresent = (): void => {
     });
 };
 
-export const addSingleProduct = (): void => {
+export const addSingleProductIfNone = (): void => {
+    let hasProduct: string[] = [];
+    cy.wrap(hasProduct).as('hasProduct');
     getHomePage();
     clickElementById('account-link');
     clickElementByText('Services');
-    clickElementByText('Create new product');
-    selectCarnetFareType('single');
-    defineUserTypeAndTimeRestrictions();
-    completeSinglePages(true, true);
-    completeSalesPages();
-    isFinished();
-};
-
-export const addSingleProductWithManualCSV = (): void => {
-    getHomePage();
-    clickElementById('account-link');
-    clickElementByText('Services');
-    clickElementByText('Create new product');
-    selectCarnetFareType('single');
-    defineUserTypeAndTimeRestrictions();
-    completeSinglePages(false, true);
-    completeSalesPages();
-    isFinished();
+    cy.get('table > tbody > tr > td:nth-child(2)').each(($el) => {
+        if (parseInt($el.text()) > 0) {
+            cy.log($el.text())
+            hasProduct.push($el.text());
+            cy.wrap(hasProduct).as('hasProduct');
+        }
+    });
+    cy.get('@hasProduct').then((hasProduct) => {
+        if (hasProduct.length === 0) {
+            const randomSelector = getRandomNumber(1, 2);
+            if (randomSelector === 1) {
+                cy.log('Making a single product with CSV upload')
+                clickElementByText('Create new product');
+                selectCarnetFareType('single');
+                defineUserTypeAndTimeRestrictions();
+                completeSinglePages(true, true);
+                completeSalesPages();
+                isFinished();
+            } else {
+                cy.log('Making a single product with manual upload')
+                clickElementByText('Create new product');
+                selectCarnetFareType('single');
+                defineUserTypeAndTimeRestrictions();
+                completeSinglePages(false, true);
+                completeSalesPages();
+                isFinished();
+            }
+        }
+    });
 };
 
 export const retryRouteChoiceOnReturnProductError = (): void => {

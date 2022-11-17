@@ -1,7 +1,6 @@
 import {
     addFlatFareProductIfNotPresent,
-    addSingleProduct,
-    addSingleProductWithManualCSV,
+    addSingleProductIfNone,
     clickElementById,
     clickElementByText,
     getHomePage,
@@ -27,8 +26,7 @@ import {
 
 describe('The my fares point to point products pages', () => {
     before(() => {
-        addSingleProduct();
-        addSingleProductWithManualCSV();
+       addSingleProductIfNone()
     });
     it('allows for navigation through the point to point products pages', () => {
         getHomePage();
