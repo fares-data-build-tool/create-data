@@ -127,6 +127,35 @@ export const randomlyChooseASchoolProof = (): void => {
     }
 };
 
+export const randomlySelectMultiServices = (): void => {
+    
+    const randomSelector = getRandomNumber(1, 3);
+    switch (randomSelector) {
+        case 1:
+            cy.log('Select All button clicked');
+            clickElementById('select-all-button');
+            break;
+        case 2:
+            cy.log('Few checkbox are selected');            
+            cy.get('[class=govuk-checkboxes__item]').each((checkbox, index, checkboxes) => {
+                const numberOfCheckboxes = checkboxes.length;
+                if (numberOfCheckboxes === 1 || index !== numberOfCheckboxes - 1) {
+                    cy.wrap(checkbox).click();
+                }
+            });
+            break;
+        case 3:
+            cy.log('All checkbox are selected');
+            cy.get('[class=govuk-checkboxes__item]').each((checkbox) => {
+                cy.wrap(checkbox).click();
+            });
+            break;
+        default:
+            throwInvalidRandomSelectorError();
+    }
+
+};
+
 export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, passengerType: string): void => {
     // Once we leave the passenger types page,
     // check if we have skipped the defining passenger types page due to a saved config
@@ -549,37 +578,10 @@ export const clickRandomElementInTable = (tableName: string, elementId: string):
 };
 
 export const completeOperatorSearch = (isMultiService: boolean): void => {
-    cy.url()
-        .should('match', /\/(searchOperators|reuseOperatorGroup)$/) // This is bassicly a wait to ensure we're on the correct page
-        .then((url: string) => {
-            if (url.includes('reuseOperatorGroup')) {
-                clickElementById('test-radio');
-                continueButtonClick();
-            }
-            getElementById(`search-input`).type('north');
-            clickElementById('search-button');
 
-            getElementById('add-operator-checkbox-0').click();
-            getElementById('add-operator-checkbox-1').click();
-            getElementById('add-operator-checkbox-2').click();
-            getElementById('add-operator-checkbox-3').click();
+    clickElementById('test-radio');
+    continueButtonClick();
 
-            clickElementById('add-operator-button');
-
-            getElementById('remove-operator-checkbox-3').click();
-            clickElementById('remove-operators-button');
-            continueButtonClick();
-
-            clickElementById('no-save');
-            continueButtonClick();
-
-            if (isMultiService) {
-                for (let i = 0; i < 3; i += 1) {
-                    randomlyChooseAndSelectServices();
-                    continueButtonClick();
-                }
-            }
-        });
 };
 
 export const addFlatFareProductIfNotPresent = (): void => {
@@ -653,4 +655,12 @@ export const clearDates = (): void => {
     getElementById('end-day-input').clear();
     getElementById('end-month-input').clear();
     getElementById('end-year-input').clear();
+};
+
+export const completeMultiServicePages = (): void => {
+    
+    randomlySelectMultiServices();
+    getElementById('operator-1').click();
+    randomlySelectMultiServices();
+    continueButtonClick();
 };

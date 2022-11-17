@@ -24,6 +24,7 @@ import {
     retryRouteChoiceOnReturnProductError,
     clearDates,
     randomlyDeterminePurchaseType,
+    completeMultiServicePages,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -331,6 +332,7 @@ export const completeMultiOpMultiServicePages = (numberOfProducts?: number, mult
     continueButtonClick();
 
     completeOperatorSearch(true);
+    completeMultiServicePages();
 
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
 };

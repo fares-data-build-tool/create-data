@@ -74,6 +74,7 @@ export const showSelectedOperators = (
                                             e.preventDefault();
                                             setActiveOperator(operator);
                                         }}
+                                        id={`operator-${index}`}
                                     >
                                         <span className="govuk-details__summary-text">{operator.name}</span>
                                     </summary>
