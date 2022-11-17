@@ -1907,6 +1907,9 @@ describe('Netex Helpers', () => {
             const expectedPreassignedFareProduct = {
                 id: expect.stringContaining(tripString),
                 Name: { $t: productNameForPlainText },
+                ChargingMomentType: {
+                    $t: 'beforeTravel',
+                },
                 TypeOfFareProductRef: { version: '1.0', ref: expect.stringContaining('fxc:standard_product@trip@') },
                 validableElements: {
                     ValidableElement: {

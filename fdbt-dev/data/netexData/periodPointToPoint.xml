@@ -1209,6 +1209,7 @@
           <fareProducts>
             <PreassignedFareProduct id="Trip@Period_Point_to_Point" version="1.0">
               <Name>Period Point to Point</Name>
+              <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="1.0" ref="fxc:standard_product@trip@single"/>
               <validableElements>
                 <ValidableElement id="Trip@Period_Point_to_Point@travel" version="1.0">
