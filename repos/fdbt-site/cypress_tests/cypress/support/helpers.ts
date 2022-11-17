@@ -125,6 +125,35 @@ export const randomlyChooseASchoolProof = (): void => {
     }
 };
 
+export const randomlySelectMultiServices = (): void => {
+    
+    const randomSelector = getRandomNumber(1, 3);
+    switch (randomSelector) {
+        case 1:
+            cy.log('Select All button clicked');
+            clickElementById('select-all-button');
+            break;
+        case 2:
+            cy.log('Few checkbox are selected');            
+            cy.get('[class=govuk-checkboxes__item]').each((checkbox, index, checkboxes) => {
+                const numberOfCheckboxes = checkboxes.length;
+                if (numberOfCheckboxes === 1 || index !== numberOfCheckboxes - 1) {
+                    cy.wrap(checkbox).click();
+                }
+            });
+            break;
+        case 3:
+            cy.log('All checkbox are selected');
+            cy.get('[class=govuk-checkboxes__item]').each((checkbox) => {
+                cy.wrap(checkbox).click();
+            });
+            break;
+        default:
+            throwInvalidRandomSelectorError();
+    }
+
+};
+
 export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, passengerType: string): void => {
     // Once we leave the passenger types page,
     // check if we have skipped the defining passenger types page due to a saved config
@@ -586,13 +615,8 @@ export const clearDates = (): void => {
 
 export const completeMultiServicePages = (): void => {
     
-    cy.get('[class=govuk-checkboxes__item]').each((checkbox) => {
-        cy.wrap(checkbox).click();
-    });
-    
+    randomlySelectMultiServices();
     getElementById('operator-1').click();
-    cy.get('[class=govuk-checkboxes__item]').each((checkbox) => {
-        cy.wrap(checkbox).click();
-    });
+    randomlySelectMultiServices();
     continueButtonClick();
 };
