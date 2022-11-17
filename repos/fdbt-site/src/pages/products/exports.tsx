@@ -10,7 +10,7 @@ import { Export } from '../api/getExportProgress';
 import InfoPopup from '../../components/InfoPopup';
 
 const title = 'Exports';
-const description = 'View and access your settings in one place.';
+const description = 'Export your products into NeTEx.';
 const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).then((res) => res.json());
 
 interface GlobalSettingsProps {
@@ -78,32 +78,41 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
                             <h1 className="govuk-heading-xl">Export your data</h1>{' '}
-                            {!anExportIsInProgress ? (
-                                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
-                                    <button
-                                        type="submit"
-                                        className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
-                                        onClick={() => {
-                                            setShowPopup(true);
-                                            setButtonClicked(true);
-                                        }}
-                                    >
-                                        Export all fares
-                                    </button>
-                                </CsrfForm>
-                            ) : showCancelButton ? (
-                                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
-                                    <input type="hidden" name="exportName" value={exportInProgress?.name} />
-                                    <button
-                                        type="submit"
-                                        className={`govuk-button govuk-button--warning${
-                                            !isDevOrTest ? ' govuk-visually-hidden' : ''
-                                        }`}
-                                    >
-                                        Cancel export in progress
-                                    </button>
-                                </CsrfForm>
-                            ) : null}
+                            <div>
+                                {!anExportIsInProgress ? (
+                                    <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
+                                        <button
+                                            type="submit"
+                                            className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
+                                            onClick={() => {
+                                                setShowPopup(true);
+                                                setButtonClicked(true);
+                                            }}
+                                        >
+                                            Export all fares
+                                        </button>
+                                    </CsrfForm>
+                                ) : showCancelButton ? (
+                                    <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
+                                        <input type="hidden" name="exportName" value={exportInProgress?.name} />
+                                        <button
+                                            type="submit"
+                                            className={`govuk-button govuk-button--warning${
+                                                !isDevOrTest ? ' govuk-visually-hidden' : ''
+                                            }`}
+                                        >
+                                            Cancel export in progress
+                                        </button>
+                                    </CsrfForm>
+                                ) : null}
+                                <a
+                                    href="/products/selectExports"
+                                    className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
+                                    data-module="govuk-button"
+                                >
+                                    Select products to export
+                                </a>
+                            </div>
                         </div>
                         <div className="govuk-grid-row">
                             <div className="govuk-grid-column-two-thirds">
