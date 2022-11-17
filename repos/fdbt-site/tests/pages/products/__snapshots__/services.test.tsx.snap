@@ -181,7 +181,6 @@ exports[`myfares pages services should render correctly when services present 1`
               </td>
               <td
                 className="govuk-table__cell dft-text-align-centre active-products"
-                id="active-products-0"
               >
                 0
               </td>
@@ -310,7 +309,6 @@ exports[`myfares pages services should render correctly when services present an
               </td>
               <td
                 className="govuk-table__cell dft-text-align-centre active-products"
-                id="active-products-0"
               >
                 2
               </td>
@@ -439,7 +437,6 @@ exports[`myfares pages services should render correctly when services require at
               </td>
               <td
                 className="govuk-table__cell dft-text-align-centre active-products"
-                id="active-products-0"
               >
                 2
               </td>
