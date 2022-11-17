@@ -55,7 +55,7 @@ const addTestOperatorGroups = (): void => {
         const numberofOperatorGroups = Number(element.attr('data-card-count'));
         cy.log(`There are ${numberofOperatorGroups} operator groups`);
         if (numberofOperatorGroups > 0) {
-            cy.log('There is at least one purchase method');
+            cy.log('There is at least one operator group');
         } else {
 
             clickElementByText('Add an operator group');
