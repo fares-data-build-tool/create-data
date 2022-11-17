@@ -23,7 +23,6 @@ exports[`pages exports should render correctly without data when operator has no
           </h1>
            
           <div>
-             
             <CsrfForm
               action="/api/exports"
               csrfToken=""
@@ -106,7 +105,6 @@ exports[`pages exports should render the export button correctly when operator h
           </h1>
            
           <div>
-             
             <CsrfForm
               action="/api/exports"
               csrfToken=""

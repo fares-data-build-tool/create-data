@@ -6,7 +6,7 @@ import * as s3 from '../data/s3';
 import { isPointToPointTicket, isSchemeOperatorTicket, isSingleTicket, Ticket } from '../types/index';
 import netexGenerator from './netexGenerator';
 import { Operator } from '../../src/types/index';
-import { getProductType } from './sharedHelpers';
+import { getProductType, replaceAll } from './sharedHelpers';
 import { SchemeOperatorTicket } from 'fdbt-types/matchingJsonTypes';
 import { fileNameExistsAlready } from '../data/s3';
 import { v4 as uuidv4 } from 'uuid';
@@ -69,7 +69,8 @@ export const generateFileName = (ticket: Ticket): string => {
     const productType = getProductType(ticket);
     const lineOrNetworkFare = getLineOrNetworkFare(productType);
     const nocOrSchemeName = isSchemeOperatorTicket(ticket) ? getSchemeNocIdentifier(ticket) : ticket.nocCode;
-    const productName = ticket.products[0].productName.replace(' ', '-').replace('/', '-');
+    const productNameWithoutWhiteSpace = replaceAll(ticket.products[0].productName, ' ', '-');
+    const productNameWithoutSlashes = replaceAll(productNameWithoutWhiteSpace, '/', '-');
     const creationDate = new Date(Date.now()).toISOString().split('T')[0];
     const startDate = ticket.ticketPeriod.startDate.split('T')[0];
 
@@ -89,7 +90,7 @@ export const generateFileName = (ticket: Ticket): string => {
 
     return `FX-PI-01_UK_${nocOrSchemeName}_${lineOrNetworkFare}_${
         pointToPointInsert ? pointToPointInsert : ''
-    }${productName}_${creationDate}_${startDate}_${uuid}`;
+    }${productNameWithoutSlashes}_${creationDate}_${startDate}_${uuid}`;
 };
 
 export const getFinalNetexName = async (fileName: string): Promise<string> => {

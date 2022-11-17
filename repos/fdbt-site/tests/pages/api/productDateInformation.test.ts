@@ -111,6 +111,45 @@ describe('productDataInformation', () => {
         });
     });
 
+    it('it should not let the user enter a start year or end date year beyond 2099', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                startDateDay: '12',
+                startDateMonth: '12',
+                startDateYear: '2150',
+                endDateDay: '12',
+                endDateMonth: '12',
+                endDateYear: '2019',
+                productDates: 'Yes',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await productDateInformation(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
+            errors: [
+                {
+                    errorMessage: 'Enter a date with a year before 2099',
+                    id: 'start-year-input',
+                },
+            ],
+            dates: {
+                startDateDay: '12',
+                startDateMonth: '12',
+                startDateYear: '2150',
+                endDateDay: '12',
+                endDateMonth: '12',
+                endDateYear: '2019',
+            },
+        });
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/productDateInformation',
+        });
+    });
+
     it('it should set the start and end date when entered correctly and redirect to confirmation page', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
