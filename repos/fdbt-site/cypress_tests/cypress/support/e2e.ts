@@ -50,14 +50,25 @@ const addTestOperatorDetails = (): void => {
 };
 
 const addTestOperatorGroups = (): void => {
-    clickElementByText('Add an operator group');
-    clickElementById('search-input').clear().type('bus');
-    clickElementById('search-button')
-    cy.get('[class=govuk-checkboxes__item]').each((checkbox) => {
-        cy.wrap(checkbox).click();
+
+    cy.get(`[data-card-count]`).then((element) => {
+        const numberofOperatorGroups = Number(element.attr('data-card-count'));
+        cy.log(`There are ${numberofOperatorGroups} operator groups`);
+        if (numberofOperatorGroups > 0) {
+            cy.log('There is at least one operator group');
+        } else {
+
+            clickElementByText('Add an operator group');
+            clickElementById('search-input').clear().type('bus');
+            clickElementById('search-button')
+            cy.get('[class=govuk-checkboxes__item]').each((checkbox) => {
+                cy.wrap(checkbox).click();
+            });
+            clickElementById('operator-group-name').clear().type('test');
+            continueButtonClick()
+        
+        }
     });
-    clickElementById('operator-group-name').clear().type('test');
-    continueButtonClick()
 };
 
 const addTestFareDayEnd = (): void => {
