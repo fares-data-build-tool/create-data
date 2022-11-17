@@ -690,3 +690,22 @@ export interface TxcSourceAttribute {
     hasTnds: boolean;
     hasBods: boolean;
 }
+
+export interface ProductToExport {
+    id: string;
+    productName: string;
+    startDate: string;
+    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator';
+    carnet: boolean;
+    schoolTicket: boolean;
+    serviceLineId: string | null;
+    direction: string | null;
+    passengerTypeName: string;
+}
+
+export interface ServiceToDisplay {
+    lineId: string;
+    origin: string;
+    destination: string;
+    lineName: string;
+}

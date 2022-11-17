@@ -72,7 +72,11 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
                                         </button>
                                     </CsrfForm>
                                 )}
-                                <a href="/products/selectExports" className="govuk-button" data-module="govuk-button">
+                                <a
+                                    href="/products/selectExports"
+                                    className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
+                                    data-module="govuk-button"
+                                >
                                     Select products to export
                                 </a>
                             </div>

@@ -45,7 +45,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
  *
  * @returns only non-expired products are an array.
  */
-export const getNonExpiredProducts = (products: DbProduct[]) => {
+export const getNonExpiredProducts = (products: DbProduct[]): DbProduct[] => {
     return products.filter((product) => {
         const status = getEntityStatus(product.startDate, product.endDate);
 
@@ -68,7 +68,10 @@ export const getNonExpiredProducts = (products: DbProduct[]) => {
  *
  * @returns a products array where the products have one or more active services.
  */
-export const filterOutProductsWithNoActiveServices = async (noc: string, products: DbProduct[]) => {
+export const filterOutProductsWithNoActiveServices = async (
+    noc: string,
+    products: DbProduct[],
+): Promise<DbProduct[]> => {
     const lineIdsToKeep: string[] = [];
 
     for (let i = 0; i < products.length; i++) {
