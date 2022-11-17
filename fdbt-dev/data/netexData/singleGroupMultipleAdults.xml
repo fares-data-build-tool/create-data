@@ -1966,6 +1966,7 @@
           <fareProducts>
             <PreassignedFareProduct id="Trip@Best_product" version="1.0">
               <Name>Best product</Name>
+              <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="1.0" ref="fxc:standard_product@trip@single"/>
               <validableElements>
                 <ValidableElement id="Trip@Best_product@travel" version="1.0">
