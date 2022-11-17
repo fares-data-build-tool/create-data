@@ -608,7 +608,6 @@ export const addSingleProductIfNone = (): void => {
     clickElementByText('Services');
     cy.get('table > tbody > tr > td:nth-child(2)').each(($el) => {
         if (parseInt($el.text()) > 0) {
-            cy.log($el.text())
             hasProduct.push($el.text());
             cy.wrap(hasProduct).as('hasProduct');
         }
