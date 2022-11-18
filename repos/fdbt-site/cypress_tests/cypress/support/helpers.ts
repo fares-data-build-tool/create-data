@@ -2,8 +2,10 @@ import 'cypress-file-upload';
 import {
     completeFlatFarePages,
     completeSalesPages,
+    completeSinglePages,
     defineUserTypeAndTimeRestrictions,
     FareType,
+    selectCarnetFareType,
     selectFareType,
 } from './steps';
 import { DateInput } from './types';
@@ -314,7 +316,7 @@ export const randomlyDetermineUserType = (): void => {
     continueButtonClick();
 };
 
-export const randomlyDeterminePurchaseType = (): void => {
+export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void => {
     let purchaseType: string;
     cy.get('[class=govuk-checkboxes__input]')
         .its('length')
@@ -324,12 +326,18 @@ export const randomlyDeterminePurchaseType = (): void => {
                 .eq(randomNumber)
                 .click()
                 .then(($radio) => {
-                    purchaseType = $radio.attr('value');
-                    purchaseType = JSON.parse(purchaseType).name;
-                    cy.get(`[id=price-${randomNumber}]`).then(($radio) => {
-                        purchaseType = `${purchaseType} - £${$radio.attr('value')}`;
+                    if (isOtherProduct) {
+                        purchaseType = $radio.attr('value');
+                        purchaseType = JSON.parse(purchaseType).name;
+                        cy.get(`[id=price-${randomNumber}]`).then(($radio) => {
+                            purchaseType = `${purchaseType} - £${$radio.attr('value')}`;
+                            cy.wrap(purchaseType).as('purchaseType');
+                        });
+                    } else {
+                        purchaseType = $radio.attr('value');
+                        purchaseType = JSON.parse(purchaseType).name;
                         cy.wrap(purchaseType).as('purchaseType');
-                    });
+                    }
                 });
         });
     continueButtonClick();
@@ -590,6 +598,42 @@ export const addFlatFareProductIfNotPresent = (): void => {
             completeSalesPages();
             isFinished();
             cy.log('Flat fare product set up');
+        }
+    });
+};
+
+export const addSingleProductIfNotPresent = (): void => {
+    let hasProduct: string[] = [];
+    cy.wrap(hasProduct).as('hasProduct');
+    getHomePage();
+    clickElementById('account-link');
+    clickElementByText('Services');
+    cy.get(`[id^="active-products-"]`).each(($element) => {
+        if (parseInt($element.text()) > 0) {
+            hasProduct.push($element.text());
+            cy.wrap(hasProduct).as('hasProduct');
+        }
+    });
+    cy.get('@hasProduct').then((hasProduct) => {
+        if (hasProduct.length === 0) {
+            const randomSelector = getRandomNumber(1, 2);
+            if (randomSelector === 1) {
+                cy.log('Making a single product with CSV upload');
+                clickElementByText('Create new product');
+                selectCarnetFareType('single');
+                defineUserTypeAndTimeRestrictions();
+                completeSinglePages(true, true);
+                completeSalesPages();
+                isFinished();
+            } else {
+                cy.log('Making a single product with manual upload');
+                clickElementByText('Create new product');
+                selectCarnetFareType('single');
+                defineUserTypeAndTimeRestrictions();
+                completeSinglePages(false, true);
+                completeSalesPages();
+                isFinished();
+            }
         }
     });
 };

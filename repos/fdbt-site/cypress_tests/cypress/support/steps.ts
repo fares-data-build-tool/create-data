@@ -147,9 +147,9 @@ export const completeDirectionPageIfReached = (): void => {
         });
 };
 
-const completeFareTrianglePages = (csvUpload: boolean): void => {
+const completeFareTrianglePages = (csvUpload: boolean, isIndividualTest: boolean): void => {
     clickElementById(csvUpload ? 'csv-upload' : 'manual-entry');
-    continueButtonClick();
+    if (!isIndividualTest) continueButtonClick();
     if (csvUpload) {
         clickElementById('pence');
         uploadFile('csv-upload', 'fareTriangle.csv');
@@ -202,7 +202,7 @@ const completePointToPointPeriodProductDetail = (): void => {
 export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void => {
     completeServicePage();
     completeDirectionPageIfReached();
-    completeFareTrianglePages(csvUpload);
+    completeFareTrianglePages(csvUpload, false);
     completeMatchingPage();
 
     if (isCarnet) {
@@ -214,7 +214,7 @@ export const completeSinglePages = (csvUpload: boolean, isCarnet: boolean): void
 
 export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPeriod: boolean): void => {
     completeServicePage();
-    completeFareTrianglePages(csvUpload);
+    completeFareTrianglePages(csvUpload, false);
     completeMatchingPage();
     completeMatchingPage();
 
@@ -372,11 +372,7 @@ export const editServicesOtherProductsPage = (): void => {
     clickElementByText('Back');
 };
 
-export const editProductNameOtherProductsPage = () => {
-    clickRandomElementInTable('govuk-table__body', 'product-link');
-    getElementById('product-name').should('not.be.empty');
-    getElementById('product-status').should('not.be.empty');
-    getElementById('fare-type').should('not.be.empty');
+export const editProductName = () => {
     clickElementById('edit-product-name');
     let oldProductName;
     cy.get('.popup')
@@ -395,11 +391,26 @@ export const editProductNameOtherProductsPage = () => {
     clickElementByText('Back');
 };
 
-export const editPassengerTypeOtherProductsPage = () => {
+export const editProductNameOtherProductsPage = () => {
     clickRandomElementInTable('govuk-table__body', 'product-link');
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
+    editProductName();
+};
+
+export const editProductNamePointToPointPage = () => {
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
+            cy.get('[class=govuk-table__body]').find('a').click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editProductName();
+    });
+};
+
+export const editPassengerType = () => {
     clickElementById('passenger-type-link');
     randomlyDetermineUserType();
     cy.get('@passengerType').then((passengerType) => {
@@ -408,15 +419,57 @@ export const editPassengerTypeOtherProductsPage = () => {
     clickElementByText('Back');
 };
 
+export const editPassengerTypeOtherProductsPage = () => {
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    editPassengerType();
+};
+
+export const editPassengerTypePointToPointPage = () => {
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
+            cy.get('[class=govuk-table__body]').find('a').click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editPassengerType();
+    });
+};
+
+const editStartDate = () => {
+    clickElementById('start-date-link');
+    clearDates();
+    let dateInput = completeProductDateInformationPage();
+    cy.get('[id=start-date]').should('have.text', dateInput.startDate);
+    clickElementByText('Back');
+};
+
 export const editStartDateOtherProductsPage = () => {
     clickRandomElementInTable('govuk-table__body', 'product-link');
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
-    clickElementById('start-date-link');
+    editStartDate();
+};
+
+export const editStartDatePointToPointPage = () => {
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
+            cy.get('[class=govuk-table__body]').find('a').click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editStartDate();
+    });
+};
+
+const editEndDate = () => {
+    clickElementById('end-date-link');
     clearDates();
     let dateInput = completeProductDateInformationPage();
-    cy.get('[id=start-date]').should('have.text', dateInput.startDate);
+    cy.get('[id=end-date]').should('have.text', dateInput.endDate || '-');
     clickElementByText('Back');
 };
 
@@ -425,10 +478,26 @@ export const editEndDateOtherProductsPage = () => {
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
-    clickElementById('end-date-link');
-    clearDates();
-    let dateInput = completeProductDateInformationPage();
-    cy.get('[id=end-date]').should('have.text', dateInput.endDate || '-');
+    editEndDate();
+};
+
+export const editEndDatePointToPointPage = () => {
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
+            cy.get('[class=govuk-table__body]').find('a').click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editEndDate();
+    });
+};
+
+export const editTimeRestriction = () => {
+    clickElementById('time-restriction-link');
+    randomlyDecideTimeRestrictions();
+    cy.get('@timeRestriction').then((timeRestriction) => {
+        cy.get('[id=time-restriction]').should('have.text', timeRestriction.toString());
+    });
     clickElementByText('Back');
 };
 
@@ -437,10 +506,25 @@ export const editTimeRestrictionOtherProductsPage = () => {
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
-    clickElementById('time-restriction-link');
-    randomlyDecideTimeRestrictions();
-    cy.get('@timeRestriction').then((timeRestriction) => {
-        cy.get('[id=time-restriction]').should('have.text', timeRestriction.toString());
+    editTimeRestriction();
+};
+
+export const editTimeRestrictionPointToPointPage = () => {
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
+        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementById('service-name').should('not.be.empty');
+        getElementById('service-status').should('not.be.empty');
+        editTimeRestriction();
+    });
+};
+
+export const editPurchaseMethod = (isOtherProduct?: boolean) => {
+    clickElementById('purchase-methods-link');
+    randomlyDeterminePurchaseType(isOtherProduct);
+    cy.get('@purchaseType').then((purchaseType) => {
+        cy.get('[id=purchase-methods]').should('have.text', purchaseType.toString());
     });
     clickElementByText('Back');
 };
@@ -450,10 +534,35 @@ export const editPurchaseMethodOtherProductsPage = () => {
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
     getElementById('fare-type').should('not.be.empty');
-    clickElementById('purchase-methods-link');
-    randomlyDeterminePurchaseType();
-    cy.get('@purchaseType').then((purchaseType) => {
-        cy.get('[id=purchase-methods]').should('have.text', purchaseType.toString());
+    editPurchaseMethod(true);
+};
+export const getServiceLinkToClick = () => {
+    cy.get(`[id^="active-products-"]`).each(($element, index) => {
+        if (parseInt($element.text()) > 0) {
+            cy.wrap(`service-link-${index}`).as('serviceToClick');
+            return false;
+        }
     });
-    clickElementByText('Back');
+};
+export const editPurchaseMethodPointToPointPage = () => {
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
+        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementById('service-name').should('not.be.empty');
+        getElementById('service-status').should('not.be.empty');
+        editPurchaseMethod();
+    });
+};
+
+export const editFareTrianglePointToPointPage = () => {
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
+        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementById('service-name').should('not.be.empty');
+        getElementById('service-status').should('not.be.empty');
+        clickElementById('fare-triangle-link');
+        completeFareTrianglePages(true, true);
+    });
 };
