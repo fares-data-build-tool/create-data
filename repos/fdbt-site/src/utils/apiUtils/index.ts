@@ -262,6 +262,6 @@ export const validatePassword = (
 export const dateIsOverThirtyMinutesAgo = (inputDate: Date): boolean => {
     const thirtyMinutesInMilliseconds = 60 * 30 * 1000;
     const date = new Date(inputDate).getTime();
-    const oneHourAgo = Date.now() - thirtyMinutesInMilliseconds;
+    const thirtyMinutesAgo = Date.now() - thirtyMinutesInMilliseconds;
     return date < oneHourAgo;
 };
