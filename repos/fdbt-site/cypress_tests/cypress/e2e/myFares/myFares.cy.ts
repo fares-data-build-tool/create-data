@@ -6,6 +6,7 @@ import {
     getHomePage,
 } from '../../support/helpers';
 import {
+    completeMyFaresMultiOperatorProductsPages,
     completeMyFaresOtherProductsPages,
     completeMyFaresPointToPointProductsPages,
     editEndDateOtherProductsPage,
@@ -154,5 +155,52 @@ describe('The my fares other products pages', () => {
         clickElementById('account-link');
         clickElementByText('Other products');
         editProductNameOtherProductsPage();
+    });
+});
+
+
+describe('The my fares multi operator products pages', () => {
+    it('allows for navigation through the multi operator products pages', () => {
+        getHomePage();
+        clickElementById('manage-fares-link');
+        clickElementByText('Multi-operator products');
+        completeMyFaresMultiOperatorProductsPages();
+    });
+    it('allows for navigation through the multi operator products pages via operator settings', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Multi-operator products');
+        completeMyFaresMultiOperatorProductsPages();
+    });
+    it('allows the user the edit multi operator product passenger type', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Multi-operator products');
+        editPassengerTypeOtherProductsPage();
+    });
+
+    it('allows the user the edit multi operator product time restriction', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Multi-operator products');
+        editTimeRestrictionOtherProductsPage();
+    });
+    it('allows the user the edit other product purchase method', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Multi-operator products');
+        editPurchaseMethodOtherProductsPage();
+    });
+    it('allows the user the edit multi operator product start date', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Multi-operator products');
+        editStartDateOtherProductsPage();
+    });
+    it('allows the user the multi operator product end date', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Multi-operator products');
+        editEndDateOtherProductsPage();
     });
 });

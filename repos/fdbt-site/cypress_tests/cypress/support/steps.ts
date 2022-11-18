@@ -356,6 +356,16 @@ export const completeMyFaresOtherProductsPages = (): void => {
     }
 };
 
+export const completeMyFaresMultiOperatorProductsPages = (): void => {
+    for (let i = 0; i < 3; i++) {
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        getElementById('product-name').should('not.be.empty');
+        getElementById('product-status').should('not.be.empty');
+        getElementById('fare-type').should('not.be.empty').should('have.text', 'Multi operator');
+        clickElementByText('Back');
+    }
+};
+
 export const editServicesOtherProductsPage = (): void => {
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
