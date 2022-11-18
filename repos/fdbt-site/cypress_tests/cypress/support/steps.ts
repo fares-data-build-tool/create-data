@@ -400,14 +400,13 @@ export const editProductNameOtherProductsPage = () => {
 };
 
 export const editProductNamePointToPointPage = () => {
-    cy.get(`[id^="active-products-"]`).each(($element, index) => {
-        if ($element.text() === '1') {
-            clickElementById(`service-link-${index}`);
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
             cy.get('[class=govuk-table__body]').find('a').click();
             getElementById('service-name').should('not.be.empty');
             getElementById('service-status').should('not.be.empty');
             editProductName();
-        }
     });
 };
 
@@ -429,14 +428,13 @@ export const editPassengerTypeOtherProductsPage = () => {
 };
 
 export const editPassengerTypePointToPointPage = () => {
-    cy.get(`[id^="active-products-"]`).each(($element, index) => {
-        if ($element.text() === '1') {
-            clickElementById(`service-link-${index}`);
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
             cy.get('[class=govuk-table__body]').find('a').click();
             getElementById('service-name').should('not.be.empty');
             getElementById('service-status').should('not.be.empty');
             editPassengerType();
-        }
     });
 };
 
@@ -457,14 +455,13 @@ export const editStartDateOtherProductsPage = () => {
 };
 
 export const editStartDatePointToPointPage = () => {
-    cy.get(`[id^="active-products-"]`).each(($element, index) => {
-        if ($element.text() === '1') {
-            clickElementById(`service-link-${index}`);
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
             cy.get('[class=govuk-table__body]').find('a').click();
             getElementById('service-name').should('not.be.empty');
             getElementById('service-status').should('not.be.empty');
             editStartDate();
-        }
     });
 };
 
@@ -485,14 +482,13 @@ export const editEndDateOtherProductsPage = () => {
 };
 
 export const editEndDatePointToPointPage = () => {
-    cy.get(`[id^="active-products-"]`).each(($element, index) => {
-        if ($element.text() === '1') {
-            clickElementById(`service-link-${index}`);
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
             cy.get('[class=govuk-table__body]').find('a').click();
             getElementById('service-name').should('not.be.empty');
             getElementById('service-status').should('not.be.empty');
             editEndDate();
-        }
     });
 };
 
@@ -514,14 +510,13 @@ export const editTimeRestrictionOtherProductsPage = () => {
 };
 
 export const editTimeRestrictionPointToPointPage = () => {
-    cy.get(`[id^="active-products-"]`).each(($element, index) => {
-        if ($element.text() === '1') {
-            clickElementById(`service-link-${index}`);
-            cy.get('[class=govuk-table__body]').find('a').click();
-            getElementById('service-name').should('not.be.empty');
-            getElementById('service-status').should('not.be.empty');
-            editTimeRestriction();
-        }
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
+        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementById('service-name').should('not.be.empty');
+        getElementById('service-status').should('not.be.empty');
+        editTimeRestriction();
     });
 };
 
@@ -541,28 +536,33 @@ export const editPurchaseMethodOtherProductsPage = () => {
     getElementById('fare-type').should('not.be.empty');
     editPurchaseMethod(true);
 };
-
-export const editPurchaseMethodPointToPointPage = () => {
+export const getServiceLinkToClick = () => {
     cy.get(`[id^="active-products-"]`).each(($element, index) => {
-        if ($element.text() === '1') {
-            clickElementById(`service-link-${index}`);
-            cy.get('[class=govuk-table__body]').find('a').click();
-            getElementById('service-name').should('not.be.empty');
-            getElementById('service-status').should('not.be.empty');
-            editPurchaseMethod();
+        if (parseInt($element.text()) > 0) {
+            cy.wrap(`service-link-${index}`).as('serviceToClick');
+            return false;
         }
+    });
+};
+export const editPurchaseMethodPointToPointPage = () => {
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
+        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementById('service-name').should('not.be.empty');
+        getElementById('service-status').should('not.be.empty');
+        editPurchaseMethod();
     });
 };
 
 export const editFareTrianglePointToPointPage = () => {
-    cy.get(`[id^="active-products-"]`).each(($element, index) => {
-        if ($element.text() === '1') {
-            clickElementById(`service-link-${index}`);
-            cy.get('[class=govuk-table__body]').find('a').click();
-            getElementById('service-name').should('not.be.empty');
-            getElementById('service-status').should('not.be.empty');
-            clickElementById('fare-triangle-link');
-            completeFareTrianglePages(true, true);
-        }
+    getServiceLinkToClick();
+    cy.get('@serviceToClick').then((serviceToClick) => {
+        clickElementById(serviceToClick.toString());
+        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementById('service-name').should('not.be.empty');
+        getElementById('service-status').should('not.be.empty');
+        clickElementById('fare-triangle-link');
+        completeFareTrianglePages(true, true);
     });
 };
