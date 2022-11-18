@@ -61,7 +61,7 @@ const addTestOperatorGroups = (): void => {
             clickElementByText('Add an operator group');
             clickElementById('search-input').clear().type('bus');
             clickElementById('search-button')
-            cy.get('[class=govuk-checkboxes__item]').each((checkbox) => {
+            cy.get('.govuk-checkboxes__label').each((checkbox) => {
                 cy.wrap(checkbox).click();
             });
             clickElementById('operator-group-name').clear().type('test');
