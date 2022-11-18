@@ -6277,7 +6277,6 @@ export const mockPointToPointProducts: ProductToExport[] = [
         schoolTicket: false,
         serviceLineId: 'e2f23fq',
         direction: 'outbound',
-        passengerTypeName: 'Adult',
     },
     {
         id: '5',
@@ -6288,7 +6287,6 @@ export const mockPointToPointProducts: ProductToExport[] = [
         schoolTicket: false,
         serviceLineId: '32rf2cvwe',
         direction: 'inbound',
-        passengerTypeName: 'Student',
     },
     {
         id: '6',
@@ -6299,7 +6297,6 @@ export const mockPointToPointProducts: ProductToExport[] = [
         schoolTicket: false,
         serviceLineId: 'aweff3r323',
         direction: 'inbound',
-        passengerTypeName: 'Anyone',
     },
 ];
 
@@ -6313,7 +6310,6 @@ export const mockOtherProducts: ProductToExport[] = [
         schoolTicket: false,
         serviceLineId: null,
         direction: null,
-        passengerTypeName: 'Kids',
     },
     {
         id: '2',
@@ -6324,7 +6320,6 @@ export const mockOtherProducts: ProductToExport[] = [
         schoolTicket: false,
         serviceLineId: null,
         direction: null,
-        passengerTypeName: 'Adults',
     },
     {
         id: '3',
@@ -6335,6 +6330,5 @@ export const mockOtherProducts: ProductToExport[] = [
         schoolTicket: false,
         serviceLineId: null,
         direction: null,
-        passengerTypeName: 'Anyone',
     },
 ];
