@@ -2,10 +2,9 @@ import startCase from 'lodash/startCase';
 import React, { ReactElement, useState } from 'react';
 import BackButton from '../../components/BackButton';
 import CsrfForm from '../../components/CsrfForm';
-import { getAllProductsByNoc, getBodsServiceByNocAndLineId, getPassengerTypeById } from '../../data/auroradb';
+import { getAllProductsByNoc, getBodsServiceByNocAndLineId, getPassengerTypeNameByIdAndNoc } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import { NextPageContextWithSession, ProductToExport, ServiceToDisplay } from '../../interfaces';
-import { SinglePassengerType } from '../../interfaces/dbTypes';
 import { BaseLayout } from '../../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
 import { getNonExpiredProducts, filterOutProductsWithNoActiveServices } from '../api/exports';
@@ -472,7 +471,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         nonExpiredProductsWithActiveServices.map(async (nonExpiredProduct) => {
             const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
             const product = s3Data.products[0];
-            const passengerType = (await getPassengerTypeById(s3Data.passengerType.id, noc)) as SinglePassengerType;
             const carnet = 'carnetDetails' in product;
 
             return {
@@ -480,13 +478,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 productName:
                     'productName' in product
                         ? product.productName
-                        : `${passengerType.name} - ${startCase(s3Data.type)}`,
+                        : `${await getPassengerTypeNameByIdAndNoc(s3Data.passengerType.id, noc)} - ${startCase(
+                              s3Data.type,
+                          )}`,
                 startDate: nonExpiredProduct.startDate,
                 serviceLineId: 'lineId' in s3Data ? s3Data.lineId : null,
                 direction: 'journeyDirection' in s3Data ? s3Data.journeyDirection : null,
                 carnet,
                 fareType: s3Data.type === 'schoolService' ? 'period' : s3Data.type,
-                passengerTypeName: passengerType.name,
                 schoolTicket: 'termTime' in s3Data && !!s3Data.termTime,
             };
         }),

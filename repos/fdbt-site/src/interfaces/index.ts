@@ -700,7 +700,6 @@ export interface ProductToExport {
     schoolTicket: boolean;
     serviceLineId: string | null;
     direction: string | null;
-    passengerTypeName: string;
 }
 
 export interface ServiceToDisplay {
