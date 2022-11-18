@@ -1,3 +1,4 @@
+import * as e from 'express';
 import {
     clickElementById,
     clickElementByText,
@@ -15,7 +16,7 @@ const addSingleMultiOperatorGroup = (name: string) => {
     clickElementById('search-button');
     const input: string[] = [];
     cy.get('.govuk-checkboxes__label').each((checkbox, index, checkboxes) => {
-        cy.log(checkboxes.length.toString());
+        cy.wrap(checkboxes.length.toString()).as('numberOfOperators');
         cy.wrap(checkbox).click();
         input[index] = checkbox.text();
         cy.log(index.toString(), checkbox.text());
@@ -32,13 +33,25 @@ export const createEditMultiOperatorGroups = () => {
 
     const firstCard = getElementByClass('card').eq(0);
     firstCard.should('include.text', multiOperatorGroup1);
-    // cy.get('@inputMultiOp').then((input) => {
-    //     cy.log(input.toString());
-    //     const valuesToCompare = input.toString().split(',');
-    //     valuesToCompare.forEach((value) => {
-    //         firstCard.should('include.text', value);
-    //     });
-    // });
+    cy.get('@numberOfOperators').then((numberOfOperators) => {
+        cy.get('@inputMultiOp').then((input) => {
+            const valuesToCompare = input.toString().split(',');
+            expect(valuesToCompare).to.have.lengthOf(parseInt(numberOfOperators.toString()));
+            valuesToCompare.forEach((value, index) => {
+                if (index < 5) {
+                    firstCard.get(`[id=operator-${index}]`).should(($p) => {
+                        expect($p.text().trim()).equal(value);
+                    });
+                } else {
+                    const restOfOperators = `and ${parseInt(numberOfOperators.toString()) - 5} other operators`;
+                    firstCard.get(`[id=rest-of-operators]`).should(($rest) => {
+                        expect($rest.text().trim()).equal(restOfOperators);
+                    });
+                }
+            });
+        });
+    });
+
     addSingleMultiOperatorGroup(multiOperatorGroup2);
     const secondCard = getElementByClass('card').eq(1);
     secondCard.should('include.text', multiOperatorGroup2);
