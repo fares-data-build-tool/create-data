@@ -1,21 +1,24 @@
 import { NextApiResponse } from 'next';
-import { dateIsOverAnHourAgo, getAndValidateNoc, redirectToError } from '../../utils/apiUtils';
+import { dateIsOverThirtyMinutesAgo, getAndValidateNoc, redirectToError } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
 import {
     checkIfMetaDataExists,
     getExportMetaData,
+    getNetexFileNames,
     getS3Exports,
     getS3FolderCount,
     retrieveExportZip,
 } from '../../data/s3';
 import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 import logger from '../../utils/logger';
+import { difference } from 'lodash';
 
 export interface Export {
     name: string;
     numberOfFilesExpected: number;
     netexCount: number;
     exportFailed: boolean;
+    failedValidationFilenames: string[];
     signedUrl?: string;
 }
 
@@ -49,19 +52,26 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
 
                 let exportFailed = false;
+                let failedValidationFilenames: string[] = [];
 
                 if (
                     metadata &&
-                    dateIsOverAnHourAgo(new Date(metadata.date)) &&
+                    dateIsOverThirtyMinutesAgo(new Date(metadata.date)) &&
                     metadata.numberOfExpectedNetexFiles !== netexCount
                 ) {
                     exportFailed = true;
                 }
 
+                if (exportFailed) {
+                    const unvalidatedNetexFileNames = await getNetexFileNames(prefix, false);
+                    const validatedNetexFileNames = await getNetexFileNames(prefix, true);
+                    failedValidationFilenames = difference(unvalidatedNetexFileNames, validatedNetexFileNames);
+                }
+
                 const complete = matchingDataCount === netexCount;
                 const signedUrl = complete ? await retrieveExportZip(noc, name) : undefined;
 
-                return { name, numberOfFilesExpected, netexCount, signedUrl, exportFailed };
+                return { name, numberOfFilesExpected, netexCount, signedUrl, exportFailed, failedValidationFilenames };
             }),
         );
 
