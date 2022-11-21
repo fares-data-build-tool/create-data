@@ -70,7 +70,7 @@ const ViewOperatorGroups = ({
                         Define a group of operators for use in a multioperator product
                     </p>
 
-                    <div id="all-cards">
+                    <div>
                         {!operatorGroups.length ? (
                             <>
                                 <NoOperatorGroups />
