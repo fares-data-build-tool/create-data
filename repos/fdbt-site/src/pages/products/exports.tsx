@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { NextPageContextWithSession } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
-import { getAndValidateNoc, getCsrfToken } from '../../utils';
+import { formatFailedFileNames, getAndValidateNoc, getCsrfToken } from '../../utils';
 import CsrfForm from '../../components/CsrfForm';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { getAllProductsByNoc as getAllProductsByNoc } from '../../data/auroradb';
@@ -52,24 +52,23 @@ const getTag = (exportDetails: Export): ReactElement => {
 };
 
 const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps): ReactElement => {
+    const [showExportPopup, setShowExportPopup] = useState(false);
+    const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
+    const [buttonClicked, setButtonClicked] = useState(false);
+
     const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000 });
 
     const exports: Export[] | undefined = data?.exports;
-
-    const anExportIsInProgress: boolean = exports
-        ? exports.some((exportDetails) => exportDetails.netexCount !== exportDetails.numberOfFilesExpected)
-        : false;
 
     const exportInProgress: Export | undefined = exports
         ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.numberOfFilesExpected)
         : undefined;
 
-    const [showPopup, setShowPopup] = useState(false);
-    const [buttonClicked, setButtonClicked] = useState(false);
-
-    const exportAllowed = operatorHasProducts && !anExportIsInProgress && exports && !buttonClicked;
-
-    const showCancelButton = anExportIsInProgress && exportInProgress?.exportFailed;
+    const anExportIsInProgress = !!exportInProgress;
+    const exportAllowed: boolean = operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked;
+    const showCancelButton: boolean = anExportIsInProgress && !!exportInProgress?.exportFailed;
+    const failedExport: Export | undefined =
+        anExportIsInProgress && exportInProgress?.exportFailed ? exportInProgress : undefined;
 
     return (
         <>
@@ -85,7 +84,7 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
                                             type="submit"
                                             className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
                                             onClick={() => {
-                                                setShowPopup(true);
+                                                setShowExportPopup(true);
                                                 setButtonClicked(true);
                                             }}
                                         >
@@ -161,8 +160,18 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
                                                 <td className="govuk-table__cell">{exportDetails.name}</td>
                                                 <td className="govuk-table__cell">{getTag(exportDetails)}</td>
                                                 <td className="govuk-table__cell">
-                                                    {exportDetails.signedUrl ? (
+                                                    {exportDetails.signedUrl && !exportDetails.exportFailed ? (
                                                         <a href={exportDetails.signedUrl}>Download file</a>
+                                                    ) : !!exportDetails.exportFailed &&
+                                                      exportDetails.failedValidationFilenames.length > 0 ? (
+                                                        <button
+                                                            className="govuk-button margin-bottom-0"
+                                                            onClick={() => {
+                                                                setShowFailedFilesPopup(true);
+                                                            }}
+                                                        >
+                                                            View failure details
+                                                        </button>
                                                     ) : null}
                                                 </td>
                                             </tr>
@@ -172,12 +181,39 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
                             </table>
                         )}
 
-                        {showPopup && (
+                        {showExportPopup && (
                             <InfoPopup
                                 title="We are preparing your export"
                                 text="Your export will take a few seconds to show in the table below."
-                                okActionHandler={() => setShowPopup(false)}
+                                okActionHandler={() => setShowExportPopup(false)}
                             />
+                        )}
+
+                        {showFailedFilesPopup && !!failedExport && (
+                            <div className="popup">
+                                <div className="popup__content">
+                                    <h1 className="govuk-heading-m govuk-!-margin-bottom-8">
+                                        Product names of invalid NeTEx files
+                                    </h1>
+
+                                    <p className="govuk-body-m govuk-!-margin-bottom-8">
+                                        {formatFailedFileNames(failedExport.failedValidationFilenames)}
+                                    </p>
+
+                                    <span className="govuk-hint" id="info-hint">
+                                        Use the contact link at the bottom of the screen to let us know.
+                                    </span>
+
+                                    <span className="govuk-hint" id="info-hint">
+                                        If you want to fix your export, use the &apos;Cancel&apos; button and then
+                                        &apos;Select products to export&apos; button to exclude the failing products.
+                                    </span>
+
+                                    <button className="govuk-button" onClick={() => setShowFailedFilesPopup(false)}>
+                                        Ok
+                                    </button>
+                                </div>
+                            </div>
                         )}
                     </div>
                 </div>

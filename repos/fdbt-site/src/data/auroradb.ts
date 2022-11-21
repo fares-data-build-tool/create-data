@@ -12,7 +12,7 @@ import {
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
-import _ from 'lodash';
+import { difference } from 'lodash';
 import {
     RawService,
     RawJourneyPattern,
@@ -459,7 +459,7 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
         const queryResults = await executeQuery<NaptanInfo[]>(batchQuery, atcoCodes);
         if (queryResults.length !== atcoCodes.length) {
             const queryResultsAtcos = queryResults.map((qr) => qr.atcoCode);
-            const missingAtcosFromDb = _.difference(atcoCodes, queryResultsAtcos);
+            const missingAtcosFromDb = difference(atcoCodes, queryResultsAtcos);
 
             logger.info('', {
                 context: 'data.auroradb',
