@@ -413,7 +413,7 @@ export const editProductNamePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-            cy.get('[class=govuk-table__body]').find('a').click();
+            cy.get('[class=govuk-table__body]').find('a').eq(0).click();
             getElementById('service-name').should('not.be.empty');
             getElementById('service-status').should('not.be.empty');
             editProductName();
@@ -441,7 +441,7 @@ export const editPassengerTypePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-            cy.get('[class=govuk-table__body]').find('a').click();
+            cy.get('[class=govuk-table__body]').find('a').eq(0).click();
             getElementById('service-name').should('not.be.empty');
             getElementById('service-status').should('not.be.empty');
             editPassengerType();
@@ -468,7 +468,7 @@ export const editStartDatePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-            cy.get('[class=govuk-table__body]').find('a').click();
+            cy.get('[class=govuk-table__body]').find('a').eq(0).click();
             getElementById('service-name').should('not.be.empty');
             getElementById('service-status').should('not.be.empty');
             editStartDate();
@@ -495,7 +495,7 @@ export const editEndDatePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-            cy.get('[class=govuk-table__body]').find('a').click();
+            cy.get('[class=govuk-table__body]').find('a').eq(0).click();
             getElementById('service-name').should('not.be.empty');
             getElementById('service-status').should('not.be.empty');
             editEndDate();
@@ -523,7 +523,7 @@ export const editTimeRestrictionPointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-        cy.get('[class=govuk-table__body]').find('a').click();
+        cy.get('[class=govuk-table__body]').find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
         editTimeRestriction();
@@ -558,7 +558,7 @@ export const editPurchaseMethodPointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-        cy.get('[class=govuk-table__body]').find('a').click();
+        cy.get('[class=govuk-table__body]').find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
         editPurchaseMethod();
@@ -569,7 +569,7 @@ export const editFareTrianglePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-        cy.get('[class=govuk-table__body]').find('a').click();
+        cy.get('[class=govuk-table__body]').find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
         clickElementById('fare-triangle-link');
