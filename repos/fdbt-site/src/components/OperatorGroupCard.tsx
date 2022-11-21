@@ -24,6 +24,7 @@ const OperatorGroupCard = ({
                         <ul className="actions__list">
                             <li className="actions__item">
                                 <a
+                                    id={`edit-link-${index}`}
                                     className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
                                     href={`/searchOperators?id=${id}`}
                                 >
