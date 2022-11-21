@@ -290,10 +290,10 @@ export const getBodsServiceByNocAndId = async (
     }
 };
 
-export const getBodsServiceByNocAndLineId = async (
+export const getBodsServicesByNocAndLineId = async (
     nationalOperatorCode: string,
     lineId: string,
-): Promise<MyFaresService> => {
+): Promise<MyFaresService[]> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 
     logger.info('', {
@@ -311,21 +311,20 @@ export const getBodsServiceByNocAndLineId = async (
         `;
 
         const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter, lineId]);
-        if (queryResults.length !== 1) {
-            throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
-        }
 
-        return {
-            id: queryResults[0].id,
-            origin: queryResults[0].origin,
-            destination: queryResults[0].destination,
-            lineName: queryResults[0].lineName,
-            startDate: convertDateFormat(queryResults[0].startDate),
-            endDate: queryResults[0].endDate ? convertDateFormat(queryResults[0].endDate) : undefined,
-            lineId: queryResults[0].lineId,
-        };
+        return queryResults.map((result) => {
+            return {
+                id: result.id,
+                origin: result.origin,
+                destination: result.destination,
+                lineName: result.lineName,
+                startDate: convertDateFormat(result.startDate),
+                endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
+                lineId: result.lineId,
+            };
+        });
     } catch (error) {
-        throw new Error(`Could not retrieve individual service from AuroraDB: ${error.stack}`);
+        throw new Error(`Could not retrieve bods services for line id ${lineId} from AuroraDB: ${error.stack}`);
     }
 };
 
