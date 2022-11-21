@@ -76,7 +76,7 @@ const MultiOperatorProductsTable = (
     csrfToken: string,
 ): React.ReactElement => {
     return (
-        <>
+        <div id="multiOperatorProductsTablePage">
             <table className="govuk-table">
                 <thead className="govuk-table__head">
                     <tr className="govuk-table__row">
@@ -158,7 +158,7 @@ const MultiOperatorProductsTable = (
                     <i>You currently have no multi-operator products</i>
                 </span>
             ) : null}
-        </>
+        </div>
     );
 };
 
