@@ -216,6 +216,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               </td>
               <td
                 className="govuk-table__cell"
+                id="type-0"
               >
                 Flat fare
               </td>
@@ -290,6 +291,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               </td>
               <td
                 className="govuk-table__cell"
+                id="type-1"
               >
                 Period
               </td>
@@ -364,6 +366,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               </td>
               <td
                 className="govuk-table__cell"
+                id="type-2"
               >
                 Period
               </td>

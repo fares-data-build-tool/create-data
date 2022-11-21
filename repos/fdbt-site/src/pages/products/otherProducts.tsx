@@ -117,7 +117,9 @@ const otherProductsTable = (
                                           {product.productDescription}
                                       </a>
                                   </td>
-                                  <td className="govuk-table__cell">{sentenceCaseString(product.type)}</td>
+                                  <td id={`type-${index}`} className="govuk-table__cell">
+                                      {sentenceCaseString(product.type)}
+                                  </td>
                                   <td className="govuk-table__cell">{product.duration}</td>
                                   <td className="govuk-table__cell dft-table-wrap-anywhere">
                                       {sentenceCaseString(product.passengerType)}
