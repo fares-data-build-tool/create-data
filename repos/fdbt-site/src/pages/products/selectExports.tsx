@@ -549,11 +549,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const filteredServices = servicesToDisplay.filter((service) => !!service) as ServiceToDisplay[];
 
+    const seenLineIds: string[] = [];
+    const uniqueServicesToDisplay =
+        filteredServices.filter((item) =>
+            seenLineIds.includes(item.lineId) ? false : seenLineIds.push(item.lineId),
+        ) ?? [];
+
     return {
         props: {
             csrf: getCsrfToken(ctx),
             productsToDisplay,
-            servicesToDisplay: filteredServices,
+            servicesToDisplay: uniqueServicesToDisplay,
         },
     };
 };
