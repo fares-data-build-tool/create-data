@@ -8,10 +8,11 @@ import {
     getAndValidateSchemeOpRegion,
     isSchemeOperator,
     objectKeyMatchesExportNameExactly,
+    formatFailedFileNames,
 } from '../../src/utils';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
-import { dateIsOverAnHourAgo } from '../../src/utils/apiUtils';
+import { dateIsOverThirtyMinutesAgo } from '../../src/utils/apiUtils';
 import { Stop } from '../../src/interfaces/matchingJsonTypes';
 
 describe('index', () => {
@@ -38,6 +39,19 @@ describe('index', () => {
             });
             const result = getHost(req);
             expect(result).toEqual(expected);
+        });
+    });
+
+    describe('formatFailedFileNames', () => {
+        it('correctly returns the text with only the product names', () => {
+            const fileNames = [
+                'FX-PI-01_UK_LNUD_LINE-FARE_1_eeee-return_2022-11-15_2020-02-01_7628.xml',
+                'FX-PI-01_UK_LNUD_LINE-FARE_Carnet_2022-11-15_2020-02-01_3237.xml',
+                'FX-PI-01_UK_LNUD_NETWORK-FARE_Carnet-product-superb_2022-11-15_2020-02-01_3cc9.xml',
+            ];
+            const result = formatFailedFileNames(fileNames);
+
+            expect(result).toEqual('1_eeee-return, Carnet, Carnet-product-superb');
         });
     });
 
@@ -208,16 +222,16 @@ describe('index', () => {
         });
     });
 
-    describe('dateIsOverAnHourAgo', () => {
-        it('returns true if the date is over an hour ago', () => {
-            const result = dateIsOverAnHourAgo(new Date('2022-06-17T03:24:00'));
+    describe('dateIsOverThirtyMinutesAgo', () => {
+        it('returns true if the date is over thirty minutes ago', () => {
+            const result = dateIsOverThirtyMinutesAgo(new Date('2022-06-17T03:24:00'));
 
             expect(result).toBeTruthy();
         });
 
-        it('returns false if the date is less than an hour ago', () => {
+        it('returns false if the date is less than thirty minutes ago', () => {
             const date = new Date();
-            const result = dateIsOverAnHourAgo(date);
+            const result = dateIsOverThirtyMinutesAgo(date);
 
             expect(result).toBeFalsy();
         });
