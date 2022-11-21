@@ -72,7 +72,7 @@ const OperatorGroupCard = ({
                         ),
                 )}
                 {operatorGroup.operators.length > 5 && (
-                    <p id="rest-of-operators" className="govuk-body-s govuk-!-margin-bottom-2">
+                    <p className="govuk-body-s govuk-!-margin-bottom-2">
                         and {operatorGroup.operators.length - 5} other operators
                     </p>
                 )}
