@@ -403,10 +403,10 @@ export const editProductNamePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-            cy.get('[class=govuk-table__body]').find('a').click();
-            getElementById('service-name').should('not.be.empty');
-            getElementById('service-status').should('not.be.empty');
-            editProductName();
+        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementById('service-name').should('not.be.empty');
+        getElementById('service-status').should('not.be.empty');
+        editProductName();
     });
 };
 
@@ -431,10 +431,10 @@ export const editPassengerTypePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-            cy.get('[class=govuk-table__body]').find('a').click();
-            getElementById('service-name').should('not.be.empty');
-            getElementById('service-status').should('not.be.empty');
-            editPassengerType();
+        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementById('service-name').should('not.be.empty');
+        getElementById('service-status').should('not.be.empty');
+        editPassengerType();
     });
 };
 
@@ -458,10 +458,10 @@ export const editStartDatePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-            cy.get('[class=govuk-table__body]').find('a').click();
-            getElementById('service-name').should('not.be.empty');
-            getElementById('service-status').should('not.be.empty');
-            editStartDate();
+        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementById('service-name').should('not.be.empty');
+        getElementById('service-status').should('not.be.empty');
+        editStartDate();
     });
 };
 
@@ -485,10 +485,10 @@ export const editEndDatePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-            cy.get('[class=govuk-table__body]').find('a').click();
-            getElementById('service-name').should('not.be.empty');
-            getElementById('service-status').should('not.be.empty');
-            editEndDate();
+        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementById('service-name').should('not.be.empty');
+        getElementById('service-status').should('not.be.empty');
+        editEndDate();
     });
 };
 

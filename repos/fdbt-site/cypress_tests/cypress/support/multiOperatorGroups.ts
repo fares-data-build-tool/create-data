@@ -6,17 +6,17 @@ const addExtraOperator = (): void => {
     clickElementByText('Pilkingtonbus - NWBT');
 };
 
-export const addSingleMultiOperatorGroup = (name: string, addExtra: boolean): void => {
-    const input: string[] = [];
-    cy.wrap(input).as('inputMultiOp');
-    clickElementByText('Add an operator group');
-    clickElementById('search-input').clear().type('blackpool');
-    clickElementById('search-button');
-    clickElementByText('Blackpool Transport - BLAC');
-    clickElementById('search-input').clear().type('bus');
-    clickElementById('search-button');
-    clickElementByText("Warrington's Own Buses - WBTR");
-    if (addExtra) {
+export const addSingleMultiOperatorGroup = (name: string, addExtra: boolean, addMulti: boolean): void => {
+    if (addMulti) {
+        clickElementByText('Add an operator group');
+        clickElementById('search-input').clear().type('blackpool');
+        clickElementById('search-button');
+        clickElementByText('Blackpool Transport - BLAC');
+        clickElementById('search-input').clear().type('bus');
+        clickElementById('search-button');
+        clickElementByText("Warrington's Own Buses - WBTR");
+    }
+    if (addExtra || !addMulti) {
         addExtraOperator();
     }
     clickElementById('operator-group-name').clear().type(name);
@@ -41,7 +41,7 @@ export const createEditMultiOperatorGroups = () => {
     const multiOperatorGroup1 = 'MultiOperator Group 1';
     const multiOperatorGroup2 = 'MultiOperator Group 2';
 
-    addSingleMultiOperatorGroup(multiOperatorGroup1, false);
+    addSingleMultiOperatorGroup(multiOperatorGroup1, false, true);
 
     const valuesToCompareFirst = ['Blackpool Transport - BLAC', "Warrington's Own Buses - WBTR"];
     const firstCard = getElementByClass('card').eq(0);
@@ -60,7 +60,7 @@ export const createEditMultiOperatorGroups = () => {
         "Warrington's Own Buses - WBTR",
         'Pilkingtonbus - NWBT',
     ];
-    addSingleMultiOperatorGroup(multiOperatorGroup2, true);
+    addSingleMultiOperatorGroup(multiOperatorGroup2, true, true);
     const secondCard = getElementByClass('card').eq(1);
     secondCard.should('contain.text', multiOperatorGroup2);
     checkCardBody(secondCard, 1, valuesToCompareSecond);

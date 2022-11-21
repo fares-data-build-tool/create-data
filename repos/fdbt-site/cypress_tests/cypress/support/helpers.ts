@@ -128,7 +128,6 @@ export const randomlyChooseASchoolProof = (): void => {
 };
 
 export const randomlySelectMultiServices = (): void => {
-    
     const randomSelector = getRandomNumber(1, 3);
     switch (randomSelector) {
         case 1:
@@ -136,7 +135,7 @@ export const randomlySelectMultiServices = (): void => {
             clickElementById('select-all-button');
             break;
         case 2:
-            cy.log('Few checkbox are selected');            
+            cy.log('Few checkbox are selected');
             cy.get('[class=govuk-checkboxes__item]').each((checkbox, index, checkboxes) => {
                 const numberOfCheckboxes = checkboxes.length;
                 if (numberOfCheckboxes === 1 || index !== numberOfCheckboxes - 1) {
@@ -153,7 +152,6 @@ export const randomlySelectMultiServices = (): void => {
         default:
             throwInvalidRandomSelectorError();
     }
-
 };
 
 export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, passengerType: string): void => {
@@ -578,10 +576,13 @@ export const clickRandomElementInTable = (tableName: string, elementId: string):
 };
 
 export const completeOperatorSearch = (isMultiService: boolean): void => {
-
-    clickElementById('test-radio');
+    if (isMultiService) {
+        clickElementById('test-radio');
+    }
+    else{
+        clickElementById('test2-radio');
+    }
     continueButtonClick();
-
 };
 
 export const addFlatFareProductIfNotPresent = (): void => {
@@ -658,7 +659,6 @@ export const clearDates = (): void => {
 };
 
 export const completeMultiServicePages = (): void => {
-    
     randomlySelectMultiServices();
     getElementById('operator-1').click();
     randomlySelectMultiServices();
