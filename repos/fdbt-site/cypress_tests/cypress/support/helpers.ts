@@ -462,7 +462,7 @@ export const completeSalesOfferPackagesForMultipleProducts = (
 
                 getElementById(`${idPrefix}${otherIndex}`).click();
 
-                cy.get(`[id=${productName}-price-${otherIndex}]`).clear().type('9.99');
+                getElementById(`${productName}-price-${otherIndex}`).clear().type('9.99');
             }
         });
     }
