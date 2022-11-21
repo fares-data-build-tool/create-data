@@ -23,10 +23,14 @@ export const addSingleMultiOperatorGroup = (name: string, addExtra: boolean): vo
     continueButtonClick();
 };
 
-const checkCardBody = (card: Cypress.Chainable<JQuery<HTMLElement>>, eq: number, valuesToCompare: string[]) => {
+const checkCardBody = (
+    card: Cypress.Chainable<JQuery<HTMLElement>>,
+    indexOfCard: number,
+    valuesToCompare: string[],
+) => {
     valuesToCompare.forEach((value, index) => {
         card.get(`[id=operator-${index}]`)
-            .eq(eq)
+            .eq(indexOfCard)
             .should(($p) => {
                 expect($p.text()).equal(value);
             });
