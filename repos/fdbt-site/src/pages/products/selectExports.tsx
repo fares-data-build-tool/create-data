@@ -513,43 +513,41 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         )
     ).flat();
 
-    const servicesToDisplay: (ServiceToDisplay | undefined)[] = (
-        await Promise.all(
-            allServicesWithMatchingLineIds.map(async (service) => {
-                const productsWithSameLineId = productsToDisplay.filter(
-                    (product) => !!product.serviceLineId && product.serviceLineId === service.lineId,
-                );
+    const servicesToDisplay: (ServiceToDisplay | undefined)[] = await Promise.all(
+        allServicesWithMatchingLineIds.map((service) => {
+            const productsWithSameLineId = productsToDisplay.filter(
+                (product) => !!product.serviceLineId && product.serviceLineId === service.lineId,
+            );
 
-                const matchingProducts = productsWithSameLineId.filter((product) => {
-                    const momentProductStartDate = moment(product.startDate, 'DD/MM/YYYY').valueOf();
-                    const momentProductEndDate = product.endDate && moment(product.endDate, 'DD/MM/YYYY').valueOf();
-                    const momentServiceStartDate = moment(service.startDate, 'DD/MM/YYYY').valueOf();
-                    const momentServiceEndDate = service.endDate
-                        ? moment(service.endDate, 'DD/MM/YYYY').valueOf()
-                        : undefined;
+            const matchingProducts = productsWithSameLineId.filter((product) => {
+                const momentProductStartDate = moment(product.startDate, 'DD/MM/YYYY').valueOf();
+                const momentProductEndDate = product.endDate && moment(product.endDate, 'DD/MM/YYYY').valueOf();
+                const momentServiceStartDate = moment(service.startDate, 'DD/MM/YYYY').valueOf();
+                const momentServiceEndDate = service.endDate
+                    ? moment(service.endDate, 'DD/MM/YYYY').valueOf()
+                    : undefined;
 
-                    const productMatchesService =
-                        (!momentProductEndDate || momentProductEndDate >= momentServiceStartDate) &&
-                        (!momentServiceEndDate || momentServiceEndDate >= momentProductStartDate);
+                const productMatchesService =
+                    (!momentProductEndDate || momentProductEndDate >= momentServiceStartDate) &&
+                    (!momentServiceEndDate || momentServiceEndDate >= momentProductStartDate);
 
-                    return productMatchesService;
-                });
+                return productMatchesService;
+            });
 
-                if (matchingProducts.length > 0) {
-                    return {
-                        lineId: service.lineId,
-                        origin: service.origin,
-                        destination: service.destination,
-                        lineName: service.lineName,
-                    };
-                } else {
-                    return undefined;
-                }
-            }),
-        )
+            if (matchingProducts.length > 0) {
+                return {
+                    lineId: service.lineId,
+                    origin: service.origin,
+                    destination: service.destination,
+                    lineName: service.lineName,
+                };
+            } else {
+                return undefined;
+            }
+        }),
     );
 
-    const filteredServices = servicesToDisplay.filter(service => !!service) as ServiceToDisplay[];
+    const filteredServices = servicesToDisplay.filter((service) => !!service) as ServiceToDisplay[];
 
     return {
         props: {
