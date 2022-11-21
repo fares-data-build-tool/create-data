@@ -1,8 +1,13 @@
 import startCase from 'lodash/startCase';
+import moment from 'moment';
 import React, { ReactElement, useState } from 'react';
 import BackButton from '../../components/BackButton';
 import CsrfForm from '../../components/CsrfForm';
-import { getAllProductsByNoc, getBodsServiceByNocAndLineId, getPassengerTypeNameByIdAndNoc } from '../../data/auroradb';
+import {
+    getAllProductsByNoc,
+    getBodsServicesByNocAndLineId,
+    getPassengerTypeNameByIdAndNoc,
+} from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import { NextPageContextWithSession, ProductToExport, ServiceToDisplay } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
@@ -482,6 +487,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                               s3Data.type,
                           )}`,
                 startDate: nonExpiredProduct.startDate,
+                endDate: nonExpiredProduct.endDate || '',
                 serviceLineId: 'lineId' in s3Data ? s3Data.lineId : null,
                 direction: 'journeyDirection' in s3Data ? s3Data.journeyDirection : null,
                 carnet,
@@ -497,23 +503,59 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         })
         .filter((lineId) => lineId);
 
-    const servicesToDisplay: ServiceToDisplay[] = await Promise.all(
-        servicesLineIds.map(async (lineId) => {
-            const service = await getBodsServiceByNocAndLineId(noc, lineId);
-            return {
-                lineId: service.lineId,
-                origin: service.origin,
-                destination: service.destination,
-                lineName: service.lineName,
-            };
-        }),
+    const uniqueServiceLineIds = Array.from(new Set(servicesLineIds));
+
+    const allServicesWithMatchingLineIds = (
+        await Promise.all(
+            uniqueServiceLineIds.map(async (lineId) => {
+                return await getBodsServicesByNocAndLineId(noc, lineId);
+            }),
+        )
+    ).flat();
+
+    const servicesToDisplay: (ServiceToDisplay | undefined)[] = (
+        await Promise.all(
+            allServicesWithMatchingLineIds.map(async (service) => {
+                const productsWithSameLineId = productsToDisplay.filter(
+                    (product) => !!product.serviceLineId && product.serviceLineId === service.lineId,
+                );
+
+                const matchingProducts = productsWithSameLineId.filter((product) => {
+                    const momentProductStartDate = moment(product.startDate, 'DD/MM/YYYY').valueOf();
+                    const momentProductEndDate = product.endDate && moment(product.endDate, 'DD/MM/YYYY').valueOf();
+                    const momentServiceStartDate = moment(service.startDate, 'DD/MM/YYYY').valueOf();
+                    const momentServiceEndDate = service.endDate
+                        ? moment(service.endDate, 'DD/MM/YYYY').valueOf()
+                        : undefined;
+
+                    const productMatchesService =
+                        (!momentProductEndDate || momentProductEndDate >= momentServiceStartDate) &&
+                        (!momentServiceEndDate || momentServiceEndDate >= momentProductStartDate);
+
+                    return productMatchesService;
+                });
+
+                if (matchingProducts.length > 0) {
+                    return {
+                        lineId: service.lineId,
+                        origin: service.origin,
+                        destination: service.destination,
+                        lineName: service.lineName,
+                    };
+                } else {
+                    return undefined;
+                }
+            }),
+        )
     );
+
+    const filteredServices = servicesToDisplay.filter(service => !!service) as ServiceToDisplay[];
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
             productsToDisplay,
-            servicesToDisplay,
+            servicesToDisplay: filteredServices,
         },
     };
 };
