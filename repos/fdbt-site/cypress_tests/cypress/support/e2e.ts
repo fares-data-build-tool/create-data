@@ -1,4 +1,5 @@
-import { clickElementById, clickElementByText, continueButtonClick, getHomePage } from './helpers';
+import { clickElementById, clickElementByText, getHomePage } from './helpers';
+import { addSingleMultiOperatorGroup } from './multiOperatorGroups';
 import { enterPassengerTypeDetails, addGroupPassengerType } from './passengerTypes';
 import { addPurchaseMethod } from './purchaseMethods';
 import { addTimeRestriction } from './timeRestrictions';
@@ -50,23 +51,13 @@ const addTestOperatorDetails = (): void => {
 };
 
 const addTestOperatorGroups = (): void => {
-
     cy.get(`[data-card-count]`).then((element) => {
         const numberofOperatorGroups = Number(element.attr('data-card-count'));
         cy.log(`There are ${numberofOperatorGroups} operator groups`);
         if (numberofOperatorGroups > 0) {
             cy.log('There is at least one operator group');
         } else {
-
-            clickElementByText('Add an operator group');
-            clickElementById('search-input').clear().type('bus');
-            clickElementById('search-button')
-            cy.get('.govuk-checkboxes__label').each((checkbox) => {
-                cy.wrap(checkbox).click();
-            });
-            clickElementById('operator-group-name').clear().type('test');
-            continueButtonClick()
-        
+            addSingleMultiOperatorGroup('test', false);
         }
     });
 };
