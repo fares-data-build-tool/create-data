@@ -15,6 +15,7 @@ exports[`pages view operator groups should render correctly on operator group 1`
   <div
     className="govuk-grid-row"
     data-card-count={1}
+    operator-groups="first operator group"
   >
     <div
       className="govuk-grid-column-one-quarter"
@@ -87,6 +88,7 @@ exports[`pages view operator groups should render correctly when no operator gro
   <div
     className="govuk-grid-row"
     data-card-count={0}
+    operator-groups=""
   >
     <div
       className="govuk-grid-column-one-quarter"
