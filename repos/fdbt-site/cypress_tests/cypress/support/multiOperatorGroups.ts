@@ -7,8 +7,8 @@ const addExtraOperator = (): void => {
 };
 
 export const addSingleMultiOperatorGroup = (name: string, addExtra: boolean, addMulti: boolean): void => {
+    clickElementByText('Add an operator group');
     if (addMulti) {
-        clickElementByText('Add an operator group');
         clickElementById('search-input').clear().type('blackpool');
         clickElementById('search-button');
         clickElementByText('Blackpool Transport - BLAC');
