@@ -589,7 +589,7 @@ export const addFlatFareProductIfNotPresent = (): void => {
     cy.wrap(hasFlatFare).as('hasFlatFare');
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfProducts = Number(element.attr('data-card-count'));
-        if (numberOfProducts == 0) {
+        if (numberOfProducts === 0) {
             selectFareType('flatFare', false);
             defineUserTypeAndTimeRestrictions();
             clickElementById('radio-option-multipleServices');
