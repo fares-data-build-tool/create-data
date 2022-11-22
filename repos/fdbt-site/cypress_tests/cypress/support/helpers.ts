@@ -578,10 +578,8 @@ export const clickRandomElementInTable = (tableName: string, elementId: string):
 };
 
 export const completeOperatorSearch = (isMultiService: boolean): void => {
-
     clickElementById('test-radio');
     continueButtonClick();
-
 };
 
 export const addFlatFareProductIfNotPresent = (): void => {
