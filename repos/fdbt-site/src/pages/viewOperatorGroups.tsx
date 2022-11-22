@@ -59,7 +59,11 @@ const ViewOperatorGroups = ({
             <div>
                 <ErrorSummary errors={viewOperatorGroupErrors} />
             </div>
-            <div className="govuk-grid-row" data-card-count={operatorGroups.length}>
+            <div
+                className="govuk-grid-row"
+                data-card-count={operatorGroups.length}
+                operator-groups={operatorGroups.map((element) => element.name).toString()}
+            >
                 <div className="govuk-grid-column-one-quarter">
                     <SubNavigation />
                 </div>

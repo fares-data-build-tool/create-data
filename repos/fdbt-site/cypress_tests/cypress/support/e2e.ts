@@ -1,4 +1,4 @@
-import { clickElementById, clickElementByText, getHomePage } from './helpers';
+import { clickElementById, clickElementByText, getElementById, getHomePage } from './helpers';
 import { addSingleMultiOperatorGroup } from './multiOperatorGroups';
 import { enterPassengerTypeDetails, addGroupPassengerType } from './passengerTypes';
 import { addPurchaseMethod } from './purchaseMethods';
@@ -54,11 +54,16 @@ const addTestOperatorGroups = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
         const numberofOperatorGroups = Number(element.attr('data-card-count'));
         cy.log(`There are ${numberofOperatorGroups} operator groups`);
-        if (numberofOperatorGroups > 0) {
-            cy.log('There is at least one operator group');
-        } else {
-            addSingleMultiOperatorGroup('test', false);
-        }
+        cy.get(`[operator-groups]`).then((element) => {
+            const operatorGroups = element.attr('operator-groups').toString();
+            const operatorGroupsValue = operatorGroups.split(',')
+            if (!operatorGroupsValue.includes('test')) {
+                addSingleMultiOperatorGroup('test', false, true);
+            }
+            if (!operatorGroupsValue.includes('test2')) {
+                addSingleMultiOperatorGroup('test2', false, false);
+            }
+        });
     });
 };
 

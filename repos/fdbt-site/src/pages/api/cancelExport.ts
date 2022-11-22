@@ -12,13 +12,6 @@ import logger from '../../utils/logger';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const isDevelopment = process.env.NODE_ENV === 'development';
-        const isTest = process.env.STAGE === 'test';
-
-        if (!isDevelopment && !isTest) {
-            throw new Error('Cancel export API called in non test or development environment.');
-        }
-
         const noc = getAndValidateNoc(req, res);
 
         const { exportName } = req.body;
