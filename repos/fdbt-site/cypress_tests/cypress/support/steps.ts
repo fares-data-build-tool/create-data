@@ -578,7 +578,7 @@ export const editFareTrianglePointToPointPage = () => {
     });
 };
 
-export const deleteProduct = () => {
+export const deleteMultiOperatorProduct = () => {
     
     let numberOfProducts = 0;    
     cy.get(`[data-card-count]`).then((element) => {
