@@ -263,7 +263,7 @@ export const ShowSearchResults = (
                 <FormElementWrapper errors={addOperatorsErrors} errorId={addOperatorsErrorId} errorClass="">
                     <>
                         <div className="govuk-checkboxes">
-                            <p className="govuk-hint" id="traveline-hint-text">
+                            <p className="govuk-hint" id="bods-hint-text">
                                 Select the operators results and click add operator(s). This data is taken from Bus Open
                                 Data Service (BODS).
                             </p>
@@ -279,8 +279,8 @@ export const ShowSearchResults = (
                                             id={`operator-to-add-${index}`}
                                             // eslint-disable-next-line jsx-a11y/aria-role
                                             role="input"
+                                            htmlFor="id"
                                             className="govuk-label govuk-checkboxes__label"
-                                            htmlFor={`add-operator-checkbox-${index}`}
                                             onClick={() => addOperator(operator.nocCode, operator.name)}
                                         >
                                             {name} - {nocCode}

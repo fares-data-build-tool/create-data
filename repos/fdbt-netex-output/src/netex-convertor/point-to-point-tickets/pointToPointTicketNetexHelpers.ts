@@ -293,6 +293,9 @@ export const getPreassignedFareProduct = (
         Name: {
             $t: productNameForPlainText,
         },
+        ChargingMomentType: {
+            $t: 'beforeTravel',
+        },
         TypeOfFareProductRef: {
             version: '1.0',
             ref: `fxc:standard_product@trip@${matchingData.type === 'return' ? 'day_return' : 'single'}`,

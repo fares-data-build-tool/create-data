@@ -6,6 +6,8 @@ import {
     NETEX_BUCKET_NAME,
     MATCHING_DATA_BUCKET_NAME,
     PRODUCTS_DATA_BUCKET_NAME,
+    EXPORT_METADATA_BUCKET_NAME,
+    UNVALIDATED_NETEX_BUCKET_NAME,
 } from '../constants';
 import { UserFareStages, UserFareZone } from '../interfaces';
 import logger from '../utils/logger';
@@ -13,6 +15,7 @@ import { triggerZipper } from '../utils/apiUtils/export';
 import { DeleteObjectsRequest, ListObjectsV2Request, ObjectIdentifierList, ObjectList } from 'aws-sdk/clients/s3';
 import { objectKeyMatchesExportNameExactly } from '../utils';
 import { Ticket, TicketWithIds } from '../interfaces/matchingJsonTypes';
+import { ExportMetadata } from '../interfaces/integrationTypes';
 
 const getS3Client = (): S3 => {
     let options: S3.ClientConfiguration = {
@@ -260,6 +263,32 @@ export const getS3Exports = async (noc: string): Promise<string[]> => {
     );
 };
 
+export const getNetexFileNames = async (path: string, validated: boolean): Promise<string[]> => {
+    try {
+        const response = await s3
+            .listObjectsV2({
+                Bucket: validated ? NETEX_BUCKET_NAME : UNVALIDATED_NETEX_BUCKET_NAME,
+                Prefix: path,
+                Delimiter: '/',
+            })
+            .promise();
+
+        if (!response.Contents) {
+            throw new Error('Request for netex file names failed due to no Contents in response');
+        }
+
+        return response.Contents.map((content) => {
+            if (!content.Key) {
+                throw new Error('Request for netex file names failed due to no Key in Contents');
+            }
+
+            return content.Key;
+        });
+    } catch (error) {
+        throw new Error(`Failed to retrieve NeTEx filenames, ${error.stack}`);
+    }
+};
+
 export const deleteFromS3 = async (key: string, bucketName: string): Promise<void> => {
     try {
         logger.info('', {
@@ -314,4 +343,38 @@ export const deleteExport = async (exportName: string, bucket: string): Promise<
     };
 
     await s3.deleteObjects(deleteParams).promise();
+};
+
+export const getExportMetaData = async (key: string): Promise<ExportMetadata> => {
+    try {
+        const request: AWS.S3.GetObjectRequest = {
+            Bucket: EXPORT_METADATA_BUCKET_NAME,
+            Key: key,
+        };
+
+        const response = await s3.getObject(request).promise();
+        const dataAsString = response.Body?.toString('utf-8') ?? '';
+
+        return JSON.parse(dataAsString) as ExportMetadata;
+    } catch (error) {
+        throw new Error(`Failed to get export metadata for key: ${key}, ${error.stack}`);
+    }
+};
+
+export const checkIfMetaDataExists = async (key: string): Promise<boolean> => {
+    try {
+        const request: AWS.S3.HeadObjectRequest = {
+            Bucket: EXPORT_METADATA_BUCKET_NAME,
+            Key: key,
+        };
+
+        await s3.headObject(request).promise();
+        return true;
+    } catch (error) {
+        logger.info('', {
+            context: 'data.s3.checkIfMetaDataExists',
+            message: `Metadata does not exist for ${key}`,
+        });
+        return false;
+    }
 };

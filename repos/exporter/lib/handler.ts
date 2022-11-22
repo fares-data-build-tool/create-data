@@ -36,13 +36,19 @@ const s3: S3 = new S3(
 
 const PRODUCTS_BUCKET = process.env.PRODUCTS_BUCKET;
 const MATCHING_DATA_BUCKET = process.env.MATCHING_DATA_BUCKET;
+const EXPORT_METADATA_BUCKET = process.env.EXPORT_METADATA_BUCKET;
 
 export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPrefix }) => {
     // populate the values from global settings using the IDs and write to matching data bucket
-    console.log(`triggered export lambda... ${paths.toString()} noc: ${noc}`);
 
-    if (!PRODUCTS_BUCKET || !MATCHING_DATA_BUCKET) {
-        throw new Error('Need to set MATCHING_DATA_BUCKET and PRODUCTS_BUCKET');
+    console.log(`${noc} - Exporting ${paths.length} files for netex creation for export ${exportPrefix}`);
+
+    if (!PRODUCTS_BUCKET || !MATCHING_DATA_BUCKET || !EXPORT_METADATA_BUCKET) {
+        throw new Error(
+            `Bucket details missing. Products bucket: ${PRODUCTS_BUCKET || '<missing>'}, Matching data bucket: ${
+                MATCHING_DATA_BUCKET || '<missing>'
+            }, Export metadata bucket: ${EXPORT_METADATA_BUCKET || '<missing>'}`,
+        );
     }
 
     await Promise.all(
@@ -135,7 +141,25 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
         }),
     );
 
-    console.log(`done ${paths.toString()}`);
+    const date = new Date();
+    const numberOfExpectedNetexFiles = paths.length;
+    const metadata = { date, numberOfExpectedNetexFiles };
+
+    console.log(
+        `putting metadata: date - ${metadata.date.toDateString()} numberOfExpectedNetexFiles - ${
+            metadata.numberOfExpectedNetexFiles
+        } in metadata bucket: ${EXPORT_METADATA_BUCKET} key: ${noc}/exports/${exportPrefix}.json`,
+    );
+
+    await s3
+        .putObject({
+            Key: `${noc}/exports/${exportPrefix}.json`,
+            Bucket: EXPORT_METADATA_BUCKET,
+            Body: JSON.stringify(metadata),
+        })
+        .promise();
+
+    console.log(`completed ${paths.length} files.`);
 };
 
 export const isBasePeriodTicket = (ticket: WithIds<Ticket>): ticket is WithIds<BasePeriodTicket> =>

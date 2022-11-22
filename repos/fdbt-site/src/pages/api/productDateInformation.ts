@@ -102,6 +102,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     errorMessage: 'End date year has an invalid character',
                 });
             }
+
+            if (Number(endDateYear) > 2099) {
+                errors.push({
+                    errorMessage: 'Enter a date with a year before 2099',
+                    id: 'end-year-input',
+                });
+            }
         }
 
         const startDate = moment.utc([startDateYear, startDateMonth - 1, startDateDay]);
@@ -112,6 +119,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (endDate && !endDate.isValid() && !isEndDateEmpty) {
             errors.push({ errorMessage: 'End date must be a real date', id: 'end-day-input' });
+        }
+
+        if (Number(startDateYear) > 2099) {
+            errors.push({
+                errorMessage: 'Enter a date with a year before 2099',
+                id: 'start-year-input',
+            });
         }
 
         if (errors.length > 0) {

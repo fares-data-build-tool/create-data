@@ -37,6 +37,7 @@ export type RawMyFaresProduct = Omit<MyFaresProduct, 'servicesRequiringAttention
 };
 
 export interface DbProduct {
+    id: string;
     matchingJsonLink: string;
     lineId: string;
     startDate: string;

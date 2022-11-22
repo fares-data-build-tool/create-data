@@ -53,6 +53,8 @@ import {
     TimeRestriction,
     UserFareStages,
     OperatorGroup,
+    ProductToExport,
+    ServiceToDisplay,
 } from '../../src/interfaces';
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
@@ -6241,5 +6243,92 @@ export const mockDataSplitOutProducts = [
         type: 'period',
         uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
         zoneName: 'Green Lane Shops',
+    },
+];
+
+export const mockServicesToDisplay: ServiceToDisplay[] = [
+    {
+        lineId: 'e2f23fq',
+        origin: 'Town',
+        destination: 'Football Stadium',
+        lineName: '2a',
+    },
+    {
+        lineId: '32rf2cvwe',
+        origin: 'College',
+        destination: 'Shops',
+        lineName: '44',
+    },
+    {
+        lineId: 'aweff3r323',
+        origin: 'Leeds',
+        destination: 'Bradford',
+        lineName: '11b',
+    },
+];
+
+export const mockPointToPointProducts: ProductToExport[] = [
+    {
+        id: '4',
+        productName: 'Adult single',
+        startDate: '01/02/2022',
+        fareType: 'single',
+        carnet: false,
+        schoolTicket: false,
+        serviceLineId: 'e2f23fq',
+        direction: 'outbound',
+    },
+    {
+        id: '5',
+        productName: 'Student return',
+        startDate: '02/02/2022',
+        fareType: 'return',
+        carnet: false,
+        schoolTicket: false,
+        serviceLineId: '32rf2cvwe',
+        direction: 'inbound',
+    },
+    {
+        id: '6',
+        productName: 'Saver ticket',
+        startDate: '02/02/2022',
+        fareType: 'single',
+        carnet: true,
+        schoolTicket: false,
+        serviceLineId: 'aweff3r323',
+        direction: 'inbound',
+    },
+];
+
+export const mockOtherProducts: ProductToExport[] = [
+    {
+        id: '1',
+        productName: 'Best product',
+        startDate: '01/02/2022',
+        fareType: 'period',
+        carnet: false,
+        schoolTicket: false,
+        serviceLineId: null,
+        direction: null,
+    },
+    {
+        id: '2',
+        productName: 'Super product',
+        startDate: '02/02/2022',
+        fareType: 'flatFare',
+        carnet: true,
+        schoolTicket: false,
+        serviceLineId: null,
+        direction: null,
+    },
+    {
+        id: '3',
+        productName: 'Super product',
+        startDate: '02/02/2022',
+        fareType: 'multiOperator',
+        carnet: true,
+        schoolTicket: false,
+        serviceLineId: null,
+        direction: null,
     },
 ];

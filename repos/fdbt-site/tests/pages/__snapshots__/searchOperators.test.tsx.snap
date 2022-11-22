@@ -105,7 +105,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             >
               <p
                 className="govuk-hint"
-                id="traveline-hint-text"
+                id="bods-hint-text"
               >
                 Select the operators results and click add operator(s). This data is taken from Bus Open Data Service (BODS).
               </p>
@@ -121,7 +121,7 @@ exports[`pages searchOperator should render a selection error when the user trie
               >
                 <label
                   className="govuk-label govuk-checkboxes__label"
-                  htmlFor="add-operator-checkbox-0"
+                  htmlFor="id"
                   id="operator-to-add-0"
                   onClick={[Function]}
                   role="input"
@@ -996,7 +996,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
             >
               <p
                 className="govuk-hint"
-                id="traveline-hint-text"
+                id="bods-hint-text"
               >
                 Select the operators results and click add operator(s). This data is taken from Bus Open Data Service (BODS).
               </p>
@@ -1012,7 +1012,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
               >
                 <label
                   className="govuk-label govuk-checkboxes__label"
-                  htmlFor="add-operator-checkbox-0"
+                  htmlFor="id"
                   id="operator-to-add-0"
                   onClick={[Function]}
                   role="input"
@@ -1611,7 +1611,7 @@ exports[`pages searchOperator should render the search input and search results 
             >
               <p
                 className="govuk-hint"
-                id="traveline-hint-text"
+                id="bods-hint-text"
               >
                 Select the operators results and click add operator(s). This data is taken from Bus Open Data Service (BODS).
               </p>
@@ -1627,7 +1627,7 @@ exports[`pages searchOperator should render the search input and search results 
               >
                 <label
                   className="govuk-label govuk-checkboxes__label"
-                  htmlFor="add-operator-checkbox-0"
+                  htmlFor="id"
                   id="operator-to-add-0"
                   onClick={[Function]}
                   role="input"
@@ -1866,7 +1866,7 @@ exports[`pages searchOperator should render the search input, search results and
             >
               <p
                 className="govuk-hint"
-                id="traveline-hint-text"
+                id="bods-hint-text"
               >
                 Select the operators results and click add operator(s). This data is taken from Bus Open Data Service (BODS).
               </p>
@@ -1882,7 +1882,7 @@ exports[`pages searchOperator should render the search input, search results and
               >
                 <label
                   className="govuk-label govuk-checkboxes__label"
-                  htmlFor="add-operator-checkbox-0"
+                  htmlFor="id"
                   id="operator-to-add-0"
                   onClick={[Function]}
                   role="input"

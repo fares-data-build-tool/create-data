@@ -1,4 +1,5 @@
 import { clickElementById, clickElementByText, getHomePage } from './helpers';
+import { addSingleMultiOperatorGroup } from './multiOperatorGroups';
 import { enterPassengerTypeDetails, addGroupPassengerType } from './passengerTypes';
 import { addPurchaseMethod } from './purchaseMethods';
 import { addTimeRestriction } from './timeRestrictions';
@@ -15,7 +16,9 @@ before(() => {
     addTestTimeRestrictions();
     clickElementByText('Fare day end');
     addTestFareDayEnd();
-    cy.log('Global Settings set up for BLAC');
+    clickElementByText('Operator groups');
+    addTestOperatorGroups();
+    cy.log('Global Settings set up for LNUD');
 
     // Disabling the below, as schemes are currently not fully supported
     /*
@@ -45,6 +48,18 @@ const addTestOperatorDetails = (): void => {
     clickElementById('county').clear().type('Home County');
     clickElementById('postcode').clear().type('AW23 8LE');
     clickElementByText('Save');
+};
+
+const addTestOperatorGroups = (): void => {
+    cy.get(`[data-card-count]`).then((element) => {
+        const numberofOperatorGroups = Number(element.attr('data-card-count'));
+        cy.log(`There are ${numberofOperatorGroups} operator groups`);
+        if (numberofOperatorGroups > 0) {
+            cy.log('There is at least one operator group');
+        } else {
+            addSingleMultiOperatorGroup('test', false);
+        }
+    });
 };
 
 const addTestFareDayEnd = (): void => {
@@ -124,7 +139,7 @@ const addTestPurchaseMethods = (): void => {
     });
 };
 
-const addTestTimeRestrictions = (): void => {
+export const addTestTimeRestrictions = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfTimeRestrictions = Number(element.attr('data-card-count'));
         cy.log(`There are ${numberOfTimeRestrictions} time restrictions`);

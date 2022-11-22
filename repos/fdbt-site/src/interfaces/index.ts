@@ -621,7 +621,7 @@ export interface ProductDetailsElement {
     content: string[];
     editLink?: string;
     generateLink?: string;
-    id?: string;
+    id: string;
     editLabel?: string;
 }
 
@@ -689,4 +689,23 @@ export interface TxcSourceAttribute {
     source: 'tnds' | 'bods';
     hasTnds: boolean;
     hasBods: boolean;
+}
+
+export interface ProductToExport {
+    id: string;
+    productName: string;
+    startDate: string;
+    endDate?: string;
+    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator';
+    carnet: boolean;
+    schoolTicket: boolean;
+    serviceLineId: string | null;
+    direction: string | null;
+}
+
+export interface ServiceToDisplay {
+    lineId: string;
+    origin: string;
+    destination: string;
+    lineName: string;
 }

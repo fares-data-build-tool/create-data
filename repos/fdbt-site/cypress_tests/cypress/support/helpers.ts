@@ -2,10 +2,13 @@ import 'cypress-file-upload';
 import {
     completeFlatFarePages,
     completeSalesPages,
+    completeSinglePages,
     defineUserTypeAndTimeRestrictions,
     FareType,
+    selectCarnetFareType,
     selectFareType,
 } from './steps';
+import { DateInput } from './types';
 
 export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
@@ -122,6 +125,35 @@ export const randomlyChooseASchoolProof = (): void => {
         default:
             throwInvalidRandomSelectorError();
     }
+};
+
+export const randomlySelectMultiServices = (): void => {
+    
+    const randomSelector = getRandomNumber(1, 3);
+    switch (randomSelector) {
+        case 1:
+            cy.log('Select All button clicked');
+            clickElementById('select-all-button');
+            break;
+        case 2:
+            cy.log('Few checkbox are selected');            
+            cy.get('[class=govuk-checkboxes__item]').each((checkbox, index, checkboxes) => {
+                const numberOfCheckboxes = checkboxes.length;
+                if (numberOfCheckboxes === 1 || index !== numberOfCheckboxes - 1) {
+                    cy.wrap(checkbox).click();
+                }
+            });
+            break;
+        case 3:
+            cy.log('All checkbox are selected');
+            cy.get('[class=govuk-checkboxes__item]').each((checkbox) => {
+                cy.wrap(checkbox).click();
+            });
+            break;
+        default:
+            throwInvalidRandomSelectorError();
+    }
+
 };
 
 export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, passengerType: string): void => {
@@ -267,19 +299,55 @@ export const completeGroupPassengerDetailsPages = (): void => {
 };
 
 export const randomlyDetermineUserType = (): void => {
+    let passengerType;
     cy.get('[class=govuk-radios__input]')
         .its('length')
         .then((length) => {
             const randomNumber = getRandomNumber(0, length - 1);
-            cy.get('[class=govuk-radios__input]').eq(randomNumber).click();
+            cy.get('[class=govuk-radios__input]')
+                .eq(randomNumber)
+                .click()
+                .then(($radio) => {
+                    passengerType = $radio.attr('aria-label');
+                    cy.wrap(passengerType).as('passengerType');
+                });
         });
 
     continueButtonClick();
 };
 
+export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void => {
+    let purchaseType: string;
+    cy.get('[class=govuk-checkboxes__input]')
+        .its('length')
+        .then((length) => {
+            const randomNumber = getRandomNumber(0, length - 1);
+            cy.get('[class=govuk-checkboxes__input]')
+                .eq(randomNumber)
+                .click()
+                .then(($radio) => {
+                    if (isOtherProduct) {
+                        purchaseType = $radio.attr('value');
+                        purchaseType = JSON.parse(purchaseType).name;
+                        cy.get(`[id=price-${randomNumber}]`).then(($radio) => {
+                            purchaseType = `${purchaseType} - £${$radio.attr('value')}`;
+                            cy.wrap(purchaseType).as('purchaseType');
+                        });
+                    } else {
+                        purchaseType = $radio.attr('value');
+                        purchaseType = JSON.parse(purchaseType).name;
+                        cy.wrap(purchaseType).as('purchaseType');
+                    }
+                });
+        });
+    continueButtonClick();
+};
+
 export const randomlyDecideTimeRestrictions = (): void => {
+    let timeRestriction = 'N/A';
     if (getRandomNumber(0, 1) === 0) {
         clickElementById('valid-days-not-required');
+        cy.wrap(timeRestriction).as('timeRestriction');
     } else {
         // click yes button
         clickElementById('valid-days-required');
@@ -293,7 +361,11 @@ export const randomlyDecideTimeRestrictions = (): void => {
                 getElementById('conditional-time-restriction')
                     .find('[class=govuk-radios__input]')
                     .eq(randomNumber)
-                    .click();
+                    .click()
+                    .then(($radio) => {
+                        timeRestriction = $radio.attr('value');
+                        cy.wrap(timeRestriction).as('timeRestriction');
+                    });
             });
     }
 
@@ -309,17 +381,49 @@ export const randomlyDecideTermRestrictions = (): void => {
     continueButtonClick();
 };
 
-export const clickAllCheckboxes = (): void => {
-    cy.get('[class=govuk-checkboxes__input]').each((checkbox) => {
+export const clickAllCheckboxes = (): string[] => {
+    const input: string[] = [];
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
         cy.wrap(checkbox).click();
+        const name = checkbox.attr('name');
+        input[index] = name.split('#')[0];
+        cy.wrap(input).as('input');
+    });
+    return input;
+};
+
+export const getAllCheckboxesData = (): void => {
+    const input: string[] = [];
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
+        cy.wrap(checkbox);
+        const name = checkbox.attr('name');
+        input[index] = name.split('#')[0];
+        cy.wrap(input).as('input');
+    });
+};
+
+export const getAllButFirstCheckbox = (): void => {
+    const input: string[] = [];
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
+        const name = checkbox.attr('name');
+        input[index] = name.split('#')[0];
+        cy.wrap(input).as('input');
+    });
+    cy.get('@input').then((input) => {
+        const newInputWithoutFirstItem = input.toString().split(',').slice(1);
+        cy.wrap(newInputWithoutFirstItem).as('input');
     });
 };
 
 export const clickSomeCheckboxes = (): void => {
+    const input: string[] = [];
     cy.get('[class=govuk-checkboxes__input]').each((checkbox, index, checkboxes) => {
         const numberOfCheckboxes = checkboxes.length;
         if (numberOfCheckboxes === 1 || index !== numberOfCheckboxes - 1) {
             cy.wrap(checkbox).click();
+            const name = checkbox.attr('name');
+            input[index] = name.split('#')[0];
+            cy.wrap(input).as('input');
         }
     });
 };
@@ -371,6 +475,7 @@ export const randomlyChooseAndSelectServices = (): void => {
         case 1: {
             cy.log('Click Select All button and continue');
             clickElementById('select-all-button');
+            getAllCheckboxesData();
             break;
         }
         case 2: {
@@ -386,6 +491,7 @@ export const randomlyChooseAndSelectServices = (): void => {
         case 4: {
             cy.log('Click Select All button and then click first checkbox to deselect, then continue');
             clickElementById('select-all-button');
+            getAllButFirstCheckbox();
             clickFirstCheckboxIfMultiple();
             break;
         }
@@ -395,13 +501,15 @@ export const randomlyChooseAndSelectServices = (): void => {
     }
 };
 
-export const completeProductDateInformationPage = (): void => {
+export const completeProductDateInformationPage = (): DateInput => {
     const randomSelector = getRandomNumber(1, 2);
+    let input;
     switch (randomSelector) {
         case 1: {
             getElementById('start-day-input').type('13');
             getElementById('start-month-input').type('10');
             getElementById('start-year-input').type('2010');
+            input = { startDate: '13/10/2010' };
             break;
         }
         case 2: {
@@ -411,6 +519,10 @@ export const completeProductDateInformationPage = (): void => {
             getElementById('end-day-input').type('7');
             getElementById('end-month-input').type('12');
             getElementById('end-year-input').type('2025');
+            input = {
+                startDate: '13/10/2010',
+                endDate: '07/12/2025',
+            };
             break;
         }
         default: {
@@ -418,6 +530,7 @@ export const completeProductDateInformationPage = (): void => {
         }
     }
     continueButtonClick();
+    return input;
 };
 
 export const isFinished = (): void => {
@@ -465,37 +578,10 @@ export const clickRandomElementInTable = (tableName: string, elementId: string):
 };
 
 export const completeOperatorSearch = (isMultiService: boolean): void => {
-    cy.url()
-        .should('match', /\/(searchOperators|reuseOperatorGroup)$/) // This is bassicly a wait to ensure we're on the correct page
-        .then((url: string) => {
-            if (url.includes('reuseOperatorGroup')) {
-                clickElementById('reuse-operator-group-no');
-                continueButtonClick();
-            }
-            getElementById(`search-input`).type('north');
-            clickElementById('search-button');
 
-            getElementById('add-operator-checkbox-0').click();
-            getElementById('add-operator-checkbox-1').click();
-            getElementById('add-operator-checkbox-2').click();
-            getElementById('add-operator-checkbox-3').click();
+    clickElementById('test-radio');
+    continueButtonClick();
 
-            clickElementById('add-operator-button');
-
-            getElementById('remove-operator-checkbox-3').click();
-            clickElementById('remove-operators-button');
-            continueButtonClick();
-
-            clickElementById('no-save');
-            continueButtonClick();
-
-            if (isMultiService) {
-                for (let i = 0; i < 3; i += 1) {
-                    randomlyChooseAndSelectServices();
-                    continueButtonClick();
-                }
-            }
-        });
 };
 
 export const addFlatFareProductIfNotPresent = (): void => {
@@ -516,6 +602,42 @@ export const addFlatFareProductIfNotPresent = (): void => {
     });
 };
 
+export const addSingleProductIfNotPresent = (): void => {
+    let hasProduct: string[] = [];
+    cy.wrap(hasProduct).as('hasProduct');
+    getHomePage();
+    clickElementById('account-link');
+    clickElementByText('Services');
+    cy.get(`[id^="active-products-"]`).each(($element) => {
+        if (parseInt($element.text()) > 0) {
+            hasProduct.push($element.text());
+            cy.wrap(hasProduct).as('hasProduct');
+        }
+    });
+    cy.get('@hasProduct').then((hasProduct) => {
+        if (hasProduct.length === 0) {
+            const randomSelector = getRandomNumber(1, 2);
+            if (randomSelector === 1) {
+                cy.log('Making a single product with CSV upload');
+                clickElementByText('Create new product');
+                selectCarnetFareType('single');
+                defineUserTypeAndTimeRestrictions();
+                completeSinglePages(true, true);
+                completeSalesPages();
+                isFinished();
+            } else {
+                cy.log('Making a single product with manual upload');
+                clickElementByText('Create new product');
+                selectCarnetFareType('single');
+                defineUserTypeAndTimeRestrictions();
+                completeSinglePages(false, true);
+                completeSalesPages();
+                isFinished();
+            }
+        }
+    });
+};
+
 export const retryRouteChoiceOnReturnProductError = (): void => {
     cy.get('main').then(($main) => {
         if ($main.text().includes('you cannot create a return product for this service')) {
@@ -524,4 +646,21 @@ export const retryRouteChoiceOnReturnProductError = (): void => {
             continueButtonClick();
         }
     });
+};
+
+export const clearDates = (): void => {
+    getElementById('start-day-input').clear();
+    getElementById('start-month-input').clear();
+    getElementById('start-year-input').clear();
+    getElementById('end-day-input').clear();
+    getElementById('end-month-input').clear();
+    getElementById('end-year-input').clear();
+};
+
+export const completeMultiServicePages = (): void => {
+    
+    randomlySelectMultiServices();
+    getElementById('operator-1').click();
+    randomlySelectMultiServices();
+    continueButtonClick();
 };
