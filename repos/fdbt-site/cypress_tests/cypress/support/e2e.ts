@@ -56,10 +56,11 @@ const addTestOperatorGroups = (): void => {
         cy.log(`There are ${numberofOperatorGroups} operator groups`);
         cy.get(`[operator-groups]`).then((element) => {
             const operatorGroups = element.attr('operator-groups').toString();
-            if (!operatorGroups.split(',').includes('test')) {
+            const value = operatorGroups.split(',')
+            if (!value.includes('test')) {
                 addSingleMultiOperatorGroup('test', false, true);
             }
-            if (!operatorGroups.split(',').includes('test2')) {
+            if (!value.includes('test2')) {
                 addSingleMultiOperatorGroup('test2', false, false);
             }
         });
