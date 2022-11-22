@@ -27,6 +27,19 @@ import {
 import dateFormat from 'dateformat';
 import { Stop, Ticket, TicketWithIds, ReturnTicket } from '../interfaces/matchingJsonTypes';
 
+export const formatFailedFileNames = (failedExportFileNames: string[]): string => {
+    // example filename
+    // FX-PI-01_UK_BRTB_NETWORK-FARE_My-Best-Product_2022-10-28_2020-02-01_fab0.xml
+    const names = failedExportFileNames.map((fileName) => {
+        const isNetworkFare = fileName.includes('NETWORK-FARE');
+        const productNameChunk = fileName.split(isNetworkFare ? 'NETWORK-FARE_' : 'LINE-FARE_')[1];
+        const amountOfCharactersInProductName = productNameChunk.length - 31;
+        return productNameChunk.substring(0, amountOfCharactersInProductName);
+    });
+
+    return names.join(', ');
+};
+
 export const getProofDocumentsString = (documents: string[]): string =>
     documents.map((document) => sentenceCaseString(document)).join(', ');
 

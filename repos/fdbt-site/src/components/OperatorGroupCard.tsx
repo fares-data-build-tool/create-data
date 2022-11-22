@@ -65,7 +65,7 @@ const OperatorGroupCard = ({
                     (operator, idx) =>
                         idx < 5 && (
                             <>
-                                <p className="govuk-body-s govuk-!-margin-bottom-2">
+                                <p id={`operator-${idx}`} className="govuk-body-s govuk-!-margin-bottom-2">
                                     {operator.name} - {operator.nocCode}
                                 </p>
                             </>

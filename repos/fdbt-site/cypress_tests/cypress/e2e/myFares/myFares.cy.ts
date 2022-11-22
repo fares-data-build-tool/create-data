@@ -22,13 +22,14 @@ import {
     editServicesOtherProductsPage,
     editStartDateOtherProductsPage,
     editStartDatePointToPointPage,
-    editTimeRestrictionOtherProductsPage,
+    editTimeRestriction,
+    editTimeRestrictionMultiOperatorProductsPage,
     editTimeRestrictionPointToPointPage,
 } from '../../support/steps';
 
 describe('The my fares point to point products pages', () => {
     before(() => {
-       addSingleProductIfNotPresent()
+        addSingleProductIfNotPresent();
     });
     it('allows for navigation through the point to point products pages', () => {
         getHomePage();
@@ -149,7 +150,13 @@ describe('The my fares other products pages', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
-        editTimeRestrictionOtherProductsPage();
+        cy.get('[class=govuk-table__body]')
+            .contains('[class=govuk-table__row]', 'Flat fare')
+            .find('td a')
+            .click()
+            .then(() => {
+                editTimeRestriction();
+            });
     });
     it('allows the user the edit other product name', () => {
         getHomePage();
@@ -158,7 +165,6 @@ describe('The my fares other products pages', () => {
         editProductNameOtherProductsPage();
     });
 });
-
 
 describe('The my fares multi operator products pages', () => {
     before(() => {
@@ -187,7 +193,7 @@ describe('The my fares multi operator products pages', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Multi-operator products');
-        editTimeRestrictionOtherProductsPage();
+        editTimeRestrictionMultiOperatorProductsPage()
     });
     it('allows the user the edit other product purchase method', () => {
         getHomePage();

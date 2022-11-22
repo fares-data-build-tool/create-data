@@ -2,6 +2,7 @@ import 'cypress-file-upload';
 import {
     completeFlatFarePages,
     completeMultiOpGeoZonePages,
+    completeMultiOpMultiServicePages,
     completeSalesPages,
     completeSinglePages,
     defineUserTypeAndTimeRestrictions,
@@ -328,7 +329,7 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
                     if (isOtherProduct) {
                         purchaseType = $radio.attr('value');
                         purchaseType = JSON.parse(purchaseType).name;
-                        cy.get(`[id=price-${randomNumber}]`).then(($radio) => {
+                        cy.get(`[id$=price-${randomNumber}]`).then(($radio) => {
                             purchaseType = `${purchaseType} - £${$radio.attr('value')}`;
                             cy.wrap(purchaseType).as('purchaseType');
                         });
@@ -461,8 +462,7 @@ export const completeSalesOfferPackagesForMultipleProducts = (
                         : randomSalesOfferPackageIndex + 1;
 
                 getElementById(`${idPrefix}${otherIndex}`).click();
-
-                getElementById(`price-${productName}-${otherIndex}`).clear().type('9.99');
+                getElementById(`${productName}-price-${otherIndex}`).clear().type('9.99');
             }
         });
     }
@@ -658,6 +658,24 @@ export const addSingleProductIfNotPresent = (): void => {
                 completeSalesPages();
                 isFinished();
             }
+        }
+    });
+};
+
+export const addMultiOperatorProductIfNotPresent = () => {
+    let hasProduct: string[] = [];
+    cy.wrap(hasProduct).as('hasProduct');
+    getHomePage();
+    clickElementById('account-link');
+    clickElementByText('Multi-operator products');
+    getElementById('multiOperatorProductsTablePage').then(($page) => {
+        if ($page.text().includes('You currently have no multi-operator products')) {
+            cy.log('Making a multiOperator product');
+            selectFareType('multiOperator', false);
+            defineUserTypeAndTimeRestrictions();
+            completeMultiOpMultiServicePages();
+            completeSalesPages();
+            isFinished();
         }
     });
 };

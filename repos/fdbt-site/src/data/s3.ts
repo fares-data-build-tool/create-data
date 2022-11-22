@@ -7,6 +7,7 @@ import {
     MATCHING_DATA_BUCKET_NAME,
     PRODUCTS_DATA_BUCKET_NAME,
     EXPORT_METADATA_BUCKET_NAME,
+    UNVALIDATED_NETEX_BUCKET_NAME,
 } from '../constants';
 import { UserFareStages, UserFareZone } from '../interfaces';
 import logger from '../utils/logger';
@@ -260,6 +261,32 @@ export const getS3Exports = async (noc: string): Promise<string[]> => {
             return partsOfName?.[partsOfName.length - 2] ?? [];
         }) || []
     );
+};
+
+export const getNetexFileNames = async (path: string, validated: boolean): Promise<string[]> => {
+    try {
+        const response = await s3
+            .listObjectsV2({
+                Bucket: validated ? NETEX_BUCKET_NAME : UNVALIDATED_NETEX_BUCKET_NAME,
+                Prefix: path,
+                Delimiter: '/',
+            })
+            .promise();
+
+        if (!response.Contents) {
+            throw new Error('Request for netex file names failed due to no Contents in response');
+        }
+
+        return response.Contents.map((content) => {
+            if (!content.Key) {
+                throw new Error('Request for netex file names failed due to no Key in Contents');
+            }
+
+            return content.Key;
+        });
+    } catch (error) {
+        throw new Error(`Failed to retrieve NeTEx filenames, ${error.stack}`);
+    }
 };
 
 export const deleteFromS3 = async (key: string, bucketName: string): Promise<void> => {

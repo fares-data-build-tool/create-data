@@ -105,7 +105,7 @@ const generateCheckbox = (
                                                 name={`price-${productName}-${offer.id}`}
                                                 data-non-numeric
                                                 type="text"
-                                                id={`price-${removeAllWhiteSpace(productName)}-${index}`}
+                                                id={`${removeAllWhiteSpace(productName)}-price-${index}`}
                                                 defaultValue={selectedOffer?.price || defaultPrice}
                                             />
                                         </FormElementWrapper>
