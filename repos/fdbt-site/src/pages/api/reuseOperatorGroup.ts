@@ -45,12 +45,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, undefined);
 
-                redirectTo(
-                    res,
-                    `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
-                        matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
-                    }`,
-                );
+                redirectTo(res, `/products/productDetails?productId=${matchingJsonMetaData?.productId}}`);
                 return;
             }
             updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
