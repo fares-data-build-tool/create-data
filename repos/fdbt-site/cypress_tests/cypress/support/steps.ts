@@ -77,7 +77,7 @@ export const completeFlatFarePages = (
     isGeoZone = false,
 ): void => {
     if (isScheme) {
-        completeOperatorSearch(true);
+        completeOperatorSearch();
     } else if (isGeoZone) {
         uploadFile('csv-upload', 'fareZone.csv');
         submitButtonClick();
@@ -321,7 +321,7 @@ export const completeMultiOpGeoZonePages = (
     uploadFile('csv-upload', 'fareZone.csv');
     submitButtonClick();
 
-    completeOperatorSearch(false);
+    completeOperatorSearch();
 
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
 };
@@ -332,7 +332,7 @@ export const completeMultiOpMultiServicePages = (numberOfProducts?: number, mult
     randomlyChooseAndSelectServices();
     continueButtonClick();
 
-    completeOperatorSearch(true);
+    completeOperatorSearch();
     completeMultiServicePages();
 
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
@@ -576,4 +576,23 @@ export const editFareTrianglePointToPointPage = () => {
         clickElementById('fare-triangle-link');
         completeFareTrianglePages(true, true);
     });
+};
+
+export const deleteMultiOperatorProduct = () => {
+    
+    let numberOfProducts = 0;    
+    cy.get(`[data-card-count]`).then((element) => {
+        numberOfProducts = Number(element.attr('data-card-count'));
+        if (numberOfProducts > 0) {
+            getElementById('delete-0').click();
+            getElementById('popup-delete-button').click();
+        }
+    });
+
+    cy.get(`[data-card-count]`).then((element) => {
+        const numberOfProductsAfterDelete = Number(element.attr('data-card-count'));
+        assert(numberOfProducts - numberOfProductsAfterDelete === 1)
+    });
+    
+    
 };

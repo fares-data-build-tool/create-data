@@ -10,6 +10,7 @@ import {
     completeMyFaresMultiOperatorProductsPages,
     completeMyFaresOtherProductsPages,
     completeMyFaresPointToPointProductsPages,
+    deleteMultiOperatorProduct,
     editEndDateOtherProductsPage,
     editEndDatePointToPointPage,
     editFareTrianglePointToPointPage,
@@ -212,5 +213,11 @@ describe('The my fares multi operator products pages', () => {
         clickElementById('account-link');
         clickElementByText('Multi-operator products');
         editEndDateOtherProductsPage();
+    });
+    it('allows the user to delete the multi operator product', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Multi-operator products');
+        deleteMultiOperatorProduct();
     });
 });

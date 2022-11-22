@@ -273,6 +273,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when some n
                 >
                   <button
                     className="govuk-link govuk-body button-link"
+                    id="delete-0"
                     onClick={[Function]}
                   >
                     Delete
@@ -347,6 +348,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when some n
                 >
                   <button
                     className="govuk-link govuk-body button-link"
+                    id="delete-1"
                     onClick={[Function]}
                   >
                     Delete
@@ -421,6 +423,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when some n
                 >
                   <button
                     className="govuk-link govuk-body button-link"
+                    id="delete-2"
                     onClick={[Function]}
                   >
                     Delete
