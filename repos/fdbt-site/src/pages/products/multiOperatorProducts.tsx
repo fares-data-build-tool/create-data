@@ -144,6 +144,7 @@ const MultiOperatorProductsTable = (
                                       <button
                                           className="govuk-link govuk-body button-link"
                                           onClick={() => deleteActionHandler(product.id, product.productDescription)}
+                                          id={`delete-${index}`}
                                       >
                                           Delete
                                       </button>
