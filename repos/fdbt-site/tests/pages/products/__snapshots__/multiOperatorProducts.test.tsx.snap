@@ -29,10 +29,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when no non
             Create new product
           </a>
         </div>
-
-        <div
-          id="multiOperatorProductsTablePage"
-        >
+        <div>
           <table
             className="govuk-table"
             data-card-count={0}
@@ -142,10 +139,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when some n
             Create new product
           </a>
         </div>
-
-        <div
-          id="multiOperatorProductsTablePage"
-        >
+        <div>
           <table
             className="govuk-table"
             data-card-count={3}
