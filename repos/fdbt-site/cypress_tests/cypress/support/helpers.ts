@@ -587,14 +587,9 @@ export const addFlatFareProductIfNotPresent = (): void => {
     clickElementByText('Other products');
     let hasFlatFare: boolean = false;
     cy.wrap(hasFlatFare).as('hasFlatFare');
-    cy.get(`[id^="type-"]`).each(($element) => {
-        if ($element.text() === 'Flat fare') {
-            hasFlatFare = true;
-            cy.wrap(hasFlatFare).as('hasFlatFare');
-        }
-    });
-    cy.get('@hasFlatFare').then((hasFlatFare) => {
-        if (!hasFlatFare) {
+    cy.get(`[data-card-count]`).then((element) => {
+        const numberOfProducts = Number(element.attr('data-card-count'));
+        if (numberOfProducts == 0) {
             selectFareType('flatFare', false);
             defineUserTypeAndTimeRestrictions();
             clickElementById('radio-option-multipleServices');
@@ -615,7 +610,7 @@ export const addMultiOperatorProductIfNotPresent = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfProducts = Number(element.attr('data-card-count'));
 
-        if (numberOfProducts == 0) {
+        if (numberOfProducts === 0) {
             selectFareType('multiOperator', false);
             defineUserTypeAndTimeRestrictions();
             completeMultiOpGeoZonePages();

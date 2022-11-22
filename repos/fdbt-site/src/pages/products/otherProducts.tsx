@@ -77,7 +77,7 @@ const otherProductsTable = (
 ): React.ReactElement => {
     return (
         <>
-            <table className="govuk-table">
+            <table className="govuk-table" data-card-count={otherProducts.length}>
                 <thead className="govuk-table__head">
                     <tr className="govuk-table__row">
                         <th scope="col" className="govuk-table__header">
@@ -117,9 +117,7 @@ const otherProductsTable = (
                                           {product.productDescription}
                                       </a>
                                   </td>
-                                  <td id={`type-${index}`} className="govuk-table__cell">
-                                      {sentenceCaseString(product.type)}
-                                  </td>
+                                  <td className="govuk-table__cell">{sentenceCaseString(product.type)}</td>
                                   <td className="govuk-table__cell">{product.duration}</td>
                                   <td className="govuk-table__cell dft-table-wrap-anywhere">
                                       {sentenceCaseString(product.passengerType)}
