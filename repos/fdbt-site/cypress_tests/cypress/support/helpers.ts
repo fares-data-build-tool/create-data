@@ -661,24 +661,6 @@ export const addSingleProductIfNotPresent = (): void => {
     });
 };
 
-// export const addMultiOperatorProductIfNotPresent = () => {
-//     let hasProduct: string[] = [];
-//     cy.wrap(hasProduct).as('hasProduct');
-//     getHomePage();
-//     clickElementById('account-link');
-//     clickElementByText('Multi-operator products');
-//     getElementById('multiOperatorProductsTablePage').then(($page) => {
-//         if ($page.text().includes('You currently have no multi-operator products')) {
-//             cy.log('Making a multiOperator product');
-//             selectFareType('multiOperator', false);
-//             defineUserTypeAndTimeRestrictions();
-//             completeMultiOpMultiServicePages();
-//             completeSalesPages();
-//             isFinished();
-//         }
-//     });
-// };
-
 export const retryRouteChoiceOnReturnProductError = (): void => {
     cy.get('main').then(($main) => {
         if ($main.text().includes('you cannot create a return product for this service')) {
