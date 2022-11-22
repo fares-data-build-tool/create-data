@@ -585,16 +585,16 @@ export const addFlatFareProductIfNotPresent = (): void => {
     getHomePage();
     clickElementById('manage-fares-link');
     clickElementByText('Other products');
-    const hasFlatFare: JQuery<HTMLElement>[] = [];
+    let hasFlatFare: boolean = false;
     cy.wrap(hasFlatFare).as('hasFlatFare');
     cy.get(`[id^="type-"]`).each(($element) => {
         if ($element.text() === 'Flat fare') {
-            hasFlatFare.push($element);
+            hasFlatFare = true;
             cy.wrap(hasFlatFare).as('hasFlatFare');
         }
     });
     cy.get('@hasFlatFare').then((hasFlatFare) => {
-        if (!hasFlatFare.toString()) {
+        if (hasFlatFare.toString() === 'false') {
             selectFareType('flatFare', false);
             defineUserTypeAndTimeRestrictions();
             clickElementById('radio-option-multipleServices');
@@ -621,9 +621,8 @@ export const addMultiOperatorProductIfNotPresent = (): void => {
             completeMultiOpGeoZonePages();
             completeSalesPages();
             isFinished();
-        } 
+        }
     });
-
 };
 
 export const addSingleProductIfNotPresent = (): void => {
@@ -662,23 +661,23 @@ export const addSingleProductIfNotPresent = (): void => {
     });
 };
 
-export const addMultiOperatorProductIfNotPresent = () => {
-    let hasProduct: string[] = [];
-    cy.wrap(hasProduct).as('hasProduct');
-    getHomePage();
-    clickElementById('account-link');
-    clickElementByText('Multi-operator products');
-    getElementById('multiOperatorProductsTablePage').then(($page) => {
-        if ($page.text().includes('You currently have no multi-operator products')) {
-            cy.log('Making a multiOperator product');
-            selectFareType('multiOperator', false);
-            defineUserTypeAndTimeRestrictions();
-            completeMultiOpMultiServicePages();
-            completeSalesPages();
-            isFinished();
-        }
-    });
-};
+// export const addMultiOperatorProductIfNotPresent = () => {
+//     let hasProduct: string[] = [];
+//     cy.wrap(hasProduct).as('hasProduct');
+//     getHomePage();
+//     clickElementById('account-link');
+//     clickElementByText('Multi-operator products');
+//     getElementById('multiOperatorProductsTablePage').then(($page) => {
+//         if ($page.text().includes('You currently have no multi-operator products')) {
+//             cy.log('Making a multiOperator product');
+//             selectFareType('multiOperator', false);
+//             defineUserTypeAndTimeRestrictions();
+//             completeMultiOpMultiServicePages();
+//             completeSalesPages();
+//             isFinished();
+//         }
+//     });
+// };
 
 export const retryRouteChoiceOnReturnProductError = (): void => {
     cy.get('main').then(($main) => {
