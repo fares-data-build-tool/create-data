@@ -16,7 +16,6 @@ const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).th
 interface GlobalSettingsProps {
     csrf: string;
     operatorHasProducts: boolean;
-    isDevOrTest: boolean;
 }
 
 const getTag = (exportDetails: Export): ReactElement => {
@@ -51,7 +50,7 @@ const getTag = (exportDetails: Export): ReactElement => {
     );
 };
 
-const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps): ReactElement => {
+const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
     const [showExportPopup, setShowExportPopup] = useState(false);
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
@@ -94,12 +93,7 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
                                 ) : showCancelButton ? (
                                     <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
                                         <input type="hidden" name="exportName" value={exportInProgress?.name} />
-                                        <button
-                                            type="submit"
-                                            className={`govuk-button govuk-button--warning${
-                                                !isDevOrTest ? ' govuk-visually-hidden' : ''
-                                            }`}
-                                        >
+                                        <button type="submit" className="govuk-button govuk-button--warning">
                                             Cancel export in progress
                                         </button>
                                     </CsrfForm>
@@ -225,15 +219,12 @@ const Exports = ({ csrf, operatorHasProducts, isDevOrTest }: GlobalSettingsProps
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: GlobalSettingsProps }> => {
     const noc = getAndValidateNoc(ctx);
 
-    const isDevelopment = process.env.NODE_ENV === 'development';
-    const isTest = process.env.STAGE === 'test';
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
             operatorHasProducts,
-            isDevOrTest: isDevelopment || isTest,
         },
     };
 };
