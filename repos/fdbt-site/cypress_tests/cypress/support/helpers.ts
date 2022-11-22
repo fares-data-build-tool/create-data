@@ -1,6 +1,8 @@
 import 'cypress-file-upload';
 import {
     completeFlatFarePages,
+    completeMultiOpGeoZonePages,
+    completeMultiOpMultiServicePages,
     completeSalesPages,
     completeSinglePages,
     defineUserTypeAndTimeRestrictions,
@@ -135,6 +137,7 @@ export const randomlySelectMultiServices = (): void => {
             clickElementById('select-all-button');
             break;
         case 2:
+            cy.log('Few checkbox are selected');
             cy.log('Few checkbox are selected');
             cy.get('[class=govuk-checkboxes__item]').each((checkbox, index, checkboxes) => {
                 const numberOfCheckboxes = checkboxes.length;
@@ -327,7 +330,7 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
                     if (isOtherProduct) {
                         purchaseType = $radio.attr('value');
                         purchaseType = JSON.parse(purchaseType).name;
-                        cy.get(`[id=price-${randomNumber}]`).then(($radio) => {
+                        cy.get(`[id$=price-${randomNumber}]`).then(($radio) => {
                             purchaseType = `${purchaseType} - £${$radio.attr('value')}`;
                             cy.wrap(purchaseType).as('purchaseType');
                         });
@@ -460,8 +463,7 @@ export const completeSalesOfferPackagesForMultipleProducts = (
                         : randomSalesOfferPackageIndex + 1;
 
                 getElementById(`${idPrefix}${otherIndex}`).click();
-
-                getElementById(`price-${productName}-${otherIndex}`).clear().type('9.99');
+                getElementById(`${productName}-price-${otherIndex}`).clear().type('9.99');
             }
         });
     }
@@ -576,21 +578,21 @@ export const clickRandomElementInTable = (tableName: string, elementId: string):
 };
 
 export const completeOperatorSearch = (isMultiService: boolean): void => {
-    if (isMultiService) {
-        clickElementById('test-radio');
-    }
-    else{
-        clickElementById('test2-radio');
-    }
+
+    clickElementById('test-radio');
     continueButtonClick();
+
 };
 
 export const addFlatFareProductIfNotPresent = (): void => {
     getHomePage();
     clickElementById('manage-fares-link');
     clickElementByText('Other products');
-    getElementByClass('govuk-table').then((table) => {
-        if (table.find('tr').length === 1) {
+    let hasFlatFare: boolean = false;
+    cy.wrap(hasFlatFare).as('hasFlatFare');
+    cy.get(`[data-card-count]`).then((element) => {
+        const numberOfProducts = Number(element.attr('data-card-count'));
+        if (numberOfProducts === 0) {
             selectFareType('flatFare', false);
             defineUserTypeAndTimeRestrictions();
             clickElementById('radio-option-multipleServices');
@@ -599,6 +601,24 @@ export const addFlatFareProductIfNotPresent = (): void => {
             completeSalesPages();
             isFinished();
             cy.log('Flat fare product set up');
+        }
+    });
+};
+
+export const addMultiOperatorProductIfNotPresent = (): void => {
+    getHomePage();
+    clickElementById('manage-fares-link');
+    clickElementByText('Multi-operator products');
+
+    cy.get(`[data-card-count]`).then((element) => {
+        const numberOfProducts = Number(element.attr('data-card-count'));
+
+        if (numberOfProducts === 0) {
+            selectFareType('multiOperator', false);
+            defineUserTypeAndTimeRestrictions();
+            completeMultiOpGeoZonePages();
+            completeSalesPages();
+            isFinished();
         }
     });
 };

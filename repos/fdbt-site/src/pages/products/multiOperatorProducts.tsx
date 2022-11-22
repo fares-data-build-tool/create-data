@@ -76,8 +76,8 @@ const MultiOperatorProductsTable = (
     csrfToken: string,
 ): React.ReactElement => {
     return (
-        <>
-            <table className="govuk-table">
+        <div>
+            <table className="govuk-table" data-card-count={multiOperatorProducts.length}>
                 <thead className="govuk-table__head">
                     <tr className="govuk-table__row">
                         <th scope="col" className="govuk-table__header">
@@ -158,7 +158,7 @@ const MultiOperatorProductsTable = (
                     <i>You currently have no multi-operator products</i>
                 </span>
             ) : null}
-        </>
+        </div>
     );
 };
 

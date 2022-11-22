@@ -25,6 +25,7 @@ import {
     clearDates,
     randomlyDeterminePurchaseType,
     completeMultiServicePages,
+    getElementByClass,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -356,6 +357,16 @@ export const completeMyFaresOtherProductsPages = (): void => {
     }
 };
 
+export const completeMyFaresMultiOperatorProductsPages = (): void => {
+    for (let i = 0; i < 3; i++) {
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        getElementById('product-name').should('not.be.empty');
+        getElementById('product-status').should('not.be.empty');
+        getElementById('fare-type').should('not.be.empty').should('have.text', 'Multi operator');
+        clickElementByText('Back');
+    }
+};
+
 export const editServicesOtherProductsPage = (): void => {
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
@@ -403,10 +414,10 @@ export const editProductNamePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-        cy.get('[class=govuk-table__body]').find('a').click();
-        getElementById('service-name').should('not.be.empty');
-        getElementById('service-status').should('not.be.empty');
-        editProductName();
+            getElementByClass("govuk-table__body").find('a').eq(0).click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editProductName();
     });
 };
 
@@ -431,10 +442,10 @@ export const editPassengerTypePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-        cy.get('[class=govuk-table__body]').find('a').click();
-        getElementById('service-name').should('not.be.empty');
-        getElementById('service-status').should('not.be.empty');
-        editPassengerType();
+            getElementByClass("govuk-table__body").find('a').eq(0).click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editPassengerType();
     });
 };
 
@@ -458,10 +469,10 @@ export const editStartDatePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-        cy.get('[class=govuk-table__body]').find('a').click();
-        getElementById('service-name').should('not.be.empty');
-        getElementById('service-status').should('not.be.empty');
-        editStartDate();
+            getElementByClass("govuk-table__body").find('a').eq(0).click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editStartDate();
     });
 };
 
@@ -485,10 +496,10 @@ export const editEndDatePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-        cy.get('[class=govuk-table__body]').find('a').click();
-        getElementById('service-name').should('not.be.empty');
-        getElementById('service-status').should('not.be.empty');
-        editEndDate();
+            getElementByClass("govuk-table__body").find('a').eq(0).click();
+            getElementById('service-name').should('not.be.empty');
+            getElementById('service-status').should('not.be.empty');
+            editEndDate();
     });
 };
 
@@ -501,7 +512,7 @@ export const editTimeRestriction = () => {
     clickElementByText('Back');
 };
 
-export const editTimeRestrictionOtherProductsPage = () => {
+export const editTimeRestrictionMultiOperatorProductsPage = () => {
     clickRandomElementInTable('govuk-table__body', 'product-link');
     getElementById('product-name').should('not.be.empty');
     getElementById('product-status').should('not.be.empty');
@@ -513,7 +524,7 @@ export const editTimeRestrictionPointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementByClass("govuk-table__body").find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
         editTimeRestriction();
@@ -548,7 +559,7 @@ export const editPurchaseMethodPointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementByClass("govuk-table__body").find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
         editPurchaseMethod();
@@ -559,7 +570,7 @@ export const editFareTrianglePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
         clickElementById(serviceToClick.toString());
-        cy.get('[class=govuk-table__body]').find('a').click();
+        getElementByClass("govuk-table__body").find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
         clickElementById('fare-triangle-link');
