@@ -52,13 +52,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     }`,
                 );
                 return;
-            } else {
-                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
-                    selectedOperators: multipleOperators.operators,
-                    id: multipleOperators.id,
-                });
-                updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
             }
+            updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
+                selectedOperators: multipleOperators.operators,
+                id: multipleOperators.id,
+            });
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
         } else {
             updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
                 { errorMessage: 'Select a valid operator group', id: 'operatorGroup' },
