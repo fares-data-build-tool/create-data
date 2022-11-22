@@ -1,5 +1,6 @@
 import {
     addFlatFareProductIfNotPresent,
+    addMultiOperatorProductIfNotPresent,
     addSingleProductIfNotPresent,
     clickElementById,
     clickElementByText,
@@ -160,6 +161,9 @@ describe('The my fares other products pages', () => {
 
 
 describe('The my fares multi operator products pages', () => {
+    before(() => {
+        addMultiOperatorProductIfNotPresent();
+    });
     it('allows for navigation through the multi operator products pages', () => {
         getHomePage();
         clickElementById('manage-fares-link');

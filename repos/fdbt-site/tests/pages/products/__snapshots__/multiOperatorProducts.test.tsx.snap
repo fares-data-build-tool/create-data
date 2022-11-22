@@ -31,6 +31,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when no non
         </div>
         <table
           className="govuk-table"
+          data-card-count={0}
         >
           <thead
             className="govuk-table__head"
@@ -138,6 +139,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when some n
         </div>
         <table
           className="govuk-table"
+          data-card-count={3}
         >
           <thead
             className="govuk-table__head"

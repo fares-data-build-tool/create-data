@@ -77,7 +77,7 @@ const MultiOperatorProductsTable = (
 ): React.ReactElement => {
     return (
         <>
-            <table className="govuk-table">
+            <table className="govuk-table" data-card-count={multiOperatorProducts.length}>
                 <thead className="govuk-table__head">
                     <tr className="govuk-table__row">
                         <th scope="col" className="govuk-table__header">

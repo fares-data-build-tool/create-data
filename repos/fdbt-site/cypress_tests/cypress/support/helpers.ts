@@ -1,6 +1,7 @@
 import 'cypress-file-upload';
 import {
     completeFlatFarePages,
+    completeMultiOpGeoZonePages,
     completeSalesPages,
     completeSinglePages,
     defineUserTypeAndTimeRestrictions,
@@ -461,7 +462,7 @@ export const completeSalesOfferPackagesForMultipleProducts = (
 
                 getElementById(`${idPrefix}${otherIndex}`).click();
 
-                getElementById(`price-${otherIndex}`).clear().type('9.99');
+                getElementById(`price-${productName}-${otherIndex}`).clear().type('9.99');
             }
         });
     }
@@ -604,6 +605,25 @@ export const addFlatFareProductIfNotPresent = (): void => {
             cy.log('Flat fare product set up');
         }
     });
+};
+
+export const addMultiOperatorProductIfNotPresent = (): void => {
+    getHomePage();
+    clickElementById('manage-fares-link');
+    clickElementByText('Multi-operator products');
+
+    cy.get(`[data-card-count]`).then((element) => {
+        const numberOfProducts = Number(element.attr('data-card-count'));
+
+        if (numberOfProducts == 0) {
+            selectFareType('multiOperator', false);
+            defineUserTypeAndTimeRestrictions();
+            completeMultiOpGeoZonePages();
+            completeSalesPages();
+            isFinished();
+        } 
+    });
+
 };
 
 export const addSingleProductIfNotPresent = (): void => {
