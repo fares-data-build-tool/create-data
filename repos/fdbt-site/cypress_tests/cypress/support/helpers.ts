@@ -576,8 +576,8 @@ export const clickRandomElementInTable = (tableName: string, elementId: string):
         });
 };
 
-export const completeOperatorSearch = (isMultiService: boolean): void => {
-    clickElementById('test-radio');
+export const completeOperatorSearch = (): void => {
+    clickElementById('operator-group-0-radio');
     continueButtonClick();
 };
 

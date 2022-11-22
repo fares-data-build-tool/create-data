@@ -46,7 +46,7 @@ const OperatorGroupCard = ({
                         <div className="govuk-radios__item card__selector">
                             <input
                                 className="govuk-radios__input"
-                                id={`${name}-radio`}
+                                id={`operator-group-${index}-radio`}
                                 name="operatorGroupId"
                                 type="radio"
                                 value={id}
