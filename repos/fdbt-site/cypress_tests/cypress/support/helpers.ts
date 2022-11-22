@@ -594,7 +594,7 @@ export const addFlatFareProductIfNotPresent = (): void => {
         }
     });
     cy.get('@hasFlatFare').then((hasFlatFare) => {
-        if (hasFlatFare.toString() === 'false') {
+        if (!hasFlatFare) {
             selectFareType('flatFare', false);
             defineUserTypeAndTimeRestrictions();
             clickElementById('radio-option-multipleServices');
