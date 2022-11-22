@@ -577,7 +577,14 @@ export const clickRandomElementInTable = (tableName: string, elementId: string):
 };
 
 export const completeOperatorSearch = (): void => {
-    clickElementById('operator-group-0-radio');
+
+    getElementByClass("govuk-radios__input").each((element) => {
+
+        if(element.attr("aria-label") === "test" ) {
+            cy.wrap(element).click();
+        }
+    });
+
     continueButtonClick();
 };
 
