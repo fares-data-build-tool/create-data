@@ -138,7 +138,6 @@ export const randomlySelectMultiServices = (): void => {
             break;
         case 2:
             cy.log('Few checkbox are selected');
-            cy.log('Few checkbox are selected');
             cy.get('[class=govuk-checkboxes__item]').each((checkbox, index, checkboxes) => {
                 const numberOfCheckboxes = checkboxes.length;
                 if (numberOfCheckboxes === 1 || index !== numberOfCheckboxes - 1) {
