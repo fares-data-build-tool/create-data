@@ -591,7 +591,7 @@ export const deleteMultiOperatorProduct = () => {
 
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfProductsAfterDelete = Number(element.attr('data-card-count'));
-        assert(numberOfProducts - numberOfProductsAfterDelete === 1)
+        assert.equal(numberOfProducts, numberOfProductsAfterDelete+1, "Product is deleted")
     });
     
     
