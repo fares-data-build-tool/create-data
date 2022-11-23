@@ -579,8 +579,7 @@ export const editFareTrianglePointToPointPage = () => {
 };
 
 export const deleteMultiOperatorProduct = () => {
-    
-    let numberOfProducts = 0;    
+    let numberOfProducts = 0;
     cy.get(`[data-card-count]`).then((element) => {
         numberOfProducts = Number(element.attr('data-card-count'));
         if (numberOfProducts > 0) {
@@ -591,8 +590,28 @@ export const deleteMultiOperatorProduct = () => {
 
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfProductsAfterDelete = Number(element.attr('data-card-count'));
-        assert.equal(numberOfProducts, numberOfProductsAfterDelete+1, "Product is deleted")
+        assert.equal(numberOfProducts, numberOfProductsAfterDelete + 1, 'Product is deleted');
     });
-    
-    
+};
+
+const editOperatorGroup = () => {
+    clickElementById('multi-operator-group-link');
+    getElementByClass('govuk-radios__input').each((element) => {
+        if (element.attr('aria-label') === 'test2') {
+            cy.wrap(element).click();
+        }
+    });
+    continueButtonClick();
+    const expectedOperatorGroups = ['LNUD', 'NWBT'];
+    getElementById('multi-operator-group').should('have.text', expectedOperatorGroups.join(', '));
+};
+
+export const editOperatorGroupMultiOperatorProductsPage = () => {
+    clickRandomElementInTable('govuk-table__body', 'product-link');
+    getElementById('product-name').should('not.be.empty');
+    getElementById('product-status').should('not.be.empty');
+    getElementById('fare-type').should('not.be.empty');
+    getElementById('zone').should('not.be.empty');
+    getElementById('multi-operator-group').should('not.be.empty');
+    editOperatorGroup();
 };
