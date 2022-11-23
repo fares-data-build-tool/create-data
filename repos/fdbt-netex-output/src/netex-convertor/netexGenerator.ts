@@ -411,6 +411,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 fareStructuresElements,
                 coreData.ticketUserConcat,
                 coreData.productNameForPlainText,
+                coreData.isCarnet,
             );
 
             priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = buildSalesOfferPackages(
@@ -460,6 +461,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             ticket,
             coreData.nocCodeFormat,
             coreData.opIdNocFormat,
+            coreData.isCarnet,
         );
 
         // Sales Offer Packages

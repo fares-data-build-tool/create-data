@@ -287,6 +287,7 @@
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@Test_Product_4_youngPerson">
               <Name>Test Product 4</Name>
+              <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>

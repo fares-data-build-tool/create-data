@@ -290,6 +290,7 @@
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@Week_Rider_adult">
               <Name>Week Rider</Name>
+              <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>

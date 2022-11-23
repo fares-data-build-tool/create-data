@@ -443,9 +443,14 @@ describe('periodTicketNetexHelpers', () => {
                 geoUserPeriodTicket,
                 `noc:${geoUserPeriodTicket.nocCode}`,
                 'noc:TestOperatorOpId',
+                false,
             );
 
             const expectedFormat = {
+                ChargingMomentRef: expect.objectContaining({
+                    ref: expect.any(String),
+                    versionRef: 'fxc:v1.0',
+                }),
                 ChargingMomentType: expect.objectContaining({ $t: expect.any(String) }),
                 Name: expect.objectContaining({ $t: expect.any(String) }),
                 OperatorRef: expect.objectContaining({
@@ -477,9 +482,14 @@ describe('periodTicketNetexHelpers', () => {
                 periodMultipleServicesTicket,
                 `noc:${periodMultipleServicesTicket.nocCode}`,
                 'noc:TestOperatorOpId',
+                false,
             );
 
             const expectedFormat = {
+                ChargingMomentRef: expect.objectContaining({
+                    ref: expect.any(String),
+                    versionRef: 'fxc:v1.0',
+                }),
                 ChargingMomentType: expect.objectContaining({ $t: expect.any(String) }),
                 Name: expect.objectContaining({ $t: expect.any(String) }),
                 OperatorRef: expect.objectContaining({

@@ -1907,6 +1907,10 @@ describe('Netex Helpers', () => {
             const expectedPreassignedFareProduct = {
                 id: expect.stringContaining(tripString),
                 Name: { $t: productNameForPlainText },
+                ChargingMomentRef: {
+                    versionRef: 'fxc:v1.0',
+                    ref: 'fxc:prepayment',
+                },
                 ChargingMomentType: {
                     $t: 'beforeTravel',
                 },
@@ -1955,6 +1959,7 @@ describe('Netex Helpers', () => {
                 [{ id: '@lines' }, { id: '@eligibility' }, { id: '@conditions_of_travel' }],
                 ticketUserConcat,
                 productNameForPlainText,
+                false,
             );
             expect(actualPreassignedFareProduct).toEqual(expectedPreassignedFareProduct);
         });
