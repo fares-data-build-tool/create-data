@@ -5,7 +5,7 @@ TRUNCATE TABLE `operatorGroup`;
 
 INSERT INTO `operatorGroup` (name, contents, nocCode) 
 VALUES
-('test', '[{"nocCode":"LNUD","name":"The Blackburn Bus Company"},{"nocCode":"NWBT","name": "Pilkingtonbus"}]', 'BLAC');
+('operator-group', '[{"nocCode":"LNUD","name":"The Blackburn Bus Company"},{"nocCode":"NWBT","name": "Pilkingtonbus"}]', 'BLAC');
 
 UNLOCK TABLES;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
