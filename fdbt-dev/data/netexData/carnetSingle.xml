@@ -1943,6 +1943,7 @@
           <fareProducts>
             <PreassignedFareProduct id="Trip@Product_1" version="1.0">
               <Name>Product 1</Name>
+              <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment@bundled"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="1.0" ref="fxc:standard_product@trip@single"/>
               <validableElements>

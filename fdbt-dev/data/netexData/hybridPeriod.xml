@@ -281,6 +281,7 @@
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@Best_product_one_anyone">
               <Name>Best product one</Name>
+              <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>
