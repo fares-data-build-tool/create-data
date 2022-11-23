@@ -1,10 +1,16 @@
 import {
     FARE_TYPE_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     REUSE_OPERATOR_GROUP_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../../src/constants/attributes';
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import {
+    expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
+    getMockRequestAndResponse,
+} from '../../testData/mockData';
+import * as userData from '../../../src/utils/apiUtils/userData';
 import * as sessions from '../../../src/utils/sessions';
 import reuseOperatorGroup from '../../../src/pages/api/reuseOperatorGroup';
 import * as auroradb from '../../../src/data/auroradb';
@@ -13,6 +19,8 @@ import * as index from '../../../src/utils/apiUtils/index';
 describe('reuseOperatorGroup', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const writeHeadMock = jest.fn();
+    const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
+    s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
 
     afterEach(() => {
         jest.resetAllMocks();
@@ -124,5 +132,53 @@ describe('reuseOperatorGroup', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleOperatorsServiceList' });
+    });
+    it('should update the multi operators for geozone ticket when in edit mode and redirect back to products/productDetails', async () => {
+        const getOperatorGroupByNocAndId = jest.spyOn(auroradb, 'getOperatorGroupByNocAndId');
+        const testOperators = [
+            {
+                name: 'Best Op 1',
+                nocCode: 'BO1',
+            },
+            {
+                name: 'Best Op 2',
+                nocCode: 'BO3',
+            },
+            {
+                name: 'Best Op Supreme',
+                nocCode: 'BOS',
+            },
+        ];
+        getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue({
+            id: 1,
+            name: 'Best Ops',
+            operators: testOperators,
+        });
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                operatorGroupId: '1',
+            },
+            uuid: {},
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '2',
+                    matchingJsonLink: 'test/path',
+                },
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await reuseOperatorGroup(req, res);
+
+        expect(userData.putUserDataInProductsBucketWithFilePath).toBeCalledWith(
+            { ...expectedMultiOperatorGeoZoneTicketWithMultipleProducts, additionalNocs: ['BO1', 'BO3', 'BOS'] },
+            'test/path',
+        );
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/products/productDetails?productId=2',
+        });
     });
 });

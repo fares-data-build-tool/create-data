@@ -358,6 +358,7 @@ const createProductDetails = async (
                 id: 'multi-operator-group',
                 name: `Multi Operator Group`,
                 content: [`${noc}, ${ticket.additionalNocs.join(', ')}`],
+                editLink: '/reuseOperatorGroup',
             });
         }
     }
