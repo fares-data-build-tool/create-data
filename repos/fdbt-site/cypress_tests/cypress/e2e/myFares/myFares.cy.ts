@@ -4,6 +4,9 @@ import {
     addSingleProductIfNotPresent,
     clickElementById,
     clickElementByText,
+    clickRandomElementInTable,
+    getElementByClass,
+    getElementById,
     getHomePage,
 } from '../../support/helpers';
 import {
@@ -17,12 +20,12 @@ import {
     editOperatorGroupMultiOperatorProductsPage,
     editPassengerTypeOtherProductsPage,
     editPassengerTypePointToPointPage,
-    editProductNameOtherProductsPage,
+    editProductName,
     editProductNamePointToPointPage,
     editPurchaseMethodOtherProductsPage,
     editPurchaseMethodPointToPointPage,
     editServicesOtherProductsPage,
-    editStartDateOtherProductsPage,
+    editStartDate,
     editStartDatePointToPointPage,
     editTimeRestriction,
     editTimeRestrictionMultiOperatorProductsPage,
@@ -73,7 +76,7 @@ describe('The my fares point to point products pages', () => {
         clickElementById('account-link');
         clickElementByText('Services');
         editFareTrianglePointToPointPage();
-        cy.get('[id=fare-triangle]')
+        getElementById('fare-triangle')
             .invoke('text')
             .then((text) => {
                 const dateTextNew = text.split(' ')[1];
@@ -116,7 +119,7 @@ describe('The my fares other products pages', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
-        cy.get('[class=govuk-table__body]')
+        getElementByClass('govuk-table__body')
             .contains('[class=govuk-table__row]', 'Flat fare')
             .find('td a')
             .click()
@@ -134,7 +137,8 @@ describe('The my fares other products pages', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
-        editStartDateOtherProductsPage();
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        editStartDate();
     });
     it('allows the user the edit other product end date', () => {
         getHomePage();
@@ -152,7 +156,7 @@ describe('The my fares other products pages', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
-        cy.get('[class=govuk-table__body]')
+        getElementByClass('govuk-table__body')
             .contains('[class=govuk-table__row]', 'Flat fare')
             .find('td a')
             .click()
@@ -164,7 +168,8 @@ describe('The my fares other products pages', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
-        editProductNameOtherProductsPage();
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        editProductName();
     });
 });
 
@@ -195,7 +200,7 @@ describe('The my fares multi operator products pages', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Multi-operator products');
-        editTimeRestrictionMultiOperatorProductsPage()
+        editTimeRestrictionMultiOperatorProductsPage();
     });
     it('allows the user the edit other product purchase method', () => {
         getHomePage();
@@ -207,7 +212,8 @@ describe('The my fares multi operator products pages', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Multi-operator products');
-        editStartDateOtherProductsPage();
+        clickRandomElementInTable('govuk-table__body', 'product-link');
+        editStartDate();
     });
     it('allows the user the multi operator product end date', () => {
         getHomePage();
