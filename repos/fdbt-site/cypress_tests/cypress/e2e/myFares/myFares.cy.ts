@@ -221,7 +221,7 @@ describe('The my fares multi operator products pages', () => {
         clickElementByText('Multi-operator products');
         deleteMultiOperatorProduct();
     });
-    it.only('allows the user to edit multi operator groups for geozone multi-operator tickets', () => {
+    it('allows the user to edit multi operator groups for geozone multi-operator tickets', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Multi-operator products');
