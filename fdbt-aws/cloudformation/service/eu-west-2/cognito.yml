@@ -61,7 +61,7 @@ Resources:
         - Name: noc
           AttributeDataType: String
           StringAttributeConstraints:
-            MaxLength: "256"
+            MaxLength: "2048"
             MinLength: "1"
           Mutable: true
         - Name: contactable
