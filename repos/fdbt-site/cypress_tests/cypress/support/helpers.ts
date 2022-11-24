@@ -2,7 +2,6 @@ import 'cypress-file-upload';
 import {
     completeFlatFarePages,
     completeMultiOpGeoZonePages,
-    completeMultiOpMultiServicePages,
     completeSalesPages,
     completeSinglePages,
     defineUserTypeAndTimeRestrictions,
@@ -300,11 +299,11 @@ export const completeGroupPassengerDetailsPages = (): void => {
 
 export const randomlyDetermineUserType = (): void => {
     let passengerType;
-    cy.get('[class=govuk-radios__input]')
+    getElementByClass('govuk-radios__input')
         .its('length')
         .then((length) => {
             const randomNumber = getRandomNumber(0, length - 1);
-            cy.get('[class=govuk-radios__input]')
+            getElementByClass('govuk-radios__input')
                 .eq(randomNumber)
                 .click()
                 .then(($radio) => {
@@ -318,11 +317,11 @@ export const randomlyDetermineUserType = (): void => {
 
 export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void => {
     let purchaseType: string;
-    cy.get('[class=govuk-checkboxes__input]')
+    getElementByClass('govuk-checkboxes__input')
         .its('length')
         .then((length) => {
             const randomNumber = getRandomNumber(0, length - 1);
-            cy.get('[class=govuk-checkboxes__input]')
+            getElementByClass('govuk-checkboxes__input')
                 .eq(randomNumber)
                 .click()
                 .then(($radio) => {
@@ -383,7 +382,7 @@ export const randomlyDecideTermRestrictions = (): void => {
 
 export const clickAllCheckboxes = (): string[] => {
     const input: string[] = [];
-    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
+    getElementByClass('govuk-checkboxes__input').each((checkbox, index) => {
         cy.wrap(checkbox).click();
         const name = checkbox.attr('name');
         input[index] = name.split('#')[0];
@@ -394,7 +393,7 @@ export const clickAllCheckboxes = (): string[] => {
 
 export const getAllCheckboxesData = (): void => {
     const input: string[] = [];
-    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
+    getElementByClass('govuk-checkboxes__input').each((checkbox, index) => {
         cy.wrap(checkbox);
         const name = checkbox.attr('name');
         input[index] = name.split('#')[0];
@@ -404,7 +403,7 @@ export const getAllCheckboxesData = (): void => {
 
 export const getAllButFirstCheckbox = (): void => {
     const input: string[] = [];
-    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
+    getElementByClass('govuk-checkboxes__input').each((checkbox, index) => {
         const name = checkbox.attr('name');
         input[index] = name.split('#')[0];
         cy.wrap(input).as('input');
@@ -417,7 +416,7 @@ export const getAllButFirstCheckbox = (): void => {
 
 export const clickSomeCheckboxes = (): void => {
     const input: string[] = [];
-    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index, checkboxes) => {
+    getElementByClass('govuk-checkboxes__input').each((checkbox, index, checkboxes) => {
         const numberOfCheckboxes = checkboxes.length;
         if (numberOfCheckboxes === 1 || index !== numberOfCheckboxes - 1) {
             cy.wrap(checkbox).click();
@@ -429,7 +428,7 @@ export const clickSomeCheckboxes = (): void => {
 };
 
 export const clickFirstCheckboxIfMultiple = (): void => {
-    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index, checkboxes) => {
+    getElementByClass('govuk-checkboxes__input').each((checkbox, index, checkboxes) => {
         if (checkboxes.length > 1 && index === 0) {
             cy.wrap(checkbox).click();
         }
@@ -577,10 +576,8 @@ export const clickRandomElementInTable = (tableName: string, elementId: string):
 };
 
 export const completeOperatorSearch = (): void => {
-
-    getElementByClass("govuk-radios__input").each((element) => {
-
-        if(element.attr("aria-label") === "test" ) {
+    getElementByClass('govuk-radios__input').each((element) => {
+        if (element.attr('aria-label') === 'test') {
             cy.wrap(element).click();
         }
     });

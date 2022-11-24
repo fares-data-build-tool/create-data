@@ -376,7 +376,7 @@ export const editServicesOtherProductsPage = (): void => {
         randomlyChooseAndSelectServices();
         cy.get('@input').then((input) => {
             continueButtonClick();
-            cy.get('[id=selected-services]').should('have.text', input.toString().split(',').join(', '));
+            getElementById('selected-services').should('have.text', input.toString().split(',').join(', '));
         });
     }
 
@@ -385,29 +385,11 @@ export const editServicesOtherProductsPage = (): void => {
 
 export const editProductName = () => {
     clickElementById('edit-product-name');
-    let oldProductName;
-    cy.get('.popup')
-        .find('[id=product-name]')
-        .should(($input) => {
-            oldProductName = $input.val();
-        });
-    const newProductName = Math.random().toString(36).substring(2, 7);
-    if (oldProductName === newProductName) {
-        clickElementByText('Cancel');
-    } else {
-        cy.get('.popup').find('[id=product-name]').clear().type(newProductName);
-        clickElementByText('Save');
-    }
-    cy.get('[id=product-name-header]').should('have.text', newProductName);
+    const newProductName = `Product ${getRandomNumber(1, 200)}${getRandomNumber(1, 200)}${getRandomNumber(1, 200)}`;
+    getElementById('product-name').clear().type(newProductName);
+    clickElementByText('Save');
+    getElementById('product-name-header').should('have.text', newProductName);
     clickElementByText('Back');
-};
-
-export const editProductNameOtherProductsPage = () => {
-    clickRandomElementInTable('govuk-table__body', 'product-link');
-    getElementById('product-name').should('not.be.empty');
-    getElementById('product-status').should('not.be.empty');
-    getElementById('fare-type').should('not.be.empty');
-    editProductName();
 };
 
 export const editProductNamePointToPointPage = () => {
@@ -425,7 +407,7 @@ export const editPassengerType = () => {
     clickElementById('passenger-type-link');
     randomlyDetermineUserType();
     cy.get('@passengerType').then((passengerType) => {
-        cy.get('[id=passenger-type]').should('have.text', passengerType.toString());
+        getElementById('passenger-type').should('have.text', passengerType.toString());
     });
     clickElementByText('Back');
 };
@@ -449,20 +431,12 @@ export const editPassengerTypePointToPointPage = () => {
     });
 };
 
-const editStartDate = () => {
+export const editStartDate = () => {
     clickElementById('start-date-link');
     clearDates();
     let dateInput = completeProductDateInformationPage();
-    cy.get('[id=start-date]').should('have.text', dateInput.startDate);
+    getElementById('start-date').should('have.text', dateInput.startDate);
     clickElementByText('Back');
-};
-
-export const editStartDateOtherProductsPage = () => {
-    clickRandomElementInTable('govuk-table__body', 'product-link');
-    getElementById('product-name').should('not.be.empty');
-    getElementById('product-status').should('not.be.empty');
-    getElementById('fare-type').should('not.be.empty');
-    editStartDate();
 };
 
 export const editStartDatePointToPointPage = () => {
@@ -480,7 +454,7 @@ const editEndDate = () => {
     clickElementById('end-date-link');
     clearDates();
     let dateInput = completeProductDateInformationPage();
-    cy.get('[id=end-date]').should('have.text', dateInput.endDate || '-');
+    getElementById('end-date').should('have.text', dateInput.endDate || '-');
     clickElementByText('Back');
 };
 
@@ -507,7 +481,7 @@ export const editTimeRestriction = () => {
     clickElementById('time-restriction-link');
     randomlyDecideTimeRestrictions();
     cy.get('@timeRestriction').then((timeRestriction) => {
-        cy.get('[id=time-restriction]').should('have.text', timeRestriction.toString());
+        getElementById('time-restriction').should('have.text', timeRestriction.toString());
     });
     clickElementByText('Back');
 };
@@ -535,7 +509,7 @@ export const editPurchaseMethod = (isOtherProduct?: boolean) => {
     clickElementById('purchase-methods-link');
     randomlyDeterminePurchaseType(isOtherProduct);
     cy.get('@purchaseType').then((purchaseType) => {
-        cy.get('[id=purchase-methods]').should('have.text', purchaseType.toString());
+        getElementById('purchase-methods').should('have.text', purchaseType.toString());
     });
     clickElementByText('Back');
 };
