@@ -2,7 +2,6 @@ import 'cypress-file-upload';
 import {
     completeFlatFarePages,
     completeMultiOpGeoZonePages,
-    completeMultiOpMultiServicePages,
     completeSalesPages,
     completeSinglePages,
     defineUserTypeAndTimeRestrictions,
