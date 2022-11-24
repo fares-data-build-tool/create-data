@@ -221,16 +221,16 @@ describe('The my fares multi operator products pages', () => {
         clickElementByText('Multi-operator products');
         editEndDateOtherProductsPage();
     });
-    it('allows the user to delete the multi operator product', () => {
-        getHomePage();
-        clickElementById('account-link');
-        clickElementByText('Multi-operator products');
-        deleteMultiOperatorProduct();
-    });
     it('allows the user to edit multi operator groups for geozone multi-operator tickets', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Multi-operator products');
         editOperatorGroupMultiOperatorProductsPage();
+    });
+    it('allows the user to delete the multi operator product', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Multi-operator products');
+        deleteMultiOperatorProduct();
     });
 });

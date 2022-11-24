@@ -386,7 +386,7 @@ export const editServicesOtherProductsPage = (): void => {
 export const editProductName = () => {
     clickElementById('edit-product-name');
     const newProductName = `Product ${getRandomNumber(1, 200)}${getRandomNumber(1, 200)}${getRandomNumber(1, 200)}`;
-    cy.get('.popup').find('[id=product-name]').clear().type(newProductName);
+    getElementById('product-name').clear().type(newProductName);
     clickElementByText('Save');
     getElementById('product-name-header').should('have.text', newProductName);
     clickElementByText('Back');
