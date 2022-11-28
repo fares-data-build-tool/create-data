@@ -170,4 +170,17 @@ describe('fareType', () => {
             Location: '/selectPassengerType',
         });
     });
+
+    it('should return 302 redirect to /passengerType when capped product is selected', async () => {
+        checkForServicesSpy.mockResolvedValue(services);
+        const { req, res } = getMockRequestAndResponse({
+            body: { fareType: 'cappedProduct' },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await fareType(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, { fareType: 'cappedProduct' });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/selectPassengerType',
+        });
+    });
 });
