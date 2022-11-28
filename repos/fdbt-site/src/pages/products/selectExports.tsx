@@ -3,7 +3,7 @@ import moment from 'moment';
 import React, { ReactElement, useState } from 'react';
 import BackButton from '../../components/BackButton';
 import CsrfForm from '../../components/CsrfForm';
-import { getAllProductsByNoc, getBodsServicesByNoc, getPassengerTypeNameByIdAndNoc } from '../../data/auroradb';
+import { getAllPassengerTypesByNoc, getAllProductsByNoc, getBodsServicesByNoc } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import { MyFaresService, NextPageContextWithSession, ProductToExport, ServiceToDisplay } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
@@ -467,33 +467,34 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const products = await getAllProductsByNoc(noc);
     const nonExpiredProducts = getNonExpiredProducts(products);
     const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
-
-    const seenPassengerTypeNames: { name: string; id: number }[] = [];
+    const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
     const productsToDisplay: ProductToExport[] = await Promise.all(
         nonExpiredProductsWithActiveServices.map(async (nonExpiredProduct) => {
             const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
             const product = s3Data.products[0];
-            const carnet = 'carnetDetails' in product;
             const hasProductName = 'productName' in product;
+            let passengerTypeName = '';
 
-            if (!hasProductName && !seenPassengerTypeNames.find((name) => name.id === s3Data.passengerType.id)) {
-                const passengerTypeName = await getPassengerTypeNameByIdAndNoc(s3Data.passengerType.id, noc);
-                seenPassengerTypeNames.push({ name: passengerTypeName, id: s3Data.passengerType.id });
+            if (!hasProductName) {
+                const foundPassengerType = allPassengerTypes.find(
+                    (passengerType) => passengerType.id === s3Data.passengerType.id,
+                );
+
+                if (!foundPassengerType) {
+                    throw new Error('Could not find matching passenger type.');
+                }
+
+                passengerTypeName = foundPassengerType.name;
             }
 
             return {
                 id: nonExpiredProduct.id,
-                productName: hasProductName
-                    ? product.productName
-                    : `${
-                          seenPassengerTypeNames.find((seenName) => seenName.id === s3Data.passengerType.id)?.name
-                      } - ${startCase(s3Data.type)}`,
+                productName: hasProductName ? product.productName : `${passengerTypeName} - ${startCase(s3Data.type)}`,
                 startDate: nonExpiredProduct.startDate,
                 endDate: nonExpiredProduct.endDate || '',
                 serviceLineId: 'lineId' in s3Data ? s3Data.lineId : null,
                 direction: 'journeyDirection' in s3Data ? s3Data.journeyDirection : null,
-                carnet,
                 fareType: s3Data.type === 'schoolService' ? 'period' : s3Data.type,
                 schoolTicket: 'termTime' in s3Data && !!s3Data.termTime,
             };

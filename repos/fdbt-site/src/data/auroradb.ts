@@ -1236,35 +1236,31 @@ export const updateGroupPassengerType = async (
     }
 };
 
-export const getPassengerTypeByNameAndNocCode = async (
-    nocCode: string,
-    name: string,
-    group: boolean,
-): Promise<PassengerType | undefined> => {
+export const getAllPassengerTypesByNoc = async (
+    nationalOperatorCode: string,
+): Promise<{ id: number; name: string }[]> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving passenger types for given noc and name',
-        nocCode,
-        name,
+        message: 'retrieving all passenger types for a given national operator code',
+        nationalOperatorCode,
     });
 
     try {
         const queryInput = `
-            SELECT contents
+            SELECT id, name
             FROM passengerType
-            WHERE nocCode = ?
-            AND name = ?
-            AND isGroup = ?
-        `;
+            WHERE nocCode = ?`;
 
-        const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode, name, group]);
-        if (queryResults.length > 1) {
-            throw new Error("Didn't expect more than one passenger type with same name and NOC");
-        }
+        const queryResults = await executeQuery<{ id: number; name: string }[]>(queryInput, [nationalOperatorCode]);
 
-        return queryResults[0] ? (JSON.parse(queryResults[0].contents) as PassengerType) : undefined;
+        return queryResults.map((result) => {
+            return {
+                id: result.id,
+                name: result.name,
+            };
+        });
     } catch (error) {
-        throw new Error(`Could not retrieve passenger type by nocCode from AuroraDB: ${error}`);
+        throw new Error(`Could not retrieve all passenger types by national operator code from AuroraDB: ${error}`);
     }
 };
 
