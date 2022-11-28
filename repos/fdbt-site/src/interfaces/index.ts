@@ -696,7 +696,7 @@ export interface ProductToExport {
     productName: string;
     startDate: string;
     endDate?: string;
-    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator';
+    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator' | 'cappedProduct';
     carnet: boolean;
     schoolTicket: boolean;
     serviceLineId: string | null;
