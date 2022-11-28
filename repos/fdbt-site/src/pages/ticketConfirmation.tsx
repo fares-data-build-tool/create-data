@@ -431,6 +431,7 @@ export const buildTicketConfirmationElements = (
             confirmationElements = buildSchoolTicketConfirmationElements(ctx);
             break;
         case 'period':
+        case 'cappedProduct':
             confirmationElements = buildPeriodOrFlatFareConfirmationElements(ctx);
             break;
 

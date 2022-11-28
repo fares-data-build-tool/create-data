@@ -31,7 +31,23 @@ export const sanitiseReqBody = (
     products: { productName: string }[],
 ): SanitisedBodyAndErrors => {
     const errors: ErrorInfo[] = [];
-
+    const val = {
+        '0': [
+            {
+                productName: 'test',
+                productNameId: 'multiple-product-name-0',
+                productPrice: '3',
+                productPriceId: 'multiple-product-price-0',
+                productCarnetQuantityId: 'product-details-carnet-quantity-0',
+                productCarnetExpiryDurationId: 'product-details-carnet-expiry-quantity-0',
+                productCarnetExpiryUnitsId: 'product-details-carnet-expiry-unit-0',
+                productDuration: '3',
+                productDurationId: 'product-details-period-duration-quantity-0',
+                productDurationUnits: 'hour',
+                productDurationUnitsId: 'product-details-period-duration-unit-0',
+            },
+        ],
+    };
     const sanitisedBody = products.reduce((sanitisedBody, product) => {
         const sopInput = req.body[`${productPrefix}${product.productName}`];
 
@@ -85,7 +101,24 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             : ticket && 'productName' in ticket.products[0]
             ? [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice }]
             : [{ productName: 'product', productPrice: '' }];
-
+        console.log('hereee', products);
+        const val = {
+            '0': [
+                {
+                    productName: 'test',
+                    productNameId: 'multiple-product-name-0',
+                    productPrice: '3',
+                    productPriceId: 'multiple-product-price-0',
+                    productCarnetQuantityId: 'product-details-carnet-quantity-0',
+                    productCarnetExpiryDurationId: 'product-details-carnet-expiry-quantity-0',
+                    productCarnetExpiryUnitsId: 'product-details-carnet-expiry-unit-0',
+                    productDuration: '3',
+                    productDurationId: 'product-details-period-duration-quantity-0',
+                    productDurationUnits: 'hour',
+                    productDurationUnitsId: 'product-details-period-duration-unit-0',
+                },
+            ],
+        };
         const { sanitisedBody, errors } = sanitiseReqBody(req, products);
 
         if (errors.length > 0) {

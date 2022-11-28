@@ -253,7 +253,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             : fareTypeAttribute.fareType;
 
     const products =
-        ['period', 'multiOperator', 'flatFare'].includes(fareType) && multipleProductAttribute
+        ['period', 'multiOperator', 'flatFare', 'cappedProduct'].includes(fareType) && multipleProductAttribute
             ? multipleProductAttribute.products
             : [{ productName: 'product', productPrice: '' }];
 

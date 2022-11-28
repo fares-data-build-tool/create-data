@@ -74,7 +74,14 @@ export interface SalesOfferPackage {
 
 export type FromDb<T> = T & { id: number };
 
-export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
+export type TicketType =
+    | 'flatFare'
+    | 'period'
+    | 'multiOperator'
+    | 'schoolService'
+    | 'single'
+    | 'return'
+    | 'cappedProduct';
 
 export type Ticket =
     | PointToPointTicket

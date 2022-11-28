@@ -95,6 +95,11 @@ const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
             label: 'Academic term/year ticket',
             hint: 'A ticket available to pupils in full-time education',
         },
+        {
+            value: 'cappedProduct',
+            label: 'Capped product',
+            hint: 'A cap applicable over a number of days or weeks',
+        },
     ];
 
     return radioProps;
