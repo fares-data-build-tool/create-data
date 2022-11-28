@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { getAndValidateNoc } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, EntityStatus } from '../../interfaces';
 import { getS3Exports } from '../../data/s3';
-import { getAllProductsByNoc, getServicesByNocAndLineId } from '../../data/auroradb';
+import { getAllProductsByNoc, getBodsServicesByNoc } from '../../data/auroradb';
 import { triggerExport } from '../../utils/apiUtils/export';
 import { getEntityStatus } from '../products/services';
 import { DbProduct } from '../../interfaces/dbTypes';
@@ -74,6 +74,8 @@ export const filterOutProductsWithNoActiveServices = async (
 ): Promise<DbProduct[]> => {
     const lineIdsToKeep: string[] = [];
 
+    const allBodsServices = await getBodsServicesByNoc(noc);
+
     for (let i = 0; i < products.length; i++) {
         const product = products[i];
         const lineId = product.lineId;
@@ -82,7 +84,7 @@ export const filterOutProductsWithNoActiveServices = async (
             // we have a product that is not associated with a service
             lineIdsToKeep.push(lineId);
         } else {
-            const services = await getServicesByNocAndLineId(noc, lineId);
+            const services = allBodsServices.filter((service) => service.lineId === lineId);
 
             const activeServices = services.filter((service) => {
                 const startDate = service.startDate;

@@ -184,8 +184,6 @@ export const getServerSideProps = async (
                     matchingJson.products?.map(async (innerProduct) => {
                         const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
                         const duration = 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
-                        const quantity =
-                            ('carnetDetails' in innerProduct ? innerProduct.carnetDetails?.quantity : '1') || '1';
                         const type = `${matchingJson.type}${matchingJson.carnet ? ' carnet' : ''}`;
                         const passengerType =
                             (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
@@ -203,12 +201,10 @@ export const getServerSideProps = async (
                             productDescription,
                             type,
                             duration,
-                            quantity,
                             passengerType,
                             startDate,
                             endDate,
                             id,
-                            carnet: 'carnetDetails' in innerProduct && !!innerProduct.carnetDetails,
                         };
                     }),
                 );

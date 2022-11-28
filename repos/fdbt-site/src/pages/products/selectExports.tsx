@@ -3,13 +3,9 @@ import moment from 'moment';
 import React, { ReactElement, useState } from 'react';
 import BackButton from '../../components/BackButton';
 import CsrfForm from '../../components/CsrfForm';
-import {
-    getAllProductsByNoc,
-    getBodsServicesByNocAndLineId,
-    getPassengerTypeNameByIdAndNoc,
-} from '../../data/auroradb';
+import { getAllPassengerTypesByNoc, getAllProductsByNoc, getBodsServicesByNoc } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
-import { NextPageContextWithSession, ProductToExport, ServiceToDisplay } from '../../interfaces';
+import { MyFaresService, NextPageContextWithSession, ProductToExport, ServiceToDisplay } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
 import { getNonExpiredProducts, filterOutProductsWithNoActiveServices } from '../api/exports';
@@ -471,26 +467,34 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const products = await getAllProductsByNoc(noc);
     const nonExpiredProducts = getNonExpiredProducts(products);
     const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
+    const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
     const productsToDisplay: ProductToExport[] = await Promise.all(
         nonExpiredProductsWithActiveServices.map(async (nonExpiredProduct) => {
             const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
             const product = s3Data.products[0];
-            const carnet = 'carnetDetails' in product;
+            const hasProductName = 'productName' in product;
+            let passengerTypeName = '';
+
+            if (!hasProductName) {
+                const foundPassengerType = allPassengerTypes.find(
+                    (passengerType) => passengerType.id === s3Data.passengerType.id,
+                );
+
+                if (!foundPassengerType) {
+                    throw new Error('Could not find matching passenger type.');
+                }
+
+                passengerTypeName = foundPassengerType.name;
+            }
 
             return {
                 id: nonExpiredProduct.id,
-                productName:
-                    'productName' in product
-                        ? product.productName
-                        : `${await getPassengerTypeNameByIdAndNoc(s3Data.passengerType.id, noc)} - ${startCase(
-                              s3Data.type,
-                          )}`,
+                productName: hasProductName ? product.productName : `${passengerTypeName} - ${startCase(s3Data.type)}`,
                 startDate: nonExpiredProduct.startDate,
                 endDate: nonExpiredProduct.endDate || '',
                 serviceLineId: 'lineId' in s3Data ? s3Data.lineId : null,
                 direction: 'journeyDirection' in s3Data ? s3Data.journeyDirection : null,
-                carnet,
                 fareType: s3Data.type === 'schoolService' ? 'period' : s3Data.type,
                 schoolTicket: 'termTime' in s3Data && !!s3Data.termTime,
             };
@@ -505,16 +509,19 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const uniqueServiceLineIds = Array.from(new Set(servicesLineIds));
 
-    const allServicesWithMatchingLineIds = (
-        await Promise.all(
-            uniqueServiceLineIds.map(async (lineId) => {
-                return await getBodsServicesByNocAndLineId(noc, lineId);
-            }),
-        )
-    ).flat();
+    const allServicesWithMatchingLineIds: MyFaresService[] = [];
 
-    const servicesToDisplay: (ServiceToDisplay | undefined)[] = await Promise.all(
-        allServicesWithMatchingLineIds.map((service) => {
+    if (uniqueServiceLineIds.length > 0) {
+        const allBodsServices = await getBodsServicesByNoc(noc);
+        uniqueServiceLineIds.forEach((uniqueServiceLineId) => {
+            allServicesWithMatchingLineIds.push(
+                allBodsServices.find((service) => service.lineId === uniqueServiceLineId) as MyFaresService,
+            );
+        });
+    }
+
+    const servicesToDisplay: ServiceToDisplay[] = allServicesWithMatchingLineIds
+        .map((service) => {
             const productsWithSameLineId = productsToDisplay.filter(
                 (product) => !!product.serviceLineId && product.serviceLineId === service.lineId,
             );
@@ -544,14 +551,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             } else {
                 return undefined;
             }
-        }),
-    );
-
-    const filteredServices = servicesToDisplay.filter((service) => !!service) as ServiceToDisplay[];
+        })
+        .filter((service) => !!service) as ServiceToDisplay[];
 
     const seenLineIds: string[] = [];
     const uniqueServicesToDisplay =
-        filteredServices.filter((item) =>
+        servicesToDisplay.filter((item) =>
             seenLineIds.includes(item.lineId) ? false : seenLineIds.push(item.lineId),
         ) ?? [];
 
