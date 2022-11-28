@@ -576,8 +576,7 @@ const editOperatorGroup = () => {
         }
     });
     continueButtonClick();
-    const expectedOperatorGroups = ['LNUD', 'NWBT'];
-    getElementById('multi-operator-group').should('have.text', expectedOperatorGroups.join(', '));
+    getElementById('multi-operator-group').should('have.text', 'NWBT');
 };
 
 export const editOperatorGroupMultiOperatorProductsPage = () => {
