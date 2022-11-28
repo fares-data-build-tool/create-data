@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'feature/CFDS-123_performance_improvements'
+    - 'develop'
     paths:
     - repos/fdbt-site/**
   workflow_dispatch:
