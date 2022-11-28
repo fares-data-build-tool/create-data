@@ -1907,16 +1907,7 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
     });
 
     try {
-        const queryInput =
-            process.env.STAGE === 'test'
-                ? `
-            SELECT id, matchingJsonLink, startDate, endDate
-            FROM products
-            WHERE lineId = ''
-            AND nocCode = ?
-            LIMIT 100
-        `
-                : `
+        const queryInput = `
             SELECT id, matchingJsonLink, startDate, endDate
             FROM products
             WHERE lineId = ''

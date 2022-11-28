@@ -475,23 +475,20 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
             const product = s3Data.products[0];
             const carnet = 'carnetDetails' in product;
+            const hasProductName = 'productName' in product;
 
-            if (
-                !seenPassengerTypeNames.find((name) => name.id === s3Data.passengerType.id) &&
-                !('productName' in product)
-            ) {
+            if (!hasProductName && !seenPassengerTypeNames.find((name) => name.id === s3Data.passengerType.id)) {
                 const passengerTypeName = await getPassengerTypeNameByIdAndNoc(s3Data.passengerType.id, noc);
                 seenPassengerTypeNames.push({ name: passengerTypeName, id: s3Data.passengerType.id });
             }
 
             return {
                 id: nonExpiredProduct.id,
-                productName:
-                    'productName' in product
-                        ? product.productName
-                        : `${
-                              seenPassengerTypeNames.find((seenName) => seenName.id === s3Data.passengerType.id)?.name
-                          } - ${startCase(s3Data.type)}`,
+                productName: hasProductName
+                    ? product.productName
+                    : `${
+                          seenPassengerTypeNames.find((seenName) => seenName.id === s3Data.passengerType.id)?.name
+                      } - ${startCase(s3Data.type)}`,
                 startDate: nonExpiredProduct.startDate,
                 endDate: nonExpiredProduct.endDate || '',
                 serviceLineId: 'lineId' in s3Data ? s3Data.lineId : null,

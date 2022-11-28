@@ -555,11 +555,9 @@ export interface MyFaresOtherFaresProduct {
     productDescription: string;
     type: string;
     duration: string;
-    quantity: string;
     passengerType: string;
     startDate: string;
     endDate?: string;
-    carnet: boolean;
 }
 
 export interface ServiceWithErrors {

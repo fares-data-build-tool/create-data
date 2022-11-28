@@ -55,7 +55,7 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
 
-    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000 });
+    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 1500 });
 
     const exports: Export[] | undefined = data?.exports;
 
