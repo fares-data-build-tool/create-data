@@ -31,7 +31,7 @@ export const sanitiseReqBody = (
     products: { productName: string }[],
 ): SanitisedBodyAndErrors => {
     const errors: ErrorInfo[] = [];
-    
+
     const sanitisedBody = products.reduce((sanitisedBody, product) => {
         const sopInput = req.body[`${productPrefix}${product.productName}`];
 
