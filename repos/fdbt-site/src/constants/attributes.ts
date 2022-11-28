@@ -128,4 +128,4 @@ export const VIEW_TIME_RESTRICTION = 'fdbt-products-using-time-restriction';
 
 export const VIEW_OPERATOR_GROUP = 'fdbt-products-using-operator-group';
 
-export const CAPPED_PRODUCT_FARE_TYPE_ATTRIBUTE = 'fdbt-capped-product-type';
+export const CAPPED_PRODUCT_ATTRIBUTE = 'fdbt-capped-product-type';
