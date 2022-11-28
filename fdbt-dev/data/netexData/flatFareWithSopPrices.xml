@@ -193,6 +193,7 @@
           <fareProducts>
             <PreassignedFareProduct version="1.0" id="op:Pass@test_anyone">
               <Name>test</Name>
+              <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
               <OperatorRef version="1.0" ref="noc:WBTR">noc:138008</OperatorRef>

@@ -649,7 +649,8 @@ describe('myfares pages', () => {
                         {
                             id: 'multi-operator-group',
                             name: 'Multi Operator Group',
-                            content: ['TEST, MCTR, WBTR, BLAC'],
+                            content: ['MCTR, WBTR, BLAC'],
+                            editLink: '/reuseOperatorGroup',
                         },
                         { id: 'period-duration', name: 'Period duration', content: ['5 weeks'] },
                         { id: 'product-expiry', name: 'Product expiry', content: ['24 hr'] },

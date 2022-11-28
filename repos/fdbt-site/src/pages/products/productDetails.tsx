@@ -357,7 +357,8 @@ const createProductDetails = async (
             productDetailsElements.push({
                 id: 'multi-operator-group',
                 name: `Multi Operator Group`,
-                content: [`${noc}, ${ticket.additionalNocs.join(', ')}`],
+                content: [ticket.additionalNocs.join(', ')],
+                editLink: '/reuseOperatorGroup',
             });
         }
     }

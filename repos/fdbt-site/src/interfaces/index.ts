@@ -555,11 +555,9 @@ export interface MyFaresOtherFaresProduct {
     productDescription: string;
     type: string;
     duration: string;
-    quantity: string;
     passengerType: string;
     startDate: string;
     endDate?: string;
-    carnet: boolean;
 }
 
 export interface ServiceWithErrors {
@@ -697,7 +695,6 @@ export interface ProductToExport {
     startDate: string;
     endDate?: string;
     fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator';
-    carnet: boolean;
     schoolTicket: boolean;
     serviceLineId: string | null;
     direction: string | null;

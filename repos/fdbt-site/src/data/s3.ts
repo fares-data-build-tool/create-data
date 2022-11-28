@@ -194,25 +194,6 @@ export const getMatchingDataObject = async (
     }
 };
 
-export const retrieveNetexForNocs = async (nocList: string[]): Promise<AWS.S3.Object[]> => {
-    try {
-        const requestPromises = nocList.map((noc) => {
-            const request: AWS.S3.ListObjectsV2Request = {
-                Bucket: NETEX_BUCKET_NAME,
-                Prefix: noc,
-            };
-
-            return s3.listObjectsV2(request).promise();
-        });
-
-        const response = await Promise.all(requestPromises);
-
-        return response.flatMap((item) => item.Contents || []);
-    } catch (error) {
-        throw new Error(`Failed to retrieve NeTEx from NOCs, ${error.stack}`);
-    }
-};
-
 export const retrieveExportZip = async (noc: string, exportName: string): Promise<string | undefined> => {
     const prefix = `${noc}/zips/${exportName}/`;
     const zipResponse = await s3
@@ -237,53 +218,107 @@ export const retrieveExportZip = async (noc: string, exportName: string): Promis
 };
 
 export const getS3FolderCount = async (bucketName: string, path: string): Promise<number> => {
-    const response = await s3
-        .listObjectsV2({
-            Bucket: bucketName,
-            Prefix: path,
-            Delimiter: '/',
-        })
-        .promise();
-    return (response.CommonPrefixes?.length ?? 0) + (response.Contents?.length ?? 0);
+    try {
+        let objectCount = 0;
+
+        const getObjectsWithContinuationToken = async (continuationToken: string | undefined) => {
+            const params: ListObjectsV2Request = {
+                Bucket: bucketName,
+                Prefix: path,
+                Delimiter: '/',
+                ContinuationToken: continuationToken,
+            };
+
+            const listObjectsResponse = await s3.listObjectsV2(params).promise();
+
+            if (listObjectsResponse.Contents || listObjectsResponse.CommonPrefixes) {
+                objectCount =
+                    objectCount +
+                    (listObjectsResponse.CommonPrefixes?.length ?? 0) +
+                    (listObjectsResponse.Contents?.length ?? 0);
+
+                if (listObjectsResponse.NextContinuationToken) {
+                    await getObjectsWithContinuationToken(listObjectsResponse.NextContinuationToken);
+                }
+            }
+        };
+
+        await getObjectsWithContinuationToken(undefined);
+
+        return objectCount;
+    } catch (error) {
+        throw new Error(`Failed to get S3 folder count for ${bucketName} with path ${path}: ${error.stack}`);
+    }
 };
 
 export const getS3Exports = async (noc: string): Promise<string[]> => {
-    const response = await s3
-        .listObjectsV2({
-            Bucket: MATCHING_DATA_BUCKET_NAME,
-            Prefix: `${noc}/exports/`,
-            Delimiter: '/',
-        })
-        .promise();
-    return (
-        response.CommonPrefixes?.flatMap((prefix) => {
-            const partsOfName = prefix.Prefix?.split('/');
-            return partsOfName?.[partsOfName.length - 2] ?? [];
-        }) || []
-    );
+    try {
+        const exportNames: string[] = [];
+
+        const getObjectsWithContinuationToken = async (continuationToken: string | undefined) => {
+            const params: ListObjectsV2Request = {
+                Bucket: MATCHING_DATA_BUCKET_NAME,
+                Prefix: `${noc}/exports/`,
+                Delimiter: '/',
+                ContinuationToken: continuationToken,
+            };
+
+            const listObjectsResponse = await s3.listObjectsV2(params).promise();
+
+            if (listObjectsResponse.CommonPrefixes) {
+                listObjectsResponse.CommonPrefixes.forEach((prefix) => {
+                    const partsOfName = prefix.Prefix?.split('/');
+                    const partToReturn = partsOfName?.[partsOfName.length - 2];
+
+                    if (partToReturn) {
+                        exportNames.push(partToReturn);
+                    }
+                });
+
+                if (listObjectsResponse.NextContinuationToken) {
+                    await getObjectsWithContinuationToken(listObjectsResponse.NextContinuationToken);
+                }
+            }
+        };
+
+        await getObjectsWithContinuationToken(undefined);
+
+        return exportNames;
+    } catch (error) {
+        throw new Error(`Failed to get S3 export names for ${noc}: ${error.stack}`);
+    }
 };
 
 export const getNetexFileNames = async (path: string, validated: boolean): Promise<string[]> => {
     try {
-        const response = await s3
-            .listObjectsV2({
+        const netexFileNames: string[] = [];
+
+        const getObjectsWithContinuationToken = async (continuationToken: string | undefined) => {
+            const params: ListObjectsV2Request = {
                 Bucket: validated ? NETEX_BUCKET_NAME : UNVALIDATED_NETEX_BUCKET_NAME,
                 Prefix: path,
                 Delimiter: '/',
-            })
-            .promise();
+                ContinuationToken: continuationToken,
+            };
 
-        if (!response.Contents) {
-            throw new Error('Request for netex file names failed due to no Contents in response');
-        }
+            const listObjectsResponse = await s3.listObjectsV2(params).promise();
 
-        return response.Contents.map((content) => {
-            if (!content.Key) {
-                throw new Error('Request for netex file names failed due to no Key in Contents');
+            if (listObjectsResponse.Contents) {
+                listObjectsResponse.Contents.forEach((content) => {
+                    if (content.Key) {
+                        netexFileNames.push(content.Key);
+                    }
+                });
+
+                if (listObjectsResponse.NextContinuationToken) {
+                    await getObjectsWithContinuationToken(listObjectsResponse.NextContinuationToken);
+                }
             }
+        };
 
-            return content.Key;
-        });
+        await getObjectsWithContinuationToken(undefined);
+
+        return netexFileNames;
     } catch (error) {
         throw new Error(`Failed to retrieve NeTEx filenames, ${error.stack}`);
     }

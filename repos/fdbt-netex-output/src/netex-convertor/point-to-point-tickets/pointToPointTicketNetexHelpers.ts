@@ -281,6 +281,7 @@ export const getPreassignedFareProduct = (
     fareStructuresElements: NetexObject[],
     ticketUserConcat: string,
     productNameForPlainText: string,
+    isCarnet: boolean,
 ): NetexObject => {
     const fareStructureElementRefs = fareStructuresElements.map(element => ({
         version: '1.0',
@@ -292,6 +293,10 @@ export const getPreassignedFareProduct = (
         version: '1.0',
         Name: {
             $t: productNameForPlainText,
+        },
+        ChargingMomentRef: {
+            versionRef: 'fxc:v1.0',
+            ref: isCarnet ? 'fxc:prepayment@bundled' : 'fxc:prepayment',
         },
         ChargingMomentType: {
             $t: 'beforeTravel',

@@ -542,6 +542,7 @@ export const getPreassignedFareProducts = (
     userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorTicket,
     nocCodeNocFormat: string,
     opIdNocFormat: string,
+    isCarnet: boolean,
 ): NetexObject[] => {
     const { passengerType } = userPeriodTicket;
     return userPeriodTicket.products.map(product => {
@@ -581,6 +582,10 @@ export const getPreassignedFareProducts = (
             id: `op:Pass@${product.productName}_${passengerType}`,
             Name: {
                 $t: product.productName,
+            },
+            ChargingMomentRef: {
+                versionRef: 'fxc:v1.0',
+                ref: isCarnet ? 'fxc:prepayment@bundled' : 'fxc:prepayment',
             },
             ChargingMomentType: {
                 $t: 'beforeTravel',
