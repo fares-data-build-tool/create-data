@@ -89,7 +89,6 @@ export const validFareTypes = [
     'flatFare',
     'multiOperator',
     'schoolService',
-    'cappedProduct',
 ];
 
 export const purchaseMethodsValuesMap: { [key: string]: string } = {

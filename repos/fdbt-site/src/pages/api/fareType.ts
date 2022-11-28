@@ -2,7 +2,12 @@ import camelCase from 'lodash/camelCase';
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectTo, getAndValidateNoc, isSchemeOperator } from '../../utils/apiUtils/index';
 import { regenerateSession, updateSessionAttribute } from '../../utils/sessions';
-import { FARE_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../constants/attributes';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+    CAPPED_PRODUCT_FARE_TYPE_ATTRIBUTE,
+} from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getAllServicesByNocCode } from '../../data/auroradb';
 import { SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
@@ -47,6 +52,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
             updateSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE, false);
+            if (fareType === 'cappedProduct') {
+                updateSessionAttribute(req, CAPPED_PRODUCT_FARE_TYPE_ATTRIBUTE, true);
+                updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
+                    fareType: 'period',
+                });
+                redirectTo(res, '/selectPassengerType');
+                return;
+            }
+            updateSessionAttribute(req, CAPPED_PRODUCT_FARE_TYPE_ATTRIBUTE, false);
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 fareType,
             });

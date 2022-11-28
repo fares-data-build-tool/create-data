@@ -114,7 +114,6 @@ export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiR
     if (isFareType(fareTypeAttribute)) {
         switch (fareTypeAttribute.fareType) {
             case 'period':
-            case 'cappedProduct':
             case 'multiOperator':
             case 'flatFare':
                 redirectTo(res, '/ticketRepresentation');

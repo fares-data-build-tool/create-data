@@ -1,4 +1,4 @@
-import { TXC_SOURCE_ATTRIBUTE } from './../../../src/constants/attributes';
+import { CAPPED_PRODUCT_FARE_TYPE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from './../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import fareType from '../../../src/pages/api/fareType';
 import * as sessions from '../../../src/utils/sessions';
@@ -178,7 +178,8 @@ describe('fareType', () => {
             mockWriteHeadFn: writeHeadMock,
         });
         await fareType(req, res);
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, { fareType: 'cappedProduct' });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPPED_PRODUCT_FARE_TYPE_ATTRIBUTE, true);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, { fareType: 'period' });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectPassengerType',
         });

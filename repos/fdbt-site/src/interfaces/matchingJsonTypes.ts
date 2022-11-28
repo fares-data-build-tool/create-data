@@ -81,7 +81,6 @@ export type TicketType =
     | 'schoolService'
     | 'single'
     | 'return'
-    | 'cappedProduct';
 
 export type Ticket =
     | PointToPointTicket

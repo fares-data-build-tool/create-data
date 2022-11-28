@@ -7,7 +7,7 @@ import { FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
-        if (isSchemeOperator(req, res) && fareType !== 'period' && fareType !== 'cappedProduct') {
+        if (isSchemeOperator(req, res) && fareType !== 'period') {
             redirectTo(res, '/reuseOperatorGroup');
             return;
         }

@@ -199,7 +199,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
-            if (fareType === 'period' || fareType === 'cappedProduct') {
+            if (fareType === 'period') {
                 const ticketType = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
                 if (!ticketType || !('name' in ticketType)) {
                     throw new Error('No ticket type set for period ticket');
