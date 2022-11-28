@@ -4,6 +4,7 @@ import {
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
+    CAPPED_PRODUCT_FARE_TYPE_ATTRIBUTE,
 } from './../constants/attributes';
 import * as attributes from '../constants/attributes';
 import {
@@ -208,6 +209,7 @@ export interface SessionAttributeTypes {
     [VIEW_PURCHASE_METHOD]: ErrorInfo[];
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
+    [CAPPED_PRODUCT_FARE_TYPE_ATTRIBUTE]: boolean | undefined;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
