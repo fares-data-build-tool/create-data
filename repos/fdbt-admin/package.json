@@ -44,12 +44,8 @@
         "lint": "eslint . --ext .ts,.tsx",
         "lint:fix": "eslint --fix . --ext .ts,.tsx",
         "test:ci": "CI=true react-scripts test",
-        "preinstall": "npx npm-force-resolutions"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged && npm run test:ci && tsc"
-        }
+        "preinstall": "npx npm-force-resolutions",
+        "precommit": "lint-staged && npm run test:ci && tsc"
     },
     "lint-staged": {
         "./**/*.{ts,tsx}": [

@@ -17,17 +17,13 @@
         "lint": "eslint . --ext .ts,.tsx",
         "lint:fix": "eslint --fix . --ext .ts,.tsx",
         "lint:cypress": "cd cypress_tests && npm run lint:fix",
-        "postshrinkwrap": "npx --quiet npm-force-resolutions && npm install --no-package-lock --no-audit --no-fund --no-progress --silent && npx prettier --write ./package-lock.json"
+        "postshrinkwrap": "npx --quiet npm-force-resolutions && npm install --no-package-lock --no-audit --no-fund --no-progress --silent && npx prettier --write ./package-lock.json",
+        "precommit": ". ${NVM_DIR}/nvm.sh && nvm use && NODE_ENV=production lint-staged && CI=true jest --silent && tsc && tsc --project tsconfig.server.json && npm run test:ci"
     },
     "jest": {
         "collectCoverageFrom": [
             "src/**/*.{js,jsx,ts,tsx}"
         ]
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": ". ${NVM_DIR}/nvm.sh && nvm use && NODE_ENV=production lint-staged && CI=true jest --silent && tsc && tsc --project tsconfig.server.json"
-        }
     },
     "lint-staged": {
         "./**/*.{ts,tsx}": [
