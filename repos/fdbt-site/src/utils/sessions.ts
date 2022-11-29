@@ -209,7 +209,7 @@ export interface SessionAttributeTypes {
     [VIEW_PURCHASE_METHOD]: ErrorInfo[];
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
-    [CAPPED_PRODUCT_ATTRIBUTE]: boolean | undefined;
+    [CAPPED_PRODUCT_ATTRIBUTE]: boolean;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
