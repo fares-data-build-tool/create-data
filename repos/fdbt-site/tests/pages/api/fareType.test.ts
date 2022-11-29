@@ -1,4 +1,4 @@
-import { TXC_SOURCE_ATTRIBUTE } from './../../../src/constants/attributes';
+import { CAPPED_PRODUCT_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from './../../../src/constants/attributes';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import fareType from '../../../src/pages/api/fareType';
 import * as sessions from '../../../src/utils/sessions';
@@ -166,6 +166,20 @@ describe('fareType', () => {
             hasBods: true,
             hasTnds: false,
         });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/selectPassengerType',
+        });
+    });
+
+    it('should return 302 redirect to /passengerType when capped product is selected', async () => {
+        checkForServicesSpy.mockResolvedValue(services);
+        const { req, res } = getMockRequestAndResponse({
+            body: { fareType: 'cappedProduct' },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await fareType(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPPED_PRODUCT_ATTRIBUTE, true);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_TYPE_ATTRIBUTE, { fareType: 'period' });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectPassengerType',
         });

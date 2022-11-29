@@ -127,3 +127,5 @@ export const MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE = 'fdbt-manage-operator-grou
 export const VIEW_TIME_RESTRICTION = 'fdbt-products-using-time-restriction';
 
 export const VIEW_OPERATOR_GROUP = 'fdbt-products-using-operator-group';
+
+export const CAPPED_PRODUCT_ATTRIBUTE = 'fdbt-capped-product-type';

@@ -49,7 +49,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson = getSingleTicketJson(req, res);
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
-        } else if (fareType === 'period' || fareType === 'multiOperator' || fareType === 'flatFare') {
+        } else if (['period', 'multiOperator', 'flatFare'].includes(fareType)) {
             switch (ticketType) {
                 case 'geoZone':
                     userDataJson = await getGeoZoneTicketJson(req, res);
