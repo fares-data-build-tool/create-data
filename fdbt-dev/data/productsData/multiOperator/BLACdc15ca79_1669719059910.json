@@ -1,0 +1,98 @@
+{
+  "nocCode": "BLAC",
+  "type": "multiOperator",
+  "passengerType": { "id": 1 },
+  "email": "test@example.com",
+  "uuid": "BLACdc15ca79",
+  "ticketPeriod": { "startDate": "2020-03-12T00:00:00.000Z" },
+  "operatorName": "Test Operator",
+  "products": [
+    {
+      "productName": "Monthly adult",
+      "productPrice": "250",
+      "productDuration": "1 month",
+      "productValidity": "24hr",
+      "salesOfferPackages": [{ "id": 1, "price": "250" }]
+    }
+  ],
+  "selectedServices": [
+    {
+      "lineName": "2",
+      "lineId": "YpQjUw",
+      "serviceCode": "NW_05_BLAC_2_1",
+      "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients"
+    },
+    {
+      "lineName": "17",
+      "lineId": "vySmf0",
+      "serviceCode": "NW_05_BLAC_17_1",
+      "serviceDescription": "BLACKPOOL - ST ANNES - LYTHAM"
+    },
+    {
+      "lineName": "19",
+      "lineId": "l7QdTQ",
+      "serviceCode": "NW_05_BLAC_19_1",
+      "serviceDescription": "STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)"
+    }
+  ],
+  "additionalOperators": [
+    {
+      "nocCode": "LNUD",
+      "selectedServices": [
+        {
+          "nocCode": "LNUD",
+          "lineName": "259",
+          "lineId": "vHaXmz",
+          "serviceCode": "YWAO259",
+          "startDate": "YWAO259",
+          "serviceDescription": "Brighouse - East Bierley",
+          "selected": false
+        },
+        {
+          "nocCode": "LNUD",
+          "lineName": "263",
+          "lineId": "xZ0pem",
+          "serviceCode": "YWAO263",
+          "startDate": "YWAO263",
+          "serviceDescription": "Bradford - Dewsbury",
+          "selected": false
+        }
+      ]
+    },
+    {
+      "nocCode": "NWBT",
+      "selectedServices": [
+        {
+          "nocCode": "NWBT",
+          "lineName": "15A",
+          "lineId": "02SfpM",
+          "serviceCode": "NW_05_NWBT_15A_1",
+          "startDate": "NW_05_NWBT_15A_1",
+          "serviceDescription": "BURNLEY - BURNLEY via Branch Road, Moorland Road",
+          "selected": false
+        },
+        {
+          "nocCode": "NWBT",
+          "lineName": "64",
+          "lineId": "xqpVTa",
+          "serviceCode": "NW_05_NWBT_64_1",
+          "startDate": "NW_05_NWBT_64_1",
+          "serviceDescription": "BURNLEY - CLITHEROE via Sycamore Avenue, Lowerhouse, Slade Lane, Whalley",
+          "selected": false
+        },
+        {
+          "nocCode": "NWBT",
+          "lineName": "65",
+          "lineId": "M0L2FP",
+          "serviceCode": "NW_05_NWBT_65_1",
+          "startDate": "NW_05_NWBT_65_1",
+          "serviceDescription": "BURNLEY - NELSON via Sycamore Avenue, Lowerhouse, Slade Lane, Higham, Barrowford",
+          "selected": false
+        }
+      ]
+    }
+  ],
+  "termTime": false,
+  "operatorGroupId": 1,
+  "carnet": false
+}
