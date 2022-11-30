@@ -23,7 +23,7 @@ import {
 } from '../../../src/constants/attributes';
 import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
-import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
+import { SingleTicket, TicketWithIds, WithIds } from '../../interfaces/matchingJsonTypes';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -344,6 +344,49 @@ const createProductDetails = async (
             ],
             editLink: '/csvUpload',
         });
+
+        if (isReturnTicket(ticket)) {
+            let outboundStopCounter = 0;
+
+            ticket.outboundFareZones.forEach((stage) => {
+                outboundStopCounter = outboundStopCounter + stage.stops.length;
+            });
+
+            productDetailsElements.push({
+                id: 'outbound-fare-stage-matching',
+                name: 'Outbound fare stages and stops',
+                content: [`${outboundStopCounter} bus stops across ${ticket.outboundFareZones.length} fare stages`],
+                editLink: '/editFareStageMatching',
+            });
+
+            let inboundStopCounter = 0;
+
+            ticket.inboundFareZones.forEach((stage) => {
+                inboundStopCounter = inboundStopCounter + stage.stops.length;
+            });
+
+            productDetailsElements.push({
+                id: 'inbound-fare-stage-matching',
+                name: 'Inbound fare stages and stops',
+                content: [`${inboundStopCounter} bus stops across ${ticket.inboundFareZones.length} fare stages`],
+                editLink: '/editFareStageMatching',
+            });
+        } else {
+            let stopCounter = 0;
+
+            (ticket as WithIds<SingleTicket>).fareZones.forEach((stage) => {
+                stopCounter = stopCounter + stage.stops.length;
+            });
+
+            productDetailsElements.push({
+                id: 'fare-stage-matching',
+                name: 'Fare stages and stops',
+                content: [
+                    `${stopCounter} bus stops across ${(ticket as WithIds<SingleTicket>).fareZones.length} fare stages`,
+                ],
+                editLink: '/editFareStageMatching',
+            });
+        }
     }
 
     if ('additionalNocs' in ticket) {

@@ -282,12 +282,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE) as
                 | WithIds<SingleTicket>
-                | WithIds<ReturnTicket>;
+                | WithIds<ReturnTicket>
+                | undefined;
 
             const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
             // check to see if we are in edit mode
-            if (ticket !== undefined && matchingJsonMetaData !== undefined) {
+            if (ticket && matchingJsonMetaData) {
                 const fareZoneNames = getNamesOfFareZones(ticket);
 
                 if (!fareZoneNames) {
