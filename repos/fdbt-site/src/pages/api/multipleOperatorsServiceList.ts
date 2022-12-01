@@ -1,87 +1,82 @@
 import { NextApiResponse } from 'next';
-import isArray from 'lodash/isArray';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
 } from '../../constants/attributes';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
-import { MultiOperatorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../../src/utils/sessions';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
-import { ServiceWithNocCode, SelectedServiceByNocCode } from '../../interfaces/matchingJsonTypes';
-
-const errorId = 'service-to-add-1';
-const redirectUrl = '/multipleOperatorsServiceList';
+import { AdditionalOperator, SelectedService } from '../../interfaces/matchingJsonTypes';
 
 export const getMultiOperatorsDataFromRequest = (requestBody: {
     [key: string]: string | string[];
-}): MultiOperatorInfo[] => {
-    let nocCode = '';
-    const serviceDetails: ServiceWithNocCode[] = [];
-    const convertServiceDetails = (value: string, description: string | string[]): ServiceWithNocCode => {
-        let splitStrings = [];
-        let serviceDescription: string;
-        [nocCode, ...splitStrings] = value.split('#');
-        if (isArray(description)) {
-            [serviceDescription] = description;
-        } else {
-            serviceDescription = description;
+}): AdditionalOperator[] => {
+    //  example input
+    // {'LNUD#259#vHaXmz#YWAO259#25/03/2020': 'Brighouse - East Bierley'}
+
+    const keyValuePairs = Object.entries(requestBody);
+
+    const nocList: string[] = [];
+
+    const unsortedMultiOperatorData = keyValuePairs.map((pair) => {
+        const values = pair[0].split('#');
+        const noc = values[0];
+        const lineName = values[1];
+        const lineId = values[2];
+        const serviceCode = values[3];
+        const startDate = values[4];
+        const serviceDescription = pair[1] as string;
+
+        if (!nocList.includes(noc)) {
+            nocList.push(noc);
         }
 
         return {
-            nocCode: nocCode,
-            lineName: splitStrings[0],
-            lineId: splitStrings[1],
-            serviceCode: splitStrings[2],
-            startDate: splitStrings[3],
-            serviceDescription: serviceDescription,
-            selected: false,
+            noc,
+            lineName,
+            lineId,
+            serviceCode,
+            startDate,
+            serviceDescription,
         };
-    };
-
-    Object.entries(requestBody)
-        .filter((item) => item[0] !== 'operatorCount')
-        .forEach((e) => {
-            const value = convertServiceDetails(e[0], e[1]);
-            serviceDetails.push(value);
-        });
-
-    const selectedServices: SelectedServiceByNocCode[] = [];
-
-    const getIndexOfMultiOperatorsService = (noc: string): number => {
-        const index = selectedServices.findIndex((serviceDetails) => Object.keys(serviceDetails).includes(noc));
-        return index;
-    };
-    serviceDetails.forEach((service: ServiceWithNocCode) => {
-        const indexOfFound = getIndexOfMultiOperatorsService(service.nocCode);
-        if (indexOfFound === -1) {
-            selectedServices.push({ [`${service.nocCode}`]: [service] });
-        } else {
-            selectedServices[indexOfFound][service.nocCode].push(service);
-        }
-    });
-    const newListOfMultiOperatorsData: MultiOperatorInfo[] = selectedServices.flatMap((selectedService) => {
-        return Object.entries(selectedService).flatMap((keyValuePair) => {
-            return { nocCode: keyValuePair[0], services: keyValuePair[1] };
-        });
     });
 
-    return newListOfMultiOperatorsData;
+    const sortedMultiOperatorData: AdditionalOperator[] = nocList.map((nocCode) => {
+        const matchingData = unsortedMultiOperatorData.filter((data) => data.noc === nocCode);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const selectedServices: SelectedService[] = matchingData.map(({ noc, ...rest }) => rest);
+        return {
+            nocCode,
+            selectedServices,
+        };
+    });
+
+    return sortedMultiOperatorData;
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const operatorCount = req.body.operatorCount ? parseInt(req.body.operatorCount) : 0;
+        const selectedOperatorCount = req.body.selectedOperatorCount ? parseInt(req.body.selectedOperatorCount) : 0;
+
         delete req.body.operatorCount;
+        delete req.body.selectedOperatorCount;
+
         const listOfMultiOperatorsData = getMultiOperatorsDataFromRequest(req.body);
 
-        if (operatorCount !== listOfMultiOperatorsData.length) {
+        if (operatorCount !== selectedOperatorCount) {
             updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
                 multiOperatorInfo: listOfMultiOperatorsData,
-                errors: [{ id: errorId, errorMessage: 'All operators need to have at least one service' }],
+                errors: [
+                    {
+                        id: 'service-to-add-0',
+                        errorMessage: 'All operators need to have at least one service selected',
+                    },
+                ],
             });
-            redirectTo(res, `${redirectUrl}`);
+            redirectTo(res, '/multiOperatorServiceList');
             return;
         }
 
@@ -93,10 +88,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (inEditMode) {
             const updatedTicket = {
                 ...ticket,
-                additionalOperators: listOfMultiOperatorsData.map((operator) => ({
-                    nocCode: operator.nocCode,
-                    selectedServices: operator.services,
-                })),
+                additionalOperators: listOfMultiOperatorsData,
             };
 
             // put the now updated matching json into s3

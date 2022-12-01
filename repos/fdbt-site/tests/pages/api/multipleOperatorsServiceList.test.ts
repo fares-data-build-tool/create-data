@@ -11,15 +11,13 @@ describe('getMultiOperatorsDataFromRequests tests', () => {
         expect(response).toEqual([
             {
                 nocCode: 'BLAC',
-                services: [
+                selectedServices: [
                     {
                         lineId: '123',
                         lineName: '237',
-                        nocCode: 'BLAC',
                         serviceCode: 'abc',
                         serviceDescription: 'Some description',
                         startDate: '12/06/2020',
-                        selected: false,
                     },
                 ],
             },
@@ -28,35 +26,67 @@ describe('getMultiOperatorsDataFromRequests tests', () => {
 
     it('should return operator data for more than one operator', () => {
         const response = getMultiOperatorsDataFromRequest({
-            'BLAC#237#123#abc#12/06/2020': 'Some description',
-            'LNUD#145#12345#cdb#10/07/2021': 'Some description 2',
+            'LNUD#259#vHaXmz#YWAO259#YWAO259#25/03/2020': 'Brighouse - East Bierley',
+            'LNUD#263#xZ0pem#YWAO263#YWAO263#25/02/2019': 'Bradford - Dewsbury',
+            'LNUD#341#cCQkuR#YWAO341#YWAO341#25/03/2020': 'Stocksmoor - Huddersfield',
+            'NWBT#4#DnmNdy#NW_05_NWBT_4_1#NW_05_NWBT_4_1#02/01/2020':
+                'CLITHEROE - PEEL PARK CIRCULAR via Claremont Ave, Standen Rd, Langshaw Dr, Turner St, Victoria St',
+            'NWBT#15#rLjpBT#NW_05_NWBT_15_1#NW_05_NWBT_15_1#28/03/2020':
+                'BURNLEY - BURNLEY via Rose Hill Road, Moorland Road',
+            'NWBT#15A#02SfpM#NW_05_NWBT_15A_1#NW_05_NWBT_15A_1#28/03/2020':
+                'BURNLEY - BURNLEY via Branch Road, Moorland Road',
         });
         expect(response).toEqual([
             {
-                nocCode: 'BLAC',
-                services: [
+                nocCode: 'LNUD',
+                selectedServices: [
                     {
-                        lineId: '123',
-                        lineName: '237',
-                        nocCode: 'BLAC',
-                        serviceCode: 'abc',
-                        serviceDescription: 'Some description',
-                        startDate: '12/06/2020',
-                        selected: false,
+                        lineId: 'vHaXmz',
+                        lineName: '259',
+                        serviceCode: 'YWAO259',
+                        serviceDescription: 'Brighouse - East Bierley',
+                        startDate: 'YWAO259',
+                    },
+                    {
+                        lineId: 'xZ0pem',
+                        lineName: '263',
+                        serviceCode: 'YWAO263',
+                        serviceDescription: 'Bradford - Dewsbury',
+                        startDate: 'YWAO263',
+                    },
+                    {
+                        lineId: 'cCQkuR',
+                        lineName: '341',
+                        serviceCode: 'YWAO341',
+                        serviceDescription: 'Stocksmoor - Huddersfield',
+                        startDate: 'YWAO341',
                     },
                 ],
             },
             {
-                nocCode: 'LNUD',
-                services: [
+                nocCode: 'NWBT',
+                selectedServices: [
                     {
-                        lineId: '12345',
-                        lineName: '145',
-                        nocCode: 'LNUD',
-                        serviceCode: 'cdb',
-                        serviceDescription: 'Some description 2',
-                        startDate: '10/07/2021',
-                        selected: false,
+                        lineId: 'DnmNdy',
+                        lineName: '4',
+                        serviceCode: 'NW_05_NWBT_4_1',
+                        serviceDescription:
+                            'CLITHEROE - PEEL PARK CIRCULAR via Claremont Ave, Standen Rd, Langshaw Dr, Turner St, Victoria St',
+                        startDate: 'NW_05_NWBT_4_1',
+                    },
+                    {
+                        lineId: 'rLjpBT',
+                        lineName: '15',
+                        serviceCode: 'NW_05_NWBT_15_1',
+                        serviceDescription: 'BURNLEY - BURNLEY via Rose Hill Road, Moorland Road',
+                        startDate: 'NW_05_NWBT_15_1',
+                    },
+                    {
+                        lineId: '02SfpM',
+                        lineName: '15A',
+                        serviceCode: 'NW_05_NWBT_15A_1',
+                        serviceDescription: 'BURNLEY - BURNLEY via Branch Road, Moorland Road',
+                        startDate: 'NW_05_NWBT_15A_1',
                     },
                 ],
             },
@@ -75,7 +105,6 @@ describe('multiOperatorServiceList tests', () => {
         jest.resetAllMocks();
     });
     const writeHeadMock = jest.fn();
-    const errorId = 'service-to-add-1';
 
     it('should redirect and produce error when operator count does not match number of multi operator data', async () => {
         const { req, res } = getMockRequestAndResponse({
@@ -94,42 +123,38 @@ describe('multiOperatorServiceList tests', () => {
             multiOperatorInfo: [
                 {
                     nocCode: 'BLAC',
-                    services: [
+                    selectedServices: [
                         {
                             lineId: '123',
                             lineName: '237',
-                            nocCode: 'BLAC',
                             serviceCode: 'abc',
                             serviceDescription: 'Some description',
                             startDate: '12/06/2020',
-                            selected: false,
                         },
                     ],
                 },
                 {
                     nocCode: 'LNUD',
-                    services: [
+                    selectedServices: [
                         {
                             lineId: '12345',
                             lineName: '145',
-                            nocCode: 'LNUD',
                             serviceCode: 'cdb',
                             serviceDescription: 'Some description 2',
                             startDate: '10/07/2021',
-                            selected: false,
                         },
                     ],
                 },
             ],
             errors: [
                 {
-                    id: errorId,
-                    errorMessage: 'All operators need to have at least one service',
+                    id: 'service-to-add-0',
+                    errorMessage: 'All operators need to have at least one service selected',
                 },
             ],
         });
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/multipleOperatorsServiceList',
+            Location: '/multiOperatorServiceList',
         });
     });
 
@@ -137,6 +162,7 @@ describe('multiOperatorServiceList tests', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 operatorCount: 2,
+                selectedOperatorCount: 2,
                 'BLAC#237#123#abc#12/06/2020': 'Some description',
                 'LNUD#145#12345#cdb#10/07/2021': 'Some description 2',
             },
@@ -149,29 +175,25 @@ describe('multiOperatorServiceList tests', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, [
             {
                 nocCode: 'BLAC',
-                services: [
+                selectedServices: [
                     {
                         lineId: '123',
                         lineName: '237',
-                        nocCode: 'BLAC',
                         serviceCode: 'abc',
                         serviceDescription: 'Some description',
                         startDate: '12/06/2020',
-                        selected: false,
                     },
                 ],
             },
             {
                 nocCode: 'LNUD',
-                services: [
+                selectedServices: [
                     {
                         lineId: '12345',
                         lineName: '145',
-                        nocCode: 'LNUD',
                         serviceCode: 'cdb',
                         serviceDescription: 'Some description 2',
                         startDate: '10/07/2021',
-                        selected: false,
                     },
                 ],
             },

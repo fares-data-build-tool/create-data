@@ -5,7 +5,6 @@ import { ReactElement } from 'react';
 import { DbTimeRestriction, SinglePassengerType } from './dbTypes';
 import {
     CarnetDetails,
-    ServiceWithNocCode,
     SelectedService,
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
@@ -16,6 +15,7 @@ import {
     CompanionInfo,
     TicketType,
     ExpiryUnit,
+    AdditionalOperator,
 } from './matchingJsonTypes';
 
 // Session Attributes and Cookies
@@ -97,10 +97,14 @@ export interface OperatorGroup {
 
 export interface MultiOperatorInfo {
     nocCode: string;
-    services: ServiceWithNocCode[];
-    name?: string;
-    dataSource?: string;
-    open?: boolean;
+    services: ServiceWithOriginAndDestination[];
+    selectedServices: ServiceWithOriginAndDestination[];
+    name: string;
+}
+
+export interface ServiceWithOriginAndDestination extends SelectedService {
+    origin: string;
+    destination: string;
 }
 
 export interface TermTimeAttribute {
@@ -389,7 +393,7 @@ export interface ProductData {
 }
 
 export interface MultiOperatorInfoWithErrors {
-    multiOperatorInfo: MultiOperatorInfo[];
+    multiOperatorInfo: AdditionalOperator[];
     errors: ErrorInfo[];
 }
 

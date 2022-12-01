@@ -9,6 +9,7 @@ import {
     ServiceType,
     ServiceCount,
     MyFaresService,
+    ServiceWithOriginAndDestination,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
@@ -29,14 +30,7 @@ import {
     MyFaresOtherProduct,
     DbProduct,
 } from '../interfaces/dbTypes';
-import {
-    ServiceWithNocCode,
-    Stop,
-    FromDb,
-    SalesOfferPackage,
-    CompanionInfo,
-    OperatorDetails,
-} from '../interfaces/matchingJsonTypes';
+import { Stop, FromDb, SalesOfferPackage, CompanionInfo, OperatorDetails } from '../interfaces/matchingJsonTypes';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -164,7 +158,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
 export const getServicesByNocCodeAndDataSourceWithGrouping = async (
     nocCode: string,
     source: string,
-): Promise<ServiceWithNocCode[]> => {
+): Promise<ServiceWithOriginAndDestination[]> => {
     //grouped by service description which combines (lineName, origin, destination)
     const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
@@ -175,14 +169,17 @@ export const getServicesByNocCodeAndDataSourceWithGrouping = async (
 
     try {
         const queryInput = `
-            SELECT id, lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
+            SELECT lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = ? AND (endDate IS NULL OR CURDATE() <= endDate)
             group by lineId, origin, destination
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
-        const queryResults = await executeQuery<ServiceWithNocCode[]>(queryInput, [nocCodeParameter, source]);
+        const queryResults = await executeQuery<ServiceWithOriginAndDestination[]>(queryInput, [
+            nocCodeParameter,
+            source,
+        ]);
 
         return (
             queryResults.map((item) => ({

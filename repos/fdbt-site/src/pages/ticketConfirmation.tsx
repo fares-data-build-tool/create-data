@@ -26,7 +26,6 @@ import {
 } from '../constants/attributes';
 import {
     ConfirmationElement,
-    MultiOperatorInfo,
     MultipleOperatorsAttribute,
     MultipleProductAttribute,
     MultiProduct,
@@ -48,6 +47,7 @@ import {
     ReturnPeriodValidity,
     PointToPointPeriodProduct,
     Product,
+    AdditionalOperator,
 } from '../interfaces/matchingJsonTypes';
 
 const title = 'Ticket Confirmation - Create Fares Data Service';
@@ -274,7 +274,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     ).name;
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const multiOpAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute;
-    const multiOpServices = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) as MultiOperatorInfo[];
+    const multiOpServices = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) as AdditionalOperator[];
     const fileName = getSessionAttribute(ctx.req, CSV_ZONE_FILE_NAME);
 
     const services = serviceInformation ? serviceInformation.selectedServices : [];
@@ -322,7 +322,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
                     name: `${
                         additionalOperators.find((operator) => operator.nocCode === serviceInfo.nocCode)?.name
                     } Services`,
-                    content: `${serviceInfo.services.map((service) => service.lineName).join(', ')}`,
+                    content: `${serviceInfo.selectedServices.map((service) => service.lineName).join(', ')}`,
                     href: 'searchOperators',
                 });
             });
