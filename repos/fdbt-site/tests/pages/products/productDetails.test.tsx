@@ -375,7 +375,12 @@ describe('myfares pages', () => {
                             editLink: '/csvUpload',
                         },
                         { id: 'period-duration', name: 'Period duration', content: ['7 weeks'] },
-                        { id: 'product-expiry', name: 'Product expiry', content: ['24 hr'] },
+                        {
+                            id: 'product-expiry',
+                            name: 'Product expiry',
+                            content: ['24 hr'],
+                            editLink: '/selectPeriodValidity',
+                        },
                         {
                             id: 'purchase-methods',
                             name: 'Purchase methods',
@@ -586,7 +591,12 @@ describe('myfares pages', () => {
                             editLink: '/selectTimeRestrictions',
                         },
                         { id: 'period-duration', name: 'Period duration', content: ['5 weeks'] },
-                        { id: 'product-expiry', name: 'Product expiry', content: ['24 hr'] },
+                        {
+                            id: 'product-expiry',
+                            name: 'Product expiry',
+                            content: ['24 hr'],
+                            editLink: '/selectPeriodValidity',
+                        },
                         {
                             id: 'purchase-methods',
                             name: 'Purchase methods',
@@ -653,7 +663,12 @@ describe('myfares pages', () => {
                             editLink: '/reuseOperatorGroup',
                         },
                         { id: 'period-duration', name: 'Period duration', content: ['5 weeks'] },
-                        { id: 'product-expiry', name: 'Product expiry', content: ['24 hr'] },
+                        {
+                            id: 'product-expiry',
+                            name: 'Product expiry',
+                            content: ['24 hr'],
+                            editLink: '/selectPeriodValidity',
+                        },
                         {
                             id: 'purchase-methods',
                             name: 'Purchase methods',
@@ -789,7 +804,12 @@ describe('myfares pages', () => {
                         },
                         { id: 'multi-operator-group', name: 'Multi Operator Group', content: ['MCTR, WBTR, BLAC'] },
                         { id: 'period-duration', name: 'Period duration', content: ['5 weeks'] },
-                        { id: 'product-expiry', name: 'Product expiry', content: ['Fare day end'] },
+                        {
+                            id: 'product-expiry',
+                            name: 'Product expiry',
+                            content: ['Fare day end'],
+                            editLink: '/selectPeriodValidity',
+                        },
                         {
                             id: 'purchase-methods',
                             name: 'Purchase methods',

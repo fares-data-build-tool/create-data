@@ -423,6 +423,7 @@ const createProductDetails = async (
             id: 'product-expiry',
             name: 'Product expiry',
             content: [sentenceCaseString(product.productValidity)],
+            editLink: '/selectPeriodValidity',
         });
     }
 
