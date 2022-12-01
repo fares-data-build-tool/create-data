@@ -77,7 +77,11 @@ const otherProductsTable = (
 ): React.ReactElement => {
     return (
         <>
-            <table className="govuk-table" data-card-count={otherProducts.length}>
+            <table
+                className="govuk-table"
+                data-card-count={otherProducts.length}
+                data-period-card-count={otherProducts.filter((product) => product.type === 'period').length}
+            >
                 <thead className="govuk-table__head">
                     <tr className="govuk-table__row">
                         <th scope="col" className="govuk-table__header">
@@ -113,6 +117,7 @@ const otherProductsTable = (
                                       <a
                                           href={`/products/productDetails?productId=${product.id}`}
                                           id={`product-link-${index}`}
+                                          data-product-type={product.type}
                                       >
                                           {product.productDescription}
                                       </a>

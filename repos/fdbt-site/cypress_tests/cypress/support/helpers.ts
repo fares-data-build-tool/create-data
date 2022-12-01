@@ -2,6 +2,7 @@ import 'cypress-file-upload';
 import {
     completeFlatFarePages,
     completeMultiOpGeoZonePages,
+    completePeriodGeoZonePages,
     completeSalesPages,
     completeSinglePages,
     defineUserTypeAndTimeRestrictions,
@@ -585,6 +586,17 @@ export const completeOperatorSearch = (): void => {
     continueButtonClick();
 };
 
+export const clickElementInTableByDataAttribute = (tableName: string, dataAttributeKey: string, dataAttributeValue:string): void => {
+    getElementByClass(tableName)
+        .get(`[${dataAttributeKey}]`)
+        .each((elm) => {
+            const productType = elm.attr(dataAttributeKey);
+            if(productType === dataAttributeValue) {
+                cy.wrap(elm).click();                
+            }
+        });
+};
+
 export const addFlatFareProductIfNotPresent = (): void => {
     getHomePage();
     clickElementById('manage-fares-link');
@@ -602,6 +614,22 @@ export const addFlatFareProductIfNotPresent = (): void => {
             completeSalesPages();
             isFinished();
             cy.log('Flat fare product set up');
+        }
+    });
+};
+
+export const addPeriodProductIfNotPresent = (): void => {
+    getHomePage();
+    clickElementById('manage-fares-link');
+    clickElementByText('Other products');
+    cy.get(`[data-period-card-count]`).then((element) => {
+        const numberOfProducts = Number(element.attr('data-period-card-count'));
+        if (numberOfProducts === 0) {
+            selectFareType('period', false);
+            defineUserTypeAndTimeRestrictions();
+            completePeriodGeoZonePages(1);
+            completeSalesPages();
+            isFinished();
         }
     });
 };
