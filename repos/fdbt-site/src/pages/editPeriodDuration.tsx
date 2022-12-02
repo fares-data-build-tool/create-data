@@ -74,7 +74,11 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ed
 
         if ('productDuration' in product) {
             productDuration = product.productDuration;
+        } else {
+            throw new Error('productDuration is undefined');
         }
+    } else {
+        throw new Error('Ticket is undefined');
     }
     const productDurationSplit = productDuration.split(' ');
     const productDurationValue = productDurationSplit[0];
