@@ -1,14 +1,18 @@
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { NextApiResponse } from 'next';
-import { getSessionAttribute, updateSessionAttribute } from 'src/utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../../src/utils/sessions';
 import {
     EDIT_PERIOD_DURATION_ERROR,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
-} from 'src/constants/attributes';
-import { redirectTo, redirectToError } from 'src/utils/apiUtils';
+} from '../../../src/constants/attributes';
+import { redirectTo, redirectToError } from '../../../src/utils/apiUtils';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
-import { checkDurationIsValid, isValidInputDuration, removeExcessWhiteSpace } from 'src/utils/apiUtils/validator';
+import {
+    checkDurationIsValid,
+    isValidInputDuration,
+    removeExcessWhiteSpace,
+} from '../../../src/utils/apiUtils/validator';
 
 const validateDuration = (productDuration: string, productDurationUnit: string): ErrorInfo[] => {
     const trimmedDuration = removeExcessWhiteSpace(productDuration);
