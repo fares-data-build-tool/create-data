@@ -415,6 +415,7 @@ const createProductDetails = async (
             id: 'period-duration',
             name: 'Period duration',
             content: [product.productDuration],
+            editLink: '/editPeriodDuration',
         });
     }
 
