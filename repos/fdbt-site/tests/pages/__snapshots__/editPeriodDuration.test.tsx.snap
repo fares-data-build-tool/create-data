@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages editPeriodDuration should render editPeriodDuration page correctly 1`] = `
+<TwoThirdsLayout
+  description="Edit Period Duration page of the Create Fares Data Service"
+  errors={Array []}
+  title="Edit Period Duration - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/editPeriodDuration"
+    csrfToken=""
+    method="post"
+  >
+    <div
+      className="govuk-form-group"
+    >
+      <ErrorSummary
+        errors={Array []}
+      />
+      <h1
+        className="govuk-heading-l"
+        id="multiple-product-page-heading"
+      >
+        Edit Period Duration
+      </h1>
+      <label
+        className="govuk-label"
+        htmlFor="product-details-period-duration"
+      >
+        Period duration
+      </label>
+      <span
+        className="govuk-hint"
+        id="product-period-duration-hint"
+      >
+        For example, 3 days
+      </span>
+      <ExpirySelector
+        carnet={false}
+        defaultDuration="1"
+        defaultUnit="week"
+        errors={Array []}
+        hideFormGroupError={true}
+        hintId="product-period-duration-hint"
+        quantityId="product-details-period-duration-quantity"
+        quantityName="multipleProductDurationInput"
+        school={false}
+        unitId="product-details-period-duration-unit"
+        unitName="multipleProductDurationUnitsInput"
+      />
+      <br />
+      <input
+        className="govuk-button"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;

@@ -16,7 +16,7 @@ import {
 
 const validateDuration = (productDuration: string, productDurationUnit: string): ErrorInfo[] => {
     const trimmedDuration = removeExcessWhiteSpace(productDuration);
-    const errors = [];
+    const errors: ErrorInfo[] = [];
     const productDurationError = checkDurationIsValid(trimmedDuration);
     const productDurationUnitError = !isValidInputDuration(productDurationUnit, false)
         ? 'Choose an option from the dropdown'

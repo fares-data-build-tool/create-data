@@ -4,10 +4,10 @@ import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
-import ExpirySelector from 'src/components/ExpirySelector';
-import { getSessionAttribute } from 'src/utils/sessions';
-import { EDIT_PERIOD_DURATION_ERROR, MATCHING_JSON_ATTRIBUTE } from 'src/constants/attributes';
-import { ExpiryUnit } from 'src/interfaces/matchingJsonTypes';
+import ExpirySelector from '../../src/components/ExpirySelector';
+import { getSessionAttribute } from '../../src/utils/sessions';
+import { EDIT_PERIOD_DURATION_ERROR, MATCHING_JSON_ATTRIBUTE } from '../../src/constants/attributes';
+import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
 
 const title = 'Edit Period Duration - Create Fares Data Service';
 const description = 'Edit Period Duration page of the Create Fares Data Service';
