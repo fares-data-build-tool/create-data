@@ -40,22 +40,18 @@
       "nocCode": "LNUD",
       "selectedServices": [
         {
-          "nocCode": "LNUD",
           "lineName": "259",
           "lineId": "vHaXmz",
           "serviceCode": "YWAO259",
-          "startDate": "YWAO259",
-          "serviceDescription": "Brighouse - East Bierley",
-          "selected": false
+          "startDate": "25/03/2020",
+          "serviceDescription": "Brighouse - East Bierley"
         },
         {
-          "nocCode": "LNUD",
-          "lineName": "263",
-          "lineId": "xZ0pem",
-          "serviceCode": "YWAO263",
-          "startDate": "YWAO263",
-          "serviceDescription": "Bradford - Dewsbury",
-          "selected": false
+          "lineName": "341",
+          "lineId": "cCQkuR",
+          "serviceCode": "YWAO341",
+          "startDate": "25/03/2020",
+          "serviceDescription": "Stocksmoor - Huddersfield"
         }
       ]
     },
@@ -63,31 +59,18 @@
       "nocCode": "NWBT",
       "selectedServices": [
         {
-          "nocCode": "NWBT",
           "lineName": "15A",
           "lineId": "02SfpM",
           "serviceCode": "NW_05_NWBT_15A_1",
-          "startDate": "NW_05_NWBT_15A_1",
-          "serviceDescription": "BURNLEY - BURNLEY via Branch Road, Moorland Road",
-          "selected": false
+          "startDate": "28/03/2020",
+          "serviceDescription": "BURNLEY - BURNLEY via Branch Road, Moorland Road"
         },
         {
-          "nocCode": "NWBT",
           "lineName": "64",
           "lineId": "xqpVTa",
           "serviceCode": "NW_05_NWBT_64_1",
-          "startDate": "NW_05_NWBT_64_1",
-          "serviceDescription": "BURNLEY - CLITHEROE via Sycamore Avenue, Lowerhouse, Slade Lane, Whalley",
-          "selected": false
-        },
-        {
-          "nocCode": "NWBT",
-          "lineName": "65",
-          "lineId": "M0L2FP",
-          "serviceCode": "NW_05_NWBT_65_1",
-          "startDate": "NW_05_NWBT_65_1",
-          "serviceDescription": "BURNLEY - NELSON via Sycamore Avenue, Lowerhouse, Slade Lane, Higham, Barrowford",
-          "selected": false
+          "startDate": "28/03/2020",
+          "serviceDescription": "BURNLEY - CLITHEROE via Sycamore Avenue, Lowerhouse, Slade Lane, Whalley"
         }
       ]
     }

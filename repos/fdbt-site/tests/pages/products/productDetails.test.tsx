@@ -380,7 +380,12 @@ describe('myfares pages', () => {
                             content: ['7 weeks'],
                             editLink: '/editPeriodDuration',
                         },
-                        { id: 'product-expiry', name: 'Product expiry', content: ['24 hr'] },
+                        {
+                            id: 'product-expiry',
+                            name: 'Product expiry',
+                            content: ['24 hr'],
+                            editLink: '/selectPeriodValidity',
+                        },
                         {
                             id: 'purchase-methods',
                             name: 'Purchase methods',
@@ -596,7 +601,12 @@ describe('myfares pages', () => {
                             content: ['5 weeks'],
                             editLink: '/editPeriodDuration',
                         },
-                        { id: 'product-expiry', name: 'Product expiry', content: ['24 hr'] },
+                        {
+                            id: 'product-expiry',
+                            name: 'Product expiry',
+                            content: ['24 hr'],
+                            editLink: '/selectPeriodValidity',
+                        },
                         {
                             id: 'purchase-methods',
                             name: 'Purchase methods',
@@ -668,7 +678,12 @@ describe('myfares pages', () => {
                             content: ['5 weeks'],
                             editLink: '/editPeriodDuration',
                         },
-                        { id: 'product-expiry', name: 'Product expiry', content: ['24 hr'] },
+                        {
+                            id: 'product-expiry',
+                            name: 'Product expiry',
+                            content: ['24 hr'],
+                            editLink: '/selectPeriodValidity',
+                        },
                         {
                             id: 'purchase-methods',
                             name: 'Purchase methods',
@@ -730,19 +745,19 @@ describe('myfares pages', () => {
                             id: 'additional-operators-services',
                             name: 'WBTR Services',
                             content: ['343, 444, 543'],
-                            editLink: '/multipleOperatorsServiceList',
+                            editLink: '/multiOperatorServiceList',
                         },
                         {
                             id: 'additional-operators-services',
                             name: 'BLAC Services',
                             content: ['100, 101, 102'],
-                            editLink: '/multipleOperatorsServiceList',
+                            editLink: '/multiOperatorServiceList',
                         },
                         {
                             id: 'additional-operators-services',
                             name: 'LEDS Services',
                             content: ['63, 64, 65'],
-                            editLink: '/multipleOperatorsServiceList',
+                            editLink: '/multiOperatorServiceList',
                         },
                         {
                             id: 'purchase-methods',
@@ -809,7 +824,12 @@ describe('myfares pages', () => {
                             content: ['5 weeks'],
                             editLink: '/editPeriodDuration',
                         },
-                        { id: 'product-expiry', name: 'Product expiry', content: ['Fare day end'] },
+                        {
+                            id: 'product-expiry',
+                            name: 'Product expiry',
+                            content: ['Fare day end'],
+                            editLink: '/selectPeriodValidity',
+                        },
                         {
                             id: 'purchase-methods',
                             name: 'Purchase methods',

@@ -88,7 +88,6 @@ import {
     IncomingMessageWithSession,
     InputCheck,
     InputMethodInfo,
-    MultiOperatorInfo,
     MultiOperatorInfoWithErrors,
     MultipleOperatorsAttribute,
     MultipleOperatorsAttributeWithErrors,
@@ -139,6 +138,7 @@ import {
     PointToPointPeriodProduct,
     ReturnPeriodValidity,
     SalesOfferPackage,
+    AdditionalOperator,
 } from '../interfaces/matchingJsonTypes';
 import { PassengerType, GroupPassengerType, GroupPassengerTypeDb } from '../interfaces/dbTypes';
 
@@ -183,7 +183,7 @@ export interface SessionAttributeTypes {
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
     [PRODUCT_DATE_ATTRIBUTE]: TicketPeriodWithInput | TicketPeriodWithErrors;
     [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
-    [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors;
+    [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: AdditionalOperator[] | MultiOperatorInfoWithErrors;
     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;
     [TERM_TIME_ATTRIBUTE]: TermTimeAttribute | WithErrors<TermTimeAttribute>;
     [SCHOOL_FARE_TYPE_ATTRIBUTE]: SchoolFareTypeAttribute | WithErrors<SchoolFareTypeAttribute>;

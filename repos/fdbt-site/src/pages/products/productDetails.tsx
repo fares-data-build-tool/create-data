@@ -371,7 +371,7 @@ const createProductDetails = async (
                 content: [
                     additionalOperator.selectedServices.map((selectedService) => selectedService.lineName).join(', '),
                 ],
-                editLink: '/multipleOperatorsServiceList',
+                editLink: '/multiOperatorServiceList',
             });
         });
     }
@@ -424,6 +424,7 @@ const createProductDetails = async (
             id: 'product-expiry',
             name: 'Product expiry',
             content: [sentenceCaseString(product.productValidity)],
+            editLink: '/selectPeriodValidity',
         });
     }
 
