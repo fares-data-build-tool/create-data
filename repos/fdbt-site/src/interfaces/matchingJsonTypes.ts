@@ -27,17 +27,6 @@ export interface SelectedService {
     serviceDescription: string;
 }
 
-export interface ServiceWithNocCode extends SelectedService {
-    nocCode: string;
-    selected: boolean;
-    destination?: string;
-    origin?: string;
-}
-
-export interface SelectedServiceByNocCode {
-    [key: string]: ServiceWithNocCode[];
-}
-
 export interface AdditionalService extends SelectedService {
     serviceId: number;
 }
@@ -113,22 +102,21 @@ export interface SchemeOperatorGeoZoneTicket extends BaseSchemeOperatorTicket {
     additionalNocs: string[];
 }
 
+export interface AdditionalOperator {
+    nocCode: string;
+    selectedServices: SelectedService[];
+}
+
 export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {
     type: 'flatFare';
     products: FlatFareProductDetails[];
-    additionalOperators: {
-        nocCode: string;
-        selectedServices: SelectedService[];
-    }[];
+    additionalOperators: AdditionalOperator[];
 }
 
 export interface SchemeOperatorMultiServiceTicket extends BaseSchemeOperatorTicket {
     type: 'period';
     products: ProductDetails[];
-    additionalOperators: {
-        nocCode: string;
-        selectedServices: SelectedService[];
-    }[];
+    additionalOperators: AdditionalOperator[];
 }
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
@@ -137,10 +125,7 @@ export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
 }
 
 export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
-    additionalOperators: {
-        nocCode: string;
-        selectedServices: SelectedService[];
-    }[];
+    additionalOperators: AdditionalOperator[];
     operatorGroupId: number;
 }
 
