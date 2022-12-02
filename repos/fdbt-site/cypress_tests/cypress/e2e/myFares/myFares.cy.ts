@@ -173,7 +173,7 @@ describe('The my fares other products pages', () => {
         clickRandomElementInTable('govuk-table__body', 'product-link');
         editProductName();
     });
-    it.only('allows the user the edit product validity', () => {
+    it('allows the user the edit product validity', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
