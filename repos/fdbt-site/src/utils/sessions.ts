@@ -5,6 +5,7 @@ import {
     UNASSIGNED_STOPS_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
     CAPPED_PRODUCT_ATTRIBUTE,
+    EDIT_PERIOD_DURATION_ERROR,
 } from './../constants/attributes';
 import * as attributes from '../constants/attributes';
 import {
@@ -210,6 +211,7 @@ export interface SessionAttributeTypes {
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
     [CAPPED_PRODUCT_ATTRIBUTE]: boolean;
+    [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

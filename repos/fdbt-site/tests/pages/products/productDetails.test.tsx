@@ -374,7 +374,12 @@ describe('myfares pages', () => {
                             content: ['You created a fare triangle'],
                             editLink: '/csvUpload',
                         },
-                        { id: 'period-duration', name: 'Period duration', content: ['7 weeks'] },
+                        {
+                            id: 'period-duration',
+                            name: 'Period duration',
+                            content: ['7 weeks'],
+                            editLink: '/editPeriodDuration',
+                        },
                         {
                             id: 'product-expiry',
                             name: 'Product expiry',
@@ -590,7 +595,12 @@ describe('myfares pages', () => {
                             content: ['Test Time Restriction'],
                             editLink: '/selectTimeRestrictions',
                         },
-                        { id: 'period-duration', name: 'Period duration', content: ['5 weeks'] },
+                        {
+                            id: 'period-duration',
+                            name: 'Period duration',
+                            content: ['5 weeks'],
+                            editLink: '/editPeriodDuration',
+                        },
                         {
                             id: 'product-expiry',
                             name: 'Product expiry',
@@ -662,7 +672,12 @@ describe('myfares pages', () => {
                             content: ['MCTR, WBTR, BLAC'],
                             editLink: '/reuseOperatorGroup',
                         },
-                        { id: 'period-duration', name: 'Period duration', content: ['5 weeks'] },
+                        {
+                            id: 'period-duration',
+                            name: 'Period duration',
+                            content: ['5 weeks'],
+                            editLink: '/editPeriodDuration',
+                        },
                         {
                             id: 'product-expiry',
                             name: 'Product expiry',
@@ -803,7 +818,12 @@ describe('myfares pages', () => {
                             editLink: '/selectTimeRestrictions',
                         },
                         { id: 'multi-operator-group', name: 'Multi Operator Group', content: ['MCTR, WBTR, BLAC'] },
-                        { id: 'period-duration', name: 'Period duration', content: ['5 weeks'] },
+                        {
+                            id: 'period-duration',
+                            name: 'Period duration',
+                            content: ['5 weeks'],
+                            editLink: '/editPeriodDuration',
+                        },
                         {
                             id: 'product-expiry',
                             name: 'Product expiry',
