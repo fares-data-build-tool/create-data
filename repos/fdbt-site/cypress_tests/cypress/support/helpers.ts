@@ -2,6 +2,7 @@ import 'cypress-file-upload';
 import {
     completeFlatFarePages,
     completeMultiOpGeoZonePages,
+    completePeriodGeoZonePages,
     completeSalesPages,
     completeSinglePages,
     defineUserTypeAndTimeRestrictions,
@@ -585,25 +586,49 @@ export const completeOperatorSearch = (): void => {
     continueButtonClick();
 };
 
-export const addFlatFareProductIfNotPresent = (): void => {
+export const addOtherProductsIfNotPresent = (): void => {
     getHomePage();
     clickElementById('manage-fares-link');
     clickElementByText('Other products');
-    let hasFlatFare: boolean = false;
-    cy.wrap(hasFlatFare).as('hasFlatFare');
+
+    let numberOfPeriodProducts = 0;
+    let numberOfFlatFareProducts = 0;
+
     cy.get(`[data-card-count]`).then((element) => {
-        const numberOfProducts = Number(element.attr('data-card-count'));
-        if (numberOfProducts === 0) {
-            selectFareType('flatFare', false);
-            defineUserTypeAndTimeRestrictions();
-            clickElementById('radio-option-multipleServices');
-            continueButtonClick();
-            completeFlatFarePages('Flat Fare Test Product', false);
-            completeSalesPages();
-            isFinished();
-            cy.log('Flat fare product set up');
+        const totNumberOfProducts = Number(element.attr('data-card-count'));
+        if (totNumberOfProducts > 0) {
+            getElementByClass('govuk-table__body')
+                .find('tr a')
+                .each((elm) => {
+                    if (elm.attr('data-product-type') === 'period') {
+                        numberOfPeriodProducts += 1;
+                    } else if (elm.attr('data-product-type') === 'flatFare') {
+                        numberOfFlatFareProducts += 1;
+                    }
+                });
         }
     });
+
+    if (numberOfPeriodProducts === 0) {
+        selectFareType('period', false);
+        defineUserTypeAndTimeRestrictions();
+        completePeriodGeoZonePages(1);
+        completeSalesPages();
+        isFinished();
+        cy.log('Period product set up');
+    }
+
+    if (numberOfFlatFareProducts === 0) {
+        selectFareType('flatFare', false);
+        defineUserTypeAndTimeRestrictions();
+        clickElementById('radio-option-multipleServices');
+        continueButtonClick();
+        completeFlatFarePages('Flat Fare Test Product', false);
+        completeSalesPages();
+        isFinished();
+        cy.log('Flat fare product set up');
+    }
+
 };
 
 export const addMultiOperatorProductIfNotPresent = (): void => {

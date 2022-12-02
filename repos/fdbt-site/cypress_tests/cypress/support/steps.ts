@@ -392,6 +392,13 @@ export const editProductName = () => {
     clickElementByText('Back');
 };
 
+export const editProductExpiry = () => {
+    clickElementById('product-expiry-link');
+    randomlyChooseProductPeriodValidity();
+    continueButtonClick();
+    clickElementByText('Back');    
+};
+
 export const editProductNamePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
