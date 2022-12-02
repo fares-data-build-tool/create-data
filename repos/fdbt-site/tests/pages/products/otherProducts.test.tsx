@@ -1,12 +1,13 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import { getProductsMatchingJson } from '../../../src/data/s3';
-import { getOtherProductsByNoc, getPassengerTypeNameByIdAndNoc } from '../../../src/data/auroradb';
+import { getOtherProductsByNoc, getPassengerTypeById } from '../../../src/data/auroradb';
 import { MyFaresOtherFaresProduct } from '../../../src/interfaces';
 import OtherProducts, { getServerSideProps } from '../../../src/pages/products/otherProducts';
 import {
-    expectedFlatFareTicket,
+    expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
+    expectedPeriodMultipleServicesTicketWithMultipleProducts,
     getMockContext,
 } from '../../../tests/testData/mockData';
 
@@ -33,20 +34,30 @@ jest.mock('../../../src/data/s3');
         endDate: '18/12/2020',
     },
 ]);
-(getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedFlatFareTicket);
-(getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
-    ...expectedPeriodGeoZoneTicketWithMultipleProducts,
-    products: [expectedPeriodGeoZoneTicketWithMultipleProducts.products[0]],
+(getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedPeriodMultipleServicesTicketWithMultipleProducts);
+(getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedMultiOperatorGeoZoneTicketWithMultipleProducts);
+(getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedPeriodGeoZoneTicketWithMultipleProducts);
+(getPassengerTypeById as jest.Mock).mockResolvedValueOnce({
+    id: 9,
+    name: 'My best passenger',
+    passengerType: {
+        passengerType: 'Adult',
+    },
 });
-(getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
-    ...expectedPeriodGeoZoneTicketWithMultipleProducts,
-    products: [expectedPeriodGeoZoneTicketWithMultipleProducts.products[1]],
+(getPassengerTypeById as jest.Mock).mockResolvedValueOnce({
+    id: 2,
+    name: 'My other passenger',
+    passengerType: {
+        passengerType: 'Infant',
+    },
 });
-
-(getPassengerTypeNameByIdAndNoc as jest.Mock)
-    .mockResolvedValueOnce('My best passenger')
-    .mockResolvedValueOnce('My other passenger')
-    .mockResolvedValueOnce('My last passenger');
+(getPassengerTypeById as jest.Mock).mockResolvedValueOnce({
+    id: 3,
+    name: 'My last passenger',
+    passengerType: {
+        passengerType: 'Student',
+    },
+});
 
 const testProducts: MyFaresOtherFaresProduct[] = [
     {
@@ -54,27 +65,33 @@ const testProducts: MyFaresOtherFaresProduct[] = [
         type: 'flatFare',
         id: 1,
         duration: '1 trip',
+        quantity: '1',
         passengerType: 'infant',
         startDate: '11/04/2020',
         endDate: '02/09/2090',
+        carnet: false,
     },
     {
         productDescription: 'The greatest product eveer!',
         type: 'period',
         id: 2,
         duration: '3 days',
+        quantity: '20',
         passengerType: 'infant',
         startDate: '11/12/2021',
         endDate: '02/09/2023',
+        carnet: true,
     },
     {
         productDescription: 'The greatest product eveer!',
         type: 'period',
         id: 3,
         duration: '3 days',
+        quantity: '1',
         passengerType: 'adult',
         startDate: '11/12/2021',
         endDate: '02/09/2023',
+        carnet: false,
     },
 ];
 
@@ -102,29 +119,68 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     otherProducts: [
                         {
-                            duration: '1 trip',
+                            carnet: false,
+                            duration: '5 weeks',
                             id: 1,
                             endDate: '18/12/2020',
                             passengerType: 'My best passenger',
-                            productDescription: 'Weekly Rider',
-                            startDate: '17/12/2020',
-                            type: 'flatFare',
-                        },
-                        {
-                            duration: '5 weeks',
-                            id: 2,
-                            endDate: '18/12/2020',
-                            passengerType: 'My other passenger',
                             productDescription: 'Weekly Ticket',
+                            quantity: '1',
                             startDate: '17/12/2020',
                             type: 'period',
                         },
                         {
+                            carnet: false,
+                            duration: '1 year',
+                            id: 1,
+                            endDate: '18/12/2020',
+                            passengerType: 'My other passenger',
+                            productDescription: 'Day Ticket',
+                            quantity: '1',
+                            startDate: '17/12/2020',
+                            type: 'period',
+                        },
+                        {
+                            carnet: false,
+                            duration: '28 months',
+                            id: 1,
+                            endDate: '18/12/2020',
+                            passengerType: 'My last passenger',
+                            productDescription: 'Monthly Ticket',
+                            quantity: '1',
+                            startDate: '17/12/2020',
+                            type: 'period',
+                        },
+                        {
+                            carnet: false,
+                            duration: '5 weeks',
+                            id: 3,
+                            endDate: '18/12/2020',
+                            passengerType: '',
+                            productDescription: 'Weekly Ticket',
+                            quantity: '1',
+                            startDate: '17/12/2020',
+                            type: 'period',
+                        },
+                        {
+                            carnet: false,
                             duration: '1 year',
                             id: 3,
                             endDate: '18/12/2020',
-                            passengerType: 'My last passenger',
+                            passengerType: '',
                             productDescription: 'Day Ticket',
+                            quantity: '1',
+                            startDate: '17/12/2020',
+                            type: 'period',
+                        },
+                        {
+                            carnet: false,
+                            duration: '28 months',
+                            id: 3,
+                            endDate: '18/12/2020',
+                            passengerType: '',
+                            productDescription: 'Monthly Ticket',
+                            quantity: '1',
                             startDate: '17/12/2020',
                             type: 'period',
                         },

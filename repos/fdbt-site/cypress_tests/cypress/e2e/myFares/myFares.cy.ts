@@ -1,7 +1,6 @@
 import {
-    addFlatFareProductIfNotPresent,
     addMultiOperatorProductIfNotPresent,
-    addPeriodProductIfNotPresent,
+    addOtherProductsIfNotPresent,
     addSingleProductIfNotPresent,
     clickElementById,
     clickElementByText,
@@ -104,8 +103,7 @@ describe('The my fares point to point products pages', () => {
 
 describe('The my fares other products pages', () => {
     before(() => {
-        addFlatFareProductIfNotPresent();
-        addPeriodProductIfNotPresent();
+        addOtherProductsIfNotPresent();
     });
     it('allows for navigation through the other products pages', () => {
         getHomePage();

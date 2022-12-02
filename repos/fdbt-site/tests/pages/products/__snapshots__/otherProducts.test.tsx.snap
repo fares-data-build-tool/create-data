@@ -31,7 +31,6 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
         </div>
         <table
           className="govuk-table"
-          data-card-count={0}
         >
           <thead
             className="govuk-table__head"
@@ -139,7 +138,6 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
         </div>
         <table
           className="govuk-table"
-          data-card-count={3}
         >
           <thead
             className="govuk-table__head"
@@ -210,6 +208,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 <a
+                  data-product-type="flatFare"
                   href="/products/productDetails?productId=1"
                   id="product-link-0"
                 >
@@ -284,6 +283,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 <a
+                  data-product-type="period"
                   href="/products/productDetails?productId=2"
                   id="product-link-1"
                 >
@@ -358,6 +358,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 <a
+                  data-product-type="period"
                   href="/products/productDetails?productId=3"
                   id="product-link-2"
                 >

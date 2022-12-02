@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import { MyFaresOtherFaresProduct, NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString, getCsrfToken } from '../../utils';
-import { getOtherProductsByNoc, getPassengerTypeNameByIdAndNoc } from '../../data/auroradb';
+import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import { getTag } from '../products/services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
@@ -77,11 +77,7 @@ const otherProductsTable = (
 ): React.ReactElement => {
     return (
         <>
-            <table
-                className="govuk-table"
-                data-card-count={otherProducts.length}
-                data-period-card-count={otherProducts.filter((product) => product.type === 'period').length}
-            >
+            <table className="govuk-table">
                 <thead className="govuk-table__head">
                     <tr className="govuk-table__row">
                         <th scope="col" className="govuk-table__header">
@@ -171,8 +167,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
     const otherProductsFromDb: MyFaresOtherProduct[] = await getOtherProductsByNoc(noc);
 
-    if (process.env.STAGE !== 'test' && otherProductsFromDb.length > 500) {
-        logger.info('User has more than 500 other products', {
+    if (process.env.STAGE !== 'test' && otherProductsFromDb.length > 50) {
+        logger.info('User has more than 50 other products', {
             noc: noc,
             otherProductsCount: otherProductsFromDb.length,
         });
@@ -186,11 +182,18 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     matchingJson.products?.map(async (innerProduct) => {
                         const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
                         const duration = 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
+                        const quantity =
+                            ('carnetDetails' in innerProduct ? innerProduct.carnetDetails?.quantity : '1') || '1';
                         const type = `${matchingJson.type}${matchingJson.carnet ? ' carnet' : ''}`;
-                        const passengerType = await getPassengerTypeNameByIdAndNoc(matchingJson.passengerType.id, noc);
+                        const passengerType =
+                            (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
+                            (await getGroupPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
+                            '';
                         const { id } = product;
 
-                        const startDate = convertDateFormat(matchingJson.ticketPeriod.startDate);
+                        const startDate = matchingJson.ticketPeriod.startDate
+                            ? convertDateFormat(matchingJson.ticketPeriod.startDate)
+                            : '-';
                         const endDate = matchingJson.ticketPeriod.endDate
                             ? convertDateFormat(matchingJson.ticketPeriod.endDate)
                             : '-';
@@ -198,10 +201,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                             productDescription,
                             type,
                             duration,
+                            quantity,
                             passengerType,
                             startDate,
                             endDate,
                             id,
+                            carnet: 'carnetDetails' in innerProduct && !!innerProduct.carnetDetails,
                         };
                     }),
                 );
