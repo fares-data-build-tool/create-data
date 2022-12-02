@@ -113,7 +113,6 @@ const otherProductsTable = (
                                       <a
                                           href={`/products/productDetails?productId=${product.id}`}
                                           id={`product-link-${index}`}
-                                          data-product-type={product.type}
                                       >
                                           {product.productDescription}
                                       </a>

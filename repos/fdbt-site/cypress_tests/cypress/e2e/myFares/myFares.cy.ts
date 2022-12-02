@@ -173,12 +173,17 @@ describe('The my fares other products pages', () => {
         clickRandomElementInTable('govuk-table__body', 'product-link');
         editProductName();
     });
-    it('allows the user the edit product validity', () => {
+    it.only('allows the user the edit product validity', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
-        clickElementInTableByDataAttribute('govuk-table__body', 'data-product-type', 'period');
-        editProductExpiry();
+        getElementByClass('govuk-table__body')
+            .contains('[class=govuk-table__row]', 'Period')
+            .find('td a')
+            .click()
+            .then(() => {
+                editProductExpiry();
+        });
     });
 });
 

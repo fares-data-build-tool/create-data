@@ -210,7 +210,6 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 <a
-                  data-product-type="flatFare"
                   href="/products/productDetails?productId=1"
                   id="product-link-0"
                 >
@@ -285,7 +284,6 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 <a
-                  data-product-type="period"
                   href="/products/productDetails?productId=2"
                   id="product-link-1"
                 >
@@ -360,7 +358,6 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
                 className="govuk-table__cell dft-table-wrap-anywhere"
               >
                 <a
-                  data-product-type="period"
                   href="/products/productDetails?productId=3"
                   id="product-link-2"
                 >

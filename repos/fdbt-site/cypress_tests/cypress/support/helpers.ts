@@ -586,18 +586,6 @@ export const completeOperatorSearch = (): void => {
     continueButtonClick();
 };
 
-export const clickElementInTableByDataAttribute = (tableName: string, dataAttributeKey: string, dataAttributeValue: string): void => {
-    
-    getElementByClass(tableName)
-        .get(`[${dataAttributeKey}]`)
-        .each((elm) => {
-
-            if (elm.attr(dataAttributeKey) === dataAttributeValue) {
-                cy.wrap(elm).click();
-            }
-        });
-};
-
 export const addOtherProductsIfNotPresent = (): void => {
     getHomePage();
     clickElementById('manage-fares-link');
