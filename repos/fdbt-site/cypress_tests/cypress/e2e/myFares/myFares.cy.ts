@@ -175,7 +175,7 @@ describe('The my fares other products pages', () => {
             .find('td a')
             .click()
             .then(() => {
-                editProductDuration()
+                editProductDuration();
             });
     });
     it('allows the user the edit other product name', () => {

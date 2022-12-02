@@ -402,8 +402,8 @@ export const editProductExpiry = () => {
 export const editProductDuration = () => {
     clickElementById('period-duration-link');
     const productDuration = getRandomNumber(1, 10);
-    clickElementById('edit-period-duration-period-duration-quantity').clear().type(productDuration.toString());
-    selectRandomOptionFromDropDown('edit-period-duration-period-duration-unit');
+    clickElementById('edit-period-duration-quantity').clear().type(productDuration.toString());
+    selectRandomOptionFromDropDown('edit-period-duration-unit');
     continueButtonClick();
     cy.get('@dropdownValue').then((input) => {
         const productDurationUnit = input.toString();
