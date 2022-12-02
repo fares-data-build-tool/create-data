@@ -30,7 +30,7 @@ interface MultiOperatorsServiceListProps {
     csrfToken: string;
 }
 
-const getNumberOfOperatorsWithSelectedProducts = (operators: MultiOperatorInfo[]): number => {
+const getNumberOfOperatorsWithSelectedServices = (operators: MultiOperatorInfo[]): number => {
     let count = 0;
 
     operators.forEach((operator) => {
@@ -153,7 +153,7 @@ const MultiOperatorsServiceList = ({
     const [numberOfOperatorsWithSelectedServices, setNumberOfOperatorsWithSelectedServices] = useState(0);
 
     useEffect(() => {
-        const count = getNumberOfOperatorsWithSelectedProducts(operators);
+        const count = getNumberOfOperatorsWithSelectedServices(operators);
         setNumberOfOperatorsWithSelectedServices(count);
     }, [operators]);
 
@@ -426,7 +426,7 @@ export const getServerSideProps = async (
             throw new Error('Page navigated to manually without necessary session attributes.');
         }
 
-        // map over all additional operators in the ticlet
+        // map over all additional operators in the ticket
         multiOperatorData = await Promise.all(
             ticket.additionalOperators.map(async (operator) => {
                 const services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, 'bods');

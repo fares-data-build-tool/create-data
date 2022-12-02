@@ -13,8 +13,7 @@ import { AdditionalOperator, SelectedService } from '../../interfaces/matchingJs
 export const getMultiOperatorsDataFromRequest = (requestBody: {
     [key: string]: string | string[];
 }): AdditionalOperator[] => {
-    //  example input
-    // {'LNUD#259#vHaXmz#YWAO259#25/03/2020': 'Brighouse - East Bierley'}
+    //  example input {'LNUD#259#vHaXmz#YWAO259#25/03/2020': 'Brighouse - East Bierley'}
 
     const keyValuePairs = Object.entries(requestBody);
 
