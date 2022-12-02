@@ -19,19 +19,19 @@ exports[`pages editPeriodDuration should render editPeriodDuration page correctl
       />
       <h1
         className="govuk-heading-l"
-        id="multiple-product-page-heading"
+        id="edit-period-duration-page-heading"
       >
         Edit Period Duration
       </h1>
       <label
         className="govuk-label"
-        htmlFor="product-details-period-duration"
+        htmlFor="edit-period-duration-period-duration"
       >
         Period duration
       </label>
       <span
         className="govuk-hint"
-        id="product-period-duration-hint"
+        id="edit-period-duration-period-duration-hint"
       >
         For example, 3 days
       </span>

@@ -13,7 +13,7 @@ const title = 'Edit Period Duration - Create Fares Data Service';
 const description = 'Edit Period Duration page of the Create Fares Data Service';
 
 interface EditPeriodDurationProps {
-    errors?: ErrorInfo[];
+    errors: ErrorInfo[];
     csrfToken: string;
     productDurationValue: string;
     productDurationUnit: string;
@@ -30,15 +30,15 @@ const EditPeriodDuration = ({
             <CsrfForm action="/api/editPeriodDuration" method="post" csrfToken={csrfToken}>
                 <div className="govuk-form-group">
                     <ErrorSummary errors={errors} />
-                    <h1 className="govuk-heading-l" id="multiple-product-page-heading">
+                    <h1 className="govuk-heading-l" id="edit-period-duration-page-heading">
                         Edit Period Duration
                     </h1>
 
                     <>
-                        <label className="govuk-label" htmlFor="product-details-period-duration">
+                        <label className="govuk-label" htmlFor="edit-period-duration-period-duration">
                             Period duration
                         </label>
-                        <span className="govuk-hint" id="product-period-duration-hint">
+                        <span className="govuk-hint" id="edit-period-duration-period-duration-hint">
                             For example, 3 days
                         </span>
                     </>
@@ -66,7 +66,7 @@ const EditPeriodDuration = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: EditPeriodDurationProps } => {
     const csrfToken = getCsrfToken(ctx);
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
-    const errors = getSessionAttribute(ctx.req, EDIT_PERIOD_DURATION_ERROR);
+    const errors: ErrorInfo[] = getSessionAttribute(ctx.req, EDIT_PERIOD_DURATION_ERROR) || [];
 
     let productDuration = '';
     if (ticket) {
@@ -81,10 +81,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ed
     const productDurationUnit = productDurationSplit[1];
     return {
         props: {
-            errors: errors || [],
+            errors: errors,
             csrfToken,
-            productDurationValue: productDurationValue,
-            productDurationUnit: productDurationUnit,
+            productDurationValue,
+            productDurationUnit,
         },
     };
 };

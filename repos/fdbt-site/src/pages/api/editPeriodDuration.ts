@@ -37,8 +37,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (!ticket || !matchingJsonMetaData) {
             throw new Error('Ticket information cannot be undefined');
         }
-        const productDurationValue = req.body['multipleProductDurationInput'];
-        const productDurationUnit = req.body['multipleProductDurationUnitsInput'];
+        const productDurationValue = req.body.multipleProductDurationInput;
+        const productDurationUnit = req.body.multipleProductDurationUnitsInput;
 
         const errors: ErrorInfo[] = validateDuration(productDurationValue, productDurationUnit);
 
@@ -60,7 +60,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             ],
         };
 
-        await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData?.matchingJsonLink);
+        await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
         updateSessionAttribute(req, EDIT_PERIOD_DURATION_ERROR, undefined);
         redirectTo(
             res,
