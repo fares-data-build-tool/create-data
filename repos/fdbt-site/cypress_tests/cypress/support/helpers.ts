@@ -602,7 +602,6 @@ export const addOtherProductsIfNotPresent = (): void => {
     getElementByClass('govuk-table').then((element) => {
         const totNumberOfProducts = Number(element.attr('data-card-count'));
         if (totNumberOfProducts > 0) {
-            cy.log(totNumberOfProducts.toString());
             getElementByClass('govuk-table__body')
                 .find("tr:contains('Period')")
                 .each((_) => {
