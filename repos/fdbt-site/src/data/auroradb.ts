@@ -10,6 +10,7 @@ import {
     ServiceCount,
     MyFaresService,
     ServiceWithOriginAndDestination,
+    GroupOfProducts,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
@@ -29,6 +30,7 @@ import {
     RawMyFaresProduct,
     MyFaresOtherProduct,
     DbProduct,
+    GroupOfProductsDb,
 } from '../interfaces/dbTypes';
 import { Stop, FromDb, SalesOfferPackage, CompanionInfo, OperatorDetails } from '../interfaces/matchingJsonTypes';
 
@@ -2005,6 +2007,37 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
             startDate: convertDateFormat(result.startDate),
             endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
         }));
+    } catch (error) {
+        throw new Error(`Could not fetch products from the products table. ${error.stack}`);
+    }
+};
+
+export const getProductGroup = async (noc: string, id: number): Promise<GroupOfProducts | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting product group for a given noc and id',
+        noc,
+        id,
+    });
+
+    const query = `
+            SELECT id, name, products
+            FROM groupOfProducts
+            WHERE nocCode = ? AND id = ?
+        `;
+
+    try {
+        const result = await executeQuery<GroupOfProductsDb[]>(query, [noc, id]);
+
+        if (result.length > 0) {
+            throw new Error('Expected only one result');
+        }
+
+        return {
+            id: result[0].id,
+            productIds: JSON.parse(result[0].products) as string[],
+            name: result[0].name,
+        };
     } catch (error) {
         throw new Error(`Could not fetch products from the products table. ${error.stack}`);
     }

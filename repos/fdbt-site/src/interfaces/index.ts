@@ -710,3 +710,13 @@ export interface ServiceToDisplay {
     destination: string;
     lineName: string;
 }
+
+export interface TypeOfCap {
+    typeOfCap: 'byDistance' | 'byTaps' | 'byProducts';
+}
+
+export interface GroupOfProducts {
+    id: number;
+    productIds: string[];
+    name: string;
+}
