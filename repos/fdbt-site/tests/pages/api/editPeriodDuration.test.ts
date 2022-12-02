@@ -18,7 +18,7 @@ describe('editPeriodDuration tests', () => {
     it('should update a products period duration and redirect back to products/productDetails', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
-            body: { multipleProductDurationInput: '6', multipleProductDurationUnitsInput: 'week' },
+            body: { editPeriodDurationInput: '6', editPeriodDurationUnitsInput: 'week' },
             uuid: {},
             session: {
                 [MATCHING_JSON_ATTRIBUTE]: expectedPeriodGeoZoneTicketWithMultipleProducts,

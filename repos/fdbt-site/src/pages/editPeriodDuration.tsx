@@ -45,11 +45,11 @@ const EditPeriodDuration = ({
                     <ExpirySelector
                         defaultDuration={productDurationValue || undefined}
                         defaultUnit={(productDurationUnit as ExpiryUnit) || undefined}
-                        quantityName={'multipleProductDurationInput'}
-                        quantityId={'product-details-period-duration-quantity'}
-                        hintId="product-period-duration-hint"
-                        unitName={'multipleProductDurationUnitsInput'}
-                        unitId={`product-details-period-duration-unit`}
+                        quantityName={'editPeriodDurationInput'}
+                        quantityId={'edit-period-duration-period-duration-quantity'}
+                        hintId="edit-period-duration-period-duration-hint"
+                        unitName={'editPeriodDurationUnitsInput'}
+                        unitId={'edit-period-duration-period-duration-unit'}
                         carnet={false}
                         errors={errors}
                         school={false}

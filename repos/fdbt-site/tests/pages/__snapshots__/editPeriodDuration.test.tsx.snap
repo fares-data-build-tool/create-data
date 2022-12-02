@@ -41,12 +41,12 @@ exports[`pages editPeriodDuration should render editPeriodDuration page correctl
         defaultUnit="week"
         errors={Array []}
         hideFormGroupError={true}
-        hintId="product-period-duration-hint"
-        quantityId="product-details-period-duration-quantity"
-        quantityName="multipleProductDurationInput"
+        hintId="edit-period-duration-period-duration-hint"
+        quantityId="edit-period-duration-period-duration-quantity"
+        quantityName="editPeriodDurationInput"
         school={false}
-        unitId="product-details-period-duration-unit"
-        unitName="multipleProductDurationUnitsInput"
+        unitId="edit-period-duration-period-duration-unit"
+        unitName="editPeriodDurationUnitsInput"
       />
       <br />
       <input

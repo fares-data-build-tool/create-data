@@ -4,7 +4,6 @@ import {
     addSingleProductIfNotPresent,
     clickElementById,
     clickElementByText,
-    clickElementInTableByDataAttribute,
     clickRandomElementInTable,
     getElementByClass,
     getElementById,
@@ -21,6 +20,7 @@ import {
     editOperatorGroupMultiOperatorProductsPage,
     editPassengerTypeOtherProductsPage,
     editPassengerTypePointToPointPage,
+    editProductDuration,
     editProductExpiry,
     editProductName,
     editProductNamePointToPointPage,
@@ -164,6 +164,18 @@ describe('The my fares other products pages', () => {
             .click()
             .then(() => {
                 editTimeRestriction();
+            });
+    });
+    it('allows the user the edit other product period duration', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Other products');
+        getElementByClass('govuk-table__body')
+            .contains('[class=govuk-table__row]', 'Period')
+            .find('td a')
+            .click()
+            .then(() => {
+                editProductDuration()
             });
     });
     it('allows the user the edit other product name', () => {

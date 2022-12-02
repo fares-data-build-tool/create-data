@@ -291,6 +291,9 @@ export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
         })
         .parent()
         .trigger('change');
+        cy.get(`[id=${dropDownId}] option:selected`).then(($selected) => {
+            cy.wrap($selected.text()).as('dropdownValue');
+        });
 };
 
 export const completeGroupPassengerDetailsPages = (): void => {
@@ -628,7 +631,6 @@ export const addOtherProductsIfNotPresent = (): void => {
         isFinished();
         cy.log('Flat fare product set up');
     }
-
 };
 
 export const addMultiOperatorProductIfNotPresent = (): void => {
