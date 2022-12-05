@@ -213,6 +213,7 @@ export interface SessionAttributeTypes {
     [VIEW_PURCHASE_METHOD]: ErrorInfo[];
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
+    [VIEW_PRODUCT_GROUP]: ErrorInfo[];
     [CAPPED_PRODUCT_ATTRIBUTE]: boolean;
     [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;

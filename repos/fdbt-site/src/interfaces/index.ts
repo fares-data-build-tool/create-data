@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { ReactElement } from 'react';
-import { DbTimeRestriction, SinglePassengerType } from './dbTypes';
+import { DbTimeRestriction, MyFaresProduct, SinglePassengerType } from './dbTypes';
 import {
     CarnetDetails,
     SelectedService,
@@ -92,6 +92,12 @@ export interface Operator {
 export interface OperatorGroup {
     name: string;
     operators: Operator[];
+    id: number;
+}
+
+export interface ProductGroup {
+    name: string;
+    productIds: string[];
     id: number;
 }
 
@@ -217,6 +223,7 @@ export interface GlobalSettingsCounts {
     fareDayEndSet: boolean;
     operatorDetailsSet: boolean;
     operatorGroupsCount: number;
+    productGroupsCount: number;
 }
 
 export interface PassengerAttributes {

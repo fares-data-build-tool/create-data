@@ -70,6 +70,7 @@ const Navigation = (): ReactElement => (
                         'manageFareDayEnd',
                         'manageOperatorDetails',
                         'viewOperatorGroups',
+                        'viewProductGroups'
                     ])
                         ? 'app-navigation__list-item--current'
                         : ''
