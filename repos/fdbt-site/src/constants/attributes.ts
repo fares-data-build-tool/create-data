@@ -128,6 +128,8 @@ export const VIEW_TIME_RESTRICTION = 'fdbt-products-using-time-restriction';
 
 export const VIEW_OPERATOR_GROUP = 'fdbt-products-using-operator-group';
 
+export const VIEW_PRODUCT_GROUP = 'fdbt-products-using-product-group';
+
 export const CAPPED_PRODUCT_ATTRIBUTE = 'fdbt-capped-product-type';
 
 export const EDIT_PERIOD_DURATION_ERROR = 'fdbt-period-duration-error';

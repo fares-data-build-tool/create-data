@@ -132,3 +132,9 @@ export interface ServiceDetails {
     direction: string;
     serviceId: string;
 }
+
+export interface GroupOfProductsDb {
+    id: number;
+    products: string;
+    name: string;
+}

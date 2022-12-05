@@ -8,6 +8,7 @@ import {
     getFareDayEnd,
     getOperatorDetails,
     getOperatorGroupsByNoc,
+    getProductGroupsByNoc,
 } from '../data/auroradb';
 import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
@@ -72,11 +73,19 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                         />
 
                         <SettingOverview
+                            href="/viewProductGroups"
+                            name="Product groups"
+                            description="Define your operator groups - these will be used in capped tickets"
+                            count={globalSettingsCounts.productGroupsCount}
+                        />
+
+                        <SettingOverview
                             href="/manageOperatorDetails"
                             name="Operator details"
                             description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
                             count={globalSettingsCounts.operatorDetailsSet}
                         />
+
                     </div>
                 </div>
             </BaseLayout>
@@ -100,6 +109,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const fareDayEnd = await getFareDayEnd(noc);
     const operatorDetails = await getOperatorDetails(noc);
     const operatorGroups = await getOperatorGroupsByNoc(noc);
+    const productGroups = await getProductGroupsByNoc(noc);
 
     const globalSettingsCounts: GlobalSettingsCounts = {
         passengerTypesCount: savedPassengerTypes.length + savedGroupPassengerTypes.length,
@@ -108,6 +118,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         fareDayEndSet: !!fareDayEnd,
         operatorDetailsSet: !!operatorDetails,
         operatorGroupsCount: operatorGroups.length,
+        productGroupsCount: productGroups.length
     };
 
     return { props: { globalSettingsCounts, referer } };
