@@ -13,7 +13,8 @@ import { isValidInputDuration, removeExcessWhiteSpace, checkIntegerIsValid } fro
 const validateDuration = (carnetDuration: string, carnetDurationUnit: string, quantity: string): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
     const trimmedExpiry = removeExcessWhiteSpace(carnetDuration);
-    const expiryError = checkIntegerIsValid(trimmedExpiry, 'Carnet expiry amount', 1, 999);
+    const expiryError =
+        carnetDurationUnit === 'no expiry' ? '' : checkIntegerIsValid(trimmedExpiry, 'Carnet expiry amount', 1, 999);
     const trimmedQuantity = removeExcessWhiteSpace(quantity);
     const quantityError = checkIntegerIsValid(trimmedQuantity, 'Quantity in bundle', 2, 999);
     const carnetDurationUnitsError =
