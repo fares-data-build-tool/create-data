@@ -35,21 +35,21 @@ const EditPeriodDuration = ({
                     </h1>
 
                     <>
-                        <label className="govuk-label" htmlFor="edit-period-duration-period-duration">
+                        <label className="govuk-label" htmlFor="edit-period-duration">
                             Period duration
                         </label>
-                        <span className="govuk-hint" id="edit-period-duration-period-duration-hint">
+                        <span className="govuk-hint" id="edit-period-duration-hint">
                             For example, 3 days
                         </span>
                     </>
                     <ExpirySelector
                         defaultDuration={productDurationValue || undefined}
                         defaultUnit={(productDurationUnit as ExpiryUnit) || undefined}
-                        quantityName={'multipleProductDurationInput'}
-                        quantityId={'product-details-period-duration-quantity'}
-                        hintId="product-period-duration-hint"
-                        unitName={'multipleProductDurationUnitsInput'}
-                        unitId={`product-details-period-duration-unit`}
+                        quantityName={'periodDurationInput'}
+                        quantityId={'edit-period-duration-quantity'}
+                        hintId="edit-period-duration-hint"
+                        unitName={'periodDurationUnitsInput'}
+                        unitId={'edit-period-duration-unit'}
                         carnet={false}
                         errors={errors}
                         school={false}
