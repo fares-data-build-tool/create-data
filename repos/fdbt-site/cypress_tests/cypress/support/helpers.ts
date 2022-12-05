@@ -599,7 +599,7 @@ export const addOtherProductsIfNotPresent = (): void => {
     let numberOfFlatFareProducts = 0;
     cy.wrap(numberOfFlatFareProducts).as('numberOfFlatFareProducts');
 
-    getElementByClass('govuk-table').then((element) => {
+    cy.get(`[data-card-count]`).then((element) => {
         const totNumberOfProducts = Number(element.attr('data-card-count'));
         if (totNumberOfProducts > 0) {
             getElementByClass('govuk-table__body')
