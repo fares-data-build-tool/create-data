@@ -1,19 +1,19 @@
 import React, { ReactElement } from 'react';
 import { GroupOfProducts } from '../interfaces';
 
-interface ProductsGroupCardProps {
+interface ProductGroupCardProps {
     groupDetails: GroupOfProducts;
     index: number;
     deleteActionHandler?: (id: number, name: string) => void;
     defaultChecked: boolean;
 }
 
-const ProductsGroupCard = ({
+const ProductGroupCard = ({
     groupDetails,
     index,
     deleteActionHandler,
     defaultChecked,
-}: ProductsGroupCardProps): ReactElement => {
+}: ProductGroupCardProps): ReactElement => {
     const { name, id } = groupDetails;
 
     return (
@@ -67,4 +67,4 @@ const ProductsGroupCard = ({
     );
 };
 
-export default ProductsGroupCard;
+export default ProductGroupCard;

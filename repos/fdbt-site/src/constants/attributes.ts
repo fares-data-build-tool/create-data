@@ -133,3 +133,5 @@ export const CAPPED_PRODUCT_ATTRIBUTE = 'fdbt-capped-product-type';
 export const TYPE_OF_CAP_ATTRIBUTE = 'fdbt-type-of-cap';
 
 export const CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE = 'fdbt-capped-product-group-id';
+
+export const CAPS_ATTRIBUTE = 'fdbt-caps';

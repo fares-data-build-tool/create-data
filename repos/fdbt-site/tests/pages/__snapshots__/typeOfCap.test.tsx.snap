@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages typeOfCap should render correctly 1`] = `
+<TwoThirdsLayout
+  description="Type of cap selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Type of Cap - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/typeOfCap"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="type-of-cap-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="type-of-cap-page-heading"
+          >
+            Select a type of cap
+          </h1>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--errors"
+          errorId="radio-option-byDistance"
+          errors={Array []}
+        >
+          <RadioButtons
+            inputName="typeOfCap"
+            options={
+              Array [
+                Object {
+                  "hint": "Price increments by units of distance travelled up to a cap",
+                  "label": "Pricing by distance",
+                  "value": "byDistance",
+                },
+                Object {
+                  "hint": "Pricing increments by number of taps up to a cap",
+                  "label": "Pricing by taps",
+                  "value": "byTaps",
+                },
+                Object {
+                  "hint": "Price increments by standard products up to a cap",
+                  "label": "Pricing by products",
+                  "value": "byProducts",
+                },
+              ]
+            }
+          />
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages typeOfCap should render error messaging when errors are passed to the page 1`] = `
+<TwoThirdsLayout
+  description="Type of cap selection page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose a type of cap",
+        "id": "radio-option-byDistance",
+      },
+    ]
+  }
+  title="Type of Cap - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/typeOfCap"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose a type of cap",
+            "id": "radio-option-byDistance",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="type-of-cap-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="type-of-cap-page-heading"
+          >
+            Select a type of cap
+          </h1>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--errors"
+          errorId="radio-option-byDistance"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Choose a type of cap",
+                "id": "radio-option-byDistance",
+              },
+            ]
+          }
+        >
+          <RadioButtons
+            inputName="typeOfCap"
+            options={
+              Array [
+                Object {
+                  "hint": "Price increments by units of distance travelled up to a cap",
+                  "label": "Pricing by distance",
+                  "value": "byDistance",
+                },
+                Object {
+                  "hint": "Pricing increments by number of taps up to a cap",
+                  "label": "Pricing by taps",
+                  "value": "byTaps",
+                },
+                Object {
+                  "hint": "Price increments by standard products up to a cap",
+                  "label": "Pricing by products",
+                  "value": "byProducts",
+                },
+              ]
+            }
+          />
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;

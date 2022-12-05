@@ -1,0 +1,138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductGroupCard should render checked 1`] = `
+<div
+  className="card"
+  id="product-group-0"
+>
+  <div
+    className="card__body"
+  >
+    <div
+      className="govuk-radios"
+    >
+      <div
+        className="govuk-radios__item card__selector"
+      >
+        <input
+          aria-label="The capped products"
+          className="govuk-radios__input"
+          defaultChecked={true}
+          id="product-group-0-radio"
+          name="productGroupId"
+          type="radio"
+          value={1}
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+        />
+      </div>
+    </div>
+    <h4
+      className="govuk-heading-m govuk-!-padding-bottom-4"
+    >
+      The capped products
+    </h4>
+    <p
+      className="govuk-body-s govuk-!-margin-bottom-2"
+    >
+      4
+       products
+    </p>
+  </div>
+</div>
+`;
+
+exports[`ProductGroupCard should render not checked 1`] = `
+<div
+  className="card"
+  id="product-group-0"
+>
+  <div
+    className="card__body"
+  >
+    <div
+      className="govuk-radios"
+    >
+      <div
+        className="govuk-radios__item card__selector"
+      >
+        <input
+          aria-label="The capped products"
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="product-group-0-radio"
+          name="productGroupId"
+          type="radio"
+          value={1}
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+        />
+      </div>
+    </div>
+    <h4
+      className="govuk-heading-m govuk-!-padding-bottom-4"
+    >
+      The capped products
+    </h4>
+    <p
+      className="govuk-body-s govuk-!-margin-bottom-2"
+    >
+      4
+       products
+    </p>
+  </div>
+</div>
+`;
+
+exports[`ProductGroupCard should render with delete handler 1`] = `
+<div
+  className="card"
+  id="product-group-0"
+>
+  <div
+    className="card__body"
+  >
+    <div
+      className="card__actions"
+    >
+      <ul
+        className="actions__list"
+      >
+        <li
+          className="actions__item"
+        >
+          <a
+            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
+            href="/searchOperators?id=1"
+          >
+            Edit
+          </a>
+        </li>
+        <li
+          className="actions__item"
+        >
+          <button
+            className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+            onClick={[Function]}
+          >
+            Delete
+          </button>
+        </li>
+      </ul>
+    </div>
+    <h4
+      className="govuk-heading-m govuk-!-padding-bottom-4"
+    >
+      The capped products
+    </h4>
+    <p
+      className="govuk-body-s govuk-!-margin-bottom-2"
+    >
+      4
+       products
+    </p>
+  </div>
+</div>
+`;

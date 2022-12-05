@@ -25,7 +25,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (typeOfCap === 'byProducts') {
             redirectTo(res, '/selectCappedProductGroup');
+            return;
         } else {
+            // to change when we support other types of cap
+            // and add appropriate unit API test
             redirectTo(res, '/typeOfCap');
             return;
         }

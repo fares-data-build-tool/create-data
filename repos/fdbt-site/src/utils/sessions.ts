@@ -66,6 +66,7 @@ import {
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     CSV_ZONE_FILE_NAME,
     DIRECTION_ATTRIBUTE,
+    CAPS_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -124,6 +125,7 @@ import {
     BasicService,
     ManageOperatorGroupWithErrors,
     TypeOfCap,
+    Cap,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -213,6 +215,7 @@ export interface SessionAttributeTypes {
     [CAPPED_PRODUCT_ATTRIBUTE]: boolean;
     [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
+    [CAPS_ATTRIBUTE]: { errors: ErrorInfo[]; caps: Cap[] };
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

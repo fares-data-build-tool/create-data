@@ -1,7 +1,7 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
-import ProductsGroupCard from '../components/ProductsGroupCard';
+import ProductsGroupCard from '../components/ProductGroupCard';
 import { CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, GroupOfProducts, NextPageContextWithSession } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
@@ -43,7 +43,7 @@ const SelectPassengerType = ({
                             <strong className="govuk-warning-text__text">
                                 <span className="govuk-warning-text__assistive">Warning</span>
                                 You can create groups of capped products in your{' '}
-                                <a className="govuk-link" href="/viewGroupsOfProducts">
+                                <a className="govuk-link" href="/viewProductGroups">
                                     operator settings.
                                 </a>{' '}
                                 <br />
@@ -64,6 +64,7 @@ const SelectPassengerType = ({
                                 <div className="card-row" id="product-groups">
                                     {savedGroups.map((savedGroup, index) => (
                                         <ProductsGroupCard
+                                            key={savedGroup.name}
                                             defaultChecked={selectedId === savedGroup.id}
                                             index={index}
                                             groupDetails={savedGroup}
@@ -90,9 +91,7 @@ const SelectPassengerType = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (
-    ctx: NextPageContextWithSession,
-): Promise<{ props: SelectCappedProductGroupProps }> => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SelectCappedProductGroupProps } => {
     const csrfToken = getCsrfToken(ctx);
     const groupOfProductsAttribute = getSessionAttribute(ctx.req, CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE);
     const errors =

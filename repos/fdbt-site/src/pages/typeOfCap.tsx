@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -30,7 +30,11 @@ const TicketRepresentation = ({ errors = [], csrfToken }: TypeOfCapProps): React
                                     {`Select a type of cap`}
                                 </h1>
                             </legend>
-                            <FormElementWrapper errors={errors} errorId="radio-option-byDistance" errorClass="govuk-radios--errors">
+                            <FormElementWrapper
+                                errors={errors}
+                                errorId="radio-option-byDistance"
+                                errorClass="govuk-radios--errors"
+                            >
                                 <RadioButtons
                                     inputName="typeOfCap"
                                     options={[

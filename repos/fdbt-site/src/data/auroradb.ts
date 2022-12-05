@@ -2012,7 +2012,7 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
     }
 };
 
-export const getProductGroup = async (noc: string, id: number): Promise<GroupOfProducts | undefined> => {
+export const getProductGroupById = async (noc: string, id: number): Promise<GroupOfProducts | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'getting product group for a given noc and id',
@@ -2029,16 +2029,12 @@ export const getProductGroup = async (noc: string, id: number): Promise<GroupOfP
     try {
         const result = await executeQuery<GroupOfProductsDb[]>(query, [noc, id]);
 
-        if (result.length > 0) {
-            throw new Error('Expected only one result');
-        }
-
         return {
             id: result[0].id,
             productIds: JSON.parse(result[0].products) as string[],
             name: result[0].name,
         };
     } catch (error) {
-        throw new Error(`Could not fetch products from the products table. ${error.stack}`);
+        return undefined;
     }
 };

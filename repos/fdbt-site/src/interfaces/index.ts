@@ -720,3 +720,10 @@ export interface GroupOfProducts {
     productIds: string[];
     name: string;
 }
+
+export interface Cap {
+    name: string;
+    price: string;
+    durationAmount: string;
+    durationUnits: ExpiryUnit;
+}

@@ -81,11 +81,6 @@ exports[`pages fareType should render correctly 1`] = `
                   "label": "Academic term/year ticket",
                   "value": "schoolService",
                 },
-                Object {
-                  "hint": "A cap applicable over a number of days or weeks",
-                  "label": "Capped product",
-                  "value": "cappedProduct",
-                },
               ]
             }
           />
@@ -285,11 +280,6 @@ exports[`pages fareType should render error messaging when errors are passed to 
                   "hint": "A ticket available to pupils in full-time education",
                   "label": "Academic term/year ticket",
                   "value": "schoolService",
-                },
-                Object {
-                  "hint": "A cap applicable over a number of days or weeks",
-                  "label": "Capped product",
-                  "value": "cappedProduct",
                 },
               ]
             }
