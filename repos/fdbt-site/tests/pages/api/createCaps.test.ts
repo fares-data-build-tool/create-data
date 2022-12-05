@@ -13,7 +13,12 @@ describe('createCaps', () => {
 
     it('redirects back to /createCaps if there is no user entry', () => {
         const { req, res } = getMockRequestAndResponse({
-            body: null,
+            body: {
+                capNameInput0: '',
+                capPriceInput0: '',
+                capDurationInput0: '',
+                capDurationUnitsInput0: '',
+            },
             mockWriteHeadFn: writeHeadMock,
         });
 
@@ -24,8 +29,13 @@ describe('createCaps', () => {
         });
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
-            caps: [],
-            errors: [{ errorMessage: 'Next page to be made soon!', id: '' }],
+            caps: [{ durationAmount: '', durationUnits: '', name: '', price: '' }],
+            errors: [
+                { errorMessage: 'Cap name cannot have less than 2 characters', id: 'cap-name-0' },
+                { errorMessage: 'Cap price cannot be empty', id: 'cap-price-0' },
+                { errorMessage: 'Cap duration cannot be empty', id: 'cap-period-duration-quantity-0' },
+                { errorMessage: 'Choose an option from the dropdown', id: 'cap-duration-unit-0' },
+            ],
         });
     });
 
