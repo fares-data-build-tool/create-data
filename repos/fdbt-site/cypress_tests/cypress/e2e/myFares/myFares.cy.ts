@@ -180,7 +180,7 @@ describe('The my fares other products pages', () => {
                 editProductDuration();
             });
     });
-    it.only('allows the user the edit other carnet product quantity', () => {
+    it('allows the user the edit other carnet product quantity', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
@@ -192,7 +192,7 @@ describe('The my fares other products pages', () => {
                 editQuantityInBundle();
             });
     });
-    it.only('allows the user the edit other carnet product expiry', () => {
+    it('allows the user the edit other carnet product expiry', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
