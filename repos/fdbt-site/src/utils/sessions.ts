@@ -67,6 +67,7 @@ import {
     MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
     VIEW_TIME_RESTRICTION,
     VIEW_OPERATOR_GROUP,
+    EDIT_CARNET_PROPERTIES_ERROR,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -212,6 +213,7 @@ export interface SessionAttributeTypes {
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
     [CAPPED_PRODUCT_ATTRIBUTE]: boolean;
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
+    [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

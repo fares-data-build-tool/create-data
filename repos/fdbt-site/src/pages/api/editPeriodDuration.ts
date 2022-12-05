@@ -23,10 +23,10 @@ const validateDuration = (productDuration: string, productDurationUnit: string):
         : '';
 
     if (productDurationError) {
-        errors.push({ id: 'product-duration', errorMessage: productDurationError });
+        errors.push({ id: 'edit-period-duration-quantity', errorMessage: productDurationError });
     }
     if (productDurationUnitError) {
-        errors.push({ id: 'product-duration-unit', errorMessage: productDurationUnitError });
+        errors.push({ id: 'edit-period-duration-unit', errorMessage: productDurationUnitError });
     }
     return errors;
 };
