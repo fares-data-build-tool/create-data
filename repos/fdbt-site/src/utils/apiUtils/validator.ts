@@ -97,9 +97,11 @@ export const checkPriceIsValid = (inputtedPrice: string | undefined, inputType: 
     if (!inputtedPrice) {
         productPriceError = `${startCase(inputType)} price cannot be empty`;
     } else if (Math.sign(Number(inputtedPrice)) === -1) {
-        productPriceError = `This must be a positive number`;
+        productPriceError = 'This must be a positive number';
     } else if (!isCurrency(inputtedPrice)) {
-        productPriceError = `This must be a valid price in pounds and pence`;
+        productPriceError = 'This must be a valid price in pounds and pence';
+    } else if (inputType === 'cap' && Number(inputtedPrice) === 0) {
+        productPriceError = 'Cap prices cannot be zero';
     }
 
     if (productPriceError) {

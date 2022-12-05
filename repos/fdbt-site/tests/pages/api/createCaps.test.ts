@@ -116,4 +116,50 @@ describe('createCaps', () => {
             ],
         });
     });
+
+    it('redirects back to /createCaps if the user enters 0 as an input', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                capNameInput0: 'Name',
+                capPriceInput0: '0',
+                capDurationInput0: '2',
+                capDurationUnitsInput0: 'week',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        createCaps(req, res);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/createCaps',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
+            caps: [{ durationAmount: '2', durationUnits: 'week', name: 'Name', price: '0' }],
+            errors: [{ errorMessage: 'Cap prices cannot be zero', id: 'cap-price-0' }],
+        });
+    });
+
+    it('redirects back to /createCaps if the user enters 000 as an input', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                capNameInput0: 'Name',
+                capPriceInput0: '000',
+                capDurationInput0: '2',
+                capDurationUnitsInput0: 'week',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        createCaps(req, res);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/createCaps',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
+            caps: [{ durationAmount: '2', durationUnits: 'week', name: 'Name', price: '000' }],
+            errors: [{ errorMessage: 'Cap prices cannot be zero', id: 'cap-price-0' }],
+        });
+    });
 });
