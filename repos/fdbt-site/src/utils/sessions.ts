@@ -127,6 +127,7 @@ import {
     ManageOperatorGroupWithErrors,
     TypeOfCap,
     Cap,
+    ManageProductGroupWithErrors,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -178,6 +179,7 @@ export interface SessionAttributeTypes {
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;
     [MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE]: ManageOperatorGroupWithErrors;
+    [MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE]: ManageProductGroupWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [RETURN_SERVICE_ATTRIBUTE]: BasicService | WithErrors<BasicService>;
     [DIRECTION_ATTRIBUTE]: Direction | Errors;

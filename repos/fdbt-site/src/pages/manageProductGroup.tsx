@@ -1,61 +1,31 @@
 import startCase from 'lodash/startCase';
 import moment from 'moment';
-import React, { ErrorInfo, ReactElement, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
+import ErrorSummary from 'src/components/ErrorSummary';
 import FormElementWrapper from 'src/components/FormElementWrapper';
+import InformationSummary from 'src/components/InformationSummary';
+import { MULTIPLE_OPERATOR_ATTRIBUTE } from 'src/constants/attributes';
+import { getSessionAttribute } from 'src/utils/sessions';
 import CsrfForm from '../components/CsrfForm';
-import { getAllPassengerTypesByNoc, getAllProductsByNoc, getBodsServicesByNoc } from '../data/auroradb';
+import { getAllPassengerTypesByNoc, getAllProductsByNoc, getBodsServicesByNoc, getProductGroupById, getProductGroupsByNoc } from '../data/auroradb';
 import { getProductsMatchingJson } from '../data/s3';
-import { MyFaresService, NextPageContextWithSession, ProductToExport, ServiceToDisplay } from '../interfaces';
+import { ErrorInfo, MyFaresService, NextPageContextWithSession, ProductGroup, ProductToExport, ServiceToDisplay } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getNonExpiredProducts, filterOutProductsWithNoActiveServices } from './api/exports';
 
 const title = 'Manage Product Group';
 const description = 'Manage the product group';
+const editingInformationText = 'Editing and saving new changes will be applied to all capped fares using this product group.';
 
 interface ManageProductGroupProps {
     csrf: string;
     productsToDisplay: ProductToExport[];
     servicesToDisplay: ServiceToDisplay[];
     errors: ErrorInfo[];
+    editMode: boolean;
+    inputs?: ProductGroup | undefined;
 }
-
-interface FormattedOtherProducts {
-    periodProducts: ProductToExport[];
-    flatFareProducts: ProductToExport[];
-    multiOperatorProducts: ProductToExport[];
-    schoolServiceProducts: ProductToExport[];
-}
-
-export const formatOtherProducts = (otherProducts: ProductToExport[]): FormattedOtherProducts => {
-    const formatted: FormattedOtherProducts = {
-        periodProducts: [],
-        flatFareProducts: [],
-        multiOperatorProducts: [],
-        schoolServiceProducts: [],
-    };
-
-    otherProducts.forEach((product) => {
-        switch (product.fareType) {
-            case 'period':
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                product.schoolTicket
-                    ? formatted.schoolServiceProducts.push(product)
-                    : formatted.periodProducts.push(product);
-                break;
-            case 'flatFare':
-                formatted.flatFareProducts.push(product);
-                break;
-            case 'multiOperator':
-                formatted.multiOperatorProducts.push(product);
-                break;
-            default:
-                break;
-        }
-    });
-
-    return formatted;
-};
 
 const buildOtherProductSection = (
     indexCounter: number,
@@ -113,42 +83,36 @@ const buildOtherProductSection = (
     );
 };
 
-const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors }: ManageProductGroupProps): ReactElement => {
+const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors, editMode, inputs }: ManageProductGroupProps): ReactElement => {
+    
+    const id = inputs?.id; 
+
     const [detailsAllOpen, setAllDetails] = useState(false);
     const [productsSelected, setProductsSelected] = useState<number[]>([]);
     let indexCounter = 0;
 
-    const otherProducts = productsToDisplay.filter((product) => !product.serviceLineId);
-    const formattedProducts = formatOtherProducts(otherProducts);
+    const otherProducts = productsToDisplay.filter((product) => !product.serviceLineId);    
 
     return (
-        <>
+        <>                            
             <BaseLayout title={title} description={description}>
+            {editMode && errors.length === 0 ? (
+                        <InformationSummary informationText={editingInformationText} />
+                    ) : null}
+                <ErrorSummary errors={errors} />
                 <CsrfForm csrfToken={csrf} method={'post'} action={'/api/manageProductGroup'}>
-                {/* <input type="hidden" name="id" value={id} /> */}
+                <input type="hidden" name="id" value={id} />
                     <div className="govuk-grid-row">
                         <div className="govuk-grid-column-full">
                         
                             <div className="dft-flex dft-flex-justify-space-between">
-                                <h1 className="govuk-heading-xl">Product group</h1>{' '}
-                                <div className="align-middle">
-                                    <button
-                                        type="submit"
-                                        className={`govuk-button${
-                                            productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
-                                        }`}
-                                    >
-                                        Create Product Group
-                                    </button>
-                                </div>
+                                <h1 className="govuk-heading-xl">Product group</h1>{' '}                                
                             </div>
 
                             <div className="govuk-grid-row">
                                 <div className="dft-flex dft-flex-justify-space-between">
                                     <div className="govuk-grid-column-two-thirds">
                                         <p className="govuk-body-m govuk-!-margin-bottom-5">
-                                            
-
                                         <div
                                             className={`govuk-form-group`}
                                             id="product-group-name"
@@ -174,7 +138,7 @@ const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors
                                                     type="text"
                                                     maxLength={50}
                                                     minLength={2}
-                                                    // defaultValue={inputs?.name || ''}
+                                                    defaultValue={inputs?.name || ''}
                                                 />
                                             </FormElementWrapper>
                                         </div>
@@ -231,27 +195,12 @@ const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors
                                                 <a className="govuk-tabs__tab" href="#services">
                                                     Services
                                                 </a>
-                                            </li>
-                                            <li className="govuk-tabs__list-item">
-                                                <a className="govuk-tabs__tab" href="#period-products">
-                                                    Period products
-                                                </a>
-                                            </li>
+                                            </li>                                            
                                             <li className="govuk-tabs__list-item">
                                                 <a className="govuk-tabs__tab" href="#flat-fare-products">
                                                     Flat fare products
                                                 </a>
-                                            </li>
-                                            <li className="govuk-tabs__list-item">
-                                                <a className="govuk-tabs__tab" href="#multi-operator-products">
-                                                    Multi operator products
-                                                </a>
-                                            </li>
-                                            <li className="govuk-tabs__list-item">
-                                                <a className="govuk-tabs__tab" href="#school-service-products">
-                                                    Academic products
-                                                </a>
-                                            </li>
+                                            </li>                                            
                                         </ul>
                                         <div className="govuk-tabs__panel" id="services">
                                             <h2 className="govuk-heading-m govuk-!-margin-bottom-6">Services</h2>
@@ -367,34 +316,7 @@ const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors
                                                     </em>
                                                 </p>
                                             )}
-                                        </div>
-                                        <div
-                                            className="govuk-tabs__panel govuk-tabs__panel--hidden"
-                                            id="period-products"
-                                        >
-                                            {otherProducts.length > 0 ? (
-                                                <div>
-                                                    <h2 className="govuk-heading-m govuk-!-margin-bottom-6">
-                                                        Period products
-                                                    </h2>
-                                                    {formattedProducts.periodProducts.length > 0 ? (
-                                                        buildOtherProductSection(
-                                                            indexCounter,
-                                                            productsSelected,
-                                                            setProductsSelected,
-                                                            formattedProducts.periodProducts,
-                                                        )
-                                                    ) : (
-                                                        <p className="govuk-body-m govuk-!-margin-top-5">
-                                                            <em>
-                                                                You currently have no period products that can be
-                                                                added to product group.
-                                                            </em>
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            ) : null}
-                                        </div>
+                                        </div>                                        
                                         <div
                                             className="govuk-tabs__panel govuk-tabs__panel--hidden"
                                             id="flat-fare-products"
@@ -405,12 +327,12 @@ const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors
                                                         Flat fare products
                                                     </h2>
 
-                                                    {formattedProducts.flatFareProducts.length > 0 ? (
+                                                    {otherProducts.length > 0 ? (
                                                         buildOtherProductSection(
-                                                            indexCounter + formattedProducts.periodProducts.length,
+                                                            indexCounter + otherProducts.length,
                                                             productsSelected,
                                                             setProductsSelected,
-                                                            formattedProducts.flatFareProducts,
+                                                            otherProducts,
                                                         )
                                                     ) : (
                                                         <p className="govuk-body-m govuk-!-margin-top-5">
@@ -423,69 +345,19 @@ const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors
                                                 </div>
                                             ) : null}
                                         </div>
-                                        <div
-                                            className="govuk-tabs__panel govuk-tabs__panel--hidden"
-                                            id="multi-operator-products"
-                                        >
-                                            {otherProducts.length > 0 ? (
-                                                <div>
-                                                    <h2 className="govuk-heading-m govuk-!-margin-bottom-6">
-                                                        Multioperator products
-                                                    </h2>
 
-                                                    {formattedProducts.multiOperatorProducts.length > 0 ? (
-                                                        buildOtherProductSection(
-                                                            indexCounter +
-                                                                formattedProducts.flatFareProducts.length +
-                                                                formattedProducts.periodProducts.length,
-                                                            productsSelected,
-                                                            setProductsSelected,
-                                                            formattedProducts.multiOperatorProducts,
-                                                        )
-                                                    ) : (
-                                                        <p className="govuk-body-m govuk-!-margin-top-5">
-                                                            <em>
-                                                                You currently have no multioperator products that can be
-                                                                added to product group.
-                                                            </em>
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            ) : null}
-                                        </div>
-                                        <div
-                                            className="govuk-tabs__panel govuk-tabs__panel--hidden"
-                                            id="school-service-products"
-                                        >
-                                            {otherProducts.length > 0 ? (
-                                                <div>
-                                                    <h2 className="govuk-heading-m govuk-!-margin-bottom-6">
-                                                        Academic term/year products
-                                                    </h2>
-                                                    {formattedProducts.schoolServiceProducts.length > 0 ? (
-                                                        buildOtherProductSection(
-                                                            indexCounter +
-                                                                formattedProducts.multiOperatorProducts.length +
-                                                                formattedProducts.flatFareProducts.length +
-                                                                formattedProducts.periodProducts.length,
-                                                            productsSelected,
-                                                            setProductsSelected,
-                                                            formattedProducts.schoolServiceProducts,
-                                                        )
-                                                    ) : (
-                                                        <p className="govuk-body-m govuk-!-margin-top-5">
-                                                            <em>
-                                                                You currently have no academic term/year products that
-                                                                can be added to product group.
-                                                            </em>
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            ) : null}
-                                        </div>
                                     </div>
                                 </div>
                             )}
+
+                            <button
+                                        type="submit"
+                                        className={`govuk-button${
+                                            productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
+                                        }`}
+                                    >
+                                        Create Product Group
+                                    </button>
                         </div>
                     </div>
                 </CsrfForm>
@@ -502,8 +374,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
+    // const userInputsAndErrors = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
+    // return getGlobalSettingsManageProps(ctx, getPassengerTypeById, userInputsAndErrors);
+
+
     console.log("maange the product group - 1");
-    const productsToDisplay: ProductToExport[] = await Promise.all(
+    
+    const allProductsToDisplay: ProductToExport[] = await Promise.all(
         nonExpiredProductsWithActiveServices.map(async (nonExpiredProduct) => {
             const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
             const product = s3Data.products[0];
@@ -521,7 +398,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
                 passengerTypeName = foundPassengerType.name;
             }
-
+            
             return {
                 id: nonExpiredProduct.id,
                 productName: hasProductName ? product.productName : `${passengerTypeName} - ${startCase(s3Data.type)}`,
@@ -531,9 +408,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 direction: 'journeyDirection' in s3Data ? s3Data.journeyDirection : null,
                 fareType: s3Data.type === 'schoolService' ? 'period' : s3Data.type,
                 schoolTicket: 'termTime' in s3Data && !!s3Data.termTime,
-            };
+            };            
         }),
     );
+
+    const productsToDisplay = allProductsToDisplay.filter((product) => product.fareType === 'single' ||  
+                                                            product.fareType === 'return' || 
+                                                            product.fareType === 'flatFare');
 
     const servicesLineIds = productsToDisplay
         .map((product) => {
@@ -594,13 +475,34 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             seenLineIds.includes(item.lineId) ? false : seenLineIds.push(item.lineId),
         ) ?? [];
 
-    console.log("maange the product group");
+    const editId = Number.isInteger(Number(ctx.query.id)) ? Number(ctx.query.id) : undefined;
+    let inputs: ProductGroup | undefined;
+
+    const searchOperatorsAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE);
+    let selectedProductIds: string[] = searchOperatorsAttribute?.selectedOperators
+        ? []
+        : [];
+
+    if (editId) {
+        inputs = await getProductGroupById(noc, editId);
+        if (!inputs) {
+            throw new Error('No entity for this NOC matches the passed id');
+        }
+
+        if (!searchOperatorsAttribute) {
+            selectedProductIds = selectedProductIds.concat(inputs.productIds);
+        }
+    }
+
+
     return {
         props: {
             csrf: getCsrfToken(ctx),
             productsToDisplay,
             servicesToDisplay: uniqueServicesToDisplay,
-            errors: []
+            errors: [],
+            editMode: !!editId,
+            ...(inputs && { inputs }),
         },
     };
 };

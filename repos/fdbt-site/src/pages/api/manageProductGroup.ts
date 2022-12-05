@@ -1,10 +1,10 @@
 import { NextApiResponse } from 'next';
 import { getAndValidateNoc, redirectTo } from '../../utils/apiUtils';
-import { ErrorInfo, ManagePassengerTypeWithErrors, NextApiRequestWithSession } from '../../interfaces';
-import { getS3Exports } from '../../data/s3';
-import { getProductById, insertProductGroup, updateProductGroup } from '../../data/auroradb';
-import { triggerExport } from '../../utils/apiUtils/export';
+import { ErrorInfo, ManageProductGroupWithErrors, NextApiRequestWithSession } from '../../interfaces';
+import { getProductGroupByNameAndNocCode, insertProductGroup, updateProductGroup } from '../../data/auroradb';
 import { removeExcessWhiteSpace } from '../..//utils/apiUtils/validator';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE } from '../../constants/attributes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
 
@@ -19,31 +19,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     const isInEditMode = id && Number.isInteger(id);
 
     console.log("Point .2");
+
     if (productGroupName.length < 2 ) {
-        errors.push({errorMessage: 'Name cannot be less than 2 characters', id: ''});
+        errors.push({errorMessage: 'Name cannot be less than 2 characters', id: 'product-group-name'});
         console.log("name");
     }
 
     if (!productIdsFromReq || productIdsFromReq.length === 0) {
         errors.push({errorMessage: 'Select product to be added in the group', id: ''});
         console.log("pridtid");
-    }
-
-    if (errors.length) {
-        console.log("in errors");
-        // const sessionInfo: ManagePassengerTypeWithErrors = {
-        //     errors,
-        // };
-
-        // updateSessionAttribute(req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, sessionInfo);
-
-        const location = isInEditMode
-            ? `/manageProductGroup?id=${id}`
-            : '/manageProductGroup';
-
-        redirectTo(res, location);
-        return;
-
     }
 
     console.log("Point 1");
@@ -54,6 +38,34 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     } else {
         productIds = productIdsFromReq;
     }
+
+    const productGroup = await getProductGroupByNameAndNocCode(noc, productGroupName);
+
+    if (productGroup !== undefined) {
+        if (id !== productGroup.id) {
+            errors.push({ id: 'product-group-name', errorMessage: `${productGroupName} already exists as a product group` });
+        }
+    }
+
+    if (errors.length) {
+        
+        const sessionInfo: ManageProductGroupWithErrors = {
+            inputs:  {id, productIds: productIds, name: productGroupName},
+            errors,
+        };
+
+        updateSessionAttribute(req, MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE, sessionInfo);
+
+        const location = isInEditMode
+            ? `/manageProductGroup?id=${id}`
+            : '/manageProductGroup';
+
+        redirectTo(res, location);
+        return;
+
+    }
+
+    
 
     console.log("Point 21");
     if (isInEditMode) {
@@ -66,6 +78,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         );
     }
 
-    redirectTo(res, '/viewProductGroup');
+    redirectTo(res, '/viewProductGroups');
     return;
 };
