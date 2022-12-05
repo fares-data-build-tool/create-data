@@ -133,3 +133,5 @@ export const VIEW_PRODUCT_GROUP = 'fdbt-products-using-product-group';
 export const CAPPED_PRODUCT_ATTRIBUTE = 'fdbt-capped-product-type';
 
 export const EDIT_PERIOD_DURATION_ERROR = 'fdbt-period-duration-error';
+
+export const MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE = 'fdbt-manage-product-group-errors';

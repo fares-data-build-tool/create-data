@@ -447,6 +447,11 @@ export interface ManageOperatorGroupWithErrors {
     errors: ErrorInfo[];
 }
 
+export interface ManageProductGroupWithErrors {
+    inputs: ProductGroup;
+    errors: ErrorInfo[];
+}
+
 export interface TimeRestrictionsDefinition extends TimeRestriction {
     timeRestrictionChoice?: string;
 }
