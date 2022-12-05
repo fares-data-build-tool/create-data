@@ -2,6 +2,7 @@ import 'cypress-file-upload';
 import {
     completeFlatFarePages,
     completeMultiOpGeoZonePages,
+    completePeriodGeoZonePages,
     completeSalesPages,
     completeSinglePages,
     defineUserTypeAndTimeRestrictions,
@@ -290,6 +291,9 @@ export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
         })
         .parent()
         .trigger('change');
+    cy.get(`[id=${dropDownId}] option:selected`).then(($selected) => {
+        cy.wrap($selected.text()).as('dropdownValue');
+    });
 };
 
 export const completeGroupPassengerDetailsPages = (): void => {
@@ -585,15 +589,47 @@ export const completeOperatorSearch = (): void => {
     continueButtonClick();
 };
 
-export const addFlatFareProductIfNotPresent = (): void => {
+export const addOtherProductsIfNotPresent = (): void => {
     getHomePage();
     clickElementById('manage-fares-link');
     clickElementByText('Other products');
-    let hasFlatFare: boolean = false;
-    cy.wrap(hasFlatFare).as('hasFlatFare');
+
+    let numberOfPeriodProducts = 0;
+    cy.wrap(numberOfPeriodProducts).as('numberOfPeriodProducts');
+    let numberOfFlatFareProducts = 0;
+    cy.wrap(numberOfFlatFareProducts).as('numberOfFlatFareProducts');
+
     cy.get(`[data-card-count]`).then((element) => {
-        const numberOfProducts = Number(element.attr('data-card-count'));
-        if (numberOfProducts === 0) {
+        const totNumberOfProducts = Number(element.attr('data-card-count'));
+        if (totNumberOfProducts > 0) {
+            getElementByClass('govuk-table__body')
+                .find("tr:contains('Period')")
+                .each((_) => {
+                    numberOfPeriodProducts += 1;
+                    cy.wrap(numberOfPeriodProducts).as('numberOfPeriodProducts');
+                });
+            getElementByClass('govuk-table__body')
+                .find("tr:contains('Flat fare')")
+                .each((_) => {
+                    numberOfFlatFareProducts += 1;
+                    cy.wrap(numberOfFlatFareProducts).as('numberOfFlatFareProducts');
+                });
+        }
+    });
+
+    cy.get('@numberOfPeriodProducts').then((numberOfPeriodProducts) => {
+        if (Number(numberOfPeriodProducts) === 0) {
+            selectFareType('period', false);
+            defineUserTypeAndTimeRestrictions();
+            completePeriodGeoZonePages(1);
+            completeSalesPages();
+            isFinished();
+            cy.log('Period product set up');
+        }
+    });
+
+    cy.get('@numberOfFlatFareProducts').then((numberOfFlatFareProducts) => {
+        if (Number(numberOfFlatFareProducts) === 0) {
             selectFareType('flatFare', false);
             defineUserTypeAndTimeRestrictions();
             clickElementById('radio-option-multipleServices');

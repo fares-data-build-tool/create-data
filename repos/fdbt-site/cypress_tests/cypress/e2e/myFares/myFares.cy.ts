@@ -1,6 +1,6 @@
 import {
-    addFlatFareProductIfNotPresent,
     addMultiOperatorProductIfNotPresent,
+    addOtherProductsIfNotPresent,
     addSingleProductIfNotPresent,
     clickElementById,
     clickElementByText,
@@ -20,6 +20,8 @@ import {
     editOperatorGroupMultiOperatorProductsPage,
     editPassengerTypeOtherProductsPage,
     editPassengerTypePointToPointPage,
+    editProductDuration,
+    editProductExpiry,
     editProductName,
     editProductNamePointToPointPage,
     editPurchaseMethodOtherProductsPage,
@@ -101,7 +103,7 @@ describe('The my fares point to point products pages', () => {
 
 describe('The my fares other products pages', () => {
     before(() => {
-        addFlatFareProductIfNotPresent();
+        addOtherProductsIfNotPresent();
     });
     it('allows for navigation through the other products pages', () => {
         getHomePage();
@@ -164,12 +166,36 @@ describe('The my fares other products pages', () => {
                 editTimeRestriction();
             });
     });
+    it('allows the user the edit other product period duration', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Other products');
+        getElementByClass('govuk-table__body')
+            .contains('[class=govuk-table__row]', 'Period')
+            .find('td a')
+            .click()
+            .then(() => {
+                editProductDuration();
+            });
+    });
     it('allows the user the edit other product name', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
         clickRandomElementInTable('govuk-table__body', 'product-link');
         editProductName();
+    });
+    it('allows the user the edit product validity', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Other products');
+        getElementByClass('govuk-table__body')
+            .contains('[class=govuk-table__row]', 'Period')
+            .find('td a')
+            .click()
+            .then(() => {
+                editProductExpiry();
+        });
     });
 });
 

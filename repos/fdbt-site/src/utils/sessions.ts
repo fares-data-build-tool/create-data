@@ -67,6 +67,7 @@ import {
     CSV_ZONE_FILE_NAME,
     DIRECTION_ATTRIBUTE,
     CAPS_ATTRIBUTE,
+    EDIT_PERIOD_DURATION_ERROR,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -216,6 +217,7 @@ export interface SessionAttributeTypes {
     [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
     [CAPS_ATTRIBUTE]: { errors: ErrorInfo[]; caps: Cap[] };
+    [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
