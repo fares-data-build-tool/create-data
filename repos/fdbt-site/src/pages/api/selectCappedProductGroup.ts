@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE } from '../../constants/attributes';
-import { getProductGroupById } from '../../data/auroradb';
+import { getProductGroupByNocAndId } from '../../data/auroradb';
 import { NextApiRequestWithSession } from '../../interfaces/index';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -23,7 +23,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
 
         if (!isDevOrTest) {
-            const productCheck = await getProductGroupById(noc, Number.parseInt(productGroupId));
+            const productCheck = await getProductGroupByNocAndId(noc, Number.parseInt(productGroupId));
 
             if (!productCheck) {
                 updateSessionAttribute(req, CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE, {

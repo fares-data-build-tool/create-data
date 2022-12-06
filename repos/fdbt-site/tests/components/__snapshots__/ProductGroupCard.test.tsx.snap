@@ -37,7 +37,8 @@ exports[`ProductGroupCard should render checked 1`] = `
       className="govuk-body-s govuk-!-margin-bottom-2"
     >
       4
-       products
+       product
+      s
     </p>
   </div>
 </div>
@@ -80,7 +81,8 @@ exports[`ProductGroupCard should render not checked 1`] = `
       className="govuk-body-s govuk-!-margin-bottom-2"
     >
       4
-       products
+       product
+      s
     </p>
   </div>
 </div>
@@ -105,7 +107,7 @@ exports[`ProductGroupCard should render with delete handler 1`] = `
         >
           <a
             className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-            href="/searchOperators?id=1"
+            href="/manageProductGroup?id=1"
           >
             Edit
           </a>
@@ -131,7 +133,8 @@ exports[`ProductGroupCard should render with delete handler 1`] = `
       className="govuk-body-s govuk-!-margin-bottom-2"
     >
       4
-       products
+       product
+      s
     </p>
   </div>
 </div>

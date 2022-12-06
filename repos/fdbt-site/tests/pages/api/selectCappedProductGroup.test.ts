@@ -7,7 +7,7 @@ import { CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE } from '../../../src/constants/attrib
 
 describe('selectCappedProductGroup', () => {
     const writeHeadMock = jest.fn();
-    const auroraSpy = jest.spyOn(aurora, 'getProductGroupById');
+    const auroraSpy = jest.spyOn(aurora, 'getProductGroupByNocAndId');
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
     jest.spyOn(index, 'getAndValidateNoc').mockReturnValue('BLAC');
 

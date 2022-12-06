@@ -25,7 +25,7 @@ const ProductGroupCard = ({
                             <li className="actions__item">
                                 <a
                                     className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                    href={`/searchOperators?id=${id}`}
+                                    href={`/manageProductGroup?id=${id}`}
                                 >
                                     Edit
                                 </a>
@@ -61,7 +61,9 @@ const ProductGroupCard = ({
 
                 <h4 className="govuk-heading-m govuk-!-padding-bottom-4">{name}</h4>
 
-                <p className="govuk-body-s govuk-!-margin-bottom-2">{groupDetails.productIds.length} products</p>
+                <p className="govuk-body-s govuk-!-margin-bottom-2">
+                    {groupDetails.productIds.length} product{groupDetails.productIds.length > 1 ? 's' : ''}
+                </p>
             </div>
         </div>
     );

@@ -2012,7 +2012,7 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
     }
 };
 
-export const getProductGroupById = async (noc: string, id: number): Promise<GroupOfProducts | undefined> => {
+export const getProductGroupByNocAndId = async (noc: string, id: number): Promise<GroupOfProducts | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'getting product group for a given noc and id',
