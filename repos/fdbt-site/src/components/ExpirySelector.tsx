@@ -31,12 +31,12 @@ const ExpirySelector = ({
     school = false,
     hideFormGroupError = false,
 }: DurationSelectorProps): ReactElement => {
-    const optionList = [];
+    let optionList: string[] = [];
     Object.values(carnet ? CarnetExpiryUnit : ExpiryUnit).map((unit) => {
         optionList.push(unit);
     });
-    if (school) {
-        optionList.push('term');
+    if (!school) {
+        optionList = optionList.filter((option) => option !== 'term');
     }
 
     return (

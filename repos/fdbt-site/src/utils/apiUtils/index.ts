@@ -9,6 +9,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
+    CAPPED_PRODUCT_ATTRIBUTE,
 } from '../../constants/attributes';
 import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession, SchoolFareTypeAttribute } from '../../interfaces';
 import { globalSignOut } from '../../data/cognito';
@@ -110,6 +111,12 @@ export const redirectOnSchoolFareType = (req: NextApiRequestWithSession, res: Ne
 
 export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+    const isCapped = getSessionAttribute(req, CAPPED_PRODUCT_ATTRIBUTE);
+
+    if (isCapped) {
+        redirectTo(res, '/typeOfCap');
+        return;
+    }
 
     if (isFareType(fareTypeAttribute)) {
         switch (fareTypeAttribute.fareType) {

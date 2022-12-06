@@ -710,3 +710,20 @@ export interface ServiceToDisplay {
     destination: string;
     lineName: string;
 }
+
+export interface TypeOfCap {
+    typeOfCap: 'byDistance' | 'byTaps' | 'byProducts';
+}
+
+export interface GroupOfProducts {
+    id: number;
+    productIds: string[];
+    name: string;
+}
+
+export interface Cap {
+    name: string;
+    price: string;
+    durationAmount: string;
+    durationUnits: ExpiryUnit;
+}

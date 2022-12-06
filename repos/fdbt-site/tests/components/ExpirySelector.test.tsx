@@ -10,7 +10,6 @@ describe('ExpirySelector', () => {
                 unitId="test-unit-id"
                 unitName="testUnitName"
                 quantityName="testQuantityName"
-                carnet={false}
                 hideFormGroupError={false}
             />,
         );
@@ -25,6 +24,21 @@ describe('ExpirySelector', () => {
                 unitName="testUnitName"
                 quantityName="testQuantityName"
                 carnet
+                hideFormGroupError={false}
+            />,
+        );
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render the selector for a school ticket', () => {
+        const wrapper = shallow(
+            <ExpirySelector
+                quantityId="test-quantity-id"
+                unitId="test-unit-id"
+                unitName="testUnitName"
+                quantityName="testQuantityName"
+                carnet={false}
+                school
                 hideFormGroupError={false}
             />,
         );
