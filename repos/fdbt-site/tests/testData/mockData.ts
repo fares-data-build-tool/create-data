@@ -6272,3 +6272,378 @@ export const mockOtherProducts: ProductToExport[] = [
         direction: null,
     },
 ];
+
+export const mockCapValidityFieldset: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'End of service day',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [],
+};
+
+export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                    disabled: true,
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [],
+};
+
+export const mockCapValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [
+        {
+            errorMessage: 'Choose one of the validity options',
+            id: 'cap-end-calendar',
+        },
+    ],
+};
+
+export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                    disabled: true,
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [
+        {
+            errorMessage: 'Choose one of the validity options',
+            id: 'cap-end-calendar',
+        },
+    ],
+};
+
+export const mockCapValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules ",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [
+                {
+                    errorMessage: 'Specify an end time for fare day end',
+                    id: 'product-end-time',
+                },
+            ],
+        },
+    ],
+    radioError: [],
+};
+
+export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                    disabled: true,
+                },
+            ],
+            inputErrors: [
+                {
+                    errorMessage: 'Specify an end time for fare day end',
+                    id: 'product-end-time',
+                },
+            ],
+        },
+    ],
+    radioError: [],
+};

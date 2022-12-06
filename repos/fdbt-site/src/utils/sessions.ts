@@ -69,6 +69,7 @@ import {
     CAPS_ATTRIBUTE,
     EDIT_PERIOD_DURATION_ERROR,
     EDIT_CARNET_PROPERTIES_ERROR,
+    CAP_EXPIRY_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -143,6 +144,7 @@ import {
     ReturnPeriodValidity,
     SalesOfferPackage,
     AdditionalOperator,
+    CapExpiry,
 } from '../interfaces/matchingJsonTypes';
 import { PassengerType, GroupPassengerType, GroupPassengerTypeDb } from '../interfaces/dbTypes';
 
@@ -220,6 +222,7 @@ export interface SessionAttributeTypes {
     [CAPS_ATTRIBUTE]: { errors: ErrorInfo[]; caps: Cap[] };
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
+    [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
