@@ -1,10 +1,11 @@
 import { getMockRequestAndResponse, expectedCarnetReturnTicket } from '../../testData/mockData';
 import { MATCHING_JSON_ATTRIBUTE, MATCHING_JSON_META_DATA_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as userData from '../../../src/utils/apiUtils/userData';
-import editCarnetProperties from '../../../src/pages/api/editCarnetProperties';
+import editCarnetProperties, { validateDuration } from '../../../src/pages/api/editCarnetProperties';
 import { CarnetExpiryUnit } from '../../../src/interfaces/matchingJsonTypes';
+import { ErrorInfo } from 'src/interfaces';
 
-describe('editPeriodDuration tests', () => {
+describe('editCarnetProperties tests', () => {
     let writeHeadMock: jest.Mock;
 
     beforeEach(() => {
@@ -53,4 +54,26 @@ describe('editPeriodDuration tests', () => {
             Location: '/products/productDetails?productId=2',
         });
     });
+    const valuesToTest: Array<[string, CarnetExpiryUnit, string, ErrorInfo[]]> = [
+        ['3', CarnetExpiryUnit.MONTH, '4', []],
+        [
+            '0',
+            CarnetExpiryUnit.MONTH,
+            '4',
+            [
+                {
+                    id: 'edit-carnet-expiry-duration',
+                    errorMessage: 'Carnet expiry amount cannot be less than 1',
+                },
+            ],
+        ],
+        ['', CarnetExpiryUnit.NO_EXPIRY, '4', []],
+    ];
+    it.each(valuesToTest)(
+        'should update validate a carnet products carnet expiry and quantity in bundle',
+        (expiryTime, expiryUnit, quantity, result) => {
+            const errors = validateDuration(expiryTime, expiryUnit, quantity);
+            expect(errors).toEqual(result);
+        },
+    );
 });

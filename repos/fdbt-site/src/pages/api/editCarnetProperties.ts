@@ -10,7 +10,7 @@ import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 import { isValidInputDuration, removeExcessWhiteSpace, checkIntegerIsValid } from '../../utils/apiUtils/validator';
 
-const validateDuration = (carnetDuration: string, carnetExpiryUnit: string, quantity: string): ErrorInfo[] => {
+export const validateDuration = (carnetDuration: string, carnetExpiryUnit: string, quantity: string): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
     const trimmedExpiry = removeExcessWhiteSpace(carnetDuration);
     const expiryError =
