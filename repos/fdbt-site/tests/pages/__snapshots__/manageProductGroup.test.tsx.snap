@@ -75,7 +75,6 @@ exports[`pages manage product group should render correctly 1`] = `
                         defaultValue=""
                         id="product-group-name"
                         maxLength={50}
-                        minLength={2}
                         name="productGroupName"
                         type="text"
                       />
@@ -193,7 +192,6 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                         defaultValue="Product Group 1"
                         id="product-group-name"
                         maxLength={50}
-                        minLength={2}
                         name="productGroupName"
                         type="text"
                       />
@@ -591,7 +589,6 @@ exports[`pages manage product group should render error state on name form group
                         defaultValue="Product Group 1"
                         id="product-group-name"
                         maxLength={50}
-                        minLength={2}
                         name="productGroupName"
                         type="text"
                       />
@@ -989,7 +986,6 @@ exports[`pages manage product group should render error state on passenger type 
                         defaultValue="Product Group 1"
                         id="product-group-name"
                         maxLength={50}
-                        minLength={2}
                         name="productGroupName"
                         type="text"
                       />
@@ -1373,7 +1369,6 @@ exports[`pages manage product group should render update product group button wh
                         defaultValue="Product Group 1"
                         id="product-group-name"
                         maxLength={50}
-                        minLength={2}
                         name="productGroupName"
                         type="text"
                       />

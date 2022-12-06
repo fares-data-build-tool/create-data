@@ -699,7 +699,7 @@ export interface TxcSourceAttribute {
     hasBods: boolean;
 }
 
-export interface ProductToExport {
+export interface ProductToDisplay {
     id: string;
     productName: string;
     startDate: string;

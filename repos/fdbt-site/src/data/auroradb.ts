@@ -2126,10 +2126,6 @@ export const getProductGroupByNocAndId = async (noc: string, id: number): Promis
     try {
         const result = await executeQuery<GroupOfProductsDb[]>(query, [noc, id]);
 
-        if (result.length > 1) {
-            return undefined;
-        }
-
         return {
             id: result[0].id,
             productIds: JSON.parse(result[0].products) as string[],

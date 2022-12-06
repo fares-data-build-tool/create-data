@@ -19,7 +19,7 @@ import {
     MyFaresService,
     NextPageContextWithSession,
     GroupOfProducts,
-    ProductToExport,
+    ProductToDisplay,
     ServiceToDisplay,
 } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
@@ -34,7 +34,7 @@ const editingInformationText =
 
 interface ManageProductGroupProps {
     csrf: string;
-    productsToDisplay: ProductToExport[];
+    productsToDisplay: ProductToDisplay[];
     servicesToDisplay: ServiceToDisplay[];
     errors: ErrorInfo[];
     editMode: boolean;
@@ -45,7 +45,7 @@ const buildOtherProductSection = (
     indexCounter: number,
     productsSelected: number[],
     setProductsSelected: React.Dispatch<React.SetStateAction<number[]>>,
-    otherProducts: ProductToExport[],
+    otherProducts: ProductToDisplay[],
 ) => {
     return (
         <>
@@ -153,7 +153,6 @@ const ManageProductGroup = ({
                                                         name="productGroupName"
                                                         type="text"
                                                         maxLength={50}
-                                                        minLength={2}
                                                         defaultValue={inputs?.name || ''}
                                                     />
                                                 </FormElementWrapper>
@@ -388,7 +387,7 @@ export const getServerSideProps = async (
     const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
-    const allProductsToDisplay: ProductToExport[] = await Promise.all(
+    const allProductsToDisplay: ProductToDisplay[] = await Promise.all(
         nonExpiredProductsWithActiveServices.map(async (nonExpiredProduct) => {
             const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
             const product = s3Data.products[0];
