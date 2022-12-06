@@ -1,27 +1,18 @@
 import { NextApiResponse } from 'next';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import {
-    MATCHING_JSON_ATTRIBUTE,
-    MATCHING_JSON_META_DATA_ATTRIBUTE,
-    CAP_EXPIRY_ATTRIBUTE,
-} from '../../constants/attributes';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { CAP_EXPIRY_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getFareDayEnd } from '../../data/auroradb';
-import { CapExpiry, Ticket, WithIds } from '../../interfaces/matchingJsonTypes';
-import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
+import { CapExpiry } from '../../interfaces/matchingJsonTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const errors: ErrorInfo[] = [];
-        if (req.body.capValid) {
-            const { capValid } = req.body;
-
+        const { capValid } = req.body;
+        if (capValid) {
             let productEndTime = '';
             const endOfFareDay = await getFareDayEnd(getAndValidateNoc(req, res));
-
-            const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
-            const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
             if (capValid === 'fareDayEnd') {
                 if (!endOfFareDay) {
@@ -37,29 +28,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 } else {
                     productEndTime = endOfFareDay;
                 }
-            }
-
-            // redirected from the product details page
-            if (ticket && matchingJsonMetaData) {
-                const product = ticket.products[0];
-                const updatedProduct = { ...product, productValidity: capValid, productEndTime: productEndTime };
-
-                // edit mode
-                const updatedTicket: WithIds<Ticket> = {
-                    ...ticket,
-                    products: [updatedProduct],
-                };
-
-                // put the now updated matching json into s3
-                await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
-                updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, undefined);
-                redirectTo(
-                    res,
-                    `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
-                        matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
-                    }`,
-                );
-                return;
             }
 
             const capExpiryAttributeValue: CapExpiry = {
