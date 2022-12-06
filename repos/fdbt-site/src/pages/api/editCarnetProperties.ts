@@ -10,25 +10,23 @@ import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 import { isValidInputDuration, removeExcessWhiteSpace, checkIntegerIsValid } from '../../utils/apiUtils/validator';
 
-const validateDuration = (carnetDuration: string, carnetDurationUnit: string, quantity: string): ErrorInfo[] => {
+const validateDuration = (carnetDuration: string, carnetExpiryUnit: string, quantity: string): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
     const trimmedExpiry = removeExcessWhiteSpace(carnetDuration);
     const expiryError =
-        carnetDurationUnit === 'no expiry' ? '' : checkIntegerIsValid(trimmedExpiry, 'Carnet expiry amount', 1, 999);
+        carnetExpiryUnit === 'no expiry' ? '' : checkIntegerIsValid(trimmedExpiry, 'Carnet expiry amount', 1, 999);
     const trimmedQuantity = removeExcessWhiteSpace(quantity);
     const quantityError = checkIntegerIsValid(trimmedQuantity, 'Quantity in bundle', 2, 999);
-    const carnetDurationUnitsError =
-        !carnetDurationUnit || !isValidInputDuration(carnetDurationUnit, true)
-            ? 'Choose an option from the dropdown'
-            : '';
+    const carnetExpiryUnitsError =
+        !carnetExpiryUnit || !isValidInputDuration(carnetExpiryUnit, true) ? 'Choose an option from the dropdown' : '';
     if (quantityError) {
         errors.push({ id: 'edit-carnet-quantity', errorMessage: quantityError });
     }
     if (expiryError) {
         errors.push({ id: 'edit-carnet-expiry-duration', errorMessage: expiryError });
     }
-    if (carnetDurationUnitsError) {
-        errors.push({ id: 'edit-carnet-expiry-unit', errorMessage: carnetDurationUnitsError });
+    if (carnetExpiryUnitsError) {
+        errors.push({ id: 'edit-carnet-expiry-unit', errorMessage: carnetExpiryUnitsError });
     }
     return errors;
 };
@@ -39,11 +37,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (!ticket || !matchingJsonMetaData) {
             throw new Error('Ticket information cannot be undefined');
         }
-        const carnetQuantity = req.body.carnetQuantityInput;
-        const carnetDurationValue = req.body.carnetExpiryDurationInput;
-        const carnetDurationUnit = req.body.carnetExpiryUnitInput;
 
-        const errors: ErrorInfo[] = validateDuration(carnetDurationValue, carnetDurationUnit, carnetQuantity);
+        const { carnetExpiryUnit, carnetExpiryDuration, carnetQuantity } = req.body;
+
+        const errors: ErrorInfo[] = validateDuration(carnetExpiryDuration, carnetExpiryUnit, carnetQuantity);
 
         if (errors.length > 0) {
             updateSessionAttribute(req, EDIT_CARNET_PROPERTIES_ERROR, errors);
@@ -57,8 +54,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 {
                     ...ticket.products[0],
                     carnetDetails: {
-                        expiryTime: carnetDurationUnit === 'no expiry' ? '' : carnetDurationValue,
-                        expiryUnit: carnetDurationUnit,
+                        expiryTime: carnetExpiryUnit === 'no expiry' ? '' : carnetExpiryDuration,
+                        expiryUnit: carnetExpiryUnit,
                         quantity: carnetQuantity,
                     },
                 },
@@ -76,6 +73,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         return;
     } catch (error) {
         const message = 'There was a problem editing period duration:';
-        redirectToError(res, message, 'api.editPeriodDuration', error);
+        redirectToError(res, message, 'api.editCarnetProperties', error);
     }
 };

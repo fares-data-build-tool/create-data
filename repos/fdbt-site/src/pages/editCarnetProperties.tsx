@@ -31,13 +31,13 @@ const EditCarnetProperties = ({
         <FullColumnLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/editCarnetProperties" method="post" csrfToken={csrfToken}>
                 <ErrorSummary errors={errors} />
-                <h1 className="govuk-heading-l" id="edit-period-duration-page-heading">
+                <h1 className="govuk-heading-l" id="edit-carnet-properties-page-heading">
                     Edit Carnet Properties
                 </h1>
                 <div className="flex-container">
                     <div className="govuk-!-margin-right-2">
                         <>
-                            <label className="govuk-label" htmlFor={'edit-carnet-quantity'}>
+                            <label className="govuk-label" htmlFor="edit-carnet-quantity">
                                 <span aria-hidden>Quantity in bundle</span>
                             </label>
                             <span className="govuk-hint" id="edit-carnet-quantity-hint">
@@ -46,17 +46,17 @@ const EditCarnetProperties = ({
                         </>
                         <input
                             className="govuk-input govuk-input--width-6"
-                            name={'carnetQuantityInput'}
+                            name="carnetQuantity"
                             data-non-numeric
                             type="text"
-                            id={'edit-carnet-quantity'}
+                            id="edit-carnet-quantity"
                             aria-describedby="edit-carnet-quantity-hint"
                             defaultValue={quantity || ''}
                         />
                     </div>
                     <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
                         <>
-                            <label className="govuk-label" htmlFor="edit-carnet-expiry">
+                            <label className="govuk-label" htmlFor="edit-carnet-expiry-duration">
                                 Carnet expiry
                             </label>
                             <span className="govuk-hint" id="edit-carnet-expiry-hint">
@@ -66,10 +66,10 @@ const EditCarnetProperties = ({
                         <ExpirySelector
                             defaultDuration={expiryTime || undefined}
                             defaultUnit={expiryUnit || undefined}
-                            quantityName={'carnetExpiryDurationInput'}
+                            quantityName={'carnetExpiryDuration'}
                             quantityId={'edit-carnet-expiry-duration'}
                             hintId="edit-carnet-expiry-hint"
-                            unitName={'carnetExpiryUnitInput'}
+                            unitName={'carnetExpiryUnit'}
                             unitId={'edit-carnet-expiry-unit'}
                             carnet
                             errors={errors}
@@ -89,12 +89,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ed
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const errors: ErrorInfo[] = getSessionAttribute(ctx.req, EDIT_CARNET_PROPERTIES_ERROR) || [];
 
-    let carnetDetails: CarnetDetails | undefined;
+    let carnetDetails: CarnetDetails = { quantity: '', expiryTime: '', expiryUnit: CarnetExpiryUnit.NO_EXPIRY };
     if (ticket) {
         const product = ticket.products[0];
 
         if ('carnetDetails' in product) {
-            carnetDetails = product.carnetDetails;
+            carnetDetails = product.carnetDetails as CarnetDetails;
         } else {
             throw new Error('carnetDetails is undefined');
         }
@@ -102,15 +102,11 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ed
         throw new Error('Ticket is undefined');
     }
 
-    if (!carnetDetails?.expiryUnit || !carnetDetails?.quantity) {
-        throw new Error('A property in carnetDetails is undefined');
-    }
-
     return {
         props: {
             errors: errors,
             csrfToken,
-            expiryTime: carnetDetails.expiryTime, //can be empty if no expiry
+            expiryTime: carnetDetails.expiryTime || '',
             expiryUnit: carnetDetails.expiryUnit,
             quantity: carnetDetails.quantity,
         },

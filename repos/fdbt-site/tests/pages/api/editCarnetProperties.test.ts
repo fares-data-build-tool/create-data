@@ -20,9 +20,9 @@ describe('editPeriodDuration tests', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
-                carnetQuantityInput: '4',
-                carnetExpiryDurationInput: '3',
-                carnetExpiryUnitInput: CarnetExpiryUnit.MONTH,
+                carnetQuantity: '4',
+                carnetExpiryDuration: '3',
+                carnetExpiryUnit: CarnetExpiryUnit.MONTH,
             },
             uuid: {},
             session: {

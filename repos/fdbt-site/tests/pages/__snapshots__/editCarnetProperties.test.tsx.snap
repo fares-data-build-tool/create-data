@@ -16,7 +16,7 @@ exports[`pages editCarnetProperties should render editCarnetProperties page corr
     />
     <h1
       className="govuk-heading-l"
-      id="edit-period-duration-page-heading"
+      id="edit-carnet-properties-page-heading"
     >
       Edit Carnet Properties
     </h1>
@@ -48,7 +48,7 @@ exports[`pages editCarnetProperties should render editCarnetProperties page corr
           data-non-numeric={true}
           defaultValue="3"
           id="edit-carnet-quantity"
-          name="carnetQuantityInput"
+          name="carnetQuantity"
           type="text"
         />
       </div>
@@ -57,7 +57,7 @@ exports[`pages editCarnetProperties should render editCarnetProperties page corr
       >
         <label
           className="govuk-label"
-          htmlFor="edit-carnet-expiry"
+          htmlFor="edit-carnet-expiry-duration"
         >
           Carnet expiry
         </label>
@@ -75,9 +75,9 @@ exports[`pages editCarnetProperties should render editCarnetProperties page corr
           hideFormGroupError={true}
           hintId="edit-carnet-expiry-hint"
           quantityId="edit-carnet-expiry-duration"
-          quantityName="carnetExpiryDurationInput"
+          quantityName="carnetExpiryDuration"
           unitId="edit-carnet-expiry-unit"
-          unitName="carnetExpiryUnitInput"
+          unitName="carnetExpiryUnit"
         />
       </div>
     </div>
