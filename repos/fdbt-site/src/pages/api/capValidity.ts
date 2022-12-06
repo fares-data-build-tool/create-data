@@ -41,8 +41,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             // and add test to make sure data is stored in session
             updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, [{ errorMessage: 'Next page to be made soon!', id: '' }]);
             redirectTo(res, '/selectCapValidity');
-
-            redirectTo(res, '/ticketConfirmation');
+            return;
         } else {
             errors.push({
                 id: 'cap-end-calendar',
@@ -50,6 +49,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             });
             updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, errors);
             redirectTo(res, '/selectCapValidity');
+            return;
         }
     } catch (error) {
         const message = 'There was a problem selecting the cap validity:';
