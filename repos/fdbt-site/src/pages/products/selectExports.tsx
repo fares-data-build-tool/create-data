@@ -5,7 +5,7 @@ import BackButton from '../../components/BackButton';
 import CsrfForm from '../../components/CsrfForm';
 import { getAllPassengerTypesByNoc, getAllProductsByNoc, getBodsServicesByNoc } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
-import { MyFaresService, NextPageContextWithSession, ProductToExport, ServiceToDisplay } from '../../interfaces';
+import { MyFaresService, NextPageContextWithSession, ProductToDisplay, ServiceToDisplay } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
 import { getNonExpiredProducts, filterOutProductsWithNoActiveServices } from '../api/exports';
@@ -15,18 +15,18 @@ const description = 'Export selected products into NeTEx.';
 
 interface SelectExportsProps {
     csrf: string;
-    productsToDisplay: ProductToExport[];
+    productsToDisplay: ProductToDisplay[];
     servicesToDisplay: ServiceToDisplay[];
 }
 
 interface FormattedOtherProducts {
-    periodProducts: ProductToExport[];
-    flatFareProducts: ProductToExport[];
-    multiOperatorProducts: ProductToExport[];
-    schoolServiceProducts: ProductToExport[];
+    periodProducts: ProductToDisplay[];
+    flatFareProducts: ProductToDisplay[];
+    multiOperatorProducts: ProductToDisplay[];
+    schoolServiceProducts: ProductToDisplay[];
 }
 
-export const formatOtherProducts = (otherProducts: ProductToExport[]): FormattedOtherProducts => {
+export const formatOtherProducts = (otherProducts: ProductToDisplay[]): FormattedOtherProducts => {
     const formatted: FormattedOtherProducts = {
         periodProducts: [],
         flatFareProducts: [],
@@ -60,7 +60,7 @@ const buildOtherProductSection = (
     indexCounter: number,
     productsSelected: number[],
     setProductsSelected: React.Dispatch<React.SetStateAction<number[]>>,
-    otherProducts: ProductToExport[],
+    otherProducts: ProductToDisplay[],
 ) => {
     return (
         <>
@@ -469,7 +469,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
-    const productsToDisplay: ProductToExport[] = await Promise.all(
+    const productsToDisplay: ProductToDisplay[] = await Promise.all(
         nonExpiredProductsWithActiveServices.map(async (nonExpiredProduct) => {
             const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
             const product = s3Data.products[0];

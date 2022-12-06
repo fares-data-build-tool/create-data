@@ -19,7 +19,7 @@ import {
     MyFaresService,
     NextPageContextWithSession,
     GroupOfProducts,
-    ProductToExport,
+    ProductToDisplay,
     ServiceToDisplay,
 } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
@@ -34,7 +34,7 @@ const editingInformationText =
 
 interface ManageProductGroupProps {
     csrf: string;
-    productsToDisplay: ProductToExport[];
+    productsToDisplay: ProductToDisplay[];
     servicesToDisplay: ServiceToDisplay[];
     errors: ErrorInfo[];
     editMode: boolean;
@@ -45,7 +45,7 @@ const buildOtherProductSection = (
     indexCounter: number,
     productsSelected: number[],
     setProductsSelected: React.Dispatch<React.SetStateAction<number[]>>,
-    otherProducts: ProductToExport[],
+    otherProducts: ProductToDisplay[],
 ) => {
     return (
         <>
@@ -64,15 +64,19 @@ const buildOtherProductSection = (
                             name="productsSelected"
                             type="checkbox"
                             value={product.id}
-                            checked={!!productsSelected.find((productSelected) => productSelected === productsIndex)}
+                            checked={
+                                !!productsSelected.find((productSelected) => productSelected === Number(product.id))
+                            }
                             onClick={() => {
-                                if (productsSelected.find((productSelected) => productSelected === productsIndex)) {
+                                if (
+                                    productsSelected.find((productSelected) => productSelected === Number(product.id))
+                                ) {
                                     const newSelected = [...productsSelected].filter(
-                                        (valueSelected) => valueSelected !== productsIndex,
+                                        (valueSelected) => valueSelected !== Number(product.id),
                                     );
                                     setProductsSelected(newSelected);
                                 } else {
-                                    setProductsSelected([...productsSelected, productsIndex]);
+                                    setProductsSelected([...productsSelected, Number(product.id)]);
                                 }
                             }}
                             // This onChange is here because of how we're using the 'checked' prop
@@ -106,9 +110,11 @@ const ManageProductGroup = ({
     inputs,
 }: ManageProductGroupProps): ReactElement => {
     const id = inputs?.id;
-
+    const selectedProductIds = !!inputs && inputs.productIds ? inputs.productIds : [];
     const [detailsAllOpen, setAllDetails] = useState(false);
-    const [productsSelected, setProductsSelected] = useState<number[]>([]);
+    const [productsSelected, setProductsSelected] = useState<number[]>(
+        selectedProductIds.map((productId) => Number(productId)),
+    );
     let indexCounter = 0;
 
     const otherProducts = productsToDisplay.filter((product) => !product.serviceLineId);
@@ -153,7 +159,6 @@ const ManageProductGroup = ({
                                                         name="productGroupName"
                                                         type="text"
                                                         maxLength={50}
-                                                        minLength={2}
                                                         defaultValue={inputs?.name || ''}
                                                     />
                                                 </FormElementWrapper>
@@ -177,8 +182,8 @@ const ManageProductGroup = ({
                                     } else {
                                         setProductsSelected([]);
                                         const arrayOfIndexs = [];
-                                        for (let i = 1; i <= productsToDisplay.length; i++) {
-                                            arrayOfIndexs.push(i);
+                                        for (let i = 0; i < productsToDisplay.length; i++) {
+                                            arrayOfIndexs.push(Number(productsToDisplay[i].id));
                                         }
                                         setProductsSelected(arrayOfIndexs);
                                     }
@@ -267,7 +272,7 @@ const ManageProductGroup = ({
                                                                                     !!productsSelected.find(
                                                                                         (productSelected) =>
                                                                                             productSelected ===
-                                                                                            productsIndex,
+                                                                                            Number(product.id),
                                                                                     )
                                                                                 }
                                                                                 onClick={() => {
@@ -275,7 +280,7 @@ const ManageProductGroup = ({
                                                                                         productsSelected.find(
                                                                                             (productSelected) =>
                                                                                                 productSelected ===
-                                                                                                productsIndex,
+                                                                                                Number(product.id),
                                                                                         )
                                                                                     ) {
                                                                                         const newSelected = [
@@ -283,7 +288,7 @@ const ManageProductGroup = ({
                                                                                         ].filter(
                                                                                             (valueSelected) =>
                                                                                                 valueSelected !==
-                                                                                                productsIndex,
+                                                                                                Number(product.id),
                                                                                         );
                                                                                         setProductsSelected(
                                                                                             newSelected,
@@ -291,7 +296,7 @@ const ManageProductGroup = ({
                                                                                     } else {
                                                                                         setProductsSelected([
                                                                                             ...productsSelected,
-                                                                                            productsIndex,
+                                                                                            Number(product.id),
                                                                                         ]);
                                                                                     }
                                                                                 }}
@@ -342,7 +347,7 @@ const ManageProductGroup = ({
 
                                                     {otherProducts.length > 0 ? (
                                                         buildOtherProductSection(
-                                                            indexCounter + otherProducts.length,
+                                                            otherProducts.length,
                                                             productsSelected,
                                                             setProductsSelected,
                                                             otherProducts,
@@ -388,7 +393,7 @@ export const getServerSideProps = async (
     const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
-    const allProductsToDisplay: ProductToExport[] = await Promise.all(
+    const allProductsToDisplay: ProductToDisplay[] = await Promise.all(
         nonExpiredProductsWithActiveServices.map(async (nonExpiredProduct) => {
             const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
             const product = s3Data.products[0];

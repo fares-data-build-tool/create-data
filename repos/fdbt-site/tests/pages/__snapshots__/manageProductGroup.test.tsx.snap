@@ -75,7 +75,6 @@ exports[`pages manage product group should render correctly 1`] = `
                         defaultValue=""
                         id="product-group-name"
                         maxLength={50}
-                        minLength={2}
                         name="productGroupName"
                         type="text"
                       />
@@ -193,7 +192,6 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                         defaultValue="Product Group 1"
                         id="product-group-name"
                         maxLength={50}
-                        minLength={2}
                         name="productGroupName"
                         type="text"
                       />
@@ -216,7 +214,7 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
               className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
               id="products-selected"
             >
-              0
+              2
                / 
               6
                selected
@@ -416,12 +414,12 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                   </h2>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-7"
+                    key="checkbox-product-4"
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       className="govuk-checkboxes__input"
-                      id="checkbox-7"
+                      id="checkbox-4"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -430,8 +428,8 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-7"
-                      id="product-7"
+                      htmlFor="checkbox-4"
+                      id="product-4"
                       role="input"
                     >
                       Best product | 01/02/2022
@@ -439,12 +437,12 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                   </div>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-8"
+                    key="checkbox-product-5"
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       className="govuk-checkboxes__input"
-                      id="checkbox-8"
+                      id="checkbox-5"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -453,8 +451,8 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-8"
-                      id="product-8"
+                      htmlFor="checkbox-5"
+                      id="product-5"
                       role="input"
                     >
                       Super product | 02/02/2022
@@ -462,12 +460,12 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                   </div>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-9"
+                    key="checkbox-product-6"
                   >
                     <input
                       checked={false}
                       className="govuk-checkboxes__input"
-                      id="checkbox-9"
+                      id="checkbox-6"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -476,8 +474,8 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-9"
-                      id="product-9"
+                      htmlFor="checkbox-6"
+                      id="product-6"
                       role="input"
                     >
                       Super product | 02/02/2022
@@ -591,7 +589,6 @@ exports[`pages manage product group should render error state on name form group
                         defaultValue="Product Group 1"
                         id="product-group-name"
                         maxLength={50}
-                        minLength={2}
                         name="productGroupName"
                         type="text"
                       />
@@ -614,7 +611,7 @@ exports[`pages manage product group should render error state on name form group
               className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
               id="products-selected"
             >
-              0
+              2
                / 
               6
                selected
@@ -814,12 +811,12 @@ exports[`pages manage product group should render error state on name form group
                   </h2>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-7"
+                    key="checkbox-product-4"
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       className="govuk-checkboxes__input"
-                      id="checkbox-7"
+                      id="checkbox-4"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -828,8 +825,8 @@ exports[`pages manage product group should render error state on name form group
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-7"
-                      id="product-7"
+                      htmlFor="checkbox-4"
+                      id="product-4"
                       role="input"
                     >
                       Best product | 01/02/2022
@@ -837,12 +834,12 @@ exports[`pages manage product group should render error state on name form group
                   </div>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-8"
+                    key="checkbox-product-5"
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       className="govuk-checkboxes__input"
-                      id="checkbox-8"
+                      id="checkbox-5"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -851,8 +848,8 @@ exports[`pages manage product group should render error state on name form group
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-8"
-                      id="product-8"
+                      htmlFor="checkbox-5"
+                      id="product-5"
                       role="input"
                     >
                       Super product | 02/02/2022
@@ -860,12 +857,12 @@ exports[`pages manage product group should render error state on name form group
                   </div>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-9"
+                    key="checkbox-product-6"
                   >
                     <input
                       checked={false}
                       className="govuk-checkboxes__input"
-                      id="checkbox-9"
+                      id="checkbox-6"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -874,8 +871,8 @@ exports[`pages manage product group should render error state on name form group
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-9"
-                      id="product-9"
+                      htmlFor="checkbox-6"
+                      id="product-6"
                       role="input"
                     >
                       Super product | 02/02/2022
@@ -989,7 +986,6 @@ exports[`pages manage product group should render error state on passenger type 
                         defaultValue="Product Group 1"
                         id="product-group-name"
                         maxLength={50}
-                        minLength={2}
                         name="productGroupName"
                         type="text"
                       />
@@ -1012,7 +1008,7 @@ exports[`pages manage product group should render error state on passenger type 
               className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
               id="products-selected"
             >
-              0
+              2
                / 
               6
                selected
@@ -1212,12 +1208,12 @@ exports[`pages manage product group should render error state on passenger type 
                   </h2>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-7"
+                    key="checkbox-product-4"
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       className="govuk-checkboxes__input"
-                      id="checkbox-7"
+                      id="checkbox-4"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -1226,8 +1222,8 @@ exports[`pages manage product group should render error state on passenger type 
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-7"
-                      id="product-7"
+                      htmlFor="checkbox-4"
+                      id="product-4"
                       role="input"
                     >
                       Best product | 01/02/2022
@@ -1235,12 +1231,12 @@ exports[`pages manage product group should render error state on passenger type 
                   </div>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-8"
+                    key="checkbox-product-5"
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       className="govuk-checkboxes__input"
-                      id="checkbox-8"
+                      id="checkbox-5"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -1249,8 +1245,8 @@ exports[`pages manage product group should render error state on passenger type 
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-8"
-                      id="product-8"
+                      htmlFor="checkbox-5"
+                      id="product-5"
                       role="input"
                     >
                       Super product | 02/02/2022
@@ -1258,12 +1254,12 @@ exports[`pages manage product group should render error state on passenger type 
                   </div>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-9"
+                    key="checkbox-product-6"
                   >
                     <input
                       checked={false}
                       className="govuk-checkboxes__input"
-                      id="checkbox-9"
+                      id="checkbox-6"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -1272,8 +1268,8 @@ exports[`pages manage product group should render error state on passenger type 
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-9"
-                      id="product-9"
+                      htmlFor="checkbox-6"
+                      id="product-6"
                       role="input"
                     >
                       Super product | 02/02/2022
@@ -1373,7 +1369,6 @@ exports[`pages manage product group should render update product group button wh
                         defaultValue="Product Group 1"
                         id="product-group-name"
                         maxLength={50}
-                        minLength={2}
                         name="productGroupName"
                         type="text"
                       />
@@ -1396,7 +1391,7 @@ exports[`pages manage product group should render update product group button wh
               className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
               id="products-selected"
             >
-              0
+              2
                / 
               6
                selected
@@ -1596,12 +1591,12 @@ exports[`pages manage product group should render update product group button wh
                   </h2>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-7"
+                    key="checkbox-product-4"
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       className="govuk-checkboxes__input"
-                      id="checkbox-7"
+                      id="checkbox-4"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -1610,8 +1605,8 @@ exports[`pages manage product group should render update product group button wh
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-7"
-                      id="product-7"
+                      htmlFor="checkbox-4"
+                      id="product-4"
                       role="input"
                     >
                       Best product | 01/02/2022
@@ -1619,12 +1614,12 @@ exports[`pages manage product group should render update product group button wh
                   </div>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-8"
+                    key="checkbox-product-5"
                   >
                     <input
-                      checked={false}
+                      checked={true}
                       className="govuk-checkboxes__input"
-                      id="checkbox-8"
+                      id="checkbox-5"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -1633,8 +1628,8 @@ exports[`pages manage product group should render update product group button wh
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-8"
-                      id="product-8"
+                      htmlFor="checkbox-5"
+                      id="product-5"
                       role="input"
                     >
                       Super product | 02/02/2022
@@ -1642,12 +1637,12 @@ exports[`pages manage product group should render update product group button wh
                   </div>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
-                    key="checkbox-product-9"
+                    key="checkbox-product-6"
                   >
                     <input
                       checked={false}
                       className="govuk-checkboxes__input"
-                      id="checkbox-9"
+                      id="checkbox-6"
                       name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
@@ -1656,8 +1651,8 @@ exports[`pages manage product group should render update product group button wh
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
-                      htmlFor="checkbox-9"
-                      id="product-9"
+                      htmlFor="checkbox-6"
+                      id="product-6"
                       role="input"
                     >
                       Super product | 02/02/2022

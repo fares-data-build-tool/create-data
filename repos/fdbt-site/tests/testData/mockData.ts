@@ -53,7 +53,7 @@ import {
     TimeRestriction,
     UserFareStages,
     OperatorGroup,
-    ProductToExport,
+    ProductToDisplay,
     ServiceToDisplay,
 } from '../../src/interfaces';
 
@@ -6213,7 +6213,7 @@ export const mockServicesToDisplay: ServiceToDisplay[] = [
     },
 ];
 
-export const mockPointToPointProducts: ProductToExport[] = [
+export const mockPointToPointProducts: ProductToDisplay[] = [
     {
         id: '4',
         productName: 'Adult single',
@@ -6243,7 +6243,7 @@ export const mockPointToPointProducts: ProductToExport[] = [
     },
 ];
 
-export const mockOtherProducts: ProductToExport[] = [
+export const mockOtherProducts: ProductToDisplay[] = [
     {
         id: '1',
         productName: 'Best product',
