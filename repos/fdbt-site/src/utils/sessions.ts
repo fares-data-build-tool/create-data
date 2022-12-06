@@ -1,12 +1,3 @@
-import {
-    CSV_ZONE_FILE_NAME,
-    GS_FARE_DAY_END_ATTRIBUTE,
-    UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
-    UNASSIGNED_STOPS_ATTRIBUTE,
-    DIRECTION_ATTRIBUTE,
-    CAPPED_PRODUCT_ATTRIBUTE,
-    EDIT_PERIOD_DURATION_ERROR,
-} from './../constants/attributes';
 import * as attributes from '../constants/attributes';
 import {
     MATCHING_JSON_META_DATA_ATTRIBUTE,
@@ -67,6 +58,16 @@ import {
     MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
     VIEW_TIME_RESTRICTION,
     VIEW_OPERATOR_GROUP,
+    CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE,
+    TYPE_OF_CAP_ATTRIBUTE,
+    CAPPED_PRODUCT_ATTRIBUTE,
+    UNASSIGNED_STOPS_ATTRIBUTE,
+    GS_FARE_DAY_END_ATTRIBUTE,
+    UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
+    CSV_ZONE_FILE_NAME,
+    DIRECTION_ATTRIBUTE,
+    CAPS_ATTRIBUTE,
+    EDIT_PERIOD_DURATION_ERROR,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -124,6 +125,8 @@ import {
     Errors,
     BasicService,
     ManageOperatorGroupWithErrors,
+    TypeOfCap,
+    Cap,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -211,6 +214,9 @@ export interface SessionAttributeTypes {
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
     [CAPPED_PRODUCT_ATTRIBUTE]: boolean;
+    [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
+    [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
+    [CAPS_ATTRIBUTE]: { errors: ErrorInfo[]; caps: Cap[] };
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
 }
 

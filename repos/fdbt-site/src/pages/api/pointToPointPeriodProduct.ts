@@ -5,7 +5,7 @@ import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { POINT_TO_POINT_PRODUCT_ATTRIBUTE } from '../../constants/attributes';
 import {
     checkDurationIsValid,
-    checkProductNameIsValid,
+    checkProductOrCapNameIsValid,
     isValidInputDuration,
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
@@ -22,13 +22,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             productDurationUnits: durationUnits,
         };
 
-        const nameCheckError = checkProductNameIsValid(whiteSpaceCleansedNameInput);
+        const nameCheckError = checkProductOrCapNameIsValid(whiteSpaceCleansedNameInput, 'product');
         const productDurationUnitsCheckError = !isValidInputDuration(durationUnits, true)
             ? 'Select a valid expiry unit'
             : '';
         let durationCheckError = '';
         if (durationUnits !== 'no expiry') {
-            durationCheckError = checkDurationIsValid(whiteSpaceCleansedDurationInput);
+            durationCheckError = checkDurationIsValid(whiteSpaceCleansedDurationInput, 'product');
         }
 
         const errors: ErrorInfo[] = [];

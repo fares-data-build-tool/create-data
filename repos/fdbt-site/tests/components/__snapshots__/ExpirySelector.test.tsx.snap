@@ -149,6 +149,80 @@ exports[`ExpirySelector should render the selector for a non-carnet 1`] = `
       >
         Years
       </option>
+    </select>
+  </FormElementWrapper>
+</div>
+`;
+
+exports[`ExpirySelector should render the selector for a school ticket 1`] = `
+<div
+  className="govuk-input__wrapper expiry-selector-wrapper"
+>
+  <FormElementWrapper
+    addFormGroupError={true}
+    errorClass="govuk-input--error"
+    errorId="test-quantity-id"
+    errors={Array []}
+    hideText={true}
+  >
+    <input
+      aria-describedby=""
+      className="govuk-input govuk-input--width-3"
+      defaultValue=""
+      id="test-quantity-id"
+      name="testQuantityName"
+      type="text"
+    />
+  </FormElementWrapper>
+  <FormElementWrapper
+    errorClass="govuk-select--error"
+    errorId="test-unit-id"
+    errors={Array []}
+    hideText={true}
+  >
+    <select
+      className="govuk-select govuk-select--width-3 expiry-selector-units"
+      defaultValue=""
+      id="test-unit-id"
+      name="testUnitName"
+    >
+      <option
+        disabled={true}
+        key="select-one"
+        value=""
+      >
+        Select One
+      </option>
+      <option
+        key="hour"
+        value="hour"
+      >
+        Hours
+      </option>
+      <option
+        key="day"
+        value="day"
+      >
+        Days
+      </option>
+      <option
+        key="week"
+        value="week"
+      >
+        Weeks
+      </option>
+      <option
+        key="month"
+        value="month"
+      >
+        Months
+      </option>
+      <option
+        key="year"
+        value="year"
+      >
+        Years
+      </option>
       <option
         key="term"
         value="term"
