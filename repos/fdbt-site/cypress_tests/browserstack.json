@@ -13,7 +13,7 @@
         "exclude": [],
         "parallels": "5",
         "cypress_version": "10",
-        "spec_timeout": 10,
+        "spec_timeout": 30,
         "npm_dependencies": {
             "@cypress/webpack-preprocessor": "^5.7.0",
             "@typescript-eslint/eslint-plugin": "^2.33.0",
