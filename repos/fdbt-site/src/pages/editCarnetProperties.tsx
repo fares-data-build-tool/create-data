@@ -104,7 +104,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ed
 
     return {
         props: {
-            errors: errors,
+            errors,
             csrfToken,
             expiryTime: carnetDetails.expiryTime || '',
             expiryUnit: carnetDetails.expiryUnit,
