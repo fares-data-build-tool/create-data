@@ -19,6 +19,7 @@ import { getAtcoCodesByNaptanCodes, batchGetStopsByAtcoCode } from '../../data/a
 import { getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
+import uniq from 'lodash/uniq';
 
 export interface FareZoneWithErrors {
     errors: ErrorInfo[];
@@ -169,9 +170,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
 
             const atcoCodes: string[] = userFareZones.map((fareZone) => fareZone.AtcoCodes);
+            const deduplicatedAtcoCodes = uniq(atcoCodes);
 
             try {
-                await batchGetStopsByAtcoCode(atcoCodes);
+                await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
             } catch (error) {
                 const errors: ErrorInfo[] = [
                     {
