@@ -119,6 +119,9 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
     description="Manage product group page for the Create Fares Data Service"
     title="Manage Product Group"
   >
+    <BackButton
+      href="/viewProductGroups"
+    />
     <InformationSummary
       informationText="Editing and saving new changes will be applied to all capped fares using this product group."
     />

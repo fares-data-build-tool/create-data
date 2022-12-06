@@ -26,6 +26,7 @@ import { BaseLayout } from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getNonExpiredProducts, filterOutProductsWithNoActiveServices } from './api/exports';
 import { isWithErrors } from '../interfaces/typeGuards';
+import BackButton from '../components/BackButton';
 
 const title = 'Manage Product Group';
 const description = 'Manage product group page for the Create Fares Data Service';
@@ -123,7 +124,10 @@ const ManageProductGroup = ({
         <>
             <BaseLayout title={title} description={description}>
                 {editMode && errors.length === 0 ? (
-                    <InformationSummary informationText={editingInformationText} />
+                    <>
+                        <BackButton href="/viewProductGroups" />
+                        <InformationSummary informationText={editingInformationText} />
+                    </>
                 ) : null}
                 <ErrorSummary errors={errors} />
                 <CsrfForm csrfToken={csrf} method={'post'} action={'/api/manageProductGroup'}>
