@@ -27,7 +27,7 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
-                    expiryTime="3"
+                    expiryTime="0"
                     expiryUnit={CarnetExpiryUnit.HOUR}
                     quantity="3"
                 />,

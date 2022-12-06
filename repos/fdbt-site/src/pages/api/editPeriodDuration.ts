@@ -14,7 +14,7 @@ import {
     removeExcessWhiteSpace,
 } from '../../../src/utils/apiUtils/validator';
 
-const validateDuration = (productDuration: string, productDurationUnit: string): ErrorInfo[] => {
+export const validateDuration = (productDuration: string, productDurationUnit: string): ErrorInfo[] => {
     const trimmedDuration = removeExcessWhiteSpace(productDuration);
     const errors: ErrorInfo[] = [];
     const productDurationError = checkDurationIsValid(trimmedDuration);

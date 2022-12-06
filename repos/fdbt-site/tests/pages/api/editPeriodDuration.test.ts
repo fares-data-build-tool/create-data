@@ -1,7 +1,8 @@
 import { getMockRequestAndResponse, expectedPeriodGeoZoneTicketWithMultipleProducts } from '../../testData/mockData';
 import { MATCHING_JSON_ATTRIBUTE, MATCHING_JSON_META_DATA_ATTRIBUTE } from '../../../src/constants/attributes';
-import editPeriodDuration from '../../../src/pages/api/editPeriodDuration';
+import editPeriodDuration, { validateDuration } from '../../../src/pages/api/editPeriodDuration';
 import * as userData from '../../../src/utils/apiUtils/userData';
+import { ErrorInfo } from 'src/interfaces';
 
 describe('editPeriodDuration tests', () => {
     let writeHeadMock: jest.Mock;
@@ -45,4 +46,23 @@ describe('editPeriodDuration tests', () => {
             Location: '/products/productDetails?productId=2',
         });
     });
+    const valuesToTest: Array<[string, string, ErrorInfo[]]> = [
+        ['2', 'hour', []],
+        ['', 'hour', [{ id: 'edit-period-duration-quantity', errorMessage: 'Product duration cannot be empty' }]],
+        [
+            '',
+            '',
+            [
+                { id: 'edit-period-duration-quantity', errorMessage: 'Product duration cannot be empty' },
+                { id: 'edit-period-duration-unit', errorMessage: 'Choose an option from the dropdown' },
+            ],
+        ],
+    ];
+    it.each(valuesToTest)(
+        'should update validate period products duration',
+        (productDuration, productDurationUnit, result) => {
+            const errors = validateDuration(productDuration, productDurationUnit);
+            expect(errors).toEqual(result);
+        },
+    );
 });

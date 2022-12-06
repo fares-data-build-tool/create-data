@@ -175,7 +175,7 @@ exports[`pages editCarnetProperties should render editCarnetProperties page corr
         </span>
         <ExpirySelector
           carnet={true}
-          defaultDuration="3"
+          defaultDuration="0"
           defaultUnit="hour"
           errors={
             Array [

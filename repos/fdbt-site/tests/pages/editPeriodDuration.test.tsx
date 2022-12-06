@@ -10,5 +10,16 @@ describe('pages', () => {
             );
             expect(wrapper).toMatchSnapshot();
         });
+        it('should render editPeriodDuration page correctly with an error', () => {
+            const wrapper = shallow(
+                <EditPeriodDuration
+                    errors={[{ id: 'edit-period-duration-quantity', errorMessage: 'Product duration cannot be empty' }]}
+                    csrfToken=""
+                    productDurationValue=""
+                    productDurationUnit="week"
+                />,
+            );
+            expect(wrapper).toMatchSnapshot();
+        });
     });
 });
