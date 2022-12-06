@@ -85,7 +85,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ed
     const productDurationUnit = productDurationSplit[1];
     return {
         props: {
-            errors: errors,
+            errors,
             csrfToken,
             productDurationValue,
             productDurationUnit,

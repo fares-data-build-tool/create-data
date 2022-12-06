@@ -141,3 +141,5 @@ export const CAPS_ATTRIBUTE = 'fdbt-caps';
 export const EDIT_PERIOD_DURATION_ERROR = 'fdbt-period-duration-error';
 
 export const MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE = 'fdbt-manage-product-group-errors';
+
+export const EDIT_CARNET_PROPERTIES_ERROR = 'fdbt-carnet-properties-error';
