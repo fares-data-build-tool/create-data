@@ -977,12 +977,12 @@ export const getProductGroupsByNoc = async (nocCode: string): Promise<ProductGro
         `;
 
         const queryResults = await executeQuery<RawProductGroup[]>(queryInput, [nocCode]);
-        
+
         return queryResults.map((item) => ({
             id: item.id,
             name: item.name,
             productIds: JSON.parse(item.products),
-            noc: nocCode     
+            noc: nocCode,
         }));
     } catch (error) {
         throw new Error(`Could not retrieve product group by nocCode from AuroraDB: ${error.stack}`);
@@ -1004,9 +1004,7 @@ export const insertProductGroup = async (nocCode: string, products: string[], na
                             VALUES (?, ?, ?)`;
 
     try {
-
         await executeQuery(insertQuery, [nocCode, name, contents]);
-        
     } catch (error) {
         throw new Error(`Could not insert operator group into the operatorGroup table. ${error.stack}`);
     }
@@ -1039,7 +1037,25 @@ export const updateProductGroup = async (
             throw Error(`Did not update a single row: ${meta}`);
         }
     } catch (error) {
-        throw new Error(`Could not update product group into the operatorGroup table. ${error.stack}`);
+        throw new Error(`Could not update product group into the product group table. ${error.stack}`);
+    }
+};
+
+export const deleteProductGroupByNocCodeAndId = async (id: number, nocCode: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'deleting product group',
+        id,
+    });
+
+    const deleteQuery = `
+            DELETE FROM groupOfProducts
+            WHERE id = ?
+            AND nocCode = ?`;
+    try {
+        await executeQuery(deleteQuery, [id, nocCode]);
+    } catch (error) {
+        throw new Error(`Could not delete product group from the groupOfProducts table. ${error.stack}`);
     }
 };
 
@@ -2100,11 +2116,7 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
     }
 };
 
-<<<<<<< HEAD
 export const getProductGroupByNocAndId = async (noc: string, id: number): Promise<GroupOfProducts | undefined> => {
-=======
-export const getProductGroupById = async (noc: string, id: number): Promise<ProductGroup | undefined> => {
->>>>>>> b78ffd7c1 (Adding changes)
     logger.info('', {
         context: 'data.auroradb',
         message: 'getting product group for a given noc and id',
@@ -2119,15 +2131,12 @@ export const getProductGroupById = async (noc: string, id: number): Promise<Prod
         `;
 
     try {
-<<<<<<< HEAD
+
         const result = await executeQuery<GroupOfProductsDb[]>(query, [noc, id]);
-=======
-        const result = await executeQuery<RawProductGroup[]>(query, [noc, id]);
 
         if (result.length > 1) {
             throw new Error('Expected only one result');
         }
->>>>>>> b78ffd7c1 (Adding changes)
 
         return {
             id: result[0].id,
@@ -2135,19 +2144,11 @@ export const getProductGroupById = async (noc: string, id: number): Promise<Prod
             name: result[0].name,
         };
     } catch (error) {
-<<<<<<< HEAD
-        return undefined;
-    }
-};
-=======
         throw new Error(`Could not fetch products from the products table. ${error.stack}`);
     }
 };
 
-export const getProductGroupByNameAndNocCode = async (
-    noc: string,
-    name: string,
-): Promise<ProductGroup | undefined> => {
+export const getProductGroupByNameAndNocCode = async (noc: string, name: string): Promise<ProductGroup | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving product group for a given national operator code and name',
@@ -2173,7 +2174,7 @@ export const getProductGroupByNameAndNocCode = async (
         const data = queryResults[0];
 
         return data
-            ? ({               
+            ? ({
                   id: data.id,
                   name: data.name,
                   productIds: JSON.parse(data.products) as string[],
@@ -2183,4 +2184,3 @@ export const getProductGroupByNameAndNocCode = async (
         throw new Error(`Could not retrieve product group by national operator code and name from AuroraDB: ${error}`);
     }
 };
->>>>>>> b78ffd7c1 (Adding changes)

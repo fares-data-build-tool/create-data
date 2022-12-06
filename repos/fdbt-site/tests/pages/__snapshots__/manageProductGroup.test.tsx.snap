@@ -1,0 +1,1682 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages manage product group should render correctly 1`] = `
+<Fragment>
+  <BaseLayout
+    description="Manage the product group"
+    title="Manage Product Group"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <CsrfForm
+      action="/api/manageProductGroup"
+      csrfToken=""
+      method="post"
+    >
+      <input
+        name="id"
+        type="hidden"
+      />
+      <div
+        className="govuk-grid-row"
+      >
+        <div
+          className="govuk-grid-column-full"
+        >
+          <div
+            className="dft-flex dft-flex-justify-space-between"
+          >
+            <h1
+              className="govuk-heading-xl"
+            >
+              Product group
+            </h1>
+             
+          </div>
+          <div
+            className="govuk-grid-row"
+          >
+            <div
+              className="dft-flex dft-flex-justify-space-between"
+            >
+              <div
+                className="govuk-grid-column-two-thirds"
+              >
+                <p
+                  className="govuk-body-m govuk-!-margin-bottom-5"
+                >
+                  <div
+                    className="govuk-form-group"
+                    id="product-group-name"
+                  >
+                    <label
+                      htmlFor="product-group-name"
+                    >
+                      <h1
+                        className="govuk-heading-m"
+                        id="product-group-name-heading"
+                      >
+                        Provide a name for your group
+                      </h1>
+                    </label>
+                    <p
+                      className="govuk-hint"
+                      id="group-name-hint"
+                    >
+                      2 characters minimum
+                    </p>
+                    <FormElementWrapper
+                      errorClass="govuk-input--error"
+                      errorId="product-group-name"
+                      errors={Array []}
+                    >
+                      <input
+                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                        defaultValue=""
+                        id="product-group-name"
+                        maxLength={50}
+                        minLength={2}
+                        name="productGroupName"
+                        type="text"
+                      />
+                    </FormElementWrapper>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </div>
+          <button
+            className="govuk-button govuk-button--secondary govuk-visually-hidden"
+            data-module="govuk-button"
+            id="select-all"
+            onClick={[Function]}
+          >
+            Unselect all products
+          </button>
+          <p
+            className="govuk-body-m govuk-!-margin-top-5"
+          >
+            <em>
+              You currently have no products that can be added to product group.
+            </em>
+          </p>
+          <button
+            className="govuk-button govuk-visually-hidden"
+            type="submit"
+          >
+            Create Product Group
+          </button>
+        </div>
+      </div>
+    </CsrfForm>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`pages manage product group should render correctly in edit mode 1`] = `
+<Fragment>
+  <BaseLayout
+    description="Manage the product group"
+    title="Manage Product Group"
+  >
+    <InformationSummary
+      informationText="Editing and saving new changes will be applied to all capped fares using this product group."
+    />
+    <ErrorSummary
+      errors={Array []}
+    />
+    <CsrfForm
+      action="/api/manageProductGroup"
+      csrfToken=""
+      method="post"
+    >
+      <input
+        name="id"
+        type="hidden"
+        value={3}
+      />
+      <div
+        className="govuk-grid-row"
+      >
+        <div
+          className="govuk-grid-column-full"
+        >
+          <div
+            className="dft-flex dft-flex-justify-space-between"
+          >
+            <h1
+              className="govuk-heading-xl"
+            >
+              Product group
+            </h1>
+             
+          </div>
+          <div
+            className="govuk-grid-row"
+          >
+            <div
+              className="dft-flex dft-flex-justify-space-between"
+            >
+              <div
+                className="govuk-grid-column-two-thirds"
+              >
+                <p
+                  className="govuk-body-m govuk-!-margin-bottom-5"
+                >
+                  <div
+                    className="govuk-form-group"
+                    id="product-group-name"
+                  >
+                    <label
+                      htmlFor="product-group-name"
+                    >
+                      <h1
+                        className="govuk-heading-m"
+                        id="product-group-name-heading"
+                      >
+                        Provide a name for your group
+                      </h1>
+                    </label>
+                    <p
+                      className="govuk-hint"
+                      id="group-name-hint"
+                    >
+                      2 characters minimum
+                    </p>
+                    <FormElementWrapper
+                      errorClass="govuk-input--error"
+                      errorId="product-group-name"
+                      errors={Array []}
+                    >
+                      <input
+                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                        defaultValue="Product Group 1"
+                        id="product-group-name"
+                        maxLength={50}
+                        minLength={2}
+                        name="productGroupName"
+                        type="text"
+                      />
+                    </FormElementWrapper>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </div>
+          <button
+            className="govuk-button govuk-button--secondary"
+            data-module="govuk-button"
+            id="select-all"
+            onClick={[Function]}
+          >
+            Select all products
+          </button>
+          <div>
+            <strong
+              className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
+              id="products-selected"
+            >
+              0
+               / 
+              6
+               selected
+            </strong>
+            <div
+              className="govuk-tabs"
+              data-module="govuk-tabs"
+            >
+              <h2
+                className="govuk-tabs__title"
+              >
+                Products
+              </h2>
+              <ul
+                className="govuk-tabs__list"
+              >
+                <li
+                  className="govuk-tabs__list-item govuk-tabs__list-item--selected"
+                >
+                  <a
+                    className="govuk-tabs__tab"
+                    href="#services"
+                  >
+                    Services
+                  </a>
+                </li>
+                <li
+                  className="govuk-tabs__list-item"
+                >
+                  <a
+                    className="govuk-tabs__tab"
+                    href="#flat-fare-products"
+                  >
+                    Flat fare products
+                  </a>
+                </li>
+              </ul>
+              <div
+                className="govuk-tabs__panel"
+                id="services"
+              >
+                <h2
+                  className="govuk-heading-m govuk-!-margin-bottom-6"
+                >
+                  Services
+                </h2>
+                <button
+                  className="govuk-button govuk-button--secondary"
+                  data-module="govuk-button"
+                  id="open-all-services"
+                  onClick={[Function]}
+                >
+                  Open all
+                </button>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="e2f23fq"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      2a
+                       - 
+                      Town
+                       to
+                       
+                      Football Stadium
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-1"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-1"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="4"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-1"
+                      id="product-1"
+                      role="input"
+                    >
+                      Adult single | Outbound | 01/02/2022
+                    </label>
+                  </div>
+                </details>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="32rf2cvwe"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      44
+                       - 
+                      College
+                       to
+                       
+                      Shops
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-2"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-2"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="5"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-2"
+                      id="product-2"
+                      role="input"
+                    >
+                      Student return | Inbound | 02/02/2022
+                    </label>
+                  </div>
+                </details>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="aweff3r323"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      11b
+                       - 
+                      Leeds
+                       to
+                       
+                      Bradford
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-3"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-3"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="6"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-3"
+                      id="product-3"
+                      role="input"
+                    >
+                      Saver ticket | Inbound | 02/02/2022
+                    </label>
+                  </div>
+                </details>
+              </div>
+              <div
+                className="govuk-tabs__panel govuk-tabs__panel--hidden"
+                id="flat-fare-products"
+              >
+                <div>
+                  <h2
+                    className="govuk-heading-m govuk-!-margin-bottom-6"
+                  >
+                    Flat fare products
+                  </h2>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-7"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-7"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="1"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-7"
+                      id="product-7"
+                      role="input"
+                    >
+                      Best product | 01/02/2022
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-8"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-8"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="2"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-8"
+                      id="product-8"
+                      role="input"
+                    >
+                      Super product | 02/02/2022
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-9"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-9"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="3"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-9"
+                      id="product-9"
+                      role="input"
+                    >
+                      Super product | 02/02/2022
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            className="govuk-button"
+            type="submit"
+          >
+            Create Product Group
+          </button>
+        </div>
+      </div>
+    </CsrfForm>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`pages manage product group should render error state on name form group when name input left blank 1`] = `
+<Fragment>
+  <BaseLayout
+    description="Manage the product group"
+    title="Manage Product Group"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "You must provide a product group name",
+            "id": "product-group-name",
+          },
+        ]
+      }
+    />
+    <CsrfForm
+      action="/api/manageProductGroup"
+      csrfToken=""
+      method="post"
+    >
+      <input
+        name="id"
+        type="hidden"
+        value={3}
+      />
+      <div
+        className="govuk-grid-row"
+      >
+        <div
+          className="govuk-grid-column-full"
+        >
+          <div
+            className="dft-flex dft-flex-justify-space-between"
+          >
+            <h1
+              className="govuk-heading-xl"
+            >
+              Product group
+            </h1>
+             
+          </div>
+          <div
+            className="govuk-grid-row"
+          >
+            <div
+              className="dft-flex dft-flex-justify-space-between"
+            >
+              <div
+                className="govuk-grid-column-two-thirds"
+              >
+                <p
+                  className="govuk-body-m govuk-!-margin-bottom-5"
+                >
+                  <div
+                    className="govuk-form-group"
+                    id="product-group-name"
+                  >
+                    <label
+                      htmlFor="product-group-name"
+                    >
+                      <h1
+                        className="govuk-heading-m"
+                        id="product-group-name-heading"
+                      >
+                        Provide a name for your group
+                      </h1>
+                    </label>
+                    <p
+                      className="govuk-hint"
+                      id="group-name-hint"
+                    >
+                      2 characters minimum
+                    </p>
+                    <FormElementWrapper
+                      errorClass="govuk-input--error"
+                      errorId="product-group-name"
+                      errors={
+                        Array [
+                          Object {
+                            "errorMessage": "You must provide a product group name",
+                            "id": "product-group-name",
+                          },
+                        ]
+                      }
+                    >
+                      <input
+                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                        defaultValue="Product Group 1"
+                        id="product-group-name"
+                        maxLength={50}
+                        minLength={2}
+                        name="productGroupName"
+                        type="text"
+                      />
+                    </FormElementWrapper>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </div>
+          <button
+            className="govuk-button govuk-button--secondary"
+            data-module="govuk-button"
+            id="select-all"
+            onClick={[Function]}
+          >
+            Select all products
+          </button>
+          <div>
+            <strong
+              className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
+              id="products-selected"
+            >
+              0
+               / 
+              6
+               selected
+            </strong>
+            <div
+              className="govuk-tabs"
+              data-module="govuk-tabs"
+            >
+              <h2
+                className="govuk-tabs__title"
+              >
+                Products
+              </h2>
+              <ul
+                className="govuk-tabs__list"
+              >
+                <li
+                  className="govuk-tabs__list-item govuk-tabs__list-item--selected"
+                >
+                  <a
+                    className="govuk-tabs__tab"
+                    href="#services"
+                  >
+                    Services
+                  </a>
+                </li>
+                <li
+                  className="govuk-tabs__list-item"
+                >
+                  <a
+                    className="govuk-tabs__tab"
+                    href="#flat-fare-products"
+                  >
+                    Flat fare products
+                  </a>
+                </li>
+              </ul>
+              <div
+                className="govuk-tabs__panel"
+                id="services"
+              >
+                <h2
+                  className="govuk-heading-m govuk-!-margin-bottom-6"
+                >
+                  Services
+                </h2>
+                <button
+                  className="govuk-button govuk-button--secondary"
+                  data-module="govuk-button"
+                  id="open-all-services"
+                  onClick={[Function]}
+                >
+                  Open all
+                </button>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="e2f23fq"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      2a
+                       - 
+                      Town
+                       to
+                       
+                      Football Stadium
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-1"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-1"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="4"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-1"
+                      id="product-1"
+                      role="input"
+                    >
+                      Adult single | Outbound | 01/02/2022
+                    </label>
+                  </div>
+                </details>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="32rf2cvwe"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      44
+                       - 
+                      College
+                       to
+                       
+                      Shops
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-2"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-2"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="5"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-2"
+                      id="product-2"
+                      role="input"
+                    >
+                      Student return | Inbound | 02/02/2022
+                    </label>
+                  </div>
+                </details>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="aweff3r323"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      11b
+                       - 
+                      Leeds
+                       to
+                       
+                      Bradford
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-3"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-3"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="6"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-3"
+                      id="product-3"
+                      role="input"
+                    >
+                      Saver ticket | Inbound | 02/02/2022
+                    </label>
+                  </div>
+                </details>
+              </div>
+              <div
+                className="govuk-tabs__panel govuk-tabs__panel--hidden"
+                id="flat-fare-products"
+              >
+                <div>
+                  <h2
+                    className="govuk-heading-m govuk-!-margin-bottom-6"
+                  >
+                    Flat fare products
+                  </h2>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-7"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-7"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="1"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-7"
+                      id="product-7"
+                      role="input"
+                    >
+                      Best product | 01/02/2022
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-8"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-8"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="2"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-8"
+                      id="product-8"
+                      role="input"
+                    >
+                      Super product | 02/02/2022
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-9"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-9"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="3"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-9"
+                      id="product-9"
+                      role="input"
+                    >
+                      Super product | 02/02/2022
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            className="govuk-button"
+            type="submit"
+          >
+            Create Product Group
+          </button>
+        </div>
+      </div>
+    </CsrfForm>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`pages manage product group should render error state on passenger type form group when passenger type not selected 1`] = `
+<Fragment>
+  <BaseLayout
+    description="Manage the product group"
+    title="Manage Product Group"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "You must select a product group ",
+            "id": "",
+          },
+        ]
+      }
+    />
+    <CsrfForm
+      action="/api/manageProductGroup"
+      csrfToken=""
+      method="post"
+    >
+      <input
+        name="id"
+        type="hidden"
+        value={3}
+      />
+      <div
+        className="govuk-grid-row"
+      >
+        <div
+          className="govuk-grid-column-full"
+        >
+          <div
+            className="dft-flex dft-flex-justify-space-between"
+          >
+            <h1
+              className="govuk-heading-xl"
+            >
+              Product group
+            </h1>
+             
+          </div>
+          <div
+            className="govuk-grid-row"
+          >
+            <div
+              className="dft-flex dft-flex-justify-space-between"
+            >
+              <div
+                className="govuk-grid-column-two-thirds"
+              >
+                <p
+                  className="govuk-body-m govuk-!-margin-bottom-5"
+                >
+                  <div
+                    className="govuk-form-group"
+                    id="product-group-name"
+                  >
+                    <label
+                      htmlFor="product-group-name"
+                    >
+                      <h1
+                        className="govuk-heading-m"
+                        id="product-group-name-heading"
+                      >
+                        Provide a name for your group
+                      </h1>
+                    </label>
+                    <p
+                      className="govuk-hint"
+                      id="group-name-hint"
+                    >
+                      2 characters minimum
+                    </p>
+                    <FormElementWrapper
+                      errorClass="govuk-input--error"
+                      errorId="product-group-name"
+                      errors={
+                        Array [
+                          Object {
+                            "errorMessage": "You must select a product group ",
+                            "id": "",
+                          },
+                        ]
+                      }
+                    >
+                      <input
+                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                        defaultValue="Product Group 1"
+                        id="product-group-name"
+                        maxLength={50}
+                        minLength={2}
+                        name="productGroupName"
+                        type="text"
+                      />
+                    </FormElementWrapper>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </div>
+          <button
+            className="govuk-button govuk-button--secondary"
+            data-module="govuk-button"
+            id="select-all"
+            onClick={[Function]}
+          >
+            Select all products
+          </button>
+          <div>
+            <strong
+              className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
+              id="products-selected"
+            >
+              0
+               / 
+              6
+               selected
+            </strong>
+            <div
+              className="govuk-tabs"
+              data-module="govuk-tabs"
+            >
+              <h2
+                className="govuk-tabs__title"
+              >
+                Products
+              </h2>
+              <ul
+                className="govuk-tabs__list"
+              >
+                <li
+                  className="govuk-tabs__list-item govuk-tabs__list-item--selected"
+                >
+                  <a
+                    className="govuk-tabs__tab"
+                    href="#services"
+                  >
+                    Services
+                  </a>
+                </li>
+                <li
+                  className="govuk-tabs__list-item"
+                >
+                  <a
+                    className="govuk-tabs__tab"
+                    href="#flat-fare-products"
+                  >
+                    Flat fare products
+                  </a>
+                </li>
+              </ul>
+              <div
+                className="govuk-tabs__panel"
+                id="services"
+              >
+                <h2
+                  className="govuk-heading-m govuk-!-margin-bottom-6"
+                >
+                  Services
+                </h2>
+                <button
+                  className="govuk-button govuk-button--secondary"
+                  data-module="govuk-button"
+                  id="open-all-services"
+                  onClick={[Function]}
+                >
+                  Open all
+                </button>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="e2f23fq"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      2a
+                       - 
+                      Town
+                       to
+                       
+                      Football Stadium
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-1"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-1"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="4"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-1"
+                      id="product-1"
+                      role="input"
+                    >
+                      Adult single | Outbound | 01/02/2022
+                    </label>
+                  </div>
+                </details>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="32rf2cvwe"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      44
+                       - 
+                      College
+                       to
+                       
+                      Shops
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-2"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-2"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="5"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-2"
+                      id="product-2"
+                      role="input"
+                    >
+                      Student return | Inbound | 02/02/2022
+                    </label>
+                  </div>
+                </details>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="aweff3r323"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      11b
+                       - 
+                      Leeds
+                       to
+                       
+                      Bradford
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-3"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-3"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="6"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-3"
+                      id="product-3"
+                      role="input"
+                    >
+                      Saver ticket | Inbound | 02/02/2022
+                    </label>
+                  </div>
+                </details>
+              </div>
+              <div
+                className="govuk-tabs__panel govuk-tabs__panel--hidden"
+                id="flat-fare-products"
+              >
+                <div>
+                  <h2
+                    className="govuk-heading-m govuk-!-margin-bottom-6"
+                  >
+                    Flat fare products
+                  </h2>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-7"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-7"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="1"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-7"
+                      id="product-7"
+                      role="input"
+                    >
+                      Best product | 01/02/2022
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-8"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-8"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="2"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-8"
+                      id="product-8"
+                      role="input"
+                    >
+                      Super product | 02/02/2022
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-9"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-9"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="3"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-9"
+                      id="product-9"
+                      role="input"
+                    >
+                      Super product | 02/02/2022
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            className="govuk-button"
+            type="submit"
+          >
+            Create Product Group
+          </button>
+        </div>
+      </div>
+    </CsrfForm>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`pages manage product group should render update product group button when in edit mode 1`] = `
+<Fragment>
+  <BaseLayout
+    description="Manage the product group"
+    title="Manage Product Group"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <CsrfForm
+      action="/api/manageProductGroup"
+      csrfToken=""
+      method="post"
+    >
+      <input
+        name="id"
+        type="hidden"
+        value={3}
+      />
+      <div
+        className="govuk-grid-row"
+      >
+        <div
+          className="govuk-grid-column-full"
+        >
+          <div
+            className="dft-flex dft-flex-justify-space-between"
+          >
+            <h1
+              className="govuk-heading-xl"
+            >
+              Product group
+            </h1>
+             
+          </div>
+          <div
+            className="govuk-grid-row"
+          >
+            <div
+              className="dft-flex dft-flex-justify-space-between"
+            >
+              <div
+                className="govuk-grid-column-two-thirds"
+              >
+                <p
+                  className="govuk-body-m govuk-!-margin-bottom-5"
+                >
+                  <div
+                    className="govuk-form-group"
+                    id="product-group-name"
+                  >
+                    <label
+                      htmlFor="product-group-name"
+                    >
+                      <h1
+                        className="govuk-heading-m"
+                        id="product-group-name-heading"
+                      >
+                        Provide a name for your group
+                      </h1>
+                    </label>
+                    <p
+                      className="govuk-hint"
+                      id="group-name-hint"
+                    >
+                      2 characters minimum
+                    </p>
+                    <FormElementWrapper
+                      errorClass="govuk-input--error"
+                      errorId="product-group-name"
+                      errors={Array []}
+                    >
+                      <input
+                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                        defaultValue="Product Group 1"
+                        id="product-group-name"
+                        maxLength={50}
+                        minLength={2}
+                        name="productGroupName"
+                        type="text"
+                      />
+                    </FormElementWrapper>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </div>
+          <button
+            className="govuk-button govuk-button--secondary"
+            data-module="govuk-button"
+            id="select-all"
+            onClick={[Function]}
+          >
+            Select all products
+          </button>
+          <div>
+            <strong
+              className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
+              id="products-selected"
+            >
+              0
+               / 
+              6
+               selected
+            </strong>
+            <div
+              className="govuk-tabs"
+              data-module="govuk-tabs"
+            >
+              <h2
+                className="govuk-tabs__title"
+              >
+                Products
+              </h2>
+              <ul
+                className="govuk-tabs__list"
+              >
+                <li
+                  className="govuk-tabs__list-item govuk-tabs__list-item--selected"
+                >
+                  <a
+                    className="govuk-tabs__tab"
+                    href="#services"
+                  >
+                    Services
+                  </a>
+                </li>
+                <li
+                  className="govuk-tabs__list-item"
+                >
+                  <a
+                    className="govuk-tabs__tab"
+                    href="#flat-fare-products"
+                  >
+                    Flat fare products
+                  </a>
+                </li>
+              </ul>
+              <div
+                className="govuk-tabs__panel"
+                id="services"
+              >
+                <h2
+                  className="govuk-heading-m govuk-!-margin-bottom-6"
+                >
+                  Services
+                </h2>
+                <button
+                  className="govuk-button govuk-button--secondary"
+                  data-module="govuk-button"
+                  id="open-all-services"
+                  onClick={[Function]}
+                >
+                  Open all
+                </button>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="e2f23fq"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      2a
+                       - 
+                      Town
+                       to
+                       
+                      Football Stadium
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-1"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-1"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="4"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-1"
+                      id="product-1"
+                      role="input"
+                    >
+                      Adult single | Outbound | 01/02/2022
+                    </label>
+                  </div>
+                </details>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="32rf2cvwe"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      44
+                       - 
+                      College
+                       to
+                       
+                      Shops
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-2"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-2"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="5"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-2"
+                      id="product-2"
+                      role="input"
+                    >
+                      Student return | Inbound | 02/02/2022
+                    </label>
+                  </div>
+                </details>
+                <details
+                  className="govuk-details margin-bottom-export"
+                  data-module="govuk-details"
+                  key="aweff3r323"
+                  open={false}
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      11b
+                       - 
+                      Leeds
+                       to
+                       
+                      Bradford
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-3"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-3"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="6"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-3"
+                      id="product-3"
+                      role="input"
+                    >
+                      Saver ticket | Inbound | 02/02/2022
+                    </label>
+                  </div>
+                </details>
+              </div>
+              <div
+                className="govuk-tabs__panel govuk-tabs__panel--hidden"
+                id="flat-fare-products"
+              >
+                <div>
+                  <h2
+                    className="govuk-heading-m govuk-!-margin-bottom-6"
+                  >
+                    Flat fare products
+                  </h2>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-7"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-7"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="1"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-7"
+                      id="product-7"
+                      role="input"
+                    >
+                      Best product | 01/02/2022
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-8"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-8"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="2"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-8"
+                      id="product-8"
+                      role="input"
+                    >
+                      Super product | 02/02/2022
+                    </label>
+                  </div>
+                  <div
+                    className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
+                    key="checkbox-product-9"
+                  >
+                    <input
+                      checked={false}
+                      className="govuk-checkboxes__input"
+                      id="checkbox-9"
+                      name="productsToExport"
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="3"
+                    />
+                    <label
+                      className="govuk-label govuk-checkboxes__label"
+                      htmlFor="checkbox-9"
+                      id="product-9"
+                      role="input"
+                    >
+                      Super product | 02/02/2022
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            className="govuk-button"
+            type="submit"
+          >
+            Create Product Group
+          </button>
+        </div>
+      </div>
+    </CsrfForm>
+  </BaseLayout>
+</Fragment>
+`;

@@ -5,7 +5,7 @@ TRUNCATE TABLE `groupOfProducts`;
 
 INSERT INTO `groupOfProducts` (name, products, nocCode) 
 VALUES
-('product-group', '[1, 2, 3,4]', 'BLAC');
+('product-group', '["1","2","3"]', 'BLAC');
 
 UNLOCK TABLES;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { ReactElement } from 'react';
-import { DbTimeRestriction, MyFaresProduct, SinglePassengerType } from './dbTypes';
+import { DbTimeRestriction, SinglePassengerType } from './dbTypes';
 import {
     CarnetDetails,
     SelectedService,

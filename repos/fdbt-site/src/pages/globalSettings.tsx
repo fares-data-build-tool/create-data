@@ -85,7 +85,6 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
                             count={globalSettingsCounts.operatorDetailsSet}
                         />
-
                     </div>
                 </div>
             </BaseLayout>
@@ -118,7 +117,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         fareDayEndSet: !!fareDayEnd,
         operatorDetailsSet: !!operatorDetails,
         operatorGroupsCount: operatorGroups.length,
-        productGroupsCount: productGroups.length
+        productGroupsCount: productGroups.length,
     };
 
     return { props: { globalSettingsCounts, referer } };
