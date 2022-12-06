@@ -14,6 +14,7 @@ const insertProductGroupSpy = jest.spyOn(aurora, 'insertProductGroup');
 
 insertProductGroupSpy.mockResolvedValue();
 updateProductGroupSpy.mockResolvedValue();
+getProductGroupByNameAndNocCodeSpy.mockResolvedValueOnce(undefined);
 
 describe('manageProductGroup', () => {
     const writeHeadMock = jest.fn();
