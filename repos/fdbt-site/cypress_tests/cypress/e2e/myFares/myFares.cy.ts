@@ -14,6 +14,7 @@ import {
     completeMyFaresOtherProductsPages,
     completeMyFaresPointToPointProductsPages,
     deleteMultiOperatorProduct,
+    editCarnetExpiry,
     editEndDateOtherProductsPage,
     editEndDatePointToPointPage,
     editFareTrianglePointToPointPage,
@@ -26,6 +27,7 @@ import {
     editProductNamePointToPointPage,
     editPurchaseMethodOtherProductsPage,
     editPurchaseMethodPointToPointPage,
+    editQuantityInBundle,
     editServicesOtherProductsPage,
     editStartDate,
     editStartDatePointToPointPage,
@@ -178,7 +180,31 @@ describe('The my fares other products pages', () => {
                 editProductDuration();
             });
     });
-    it('allows the user the edit other product name', () => {
+    it('allows the user to edit a carnet product quantity', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Other products');
+        getElementByClass('govuk-table__body')
+            .contains('[class=govuk-table__row]', 'Flat fare carnet')
+            .find('td a')
+            .click()
+            .then(() => {
+                editQuantityInBundle();
+            });
+    });
+    it('allows the user to edit a carnet product expiry', () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Other products');
+        getElementByClass('govuk-table__body')
+            .contains('[class=govuk-table__row]', 'Flat fare carnet')
+            .find('td a')
+            .click()
+            .then(() => {
+                editCarnetExpiry();
+            });
+    });
+    it('allows the user to edit an other product name', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
@@ -195,7 +221,7 @@ describe('The my fares other products pages', () => {
             .click()
             .then(() => {
                 editProductExpiry();
-        });
+            });
     });
 });
 

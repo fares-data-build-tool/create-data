@@ -70,6 +70,7 @@ import {
     EDIT_PERIOD_DURATION_ERROR,
     MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE,
     VIEW_PRODUCT_GROUP,
+    EDIT_CARNET_PROPERTIES_ERROR,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -223,6 +224,7 @@ export interface SessionAttributeTypes {
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
     [CAPS_ATTRIBUTE]: { errors: ErrorInfo[]; caps: Cap[] };
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
+    [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
