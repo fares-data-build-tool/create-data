@@ -2127,7 +2127,7 @@ export const getProductGroupByNocAndId = async (noc: string, id: number): Promis
         const result = await executeQuery<GroupOfProductsDb[]>(query, [noc, id]);
 
         if (result.length > 1) {
-            throw new Error('Expected only one result');
+            return undefined;
         }
 
         return {

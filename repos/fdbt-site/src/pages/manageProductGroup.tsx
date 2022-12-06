@@ -28,7 +28,7 @@ import { getNonExpiredProducts, filterOutProductsWithNoActiveServices } from './
 import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Manage Product Group';
-const description = 'Manage the product group';
+const description = 'Manage product group page for the Create Fares Data Service';
 const editingInformationText =
     'Editing and saving new changes will be applied to all capped fares using this product group.';
 
@@ -61,7 +61,7 @@ const buildOtherProductSection = (
                         <input
                             className="govuk-checkboxes__input"
                             id={`checkbox-${productsIndex}`}
-                            name="productsToExport"
+                            name="productsSelected"
                             type="checkbox"
                             value={product.id}
                             checked={!!productsSelected.find((productSelected) => productSelected === productsIndex)}
@@ -260,7 +260,7 @@ const ManageProductGroup = ({
                                                                             <input
                                                                                 className="govuk-checkboxes__input"
                                                                                 id={`checkbox-${productsIndex}`}
-                                                                                name="productsToExport"
+                                                                                name="productsSelected"
                                                                                 type="checkbox"
                                                                                 value={product.id}
                                                                                 checked={
@@ -369,7 +369,7 @@ const ManageProductGroup = ({
                                 }`}
                                 id="continue-button"
                             >
-                                Create Product Group
+                                {`${editMode ? 'Update' : 'Create'} Product Group`}
                             </button>
                         </div>
                     </div>

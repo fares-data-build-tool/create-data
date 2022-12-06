@@ -13,7 +13,7 @@ import { FromDb } from '../interfaces/matchingJsonTypes';
 import ProductGroupCard from '../components/ProductGroupCard';
 
 const title = 'Product Groups - Create Fares Data Service';
-const description = 'View and edit your product groups.';
+const description = 'View and edit product group page for the Create Fares Data Service';
 
 interface viewProductGroupsProps {
     csrfToken: string;

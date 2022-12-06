@@ -40,7 +40,7 @@ describe('manageProductGroup', () => {
             body: {
                 id: '1',
                 productGroupName: '',
-                productsToExport: ['1'],
+                productsSelected: ['1'],
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -73,7 +73,7 @@ describe('manageProductGroup', () => {
             body: {
                 id: '1',
                 productGroupName: '             ',
-                productsToExport: ['1'],
+                productsSelected: ['1'],
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -106,7 +106,7 @@ describe('manageProductGroup', () => {
             body: {
                 id: '1',
                 productGroupName: 'Th',
-                productsToExport: ['1'],
+                productsSelected: ['1'],
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -139,7 +139,7 @@ describe('manageProductGroup', () => {
             body: {
                 id: '1',
                 productGroupName: 'Dummy product group',
-                productsToExport: [],
+                productsSelected: [],
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -148,7 +148,7 @@ describe('manageProductGroup', () => {
         const attributeValue = {
             errors: [
                 {
-                    errorMessage: 'Select product to be added in the group',
+                    errorMessage: 'Select at least one product to add to the group',
                     id: '',
                 },
             ],
@@ -178,7 +178,7 @@ describe('manageProductGroup', () => {
             body: {
                 id: '2',
                 productGroupName: 'Dummy Product',
-                productsToExport: ['1'],
+                productsSelected: ['1'],
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -187,7 +187,7 @@ describe('manageProductGroup', () => {
         const attributeValue = {
             errors: [
                 {
-                    errorMessage: 'Dummy Product already exists as a product group',
+                    errorMessage: 'Dummy Product already exists as a product group name',
                     id: 'product-group-name',
                 },
             ],
@@ -213,7 +213,7 @@ describe('manageProductGroup', () => {
             body: {
                 id: '1',
                 productGroupName: 'Dummy Product',
-                productsToExport: ['1'],
+                productsSelected: ['1'],
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -237,7 +237,7 @@ describe('manageProductGroup', () => {
             cookieValues: {},
             body: {
                 productGroupName: 'Dummy Product Group',
-                productsToExport: ['1'],
+                productsSelected: ['1'],
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,

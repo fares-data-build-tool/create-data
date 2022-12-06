@@ -8,7 +8,7 @@ import { MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE } from '../../constants/attribute
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const noc = getAndValidateNoc(req, res);
-    const productIdsFromReq: string[] | undefined | string = req.body.productsToExport;
+    const productIdsFromReq: string[] | undefined | string = req.body.productsSelected;
 
     const errors: ErrorInfo[] = [];
     const id = req.body.id && Number(req.body.id);
@@ -20,7 +20,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     }
 
     if (!productIdsFromReq || productIdsFromReq.length === 0) {
-        errors.push({ errorMessage: 'Select product to be added in the group', id: '' });
+        errors.push({ errorMessage: 'Select at least one product to add to the group', id: '' });
     }
 
     let productIds: string[] = [];
@@ -33,16 +33,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
     const productGroup = await getProductGroupByNameAndNocCode(noc, productGroupName);
 
-    if (productGroup !== undefined) {
+    if (!!productGroup) {
         if (id !== productGroup.id) {
             errors.push({
                 id: 'product-group-name',
-                errorMessage: `${productGroupName} already exists as a product group`,
+                errorMessage: `${productGroupName} already exists as a product group name`,
             });
         }
     }
 
-    if (errors.length) {
+    if (errors.length > 0) {
         const attributeInfo: ManageProductGroupWithErrors = {
             inputs: { id, productIds: productIds, name: productGroupName },
             errors,

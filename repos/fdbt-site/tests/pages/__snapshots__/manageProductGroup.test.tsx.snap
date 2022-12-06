@@ -3,7 +3,7 @@
 exports[`pages manage product group should render correctly 1`] = `
 <Fragment>
   <BaseLayout
-    description="Manage the product group"
+    description="Manage product group page for the Create Fares Data Service"
     title="Manage Product Group"
   >
     <ErrorSummary
@@ -117,7 +117,7 @@ exports[`pages manage product group should render correctly 1`] = `
 exports[`pages manage product group should render correctly in edit mode 1`] = `
 <Fragment>
   <BaseLayout
-    description="Manage the product group"
+    description="Manage product group page for the Create Fares Data Service"
     title="Manage Product Group"
   >
     <InformationSummary
@@ -299,7 +299,7 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-1"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -343,7 +343,7 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-2"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -387,7 +387,7 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-3"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -422,7 +422,7 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-7"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -445,7 +445,7 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-8"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -468,7 +468,7 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-9"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -492,7 +492,7 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
             id="continue-button"
             type="submit"
           >
-            Create Product Group
+            Update Product Group
           </button>
         </div>
       </div>
@@ -504,7 +504,7 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
 exports[`pages manage product group should render error state on name form group when name input left blank 1`] = `
 <Fragment>
   <BaseLayout
-    description="Manage the product group"
+    description="Manage product group page for the Create Fares Data Service"
     title="Manage Product Group"
   >
     <ErrorSummary
@@ -697,7 +697,7 @@ exports[`pages manage product group should render error state on name form group
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-1"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -741,7 +741,7 @@ exports[`pages manage product group should render error state on name form group
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-2"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -785,7 +785,7 @@ exports[`pages manage product group should render error state on name form group
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-3"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -820,7 +820,7 @@ exports[`pages manage product group should render error state on name form group
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-7"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -843,7 +843,7 @@ exports[`pages manage product group should render error state on name form group
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-8"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -866,7 +866,7 @@ exports[`pages manage product group should render error state on name form group
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-9"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -902,7 +902,7 @@ exports[`pages manage product group should render error state on name form group
 exports[`pages manage product group should render error state on passenger type form group when passenger type not selected 1`] = `
 <Fragment>
   <BaseLayout
-    description="Manage the product group"
+    description="Manage product group page for the Create Fares Data Service"
     title="Manage Product Group"
   >
     <ErrorSummary
@@ -1095,7 +1095,7 @@ exports[`pages manage product group should render error state on passenger type 
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-1"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -1139,7 +1139,7 @@ exports[`pages manage product group should render error state on passenger type 
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-2"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -1183,7 +1183,7 @@ exports[`pages manage product group should render error state on passenger type 
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-3"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -1218,7 +1218,7 @@ exports[`pages manage product group should render error state on passenger type 
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-7"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -1241,7 +1241,7 @@ exports[`pages manage product group should render error state on passenger type 
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-8"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -1264,7 +1264,7 @@ exports[`pages manage product group should render error state on passenger type 
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-9"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -1300,7 +1300,7 @@ exports[`pages manage product group should render error state on passenger type 
 exports[`pages manage product group should render update product group button when in edit mode 1`] = `
 <Fragment>
   <BaseLayout
-    description="Manage the product group"
+    description="Manage product group page for the Create Fares Data Service"
     title="Manage Product Group"
   >
     <ErrorSummary
@@ -1479,7 +1479,7 @@ exports[`pages manage product group should render update product group button wh
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-1"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -1523,7 +1523,7 @@ exports[`pages manage product group should render update product group button wh
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-2"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -1567,7 +1567,7 @@ exports[`pages manage product group should render update product group button wh
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-3"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -1602,7 +1602,7 @@ exports[`pages manage product group should render update product group button wh
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-7"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -1625,7 +1625,7 @@ exports[`pages manage product group should render update product group button wh
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-8"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -1648,7 +1648,7 @@ exports[`pages manage product group should render update product group button wh
                       checked={false}
                       className="govuk-checkboxes__input"
                       id="checkbox-9"
-                      name="productsToExport"
+                      name="productsSelected"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"

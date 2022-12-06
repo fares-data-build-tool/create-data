@@ -2,7 +2,7 @@
 
 exports[`pages view product groups should render correctly on product group 1`] = `
 <BaseLayout
-  description="View and edit your product groups."
+  description="View and edit product group page for the Create Fares Data Service"
   referer="hello"
   showNavigation={true}
   title="Product Groups - Create Fares Data Service"
@@ -73,7 +73,7 @@ exports[`pages view product groups should render correctly on product group 1`] 
 
 exports[`pages view product groups should render correctly when no product groups 1`] = `
 <BaseLayout
-  description="View and edit your product groups."
+  description="View and edit product group page for the Create Fares Data Service"
   referer={null}
   showNavigation={true}
   title="Product Groups - Create Fares Data Service"

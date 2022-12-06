@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { getProductGroupsByNoc } from 'src/data/auroradb';
+import { getProductGroupsByNoc } from '../data/auroradb';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import ProductsGroupCard from '../components/ProductGroupCard';
@@ -84,7 +84,7 @@ const SelectPassengerType = ({
                         className="govuk-button govuk-!-margin-right-2"
                     />
                 )}
-                <a className="govuk-button govuk-button--secondary" href="/viewGroupsOfProducts">
+                <a className="govuk-button govuk-button--secondary" href="/viewProductGroups">
                     Create new
                 </a>
             </>
