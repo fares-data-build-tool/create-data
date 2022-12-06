@@ -68,6 +68,8 @@ import {
     DIRECTION_ATTRIBUTE,
     CAPS_ATTRIBUTE,
     EDIT_PERIOD_DURATION_ERROR,
+    MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE,
+    VIEW_PRODUCT_GROUP,
     EDIT_CARNET_PROPERTIES_ERROR,
     CAP_EXPIRY_ATTRIBUTE,
 } from '../constants/attributes';
@@ -129,6 +131,7 @@ import {
     ManageOperatorGroupWithErrors,
     TypeOfCap,
     Cap,
+    ManageProductGroupWithErrors,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -181,6 +184,7 @@ export interface SessionAttributeTypes {
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;
     [MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE]: ManageOperatorGroupWithErrors;
+    [MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE]: ManageProductGroupWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [RETURN_SERVICE_ATTRIBUTE]: BasicService | WithErrors<BasicService>;
     [DIRECTION_ATTRIBUTE]: Direction | Errors;
@@ -216,6 +220,7 @@ export interface SessionAttributeTypes {
     [VIEW_PURCHASE_METHOD]: ErrorInfo[];
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
+    [VIEW_PRODUCT_GROUP]: ErrorInfo[];
     [CAPPED_PRODUCT_ATTRIBUTE]: boolean;
     [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
