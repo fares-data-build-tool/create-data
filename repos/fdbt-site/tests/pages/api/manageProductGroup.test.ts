@@ -120,7 +120,7 @@ describe('manageProductGroup', () => {
             ],
             inputs: {
                 id: 1,
-                name: '',
+                name: 'Th',
                 productIds: ['1'],
             },
         };
@@ -224,7 +224,7 @@ describe('manageProductGroup', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE, attributeValue);
 
-        expect(updateProductGroupSpy).toBeCalledWith(1, 'TEST', ['1'], 'Dummy Product');
+        expect(updateProductGroupSpy).toBeCalledWith(1, undefined, ['1'], 'Dummy Product');
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/viewProductGroups' });
     });
@@ -248,7 +248,7 @@ describe('manageProductGroup', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE, attributeValue);
 
-        expect(insertProductGroupSpy).toBeCalledWith('TEST', ['1'], 'Dummy Product Group');
+        expect(insertProductGroupSpy).toBeCalledWith(undefined, ['1'], 'Dummy Product Group');
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/viewProductGroups' });
     });

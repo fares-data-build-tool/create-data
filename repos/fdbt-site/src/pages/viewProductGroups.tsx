@@ -1,19 +1,16 @@
 import React, { ReactElement, useState } from 'react';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 import { getProductGroupsByNoc } from '../data/auroradb';
-import { NextPageContextWithSession, ErrorInfo, ProductGroup, GroupOfProducts } from '../interfaces';
+import { NextPageContextWithSession, ErrorInfo, GroupOfProducts } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import {
-    MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE,
-    VIEW_PRODUCT_GROUP,
-} from '../constants/attributes';
+import { MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE, VIEW_PRODUCT_GROUP } from '../constants/attributes';
 import ErrorSummary from '../components/ErrorSummary';
 import { FromDb } from '../interfaces/matchingJsonTypes';
-import ProductsGroupCard from 'src/components/ProductsGroupCard';
+import ProductGroupCard from '../components/ProductGroupCard';
 
 const title = 'Product Groups - Create Fares Data Service';
 const description = 'View and edit your product groups.';
@@ -90,7 +87,7 @@ const viewProductGroups = ({
                                 <div className="card-row">
                                     {productGroups.map((productGroup, index) => (
                                         <>
-                                            <ProductsGroupCard
+                                            <ProductGroupCard
                                                 index={index}
                                                 groupDetails={productGroup}
                                                 key={productGroup.id.toString()}

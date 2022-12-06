@@ -61,7 +61,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         // }
 
         await deleteProductGroupByNocCodeAndId(id, nocCode);
-        console.log("Redirecting now");
+
         redirectTo(res, '/viewProductGroups');
     } catch (error) {
         const message = 'There was a problem deleting the selected product group:';

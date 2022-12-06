@@ -95,12 +95,6 @@ export interface OperatorGroup {
     id: number;
 }
 
-export interface ProductGroup {
-    name: string;
-    productIds: string[];
-    id: number;
-}
-
 export interface MultiOperatorInfo {
     nocCode: string;
     services: ServiceWithOriginAndDestination[];
@@ -448,7 +442,7 @@ export interface ManageOperatorGroupWithErrors {
 }
 
 export interface ManageProductGroupWithErrors {
-    inputs: ProductGroup;
+    inputs: GroupOfProducts;
     errors: ErrorInfo[];
 }
 

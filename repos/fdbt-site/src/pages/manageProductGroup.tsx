@@ -4,29 +4,28 @@ import React, { ReactElement, useState } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import InformationSummary from '../components/InformationSummary';
-import { MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE, MULTIPLE_OPERATOR_ATTRIBUTE } from '../constants/attributes';
+import { MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE } from '../constants/attributes';
 import { getSessionAttribute } from '../utils/sessions';
 import CsrfForm from '../components/CsrfForm';
 import {
     getAllPassengerTypesByNoc,
     getAllProductsByNoc,
     getBodsServicesByNoc,
-    getProductGroupById,
-    getProductGroupsByNoc,
+    getProductGroupByNocAndId,
 } from '../data/auroradb';
 import { getProductsMatchingJson } from '../data/s3';
 import {
     ErrorInfo,
     MyFaresService,
     NextPageContextWithSession,
-    ProductGroup,
+    GroupOfProducts,
     ProductToExport,
     ServiceToDisplay,
 } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getNonExpiredProducts, filterOutProductsWithNoActiveServices } from './api/exports';
-import { isWithErrors } from 'src/interfaces/typeGuards';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Manage Product Group';
 const description = 'Manage the product group';
@@ -39,8 +38,7 @@ interface ManageProductGroupProps {
     servicesToDisplay: ServiceToDisplay[];
     errors: ErrorInfo[];
     editMode: boolean;
-    inputs?: ProductGroup | undefined;
-    selectedProductIds: string[];
+    inputs?: GroupOfProducts | undefined;
 }
 
 const buildOtherProductSection = (
@@ -106,12 +104,11 @@ const ManageProductGroup = ({
     errors,
     editMode,
     inputs,
-    selectedProductIds,
 }: ManageProductGroupProps): ReactElement => {
     const id = inputs?.id;
 
     const [detailsAllOpen, setAllDetails] = useState(false);
-    const [productsSelected, setProductsSelected] = useState<number[]>(selectedProductIds.map((pid) => Number(pid)));
+    const [productsSelected, setProductsSelected] = useState<number[]>([]);
     let indexCounter = 0;
 
     const otherProducts = productsToDisplay.filter((product) => !product.serviceLineId);
@@ -487,17 +484,15 @@ export const getServerSideProps = async (
         ) ?? [];
 
     const editId = Number.isInteger(Number(ctx.query.id)) ? Number(ctx.query.id) : undefined;
-    let inputs: ProductGroup | undefined;
+    let inputs: GroupOfProducts | undefined;
 
     const productGroupAttribute = getSessionAttribute(ctx.req, MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE);
-    let selectedProductIds: string[] = productGroupAttribute?.inputs.productIds ? [] : [];
 
     if (editId) {
-        inputs = await getProductGroupById(noc, editId);
+        inputs = await getProductGroupByNocAndId(noc, editId);
         if (!inputs) {
             throw new Error('No entity for this NOC matches the passed id');
         }
-        
     }
 
     return {
@@ -505,10 +500,9 @@ export const getServerSideProps = async (
             csrf: getCsrfToken(ctx),
             productsToDisplay,
             servicesToDisplay: uniqueServicesToDisplay,
-            errors: isWithErrors(productGroupAttribute) ? productGroupAttribute.errors: [],
+            errors: isWithErrors(productGroupAttribute) ? productGroupAttribute.errors : [],
             editMode: !!editId,
             ...(inputs && { inputs }),
-            selectedProductIds,
         },
     };
 };

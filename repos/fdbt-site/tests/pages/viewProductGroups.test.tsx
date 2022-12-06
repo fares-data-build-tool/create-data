@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { ProductGroup } from '../../src/interfaces';
+import { GroupOfProducts } from '../../src/interfaces';
 import ViewProductGroups from '../../src/pages/viewProductGroups';
 
 describe('pages', () => {
@@ -14,7 +14,7 @@ describe('pages', () => {
         });
 
         it('should render correctly on product group', () => {
-            const operatorGroup: ProductGroup = {
+            const productGroup: GroupOfProducts = {
                 id: 1,
                 name: 'first product group',
                 productIds: ['1', '2'],
@@ -22,7 +22,7 @@ describe('pages', () => {
 
             const tree = shallow(
                 <ViewProductGroups
-                    productGroups={[operatorGroup]}
+                    productGroups={[productGroup]}
                     csrfToken={''}
                     referer={'hello'}
                     viewProductGroupErrors={[]}

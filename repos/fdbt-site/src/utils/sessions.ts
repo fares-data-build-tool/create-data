@@ -68,6 +68,8 @@ import {
     DIRECTION_ATTRIBUTE,
     CAPS_ATTRIBUTE,
     EDIT_PERIOD_DURATION_ERROR,
+    MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE,
+    VIEW_PRODUCT_GROUP,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,

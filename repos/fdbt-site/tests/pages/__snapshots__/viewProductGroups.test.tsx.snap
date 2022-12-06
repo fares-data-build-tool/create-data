@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages view product groups should render correctly on product group 1`] = `
+<BaseLayout
+  description="View and edit your product groups."
+  referer="hello"
+  showNavigation={true}
+  title="Product Groups - Create Fares Data Service"
+>
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
+  <div
+    className="govuk-grid-row"
+    data-card-count={1}
+    product-groups="first product group"
+  >
+    <div
+      className="govuk-grid-column-one-quarter"
+    >
+      <SubNavigation />
+    </div>
+    <div
+      className="govuk-grid-column-three-quarters"
+    >
+      <h1
+        className="govuk-heading-xl"
+      >
+        Product Groups
+      </h1>
+      <p
+        className="govuk-body govuk-!-margin-bottom-8"
+      >
+        Define a group of products for use in a capped product
+      </p>
+      <div>
+        <div>
+          <div
+            className="card-row"
+          >
+            <ProductGroupCard
+              defaultChecked={false}
+              deleteActionHandler={[Function]}
+              groupDetails={
+                Object {
+                  "id": 1,
+                  "name": "first product group",
+                  "productIds": Array [
+                    "1",
+                    "2",
+                  ],
+                }
+              }
+              index={0}
+              key="1"
+            />
+          </div>
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/manageProductGroup"
+          >
+            Add a product group
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages view product groups should render correctly when no product groups 1`] = `
+<BaseLayout
+  description="View and edit your product groups."
+  referer={null}
+  showNavigation={true}
+  title="Product Groups - Create Fares Data Service"
+>
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
+  <div
+    className="govuk-grid-row"
+    data-card-count={0}
+    product-groups=""
+  >
+    <div
+      className="govuk-grid-column-one-quarter"
+    >
+      <SubNavigation />
+    </div>
+    <div
+      className="govuk-grid-column-three-quarters"
+    >
+      <h1
+        className="govuk-heading-xl"
+      >
+        Product Groups
+      </h1>
+      <p
+        className="govuk-body govuk-!-margin-bottom-8"
+      >
+        Define a group of products for use in a capped product
+      </p>
+      <div>
+        <NoProductGroups />
+        <a
+          aria-disabled={true}
+          className="govuk-button govuk-button"
+          data-module="govuk-button"
+          href="/manageProductGroup"
+        >
+          Add a product group
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;

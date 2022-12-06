@@ -48,7 +48,6 @@ exports[`pages manage product group should render correctly 1`] = `
                 >
                   <div
                     className="govuk-form-group"
-                    id="product-group-name"
                   >
                     <label
                       htmlFor="product-group-name"
@@ -103,6 +102,7 @@ exports[`pages manage product group should render correctly 1`] = `
           </p>
           <button
             className="govuk-button govuk-visually-hidden"
+            id="continue-button"
             type="submit"
           >
             Create Product Group
@@ -166,7 +166,6 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
                 >
                   <div
                     className="govuk-form-group"
-                    id="product-group-name"
                   >
                     <label
                       htmlFor="product-group-name"
@@ -490,6 +489,7 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
           </div>
           <button
             className="govuk-button"
+            id="continue-button"
             type="submit"
           >
             Create Product Group
@@ -557,7 +557,6 @@ exports[`pages manage product group should render error state on name form group
                 >
                   <div
                     className="govuk-form-group"
-                    id="product-group-name"
                   >
                     <label
                       htmlFor="product-group-name"
@@ -888,6 +887,7 @@ exports[`pages manage product group should render error state on name form group
           </div>
           <button
             className="govuk-button"
+            id="continue-button"
             type="submit"
           >
             Create Product Group
@@ -955,7 +955,6 @@ exports[`pages manage product group should render error state on passenger type 
                 >
                   <div
                     className="govuk-form-group"
-                    id="product-group-name"
                   >
                     <label
                       htmlFor="product-group-name"
@@ -1286,6 +1285,7 @@ exports[`pages manage product group should render error state on passenger type 
           </div>
           <button
             className="govuk-button"
+            id="continue-button"
             type="submit"
           >
             Create Product Group
@@ -1346,7 +1346,6 @@ exports[`pages manage product group should render update product group button wh
                 >
                   <div
                     className="govuk-form-group"
-                    id="product-group-name"
                   >
                     <label
                       htmlFor="product-group-name"
@@ -1670,6 +1669,7 @@ exports[`pages manage product group should render update product group button wh
           </div>
           <button
             className="govuk-button"
+            id="continue-button"
             type="submit"
           >
             Create Product Group

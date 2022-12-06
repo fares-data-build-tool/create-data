@@ -13,10 +13,10 @@ describe('product groups', () => {
         clickElementByText('Product groups');
         
         // // start with clean environment
-        //deleteAllCards();
+        deleteAllCards();
 
         createEditProductGroups();
 
-        //deleteAllCards();
+        deleteAllCards();
     });
 });

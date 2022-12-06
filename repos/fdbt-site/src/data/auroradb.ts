@@ -83,13 +83,6 @@ interface RawOperatorGroup {
     id: number;
 }
 
-interface RawProductGroup {
-    nocCode: string;
-    name: string;
-    products: string;
-    id: number;
-}
-
 export const getAuroraDBClient = (): Pool => {
     let client: Pool;
 
@@ -962,7 +955,7 @@ export const deleteOperatorGroupByNocCodeAndId = async (id: number, nocCode: str
     }
 };
 
-export const getProductGroupsByNoc = async (nocCode: string): Promise<ProductGroup[]> => {
+export const getProductGroupsByNoc = async (nocCode: string): Promise<GroupOfProducts[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving product groups for given nocCode',
@@ -976,7 +969,7 @@ export const getProductGroupsByNoc = async (nocCode: string): Promise<ProductGro
             WHERE nocCode = ?
         `;
 
-        const queryResults = await executeQuery<RawProductGroup[]>(queryInput, [nocCode]);
+        const queryResults = await executeQuery<GroupOfProductsDb[]>(queryInput, [nocCode]);
 
         return queryResults.map((item) => ({
             id: item.id,
@@ -2131,7 +2124,6 @@ export const getProductGroupByNocAndId = async (noc: string, id: number): Promis
         `;
 
     try {
-
         const result = await executeQuery<GroupOfProductsDb[]>(query, [noc, id]);
 
         if (result.length > 1) {
@@ -2144,11 +2136,14 @@ export const getProductGroupByNocAndId = async (noc: string, id: number): Promis
             name: result[0].name,
         };
     } catch (error) {
-        throw new Error(`Could not fetch products from the products table. ${error.stack}`);
+        return undefined;
     }
 };
 
-export const getProductGroupByNameAndNocCode = async (noc: string, name: string): Promise<ProductGroup | undefined> => {
+export const getProductGroupByNameAndNocCode = async (
+    noc: string,
+    name: string,
+): Promise<GroupOfProducts | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving product group for a given national operator code and name',
@@ -2162,10 +2157,7 @@ export const getProductGroupByNameAndNocCode = async (noc: string, name: string)
             FROM groupOfProducts
             WHERE nocCode = ? AND name = ?`;
 
-        const queryResults = await executeQuery<{ id: number; name: string; products: string }[]>(queryInput, [
-            noc,
-            name,
-        ]);
+        const queryResults = await executeQuery<GroupOfProductsDb[]>(queryInput, [noc, name]);
 
         if (queryResults.length > 1) {
             throw new Error("Didn't expect more than one product group with the same national operator code and name");
@@ -2178,7 +2170,7 @@ export const getProductGroupByNameAndNocCode = async (noc: string, name: string)
                   id: data.id,
                   name: data.name,
                   productIds: JSON.parse(data.products) as string[],
-              } as ProductGroup)
+              } as GroupOfProducts)
             : undefined;
     } catch (error) {
         throw new Error(`Could not retrieve product group by national operator code and name from AuroraDB: ${error}`);

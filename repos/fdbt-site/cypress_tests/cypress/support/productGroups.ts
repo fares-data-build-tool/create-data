@@ -20,7 +20,7 @@ export const createEditProductGroups = () => {
 
     const firstCard = getElementByClass('card').eq(0);
     firstCard.should('contain.text', productGroup1);
-    firstCard.should('contain.text', '1 products');
+    firstCard.should('contain.text', '1 product');
     
     getElementByClass('card').eq(0).contains('Edit').click();
     clickElementById('product-group-name').clear().type('Another product group');
