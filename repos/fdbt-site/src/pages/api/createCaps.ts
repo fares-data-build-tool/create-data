@@ -97,14 +97,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/createCaps');
             return;
         }
+        updateSessionAttribute(req, CAPS_ATTRIBUTE, { errors: [], caps });
 
-        // redirect to next page, once work is completed
-        // and add test to make sure data is stored in session
-        updateSessionAttribute(req, CAPS_ATTRIBUTE, {
-            errors: [{ errorMessage: 'Next page to be made soon!', id: '' }],
-            caps,
-        });
-        redirectTo(res, '/createCaps');
+        redirectTo(res, '/selectCapValidity');
         return;
     } catch (error) {
         const message = 'There was a problem in the create caps API:';

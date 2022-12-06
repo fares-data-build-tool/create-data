@@ -302,6 +302,11 @@ export interface PeriodExpiry {
     productEndTime?: string;
 }
 
+export interface CapExpiry {
+    productValidity: string;
+    productEndTime?: string;
+}
+
 export interface FareZone {
     name: string;
     stops: Stop[];
