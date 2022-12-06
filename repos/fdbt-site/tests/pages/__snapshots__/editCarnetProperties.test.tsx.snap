@@ -1,0 +1,206 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages editCarnetProperties should render editCarnetProperties page correctly 1`] = `
+<FullColumnLayout
+  description="Edit Carnet Properties page of the Create Fares Data Service"
+  errors={Array []}
+  title="Edit Carnet Properties - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/editCarnetProperties"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="edit-carnet-properties-page-heading"
+    >
+      Edit Carnet Properties
+    </h1>
+    <div
+      className="flex-container"
+    >
+      <div
+        className="govuk-!-margin-right-2"
+      >
+        <label
+          className="govuk-label"
+          htmlFor="edit-carnet-quantity"
+        >
+          <span
+            aria-hidden={true}
+          >
+            Quantity in bundle
+          </span>
+        </label>
+        <span
+          className="govuk-hint"
+          id="edit-carnet-quantity-hint"
+        >
+          Must be 2 or more
+        </span>
+        <input
+          aria-describedby="edit-carnet-quantity-hint"
+          className="govuk-input govuk-input--width-6"
+          data-non-numeric={true}
+          defaultValue="3"
+          id="edit-carnet-quantity"
+          name="carnetQuantity"
+          type="text"
+        />
+      </div>
+      <div
+        className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+      >
+        <label
+          className="govuk-label"
+          htmlFor="edit-carnet-expiry-duration"
+        >
+          Carnet expiry
+        </label>
+        <span
+          className="govuk-hint"
+          id="edit-carnet-expiry-hint"
+        >
+          e.g. 2 months
+        </span>
+        <ExpirySelector
+          carnet={true}
+          defaultDuration="3"
+          defaultUnit="hour"
+          errors={Array []}
+          hideFormGroupError={true}
+          hintId="edit-carnet-expiry-hint"
+          quantityId="edit-carnet-expiry-duration"
+          quantityName="carnetExpiryDuration"
+          unitId="edit-carnet-expiry-unit"
+          unitName="carnetExpiryUnit"
+        />
+      </div>
+    </div>
+    <br />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</FullColumnLayout>
+`;
+
+exports[`pages editCarnetProperties should render editCarnetProperties page correctly with an error 1`] = `
+<FullColumnLayout
+  description="Edit Carnet Properties page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Carnet expiry amount cannot be less than 1",
+        "id": "edit-carnet-expiry-duration",
+      },
+    ]
+  }
+  title="Edit Carnet Properties - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/editCarnetProperties"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Carnet expiry amount cannot be less than 1",
+            "id": "edit-carnet-expiry-duration",
+          },
+        ]
+      }
+    />
+    <h1
+      className="govuk-heading-l"
+      id="edit-carnet-properties-page-heading"
+    >
+      Edit Carnet Properties
+    </h1>
+    <div
+      className="flex-container"
+    >
+      <div
+        className="govuk-!-margin-right-2"
+      >
+        <label
+          className="govuk-label"
+          htmlFor="edit-carnet-quantity"
+        >
+          <span
+            aria-hidden={true}
+          >
+            Quantity in bundle
+          </span>
+        </label>
+        <span
+          className="govuk-hint"
+          id="edit-carnet-quantity-hint"
+        >
+          Must be 2 or more
+        </span>
+        <input
+          aria-describedby="edit-carnet-quantity-hint"
+          className="govuk-input govuk-input--width-6"
+          data-non-numeric={true}
+          defaultValue="3"
+          id="edit-carnet-quantity"
+          name="carnetQuantity"
+          type="text"
+        />
+      </div>
+      <div
+        className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+      >
+        <label
+          className="govuk-label"
+          htmlFor="edit-carnet-expiry-duration"
+        >
+          Carnet expiry
+        </label>
+        <span
+          className="govuk-hint"
+          id="edit-carnet-expiry-hint"
+        >
+          e.g. 2 months
+        </span>
+        <ExpirySelector
+          carnet={true}
+          defaultDuration="0"
+          defaultUnit="hour"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Carnet expiry amount cannot be less than 1",
+                "id": "edit-carnet-expiry-duration",
+              },
+            ]
+          }
+          hideFormGroupError={true}
+          hintId="edit-carnet-expiry-hint"
+          quantityId="edit-carnet-expiry-duration"
+          quantityName="carnetExpiryDuration"
+          unitId="edit-carnet-expiry-unit"
+          unitName="carnetExpiryUnit"
+        />
+      </div>
+    </div>
+    <br />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</FullColumnLayout>
+`;

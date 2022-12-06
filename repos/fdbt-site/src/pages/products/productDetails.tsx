@@ -383,6 +383,7 @@ const createProductDetails = async (
             id: 'quantity-in-bundle',
             name: 'Quantity in bundle',
             content: [product.carnetDetails.quantity],
+            editLink: '/editCarnetProperties',
         });
 
         productDetailsElements.push({
@@ -393,6 +394,7 @@ const createProductDetails = async (
                     ? 'No expiry'
                     : `${product.carnetDetails.expiryTime} ${product.carnetDetails.expiryUnit}(s)`,
             ],
+            editLink: '/editCarnetProperties',
         });
     }
 

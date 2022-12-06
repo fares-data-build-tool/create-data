@@ -1,5 +1,6 @@
 import 'cypress-file-upload';
 import {
+    completeFlatFareCarnet,
     completeFlatFarePages,
     completeMultiOpGeoZonePages,
     completePeriodGeoZonePages,
@@ -598,21 +599,28 @@ export const addOtherProductsIfNotPresent = (): void => {
     cy.wrap(numberOfPeriodProducts).as('numberOfPeriodProducts');
     let numberOfFlatFareProducts = 0;
     cy.wrap(numberOfFlatFareProducts).as('numberOfFlatFareProducts');
+    let numberOfFlatFareCarnetProducts = 0;
+    cy.wrap(numberOfFlatFareCarnetProducts).as('numberOfFlatFareCarnetProducts');
 
     cy.get(`[data-card-count]`).then((element) => {
         const totNumberOfProducts = Number(element.attr('data-card-count'));
         if (totNumberOfProducts > 0) {
             getElementByClass('govuk-table__body')
-                .find("tr:contains('Period')")
-                .each((_) => {
-                    numberOfPeriodProducts += 1;
-                    cy.wrap(numberOfPeriodProducts).as('numberOfPeriodProducts');
-                });
-            getElementByClass('govuk-table__body')
-                .find("tr:contains('Flat fare')")
-                .each((_) => {
-                    numberOfFlatFareProducts += 1;
-                    cy.wrap(numberOfFlatFareProducts).as('numberOfFlatFareProducts');
+                .find('td')
+                .each(($element) => {
+                    const type = $element.text();
+                    if (type === 'Period') {
+                        numberOfPeriodProducts += 1;
+                        cy.wrap(numberOfPeriodProducts).as('numberOfPeriodProducts');
+                    }
+                    if (type === 'Flat fare') {
+                        numberOfFlatFareProducts += 1;
+                        cy.wrap(numberOfFlatFareProducts).as('numberOfFlatFareProducts');
+                    }
+                    if (type === 'Flat fare carnet') {
+                        numberOfFlatFareCarnetProducts += 1;
+                        cy.wrap(numberOfFlatFareCarnetProducts).as('numberOfFlatFareCarnetProducts');
+                    }
                 });
         }
     });
@@ -638,6 +646,17 @@ export const addOtherProductsIfNotPresent = (): void => {
             completeSalesPages();
             isFinished();
             cy.log('Flat fare product set up');
+        }
+    });
+
+    cy.get('@numberOfFlatFareCarnetProducts').then((numberOfFlatFareProducts) => {
+        if (Number(numberOfFlatFareProducts) === 0) {
+            selectCarnetFareType('flatFare');
+            defineUserTypeAndTimeRestrictions();
+            completeFlatFareCarnet();
+            completeSalesPages(3, 'Flat fare carnet ');
+            isFinished();
+            cy.log('Flat fare carnet product set up');
         }
     });
 };
