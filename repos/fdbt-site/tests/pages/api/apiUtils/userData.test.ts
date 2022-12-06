@@ -1003,97 +1003,79 @@ describe('userData', () => {
                     [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: [
                         {
                             nocCode: 'WBTR',
-                            services: [
+                            selectedServices: [
                                 {
-                                    nocCode: 'WBTR',
                                     lineName: '343',
                                     lineId: '3h3vsergesrhg',
                                     serviceCode: '11-444-_-y08-1',
                                     serviceDescription: 'Test Under Lyne - Glossop',
                                     startDate: '07/04/2020',
-                                    selected: false,
                                 },
                                 {
-                                    nocCode: 'WBTR',
                                     lineName: '444',
                                     lineId: '3h3vtrhtherhed',
                                     serviceCode: 'NW_01_MCT_391_1',
                                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                                     startDate: '23/04/2019',
-                                    selected: false,
                                 },
                                 {
-                                    nocCode: 'WBTR',
                                     lineName: '543',
                                     lineId: '3h3vb32ik',
                                     serviceCode: 'NW_04_MCTR_232_1',
                                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                                     startDate: '06/04/2020',
-                                    selected: false,
                                 },
                             ],
                         },
                         {
                             nocCode: 'BLAC',
-                            services: [
+                            selectedServices: [
                                 {
-                                    nocCode: 'BLAC',
                                     lineName: '100',
                                     lineId: '3h3rthsrty56y5',
                                     serviceCode: '11-444-_-y08-1',
                                     serviceDescription: 'Test Under Lyne - Glossop',
                                     startDate: '07/04/2020',
-                                    selected: false,
                                 },
                                 {
-                                    nocCode: 'BLAC',
                                     lineName: '101',
                                     lineId: '3h34t43deefsf',
                                     serviceCode: 'NW_01_MCT_391_1',
                                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                                     startDate: '23/04/2019',
-                                    selected: false,
                                 },
                                 {
-                                    nocCode: 'BLAC',
                                     lineName: '102',
                                     lineId: '34tvwevdsvb32ik',
                                     serviceCode: 'NW_04_MCTR_232_1',
                                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                                     startDate: '06/04/2020',
-                                    selected: false,
                                 },
                             ],
                         },
                         {
                             nocCode: 'LEDS',
-                            services: [
+                            selectedServices: [
                                 {
-                                    nocCode: 'LEDS',
                                     lineName: '63',
                                     lineId: '45t34gvfdx2ik',
                                     serviceCode: '11-444-_-y08-1',
                                     serviceDescription: 'Test Under Lyne - Glossop',
                                     startDate: '07/04/2020',
-                                    selected: false,
                                 },
                                 {
-                                    nocCode: 'LEDS',
                                     lineName: '64',
                                     lineId: 'q45g4rgergik',
                                     serviceCode: 'NW_01_MCT_391_1',
                                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                                     startDate: '23/04/2019',
-                                    selected: false,
                                 },
                                 {
-                                    nocCode: 'LEDS',
                                     lineName: '65',
                                     lineId: 'q34ttfwerfsxfc',
                                     serviceCode: 'NW_04_MCTR_232_1',
                                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                                     startDate: '06/04/2020',
-                                    selected: false,
                                 },
                             ],
                         },
@@ -1618,97 +1600,79 @@ describe('userData', () => {
         const mockMultiOperatorServices = [
             {
                 nocCode: 'WBTR',
-                services: [
+                selectedServices: [
                     {
-                        nocCode: 'WBTR',
                         lineName: '343',
                         lineId: '3h3vsergesrhg',
                         serviceCode: '11-444-_-y08-1',
                         serviceDescription: 'Test Under Lyne - Glossop',
                         startDate: '07/04/2020',
-                        selected: false,
                     },
                     {
-                        nocCode: 'WBTR',
                         lineName: '444',
                         lineId: '3h3vtrhtherhed',
                         serviceCode: 'NW_01_MCT_391_1',
                         serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                         startDate: '23/04/2019',
-                        selected: false,
                     },
                     {
-                        nocCode: 'WBTR',
                         lineName: '543',
                         lineId: '3h3vb32ik',
                         serviceCode: 'NW_04_MCTR_232_1',
                         serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                         startDate: '06/04/2020',
-                        selected: false,
                     },
                 ],
             },
             {
                 nocCode: 'BLAC',
-                services: [
+                selectedServices: [
                     {
-                        nocCode: 'BLAC',
                         lineName: '100',
                         lineId: '3h3rthsrty56y5',
                         serviceCode: '11-444-_-y08-1',
                         serviceDescription: 'Test Under Lyne - Glossop',
                         startDate: '07/04/2020',
-                        selected: false,
                     },
                     {
-                        nocCode: 'BLAC',
                         lineName: '101',
                         lineId: '3h34t43deefsf',
                         serviceCode: 'NW_01_MCT_391_1',
                         serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                         startDate: '23/04/2019',
-                        selected: false,
                     },
                     {
-                        nocCode: 'BLAC',
                         lineName: '102',
                         lineId: '34tvwevdsvb32ik',
                         serviceCode: 'NW_04_MCTR_232_1',
                         serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                         startDate: '06/04/2020',
-                        selected: false,
                     },
                 ],
             },
             {
                 nocCode: 'LEDS',
-                services: [
+                selectedServices: [
                     {
-                        nocCode: 'LEDS',
                         lineName: '63',
                         lineId: '45t34gvfdx2ik',
                         serviceCode: '11-444-_-y08-1',
                         serviceDescription: 'Test Under Lyne - Glossop',
                         startDate: '07/04/2020',
-                        selected: false,
                     },
                     {
-                        nocCode: 'LEDS',
                         lineName: '64',
                         lineId: 'q45g4rgergik',
                         serviceCode: 'NW_01_MCT_391_1',
                         serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                         startDate: '23/04/2019',
-                        selected: false,
                     },
                     {
-                        nocCode: 'LEDS',
                         lineName: '65',
                         lineId: 'q34ttfwerfsxfc',
                         serviceCode: 'NW_04_MCTR_232_1',
                         serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                         startDate: '06/04/2020',
-                        selected: false,
                     },
                 ],
             },

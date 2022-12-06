@@ -1,0 +1,49 @@
+{
+  "nocCode": "BLAC",
+  "type": "period",
+  "passengerType": { "id": 1 },
+  "email": "test@example.com",
+  "uuid": "BLAC84085f49",
+  "ticketPeriod": { "startDate": "2020-01-01T00:00:00.000Z" },
+  "operatorName": "Test Operator",
+  "products": [
+    {
+      "productName": "School pupil ticket",
+      "productPrice": "22",
+      "productDuration": "1 week",
+      "productValidity": "24hr",
+      "salesOfferPackages": [
+        { "id": 1, "price": "22" },
+        { "id": 2, "price": "22" }
+      ]
+    }
+  ],
+  "selectedServices": [
+    {
+      "lineName": "1",
+      "lineId": "4YyoI0",
+      "serviceCode": "NW_05_BLAC_1_1",
+      "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade"
+    },
+    {
+      "lineName": "2C",
+      "lineId": "vySmfewe0",
+      "serviceCode": "NW_05_BLAC_2C_1",
+      "serviceDescription": "KNOTT END - POULTON - BLACKPOOL"
+    },
+    {
+      "lineName": "17",
+      "lineId": "vySmf0",
+      "serviceCode": "NW_05_BLAC_17_1",
+      "serviceDescription": "BLACKPOOL - ST ANNES - LYTHAM"
+    },
+    {
+      "lineName": "19",
+      "lineId": "l7QdTQ",
+      "serviceCode": "NW_05_BLAC_19_1",
+      "serviceDescription": "STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)"
+    }
+  ],
+  "termTime": true,
+  "carnet": false
+}

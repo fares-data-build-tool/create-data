@@ -1,0 +1,510 @@
+{
+  "nocCode": "BLAC",
+  "type": "return",
+  "passengerType": { "id": 2 },
+  "email": "test@example.com",
+  "uuid": "BLAC06cacdb0",
+  "ticketPeriod": { "startDate": "2020-02-01T00:00:00.000Z" },
+  "lineName": "1",
+  "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade",
+  "lineId": "4YyoI0",
+  "outboundFareZones": [
+    {
+      "name": "Shott Drive",
+      "stops": [
+        {
+          "stopName": "Market Street",
+          "naptanCode": "blpajgag",
+          "atcoCode": "2590B0901",
+          "localityCode": "E0054826",
+          "localityName": "Blackpool Town Centre",
+          "parentLocalityName": "Blackpool",
+          "indicator": "Stop MA1",
+          "street": "Market Street",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "110.00",
+          "fareZones": ["The Stag pub", "Frederick Drive", "Red Lane"]
+        },
+        {
+          "price": "170.00",
+          "fareZones": [
+            "Rail Station",
+            "Redtree Street",
+            "Park Lane",
+            "Daws Bank/Plough Ave"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Stag pub",
+      "stops": [
+        {
+          "stopName": "Bank Hey Street",
+          "naptanCode": "blpadjmt",
+          "atcoCode": "2590B0128",
+          "localityCode": "N0079382",
+          "localityName": "Promenade",
+          "parentLocalityName": "Blackpool",
+          "indicator": "Stop 2",
+          "street": "Bank Hey Street",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        { "price": "110.00", "fareZones": ["Frederick Drive", "Red Lane"] },
+        {
+          "price": "170.00",
+          "fareZones": [
+            "Rail Station",
+            "Redtree Street",
+            "Park Lane",
+            "Daws Bank/Plough Ave"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Frederick Drive",
+      "stops": [
+        {
+          "stopName": "Central Coach Station",
+          "naptanCode": "blpagwat",
+          "atcoCode": "2590B0677",
+          "localityCode": "E0054826",
+          "localityName": "Blackpool Town Centre",
+          "parentLocalityName": "Blackpool",
+          "indicator": "opp",
+          "street": "Central Drive",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "110.00",
+          "fareZones": ["Red Lane", "Rail Station", "Redtree Street"]
+        },
+        {
+          "price": "170.00",
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
+        }
+      ]
+    },
+    {
+      "name": "Red Lane",
+      "stops": [
+        {
+          "stopName": "Chapel Street",
+          "naptanCode": "blpagjwp",
+          "atcoCode": "2590B0516",
+          "localityCode": "N0079370",
+          "localityName": "Central",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Central Drive",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        { "price": "110.00", "fareZones": ["Rail Station", "Redtree Street"] },
+        {
+          "price": "170.00",
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
+        }
+      ]
+    },
+    {
+      "name": "Rail Station",
+      "stops": [
+        {
+          "stopName": "Gymnasium",
+          "naptanCode": "blpadjpd",
+          "atcoCode": "2590B0131",
+          "localityCode": "N0079370",
+          "localityName": "Central",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Grasmere Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "100.00",
+          "fareZones": ["Redtree Street", "Park Lane", "Daws Bank/Plough Ave"]
+        }
+      ]
+    },
+    {
+      "name": "Redtree Street",
+      "stops": [
+        {
+          "stopName": "Revoe School",
+          "naptanCode": "blpadjpg",
+          "atcoCode": "2590B0132",
+          "localityCode": "N0079371",
+          "localityName": "Ansdell",
+          "parentLocalityName": "Blackpool",
+          "indicator": "opp",
+          "street": "Grasmere Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "100.00",
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
+        }
+      ]
+    },
+    {
+      "name": "Park Lane",
+      "stops": [
+        {
+          "stopName": "Condor Square",
+          "naptanCode": "blpadjpj",
+          "atcoCode": "2590B0133",
+          "localityCode": "N0079371",
+          "localityName": "Ansdell",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Ansdell Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [{ "price": "100.00", "fareZones": ["Daws Bank/Plough Ave"] }]
+    },
+    {
+      "name": "Daws Bank/Plough Ave",
+      "stops": [
+        {
+          "stopName": "Bloomfield Hotel",
+          "naptanCode": "blpadjpm",
+          "atcoCode": "2590B0134",
+          "localityCode": "E0035294",
+          "localityName": "Bloomfield",
+          "parentLocalityName": "Blackpool",
+          "indicator": "o/s",
+          "street": "Ansdell Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": []
+    }
+  ],
+  "inboundFareZones": [
+    {
+      "name": "Shott Drive",
+      "stops": [
+        {
+          "stopName": "Saltcotes Road",
+          "naptanCode": "lanjgdat",
+          "atcoCode": "2500B0449",
+          "localityCode": "E0015858",
+          "localityName": "Saltcotes",
+          "parentLocalityName": "",
+          "indicator": "by",
+          "street": "Saltcotes Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "110.00",
+          "fareZones": ["The Stag pub", "Frederick Drive", "Red Lane"]
+        },
+        {
+          "price": "170.00",
+          "fareZones": [
+            "Rail Station",
+            "Redtree Street",
+            "Park Lane",
+            "Daws Bank/Plough Ave"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Stag pub",
+      "stops": [
+        {
+          "stopName": "Wordsworth Avenue",
+          "naptanCode": "lanjgpjp",
+          "atcoCode": "2500B0450",
+          "localityCode": "E0057506",
+          "localityName": "Lytham",
+          "parentLocalityName": "",
+          "indicator": "by",
+          "street": "Preston Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        { "price": "110.00", "fareZones": ["Frederick Drive", "Red Lane"] },
+        {
+          "price": "170.00",
+          "fareZones": [
+            "Rail Station",
+            "Redtree Street",
+            "Park Lane",
+            "Daws Bank/Plough Ave"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Frederick Drive",
+      "stops": [
+        {
+          "stopName": "South St",
+          "naptanCode": "lanjgpjg",
+          "atcoCode": "2500B0451",
+          "localityCode": "E0057506",
+          "localityName": "Lytham",
+          "parentLocalityName": "",
+          "indicator": "by",
+          "street": "Preston Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "110.00",
+          "fareZones": ["Red Lane", "Rail Station", "Redtree Street"]
+        },
+        {
+          "price": "170.00",
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
+        }
+      ]
+    },
+    {
+      "name": "Red Lane",
+      "stops": [
+        {
+          "stopName": "Lytham Hospital",
+          "naptanCode": "lanjmdwt",
+          "atcoCode": "2500B0452",
+          "localityCode": "E0057506",
+          "localityName": "Lytham",
+          "parentLocalityName": "",
+          "indicator": "by",
+          "street": "Warton Street",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        { "price": "110.00", "fareZones": ["Rail Station", "Redtree Street"] },
+        {
+          "price": "170.00",
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
+        }
+      ]
+    },
+    {
+      "name": "Rail Station",
+      "stops": [
+        {
+          "stopName": "Grosvenor Street",
+          "naptanCode": "lanjmdwm",
+          "atcoCode": "2500B0453",
+          "localityCode": "E0057506",
+          "localityName": "Lytham",
+          "parentLocalityName": "",
+          "indicator": "by",
+          "street": "Warton Street",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "100.00",
+          "fareZones": ["Redtree Street", "Park Lane", "Daws Bank/Plough Ave"]
+        }
+      ]
+    },
+    {
+      "name": "Redtree Street",
+      "stops": [
+        {
+          "stopName": "St John's Street",
+          "naptanCode": "lanjmgag",
+          "atcoCode": "2500B0454",
+          "localityCode": "E0057506",
+          "localityName": "Lytham",
+          "parentLocalityName": "",
+          "indicator": "by",
+          "street": "Warton Street",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "100.00",
+          "fareZones": ["Park Lane", "Daws Bank/Plough Ave"]
+        }
+      ]
+    },
+    {
+      "name": "Park Lane",
+      "stops": [
+        {
+          "stopName": "Station Rd",
+          "naptanCode": "lanjdjmj",
+          "atcoCode": "2500B0455",
+          "localityCode": "E0057506",
+          "localityName": "Lytham",
+          "parentLocalityName": "",
+          "indicator": "opp",
+          "street": "Clifton Street",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [{ "price": "100.00", "fareZones": ["Daws Bank/Plough Ave"] }]
+    },
+    {
+      "name": "Daws Bank/Plough Ave",
+      "stops": [
+        {
+          "stopName": "Square",
+          "naptanCode": "lanjtmjg",
+          "atcoCode": "2500LAA15912",
+          "localityCode": "E0057506",
+          "localityName": "Lytham",
+          "parentLocalityName": "",
+          "indicator": "Stand 2",
+          "street": "Clifton Street",
+          "qualifierName": ""
+        }
+      ],
+      "prices": []
+    }
+  ],
+  "returnPeriodValidity": { "amount": "1", "typeOfDuration": "day" },
+  "unassignedStops": {
+    "outboundUnassignedStops": [
+      { "atcoCode": "2590B0135" },
+      { "atcoCode": "2590B0136" },
+      { "atcoCode": "2590B0137" },
+      { "atcoCode": "2590B0138" },
+      { "atcoCode": "2590B0139" },
+      { "atcoCode": "2590BTA01300" },
+      { "atcoCode": "2590B0419" },
+      { "atcoCode": "2590B0420" },
+      { "atcoCode": "2590B0421" },
+      { "atcoCode": "2590B0422" },
+      { "atcoCode": "2590B0423" },
+      { "atcoCode": "2590B0424" },
+      { "atcoCode": "2590B0425" },
+      { "atcoCode": "2590B0426" },
+      { "atcoCode": "2590B0427" },
+      { "atcoCode": "2500B0428" },
+      { "atcoCode": "2500B0429" },
+      { "atcoCode": "2500B0430" },
+      { "atcoCode": "2500B0431" },
+      { "atcoCode": "2500IMG390" },
+      { "atcoCode": "2500IMG387" },
+      { "atcoCode": "2500B0433" },
+      { "atcoCode": "2500BTA01082" },
+      { "atcoCode": "2500B0435" },
+      { "atcoCode": "2500B0436" },
+      { "atcoCode": "2500B0437" },
+      { "atcoCode": "2500B0438" },
+      { "atcoCode": "2500B0439" },
+      { "atcoCode": "2500B0440" },
+      { "atcoCode": "2500B0441" },
+      { "atcoCode": "2500B0287" },
+      { "atcoCode": "2500B0347" },
+      { "atcoCode": "2500B0348" },
+      { "atcoCode": "2500B0349" },
+      { "atcoCode": "2500B0350" },
+      { "atcoCode": "2500B0351" },
+      { "atcoCode": "2500B0352" },
+      { "atcoCode": "2500B0353" },
+      { "atcoCode": "2500B0354" },
+      { "atcoCode": "2500B0355" },
+      { "atcoCode": "2500B0356" },
+      { "atcoCode": "2500B0357" },
+      { "atcoCode": "2500B0358" },
+      { "atcoCode": "2500B0359" },
+      { "atcoCode": "2500B0360" },
+      { "atcoCode": "2500B0266" },
+      { "atcoCode": "2500B0267" },
+      { "atcoCode": "2500B0268" },
+      { "atcoCode": "2500B0269" },
+      { "atcoCode": "2500B0534" },
+      { "atcoCode": "2500B0535" },
+      { "atcoCode": "2500IMG660" },
+      { "atcoCode": "2500IMG661" },
+      { "atcoCode": "2500IMG663" },
+      { "atcoCode": "2500B0449" }
+    ],
+    "inboundUnassignedStops": [
+      { "atcoCode": "2500B0271" },
+      { "atcoCode": "2500B0272" },
+      { "atcoCode": "250012414" },
+      { "atcoCode": "2500B0274" },
+      { "atcoCode": "2500B0361" },
+      { "atcoCode": "2500B0362" },
+      { "atcoCode": "2500607" },
+      { "atcoCode": "2500B0364" },
+      { "atcoCode": "2500B0365" },
+      { "atcoCode": "2500B0366" },
+      { "atcoCode": "2500B0367" },
+      { "atcoCode": "2500B0368" },
+      { "atcoCode": "2500B0369" },
+      { "atcoCode": "2500B0370" },
+      { "atcoCode": "2500B0371" },
+      { "atcoCode": "2500BTA01069" },
+      { "atcoCode": "2500686" },
+      { "atcoCode": "2500B0859" },
+      { "atcoCode": "2500B0389" },
+      { "atcoCode": "2500B0390" },
+      { "atcoCode": "2500B0391" },
+      { "atcoCode": "2500IMG396" },
+      { "atcoCode": "2500B0393" },
+      { "atcoCode": "2500B0394" },
+      { "atcoCode": "2500B0395" },
+      { "atcoCode": "2500B0396" },
+      { "atcoCode": "2500B0397" },
+      { "atcoCode": "2500B0398" },
+      { "atcoCode": "2500IMG388" },
+      { "atcoCode": "2500IMG389" },
+      { "atcoCode": "2500LAA16018" },
+      { "atcoCode": "2500B0400" },
+      { "atcoCode": "2500B0401" },
+      { "atcoCode": "2500B0402" },
+      { "atcoCode": "2500B0403" },
+      { "atcoCode": "2590B0404" },
+      { "atcoCode": "2590B0405" },
+      { "atcoCode": "2590B0406" },
+      { "atcoCode": "2590B0407" },
+      { "atcoCode": "2590B0408" },
+      { "atcoCode": "2590B0409" },
+      { "atcoCode": "2590B0410" },
+      { "atcoCode": "2590B0411" },
+      { "atcoCode": "2590B0412" },
+      { "atcoCode": "2590B0413" },
+      { "atcoCode": "2590B0165" },
+      { "atcoCode": "2590B0166" },
+      { "atcoCode": "2590B0167" },
+      { "atcoCode": "2590B0168" },
+      { "atcoCode": "2590B0169" },
+      { "atcoCode": "2590B0170" },
+      { "atcoCode": "2590B0171" },
+      { "atcoCode": "2590B0172" },
+      { "atcoCode": "2590B0173" },
+      { "atcoCode": "2590B0174" },
+      { "atcoCode": "2590BTA01291" },
+      { "atcoCode": "2590B0175" },
+      { "atcoCode": "2590B0901" }
+    ]
+  },
+  "products": [{ "salesOfferPackages": [{ "id": 1 }] }],
+  "operatorName": "Blackpool Transport",
+  "carnet": false
+}

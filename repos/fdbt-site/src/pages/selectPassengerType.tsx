@@ -33,7 +33,7 @@ const SelectPassengerType = ({
         <CsrfForm action="/api/selectPassengerType" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="passenger-type-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 className="govuk-fieldset__heading" id="passenger-type-page-heading">

@@ -371,7 +371,7 @@ const createProductDetails = async (
                 content: [
                     additionalOperator.selectedServices.map((selectedService) => selectedService.lineName).join(', '),
                 ],
-                editLink: '/multipleOperatorsServiceList',
+                editLink: '/multiOperatorServiceList',
             });
         });
     }
@@ -383,6 +383,7 @@ const createProductDetails = async (
             id: 'quantity-in-bundle',
             name: 'Quantity in bundle',
             content: [product.carnetDetails.quantity],
+            editLink: '/editCarnetProperties',
         });
 
         productDetailsElements.push({
@@ -393,6 +394,7 @@ const createProductDetails = async (
                     ? 'No expiry'
                     : `${product.carnetDetails.expiryTime} ${product.carnetDetails.expiryUnit}(s)`,
             ],
+            editLink: '/editCarnetProperties',
         });
     }
 
@@ -415,6 +417,7 @@ const createProductDetails = async (
             id: 'period-duration',
             name: 'Period duration',
             content: [product.productDuration],
+            editLink: '/editPeriodDuration',
         });
     }
 
@@ -423,6 +426,7 @@ const createProductDetails = async (
             id: 'product-expiry',
             name: 'Product expiry',
             content: [sentenceCaseString(product.productValidity)],
+            editLink: '/selectPeriodValidity',
         });
     }
 

@@ -127,3 +127,15 @@ export const MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE = 'fdbt-manage-operator-grou
 export const VIEW_TIME_RESTRICTION = 'fdbt-products-using-time-restriction';
 
 export const VIEW_OPERATOR_GROUP = 'fdbt-products-using-operator-group';
+
+export const CAPPED_PRODUCT_ATTRIBUTE = 'fdbt-capped-product-type';
+
+export const TYPE_OF_CAP_ATTRIBUTE = 'fdbt-type-of-cap';
+
+export const CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE = 'fdbt-capped-product-group-id';
+
+export const CAPS_ATTRIBUTE = 'fdbt-caps';
+
+export const EDIT_PERIOD_DURATION_ERROR = 'fdbt-period-duration-error';
+
+export const EDIT_CARNET_PROPERTIES_ERROR = 'fdbt-carnet-properties-error';

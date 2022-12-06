@@ -15,7 +15,7 @@ import {
     checkDurationIsValid,
     checkIntegerIsValid,
     checkPriceIsValid,
-    checkProductNameIsValid,
+    checkProductOrCapNameIsValid,
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
 
@@ -99,7 +99,7 @@ export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiPr
     const productsWithErrors: MultiProduct[] = products.map((product) => {
         const { productDuration } = product;
         const trimmedDuration = removeExcessWhiteSpace(productDuration);
-        const productDurationError = checkDurationIsValid(trimmedDuration);
+        const productDurationError = checkDurationIsValid(trimmedDuration, 'product');
 
         if (productDurationError) {
             return {
@@ -137,7 +137,7 @@ export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProdu
     const productsWithErrors: MultiProduct[] = products.map((product) => {
         const { productPrice } = product;
         const trimmedPrice = removeExcessWhiteSpace(productPrice);
-        const productPriceError = checkPriceIsValid(trimmedPrice);
+        const productPriceError = checkPriceIsValid(trimmedPrice, 'product');
 
         if (productPriceError) {
             return {
@@ -160,7 +160,7 @@ export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduc
         const trimmedProductName = removeExcessWhiteSpace(productName);
         const duplicateError =
             productNames.filter((item) => item === productName).length > 1 ? 'Product names must be unique' : '';
-        const productNameError = checkProductNameIsValid(trimmedProductName) || duplicateError;
+        const productNameError = checkProductOrCapNameIsValid(trimmedProductName, 'product') || duplicateError;
 
         if (productNameError) {
             return {

@@ -1,14 +1,21 @@
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import { expectedPeriodGeoZoneTicketWithMultipleProducts, getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import periodValidity from '../../../src/pages/api/periodValidity';
 import { ErrorInfo } from '../../../src/interfaces';
-import { PERIOD_EXPIRY_ATTRIBUTE } from '../../../src/constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
+} from '../../../src/constants/attributes';
 import * as db from '../../../src/data/auroradb';
 import { PeriodExpiry } from '../../../src/interfaces/matchingJsonTypes';
+import * as userData from '../../../src/utils/apiUtils/userData';
 
 describe('periodValidity', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const writeHeadMock = jest.fn();
+    const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
+    s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
 
     beforeEach(() => {
         jest.spyOn(db, 'getFareDayEnd').mockImplementation(() => Promise.resolve('2200'));
@@ -34,6 +41,43 @@ describe('periodValidity', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, mockProductInfo);
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/ticketConfirmation' });
+    });
+
+    it('correctly generates product info, and then redirects to /productDetails if update in edit mode', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { periodValid: '24hr' },
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedPeriodGeoZoneTicketWithMultipleProducts,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '2',
+                    matchingJsonLink: 'test/path',
+                },
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await periodValidity(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, undefined);
+
+        expect(userData.putUserDataInProductsBucketWithFilePath).toBeCalledWith(
+            {
+                ...expectedPeriodGeoZoneTicketWithMultipleProducts,
+                products: [
+                    {
+                        ...expectedPeriodGeoZoneTicketWithMultipleProducts.products[0],
+                        productValidity: '24hr',
+                        productEndTime: '',
+                    },
+                ],
+            },
+            'test/path',
+        );
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/products/productDetails?productId=2',
+        });
     });
 
     it('correctly generates product info, updates the PERIOD_EXPIRY_ATTRIBUTE with productEndTime empty even if supplied, if end of service day is not selected', async () => {
@@ -79,7 +123,6 @@ describe('periodValidity', () => {
             {
                 id: 'product-end-time',
                 errorMessage: 'No fare day end defined',
-                userInput: '',
             },
         ];
 

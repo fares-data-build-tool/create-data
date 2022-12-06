@@ -68,7 +68,7 @@ module.exports = {
         '@typescript-eslint/restrict-template-expressions': 'off',
         '@typescript-eslint/restrict-plus-operands': 'off',
         '@typescript-eslint/ban-types': 'off',
-
+        'jsx-a11y/click-events-have-key-events': 'off',
         '@typescript-eslint/no-unused-expressions': ['error'],
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
         'react/jsx-indent': [0, 4],

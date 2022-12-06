@@ -5,7 +5,7 @@ import { MULTIPLE_PRODUCT_ATTRIBUTE, CARNET_PRODUCT_DETAILS_ATTRIBUTE } from '..
 import {
     removeExcessWhiteSpace,
     checkIntegerIsValid,
-    checkProductNameIsValid,
+    checkProductOrCapNameIsValid,
     isValidInputDuration,
 } from '../../utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -36,7 +36,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const productDetails = getProductDetails(req);
 
-        const productNameError = checkProductNameIsValid(productDetails.productName);
+        const productNameError = checkProductOrCapNameIsValid(productDetails.productName, 'product');
         if (productNameError) {
             errors.push({
                 errorMessage: productNameError,

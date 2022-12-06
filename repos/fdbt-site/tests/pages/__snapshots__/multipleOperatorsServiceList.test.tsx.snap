@@ -1,250 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages multipleOperatorsServiceList should render correctly multiOperatorData 1`] = `
-<BaseLayout
-  description="Multiple Operators Service List selection page of the Create Fares Data Service"
-  title="Multiple Operators Service List - Create Fares Data Service"
->
-  <ErrorSummary
-    errors={Array []}
-  />
-  <div
-    className=""
-  >
-    <div>
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--s"
-      >
-        <h1
-          className="govuk-heading-l"
-          id="service-list-page-heading"
-        >
-          Which of your services is the ticket valid for?
-        </h1>
-      </legend>
-      <span
-        className="govuk-heading-s"
-      >
-        Select all services that apply for Blackpool Transport 
-      </span>
-      <span
-        className="govuk-hint"
-        id="txc-hint"
-      >
-        This data is taken from the 
-        <b>
-          Bus Open Data Service (BODS)
-        </b>
-        . If the service you are looking for is not listed, contact the BODS help desk for advice 
-        <a
-          href="/contact"
-        >
-          here
-        </a>
-        .
-      </span>
-    </div>
-    <div
-      className="govuk-grid-row"
-    >
-      <div
-        className="govuk-grid-column-two-thirds"
-      >
-        <button
-          className="govuk-button govuk-button--secondary"
-          id="select-all-button"
-          onClick={[Function]}
-        >
-          Select All
-        </button>
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--s"
-        >
-          <h1
-            className="govuk-heading-s"
-            id="service-list-page-heading"
-          >
-            Blackpool Transport
-          </h1>
-        </legend>
-        <div
-          className="govuk-checkboxes"
-        >
-          <div
-            className="govuk-checkboxes__item"
-            key="checkbox-item-0"
-          >
-            <label
-              className="govuk-label govuk-checkboxes__label"
-              htmlFor="add-operator-checkbox-0"
-              id="service-to-add-0"
-              onClick={[Function]}
-              role="button"
-            >
-              1 Ballarat west - Florinas North
-            </label>
-          </div>
-          <div
-            className="govuk-checkboxes__item"
-            key="checkbox-item-1"
-          >
-            <label
-              className="govuk-label govuk-checkboxes__label"
-              htmlFor="add-operator-checkbox-1"
-              id="service-to-add-1"
-              onClick={[Function]}
-              role="button"
-            >
-              2 Ballarat East - Florinas
-            </label>
-          </div>
-        </div>
-      </div>
-      <div
-        className="govuk-grid-column-one-third "
-      >
-        <div>
-          <table
-            className="border-collapse govuk-!-width-full"
-          >
-            <caption
-              className="govuk-table__caption govuk-table__caption--m "
-            >
-              Selected Services(s)
-            </caption>
-            <thead
-              className="selectedOperators-header-color"
-            >
-              <tr>
-                <th
-                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
-                  scope="col"
-                >
-                  2
-                   added
-                </th>
-                <th
-                  className="govuk-table__header text-align-right"
-                  scope="col"
-                />
-              </tr>
-            </thead>
-            <tbody
-              className="govuk-table__body"
-            >
-              <tr
-                key="selected-operator-0"
-              >
-                <td
-                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
-                  key="td0-0"
-                >
-                  <details
-                    className="govuk-details margin-bottom-0"
-                    data-module="govuk-details"
-                    id="details-BLAC"
-                    onClick={[Function]}
-                    open={true}
-                    role="button"
-                  >
-                    <summary
-                      className="govuk-details__summary width-x"
-                      id="operator-0"
-                      onClick={[Function]}
-                      role="button"
-                    >
-                      <span
-                        className="govuk-details__summary-text"
-                      >
-                        Blackpool Transport
-                      </span>
-                    </summary>
-                    <div
-                      className="govuk-details__text"
-                    >
-                      <button
-                        className="govuk-!-margin-right-2 button-link"
-                        id="removeAll"
-                        name="removeOperator"
-                        onClick={[Function]}
-                      >
-                        Remove all
-                      </button>
-                    </div>
-                  </details>
-                </td>
-              </tr>
-              <tr
-                key="selected-operator-1"
-              >
-                <td
-                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
-                  key="td0-1"
-                >
-                  <details
-                    className="govuk-details margin-bottom-0"
-                    data-module="govuk-details"
-                    id="details-LNUD"
-                    onClick={[Function]}
-                    open={false}
-                    role="button"
-                  >
-                    <summary
-                      className="govuk-details__summary width-x"
-                      id="operator-1"
-                      onClick={[Function]}
-                      role="button"
-                    >
-                      <span
-                        className="govuk-details__summary-text"
-                      >
-                        Testing ops
-                      </span>
-                    </summary>
-                    <div
-                      className="govuk-details__text"
-                    >
-                      <button
-                        className="govuk-!-margin-right-2 button-link"
-                        id="removeAll"
-                        name="removeOperator"
-                        onClick={[Function]}
-                      >
-                        Remove all
-                      </button>
-                    </div>
-                  </details>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <CsrfForm
-          action="/api/multipleOperatorsServiceList"
-          csrfToken=""
-          method="post"
-        >
-          <div>
-            <input
-              id="operator-count"
-              name="operatorCount"
-              type="hidden"
-              value="2"
-            />
-            <input
-              className="govuk-button govuk-!-width-full"
-              id="continue-button"
-              type="submit"
-              value="Confirm services and continue"
-            />
-          </div>
-        </CsrfForm>
-      </div>
-    </div>
-  </div>
-</BaseLayout>
-`;
-
 exports[`pages multipleOperatorsServiceList should render correctly with errors 1`] = `
 <BaseLayout
   description="Multiple Operators Service List selection page of the Create Fares Data Service"
@@ -271,14 +26,9 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
           className="govuk-heading-l"
           id="service-list-page-heading"
         >
-          Which of your services is the ticket valid for?
+          Select all services that apply for Blackpool Transport
         </h1>
       </legend>
-      <span
-        className="govuk-heading-s"
-      >
-        Select all services that apply for Blackpool Transport 
-      </span>
       <span
         className="govuk-hint"
         id="txc-hint"
@@ -302,6 +52,16 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
       <div
         className="govuk-grid-column-two-thirds"
       >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+        >
+          <h1
+            className="govuk-heading-m govuk-!-margin-top-3"
+            id="service-list-page-heading"
+          >
+            Blackpool Transport
+          </h1>
+        </legend>
         <button
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
@@ -309,16 +69,6 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
         >
           Select All
         </button>
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--s"
-        >
-          <h1
-            className="govuk-heading-s"
-            id="service-list-page-heading"
-          >
-            Blackpool Transport
-          </h1>
-        </legend>
         <div
           className="govuk-checkboxes"
         >
@@ -333,7 +83,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
               onClick={[Function]}
               role="button"
             >
-              1 Ballarat west - Florinas North
+              1 Fleetwood - Blackpool
             </label>
           </div>
           <div
@@ -347,7 +97,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
               onClick={[Function]}
               role="button"
             >
-              2 Ballarat East - Florinas
+              2 Poulton - Blackpool
             </label>
           </div>
         </div>
@@ -362,7 +112,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
             <caption
               className="govuk-table__caption govuk-table__caption--m "
             >
-              Selected Services(s)
+              Selected Services
             </caption>
             <thead
               className="selectedOperators-header-color"
@@ -372,8 +122,9 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
                   className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                   scope="col"
                 >
-                  2
-                   added
+                  0
+                   
+                  added
                 </th>
                 <th
                   className="govuk-table__header text-align-right"
@@ -478,10 +229,263 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
         >
           <div>
             <input
+              id="selected-operator-count"
+              name="selectedOperatorCount"
+              type="hidden"
+              value={0}
+            />
+            <input
               id="operator-count"
               name="operatorCount"
               type="hidden"
-              value="2"
+              value={2}
+            />
+            <input
+              className="govuk-button govuk-!-width-full"
+              id="continue-button"
+              type="submit"
+              value="Confirm services and continue"
+            />
+          </div>
+        </CsrfForm>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages multipleOperatorsServiceList should render the multiOperatorData page upon first load 1`] = `
+<BaseLayout
+  description="Multiple Operators Service List selection page of the Create Fares Data Service"
+  title="Multiple Operators Service List - Create Fares Data Service"
+>
+  <ErrorSummary
+    errors={Array []}
+  />
+  <div
+    className=""
+  >
+    <div>
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--s"
+      >
+        <h1
+          className="govuk-heading-l"
+          id="service-list-page-heading"
+        >
+          Select all services that apply for Blackpool Transport
+        </h1>
+      </legend>
+      <span
+        className="govuk-hint"
+        id="txc-hint"
+      >
+        This data is taken from the 
+        <b>
+          Bus Open Data Service (BODS)
+        </b>
+        . If the service you are looking for is not listed, contact the BODS help desk for advice 
+        <a
+          href="/contact"
+        >
+          here
+        </a>
+        .
+      </span>
+    </div>
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-two-thirds"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+        >
+          <h1
+            className="govuk-heading-m govuk-!-margin-top-3"
+            id="service-list-page-heading"
+          >
+            Blackpool Transport
+          </h1>
+        </legend>
+        <button
+          className="govuk-button govuk-button--secondary"
+          id="select-all-button"
+          onClick={[Function]}
+        >
+          Select All
+        </button>
+        <div
+          className="govuk-checkboxes"
+        >
+          <div
+            className="govuk-checkboxes__item"
+            key="checkbox-item-0"
+          >
+            <label
+              className="govuk-label govuk-checkboxes__label"
+              htmlFor="add-operator-checkbox-0"
+              id="service-to-add-0"
+              onClick={[Function]}
+              role="button"
+            >
+              1 Fleetwood - Blackpool
+            </label>
+          </div>
+          <div
+            className="govuk-checkboxes__item"
+            key="checkbox-item-1"
+          >
+            <label
+              className="govuk-label govuk-checkboxes__label"
+              htmlFor="add-operator-checkbox-1"
+              id="service-to-add-1"
+              onClick={[Function]}
+              role="button"
+            >
+              2 Poulton - Blackpool
+            </label>
+          </div>
+        </div>
+      </div>
+      <div
+        className="govuk-grid-column-one-third "
+      >
+        <div>
+          <table
+            className="border-collapse govuk-!-width-full"
+          >
+            <caption
+              className="govuk-table__caption govuk-table__caption--m "
+            >
+              Selected Services
+            </caption>
+            <thead
+              className="selectedOperators-header-color"
+            >
+              <tr>
+                <th
+                  className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
+                  scope="col"
+                >
+                  0
+                   
+                  added
+                </th>
+                <th
+                  className="govuk-table__header text-align-right"
+                  scope="col"
+                />
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            >
+              <tr
+                key="selected-operator-0"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-0"
+                >
+                  <details
+                    className="govuk-details margin-bottom-0"
+                    data-module="govuk-details"
+                    id="details-BLAC"
+                    onClick={[Function]}
+                    open={true}
+                    role="button"
+                  >
+                    <summary
+                      className="govuk-details__summary width-x"
+                      id="operator-0"
+                      onClick={[Function]}
+                      role="button"
+                    >
+                      <span
+                        className="govuk-details__summary-text"
+                      >
+                        Blackpool Transport
+                      </span>
+                    </summary>
+                    <div
+                      className="govuk-details__text"
+                    >
+                      <button
+                        className="govuk-!-margin-right-2 button-link"
+                        id="removeAll"
+                        name="removeOperator"
+                        onClick={[Function]}
+                      >
+                        Remove all
+                      </button>
+                    </div>
+                  </details>
+                </td>
+              </tr>
+              <tr
+                key="selected-operator-1"
+              >
+                <td
+                  className="govuk-label govuk-!-font-size-16 govuk-!-padding-top-1"
+                  key="td0-1"
+                >
+                  <details
+                    className="govuk-details margin-bottom-0"
+                    data-module="govuk-details"
+                    id="details-LNUD"
+                    onClick={[Function]}
+                    open={false}
+                    role="button"
+                  >
+                    <summary
+                      className="govuk-details__summary width-x"
+                      id="operator-1"
+                      onClick={[Function]}
+                      role="button"
+                    >
+                      <span
+                        className="govuk-details__summary-text"
+                      >
+                        Testing ops
+                      </span>
+                    </summary>
+                    <div
+                      className="govuk-details__text"
+                    >
+                      <button
+                        className="govuk-!-margin-right-2 button-link"
+                        id="removeAll"
+                        name="removeOperator"
+                        onClick={[Function]}
+                      >
+                        Remove all
+                      </button>
+                    </div>
+                  </details>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <CsrfForm
+          action="/api/multipleOperatorsServiceList"
+          csrfToken=""
+          method="post"
+        >
+          <div>
+            <input
+              id="selected-operator-count"
+              name="selectedOperatorCount"
+              type="hidden"
+              value={0}
+            />
+            <input
+              id="operator-count"
+              name="operatorCount"
+              type="hidden"
+              value={2}
             />
             <input
               className="govuk-button govuk-!-width-full"

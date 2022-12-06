@@ -15,7 +15,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
       errors={Array []}
     />
     <div
-      className="govuk-form-group "
+      className="govuk-form-group"
     >
       <fieldset
         aria-describedby="passenger-type-page-heading"
@@ -95,7 +95,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
       errors={Array []}
     />
     <div
-      className="govuk-form-group "
+      className="govuk-form-group"
     >
       <fieldset
         aria-describedby="passenger-type-page-heading"
@@ -240,7 +240,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
       errors={Array []}
     />
     <div
-      className="govuk-form-group "
+      className="govuk-form-group"
     >
       <fieldset
         aria-describedby="passenger-type-page-heading"
@@ -452,7 +452,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
       }
     />
     <div
-      className="govuk-form-group govuk-form-group--error"
+      className="govuk-form-group"
     >
       <fieldset
         aria-describedby="passenger-type-page-heading"

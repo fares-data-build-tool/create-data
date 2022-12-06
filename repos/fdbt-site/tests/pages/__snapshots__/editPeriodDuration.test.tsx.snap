@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages editPeriodDuration should render editPeriodDuration page correctly 1`] = `
+<TwoThirdsLayout
+  description="Edit Period Duration page of the Create Fares Data Service"
+  errors={Array []}
+  title="Edit Period Duration - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/editPeriodDuration"
+    csrfToken=""
+    method="post"
+  >
+    <div
+      className="govuk-form-group"
+    >
+      <ErrorSummary
+        errors={Array []}
+      />
+      <h1
+        className="govuk-heading-l"
+        id="edit-period-duration-page-heading"
+      >
+        Edit Period Duration
+      </h1>
+      <label
+        className="govuk-label"
+        htmlFor="edit-period-duration"
+      >
+        Period duration
+      </label>
+      <span
+        className="govuk-hint"
+        id="edit-period-duration-hint"
+      >
+        For example, 3 days
+      </span>
+      <ExpirySelector
+        carnet={false}
+        defaultDuration="1"
+        defaultUnit="week"
+        errors={Array []}
+        hideFormGroupError={true}
+        hintId="edit-period-duration-hint"
+        quantityId="edit-period-duration-quantity"
+        quantityName="periodDurationInput"
+        school={false}
+        unitId="edit-period-duration-unit"
+        unitName="periodDurationUnitsInput"
+      />
+      <br />
+      <input
+        className="govuk-button"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages editPeriodDuration should render editPeriodDuration page correctly with an error 1`] = `
+<TwoThirdsLayout
+  description="Edit Period Duration page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Product duration cannot be empty",
+        "id": "edit-period-duration-quantity",
+      },
+    ]
+  }
+  title="Edit Period Duration - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/editPeriodDuration"
+    csrfToken=""
+    method="post"
+  >
+    <div
+      className="govuk-form-group"
+    >
+      <ErrorSummary
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Product duration cannot be empty",
+              "id": "edit-period-duration-quantity",
+            },
+          ]
+        }
+      />
+      <h1
+        className="govuk-heading-l"
+        id="edit-period-duration-page-heading"
+      >
+        Edit Period Duration
+      </h1>
+      <label
+        className="govuk-label"
+        htmlFor="edit-period-duration"
+      >
+        Period duration
+      </label>
+      <span
+        className="govuk-hint"
+        id="edit-period-duration-hint"
+      >
+        For example, 3 days
+      </span>
+      <ExpirySelector
+        carnet={false}
+        defaultUnit="week"
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Product duration cannot be empty",
+              "id": "edit-period-duration-quantity",
+            },
+          ]
+        }
+        hideFormGroupError={true}
+        hintId="edit-period-duration-hint"
+        quantityId="edit-period-duration-quantity"
+        quantityName="periodDurationInput"
+        school={false}
+        unitId="edit-period-duration-unit"
+        unitName="periodDurationUnitsInput"
+      />
+      <br />
+      <input
+        className="govuk-button"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;

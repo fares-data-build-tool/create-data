@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { checkProductNameIsValid, removeExcessWhiteSpace } from '../utils/apiUtils/validator';
+import { checkProductOrCapNameIsValid, removeExcessWhiteSpace } from '../utils/apiUtils/validator';
 
 interface ProductNamePopupProps {
     defaultValue: string;
@@ -34,7 +34,7 @@ const ProductNamePopup = ({
     useEffect(() => {
         if (productName) {
             const withoutExcess = removeExcessWhiteSpace(productName);
-            const error = checkProductNameIsValid(withoutExcess);
+            const error = checkProductOrCapNameIsValid(withoutExcess, 'product');
 
             if (error || productName === defaultValue) {
                 setPopupError(error);

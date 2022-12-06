@@ -392,6 +392,53 @@ export const editProductName = () => {
     clickElementByText('Back');
 };
 
+export const editProductExpiry = () => {
+    clickElementById('product-expiry-link');
+    randomlyChooseProductPeriodValidity();
+    continueButtonClick();
+    clickElementByText('Back');
+};
+
+export const editProductDuration = () => {
+    clickElementById('period-duration-link');
+    const productDuration = getRandomNumber(1, 10);
+    clickElementById('edit-period-duration-quantity').clear().type(productDuration.toString());
+    selectRandomOptionFromDropDown('edit-period-duration-unit');
+    continueButtonClick();
+    cy.get('@dropdownValue').then((input) => {
+        const productDurationUnit = input.toString();
+        const value = `${productDuration} ${productDurationUnit.toLowerCase()}`;
+        getElementById('period-duration').should('have.text', value);
+    });
+    clickElementByText('Back');
+};
+
+export const editQuantityInBundle = () => {
+    clickElementById('quantity-in-bundle-link');
+    const productDuration = getRandomNumber(2, 10);
+    clickElementById('edit-carnet-quantity').clear().type(productDuration.toString());
+    continueButtonClick();
+    getElementById('quantity-in-bundle').should('have.text', productDuration.toString());
+    clickElementByText('Back');
+};
+
+export const editCarnetExpiry = () => {
+    clickElementById('carnet-expiry-link');
+    const productDuration = getRandomNumber(2, 10);
+    clickElementById('edit-carnet-expiry-duration').clear().type(productDuration.toString());
+    selectRandomOptionFromDropDown('edit-carnet-expiry-unit');
+    continueButtonClick();
+    cy.get('@dropdownValue').then((input) => {
+        const productDurationUnit = input.toString();
+        const value =
+            productDurationUnit === 'no expiry'
+                ? 'No expiry'
+                : `${productDuration} ${productDurationUnit.slice(0, productDurationUnit.length - 1).toLowerCase()}(s)`;
+        getElementById('carnet-expiry').should('have.text', value);
+    });
+    clickElementByText('Back');
+};
+
 export const editProductNamePointToPointPage = () => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
@@ -576,8 +623,7 @@ const editOperatorGroup = () => {
         }
     });
     continueButtonClick();
-    const expectedOperatorGroups = ['LNUD', 'NWBT'];
-    getElementById('multi-operator-group').should('have.text', expectedOperatorGroups.join(', '));
+    getElementById('multi-operator-group').should('have.text', 'NWBT');
 };
 
 export const editOperatorGroupMultiOperatorProductsPage = () => {

@@ -226,6 +226,7 @@ create-sns-topics:
 add-data-to-buckets:
 	EDGE_PORT=4572 awslocal s3 sync ./data/matchingData/ s3://fdbt-matching-data-dev/BLAC
 	EDGE_PORT=4572 awslocal s3 sync ./data/netexData/ s3://fdbt-netex-data-dev/BLAC
+	EDGE_PORT=4572 awslocal s3 sync ./data/productsData/ s3://fdbt-products-data-dev/BLAC
 
 print-help:
 	@echo "\n\n**************************\n"

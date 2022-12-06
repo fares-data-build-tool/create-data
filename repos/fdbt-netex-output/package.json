@@ -8,12 +8,8 @@
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint --fix . --ext .ts",
         "netexConvert": "NODE_ENV=development UNVALIDATED_NETEX_BUCKET=$UNVALIDATED_NETEX_BUCKET ts-node src/netex-convertor/run-local.ts \"$EVENT_DATA\"",
-        "netexEmail": "NODE_ENV=development MATCHING_DATA_BUCKET=$MATCHING_DATA_BUCKET ts-node src/netex-emailer/run-local.ts \"$EVENT_DATA\""
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": ". ${NVM_DIR}/nvm.sh && nvm use && NODE_ENV=production lint-staged && npm run test:ci"
-        }
+        "netexEmail": "NODE_ENV=development MATCHING_DATA_BUCKET=$MATCHING_DATA_BUCKET ts-node src/netex-emailer/run-local.ts \"$EVENT_DATA\"",
+        "precommit": ". ${NVM_DIR}/nvm.sh && nvm use && NODE_ENV=production lint-staged && npm run test:ci"
     },
     "lint-staged": {
         "src/**/*.{ts,tsx}": [

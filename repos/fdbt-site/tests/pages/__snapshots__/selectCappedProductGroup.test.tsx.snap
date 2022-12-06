@@ -1,0 +1,467 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages selectCappedProductGroup should render correctly with no saved product groups 1`] = `
+<TwoThirdsLayout
+  description="Capped products group selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Select capped products group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectCappedProductGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="select-capped-products-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="select-capped-products-page-heading"
+          >
+            Select a group of products
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create groups of capped products in your
+             
+            <a
+              className="govuk-link"
+              href="/viewProductGroups"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+        <span
+          className="govuk-body"
+        >
+          <i>
+            You currently have no saved capped product groups
+          </i>
+        </span>
+      </fieldset>
+    </div>
+    <a
+      className="govuk-button govuk-button--secondary"
+      href="/viewGroupsOfProducts"
+    >
+      Create new
+    </a>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages selectCappedProductGroup should render correctly with saved product groups and an error because one was not selected 1`] = `
+<TwoThirdsLayout
+  description="Capped products group selection page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose a group of products",
+        "id": "product-group-0-radio",
+      },
+    ]
+  }
+  title="Select capped products group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectCappedProductGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose a group of products",
+            "id": "product-group-0-radio",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="select-capped-products-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="select-capped-products-page-heading"
+          >
+            Select a group of products
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create groups of capped products in your
+             
+            <a
+              className="govuk-link"
+              href="/viewProductGroups"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Product groups
+        </h3>
+        <div
+          className="card-row"
+          id="product-groups"
+        >
+          <ProductGroupCard
+            defaultChecked={false}
+            groupDetails={
+              Object {
+                "id": 1,
+                "name": "The capped products",
+                "productIds": Array [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                ],
+              }
+            }
+            index={0}
+            key="The capped products"
+          />
+          <ProductGroupCard
+            defaultChecked={false}
+            groupDetails={
+              Object {
+                "id": 2,
+                "name": "Other products",
+                "productIds": Array [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                ],
+              }
+            }
+            index={1}
+            key="Other products"
+          />
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button govuk-!-margin-right-2"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+    <a
+      className="govuk-button govuk-button--secondary"
+      href="/viewGroupsOfProducts"
+    >
+      Create new
+    </a>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages selectCappedProductGroup should render correctly with saved product groups and none selected 1`] = `
+<TwoThirdsLayout
+  description="Capped products group selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Select capped products group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectCappedProductGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="select-capped-products-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="select-capped-products-page-heading"
+          >
+            Select a group of products
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create groups of capped products in your
+             
+            <a
+              className="govuk-link"
+              href="/viewProductGroups"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Product groups
+        </h3>
+        <div
+          className="card-row"
+          id="product-groups"
+        >
+          <ProductGroupCard
+            defaultChecked={false}
+            groupDetails={
+              Object {
+                "id": 1,
+                "name": "The capped products",
+                "productIds": Array [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                ],
+              }
+            }
+            index={0}
+            key="The capped products"
+          />
+          <ProductGroupCard
+            defaultChecked={false}
+            groupDetails={
+              Object {
+                "id": 2,
+                "name": "Other products",
+                "productIds": Array [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                ],
+              }
+            }
+            index={1}
+            key="Other products"
+          />
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button govuk-!-margin-right-2"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+    <a
+      className="govuk-button govuk-button--secondary"
+      href="/viewGroupsOfProducts"
+    >
+      Create new
+    </a>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages selectCappedProductGroup should render correctly with saved product groups and one selected 1`] = `
+<TwoThirdsLayout
+  description="Capped products group selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Select capped products group - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectCappedProductGroup"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="select-capped-products-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="select-capped-products-page-heading"
+          >
+            Select a group of products
+          </h1>
+        </legend>
+        <div
+          className="govuk-warning-text"
+        >
+          <span
+            aria-hidden="true"
+            className="govuk-warning-text__icon govuk-!-margin-top-1"
+          >
+            !
+          </span>
+          <strong
+            className="govuk-warning-text__text"
+          >
+            <span
+              className="govuk-warning-text__assistive"
+            >
+              Warning
+            </span>
+            You can create groups of capped products in your
+             
+            <a
+              className="govuk-link"
+              href="/viewProductGroups"
+            >
+              operator settings.
+            </a>
+             
+            <br />
+            Don't worry you can navigate back to this page when you are finished.
+          </strong>
+        </div>
+        <h3
+          className="govuk-heading-m"
+        >
+          Product groups
+        </h3>
+        <div
+          className="card-row"
+          id="product-groups"
+        >
+          <ProductGroupCard
+            defaultChecked={false}
+            groupDetails={
+              Object {
+                "id": 1,
+                "name": "The capped products",
+                "productIds": Array [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                ],
+              }
+            }
+            index={0}
+            key="The capped products"
+          />
+          <ProductGroupCard
+            defaultChecked={true}
+            groupDetails={
+              Object {
+                "id": 2,
+                "name": "Other products",
+                "productIds": Array [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                ],
+              }
+            }
+            index={1}
+            key="Other products"
+          />
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button govuk-!-margin-right-2"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+    <a
+      className="govuk-button govuk-button--secondary"
+      href="/viewGroupsOfProducts"
+    >
+      Create new
+    </a>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;

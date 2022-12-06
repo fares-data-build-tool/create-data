@@ -9,6 +9,8 @@ import {
     ServiceType,
     ServiceCount,
     MyFaresService,
+    ServiceWithOriginAndDestination,
+    GroupOfProducts,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
@@ -28,15 +30,9 @@ import {
     RawMyFaresProduct,
     MyFaresOtherProduct,
     DbProduct,
+    GroupOfProductsDb,
 } from '../interfaces/dbTypes';
-import {
-    ServiceWithNocCode,
-    Stop,
-    FromDb,
-    SalesOfferPackage,
-    CompanionInfo,
-    OperatorDetails,
-} from '../interfaces/matchingJsonTypes';
+import { Stop, FromDb, SalesOfferPackage, CompanionInfo, OperatorDetails } from '../interfaces/matchingJsonTypes';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -164,7 +160,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
 export const getServicesByNocCodeAndDataSourceWithGrouping = async (
     nocCode: string,
     source: string,
-): Promise<ServiceWithNocCode[]> => {
+): Promise<ServiceWithOriginAndDestination[]> => {
     //grouped by service description which combines (lineName, origin, destination)
     const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
@@ -175,14 +171,17 @@ export const getServicesByNocCodeAndDataSourceWithGrouping = async (
 
     try {
         const queryInput = `
-            SELECT id, lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
+            SELECT lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = ? AND (endDate IS NULL OR CURDATE() <= endDate)
             group by lineId, origin, destination
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
-        const queryResults = await executeQuery<ServiceWithNocCode[]>(queryInput, [nocCodeParameter, source]);
+        const queryResults = await executeQuery<ServiceWithOriginAndDestination[]>(queryInput, [
+            nocCodeParameter,
+            source,
+        ]);
 
         return (
             queryResults.map((item) => ({
@@ -2010,5 +2009,32 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
         }));
     } catch (error) {
         throw new Error(`Could not fetch products from the products table. ${error.stack}`);
+    }
+};
+
+export const getProductGroupByNocAndId = async (noc: string, id: number): Promise<GroupOfProducts | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting product group for a given noc and id',
+        noc,
+        id,
+    });
+
+    const query = `
+            SELECT id, name, products
+            FROM groupOfProducts
+            WHERE nocCode = ? AND id = ?
+        `;
+
+    try {
+        const result = await executeQuery<GroupOfProductsDb[]>(query, [noc, id]);
+
+        return {
+            id: result[0].id,
+            productIds: JSON.parse(result[0].products) as string[],
+            name: result[0].name,
+        };
+    } catch (error) {
+        return undefined;
     }
 };

@@ -1,0 +1,81 @@
+{
+  "nocCode": "BLAC",
+  "type": "multiOperator",
+  "passengerType": { "id": 1 },
+  "email": "test@example.com",
+  "uuid": "BLACdc15ca79",
+  "ticketPeriod": { "startDate": "2020-03-12T00:00:00.000Z" },
+  "operatorName": "Test Operator",
+  "products": [
+    {
+      "productName": "Monthly adult",
+      "productPrice": "250",
+      "productDuration": "1 month",
+      "productValidity": "24hr",
+      "salesOfferPackages": [{ "id": 1, "price": "250" }]
+    }
+  ],
+  "selectedServices": [
+    {
+      "lineName": "2",
+      "lineId": "YpQjUw",
+      "serviceCode": "NW_05_BLAC_2_1",
+      "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients"
+    },
+    {
+      "lineName": "17",
+      "lineId": "vySmf0",
+      "serviceCode": "NW_05_BLAC_17_1",
+      "serviceDescription": "BLACKPOOL - ST ANNES - LYTHAM"
+    },
+    {
+      "lineName": "19",
+      "lineId": "l7QdTQ",
+      "serviceCode": "NW_05_BLAC_19_1",
+      "serviceDescription": "STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)"
+    }
+  ],
+  "additionalOperators": [
+    {
+      "nocCode": "LNUD",
+      "selectedServices": [
+        {
+          "lineName": "259",
+          "lineId": "vHaXmz",
+          "serviceCode": "YWAO259",
+          "startDate": "25/03/2020",
+          "serviceDescription": "Brighouse - East Bierley"
+        },
+        {
+          "lineName": "341",
+          "lineId": "cCQkuR",
+          "serviceCode": "YWAO341",
+          "startDate": "25/03/2020",
+          "serviceDescription": "Stocksmoor - Huddersfield"
+        }
+      ]
+    },
+    {
+      "nocCode": "NWBT",
+      "selectedServices": [
+        {
+          "lineName": "15A",
+          "lineId": "02SfpM",
+          "serviceCode": "NW_05_NWBT_15A_1",
+          "startDate": "28/03/2020",
+          "serviceDescription": "BURNLEY - BURNLEY via Branch Road, Moorland Road"
+        },
+        {
+          "lineName": "64",
+          "lineId": "xqpVTa",
+          "serviceCode": "NW_05_NWBT_64_1",
+          "startDate": "28/03/2020",
+          "serviceDescription": "BURNLEY - CLITHEROE via Sycamore Avenue, Lowerhouse, Slade Lane, Whalley"
+        }
+      ]
+    }
+  ],
+  "termTime": false,
+  "operatorGroupId": 1,
+  "carnet": false
+}
