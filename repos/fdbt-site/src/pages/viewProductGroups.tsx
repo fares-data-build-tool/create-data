@@ -8,9 +8,7 @@ import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import {
-    GS_OPERATOR_GROUP_ATTRIBUTE,
-    MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
-    MULTIPLE_OPERATOR_ATTRIBUTE,
+    MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE,
     VIEW_PRODUCT_GROUP,
 } from '../constants/attributes';
 import ErrorSummary from '../components/ErrorSummary';
@@ -51,7 +49,7 @@ const viewProductGroups = ({
     };
 
     const buildDeleteUrl = (idToDelete: number, csrfToken: string): string => {
-        return `/api/deleteOperatorGroup?id=${idToDelete}&_csrf=${csrfToken}`;
+        return `/api/deleteProductGroup?id=${idToDelete}&_csrf=${csrfToken}`;
     };
 
     return (
@@ -62,7 +60,7 @@ const viewProductGroups = ({
             <div
                 className="govuk-grid-row"
                 data-card-count={productGroups.length}
-                operator-groups={productGroups.map((element) => element.name).toString()}
+                product-groups={productGroups.map((element) => element.name).toString()}
             >
                 <div className="govuk-grid-column-one-quarter">
                     <SubNavigation />
@@ -140,9 +138,7 @@ export const getServerSideProps = async (
     const productGroups = await getProductGroupsByNoc(nocCode);
     const viewProductGroup = getSessionAttribute(ctx.req, VIEW_PRODUCT_GROUP);
 
-    updateSessionAttribute(ctx.req, GS_OPERATOR_GROUP_ATTRIBUTE, undefined);
-    updateSessionAttribute(ctx.req, MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE, undefined);
-    updateSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE, undefined);
+    updateSessionAttribute(ctx.req, MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, VIEW_PRODUCT_GROUP, undefined);
 
     return {

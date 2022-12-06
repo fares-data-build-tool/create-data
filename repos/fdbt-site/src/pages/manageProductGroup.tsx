@@ -1,22 +1,37 @@
 import startCase from 'lodash/startCase';
 import moment from 'moment';
 import React, { ReactElement, useState } from 'react';
-import ErrorSummary from 'src/components/ErrorSummary';
-import FormElementWrapper from 'src/components/FormElementWrapper';
-import InformationSummary from 'src/components/InformationSummary';
-import { MULTIPLE_OPERATOR_ATTRIBUTE } from 'src/constants/attributes';
-import { getSessionAttribute } from 'src/utils/sessions';
+import ErrorSummary from '../components/ErrorSummary';
+import FormElementWrapper from '../components/FormElementWrapper';
+import InformationSummary from '../components/InformationSummary';
+import { MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE, MULTIPLE_OPERATOR_ATTRIBUTE } from '../constants/attributes';
+import { getSessionAttribute } from '../utils/sessions';
 import CsrfForm from '../components/CsrfForm';
-import { getAllPassengerTypesByNoc, getAllProductsByNoc, getBodsServicesByNoc, getProductGroupById, getProductGroupsByNoc } from '../data/auroradb';
+import {
+    getAllPassengerTypesByNoc,
+    getAllProductsByNoc,
+    getBodsServicesByNoc,
+    getProductGroupById,
+    getProductGroupsByNoc,
+} from '../data/auroradb';
 import { getProductsMatchingJson } from '../data/s3';
-import { ErrorInfo, MyFaresService, NextPageContextWithSession, ProductGroup, ProductToExport, ServiceToDisplay } from '../interfaces';
+import {
+    ErrorInfo,
+    MyFaresService,
+    NextPageContextWithSession,
+    ProductGroup,
+    ProductToExport,
+    ServiceToDisplay,
+} from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getNonExpiredProducts, filterOutProductsWithNoActiveServices } from './api/exports';
+import { isWithErrors } from 'src/interfaces/typeGuards';
 
 const title = 'Manage Product Group';
 const description = 'Manage the product group';
-const editingInformationText = 'Editing and saving new changes will be applied to all capped fares using this product group.';
+const editingInformationText =
+    'Editing and saving new changes will be applied to all capped fares using this product group.';
 
 interface ManageProductGroupProps {
     csrf: string;
@@ -25,6 +40,7 @@ interface ManageProductGroupProps {
     errors: ErrorInfo[];
     editMode: boolean;
     inputs?: ProductGroup | undefined;
+    selectedProductIds: string[];
 }
 
 const buildOtherProductSection = (
@@ -83,98 +99,98 @@ const buildOtherProductSection = (
     );
 };
 
-const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors, editMode, inputs }: ManageProductGroupProps): ReactElement => {
-    
-    const id = inputs?.id; 
+const ManageProductGroup = ({
+    productsToDisplay,
+    servicesToDisplay,
+    csrf,
+    errors,
+    editMode,
+    inputs,
+    selectedProductIds,
+}: ManageProductGroupProps): ReactElement => {
+    const id = inputs?.id;
 
     const [detailsAllOpen, setAllDetails] = useState(false);
-    const [productsSelected, setProductsSelected] = useState<number[]>([]);
+    const [productsSelected, setProductsSelected] = useState<number[]>(selectedProductIds.map((pid) => Number(pid)));
     let indexCounter = 0;
 
-    const otherProducts = productsToDisplay.filter((product) => !product.serviceLineId);    
+    const otherProducts = productsToDisplay.filter((product) => !product.serviceLineId);
 
     return (
-        <>                            
+        <>
             <BaseLayout title={title} description={description}>
-            {editMode && errors.length === 0 ? (
-                        <InformationSummary informationText={editingInformationText} />
-                    ) : null}
+                {editMode && errors.length === 0 ? (
+                    <InformationSummary informationText={editingInformationText} />
+                ) : null}
                 <ErrorSummary errors={errors} />
                 <CsrfForm csrfToken={csrf} method={'post'} action={'/api/manageProductGroup'}>
-                <input type="hidden" name="id" value={id} />
+                    <input type="hidden" name="id" value={id} />
                     <div className="govuk-grid-row">
                         <div className="govuk-grid-column-full">
-                        
                             <div className="dft-flex dft-flex-justify-space-between">
-                                <h1 className="govuk-heading-xl">Product group</h1>{' '}                                
+                                <h1 className="govuk-heading-xl">Product group</h1>{' '}
                             </div>
 
                             <div className="govuk-grid-row">
                                 <div className="dft-flex dft-flex-justify-space-between">
                                     <div className="govuk-grid-column-two-thirds">
                                         <p className="govuk-body-m govuk-!-margin-bottom-5">
-                                        <div
-                                            className={`govuk-form-group`}
-                                            id="product-group-name"
-                                        >
-                                            <label htmlFor="product-group-name">
-                                                <h1 className="govuk-heading-m" id="product-group-name-heading">
-                                                    Provide a name for your group
-                                                </h1>
-                                            </label>
+                                            <div className={`govuk-form-group`}>
+                                                <label htmlFor="product-group-name">
+                                                    <h1 className="govuk-heading-m" id="product-group-name-heading">
+                                                        Provide a name for your group
+                                                    </h1>
+                                                </label>
 
-                                            <p className="govuk-hint" id="group-name-hint">
-                                                2 characters minimum
-                                            </p>
-                                            <FormElementWrapper
-                                                errors={errors}
-                                                errorId="product-group-name"
-                                                errorClass="govuk-input--error"
-                                            >
-                                                <input
-                                                    className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                                                    id="product-group-name"
-                                                    name="productGroupName"
-                                                    type="text"
-                                                    maxLength={50}
-                                                    minLength={2}
-                                                    defaultValue={inputs?.name || ''}
-                                                />
-                                            </FormElementWrapper>
-                                        </div>
-                                                                                
+                                                <p className="govuk-hint" id="group-name-hint">
+                                                    2 characters minimum
+                                                </p>
+                                                <FormElementWrapper
+                                                    errors={errors}
+                                                    errorId="product-group-name"
+                                                    errorClass="govuk-input--error"
+                                                >
+                                                    <input
+                                                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                                                        id="product-group-name"
+                                                        name="productGroupName"
+                                                        type="text"
+                                                        maxLength={50}
+                                                        minLength={2}
+                                                        defaultValue={inputs?.name || ''}
+                                                    />
+                                                </FormElementWrapper>
+                                            </div>
                                         </p>
                                     </div>
-                                    
                                 </div>
                             </div>
                             <button
-                                        id="select-all"
-                                        className={`govuk-button govuk-button--secondary${
-                                            productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
-                                        }`}
-                                        data-module="govuk-button"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            const productsAreAllSelected =
-                                                productsSelected.length === productsToDisplay.length;
+                                id="select-all"
+                                className={`govuk-button govuk-button--secondary${
+                                    productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
+                                }`}
+                                data-module="govuk-button"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    const productsAreAllSelected = productsSelected.length === productsToDisplay.length;
 
-                                            if (productsAreAllSelected) {
-                                                setProductsSelected([]);
-                                            } else {
-                                                setProductsSelected([]);
-                                                const arrayOfIndexs = [];
-                                                for (let i = 1; i <= productsToDisplay.length; i++) {
-                                                    arrayOfIndexs.push(i);
-                                                }
-                                                setProductsSelected(arrayOfIndexs);
-                                            }
-                                        }}
-                                    >
-                                        {productsSelected.length === productsToDisplay.length
-                                            ? 'Unselect all products'
-                                            : 'Select all products'}
-                                    </button>
+                                    if (productsAreAllSelected) {
+                                        setProductsSelected([]);
+                                    } else {
+                                        setProductsSelected([]);
+                                        const arrayOfIndexs = [];
+                                        for (let i = 1; i <= productsToDisplay.length; i++) {
+                                            arrayOfIndexs.push(i);
+                                        }
+                                        setProductsSelected(arrayOfIndexs);
+                                    }
+                                }}
+                            >
+                                {productsSelected.length === productsToDisplay.length
+                                    ? 'Unselect all products'
+                                    : 'Select all products'}
+                            </button>
                             {productsToDisplay.length === 0 ? (
                                 <p className="govuk-body-m govuk-!-margin-top-5">
                                     <em>You currently have no products that can be added to product group.</em>
@@ -195,12 +211,12 @@ const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors
                                                 <a className="govuk-tabs__tab" href="#services">
                                                     Services
                                                 </a>
-                                            </li>                                            
+                                            </li>
                                             <li className="govuk-tabs__list-item">
                                                 <a className="govuk-tabs__tab" href="#flat-fare-products">
                                                     Flat fare products
                                                 </a>
-                                            </li>                                            
+                                            </li>
                                         </ul>
                                         <div className="govuk-tabs__panel" id="services">
                                             <h2 className="govuk-heading-m govuk-!-margin-bottom-6">Services</h2>
@@ -316,7 +332,7 @@ const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors
                                                     </em>
                                                 </p>
                                             )}
-                                        </div>                                        
+                                        </div>
                                         <div
                                             className="govuk-tabs__panel govuk-tabs__panel--hidden"
                                             id="flat-fare-products"
@@ -345,19 +361,19 @@ const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors
                                                 </div>
                                             ) : null}
                                         </div>
-
                                     </div>
                                 </div>
                             )}
 
                             <button
-                                        type="submit"
-                                        className={`govuk-button${
-                                            productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
-                                        }`}
-                                    >
-                                        Create Product Group
-                                    </button>
+                                type="submit"
+                                className={`govuk-button${
+                                    productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
+                                }`}
+                                id="continue-button"
+                            >
+                                Create Product Group
+                            </button>
                         </div>
                     </div>
                 </CsrfForm>
@@ -366,20 +382,15 @@ const ManageProductGroup = ({ productsToDisplay, servicesToDisplay, csrf, errors
     );
 };
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ManageProductGroupProps }> => {
-    console.log("maange the product group - 1");
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: ManageProductGroupProps }> => {
     const noc = getAndValidateNoc(ctx);
     const products = await getAllProductsByNoc(noc);
     const nonExpiredProducts = getNonExpiredProducts(products);
     const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
-    // const userInputsAndErrors = getSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
-    // return getGlobalSettingsManageProps(ctx, getPassengerTypeById, userInputsAndErrors);
-
-
-    console.log("maange the product group - 1");
-    
     const allProductsToDisplay: ProductToExport[] = await Promise.all(
         nonExpiredProductsWithActiveServices.map(async (nonExpiredProduct) => {
             const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
@@ -398,7 +409,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
                 passengerTypeName = foundPassengerType.name;
             }
-            
+
             return {
                 id: nonExpiredProduct.id,
                 productName: hasProductName ? product.productName : `${passengerTypeName} - ${startCase(s3Data.type)}`,
@@ -408,13 +419,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 direction: 'journeyDirection' in s3Data ? s3Data.journeyDirection : null,
                 fareType: s3Data.type === 'schoolService' ? 'period' : s3Data.type,
                 schoolTicket: 'termTime' in s3Data && !!s3Data.termTime,
-            };            
+            };
         }),
     );
 
-    const productsToDisplay = allProductsToDisplay.filter((product) => product.fareType === 'single' ||  
-                                                            product.fareType === 'return' || 
-                                                            product.fareType === 'flatFare');
+    const productsToDisplay = allProductsToDisplay.filter(
+        (product) => product.fareType === 'single' || product.fareType === 'return' || product.fareType === 'flatFare',
+    );
 
     const servicesLineIds = productsToDisplay
         .map((product) => {
@@ -478,31 +489,26 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const editId = Number.isInteger(Number(ctx.query.id)) ? Number(ctx.query.id) : undefined;
     let inputs: ProductGroup | undefined;
 
-    const searchOperatorsAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE);
-    let selectedProductIds: string[] = searchOperatorsAttribute?.selectedOperators
-        ? []
-        : [];
+    const productGroupAttribute = getSessionAttribute(ctx.req, MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE);
+    let selectedProductIds: string[] = productGroupAttribute?.inputs.productIds ? [] : [];
 
     if (editId) {
         inputs = await getProductGroupById(noc, editId);
         if (!inputs) {
             throw new Error('No entity for this NOC matches the passed id');
         }
-
-        if (!searchOperatorsAttribute) {
-            selectedProductIds = selectedProductIds.concat(inputs.productIds);
-        }
+        
     }
-
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
             productsToDisplay,
             servicesToDisplay: uniqueServicesToDisplay,
-            errors: [],
+            errors: isWithErrors(productGroupAttribute) ? productGroupAttribute.errors: [],
             editMode: !!editId,
             ...(inputs && { inputs }),
+            selectedProductIds,
         },
     };
 };
