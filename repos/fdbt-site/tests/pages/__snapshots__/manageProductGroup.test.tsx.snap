@@ -43,44 +43,35 @@ exports[`pages manage product group should render correctly 1`] = `
               <div
                 className="govuk-grid-column-two-thirds"
               >
-                <p
-                  className="govuk-body-m govuk-!-margin-bottom-5"
+                <div
+                  className="govuk-form-group"
                 >
-                  <div
-                    className="govuk-form-group"
+                  <h1
+                    className="govuk-heading-s"
                   >
-                    <label
-                      htmlFor="product-group-name"
-                    >
-                      <h1
-                        className="govuk-heading-m"
-                        id="product-group-name-heading"
-                      >
-                        Provide a name for your group
-                      </h1>
-                    </label>
-                    <p
-                      className="govuk-hint"
-                      id="group-name-hint"
-                    >
-                      2 characters minimum
-                    </p>
-                    <FormElementWrapper
-                      errorClass="govuk-input--error"
-                      errorId="product-group-name"
-                      errors={Array []}
-                    >
-                      <input
-                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                        defaultValue=""
-                        id="product-group-name"
-                        maxLength={50}
-                        name="productGroupName"
-                        type="text"
-                      />
-                    </FormElementWrapper>
-                  </div>
-                </p>
+                    Provide a name for your group
+                  </h1>
+                  <p
+                    className="govuk-hint"
+                    id="group-name-hint"
+                  >
+                    2 characters minimum
+                  </p>
+                  <FormElementWrapper
+                    errorClass="govuk-input--error"
+                    errorId="product-group-name"
+                    errors={Array []}
+                  >
+                    <input
+                      className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                      defaultValue=""
+                      id="product-group-name"
+                      maxLength={50}
+                      name="productGroupName"
+                      type="text"
+                    />
+                  </FormElementWrapper>
+                </div>
               </div>
             </div>
           </div>
@@ -163,44 +154,35 @@ exports[`pages manage product group should render correctly in edit mode 1`] = `
               <div
                 className="govuk-grid-column-two-thirds"
               >
-                <p
-                  className="govuk-body-m govuk-!-margin-bottom-5"
+                <div
+                  className="govuk-form-group"
                 >
-                  <div
-                    className="govuk-form-group"
+                  <h1
+                    className="govuk-heading-s"
                   >
-                    <label
-                      htmlFor="product-group-name"
-                    >
-                      <h1
-                        className="govuk-heading-m"
-                        id="product-group-name-heading"
-                      >
-                        Provide a name for your group
-                      </h1>
-                    </label>
-                    <p
-                      className="govuk-hint"
-                      id="group-name-hint"
-                    >
-                      2 characters minimum
-                    </p>
-                    <FormElementWrapper
-                      errorClass="govuk-input--error"
-                      errorId="product-group-name"
-                      errors={Array []}
-                    >
-                      <input
-                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                        defaultValue="Product Group 1"
-                        id="product-group-name"
-                        maxLength={50}
-                        name="productGroupName"
-                        type="text"
-                      />
-                    </FormElementWrapper>
-                  </div>
-                </p>
+                    Provide a name for your group
+                  </h1>
+                  <p
+                    className="govuk-hint"
+                    id="group-name-hint"
+                  >
+                    2 characters minimum
+                  </p>
+                  <FormElementWrapper
+                    errorClass="govuk-input--error"
+                    errorId="product-group-name"
+                    errors={Array []}
+                  >
+                    <input
+                      className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                      defaultValue="Product Group 1"
+                      id="product-group-name"
+                      maxLength={50}
+                      name="productGroupName"
+                      type="text"
+                    />
+                  </FormElementWrapper>
+                </div>
               </div>
             </div>
           </div>
@@ -553,51 +535,42 @@ exports[`pages manage product group should render error state on name form group
               <div
                 className="govuk-grid-column-two-thirds"
               >
-                <p
-                  className="govuk-body-m govuk-!-margin-bottom-5"
+                <div
+                  className="govuk-form-group"
                 >
-                  <div
-                    className="govuk-form-group"
+                  <h1
+                    className="govuk-heading-s"
                   >
-                    <label
-                      htmlFor="product-group-name"
-                    >
-                      <h1
-                        className="govuk-heading-m"
-                        id="product-group-name-heading"
-                      >
-                        Provide a name for your group
-                      </h1>
-                    </label>
-                    <p
-                      className="govuk-hint"
-                      id="group-name-hint"
-                    >
-                      2 characters minimum
-                    </p>
-                    <FormElementWrapper
-                      errorClass="govuk-input--error"
-                      errorId="product-group-name"
-                      errors={
-                        Array [
-                          Object {
-                            "errorMessage": "You must provide a product group name",
-                            "id": "product-group-name",
-                          },
-                        ]
-                      }
-                    >
-                      <input
-                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                        defaultValue="Product Group 1"
-                        id="product-group-name"
-                        maxLength={50}
-                        name="productGroupName"
-                        type="text"
-                      />
-                    </FormElementWrapper>
-                  </div>
-                </p>
+                    Provide a name for your group
+                  </h1>
+                  <p
+                    className="govuk-hint"
+                    id="group-name-hint"
+                  >
+                    2 characters minimum
+                  </p>
+                  <FormElementWrapper
+                    errorClass="govuk-input--error"
+                    errorId="product-group-name"
+                    errors={
+                      Array [
+                        Object {
+                          "errorMessage": "You must provide a product group name",
+                          "id": "product-group-name",
+                        },
+                      ]
+                    }
+                  >
+                    <input
+                      className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                      defaultValue="Product Group 1"
+                      id="product-group-name"
+                      maxLength={50}
+                      name="productGroupName"
+                      type="text"
+                    />
+                  </FormElementWrapper>
+                </div>
               </div>
             </div>
           </div>
@@ -950,51 +923,42 @@ exports[`pages manage product group should render error state on passenger type 
               <div
                 className="govuk-grid-column-two-thirds"
               >
-                <p
-                  className="govuk-body-m govuk-!-margin-bottom-5"
+                <div
+                  className="govuk-form-group"
                 >
-                  <div
-                    className="govuk-form-group"
+                  <h1
+                    className="govuk-heading-s"
                   >
-                    <label
-                      htmlFor="product-group-name"
-                    >
-                      <h1
-                        className="govuk-heading-m"
-                        id="product-group-name-heading"
-                      >
-                        Provide a name for your group
-                      </h1>
-                    </label>
-                    <p
-                      className="govuk-hint"
-                      id="group-name-hint"
-                    >
-                      2 characters minimum
-                    </p>
-                    <FormElementWrapper
-                      errorClass="govuk-input--error"
-                      errorId="product-group-name"
-                      errors={
-                        Array [
-                          Object {
-                            "errorMessage": "You must select a product group ",
-                            "id": "",
-                          },
-                        ]
-                      }
-                    >
-                      <input
-                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                        defaultValue="Product Group 1"
-                        id="product-group-name"
-                        maxLength={50}
-                        name="productGroupName"
-                        type="text"
-                      />
-                    </FormElementWrapper>
-                  </div>
-                </p>
+                    Provide a name for your group
+                  </h1>
+                  <p
+                    className="govuk-hint"
+                    id="group-name-hint"
+                  >
+                    2 characters minimum
+                  </p>
+                  <FormElementWrapper
+                    errorClass="govuk-input--error"
+                    errorId="product-group-name"
+                    errors={
+                      Array [
+                        Object {
+                          "errorMessage": "You must select a product group ",
+                          "id": "",
+                        },
+                      ]
+                    }
+                  >
+                    <input
+                      className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                      defaultValue="Product Group 1"
+                      id="product-group-name"
+                      maxLength={50}
+                      name="productGroupName"
+                      type="text"
+                    />
+                  </FormElementWrapper>
+                </div>
               </div>
             </div>
           </div>
@@ -1340,44 +1304,35 @@ exports[`pages manage product group should render update product group button wh
               <div
                 className="govuk-grid-column-two-thirds"
               >
-                <p
-                  className="govuk-body-m govuk-!-margin-bottom-5"
+                <div
+                  className="govuk-form-group"
                 >
-                  <div
-                    className="govuk-form-group"
+                  <h1
+                    className="govuk-heading-s"
                   >
-                    <label
-                      htmlFor="product-group-name"
-                    >
-                      <h1
-                        className="govuk-heading-m"
-                        id="product-group-name-heading"
-                      >
-                        Provide a name for your group
-                      </h1>
-                    </label>
-                    <p
-                      className="govuk-hint"
-                      id="group-name-hint"
-                    >
-                      2 characters minimum
-                    </p>
-                    <FormElementWrapper
-                      errorClass="govuk-input--error"
-                      errorId="product-group-name"
-                      errors={Array []}
-                    >
-                      <input
-                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                        defaultValue="Product Group 1"
-                        id="product-group-name"
-                        maxLength={50}
-                        name="productGroupName"
-                        type="text"
-                      />
-                    </FormElementWrapper>
-                  </div>
-                </p>
+                    Provide a name for your group
+                  </h1>
+                  <p
+                    className="govuk-hint"
+                    id="group-name-hint"
+                  >
+                    2 characters minimum
+                  </p>
+                  <FormElementWrapper
+                    errorClass="govuk-input--error"
+                    errorId="product-group-name"
+                    errors={Array []}
+                  >
+                    <input
+                      className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                      defaultValue="Product Group 1"
+                      id="product-group-name"
+                      maxLength={50}
+                      name="productGroupName"
+                      type="text"
+                    />
+                  </FormElementWrapper>
+                </div>
               </div>
             </div>
           </div>

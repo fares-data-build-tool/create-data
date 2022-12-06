@@ -130,7 +130,7 @@ const ManageProductGroup = ({
                     </>
                 ) : null}
                 <ErrorSummary errors={errors} />
-                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/manageProductGroup'}>
+                <CsrfForm csrfToken={csrf} method="post" action="/api/manageProductGroup">
                     <input type="hidden" name="id" value={id} />
                     <div className="govuk-grid-row">
                         <div className="govuk-grid-column-full">
@@ -141,33 +141,27 @@ const ManageProductGroup = ({
                             <div className="govuk-grid-row">
                                 <div className="dft-flex dft-flex-justify-space-between">
                                     <div className="govuk-grid-column-two-thirds">
-                                        <p className="govuk-body-m govuk-!-margin-bottom-5">
-                                            <div className={`govuk-form-group`}>
-                                                <label htmlFor="product-group-name">
-                                                    <h1 className="govuk-heading-m" id="product-group-name-heading">
-                                                        Provide a name for your group
-                                                    </h1>
-                                                </label>
+                                        <div className="govuk-form-group">
+                                            <h1 className="govuk-heading-s">Provide a name for your group</h1>
 
-                                                <p className="govuk-hint" id="group-name-hint">
-                                                    2 characters minimum
-                                                </p>
-                                                <FormElementWrapper
-                                                    errors={errors}
-                                                    errorId="product-group-name"
-                                                    errorClass="govuk-input--error"
-                                                >
-                                                    <input
-                                                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                                                        id="product-group-name"
-                                                        name="productGroupName"
-                                                        type="text"
-                                                        maxLength={50}
-                                                        defaultValue={inputs?.name || ''}
-                                                    />
-                                                </FormElementWrapper>
-                                            </div>
-                                        </p>
+                                            <p className="govuk-hint" id="group-name-hint">
+                                                2 characters minimum
+                                            </p>
+                                            <FormElementWrapper
+                                                errors={errors}
+                                                errorId="product-group-name"
+                                                errorClass="govuk-input--error"
+                                            >
+                                                <input
+                                                    className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                                                    id="product-group-name"
+                                                    name="productGroupName"
+                                                    type="text"
+                                                    maxLength={50}
+                                                    defaultValue={inputs?.name || ''}
+                                                />
+                                            </FormElementWrapper>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
