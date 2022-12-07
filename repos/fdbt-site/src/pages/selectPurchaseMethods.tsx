@@ -234,8 +234,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         };
 
         const selectedValue = {
-            [productInfo.productName]: purchaseMethodsList.filter((el) =>
-                ticket.products[0].salesOfferPackages.map((e) => e.id).includes(el.id),
+            [productInfo.productName]: purchaseMethodsList.filter((purchaseMethod) =>
+                ticket.products[0].salesOfferPackages.map((salesOffer) => salesOffer.id).includes(purchaseMethod.id),
             ),
         };
 
