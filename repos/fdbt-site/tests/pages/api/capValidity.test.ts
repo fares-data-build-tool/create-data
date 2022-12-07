@@ -36,7 +36,7 @@ describe('capValidity', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_EXPIRY_ATTRIBUTE, mockProductInfo);
 
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/selectCapValidity' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/defineCapStart' });
     });
 
     it('correctly generates product info, updates the CAP_EXPIRY_ATTRIBUTE with productEndTime empty even if supplied, if end of service day is not selected', async () => {

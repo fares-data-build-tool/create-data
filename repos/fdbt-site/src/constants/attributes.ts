@@ -145,3 +145,5 @@ export const MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE = 'fdbt-manage-product-group-
 export const EDIT_CARNET_PROPERTIES_ERROR = 'fdbt-carnet-properties-error';
 
 export const CAP_EXPIRY_ATTRIBUTE = 'fdbt-cap-expiry';
+
+export const CAP_START_ATTRIBUTE = 'fdbt-cap-start';

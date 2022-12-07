@@ -37,10 +37,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, capExpiryAttributeValue);
 
-            // redirect to next page, once work is completed
-            // and add test to make sure data is stored in session
-            updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, [{ errorMessage: 'Next page to be made soon!', id: '' }]);
-            redirectTo(res, '/selectCapValidity');
+            redirectTo(res, '/defineCapStart');
             return;
         } else {
             errors.push({
