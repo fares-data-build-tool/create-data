@@ -4,19 +4,23 @@ import { CAP_START_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from '../../utils/apiUtils';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { CapStartInfo, DayOfTheWeek } from '../../../src/interfaces/matchingJsonTypes';
-import { isCapStart, isDayOfTheWeek } from '../../../src/interfaces/typeGuards';
+
+export const isADayOfTheWeek = (input: string): boolean => {
+    const daysOfWeek: string[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    return daysOfWeek.includes(input);
+};
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const errors: ErrorInfo[] = [];
         let startValue: DayOfTheWeek | undefined;
-        const { capStart, start } = req.body;
-        if (isCapStart(capStart)) {
+        const { capStart, startDay } = req.body;
+        if (capStart === 'fixedWeekdays' || capStart === 'rollingDays') {
             if (capStart === 'fixedWeekdays') {
-                if (!isDayOfTheWeek(start)) {
+                if (!isADayOfTheWeek(startDay)) {
                     errors.push({
                         id: 'start',
-                        errorMessage: 'Start value is invalid',
+                        errorMessage: 'Select a start day',
                     });
 
                     updateSessionAttribute(req, CAP_START_ATTRIBUTE, errors);
@@ -24,13 +28,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
                     return;
                 } else {
-                    startValue = start;
+                    startValue = startDay;
                 }
             }
 
             const capStartAttributeValue: CapStartInfo = {
                 type: capStart,
-                start: startValue,
+                startDay: startValue,
             };
 
             updateSessionAttribute(req, CAP_START_ATTRIBUTE, capStartAttributeValue);

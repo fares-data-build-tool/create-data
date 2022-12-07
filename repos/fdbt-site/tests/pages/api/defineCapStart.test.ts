@@ -16,11 +16,11 @@ describe('defineCapStart', () => {
     it('correctly generates product info, updates the CAP_START_ATTRIBUTE and then redirects to /defineCapStart if all is valid', () => {
         const mockProductInfo: CapStartInfo = {
             type: 'fixedWeekdays',
-            start: 'monday',
+            startDay: 'monday',
         };
 
         const { req, res } = getMockRequestAndResponse({
-            body: { capStart: 'fixedWeekdays', start: 'monday' },
+            body: { capStart: 'fixedWeekdays', startDay: 'monday' },
             mockWriteHeadFn: writeHeadMock,
         });
 
@@ -31,14 +31,14 @@ describe('defineCapStart', () => {
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/defineCapStart' });
     });
 
-    it('correctly generates product info, updates the CAP_START_ATTRIBUTE with start empty even if supplied, if fixedWeekdays is not selected', () => {
+    it('correctly generates product info, updates the CAP_START_ATTRIBUTE with startDay empty even if supplied, if fixedWeekdays is not selected', () => {
         const mockProductInfo: CapStartInfo = {
             type: 'rollingDays',
-            start: undefined,
+            startDay: undefined,
         };
 
         const { req, res } = getMockRequestAndResponse({
-            body: { capStart: 'rollingDays', start: '' },
+            body: { capStart: 'rollingDays', startDay: '' },
         });
 
         defineCapStart(req, res);
@@ -46,7 +46,24 @@ describe('defineCapStart', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_START_ATTRIBUTE, mockProductInfo);
     });
 
-    it('correctly generates cap expiry error info, updates the CAP_START_ATTRIBUTE and then redirects to defineCapStart page when there is no cap validity info', () => {
+    it('produces an error when startDay is empty and fixedWeekdays is selected', () => {
+        const errors: ErrorInfo[] = [
+            {
+                id: 'start',
+                errorMessage: 'Select a start day',
+            },
+        ];
+
+        const { req, res } = getMockRequestAndResponse({
+            body: { capStart: 'fixedWeekdays', startDay: '' },
+        });
+
+        defineCapStart(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_START_ATTRIBUTE, errors);
+    });
+
+    it('correctly generates cap start error info, updates the CAP_START_ATTRIBUTE and then redirects to defineCapStart page when there is no cap validity info', () => {
         const errors: ErrorInfo[] = [
             {
                 id: 'fixed-weekdays',

@@ -66,7 +66,7 @@ export type DayOfTheWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'fr
 export type CapStart = 'rollingDays' | 'fixedWeekdays';
 export interface CapStartInfo {
     type: CapStart;
-    start?: DayOfTheWeek;
+    startDay?: DayOfTheWeek;
 }
 
 export type FromDb<T> = T & { id: number };

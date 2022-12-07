@@ -1,3 +1,4 @@
+import { upperFirst } from 'lodash';
 import React, { ReactElement } from 'react';
 import { CAP_START_ATTRIBUTE } from '../../src/constants/attributes';
 import { isCapStartInfo } from '../../src/interfaces/typeGuards';
@@ -6,7 +7,7 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
-import { getCsrfToken, sentenceCaseString } from '../utils';
+import { getCsrfToken } from '../utils';
 
 const title = 'Define cap start - Create Fares Data Service';
 const description = 'Capped products start selection page of the Create Fares Data Service';
@@ -50,13 +51,13 @@ const DefineCapStart = ({ errors = [], csrfToken }: SelectCappedProductGroupProp
                             id="conditional-fixed-weekdays"
                         >
                             <div className="govuk-form-group">
-                                <label className="govuk-label" htmlFor="start">
+                                <label className="govuk-label" htmlFor="start-day">
                                     Start
                                 </label>
-                                <select className="govuk-select" id="start" name="start">
+                                <select className="govuk-select" id="start-day" name="startDay">
                                     {daysOfWeek.map((day) => (
                                         <option defaultValue={day[0]} key={day} value={day}>
-                                            {sentenceCaseString(day)}
+                                            {upperFirst(day)}
                                         </option>
                                     ))}
                                 </select>
@@ -88,12 +89,8 @@ const DefineCapStart = ({ errors = [], csrfToken }: SelectCappedProductGroupProp
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SelectCappedProductGroupProps } => {
     const csrfToken = getCsrfToken(ctx);
-    let errors: ErrorInfo[] = [];
     const capStartAttribute = getSessionAttribute(ctx.req, CAP_START_ATTRIBUTE);
-
-    if (capStartAttribute && !isCapStartInfo(capStartAttribute)) {
-        errors = capStartAttribute;
-    }
+    const errors: ErrorInfo[] = capStartAttribute && !isCapStartInfo(capStartAttribute) ? capStartAttribute : [];
 
     return {
         props: {

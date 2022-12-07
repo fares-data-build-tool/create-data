@@ -72,14 +72,14 @@ exports[`pages defineCapStart should render correctly 1`] = `
             >
               <label
                 className="govuk-label"
-                htmlFor="start"
+                htmlFor="start-day"
               >
                 Start
               </label>
               <select
                 className="govuk-select"
-                id="start"
-                name="start"
+                id="start-day"
+                name="startDay"
               >
                 <option
                   defaultValue="m"
@@ -256,14 +256,14 @@ exports[`pages defineCapStart should render error messaging when errors are pass
             >
               <label
                 className="govuk-label"
-                htmlFor="start"
+                htmlFor="start-day"
               >
                 Start
               </label>
               <select
                 className="govuk-select"
-                id="start"
-                name="start"
+                id="start-day"
+                name="startDay"
               >
                 <option
                   defaultValue="m"

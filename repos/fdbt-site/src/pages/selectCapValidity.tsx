@@ -103,11 +103,11 @@ const CapValidity = ({ errors = [], fieldset, csrfToken }: CapValidityProps): Re
                         <fieldset className="govuk-fieldset" aria-describedby="cap-validity-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 className="govuk-fieldset__heading" id="cap-validity-page-heading">
-                                    When does the product expire?
+                                    When does the cap expire?
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="cap-validity-hint">
-                                We need to know the time that this product would be valid until
+                                We need to know the time that this cap would be valid until
                             </span>
                             <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
                         </fieldset>
