@@ -4,10 +4,15 @@ import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo, NextPageContextWithSession, OperatorGroup } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { REUSE_OPERATOR_GROUP_ATTRIBUTE } from '../constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    REUSE_OPERATOR_GROUP_ATTRIBUTE,
+} from '../constants/attributes';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getOperatorGroupsByNoc } from '../data/auroradb';
 import OperatorGroupCard from '../components/OperatorGroupCard';
+import BackButton from '../components/BackButton';
 
 const title = 'Select Operator Group - Create Fares Data Service';
 const description = 'Select Operator Group page of the Create Fares Data Service';
@@ -16,10 +21,17 @@ interface ReuseOperatorGroupProps {
     errors: ErrorInfo[];
     csrfToken: string;
     operatorGroups: OperatorGroup[];
+    backHref: string;
 }
 
-const ReuseOperatorGroup = ({ errors = [], csrfToken, operatorGroups }: ReuseOperatorGroupProps): ReactElement => (
+const ReuseOperatorGroup = ({
+    errors = [],
+    csrfToken,
+    operatorGroups,
+    backHref,
+}: ReuseOperatorGroupProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
+        {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
         <CsrfForm action="/api/reuseOperatorGroup" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
@@ -91,7 +103,17 @@ export const getServerSideProps = async (
 
     const errors = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE) || [];
 
-    return { props: { errors, csrfToken, operatorGroups } };
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const backHref =
+        ticket && matchingJsonMetaData
+            ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                  matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+              }`
+            : '';
+
+    return { props: { errors, csrfToken, operatorGroups, backHref } };
 };
 
 export default ReuseOperatorGroup;

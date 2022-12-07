@@ -1,6 +1,10 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
+} from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, RadioConditionalInputFieldset } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
@@ -9,6 +13,7 @@ import { getAndValidateNoc, getCsrfToken, getErrorsByIds } from '../utils';
 import RadioConditionalInput from '../components/RadioConditionalInput';
 import { isPeriodExpiry } from '../interfaces/typeGuards';
 import { getFareDayEnd } from '../data/auroradb';
+import BackButton from '../components/BackButton';
 
 const title = 'Period Validity - Create Fares Data Service';
 const description = 'Period Validity selection page of the Create Fares Data Service';
@@ -17,6 +22,7 @@ interface PeriodValidityProps {
     errors: ErrorInfo[];
     fieldset: RadioConditionalInputFieldset;
     csrfToken: string;
+    backHref: string;
 }
 
 export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioConditionalInputFieldset => {
@@ -83,9 +89,10 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioCo
     return periodValidityFieldSet;
 };
 
-const PeriodValidity = ({ errors = [], fieldset, csrfToken }: PeriodValidityProps): ReactElement => {
+const PeriodValidity = ({ errors = [], fieldset, csrfToken, backHref }: PeriodValidityProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
             <CsrfForm action="/api/periodValidity" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors}>
@@ -132,12 +139,22 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const fieldset: RadioConditionalInputFieldset = getFieldset(errors, endOfFareDay);
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const backHref =
+        ticket && matchingJsonMetaData
+            ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                  matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+              }`
+            : '';
 
     return {
         props: {
             errors,
             fieldset,
             csrfToken,
+            backHref,
         },
     };
 };

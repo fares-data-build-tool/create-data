@@ -55,6 +55,7 @@ describe('pages', () => {
         errors: [],
         products: [],
         csrfToken: '',
+        backHref: '',
     };
 
     const selectSalesOfferPackagePropsInfoWithError: PurchaseMethodsProps = {
@@ -67,6 +68,7 @@ describe('pages', () => {
         ],
         errors: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
         csrfToken: '',
+        backHref: '',
     };
 
     describe('selectPurchaseMethods', () => {
@@ -82,6 +84,7 @@ describe('pages', () => {
                     ]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -99,6 +102,7 @@ describe('pages', () => {
                     ]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -111,6 +115,7 @@ describe('pages', () => {
                     products={[]}
                     errors={selectSalesOfferPackagePropsInfoWithError.errors}
                     csrfToken=""
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();

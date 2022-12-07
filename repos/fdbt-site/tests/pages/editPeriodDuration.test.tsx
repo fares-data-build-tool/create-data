@@ -6,7 +6,13 @@ describe('pages', () => {
     describe('editPeriodDuration', () => {
         it('should render editPeriodDuration page correctly', () => {
             const wrapper = shallow(
-                <EditPeriodDuration errors={[]} csrfToken="" productDurationValue="1" productDurationUnit="week" />,
+                <EditPeriodDuration
+                    errors={[]}
+                    csrfToken=""
+                    productDurationValue="1"
+                    productDurationUnit="week"
+                    backHref=""
+                />,
             );
             expect(wrapper).toMatchSnapshot();
         });
@@ -17,6 +23,7 @@ describe('pages', () => {
                     csrfToken=""
                     productDurationValue=""
                     productDurationUnit="week"
+                    backHref=""
                 />,
             );
             expect(wrapper).toMatchSnapshot();

@@ -10,9 +10,14 @@ import {
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { RETURN_VALIDITY_ATTRIBUTE } from '../constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    RETURN_VALIDITY_ATTRIBUTE,
+} from '../constants/attributes';
 import { getCsrfToken, getErrorsByIds } from '../utils';
 import { ReturnPeriodValidity } from '../interfaces/matchingJsonTypes';
+import BackButton from '../components/BackButton';
 
 const title = 'Return Validity - Create Fares Data Service';
 const description = 'Return Validity page of the Create Fares Data Service';
@@ -21,6 +26,7 @@ interface ReturnValidityProps {
     errors: ErrorInfo[];
     fieldset: RadioConditionalInputFieldset;
     csrfToken: string;
+    backHref: string;
 }
 
 export const getFieldset = (errors: ErrorInfo[], amount: string, duration: string): RadioConditionalInputFieldset => ({
@@ -74,8 +80,9 @@ export const isReturnPeriodValidityWithErrors = (
     returnValidityDefinition !== undefined &&
     (returnValidityDefinition as ReturnPeriodValidityWithErrors).errors !== undefined;
 
-const ReturnValidity = ({ errors, fieldset, csrfToken }: ReturnValidityProps): ReactElement => (
+const ReturnValidity = ({ errors, fieldset, csrfToken, backHref }: ReturnValidityProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
+        {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
         <CsrfForm action="/api/returnValidity" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
@@ -104,7 +111,17 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Re
     const duration = returnValidity && returnValidity.typeOfDuration !== undefined ? returnValidity.typeOfDuration : '';
 
     const fieldset: RadioConditionalInputFieldset = getFieldset(errors, amount, duration);
-    return { props: { errors, fieldset, csrfToken } };
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const backHref =
+        ticket && matchingJsonMetaData
+            ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                  matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+              }`
+            : '';
+
+    return { props: { errors, fieldset, csrfToken, backHref } };
 };
 
 export default ReturnValidity;

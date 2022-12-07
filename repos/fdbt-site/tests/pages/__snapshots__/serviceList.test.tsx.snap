@@ -205,6 +205,9 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
   description="Service List selection page of the Create Fares Data Service"
   title="Service List - Create Fares Data Service"
 >
+  <BackButton
+    href="/product/productDetails?id=99"
+  />
   <CsrfForm
     action="/api/serviceList"
     csrfToken=""

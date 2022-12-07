@@ -6,8 +6,13 @@ import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import ExpirySelector from '../../src/components/ExpirySelector';
 import { getSessionAttribute } from '../../src/utils/sessions';
-import { EDIT_PERIOD_DURATION_ERROR, MATCHING_JSON_ATTRIBUTE } from '../../src/constants/attributes';
+import {
+    EDIT_PERIOD_DURATION_ERROR,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+} from '../../src/constants/attributes';
 import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
+import BackButton from '../components/BackButton';
 
 const title = 'Edit Period Duration - Create Fares Data Service';
 const description = 'Edit Period Duration page of the Create Fares Data Service';
@@ -17,6 +22,7 @@ interface EditPeriodDurationProps {
     csrfToken: string;
     productDurationValue: string;
     productDurationUnit: string;
+    backHref: string;
 }
 
 const EditPeriodDuration = ({
@@ -24,9 +30,11 @@ const EditPeriodDuration = ({
     csrfToken,
     productDurationValue,
     productDurationUnit,
+    backHref,
 }: EditPeriodDurationProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
             <CsrfForm action="/api/editPeriodDuration" method="post" csrfToken={csrfToken}>
                 <div className="govuk-form-group">
                     <ErrorSummary errors={errors} />
@@ -80,6 +88,16 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ed
     } else {
         throw new Error('Ticket is undefined');
     }
+
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const backHref =
+        ticket && matchingJsonMetaData
+            ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                  matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+              }`
+            : '';
+
     const productDurationSplit = productDuration.split(' ');
     const productDurationValue = productDurationSplit[0];
     const productDurationUnit = productDurationSplit[1];
@@ -89,6 +107,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ed
             csrfToken,
             productDurationValue,
             productDurationUnit,
+            backHref,
         },
     };
 };

@@ -3,11 +3,16 @@ import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import { ErrorInfo, ProductDateInformation, NextPageContextWithSession } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
-import { PRODUCT_DATE_ATTRIBUTE } from '../constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    PRODUCT_DATE_ATTRIBUTE,
+} from '../constants/attributes';
 import { isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import { getCsrfToken } from '../utils';
 import DateSelector from '../components/DateSelector';
+import BackButton from '../components/BackButton';
 
 const title = 'Product Date Information - Create Fares Data Service';
 const description = 'Product Date Information page of the Create Fares Data Service';
@@ -17,6 +22,7 @@ interface ProductDateInformationProps {
     endDateErrors: ErrorInfo[];
     csrfToken: string;
     inputs: ProductDateInformation;
+    backHref: string;
 }
 
 const ProductDateInfo = ({
@@ -24,9 +30,13 @@ const ProductDateInfo = ({
     startDateErrors = [],
     endDateErrors = [],
     inputs,
+    backHref,
 }: ProductDateInformationProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description}>
+            {!!backHref && startDateErrors.length === 0 && endDateErrors.length === 0 ? (
+                <BackButton href={backHref}></BackButton>
+            ) : null}
             <CsrfForm action="/api/productDateInformation" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={startDateErrors.concat(endDateErrors)} />
@@ -101,12 +111,23 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         }
     }
 
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const backHref =
+        ticket && matchingJsonMetaData
+            ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                  matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+              }`
+            : '';
+
     return {
         props: {
             startDateErrors,
             endDateErrors,
             csrfToken,
             inputs,
+            backHref,
         },
     };
 };
