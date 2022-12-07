@@ -1,6 +1,6 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import defineCapStart from '../../../src/pages/api/defineCapStart';
+import defineCapStart, { isADayOfTheWeek } from '../../../src/pages/api/defineCapStart';
 import { ErrorInfo } from '../../../src/interfaces';
 import { CAP_START_ATTRIBUTE } from '../../../src/constants/attributes';
 import { CapStartInfo } from '../../../src/interfaces/matchingJsonTypes';
@@ -82,5 +82,16 @@ describe('defineCapStart', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/defineCapStart',
         });
+    });
+    it.each([
+        ['monday', true],
+        ['tuesday', true],
+        ['', false],
+        [undefined, false],
+        ['notMonday', false],
+    ])('correctly tests days of the week', (day: string | undefined, result: boolean) => {
+        const isDayOfTheWeek = isADayOfTheWeek(day);
+
+        expect(isDayOfTheWeek).toEqual(result);
     });
 });

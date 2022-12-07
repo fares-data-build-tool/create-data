@@ -3,17 +3,16 @@ import { updateSessionAttribute } from '../../utils/sessions';
 import { CAP_START_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from '../../utils/apiUtils';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { CapStartInfo, DayOfTheWeek } from '../../../src/interfaces/matchingJsonTypes';
+import { CapStartInfo } from '../../../src/interfaces/matchingJsonTypes';
 
-export const isADayOfTheWeek = (input: string): boolean => {
+export const isADayOfTheWeek = (input: string | undefined): boolean => {
     const daysOfWeek: string[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-    return daysOfWeek.includes(input);
+    return !!input && daysOfWeek.includes(input);
 };
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const errors: ErrorInfo[] = [];
-        let startValue: DayOfTheWeek | undefined;
         const { capStart, startDay } = req.body;
         if (capStart === 'fixedWeekdays' || capStart === 'rollingDays') {
             if (capStart === 'fixedWeekdays') {
@@ -27,14 +26,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                     redirectTo(res, '/defineCapStart');
 
                     return;
-                } else {
-                    startValue = startDay;
                 }
             }
 
             const capStartAttributeValue: CapStartInfo = {
                 type: capStart,
-                startDay: startValue,
+                startDay: capStart === 'rollingDays' ? undefined : startDay,
             };
 
             updateSessionAttribute(req, CAP_START_ATTRIBUTE, capStartAttributeValue);
