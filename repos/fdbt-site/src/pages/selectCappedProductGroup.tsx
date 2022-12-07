@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
+import { getProductGroupsByNoc } from '../data/auroradb';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import ProductsGroupCard from '../components/ProductGroupCard';
 import { CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, GroupOfProducts, NextPageContextWithSession } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
-import { getCsrfToken } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Select capped products group - Create Fares Data Service';
@@ -83,7 +84,7 @@ const SelectPassengerType = ({
                         className="govuk-button govuk-!-margin-right-2"
                     />
                 )}
-                <a className="govuk-button govuk-button--secondary" href="/viewGroupsOfProducts">
+                <a className="govuk-button govuk-button--secondary" href="/viewProductGroups">
                     Create new
                 </a>
             </>
@@ -91,28 +92,21 @@ const SelectPassengerType = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SelectCappedProductGroupProps } => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: SelectCappedProductGroupProps }> => {
     const csrfToken = getCsrfToken(ctx);
     const groupOfProductsAttribute = getSessionAttribute(ctx.req, CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE);
     const errors =
         !!groupOfProductsAttribute && !(typeof groupOfProductsAttribute === 'string') ? [groupOfProductsAttribute] : [];
 
+    const nocCode = getAndValidateNoc(ctx);
+    const savedGroups = await getProductGroupsByNoc(nocCode);
     return {
         props: {
             errors,
             csrfToken,
-            savedGroups: [
-                {
-                    id: 1,
-                    productIds: ['1', '2', '3', '4'],
-                    name: 'The capped products',
-                },
-                {
-                    id: 2,
-                    productIds: ['1', '2', '3', '4', '5'],
-                    name: 'Other products',
-                },
-            ],
+            savedGroups,
             selectedId: null,
         },
     };
