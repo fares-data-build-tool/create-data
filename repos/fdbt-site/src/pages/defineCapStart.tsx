@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import { CAP_START_ATTRIBUTE } from 'src/constants/attributes';
-import { isCapStartInfo } from 'src/interfaces/typeGuards';
-import { getSessionAttribute } from 'src/utils/sessions';
+import { CAP_START_ATTRIBUTE } from '../../src/constants/attributes';
+import { isCapStartInfo } from '../../src/interfaces/typeGuards';
+import { getSessionAttribute } from '../../src/utils/sessions';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
