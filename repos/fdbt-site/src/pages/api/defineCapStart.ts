@@ -3,8 +3,8 @@ import { updateSessionAttribute } from '../../utils/sessions';
 import { CAP_START_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from '../../utils/apiUtils';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { CapStartInfo, DayOfTheWeek } from 'src/interfaces/matchingJsonTypes';
-import { isCapStart, isDayOfTheWeek } from 'src/interfaces/typeGuards';
+import { CapStartInfo, DayOfTheWeek } from '../../../src/interfaces/matchingJsonTypes';
+import { isCapStart, isDayOfTheWeek } from '../../../src/interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
