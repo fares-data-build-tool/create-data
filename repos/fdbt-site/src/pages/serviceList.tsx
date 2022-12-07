@@ -66,7 +66,7 @@ const ServiceList = ({
                     csrfToken={csrfToken}
                 />
             )} */}
-            {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />

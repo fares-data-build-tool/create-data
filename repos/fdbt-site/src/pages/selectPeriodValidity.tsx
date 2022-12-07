@@ -92,7 +92,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioCo
 const PeriodValidity = ({ errors = [], fieldset, csrfToken, backHref }: PeriodValidityProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
-            {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/periodValidity" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors}>

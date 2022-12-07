@@ -11,14 +11,12 @@ import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Tria
 import { NextPageContextWithSession, ErrorInfo, UserDataUploadsProps } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
-import BackButton from '../components/BackButton';
 
 const title = 'CSV Upload - Create Fares Data Service';
 const description = 'CSV Upload page of the Create Fares Data Service';
 
 const CsvUpload = ({ errors, ...props }: UserDataUploadsProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={errors}>
-        {!!props.backHref && errors.length === 0 ? <BackButton href={props.backHref}></BackButton> : null}
         <UserDataUploadComponent
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...props}

@@ -162,7 +162,7 @@ const MultiOperatorsServiceList = ({
 
     return (
         <BaseLayout title={pageTitle} description={pageDescription}>
-            {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <ErrorSummary errors={errors} />
             <div className={errors.length > 0 ? 'govuk-form-group--error' : ''}>
                 <div>

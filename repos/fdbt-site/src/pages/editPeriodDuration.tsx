@@ -34,7 +34,7 @@ const EditPeriodDuration = ({
 }: EditPeriodDurationProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
-            {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/editPeriodDuration" method="post" csrfToken={csrfToken}>
                 <div className="govuk-form-group">
                     <ErrorSummary errors={errors} />

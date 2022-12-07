@@ -171,7 +171,7 @@ const SelectPurchaseMethods = ({
 }: PurchaseMethodsProps): ReactElement => {
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
-            {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/selectSalesOfferPackage" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />

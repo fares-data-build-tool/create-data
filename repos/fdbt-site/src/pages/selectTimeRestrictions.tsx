@@ -35,7 +35,7 @@ const SelectTimeRestrictions = ({
 }: SelectTimeRestrictionsProps): ReactElement => {
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
-            {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <ErrorSummary errors={errors} />
             <CsrfForm action="/api/defineTimeRestrictions" method="post" csrfToken={csrfToken}>
                 <>

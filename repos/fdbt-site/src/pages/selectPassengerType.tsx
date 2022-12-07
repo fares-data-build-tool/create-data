@@ -37,7 +37,7 @@ const SelectPassengerType = ({
     backHref,
 }: PassengerTypeProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
-        {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
+        {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
 
         <CsrfForm action="/api/selectPassengerType" method="post" csrfToken={csrfToken}>
             <>

@@ -35,7 +35,7 @@ const ProductDateInfo = ({
     return (
         <TwoThirdsLayout title={title} description={description}>
             {!!backHref && startDateErrors.length === 0 && endDateErrors.length === 0 ? (
-                <BackButton href={backHref}></BackButton>
+                <BackButton href={backHref} />
             ) : null}
             <CsrfForm action="/api/productDateInformation" method="post" csrfToken={csrfToken}>
                 <>

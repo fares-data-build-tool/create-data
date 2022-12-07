@@ -36,7 +36,7 @@ const EditCarnetProperties = ({
 }: EditCarnetPropertiesProps): ReactElement => {
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
-            {!!backHref && errors.length === 0 ? <BackButton href={backHref}></BackButton> : null}
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/editCarnetProperties" method="post" csrfToken={csrfToken}>
                 <ErrorSummary errors={errors} />
                 <h1 className="govuk-heading-l" id="edit-carnet-properties-page-heading">

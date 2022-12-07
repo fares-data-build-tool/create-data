@@ -131,7 +131,7 @@ export interface UserDataUploadsProps {
     showPriceOption?: boolean;
     poundsOrPence?: string | null;
     csrfToken: string;
-    backHref?: string;
+    backHref: string;
 }
 
 export interface NumberOfStagesAttributeWithError {
