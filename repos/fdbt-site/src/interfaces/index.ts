@@ -217,6 +217,7 @@ export interface GlobalSettingsCounts {
     fareDayEndSet: boolean;
     operatorDetailsSet: boolean;
     operatorGroupsCount: number;
+    productGroupsCount: number;
 }
 
 export interface PassengerAttributes {
@@ -437,6 +438,11 @@ export interface ManagePassengerTypeWithErrors {
 
 export interface ManageOperatorGroupWithErrors {
     inputs: OperatorGroup;
+    errors: ErrorInfo[];
+}
+
+export interface ManageProductGroupWithErrors {
+    inputs: GroupOfProducts;
     errors: ErrorInfo[];
 }
 
@@ -693,7 +699,7 @@ export interface TxcSourceAttribute {
     hasBods: boolean;
 }
 
-export interface ProductToExport {
+export interface ProductToDisplay {
     id: string;
     productName: string;
     startDate: string;

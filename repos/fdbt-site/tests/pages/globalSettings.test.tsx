@@ -13,6 +13,7 @@ describe('pages', () => {
                 fareDayEndSet: true,
                 operatorDetailsSet: true,
                 operatorGroupsCount: 2,
+                productGroupsCount: 2,
             };
             const tree = shallow(<GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" />);
             expect(tree).toMatchSnapshot();
@@ -26,6 +27,7 @@ describe('pages', () => {
                 fareDayEndSet: true,
                 operatorDetailsSet: true,
                 operatorGroupsCount: 2,
+                productGroupsCount: 2,
             };
             const tree = shallow(<GlobalSettings globalSettingsCounts={globalSettingsCounts} referer="hello" />);
             expect(tree).toMatchSnapshot();

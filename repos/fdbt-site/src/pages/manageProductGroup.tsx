@@ -1,60 +1,46 @@
 import startCase from 'lodash/startCase';
 import moment from 'moment';
 import React, { ReactElement, useState } from 'react';
-import BackButton from '../../components/BackButton';
-import CsrfForm from '../../components/CsrfForm';
-import { getAllPassengerTypesByNoc, getAllProductsByNoc, getBodsServicesByNoc } from '../../data/auroradb';
-import { getProductsMatchingJson } from '../../data/s3';
-import { MyFaresService, NextPageContextWithSession, ProductToDisplay, ServiceToDisplay } from '../../interfaces';
-import { BaseLayout } from '../../layout/Layout';
-import { getAndValidateNoc, getCsrfToken } from '../../utils';
-import { getNonExpiredProducts, filterOutProductsWithNoActiveServices } from '../api/exports';
+import ErrorSummary from '../components/ErrorSummary';
+import FormElementWrapper from '../components/FormElementWrapper';
+import InformationSummary from '../components/InformationSummary';
+import { MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE } from '../constants/attributes';
+import { getSessionAttribute } from '../utils/sessions';
+import CsrfForm from '../components/CsrfForm';
+import {
+    getAllPassengerTypesByNoc,
+    getAllProductsByNoc,
+    getBodsServicesByNoc,
+    getProductGroupByNocAndId,
+} from '../data/auroradb';
+import { getProductsMatchingJson } from '../data/s3';
+import {
+    ErrorInfo,
+    MyFaresService,
+    NextPageContextWithSession,
+    GroupOfProducts,
+    ProductToDisplay,
+    ServiceToDisplay,
+} from '../interfaces';
+import { BaseLayout } from '../layout/Layout';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getNonExpiredProducts, filterOutProductsWithNoActiveServices } from './api/exports';
+import { isWithErrors } from '../interfaces/typeGuards';
+import BackButton from '../components/BackButton';
 
-const title = 'Select Exports';
-const description = 'Export selected products into NeTEx.';
+const title = 'Manage Product Group';
+const description = 'Manage product group page for the Create Fares Data Service';
+const editingInformationText =
+    'Editing and saving new changes will be applied to all capped fares using this product group.';
 
-interface SelectExportsProps {
+interface ManageProductGroupProps {
     csrf: string;
     productsToDisplay: ProductToDisplay[];
     servicesToDisplay: ServiceToDisplay[];
+    errors: ErrorInfo[];
+    editMode: boolean;
+    inputs?: GroupOfProducts | undefined;
 }
-
-interface FormattedOtherProducts {
-    periodProducts: ProductToDisplay[];
-    flatFareProducts: ProductToDisplay[];
-    multiOperatorProducts: ProductToDisplay[];
-    schoolServiceProducts: ProductToDisplay[];
-}
-
-export const formatOtherProducts = (otherProducts: ProductToDisplay[]): FormattedOtherProducts => {
-    const formatted: FormattedOtherProducts = {
-        periodProducts: [],
-        flatFareProducts: [],
-        multiOperatorProducts: [],
-        schoolServiceProducts: [],
-    };
-
-    otherProducts.forEach((product) => {
-        switch (product.fareType) {
-            case 'period':
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                product.schoolTicket
-                    ? formatted.schoolServiceProducts.push(product)
-                    : formatted.periodProducts.push(product);
-                break;
-            case 'flatFare':
-                formatted.flatFareProducts.push(product);
-                break;
-            case 'multiOperator':
-                formatted.multiOperatorProducts.push(product);
-                break;
-            default:
-                break;
-        }
-    });
-
-    return formatted;
-};
 
 const buildOtherProductSection = (
     indexCounter: number,
@@ -76,18 +62,22 @@ const buildOtherProductSection = (
                         <input
                             className="govuk-checkboxes__input"
                             id={`checkbox-${productsIndex}`}
-                            name="productsToExport"
+                            name="productsSelected"
                             type="checkbox"
                             value={product.id}
-                            checked={!!productsSelected.find((productSelected) => productSelected === productsIndex)}
+                            checked={
+                                !!productsSelected.find((productSelected) => productSelected === Number(product.id))
+                            }
                             onClick={() => {
-                                if (productsSelected.find((productSelected) => productSelected === productsIndex)) {
+                                if (
+                                    productsSelected.find((productSelected) => productSelected === Number(product.id))
+                                ) {
                                     const newSelected = [...productsSelected].filter(
-                                        (valueSelected) => valueSelected !== productsIndex,
+                                        (valueSelected) => valueSelected !== Number(product.id),
                                     );
                                     setProductsSelected(newSelected);
                                 } else {
-                                    setProductsSelected([...productsSelected, productsIndex]);
+                                    setProductsSelected([...productsSelected, Number(product.id)]);
                                 }
                             }}
                             // This onChange is here because of how we're using the 'checked' prop
@@ -112,76 +102,98 @@ const buildOtherProductSection = (
     );
 };
 
-const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExportsProps): ReactElement => {
+const ManageProductGroup = ({
+    productsToDisplay,
+    servicesToDisplay,
+    csrf,
+    errors,
+    editMode,
+    inputs,
+}: ManageProductGroupProps): ReactElement => {
+    const id = inputs?.id;
+    const selectedProductIds = !!inputs && inputs.productIds ? inputs.productIds : [];
     const [detailsAllOpen, setAllDetails] = useState(false);
-    const [productsSelected, setProductsSelected] = useState<number[]>([]);
+    const [productsSelected, setProductsSelected] = useState<number[]>(
+        selectedProductIds.map((productId) => Number(productId)),
+    );
     let indexCounter = 0;
 
     const otherProducts = productsToDisplay.filter((product) => !product.serviceLineId);
-    const formattedProducts = formatOtherProducts(otherProducts);
 
     return (
         <>
             <BaseLayout title={title} description={description}>
-                <BackButton href="/products/exports" />
-                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/selectExports'}>
+                {editMode && errors.length === 0 ? (
+                    <>
+                        <BackButton href="/viewProductGroups" />
+                        <InformationSummary informationText={editingInformationText} />
+                    </>
+                ) : null}
+                <ErrorSummary errors={errors} />
+                <CsrfForm csrfToken={csrf} method="post" action="/api/manageProductGroup">
+                    <input type="hidden" name="id" value={id} />
                     <div className="govuk-grid-row">
                         <div className="govuk-grid-column-full">
                             <div className="dft-flex dft-flex-justify-space-between">
-                                <h1 className="govuk-heading-xl">Export your selected products</h1>{' '}
-                                <div className="align-middle">
-                                    <button
-                                        type="submit"
-                                        className={`govuk-button${
-                                            productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
-                                        }`}
-                                    >
-                                        Export selected products
-                                    </button>
-                                </div>
+                                <h1 className="govuk-heading-xl">Product group</h1>{' '}
                             </div>
 
                             <div className="govuk-grid-row">
                                 <div className="dft-flex dft-flex-justify-space-between">
                                     <div className="govuk-grid-column-two-thirds">
-                                        <p className="govuk-body-m govuk-!-margin-bottom-5">
-                                            This page will export all of the products you select. Expired products, or
-                                            products for expired services, will not be included in the list below.
-                                        </p>
-                                    </div>
-                                    <button
-                                        id="select-all"
-                                        className={`govuk-button govuk-button--secondary${
-                                            productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
-                                        }`}
-                                        data-module="govuk-button"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            const productsAreAllSelected =
-                                                productsSelected.length === productsToDisplay.length;
+                                        <div className="govuk-form-group">
+                                            <h1 className="govuk-heading-s">Provide a name for your group</h1>
 
-                                            if (productsAreAllSelected) {
-                                                setProductsSelected([]);
-                                            } else {
-                                                setProductsSelected([]);
-                                                const arrayOfIndexs = [];
-                                                for (let i = 1; i <= productsToDisplay.length; i++) {
-                                                    arrayOfIndexs.push(i);
-                                                }
-                                                setProductsSelected(arrayOfIndexs);
-                                            }
-                                        }}
-                                    >
-                                        {productsSelected.length === productsToDisplay.length
-                                            ? 'Unselect all'
-                                            : 'Select all'}
-                                    </button>
+                                            <p className="govuk-hint" id="group-name-hint">
+                                                2 characters minimum
+                                            </p>
+                                            <FormElementWrapper
+                                                errors={errors}
+                                                errorId="product-group-name"
+                                                errorClass="govuk-input--error"
+                                            >
+                                                <input
+                                                    className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                                                    id="product-group-name"
+                                                    name="productGroupName"
+                                                    type="text"
+                                                    maxLength={50}
+                                                    defaultValue={inputs?.name || ''}
+                                                />
+                                            </FormElementWrapper>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <button
+                                id="select-all"
+                                className={`govuk-button govuk-button--secondary${
+                                    productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
+                                }`}
+                                data-module="govuk-button"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    const productsAreAllSelected = productsSelected.length === productsToDisplay.length;
 
+                                    if (productsAreAllSelected) {
+                                        setProductsSelected([]);
+                                    } else {
+                                        setProductsSelected([]);
+                                        const arrayOfIndexs = [];
+                                        for (let i = 0; i < productsToDisplay.length; i++) {
+                                            arrayOfIndexs.push(Number(productsToDisplay[i].id));
+                                        }
+                                        setProductsSelected(arrayOfIndexs);
+                                    }
+                                }}
+                            >
+                                {productsSelected.length === productsToDisplay.length
+                                    ? 'Unselect all products'
+                                    : 'Select all products'}
+                            </button>
                             {productsToDisplay.length === 0 ? (
                                 <p className="govuk-body-m govuk-!-margin-top-5">
-                                    <em>You currently have no products that can be exported.</em>
+                                    <em>You currently have no products that can be added to product group.</em>
                                 </p>
                             ) : (
                                 <div>
@@ -201,23 +213,8 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                                 </a>
                                             </li>
                                             <li className="govuk-tabs__list-item">
-                                                <a className="govuk-tabs__tab" href="#period-products">
-                                                    Period products
-                                                </a>
-                                            </li>
-                                            <li className="govuk-tabs__list-item">
                                                 <a className="govuk-tabs__tab" href="#flat-fare-products">
                                                     Flat fare products
-                                                </a>
-                                            </li>
-                                            <li className="govuk-tabs__list-item">
-                                                <a className="govuk-tabs__tab" href="#multi-operator-products">
-                                                    Multi operator products
-                                                </a>
-                                            </li>
-                                            <li className="govuk-tabs__list-item">
-                                                <a className="govuk-tabs__tab" href="#school-service-products">
-                                                    Academic products
                                                 </a>
                                             </li>
                                         </ul>
@@ -266,14 +263,14 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                                                             <input
                                                                                 className="govuk-checkboxes__input"
                                                                                 id={`checkbox-${productsIndex}`}
-                                                                                name="productsToExport"
+                                                                                name="productsSelected"
                                                                                 type="checkbox"
                                                                                 value={product.id}
                                                                                 checked={
                                                                                     !!productsSelected.find(
                                                                                         (productSelected) =>
                                                                                             productSelected ===
-                                                                                            productsIndex,
+                                                                                            Number(product.id),
                                                                                     )
                                                                                 }
                                                                                 onClick={() => {
@@ -281,7 +278,7 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                                                                         productsSelected.find(
                                                                                             (productSelected) =>
                                                                                                 productSelected ===
-                                                                                                productsIndex,
+                                                                                                Number(product.id),
                                                                                         )
                                                                                     ) {
                                                                                         const newSelected = [
@@ -289,7 +286,7 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                                                                         ].filter(
                                                                                             (valueSelected) =>
                                                                                                 valueSelected !==
-                                                                                                productsIndex,
+                                                                                                Number(product.id),
                                                                                         );
                                                                                         setProductsSelected(
                                                                                             newSelected,
@@ -297,7 +294,7 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                                                                     } else {
                                                                                         setProductsSelected([
                                                                                             ...productsSelected,
-                                                                                            productsIndex,
+                                                                                            Number(product.id),
                                                                                         ]);
                                                                                     }
                                                                                 }}
@@ -331,37 +328,10 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                                 <p className="govuk-body-m govuk-!-margin-top-5">
                                                     <em>
                                                         You currently have no single or return products that can be
-                                                        exported.
+                                                        added to product group.
                                                     </em>
                                                 </p>
                                             )}
-                                        </div>
-                                        <div
-                                            className="govuk-tabs__panel govuk-tabs__panel--hidden"
-                                            id="period-products"
-                                        >
-                                            {otherProducts.length > 0 ? (
-                                                <div>
-                                                    <h2 className="govuk-heading-m govuk-!-margin-bottom-6">
-                                                        Period products
-                                                    </h2>
-                                                    {formattedProducts.periodProducts.length > 0 ? (
-                                                        buildOtherProductSection(
-                                                            indexCounter,
-                                                            productsSelected,
-                                                            setProductsSelected,
-                                                            formattedProducts.periodProducts,
-                                                        )
-                                                    ) : (
-                                                        <p className="govuk-body-m govuk-!-margin-top-5">
-                                                            <em>
-                                                                You currently have no period products that can be
-                                                                exported.
-                                                            </em>
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            ) : null}
                                         </div>
                                         <div
                                             className="govuk-tabs__panel govuk-tabs__panel--hidden"
@@ -373,78 +343,18 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                                         Flat fare products
                                                     </h2>
 
-                                                    {formattedProducts.flatFareProducts.length > 0 ? (
+                                                    {otherProducts.length > 0 ? (
                                                         buildOtherProductSection(
-                                                            indexCounter + formattedProducts.periodProducts.length,
+                                                            otherProducts.length,
                                                             productsSelected,
                                                             setProductsSelected,
-                                                            formattedProducts.flatFareProducts,
+                                                            otherProducts,
                                                         )
                                                     ) : (
                                                         <p className="govuk-body-m govuk-!-margin-top-5">
                                                             <em>
                                                                 You currently have no flat fare products that can be
-                                                                exported.
-                                                            </em>
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            ) : null}
-                                        </div>
-                                        <div
-                                            className="govuk-tabs__panel govuk-tabs__panel--hidden"
-                                            id="multi-operator-products"
-                                        >
-                                            {otherProducts.length > 0 ? (
-                                                <div>
-                                                    <h2 className="govuk-heading-m govuk-!-margin-bottom-6">
-                                                        Multioperator products
-                                                    </h2>
-
-                                                    {formattedProducts.multiOperatorProducts.length > 0 ? (
-                                                        buildOtherProductSection(
-                                                            indexCounter +
-                                                                formattedProducts.flatFareProducts.length +
-                                                                formattedProducts.periodProducts.length,
-                                                            productsSelected,
-                                                            setProductsSelected,
-                                                            formattedProducts.multiOperatorProducts,
-                                                        )
-                                                    ) : (
-                                                        <p className="govuk-body-m govuk-!-margin-top-5">
-                                                            <em>
-                                                                You currently have no multioperator products that can be
-                                                                exported.
-                                                            </em>
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            ) : null}
-                                        </div>
-                                        <div
-                                            className="govuk-tabs__panel govuk-tabs__panel--hidden"
-                                            id="school-service-products"
-                                        >
-                                            {otherProducts.length > 0 ? (
-                                                <div>
-                                                    <h2 className="govuk-heading-m govuk-!-margin-bottom-6">
-                                                        Academic term/year products
-                                                    </h2>
-                                                    {formattedProducts.schoolServiceProducts.length > 0 ? (
-                                                        buildOtherProductSection(
-                                                            indexCounter +
-                                                                formattedProducts.multiOperatorProducts.length +
-                                                                formattedProducts.flatFareProducts.length +
-                                                                formattedProducts.periodProducts.length,
-                                                            productsSelected,
-                                                            setProductsSelected,
-                                                            formattedProducts.schoolServiceProducts,
-                                                        )
-                                                    ) : (
-                                                        <p className="govuk-body-m govuk-!-margin-top-5">
-                                                            <em>
-                                                                You currently have no academic term/year products that
-                                                                can be exported.
+                                                                added to product group.
                                                             </em>
                                                         </p>
                                                     )}
@@ -454,6 +364,16 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                     </div>
                                 </div>
                             )}
+
+                            <button
+                                type="submit"
+                                className={`govuk-button${
+                                    productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
+                                }`}
+                                id="continue-button"
+                            >
+                                {`${editMode ? 'Update' : 'Create'} Product Group`}
+                            </button>
                         </div>
                     </div>
                 </CsrfForm>
@@ -462,14 +382,16 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
     );
 };
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SelectExportsProps }> => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: ManageProductGroupProps }> => {
     const noc = getAndValidateNoc(ctx);
     const products = await getAllProductsByNoc(noc);
     const nonExpiredProducts = getNonExpiredProducts(products);
     const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
-    const productsToDisplay: ProductToDisplay[] = await Promise.all(
+    const allProductsToDisplay: ProductToDisplay[] = await Promise.all(
         nonExpiredProductsWithActiveServices.map(async (nonExpiredProduct) => {
             const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
             const product = s3Data.products[0];
@@ -499,6 +421,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 schoolTicket: 'termTime' in s3Data && !!s3Data.termTime,
             };
         }),
+    );
+
+    const productsToDisplay = allProductsToDisplay.filter(
+        (product) => product.fareType === 'single' || product.fareType === 'return' || product.fareType === 'flatFare',
     );
 
     const servicesLineIds = productsToDisplay
@@ -560,13 +486,28 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             seenLineIds.includes(item.lineId) ? false : seenLineIds.push(item.lineId),
         ) ?? [];
 
+    const editId = Number.isInteger(Number(ctx.query.id)) ? Number(ctx.query.id) : undefined;
+    let inputs: GroupOfProducts | undefined;
+
+    const productGroupAttribute = getSessionAttribute(ctx.req, MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE);
+
+    if (editId) {
+        inputs = await getProductGroupByNocAndId(noc, editId);
+        if (!inputs) {
+            throw new Error('No entity for this NOC matches the passed id');
+        }
+    }
+
     return {
         props: {
             csrf: getCsrfToken(ctx),
             productsToDisplay,
             servicesToDisplay: uniqueServicesToDisplay,
+            errors: isWithErrors(productGroupAttribute) ? productGroupAttribute.errors : [],
+            editMode: !!editId,
+            ...(inputs && { inputs }),
         },
     };
 };
 
-export default SelectExports;
+export default ManageProductGroup;

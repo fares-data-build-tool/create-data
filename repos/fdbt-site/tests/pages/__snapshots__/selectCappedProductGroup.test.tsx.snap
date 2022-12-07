@@ -72,7 +72,7 @@ exports[`pages selectCappedProductGroup should render correctly with no saved pr
     </div>
     <a
       className="govuk-button govuk-button--secondary"
-      href="/viewGroupsOfProducts"
+      href="/viewProductGroups"
     >
       Create new
     </a>
@@ -210,7 +210,7 @@ exports[`pages selectCappedProductGroup should render correctly with saved produ
     />
     <a
       className="govuk-button govuk-button--secondary"
-      href="/viewGroupsOfProducts"
+      href="/viewProductGroups"
     >
       Create new
     </a>
@@ -334,7 +334,7 @@ exports[`pages selectCappedProductGroup should render correctly with saved produ
     />
     <a
       className="govuk-button govuk-button--secondary"
-      href="/viewGroupsOfProducts"
+      href="/viewProductGroups"
     >
       Create new
     </a>
@@ -458,7 +458,7 @@ exports[`pages selectCappedProductGroup should render correctly with saved produ
     />
     <a
       className="govuk-button govuk-button--secondary"
-      href="/viewGroupsOfProducts"
+      href="/viewProductGroups"
     >
       Create new
     </a>
