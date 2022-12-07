@@ -64,6 +64,7 @@ export interface SalesOfferPackage {
 export type DayOfTheWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
 export type CapStart = 'rollingDays' | 'fixedWeekdays';
+
 export interface CapStartInfo {
     type: CapStart;
     startDay?: DayOfTheWeek;
