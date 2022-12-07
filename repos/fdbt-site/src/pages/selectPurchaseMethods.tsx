@@ -233,8 +233,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             productPrice: product.salesOfferPackages[0].price || '',
         };
 
+        const selectedValue = {
+            [productInfo.productName]: purchaseMethodsList.filter((el) =>
+                ticket.products[0].salesOfferPackages.map((e) => e.id).includes(el.id),
+            ),
+        };
+
         return {
             props: {
+                ...(selectedValue && { selected: selectedValue }),
                 products: [productInfo],
                 purchaseMethodsList: purchaseMethodsList as FromDb<SalesOfferPackage>[],
                 errors,
