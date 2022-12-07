@@ -6,6 +6,7 @@ import { UserDataUploadsProps } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 import ErrorSummary from './ErrorSummary';
 import CsrfForm from './CsrfForm';
+import BackButton from './BackButton';
 
 const UserDataUploadComponent = ({
     csvUploadApiRoute,
@@ -23,9 +24,11 @@ const UserDataUploadComponent = ({
     showPriceOption,
     poundsOrPence,
     csrfToken,
+    backHref,
 }: UserDataUploadsProps): ReactElement => (
     <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <ErrorSummary errors={errors} />
             <CsrfForm action={csvUploadApiRoute} method="post" encType="multipart/form-data" csrfToken={csrfToken}>
                 <>

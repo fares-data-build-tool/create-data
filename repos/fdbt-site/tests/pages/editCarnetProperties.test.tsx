@@ -13,6 +13,7 @@ describe('pages', () => {
                     expiryTime="3"
                     expiryUnit={CarnetExpiryUnit.HOUR}
                     quantity="3"
+                    backHref="/product/productDetails?id=99"
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -30,6 +31,7 @@ describe('pages', () => {
                     expiryTime="0"
                     expiryUnit={CarnetExpiryUnit.HOUR}
                     quantity="3"
+                    backHref=""
                 />,
             );
             expect(wrapper).toMatchSnapshot();

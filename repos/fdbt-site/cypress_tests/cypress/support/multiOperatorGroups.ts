@@ -43,6 +43,10 @@ export const createEditMultiOperatorGroups = () => {
 
     addSingleMultiOperatorGroup(multiOperatorGroup1, false, true);
 
+    // Click on edit and back button
+    getElementByClass('card').eq(0).contains('Edit').click();
+    clickElementByText("Back")
+
     const valuesToCompareFirst = ['Blackpool Transport - BLAC', "Warrington's Own Buses - WBTR"];
     const firstCard = getElementByClass('card').eq(0);
     firstCard.should('contain.text', multiOperatorGroup1);

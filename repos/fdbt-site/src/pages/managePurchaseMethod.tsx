@@ -12,6 +12,7 @@ import { GlobalSettingsManageProps, getGlobalSettingsManageProps } from '../util
 import { getSalesOfferPackageByIdAndNoc } from '../data/auroradb';
 import InformationSummary from '../components/InformationSummary';
 import { FromDb, SalesOfferPackage } from '../interfaces/matchingJsonTypes';
+import BackButton from '../components/BackButton';
 
 const title = 'Manage Purchase Methods - Create Fares Data Service';
 const description = 'Manage Purchase Methods page of the Create Fares Data Service';
@@ -60,7 +61,12 @@ export const valuesMap: { [key: string]: string } = {
 const ManagePurchaseMethod = ({ inputs, csrfToken, errors, editMode }: ManagePurchaseMethodsProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description}>
-            {editMode && errors.length === 0 ? <InformationSummary informationText={editingInformationText} /> : null}
+            {editMode && errors.length === 0 ? (
+                <>
+                    <BackButton href="/viewPurchaseMethods"></BackButton>
+                    <InformationSummary informationText={editingInformationText} />{' '}
+                </>
+            ) : null}
             <ErrorSummary errors={errors} />
 
             <div className="govuk-grid-row">

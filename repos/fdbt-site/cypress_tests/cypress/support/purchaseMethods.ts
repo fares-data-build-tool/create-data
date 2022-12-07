@@ -37,6 +37,10 @@ export const createEditPurchaseMethod = (): void => {
 
     addPurchaseMethod(purchaseMethod);
 
+    // Click on edit and back button
+    getElementByClass('card').eq(0).contains('Edit').click();
+    clickElementByText("Back");    
+
     const purchaseMethodCard = getElementByClass('card').eq(0);
     purchaseMethodCard.should('include.text', purchaseMethod.name);
     purchaseMethodCard.should('include.text', 'Purchase locations: On board');

@@ -6,8 +6,13 @@ import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import ExpirySelector from '../components/ExpirySelector';
 import { getSessionAttribute } from '../utils/sessions';
-import { EDIT_CARNET_PROPERTIES_ERROR, MATCHING_JSON_ATTRIBUTE } from '../constants/attributes';
+import {
+    EDIT_CARNET_PROPERTIES_ERROR,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+} from '../constants/attributes';
 import { CarnetDetails, CarnetExpiryUnit } from '../interfaces/matchingJsonTypes';
+import BackButton from '../components/BackButton';
 
 const title = 'Edit Carnet Properties - Create Fares Data Service';
 const description = 'Edit Carnet Properties page of the Create Fares Data Service';
@@ -18,6 +23,7 @@ interface EditCarnetPropertiesProps {
     expiryTime: string;
     expiryUnit: CarnetExpiryUnit;
     quantity: string;
+    backHref: string;
 }
 
 const EditCarnetProperties = ({
@@ -26,9 +32,11 @@ const EditCarnetProperties = ({
     expiryTime,
     expiryUnit,
     quantity,
+    backHref,
 }: EditCarnetPropertiesProps): ReactElement => {
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/editCarnetProperties" method="post" csrfToken={csrfToken}>
                 <ErrorSummary errors={errors} />
                 <h1 className="govuk-heading-l" id="edit-carnet-properties-page-heading">
@@ -102,6 +110,15 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ed
         throw new Error('Ticket is undefined');
     }
 
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const backHref =
+        ticket && matchingJsonMetaData
+            ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                  matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+              }`
+            : '';
+
     return {
         props: {
             errors,
@@ -109,6 +126,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ed
             expiryTime: carnetDetails.expiryTime || '',
             expiryUnit: carnetDetails.expiryUnit,
             quantity: carnetDetails.quantity,
+            backHref,
         },
     };
 };

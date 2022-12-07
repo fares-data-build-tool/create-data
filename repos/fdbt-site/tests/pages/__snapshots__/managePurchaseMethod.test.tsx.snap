@@ -495,9 +495,13 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
   description="Manage Purchase Methods page of the Create Fares Data Service"
   title="Manage Purchase Methods - Create Fares Data Service"
 >
+  <BackButton
+    href="/viewPurchaseMethods"
+  />
   <InformationSummary
     informationText="Editing and saving new changes will be applied to all fares using this purchase method."
   />
+   
   <ErrorSummary
     errors={Array []}
   />

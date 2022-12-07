@@ -10,6 +10,7 @@ import { getGlobalSettingsManageProps, GlobalSettingsManageProps } from '../util
 import { getSessionAttribute } from '../utils/sessions';
 import { getAndValidateNoc } from '../utils';
 import InformationSummary from '../components/InformationSummary';
+import BackButton from '../components/BackButton';
 
 const title = 'Manage Time Restrictions - Create Fares Data Service';
 const description = 'Manage Time Restrictions page of the Create Fares Data Service';
@@ -233,7 +234,10 @@ const ManageTimeRestriction = ({
             <CsrfForm action="/api/manageTimeRestriction" method="post" csrfToken={csrfToken}>
                 <>
                     {editMode && errors.length === 0 ? (
-                        <InformationSummary informationText={editingInformationText} />
+                        <>
+                            <BackButton href="viewTimeRestrictions"></BackButton>
+                            <InformationSummary informationText={editingInformationText} />
+                        </>
                     ) : null}
                     <ErrorSummary errors={errors} />
 
