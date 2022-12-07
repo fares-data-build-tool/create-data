@@ -91,6 +91,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
+        if (fareType === 'capped') {
+            redirectTo(res, '/typeOfCap');
+            return;
+        }
+
         redirectTo(res, '/multipleProducts');
         return;
     } catch (error) {
