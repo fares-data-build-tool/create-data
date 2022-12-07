@@ -29,6 +29,8 @@ import {
 import { validFareTypes } from '../constants';
 import { PassengerType } from './dbTypes';
 import {
+    CapStart,
+    DayOfTheWeek,
     Ticket,
     PeriodMultipleServicesTicket,
     FlatFareTicket,
@@ -39,6 +41,7 @@ import {
     CarnetProductInfo,
     PeriodExpiry,
     CapExpiry,
+    CapStartInfo,
 } from './matchingJsonTypes';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
@@ -163,8 +166,17 @@ export const isPeriodExpiry = (
     periodExpiryAttribute: PeriodExpiry | ErrorInfo[] | undefined,
 ): periodExpiryAttribute is PeriodExpiry => !!periodExpiryAttribute && 'productValidity' in periodExpiryAttribute;
 
+export const isDayOfTheWeek = (dayOfTheWeek: DayOfTheWeek | ErrorInfo[] | undefined): dayOfTheWeek is DayOfTheWeek =>
+    !!dayOfTheWeek;
+
+export const isCapStart = (capStart: CapStart | ErrorInfo[] | undefined): capStart is CapStart => !!capStart;
+
 export const isCapExpiry = (capExpiryAttribute: CapExpiry | ErrorInfo[] | undefined): capExpiryAttribute is CapExpiry =>
     !!capExpiryAttribute && 'productValidity' in capExpiryAttribute;
+
+export const isCapStartInfo = (
+    capStartAttribute: CapStartInfo | ErrorInfo[] | undefined,
+): capStartAttribute is CapStartInfo => !!capStartAttribute && 'type' && 'start' in capStartAttribute;
 
 export const isMultiOperatorMultipleServicesTicket = (
     ticket: Ticket | WithIds<Ticket>,
