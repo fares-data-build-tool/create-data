@@ -19,6 +19,7 @@ describe('pages', () => {
                     errors={[]}
                     showPriceOption
                     csrfToken=""
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();

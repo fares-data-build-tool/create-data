@@ -1,4 +1,5 @@
 import React, { Dispatch, ReactElement, SetStateAction, useEffect, useState } from 'react';
+import BackButton from '../components/BackButton';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import InsetText from '../components/InsetText';
@@ -28,6 +29,7 @@ interface MultiOperatorsServiceListProps {
     multiOperatorData: MultiOperatorInfo[];
     errors: ErrorInfo[];
     csrfToken: string;
+    backHref: string;
 }
 
 const getNumberOfOperatorsWithSelectedServices = (operators: MultiOperatorInfo[]): number => {
@@ -146,6 +148,7 @@ const MultiOperatorsServiceList = ({
     errors,
     multiOperatorData,
     csrfToken,
+    backHref,
 }: MultiOperatorsServiceListProps): ReactElement => {
     const order = getOrderOfOperators(multiOperatorData);
     const [activeOperatorNoc, setActiveOperatorNoc] = useState(multiOperatorData[0].nocCode);
@@ -159,6 +162,7 @@ const MultiOperatorsServiceList = ({
 
     return (
         <BaseLayout title={pageTitle} description={pageDescription}>
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <ErrorSummary errors={errors} />
             <div className={errors.length > 0 ? 'govuk-form-group--error' : ''}>
                 <div>
@@ -416,6 +420,7 @@ export const getServerSideProps = async (
     const multiOperatorServicesAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
     let multiOperatorData: MultiOperatorInfo[] = [];
     let errors: ErrorInfo[] = [];
+    let backHref = '';
 
     if (!multiOperatorAttribute) {
         // edit mode
@@ -425,6 +430,13 @@ export const getServerSideProps = async (
         if (!ticket || !matchingJsonMetaData || !('additionalOperators' in ticket)) {
             throw new Error('Page navigated to manually without necessary session attributes.');
         }
+
+        backHref =
+            ticket && matchingJsonMetaData
+                ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                      matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                  }`
+                : '';
 
         // map over all additional operators in the ticket
         multiOperatorData = await Promise.all(
@@ -515,6 +527,7 @@ export const getServerSideProps = async (
             multiOperatorData,
             errors,
             csrfToken,
+            backHref,
         },
     };
 };

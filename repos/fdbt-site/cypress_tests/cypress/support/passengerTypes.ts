@@ -76,6 +76,10 @@ export const createEditSinglePassengerTypes = (): void => {
     addSinglePassengerType(passengerType1);
     addSinglePassengerType(passengerType2);
 
+    // Click on edit and back button
+    getElementByClass('card').eq(0).contains('Edit').click();
+    clickElementByText("Back");
+
     const firstCard = getElementByClass('card').eq(0);
     firstCard.should('include.text', passengerType1.name);
     firstCard.should('include.text', 'Proof document(s): Membership card, Identity document');
