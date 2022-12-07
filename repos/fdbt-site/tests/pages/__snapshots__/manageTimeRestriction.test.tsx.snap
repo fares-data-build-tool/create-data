@@ -1130,6 +1130,9 @@ exports[`pages manage time restriction should render correctly in edit mode 1`] 
     csrfToken=""
     method="post"
   >
+    <BackButton
+      href="viewTimeRestrictions"
+    />
     <InformationSummary
       informationText="Editing and saving new changes will be applied to all fares using this time restriction."
     />

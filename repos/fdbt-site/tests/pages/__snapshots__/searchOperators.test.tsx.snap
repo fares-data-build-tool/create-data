@@ -876,6 +876,9 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
     <div
       className="govuk-grid-column-two-thirds"
     >
+      <BackButton
+        href="/viewOperatorGroups"
+      />
       <InformationSummary
         informationText="Editing and saving new changes will be applied to all fares using this operator group."
       />

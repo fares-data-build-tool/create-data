@@ -15,6 +15,7 @@ import { isSearchInputValid } from './api/searchOperators';
 import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
 import { useState } from 'react';
 import InformationSummary from '../components/InformationSummary';
+import BackButton from '../components/BackButton';
 
 const title = 'Search Operators - Create Fares Data Service';
 const description = 'Search Operators page for the Create Fares Data Service';
@@ -320,7 +321,10 @@ const SearchOperators = ({
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">
                     {editMode && errors.length === 0 ? (
-                        <InformationSummary informationText={editingInformationText} />
+                        <>
+                            <BackButton href="/viewOperatorGroups"></BackButton>
+                            <InformationSummary informationText={editingInformationText} />
+                        </>
                     ) : null}
                     <ErrorSummary errors={errors} />
                     <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
