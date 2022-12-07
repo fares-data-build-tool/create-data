@@ -105,7 +105,12 @@ describe('pages', () => {
 
         it('should render the multiOperatorData page upon first load', () => {
             const tree = shallow(
-                <MultipleOperatorsServiceList multiOperatorData={mockMultiOperatorData} errors={[]} csrfToken="" />,
+                <MultipleOperatorsServiceList
+                    multiOperatorData={mockMultiOperatorData}
+                    errors={[]}
+                    csrfToken=""
+                    backHref=""
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -116,6 +121,7 @@ describe('pages', () => {
                     multiOperatorData={mockMultiOperatorData}
                     errors={mockErrors}
                     csrfToken=""
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();
