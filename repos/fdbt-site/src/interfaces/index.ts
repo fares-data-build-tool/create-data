@@ -705,7 +705,7 @@ export interface ProductToDisplay {
     productName: string;
     startDate: string;
     endDate?: string;
-    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator';
+    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator' | 'capped';
     schoolTicket: boolean;
     serviceLineId: string | null;
     direction: string | null;

@@ -60,7 +60,6 @@ import {
     VIEW_OPERATOR_GROUP,
     CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE,
     TYPE_OF_CAP_ATTRIBUTE,
-    CAPPED_PRODUCT_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
     GS_FARE_DAY_END_ATTRIBUTE,
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
@@ -223,7 +222,6 @@ export interface SessionAttributeTypes {
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
     [VIEW_PRODUCT_GROUP]: ErrorInfo[];
-    [CAPPED_PRODUCT_ATTRIBUTE]: boolean;
     [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
     [CAPS_ATTRIBUTE]: { errors: ErrorInfo[]; caps: Cap[] };
