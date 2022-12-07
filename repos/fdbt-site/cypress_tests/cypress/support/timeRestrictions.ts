@@ -31,6 +31,10 @@ export const createEditTimeRestriction = (): void => {
 
     addTimeRestriction(timeRestriction);
 
+    // Click on edit and back button
+    getElementByClass('card').eq(0).contains('Edit').click();
+    clickElementByText("Back");
+
     let timeRestrictionCard = getElementByClass('card').eq(0);
     timeRestrictionCard.should('include.text', timeRestriction.name);
 
