@@ -357,7 +357,6 @@ const renderConditionalRadioButton = (
             type="radio"
             value={radio.value}
             data-aria-controls={radio.dataAriaControls}
-            defaultChecked={radio.defaultChecked}
         />
     );
     const checkedRadioInput = (
@@ -368,7 +367,7 @@ const renderConditionalRadioButton = (
             type="radio"
             value={radio.value}
             data-aria-controls={radio.dataAriaControls}
-            defaultChecked={radio.defaultChecked}
+            defaultChecked
         />
     );
 

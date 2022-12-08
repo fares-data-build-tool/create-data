@@ -87,7 +87,7 @@ export const getFieldset = (
                         name: 'productEndTime',
                         label: 'End time',
                         disabled: true,
-                        defaultValue: endOfFareDay ? endOfFareDay : productEndTime ? productEndTime : '',
+                        defaultValue: endOfFareDay || productEndTime || '',
                     },
                 ],
                 inputErrors: getErrorsByIds(['product-end-time'], errors),
@@ -159,7 +159,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     let fieldset: RadioConditionalInputFieldset = getFieldset(errors, endOfFareDay);
     if (ticket) {
-        const product = ticket?.products[0] as PeriodExpiry;
+        const product = ticket.products[0] as PeriodExpiry;
         const productValidity = product.productValidity;
         const productEndTime = product.productEndTime;
         fieldset = getFieldset(errors, endOfFareDay, productValidity, productEndTime);

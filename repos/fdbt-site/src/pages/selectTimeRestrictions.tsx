@@ -188,7 +188,7 @@ export const getServerSideProps = async (
 
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const selectedId =
-        getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE)?.id || ticket?.timeRestriction?.id;
+        getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE)?.id || ticket?.timeRestriction?.id || null;
 
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
@@ -199,7 +199,7 @@ export const getServerSideProps = async (
               }`
             : '';
 
-    return { props: { csrfToken, errors, timeRestrictions, selectedId: selectedId || null, backHref } };
+    return { props: { csrfToken, errors, timeRestrictions, selectedId: selectedId, backHref } };
 };
 
 export default SelectTimeRestrictions;
