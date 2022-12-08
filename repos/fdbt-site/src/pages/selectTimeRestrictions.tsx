@@ -199,7 +199,7 @@ export const getServerSideProps = async (
               }`
             : '';
 
-    return { props: { csrfToken, errors, timeRestrictions, selectedId: selectedId, backHref } };
+    return { props: { csrfToken, errors, timeRestrictions, selectedId, backHref } };
 };
 
 export default SelectTimeRestrictions;
