@@ -61,9 +61,18 @@ export interface SalesOfferPackage {
     price?: string;
 }
 
+export type DayOfTheWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
+export type CapStart = 'rollingDays' | 'fixedWeekdays';
+
+export interface CapStartInfo {
+    type: CapStart;
+    startDay?: DayOfTheWeek;
+}
+
 export type FromDb<T> = T & { id: number };
 
-export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
+export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return' | 'capped';
 
 export type Ticket =
     | PointToPointTicket

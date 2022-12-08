@@ -28,14 +28,14 @@ exports[`pages capValidity should render correctly 1`] = `
             className="govuk-fieldset__heading"
             id="cap-validity-page-heading"
           >
-            When does the product expire?
+            When does the cap expire?
           </h1>
         </legend>
         <span
           className="govuk-hint"
           id="cap-validity-hint"
         >
-          We need to know the time that this product would be valid until
+          We need to know the time that this cap would be valid until
         </span>
         <RadioConditionalInput
           fieldset={
@@ -154,14 +154,14 @@ exports[`pages capValidity should render error messaging when errors are passed 
             className="govuk-fieldset__heading"
             id="cap-validity-page-heading"
           >
-            When does the product expire?
+            When does the cap expire?
           </h1>
         </legend>
         <span
           className="govuk-hint"
           id="cap-validity-hint"
         >
-          We need to know the time that this product would be valid until
+          We need to know the time that this cap would be valid until
         </span>
         <RadioConditionalInput
           fieldset={

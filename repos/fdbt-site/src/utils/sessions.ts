@@ -60,7 +60,6 @@ import {
     VIEW_OPERATOR_GROUP,
     CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE,
     TYPE_OF_CAP_ATTRIBUTE,
-    CAPPED_PRODUCT_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
     GS_FARE_DAY_END_ATTRIBUTE,
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
@@ -72,6 +71,7 @@ import {
     VIEW_PRODUCT_GROUP,
     EDIT_CARNET_PROPERTIES_ERROR,
     CAP_EXPIRY_ATTRIBUTE,
+    CAP_START_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -148,6 +148,7 @@ import {
     SalesOfferPackage,
     AdditionalOperator,
     CapExpiry,
+    CapStartInfo,
 } from '../interfaces/matchingJsonTypes';
 import { PassengerType, GroupPassengerType, GroupPassengerTypeDb } from '../interfaces/dbTypes';
 
@@ -221,13 +222,13 @@ export interface SessionAttributeTypes {
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
     [VIEW_PRODUCT_GROUP]: ErrorInfo[];
-    [CAPPED_PRODUCT_ATTRIBUTE]: boolean;
     [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
     [CAPS_ATTRIBUTE]: { errors: ErrorInfo[]; caps: Cap[] };
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];
+    [CAP_START_ATTRIBUTE]: CapStartInfo | ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
