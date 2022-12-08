@@ -1,0 +1,239 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages capValidity should render correctly 1`] = `
+<TwoThirdsLayout
+  description="Cap Validity selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Cap Validity - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/capValidity"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="cap-validity-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="cap-validity-page-heading"
+          >
+            When does the cap expire?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="cap-validity-hint"
+        >
+          We need to know the time that this cap would be valid until
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": Any<String>,
+                "hidden": true,
+                "id": "cap-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "id": "cap-end-calendar",
+                  "label": " At the end of a calendar day",
+                  "name": "capValid",
+                  "radioButtonHint": Object {
+                    "content": "The cap applies to journeys made before midnight",
+                    "id": "cap-end-calendar-hint",
+                  },
+                  "value": "endOfCalendarDay",
+                },
+                Object {
+                  "id": "cap-twenty-four-hours",
+                  "label": "At the end of a 24 hour period",
+                  "name": "capValid",
+                  "radioButtonHint": Object {
+                    "content": "The cap applies to journeys made within 24hrs of the first tap",
+                    "id": "cap-twenty-four-hours-hint",
+                  },
+                  "value": "24hr",
+                },
+                Object {
+                  "dataAriaControls": "cap-validity-end-of-service-required-conditional",
+                  "disableAutoSelect": true,
+                  "id": "cap-end-of-service",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
+                    "content": "You can update your fare day end in operator settings",
+                    "hidden": true,
+                    "id": "product-end-time-hint",
+                  },
+                  "inputType": "text",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "disabled": true,
+                      "id": "product-end-time",
+                      "label": "End time",
+                      "name": "productEndTime",
+                    },
+                  ],
+                  "label": "Fare day end",
+                  "name": "capValid",
+                  "radioButtonHint": Object {
+                    "content": "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+                    "id": "cap-end-of-service-hint",
+                  },
+                  "value": "fareDayEnd",
+                },
+              ],
+            }
+          }
+          key="cap-validity"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages capValidity should render error messaging when errors are passed 1`] = `
+<TwoThirdsLayout
+  description="Cap Validity selection page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose an option regarding your cap ticket validity",
+        "id": "cap-validity-error",
+      },
+    ]
+  }
+  title="Cap Validity - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/capValidity"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose an option regarding your cap ticket validity",
+            "id": "cap-validity-error",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
+      <fieldset
+        aria-describedby="cap-validity-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="cap-validity-page-heading"
+          >
+            When does the cap expire?
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="cap-validity-hint"
+        >
+          We need to know the time that this cap would be valid until
+        </span>
+        <RadioConditionalInput
+          fieldset={
+            Object {
+              "heading": Object {
+                "content": Any<String>,
+                "hidden": true,
+                "id": "cap-validity",
+              },
+              "radioError": Array [],
+              "radios": Array [
+                Object {
+                  "id": "cap-end-calendar",
+                  "label": " At the end of a calendar day",
+                  "name": "capValid",
+                  "radioButtonHint": Object {
+                    "content": "The cap applies to journeys made before midnight",
+                    "id": "cap-end-calendar-hint",
+                  },
+                  "value": "endOfCalendarDay",
+                },
+                Object {
+                  "id": "cap-twenty-four-hours",
+                  "label": "At the end of a 24 hour period",
+                  "name": "capValid",
+                  "radioButtonHint": Object {
+                    "content": "The cap applies to journeys made within 24hrs of the first tap",
+                    "id": "cap-twenty-four-hours-hint",
+                  },
+                  "value": "24hr",
+                },
+                Object {
+                  "dataAriaControls": "cap-validity-end-of-service-required-conditional",
+                  "disableAutoSelect": true,
+                  "id": "cap-end-of-service",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
+                    "content": "You can update your fare day end in operator settings",
+                    "hidden": true,
+                    "id": "product-end-time-hint",
+                  },
+                  "inputType": "text",
+                  "inputs": Array [
+                    Object {
+                      "defaultValue": "",
+                      "disabled": true,
+                      "id": "product-end-time",
+                      "label": "End time",
+                      "name": "productEndTime",
+                    },
+                  ],
+                  "label": "Fare day end",
+                  "name": "capValid",
+                  "radioButtonHint": Object {
+                    "content": "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+                    "id": "cap-end-of-service-hint",
+                  },
+                  "value": "fareDayEnd",
+                },
+              ],
+            }
+          }
+          key="cap-validity"
+        />
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;

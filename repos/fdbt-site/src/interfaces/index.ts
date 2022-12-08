@@ -131,6 +131,7 @@ export interface UserDataUploadsProps {
     showPriceOption?: boolean;
     poundsOrPence?: string | null;
     csrfToken: string;
+    backHref: string;
 }
 
 export interface NumberOfStagesAttributeWithError {
@@ -217,6 +218,7 @@ export interface GlobalSettingsCounts {
     fareDayEndSet: boolean;
     operatorDetailsSet: boolean;
     operatorGroupsCount: number;
+    productGroupsCount: number;
 }
 
 export interface PassengerAttributes {
@@ -437,6 +439,11 @@ export interface ManagePassengerTypeWithErrors {
 
 export interface ManageOperatorGroupWithErrors {
     inputs: OperatorGroup;
+    errors: ErrorInfo[];
+}
+
+export interface ManageProductGroupWithErrors {
+    inputs: GroupOfProducts;
     errors: ErrorInfo[];
 }
 
@@ -693,12 +700,12 @@ export interface TxcSourceAttribute {
     hasBods: boolean;
 }
 
-export interface ProductToExport {
+export interface ProductToDisplay {
     id: string;
     productName: string;
     startDate: string;
     endDate?: string;
-    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator';
+    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator' | 'capped';
     schoolTicket: boolean;
     serviceLineId: string | null;
     direction: string | null;

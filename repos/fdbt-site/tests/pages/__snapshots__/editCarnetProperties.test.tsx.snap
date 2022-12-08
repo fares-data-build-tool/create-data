@@ -6,6 +6,9 @@ exports[`pages editCarnetProperties should render editCarnetProperties page corr
   errors={Array []}
   title="Edit Carnet Properties - Create Fares Data Service"
 >
+  <BackButton
+    href="/product/productDetails?id=99"
+  />
   <CsrfForm
     action="/api/editCarnetProperties"
     csrfToken=""

@@ -1,0 +1,355 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages defineCapStart should render correctly 1`] = `
+<TwoThirdsLayout
+  description="Capped products start selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Define cap start - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/defineCapStart"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="fixed-weekdays-hint"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+          >
+            Define when cap is calculated from
+          </h1>
+        </legend>
+        <h2
+          className="govuk-heading-m govuk-!-margin-top-6"
+        >
+          Business week
+        </h2>
+        <span
+          className="govuk-hint"
+          id="fixed-weekdays-hint"
+        >
+          Which day does your cap's calculation start on?
+        </span>
+        <div
+          className="govuk-radios"
+          data-module="govuk-radios"
+        >
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              data-aria-controls="conditional-fixed-weekdays"
+              id="fixed-weekdays"
+              name="capStart"
+              type="radio"
+              value="fixedWeekdays"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="fixed-weekdays"
+            >
+              Fixed weekdays
+            </label>
+          </div>
+          <div
+            className="govuk-radios__conditional govuk-radios__conditional--hidden"
+            id="conditional-fixed-weekdays"
+          >
+            <div
+              className="govuk-form-group"
+            >
+              <label
+                className="govuk-label"
+                htmlFor="start-day"
+              >
+                Start
+              </label>
+              <select
+                className="govuk-select"
+                id="start-day"
+                name="startDay"
+              >
+                <option
+                  defaultValue="m"
+                  key="monday"
+                  value="monday"
+                >
+                  Monday
+                </option>
+                <option
+                  defaultValue="t"
+                  key="tuesday"
+                  value="tuesday"
+                >
+                  Tuesday
+                </option>
+                <option
+                  defaultValue="w"
+                  key="wednesday"
+                  value="wednesday"
+                >
+                  Wednesday
+                </option>
+                <option
+                  defaultValue="t"
+                  key="thursday"
+                  value="thursday"
+                >
+                  Thursday
+                </option>
+                <option
+                  defaultValue="f"
+                  key="friday"
+                  value="friday"
+                >
+                  Friday
+                </option>
+                <option
+                  defaultValue="s"
+                  key="saturday"
+                  value="saturday"
+                >
+                  Saturday
+                </option>
+                <option
+                  defaultValue="s"
+                  key="sunday"
+                  value="sunday"
+                >
+                  Sunday
+                </option>
+              </select>
+            </div>
+          </div>
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              aria-describedby="rolling-days-hint"
+              className="govuk-radios__input"
+              id="rolling-days"
+              name="capStart"
+              type="radio"
+              value="rollingDays"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="rolling-days"
+            >
+              Rolling days
+            </label>
+            <div
+              className="govuk-hint govuk-radios__hint"
+              id="rolling-days-hint"
+            >
+              Rolling seven days from first journey
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages defineCapStart should render error messaging when errors are passed 1`] = `
+<TwoThirdsLayout
+  description="Capped products start selection page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Choose an option regarding your cap ticket start",
+        "id": "fixed-weekdays",
+      },
+    ]
+  }
+  title="Define cap start - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/defineCapStart"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose an option regarding your cap ticket start",
+            "id": "fixed-weekdays",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="fixed-weekdays-hint"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+          >
+            Define when cap is calculated from
+          </h1>
+        </legend>
+        <h2
+          className="govuk-heading-m govuk-!-margin-top-6"
+        >
+          Business week
+        </h2>
+        <span
+          className="govuk-hint"
+          id="fixed-weekdays-hint"
+        >
+          Which day does your cap's calculation start on?
+        </span>
+        <div
+          className="govuk-radios"
+          data-module="govuk-radios"
+        >
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              className="govuk-radios__input"
+              data-aria-controls="conditional-fixed-weekdays"
+              id="fixed-weekdays"
+              name="capStart"
+              type="radio"
+              value="fixedWeekdays"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="fixed-weekdays"
+            >
+              Fixed weekdays
+            </label>
+          </div>
+          <div
+            className="govuk-radios__conditional govuk-radios__conditional--hidden"
+            id="conditional-fixed-weekdays"
+          >
+            <div
+              className="govuk-form-group"
+            >
+              <label
+                className="govuk-label"
+                htmlFor="start-day"
+              >
+                Start
+              </label>
+              <select
+                className="govuk-select"
+                id="start-day"
+                name="startDay"
+              >
+                <option
+                  defaultValue="m"
+                  key="monday"
+                  value="monday"
+                >
+                  Monday
+                </option>
+                <option
+                  defaultValue="t"
+                  key="tuesday"
+                  value="tuesday"
+                >
+                  Tuesday
+                </option>
+                <option
+                  defaultValue="w"
+                  key="wednesday"
+                  value="wednesday"
+                >
+                  Wednesday
+                </option>
+                <option
+                  defaultValue="t"
+                  key="thursday"
+                  value="thursday"
+                >
+                  Thursday
+                </option>
+                <option
+                  defaultValue="f"
+                  key="friday"
+                  value="friday"
+                >
+                  Friday
+                </option>
+                <option
+                  defaultValue="s"
+                  key="saturday"
+                  value="saturday"
+                >
+                  Saturday
+                </option>
+                <option
+                  defaultValue="s"
+                  key="sunday"
+                  value="sunday"
+                >
+                  Sunday
+                </option>
+              </select>
+            </div>
+          </div>
+          <div
+            className="govuk-radios__item"
+          >
+            <input
+              aria-describedby="rolling-days-hint"
+              className="govuk-radios__input"
+              id="rolling-days"
+              name="capStart"
+              type="radio"
+              value="rollingDays"
+            />
+            <label
+              className="govuk-label govuk-radios__label"
+              htmlFor="rolling-days"
+            >
+              Rolling days
+            </label>
+            <div
+              className="govuk-hint govuk-radios__hint"
+              id="rolling-days-hint"
+            >
+              Rolling seven days from first journey
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;

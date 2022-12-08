@@ -1,0 +1,11 @@
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+LOCK TABLES `groupOfProducts` WRITE;
+
+TRUNCATE TABLE `groupOfProducts`;
+
+INSERT INTO `groupOfProducts` (name, products, nocCode) 
+VALUES
+('product-group', '["1","2","3"]', 'BLAC');
+
+UNLOCK TABLES;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -117,9 +117,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (ticket && matchingJsonMetaData) {
             const updatedTicket = {
                 ...ticket,
-                timeRestriction: selectedTimeRestriction
-                    ? { id: selectedTimeRestriction.dbTimeRestriction.id }
-                    : undefined,
+                timeRestriction:
+                    selectedTimeRestriction && timeRestrictionChoice !== 'no'
+                        ? { id: selectedTimeRestriction.dbTimeRestriction.id }
+                        : undefined,
             };
 
             await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);

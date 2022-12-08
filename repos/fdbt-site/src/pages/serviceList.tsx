@@ -24,6 +24,7 @@ import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { redirectTo } from '../utils/apiUtils';
+import BackButton from '../components/BackButton';
 
 const pageTitle = 'Service List - Create Fares Data Service';
 const pageDescription = 'Service List selection page of the Create Fares Data Service';
@@ -36,6 +37,7 @@ interface ServiceListProps {
     dataSourceAttribute: TxcSourceAttribute;
     csrfToken: string;
     additional: boolean;
+    backHref: string;
 }
 
 const ServiceList = ({
@@ -46,6 +48,7 @@ const ServiceList = ({
     multiOperator,
     dataSourceAttribute,
     additional,
+    backHref,
 }: ServiceListProps): ReactElement => {
     const multiOperatorText = multiOperator ? 'of your ' : '';
     const seen: string[] = [];
@@ -63,6 +66,7 @@ const ServiceList = ({
                     csrfToken={csrfToken}
                 />
             )} */}
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
@@ -194,9 +198,30 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
     if (ticketJson && matchingJsonMetaData) {
+        const backHref = `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+            matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+        }`;
+
+        let services: string[] = [];
+        if ('selectedServices' in ticketJson) {
+            services = ticketJson.selectedServices.map((service) => {
+                return service.lineName;
+            });
+        }
+
+        const serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
+            return {
+                ...service,
+                checked:
+                    !selectAll || (selectAll !== 'true' && selectAll !== 'false')
+                        ? services.includes(service.lineName)
+                        : selectAll !== 'false',
+            };
+        });
+
         return {
             props: {
-                serviceList,
+                serviceList: serviceListEdit,
                 buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
                 errors:
                     serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
@@ -206,6 +231,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 dataSourceAttribute,
                 csrfToken,
                 additional: false,
+                backHref,
             },
         };
     }
@@ -227,6 +253,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             dataSourceAttribute,
             csrfToken,
             additional,
+            backHref: '',
         },
     };
 };

@@ -25,6 +25,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { removeAllWhiteSpace } from '../utils/apiUtils/validator';
 import { PurchaseMethodCardBody } from './viewPurchaseMethods';
 import { SalesOfferPackage, FromDb } from '../interfaces/matchingJsonTypes';
+import BackButton from '../components/BackButton';
 
 const pageTitle = 'Select Purchase Methods - Create Fares Data Service';
 const pageDescription = 'Purchase Methods selection page of the Create Fares Data Service';
@@ -35,6 +36,7 @@ export interface PurchaseMethodsProps {
     purchaseMethodsList: FromDb<SalesOfferPackage>[];
     errors: ErrorInfo[];
     csrfToken: string;
+    backHref: string;
 }
 
 export const formatSOPArray = (stringArray: string[]): string =>
@@ -165,9 +167,11 @@ const SelectPurchaseMethods = ({
     purchaseMethodsList,
     csrfToken,
     errors,
+    backHref,
 }: PurchaseMethodsProps): ReactElement => {
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/selectSalesOfferPackage" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
@@ -229,12 +233,22 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             productPrice: product.salesOfferPackages[0].price || '',
         };
 
+        const selectedValue = {
+            [productInfo.productName]: purchaseMethodsList.filter((purchaseMethod) =>
+                ticket.products[0].salesOfferPackages.map((salesOffer) => salesOffer.id).includes(purchaseMethod.id),
+            ),
+        };
+
         return {
             props: {
+                ...(selectedValue && { selected: selectedValue }),
                 products: [productInfo],
                 purchaseMethodsList: purchaseMethodsList as FromDb<SalesOfferPackage>[],
                 errors,
                 csrfToken,
+                backHref: `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                }`,
             },
         };
     }
@@ -279,6 +293,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             purchaseMethodsList: purchaseMethodsList as FromDb<SalesOfferPackage>[],
             errors,
             csrfToken,
+            backHref: '',
         },
     };
 };

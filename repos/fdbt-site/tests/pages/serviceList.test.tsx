@@ -123,6 +123,7 @@ describe('pages', () => {
                         hasBods: true,
                     }}
                     additional={false}
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -142,6 +143,7 @@ describe('pages', () => {
                         hasBods: false,
                     }}
                     additional={false}
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -161,6 +163,7 @@ describe('pages', () => {
                         hasBods: true,
                     }}
                     additional={false}
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -180,6 +183,7 @@ describe('pages', () => {
                         hasBods: true,
                     }}
                     additional={false}
+                    backHref="/product/productDetails?id=99"
                 />,
             );
             expect(tree).toMatchSnapshot();

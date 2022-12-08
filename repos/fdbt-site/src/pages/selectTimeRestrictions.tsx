@@ -7,7 +7,13 @@ import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getTimeRestrictionByNocCode } from '../data/auroradb';
 import { TimeRestrictionCardBody } from './viewTimeRestrictions';
 import { getSessionAttribute } from '../utils/sessions';
-import { FULL_TIME_RESTRICTIONS_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants/attributes';
+import {
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+} from '../constants/attributes';
+import BackButton from '../components/BackButton';
 
 const title = 'Select Time Restrictions - Create Fares Data Service';
 const description = 'Select Time Restrictions page of the Create Fares Data Service';
@@ -17,6 +23,7 @@ interface SelectTimeRestrictionsProps {
     errors: ErrorInfo[];
     timeRestrictions: PremadeTimeRestriction[];
     selectedId: number | null;
+    backHref: string;
 }
 
 const SelectTimeRestrictions = ({
@@ -24,9 +31,11 @@ const SelectTimeRestrictions = ({
     errors,
     timeRestrictions,
     selectedId,
+    backHref,
 }: SelectTimeRestrictionsProps): ReactElement => {
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <ErrorSummary errors={errors} />
             <CsrfForm action="/api/defineTimeRestrictions" method="post" csrfToken={csrfToken}>
                 <>
@@ -103,6 +112,7 @@ const SelectTimeRestrictions = ({
                                         type="radio"
                                         value="no"
                                         data-aria-controls="conditional-time-restriction-2"
+                                        defaultChecked={!selectedId}
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
                                         No
@@ -167,7 +177,6 @@ export const getServerSideProps = async (
     let errors: ErrorInfo[] = [];
 
     const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
-    const selectedId = getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE)?.id ?? null;
 
     if (timeRestrictionsDefinition && 'errors' in timeRestrictionsDefinition) {
         errors = timeRestrictionsDefinition.errors;
@@ -177,7 +186,20 @@ export const getServerSideProps = async (
 
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
 
-    return { props: { csrfToken, errors, timeRestrictions, selectedId } };
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const selectedId =
+        getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE)?.id || ticket?.timeRestriction?.id || null;
+
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const backHref =
+        ticket && matchingJsonMetaData
+            ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                  matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+              }`
+            : '';
+
+    return { props: { csrfToken, errors, timeRestrictions, selectedId, backHref } };
 };
 
 export default SelectTimeRestrictions;

@@ -1,7 +1,11 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent from '../components/UserDataUploads';
-import { CSV_UPLOAD_ATTRIBUTE } from '../constants/attributes';
+import {
+    CSV_UPLOAD_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+} from '../constants/attributes';
 import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
 import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
 import { NextPageContextWithSession, ErrorInfo, UserDataUploadsProps } from '../interfaces';
@@ -39,6 +43,16 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
     const errors: ErrorInfo[] = csvUploadAttribute?.errors ?? [];
     const poundsOrPence = csvUploadAttribute?.poundsOrPence ?? null;
 
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const backHref =
+        ticket && matchingJsonMetaData
+            ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                  matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+              }`
+            : '';
+
     return {
         props: {
             csvUploadApiRoute: '/api/csvUpload',
@@ -56,6 +70,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             showPriceOption: true,
             poundsOrPence,
             csrfToken: getCsrfToken(ctx),
+            backHref,
         },
     };
 };
