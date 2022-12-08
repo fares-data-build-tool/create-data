@@ -202,9 +202,26 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
         }`;
 
+        let services: string[] = [];
+        if ('selectedServices' in ticketJson) {
+            services = ticketJson.selectedServices.map((service) => {
+                return service.lineName;
+            });
+        }
+
+        const serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
+            return {
+                ...service,
+                checked:
+                    !selectAll || (selectAll !== 'true' && selectAll !== 'false')
+                        ? services.includes(service.lineName)
+                        : selectAll !== 'false',
+            };
+        });
+
         return {
             props: {
-                serviceList,
+                serviceList: serviceListEdit,
                 buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
                 errors:
                     serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)

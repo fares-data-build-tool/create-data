@@ -112,6 +112,7 @@ const SelectTimeRestrictions = ({
                                         type="radio"
                                         value="no"
                                         data-aria-controls="conditional-time-restriction-2"
+                                        defaultChecked={!selectedId}
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
                                         No
@@ -176,7 +177,6 @@ export const getServerSideProps = async (
     let errors: ErrorInfo[] = [];
 
     const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
-    const selectedId = getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE)?.id ?? null;
 
     if (timeRestrictionsDefinition && 'errors' in timeRestrictionsDefinition) {
         errors = timeRestrictionsDefinition.errors;
@@ -187,6 +187,9 @@ export const getServerSideProps = async (
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
 
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const selectedId =
+        getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE)?.id || ticket?.timeRestriction?.id || null;
+
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
     const backHref =
