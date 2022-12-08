@@ -5314,6 +5314,7 @@ export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
             name: 'validity',
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
+            defaultChecked: false,
             label: 'Yes',
             inputHint: {
                 id: 'define-return-validity-hint',
@@ -5338,6 +5339,7 @@ export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
             inputErrors: [],
         },
         {
+            defaultChecked: true,
             id: 'return-validity-not-defined',
             name: 'validity',
             value: 'No',
@@ -5359,6 +5361,7 @@ export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInpu
             name: 'validity',
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
+            defaultChecked: false,
             label: 'Yes',
             inputHint: {
                 id: 'define-return-validity-hint',
@@ -5383,6 +5386,7 @@ export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInpu
             inputErrors: [{ errorMessage: 'Enter a whole number greater than zero', id: 'return-validity-amount' }],
         },
         {
+            defaultChecked: true,
             id: 'return-validity-not-defined',
             name: 'validity',
             value: 'No',
@@ -5404,6 +5408,7 @@ export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditional
             name: 'validity',
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
+            defaultChecked: false,
             label: 'Yes',
             inputHint: {
                 id: 'define-return-validity-hint',
@@ -5430,6 +5435,7 @@ export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditional
             ],
         },
         {
+            defaultChecked: true,
             id: 'return-validity-not-defined',
             name: 'validity',
             value: 'No',
@@ -5451,6 +5457,7 @@ export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioCond
             name: 'validity',
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
+            defaultChecked: false,
             label: 'Yes',
             inputHint: {
                 id: 'define-return-validity-hint',
@@ -5478,6 +5485,7 @@ export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioCond
             ],
         },
         {
+            defaultChecked: true,
             id: 'return-validity-not-defined',
             name: 'validity',
             value: 'No',
@@ -5499,6 +5507,7 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
             name: 'validity',
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
+            defaultChecked: false,
             label: 'Yes',
             inputHint: {
                 id: 'define-return-validity-hint',
@@ -5523,6 +5532,7 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
             inputErrors: [],
         },
         {
+            defaultChecked: true,
             id: 'return-validity-not-defined',
             name: 'validity',
             value: 'No',

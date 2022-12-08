@@ -46,6 +46,7 @@ export const getFieldset = (errors: ErrorInfo[], amount: string, duration: strin
                 id: 'define-return-validity-hint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
+            defaultChecked: !!amount && !!duration,
             inputType: 'textWithUnits',
             inputs: [
                 {
@@ -69,6 +70,7 @@ export const getFieldset = (errors: ErrorInfo[], amount: string, duration: strin
             name: 'validity',
             value: 'No',
             label: 'No',
+            defaultChecked: !amount && !duration,
         },
     ],
     radioError: getErrorsByIds(['return-validity-defined'], errors),
@@ -107,13 +109,19 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Re
 
     const errors: ErrorInfo[] =
         returnValidity && isReturnPeriodValidityWithErrors(returnValidity) ? returnValidity.errors : [];
-    const amount = (returnValidity && returnValidity.amount) || '';
-    const duration = returnValidity && returnValidity.typeOfDuration !== undefined ? returnValidity.typeOfDuration : '';
+    let amount = (returnValidity && returnValidity.amount) || '';
+    let duration = returnValidity && returnValidity.typeOfDuration !== undefined ? returnValidity.typeOfDuration : '';
 
-    const fieldset: RadioConditionalInputFieldset = getFieldset(errors, amount, duration);
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+    if (ticket && 'returnPeriodValidity' in ticket) {
+        if (ticket.returnPeriodValidity?.amount && ticket.returnPeriodValidity?.typeOfDuration) {
+            amount = ticket.returnPeriodValidity?.amount;
+            duration = ticket.returnPeriodValidity?.typeOfDuration;
+        }
+    }
 
+    const fieldset: RadioConditionalInputFieldset = getFieldset(errors, amount, duration);
     const backHref =
         ticket && matchingJsonMetaData
             ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
