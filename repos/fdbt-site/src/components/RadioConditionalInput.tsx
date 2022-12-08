@@ -357,6 +357,7 @@ const renderConditionalRadioButton = (
             type="radio"
             value={radio.value}
             data-aria-controls={radio.dataAriaControls}
+            defaultChecked={radio.defaultChecked}
         />
     );
     const checkedRadioInput = (
@@ -367,7 +368,7 @@ const renderConditionalRadioButton = (
             type="radio"
             value={radio.value}
             data-aria-controls={radio.dataAriaControls}
-            defaultChecked
+            defaultChecked={radio.defaultChecked}
         />
     );
 
@@ -418,7 +419,14 @@ const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
 
     return (
         <div key={radio.id} className="govuk-radios__item">
-            <input className="govuk-radios__input" id={radio.id} name={radio.name} type="radio" value={radio.value} />
+            <input
+                className="govuk-radios__input"
+                id={radio.id}
+                name={radio.name}
+                type="radio"
+                value={radio.value}
+                defaultChecked={radio.defaultChecked}
+            />
             {radioButtonLabel}
             {radio.radioButtonHint ? radioButtonHint : null}
         </div>

@@ -4185,6 +4185,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4195,6 +4196,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4208,6 +4210,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
@@ -4244,6 +4247,7 @@ export const mockSelectPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4254,6 +4258,7 @@ export const mockSelectPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4267,6 +4272,7 @@ export const mockSelectPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',
@@ -4304,6 +4310,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4314,6 +4321,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4328,6 +4336,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
@@ -4369,6 +4378,7 @@ export const mockSelectPeriodValidityFieldsetWithErrors: RadioConditionalInputFi
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4379,6 +4389,7 @@ export const mockSelectPeriodValidityFieldsetWithErrors: RadioConditionalInputFi
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4393,6 +4404,7 @@ export const mockSelectPeriodValidityFieldsetWithErrors: RadioConditionalInputFi
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',
@@ -4435,6 +4447,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4445,6 +4458,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4459,6 +4473,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
@@ -4500,6 +4515,7 @@ export const mockSelectPeriodValidityFieldsetWithInputErrors: RadioConditionalIn
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4510,6 +4526,7 @@ export const mockSelectPeriodValidityFieldsetWithInputErrors: RadioConditionalIn
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4524,6 +4541,7 @@ export const mockSelectPeriodValidityFieldsetWithInputErrors: RadioConditionalIn
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',

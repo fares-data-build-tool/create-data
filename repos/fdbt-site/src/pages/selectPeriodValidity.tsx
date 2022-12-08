@@ -14,6 +14,7 @@ import RadioConditionalInput from '../components/RadioConditionalInput';
 import { isPeriodExpiry } from '../interfaces/typeGuards';
 import { getFareDayEnd } from '../data/auroradb';
 import BackButton from '../components/BackButton';
+import { PeriodExpiry } from 'src/interfaces/matchingJsonTypes';
 
 const title = 'Period Validity - Create Fares Data Service';
 const description = 'Period Validity selection page of the Create Fares Data Service';
@@ -25,7 +26,12 @@ interface PeriodValidityProps {
     backHref: string;
 }
 
-export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioConditionalInputFieldset => {
+export const getFieldset = (
+    errors: ErrorInfo[],
+    endOfFareDay?: string,
+    productValidity?: string,
+    productEndTime?: string,
+): RadioConditionalInputFieldset => {
     const periodValidityFieldSet: RadioConditionalInputFieldset = {
         heading: {
             id: 'period-validity',
@@ -43,6 +49,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioCo
                     content:
                         'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
                 },
+                defaultChecked: productValidity === 'endOfCalendarDay',
             },
             {
                 id: 'period-twenty-four-hours',
@@ -53,6 +60,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioCo
                     id: 'period-twenty-four-hours-hint',
                     content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
                 },
+                defaultChecked: productValidity === '24hr',
             },
             {
                 id: 'period-end-of-service',
@@ -66,6 +74,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioCo
                     content:
                         'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
                 },
+                defaultChecked: productValidity === 'fareDayEnd',
                 inputHint: {
                     id: 'product-end-time-hint',
                     content: 'You can update your fare day end in operator settings',
@@ -78,7 +87,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioCo
                         name: 'productEndTime',
                         label: 'End time',
                         disabled: true,
-                        defaultValue: endOfFareDay ?? '',
+                        defaultValue: endOfFareDay ? endOfFareDay : productEndTime ? productEndTime : '',
                     },
                 ],
                 inputErrors: getErrorsByIds(['product-end-time'], errors),
@@ -138,7 +147,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         errors = periodExpiryAttribute.filter((err) => err.id !== 'product-end-time' || !endOfFareDay);
     }
 
-    const fieldset: RadioConditionalInputFieldset = getFieldset(errors, endOfFareDay);
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
@@ -148,6 +156,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                   matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
               }`
             : '';
+
+    let fieldset: RadioConditionalInputFieldset = getFieldset(errors, endOfFareDay);
+    if (ticket) {
+        const product = ticket?.products[0] as PeriodExpiry;
+        const productValidity = product.productValidity;
+        const productEndTime = product.productEndTime;
+        fieldset = getFieldset(errors, endOfFareDay, productValidity, productEndTime);
+    }
 
     return {
         props: {
