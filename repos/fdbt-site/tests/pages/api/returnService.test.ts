@@ -84,7 +84,7 @@ describe('returnService', () => {
         );
     });
 
-    it('should return 302 redirect to /error when the ticket being edited is a return ticket', async () => {
+    it('should return 302 redirect to /error when the ticket being edited is not a return ticket', async () => {
         const writeHeadMock = jest.fn();
 
         const { req, res } = getMockRequestAndResponse({
