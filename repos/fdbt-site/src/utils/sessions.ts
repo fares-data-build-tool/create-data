@@ -134,8 +134,7 @@ import {
     TypeOfCap,
     Cap,
     ManageProductGroupWithErrors,
-    MultiTapPricingAttributeWithErrors,
-    MultiTapPricingAttribute,
+    MultiTapPricing,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -233,7 +232,7 @@ export interface SessionAttributeTypes {
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];
     [CAP_START_ATTRIBUTE]: CapStartInfo | ErrorInfo[];
-    [MULTI_TAPS_PRICING_ATTRIBUTE]: MultiTapPricingAttribute | MultiTapPricingAttributeWithErrors;
+    [MULTI_TAPS_PRICING_ATTRIBUTE]: MultiTapPricing[] | ErrorInfo[];
     [NUMBER_OF_TAPS_ATTRIBUTE]: number;
 }
 

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`tap pricing row renders correctly for a single row  1`] = `
-<div>
+<div
+  className="govuk-form-group--error"
+>
   <fieldset
     className="govuk-fieldset"
     key="0"
@@ -24,7 +26,6 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"
@@ -34,7 +35,8 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
               className="govuk-label"
               id="multi-tap-number-hint-0"
             >
-              Tap Number  
+              Tap number 
+              1
             </span>
              
           </label>
@@ -51,9 +53,7 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
             >
               <span
                 className="govuk-visually"
-              >
-                1
-              </span>
+              />
             </label>
           </FormElementWrapper>
         </FormGroupWrapper>
@@ -68,7 +68,6 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"
@@ -129,7 +128,9 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
 `;
 
 exports[`tap pricing row renders correctly for more than one row  1`] = `
-<div>
+<div
+  className="govuk-form-group--error"
+>
   <fieldset
     className="govuk-fieldset"
     key="0"
@@ -152,7 +153,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"
@@ -162,7 +162,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
               className="govuk-label"
               id="multi-tap-number-hint-0"
             >
-              Tap Number  
+              Tap number 
+              1
             </span>
              
           </label>
@@ -179,9 +180,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             >
               <span
                 className="govuk-visually"
-              >
-                1
-              </span>
+              />
             </label>
           </FormElementWrapper>
         </FormGroupWrapper>
@@ -196,7 +195,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"
@@ -275,7 +273,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"
@@ -285,7 +282,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
               className="govuk-label"
               id="multi-tap-number-hint-1"
             >
-              Tap Number  
+              Tap number 
+              2
             </span>
              
           </label>
@@ -302,9 +300,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             >
               <span
                 className="govuk-visually"
-              >
-                2
-              </span>
+              />
             </label>
           </FormElementWrapper>
         </FormGroupWrapper>
@@ -319,7 +315,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"
@@ -396,7 +391,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"
@@ -406,7 +400,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
               className="govuk-label"
               id="multi-tap-number-hint-2"
             >
-              Tap Number  
+              Tap number 
+              3
             </span>
              
           </label>
@@ -423,9 +418,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             >
               <span
                 className="govuk-visually"
-              >
-                3
-              </span>
+              />
             </label>
           </FormElementWrapper>
         </FormGroupWrapper>
@@ -440,7 +433,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"
@@ -517,7 +509,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"
@@ -527,7 +518,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
               className="govuk-label"
               id="multi-tap-number-hint-3"
             >
-              Tap Number  
+              Tap number 
+              4
             </span>
              
           </label>
@@ -544,9 +536,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             >
               <span
                 className="govuk-visually"
-              >
-                4
-              </span>
+              />
             </label>
           </FormElementWrapper>
         </FormGroupWrapper>
@@ -561,7 +551,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"
@@ -638,7 +627,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"
@@ -648,7 +636,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
               className="govuk-label"
               id="multi-tap-number-hint-4"
             >
-              Tap Number  
+              Tap number 
+              5
             </span>
              
           </label>
@@ -665,9 +654,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             >
               <span
                 className="govuk-visually"
-              >
-                5
-              </span>
+              />
             </label>
           </FormElementWrapper>
         </FormGroupWrapper>
@@ -682,7 +669,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             ]
           }
           errors={Array []}
-          hideErrorBar={true}
         >
           <label
             className="govuk-label"

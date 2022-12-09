@@ -3,7 +3,6 @@ import { MULTI_TAPS_PRICING_ATTRIBUTE, NUMBER_OF_TAPS_ATTRIBUTE } from '../../co
 import { ErrorInfo, MultiTapPricing, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
-
 import { checkPriceIsValid, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 
 export const checkAllValidation = (taps: MultiTapPricing[]): ErrorInfo[] => {
@@ -12,10 +11,10 @@ export const checkAllValidation = (taps: MultiTapPricing[]): ErrorInfo[] => {
     taps.forEach((tap, index) => {
         const { tapPrice } = tap;
         const trimmedPrice = removeExcessWhiteSpace(tapPrice);
-        const tapPriceError = checkPriceIsValid(trimmedPrice, 'cap');
+        const tapPriceError = checkPriceIsValid(trimmedPrice, 'cap', true);
 
         if (tapPriceError) {
-            errors.push({ errorMessage: tapPriceError, id: `{tap-price-${index}}` });
+            errors.push({ errorMessage: tapPriceError, id: `multi-tap-price-${index}` });
         }
     });
 
@@ -40,18 +39,18 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const errors = checkAllValidation(multiTaps);
 
-        if (errors.length > 0) {
-            updateSessionAttribute(req, MULTI_TAPS_PRICING_ATTRIBUTE, { errors, taps: multiTaps });
-            redirectTo(res, '/multiTapsPricing');
-            return;
-        }
-
         const numberOfTaps = multiTaps.length;
         if (numberOfTaps !== 0) {
             updateSessionAttribute(req, NUMBER_OF_TAPS_ATTRIBUTE, numberOfTaps);
         }
 
-        updateSessionAttribute(req, MULTI_TAPS_PRICING_ATTRIBUTE, { taps: multiTaps });
+        if (errors.length > 0) {
+            updateSessionAttribute(req, MULTI_TAPS_PRICING_ATTRIBUTE, errors);
+            redirectTo(res, '/multiTapsPricing');
+            return;
+        }
+
+        updateSessionAttribute(req, MULTI_TAPS_PRICING_ATTRIBUTE, multiTaps);
         redirectTo(res, '/createCaps');
         return;
     } catch (error) {

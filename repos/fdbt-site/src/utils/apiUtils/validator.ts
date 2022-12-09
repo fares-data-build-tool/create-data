@@ -91,7 +91,11 @@ export const checkProductOrCapNameIsValid = (inputtedProductName: string, inputT
     return '';
 };
 
-export const checkPriceIsValid = (inputtedPrice: string | undefined, inputType: 'cap' | 'product'): string => {
+export const checkPriceIsValid = (
+    inputtedPrice: string | undefined,
+    inputType: 'cap' | 'product',
+    isZeroAllowed = false,
+): string => {
     let productPriceError;
 
     if (!inputtedPrice) {
@@ -100,7 +104,7 @@ export const checkPriceIsValid = (inputtedPrice: string | undefined, inputType: 
         productPriceError = 'This must be a positive number';
     } else if (!isCurrency(inputtedPrice)) {
         productPriceError = 'This must be a valid price in pounds and pence';
-    } else if (inputType === 'cap' && Number(inputtedPrice) === 0) {
+    } else if (inputType === 'cap' && Number(inputtedPrice) === 0 && !isZeroAllowed) {
         productPriceError = 'Cap prices cannot be zero';
     }
 
