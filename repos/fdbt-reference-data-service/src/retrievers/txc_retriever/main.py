@@ -66,7 +66,7 @@ def cleardown_txc_tables():
         db_connection.commit()
 
     except Exception as e:
-        logger.error('ERROR: Failed to truncate tables')
+        logger.error('ERROR: Failed to truncate tables.')
         logger.error(e)
         raise e
 
