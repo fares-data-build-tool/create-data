@@ -25,7 +25,7 @@ const MultiTapsPricings = ({
     csrfToken,
     numberOfTapsToRender,
 }: MultiTapsPricingProps): ReactElement => {
-    const [numberOfTaps, setnumberOfTaps] = useState(numberOfTapsToRender);
+    const [numberOfTaps, setNumberOfTaps] = useState(numberOfTapsToRender);
 
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
@@ -43,7 +43,7 @@ const MultiTapsPricings = ({
                                     id="add-another-button"
                                     type="button"
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
-                                    onClick={(): void => setnumberOfTaps(numberOfTaps + 1)}
+                                    onClick={(): void => setNumberOfTaps(numberOfTaps + 1)}
                                 >
                                     Add additional tap
                                 </button>
@@ -56,7 +56,7 @@ const MultiTapsPricings = ({
                                     id="remove-button"
                                     type="button"
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3"
-                                    onClick={(): void => setnumberOfTaps(numberOfTaps - 1)}
+                                    onClick={(): void => setNumberOfTaps(numberOfTaps - 1)}
                                 >
                                     Remove last tap
                                 </button>
