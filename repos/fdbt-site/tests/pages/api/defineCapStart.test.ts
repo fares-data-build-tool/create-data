@@ -28,7 +28,7 @@ describe('defineCapStart', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_START_ATTRIBUTE, mockProductInfo);
 
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/defineCapPricingPerDistance' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/defineCapStart' });
     });
 
     it('correctly generates product info, updates the CAP_START_ATTRIBUTE with startDay empty even if supplied, if fixedWeekdays is not selected', () => {

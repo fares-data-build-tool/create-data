@@ -136,7 +136,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
             errors: getSessionAttribute(ctx.req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE)?.errors || [],
             capPricePerDistances: finalCapPricePerDistances,
             csrfToken,
-            numberOfProductsInitial: numberOfProducts,
+            numberOfProductsInitial: numberOfProducts === 0 ? 1 : numberOfProducts,
         },
     };
 };
