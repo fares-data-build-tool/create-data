@@ -1708,8 +1708,6 @@ export const expectedReturnTicketWithAdditionalService: WithIds<ReturnTicket> = 
         {
             lineName: '12A',
             lineId: '3h3vb32ik',
-            serviceCode: 'NW_05_BLAC_12A_1',
-            startDate: '13/05/2020',
             serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
             serviceId: 1,
         },

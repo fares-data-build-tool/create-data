@@ -1,27 +1,30 @@
-import returnService from '../../../src/pages/api/returnService';
-import {
-    expectedReturnTicketWithAdditionalService,
-    getMockRequestAndResponse,
-    mockRawService,
-} from '../../testData/mockData';
-import * as auroradb from '../../../src/data/auroradb';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
-    TXC_SOURCE_ATTRIBUTE,
+    RETURN_SERVICE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
+import * as auroradb from '../../../src/data/auroradb';
+import returnService from '../../../src/pages/api/returnService';
+import * as index from '../../../src/utils/apiUtils/index';
 import * as userData from '../../../src/utils/apiUtils/userData';
-
-beforeEach(() => {
-    jest.resetAllMocks();
-
-    jest.spyOn(auroradb, 'getServiceByIdAndDataSource').mockResolvedValue(mockRawService);
-    const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
-    s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
-});
+import * as sessions from '../../../src/utils/sessions';
+import * as utils from '../../../src/utils';
+import {
+    expectedReturnTicketWithAdditionalService,
+    expectedSingleTicket,
+    getMockRequestAndResponse,
+    mockRawService,
+} from '../../testData/mockData';
 
 describe('returnService', () => {
-    it('should return 302 redirect to /returnService with an error when there is no body in the reques', async () => {
+    const redirectToErrorSpy = jest.spyOn(index, 'redirectToError');
+    jest.spyOn(auroradb, 'getServiceByIdAndDataSource').mockResolvedValue(mockRawService);
+    jest.spyOn(utils, 'getAndValidateNoc').mockReturnValue('mynoc');
+    const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
+    s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+
+    it('should return 302 redirect to /returnService with an error in the session when there is no serviceId for the additional service in the request', async () => {
         const writeHeadMock = jest.fn();
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
@@ -29,16 +32,35 @@ describe('returnService', () => {
             body: {
                 selectedServiceId: 1,
             },
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedReturnTicketWithAdditionalService,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '1',
+                    serviceId: '2',
+                    matchingJsonLink: 'matchingJsonLink',
+                },
+            },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
+
         await returnService(req, res);
+
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/returnService?selectedServiceId=1',
         });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_SERVICE_ATTRIBUTE, {
+            lineName: '',
+            lineId: '',
+            nocCode: '',
+            operatorShortName: '',
+            serviceDescription: '',
+            errors: [{ id: 'returnService', errorMessage: 'Choose a service from the options' }],
+        });
     });
 
-    it('should return 302 redirect to /error when the ticket is not in edit mode', async () => {
+    it('should return 302 redirect to /error when the ticket is not in the session', async () => {
         const writeHeadMock = jest.fn();
 
         const { req, res } = getMockRequestAndResponse({
@@ -51,11 +73,47 @@ describe('returnService', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
+
         await returnService(req, res);
 
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
+        expect(redirectToErrorSpy).toBeCalledWith(
+            res,
+            'There was a problem selecting the additional return service:',
+            'api.returnService',
+            new Error('Could not find the ticket for which the service needs to be added.'),
+        );
+    });
+
+    it('should return 302 redirect to /error when the ticket being edited is not a return ticket', async () => {
+        const writeHeadMock = jest.fn();
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            query: {},
+            body: {
+                serviceId: 2,
+                selectedServiceId: 1,
+            },
+            uuid: {},
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedSingleTicket,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '1',
+                    serviceId: '2',
+                    matchingJsonLink: 'matchingJsonLink',
+                },
+            },
+            mockWriteHeadFn: writeHeadMock,
         });
+
+        await returnService(req, res);
+
+        expect(redirectToErrorSpy).toBeCalledWith(
+            res,
+            'There was a problem selecting the additional return service:',
+            'api.returnService',
+            new Error('Could not find the ticket for which the service needs to be added.'),
+        );
     });
 
     it('should return 302 redirect to /productDetails when a user gives a valid input', async () => {
@@ -65,7 +123,6 @@ describe('returnService', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             session: {
-                [TXC_SOURCE_ATTRIBUTE]: { source: 'bods', hasTnds: true, hasBods: true },
                 [MATCHING_JSON_ATTRIBUTE]: expectedReturnTicketWithAdditionalService,
                 [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
                     productId: '1',
@@ -91,6 +148,9 @@ describe('returnService', () => {
             },
             'matchingJsonLink',
         );
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_SERVICE_ATTRIBUTE, undefined);
+
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/products/productDetails?productId=1&serviceId=2',
         });

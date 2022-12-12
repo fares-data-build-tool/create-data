@@ -27,9 +27,9 @@ export interface SelectedService {
     serviceDescription: string;
 }
 
-export interface AdditionalService extends SelectedService {
+export type AdditionalService = Omit<SelectedService, 'serviceCode' | 'startDate'> & {
     serviceId: number;
-}
+};
 
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
