@@ -1,6 +1,6 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import capPricingPerDistance from '../../../src/pages/api/capPricingPerDistance';
+import capPricingPerDistance, { validateInput } from '../../../src/pages/api/capPricingPerDistance';
 import { CapPricePerDistances, ErrorInfo } from '../../../src/interfaces';
 import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../../src/constants/attributes';
 
@@ -239,5 +239,114 @@ describe('capPricingPerDistance', () => {
             ],
             errors,
         });
+    });
+});
+
+describe('validate input tests', () => {
+    it('validates input for distance from', () => {
+        const capPricePerDistances: CapPricePerDistances[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: '2',
+                maximumPrice: '4',
+                minimumPrice: '3',
+            },
+            {
+                distanceFrom: 'a',
+                distanceTo: 'Max',
+                pricePerKm: '5',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [{ id: '', errorMessage: 'Distance from must be defined and a number' }];
+
+        const errors = validateInput(capPricePerDistances, 1);
+
+        expect(errors).toEqual(errorsResult);
+    });
+
+    it('validates input for distance to', () => {
+        const capPricePerDistances: CapPricePerDistances[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: 'b',
+                maximumPrice: '4',
+                minimumPrice: '3',
+            },
+            {
+                distanceFrom: '3',
+                distanceTo: 'Max',
+                pricePerKm: '5',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [{ id: '', errorMessage: 'Distance to must be defined and a number' }];
+
+        const errors = validateInput(capPricePerDistances, 1);
+
+        expect(errors).toEqual(errorsResult);
+    });
+
+    it('validates input for maximum price', () => {
+        const capPricePerDistances: CapPricePerDistances[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: '3',
+                maximumPrice: 'a',
+                minimumPrice: '3',
+            },
+            {
+                distanceFrom: '3',
+                distanceTo: 'Max',
+                pricePerKm: '5',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [{ id: '', errorMessage: 'Maximum price to must be defined and a number' }];
+
+        const errors = validateInput(capPricePerDistances, 1);
+
+        expect(errors).toEqual(errorsResult);
+    });
+
+    it('validates input for minimum price', () => {
+        const capPricePerDistances: CapPricePerDistances[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: '3',
+                maximumPrice: '2',
+                minimumPrice: 'a',
+            },
+            {
+                distanceFrom: '3',
+                distanceTo: 'Max',
+                pricePerKm: '5',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [{ id: '', errorMessage: 'Minimum price to must be defined and a number' }];
+
+        const errors = validateInput(capPricePerDistances, 1);
+
+        expect(errors).toEqual(errorsResult);
+    });
+
+    it('validates input for price per km', () => {
+        const capPricePerDistances: CapPricePerDistances[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: '3',
+                maximumPrice: '2',
+                minimumPrice: '1',
+            },
+            {
+                distanceFrom: '3',
+                distanceTo: 'Max',
+                pricePerKm: 'a',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [
+            { id: '', errorMessage: 'Price per km price to must be defined and a number' },
+        ];
+
+        const errors = validateInput(capPricePerDistances, 1);
+
+        expect(errors).toEqual(errorsResult);
     });
 });
