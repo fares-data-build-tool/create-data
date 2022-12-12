@@ -40,7 +40,6 @@ const MultiTapsPricings = ({
                         second journey is £2 and the third journey is £0.50, you would create 3 taps below and enter the
                         prices accordingly.
                     </span>
-                    {/* //</>govuk-form-group--error */}
 
                     <div className={`govuk-grid-row ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <TapPricingRow numberOfTapsToDisplay={numberOfTaps} errors={errors} userInput={userInput} />

@@ -28,9 +28,11 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                             <span className="govuk-visually-hidden">{`Tap Price - Price ${index + 1}`}</span>
                             <span aria-hidden>Price</span>
                         </label>
-                        <span className="govuk-hint" id={`tap-price-hint-${index}`}>
-                            {index === 0 ? 'e.g. 2.99' : ''}
-                        </span>
+                        {index === 0 ? (
+                            <span className="govuk-hint" id="tap-price-hint-0">
+                                e.g. 2.99
+                            </span>
+                        ) : null}
 
                         <div className="govuk-currency-input">
                             <div className="govuk-currency-input__inner">

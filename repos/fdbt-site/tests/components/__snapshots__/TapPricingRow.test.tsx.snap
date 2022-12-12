@@ -264,10 +264,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
               Price
             </span>
           </label>
-          <span
-            className="govuk-hint"
-            id="tap-price-hint-1"
-          />
           <div
             className="govuk-currency-input"
           >
@@ -361,10 +357,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
               Price
             </span>
           </label>
-          <span
-            className="govuk-hint"
-            id="tap-price-hint-2"
-          />
           <div
             className="govuk-currency-input"
           >
@@ -458,10 +450,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
               Price
             </span>
           </label>
-          <span
-            className="govuk-hint"
-            id="tap-price-hint-3"
-          />
           <div
             className="govuk-currency-input"
           >
@@ -555,10 +543,6 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
               Price
             </span>
           </label>
-          <span
-            className="govuk-hint"
-            id="tap-price-hint-4"
-          />
           <div
             className="govuk-currency-input"
           >
