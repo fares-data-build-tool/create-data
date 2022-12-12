@@ -11,22 +11,37 @@ export const validateInput = (capPricePerDistances: CapPricePerDistances[], last
         const { distanceFrom, minimumPrice, maximumPrice, distanceTo, pricePerKm } = cap;
         if (lastIndex !== index) {
             if (!distanceTo || !isValidNumber(Number(distanceTo))) {
-                errors.push({ id: '', errorMessage: 'Distance to must be defined and a number' });
+                errors.push({
+                    id: `distance-to-${index}`,
+                    errorMessage: 'Distance to must be defined and a number',
+                });
             }
         }
         if (index === 0) {
             if (!minimumPrice || !isValidNumber(Number(minimumPrice))) {
-                errors.push({ id: '', errorMessage: 'Minimum price to must be defined and a number' });
+                errors.push({
+                    id: `minimum-price-${index}`,
+                    errorMessage: 'Minimum price to must be defined and a number',
+                });
             }
             if (!maximumPrice || !isValidNumber(Number(maximumPrice))) {
-                errors.push({ id: '', errorMessage: 'Maximum price to must be defined and a number' });
+                errors.push({
+                    id: `maximum-price-${index}`,
+                    errorMessage: 'Maximum price to must be defined and a number',
+                });
             }
         } else {
             if (!pricePerKm || !isValidNumber(Number(pricePerKm))) {
-                errors.push({ id: '', errorMessage: 'Price per km price to must be defined and a number' });
+                errors.push({
+                    id: `price-per-km-${index}`,
+                    errorMessage: 'Price per km price to must be defined and a number',
+                });
             }
             if (!distanceFrom || !isValidNumber(Number(distanceFrom))) {
-                errors.push({ id: '', errorMessage: 'Distance from must be defined and a number' });
+                errors.push({
+                    id: `distance-from-${index}`,
+                    errorMessage: 'Distance from must be defined and a number',
+                });
             }
         }
     });

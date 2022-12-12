@@ -51,7 +51,7 @@ describe('capPricingPerDistance', () => {
     it('produces an error when distanceTo is empty', () => {
         const errors: ErrorInfo[] = [
             {
-                id: '',
+                id: `distance-to-0`,
                 errorMessage: 'Distance to must be defined and a number',
             },
         ];
@@ -92,7 +92,7 @@ describe('capPricingPerDistance', () => {
     it('produces an error when distanceFrom is empty', () => {
         const errors: ErrorInfo[] = [
             {
-                id: '',
+                id: `distance-from-1`,
                 errorMessage: 'Distance from must be defined and a number',
             },
         ];
@@ -127,7 +127,7 @@ describe('capPricingPerDistance', () => {
     it('produces an error when maximumPrice is empty', () => {
         const errors: ErrorInfo[] = [
             {
-                id: '',
+                id: `maximum-price-0`,
                 errorMessage: 'Maximum price to must be defined and a number',
             },
         ];
@@ -168,7 +168,7 @@ describe('capPricingPerDistance', () => {
     it('produces an error when minimumPrice is empty', () => {
         const errors: ErrorInfo[] = [
             {
-                id: '',
+                id: `minimum-price-0`,
                 errorMessage: 'Minimum price to must be defined and a number',
             },
         ];
@@ -209,7 +209,7 @@ describe('capPricingPerDistance', () => {
     it('produces an error when pricePerKm is empty', () => {
         const errors: ErrorInfo[] = [
             {
-                id: '',
+                id: `price-per-km-1`,
                 errorMessage: 'Price per km price to must be defined and a number',
             },
         ];
@@ -257,7 +257,9 @@ describe('validate input tests', () => {
                 pricePerKm: '5',
             },
         ];
-        const errorsResult: ErrorInfo[] = [{ id: '', errorMessage: 'Distance from must be defined and a number' }];
+        const errorsResult: ErrorInfo[] = [
+            { id: `distance-from-1`, errorMessage: 'Distance from must be defined and a number' },
+        ];
 
         const errors = validateInput(capPricePerDistances, 1);
 
@@ -278,7 +280,9 @@ describe('validate input tests', () => {
                 pricePerKm: '5',
             },
         ];
-        const errorsResult: ErrorInfo[] = [{ id: '', errorMessage: 'Distance to must be defined and a number' }];
+        const errorsResult: ErrorInfo[] = [
+            { id: `distance-to-0`, errorMessage: 'Distance to must be defined and a number' },
+        ];
 
         const errors = validateInput(capPricePerDistances, 1);
 
@@ -299,7 +303,9 @@ describe('validate input tests', () => {
                 pricePerKm: '5',
             },
         ];
-        const errorsResult: ErrorInfo[] = [{ id: '', errorMessage: 'Maximum price to must be defined and a number' }];
+        const errorsResult: ErrorInfo[] = [
+            { id: `maximum-price-0`, errorMessage: 'Maximum price to must be defined and a number' },
+        ];
 
         const errors = validateInput(capPricePerDistances, 1);
 
@@ -320,7 +326,9 @@ describe('validate input tests', () => {
                 pricePerKm: '5',
             },
         ];
-        const errorsResult: ErrorInfo[] = [{ id: '', errorMessage: 'Minimum price to must be defined and a number' }];
+        const errorsResult: ErrorInfo[] = [
+            { id: `minimum-price-0`, errorMessage: 'Minimum price to must be defined and a number' },
+        ];
 
         const errors = validateInput(capPricePerDistances, 1);
 
@@ -342,7 +350,7 @@ describe('validate input tests', () => {
             },
         ];
         const errorsResult: ErrorInfo[] = [
-            { id: '', errorMessage: 'Price per km price to must be defined and a number' },
+            { id: `price-per-km-1`, errorMessage: 'Price per km price to must be defined and a number' },
         ];
 
         const errors = validateInput(capPricePerDistances, 1);
