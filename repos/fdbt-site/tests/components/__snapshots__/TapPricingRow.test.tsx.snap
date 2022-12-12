@@ -20,7 +20,16 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
         <div
           className="govuk-grid-column-one-half"
         >
-           
+          <label
+            className="govuk-label govuk-!-margin-top-6 "
+            htmlFor="multi-tap-number-0"
+          >
+            <span
+              className="govuk-label"
+            >
+              Tap number
+            </span>
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
@@ -39,6 +48,12 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
             >
               Price
             </span>
+            <span
+              className="govuk-hint"
+              id="tap-price-hint-0"
+            >
+              e.g. 2.99
+            </span>
           </label>
         </div>
       </div>
@@ -46,50 +61,24 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
         className="govuk-grid-row"
       >
         <div
-          className="govuk-grid-column-one-half"
+          className="govuk-grid-column-one-half "
         >
-           
-        </div>
-        <div
-          className="govuk-grid-column-one-half"
-        >
-           
-          <span
-            className="govuk-hint"
-            id="tap-price-hint-0"
+          <label
+            className="govuk-label govuk-!-margin-left-6 govuk-!-margin-top-2"
+            htmlFor="multi-tap-number-0"
           >
-            e.g. 2.99
-          </span>
-        </div>
-      </div>
-      <div
-        className="govuk-grid-row"
-      >
-        <div
-          className="govuk-grid-column-one-half"
-        >
-          <div
-            className="govuk-form-group govuk-!-margin-left-4 govuk-!-margin-top-2"
-          >
-            <label
+            <span
               className="govuk-label"
-              htmlFor="multi-tap-number-0"
+              id="multi-tap-number-hint-0"
             >
-              <span
-                className="govuk-label"
-                id="multi-tap-number-hint-0"
-              >
-                Tap number 
-                1
-              </span>
-               
-            </label>
-          </div>
+              1
+            </span>
+             
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
         >
-           
           <FormGroupWrapper
             errorIds={
               Array [
@@ -156,7 +145,16 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
         <div
           className="govuk-grid-column-one-half"
         >
-           
+          <label
+            className="govuk-label govuk-!-margin-top-6 "
+            htmlFor="multi-tap-number-0"
+          >
+            <span
+              className="govuk-label"
+            >
+              Tap number
+            </span>
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
@@ -175,6 +173,12 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             >
               Price
             </span>
+            <span
+              className="govuk-hint"
+              id="tap-price-hint-0"
+            >
+              e.g. 2.99
+            </span>
           </label>
         </div>
       </div>
@@ -182,50 +186,24 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
         className="govuk-grid-row"
       >
         <div
-          className="govuk-grid-column-one-half"
+          className="govuk-grid-column-one-half "
         >
-           
-        </div>
-        <div
-          className="govuk-grid-column-one-half"
-        >
-           
-          <span
-            className="govuk-hint"
-            id="tap-price-hint-0"
+          <label
+            className="govuk-label govuk-!-margin-left-6 govuk-!-margin-top-2"
+            htmlFor="multi-tap-number-0"
           >
-            e.g. 2.99
-          </span>
-        </div>
-      </div>
-      <div
-        className="govuk-grid-row"
-      >
-        <div
-          className="govuk-grid-column-one-half"
-        >
-          <div
-            className="govuk-form-group govuk-!-margin-left-4 govuk-!-margin-top-2"
-          >
-            <label
+            <span
               className="govuk-label"
-              htmlFor="multi-tap-number-0"
+              id="multi-tap-number-hint-0"
             >
-              <span
-                className="govuk-label"
-                id="multi-tap-number-hint-0"
-              >
-                Tap number 
-                1
-              </span>
-               
-            </label>
-          </div>
+              1
+            </span>
+             
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
         >
-           
           <FormGroupWrapper
             errorIds={
               Array [
@@ -287,7 +265,16 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
         <div
           className="govuk-grid-column-one-half"
         >
-           
+          <label
+            className="govuk-label  "
+            htmlFor="multi-tap-number-1"
+          >
+            <span
+              className="govuk-label"
+            >
+              Tap number
+            </span>
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
@@ -313,44 +300,24 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
         className="govuk-grid-row"
       >
         <div
-          className="govuk-grid-column-one-half"
+          className="govuk-grid-column-one-half "
         >
-           
-        </div>
-        <div
-          className="govuk-grid-column-one-half"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="govuk-grid-row"
-      >
-        <div
-          className="govuk-grid-column-one-half"
-        >
-          <div
-            className="govuk-form-group govuk-!-margin-left-4 govuk-!-margin-top-2"
+          <label
+            className="govuk-label govuk-!-margin-left-6 govuk-!-margin-top-2"
+            htmlFor="multi-tap-number-1"
           >
-            <label
+            <span
               className="govuk-label"
-              htmlFor="multi-tap-number-1"
+              id="multi-tap-number-hint-1"
             >
-              <span
-                className="govuk-label"
-                id="multi-tap-number-hint-1"
-              >
-                Tap number 
-                2
-              </span>
-               
-            </label>
-          </div>
+              2
+            </span>
+             
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
         >
-           
           <FormGroupWrapper
             errorIds={
               Array [
@@ -412,7 +379,16 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
         <div
           className="govuk-grid-column-one-half"
         >
-           
+          <label
+            className="govuk-label  "
+            htmlFor="multi-tap-number-2"
+          >
+            <span
+              className="govuk-label"
+            >
+              Tap number
+            </span>
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
@@ -438,44 +414,24 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
         className="govuk-grid-row"
       >
         <div
-          className="govuk-grid-column-one-half"
+          className="govuk-grid-column-one-half "
         >
-           
-        </div>
-        <div
-          className="govuk-grid-column-one-half"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="govuk-grid-row"
-      >
-        <div
-          className="govuk-grid-column-one-half"
-        >
-          <div
-            className="govuk-form-group govuk-!-margin-left-4 govuk-!-margin-top-2"
+          <label
+            className="govuk-label govuk-!-margin-left-6 govuk-!-margin-top-2"
+            htmlFor="multi-tap-number-2"
           >
-            <label
+            <span
               className="govuk-label"
-              htmlFor="multi-tap-number-2"
+              id="multi-tap-number-hint-2"
             >
-              <span
-                className="govuk-label"
-                id="multi-tap-number-hint-2"
-              >
-                Tap number 
-                3
-              </span>
-               
-            </label>
-          </div>
+              3
+            </span>
+             
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
         >
-           
           <FormGroupWrapper
             errorIds={
               Array [
@@ -537,7 +493,16 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
         <div
           className="govuk-grid-column-one-half"
         >
-           
+          <label
+            className="govuk-label  "
+            htmlFor="multi-tap-number-3"
+          >
+            <span
+              className="govuk-label"
+            >
+              Tap number
+            </span>
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
@@ -563,44 +528,24 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
         className="govuk-grid-row"
       >
         <div
-          className="govuk-grid-column-one-half"
+          className="govuk-grid-column-one-half "
         >
-           
-        </div>
-        <div
-          className="govuk-grid-column-one-half"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="govuk-grid-row"
-      >
-        <div
-          className="govuk-grid-column-one-half"
-        >
-          <div
-            className="govuk-form-group govuk-!-margin-left-4 govuk-!-margin-top-2"
+          <label
+            className="govuk-label govuk-!-margin-left-6 govuk-!-margin-top-2"
+            htmlFor="multi-tap-number-3"
           >
-            <label
+            <span
               className="govuk-label"
-              htmlFor="multi-tap-number-3"
+              id="multi-tap-number-hint-3"
             >
-              <span
-                className="govuk-label"
-                id="multi-tap-number-hint-3"
-              >
-                Tap number 
-                4
-              </span>
-               
-            </label>
-          </div>
+              4
+            </span>
+             
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
         >
-           
           <FormGroupWrapper
             errorIds={
               Array [
@@ -662,7 +607,16 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
         <div
           className="govuk-grid-column-one-half"
         >
-           
+          <label
+            className="govuk-label  "
+            htmlFor="multi-tap-number-4"
+          >
+            <span
+              className="govuk-label"
+            >
+              Tap number
+            </span>
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
@@ -688,44 +642,24 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
         className="govuk-grid-row"
       >
         <div
-          className="govuk-grid-column-one-half"
+          className="govuk-grid-column-one-half "
         >
-           
-        </div>
-        <div
-          className="govuk-grid-column-one-half"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="govuk-grid-row"
-      >
-        <div
-          className="govuk-grid-column-one-half"
-        >
-          <div
-            className="govuk-form-group govuk-!-margin-left-4 govuk-!-margin-top-2"
+          <label
+            className="govuk-label govuk-!-margin-left-6 govuk-!-margin-top-2"
+            htmlFor="multi-tap-number-4"
           >
-            <label
+            <span
               className="govuk-label"
-              htmlFor="multi-tap-number-4"
+              id="multi-tap-number-hint-4"
             >
-              <span
-                className="govuk-label"
-                id="multi-tap-number-hint-4"
-              >
-                Tap number 
-                5
-              </span>
-               
-            </label>
-          </div>
+              5
+            </span>
+             
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
         >
-           
           <FormGroupWrapper
             errorIds={
               Array [
@@ -792,7 +726,16 @@ exports[`tap pricing row renders correctly on error  1`] = `
         <div
           className="govuk-grid-column-one-half"
         >
-           
+          <label
+            className="govuk-label govuk-!-margin-top-6 "
+            htmlFor="multi-tap-number-0"
+          >
+            <span
+              className="govuk-label"
+            >
+              Tap number
+            </span>
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
@@ -811,6 +754,12 @@ exports[`tap pricing row renders correctly on error  1`] = `
             >
               Price
             </span>
+            <span
+              className="govuk-hint"
+              id="tap-price-hint-0"
+            >
+              e.g. 2.99
+            </span>
           </label>
         </div>
       </div>
@@ -818,50 +767,24 @@ exports[`tap pricing row renders correctly on error  1`] = `
         className="govuk-grid-row"
       >
         <div
-          className="govuk-grid-column-one-half"
+          className="govuk-grid-column-one-half "
         >
-           
-        </div>
-        <div
-          className="govuk-grid-column-one-half"
-        >
-           
-          <span
-            className="govuk-hint"
-            id="tap-price-hint-0"
+          <label
+            className="govuk-label govuk-!-margin-left-6 govuk-!-margin-top-2"
+            htmlFor="multi-tap-number-0"
           >
-            e.g. 2.99
-          </span>
-        </div>
-      </div>
-      <div
-        className="govuk-grid-row"
-      >
-        <div
-          className="govuk-grid-column-one-half"
-        >
-          <div
-            className="govuk-form-group govuk-!-margin-left-4 govuk-!-margin-top-2"
-          >
-            <label
+            <span
               className="govuk-label"
-              htmlFor="multi-tap-number-0"
+              id="multi-tap-number-hint-0"
             >
-              <span
-                className="govuk-label"
-                id="multi-tap-number-hint-0"
-              >
-                Tap number 
-                1
-              </span>
-               
-            </label>
-          </div>
+              1
+            </span>
+             
+          </label>
         </div>
         <div
           className="govuk-grid-column-one-half"
         >
-           
           <FormGroupWrapper
             errorIds={
               Array [

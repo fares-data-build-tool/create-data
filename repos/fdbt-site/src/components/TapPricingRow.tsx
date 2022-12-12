@@ -13,38 +13,39 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
         <legend className="govuk-fieldset__legend govuk-visually-hidden">{`Enter details for tap ${index + 1}`}</legend>
         <div className="govuk-grid-row govuk-!-width-one-third govuk-!-margin-left-4">
             <div className="govuk-grid-row">
-                <div className="govuk-grid-column-one-half">&nbsp;</div>
+                <div className="govuk-grid-column-one-half">
+                    <label
+                        className={`govuk-label ${index === 0 ? 'govuk-!-margin-top-6' : ''} `}
+                        htmlFor={`multi-tap-number-${index}`}
+                    >
+                        <span className="govuk-label">Tap number</span>
+                    </label>
+                </div>
                 <div className="govuk-grid-column-one-half">
                     <label className="govuk-label" htmlFor={`multi-tap-price-${index}`}>
                         <span className="govuk-visually-hidden">{`Tap Price - Price ${index + 1}`}</span>
                         <span aria-hidden>Price</span>
+                        {index === 0 ? (
+                            <span className="govuk-hint" id="tap-price-hint-0">
+                                e.g. 2.99
+                            </span>
+                        ) : null}
                     </label>
                 </div>
             </div>
 
             <div className="govuk-grid-row">
-                <div className="govuk-grid-column-one-half">&nbsp;</div>
-                <div className="govuk-grid-column-one-half">
-                    {' '}
-                    {index === 0 ? (
-                        <span className="govuk-hint" id="tap-price-hint-0">
-                            e.g. 2.99
-                        </span>
-                    ) : null}
-                </div>
-            </div>
-            <div className="govuk-grid-row">
-                <div className="govuk-grid-column-one-half">
-                    <div className="govuk-form-group govuk-!-margin-left-4 govuk-!-margin-top-2">
-                        <label className="govuk-label" htmlFor={`multi-tap-number-${index}`}>
-                            <span className="govuk-label" id={`multi-tap-number-hint-${index}`}>
-                                Tap number {index + 1}
-                            </span>{' '}
-                        </label>
-                    </div>
+                <div className="govuk-grid-column-one-half ">
+                    <label
+                        className="govuk-label govuk-!-margin-left-6 govuk-!-margin-top-2"
+                        htmlFor={`multi-tap-number-${index}`}
+                    >
+                        <span className="govuk-label" id={`multi-tap-number-hint-${index}`}>
+                            {index + 1}
+                        </span>{' '}
+                    </label>
                 </div>
                 <div className="govuk-grid-column-one-half">
-                    {' '}
                     <FormGroupWrapper errors={errors} errorIds={[`multi-tap-price-${index}`]}>
                         <>
                             <div className="govuk-currency-input">
