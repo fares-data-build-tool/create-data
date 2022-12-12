@@ -39,7 +39,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
             className="govuk-label"
             htmlFor="minimum-price"
           >
-            Minimum price
+            Minimum price(£)
           </label>
           <span
             className="govuk-hint"
@@ -61,7 +61,6 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
               id="minimum-price"
               name="minimumPrice"
               onChange={[Function]}
-              spellCheck="false"
               type="text"
               value=""
             />
@@ -84,7 +83,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
             className="govuk-label"
             htmlFor="maximum-price"
           >
-            Maximum price
+            Maximum price(£)
           </label>
           <span
             className="govuk-hint"
@@ -106,7 +105,6 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
               id="maximum-price"
               name="maximumPrice"
               onChange={[Function]}
-              spellCheck="false"
               type="text"
               value=""
             />
@@ -211,7 +209,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
             className="govuk-label"
             htmlFor="minimum-price"
           >
-            Minimum price
+            Minimum price(£)
           </label>
           <span
             className="govuk-hint"
@@ -233,7 +231,6 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
               id="minimum-price"
               name="minimumPrice"
               onChange={[Function]}
-              spellCheck="false"
               type="text"
               value="3"
             />
@@ -263,7 +260,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
             className="govuk-label"
             htmlFor="maximum-price"
           >
-            Maximum price
+            Maximum price(£)
           </label>
           <span
             className="govuk-hint"
@@ -285,7 +282,6 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
               id="maximum-price"
               name="maximumPrice"
               onChange={[Function]}
-              spellCheck="false"
               type="text"
               value="4"
             />

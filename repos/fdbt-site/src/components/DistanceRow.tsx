@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 import { CapPricingPerDistanceData } from '../interfaces';
+
 interface DistanceRowProps {
     numberOfCapToDisplay: number;
     errors: ErrorInfo[];
@@ -19,24 +20,23 @@ export const renderTable = (
     return (
         <fieldset key={index} className="govuk-fieldset">
             <legend className="govuk-fieldset__legend govuk-visually-hidden">
-                {`Enter details for product ${index + 1}`}
+                Enter details for product ${index + 1}
             </legend>
             <div className="flex-container">
                 <div className="govuk-!-margin-left-4 govuk-!-margin-right-2">
                     <FormGroupWrapper errors={errors} errorIds={[`cap-pricing-per-distance${index}`]} hideErrorBar>
                         <>
-                            <>
-                                <label className="govuk-label" htmlFor={`distance-from-${index}`}>
-                                    Distance from
-                                </label>
-                                {index === 0 ? (
-                                    <span className="govuk-hint" id={`distance-from-hint-${index}`}>
-                                        Unit start
-                                    </span>
-                                ) : (
-                                    ''
-                                )}
-                            </>
+                            <label className="govuk-label" htmlFor={`distance-from-${index}`}>
+                                Distance from
+                            </label>
+                            {index === 0 ? (
+                                <span className="govuk-hint" id={`distance-from-hint-${index}`}>
+                                    Unit start
+                                </span>
+                            ) : (
+                                ''
+                            )}
+
                             <FormElementWrapper
                                 errors={errors}
                                 errorId={`cap-pricing-per-distance-from-${index}`}
@@ -50,7 +50,6 @@ export const renderTable = (
                                         id={`distance-from-${index}`}
                                         name={`distanceFrom${index}`}
                                         type="text"
-                                        spellCheck="false"
                                         disabled={index === 0}
                                         onChange={(e) => {
                                             setCapPricingPerDistanceData({
@@ -73,25 +72,23 @@ export const renderTable = (
                 <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
                     <FormGroupWrapper errors={errors} errorIds={[`cap-pricing-per-distance-to-${index}`]} hideErrorBar>
                         <>
-                            <>
-                                <label className="govuk-label" htmlFor={`distance-to-${index}`}>
-                                    Distance to
-                                </label>
-                                {index === 0 ? (
-                                    <span className="govuk-hint" id={`distance-to-hint-${index}`}>
-                                        Unit limit
-                                    </span>
-                                ) : (
-                                    ''
-                                )}
-                            </>
+                            <label className="govuk-label" htmlFor={`distance-to-${index}`}>
+                                Distance to
+                            </label>
+                            {index === 0 ? (
+                                <span className="govuk-hint" id={`distance-to-hint-${index}`}>
+                                    Unit limit
+                                </span>
+                            ) : (
+                                ''
+                            )}
+
                             <div className="govuk-input__wrapper">
                                 <input
                                     className="govuk-input govuk-input--width-5"
                                     id={`distance-to-${index}`}
                                     name={`distanceTo${index}`}
                                     type="text"
-                                    spellCheck="false"
                                     onChange={(e) => {
                                         setCapPricingPerDistanceData({
                                             ...capPricingPerDistanceData,
@@ -131,7 +128,6 @@ export const renderTable = (
                                     id={`price-per-km-${index}`}
                                     name={`pricePerKm${index}`}
                                     type="text"
-                                    spellCheck="false"
                                     onChange={(e) => {
                                         setCapPricingPerDistanceData({
                                             ...capPricingPerDistanceData,

@@ -25,7 +25,7 @@ const DefineCapPricingPerDistance = ({
     capPricePerDistances,
     numberOfCapInitial,
 }: DefineCapPricingPerDistanceProps): ReactElement => {
-    const [numberOfCap, setNumberOfProducts] = useState(numberOfCapInitial);
+    const [numberOfCap, setNumberOfCaps] = useState(numberOfCapInitial);
     const [capPricingPerDistanceData, setCapPricingPerDistanceData] = useState({
         [`distanceTo${numberOfCap - 1}`]: 'Max',
         ...capPricePerDistances,
@@ -49,7 +49,7 @@ const DefineCapPricingPerDistance = ({
                                 <>
                                     <>
                                         <label className="govuk-label" htmlFor="minimum-price">
-                                            Minimum price
+                                            Minimum price(£)
                                         </label>
 
                                         <span className="govuk-hint" id={`minimum-price-hint`}>
@@ -65,7 +65,6 @@ const DefineCapPricingPerDistance = ({
                                             id={`minimum-price`}
                                             name={`minimumPrice`}
                                             type="text"
-                                            spellCheck="false"
                                             onChange={(e) => {
                                                 setCapPricingPerDistanceData({
                                                     ...capPricingPerDistanceData,
@@ -88,7 +87,7 @@ const DefineCapPricingPerDistance = ({
                                 <>
                                     <>
                                         <label className="govuk-label" htmlFor={`maximum-price`}>
-                                            Maximum price
+                                            Maximum price(£)
                                         </label>
 
                                         <span className="govuk-hint" id={`maximum-price-hint`}>
@@ -104,7 +103,6 @@ const DefineCapPricingPerDistance = ({
                                             id={`maximum-price`}
                                             name={`maximumPrice`}
                                             type="text"
-                                            spellCheck="false"
                                             onChange={(e) => {
                                                 setCapPricingPerDistanceData({
                                                     ...capPricingPerDistanceData,
@@ -132,7 +130,7 @@ const DefineCapPricingPerDistance = ({
                                     type="button"
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
                                     onClick={(): void => {
-                                        setNumberOfProducts(numberOfCap + 1);
+                                        setNumberOfCaps(numberOfCap + 1);
                                         setCapPricingPerDistanceData({
                                             ...capPricingPerDistanceData,
                                             [`distanceTo${numberOfCap - 1}`]: '',
@@ -159,7 +157,7 @@ const DefineCapPricingPerDistance = ({
                                             delete copy[`pricePerKm${numberOfCap - 1}`];
                                             return { ...copy, [`distanceTo${numberOfCap - 2}`]: 'Max' };
                                         });
-                                        setNumberOfProducts(numberOfCap - 1);
+                                        setNumberOfCaps(numberOfCap - 1);
                                     }}
                                 >
                                     Remove last row
