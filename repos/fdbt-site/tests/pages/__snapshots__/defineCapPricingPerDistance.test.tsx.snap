@@ -62,7 +62,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
               name="minimumPrice"
               onChange={[Function]}
               type="text"
-              value=""
+              value="3"
             />
           </div>
         </FormGroupWrapper>
@@ -106,7 +106,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
               name="maximumPrice"
               onChange={[Function]}
               type="text"
-              value=""
+              value="4"
             />
           </div>
         </FormGroupWrapper>
@@ -118,8 +118,20 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
       <DistanceRow
         capPricingPerDistanceData={
           Object {
-            "distanceFrom0": "0",
-            "distanceTo0": "Max",
+            "capPricing": Array [
+              Object {
+                "distanceFrom": "0",
+                "distanceTo": "2",
+                "pricePerKm": "5",
+              },
+              Object {
+                "distanceFrom": "3",
+                "distanceTo": "Max",
+                "pricePerKm": "5",
+              },
+            ],
+            "maximumPrice": "4",
+            "minimumPrice": "3",
           }
         }
         errors={Array []}
@@ -295,14 +307,20 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
       <DistanceRow
         capPricingPerDistanceData={
           Object {
-            "distanceFrom0": "0",
-            "distanceFrom1": "3",
-            "distanceTo0": "",
-            "distanceTo1": "Max",
+            "capPricing": Array [
+              Object {
+                "distanceFrom": "0",
+                "distanceTo": "",
+                "pricePerKm": "6",
+              },
+              Object {
+                "distanceFrom": "3",
+                "distanceTo": "Max",
+                "pricePerKm": "5",
+              },
+            ],
             "maximumPrice": "4",
             "minimumPrice": "3",
-            "pricePerKm0": "5",
-            "pricePerKm1": "5",
           }
         }
         errors={

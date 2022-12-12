@@ -1,21 +1,20 @@
 import React, { ReactElement } from 'react';
-import { ErrorInfo } from '../interfaces';
+import { DistanceCap, ErrorInfo } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
-import { CapPricingPerDistanceData } from '../interfaces';
 
 interface DistanceRowProps {
     numberOfCapToDisplay: number;
     errors: ErrorInfo[];
-    capPricingPerDistanceData: CapPricingPerDistanceData;
-    setCapPricingPerDistanceData: React.Dispatch<React.SetStateAction<CapPricingPerDistanceData>>;
+    capPricingPerDistanceData: DistanceCap;
+    setCapPricingPerDistanceData: React.Dispatch<React.SetStateAction<DistanceCap>>;
 }
 
 export const renderTable = (
     index: number,
     errors: ErrorInfo[],
     numberOfRows: number,
-    capPricingPerDistanceData: CapPricingPerDistanceData,
-    setCapPricingPerDistanceData: React.Dispatch<React.SetStateAction<CapPricingPerDistanceData>>,
+    capPricingPerDistanceData: DistanceCap,
+    setCapPricingPerDistanceData: React.Dispatch<React.SetStateAction<DistanceCap>>,
 ): ReactElement => {
     return (
         <fieldset key={index} className="govuk-fieldset">
@@ -52,13 +51,19 @@ export const renderTable = (
                                         type="text"
                                         disabled={index === 0}
                                         onChange={(e) => {
+                                            const items = [...capPricingPerDistanceData.capPricing];
+                                            const item = { ...capPricingPerDistanceData.capPricing[index] };
+                                            item.distanceFrom = e.target.value;
+                                            items[index] = item;
                                             setCapPricingPerDistanceData({
                                                 ...capPricingPerDistanceData,
-                                                [`distanceFrom${index}`]: e.target.value,
+                                                capPricing: items,
                                             });
                                         }}
                                         value={
-                                            index === 0 ? '0' : capPricingPerDistanceData[`distanceFrom${index}`] || ''
+                                            index === 0
+                                                ? '0'
+                                                : capPricingPerDistanceData?.capPricing[index]?.distanceFrom || ''
                                         }
                                     />
                                     <div className="govuk-input__suffix" aria-hidden="true">
@@ -90,15 +95,19 @@ export const renderTable = (
                                     name={`distanceTo${index}`}
                                     type="text"
                                     onChange={(e) => {
+                                        const items = [...capPricingPerDistanceData.capPricing];
+                                        const item = { ...capPricingPerDistanceData.capPricing[index] };
+                                        item.distanceTo = e.target.value;
+                                        items[index] = item;
                                         setCapPricingPerDistanceData({
                                             ...capPricingPerDistanceData,
-                                            [`distanceTo${index}`]: e.target.value,
+                                            capPricing: items,
                                         });
                                     }}
                                     value={
                                         index + 1 === numberOfRows
                                             ? 'Max'
-                                            : capPricingPerDistanceData[`distanceTo${index}`] || ''
+                                            : capPricingPerDistanceData?.capPricing[index]?.distanceTo || ''
                                     }
                                     disabled={index + 1 === numberOfRows}
                                 />
@@ -129,12 +138,16 @@ export const renderTable = (
                                     name={`pricePerKm${index}`}
                                     type="text"
                                     onChange={(e) => {
+                                        const items = [...capPricingPerDistanceData.capPricing];
+                                        const item = { ...capPricingPerDistanceData.capPricing[index] };
+                                        item.pricePerKm = e.target.value;
+                                        items[index] = item;
                                         setCapPricingPerDistanceData({
                                             ...capPricingPerDistanceData,
-                                            [`pricePerKm${index}`]: e.target.value,
+                                            capPricing: items,
                                         });
                                     }}
-                                    value={capPricingPerDistanceData[`pricePerKm${index}`] || ''}
+                                    value={capPricingPerDistanceData?.capPricing[index]?.pricePerKm || ''}
                                 />
                             </div>
                         </>
@@ -148,8 +161,8 @@ export const renderTable = (
 export const renderRows = (
     numberOfRows: number,
     errors: ErrorInfo[],
-    capPricingPerDistanceData: CapPricingPerDistanceData,
-    setCapPricingPerDistanceData: React.Dispatch<React.SetStateAction<CapPricingPerDistanceData>>,
+    capPricingPerDistanceData: DistanceCap,
+    setCapPricingPerDistanceData: React.Dispatch<React.SetStateAction<DistanceCap>>,
 ): ReactElement[] => {
     const elements: ReactElement[] = [];
     for (let i = 0; i < numberOfRows; i += 1) {

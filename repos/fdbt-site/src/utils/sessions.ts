@@ -231,7 +231,7 @@ export interface SessionAttributeTypes {
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];
     [CAP_START_ATTRIBUTE]: CapStartInfo | ErrorInfo[];
-    [CAP_PRICING_PER_DISTANCE_ATTRIBUTE]: { errors: ErrorInfo[]; capPricePerDistances: DistanceCap };
+    [CAP_PRICING_PER_DISTANCE_ATTRIBUTE]: DistanceCap | WithErrors<DistanceCap>;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

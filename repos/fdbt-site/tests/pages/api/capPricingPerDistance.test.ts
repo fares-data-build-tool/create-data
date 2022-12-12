@@ -44,10 +44,7 @@ describe('capPricingPerDistance', () => {
 
         capPricingPerDistance(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
-            capPricePerDistances: mockCapInfo,
-            errors: [],
-        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, mockCapInfo);
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/defineCapPricingPerDistance' });
     });
@@ -74,22 +71,20 @@ describe('capPricingPerDistance', () => {
         capPricingPerDistance(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
-            capPricePerDistances: {
-                maximumPrice: '4',
-                minimumPrice: '3',
-                capPricing: [
-                    {
-                        distanceFrom: '0',
-                        distanceTo: '',
-                        pricePerKm: '6',
-                    },
-                    {
-                        distanceFrom: '3',
-                        distanceTo: 'Max',
-                        pricePerKm: '5',
-                    },
-                ],
-            },
+            maximumPrice: '4',
+            minimumPrice: '3',
+            capPricing: [
+                {
+                    distanceFrom: '0',
+                    distanceTo: '',
+                    pricePerKm: '6',
+                },
+                {
+                    distanceFrom: '3',
+                    distanceTo: 'Max',
+                    pricePerKm: '5',
+                },
+            ],
             errors,
         });
     });
@@ -117,18 +112,16 @@ describe('capPricingPerDistance', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
             errors,
-            capPricePerDistances: {
-                maximumPrice: '4',
-                minimumPrice: '3',
-                capPricing: [
-                    { distanceFrom: '0', distanceTo: '2', pricePerKm: '5' },
-                    {
-                        distanceFrom: '',
-                        distanceTo: 'Max',
-                        pricePerKm: '5',
-                    },
-                ],
-            },
+            maximumPrice: '4',
+            minimumPrice: '3',
+            capPricing: [
+                { distanceFrom: '0', distanceTo: '2', pricePerKm: '5' },
+                {
+                    distanceFrom: '',
+                    distanceTo: 'Max',
+                    pricePerKm: '5',
+                },
+            ],
         });
     });
 
@@ -154,22 +147,20 @@ describe('capPricingPerDistance', () => {
         capPricingPerDistance(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
-            capPricePerDistances: {
-                maximumPrice: '',
-                minimumPrice: '3',
-                capPricing: [
-                    {
-                        distanceFrom: '0',
-                        distanceTo: '2',
-                        pricePerKm: '2',
-                    },
-                    {
-                        distanceFrom: '2',
-                        distanceTo: 'Max',
-                        pricePerKm: '5',
-                    },
-                ],
-            },
+            maximumPrice: '',
+            minimumPrice: '3',
+            capPricing: [
+                {
+                    distanceFrom: '0',
+                    distanceTo: '2',
+                    pricePerKm: '2',
+                },
+                {
+                    distanceFrom: '2',
+                    distanceTo: 'Max',
+                    pricePerKm: '5',
+                },
+            ],
             errors,
         });
     });
@@ -196,22 +187,20 @@ describe('capPricingPerDistance', () => {
         capPricingPerDistance(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
-            capPricePerDistances: {
-                maximumPrice: '3',
-                minimumPrice: '',
-                capPricing: [
-                    {
-                        distanceFrom: '0',
-                        distanceTo: '2',
-                        pricePerKm: '5',
-                    },
-                    {
-                        distanceFrom: '2',
-                        distanceTo: 'Max',
-                        pricePerKm: '5',
-                    },
-                ],
-            },
+            maximumPrice: '3',
+            minimumPrice: '',
+            capPricing: [
+                {
+                    distanceFrom: '0',
+                    distanceTo: '2',
+                    pricePerKm: '5',
+                },
+                {
+                    distanceFrom: '2',
+                    distanceTo: 'Max',
+                    pricePerKm: '5',
+                },
+            ],
             errors,
         });
     });
@@ -238,18 +227,16 @@ describe('capPricingPerDistance', () => {
         capPricingPerDistance(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
-            capPricePerDistances: {
-                maximumPrice: '3',
-                minimumPrice: '2',
-                capPricing: [
-                    { distanceFrom: '0', distanceTo: '2', pricePerKm: '2' },
-                    {
-                        distanceFrom: '2',
-                        distanceTo: 'Max',
-                        pricePerKm: '',
-                    },
-                ],
-            },
+            maximumPrice: '3',
+            minimumPrice: '2',
+            capPricing: [
+                { distanceFrom: '0', distanceTo: '2', pricePerKm: '2' },
+                {
+                    distanceFrom: '2',
+                    distanceTo: 'Max',
+                    pricePerKm: '',
+                },
+            ],
             errors,
         });
     });

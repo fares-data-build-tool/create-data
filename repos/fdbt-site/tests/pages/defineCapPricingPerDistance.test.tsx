@@ -9,7 +9,22 @@ describe('pages', () => {
                 <DefineCapPricingPerDistance
                     errors={[]}
                     csrfToken=""
-                    capPricePerDistances={{ distanceFrom0: '0' }}
+                    capPricePerDistances={{
+                        maximumPrice: '4',
+                        minimumPrice: '3',
+                        capPricing: [
+                            {
+                                distanceFrom: '0',
+                                distanceTo: '2',
+                                pricePerKm: '5',
+                            },
+                            {
+                                distanceFrom: '3',
+                                distanceTo: 'Max',
+                                pricePerKm: '5',
+                            },
+                        ],
+                    }}
                     numberOfCapInitial={1}
                 />,
             );
@@ -27,13 +42,20 @@ describe('pages', () => {
                     ]}
                     csrfToken=""
                     capPricePerDistances={{
-                        distanceFrom0: '0',
-                        distanceFrom1: '3',
-                        distanceTo0: '',
                         maximumPrice: '4',
                         minimumPrice: '3',
-                        pricePerKm1: '5',
-                        pricePerKm0: '5',
+                        capPricing: [
+                            {
+                                distanceFrom: '0',
+                                distanceTo: '',
+                                pricePerKm: '6',
+                            },
+                            {
+                                distanceFrom: '3',
+                                distanceTo: 'Max',
+                                pricePerKm: '5',
+                            },
+                        ],
                     }}
                     numberOfCapInitial={2}
                 />,

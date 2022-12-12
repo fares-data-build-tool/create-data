@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { FullColumnLayout } from '../layout/Layout';
 import DistanceRow from '../components/DistanceRow';
-import { CapPricingPerDistanceData, DistanceCap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { DistanceCap, ErrorInfo, NextPageContextWithSession, WithErrors } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
@@ -15,7 +15,7 @@ const description = 'Cap Pricing Per Distance entry page of the Create Fares Dat
 interface DefineCapPricingPerDistanceProps {
     errors?: ErrorInfo[];
     csrfToken: string;
-    capPricePerDistances: CapPricingPerDistanceData;
+    capPricePerDistances: DistanceCap;
     numberOfCapInitial: number;
 }
 
@@ -26,10 +26,7 @@ const DefineCapPricingPerDistance = ({
     numberOfCapInitial,
 }: DefineCapPricingPerDistanceProps): ReactElement => {
     const [numberOfCap, setNumberOfCaps] = useState(numberOfCapInitial);
-    const [capPricingPerDistanceData, setCapPricingPerDistanceData] = useState({
-        [`distanceTo${numberOfCap - 1}`]: 'Max',
-        ...capPricePerDistances,
-    });
+    const [capPricingPerDistanceData, setCapPricingPerDistanceData] = useState(capPricePerDistances);
 
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
@@ -68,10 +65,10 @@ const DefineCapPricingPerDistance = ({
                                             onChange={(e) => {
                                                 setCapPricingPerDistanceData({
                                                     ...capPricingPerDistanceData,
-                                                    [`minimumPrice`]: e.target.value,
+                                                    minimumPrice: e.target.value,
                                                 });
                                             }}
-                                            value={capPricingPerDistanceData[`minimumPrice`] || ''}
+                                            value={capPricingPerDistanceData.minimumPrice || ''}
                                         />
                                     </div>
                                 </>
@@ -106,10 +103,10 @@ const DefineCapPricingPerDistance = ({
                                             onChange={(e) => {
                                                 setCapPricingPerDistanceData({
                                                     ...capPricingPerDistanceData,
-                                                    [`maximumPrice`]: e.target.value,
+                                                    maximumPrice: e.target.value,
                                                 });
                                             }}
-                                            value={capPricingPerDistanceData[`maximumPrice`] || ''}
+                                            value={capPricingPerDistanceData.maximumPrice || ''}
                                         />
                                     </div>
                                 </>
@@ -131,10 +128,20 @@ const DefineCapPricingPerDistance = ({
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
                                     onClick={(): void => {
                                         setNumberOfCaps(numberOfCap + 1);
+                                        const items = [...capPricingPerDistanceData.capPricing];
+                                        let item = { ...capPricingPerDistanceData.capPricing[numberOfCap - 1] };
+                                        item.distanceTo = '';
+                                        items[numberOfCap - 1] = item;
                                         setCapPricingPerDistanceData({
                                             ...capPricingPerDistanceData,
-                                            [`distanceTo${numberOfCap - 1}`]: '',
-                                            [`distanceTo${numberOfCap}`]: 'Max',
+                                            capPricing: items,
+                                        });
+                                        item = { ...capPricingPerDistanceData.capPricing[numberOfCap] };
+                                        item.distanceTo = 'Max';
+                                        items[numberOfCap] = item;
+                                        setCapPricingPerDistanceData({
+                                            ...capPricingPerDistanceData,
+                                            capPricing: items,
                                         });
                                     }}
                                 >
@@ -150,13 +157,6 @@ const DefineCapPricingPerDistance = ({
                                     type="button"
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3"
                                     onClick={(): void => {
-                                        setCapPricingPerDistanceData((current) => {
-                                            const copy = { ...current };
-                                            delete copy[`distanceTo${numberOfCap - 1}`];
-                                            delete copy[`distanceFrom${numberOfCap - 1}`];
-                                            delete copy[`pricePerKm${numberOfCap - 1}`];
-                                            return { ...copy, [`distanceTo${numberOfCap - 2}`]: 'Max' };
-                                        });
                                         setNumberOfCaps(numberOfCap - 1);
                                     }}
                                 >
@@ -181,34 +181,25 @@ const DefineCapPricingPerDistance = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefineCapPricingPerDistanceProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const capPricePerDistances: DistanceCap = getSessionAttribute(ctx.req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE)
-        ?.capPricePerDistances as DistanceCap;
-
-    const finalCapPricePerDistances: CapPricingPerDistanceData = { distanceFrom0: '0' };
-    let numberOfCap = 0;
-
-    if (capPricePerDistances && capPricePerDistances.capPricing) {
-        for (let i = 0; i < capPricePerDistances.capPricing.length; i++) {
-            let capDetails = {};
-            capDetails = {
-                [`distanceFrom${i}`]: capPricePerDistances.capPricing[i].distanceFrom,
-                [`distanceTo${i}`]: capPricePerDistances.capPricing[i].distanceTo,
-                [`pricePerKm${i}`]: capPricePerDistances.capPricing[i].pricePerKm,
-            };
-            Object.assign(finalCapPricePerDistances, capDetails);
-            numberOfCap += 1;
-        }
-        Object.assign(finalCapPricePerDistances, {
-            minimumPrice: capPricePerDistances.minimumPrice,
-            maximumPrice: capPricePerDistances.maximumPrice,
-        });
+    const capPricePerDistances: DistanceCap | WithErrors<DistanceCap> | undefined = getSessionAttribute(
+        ctx.req,
+        CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    );
+    let errors: ErrorInfo[] = [];
+    if (capPricePerDistances && 'errors' in capPricePerDistances) {
+        errors = capPricePerDistances.errors;
     }
+
     return {
         props: {
-            errors: getSessionAttribute(ctx.req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE)?.errors || [],
-            capPricePerDistances: finalCapPricePerDistances,
+            errors,
+            capPricePerDistances: capPricePerDistances || {
+                capPricing: [{ distanceFrom: '0', distanceTo: 'Max', pricePerKm: '' }],
+                minimumPrice: '',
+                maximumPrice: '',
+            },
             csrfToken,
-            numberOfCapInitial: numberOfCap === 0 ? 1 : numberOfCap,
+            numberOfCapInitial: capPricePerDistances?.capPricing?.length || 1,
         },
     };
 };

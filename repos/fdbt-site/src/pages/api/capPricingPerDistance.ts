@@ -99,21 +99,21 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     capPricePerDistances[0] = { ...capPricePerDistances[0], distanceFrom: '0' };
     capPricePerDistances[i - 1] = { ...capPricePerDistances[i - 1], distanceTo: 'Max' };
     errors = validateInput(capPricePerDistances, i - 1, minimumPrice, maximumPrice);
-    const capDistance: DistanceCap = { maximumPrice, minimumPrice, capPricing: capPricePerDistances };
+    const distanceCap: DistanceCap = { maximumPrice, minimumPrice, capPricing: capPricePerDistances };
     if (errors.length > 0) {
         updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
             errors,
-            capPricePerDistances: capDistance,
+            ...distanceCap,
         });
         redirectTo(res, '/defineCapPricingPerDistance');
         return;
     }
 
-    updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, { capPricePerDistances: capDistance, errors: [] });
+    updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, distanceCap);
 
     updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
         errors: [{ id: '', errorMessage: 'Next page to be made soon!' }],
-        capPricePerDistances: capDistance,
+        ...distanceCap,
     });
     redirectTo(res, '/defineCapPricingPerDistance');
     return;
