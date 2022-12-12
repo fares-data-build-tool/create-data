@@ -1,7 +1,7 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import capPricingPerDistance from '../../../src/pages/api/capPricingPerDistance';
-import { DistanceCap, ErrorInfo } from '../../../src/interfaces';
+import capPricingPerDistance, { validateInput } from '../../../src/pages/api/capPricingPerDistance';
+import { CapDistancePricing, DistanceCap, ErrorInfo } from '../../../src/interfaces';
 import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('capPricingPerDistance', () => {
@@ -255,119 +255,114 @@ describe('capPricingPerDistance', () => {
     });
 });
 
-// describe('validate input tests', () => {
-//     it('validates input for distance from', () => {
-//         const capPricePerDistances: CapPricePerDistances[] = [
-//             {
-//                 distanceFrom: '0',
-//                 distanceTo: '2',
-//                 maximumPrice: '4',
-//                 minimumPrice: '3',
-//             },
-//             {
-//                 distanceFrom: 'a',
-//                 distanceTo: 'Max',
-//                 pricePerKm: '5',
-//             },
-//         ];
-//         const errorsResult: ErrorInfo[] = [
-//             { id: `distance-from-1`, errorMessage: 'Distance from must be defined and a number' },
-//         ];
+describe('validate input tests', () => {
+    it('validates input for distance from', () => {
+        const capPricePerDistances: CapDistancePricing[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: '2',
+                pricePerKm: '5',
+            },
+            {
+                distanceFrom: 'a',
+                distanceTo: 'Max',
+                pricePerKm: '5',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [
+            { id: `distance-from-1`, errorMessage: 'Distance from is required and needs to be number' },
+        ];
 
-//         const errors = validateInput(capPricePerDistances, 1);
+        const errors = validateInput(capPricePerDistances, 1, '3', '4');
 
-//         expect(errors).toEqual(errorsResult);
-//     });
+        expect(errors).toEqual(errorsResult);
+    });
 
-//     it('validates input for distance to', () => {
-//         const capPricePerDistances: CapPricePerDistances[] = [
-//             {
-//                 distanceFrom: '0',
-//                 distanceTo: 'b',
-//                 maximumPrice: '4',
-//                 minimumPrice: '3',
-//             },
-//             {
-//                 distanceFrom: '3',
-//                 distanceTo: 'Max',
-//                 pricePerKm: '5',
-//             },
-//         ];
-//         const errorsResult: ErrorInfo[] = [
-//             { id: `distance-to-0`, errorMessage: 'Distance to must be defined and a number' },
-//         ];
+    it('validates input for distance to', () => {
+        const capPricePerDistances: CapDistancePricing[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: 'b',
+                pricePerKm: '5',
+            },
+            {
+                distanceFrom: '3',
+                distanceTo: 'Max',
+                pricePerKm: '5',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [
+            { id: `distance-to-0`, errorMessage: 'Distance to is required and needs to be number' },
+        ];
 
-//         const errors = validateInput(capPricePerDistances, 1);
+        const errors = validateInput(capPricePerDistances, 1, '3', '4');
 
-//         expect(errors).toEqual(errorsResult);
-//     });
+        expect(errors).toEqual(errorsResult);
+    });
 
-//     it('validates input for maximum price', () => {
-//         const capPricePerDistances: CapPricePerDistances[] = [
-//             {
-//                 distanceFrom: '0',
-//                 distanceTo: '3',
-//                 maximumPrice: 'a',
-//                 minimumPrice: '3',
-//             },
-//             {
-//                 distanceFrom: '3',
-//                 distanceTo: 'Max',
-//                 pricePerKm: '5',
-//             },
-//         ];
-//         const errorsResult: ErrorInfo[] = [
-//             { id: `maximum-price`, errorMessage: 'Maximum price to must be defined and a number' },
-//         ];
+    it('validates input for maximum price', () => {
+        const capPricePerDistances: CapDistancePricing[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: '3',
+                pricePerKm: '5',
+            },
+            {
+                distanceFrom: '3',
+                distanceTo: 'Max',
+                pricePerKm: '5',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [
+            { id: `maximum-price`, errorMessage: 'This must be a valid price in pounds and pence' },
+        ];
 
-//         const errors = validateInput(capPricePerDistances, 1);
+        const errors = validateInput(capPricePerDistances, 1, '2', 'a');
 
-//         expect(errors).toEqual(errorsResult);
-//     });
+        expect(errors).toEqual(errorsResult);
+    });
 
-//     it('validates input for minimum price', () => {
-//         const capPricePerDistances: CapPricePerDistances[] = [
-//             {
-//                 distanceFrom: '0',
-//                 distanceTo: '3',
-//                 maximumPrice: '2',
-//                 minimumPrice: 'a',
-//             },
-//             {
-//                 distanceFrom: '3',
-//                 distanceTo: 'Max',
-//                 pricePerKm: '5',
-//             },
-//         ];
-//         const errorsResult: ErrorInfo[] = [
-//             { id: `minimum-price`, errorMessage: 'Minimum price to must be defined and a number' },
-//         ];
+    it('validates input for minimum price', () => {
+        const capPricePerDistances: CapDistancePricing[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: '3',
+                pricePerKm: '5',
+            },
+            {
+                distanceFrom: '3',
+                distanceTo: 'Max',
+                pricePerKm: '5',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [
+            { id: `minimum-price`, errorMessage: 'This must be a valid price in pounds and pence' },
+        ];
 
-//         const errors = validateInput(capPricePerDistances, 1);
+        const errors = validateInput(capPricePerDistances, 1, 'a', '2');
 
-//         expect(errors).toEqual(errorsResult);
-//     });
+        expect(errors).toEqual(errorsResult);
+    });
 
-//     it('validates input for price per km', () => {
-//         const capPricePerDistances: CapPricePerDistances[] = [
-//             {
-//                 distanceFrom: '0',
-//                 distanceTo: '3',
-//                 maximumPrice: '2',
-//                 minimumPrice: '1',
-//             },
-//             {
-//                 distanceFrom: '3',
-//                 distanceTo: 'Max',
-//                 pricePerKm: 'a',
-//             },
-//         ];
-//         const errorsResult: ErrorInfo[] = [
-//             { id: `price-per-km-1`, errorMessage: 'Price per km price to must be defined and a number' },
-//         ];
+    it('validates input for price per km', () => {
+        const capPricePerDistances: CapDistancePricing[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: '3',
+                pricePerKm: '2',
+            },
+            {
+                distanceFrom: '3',
+                distanceTo: 'Max',
+                pricePerKm: 'a',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [
+            { id: `price-per-km-1`, errorMessage: 'This must be a valid price in pounds and pence' },
+        ];
 
-//         const errors = validateInput(capPricePerDistances, 1);
+        const errors = validateInput(capPricePerDistances, 1, '1', '2');
 
-//         expect(errors).toEqual(errorsResult);
-//     });
-// });
+        expect(errors).toEqual(errorsResult);
+    });
+});
