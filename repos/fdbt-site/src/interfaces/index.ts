@@ -735,6 +735,9 @@ export interface Cap {
     durationUnits: ExpiryUnit;
 }
 
-export interface MultiTapPricing {
+export interface MultiTap {
     [key: string]: string;
+}
+export interface MultiTapPricing {
+    tapDetails: MultiTap;
 }

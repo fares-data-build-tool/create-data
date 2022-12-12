@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { MULTI_TAPS_PRICING_ATTRIBUTE } from '../../constants/attributes';
-import { ErrorInfo, MultiTapPricing, NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, MultiTap, MultiTapPricing, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { checkPriceIsValid, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
@@ -8,7 +8,7 @@ import { checkPriceIsValid, removeExcessWhiteSpace } from '../../utils/apiUtils/
 export const checkAllValidation = (taps: MultiTapPricing): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
 
-    Object.entries(taps).forEach((entry) => {
+    Object.entries(taps.tapDetails).forEach((entry) => {
         const tapPrice = entry[1];
         const index = entry[0];
         const trimmedPrice = removeExcessWhiteSpace(tapPrice);
@@ -24,7 +24,7 @@ export const checkAllValidation = (taps: MultiTapPricing): ErrorInfo[] => {
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        const multiTaps: MultiTapPricing = {};
+        const multiTaps: MultiTap = {};
         let i = 0;
         while (req.body[`multiTapPriceInput${i}`] !== undefined) {
             const tapPrice = req.body[`multiTapPriceInput${i}`];
@@ -33,23 +33,17 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             i += 1;
         }
 
-        const errors = checkAllValidation(multiTaps);
-        //console.log(multiTaps);
+        const multiTapPricing: MultiTapPricing = { tapDetails: multiTaps };
 
-        //const attrib : WithErrors<MultiTapPricing> = {errors: errors, "2": "22" };
-        // let attrib :WithErrors<MultiTapPricing> = {errors};
-        // //attrib.errors = errors;
-        // Object.entries(multiTaps).forEach((entry) => {
-        //     attrib[entry[0]] = entry[1];
-        // });
+        const errors = checkAllValidation(multiTapPricing);
 
         if (errors.length > 0) {
-            //updateSessionAttribute(req, MULTI_TAPS_PRICING_ATTRIBUTE, {errors, ...multiTaps});
+            updateSessionAttribute(req, MULTI_TAPS_PRICING_ATTRIBUTE, { errors, ...multiTapPricing });
             redirectTo(res, '/multiTapsPricing');
             return;
         }
 
-        updateSessionAttribute(req, MULTI_TAPS_PRICING_ATTRIBUTE, multiTaps);
+        updateSessionAttribute(req, MULTI_TAPS_PRICING_ATTRIBUTE, multiTapPricing);
         redirectTo(res, '/createCaps');
         return;
     } catch (error) {

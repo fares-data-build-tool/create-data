@@ -16,39 +16,45 @@ describe('multiTapsPricing', () => {
         jest.resetAllMocks();
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // const cases: any[] = [
-    //     [
-    //         {
-    //             multiTapPriceInput0: '-1',
-    //         },
-    //         { Location: '/multiTapsPricing' },
-    //         [{ errorMessage: 'This must be a positive number', id: 'multi-tap-price-0' }],
-    //     ],
+    const cases: any[] = [
+        [
+            {
+                multiTapPriceInput0: '-1',
+            },
+            { Location: '/multiTapsPricing' },
+            {
+                errors: [{ errorMessage: 'This must be a positive number', id: 'multi-tap-price-0' }],
+                tapDetails: { '0': '-1' },
+            },
+        ],
 
-    //     [
-    //         {
-    //             multiTapPriceInput0: '',
-    //         },
-    //         { Location: '/multiTapsPricing' },
-    //         [{ errorMessage: 'Cap price cannot be empty', id: 'multi-tap-price-0' }],
-    //     ],
-    // ];
+        [
+            {
+                multiTapPriceInput0: '',
+            },
+            { Location: '/multiTapsPricing' },
+            {
+                errors: [{ errorMessage: 'Cap price cannot be empty', id: 'multi-tap-price-0' }],
+                tapDetails: { '0': '' },
+            },
+        ],
+    ];
 
-    // it.skip.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation, errors) => {
-    //     const { req, res } = getMockRequestAndResponse({
-    //         cookieValues: {},
-    //         body: testData,
-    //         uuid: {},
-    //         mockWriteHeadFn: writeHeadMock,
-    //         session: {},
-    //     });
+    it.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation, errors) => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: testData,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {},
+        });
 
-    //     jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-    //     multiTapsPricing(req, res);
-    //     expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+        multiTapsPricing(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
 
-    //     expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTI_TAPS_PRICING_ATTRIBUTE, errors);
-    // });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTI_TAPS_PRICING_ATTRIBUTE, errors);
+    });
 
     it('redirects to /createCaps for a valid user input', () => {
         const { req, res } = getMockRequestAndResponse({
@@ -66,8 +72,7 @@ describe('multiTapsPricing', () => {
         multiTapsPricing(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTI_TAPS_PRICING_ATTRIBUTE, {
-            '0': '2.00',
-            '1': '4.00',
+            tapDetails: { '0': '2.00', '1': '4.00' },
         });
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/createCaps' });

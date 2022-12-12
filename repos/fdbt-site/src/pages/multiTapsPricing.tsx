@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import { FullColumnLayout } from '../layout/Layout';
 import { MULTI_TAPS_PRICING_ATTRIBUTE } from '../constants/attributes';
 import TapPricingRow from '../components/TapPricingRow';
-import { ErrorInfo, NextPageContextWithSession, MultiTapPricing } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, MultiTap } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { isWithErrors } from '../interfaces/typeGuards';
@@ -14,7 +14,7 @@ const description = 'Pricing by multiple taps for capped product of the Create F
 
 interface MultiTapsPricingProps {
     errors?: ErrorInfo[];
-    userInput: MultiTapPricing;
+    userInput: MultiTap;
     csrfToken: string;
     numberOfTapsToRender: number;
 }
@@ -95,13 +95,11 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
                 multiTapsPricingAttribute && isWithErrors(multiTapsPricingAttribute)
                     ? multiTapsPricingAttribute.errors
                     : [],
-            userInput:
-                multiTapsPricingAttribute && !isWithErrors(multiTapsPricingAttribute) ? multiTapsPricingAttribute : {},
+            userInput: multiTapsPricingAttribute ? multiTapsPricingAttribute.tapDetails : {},
             csrfToken,
-            numberOfTapsToRender:
-                multiTapsPricingAttribute && !isWithErrors(multiTapsPricingAttribute)
-                    ? Object.keys(multiTapsPricingAttribute).length
-                    : 1,
+            numberOfTapsToRender: multiTapsPricingAttribute
+                ? Object.keys(multiTapsPricingAttribute.tapDetails).length
+                : 1,
         },
     };
 };

@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
-import { ErrorInfo, MultiTapPricing } from '../interfaces';
+import { ErrorInfo, MultiTap } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 
 interface TapPricingRowProps {
     numberOfTapsToDisplay: number;
     errors: ErrorInfo[];
-    userInput: MultiTapPricing;
+    userInput: MultiTap;
 }
 
-export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiTapPricing = {}): ReactElement => (
+export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiTap = {}): ReactElement => (
     <fieldset key={index} className="govuk-fieldset">
         <legend className="govuk-fieldset__legend govuk-visually-hidden">{`Enter details for tap ${index + 1}`}</legend>
         <div className="flex-container">
@@ -61,11 +61,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
     </fieldset>
 );
 
-export const renderRows = (
-    numberOfRows: number,
-    errors: ErrorInfo[],
-    userInput: MultiTapPricing = {},
-): ReactElement[] => {
+export const renderRows = (numberOfRows: number, errors: ErrorInfo[], userInput: MultiTap = {}): ReactElement[] => {
     const elements: ReactElement[] = [];
     for (let i = 0; i < numberOfRows; i += 1) {
         elements.push(renderTable(i, errors, userInput));
