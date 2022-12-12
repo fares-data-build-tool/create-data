@@ -10,7 +10,7 @@ describe('pages', () => {
                     errors={[]}
                     csrfToken=""
                     capPricePerDistances={{ distanceFrom0: '0' }}
-                    numberOfProductsInitial={1}
+                    numberOfCapInitial={1}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -34,7 +34,7 @@ describe('pages', () => {
                         minimumPrice0: '3',
                         pricePerKm1: '5',
                     }}
-                    numberOfProductsInitial={2}
+                    numberOfCapInitial={2}
                 />,
             );
             expect(tree).toMatchSnapshot();

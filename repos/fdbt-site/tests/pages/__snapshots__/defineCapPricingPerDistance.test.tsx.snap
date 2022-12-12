@@ -31,7 +31,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
           }
         }
         errors={Array []}
-        numberOfProductsToDisplay={1}
+        numberOfCapToDisplay={1}
         setCapPricingPerDistanceData={[Function]}
       />
       <div
@@ -114,7 +114,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
             },
           ]
         }
-        numberOfProductsToDisplay={2}
+        numberOfCapToDisplay={2}
         setCapPricingPerDistanceData={[Function]}
       />
       <div
