@@ -1,11 +1,11 @@
 import React, { ReactElement, useState } from 'react';
 import { FullColumnLayout } from '../layout/Layout';
-import { MULTI_TAPS_PRICING_ATTRIBUTE, NUMBER_OF_TAPS_ATTRIBUTE } from '../constants/attributes';
+import { MULTI_TAPS_PRICING_ATTRIBUTE } from '../constants/attributes';
 import TapPricingRow from '../components/TapPricingRow';
 import { ErrorInfo, NextPageContextWithSession, MultiTapPricing } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
-import { isMultiTapsPricingAttribute, isMultiTapsPricingAttributeWithErrors } from '../interfaces/typeGuards';
+import { isWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
 
@@ -14,14 +14,14 @@ const description = 'Pricing by multiple taps for capped product of the Create F
 
 interface MultiTapsPricingProps {
     errors?: ErrorInfo[];
-    userInput: MultiTapPricing[];
+    userInput: MultiTapPricing;
     csrfToken: string;
     numberOfTapsToRender: number;
 }
 
 const MultiTapsPricings = ({
     errors = [],
-    userInput = [],
+    userInput = {},
     csrfToken,
     numberOfTapsToRender,
 }: MultiTapsPricingProps): ReactElement => {
@@ -40,8 +40,9 @@ const MultiTapsPricings = ({
                         second journey is £2 and the third journey is £0.50, you would create 3 taps below and enter the
                         prices accordingly.
                     </span>
+                    {/* //</>govuk-form-group--error */}
 
-                    <div className="govuk-grid-row">
+                    <div className={`govuk-grid-row ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <TapPricingRow numberOfTapsToDisplay={numberOfTaps} errors={errors} userInput={userInput} />
                         <div className="flex-container">
                             {numberOfTaps < 10 ? (
@@ -87,14 +88,20 @@ const MultiTapsPricings = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultiTapsPricingProps } => {
     const csrfToken = getCsrfToken(ctx);
     const multiTapsPricingAttribute = getSessionAttribute(ctx.req, MULTI_TAPS_PRICING_ATTRIBUTE);
-    const numberOfTapsToRender = getSessionAttribute(ctx.req, NUMBER_OF_TAPS_ATTRIBUTE) || 1;
 
     return {
         props: {
-            errors: isMultiTapsPricingAttributeWithErrors(multiTapsPricingAttribute) ? multiTapsPricingAttribute : [],
-            userInput: isMultiTapsPricingAttribute(multiTapsPricingAttribute) ? multiTapsPricingAttribute : [],
+            errors:
+                multiTapsPricingAttribute && isWithErrors(multiTapsPricingAttribute)
+                    ? multiTapsPricingAttribute.errors
+                    : [],
+            userInput:
+                multiTapsPricingAttribute && !isWithErrors(multiTapsPricingAttribute) ? multiTapsPricingAttribute : {},
             csrfToken,
-            numberOfTapsToRender: numberOfTapsToRender,
+            numberOfTapsToRender:
+                multiTapsPricingAttribute && !isWithErrors(multiTapsPricingAttribute)
+                    ? Object.keys(multiTapsPricingAttribute).length
+                    : 1,
         },
     };
 };

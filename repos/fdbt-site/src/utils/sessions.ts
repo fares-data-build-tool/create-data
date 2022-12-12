@@ -73,7 +73,6 @@ import {
     CAP_EXPIRY_ATTRIBUTE,
     CAP_START_ATTRIBUTE,
     MULTI_TAPS_PRICING_ATTRIBUTE,
-    NUMBER_OF_TAPS_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -232,8 +231,7 @@ export interface SessionAttributeTypes {
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];
     [CAP_START_ATTRIBUTE]: CapStartInfo | ErrorInfo[];
-    [MULTI_TAPS_PRICING_ATTRIBUTE]: MultiTapPricing[] | ErrorInfo[];
-    [NUMBER_OF_TAPS_ATTRIBUTE]: number;
+    [MULTI_TAPS_PRICING_ATTRIBUTE]: MultiTapPricing | WithErrors<MultiTapPricing>;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

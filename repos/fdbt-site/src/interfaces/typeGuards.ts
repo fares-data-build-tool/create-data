@@ -11,7 +11,6 @@ import {
     MultiOperatorMultipleServicesTicket,
     MultipleOperatorsAttribute,
     MultipleOperatorsAttributeWithErrors,
-    MultiTapPricing,
     PassengerTypeWithErrors,
     PeriodTicket,
     ProductData,
@@ -180,15 +179,3 @@ export const isMultiOperatorMultipleServicesTicket = (
     (ticket as MultiOperatorMultipleServicesTicket).additionalOperators &&
     (ticket as MultiOperatorMultipleServicesTicket).additionalOperators.length > 0 &&
     'selectedServices' in ticket;
-
-export const isMultiTapsPricingAttribute = (
-    multiTapsPricingAttribute: MultiTapPricing[] | ErrorInfo[] | undefined,
-): multiTapsPricingAttribute is MultiTapPricing[] =>
-    !!multiTapsPricingAttribute && multiTapsPricingAttribute.length > 0 && 'tapPrice' in multiTapsPricingAttribute[0];
-
-export const isMultiTapsPricingAttributeWithErrors = (
-    multiTapsPricingAttribute: MultiTapPricing[] | ErrorInfo[] | undefined,
-): multiTapsPricingAttribute is ErrorInfo[] =>
-    !!multiTapsPricingAttribute &&
-    multiTapsPricingAttribute.length > 0 &&
-    'errorMessage' in multiTapsPricingAttribute[0];

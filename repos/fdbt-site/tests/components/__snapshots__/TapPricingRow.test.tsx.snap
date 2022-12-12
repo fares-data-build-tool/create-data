@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`tap pricing row renders correctly for a single row  1`] = `
-<div
-  className="govuk-form-group--error"
->
+<Fragment>
   <fieldset
     className="govuk-fieldset"
     key="0"
@@ -19,13 +17,8 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <FormGroupWrapper
-          errorIds={
-            Array [
-              "multi-tap-number-0",
-            ]
-          }
-          errors={Array []}
+        <div
+          className="govuk-form-group "
         >
           <label
             className="govuk-label"
@@ -40,23 +33,7 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
             </span>
              
           </label>
-          <FormElementWrapper
-            addFormGroupError={false}
-            errorClass="govuk-input--error"
-            errorId="multi-tap-number-0"
-            errors={Array []}
-            hideText={true}
-          >
-            <label
-              className="govuk-label"
-              htmlFor="multi-tap-number-0"
-            >
-              <span
-                className="govuk-visually"
-              />
-            </label>
-          </FormElementWrapper>
-        </FormGroupWrapper>
+        </div>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
@@ -124,13 +101,11 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
       </div>
     </div>
   </fieldset>
-</div>
+</Fragment>
 `;
 
 exports[`tap pricing row renders correctly for more than one row  1`] = `
-<div
-  className="govuk-form-group--error"
->
+<Fragment>
   <fieldset
     className="govuk-fieldset"
     key="0"
@@ -146,13 +121,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <FormGroupWrapper
-          errorIds={
-            Array [
-              "multi-tap-number-0",
-            ]
-          }
-          errors={Array []}
+        <div
+          className="govuk-form-group "
         >
           <label
             className="govuk-label"
@@ -167,23 +137,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             </span>
              
           </label>
-          <FormElementWrapper
-            addFormGroupError={false}
-            errorClass="govuk-input--error"
-            errorId="multi-tap-number-0"
-            errors={Array []}
-            hideText={true}
-          >
-            <label
-              className="govuk-label"
-              htmlFor="multi-tap-number-0"
-            >
-              <span
-                className="govuk-visually"
-              />
-            </label>
-          </FormElementWrapper>
-        </FormGroupWrapper>
+        </div>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
@@ -266,13 +220,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <FormGroupWrapper
-          errorIds={
-            Array [
-              "multi-tap-number-1",
-            ]
-          }
-          errors={Array []}
+        <div
+          className="govuk-form-group "
         >
           <label
             className="govuk-label"
@@ -287,23 +236,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             </span>
              
           </label>
-          <FormElementWrapper
-            addFormGroupError={false}
-            errorClass="govuk-input--error"
-            errorId="multi-tap-number-1"
-            errors={Array []}
-            hideText={true}
-          >
-            <label
-              className="govuk-label"
-              htmlFor="multi-tap-number-1"
-            >
-              <span
-                className="govuk-visually"
-              />
-            </label>
-          </FormElementWrapper>
-        </FormGroupWrapper>
+        </div>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
@@ -357,7 +290,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
                   aria-describedby="tap-price-hint-1"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
-                  defaultValue=""
+                  defaultValue="9"
                   id="multi-tap-price-1"
                   name="multiTapPriceInput1"
                   type="text"
@@ -384,13 +317,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <FormGroupWrapper
-          errorIds={
-            Array [
-              "multi-tap-number-2",
-            ]
-          }
-          errors={Array []}
+        <div
+          className="govuk-form-group "
         >
           <label
             className="govuk-label"
@@ -405,23 +333,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             </span>
              
           </label>
-          <FormElementWrapper
-            addFormGroupError={false}
-            errorClass="govuk-input--error"
-            errorId="multi-tap-number-2"
-            errors={Array []}
-            hideText={true}
-          >
-            <label
-              className="govuk-label"
-              htmlFor="multi-tap-number-2"
-            >
-              <span
-                className="govuk-visually"
-              />
-            </label>
-          </FormElementWrapper>
-        </FormGroupWrapper>
+        </div>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
@@ -475,7 +387,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
                   aria-describedby="tap-price-hint-2"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
-                  defaultValue=""
+                  defaultValue="99"
                   id="multi-tap-price-2"
                   name="multiTapPriceInput2"
                   type="text"
@@ -502,13 +414,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <FormGroupWrapper
-          errorIds={
-            Array [
-              "multi-tap-number-3",
-            ]
-          }
-          errors={Array []}
+        <div
+          className="govuk-form-group "
         >
           <label
             className="govuk-label"
@@ -523,23 +430,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             </span>
              
           </label>
-          <FormElementWrapper
-            addFormGroupError={false}
-            errorClass="govuk-input--error"
-            errorId="multi-tap-number-3"
-            errors={Array []}
-            hideText={true}
-          >
-            <label
-              className="govuk-label"
-              htmlFor="multi-tap-number-3"
-            >
-              <span
-                className="govuk-visually"
-              />
-            </label>
-          </FormElementWrapper>
-        </FormGroupWrapper>
+        </div>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
@@ -593,7 +484,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
                   aria-describedby="tap-price-hint-3"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
-                  defaultValue=""
+                  defaultValue="999"
                   id="multi-tap-price-3"
                   name="multiTapPriceInput3"
                   type="text"
@@ -620,13 +511,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
       <div
         className="govuk-!-margin-left-4 govuk-!-margin-right-2"
       >
-        <FormGroupWrapper
-          errorIds={
-            Array [
-              "multi-tap-number-4",
-            ]
-          }
-          errors={Array []}
+        <div
+          className="govuk-form-group "
         >
           <label
             className="govuk-label"
@@ -641,23 +527,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             </span>
              
           </label>
-          <FormElementWrapper
-            addFormGroupError={false}
-            errorClass="govuk-input--error"
-            errorId="multi-tap-number-4"
-            errors={Array []}
-            hideText={true}
-          >
-            <label
-              className="govuk-label"
-              htmlFor="multi-tap-number-4"
-            >
-              <span
-                className="govuk-visually"
-              />
-            </label>
-          </FormElementWrapper>
-        </FormGroupWrapper>
+        </div>
       </div>
       <div
         className="govuk-!-margin-left-2 govuk-!-margin-right-2"
@@ -711,7 +581,7 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
                   aria-describedby="tap-price-hint-4"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
-                  defaultValue=""
+                  defaultValue="555"
                   id="multi-tap-price-4"
                   name="multiTapPriceInput4"
                   type="text"
@@ -723,5 +593,123 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
       </div>
     </div>
   </fieldset>
-</div>
+</Fragment>
+`;
+
+exports[`tap pricing row renders correctly on error  1`] = `
+<Fragment>
+  <fieldset
+    className="govuk-fieldset"
+    key="0"
+  >
+    <legend
+      className="govuk-fieldset__legend govuk-visually-hidden"
+    >
+      Enter details for tap 1
+    </legend>
+    <div
+      className="flex-container"
+    >
+      <div
+        className="govuk-!-margin-left-4 govuk-!-margin-right-2"
+      >
+        <div
+          className="govuk-form-group "
+        >
+          <label
+            className="govuk-label"
+            htmlFor="multi-tap-number-0"
+          >
+            <span
+              className="govuk-label"
+              id="multi-tap-number-hint-0"
+            >
+              Tap number 
+              1
+            </span>
+             
+          </label>
+        </div>
+      </div>
+      <div
+        className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+      >
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "multi-tap-price-0",
+            ]
+          }
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Cap price cannot be empty",
+                "id": "multi-tap-price-0",
+              },
+            ]
+          }
+        >
+          <label
+            className="govuk-label"
+            htmlFor="multi-tap-price-0"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Tap Price - Price 1
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Price
+            </span>
+          </label>
+          <span
+            className="govuk-hint"
+            id="tap-price-hint-0"
+          >
+            e.g. 2.99
+          </span>
+          <div
+            className="govuk-currency-input"
+          >
+            <div
+              className="govuk-currency-input__inner"
+            >
+              <span
+                className="govuk-currency-input__inner__unit"
+              >
+                £
+              </span>
+              <FormElementWrapper
+                addFormGroupError={false}
+                errorClass="govuk-input--error"
+                errorId="multi-tap-price-0"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Cap price cannot be empty",
+                      "id": "multi-tap-price-0",
+                    },
+                  ]
+                }
+                hideText={true}
+              >
+                <input
+                  aria-describedby="tap-price-hint-0"
+                  className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
+                  data-non-numeric={true}
+                  defaultValue=""
+                  id="multi-tap-price-0"
+                  name="multiTapPriceInput0"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </div>
+          </div>
+        </FormGroupWrapper>
+      </div>
+    </div>
+  </fieldset>
+</Fragment>
 `;

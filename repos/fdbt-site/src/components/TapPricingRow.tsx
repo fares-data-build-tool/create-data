@@ -5,34 +5,21 @@ import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 interface TapPricingRowProps {
     numberOfTapsToDisplay: number;
     errors: ErrorInfo[];
-    userInput: MultiTapPricing[];
+    userInput: MultiTapPricing;
 }
 
-export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiTapPricing[] = []): ReactElement => (
+export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiTapPricing = {}): ReactElement => (
     <fieldset key={index} className="govuk-fieldset">
         <legend className="govuk-fieldset__legend govuk-visually-hidden">{`Enter details for tap ${index + 1}`}</legend>
         <div className="flex-container">
             <div className="govuk-!-margin-left-4 govuk-!-margin-right-2">
-                <FormGroupWrapper errors={errors} errorIds={[`multi-tap-number-${index}`]}>
-                    <>
-                        <label className="govuk-label" htmlFor={`multi-tap-number-${index}`}>
-                            <span className="govuk-label" id={`multi-tap-number-hint-${index}`}>
-                                Tap number {index + 1}
-                            </span>{' '}
-                        </label>
-                        <FormElementWrapper
-                            errors={errors}
-                            errorId={`multi-tap-number-${index}`}
-                            errorClass="govuk-input--error"
-                            hideText
-                            addFormGroupError={false}
-                        >
-                            <label className="govuk-label" htmlFor={`multi-tap-number-${index}`}>
-                                <span className="govuk-visually"></span>
-                            </label>
-                        </FormElementWrapper>
-                    </>
-                </FormGroupWrapper>
+                <div className="govuk-form-group ">
+                    <label className="govuk-label" htmlFor={`multi-tap-number-${index}`}>
+                        <span className="govuk-label" id={`multi-tap-number-hint-${index}`}>
+                            Tap number {index + 1}
+                        </span>{' '}
+                    </label>
+                </div>
             </div>
             <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
                 <FormGroupWrapper errors={errors} errorIds={[`multi-tap-price-${index}`]}>
@@ -62,7 +49,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                                         type="text"
                                         aria-describedby={`tap-price-hint-${index}`}
                                         id={`multi-tap-price-${index}`}
-                                        defaultValue={userInput[index]?.tapPrice ?? ''}
+                                        defaultValue={userInput[index] ?? ''}
                                     />
                                 </FormElementWrapper>
                             </div>
@@ -77,7 +64,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
 export const renderRows = (
     numberOfRows: number,
     errors: ErrorInfo[],
-    userInput: MultiTapPricing[] = [],
+    userInput: MultiTapPricing = {},
 ): ReactElement[] => {
     const elements: ReactElement[] = [];
     for (let i = 0; i < numberOfRows; i += 1) {
@@ -86,12 +73,8 @@ export const renderRows = (
     return elements;
 };
 
-const TapPricingRow = ({ numberOfTapsToDisplay, errors, userInput = [] }: TapPricingRowProps): ReactElement => {
-    return (
-        <div className={errors ? 'govuk-form-group--error' : ''}>
-            {renderRows(numberOfTapsToDisplay, errors, userInput)}
-        </div>
-    );
+const TapPricingRow = ({ numberOfTapsToDisplay, errors, userInput = {} }: TapPricingRowProps): ReactElement => {
+    return <>{renderRows(numberOfTapsToDisplay, errors, userInput)}</>;
 };
 
 export default TapPricingRow;

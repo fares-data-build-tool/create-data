@@ -735,19 +735,6 @@ export interface Cap {
     durationUnits: ExpiryUnit;
 }
 
-export interface MultiTapPricingAttribute {
-    taps: MultiTapPricing[];
-}
-
 export interface MultiTapPricing {
-    tapPrice: string;
-    tapPriceId: string;
-}
-
-export interface MultiTapPricingWithErrors extends MultiTapPricing {
-    error: string;
-}
-
-export interface MultiTapPricingAttributeWithErrors extends MultiTapPricingAttribute {
-    errors: ErrorInfo[];
+    [key: string]: string;
 }
