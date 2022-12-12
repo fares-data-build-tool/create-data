@@ -145,3 +145,5 @@ export const EDIT_CARNET_PROPERTIES_ERROR = 'fdbt-carnet-properties-error';
 export const CAP_EXPIRY_ATTRIBUTE = 'fdbt-cap-expiry';
 
 export const CAP_START_ATTRIBUTE = 'fdbt-cap-start';
+
+export const CAP_PRICING_PER_DISTANCE_ATTRIBUTE = 'fdbt-cap-pricing-per-distance';

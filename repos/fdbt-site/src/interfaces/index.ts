@@ -734,3 +734,16 @@ export interface Cap {
     durationAmount: string;
     durationUnits: ExpiryUnit;
 }
+
+export interface CapPricePerDistances {
+    distanceFrom: string;
+    distanceTo: string;
+    minimumPrice: string;
+    maximumPrice: string;
+    pricePerKm: string;
+}
+
+export interface CapPricingPerDistanceData {
+    [key: string]: string;
+    distanceFrom0: string;
+}

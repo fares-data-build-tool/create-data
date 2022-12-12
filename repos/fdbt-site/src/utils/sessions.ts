@@ -72,6 +72,7 @@ import {
     EDIT_CARNET_PROPERTIES_ERROR,
     CAP_EXPIRY_ATTRIBUTE,
     CAP_START_ATTRIBUTE,
+    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -132,6 +133,7 @@ import {
     TypeOfCap,
     Cap,
     ManageProductGroupWithErrors,
+    CapPricePerDistances,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -229,6 +231,7 @@ export interface SessionAttributeTypes {
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];
     [CAP_START_ATTRIBUTE]: CapStartInfo | ErrorInfo[];
+    [CAP_PRICING_PER_DISTANCE_ATTRIBUTE]: { errors: ErrorInfo[]; capPricePerDistances: CapPricePerDistances[] };
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
