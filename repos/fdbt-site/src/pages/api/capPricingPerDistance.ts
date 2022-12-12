@@ -61,7 +61,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const maximumPrice = req.body[`maximumPrice${i}`];
         const pricePerKm = req.body[`pricePerKm${i}`];
         const capPricingPerDistance = {
-            distanceFrom: distanceFrom,
+            distanceFrom,
             distanceTo,
             minimumPrice,
             maximumPrice,
