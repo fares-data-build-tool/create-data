@@ -151,7 +151,7 @@ export const renderTable = (
                             </>
                         </FormGroupWrapper>
                     ) : (
-                        <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
+                        <div className="govuk-!-margin-right-2">
                             <FormGroupWrapper
                                 errors={errors}
                                 errorIds={[`cap-pricing-per-distance-price-${index}`]}
