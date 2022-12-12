@@ -133,14 +133,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
-    const selectedId = (isPassengerType(passengerTypeAttribute) && passengerTypeAttribute.id) || null;
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const selectedId =
+        (isPassengerType(passengerTypeAttribute) && passengerTypeAttribute.id) || ticket?.passengerType.id || null;
 
     const errors: ErrorInfo[] =
         passengerTypeAttribute && isPassengerTypeAttributeWithErrors(passengerTypeAttribute)
             ? passengerTypeAttribute.errors
             : [];
 
-    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
     const backHref =

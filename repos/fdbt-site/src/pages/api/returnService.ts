@@ -9,9 +9,18 @@ import { updateSessionAttribute, getSessionAttribute } from '../../utils/session
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getServiceByIdAndDataSource } from '../../data/auroradb';
 import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
+import { AdditionalService, ReturnTicket, WithIds } from '../../interfaces/matchingJsonTypes';
+import { isReturnTicket } from '../../utils';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+        if (!ticket || !matchingJsonMetaData || !isReturnTicket(ticket)) {
+            throw new Error('Could not find the ticket for which the service needs to be added.');
+        }
+
         const serviceId = Number.parseInt(req.body.serviceId);
         const selectedServiceId = Number.parseInt(req.body.selectedServiceId);
 
@@ -30,24 +39,19 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const service = await getServiceByIdAndDataSource(getAndValidateNoc(req, res), serviceId, 'bods');
-        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
-        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
-        // edit mode
-        if (!ticket || !matchingJsonMetaData) {
-            throw new Error('Could not find the ticket for which the service needs to be added.');
-        }
+        const additionalServices: AdditionalService[] = [
+            {
+                lineName: service.lineName,
+                lineId: service.lineId,
+                serviceDescription: service.serviceDescription,
+                serviceId: serviceId,
+            },
+        ];
 
-        const updatedTicket = {
+        const updatedTicket: WithIds<ReturnTicket> = {
             ...ticket,
-            additionalServices: [
-                {
-                    lineName: service.lineName,
-                    lineId: service.lineId,
-                    serviceDescription: service.serviceDescription,
-                    serviceId: serviceId,
-                },
-            ],
+            additionalServices,
         };
 
         // put the now updated matching json into s3
@@ -62,7 +66,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         );
         return;
     } catch (error) {
-        const message = 'There was a problem selecting the service:';
-        redirectToError(res, message, 'api.service', error);
+        const message = 'There was a problem selecting the additional return service:';
+        redirectToError(res, message, 'api.returnService', error);
     }
 };
