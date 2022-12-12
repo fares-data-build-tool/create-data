@@ -11,53 +11,67 @@ interface TapPricingRowProps {
 export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiTap = {}): ReactElement => (
     <fieldset key={index} className="govuk-fieldset">
         <legend className="govuk-fieldset__legend govuk-visually-hidden">{`Enter details for tap ${index + 1}`}</legend>
-        <div className="flex-container">
-            <div className="govuk-!-margin-left-4 govuk-!-margin-right-2">
-                <div className="govuk-form-group ">
-                    <label className="govuk-label" htmlFor={`multi-tap-number-${index}`}>
-                        <span className="govuk-label" id={`multi-tap-number-hint-${index}`}>
-                            Tap number {index + 1}
-                        </span>{' '}
+        <div className="govuk-grid-row govuk-!-width-one-third govuk-!-margin-left-4">
+            <div className="govuk-grid-row">
+                <div className="govuk-grid-column-one-half">&nbsp;</div>
+                <div className="govuk-grid-column-one-half">
+                    <label className="govuk-label" htmlFor={`multi-tap-price-${index}`}>
+                        <span className="govuk-visually-hidden">{`Tap Price - Price ${index + 1}`}</span>
+                        <span aria-hidden>Price</span>
                     </label>
                 </div>
             </div>
-            <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
-                <FormGroupWrapper errors={errors} errorIds={[`multi-tap-price-${index}`]}>
-                    <>
-                        <label className="govuk-label" htmlFor={`multi-tap-price-${index}`}>
-                            <span className="govuk-visually-hidden">{`Tap Price - Price ${index + 1}`}</span>
-                            <span aria-hidden>Price</span>
-                        </label>
-                        {index === 0 ? (
-                            <span className="govuk-hint" id="tap-price-hint-0">
-                                e.g. 2.99
-                            </span>
-                        ) : null}
 
-                        <div className="govuk-currency-input">
-                            <div className="govuk-currency-input__inner">
-                                <span className="govuk-currency-input__inner__unit">£</span>
-                                <FormElementWrapper
-                                    errors={errors}
-                                    errorId={`multi-tap-price-${index}`}
-                                    errorClass="govuk-input--error"
-                                    hideText
-                                    addFormGroupError={false}
-                                >
-                                    <input
-                                        className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
-                                        name={`multiTapPriceInput${index}`}
-                                        data-non-numeric
-                                        type="text"
-                                        aria-describedby={`tap-price-hint-${index}`}
-                                        id={`multi-tap-price-${index}`}
-                                        defaultValue={userInput[index] ?? ''}
-                                    />
-                                </FormElementWrapper>
+            <div className="govuk-grid-row">
+                <div className="govuk-grid-column-one-half">&nbsp;</div>
+                <div className="govuk-grid-column-one-half">
+                    {' '}
+                    {index === 0 ? (
+                        <span className="govuk-hint" id="tap-price-hint-0">
+                            e.g. 2.99
+                        </span>
+                    ) : null}
+                </div>
+            </div>
+            <div className="govuk-grid-row">
+                <div className="govuk-grid-column-one-half">
+                    <div className="govuk-form-group govuk-!-margin-left-4 govuk-!-margin-top-2">
+                        <label className="govuk-label" htmlFor={`multi-tap-number-${index}`}>
+                            <span className="govuk-label" id={`multi-tap-number-hint-${index}`}>
+                                Tap number {index + 1}
+                            </span>{' '}
+                        </label>
+                    </div>
+                </div>
+                <div className="govuk-grid-column-one-half">
+                    {' '}
+                    <FormGroupWrapper errors={errors} errorIds={[`multi-tap-price-${index}`]}>
+                        <>
+                            <div className="govuk-currency-input">
+                                <div className="govuk-currency-input__inner">
+                                    <span className="govuk-currency-input__inner__unit">£</span>
+                                    <FormElementWrapper
+                                        errors={errors}
+                                        errorId={`multi-tap-price-${index}`}
+                                        errorClass="govuk-input--error"
+                                        hideText
+                                        addFormGroupError={false}
+                                    >
+                                        <input
+                                            className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
+                                            name={`multiTapPriceInput${index}`}
+                                            data-non-numeric
+                                            type="text"
+                                            aria-describedby={`tap-price-hint-${index}`}
+                                            id={`multi-tap-price-${index}`}
+                                            defaultValue={userInput[index] ?? ''}
+                                        />
+                                    </FormElementWrapper>
+                                </div>
                             </div>
-                        </div>
-                    </>
-                </FormGroupWrapper>
+                        </>
+                    </FormGroupWrapper>
+                </div>
             </div>
         </div>
     </fieldset>

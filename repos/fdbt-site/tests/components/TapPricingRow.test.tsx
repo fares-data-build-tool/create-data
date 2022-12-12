@@ -13,7 +13,7 @@ describe('tap pricing row', () => {
     it('renders correctly for a single row ', () => {
         const numberToRender = 1;
         const wrapper = shallow(<TapPricingRow numberOfTapsToDisplay={numberToRender} errors={[]} userInput={{}} />);
-        expect(wrapper.find('.flex-container')).toHaveLength(numberToRender);
+        expect(wrapper.find('.govuk-input')).toHaveLength(numberToRender);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -22,7 +22,7 @@ describe('tap pricing row', () => {
         const wrapper = shallow(
             <TapPricingRow numberOfTapsToDisplay={numberToRender} errors={[]} userInput={mockInputs} />,
         );
-        expect(wrapper.find('.flex-container')).toHaveLength(numberToRender);
+        expect(wrapper.find('.govuk-input')).toHaveLength(numberToRender);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -35,7 +35,7 @@ describe('tap pricing row', () => {
                 userInput={{ '1': '' }}
             />,
         );
-        expect(wrapper.find('.flex-container')).toHaveLength(numberToRender);
+        expect(wrapper.find('.govuk-input')).toHaveLength(numberToRender);
         expect(wrapper).toMatchSnapshot();
     });
 });
