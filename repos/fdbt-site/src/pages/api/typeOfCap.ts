@@ -23,6 +23,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
+        updateSessionAttribute(req, TYPE_OF_CAP_ATTRIBUTE, { typeOfCap });
         if (typeOfCap === 'byProducts') {
             redirectTo(res, '/selectCappedProductGroup');
             return;

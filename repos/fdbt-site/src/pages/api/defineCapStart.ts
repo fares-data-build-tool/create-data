@@ -38,8 +38,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
             // redirect to next page, once work is completed
             // and add test to make sure data is stored in session
-            updateSessionAttribute(req, CAP_START_ATTRIBUTE, [{ errorMessage: 'Next page to be made soon!', id: '' }]);
-            redirectTo(res, '/defineCapStart');
+            //updateSessionAttribute(req, CAP_START_ATTRIBUTE, [{ errorMessage: 'Next page to be made soon!', id: '' }]);
+            redirectTo(res, '/capConfirmation');
             return;
         } else {
             errors.push({

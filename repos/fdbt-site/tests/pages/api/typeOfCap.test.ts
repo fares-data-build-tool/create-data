@@ -58,6 +58,6 @@ describe('ticketRepresentation', () => {
             Location: '/selectCappedProductGroup',
         });
 
-        expect(updateSessionAttributeSpy).toBeCalledTimes(0);
+        expect(updateSessionAttributeSpy).toBeCalledTimes(1);
     });
 });
