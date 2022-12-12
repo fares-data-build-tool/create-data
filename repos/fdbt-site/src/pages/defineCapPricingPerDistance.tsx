@@ -5,8 +5,8 @@ import { CapPricePerDistances, CapPricingPerDistanceData, ErrorInfo, NextPageCon
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
-import { getSessionAttribute } from 'src/utils/sessions';
-import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from 'src/constants/attributes';
+import { getSessionAttribute } from '../../src/utils/sessions';
+import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../src/constants/attributes';
 
 const title = 'Cap Pricing Per Distance - Create Fares Data Service';
 const description = 'Cap Pricing Per Distance entry page of the Create Fares Data Service';
