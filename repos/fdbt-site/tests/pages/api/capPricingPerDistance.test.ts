@@ -16,24 +16,24 @@ describe('capPricingPerDistance', () => {
         const mockCapInfo: CapPricePerDistances[] = [
             {
                 distanceFrom: '0',
-                distanceTo: '2',
-                maximumPrice: '4',
-                minimumPrice: '3',
+                distanceTo: '2.00',
+                maximumPrice: '4.00',
+                minimumPrice: '3.00',
             },
             {
-                distanceFrom: '3',
+                distanceFrom: '3.00',
                 distanceTo: 'Max',
-                pricePerKm: '5',
+                pricePerKm: '5.00',
             },
         ];
 
         const { req, res } = getMockRequestAndResponse({
             body: {
-                distanceFrom1: '3',
-                distanceTo0: '2',
+                distanceFrom1: '3.00',
+                distanceTo0: '2.00',
                 maximumPrice0: '4',
-                minimumPrice0: '3',
-                pricePerKm1: '5',
+                minimumPrice0: '3.00',
+                pricePerKm1: '5.00',
             },
             mockWriteHeadFn: writeHeadMock,
         });
@@ -228,7 +228,13 @@ describe('capPricingPerDistance', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
             capPricePerDistances: [
-                { distanceFrom: '0', distanceTo: '2', maximumPrice: '3', minimumPrice: '2', pricePerKm: undefined },
+                {
+                    distanceFrom: '0',
+                    distanceTo: '2',
+                    maximumPrice: '3',
+                    minimumPrice: '2',
+                    pricePerKm: undefined,
+                },
                 {
                     distanceFrom: '2',
                     distanceTo: 'Max',
