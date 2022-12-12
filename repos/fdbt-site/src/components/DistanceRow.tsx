@@ -113,119 +113,36 @@ export const renderTable = (
                     </FormGroupWrapper>
                 </div>
                 <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
-                    {index === 0 ? (
-                        <FormGroupWrapper
-                            errors={errors}
-                            errorIds={[`cap-pricing-per-distance-minimum-price-${index}`]}
-                            hideErrorBar
-                        >
-                            <>
-                                <>
-                                    <label className="govuk-label" htmlFor="minimum-price">
-                                        Minimum price
-                                    </label>
-
-                                    <span className="govuk-hint" id={`minimum-price-hint-${index}`}>
-                                        e.g. 2.99
-                                    </span>
-                                </>
-                                <div className="govuk-input__wrapper">
-                                    <div className="govuk-input__prefix" aria-hidden="true">
-                                        £
-                                    </div>
-                                    <input
-                                        className="govuk-input govuk-input--width-5"
-                                        id={`minimum-price-${index}`}
-                                        name={`minimumPrice${index}`}
-                                        type="text"
-                                        spellCheck="false"
-                                        onChange={(e) => {
-                                            setCapPricingPerDistanceData({
-                                                ...capPricingPerDistanceData,
-                                                [`minimumPrice${index}`]: e.target.value,
-                                            });
-                                        }}
-                                        value={capPricingPerDistanceData[`minimumPrice${index}`] || ''}
-                                    />
+                    <FormGroupWrapper
+                        errors={errors}
+                        errorIds={[`cap-pricing-per-distance-price-${index}`]}
+                        hideErrorBar
+                    >
+                        <>
+                            <label className="govuk-label" htmlFor={`price-per-km-${index}`}>
+                                Price per km
+                            </label>
+                            <div className="govuk-input__wrapper">
+                                <div className="govuk-input__prefix" aria-hidden="true">
+                                    £
                                 </div>
-                            </>
-                        </FormGroupWrapper>
-                    ) : (
-                        <div className="govuk-!-margin-right-2">
-                            <FormGroupWrapper
-                                errors={errors}
-                                errorIds={[`cap-pricing-per-distance-price-${index}`]}
-                                hideErrorBar
-                            >
-                                <>
-                                    <label className="govuk-label" htmlFor={`price-per-km-${index}`}>
-                                        {index === 1 ? 'Price per km' : 'Price'}
-                                    </label>
-                                    <div className="govuk-input__wrapper">
-                                        <div className="govuk-input__prefix" aria-hidden="true">
-                                            £
-                                        </div>
-                                        <input
-                                            className="govuk-input govuk-input--width-5"
-                                            id={`price-per-km-${index}`}
-                                            name={`pricePerKm${index}`}
-                                            type="text"
-                                            spellCheck="false"
-                                            onChange={(e) => {
-                                                setCapPricingPerDistanceData({
-                                                    ...capPricingPerDistanceData,
-                                                    [`pricePerKm${index}`]: e.target.value,
-                                                });
-                                            }}
-                                            value={capPricingPerDistanceData[`pricePerKm${index}`] || ''}
-                                        />
-                                    </div>
-                                </>
-                            </FormGroupWrapper>
-                        </div>
-                    )}
-                </div>
-                <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
-                    {index === 0 ? (
-                        <FormGroupWrapper
-                            errors={errors}
-                            errorIds={[`cap-pricing-per-distance-maximum-price-${index}`]}
-                            hideErrorBar
-                        >
-                            <>
-                                <>
-                                    <label className="govuk-label" htmlFor={`maximum-price-${index}`}>
-                                        Maximum price
-                                    </label>
-
-                                    <span className="govuk-hint" id={`maximum-price-hint-${index}`}>
-                                        e.g. 2.99
-                                    </span>
-                                </>
-                                <div className="govuk-input__wrapper">
-                                    <div className="govuk-input__prefix" aria-hidden="true">
-                                        £
-                                    </div>
-                                    <input
-                                        className="govuk-input govuk-input--width-5"
-                                        id={`maximum-price-${index}`}
-                                        name={`maximumPrice${index}`}
-                                        type="text"
-                                        spellCheck="false"
-                                        onChange={(e) => {
-                                            setCapPricingPerDistanceData({
-                                                ...capPricingPerDistanceData,
-                                                [`maximumPrice${index}`]: e.target.value,
-                                            });
-                                        }}
-                                        value={capPricingPerDistanceData[`maximumPrice${index}`] || ''}
-                                    />
-                                </div>
-                            </>
-                        </FormGroupWrapper>
-                    ) : (
-                        ''
-                    )}
+                                <input
+                                    className="govuk-input govuk-input--width-5"
+                                    id={`price-per-km-${index}`}
+                                    name={`pricePerKm${index}`}
+                                    type="text"
+                                    spellCheck="false"
+                                    onChange={(e) => {
+                                        setCapPricingPerDistanceData({
+                                            ...capPricingPerDistanceData,
+                                            [`pricePerKm${index}`]: e.target.value,
+                                        });
+                                    }}
+                                    value={capPricingPerDistanceData[`pricePerKm${index}`] || ''}
+                                />
+                            </div>
+                        </>
+                    </FormGroupWrapper>
                 </div>
             </div>
         </fieldset>

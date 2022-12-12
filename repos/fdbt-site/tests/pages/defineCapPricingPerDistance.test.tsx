@@ -22,7 +22,7 @@ describe('pages', () => {
                     errors={[
                         {
                             id: `distance-to-0`,
-                            errorMessage: 'Distance to must be defined and a number',
+                            errorMessage: 'Distance to is required and needs to be number',
                         },
                     ]}
                     csrfToken=""
@@ -30,9 +30,10 @@ describe('pages', () => {
                         distanceFrom0: '0',
                         distanceFrom1: '3',
                         distanceTo0: '',
-                        maximumPrice0: '4',
-                        minimumPrice0: '3',
+                        maximumPrice: '4',
+                        minimumPrice: '3',
                         pricePerKm1: '5',
+                        pricePerKm0: '5',
                     }}
                     numberOfCapInitial={2}
                 />,

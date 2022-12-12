@@ -1,12 +1,13 @@
 import React, { ReactElement, useState } from 'react';
 import { FullColumnLayout } from '../layout/Layout';
 import DistanceRow from '../components/DistanceRow';
-import { CapPricePerDistances, CapPricingPerDistanceData, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { CapPricingPerDistanceData, DistanceCap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../../src/utils/sessions';
 import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../src/constants/attributes';
+import { FormGroupWrapper } from '../../src/components/FormElementWrapper';
 
 const title = 'Cap Pricing Per Distance - Create Fares Data Service';
 const description = 'Cap Pricing Per Distance entry page of the Create Fares Data Service';
@@ -38,6 +39,85 @@ const DefineCapPricingPerDistance = ({
                     <h1 className="govuk-heading-l" id="cap-pricing-per-distance-heading">
                         Enter your distance cap details
                     </h1>
+                    <div className="flex-container">
+                        <div className="govuk-!-margin-left-1 govuk-!-margin-right-2">
+                            <FormGroupWrapper
+                                errors={errors}
+                                errorIds={[`cap-pricing-per-distance-minimum-price`]}
+                                hideErrorBar
+                            >
+                                <>
+                                    <>
+                                        <label className="govuk-label" htmlFor="minimum-price">
+                                            Minimum price
+                                        </label>
+
+                                        <span className="govuk-hint" id={`minimum-price-hint`}>
+                                            e.g. £2.99
+                                        </span>
+                                    </>
+                                    <div className="govuk-input__wrapper">
+                                        <div className="govuk-input__prefix" aria-hidden="true">
+                                            £
+                                        </div>
+                                        <input
+                                            className="govuk-input govuk-input--width-5"
+                                            id={`minimum-price`}
+                                            name={`minimumPrice`}
+                                            type="text"
+                                            spellCheck="false"
+                                            onChange={(e) => {
+                                                setCapPricingPerDistanceData({
+                                                    ...capPricingPerDistanceData,
+                                                    [`minimumPrice`]: e.target.value,
+                                                });
+                                            }}
+                                            value={capPricingPerDistanceData[`minimumPrice`] || ''}
+                                        />
+                                    </div>
+                                </>
+                            </FormGroupWrapper>
+                        </div>
+
+                        <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
+                            <FormGroupWrapper
+                                errors={errors}
+                                errorIds={[`cap-pricing-per-distance-maximum-price`]}
+                                hideErrorBar
+                            >
+                                <>
+                                    <>
+                                        <label className="govuk-label" htmlFor={`maximum-price`}>
+                                            Maximum price
+                                        </label>
+
+                                        <span className="govuk-hint" id={`maximum-price-hint`}>
+                                            e.g. £2.99
+                                        </span>
+                                    </>
+                                    <div className="govuk-input__wrapper">
+                                        <div className="govuk-input__prefix" aria-hidden="true">
+                                            £
+                                        </div>
+                                        <input
+                                            className="govuk-input govuk-input--width-5"
+                                            id={`maximum-price`}
+                                            name={`maximumPrice`}
+                                            type="text"
+                                            spellCheck="false"
+                                            onChange={(e) => {
+                                                setCapPricingPerDistanceData({
+                                                    ...capPricingPerDistanceData,
+                                                    [`maximumPrice`]: e.target.value,
+                                                });
+                                            }}
+                                            value={capPricingPerDistanceData[`maximumPrice`] || ''}
+                                        />
+                                    </div>
+                                </>
+                            </FormGroupWrapper>
+                        </div>
+                    </div>
                     <div className="govuk-grid-row">
                         <DistanceRow
                             numberOfCapToDisplay={numberOfCap}
@@ -60,7 +140,7 @@ const DefineCapPricingPerDistance = ({
                                         });
                                     }}
                                 >
-                                    Add another product
+                                    Add another row
                                 </button>
                             ) : (
                                 ''
@@ -82,7 +162,7 @@ const DefineCapPricingPerDistance = ({
                                         setNumberOfProducts(numberOfCap - 1);
                                     }}
                                 >
-                                    Remove last product
+                                    Remove last row
                                 </button>
                             ) : (
                                 ''
@@ -103,33 +183,27 @@ const DefineCapPricingPerDistance = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefineCapPricingPerDistanceProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const capPricePerDistances: CapPricePerDistances[] = getSessionAttribute(
-        ctx.req,
-        CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
-    )?.capPricePerDistances as CapPricePerDistances[];
+    const capPricePerDistances: DistanceCap = getSessionAttribute(ctx.req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE)
+        ?.capPricePerDistances as DistanceCap;
+
     const finalCapPricePerDistances: CapPricingPerDistanceData = { distanceFrom0: '0' };
     let numberOfCap = 0;
 
-    if (capPricePerDistances) {
-        for (let i = 0; i < capPricePerDistances.length; i++) {
+    if (capPricePerDistances && capPricePerDistances.capPricing) {
+        for (let i = 0; i < capPricePerDistances.capPricing.length; i++) {
             let capDetails = {};
-            if (i === 0) {
-                capDetails = {
-                    [`distanceFrom0`]: capPricePerDistances[i].distanceFrom,
-                    [`distanceTo0`]: capPricePerDistances[i].distanceTo,
-                    [`minimumPrice0`]: capPricePerDistances[i].minimumPrice,
-                    [`maximumPrice0`]: capPricePerDistances[i].maximumPrice,
-                };
-            } else {
-                capDetails = {
-                    [`distanceFrom${i}`]: capPricePerDistances[i].distanceFrom,
-                    [`distanceTo${i}`]: capPricePerDistances[i].distanceTo,
-                    [`pricePerKm${i}`]: capPricePerDistances[i].pricePerKm,
-                };
-            }
+            capDetails = {
+                [`distanceFrom${i}`]: capPricePerDistances.capPricing[i].distanceFrom,
+                [`distanceTo${i}`]: capPricePerDistances.capPricing[i].distanceTo,
+                [`pricePerKm${i}`]: capPricePerDistances.capPricing[i].pricePerKm,
+            };
             Object.assign(finalCapPricePerDistances, capDetails);
             numberOfCap += 1;
         }
+        Object.assign(finalCapPricePerDistances, {
+            minimumPrice: capPricePerDistances.minimumPrice,
+            maximumPrice: capPricePerDistances.maximumPrice,
+        });
     }
     return {
         props: {

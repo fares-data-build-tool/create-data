@@ -738,12 +738,23 @@ export interface Cap {
 export interface CapPricePerDistances {
     distanceFrom: string;
     distanceTo: string;
-    minimumPrice?: string;
-    maximumPrice?: string;
-    pricePerKm?: string;
+    minimumPrice: string;
+    maximumPrice: string;
+    pricePerKm: string;
 }
 
 export interface CapPricingPerDistanceData {
     [key: string]: string;
     distanceFrom0: string;
+}
+export interface CapDistancePricing {
+    distanceFrom: string;
+    distanceTo: string;
+    pricePerKm: string;
+}
+
+export interface DistanceCap {
+    maximumPrice: string;
+    minimumPrice: string;
+    capPricing: CapDistancePricing[];
 }

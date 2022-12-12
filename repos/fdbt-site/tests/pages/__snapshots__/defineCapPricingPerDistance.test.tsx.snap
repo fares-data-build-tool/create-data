@@ -21,6 +21,100 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
       Enter your distance cap details
     </h1>
     <div
+      className="flex-container"
+    >
+      <div
+        className="govuk-!-margin-left-1 govuk-!-margin-right-2"
+      >
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "cap-pricing-per-distance-minimum-price",
+            ]
+          }
+          errors={Array []}
+          hideErrorBar={true}
+        >
+          <label
+            className="govuk-label"
+            htmlFor="minimum-price"
+          >
+            Minimum price
+          </label>
+          <span
+            className="govuk-hint"
+            id="minimum-price-hint"
+          >
+            e.g. £2.99
+          </span>
+          <div
+            className="govuk-input__wrapper"
+          >
+            <div
+              aria-hidden="true"
+              className="govuk-input__prefix"
+            >
+              £
+            </div>
+            <input
+              className="govuk-input govuk-input--width-5"
+              id="minimum-price"
+              name="minimumPrice"
+              onChange={[Function]}
+              spellCheck="false"
+              type="text"
+              value=""
+            />
+          </div>
+        </FormGroupWrapper>
+      </div>
+      <div
+        className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+      >
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "cap-pricing-per-distance-maximum-price",
+            ]
+          }
+          errors={Array []}
+          hideErrorBar={true}
+        >
+          <label
+            className="govuk-label"
+            htmlFor="maximum-price"
+          >
+            Maximum price
+          </label>
+          <span
+            className="govuk-hint"
+            id="maximum-price-hint"
+          >
+            e.g. £2.99
+          </span>
+          <div
+            className="govuk-input__wrapper"
+          >
+            <div
+              aria-hidden="true"
+              className="govuk-input__prefix"
+            >
+              £
+            </div>
+            <input
+              className="govuk-input govuk-input--width-5"
+              id="maximum-price"
+              name="maximumPrice"
+              onChange={[Function]}
+              spellCheck="false"
+              type="text"
+              value=""
+            />
+          </div>
+        </FormGroupWrapper>
+      </div>
+    </div>
+    <div
       className="govuk-grid-row"
     >
       <DistanceRow
@@ -43,7 +137,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
           onClick={[Function]}
           type="button"
         >
-          Add another product
+          Add another row
         </button>
       </div>
       <input
@@ -63,7 +157,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
   errors={
     Array [
       Object {
-        "errorMessage": "Distance to must be defined and a number",
+        "errorMessage": "Distance to is required and needs to be number",
         "id": "distance-to-0",
       },
     ]
@@ -79,7 +173,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
       errors={
         Array [
           Object {
-            "errorMessage": "Distance to must be defined and a number",
+            "errorMessage": "Distance to is required and needs to be number",
             "id": "distance-to-0",
           },
         ]
@@ -92,6 +186,114 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
       Enter your distance cap details
     </h1>
     <div
+      className="flex-container"
+    >
+      <div
+        className="govuk-!-margin-left-1 govuk-!-margin-right-2"
+      >
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "cap-pricing-per-distance-minimum-price",
+            ]
+          }
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Distance to is required and needs to be number",
+                "id": "distance-to-0",
+              },
+            ]
+          }
+          hideErrorBar={true}
+        >
+          <label
+            className="govuk-label"
+            htmlFor="minimum-price"
+          >
+            Minimum price
+          </label>
+          <span
+            className="govuk-hint"
+            id="minimum-price-hint"
+          >
+            e.g. £2.99
+          </span>
+          <div
+            className="govuk-input__wrapper"
+          >
+            <div
+              aria-hidden="true"
+              className="govuk-input__prefix"
+            >
+              £
+            </div>
+            <input
+              className="govuk-input govuk-input--width-5"
+              id="minimum-price"
+              name="minimumPrice"
+              onChange={[Function]}
+              spellCheck="false"
+              type="text"
+              value="3"
+            />
+          </div>
+        </FormGroupWrapper>
+      </div>
+      <div
+        className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+      >
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "cap-pricing-per-distance-maximum-price",
+            ]
+          }
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Distance to is required and needs to be number",
+                "id": "distance-to-0",
+              },
+            ]
+          }
+          hideErrorBar={true}
+        >
+          <label
+            className="govuk-label"
+            htmlFor="maximum-price"
+          >
+            Maximum price
+          </label>
+          <span
+            className="govuk-hint"
+            id="maximum-price-hint"
+          >
+            e.g. £2.99
+          </span>
+          <div
+            className="govuk-input__wrapper"
+          >
+            <div
+              aria-hidden="true"
+              className="govuk-input__prefix"
+            >
+              £
+            </div>
+            <input
+              className="govuk-input govuk-input--width-5"
+              id="maximum-price"
+              name="maximumPrice"
+              onChange={[Function]}
+              spellCheck="false"
+              type="text"
+              value="4"
+            />
+          </div>
+        </FormGroupWrapper>
+      </div>
+    </div>
+    <div
       className="govuk-grid-row"
     >
       <DistanceRow
@@ -101,15 +303,16 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
             "distanceFrom1": "3",
             "distanceTo0": "",
             "distanceTo1": "Max",
-            "maximumPrice0": "4",
-            "minimumPrice0": "3",
+            "maximumPrice": "4",
+            "minimumPrice": "3",
+            "pricePerKm0": "5",
             "pricePerKm1": "5",
           }
         }
         errors={
           Array [
             Object {
-              "errorMessage": "Distance to must be defined and a number",
+              "errorMessage": "Distance to is required and needs to be number",
               "id": "distance-to-0",
             },
           ]
@@ -126,7 +329,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
           onClick={[Function]}
           type="button"
         >
-          Add another product
+          Add another row
         </button>
         <button
           className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3"
@@ -134,7 +337,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
           onClick={[Function]}
           type="button"
         >
-          Remove last product
+          Remove last row
         </button>
       </div>
       <input

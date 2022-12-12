@@ -1,46 +1,74 @@
+import { startCase } from 'lodash';
 import { NextApiResponse } from 'next';
 import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../../src/constants/attributes';
 import { redirectTo } from '../../../src/utils/apiUtils';
-import { isValidNumber } from '../../../src/utils/apiUtils/validator';
+import { isCurrency, isValidNumber } from '../../../src/utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../../src/utils/sessions';
-import { CapPricePerDistances, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { CapDistancePricing, DistanceCap, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export const validateInput = (capPricePerDistances: CapPricePerDistances[], lastIndex: number): ErrorInfo[] => {
+export const checkInputIsValid = (inputtedValue: string | undefined, inputType: string): string => {
+    let error;
+
+    if (!inputtedValue) {
+        error = `${startCase(inputType)} cannot be empty`;
+    } else if (Math.sign(Number(inputtedValue)) === -1) {
+        error = 'This must be a positive number';
+    } else if (!isCurrency(inputtedValue)) {
+        error = 'This must be a valid price in pounds and pence';
+    }
+
+    if (error) {
+        return error;
+    }
+
+    return '';
+};
+
+export const validateInput = (
+    capPricePerDistances: CapDistancePricing[],
+    lastIndex: number,
+    minimumPrice: string,
+    maximumPrice: string,
+): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
+    const minimumPriceError = checkInputIsValid(minimumPrice, 'Minimum price');
+    if (minimumPriceError) {
+        errors.push({
+            id: `minimum-price`,
+            errorMessage: minimumPriceError,
+        });
+    }
+    const maximumPriceError = checkInputIsValid(maximumPrice, 'Maximum price');
+    if (maximumPriceError) {
+        errors.push({
+            id: `maximum-price`,
+            errorMessage: maximumPriceError,
+        });
+    }
     capPricePerDistances.forEach((cap, index: number) => {
-        const { distanceFrom, minimumPrice, maximumPrice, distanceTo, pricePerKm } = cap;
+        const { distanceFrom, distanceTo, pricePerKm } = cap;
+
         if (lastIndex !== index) {
             if (!distanceTo || !isValidNumber(Number(distanceTo))) {
                 errors.push({
                     id: `distance-to-${index}`,
-                    errorMessage: 'Distance to must be defined and a number',
+                    errorMessage: 'Distance to is required and needs to be number',
                 });
             }
         }
-        if (index === 0) {
-            if (!minimumPrice || !isValidNumber(Number(minimumPrice))) {
-                errors.push({
-                    id: `minimum-price-${index}`,
-                    errorMessage: 'Minimum price to must be defined and a number',
-                });
-            }
-            if (!maximumPrice || !isValidNumber(Number(maximumPrice))) {
-                errors.push({
-                    id: `maximum-price-${index}`,
-                    errorMessage: 'Maximum price to must be defined and a number',
-                });
-            }
-        } else {
-            if (!pricePerKm || !isValidNumber(Number(pricePerKm))) {
-                errors.push({
-                    id: `price-per-km-${index}`,
-                    errorMessage: 'Price per km price to must be defined and a number',
-                });
-            }
+
+        const pricePerKmError = checkInputIsValid(pricePerKm, 'Price per km');
+        if (pricePerKmError) {
+            errors.push({
+                id: `price-per-km-${index}`,
+                errorMessage: pricePerKmError,
+            });
+        }
+        if (index !== 0) {
             if (!distanceFrom || !isValidNumber(Number(distanceFrom))) {
                 errors.push({
                     id: `distance-from-${index}`,
-                    errorMessage: 'Distance from must be defined and a number',
+                    errorMessage: 'Distance from is required and needs to be number',
                 });
             }
         }
@@ -50,21 +78,19 @@ export const validateInput = (capPricePerDistances: CapPricePerDistances[], last
 };
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
-    const capPricePerDistances: CapPricePerDistances[] = [];
+    const capPricePerDistances: CapDistancePricing[] = [];
     let i = 0;
     let errors: ErrorInfo[] = [];
+    const minimumPrice = req.body[`minimumPrice`];
+    const maximumPrice = req.body[`maximumPrice`];
 
-    while (req.body[`pricePerKm${i}`] !== undefined || req.body[`minimumPrice${i}`] !== undefined) {
+    while (req.body[`pricePerKm${i}`] !== undefined) {
         const distanceFrom = req.body[`distanceFrom${i}`];
         const distanceTo = req.body[`distanceTo${i}`];
-        const minimumPrice = req.body[`minimumPrice${i}`];
-        const maximumPrice = req.body[`maximumPrice${i}`];
         const pricePerKm = req.body[`pricePerKm${i}`];
         const capPricingPerDistance = {
             distanceFrom,
             distanceTo,
-            minimumPrice,
-            maximumPrice,
             pricePerKm,
         };
         capPricePerDistances.push(capPricingPerDistance);
@@ -72,18 +98,22 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     }
     capPricePerDistances[0] = { ...capPricePerDistances[0], distanceFrom: '0' };
     capPricePerDistances[i - 1] = { ...capPricePerDistances[i - 1], distanceTo: 'Max' };
-    errors = validateInput(capPricePerDistances, i - 1);
+    errors = validateInput(capPricePerDistances, i - 1, minimumPrice, maximumPrice);
+    const capDistance: DistanceCap = { maximumPrice, minimumPrice, capPricing: capPricePerDistances };
     if (errors.length > 0) {
-        updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, { errors, capPricePerDistances });
+        updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
+            errors,
+            capPricePerDistances: capDistance,
+        });
         redirectTo(res, '/defineCapPricingPerDistance');
         return;
     }
 
-    updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, { capPricePerDistances, errors: [] });
+    updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, { capPricePerDistances: capDistance, errors: [] });
 
     updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
         errors: [{ id: '', errorMessage: 'Next page to be made soon!' }],
-        capPricePerDistances,
+        capPricePerDistances: capDistance,
     });
     redirectTo(res, '/defineCapPricingPerDistance');
     return;
