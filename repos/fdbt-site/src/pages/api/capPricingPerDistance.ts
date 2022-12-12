@@ -1,12 +1,9 @@
 import { NextApiResponse } from 'next';
 import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../../src/constants/attributes';
 import { redirectTo } from '../../../src/utils/apiUtils';
+import { isValidNumber } from '../../../src/utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../../src/utils/sessions';
 import { CapPricePerDistances, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-
-export const isValidNumber = (n: number | string): boolean => {
-    return (Number(n) === n && n % 1 === 0) || (Number(n) === n && n % 1 !== 0);
-};
 
 export const validateInput = (capPricePerDistances: CapPricePerDistances[], lastIndex: number): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
@@ -52,23 +49,8 @@ export const validateInput = (capPricePerDistances: CapPricePerDistances[], last
     return errors;
 };
 
-export const roundAllDistances = (capPricePerDistances: CapPricePerDistances[]): CapPricePerDistances[] => {
-    let roundedDistances: CapPricePerDistances[] = [];
-    roundedDistances = capPricePerDistances.map((cap) => {
-        const { distanceFrom, minimumPrice, maximumPrice, distanceTo, pricePerKm } = cap;
-        return {
-            distanceFrom: distanceFrom === '0' ? '0' : parseFloat(distanceFrom).toFixed(2).toString(),
-            distanceTo: distanceTo === 'Max' ? 'Max' : parseFloat(distanceTo).toFixed(2).toString(),
-            minimumPrice: minimumPrice ? parseFloat(minimumPrice).toFixed(2).toString() : undefined,
-            maximumPrice: maximumPrice ? parseFloat(maximumPrice).toFixed(2).toString() : undefined,
-            pricePerKm: pricePerKm ? parseFloat(pricePerKm).toFixed(2).toString() : undefined,
-        };
-    });
-    return roundedDistances;
-};
-
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
-    let capPricePerDistances: CapPricePerDistances[] = [];
+    const capPricePerDistances: CapPricePerDistances[] = [];
     let i = 0;
     let errors: ErrorInfo[] = [];
 
@@ -96,7 +78,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         redirectTo(res, '/defineCapPricingPerDistance');
         return;
     }
-    capPricePerDistances = roundAllDistances(capPricePerDistances);
+
     updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, { capPricePerDistances, errors: [] });
 
     updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
