@@ -8,19 +8,20 @@ import { getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../../src/utils/sessions';
 import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../src/constants/attributes';
 import { FormGroupWrapper } from '../../src/components/FormElementWrapper';
+import { isWithErrors } from '../../src/interfaces/typeGuards';
 
 const title = 'Cap Pricing Per Distance - Create Fares Data Service';
 const description = 'Cap Pricing Per Distance entry page of the Create Fares Data Service';
 
 interface DefineCapPricingPerDistanceProps {
-    errors?: ErrorInfo[];
+    errors: ErrorInfo[];
     csrfToken: string;
     capPricePerDistances: DistanceCap;
     numberOfCapInitial: number;
 }
 
 const DefineCapPricingPerDistance = ({
-    errors = [],
+    errors,
     csrfToken,
     capPricePerDistances,
     numberOfCapInitial,
@@ -44,15 +45,12 @@ const DefineCapPricingPerDistance = ({
                                 hideErrorBar
                             >
                                 <>
-                                    <>
-                                        <label className="govuk-label" htmlFor="minimum-price">
-                                            Minimum price(£)
-                                        </label>
-
-                                        <span className="govuk-hint" id={`minimum-price-hint`}>
-                                            e.g. £2.99
-                                        </span>
-                                    </>
+                                    <label className="govuk-label" htmlFor="minimum-price">
+                                        Minimum price(£)
+                                    </label>
+                                    <span className="govuk-hint" id={`minimum-price-hint`}>
+                                        e.g. £2.99
+                                    </span>
                                     <div className="govuk-input__wrapper">
                                         <div className="govuk-input__prefix" aria-hidden="true">
                                             £
@@ -186,7 +184,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
     );
     let errors: ErrorInfo[] = [];
-    if (capPricePerDistances && 'errors' in capPricePerDistances) {
+    if (capPricePerDistances && isWithErrors(capPricePerDistances)) {
         errors = capPricePerDistances.errors;
     }
 

@@ -1,4 +1,3 @@
-import { startCase } from 'lodash';
 import { NextApiResponse } from 'next';
 import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../../src/constants/attributes';
 import { redirectTo } from '../../../src/utils/apiUtils';
@@ -6,13 +5,13 @@ import { isCurrency, isValidNumber } from '../../../src/utils/apiUtils/validator
 import { updateSessionAttribute } from '../../../src/utils/sessions';
 import { CapDistancePricing, DistanceCap, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export const checkInputIsValid = (inputtedValue: string | undefined, inputType: string): string => {
+export const checkInputIsValid = (inputtedValue: string | undefined): string => {
     let error;
 
     if (!inputtedValue) {
-        error = `${startCase(inputType)} cannot be empty`;
+        error = `Enter a price for the distance`;
     } else if (Math.sign(Number(inputtedValue)) === -1) {
-        error = 'This must be a positive number';
+        error = 'Prices cannot be negative numbers';
     } else if (!isCurrency(inputtedValue)) {
         error = 'This must be a valid price in pounds and pence';
     }
@@ -31,14 +30,14 @@ export const validateInput = (
     maximumPrice: string,
 ): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
-    const minimumPriceError = checkInputIsValid(minimumPrice, 'Minimum price');
+    const minimumPriceError = checkInputIsValid(minimumPrice);
     if (minimumPriceError) {
         errors.push({
             id: `minimum-price`,
             errorMessage: minimumPriceError,
         });
     }
-    const maximumPriceError = checkInputIsValid(maximumPrice, 'Maximum price');
+    const maximumPriceError = checkInputIsValid(maximumPrice);
     if (maximumPriceError) {
         errors.push({
             id: `maximum-price`,
@@ -57,7 +56,7 @@ export const validateInput = (
             }
         }
 
-        const pricePerKmError = checkInputIsValid(pricePerKm, 'Price per km');
+        const pricePerKmError = checkInputIsValid(pricePerKm);
         if (pricePerKmError) {
             errors.push({
                 id: `price-per-km-${index}`,

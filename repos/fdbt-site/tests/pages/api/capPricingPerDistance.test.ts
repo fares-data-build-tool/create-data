@@ -129,7 +129,7 @@ describe('capPricingPerDistance', () => {
         const errors: ErrorInfo[] = [
             {
                 id: `maximum-price`,
-                errorMessage: 'Maximum Price cannot be empty',
+                errorMessage: 'Enter a price for the distance',
             },
         ];
 
@@ -169,7 +169,7 @@ describe('capPricingPerDistance', () => {
         const errors: ErrorInfo[] = [
             {
                 id: `minimum-price`,
-                errorMessage: 'Minimum Price cannot be empty',
+                errorMessage: 'Enter a price for the distance',
             },
         ];
 
@@ -209,7 +209,7 @@ describe('capPricingPerDistance', () => {
         const errors: ErrorInfo[] = [
             {
                 id: `price-per-km-1`,
-                errorMessage: 'Price Per Km cannot be empty',
+                errorMessage: 'Enter a price for the distance',
             },
         ];
 
