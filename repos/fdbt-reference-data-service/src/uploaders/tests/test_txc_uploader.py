@@ -24,7 +24,7 @@ mock_invalid_data_dict = test_xml_helpers.generate_mock_invalid_data_dict()
 
 class TestLineIdGeneration:
     def test_function_returns_correctly_structured_line_id(self):
-        assert(create_unique_line_id("BLAC", "UNIQ123")) == "UZ0000BLAC:BLACUNIQ123"
+        assert(create_unique_line_id("BLAC", "UNIQ123")) == "UZ000BLAC:BLACUNIQ123"
 
 class TestNonBusFileHasUsableData:
     def test_non_bus_file_with_valid_data_is_usable(self):
