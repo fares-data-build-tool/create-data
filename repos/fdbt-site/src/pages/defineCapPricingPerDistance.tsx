@@ -7,7 +7,7 @@ import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../../src/utils/sessions';
 import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../src/constants/attributes';
-import { FormGroupWrapper } from '../../src/components/FormElementWrapper';
+import FormElementWrapper, { FormGroupWrapper } from '../../src/components/FormElementWrapper';
 import { isWithErrors } from '../../src/interfaces/typeGuards';
 
 const title = 'Cap Pricing Per Distance - Create Fares Data Service';
@@ -39,11 +39,7 @@ const DefineCapPricingPerDistance = ({
                     </h1>
                     <div className="flex-container">
                         <div className="govuk-!-margin-left-1 govuk-!-margin-right-2">
-                            <FormGroupWrapper
-                                errors={errors}
-                                errorIds={[`cap-pricing-per-distance-minimum-price`]}
-                                hideErrorBar
-                            >
+                            <FormGroupWrapper errors={errors} errorIds={[`minimum-price`]} hideErrorBar>
                                 <>
                                     <label className="govuk-label" htmlFor="minimum-price">
                                         Minimum price(£)
@@ -55,57 +51,68 @@ const DefineCapPricingPerDistance = ({
                                         <div className="govuk-input__prefix" aria-hidden="true">
                                             £
                                         </div>
-                                        <input
-                                            className="govuk-input govuk-input--width-5"
-                                            id={`minimum-price`}
-                                            name={`minimumPrice`}
-                                            type="text"
-                                            onChange={(e) => {
-                                                setCapPricingPerDistanceData({
-                                                    ...capPricingPerDistanceData,
-                                                    minimumPrice: e.target.value,
-                                                });
-                                            }}
-                                            value={capPricingPerDistanceData.minimumPrice || ''}
-                                        />
+                                        <FormElementWrapper
+                                            errors={errors}
+                                            errorId={'minimum-price'}
+                                            errorClass="govuk-input--error"
+                                            hideText
+                                            addFormGroupError={false}
+                                        >
+                                            <input
+                                                className="govuk-input govuk-input--width-5"
+                                                id={`minimum-price`}
+                                                name={`minimumPrice`}
+                                                type="text"
+                                                onChange={(e) => {
+                                                    setCapPricingPerDistanceData({
+                                                        ...capPricingPerDistanceData,
+                                                        minimumPrice: e.target.value,
+                                                    });
+                                                }}
+                                                value={capPricingPerDistanceData.minimumPrice || ''}
+                                            />
+                                        </FormElementWrapper>
                                     </div>
                                 </>
                             </FormGroupWrapper>
                         </div>
 
                         <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
-                            <FormGroupWrapper
-                                errors={errors}
-                                errorIds={[`cap-pricing-per-distance-maximum-price`]}
-                                hideErrorBar
-                            >
+                            <FormGroupWrapper errors={errors} errorIds={[`maximum-price`]} hideErrorBar>
                                 <>
-                                    <>
-                                        <label className="govuk-label" htmlFor={`maximum-price`}>
-                                            Maximum price(£)
-                                        </label>
+                                    <label className="govuk-label" htmlFor={`maximum-price`}>
+                                        Maximum price(£)
+                                    </label>
 
-                                        <span className="govuk-hint" id={`maximum-price-hint`}>
-                                            e.g. £2.99
-                                        </span>
-                                    </>
+                                    <span className="govuk-hint" id={`maximum-price-hint`}>
+                                        e.g. £2.99
+                                    </span>
+
                                     <div className="govuk-input__wrapper">
                                         <div className="govuk-input__prefix" aria-hidden="true">
                                             £
                                         </div>
-                                        <input
-                                            className="govuk-input govuk-input--width-5"
-                                            id={`maximum-price`}
-                                            name={`maximumPrice`}
-                                            type="text"
-                                            onChange={(e) => {
-                                                setCapPricingPerDistanceData({
-                                                    ...capPricingPerDistanceData,
-                                                    maximumPrice: e.target.value,
-                                                });
-                                            }}
-                                            value={capPricingPerDistanceData.maximumPrice || ''}
-                                        />
+                                        <FormElementWrapper
+                                            errors={errors}
+                                            errorId={'maximum-price'}
+                                            errorClass="govuk-input--error"
+                                            hideText
+                                            addFormGroupError={false}
+                                        >
+                                            <input
+                                                className="govuk-input govuk-input--width-5"
+                                                id={`maximum-price`}
+                                                name={`maximumPrice`}
+                                                type="text"
+                                                onChange={(e) => {
+                                                    setCapPricingPerDistanceData({
+                                                        ...capPricingPerDistanceData,
+                                                        maximumPrice: e.target.value,
+                                                    });
+                                                }}
+                                                value={capPricingPerDistanceData.maximumPrice || ''}
+                                            />
+                                        </FormElementWrapper>
                                     </div>
                                 </>
                             </FormGroupWrapper>

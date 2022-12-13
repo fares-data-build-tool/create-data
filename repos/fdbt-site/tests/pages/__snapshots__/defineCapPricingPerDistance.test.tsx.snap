@@ -29,7 +29,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
         <FormGroupWrapper
           errorIds={
             Array [
-              "cap-pricing-per-distance-minimum-price",
+              "minimum-price",
             ]
           }
           errors={Array []}
@@ -56,14 +56,22 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
             >
               £
             </div>
-            <input
-              className="govuk-input govuk-input--width-5"
-              id="minimum-price"
-              name="minimumPrice"
-              onChange={[Function]}
-              type="text"
-              value="3"
-            />
+            <FormElementWrapper
+              addFormGroupError={false}
+              errorClass="govuk-input--error"
+              errorId="minimum-price"
+              errors={Array []}
+              hideText={true}
+            >
+              <input
+                className="govuk-input govuk-input--width-5"
+                id="minimum-price"
+                name="minimumPrice"
+                onChange={[Function]}
+                type="text"
+                value="3"
+              />
+            </FormElementWrapper>
           </div>
         </FormGroupWrapper>
       </div>
@@ -73,7 +81,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
         <FormGroupWrapper
           errorIds={
             Array [
-              "cap-pricing-per-distance-maximum-price",
+              "maximum-price",
             ]
           }
           errors={Array []}
@@ -100,14 +108,22 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
             >
               £
             </div>
-            <input
-              className="govuk-input govuk-input--width-5"
-              id="maximum-price"
-              name="maximumPrice"
-              onChange={[Function]}
-              type="text"
-              value="4"
-            />
+            <FormElementWrapper
+              addFormGroupError={false}
+              errorClass="govuk-input--error"
+              errorId="maximum-price"
+              errors={Array []}
+              hideText={true}
+            >
+              <input
+                className="govuk-input govuk-input--width-5"
+                id="maximum-price"
+                name="maximumPrice"
+                onChange={[Function]}
+                type="text"
+                value="4"
+              />
+            </FormElementWrapper>
           </div>
         </FormGroupWrapper>
       </div>
@@ -167,7 +183,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
   errors={
     Array [
       Object {
-        "errorMessage": "Distance to is required and needs to be number",
+        "errorMessage": "Enter a value for the distance",
         "id": "distance-to-0",
       },
     ]
@@ -183,7 +199,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
       errors={
         Array [
           Object {
-            "errorMessage": "Distance to is required and needs to be number",
+            "errorMessage": "Enter a value for the distance",
             "id": "distance-to-0",
           },
         ]
@@ -204,13 +220,13 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
         <FormGroupWrapper
           errorIds={
             Array [
-              "cap-pricing-per-distance-minimum-price",
+              "minimum-price",
             ]
           }
           errors={
             Array [
               Object {
-                "errorMessage": "Distance to is required and needs to be number",
+                "errorMessage": "Enter a value for the distance",
                 "id": "distance-to-0",
               },
             ]
@@ -238,14 +254,29 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
             >
               £
             </div>
-            <input
-              className="govuk-input govuk-input--width-5"
-              id="minimum-price"
-              name="minimumPrice"
-              onChange={[Function]}
-              type="text"
-              value="3"
-            />
+            <FormElementWrapper
+              addFormGroupError={false}
+              errorClass="govuk-input--error"
+              errorId="minimum-price"
+              errors={
+                Array [
+                  Object {
+                    "errorMessage": "Enter a value for the distance",
+                    "id": "distance-to-0",
+                  },
+                ]
+              }
+              hideText={true}
+            >
+              <input
+                className="govuk-input govuk-input--width-5"
+                id="minimum-price"
+                name="minimumPrice"
+                onChange={[Function]}
+                type="text"
+                value="3"
+              />
+            </FormElementWrapper>
           </div>
         </FormGroupWrapper>
       </div>
@@ -255,13 +286,13 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
         <FormGroupWrapper
           errorIds={
             Array [
-              "cap-pricing-per-distance-maximum-price",
+              "maximum-price",
             ]
           }
           errors={
             Array [
               Object {
-                "errorMessage": "Distance to is required and needs to be number",
+                "errorMessage": "Enter a value for the distance",
                 "id": "distance-to-0",
               },
             ]
@@ -289,14 +320,29 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
             >
               £
             </div>
-            <input
-              className="govuk-input govuk-input--width-5"
-              id="maximum-price"
-              name="maximumPrice"
-              onChange={[Function]}
-              type="text"
-              value="4"
-            />
+            <FormElementWrapper
+              addFormGroupError={false}
+              errorClass="govuk-input--error"
+              errorId="maximum-price"
+              errors={
+                Array [
+                  Object {
+                    "errorMessage": "Enter a value for the distance",
+                    "id": "distance-to-0",
+                  },
+                ]
+              }
+              hideText={true}
+            >
+              <input
+                className="govuk-input govuk-input--width-5"
+                id="maximum-price"
+                name="maximumPrice"
+                onChange={[Function]}
+                type="text"
+                value="4"
+              />
+            </FormElementWrapper>
           </div>
         </FormGroupWrapper>
       </div>
@@ -326,7 +372,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
         errors={
           Array [
             Object {
-              "errorMessage": "Distance to is required and needs to be number",
+              "errorMessage": "Enter a value for the distance",
               "id": "distance-to-0",
             },
           ]

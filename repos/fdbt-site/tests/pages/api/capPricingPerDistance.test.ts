@@ -53,7 +53,7 @@ describe('capPricingPerDistance', () => {
         const errors: ErrorInfo[] = [
             {
                 id: `distance-to-0`,
-                errorMessage: 'Distance to is required and needs to be number',
+                errorMessage: 'Enter a value for the distance',
             },
         ];
 
@@ -93,7 +93,7 @@ describe('capPricingPerDistance', () => {
         const errors: ErrorInfo[] = [
             {
                 id: `distance-from-1`,
-                errorMessage: 'Distance from is required and needs to be number',
+                errorMessage: 'Enter a value for the distance',
             },
         ];
 
@@ -257,7 +257,7 @@ describe('validate input tests', () => {
             },
         ];
         const errorsResult: ErrorInfo[] = [
-            { id: `distance-from-1`, errorMessage: 'Distance from is required and needs to be number' },
+            { id: `distance-from-1`, errorMessage: 'Distances must be numbers to 2 decimal places' },
         ];
 
         const errors = validateInput(capPricePerDistances, 1, '3', '4');
@@ -279,7 +279,7 @@ describe('validate input tests', () => {
             },
         ];
         const errorsResult: ErrorInfo[] = [
-            { id: `distance-to-0`, errorMessage: 'Distance to is required and needs to be number' },
+            { id: `distance-to-0`, errorMessage: 'Distances must be numbers to 2 decimal places' },
         ];
 
         const errors = validateInput(capPricePerDistances, 1, '3', '4');

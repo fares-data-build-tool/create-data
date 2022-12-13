@@ -23,7 +23,7 @@ export const renderTable = (
             </legend>
             <div className="flex-container">
                 <div className="govuk-!-margin-left-4 govuk-!-margin-right-2">
-                    <FormGroupWrapper errors={errors} errorIds={[`cap-pricing-per-distance${index}`]} hideErrorBar>
+                    <FormGroupWrapper errors={errors} errorIds={[`distance-from-${index}`]} hideErrorBar>
                         <>
                             <label className="govuk-label" htmlFor={`distance-from-${index}`}>
                                 Distance from
@@ -36,14 +36,14 @@ export const renderTable = (
                                 ''
                             )}
 
-                            <FormElementWrapper
-                                errors={errors}
-                                errorId={`cap-pricing-per-distance-from-${index}`}
-                                errorClass="govuk-input--error"
-                                hideText
-                                addFormGroupError={false}
-                            >
-                                <div className="govuk-input__wrapper">
+                            <div className="govuk-input__wrapper">
+                                <FormElementWrapper
+                                    errors={errors}
+                                    errorId={`distance-from-${index}`}
+                                    errorClass="govuk-input--error"
+                                    hideText
+                                    addFormGroupError={false}
+                                >
                                     <input
                                         className="govuk-input govuk-input--width-5"
                                         id={`distance-from-${index}`}
@@ -66,16 +66,16 @@ export const renderTable = (
                                                 : capPricingPerDistanceData?.capPricing[index]?.distanceFrom || ''
                                         }
                                     />
-                                    <div className="govuk-input__suffix" aria-hidden="true">
-                                        km
-                                    </div>
+                                </FormElementWrapper>
+                                <div className="govuk-input__suffix" aria-hidden="true">
+                                    km
                                 </div>
-                            </FormElementWrapper>
+                            </div>
                         </>
                     </FormGroupWrapper>
                 </div>
                 <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
-                    <FormGroupWrapper errors={errors} errorIds={[`cap-pricing-per-distance-to-${index}`]} hideErrorBar>
+                    <FormGroupWrapper errors={errors} errorIds={[`distance-to-${index}`]} hideErrorBar>
                         <>
                             <label className="govuk-label" htmlFor={`distance-to-${index}`}>
                                 Distance to
@@ -89,28 +89,36 @@ export const renderTable = (
                             )}
 
                             <div className="govuk-input__wrapper">
-                                <input
-                                    className="govuk-input govuk-input--width-5"
-                                    id={`distance-to-${index}`}
-                                    name={`distanceTo${index}`}
-                                    type="text"
-                                    onChange={(e) => {
-                                        const items = [...capPricingPerDistanceData.capPricing];
-                                        const item = { ...capPricingPerDistanceData.capPricing[index] };
-                                        item.distanceTo = e.target.value;
-                                        items[index] = item;
-                                        setCapPricingPerDistanceData({
-                                            ...capPricingPerDistanceData,
-                                            capPricing: items,
-                                        });
-                                    }}
-                                    value={
-                                        index + 1 === numberOfRows
-                                            ? 'Max'
-                                            : capPricingPerDistanceData?.capPricing[index]?.distanceTo || ''
-                                    }
-                                    disabled={index + 1 === numberOfRows}
-                                />
+                                <FormElementWrapper
+                                    errors={errors}
+                                    errorId={`distance-to-${index}`}
+                                    errorClass="govuk-input--error"
+                                    hideText
+                                    addFormGroupError={false}
+                                >
+                                    <input
+                                        className="govuk-input govuk-input--width-5"
+                                        id={`distance-to-${index}`}
+                                        name={`distanceTo${index}`}
+                                        type="text"
+                                        onChange={(e) => {
+                                            const items = [...capPricingPerDistanceData.capPricing];
+                                            const item = { ...capPricingPerDistanceData.capPricing[index] };
+                                            item.distanceTo = e.target.value;
+                                            items[index] = item;
+                                            setCapPricingPerDistanceData({
+                                                ...capPricingPerDistanceData,
+                                                capPricing: items,
+                                            });
+                                        }}
+                                        value={
+                                            index + 1 === numberOfRows
+                                                ? 'Max'
+                                                : capPricingPerDistanceData?.capPricing[index]?.distanceTo || ''
+                                        }
+                                        disabled={index + 1 === numberOfRows}
+                                    />
+                                </FormElementWrapper>
                                 <div className="govuk-input__suffix" aria-hidden="true">
                                     km
                                 </div>
@@ -119,11 +127,7 @@ export const renderTable = (
                     </FormGroupWrapper>
                 </div>
                 <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
-                    <FormGroupWrapper
-                        errors={errors}
-                        errorIds={[`cap-pricing-per-distance-price-${index}`]}
-                        hideErrorBar
-                    >
+                    <FormGroupWrapper errors={errors} errorIds={[`price-per-km-${index}`]} hideErrorBar>
                         <>
                             <label className="govuk-label" htmlFor={`price-per-km-${index}`}>
                                 Price per km
@@ -132,23 +136,31 @@ export const renderTable = (
                                 <div className="govuk-input__prefix" aria-hidden="true">
                                     £
                                 </div>
-                                <input
-                                    className="govuk-input govuk-input--width-5"
-                                    id={`price-per-km-${index}`}
-                                    name={`pricePerKm${index}`}
-                                    type="text"
-                                    onChange={(e) => {
-                                        const items = [...capPricingPerDistanceData.capPricing];
-                                        const item = { ...capPricingPerDistanceData.capPricing[index] };
-                                        item.pricePerKm = e.target.value;
-                                        items[index] = item;
-                                        setCapPricingPerDistanceData({
-                                            ...capPricingPerDistanceData,
-                                            capPricing: items,
-                                        });
-                                    }}
-                                    value={capPricingPerDistanceData?.capPricing[index]?.pricePerKm || ''}
-                                />
+                                <FormElementWrapper
+                                    errors={errors}
+                                    errorId={`price-per-km-${index}`}
+                                    errorClass="govuk-input--error"
+                                    hideText
+                                    addFormGroupError={false}
+                                >
+                                    <input
+                                        className="govuk-input govuk-input--width-5 govuk-currency-input__inner__input"
+                                        id={`price-per-km-${index}`}
+                                        name={`pricePerKm${index}`}
+                                        type="text"
+                                        onChange={(e) => {
+                                            const items = [...capPricingPerDistanceData.capPricing];
+                                            const item = { ...capPricingPerDistanceData.capPricing[index] };
+                                            item.pricePerKm = e.target.value;
+                                            items[index] = item;
+                                            setCapPricingPerDistanceData({
+                                                ...capPricingPerDistanceData,
+                                                capPricing: items,
+                                            });
+                                        }}
+                                        value={capPricingPerDistanceData?.capPricing[index]?.pricePerKm || ''}
+                                    />
+                                </FormElementWrapper>
                             </div>
                         </>
                     </FormGroupWrapper>

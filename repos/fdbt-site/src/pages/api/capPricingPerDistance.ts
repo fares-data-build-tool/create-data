@@ -1,19 +1,23 @@
+import { startCase } from 'lodash';
 import { NextApiResponse } from 'next';
 import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../../src/constants/attributes';
 import { redirectTo } from '../../../src/utils/apiUtils';
-import { isCurrency, isValidNumber } from '../../../src/utils/apiUtils/validator';
+import { isCurrency } from '../../../src/utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../../src/utils/sessions';
 import { CapDistancePricing, DistanceCap, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export const checkInputIsValid = (inputtedValue: string | undefined): string => {
+export const checkInputIsValid = (inputtedValue: string | undefined, inputType: string): string => {
     let error;
 
     if (!inputtedValue) {
-        error = `Enter a price for the distance`;
+        error = inputType === 'price' ? 'Enter a price for the distance' : 'Enter a value for the distance';
     } else if (Math.sign(Number(inputtedValue)) === -1) {
-        error = 'Prices cannot be negative numbers';
+        error = `${startCase(inputType)}s cannot be negative numbers`;
     } else if (!isCurrency(inputtedValue)) {
-        error = 'This must be a valid price in pounds and pence';
+        error =
+            inputType === 'price'
+                ? 'This must be a valid price in pounds and pence'
+                : 'Distances must be numbers to 2 decimal places';
     }
 
     if (error) {
@@ -30,14 +34,14 @@ export const validateInput = (
     maximumPrice: string,
 ): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
-    const minimumPriceError = checkInputIsValid(minimumPrice);
+    const minimumPriceError = checkInputIsValid(minimumPrice, 'price');
     if (minimumPriceError) {
         errors.push({
             id: `minimum-price`,
             errorMessage: minimumPriceError,
         });
     }
-    const maximumPriceError = checkInputIsValid(maximumPrice);
+    const maximumPriceError = checkInputIsValid(maximumPrice, 'price');
     if (maximumPriceError) {
         errors.push({
             id: `maximum-price`,
@@ -48,15 +52,16 @@ export const validateInput = (
         const { distanceFrom, distanceTo, pricePerKm } = cap;
 
         if (lastIndex !== index) {
-            if (!distanceTo || !isValidNumber(Number(distanceTo))) {
+            const distanceToError = checkInputIsValid(distanceTo, 'distance');
+            if (distanceToError) {
                 errors.push({
                     id: `distance-to-${index}`,
-                    errorMessage: 'Distance to is required and needs to be number',
+                    errorMessage: distanceToError,
                 });
             }
         }
 
-        const pricePerKmError = checkInputIsValid(pricePerKm);
+        const pricePerKmError = checkInputIsValid(pricePerKm, 'price');
         if (pricePerKmError) {
             errors.push({
                 id: `price-per-km-${index}`,
@@ -64,10 +69,11 @@ export const validateInput = (
             });
         }
         if (index !== 0) {
-            if (!distanceFrom || !isValidNumber(Number(distanceFrom))) {
+            const distanceFromError = checkInputIsValid(distanceFrom, 'distance');
+            if (distanceFromError) {
                 errors.push({
                     id: `distance-from-${index}`,
-                    errorMessage: 'Distance from is required and needs to be number',
+                    errorMessage: distanceFromError,
                 });
             }
         }

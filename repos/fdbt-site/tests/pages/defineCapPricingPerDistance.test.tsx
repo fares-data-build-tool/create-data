@@ -37,7 +37,7 @@ describe('pages', () => {
                     errors={[
                         {
                             id: `distance-to-0`,
-                            errorMessage: 'Distance to is required and needs to be number',
+                            errorMessage: 'Enter a value for the distance',
                         },
                     ]}
                     csrfToken=""
