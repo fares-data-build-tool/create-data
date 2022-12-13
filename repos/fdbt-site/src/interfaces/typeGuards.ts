@@ -170,7 +170,7 @@ export const isCapExpiry = (capExpiryAttribute: CapExpiry | ErrorInfo[] | undefi
 export const isCapStartInfo = (
     capStartAttribute: CapStartInfo | ErrorInfo[] | undefined,
 ): capStartAttribute is CapStartInfo =>
-    !!capStartAttribute && 'type' in capStartAttribute && 'start' in capStartAttribute;
+    !!capStartAttribute && 'type' in capStartAttribute && 'startDay' in capStartAttribute;
 
 export const isMultiOperatorMultipleServicesTicket = (
     ticket: Ticket | WithIds<Ticket>,

@@ -4,15 +4,19 @@ import {
     CAPS_ATTRIBUTE,
     CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE,
     CAP_EXPIRY_ATTRIBUTE,
+    CAP_START_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
 } from '../constants/attributes';
 import { NextPageContextWithSession, ConfirmationElement, Cap } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
-import { isCapExpiry } from '../interfaces/typeGuards';
+import { isCapExpiry, isCapStartInfo } from '../interfaces/typeGuards';
 import { getCsrfToken, sentenceCaseString, getAndValidateNoc } from '../utils';
 import { getProductGroupByNocAndId } from '../data/auroradb';
+import { CapStartInfo } from 'src/interfaces/matchingJsonTypes';
+import { isServiceListAttributeWithErrors } from './serviceList';
 
 const title = 'Cap Confirmation - Create Fares Data Service';
 const description = 'Cap Confirmation page of the Create Fares Data Service';
@@ -22,6 +26,8 @@ interface CapConfirmationProps {
     productGroupName: string;
     caps: Cap[];
     capValidity: string;
+    capStartInfo: CapStartInfo;
+    services: string[];
     csrfToken: string;
 }
 
@@ -30,6 +36,8 @@ export const buildCapConfirmationElements = (
     productGroupName: string,
     caps: Cap[],
     capValidity: string,
+    capStartInfo: CapStartInfo,
+    services: string[],
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
         {
@@ -48,9 +56,13 @@ export const buildCapConfirmationElements = (
     }
 
     caps.forEach((cap) => {
+        const durationText = cap.durationUnits
+            ? `${cap.durationAmount} ${cap.durationUnits}${cap.durationAmount === '1' ? '' : 's'}`
+            : `${cap.durationAmount}`;
+
         confirmationElements.push({
-            name: 'Cap Details',
-            content: cap.name + ' || ' + cap.price + ' || ' + cap.durationAmount + ' ' + cap.durationUnits,
+            name: cap.name,
+            content: [`Price - £${cap.price}`, `Duration - ${durationText}`],
             href: '/createCaps',
         });
     });
@@ -60,6 +72,24 @@ export const buildCapConfirmationElements = (
         content: sentenceCaseString(capValidity),
         href: '/selectCapValidity',
     });
+
+    confirmationElements.push({
+        name: 'Cap Starts',
+        content:
+            capStartInfo.type === 'fixedWeekdays' && capStartInfo.startDay
+                ? `Fixed Days - ${sentenceCaseString(capStartInfo.startDay)}`
+                : 'Rolling Days',
+        href: '/defineCapStart',
+    });
+
+    if (services.length > 0) {
+        confirmationElements.push({
+            name: 'Services',
+            content: services.join(', '),
+            href: '/serviceList',
+        });
+    }
+
     return confirmationElements;
 };
 
@@ -68,6 +98,8 @@ const CapConfirmation = ({
     productGroupName,
     caps,
     capValidity,
+    capStartInfo,
+    services,
     csrfToken,
 }: CapConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
@@ -76,7 +108,14 @@ const CapConfirmation = ({
                 <h1 className="govuk-heading-l">Check your answers before sending your fares information</h1>
                 <ConfirmationTable
                     header="Fare Information"
-                    confirmationElements={buildCapConfirmationElements(typeOfCap, productGroupName, caps, capValidity)}
+                    confirmationElements={buildCapConfirmationElements(
+                        typeOfCap,
+                        productGroupName,
+                        caps,
+                        capValidity,
+                        capStartInfo,
+                        services,
+                    )}
                 />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
@@ -100,11 +139,25 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const capValidityAttribute = getSessionAttribute(ctx.req, CAP_EXPIRY_ATTRIBUTE);
     const capValidity =
-        capValidityAttribute && isCapExpiry(capValidityAttribute) ? capValidityAttribute.productValidity : '';
+        capValidityAttribute && isCapExpiry(capValidityAttribute)
+            ? `${capValidityAttribute.productValidity}${
+                  capValidityAttribute.productEndTime ? ` - ${capValidityAttribute.productEndTime}` : ''
+              }`
+            : '';
 
-    if (!typeOfCapAttribute || !('typeOfCap' in typeOfCapAttribute) || !capAttribute) {
+    const capStartAttribute = getSessionAttribute(ctx.req, CAP_START_ATTRIBUTE);
+
+    if (
+        !typeOfCapAttribute ||
+        !('typeOfCap' in typeOfCapAttribute) ||
+        !capAttribute ||
+        !capStartAttribute ||
+        !isCapStartInfo(capStartAttribute)
+    ) {
         throw new Error('Could not extract the correct attributes for the user journey.');
     }
+
+    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
     return {
         props: {
@@ -112,6 +165,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             productGroupName: productGroupName || '',
             caps,
             capValidity,
+            capStartInfo: capStartAttribute,
+            services:
+                serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)
+                    ? serviceListAttribute.selectedServices.map((service) => service.lineName)
+                    : [],
             csrfToken,
         },
     };
