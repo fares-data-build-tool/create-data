@@ -734,3 +734,10 @@ export interface Cap {
     durationAmount: string;
     durationUnits: ExpiryUnit;
 }
+
+export interface MultiTap {
+    [key: string]: string;
+}
+export interface MultiTapPricing {
+    tapDetails: MultiTap;
+}
