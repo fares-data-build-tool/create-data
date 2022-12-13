@@ -6,6 +6,10 @@ import xml.etree.ElementTree as eT
 
 NOC_INTEGRITY_ERROR_MSG = "Cannot add or update a child row: a foreign key constraint fails (`fdbt`.`txcOperatorLine`, CONSTRAINT `fk_txcOperatorLine_nocTable_nocCode` FOREIGN KEY (`nocCode`) REFERENCES `nocTable` (`nocCode`))"
 
+def create_unique_line_id(noc, line_name):
+    first_part = "UZ"
+    second_part = "000"
+    return f'{first_part}{second_part}{noc}:{noc}{line_name}'
 
 def put_metric_data_by_data_source(cloudwatch, data_source, metric_name, metric_value):
     cloudwatch.put_metric_data(
@@ -68,6 +72,7 @@ def extract_data_for_txc_operator_service_table(operator, service, line):
     )
     service_description = service.get("Description", "")
     service_code = service.get("ServiceCode")
+    mode = service.get("Mode", "")
     standard_service = service.get("StandardService")
     origin = standard_service.get("Origin")
     destination = standard_service.get("Destination")
@@ -83,6 +88,7 @@ def extract_data_for_txc_operator_service_table(operator, service, line):
         service_code,
         origin,
         destination,
+        mode
     )
 
 
@@ -244,13 +250,17 @@ def insert_into_txc_operator_service_table(
         service_code,
         origin,
         destination,
+        mode
     ) = extract_data_for_txc_operator_service_table(operator, service, line)
 
-    query = f"""INSERT INTO txcOperatorLineNew (nocCode, lineName, lineId, startDate, endDate, operatorShortName, inboundDirectionDescription, outboundDirectionDescription, serviceDescription, serviceCode, regionCode, dataSource, origin, destination)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    query = f"""INSERT INTO txcOperatorLineNew (nocCode, lineName, lineId, startDate, endDate, operatorShortName, inboundDirectionDescription, outboundDirectionDescription, serviceDescription, serviceCode, regionCode, dataSource, origin, destination, mode)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
     line_id = line.get("@id", "")
     line_name = line.get("LineName", "")
+
+    if not line.get("@id") or (mode != 'bus' and data_source == "tnds"):
+        line_id = create_unique_line_id(noc_code, line_name)
 
     try:
         cursor.execute(
@@ -270,6 +280,7 @@ def insert_into_txc_operator_service_table(
                 data_source,
                 origin,
                 destination,
+                mode
             ],
         )
         operator_service_id = cursor.lastrowid
