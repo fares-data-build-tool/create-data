@@ -10,6 +10,7 @@ CREATE TABLE salesOfferPackage(
     `purchaseLocations` varchar(255) DEFAULT NULL,
     `paymentMethods` varchar(255) DEFAULT NULL,
     `ticketFormats` varchar(255) DEFAULT NULL,
+    `isCapped` boolean NOT NULL DEFAULT false,
     INDEX idx_nocCode (nocCode),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
