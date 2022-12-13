@@ -35,7 +35,7 @@ const MultiTapsPricings = ({
                     <h1 className="govuk-heading-l" id="multi-taps-price-page-heading">
                         Enter your tap pricing
                     </h1>
-                    <span className="govuk-hint govuk-!-margin-bottom-7" id="csv-upload-hint">
+                    <span className="govuk-hint govuk-!-margin-bottom-7" id="multi-taps-price-hint">
                         For example, if a passenger travels three times in the same day and the first journey is £3, the
                         second journey is £2 and the third journey is £0.50, you would create 3 taps below and enter the
                         prices accordingly.
