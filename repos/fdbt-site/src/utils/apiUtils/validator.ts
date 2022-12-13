@@ -91,7 +91,7 @@ export const checkProductOrCapNameIsValid = (inputtedProductName: string, inputT
     return '';
 };
 
-export const checkPriceIsValid = (inputtedPrice: string | undefined, inputType: 'cap' | 'product'): string => {
+export const checkPriceIsValid = (inputtedPrice: string | undefined, inputType: 'cap' | 'product' | 'tap'): string => {
     let productPriceError;
 
     if (!inputtedPrice) {
