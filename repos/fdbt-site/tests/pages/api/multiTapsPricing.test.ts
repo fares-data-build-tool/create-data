@@ -34,7 +34,7 @@ describe('multiTapsPricing', () => {
             },
             { Location: '/multiTapsPricing' },
             {
-                errors: [{ errorMessage: 'Cap price cannot be empty', id: 'multi-tap-price-0' }],
+                errors: [{ errorMessage: 'Tap price cannot be empty', id: 'multi-tap-price-0' }],
                 tapDetails: { '0': '' },
             },
         ],

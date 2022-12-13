@@ -12,7 +12,7 @@ export const checkAllValidation = (taps: MultiTapPricing): ErrorInfo[] => {
         const tapPrice = entry[1];
         const index = entry[0];
         const trimmedPrice = removeExcessWhiteSpace(tapPrice);
-        const tapPriceError = checkPriceIsValid(trimmedPrice, 'cap', true);
+        const tapPriceError = checkPriceIsValid(trimmedPrice, 'tap');
 
         if (tapPriceError) {
             errors.push({ errorMessage: tapPriceError, id: `multi-tap-price-${index}` });
