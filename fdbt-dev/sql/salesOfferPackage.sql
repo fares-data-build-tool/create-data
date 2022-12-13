@@ -3,10 +3,10 @@ LOCK TABLES `salesOfferPackage` WRITE;
 
 TRUNCATE TABLE `salesOfferPackage`;
 
-INSERT INTO `salesOfferPackage` (name,description, purchaseLocations, paymentMethods, ticketFormats, nocCode) 
+INSERT INTO `salesOfferPackage` (name, description, purchaseLocations, paymentMethods, ticketFormats, nocCode, isCapped) 
 VALUES
-('cash','Purchase method automatically created' , 'onBoard', 'cash', 'paperTicket', 'BLAC'),
-('card', 'Another purchase method automatically created', 'onBoard,online', 'debitCard,creditCard', 'mobileApp,smartCard', 'BLAC');
+('cash','Purchase method automatically created' , 'onBoard', 'cash', 'paperTicket', 'BLAC', 'false'),
+('card', 'Another purchase method automatically created', 'onBoard,online', 'debitCard,creditCard', 'mobileApp,smartCard', 'BLAC', 'false');
 
 UNLOCK TABLES;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
