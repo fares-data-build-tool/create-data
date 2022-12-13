@@ -13,15 +13,15 @@ const title = 'Taps Pricing - Create Fares Data Service';
 const description = 'Pricing by multiple taps for capped product of the Create Fares Data Service';
 
 interface MultiTapsPricingProps {
-    errors?: ErrorInfo[];
+    errors: ErrorInfo[];
     userInput: MultiTap;
     csrfToken: string;
     numberOfTapsToRender: number;
 }
 
 const MultiTapsPricings = ({
-    errors = [],
-    userInput = {},
+    errors,
+    userInput,
     csrfToken,
     numberOfTapsToRender,
 }: MultiTapsPricingProps): ReactElement => {
@@ -32,7 +32,7 @@ const MultiTapsPricings = ({
             <CsrfForm action="/api/multiTapsPricing" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
-                    <h1 className="govuk-heading-l" id="multiple-product-page-heading">
+                    <h1 className="govuk-heading-l" id="multi-taps-price-page-heading">
                         Enter your tap pricing
                     </h1>
                     <span className="govuk-hint govuk-!-margin-bottom-7" id="csv-upload-hint">

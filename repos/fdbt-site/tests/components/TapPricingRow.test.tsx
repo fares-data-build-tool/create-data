@@ -31,7 +31,7 @@ describe('tap pricing row', () => {
         const wrapper = shallow(
             <TapPricingRow
                 numberOfTapsToDisplay={numberToRender}
-                errors={[{ errorMessage: 'Cap price cannot be empty', id: 'multi-tap-price-0' }]}
+                errors={[{ errorMessage: 'Tap price cannot be empty', id: 'multi-tap-price-0' }]}
                 userInput={{ '1': '' }}
             />,
         );

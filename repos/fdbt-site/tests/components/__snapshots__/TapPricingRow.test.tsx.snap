@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`tap pricing row renders correctly for a single row  1`] = `
-<Fragment>
+<div>
   <fieldset
     className="govuk-fieldset"
     key="0"
@@ -9,7 +9,8 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
     <legend
       className="govuk-fieldset__legend govuk-visually-hidden"
     >
-      Enter details for tap 1
+      Enter details for tap $
+      1
     </legend>
     <div
       className="govuk-grid-row govuk-!-width-one-third govuk-!-margin-left-4"
@@ -41,7 +42,8 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
             <span
               className="govuk-visually-hidden"
             >
-              Tap Price - Price 1
+              Tap Price - Price $
+              1
             </span>
             <span
               aria-hidden={true}
@@ -122,11 +124,11 @@ exports[`tap pricing row renders correctly for a single row  1`] = `
       </div>
     </div>
   </fieldset>
-</Fragment>
+</div>
 `;
 
 exports[`tap pricing row renders correctly for more than one row  1`] = `
-<Fragment>
+<div>
   <fieldset
     className="govuk-fieldset"
     key="0"
@@ -134,7 +136,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
     <legend
       className="govuk-fieldset__legend govuk-visually-hidden"
     >
-      Enter details for tap 1
+      Enter details for tap $
+      1
     </legend>
     <div
       className="govuk-grid-row govuk-!-width-one-third govuk-!-margin-left-4"
@@ -166,7 +169,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             <span
               className="govuk-visually-hidden"
             >
-              Tap Price - Price 1
+              Tap Price - Price $
+              1
             </span>
             <span
               aria-hidden={true}
@@ -254,7 +258,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
     <legend
       className="govuk-fieldset__legend govuk-visually-hidden"
     >
-      Enter details for tap 2
+      Enter details for tap $
+      2
     </legend>
     <div
       className="govuk-grid-row govuk-!-width-one-third govuk-!-margin-left-4"
@@ -286,7 +291,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             <span
               className="govuk-visually-hidden"
             >
-              Tap Price - Price 2
+              Tap Price - Price $
+              2
             </span>
             <span
               aria-hidden={true}
@@ -368,7 +374,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
     <legend
       className="govuk-fieldset__legend govuk-visually-hidden"
     >
-      Enter details for tap 3
+      Enter details for tap $
+      3
     </legend>
     <div
       className="govuk-grid-row govuk-!-width-one-third govuk-!-margin-left-4"
@@ -400,7 +407,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             <span
               className="govuk-visually-hidden"
             >
-              Tap Price - Price 3
+              Tap Price - Price $
+              3
             </span>
             <span
               aria-hidden={true}
@@ -482,7 +490,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
     <legend
       className="govuk-fieldset__legend govuk-visually-hidden"
     >
-      Enter details for tap 4
+      Enter details for tap $
+      4
     </legend>
     <div
       className="govuk-grid-row govuk-!-width-one-third govuk-!-margin-left-4"
@@ -514,7 +523,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             <span
               className="govuk-visually-hidden"
             >
-              Tap Price - Price 4
+              Tap Price - Price $
+              4
             </span>
             <span
               aria-hidden={true}
@@ -596,7 +606,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
     <legend
       className="govuk-fieldset__legend govuk-visually-hidden"
     >
-      Enter details for tap 5
+      Enter details for tap $
+      5
     </legend>
     <div
       className="govuk-grid-row govuk-!-width-one-third govuk-!-margin-left-4"
@@ -628,7 +639,8 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
             <span
               className="govuk-visually-hidden"
             >
-              Tap Price - Price 5
+              Tap Price - Price $
+              5
             </span>
             <span
               aria-hidden={true}
@@ -703,11 +715,11 @@ exports[`tap pricing row renders correctly for more than one row  1`] = `
       </div>
     </div>
   </fieldset>
-</Fragment>
+</div>
 `;
 
 exports[`tap pricing row renders correctly on error  1`] = `
-<Fragment>
+<div>
   <fieldset
     className="govuk-fieldset"
     key="0"
@@ -715,7 +727,8 @@ exports[`tap pricing row renders correctly on error  1`] = `
     <legend
       className="govuk-fieldset__legend govuk-visually-hidden"
     >
-      Enter details for tap 1
+      Enter details for tap $
+      1
     </legend>
     <div
       className="govuk-grid-row govuk-!-width-one-third govuk-!-margin-left-4"
@@ -747,7 +760,8 @@ exports[`tap pricing row renders correctly on error  1`] = `
             <span
               className="govuk-visually-hidden"
             >
-              Tap Price - Price 1
+              Tap Price - Price $
+              1
             </span>
             <span
               aria-hidden={true}
@@ -794,7 +808,7 @@ exports[`tap pricing row renders correctly on error  1`] = `
             errors={
               Array [
                 Object {
-                  "errorMessage": "Cap price cannot be empty",
+                  "errorMessage": "Tap price cannot be empty",
                   "id": "multi-tap-price-0",
                 },
               ]
@@ -818,7 +832,7 @@ exports[`tap pricing row renders correctly on error  1`] = `
                   errors={
                     Array [
                       Object {
-                        "errorMessage": "Cap price cannot be empty",
+                        "errorMessage": "Tap price cannot be empty",
                         "id": "multi-tap-price-0",
                       },
                     ]
@@ -842,5 +856,5 @@ exports[`tap pricing row renders correctly on error  1`] = `
       </div>
     </div>
   </fieldset>
-</Fragment>
+</div>
 `;
