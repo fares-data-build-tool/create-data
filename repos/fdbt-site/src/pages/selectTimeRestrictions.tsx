@@ -76,8 +76,7 @@ const SelectTimeRestrictions = ({
                                         data-aria-controls="conditional-time-restriction"
                                         defaultChecked={
                                             errors.some((error) => error.id === 'time-restriction') ||
-                                            !!selectedId ||
-                                            !isEditing
+                                            (!!selectedId && isEditing)
                                         }
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">

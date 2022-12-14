@@ -735,9 +735,22 @@ export interface Cap {
     durationUnits: ExpiryUnit;
 }
 
+export interface CapDistancePricing {
+    distanceFrom: string;
+    distanceTo: string;
+    pricePerKm: string;
+}
+
+export interface DistanceCap {
+    maximumPrice: string;
+    minimumPrice: string;
+    capPricing: CapDistancePricing[];
+}
+
 export interface MultiTap {
     [key: string]: string;
 }
+
 export interface MultiTapPricing {
     tapDetails: MultiTap;
 }

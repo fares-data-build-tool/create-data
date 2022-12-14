@@ -26,6 +26,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (typeOfCap === 'byProducts') {
             redirectTo(res, '/selectCappedProductGroup');
             return;
+        } else if (typeOfCap === 'byDistance') {
+            redirectTo(res, '/defineCapPricingPerDistance');
         } else if (typeOfCap === 'byTaps') {
             redirectTo(res, '/multiTapsPricing');
             return;

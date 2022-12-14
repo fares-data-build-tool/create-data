@@ -60,4 +60,19 @@ describe('ticketRepresentation', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledTimes(0);
     });
+    it('should return 302 redirect to /  defineCapPricingPerDistance when type of cap is byDistance', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                typeOfCap: 'byDistance',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        typeOfCap(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/defineCapPricingPerDistance',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledTimes(0);
+    });
 });
