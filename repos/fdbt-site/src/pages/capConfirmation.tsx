@@ -6,13 +6,14 @@ import {
     CAP_EXPIRY_ATTRIBUTE,
     CAP_START_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
+    MULTI_TAPS_PRICING_ATTRIBUTE,
 } from '../constants/attributes';
-import { NextPageContextWithSession, ConfirmationElement, Cap } from '../interfaces';
+import { NextPageContextWithSession, ConfirmationElement, Cap, MultiTapPricing } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
-import { isCapExpiry, isCapStartInfo } from '../interfaces/typeGuards';
+import { isCapExpiry, isCapStartInfo, isWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken, sentenceCaseString, getAndValidateNoc } from '../utils';
 import { getProductGroupByNocAndId } from '../data/auroradb';
 import { CapStartInfo } from 'src/interfaces/matchingJsonTypes';
@@ -28,6 +29,7 @@ interface CapConfirmationProps {
     capValidity: string;
     capStartInfo: CapStartInfo;
     services: string[];
+    tapsPricing: MultiTapPricing | undefined;
     csrfToken: string;
 }
 
@@ -38,6 +40,7 @@ export const buildCapConfirmationElements = (
     capValidity: string,
     capStartInfo: CapStartInfo,
     services: string[],
+    tapsPricing: MultiTapPricing | undefined,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
         {
@@ -90,6 +93,20 @@ export const buildCapConfirmationElements = (
         });
     }
 
+    if (tapsPricing) {
+        const content: string[] = [];
+
+        Object.entries(tapsPricing.tapDetails).forEach((tap) => {
+            content.push(`Tap Number: ${Number(tap[0]) + 1}, Price: ${tap[1]}`);
+        });
+
+        confirmationElements.push({
+            name: 'Prices by Taps',
+            content: content,
+            href: '/multiTapsPricing',
+        });
+    }
+
     return confirmationElements;
 };
 
@@ -100,6 +117,7 @@ const CapConfirmation = ({
     capValidity,
     capStartInfo,
     services,
+    tapsPricing,
     csrfToken,
 }: CapConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
@@ -115,6 +133,7 @@ const CapConfirmation = ({
                         capValidity,
                         capStartInfo,
                         services,
+                        tapsPricing,
                     )}
                 />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -159,6 +178,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
+    const multiTapsPricingAttribute = getSessionAttribute(ctx.req, MULTI_TAPS_PRICING_ATTRIBUTE);
+
     return {
         props: {
             typeOfCap: typeOfCapAttribute.typeOfCap,
@@ -170,6 +191,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)
                     ? serviceListAttribute.selectedServices.map((service) => service.lineName)
                     : [],
+            tapsPricing:
+                multiTapsPricingAttribute && !isWithErrors(multiTapsPricingAttribute)
+                    ? multiTapsPricingAttribute
+                    : undefined,
             csrfToken,
         },
     };
