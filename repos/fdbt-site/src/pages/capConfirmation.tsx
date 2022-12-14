@@ -127,7 +127,7 @@ const CapConfirmation = ({
     csrfToken,
 }: CapConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
-        <CsrfForm action="/api/fareConfirmation" method="post" csrfToken={csrfToken}>
+        <CsrfForm action="/api/capConfirmation" method="post" csrfToken={csrfToken}>
             <>
                 <h1 className="govuk-heading-l">Check your answers before sending your fares information</h1>
                 <ConfirmationTable

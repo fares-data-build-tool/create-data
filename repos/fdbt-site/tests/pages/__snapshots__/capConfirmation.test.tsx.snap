@@ -7,7 +7,7 @@ exports[`pages capConfirmation should render correctly for capped ticket by dist
   title="Cap Confirmation - Create Fares Data Service"
 >
   <CsrfForm
-    action="/api/fareConfirmation"
+    action="/api/capConfirmation"
     csrfToken=""
     method="post"
   >
@@ -76,7 +76,7 @@ exports[`pages capConfirmation should render correctly for capped ticket by prod
   title="Cap Confirmation - Create Fares Data Service"
 >
   <CsrfForm
-    action="/api/fareConfirmation"
+    action="/api/capConfirmation"
     csrfToken=""
     method="post"
   >
@@ -142,7 +142,7 @@ exports[`pages capConfirmation should render correctly for capped ticket by taps
   title="Cap Confirmation - Create Fares Data Service"
 >
   <CsrfForm
-    action="/api/fareConfirmation"
+    action="/api/capConfirmation"
     csrfToken=""
     method="post"
   >

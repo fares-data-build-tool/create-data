@@ -8,7 +8,7 @@ describe('capConfirmation', () => {
         jest.resetAllMocks();
     });
 
-    it('should redirect on fareType when the user logged in is not a scheme operator', () => {
+    it('should redirect on selectPurchaseMethods', () => {
         const { res } = getMockRequestAndResponse({
             mockWriteHeadFn: writeHeadMock,
         });
