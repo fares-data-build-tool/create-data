@@ -64,7 +64,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
               hideText={true}
             >
               <input
-                className="govuk-input govuk-input--width-5"
+                className="govuk-input govuk-input--width-3"
                 id="minimum-price"
                 name="minimumPrice"
                 onChange={[Function]}
@@ -116,7 +116,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
               hideText={true}
             >
               <input
-                className="govuk-input govuk-input--width-5"
+                className="govuk-input govuk-input--width-3"
                 id="maximum-price"
                 name="maximumPrice"
                 onChange={[Function]}
@@ -141,7 +141,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
                 "pricePerKm": "5",
               },
               Object {
-                "distanceFrom": "3",
+                "distanceFrom": "2",
                 "distanceTo": "Max",
                 "pricePerKm": "5",
               },
@@ -269,7 +269,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
               hideText={true}
             >
               <input
-                className="govuk-input govuk-input--width-5"
+                className="govuk-input govuk-input--width-3"
                 id="minimum-price"
                 name="minimumPrice"
                 onChange={[Function]}
@@ -335,7 +335,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
               hideText={true}
             >
               <input
-                className="govuk-input govuk-input--width-5"
+                className="govuk-input govuk-input--width-3"
                 id="maximum-price"
                 name="maximumPrice"
                 onChange={[Function]}

@@ -23,7 +23,7 @@ describe('capPricingPerDistance', () => {
                     pricePerKm: '5',
                 },
                 {
-                    distanceFrom: '3',
+                    distanceFrom: '2',
                     distanceTo: 'Max',
                     pricePerKm: '5',
                 },
@@ -32,7 +32,7 @@ describe('capPricingPerDistance', () => {
 
         const { req, res } = getMockRequestAndResponse({
             body: {
-                distanceFrom1: '3',
+                distanceFrom1: '2',
                 distanceTo0: '2',
                 maximumPrice: '4',
                 minimumPrice: '3',
@@ -54,6 +54,10 @@ describe('capPricingPerDistance', () => {
             {
                 id: `distance-to-0`,
                 errorMessage: 'Enter a value for the distance',
+            },
+            {
+                id: 'distance-from-1',
+                errorMessage: 'Distance from must be the same as distance to in the previous row',
             },
         ];
 
@@ -94,6 +98,10 @@ describe('capPricingPerDistance', () => {
             {
                 id: `distance-from-1`,
                 errorMessage: 'Enter a value for the distance',
+            },
+            {
+                id: 'distance-from-1',
+                errorMessage: 'Distance from must be the same as distance to in the previous row',
             },
         ];
 
@@ -258,6 +266,10 @@ describe('validate input tests', () => {
         ];
         const errorsResult: ErrorInfo[] = [
             { id: `distance-from-1`, errorMessage: 'Distances must be numbers to 2 decimal places' },
+            {
+                id: 'distance-from-1',
+                errorMessage: 'Distance from must be the same as distance to in the previous row',
+            },
         ];
 
         const errors = validateInput(capPricePerDistances, 1, '3', '4');
@@ -279,7 +291,11 @@ describe('validate input tests', () => {
             },
         ];
         const errorsResult: ErrorInfo[] = [
-            { id: `distance-to-0`, errorMessage: 'Distances must be numbers to 2 decimal places' },
+            { id: 'distance-to-0', errorMessage: 'Distances must be numbers to 2 decimal places' },
+            {
+                id: 'distance-from-1',
+                errorMessage: 'Distance from must be the same as distance to in the previous row',
+            },
         ];
 
         const errors = validateInput(capPricePerDistances, 1, '3', '4');
@@ -346,6 +362,41 @@ describe('validate input tests', () => {
         ];
         const errorsResult: ErrorInfo[] = [
             { id: `price-per-km-1`, errorMessage: 'This must be a valid price in pounds and pence' },
+        ];
+
+        const errors = validateInput(capPricePerDistances, 1, '1', '2');
+
+        expect(errors).toEqual(errorsResult);
+    });
+
+    it('validates ranges so that distanceFrom must be less than distanceTo and distanceTo of prior row is equal to distanceFrom', () => {
+        const capPricePerDistances: CapDistancePricing[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: '3',
+                pricePerKm: '2',
+            },
+            {
+                distanceFrom: '4',
+                distanceTo: '3',
+                pricePerKm: '2',
+            },
+            {
+                distanceFrom: '5',
+                distanceTo: 'Max',
+                pricePerKm: '2',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [
+            {
+                id: 'distance-from-2',
+                errorMessage: 'Distance from must be the same as distance to in the previous row',
+            },
+            {
+                id: 'distance-from-1',
+                errorMessage: 'Distance from must be the same as distance to in the previous row',
+            },
+            { id: 'distance-from-1', errorMessage: 'Distance from must be less than distance to in the same row' },
         ];
 
         const errors = validateInput(capPricePerDistances, 1, '1', '2');

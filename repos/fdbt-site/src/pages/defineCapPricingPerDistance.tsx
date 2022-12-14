@@ -28,7 +28,6 @@ const DefineCapPricingPerDistance = ({
 }: DefineCapPricingPerDistanceProps): ReactElement => {
     const [numberOfCap, setNumberOfCaps] = useState(numberOfCapInitial);
     const [capPricingPerDistanceData, setCapPricingPerDistanceData] = useState(capPricePerDistances);
-
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/capPricingPerDistance" method="post" csrfToken={csrfToken}>
@@ -59,7 +58,7 @@ const DefineCapPricingPerDistance = ({
                                             addFormGroupError={false}
                                         >
                                             <input
-                                                className="govuk-input govuk-input--width-5"
+                                                className="govuk-input govuk-input--width-3"
                                                 id={`minimum-price`}
                                                 name={`minimumPrice`}
                                                 type="text"
@@ -100,7 +99,7 @@ const DefineCapPricingPerDistance = ({
                                             addFormGroupError={false}
                                         >
                                             <input
-                                                className="govuk-input govuk-input--width-5"
+                                                className="govuk-input govuk-input--width-3"
                                                 id={`maximum-price`}
                                                 name={`maximumPrice`}
                                                 type="text"
@@ -148,6 +147,24 @@ const DefineCapPricingPerDistance = ({
                                             ...capPricingPerDistanceData,
                                             capPricing: items,
                                         });
+                                        for (let i = 0; i < numberOfCap; i += 1) {
+                                            if (
+                                                !capPricingPerDistanceData?.capPricing[i]?.distanceFrom &&
+                                                i !== 0 &&
+                                                capPricingPerDistanceData?.capPricing[i - 1]?.distanceTo
+                                            ) {
+                                                const items = [...capPricingPerDistanceData.capPricing];
+                                                item = { ...capPricingPerDistanceData.capPricing[i] };
+                                                item.distanceFrom =
+                                                    capPricingPerDistanceData.capPricing[i - 1].distanceTo;
+                                                item.distanceTo = '';
+                                                items[i] = item;
+                                                setCapPricingPerDistanceData({
+                                                    ...capPricingPerDistanceData,
+                                                    capPricing: items,
+                                                });
+                                            }
+                                        }
                                     }}
                                 >
                                     Add another row
@@ -162,6 +179,21 @@ const DefineCapPricingPerDistance = ({
                                     type="button"
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3"
                                     onClick={(): void => {
+                                        setCapPricingPerDistanceData((current) => {
+                                            const copy = { ...current };
+                                            if (numberOfCap !== 1) {
+                                                if (copy?.capPricing[numberOfCap - 1]?.distanceFrom) {
+                                                    copy.capPricing[numberOfCap - 1].distanceFrom = '';
+                                                }
+                                                if (copy?.capPricing[numberOfCap - 1]?.distanceTo) {
+                                                    copy.capPricing[numberOfCap - 1].distanceTo = '';
+                                                }
+                                                if (copy?.capPricing[numberOfCap - 1]?.pricePerKm) {
+                                                    copy.capPricing[numberOfCap - 1].pricePerKm = '';
+                                                }
+                                            }
+                                            return { ...copy };
+                                        });
                                         setNumberOfCaps(numberOfCap - 1);
                                     }}
                                 >

@@ -19,7 +19,7 @@ describe('pages', () => {
                                 pricePerKm: '5',
                             },
                             {
-                                distanceFrom: '3',
+                                distanceFrom: '2',
                                 distanceTo: 'Max',
                                 pricePerKm: '5',
                             },

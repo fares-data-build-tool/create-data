@@ -45,7 +45,7 @@ export const renderTable = (
                                     addFormGroupError={false}
                                 >
                                     <input
-                                        className="govuk-input govuk-input--width-5"
+                                        className="govuk-input govuk-input--width-3"
                                         id={`distance-from-${index}`}
                                         name={`distanceFrom${index}`}
                                         type="text"
@@ -97,7 +97,7 @@ export const renderTable = (
                                     addFormGroupError={false}
                                 >
                                     <input
-                                        className="govuk-input govuk-input--width-5"
+                                        className="govuk-input govuk-input--width-3"
                                         id={`distance-to-${index}`}
                                         name={`distanceTo${index}`}
                                         type="text"
@@ -144,7 +144,7 @@ export const renderTable = (
                                     addFormGroupError={false}
                                 >
                                     <input
-                                        className="govuk-input govuk-input--width-5 govuk-currency-input__inner__input"
+                                        className="govuk-input govuk-input--width-3 govuk-currency-input__inner__input"
                                         id={`price-per-km-${index}`}
                                         name={`pricePerKm${index}`}
                                         type="text"

@@ -17,7 +17,9 @@ export const checkInputIsValid = (inputtedValue: string | undefined, inputType: 
         error =
             inputType === 'price'
                 ? 'This must be a valid price in pounds and pence'
-                : 'Distances must be numbers to 2 decimal places';
+                : inputtedValue !== 'Max'
+                ? 'Distances must be numbers to 2 decimal places'
+                : '';
     }
 
     if (error) {
@@ -78,6 +80,23 @@ export const validateInput = (
             }
         }
     });
+
+    for (let i = capPricePerDistances.length - 1; i >= 1; i--) {
+        if (Number(capPricePerDistances[i].distanceFrom) !== Number(capPricePerDistances[i - 1].distanceTo)) {
+            errors.push({
+                id: `distance-from-${i}`,
+                errorMessage: 'Distance from must be the same as distance to in the previous row',
+            });
+        }
+        if (capPricePerDistances[i].distanceTo !== 'Max') {
+            if (Number(capPricePerDistances[i].distanceFrom) >= Number(capPricePerDistances[i].distanceTo)) {
+                errors.push({
+                    id: `distance-from-${i}`,
+                    errorMessage: 'Distance from must be less than distance to in the same row',
+                });
+            }
+        }
+    }
 
     return errors;
 };
