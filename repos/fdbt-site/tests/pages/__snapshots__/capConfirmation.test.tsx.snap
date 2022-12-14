@@ -1,0 +1,204 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages capConfirmation should render correctly for capped ticket by distance 1`] = `
+<TwoThirdsLayout
+  description="Cap Confirmation page of the Create Fares Data Service"
+  errors={Array []}
+  title="Cap Confirmation - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/fareConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your fares information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "Pricing by Distance ",
+            "href": "typeOfCap",
+            "name": "Cap type",
+          },
+          Object {
+            "content": Array [
+              "Price - £2",
+              "Duration - 1 day",
+            ],
+            "href": "/createCaps",
+            "name": "Cap 1",
+          },
+          Object {
+            "content": "24 hr",
+            "href": "/selectCapValidity",
+            "name": "Cap Expiry",
+          },
+          Object {
+            "content": "Fixed Days - Monday",
+            "href": "/defineCapStart",
+            "name": "Cap Starts",
+          },
+          Object {
+            "content": "1, 2C",
+            "href": "/serviceList",
+            "name": "Services",
+          },
+          Object {
+            "content": Array [
+              "Min Price: 2, Max Price: 4",
+              "Distance: 0-2, Price per km: 4",
+            ],
+            "href": "/defineCapPricingPerDistance",
+            "name": "Prices",
+          },
+        ]
+      }
+      header="Cap Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages capConfirmation should render correctly for capped ticket by products 1`] = `
+<TwoThirdsLayout
+  description="Cap Confirmation page of the Create Fares Data Service"
+  errors={Array []}
+  title="Cap Confirmation - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/fareConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your fares information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "Pricing by Products ",
+            "href": "typeOfCap",
+            "name": "Cap type",
+          },
+          Object {
+            "content": "capped-product-group-name",
+            "href": "/selectCappedProductGroup",
+            "name": "Product Group Name",
+          },
+          Object {
+            "content": Array [
+              "Price - £2",
+              "Duration - 1 hour",
+            ],
+            "href": "/createCaps",
+            "name": "Cap 1",
+          },
+          Object {
+            "content": "24 hr",
+            "href": "/selectCapValidity",
+            "name": "Cap Expiry",
+          },
+          Object {
+            "content": "Rolling Days",
+            "href": "/defineCapStart",
+            "name": "Cap Starts",
+          },
+          Object {
+            "content": "1, 2C",
+            "href": "/serviceList",
+            "name": "Services",
+          },
+        ]
+      }
+      header="Cap Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages capConfirmation should render correctly for capped ticket by taps 1`] = `
+<TwoThirdsLayout
+  description="Cap Confirmation page of the Create Fares Data Service"
+  errors={Array []}
+  title="Cap Confirmation - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/fareConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your fares information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "Pricing by Taps ",
+            "href": "typeOfCap",
+            "name": "Cap type",
+          },
+          Object {
+            "content": Array [
+              "Price - £2",
+              "Duration - 1 hour",
+            ],
+            "href": "/createCaps",
+            "name": "Cap 1",
+          },
+          Object {
+            "content": "24 hr",
+            "href": "/selectCapValidity",
+            "name": "Cap Expiry",
+          },
+          Object {
+            "content": "Rolling Days",
+            "href": "/defineCapStart",
+            "name": "Cap Starts",
+          },
+          Object {
+            "content": "1, 2C",
+            "href": "/serviceList",
+            "name": "Services",
+          },
+          Object {
+            "content": Array [
+              "Tap Number: 1, Price: 2",
+            ],
+            "href": "/multiTapsPricing",
+            "name": "Prices by Taps",
+          },
+        ]
+      }
+      header="Cap Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;

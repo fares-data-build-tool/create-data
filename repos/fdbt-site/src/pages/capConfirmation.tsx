@@ -7,8 +7,9 @@ import {
     CAP_START_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     MULTI_TAPS_PRICING_ATTRIBUTE,
+    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { NextPageContextWithSession, ConfirmationElement, Cap, MultiTapPricing } from '../interfaces';
+import { NextPageContextWithSession, ConfirmationElement, Cap } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
@@ -29,7 +30,8 @@ interface CapConfirmationProps {
     capValidity: string;
     capStartInfo: CapStartInfo;
     services: string[];
-    tapsPricing: MultiTapPricing | undefined;
+    tapsPricingContents: string[];
+    capDistancePricingContents: string[];
     csrfToken: string;
 }
 
@@ -40,7 +42,8 @@ export const buildCapConfirmationElements = (
     capValidity: string,
     capStartInfo: CapStartInfo,
     services: string[],
-    tapsPricing: MultiTapPricing | undefined,
+    tapsPricingContents: string[],
+    capDistancePricingContents: string[],
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
         {
@@ -93,17 +96,19 @@ export const buildCapConfirmationElements = (
         });
     }
 
-    if (tapsPricing) {
-        const content: string[] = [];
-
-        Object.entries(tapsPricing.tapDetails).forEach((tap) => {
-            content.push(`Tap Number: ${Number(tap[0]) + 1}, Price: ${tap[1]}`);
-        });
-
+    if (tapsPricingContents.length > 0) {
         confirmationElements.push({
             name: 'Prices by Taps',
-            content: content,
+            content: tapsPricingContents,
             href: '/multiTapsPricing',
+        });
+    }
+
+    if (capDistancePricingContents.length > 0) {
+        confirmationElements.push({
+            name: 'Prices',
+            content: capDistancePricingContents,
+            href: '/defineCapPricingPerDistance',
         });
     }
 
@@ -117,7 +122,8 @@ const CapConfirmation = ({
     capValidity,
     capStartInfo,
     services,
-    tapsPricing,
+    tapsPricingContents,
+    capDistancePricingContents,
     csrfToken,
 }: CapConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
@@ -125,7 +131,7 @@ const CapConfirmation = ({
             <>
                 <h1 className="govuk-heading-l">Check your answers before sending your fares information</h1>
                 <ConfirmationTable
-                    header="Fare Information"
+                    header="Cap Information"
                     confirmationElements={buildCapConfirmationElements(
                         typeOfCap,
                         productGroupName,
@@ -133,7 +139,8 @@ const CapConfirmation = ({
                         capValidity,
                         capStartInfo,
                         services,
-                        tapsPricing,
+                        tapsPricingContents,
+                        capDistancePricingContents,
                     )}
                 />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -180,6 +187,27 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const multiTapsPricingAttribute = getSessionAttribute(ctx.req, MULTI_TAPS_PRICING_ATTRIBUTE);
 
+    const capDistancePricingAttribute = getSessionAttribute(ctx.req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE);
+
+    const tapsPricingContents: string[] = [];
+    if (multiTapsPricingAttribute && !isWithErrors(multiTapsPricingAttribute)) {
+        Object.entries(multiTapsPricingAttribute.tapDetails).forEach((tap) => {
+            tapsPricingContents.push(`Tap Number: ${Number(tap[0]) + 1}, Price: ${tap[1]}`);
+        });
+    }
+
+    const capDistancePricingContents: string[] = [];
+    if (capDistancePricingAttribute && !isWithErrors(capDistancePricingAttribute)) {
+        capDistancePricingContents.push(
+            `Max Price: ${capDistancePricingAttribute.maximumPrice}, Min Price: ${capDistancePricingAttribute.minimumPrice}`,
+        );
+        capDistancePricingAttribute.capPricing.forEach((capDistance) => {
+            capDistancePricingContents.push(
+                `Distance: ${capDistance.distanceFrom} - ${capDistance.distanceTo}, Price(per km): ${capDistance.pricePerKm} `,
+            );
+        });
+    }
+
     return {
         props: {
             typeOfCap: typeOfCapAttribute.typeOfCap,
@@ -191,10 +219,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)
                     ? serviceListAttribute.selectedServices.map((service) => service.lineName)
                     : [],
-            tapsPricing:
-                multiTapsPricingAttribute && !isWithErrors(multiTapsPricingAttribute)
-                    ? multiTapsPricingAttribute
-                    : undefined,
+            tapsPricingContents,
+            capDistancePricingContents,
             csrfToken,
         },
     };
