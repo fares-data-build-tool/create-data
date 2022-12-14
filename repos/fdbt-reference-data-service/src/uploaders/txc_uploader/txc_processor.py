@@ -309,6 +309,7 @@ def check_txc_line_exists(
         service_code,
         origin,
         destination,
+        mode
     ) = extract_data_for_txc_operator_service_table(operator, service, line)
 
     query = f"""
