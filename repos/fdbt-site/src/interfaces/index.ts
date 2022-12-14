@@ -754,15 +754,3 @@ export interface MultiTap {
 export interface MultiTapPricing {
     tapDetails: MultiTap;
 }
-
-export interface CapDistancePricing {
-    distanceFrom: string;
-    distanceTo: string;
-    pricePerKm: string;
-}
-
-export interface DistanceCap {
-    maximumPrice: string;
-    minimumPrice: string;
-    capPricing: CapDistancePricing[];
-}

@@ -60,7 +60,24 @@ describe('ticketRepresentation', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledTimes(1);
     });
-    it('should return 302 redirect to /  defineCapPricingPerDistance when type of cap is byDistance', () => {
+
+    it('should return 302 redirect to /multiTapsPricing when type of cap is byDistance', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                typeOfCap: 'byTaps',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        typeOfCap(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/multiTapsPricing',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledTimes(1);
+    });
+
+    it('should return 302 redirect to /defineCapPricingPerDistance when type of cap is byDistance', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 typeOfCap: 'byDistance',
@@ -73,6 +90,6 @@ describe('ticketRepresentation', () => {
             Location: '/defineCapPricingPerDistance',
         });
 
-        expect(updateSessionAttributeSpy).toBeCalledTimes(0);
+        expect(updateSessionAttributeSpy).toBeCalledTimes(1);
     });
 });

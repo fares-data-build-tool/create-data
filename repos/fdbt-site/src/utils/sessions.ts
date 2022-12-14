@@ -74,7 +74,6 @@ import {
     CAP_START_ATTRIBUTE,
     CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
     MULTI_TAPS_PRICING_ATTRIBUTE,
-    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -137,7 +136,6 @@ import {
     ManageProductGroupWithErrors,
     DistanceCap,
     MultiTapPricing,
-    DistanceCap,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -237,7 +235,6 @@ export interface SessionAttributeTypes {
     [CAP_START_ATTRIBUTE]: CapStartInfo | ErrorInfo[];
     [CAP_PRICING_PER_DISTANCE_ATTRIBUTE]: DistanceCap | WithErrors<DistanceCap>;
     [MULTI_TAPS_PRICING_ATTRIBUTE]: MultiTapPricing | WithErrors<MultiTapPricing>;
-    [CAP_PRICING_PER_DISTANCE_ATTRIBUTE]: DistanceCap | WithErrors<DistanceCap>;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
