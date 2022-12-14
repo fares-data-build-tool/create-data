@@ -28,6 +28,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         } else if (typeOfCap === 'byDistance') {
             redirectTo(res, '/defineCapPricingPerDistance');
+        } else if (typeOfCap === 'byTaps') {
+            redirectTo(res, '/multiTapsPricing');
             return;
         } else {
             // to change when we support other types of cap

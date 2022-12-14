@@ -10,6 +10,7 @@ from txc_uploader.txc_processor import (
     collect_journey_patterns,
     iterate_through_journey_patterns_and_run_insert_queries,
     check_file_has_usable_data,
+    create_unique_line_id
 )
 
 from tests.helpers import test_xml_helpers
@@ -17,8 +18,19 @@ from tests.helpers.test_data import test_data
 
 logger = MagicMock()
 mock_data_dict = test_xml_helpers.generate_mock_data_dict()
+mock_non_bus_dict = test_xml_helpers.generate_mock_ferry_txc_data_dict()
 mock_invalid_data_dict = test_xml_helpers.generate_mock_invalid_data_dict()
 
+
+class TestLineIdGeneration:
+    def test_function_returns_correctly_structured_line_id(self):
+        assert(create_unique_line_id("BLAC", "UNIQ123")) == "UZ000BLAC:BLACUNIQ123"
+
+class TestNonBusFileHasUsableData:
+    def test_non_bus_file_with_valid_data_is_usable(self):
+        data = mock_non_bus_dict
+        service = mock_non_bus_dict["TransXChange"]["Services"]["Service"]
+        assert check_file_has_usable_data(data, service) == True
 
 class TestFileHasUsableData:
     def test_file_with_valid_data_is_usable(self):
@@ -64,9 +76,33 @@ class TestDataCollectionFunctionality:
             "NW_01_ANW_4_1",
             "Macclesfield",
             "Macclesfield",
+            "bus"
         )
         operator = mock_data_dict["TransXChange"]["Operators"]["Operator"]
         service = mock_data_dict["TransXChange"]["Services"]["Service"]
+        line = service["Lines"]["Line"]
+
+        assert (
+            extract_data_for_txc_operator_service_table(operator, service, line)
+            == expected_operator_and_service_info
+        )
+
+    def test_extract_data_for_non_bus_txc_operator_service_table(self):
+        expected_operator_and_service_info = (
+            "NXSF",
+            "2022-07-25",
+            "2023-02-02",
+            "NEXUS Ferry",
+            "",
+            "",
+            "South Shields - North Shields",
+            "NE_04_FER_FERR_1",
+            "South Shields",
+            "North Shields",
+            "ferry"
+        )
+        operator = mock_non_bus_dict["TransXChange"]["Operators"]["Operator"]
+        service = mock_non_bus_dict["TransXChange"]["Services"]["Service"]
         line = service["Lines"]["Line"]
 
         assert (

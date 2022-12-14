@@ -746,3 +746,11 @@ export interface DistanceCap {
     minimumPrice: string;
     capPricing: CapDistancePricing[];
 }
+
+export interface MultiTap {
+    [key: string]: string;
+}
+
+export interface MultiTapPricing {
+    tapDetails: MultiTap;
+}
