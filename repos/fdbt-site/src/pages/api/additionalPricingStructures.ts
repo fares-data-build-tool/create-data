@@ -66,7 +66,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     }
 
     if (additionalDiscounts === 'yes') {
-        errors = validateAdditionalStructuresInput( pricingStructureStart, structureDiscount);
+        errors = validateAdditionalStructuresInput(pricingStructureStart, structureDiscount);
 
         if (errors.length > 0) {
             updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, {
