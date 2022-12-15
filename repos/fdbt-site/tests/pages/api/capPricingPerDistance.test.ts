@@ -46,7 +46,7 @@ describe('capPricingPerDistance', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, mockCapInfo);
 
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/defineCapPricingPerDistance' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/additionalPricingStructures' });
     });
 
     it('produces an error when distanceTo is empty', () => {
