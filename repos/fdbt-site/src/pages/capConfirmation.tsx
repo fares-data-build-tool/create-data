@@ -202,7 +202,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const tapsPricingContents: string[] = [];
     if (multiTapsPricingAttribute && !isWithErrors(multiTapsPricingAttribute)) {
         Object.entries(multiTapsPricingAttribute.tapDetails).forEach((tap) => {
-            tapsPricingContents.push(`Tap number: ${Number(tap[0]) + 1}, Price: ${tap[1]}`);
+            tapsPricingContents.push(`Tap number - ${Number(tap[0]) + 1}, Price - £${tap[1]}`);
         });
     }
 
