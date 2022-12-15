@@ -185,6 +185,7 @@ describe('pages', () => {
                     ],
                     selectedServices: [],
                     name: 'Blackpool Transport',
+                    dataSource: 'bods',
                 },
                 {
                     nocCode: 'MCT',
@@ -219,6 +220,7 @@ describe('pages', () => {
                     ],
                     selectedServices: [],
                     name: 'Manchester Transport',
+                    dataSource: 'bods',
                 },
             ];
 
