@@ -45,7 +45,7 @@ describe('searchOperators', () => {
 
     it('should redirect to itself (i.e. /searchOperators) with search text in the query string when the search term is valid', async () => {
         const mockSelectedOperators: Operator[] = [
-            { nocCode: 'BLACK', name: 'Blackpool Transport' },
+            { nocCode: 'BLAC', name: 'Blackpool Transport' },
             { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
         ];
 
