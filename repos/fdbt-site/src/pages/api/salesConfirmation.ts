@@ -99,7 +99,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 });
             }
 
-            if (ticketType === 'geoZone' || dataFormat !== 'tnds') {
+            if (ticketType === 'geoZone' || dataFormat !== 'tnds' || fareType === 'capped') {
                 redirectTo(res, '/productCreated');
                 return;
             }
