@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-onchange */
 import React, { ReactElement } from 'react';
 import { FullColumnLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
