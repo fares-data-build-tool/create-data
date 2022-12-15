@@ -2,7 +2,7 @@
 
 exports[`pages additionalPricingStructures should render correctly 1`] = `
 <FullColumnLayout
-  description="Define Additional Pricing Structures page of the Create Fares Data Service"
+  description="Additional Pricing Structures page of the Create Fares Data Service"
   errors={Array []}
   title="Additional Pricing Structures - Create Fares Data Service"
 >
@@ -23,21 +23,15 @@ exports[`pages additionalPricingStructures should render correctly 1`] = `
         <h1
           className="govuk-fieldset__heading"
         >
-          Are there additional pricing structures
+          Are there additional pricing structures?
         </h1>
       </legend>
       <label
         className="govuk-label"
         htmlFor="additional-discounts"
       >
-        Do you have additional discounts related to this product
+        Do you have additional discounts related to this product?
       </label>
-      <div
-        className="govuk-hint"
-        id="additional-discounts-hint"
-      >
-        Different levels of discount
-      </div>
       <div
         className="govuk-radios govuk-radios--conditional"
         data-module="govuk-radios"
@@ -159,9 +153,9 @@ exports[`pages additionalPricingStructures should render correctly 1`] = `
         >
           <input
             className="govuk-radios__input"
-            data-aria-controls="conditional-additional-discounts-2"
+            data-aria-controls="conditional-no-additional-discounts"
             defaultChecked={false}
-            id="additional-discounts-2"
+            id="no-additional-discounts"
             name="additionalDiscounts"
             type="radio"
             value="no"
@@ -188,7 +182,7 @@ exports[`pages additionalPricingStructures should render correctly 1`] = `
 
 exports[`pages additionalPricingStructures should render error messaging when errors are passed 1`] = `
 <FullColumnLayout
-  description="Define Additional Pricing Structures page of the Create Fares Data Service"
+  description="Additional Pricing Structures page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -223,21 +217,15 @@ exports[`pages additionalPricingStructures should render error messaging when er
         <h1
           className="govuk-fieldset__heading"
         >
-          Are there additional pricing structures
+          Are there additional pricing structures?
         </h1>
       </legend>
       <label
         className="govuk-label"
         htmlFor="additional-discounts"
       >
-        Do you have additional discounts related to this product
+        Do you have additional discounts related to this product?
       </label>
-      <div
-        className="govuk-hint"
-        id="additional-discounts-hint"
-      >
-        Different levels of discount
-      </div>
       <div
         className="govuk-radios govuk-radios--conditional"
         data-module="govuk-radios"
@@ -373,9 +361,9 @@ exports[`pages additionalPricingStructures should render error messaging when er
         >
           <input
             className="govuk-radios__input"
-            data-aria-controls="conditional-additional-discounts-2"
+            data-aria-controls="conditional-no-additional-discounts"
             defaultChecked={false}
-            id="additional-discounts-2"
+            id="no-additional-discounts"
             name="additionalDiscounts"
             type="radio"
             value="no"

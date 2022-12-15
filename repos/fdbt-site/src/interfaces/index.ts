@@ -756,7 +756,6 @@ export interface MultiTapPricing {
 }
 
 export interface AdditionalPricing {
-    additionalDiscounts: string;
     pricingStructureStart: string;
     structureDiscount: string;
 }

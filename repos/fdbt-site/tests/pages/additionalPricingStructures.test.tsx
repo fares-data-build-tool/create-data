@@ -10,10 +10,10 @@ describe('pages', () => {
                     errors={[]}
                     csrfToken=""
                     additionalPricingStructures={{
-                        additionalDiscounts: 'yes',
                         pricingStructureStart: '2',
                         structureDiscount: '2',
                     }}
+                    clickedYes={true}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -30,10 +30,10 @@ describe('pages', () => {
                     ]}
                     csrfToken=""
                     additionalPricingStructures={{
-                        additionalDiscounts: 'yes',
                         pricingStructureStart: '',
                         structureDiscount: '2',
                     }}
+                    clickedYes={true}
                 />,
             );
             expect(tree).toMatchSnapshot();

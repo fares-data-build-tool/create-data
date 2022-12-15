@@ -1,4 +1,3 @@
-import { startCase } from 'lodash';
 import { NextApiResponse } from 'next';
 import { ADDITIONAL_PRICING_ATTRIBUTE } from '../../../src/constants/attributes';
 import { redirectTo } from '../../../src/utils/apiUtils';
@@ -12,7 +11,10 @@ export const checkInputIsValid = (inputtedValue: string | undefined, inputType: 
     if (!inputtedValue) {
         error = `Enter a value for the ${inputType}`;
     } else if (Math.sign(Number(inputtedValue)) === -1) {
-        error = `${startCase(inputType)} cannot be a negative number`;
+        error =
+            inputType === 'structure discount'
+                ? 'Percentage discount cannot be a negative number'
+                : 'Time allowance after first journey cannot be a negative number';
     } else if (!isCurrency(inputtedValue) && inputType === 'structure discount') {
         error = 'This must be a valid structure discount number to 2 decimal places';
     } else if (!Number.isInteger(Number(inputtedValue)) && inputType === 'pricing structure') {
@@ -32,7 +34,7 @@ export const validateAdditionalStructuresInput = (
 ): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
     if (additionalDiscounts !== 'yes' && additionalDiscounts !== 'no') {
-        errors.push({ id: 'additional-discounts', errorMessage: 'Please select an option from the radio button' });
+        errors.push({ id: 'additional-discounts', errorMessage: 'Select an option' });
     }
     if (additionalDiscounts === 'yes') {
         const pricingStructureStartError = checkInputIsValid(pricingStructureStart, 'pricing structure');
@@ -53,14 +55,16 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const { additionalDiscounts, pricingStructureStart, structureDiscount } = req.body;
 
     const additionalPricingStructures: AdditionalPricing = {
-        additionalDiscounts,
         pricingStructureStart,
         structureDiscount,
     };
     if (!additionalDiscounts) {
         updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, {
-            errors: [{ id: 'additional-discounts', errorMessage: 'Please select an option from the radio button' }],
-            ...additionalPricingStructures,
+            clickedYes: additionalDiscounts === 'yes',
+            additionalPricingStructures: {
+                errors: [{ id: 'additional-discounts', errorMessage: 'Select an option' }],
+                ...additionalPricingStructures,
+            },
         });
         redirectTo(res, '/additionalPricingStructures');
         return;
@@ -69,8 +73,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     errors = validateAdditionalStructuresInput(additionalDiscounts, pricingStructureStart, structureDiscount);
     if (errors.length > 0) {
         updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, {
-            errors,
-            ...additionalPricingStructures,
+            clickedYes: additionalDiscounts === 'yes',
+            additionalPricingStructures: {
+                errors,
+                ...additionalPricingStructures,
+            },
         });
         redirectTo(res, '/additionalPricingStructures');
         return;
@@ -79,8 +86,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, additionalPricingStructures);
 
     updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, {
-        errors: [{ id: '', errorMessage: 'Next page to be made soon!' }],
-        ...additionalPricingStructures,
+        clickedYes: additionalDiscounts === 'yes',
+        additionalPricingStructures: {
+            errors: [{ id: '', errorMessage: 'Next page to be made soon!' }],
+            ...additionalPricingStructures,
+        },
     });
 
     redirectTo(res, '/additionalPricingStructures');

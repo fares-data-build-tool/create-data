@@ -16,7 +16,6 @@ describe('additionalPricingStructures', () => {
 
     it('correctly generates additional pricing structures info, updates the  ADDITIONAL_PRICING_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', () => {
         const mockAdditionalStructuresInfo: AdditionalPricing = {
-            additionalDiscounts: 'yes',
             pricingStructureStart: '2',
             structureDiscount: '2',
         };
@@ -42,9 +41,7 @@ describe('additionalPricingStructures', () => {
     });
 
     it('produces an error when additionalDiscounts is empty', () => {
-        const errors: ErrorInfo[] = [
-            { id: 'additional-discounts', errorMessage: 'Please select an option from the radio button' },
-        ];
+        const errors: ErrorInfo[] = [{ id: 'additional-discounts', errorMessage: 'Select an option' }];
 
         const { req, res } = getMockRequestAndResponse({
             body: {
@@ -57,16 +54,17 @@ describe('additionalPricingStructures', () => {
         additionalPricingStructures(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, ADDITIONAL_PRICING_ATTRIBUTE, {
-            additionalDiscounts: '',
-            pricingStructureStart: '2',
-            structureDiscount: '2',
-            errors,
+            additionalPricingStructures: {
+                pricingStructureStart: '2',
+                structureDiscount: '2',
+                errors,
+            },
+            clickedYes: false,
         });
     });
 
     it('correctly generates additional pricing structures info, updates the  ADDITIONAL_PRICING_ATTRIBUTE and then redirects to /additionalPricingStructures when no is selected', () => {
         const mockAdditionalStructuresInfo: AdditionalPricing = {
-            additionalDiscounts: 'no',
             pricingStructureStart: '',
             structureDiscount: '',
         };
@@ -107,10 +105,12 @@ describe('additionalPricingStructures', () => {
         additionalPricingStructures(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, ADDITIONAL_PRICING_ATTRIBUTE, {
-            additionalDiscounts: 'yes',
-            pricingStructureStart: '',
-            structureDiscount: '2',
-            errors,
+            additionalPricingStructures: {
+                pricingStructureStart: '',
+                structureDiscount: '2',
+                errors,
+            },
+            clickedYes: true,
         });
     });
 
@@ -133,10 +133,12 @@ describe('additionalPricingStructures', () => {
         additionalPricingStructures(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, ADDITIONAL_PRICING_ATTRIBUTE, {
-            additionalDiscounts: 'yes',
-            pricingStructureStart: '2',
-            structureDiscount: '',
-            errors,
+            additionalPricingStructures: {
+                pricingStructureStart: '2',
+                structureDiscount: '',
+                errors,
+            },
+            clickedYes: true,
         });
     });
 });
@@ -147,9 +149,7 @@ describe('validate additional structures input tests', () => {
         const pricingStructureStart = '2';
         const structureDiscount = '2';
 
-        const errorsResult: ErrorInfo[] = [
-            { id: 'additional-discounts', errorMessage: 'Please select an option from the radio button' },
-        ];
+        const errorsResult: ErrorInfo[] = [{ id: 'additional-discounts', errorMessage: 'Select an option' }];
 
         const errors = validateAdditionalStructuresInput(additionalDiscounts, pricingStructureStart, structureDiscount);
 
@@ -190,10 +190,13 @@ describe('validate additional structures input tests', () => {
         const structureDiscount = '-2.22';
 
         const errorsResult: ErrorInfo[] = [
-            { id: 'pricing-structure-start', errorMessage: 'Pricing Structure cannot be a negative number' },
+            {
+                id: 'pricing-structure-start',
+                errorMessage: 'Time allowance after first journey cannot be a negative number',
+            },
             {
                 id: 'structure-discount',
-                errorMessage: 'Structure Discount cannot be a negative number',
+                errorMessage: 'Percentage discount cannot be a negative number',
             },
         ];
 

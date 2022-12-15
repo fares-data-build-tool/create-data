@@ -11,18 +11,20 @@ import { isWithErrors } from '../../src/interfaces/typeGuards';
 import FormElementWrapper from '../../src/components/FormElementWrapper';
 
 const title = 'Additional Pricing Structures - Create Fares Data Service';
-const description = 'Define Additional Pricing Structures page of the Create Fares Data Service';
+const description = 'Additional Pricing Structures page of the Create Fares Data Service';
 
 interface SelectTimeRestrictionsProps {
     csrfToken: string;
     errors: ErrorInfo[];
     additionalPricingStructures: AdditionalPricing | WithErrors<AdditionalPricing>;
+    clickedYes: boolean;
 }
 
 const AdditionalPricingStructures = ({
     csrfToken,
     errors,
     additionalPricingStructures,
+    clickedYes,
 }: SelectTimeRestrictionsProps): ReactElement => {
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
@@ -31,14 +33,11 @@ const AdditionalPricingStructures = ({
                 <>
                     <fieldset className="govuk-fieldset">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading">Are there additional pricing structures</h1>
+                            <h1 className="govuk-fieldset__heading">Are there additional pricing structures?</h1>
                         </legend>
                         <label className="govuk-label" htmlFor="additional-discounts">
-                            Do you have additional discounts related to this product
+                            Do you have additional discounts related to this product?
                         </label>
-                        <div id="additional-discounts-hint" className="govuk-hint">
-                            Different levels of discount
-                        </div>
                         <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
                             <div className="govuk-radios__item">
                                 <input
@@ -48,9 +47,7 @@ const AdditionalPricingStructures = ({
                                     type="radio"
                                     value="yes"
                                     data-aria-controls="conditional-additional-discounts"
-                                    defaultChecked={
-                                        errors.length > 0 && additionalPricingStructures.additionalDiscounts === 'yes'
-                                    }
+                                    defaultChecked={errors.length > 0 && clickedYes}
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">
                                     Yes
@@ -127,14 +124,12 @@ const AdditionalPricingStructures = ({
                             <div className="govuk-radios__item">
                                 <input
                                     className="govuk-radios__input"
-                                    id="additional-discounts-2"
+                                    id="no-additional-discounts"
                                     name="additionalDiscounts"
                                     type="radio"
                                     value="no"
-                                    data-aria-controls="conditional-additional-discounts-2"
-                                    defaultChecked={
-                                        errors.length > 0 && additionalPricingStructures.additionalDiscounts === 'no'
-                                    }
+                                    data-aria-controls="conditional-no-additional-discounts"
+                                    defaultChecked={errors.length > 0 && !clickedYes}
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
                                     No
@@ -157,24 +152,33 @@ const AdditionalPricingStructures = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SelectTimeRestrictionsProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const additionalPricingStructures: AdditionalPricing | WithErrors<AdditionalPricing> | undefined =
-        getSessionAttribute(ctx.req, ADDITIONAL_PRICING_ATTRIBUTE);
+    const additionalPricingStructures:
+        | AdditionalPricing
+        | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> }
+        | undefined = getSessionAttribute(ctx.req, ADDITIONAL_PRICING_ATTRIBUTE);
 
+    let clickedYes = false;
     let errors: ErrorInfo[] = [];
-
-    if (additionalPricingStructures && isWithErrors(additionalPricingStructures)) {
-        errors = additionalPricingStructures.errors;
+    let additionalPricing: AdditionalPricing = {
+        pricingStructureStart: '',
+        structureDiscount: '',
+    };
+    if (
+        additionalPricingStructures &&
+        'additionalPricingStructures' in additionalPricingStructures &&
+        isWithErrors(additionalPricingStructures.additionalPricingStructures)
+    ) {
+        errors = additionalPricingStructures.additionalPricingStructures.errors;
+        additionalPricing = additionalPricingStructures.additionalPricingStructures;
+        clickedYes = additionalPricingStructures.clickedYes;
     }
 
     return {
         props: {
             csrfToken,
             errors,
-            additionalPricingStructures: additionalPricingStructures || {
-                additionalDiscounts: '',
-                pricingStructureStart: '',
-                structureDiscount: '',
-            },
+            additionalPricingStructures: additionalPricing,
+            clickedYes,
         },
     };
 };

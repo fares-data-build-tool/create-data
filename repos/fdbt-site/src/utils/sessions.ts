@@ -237,7 +237,9 @@ export interface SessionAttributeTypes {
     [CAP_START_ATTRIBUTE]: CapStartInfo | ErrorInfo[];
     [CAP_PRICING_PER_DISTANCE_ATTRIBUTE]: DistanceCap | WithErrors<DistanceCap>;
     [MULTI_TAPS_PRICING_ATTRIBUTE]: MultiTapPricing | WithErrors<MultiTapPricing>;
-    [ADDITIONAL_PRICING_ATTRIBUTE]: AdditionalPricing | WithErrors<AdditionalPricing>;
+    [ADDITIONAL_PRICING_ATTRIBUTE]:
+        | AdditionalPricing
+        | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
