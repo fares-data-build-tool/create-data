@@ -17,7 +17,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isCapExpiry, isCapStartInfo, isWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken, sentenceCaseString, getAndValidateNoc } from '../utils';
 import { getProductGroupByNocAndId } from '../data/auroradb';
-import { CapStartInfo } from 'src/interfaces/matchingJsonTypes';
+import { CapStartInfo } from '../interfaces/matchingJsonTypes';
 import { isServiceListAttributeWithErrors } from './serviceList';
 
 const title = 'Cap Confirmation - Create Fares Data Service';
@@ -48,14 +48,14 @@ export const buildCapConfirmationElements = (
     const confirmationElements: ConfirmationElement[] = [
         {
             name: 'Cap type',
-            content: `Pricing by ${typeOfCap.substring(2)} `,
+            content: `Pricing by ${typeOfCap.toLowerCase().substring(2)} `,
             href: 'typeOfCap',
         },
     ];
 
     if (productGroupName) {
         confirmationElements.push({
-            name: 'Product Group Name',
+            name: 'Product group name',
             content: productGroupName,
             href: '/selectCappedProductGroup',
         });
@@ -74,17 +74,17 @@ export const buildCapConfirmationElements = (
     });
 
     confirmationElements.push({
-        name: 'Cap Expiry',
+        name: 'Cap expiry',
         content: sentenceCaseString(capValidity),
         href: '/selectCapValidity',
     });
 
     confirmationElements.push({
-        name: 'Cap Starts',
+        name: 'Cap starts',
         content:
             capStartInfo.type === 'fixedWeekdays' && capStartInfo.startDay
-                ? `Fixed Days - ${sentenceCaseString(capStartInfo.startDay)}`
-                : 'Rolling Days',
+                ? `Fixed days - ${sentenceCaseString(capStartInfo.startDay)}`
+                : 'Rolling days',
         href: '/defineCapStart',
     });
 
@@ -98,7 +98,7 @@ export const buildCapConfirmationElements = (
 
     if (tapsPricingContents.length > 0) {
         confirmationElements.push({
-            name: 'Prices by Taps',
+            name: 'Prices by taps',
             content: tapsPricingContents,
             href: '/multiTapsPricing',
         });
@@ -129,7 +129,7 @@ const CapConfirmation = ({
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/capConfirmation" method="post" csrfToken={csrfToken}>
             <>
-                <h1 className="govuk-heading-l">Check your answers before sending your fares information</h1>
+                <h1 className="govuk-heading-l">Check your answers before submitting your fares information</h1>
                 <ConfirmationTable
                     header="Cap Information"
                     confirmationElements={buildCapConfirmationElements(
@@ -192,18 +192,18 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const tapsPricingContents: string[] = [];
     if (multiTapsPricingAttribute && !isWithErrors(multiTapsPricingAttribute)) {
         Object.entries(multiTapsPricingAttribute.tapDetails).forEach((tap) => {
-            tapsPricingContents.push(`Tap Number: ${Number(tap[0]) + 1}, Price: ${tap[1]}`);
+            tapsPricingContents.push(`Tap number: ${Number(tap[0]) + 1}, Price: ${tap[1]}`);
         });
     }
 
     const capDistancePricingContents: string[] = [];
     if (capDistancePricingAttribute && !isWithErrors(capDistancePricingAttribute)) {
         capDistancePricingContents.push(
-            `Max Price: ${capDistancePricingAttribute.maximumPrice}, Min Price: ${capDistancePricingAttribute.minimumPrice}`,
+            `Min price: ${capDistancePricingAttribute.minimumPrice}, Max price: ${capDistancePricingAttribute.maximumPrice}`,
         );
         capDistancePricingAttribute.capPricing.forEach((capDistance) => {
             capDistancePricingContents.push(
-                `Distance: ${capDistance.distanceFrom} - ${capDistance.distanceTo}, Price(per km): ${capDistance.pricePerKm} `,
+                `Distance: ${capDistance.distanceFrom} - ${capDistance.distanceTo}, Price per km: ${capDistance.pricePerKm} `,
             );
         });
     }

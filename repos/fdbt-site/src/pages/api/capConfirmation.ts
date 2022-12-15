@@ -1,7 +1,8 @@
 import { NextApiResponse } from 'next';
+import { NextApiRequestWithSession } from '../../interfaces';
 import { redirectToError, redirectTo } from '../../utils/apiUtils';
 
-export default (res: NextApiResponse): void => {
+export default (_req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         redirectTo(res, '/selectPurchaseMethods');
         return;

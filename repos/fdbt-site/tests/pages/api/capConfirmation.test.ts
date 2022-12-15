@@ -4,15 +4,11 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 describe('capConfirmation', () => {
     const writeHeadMock = jest.fn();
 
-    beforeEach(() => {
-        jest.resetAllMocks();
-    });
-
     it('should redirect on selectPurchaseMethods', () => {
-        const { res } = getMockRequestAndResponse({
+        const { req, res } = getMockRequestAndResponse({
             mockWriteHeadFn: writeHeadMock,
         });
-        capConfirmation(res);
+        capConfirmation(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectPurchaseMethods',
         });

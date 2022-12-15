@@ -14,13 +14,13 @@ exports[`pages capConfirmation should render correctly for capped ticket by dist
     <h1
       className="govuk-heading-l"
     >
-      Check your answers before sending your fares information
+      Check your answers before submitting your fares information
     </h1>
     <ConfirmationTable
       confirmationElements={
         Array [
           Object {
-            "content": "Pricing by Distance ",
+            "content": "Pricing by distance ",
             "href": "typeOfCap",
             "name": "Cap type",
           },
@@ -35,12 +35,12 @@ exports[`pages capConfirmation should render correctly for capped ticket by dist
           Object {
             "content": "24 hr",
             "href": "/selectCapValidity",
-            "name": "Cap Expiry",
+            "name": "Cap expiry",
           },
           Object {
-            "content": "Fixed Days - Monday",
+            "content": "Fixed days - Monday",
             "href": "/defineCapStart",
-            "name": "Cap Starts",
+            "name": "Cap starts",
           },
           Object {
             "content": "1, 2C",
@@ -83,20 +83,20 @@ exports[`pages capConfirmation should render correctly for capped ticket by prod
     <h1
       className="govuk-heading-l"
     >
-      Check your answers before sending your fares information
+      Check your answers before submitting your fares information
     </h1>
     <ConfirmationTable
       confirmationElements={
         Array [
           Object {
-            "content": "Pricing by Products ",
+            "content": "Pricing by products ",
             "href": "typeOfCap",
             "name": "Cap type",
           },
           Object {
             "content": "capped-product-group-name",
             "href": "/selectCappedProductGroup",
-            "name": "Product Group Name",
+            "name": "Product group name",
           },
           Object {
             "content": Array [
@@ -109,12 +109,12 @@ exports[`pages capConfirmation should render correctly for capped ticket by prod
           Object {
             "content": "24 hr",
             "href": "/selectCapValidity",
-            "name": "Cap Expiry",
+            "name": "Cap expiry",
           },
           Object {
-            "content": "Rolling Days",
+            "content": "Rolling days",
             "href": "/defineCapStart",
-            "name": "Cap Starts",
+            "name": "Cap starts",
           },
           Object {
             "content": "1, 2C",
@@ -149,13 +149,13 @@ exports[`pages capConfirmation should render correctly for capped ticket by taps
     <h1
       className="govuk-heading-l"
     >
-      Check your answers before sending your fares information
+      Check your answers before submitting your fares information
     </h1>
     <ConfirmationTable
       confirmationElements={
         Array [
           Object {
-            "content": "Pricing by Taps ",
+            "content": "Pricing by taps ",
             "href": "typeOfCap",
             "name": "Cap type",
           },
@@ -170,12 +170,12 @@ exports[`pages capConfirmation should render correctly for capped ticket by taps
           Object {
             "content": "24 hr",
             "href": "/selectCapValidity",
-            "name": "Cap Expiry",
+            "name": "Cap expiry",
           },
           Object {
-            "content": "Rolling Days",
+            "content": "Rolling days",
             "href": "/defineCapStart",
-            "name": "Cap Starts",
+            "name": "Cap starts",
           },
           Object {
             "content": "1, 2C",
@@ -187,7 +187,7 @@ exports[`pages capConfirmation should render correctly for capped ticket by taps
               "Tap Number: 1, Price: 2",
             ],
             "href": "/multiTapsPricing",
-            "name": "Prices by Taps",
+            "name": "Prices by taps",
           },
         ]
       }

@@ -100,11 +100,11 @@ describe('pages', () => {
                     [],
                 );
                 expect(result).toStrictEqual([
-                    { content: 'Pricing by Products ', href: 'typeOfCap', name: 'Cap type' },
+                    { content: 'Pricing by products ', href: 'typeOfCap', name: 'Cap type' },
                     {
                         content: 'capped-product-group-name',
                         href: '/selectCappedProductGroup',
-                        name: 'Product Group Name',
+                        name: 'Product group name',
                     },
                     {
                         content: ['Price - £2', 'Duration - 1 day'],
@@ -114,12 +114,12 @@ describe('pages', () => {
                     {
                         content: 'End of calendar day',
                         href: '/selectCapValidity',
-                        name: 'Cap Expiry',
+                        name: 'Cap expiry',
                     },
                     {
-                        content: 'Fixed Days - Monday',
+                        content: 'Fixed days - Monday',
                         href: '/defineCapStart',
-                        name: 'Cap Starts',
+                        name: 'Cap starts',
                     },
                     {
                         content: '1, 2',
@@ -143,7 +143,7 @@ describe('pages', () => {
                     [],
                 );
                 expect(result).toStrictEqual([
-                    { content: 'Pricing by Taps ', href: 'typeOfCap', name: 'Cap type' },
+                    { content: 'Pricing by taps ', href: 'typeOfCap', name: 'Cap type' },
                     {
                         content: ['Price - £2', 'Duration - 1 day'],
                         href: '/createCaps',
@@ -152,12 +152,12 @@ describe('pages', () => {
                     {
                         content: '24 hr',
                         href: '/selectCapValidity',
-                        name: 'Cap Expiry',
+                        name: 'Cap expiry',
                     },
                     {
-                        content: 'Rolling Days',
+                        content: 'Rolling days',
                         href: '/defineCapStart',
-                        name: 'Cap Starts',
+                        name: 'Cap starts',
                     },
                     {
                         content: '1, 2',
@@ -165,7 +165,7 @@ describe('pages', () => {
                         name: 'Services',
                     },
                     {
-                        name: 'Prices by Taps',
+                        name: 'Prices by taps',
                         href: '/multiTapsPricing',
                         content: ['Tap Number: 1, Price: 2', 'Tap Number: 2, Price: 4'],
                     },
@@ -184,13 +184,13 @@ describe('pages', () => {
                     ['1', '2'],
                     [],
                     [
-                        'Max Price: 9, Min Price: 2',
-                        'Distance: 0 - 2, Price(per km): 4 ',
-                        'Distance: 2 - 4, Price(per km): 3 ',
+                        'Min Price: 2, Max Price: 9',
+                        'Distance: 0 - 2, Price per km: 4',
+                        'Distance: 2 - 4, Price per km: 3',
                     ],
                 );
                 expect(result).toStrictEqual([
-                    { content: 'Pricing by Distance ', href: 'typeOfCap', name: 'Cap type' },
+                    { content: 'Pricing by distance ', href: 'typeOfCap', name: 'Cap type' },
                     {
                         content: ['Price - £2', 'Duration - 1 day'],
                         href: '/createCaps',
@@ -199,12 +199,12 @@ describe('pages', () => {
                     {
                         content: '24 hr',
                         href: '/selectCapValidity',
-                        name: 'Cap Expiry',
+                        name: 'Cap expiry',
                     },
                     {
-                        content: 'Rolling Days',
+                        content: 'Rolling days',
                         href: '/defineCapStart',
-                        name: 'Cap Starts',
+                        name: 'Cap starts',
                     },
                     {
                         content: '1, 2',
@@ -213,9 +213,9 @@ describe('pages', () => {
                     },
                     {
                         content: [
-                            'Max Price: 9, Min Price: 2',
-                            'Distance: 0 - 2, Price(per km): 4 ',
-                            'Distance: 2 - 4, Price(per km): 3 ',
+                            'Min Price: 2, Max Price: 9',
+                            'Distance: 0 - 2, Price per km: 4',
+                            'Distance: 2 - 4, Price per km: 3',
                         ],
                         href: '/defineCapPricingPerDistance',
                         name: 'Prices',
