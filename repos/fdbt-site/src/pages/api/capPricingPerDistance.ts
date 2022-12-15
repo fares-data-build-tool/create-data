@@ -135,10 +135,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
     updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, distanceCap);
 
-    updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
-        errors: [{ id: '', errorMessage: 'Next page to be made soon!' }],
-        ...distanceCap,
-    });
-    redirectTo(res, '/defineCapPricingPerDistance');
+    redirectTo(res, '/capConfirmation');
     return;
 };
