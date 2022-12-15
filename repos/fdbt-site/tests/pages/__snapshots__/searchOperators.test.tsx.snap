@@ -107,7 +107,7 @@ exports[`pages searchOperator should render a selection error when the user trie
                 className="govuk-hint"
                 id="bods-hint-text"
               >
-                Select the operators results and click add operator(s). This data is taken from Bus Open Data Service (BODS).
+                Select the operators results and click add operator(s). Bus data is taken from Bus Open Data Service (BODS). Any other transport modes will be sourced from Traveline National Dataset (TNDS).
               </p>
               <p
                 className="govuk-hint"
@@ -1001,7 +1001,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
                 className="govuk-hint"
                 id="bods-hint-text"
               >
-                Select the operators results and click add operator(s). This data is taken from Bus Open Data Service (BODS).
+                Select the operators results and click add operator(s). Bus data is taken from Bus Open Data Service (BODS). Any other transport modes will be sourced from Traveline National Dataset (TNDS).
               </p>
               <p
                 className="govuk-hint"
@@ -1616,7 +1616,7 @@ exports[`pages searchOperator should render the search input and search results 
                 className="govuk-hint"
                 id="bods-hint-text"
               >
-                Select the operators results and click add operator(s). This data is taken from Bus Open Data Service (BODS).
+                Select the operators results and click add operator(s). Bus data is taken from Bus Open Data Service (BODS). Any other transport modes will be sourced from Traveline National Dataset (TNDS).
               </p>
               <p
                 className="govuk-hint"
@@ -1871,7 +1871,7 @@ exports[`pages searchOperator should render the search input, search results and
                 className="govuk-hint"
                 id="bods-hint-text"
               >
-                Select the operators results and click add operator(s). This data is taken from Bus Open Data Service (BODS).
+                Select the operators results and click add operator(s). Bus data is taken from Bus Open Data Service (BODS). Any other transport modes will be sourced from Traveline National Dataset (TNDS).
               </p>
               <p
                 className="govuk-hint"

@@ -265,8 +265,9 @@ export const ShowSearchResults = (
                     <>
                         <div className="govuk-checkboxes">
                             <p className="govuk-hint" id="bods-hint-text">
-                                Select the operators results and click add operator(s). This data is taken from Bus Open
-                                Data Service (BODS).
+                                Select the operators results and click add operator(s). Bus data is taken from Bus Open
+                                Data Service (BODS). Any other transport modes will be sourced from Traveline National
+                                Dataset (TNDS).
                             </p>
                             <p className="govuk-hint" id="noc-hint-text">
                                 You will see that all operator names are followed by a series of characters. These
@@ -444,7 +445,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         if (searchResults.length === 0) {
             errors = [
                 {
-                    errorMessage: `No operators found for '${searchText}'. Try another search term.`,
+                    errorMessage: `No operators found for '${searchText}'. Either the operator is not in the NOC Database, or there is no published service data for the operator. Try another search term.`,
                     id: 'search-input',
                 },
             ];
