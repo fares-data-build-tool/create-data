@@ -147,19 +147,7 @@ describe('additionalPricingStructures', () => {
 });
 
 describe('validate additional structures input tests', () => {
-    it('validates input for additionalDiscounts', () => {
-        const additionalDiscounts = '';
-        const pricingStructureStart = '2';
-        const structureDiscount = '2';
-
-        const errorsResult: ErrorInfo[] = [{ id: 'additional-discounts', errorMessage: 'Select an option' }];
-
-        const errors = validateAdditionalStructuresInput(additionalDiscounts, pricingStructureStart, structureDiscount);
-
-        expect(errors).toEqual(errorsResult);
-    });
     it('validates input for pricingStructureStart', () => {
-        const additionalDiscounts = 'yes';
         const pricingStructureStart = '2.22';
         const structureDiscount = '2';
 
@@ -167,12 +155,11 @@ describe('validate additional structures input tests', () => {
             { id: 'pricing-structure-start', errorMessage: 'Pricing structure must be a whole number' },
         ];
 
-        const errors = validateAdditionalStructuresInput(additionalDiscounts, pricingStructureStart, structureDiscount);
+        const errors = validateAdditionalStructuresInput(pricingStructureStart, structureDiscount);
 
         expect(errors).toEqual(errorsResult);
     });
     it('validates input for structureDiscount', () => {
-        const additionalDiscounts = 'yes';
         const pricingStructureStart = '2';
         const structureDiscount = '2.222';
 
@@ -183,12 +170,11 @@ describe('validate additional structures input tests', () => {
             },
         ];
 
-        const errors = validateAdditionalStructuresInput(additionalDiscounts, pricingStructureStart, structureDiscount);
+        const errors = validateAdditionalStructuresInput(pricingStructureStart, structureDiscount);
 
         expect(errors).toEqual(errorsResult);
     });
     it('makes sure no negative numbers are allowed ', () => {
-        const additionalDiscounts = 'yes';
         const pricingStructureStart = '-2';
         const structureDiscount = '-2.22';
 
@@ -203,7 +189,7 @@ describe('validate additional structures input tests', () => {
             },
         ];
 
-        const errors = validateAdditionalStructuresInput(additionalDiscounts, pricingStructureStart, structureDiscount);
+        const errors = validateAdditionalStructuresInput(pricingStructureStart, structureDiscount);
 
         expect(errors).toEqual(errorsResult);
     });

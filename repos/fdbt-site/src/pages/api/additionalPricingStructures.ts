@@ -28,24 +28,19 @@ export const checkInputIsValid = (inputtedValue: string | undefined, inputType: 
 };
 
 export const validateAdditionalStructuresInput = (
-    additionalDiscounts: string,
     pricingStructureStart: string,
     structureDiscount: string,
 ): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
-    if (additionalDiscounts !== 'yes' && additionalDiscounts !== 'no') {
-        errors.push({ id: 'additional-discounts', errorMessage: 'Select an option' });
+    const pricingStructureStartError = checkInputIsValid(pricingStructureStart, 'pricing structure');
+    if (pricingStructureStartError) {
+        errors.push({ id: 'pricing-structure-start', errorMessage: pricingStructureStartError });
     }
-    if (additionalDiscounts === 'yes') {
-        const pricingStructureStartError = checkInputIsValid(pricingStructureStart, 'pricing structure');
-        if (pricingStructureStartError) {
-            errors.push({ id: 'pricing-structure-start', errorMessage: pricingStructureStartError });
-        }
-        const structureDiscountError = checkInputIsValid(structureDiscount, 'structure discount');
-        if (structureDiscountError) {
-            errors.push({ id: 'structure-discount', errorMessage: structureDiscountError });
-        }
+    const structureDiscountError = checkInputIsValid(structureDiscount, 'structure discount');
+    if (structureDiscountError) {
+        errors.push({ id: 'structure-discount', errorMessage: structureDiscountError });
     }
+
     return errors;
 };
 
@@ -70,17 +65,20 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         return;
     }
 
-    errors = validateAdditionalStructuresInput(additionalDiscounts, pricingStructureStart, structureDiscount);
-    if (errors.length > 0) {
-        updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, {
-            clickedYes: additionalDiscounts === 'yes',
-            additionalPricingStructures: {
-                errors,
-                ...additionalPricingStructures,
-            },
-        });
-        redirectTo(res, '/additionalPricingStructures');
-        return;
+    if (additionalDiscounts === 'yes') {
+        errors = validateAdditionalStructuresInput( pricingStructureStart, structureDiscount);
+
+        if (errors.length > 0) {
+            updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, {
+                clickedYes: additionalDiscounts === 'yes',
+                additionalPricingStructures: {
+                    errors,
+                    ...additionalPricingStructures,
+                },
+            });
+            redirectTo(res, '/additionalPricingStructures');
+            return;
+        }
     }
 
     updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, additionalPricingStructures);
