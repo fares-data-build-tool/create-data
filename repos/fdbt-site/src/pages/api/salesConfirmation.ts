@@ -35,6 +35,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     try {
         const fareType = getFareTypeFromFromAttributes(req);
 
+        if (fareType === 'capped') {
+            redirectTo(res, '/productCreated');
+            return;
+        }
+
         const uuid = getUuidFromSession(req);
 
         let userDataJson: TicketWithIds | undefined;
@@ -99,7 +104,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 });
             }
 
-            if (ticketType === 'geoZone' || dataFormat !== 'tnds' || fareType === 'capped') {
+            if (ticketType === 'geoZone' || dataFormat !== 'tnds') {
                 redirectTo(res, '/productCreated');
                 return;
             }
