@@ -13,7 +13,7 @@ describe('defineCapStart', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates product info, updates the CAP_START_ATTRIBUTE and then redirects to /defineCapStart if all is valid', () => {
+    it('correctly generates product info, updates the CAP_START_ATTRIBUTE and then redirects to /capConfirmation if all is valid', () => {
         const mockProductInfo: CapStartInfo = {
             type: 'fixedWeekdays',
             startDay: 'monday',
@@ -28,7 +28,7 @@ describe('defineCapStart', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_START_ATTRIBUTE, mockProductInfo);
 
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/defineCapStart' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/capConfirmation' });
     });
 
     it('correctly generates product info, updates the CAP_START_ATTRIBUTE with startDay empty even if supplied, if fixedWeekdays is not selected', () => {

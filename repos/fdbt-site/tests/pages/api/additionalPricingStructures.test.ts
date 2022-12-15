@@ -14,7 +14,7 @@ describe('additionalPricingStructures', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates additional pricing structures info, updates the  ADDITIONAL_PRICING_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', () => {
+    it('correctly generates additional pricing structures info, updates the  ADDITIONAL_PRICING_ATTRIBUTE and then redirects to /capConfirmation if all is valid', () => {
         const mockAdditionalStructuresInfo: AdditionalPricing = {
             pricingStructureStart: '2',
             structureDiscount: '2',
@@ -37,7 +37,7 @@ describe('additionalPricingStructures', () => {
             mockAdditionalStructuresInfo,
         );
 
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/additionalPricingStructures' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/capConfirmation' });
     });
 
     it('produces an error when additionalDiscounts is empty', () => {
@@ -63,7 +63,7 @@ describe('additionalPricingStructures', () => {
         });
     });
 
-    it('correctly generates additional pricing structures info, updates the  ADDITIONAL_PRICING_ATTRIBUTE and then redirects to /additionalPricingStructures when no is selected', () => {
+    it('correctly generates additional pricing structures info, updates the  ADDITIONAL_PRICING_ATTRIBUTE and then redirects to /capConfirmation when no is selected', () => {
         const mockAdditionalStructuresInfo: AdditionalPricing = {
             pricingStructureStart: '',
             structureDiscount: '',
@@ -75,6 +75,7 @@ describe('additionalPricingStructures', () => {
                 pricingStructureStart: '',
                 structureDiscount: '',
             },
+            mockWriteHeadFn: writeHeadMock,
         });
 
         additionalPricingStructures(req, res);
@@ -84,6 +85,8 @@ describe('additionalPricingStructures', () => {
             ADDITIONAL_PRICING_ATTRIBUTE,
             mockAdditionalStructuresInfo,
         );
+
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/capConfirmation' });
     });
 
     it('produces an error when pricingStructureStart is empty', () => {

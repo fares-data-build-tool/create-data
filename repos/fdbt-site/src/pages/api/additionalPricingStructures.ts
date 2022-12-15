@@ -85,14 +85,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
     updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, additionalPricingStructures);
 
-    updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, {
-        clickedYes: additionalDiscounts === 'yes',
-        additionalPricingStructures: {
-            errors: [{ id: '', errorMessage: 'Next page to be made soon!' }],
-            ...additionalPricingStructures,
-        },
-    });
-
-    redirectTo(res, '/additionalPricingStructures');
+    redirectTo(res, '/capConfirmation');
     return;
 };
