@@ -9,7 +9,11 @@ import {
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
 } from '../constants/attributes';
-import { getOperatorDetailsFromNocTable, getServicesByNocCodeAndDataSourceWithGrouping } from '../data/auroradb';
+import {
+    getFerryAndBusServices,
+    getOperatorDetailsFromNocTable,
+    getServicesByNocCodeAndDataSourceWithGrouping,
+} from '../data/auroradb';
 import {
     ErrorInfo,
     MultiOperatorInfo,
@@ -31,6 +35,20 @@ interface MultiOperatorsServiceListProps {
     csrfToken: string;
     backHref: string;
 }
+
+const bodsDataSourceHtml = (
+    <>
+        This data is taken from the <b>Bus Open Data Service (BODS)</b>. If the service you are looking for is not
+        listed, contact the BODS help desk for advice <a href="/contact">here</a>.
+    </>
+);
+
+const tndsDataSourceHtml = (
+    <>
+        This data is taken from the <b>Traveline National Dataset (TNDS)</b>. If the you are looking for service data
+        published on BODS, contact the BODS help desk for advice <a href="/contact">here</a>.
+    </>
+);
 
 const getNumberOfOperatorsWithSelectedServices = (operators: MultiOperatorInfo[]): number => {
     let count = 0;
@@ -154,6 +172,13 @@ const MultiOperatorsServiceList = ({
     const [activeOperatorNoc, setActiveOperatorNoc] = useState(multiOperatorData[0].nocCode);
     const [operators, setOperators] = useState(multiOperatorData);
     const [numberOfOperatorsWithSelectedServices, setNumberOfOperatorsWithSelectedServices] = useState(0);
+    const [dataSourceText, setDataSourceText] = useState(bodsDataSourceHtml);
+
+    useEffect(() => {
+        const activeOperatorDataSource = getActiveOperator(activeOperatorNoc, operators).dataSource;
+        const dataSourceText = activeOperatorDataSource === 'bods' ? bodsDataSourceHtml : tndsDataSourceHtml;
+        setDataSourceText(dataSourceText);
+    }, [activeOperatorNoc]);
 
     useEffect(() => {
         const count = getNumberOfOperatorsWithSelectedServices(operators);
@@ -175,8 +200,7 @@ const MultiOperatorsServiceList = ({
                     </legend>
 
                     <span className="govuk-hint" id="txc-hint">
-                        This data is taken from the <b>Bus Open Data Service (BODS)</b>. If the service you are looking
-                        for is not listed, contact the BODS help desk for advice <a href="/contact">here</a>.
+                        {dataSourceText}
                     </span>
                 </div>
                 <div className="govuk-grid-row">
@@ -441,7 +465,13 @@ export const getServerSideProps = async (
         // map over all additional operators in the ticket
         multiOperatorData = await Promise.all(
             ticket.additionalOperators.map(async (operator) => {
-                const services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, 'bods');
+                let dataSource: 'bods' | 'tnds' = 'bods';
+                let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
+
+                if (services.length === 0) {
+                    services = await getFerryAndBusServices(operator.nocCode);
+                    dataSource = 'tnds';
+                }
                 // get the operators name, as we only have the nocCode
                 const operatorDetails = (await getOperatorDetailsFromNocTable(operator.nocCode)) as OperatorDetails;
 
@@ -468,19 +498,27 @@ export const getServerSideProps = async (
                     nocCode: operator.nocCode,
                     services,
                     selectedServices: updatedSelectedServices,
+                    dataSource,
                 };
             }),
         );
     } else {
         multiOperatorData = await Promise.all(
             multiOperatorAttribute.selectedOperators.map(async (operator) => {
-                const services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, 'bods');
+                let dataSource: 'bods' | 'tnds' = 'bods';
+                let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
+
+                if (services.length === 0) {
+                    services = await getFerryAndBusServices(operator.nocCode);
+                    dataSource = 'tnds';
+                }
 
                 return {
                     name: operator.name,
                     nocCode: operator.nocCode,
                     services,
                     selectedServices: [],
+                    dataSource,
                 };
             }),
         );
