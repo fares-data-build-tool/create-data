@@ -89,13 +89,21 @@ exports[`pages additionalPricingStructures should render correctly 1`] = `
             <div
               className="govuk-input__wrapper"
             >
-              <input
-                className="govuk-input govuk-input--width-3"
-                defaultValue="2"
-                id="pricing-structure-start"
-                name="pricingStructureStart"
-                type="text"
-              />
+              <FormElementWrapper
+                addFormGroupError={false}
+                errorClass="govuk-input--error"
+                errorId="pricing-structure-start"
+                errors={Array []}
+                hideText={true}
+              >
+                <input
+                  className="govuk-input govuk-input--width-3"
+                  defaultValue="2"
+                  id="pricing-structure-start"
+                  name="pricingStructureStart"
+                  type="text"
+                />
+              </FormElementWrapper>
               <div
                 aria-hidden="true"
                 className="govuk-input__suffix"
@@ -122,13 +130,21 @@ exports[`pages additionalPricingStructures should render correctly 1`] = `
             <div
               className="govuk-input__wrapper"
             >
-              <input
-                className="govuk-input govuk-input--width-3"
-                defaultValue="2"
-                id="structure-discount"
-                name="structureDiscount"
-                type="text"
-              />
+              <FormElementWrapper
+                addFormGroupError={false}
+                errorClass="govuk-input--error"
+                errorId="structure-discount"
+                errors={Array []}
+                hideText={true}
+              >
+                <input
+                  className="govuk-input govuk-input--width-3"
+                  defaultValue="2"
+                  id="structure-discount"
+                  name="structureDiscount"
+                  type="text"
+                />
+              </FormElementWrapper>
               <div
                 aria-hidden="true"
                 className="govuk-input__suffix"
@@ -273,13 +289,28 @@ exports[`pages additionalPricingStructures should render error messaging when er
             <div
               className="govuk-input__wrapper"
             >
-              <input
-                className="govuk-input govuk-input--width-3"
-                defaultValue=""
-                id="pricing-structure-start"
-                name="pricingStructureStart"
-                type="text"
-              />
+              <FormElementWrapper
+                addFormGroupError={false}
+                errorClass="govuk-input--error"
+                errorId="pricing-structure-start"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Enter a value for the pricing structure",
+                      "id": "pricing-structure-start",
+                    },
+                  ]
+                }
+                hideText={true}
+              >
+                <input
+                  className="govuk-input govuk-input--width-3"
+                  defaultValue=""
+                  id="pricing-structure-start"
+                  name="pricingStructureStart"
+                  type="text"
+                />
+              </FormElementWrapper>
               <div
                 aria-hidden="true"
                 className="govuk-input__suffix"
@@ -306,13 +337,28 @@ exports[`pages additionalPricingStructures should render error messaging when er
             <div
               className="govuk-input__wrapper"
             >
-              <input
-                className="govuk-input govuk-input--width-3"
-                defaultValue="2"
-                id="structure-discount"
-                name="structureDiscount"
-                type="text"
-              />
+              <FormElementWrapper
+                addFormGroupError={false}
+                errorClass="govuk-input--error"
+                errorId="structure-discount"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "Enter a value for the pricing structure",
+                      "id": "pricing-structure-start",
+                    },
+                  ]
+                }
+                hideText={true}
+              >
+                <input
+                  className="govuk-input govuk-input--width-3"
+                  defaultValue="2"
+                  id="structure-discount"
+                  name="structureDiscount"
+                  type="text"
+                />
+              </FormElementWrapper>
               <div
                 aria-hidden="true"
                 className="govuk-input__suffix"

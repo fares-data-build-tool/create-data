@@ -8,6 +8,7 @@ import { getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../../src/utils/sessions';
 import { ADDITIONAL_PRICING_ATTRIBUTE } from '../../src/constants/attributes';
 import { isWithErrors } from '../../src/interfaces/typeGuards';
+import FormElementWrapper from '../../src/components/FormElementWrapper';
 
 const title = 'Additional Pricing Structures - Create Fares Data Service';
 const description = 'Define Additional Pricing Structures page of the Create Fares Data Service';
@@ -72,13 +73,21 @@ const AdditionalPricingStructures = ({
                                             Time allowance after first journey
                                         </div>
                                         <div className="govuk-input__wrapper">
-                                            <input
-                                                className="govuk-input govuk-input--width-3"
-                                                id="pricing-structure-start"
-                                                name="pricingStructureStart"
-                                                type="text"
-                                                defaultValue={additionalPricingStructures.pricingStructureStart}
-                                            />
+                                            <FormElementWrapper
+                                                errors={errors}
+                                                errorId={'pricing-structure-start'}
+                                                errorClass="govuk-input--error"
+                                                hideText
+                                                addFormGroupError={false}
+                                            >
+                                                <input
+                                                    className="govuk-input govuk-input--width-3"
+                                                    id="pricing-structure-start"
+                                                    name="pricingStructureStart"
+                                                    type="text"
+                                                    defaultValue={additionalPricingStructures.pricingStructureStart}
+                                                />
+                                            </FormElementWrapper>
                                             <div className="govuk-input__suffix" aria-hidden="true">
                                                 min
                                             </div>
@@ -92,13 +101,21 @@ const AdditionalPricingStructures = ({
                                             Percentage discount
                                         </div>
                                         <div className="govuk-input__wrapper">
-                                            <input
-                                                className="govuk-input govuk-input--width-3"
-                                                id="structure-discount"
-                                                name="structureDiscount"
-                                                type="text"
-                                                defaultValue={additionalPricingStructures.structureDiscount}
-                                            />
+                                            <FormElementWrapper
+                                                errors={errors}
+                                                errorId={'structure-discount'}
+                                                errorClass="govuk-input--error"
+                                                hideText
+                                                addFormGroupError={false}
+                                            >
+                                                <input
+                                                    className="govuk-input govuk-input--width-3"
+                                                    id="structure-discount"
+                                                    name="structureDiscount"
+                                                    type="text"
+                                                    defaultValue={additionalPricingStructures.structureDiscount}
+                                                />
+                                            </FormElementWrapper>
                                             <div className="govuk-input__suffix" aria-hidden="true">
                                                 %
                                             </div>
