@@ -33,27 +33,21 @@ exports[`pages capConfirmation should render correctly for capped ticket by dist
             "name": "Cap 1",
           },
           Object {
-            "content": "24 hr",
-            "href": "/selectCapValidity",
-            "name": "Cap expiry",
-          },
-          Object {
-            "content": "Fixed days - Monday",
-            "href": "/defineCapStart",
-            "name": "Cap starts",
-          },
-          Object {
             "content": "1, 2C",
             "href": "/serviceList",
             "name": "Services",
           },
           Object {
             "content": Array [
-              "Min Price: 2, Max Price: 4",
-              "Distance: 0-2, Price per km: 4",
+              "Min price: £2, Max price: £4",
             ],
             "href": "/defineCapPricingPerDistance",
             "name": "Prices",
+          },
+          Object {
+            "content": "0 km - End of journey, Price per km: £4",
+            "href": "/defineCapPricingPerDistance",
+            "name": "Distance band 1",
           },
         ]
       }

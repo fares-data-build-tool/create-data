@@ -19,12 +19,11 @@ describe('pages', () => {
                         },
                     ]}
                     capValidity="24 hr"
-                    capStartInfo={{
-                        type: 'rollingDays',
-                    }}
+                    capStartInfoContent={'Rolling days'}
                     services={['1', '2C']}
                     tapsPricingContents={[]}
                     capDistancePricingContents={[]}
+                    distanceBands={[]}
                     csrfToken=""
                 />,
             );
@@ -45,12 +44,11 @@ describe('pages', () => {
                         },
                     ]}
                     capValidity="24 hr"
-                    capStartInfo={{
-                        type: 'rollingDays',
-                    }}
+                    capStartInfoContent={'Rolling days'}
                     services={['1', '2C']}
                     tapsPricingContents={['Tap Number: 1, Price: 2']}
                     capDistancePricingContents={[]}
+                    distanceBands={[]}
                     csrfToken=""
                 />,
             );
@@ -70,14 +68,12 @@ describe('pages', () => {
                             durationUnits: ExpiryUnit.DAY,
                         },
                     ]}
-                    capValidity="24 hr"
-                    capStartInfo={{
-                        type: 'fixedWeekdays',
-                        startDay: 'monday',
-                    }}
+                    capValidity=""
+                    capStartInfoContent={''}
                     services={['1', '2C']}
                     tapsPricingContents={[]}
-                    capDistancePricingContents={['Min Price: 2, Max Price: 4', 'Distance: 0-2, Price per km: 4']}
+                    capDistancePricingContents={['Min price: £2, Max price: £4']}
+                    distanceBands={['0 km - End of journey, Price per km: £4']}
                     csrfToken=""
                 />,
             );
@@ -91,11 +87,9 @@ describe('pages', () => {
                     'capped-product-group-name',
                     [{ name: 'Cap 1', price: '2', durationAmount: '1', durationUnits: ExpiryUnit.DAY }],
                     'endOfCalendarDay',
-                    {
-                        type: 'fixedWeekdays',
-                        startDay: 'monday',
-                    },
+                    'Fixed days - Monday',
                     ['1', '2'],
+                    [],
                     [],
                     [],
                 );
@@ -135,11 +129,10 @@ describe('pages', () => {
                     '',
                     [{ name: 'Cap 1', price: '2', durationAmount: '1', durationUnits: ExpiryUnit.DAY }],
                     '24hr',
-                    {
-                        type: 'rollingDays',
-                    },
+                    'Rolling days',
                     ['1', '2'],
                     ['Tap Number: 1, Price: 2', 'Tap Number: 2, Price: 4'],
+                    [],
                     [],
                 );
                 expect(result).toStrictEqual([
@@ -176,49 +169,35 @@ describe('pages', () => {
                 const result = buildCapConfirmationElements(
                     'byDistance',
                     '',
-                    [{ name: 'Cap 1', price: '2', durationAmount: '1', durationUnits: ExpiryUnit.DAY }],
-                    '24hr',
-                    {
-                        type: 'rollingDays',
-                    },
+                    [],
+                    '',
+                    '',
                     ['1', '2'],
                     [],
-                    [
-                        'Min Price: 2, Max Price: 9',
-                        'Distance: 0 - 2, Price per km: 4',
-                        'Distance: 2 - 4, Price per km: 3',
-                    ],
+                    ['Min price: £2, Max price: £9'],
+                    ['0 km - 2 km, Price per km: £4', '2 km - End of journey, Price per km: £3'],
                 );
                 expect(result).toStrictEqual([
                     { content: 'Pricing by distance ', href: 'typeOfCap', name: 'Cap type' },
-                    {
-                        content: ['Price - £2', 'Duration - 1 day'],
-                        href: '/createCaps',
-                        name: 'Cap 1',
-                    },
-                    {
-                        content: '24 hr',
-                        href: '/selectCapValidity',
-                        name: 'Cap expiry',
-                    },
-                    {
-                        content: 'Rolling days',
-                        href: '/defineCapStart',
-                        name: 'Cap starts',
-                    },
                     {
                         content: '1, 2',
                         href: '/serviceList',
                         name: 'Services',
                     },
                     {
-                        content: [
-                            'Min Price: 2, Max Price: 9',
-                            'Distance: 0 - 2, Price per km: 4',
-                            'Distance: 2 - 4, Price per km: 3',
-                        ],
+                        content: ['Min price: £2, Max price: £9'],
                         href: '/defineCapPricingPerDistance',
                         name: 'Prices',
+                    },
+                    {
+                        content: '0 km - 2 km, Price per km: £4',
+                        href: '/defineCapPricingPerDistance',
+                        name: 'Distance band 1',
+                    },
+                    {
+                        content: '2 km - End of journey, Price per km: £3',
+                        href: '/defineCapPricingPerDistance',
+                        name: 'Distance band 2',
                     },
                 ]);
             });

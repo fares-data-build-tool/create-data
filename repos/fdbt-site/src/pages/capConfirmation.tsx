@@ -17,8 +17,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isCapExpiry, isCapStartInfo, isWithErrors } from '../interfaces/typeGuards';
 import { getCsrfToken, sentenceCaseString, getAndValidateNoc } from '../utils';
 import { getProductGroupByNocAndId } from '../data/auroradb';
-import { CapStartInfo } from '../interfaces/matchingJsonTypes';
-import { isServiceListAttributeWithErrors } from './serviceList';
+import { isServiceListAttributeWithErrors } from '../../src/pages/serviceList';
 
 const title = 'Cap Confirmation - Create Fares Data Service';
 const description = 'Cap Confirmation page of the Create Fares Data Service';
@@ -28,10 +27,11 @@ interface CapConfirmationProps {
     productGroupName: string;
     caps: Cap[];
     capValidity: string;
-    capStartInfo: CapStartInfo;
+    capStartInfoContent: string;
     services: string[];
     tapsPricingContents: string[];
     capDistancePricingContents: string[];
+    distanceBands: string[];
     csrfToken: string;
 }
 
@@ -40,10 +40,11 @@ export const buildCapConfirmationElements = (
     productGroupName: string,
     caps: Cap[],
     capValidity: string,
-    capStartInfo: CapStartInfo,
+    capStartInfoContent: string,
     services: string[],
     tapsPricingContents: string[],
     capDistancePricingContents: string[],
+    distanceBands: string[],
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
         {
@@ -73,20 +74,21 @@ export const buildCapConfirmationElements = (
         });
     });
 
-    confirmationElements.push({
-        name: 'Cap expiry',
-        content: sentenceCaseString(capValidity),
-        href: '/selectCapValidity',
-    });
+    if (capValidity) {
+        confirmationElements.push({
+            name: 'Cap expiry',
+            content: sentenceCaseString(capValidity),
+            href: '/selectCapValidity',
+        });
+    }
 
-    confirmationElements.push({
-        name: 'Cap starts',
-        content:
-            capStartInfo.type === 'fixedWeekdays' && capStartInfo.startDay
-                ? `Fixed days - ${sentenceCaseString(capStartInfo.startDay)}`
-                : 'Rolling days',
-        href: '/defineCapStart',
-    });
+    if (capStartInfoContent) {
+        confirmationElements.push({
+            name: 'Cap starts',
+            content: capStartInfoContent,
+            href: '/defineCapStart',
+        });
+    }
 
     if (services.length > 0) {
         confirmationElements.push({
@@ -112,6 +114,16 @@ export const buildCapConfirmationElements = (
         });
     }
 
+    if (distanceBands.length > 0) {
+        distanceBands.forEach((distanceBandContent, index) => {
+            confirmationElements.push({
+                name: `Distance band ${index + 1}`,
+                content: distanceBandContent,
+                href: '/defineCapPricingPerDistance',
+            });
+        });
+    }
+
     return confirmationElements;
 };
 
@@ -120,10 +132,11 @@ const CapConfirmation = ({
     productGroupName,
     caps,
     capValidity,
-    capStartInfo,
+    capStartInfoContent,
     services,
     tapsPricingContents,
     capDistancePricingContents,
+    distanceBands,
     csrfToken,
 }: CapConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
@@ -137,10 +150,11 @@ const CapConfirmation = ({
                         productGroupName,
                         caps,
                         capValidity,
-                        capStartInfo,
+                        capStartInfoContent,
                         services,
                         tapsPricingContents,
                         capDistancePricingContents,
+                        distanceBands,
                     )}
                 />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -154,13 +168,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
 
     const typeOfCapAttribute = getSessionAttribute(ctx.req, TYPE_OF_CAP_ATTRIBUTE);
+
+    if (!typeOfCapAttribute || !('typeOfCap' in typeOfCapAttribute)) {
+        throw new Error('Could not extract the correct attributes for the user journey.');
+    }
+
     const capAttribute = getSessionAttribute(ctx.req, CAPS_ATTRIBUTE);
+    const capStartAttribute = getSessionAttribute(ctx.req, CAP_START_ATTRIBUTE);
+
     const productGroupIdAttribute = getSessionAttribute(ctx.req, CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE);
 
     const productGroupName =
         productGroupIdAttribute && typeof productGroupIdAttribute === 'string'
             ? (await getProductGroupByNocAndId(noc, Number.parseInt(productGroupIdAttribute)))?.name
             : '';
+
     const caps = capAttribute ? capAttribute.caps : [];
 
     const capValidityAttribute = getSessionAttribute(ctx.req, CAP_EXPIRY_ATTRIBUTE);
@@ -170,18 +192,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                   capValidityAttribute.productEndTime ? ` - ${capValidityAttribute.productEndTime}` : ''
               }`
             : '';
-
-    const capStartAttribute = getSessionAttribute(ctx.req, CAP_START_ATTRIBUTE);
-
-    if (
-        !typeOfCapAttribute ||
-        !('typeOfCap' in typeOfCapAttribute) ||
-        !capAttribute ||
-        !capStartAttribute ||
-        !isCapStartInfo(capStartAttribute)
-    ) {
-        throw new Error('Could not extract the correct attributes for the user journey.');
-    }
 
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
@@ -196,17 +206,32 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
     }
 
-    const capDistancePricingContents: string[] = [];
+    let capDistancePricingContents: string[] = [];
+    const distanceBands: string[] = [];
+
     if (capDistancePricingAttribute && !isWithErrors(capDistancePricingAttribute)) {
-        capDistancePricingContents.push(
-            `Min price: ${capDistancePricingAttribute.minimumPrice}, Max price: ${capDistancePricingAttribute.maximumPrice}`,
-        );
-        capDistancePricingAttribute.capPricing.forEach((capDistance) => {
-            capDistancePricingContents.push(
-                `Distance: ${capDistance.distanceFrom} - ${capDistance.distanceTo}, Price per km: ${capDistance.pricePerKm} `,
+        capDistancePricingContents = [
+            `Min price - £${capDistancePricingAttribute.minimumPrice}`,
+            `Max price - £${capDistancePricingAttribute.maximumPrice}`,
+        ];
+
+        capDistancePricingAttribute.capPricing.forEach((capDistance, index) => {
+            distanceBands.push(
+                `${capDistance.distanceFrom} km  - ${
+                    index === capDistancePricingAttribute.capPricing.length - 1
+                        ? 'End of journey'
+                        : `${capDistance.distanceTo} km`
+                }, Price - £${capDistance.pricePerKm} per km`,
             );
         });
     }
+
+    const capStartInfoContent =
+        capStartAttribute && isCapStartInfo(capStartAttribute)
+            ? capStartAttribute.type === 'fixedWeekdays' && capStartAttribute.startDay
+                ? `Fixed days - ${sentenceCaseString(capStartAttribute.startDay)}`
+                : 'Rolling days'
+            : '';
 
     return {
         props: {
@@ -214,13 +239,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             productGroupName: productGroupName || '',
             caps,
             capValidity,
-            capStartInfo: capStartAttribute,
+            capStartInfoContent,
             services:
                 serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)
                     ? serviceListAttribute.selectedServices.map((service) => service.lineName)
                     : [],
             tapsPricingContents,
             capDistancePricingContents,
+            distanceBands,
             csrfToken,
         },
     };
