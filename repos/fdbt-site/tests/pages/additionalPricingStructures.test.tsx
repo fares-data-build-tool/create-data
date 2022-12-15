@@ -25,7 +25,7 @@ describe('pages', () => {
                     errors={[
                         {
                             id: 'pricing-structure-start',
-                            errorMessage: 'Enter a value for the pricing structure',
+                            errorMessage: 'Enter a value for the Time allowance after first journey',
                         },
                     ]}
                     csrfToken=""

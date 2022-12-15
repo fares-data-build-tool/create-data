@@ -6,25 +6,19 @@ import { updateSessionAttribute } from '../../../src/utils/sessions';
 import { AdditionalPricing, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
 export const checkInputIsValid = (inputtedValue: string | undefined, inputType: string): string => {
-    let error;
+    let error = '';
 
     if (!inputtedValue) {
         error = `Enter a value for the ${inputType}`;
     } else if (Math.sign(Number(inputtedValue)) === -1) {
-        error =
-            inputType === 'structure discount'
-                ? 'Percentage discount cannot be a negative number'
-                : 'Time allowance after first journey cannot be a negative number';
-    } else if (!isCurrency(inputtedValue) && inputType === 'structure discount') {
-        error = 'This must be a valid structure discount number to 2 decimal places';
-    } else if (!Number.isInteger(Number(inputtedValue)) && inputType === 'pricing structure') {
-        error = 'Pricing structure must be a whole number';
+        error = `${inputType} cannot be a negative number`;
+    } else if (!isCurrency(inputtedValue) && inputType === 'Percentage discount') {
+        error = 'This must be a valid Percentage discount number to 2 decimal places';
+    } else if (!Number.isInteger(Number(inputtedValue)) && inputType === 'Time allowance after first journey') {
+        error = 'Time allowance after first journey must be a whole number';
     }
 
-    if (error) {
-        return error;
-    }
-    return '';
+    return error;
 };
 
 export const validateAdditionalStructuresInput = (
@@ -32,11 +26,11 @@ export const validateAdditionalStructuresInput = (
     structureDiscount: string,
 ): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
-    const pricingStructureStartError = checkInputIsValid(pricingStructureStart, 'pricing structure');
+    const pricingStructureStartError = checkInputIsValid(pricingStructureStart, 'Time allowance after first journey');
     if (pricingStructureStartError) {
         errors.push({ id: 'pricing-structure-start', errorMessage: pricingStructureStartError });
     }
-    const structureDiscountError = checkInputIsValid(structureDiscount, 'structure discount');
+    const structureDiscountError = checkInputIsValid(structureDiscount, 'Percentage discount');
     if (structureDiscountError) {
         errors.push({ id: 'structure-discount', errorMessage: structureDiscountError });
     }
@@ -65,20 +59,23 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         return;
     }
 
-    if (additionalDiscounts === 'yes') {
-        errors = validateAdditionalStructuresInput(pricingStructureStart, structureDiscount);
+    if (additionalDiscounts === 'no') {
+        redirectTo(res, '/capConfirmation');
+        return;
+    }
 
-        if (errors.length > 0) {
-            updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, {
-                clickedYes: additionalDiscounts === 'yes',
-                additionalPricingStructures: {
-                    errors,
-                    ...additionalPricingStructures,
-                },
-            });
-            redirectTo(res, '/additionalPricingStructures');
-            return;
-        }
+    errors = validateAdditionalStructuresInput(pricingStructureStart, structureDiscount);
+
+    if (errors.length > 0) {
+        updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, {
+            clickedYes: additionalDiscounts === 'yes',
+            additionalPricingStructures: {
+                errors,
+                ...additionalPricingStructures,
+            },
+        });
+        redirectTo(res, '/additionalPricingStructures');
+        return;
     }
 
     updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, additionalPricingStructures);

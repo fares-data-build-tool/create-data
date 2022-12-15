@@ -63,12 +63,7 @@ describe('additionalPricingStructures', () => {
         });
     });
 
-    it('correctly generates additional pricing structures info, updates the  ADDITIONAL_PRICING_ATTRIBUTE and then redirects to /capConfirmation when no is selected', () => {
-        const mockAdditionalStructuresInfo: AdditionalPricing = {
-            pricingStructureStart: '',
-            structureDiscount: '',
-        };
-
+    it('does not generate additional pricing structures info, then redirects to /capConfirmation when no is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 additionalDiscounts: 'no',
@@ -80,11 +75,7 @@ describe('additionalPricingStructures', () => {
 
         additionalPricingStructures(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(
-            req,
-            ADDITIONAL_PRICING_ATTRIBUTE,
-            mockAdditionalStructuresInfo,
-        );
+        expect(updateSessionAttributeSpy).not.toBeCalled();
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/capConfirmation' });
     });
@@ -93,7 +84,7 @@ describe('additionalPricingStructures', () => {
         const errors: ErrorInfo[] = [
             {
                 id: 'pricing-structure-start',
-                errorMessage: 'Enter a value for the pricing structure',
+                errorMessage: 'Enter a value for the Time allowance after first journey',
             },
         ];
 
@@ -121,7 +112,7 @@ describe('additionalPricingStructures', () => {
         const errors: ErrorInfo[] = [
             {
                 id: 'structure-discount',
-                errorMessage: 'Enter a value for the structure discount',
+                errorMessage: 'Enter a value for the Percentage discount',
             },
         ];
 
@@ -152,7 +143,10 @@ describe('validate additional structures input tests', () => {
         const structureDiscount = '2';
 
         const errorsResult: ErrorInfo[] = [
-            { id: 'pricing-structure-start', errorMessage: 'Pricing structure must be a whole number' },
+            {
+                id: 'pricing-structure-start',
+                errorMessage: 'Time allowance after first journey must be a whole number',
+            },
         ];
 
         const errors = validateAdditionalStructuresInput(pricingStructureStart, structureDiscount);
@@ -166,7 +160,7 @@ describe('validate additional structures input tests', () => {
         const errorsResult: ErrorInfo[] = [
             {
                 id: 'structure-discount',
-                errorMessage: 'This must be a valid structure discount number to 2 decimal places',
+                errorMessage: 'This must be a valid Percentage discount number to 2 decimal places',
             },
         ];
 
