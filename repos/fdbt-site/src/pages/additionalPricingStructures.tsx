@@ -60,7 +60,7 @@ const AdditionalPricingStructures = ({
                             >
                                 <>
                                     <h1 className="govuk-heading-m" id="pricing-structure-start-heading">
-                                        When does the next structure start
+                                        When does the next structure start?
                                     </h1>
                                     <div className="govuk-form-group">
                                         <label className="govuk-label" htmlFor="pricing-structure-start">

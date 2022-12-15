@@ -63,7 +63,7 @@ exports[`pages additionalPricingStructures should render correctly 1`] = `
             className="govuk-heading-m"
             id="pricing-structure-start-heading"
           >
-            When does the next structure start
+            When does the next structure start?
           </h1>
           <div
             className="govuk-form-group"
@@ -257,7 +257,7 @@ exports[`pages additionalPricingStructures should render error messaging when er
             className="govuk-heading-m"
             id="pricing-structure-start-heading"
           >
-            When does the next structure start
+            When does the next structure start?
           </h1>
           <div
             className="govuk-form-group"
