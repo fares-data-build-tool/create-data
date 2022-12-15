@@ -135,6 +135,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
     updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, distanceCap);
 
-    redirectTo(res, '/capConfirmation');
+    redirectTo(res, '/additionalPricingStructures');
     return;
 };
