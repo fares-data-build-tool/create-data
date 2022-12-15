@@ -1,0 +1,355 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages additionalPricingStructures should render correctly 1`] = `
+<FullColumnLayout
+  description="Define Additional Pricing Structures page of the Create Fares Data Service"
+  errors={Array []}
+  title="Additional Pricing Structures - Create Fares Data Service"
+>
+  <ErrorSummary
+    errors={Array []}
+  />
+  <CsrfForm
+    action="/api/additionalPricingStructures"
+    csrfToken=""
+    method="post"
+  >
+    <fieldset
+      className="govuk-fieldset"
+    >
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      >
+        <h1
+          className="govuk-fieldset__heading"
+        >
+          Are there additional pricing structures
+        </h1>
+      </legend>
+      <label
+        className="govuk-label"
+        htmlFor="additional-discounts"
+      >
+        Do you have additional discounts related to this product
+      </label>
+      <div
+        className="govuk-hint"
+        id="additional-discounts-hint"
+      >
+        Different levels of discount
+      </div>
+      <div
+        className="govuk-radios govuk-radios--conditional"
+        data-module="govuk-radios"
+      >
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            className="govuk-radios__input"
+            data-aria-controls="conditional-additional-discounts"
+            defaultChecked={false}
+            id="additional-discounts"
+            name="additionalDiscounts"
+            type="radio"
+            value="yes"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="yes-choice"
+          >
+            Yes
+          </label>
+        </div>
+        <div
+          className="govuk-radios__conditional govuk-radios__conditional--hidden"
+          id="conditional-additional-discounts"
+        >
+          <h1
+            className="govuk-heading-m"
+            id="pricing-structure-start-heading"
+          >
+            When does the next structure start
+          </h1>
+          <div
+            className="govuk-form-group"
+          >
+            <label
+              className="govuk-label"
+              htmlFor="pricing-structure-start"
+            >
+              Pricing structure starts after
+            </label>
+            <div
+              className="govuk-hint"
+              id="pricing-structure-start-hint"
+            >
+              Time allowance after first journey
+            </div>
+            <div
+              className="govuk-input__wrapper"
+            >
+              <input
+                className="govuk-input govuk-input--width-3"
+                defaultValue="2"
+                id="pricing-structure-start"
+                name="pricingStructureStart"
+                type="text"
+              />
+              <div
+                aria-hidden="true"
+                className="govuk-input__suffix"
+              >
+                min
+              </div>
+            </div>
+          </div>
+          <div
+            className="govuk-form-group"
+          >
+            <label
+              className="govuk-label"
+              htmlFor="structure-discount"
+            >
+              Structure discount
+            </label>
+            <div
+              className="govuk-hint"
+              id="structure-discount-hint"
+            >
+              Percentage discount
+            </div>
+            <div
+              className="govuk-input__wrapper"
+            >
+              <input
+                className="govuk-input govuk-input--width-3"
+                defaultValue="2"
+                id="structure-discount"
+                name="structureDiscount"
+                type="text"
+              />
+              <div
+                aria-hidden="true"
+                className="govuk-input__suffix"
+              >
+                %
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            className="govuk-radios__input"
+            data-aria-controls="conditional-additional-discounts-2"
+            defaultChecked={false}
+            id="additional-discounts-2"
+            name="additionalDiscounts"
+            type="radio"
+            value="no"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="no-choice"
+          >
+            No
+          </label>
+        </div>
+      </div>
+      <br />
+      <input
+        className="govuk-button govuk-!-margin-right-2"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </fieldset>
+  </CsrfForm>
+</FullColumnLayout>
+`;
+
+exports[`pages additionalPricingStructures should render error messaging when errors are passed 1`] = `
+<FullColumnLayout
+  description="Define Additional Pricing Structures page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "Enter a value for the pricing structure",
+        "id": "pricing-structure-start",
+      },
+    ]
+  }
+  title="Additional Pricing Structures - Create Fares Data Service"
+>
+  <ErrorSummary
+    errors={
+      Array [
+        Object {
+          "errorMessage": "Enter a value for the pricing structure",
+          "id": "pricing-structure-start",
+        },
+      ]
+    }
+  />
+  <CsrfForm
+    action="/api/additionalPricingStructures"
+    csrfToken=""
+    method="post"
+  >
+    <fieldset
+      className="govuk-fieldset"
+    >
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      >
+        <h1
+          className="govuk-fieldset__heading"
+        >
+          Are there additional pricing structures
+        </h1>
+      </legend>
+      <label
+        className="govuk-label"
+        htmlFor="additional-discounts"
+      >
+        Do you have additional discounts related to this product
+      </label>
+      <div
+        className="govuk-hint"
+        id="additional-discounts-hint"
+      >
+        Different levels of discount
+      </div>
+      <div
+        className="govuk-radios govuk-radios--conditional"
+        data-module="govuk-radios"
+      >
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            className="govuk-radios__input"
+            data-aria-controls="conditional-additional-discounts"
+            defaultChecked={true}
+            id="additional-discounts"
+            name="additionalDiscounts"
+            type="radio"
+            value="yes"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="yes-choice"
+          >
+            Yes
+          </label>
+        </div>
+        <div
+          className="govuk-radios__conditional govuk-radios__conditional--hidden"
+          id="conditional-additional-discounts"
+        >
+          <h1
+            className="govuk-heading-m"
+            id="pricing-structure-start-heading"
+          >
+            When does the next structure start
+          </h1>
+          <div
+            className="govuk-form-group"
+          >
+            <label
+              className="govuk-label"
+              htmlFor="pricing-structure-start"
+            >
+              Pricing structure starts after
+            </label>
+            <div
+              className="govuk-hint"
+              id="pricing-structure-start-hint"
+            >
+              Time allowance after first journey
+            </div>
+            <div
+              className="govuk-input__wrapper"
+            >
+              <input
+                className="govuk-input govuk-input--width-3"
+                defaultValue=""
+                id="pricing-structure-start"
+                name="pricingStructureStart"
+                type="text"
+              />
+              <div
+                aria-hidden="true"
+                className="govuk-input__suffix"
+              >
+                min
+              </div>
+            </div>
+          </div>
+          <div
+            className="govuk-form-group"
+          >
+            <label
+              className="govuk-label"
+              htmlFor="structure-discount"
+            >
+              Structure discount
+            </label>
+            <div
+              className="govuk-hint"
+              id="structure-discount-hint"
+            >
+              Percentage discount
+            </div>
+            <div
+              className="govuk-input__wrapper"
+            >
+              <input
+                className="govuk-input govuk-input--width-3"
+                defaultValue="2"
+                id="structure-discount"
+                name="structureDiscount"
+                type="text"
+              />
+              <div
+                aria-hidden="true"
+                className="govuk-input__suffix"
+              >
+                %
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            className="govuk-radios__input"
+            data-aria-controls="conditional-additional-discounts-2"
+            defaultChecked={false}
+            id="additional-discounts-2"
+            name="additionalDiscounts"
+            type="radio"
+            value="no"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="no-choice"
+          >
+            No
+          </label>
+        </div>
+      </div>
+      <br />
+      <input
+        className="govuk-button govuk-!-margin-right-2"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </fieldset>
+  </CsrfForm>
+</FullColumnLayout>
+`;

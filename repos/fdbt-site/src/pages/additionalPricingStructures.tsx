@@ -5,9 +5,9 @@ import ErrorSummary from '../components/ErrorSummary';
 import { AdditionalPricing, ErrorInfo, NextPageContextWithSession, WithErrors } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
-import { getSessionAttribute } from 'src/utils/sessions';
-import { ADDITIONAL_PRICING_ATTRIBUTE } from 'src/constants/attributes';
-import { isWithErrors } from 'src/interfaces/typeGuards';
+import { getSessionAttribute } from '../../src/utils/sessions';
+import { ADDITIONAL_PRICING_ATTRIBUTE } from '../../src/constants/attributes';
+import { isWithErrors } from '../../src/interfaces/typeGuards';
 
 const title = 'Additional Pricing Structures - Create Fares Data Service';
 const description = 'Define Additional Pricing Structures page of the Create Fares Data Service';
@@ -48,7 +48,7 @@ const AdditionalPricingStructures = ({
                                     value="yes"
                                     data-aria-controls="conditional-additional-discounts"
                                     defaultChecked={
-                                        errors.length > 1 && additionalPricingStructures.additionalDiscounts === 'yes'
+                                        errors.length > 0 && additionalPricingStructures.additionalDiscounts === 'yes'
                                     }
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">
@@ -116,7 +116,7 @@ const AdditionalPricingStructures = ({
                                     value="no"
                                     data-aria-controls="conditional-additional-discounts-2"
                                     defaultChecked={
-                                        errors.length > 1 && additionalPricingStructures.additionalDiscounts === 'no'
+                                        errors.length > 0 && additionalPricingStructures.additionalDiscounts === 'no'
                                     }
                                 />
                                 <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
