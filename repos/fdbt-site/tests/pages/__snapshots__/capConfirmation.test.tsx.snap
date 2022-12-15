@@ -178,7 +178,7 @@ exports[`pages capConfirmation should render correctly for capped ticket by taps
           },
           Object {
             "content": Array [
-              "Tap Number: 1, Price: 2",
+              "Tap number - 1, Price - £2",
             ],
             "href": "/multiTapsPricing",
             "name": "Prices by taps",

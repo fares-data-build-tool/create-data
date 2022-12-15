@@ -46,7 +46,7 @@ describe('pages', () => {
                     capValidity="24 hr"
                     capStartInfoContent={'Rolling days'}
                     services={['1', '2C']}
-                    tapsPricingContents={['Tap Number: 1, Price: 2']}
+                    tapsPricingContents={['Tap number - 1, Price - £2']}
                     capDistancePricingContents={[]}
                     distanceBands={[]}
                     csrfToken=""
@@ -131,7 +131,7 @@ describe('pages', () => {
                     '24hr',
                     'Rolling days',
                     ['1', '2'],
-                    ['Tap Number: 1, Price: 2', 'Tap Number: 2, Price: 4'],
+                    ['Tap number - 1, Price - £2', 'Tap number - 2, Price - £4'],
                     [],
                     [],
                 );
@@ -160,7 +160,7 @@ describe('pages', () => {
                     {
                         name: 'Prices by taps',
                         href: '/multiTapsPricing',
-                        content: ['Tap Number: 1, Price: 2', 'Tap Number: 2, Price: 4'],
+                        content: ['Tap number - 1, Price - £2', 'Tap number - 2, Price - £4'],
                     },
                 ]);
             });
