@@ -305,7 +305,6 @@ export const completeCappedDistanceJourney=()=>{
     randomlyDeterminePurchaseType()
     completeProductDateInformationPage()
     continueButtonClick()
-    isFinished()
 }
 
 export const completeCappedGeoZonePages = (): void => {

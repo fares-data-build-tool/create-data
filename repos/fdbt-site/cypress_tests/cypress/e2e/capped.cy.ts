@@ -14,6 +14,7 @@ describe('the capped faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeCappedGeoZonePages()
         completeCappedDistanceJourney()
+        isFinished()
     });
 
     it('completes successfully for multi-service distance journey', () => {
@@ -21,5 +22,6 @@ describe('the capped faretype product journey', () => {
         defineUserTypeAndTimeRestrictions();
         completeCappedMultiServicePages();
         completeCappedDistanceJourney()
+        isFinished()
     });
 });
