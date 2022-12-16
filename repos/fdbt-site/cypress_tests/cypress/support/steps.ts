@@ -344,13 +344,13 @@ export const completeCappedTapsJourney=()=>{
     const randomSelectorSecond = getRandomNumber(1, 2);
     switch (randomSelectorSecond) {
         case 1: {
-            cy.log('Click At the end of a calendar day');
+            cy.log('Click Fixed weekdays');
             clickElementById('fixed-weekdays')
             selectRandomOptionFromDropDown('start-day');
             break;
         }
         case 2: {
-            cy.log('Click At the end of a 24 hour period');
+            cy.log('Click Rolling days');
             clickElementById('rolling-days')
             break;
         }
