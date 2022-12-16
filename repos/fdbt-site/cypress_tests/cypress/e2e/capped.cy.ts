@@ -20,6 +20,7 @@ describe('the capped faretype product journey', () => {
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
         completeCappedMultiServicePages();
+        completeCappedDistanceJourney()
         isFinished();
     });
 });

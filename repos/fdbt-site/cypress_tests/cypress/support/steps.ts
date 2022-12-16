@@ -333,7 +333,6 @@ export const completeCappedMultiServicePages = (
     continueButtonClick();
     randomlyChooseAndSelectServices();
     continueButtonClick();
-    completeCappedDistanceJourney()
 };
 
 export const completeHybridPages = (
