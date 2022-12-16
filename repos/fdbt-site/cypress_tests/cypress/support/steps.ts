@@ -307,6 +307,64 @@ export const completeCappedDistanceJourney=()=>{
     continueButtonClick()
 }
 
+export const completeCappedTapsJourney=()=>{
+    clickElementById('radio-option-byTaps')
+    continueButtonClick()
+    clickElementById('multi-tap-price-0').type('2.99')
+    clickElementById('add-another-button')
+    clickElementById('multi-tap-price-1').type('3.54')
+    continueButtonClick()
+    clickElementById('cap-name-0').type('My Cap')
+    clickElementById('cap-price-0').type('2.34')
+    clickElementById('cap-period-duration-quantity-0').type('2')
+    selectRandomOptionFromDropDown('cap-duration-unit-0');
+    continueButtonClick()
+    const randomSelector = getRandomNumber(1, 3);
+    switch (randomSelector) {
+        case 1: {
+            cy.log('Click At the end of a calendar day');
+            clickElementById('cap-end-calendar')
+            break;
+        }
+        case 2: {
+            cy.log('Click At the end of a 24 hour period');
+            clickElementById('cap-twenty-four-hours')
+            break;
+        }
+        case 3: {
+            cy.log('Click Fare day end');
+            clickElementById('cap-end-of-service')
+            break;
+        }
+        default: {
+            throwInvalidRandomSelectorError();
+        }
+    }
+    continueButtonClick()
+    const randomSelectorSecond = getRandomNumber(1, 2);
+    switch (randomSelectorSecond) {
+        case 1: {
+            cy.log('Click At the end of a calendar day');
+            clickElementById('fixed-weekdays')
+            selectRandomOptionFromDropDown('start-day');
+            break;
+        }
+        case 2: {
+            cy.log('Click At the end of a 24 hour period');
+            clickElementById('rolling-days')
+            break;
+        }
+        default: {
+            throwInvalidRandomSelectorError();
+        }
+    }
+    continueButtonClick()
+    continueButtonClick()
+    randomlyDeterminePurchaseType()
+    completeProductDateInformationPage()
+    continueButtonClick()
+}
+
 export const completeCappedGeoZonePages = (): void => {
     clickElementById('radio-option-geoZone');
     continueButtonClick();
