@@ -26,6 +26,8 @@ import {
     randomlyDeterminePurchaseType,
     completeMultiServicePages,
     getElementByClass,
+    throwInvalidRandomSelectorError,
+    isFinished,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -44,7 +46,9 @@ export type FareType =
     | 'schoolService'
     | 'carnet'
     | 'carnetFlatFare'
-    | 'carnetPeriod';
+    | 'carnetPeriod'
+    | 'cappedProduct'
+    ;
 
 export const defineSchoolUserAndTimeRestrictions = (): void => {
     randomlyDetermineUserType();
@@ -267,6 +271,49 @@ export const completePeriodGeoZonePages = (numberOfProducts: number, multiProduc
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
 };
 
+export const completeCappedDistanceJourney=()=>{
+    clickElementById('radio-option-byDistance')
+    continueButtonClick()
+    clickElementById('minimum-price').type('2')
+    clickElementById('maximum-price').type('3')
+    clickElementById('add-another-button')
+    clickElementById('distance-to-0').type('2')
+    clickElementById('price-per-km-0').type('2.22')
+    clickElementById('distance-from-1').type('2')
+    clickElementById('price-per-km-1').type('2.22')
+    continueButtonClick()
+    const randomSelector = getRandomNumber(1, 2);
+    switch (randomSelector) {
+        case 1: {
+            cy.log('Click yes');
+            clickElementById('additional-discounts')
+            clickElementById('pricing-structure-start').type('2')
+            clickElementById('structure-discount').type('2.22')
+            break;
+        }
+        case 2: {
+            cy.log('Click no');
+            clickElementById('no-additional-discounts')
+            break;
+        }
+        default: {
+            throwInvalidRandomSelectorError();
+        }
+    }
+    continueButtonClick()
+    continueButtonClick()
+    randomlyDeterminePurchaseType()
+    completeProductDateInformationPage()
+    continueButtonClick()
+}
+
+export const completeCappedGeoZonePages = (): void => {
+    clickElementById('radio-option-geoZone');
+    continueButtonClick();
+    uploadFile('csv-upload', 'fareZone.csv');
+    submitButtonClick();
+};
+
 export const completePeriodMultiServicePages = (
     numberOfProducts?: number,
     multiProductNamePrefix?: string,
@@ -277,6 +324,14 @@ export const completePeriodMultiServicePages = (
     randomlyChooseAndSelectServices();
     continueButtonClick();
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
+};
+
+export const completeCappedMultiServicePages = (
+): void => {
+    clickElementById('radio-option-multipleServices');
+    continueButtonClick();
+    randomlyChooseAndSelectServices();
+    continueButtonClick();
 };
 
 export const completeHybridPages = (
