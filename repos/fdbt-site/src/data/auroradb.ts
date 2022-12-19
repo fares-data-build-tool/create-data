@@ -643,7 +643,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<F
 
     try {
         const queryInput = `
-            SELECT id, name, description, purchaseLocations, paymentMethods, ticketFormats
+            SELECT id, name, description, purchaseLocations, paymentMethods, ticketFormats, isCapped
             FROM salesOfferPackage
             WHERE nocCode = ?
         `;
@@ -658,6 +658,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<F
                 purchaseLocations: item.purchaseLocations.split(','),
                 paymentMethods: item.paymentMethods.split(','),
                 ticketFormats: item.ticketFormats.split(','),
+                isCapped: item.isCapped,
             })) || []
         );
     } catch (error) {
@@ -678,7 +679,7 @@ export const getSalesOfferPackageByIdAndNoc = async (
 
     try {
         const queryInput = `
-            SELECT id, name, purchaseLocations, paymentMethods, ticketFormats
+            SELECT id, name, purchaseLocations, paymentMethods, ticketFormats, isCapped
             FROM salesOfferPackage
             WHERE nocCode = ? AND id = ?
         `;
@@ -697,6 +698,7 @@ export const getSalesOfferPackageByIdAndNoc = async (
             purchaseLocations: item.purchaseLocations.split(','),
             paymentMethods: item.paymentMethods.split(','),
             ticketFormats: item.ticketFormats.split(','),
+            isCapped: item.isCapped,
         };
     } catch (error) {
         throw new Error(`Could not retrieve sales offer packages from AuroraDB: ${error.stack}`);
@@ -715,8 +717,8 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
     const ticketFormats = salesOfferPackage.ticketFormats.toString();
 
     const insertQuery = `INSERT INTO salesOfferPackage
-    (nocCode, name, description, purchaseLocations, paymentMethods, ticketFormats)
-    VALUES (?, ?, ?, ?, ?, ?)`;
+    (nocCode, name, description, purchaseLocations, paymentMethods, ticketFormats, isCapped)
+    VALUES (?, ?, ?, ?, ?, ?, ?)`;
     try {
         await executeQuery(insertQuery, [
             nocCode,
@@ -725,6 +727,7 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
             purchaseLocations,
             paymentMethods,
             ticketFormats,
+            salesOfferPackage.isCapped,
         ]);
     } catch (error) {
         throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);

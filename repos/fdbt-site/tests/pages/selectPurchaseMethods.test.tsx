@@ -15,6 +15,7 @@ const defaultSalesOfferPackageOne: FromDb<SalesOfferPackage> = {
     purchaseLocations: ['onBoard'],
     paymentMethods: ['cash'],
     ticketFormats: ['paperTicket'],
+    isCapped: false,
 };
 
 const defaultSalesOfferPackageTwo: FromDb<SalesOfferPackage> = {
@@ -24,6 +25,7 @@ const defaultSalesOfferPackageTwo: FromDb<SalesOfferPackage> = {
     purchaseLocations: ['onBoard'],
     paymentMethods: ['contactlessPaymentCard'],
     ticketFormats: ['paperTicket'],
+    isCapped: false,
 };
 
 const defaultSalesOfferPackageThree: FromDb<SalesOfferPackage> = {
@@ -33,6 +35,7 @@ const defaultSalesOfferPackageThree: FromDb<SalesOfferPackage> = {
     purchaseLocations: ['online'],
     paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
     ticketFormats: ['smartCard'],
+    isCapped: false,
 };
 
 const defaultSalesOfferPackageFour: FromDb<SalesOfferPackage> = {
@@ -42,6 +45,7 @@ const defaultSalesOfferPackageFour: FromDb<SalesOfferPackage> = {
     purchaseLocations: ['mobileDevice'],
     paymentMethods: ['debitCard', 'creditCard', 'mobilePhone', 'directDebit'],
     ticketFormats: ['mobileApp'],
+    isCapped: false,
 };
 
 describe('pages', () => {
@@ -140,6 +144,7 @@ describe('pages', () => {
                             purchaseLocations: ['On bus'],
                             paymentMethods: ['Cash'],
                             ticketFormats: ['Paper ticket'],
+                            isCapped: false,
                         },
                         {
                             id: 2,
@@ -148,6 +153,7 @@ describe('pages', () => {
                             purchaseLocations: ['Online App'],
                             paymentMethods: ['Card via App'],
                             ticketFormats: ['eTicket'],
+                            isCapped: false,
                         },
                         {
                             id: 3,
@@ -156,6 +162,7 @@ describe('pages', () => {
                             purchaseLocations: ['Ticket Machine'],
                             paymentMethods: ['Card'],
                             ticketFormats: ['Pass'],
+                            isCapped: false,
                         },
                     ];
                     (getSalesOfferPackagesByNocCode as jest.Mock).mockImplementation(() => mockSalesOfferPackages);

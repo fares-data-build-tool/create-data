@@ -43,48 +43,410 @@ exports[`pages purchase methods inner component renders normally when time restr
 </Fragment>
 `;
 
-exports[`pages view purchase methods should render correctly with purchase methods 1`] = `
+exports[`pages view purchase methods should render correctly with no purchase methods and capped purchase methods 1`] = `
 <Fragment>
-  <GlobalSettingsViewPage
-    CardBody={[Function]}
-    csrfToken=""
+  <BaseLayout
     description="Define the way your tickets are sold, including where they are bought, the payment method and format"
-    entities={
-      Array [
-        Object {
-          "description": "Purchasable on board the bus, with cash, as a paper ticket.",
-          "id": 7,
-          "name": "Onboard (cash)",
-          "paymentMethods": Array [
-            "cash",
-          ],
-          "purchaseLocations": Array [
-            "onBoard",
-          ],
-          "ticketFormats": Array [
-            "paperTicket",
-          ],
-        },
-        Object {
-          "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
-          "id": 8,
-          "name": "Onboard (contactless)",
-          "paymentMethods": Array [
-            "contactlessPaymentCard",
-          ],
-          "purchaseLocations": Array [
-            "onBoard",
-          ],
-          "ticketFormats": Array [
-            "paperTicket",
-          ],
-        },
-      ]
-    }
-    entityDescription="purchase method"
-    errors={Array []}
     referer="hello"
+    showNavigation={true}
     title="Purchase methods"
-  />
+  >
+    <div>
+      <ErrorSummary
+        errors={Array []}
+      />
+    </div>
+    <div
+      className="govuk-grid-row"
+      data-card-count={2}
+    >
+      <div
+        className="govuk-grid-column-one-quarter"
+      >
+        <SubNavigation />
+      </div>
+      <div
+        className="govuk-grid-column-three-quarters"
+      >
+        <h1
+          className="govuk-heading-xl"
+        >
+          Purchase methods
+        </h1>
+        <p
+          className="govuk-body govuk-!-margin-bottom-8"
+        >
+          Define the way your tickets are sold, including where they are bought, the payment method and format
+        </p>
+        <div>
+          <NoPurchaseMethods
+            title="Purchase methods"
+          />
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/managePurchaseMethod"
+          >
+            Add a purchase method
+          </a>
+        </div>
+        <div
+          className="govuk-!-margin-top-4"
+        >
+          <PurchaseMethods
+            deleteActionHandler={[Function]}
+            purchaseMethods={
+              Array [
+                Object {
+                  "description": "Purchasable on board the bus, with a debit card, as a smart card.",
+                  "id": 9,
+                  "isCapped": true,
+                  "name": "Capped Onboard",
+                  "paymentMethods": Array [
+                    "debitCard",
+                  ],
+                  "purchaseLocations": Array [
+                    "onBoard",
+                  ],
+                  "ticketFormats": Array [
+                    "smartCard",
+                  ],
+                },
+                Object {
+                  "description": "Purchasable via the mobile device, with a contactless card or device, as a paper ticket.",
+                  "id": 10,
+                  "isCapped": true,
+                  "name": "Capped Mobile",
+                  "paymentMethods": Array [
+                    "mobilePhone",
+                  ],
+                  "purchaseLocations": Array [
+                    "mobileDevice",
+                  ],
+                  "ticketFormats": Array [
+                    "mobileApp",
+                  ],
+                },
+              ]
+            }
+            title="Capped purchase methods"
+          />
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/managePurchaseMethod?capped=true"
+          >
+            Add a purchase method
+          </a>
+        </div>
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`pages view purchase methods should render correctly with no purchase methods and no capped purchase methods 1`] = `
+<Fragment>
+  <BaseLayout
+    description="Define the way your tickets are sold, including where they are bought, the payment method and format"
+    referer="hello"
+    showNavigation={true}
+    title="Purchase methods"
+  >
+    <div>
+      <ErrorSummary
+        errors={Array []}
+      />
+    </div>
+    <div
+      className="govuk-grid-row"
+      data-card-count={0}
+    >
+      <div
+        className="govuk-grid-column-one-quarter"
+      >
+        <SubNavigation />
+      </div>
+      <div
+        className="govuk-grid-column-three-quarters"
+      >
+        <h1
+          className="govuk-heading-xl"
+        >
+          Purchase methods
+        </h1>
+        <p
+          className="govuk-body govuk-!-margin-bottom-8"
+        >
+          Define the way your tickets are sold, including where they are bought, the payment method and format
+        </p>
+        <div>
+          <NoPurchaseMethods
+            title="Purchase methods"
+          />
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/managePurchaseMethod"
+          >
+            Add a purchase method
+          </a>
+        </div>
+        <div
+          className="govuk-!-margin-top-4"
+        >
+          <NoPurchaseMethods
+            title="Capped purchase methods"
+          />
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/managePurchaseMethod?capped=true"
+          >
+            Add a purchase method
+          </a>
+        </div>
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`pages view purchase methods should render correctly with purchase methods and capped purchase methods 1`] = `
+<Fragment>
+  <BaseLayout
+    description="Define the way your tickets are sold, including where they are bought, the payment method and format"
+    referer="hello"
+    showNavigation={true}
+    title="Purchase methods"
+  >
+    <div>
+      <ErrorSummary
+        errors={Array []}
+      />
+    </div>
+    <div
+      className="govuk-grid-row"
+      data-card-count={4}
+    >
+      <div
+        className="govuk-grid-column-one-quarter"
+      >
+        <SubNavigation />
+      </div>
+      <div
+        className="govuk-grid-column-three-quarters"
+      >
+        <h1
+          className="govuk-heading-xl"
+        >
+          Purchase methods
+        </h1>
+        <p
+          className="govuk-body govuk-!-margin-bottom-8"
+        >
+          Define the way your tickets are sold, including where they are bought, the payment method and format
+        </p>
+        <div>
+          <PurchaseMethods
+            deleteActionHandler={[Function]}
+            purchaseMethods={
+              Array [
+                Object {
+                  "description": "Purchasable on board the bus, with cash, as a paper ticket.",
+                  "id": 7,
+                  "isCapped": false,
+                  "name": "Onboard (cash)",
+                  "paymentMethods": Array [
+                    "cash",
+                  ],
+                  "purchaseLocations": Array [
+                    "onBoard",
+                  ],
+                  "ticketFormats": Array [
+                    "paperTicket",
+                  ],
+                },
+                Object {
+                  "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
+                  "id": 8,
+                  "isCapped": false,
+                  "name": "Onboard (contactless)",
+                  "paymentMethods": Array [
+                    "contactlessPaymentCard",
+                  ],
+                  "purchaseLocations": Array [
+                    "onBoard",
+                  ],
+                  "ticketFormats": Array [
+                    "paperTicket",
+                  ],
+                },
+              ]
+            }
+            title="Normal purchase methods"
+          />
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/managePurchaseMethod"
+          >
+            Add a purchase method
+          </a>
+        </div>
+        <div
+          className="govuk-!-margin-top-4"
+        >
+          <PurchaseMethods
+            deleteActionHandler={[Function]}
+            purchaseMethods={
+              Array [
+                Object {
+                  "description": "Purchasable on board the bus, with a debit card, as a smart card.",
+                  "id": 9,
+                  "isCapped": true,
+                  "name": "Capped Onboard",
+                  "paymentMethods": Array [
+                    "debitCard",
+                  ],
+                  "purchaseLocations": Array [
+                    "onBoard",
+                  ],
+                  "ticketFormats": Array [
+                    "smartCard",
+                  ],
+                },
+                Object {
+                  "description": "Purchasable via the mobile device, with a contactless card or device, as a paper ticket.",
+                  "id": 10,
+                  "isCapped": true,
+                  "name": "Capped Mobile",
+                  "paymentMethods": Array [
+                    "mobilePhone",
+                  ],
+                  "purchaseLocations": Array [
+                    "mobileDevice",
+                  ],
+                  "ticketFormats": Array [
+                    "mobileApp",
+                  ],
+                },
+              ]
+            }
+            title="Capped purchase methods"
+          />
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/managePurchaseMethod?capped=true"
+          >
+            Add a purchase method
+          </a>
+        </div>
+      </div>
+    </div>
+  </BaseLayout>
+</Fragment>
+`;
+
+exports[`pages view purchase methods should render correctly with purchase methods and no capped purchase methods 1`] = `
+<Fragment>
+  <BaseLayout
+    description="Define the way your tickets are sold, including where they are bought, the payment method and format"
+    referer="hello"
+    showNavigation={true}
+    title="Purchase methods"
+  >
+    <div>
+      <ErrorSummary
+        errors={Array []}
+      />
+    </div>
+    <div
+      className="govuk-grid-row"
+      data-card-count={2}
+    >
+      <div
+        className="govuk-grid-column-one-quarter"
+      >
+        <SubNavigation />
+      </div>
+      <div
+        className="govuk-grid-column-three-quarters"
+      >
+        <h1
+          className="govuk-heading-xl"
+        >
+          Purchase methods
+        </h1>
+        <p
+          className="govuk-body govuk-!-margin-bottom-8"
+        >
+          Define the way your tickets are sold, including where they are bought, the payment method and format
+        </p>
+        <div>
+          <PurchaseMethods
+            deleteActionHandler={[Function]}
+            purchaseMethods={
+              Array [
+                Object {
+                  "description": "Purchasable on board the bus, with cash, as a paper ticket.",
+                  "id": 7,
+                  "isCapped": false,
+                  "name": "Onboard (cash)",
+                  "paymentMethods": Array [
+                    "cash",
+                  ],
+                  "purchaseLocations": Array [
+                    "onBoard",
+                  ],
+                  "ticketFormats": Array [
+                    "paperTicket",
+                  ],
+                },
+                Object {
+                  "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
+                  "id": 8,
+                  "isCapped": false,
+                  "name": "Onboard (contactless)",
+                  "paymentMethods": Array [
+                    "contactlessPaymentCard",
+                  ],
+                  "purchaseLocations": Array [
+                    "onBoard",
+                  ],
+                  "ticketFormats": Array [
+                    "paperTicket",
+                  ],
+                },
+              ]
+            }
+            title="Normal purchase methods"
+          />
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/managePurchaseMethod"
+          >
+            Add a purchase method
+          </a>
+        </div>
+        <div
+          className="govuk-!-margin-top-4"
+        >
+          <NoPurchaseMethods
+            title="Capped purchase methods"
+          />
+          <a
+            className="govuk-button"
+            data-module="govuk-button"
+            href="/managePurchaseMethod?capped=true"
+          >
+            Add a purchase method
+          </a>
+        </div>
+      </div>
+    </div>
+  </BaseLayout>
 </Fragment>
 `;

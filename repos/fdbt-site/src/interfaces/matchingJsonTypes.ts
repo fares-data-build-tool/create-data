@@ -59,6 +59,7 @@ export interface SalesOfferPackage {
     paymentMethods: string[];
     ticketFormats: string[];
     price?: string;
+    isCapped: boolean;
 }
 
 export type DayOfTheWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';

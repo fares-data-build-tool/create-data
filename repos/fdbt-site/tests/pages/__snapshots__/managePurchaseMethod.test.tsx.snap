@@ -22,7 +22,8 @@ exports[`pages manage purchase method should render correctly 1`] = `
         <h1
           className="govuk-heading-l"
         >
-          Provide purchase method details
+          Provide 
+           purchase method details
         </h1>
         <span
           className="govuk-hint"
@@ -33,6 +34,11 @@ exports[`pages manage purchase method should render correctly 1`] = `
         <input
           name="id"
           type="hidden"
+        />
+        <input
+          name="isCapped"
+          type="hidden"
+          value="false"
         />
         <FormGroupWrapper
           errorIds={
@@ -153,7 +159,7 @@ exports[`pages manage purchase method should render correctly 1`] = `
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-cash",
+              "checkbox-0-debitCard",
             ]
           }
           errors={Array []}
@@ -170,7 +176,7 @@ exports[`pages manage purchase method should render correctly 1`] = `
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-cash"
+              errorId="checkbox-0-debitCard"
               errors={Array []}
             >
               <div
@@ -305,7 +311,7 @@ exports[`pages manage purchase method should render correctly 1`] = `
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-paper-ticket",
+              "checkbox-0-mobile-app",
             ]
           }
           errors={Array []}
@@ -322,7 +328,7 @@ exports[`pages manage purchase method should render correctly 1`] = `
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-paper-ticket"
+              errorId="checkbox-0-mobile-app"
               errors={Array []}
             >
               <div
@@ -490,6 +496,383 @@ exports[`pages manage purchase method should render correctly 1`] = `
 </BaseLayout>
 `;
 
+exports[`pages manage purchase method should render correctly for capped ticket 1`] = `
+<BaseLayout
+  description="Manage Purchase Methods page of the Create Fares Data Service"
+  title="Manage Purchase Methods - Create Fares Data Service"
+>
+  <ErrorSummary
+    errors={Array []}
+  />
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <CsrfForm
+        action="/api/managePurchaseMethod"
+        csrfToken=""
+        method="post"
+      >
+        <h1
+          className="govuk-heading-l"
+        >
+          Provide 
+          capped
+           purchase method details
+        </h1>
+        <span
+          className="govuk-hint"
+          id="service-list-hint"
+        >
+          Purchase method created will be used in capped ticket
+        </span>
+        <span
+          className="govuk-hint"
+          id="service-list-hint"
+        >
+          Select at least one from each section below
+        </span>
+        <input
+          name="id"
+          type="hidden"
+        />
+        <input
+          name="isCapped"
+          type="hidden"
+          value="true"
+        />
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "checkbox-0-on-board",
+            ]
+          }
+          errors={Array []}
+        >
+          <fieldset
+            aria-describedby="sop-purchase-locations"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-purchase-locations"
+            >
+              Where can tickets be sold?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-on-board"
+              errors={Array []}
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-on-board"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="checkbox-0-on-board"
+                  name="purchaseLocations"
+                  type="checkbox"
+                  value="onBoard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-on-board"
+                >
+                  On board
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-mobile-device"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="checkbox-1-mobile-device"
+                  name="purchaseLocations"
+                  type="checkbox"
+                  value="mobileDevice"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-mobile-device"
+                >
+                  Mobile device
+                </label>
+              </div>
+            </FormElementWrapper>
+          </fieldset>
+        </FormGroupWrapper>
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "checkbox-0-debitCard",
+            ]
+          }
+          errors={Array []}
+        >
+          <fieldset
+            aria-describedby="sop-payment-methods"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-payment-methods"
+            >
+              How can tickets be paid for?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-debitCard"
+              errors={Array []}
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-debit-card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="checkbox-0-debit-card"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="debitCard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-debit-card"
+                >
+                  Debit card
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-credit-card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="checkbox-1-credit-card"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="creditCard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-credit-card"
+                >
+                  Credit card
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-mobile-phone"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="checkbox-2-mobile-phone"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="mobilePhone"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-2-mobile-phone"
+                >
+                  Mobile phone
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-contactless-travel-card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="checkbox-3-contactless-travel-card"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="contactlessTravelCard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-3-contactless-travel-card"
+                >
+                  Contactless SmartCard (e.g Oyster)
+                </label>
+              </div>
+            </FormElementWrapper>
+          </fieldset>
+        </FormGroupWrapper>
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "checkbox-0-mobile-app",
+            ]
+          }
+          errors={Array []}
+        >
+          <fieldset
+            aria-describedby="sop-ticket-formats"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-ticket-formats"
+            >
+              What format do the tickets come in?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-mobile-app"
+              errors={Array []}
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-mobile-app"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="checkbox-0-mobile-app"
+                  name="ticketFormats"
+                  type="checkbox"
+                  value="mobileApp"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-mobile-app"
+                >
+                  Mobile app
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-smart-card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="checkbox-1-smart-card"
+                  name="ticketFormats"
+                  type="checkbox"
+                  value="smartCard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-smart-card"
+                >
+                  Smart card
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-electronic-document"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  id="checkbox-2-electronic-document"
+                  name="ticketFormats"
+                  type="checkbox"
+                  value="electronic_document"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-2-electronic-document"
+                >
+                  Digital
+                </label>
+              </div>
+            </FormElementWrapper>
+          </fieldset>
+        </FormGroupWrapper>
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "purchase-method-name",
+            ]
+          }
+          errors={Array []}
+        >
+          <div
+            className="govuk-form-group"
+          >
+            <label
+              htmlFor="purchase-method-name"
+            >
+              <h1
+                className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              >
+                Provide a name for your purchase method
+              </h1>
+            </label>
+            <p
+              className="govuk-hint"
+              id="group-name-hint"
+            >
+              50 characters maximum
+            </p>
+            <FormElementWrapper
+              errorClass="govuk-input--error"
+              errorId="purchase-method-name"
+              errors={Array []}
+            >
+              <input
+                className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                defaultValue=""
+                id="purchase-method-name"
+                maxLength={50}
+                name="name"
+                type="text"
+              />
+            </FormElementWrapper>
+          </div>
+        </FormGroupWrapper>
+        <input
+          className="govuk-button"
+          id="continue-button"
+          type="submit"
+          value="Add purchase method"
+        />
+      </CsrfForm>
+    </div>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <h1
+        className="govuk-heading-s"
+      >
+        What is a purchase method?
+      </h1>
+      <p
+        className="govuk-body"
+      >
+        To create NeTEx for your fares, you need to provide the following:
+      </p>
+      <ol
+        className="govuk-body"
+      >
+        <li>
+          Where a ticket can be bought
+        </li>
+        <li>
+          What payment methods can be used to buy a ticket
+        </li>
+        <li>
+          In what format a ticket will be used by passengers
+        </li>
+      </ol>
+      <p
+        className="govuk-body"
+      >
+        This combination of information is known as a 
+        <b>
+          purchase method
+        </b>
+        .
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
 exports[`pages manage purchase method should render correctly in edit mode 1`] = `
 <BaseLayout
   description="Manage Purchase Methods page of the Create Fares Data Service"
@@ -519,7 +902,8 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
         <h1
           className="govuk-heading-l"
         >
-          Provide purchase method details
+          Provide 
+           purchase method details
         </h1>
         <span
           className="govuk-hint"
@@ -531,6 +915,11 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
           name="id"
           type="hidden"
           value={0}
+        />
+        <input
+          name="isCapped"
+          type="hidden"
+          value="false"
         />
         <FormGroupWrapper
           errorIds={
@@ -656,7 +1045,7 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-cash",
+              "checkbox-0-debitCard",
             ]
           }
           errors={Array []}
@@ -673,7 +1062,7 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-cash"
+              errorId="checkbox-0-debitCard"
               errors={Array []}
             >
               <div
@@ -815,7 +1204,7 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-paper-ticket",
+              "checkbox-0-mobile-app",
             ]
           }
           errors={Array []}
@@ -832,7 +1221,527 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-paper-ticket"
+              errorId="checkbox-0-mobile-app"
+              errors={Array []}
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-paper-ticket"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-0-paper-ticket"
+                  name="ticketFormats"
+                  type="checkbox"
+                  value="paperTicket"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-paper-ticket"
+                >
+                  Paper ticket
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-mobile-app"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-1-mobile-app"
+                  name="ticketFormats"
+                  type="checkbox"
+                  value="mobileApp"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-mobile-app"
+                >
+                  Mobile app
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-smart-card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-2-smart-card"
+                  name="ticketFormats"
+                  type="checkbox"
+                  value="smartCard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-2-smart-card"
+                >
+                  Smart card
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-electronic-document"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-3-electronic-document"
+                  name="ticketFormats"
+                  type="checkbox"
+                  value="electronic_document"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-3-electronic-document"
+                >
+                  Digital
+                </label>
+              </div>
+            </FormElementWrapper>
+          </fieldset>
+        </FormGroupWrapper>
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "purchase-method-name",
+            ]
+          }
+          errors={Array []}
+        >
+          <div
+            className="govuk-form-group"
+          >
+            <label
+              htmlFor="purchase-method-name"
+            >
+              <h1
+                className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              >
+                Provide a name for your purchase method
+              </h1>
+            </label>
+            <p
+              className="govuk-hint"
+              id="group-name-hint"
+            >
+              50 characters maximum
+            </p>
+            <FormElementWrapper
+              errorClass="govuk-input--error"
+              errorId="purchase-method-name"
+              errors={Array []}
+            >
+              <input
+                className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                defaultValue="test"
+                id="purchase-method-name"
+                maxLength={50}
+                name="name"
+                type="text"
+              />
+            </FormElementWrapper>
+          </div>
+        </FormGroupWrapper>
+        <input
+          className="govuk-button"
+          id="continue-button"
+          type="submit"
+          value="Update purchase method"
+        />
+      </CsrfForm>
+    </div>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <h1
+        className="govuk-heading-s"
+      >
+        What is a purchase method?
+      </h1>
+      <p
+        className="govuk-body"
+      >
+        To create NeTEx for your fares, you need to provide the following:
+      </p>
+      <ol
+        className="govuk-body"
+      >
+        <li>
+          Where a ticket can be bought
+        </li>
+        <li>
+          What payment methods can be used to buy a ticket
+        </li>
+        <li>
+          In what format a ticket will be used by passengers
+        </li>
+      </ol>
+      <p
+        className="govuk-body"
+      >
+        This combination of information is known as a 
+        <b>
+          purchase method
+        </b>
+        .
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages manage purchase method should render correctly in edit mode for capped ticket 1`] = `
+<BaseLayout
+  description="Manage Purchase Methods page of the Create Fares Data Service"
+  title="Manage Purchase Methods - Create Fares Data Service"
+>
+  <BackButton
+    href="/viewPurchaseMethods"
+  />
+  <InformationSummary
+    informationText="Editing and saving new changes will be applied to all fares using this purchase method."
+  />
+   
+  <ErrorSummary
+    errors={Array []}
+  />
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <CsrfForm
+        action="/api/managePurchaseMethod"
+        csrfToken=""
+        method="post"
+      >
+        <h1
+          className="govuk-heading-l"
+        >
+          Provide 
+           purchase method details
+        </h1>
+        <span
+          className="govuk-hint"
+          id="service-list-hint"
+        >
+          Select at least one from each section below
+        </span>
+        <input
+          name="id"
+          type="hidden"
+          value={0}
+        />
+        <input
+          name="isCapped"
+          type="hidden"
+          value="false"
+        />
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "checkbox-0-on-board",
+            ]
+          }
+          errors={Array []}
+        >
+          <fieldset
+            aria-describedby="sop-purchase-locations"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-purchase-locations"
+            >
+              Where can tickets be sold?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-on-board"
+              errors={Array []}
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-on-board"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-0-on-board"
+                  name="purchaseLocations"
+                  type="checkbox"
+                  value="onBoard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-on-board"
+                >
+                  On board
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-online"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-1-online"
+                  name="purchaseLocations"
+                  type="checkbox"
+                  value="online"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-online"
+                >
+                  Online
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-mobile-device"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-2-mobile-device"
+                  name="purchaseLocations"
+                  type="checkbox"
+                  value="mobileDevice"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-2-mobile-device"
+                >
+                  Mobile device
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-postal"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-3-postal"
+                  name="purchaseLocations"
+                  type="checkbox"
+                  value="postal"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-3-postal"
+                >
+                  Postal
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-agency"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-4-agency"
+                  name="purchaseLocations"
+                  type="checkbox"
+                  value="agency"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-4-agency"
+                >
+                  Travel Shop
+                </label>
+              </div>
+            </FormElementWrapper>
+          </fieldset>
+        </FormGroupWrapper>
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "checkbox-0-debitCard",
+            ]
+          }
+          errors={Array []}
+        >
+          <fieldset
+            aria-describedby="sop-payment-methods"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-payment-methods"
+            >
+              How can tickets be paid for?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-debitCard"
+              errors={Array []}
+            >
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-cash"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-0-cash"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="cash"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-cash"
+                >
+                  Cash
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-debit-card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-1-debit-card"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="debitCard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-debit-card"
+                >
+                  Debit card
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-credit-card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-2-credit-card"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="creditCard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-2-credit-card"
+                >
+                  Credit card
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-mobile-phone"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-3-mobile-phone"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="mobilePhone"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-3-mobile-phone"
+                >
+                  Mobile phone
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-cheque"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-4-cheque"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="cheque"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-4-cheque"
+                >
+                  Cheque
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-direct-debit"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-5-direct-debit"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="directDebit"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-5-direct-debit"
+                >
+                  Direct debit
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-contactless-travel-card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-6-contactless-travel-card"
+                  name="paymentMethods"
+                  type="checkbox"
+                  value="contactlessTravelCard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-6-contactless-travel-card"
+                >
+                  Contactless SmartCard (e.g Oyster)
+                </label>
+              </div>
+            </FormElementWrapper>
+          </fieldset>
+        </FormGroupWrapper>
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "checkbox-0-mobile-app",
+            ]
+          }
+          errors={Array []}
+        >
+          <fieldset
+            aria-describedby="sop-ticket-formats"
+            className="govuk-fieldset"
+          >
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              id="sop-ticket-formats"
+            >
+              What format do the tickets come in?
+            </legend>
+            <FormElementWrapper
+              errorClass="govuk-form-group--error"
+              errorId="checkbox-0-mobile-app"
               errors={Array []}
             >
               <div
@@ -1033,7 +1942,8 @@ exports[`pages manage purchase method should render error state on purchase meth
         <h1
           className="govuk-heading-l"
         >
-          Provide purchase method details
+          Provide 
+           purchase method details
         </h1>
         <span
           className="govuk-hint"
@@ -1045,6 +1955,11 @@ exports[`pages manage purchase method should render error state on purchase meth
           name="id"
           type="hidden"
           value={0}
+        />
+        <input
+          name="isCapped"
+          type="hidden"
+          value="false"
         />
         <FormGroupWrapper
           errorIds={
@@ -1184,7 +2099,7 @@ exports[`pages manage purchase method should render error state on purchase meth
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-cash",
+              "checkbox-0-debitCard",
             ]
           }
           errors={
@@ -1208,7 +2123,7 @@ exports[`pages manage purchase method should render error state on purchase meth
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-cash"
+              errorId="checkbox-0-debitCard"
               errors={
                 Array [
                   Object {
@@ -1357,7 +2272,7 @@ exports[`pages manage purchase method should render error state on purchase meth
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-paper-ticket",
+              "checkbox-0-mobile-app",
             ]
           }
           errors={
@@ -1381,7 +2296,7 @@ exports[`pages manage purchase method should render error state on purchase meth
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-paper-ticket"
+              errorId="checkbox-0-mobile-app"
               errors={
                 Array [
                   Object {

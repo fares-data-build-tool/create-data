@@ -23,6 +23,7 @@ describe('pages', () => {
                             purchaseLocations: ['at stop', 'website'],
                             paymentMethods: ['cash'],
                             ticketFormats: ['paper'],
+                            isCapped: false,
                         },
                     ]}
                     startDate="2017-03-13T18:00:00+00:00"
@@ -78,6 +79,7 @@ describe('pages', () => {
                         purchaseLocations: ['at stop', 'website'],
                         paymentMethods: ['cash'],
                         ticketFormats: ['paper'],
+                        isCapped: false,
                     },
                     {
                         id: 2,
@@ -86,6 +88,7 @@ describe('pages', () => {
                         purchaseLocations: ['in station', 'phone'],
                         paymentMethods: ['mobileDevice'],
                         ticketFormats: ['phone'],
+                        isCapped: false,
                     },
                 ],
                 moment().toISOString(),
@@ -129,6 +132,7 @@ describe('pages', () => {
                                 purchaseLocations: ['at stop', 'website'],
                                 paymentMethods: ['cash'],
                                 ticketFormats: ['paperTicket'],
+                                isCapped: false,
                             },
                         ],
                     },
@@ -143,6 +147,7 @@ describe('pages', () => {
                                 paymentMethods: ['cash'],
                                 ticketFormats: ['paperTicket'],
                                 price: '1.99',
+                                isCapped: false,
                             },
                             {
                                 id: 2,
@@ -152,6 +157,7 @@ describe('pages', () => {
                                 paymentMethods: ['mobileDevice'],
                                 ticketFormats: ['mobileApp'],
                                 price: '2.49',
+                                isCapped: false,
                             },
                         ],
                     },

@@ -180,7 +180,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                         name="product-Great Product"
                         onChange={[Function]}
                         type="checkbox"
-                        value="{\\"id\\":1,\\"name\\":\\"Onboard (cash)\\",\\"description\\":\\"\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"cash\\"],\\"ticketFormats\\":[\\"paperTicket\\"]}"
+                        value="{\\"id\\":1,\\"name\\":\\"Onboard (cash)\\",\\"description\\":\\"\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"cash\\"],\\"ticketFormats\\":[\\"paperTicket\\"],\\"isCapped\\":false}"
                       />
                       <label
                         className="govuk-label govuk-checkboxes__label"
@@ -192,6 +192,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                         Object {
                           "description": "",
                           "id": 1,
+                          "isCapped": false,
                           "name": "Onboard (cash)",
                           "paymentMethods": Array [
                             "cash",
@@ -224,7 +225,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                         name="product-Great Product"
                         onChange={[Function]}
                         type="checkbox"
-                        value="{\\"id\\":2,\\"name\\":\\"Onboard (contactless)\\",\\"description\\":\\"\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"contactlessPaymentCard\\"],\\"ticketFormats\\":[\\"paperTicket\\"]}"
+                        value="{\\"id\\":2,\\"name\\":\\"Onboard (contactless)\\",\\"description\\":\\"\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"contactlessPaymentCard\\"],\\"ticketFormats\\":[\\"paperTicket\\"],\\"isCapped\\":false}"
                       />
                       <label
                         className="govuk-label govuk-checkboxes__label"
@@ -236,6 +237,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                         Object {
                           "description": "",
                           "id": 2,
+                          "isCapped": false,
                           "name": "Onboard (contactless)",
                           "paymentMethods": Array [
                             "contactlessPaymentCard",
@@ -268,7 +270,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                         name="product-Great Product"
                         onChange={[Function]}
                         type="checkbox"
-                        value="{\\"id\\":3,\\"name\\":\\"Online (smart card)\\",\\"description\\":\\"\\",\\"purchaseLocations\\":[\\"online\\"],\\"paymentMethods\\":[\\"directDebit\\",\\"creditCard\\",\\"debitCard\\"],\\"ticketFormats\\":[\\"smartCard\\"]}"
+                        value="{\\"id\\":3,\\"name\\":\\"Online (smart card)\\",\\"description\\":\\"\\",\\"purchaseLocations\\":[\\"online\\"],\\"paymentMethods\\":[\\"directDebit\\",\\"creditCard\\",\\"debitCard\\"],\\"ticketFormats\\":[\\"smartCard\\"],\\"isCapped\\":false}"
                       />
                       <label
                         className="govuk-label govuk-checkboxes__label"
@@ -280,6 +282,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                         Object {
                           "description": "",
                           "id": 3,
+                          "isCapped": false,
                           "name": "Online (smart card)",
                           "paymentMethods": Array [
                             "directDebit",
@@ -314,7 +317,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                         name="product-Great Product"
                         onChange={[Function]}
                         type="checkbox"
-                        value="{\\"id\\":4,\\"name\\":\\"Mobile App\\",\\"description\\":\\"\\",\\"purchaseLocations\\":[\\"mobileDevice\\"],\\"paymentMethods\\":[\\"debitCard\\",\\"creditCard\\",\\"mobilePhone\\",\\"directDebit\\"],\\"ticketFormats\\":[\\"mobileApp\\"]}"
+                        value="{\\"id\\":4,\\"name\\":\\"Mobile App\\",\\"description\\":\\"\\",\\"purchaseLocations\\":[\\"mobileDevice\\"],\\"paymentMethods\\":[\\"debitCard\\",\\"creditCard\\",\\"mobilePhone\\",\\"directDebit\\"],\\"ticketFormats\\":[\\"mobileApp\\"],\\"isCapped\\":false}"
                       />
                       <label
                         className="govuk-label govuk-checkboxes__label"
@@ -326,6 +329,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                         Object {
                           "description": "",
                           "id": 4,
+                          "isCapped": false,
                           "name": "Mobile App",
                           "paymentMethods": Array [
                             "debitCard",

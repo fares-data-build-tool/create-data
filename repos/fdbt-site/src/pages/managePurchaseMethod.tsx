@@ -21,44 +21,57 @@ const editingInformationText =
     'Editing and saving new changes will be applied to all fares using this purchase method.';
 
 // DistributionChannelType
-export const purchaseLocationsList = {
-    id: 'checkbox-0-on-board',
-    method: ['onBoard', 'online', 'mobileDevice', 'postal', 'agency'],
+
+export const purchaseLocationsList = (isCapped: boolean): { id: string; method: string[] } => {
+    return {
+        id: 'checkbox-0-on-board',
+        method: isCapped ? ['onBoard', 'mobileDevice'] : ['onBoard', 'online', 'mobileDevice', 'postal', 'agency'],
+    };
 };
 
-// Payment Method
-export const paymentMethodsList = {
-    id: 'checkbox-0-cash',
-    paymentMethods: [
-        'cash',
-        'debitCard',
-        'creditCard',
-        'mobilePhone',
-        'cheque',
-        'directDebit',
-        'contactlessTravelCard',
-    ],
+export const paymentMethodsList = (isCapped: boolean): { id: string; paymentMethods: string[] } => {
+    return {
+        id: 'checkbox-0-debitCard',
+        paymentMethods: isCapped
+            ? ['debitCard', 'creditCard', 'mobilePhone', 'contactlessTravelCard']
+            : ['cash', 'debitCard', 'creditCard', 'mobilePhone', 'cheque', 'directDebit', 'contactlessTravelCard'],
+    };
 };
 
-// FulfilmentMethodType
-export const ticketFormatsList = {
-    id: 'checkbox-0-paper-ticket',
-    ticketFormats: [
-        { value: 'paperTicket', display: 'Paper ticket' },
-        { value: 'mobileApp', display: 'Mobile app' },
-        { value: 'smartCard', display: 'Smart card' },
-        { value: 'electronic_document', display: 'Digital' },
-    ],
+export const ticketFormatsList = (
+    isCapped: boolean,
+): { id: string; ticketFormats: { value: string; display: string }[] } => {
+    return {
+        id: 'checkbox-0-mobile-app',
+        ticketFormats: isCapped
+            ? [
+                  { value: 'mobileApp', display: 'Mobile app' },
+                  { value: 'smartCard', display: 'Smart card' },
+                  { value: 'electronic_document', display: 'Digital' },
+              ]
+            : [
+                  { value: 'paperTicket', display: 'Paper ticket' },
+                  { value: 'mobileApp', display: 'Mobile app' },
+                  { value: 'smartCard', display: 'Smart card' },
+                  { value: 'electronic_document', display: 'Digital' },
+              ],
+    };
 };
 
-export type ManagePurchaseMethodsProps = GlobalSettingsManageProps<FromDb<SalesOfferPackage>>;
+export type ManagePurchaseMethodsProps = GlobalSettingsManageProps<FromDb<SalesOfferPackage>> & { isCapped: boolean };
 
 export const valuesMap: { [key: string]: string } = {
     agency: 'Travel Shop',
     contactlessTravelCard: 'Contactless SmartCard (e.g Oyster)',
 };
 
-const ManagePurchaseMethod = ({ inputs, csrfToken, errors, editMode }: ManagePurchaseMethodsProps): ReactElement => {
+const ManagePurchaseMethod = ({
+    inputs,
+    csrfToken,
+    errors,
+    editMode,
+    isCapped,
+}: ManagePurchaseMethodsProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description}>
             {editMode && errors.length === 0 ? (
@@ -73,13 +86,20 @@ const ManagePurchaseMethod = ({ inputs, csrfToken, errors, editMode }: ManagePur
                 <div className="govuk-grid-column-two-thirds">
                     <CsrfForm action="/api/managePurchaseMethod" method="post" csrfToken={csrfToken}>
                         <>
-                            <h1 className="govuk-heading-l">Provide purchase method details</h1>
+                            <h1 className="govuk-heading-l">
+                                Provide {isCapped ? 'capped' : ''} purchase method details
+                            </h1>
+                            {isCapped ? (
+                                <span id="service-list-hint" className="govuk-hint">
+                                    Purchase method created will be used in capped ticket
+                                </span>
+                            ) : null}
                             <span id="service-list-hint" className="govuk-hint">
                                 Select at least one from each section below
                             </span>
                             <input type="hidden" name="id" value={inputs?.id} />
-
-                            <FormGroupWrapper errorIds={[purchaseLocationsList.id]} errors={errors}>
+                            <input type="hidden" name="isCapped" value={String(isCapped)} />
+                            <FormGroupWrapper errorIds={[purchaseLocationsList(isCapped).id]} errors={errors}>
                                 <fieldset className="govuk-fieldset" aria-describedby="sop-purchase-locations">
                                     <legend
                                         className="govuk-fieldset__legend govuk-fieldset__legend--s"
@@ -89,11 +109,11 @@ const ManagePurchaseMethod = ({ inputs, csrfToken, errors, editMode }: ManagePur
                                     </legend>
                                     <FormElementWrapper
                                         errors={errors}
-                                        errorId={purchaseLocationsList.id}
+                                        errorId={purchaseLocationsList(isCapped).id}
                                         errorClass="govuk-form-group--error"
                                     >
                                         <>
-                                            {purchaseLocationsList.method.map((purchaseLocation, index) => {
+                                            {purchaseLocationsList(isCapped).method.map((purchaseLocation, index) => {
                                                 const purchaseLocationId = kebabCase(purchaseLocation);
                                                 return (
                                                     <div
@@ -124,7 +144,7 @@ const ManagePurchaseMethod = ({ inputs, csrfToken, errors, editMode }: ManagePur
                                     </FormElementWrapper>
                                 </fieldset>
                             </FormGroupWrapper>
-                            <FormGroupWrapper errorIds={[paymentMethodsList.id]} errors={errors}>
+                            <FormGroupWrapper errorIds={[paymentMethodsList(isCapped).id]} errors={errors}>
                                 <fieldset className="govuk-fieldset" aria-describedby="sop-payment-methods">
                                     <legend
                                         className="govuk-fieldset__legend govuk-fieldset__legend--s"
@@ -134,11 +154,11 @@ const ManagePurchaseMethod = ({ inputs, csrfToken, errors, editMode }: ManagePur
                                     </legend>
                                     <FormElementWrapper
                                         errors={errors}
-                                        errorId={paymentMethodsList.id}
+                                        errorId={paymentMethodsList(isCapped).id}
                                         errorClass="govuk-form-group--error"
                                     >
                                         <>
-                                            {paymentMethodsList.paymentMethods.map((paymentMethod, index) => {
+                                            {paymentMethodsList(isCapped).paymentMethods.map((paymentMethod, index) => {
                                                 const paymentMethodId = kebabCase(paymentMethod);
                                                 return (
                                                     <div
@@ -169,7 +189,7 @@ const ManagePurchaseMethod = ({ inputs, csrfToken, errors, editMode }: ManagePur
                                     </FormElementWrapper>
                                 </fieldset>
                             </FormGroupWrapper>
-                            <FormGroupWrapper errorIds={[ticketFormatsList.id]} errors={errors}>
+                            <FormGroupWrapper errorIds={[ticketFormatsList(isCapped).id]} errors={errors}>
                                 <fieldset className="govuk-fieldset" aria-describedby="sop-ticket-formats">
                                     <legend
                                         className="govuk-fieldset__legend govuk-fieldset__legend--s"
@@ -179,11 +199,11 @@ const ManagePurchaseMethod = ({ inputs, csrfToken, errors, editMode }: ManagePur
                                     </legend>
                                     <FormElementWrapper
                                         errors={errors}
-                                        errorId={ticketFormatsList.id}
+                                        errorId={ticketFormatsList(isCapped).id}
                                         errorClass="govuk-form-group--error"
                                     >
                                         <>
-                                            {ticketFormatsList.ticketFormats.map((ticketFormat, index) => {
+                                            {ticketFormatsList(isCapped).ticketFormats.map((ticketFormat, index) => {
                                                 const ticketFormatId = kebabCase(ticketFormat.value);
                                                 return (
                                                     <div
@@ -269,11 +289,14 @@ const ManagePurchaseMethod = ({ inputs, csrfToken, errors, editMode }: ManagePur
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: ManagePurchaseMethodsProps }> => {
-    return await getGlobalSettingsManageProps<FromDb<SalesOfferPackage>>(
+    const globalSettingsProps = await getGlobalSettingsManageProps<FromDb<SalesOfferPackage>>(
         ctx,
         getSalesOfferPackageByIdAndNoc,
         getSessionAttribute(ctx.req, GS_PURCHASE_METHOD_ATTRIBUTE),
     );
+
+    const isCapped = !!ctx.query.capped;
+    return { props: { ...globalSettingsProps.props, isCapped } };
 };
 
 export default ManagePurchaseMethod;

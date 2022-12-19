@@ -26,25 +26,26 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } = req.body;
 
         const id = req.body.id && Number(req.body.id);
+        const isCapped = Boolean(req.body.isCapped);
 
         if (!purchaseLocations) {
             errors.push({
                 errorMessage: 'Select at least one option for where the ticket can be sold',
-                id: purchaseLocationsList.id,
+                id: purchaseLocationsList(isCapped).id,
             });
         }
 
         if (!paymentMethods) {
             errors.push({
                 errorMessage: 'Select at least one option for how tickets can be paid for',
-                id: paymentMethodsList.id,
+                id: paymentMethodsList(isCapped).id,
             });
         }
 
         if (!ticketFormats) {
             errors.push({
                 errorMessage: 'Select at least one option for the ticket format',
-                id: ticketFormatsList.id,
+                id: ticketFormatsList(isCapped).id,
             });
         }
 
@@ -73,6 +74,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             purchaseLocations: toArray(purchaseLocations),
             paymentMethods: toArray(paymentMethods),
             ticketFormats: toArray(ticketFormats),
+            isCapped,
         };
 
         const noc = getAndValidateNoc(req, res);
@@ -90,8 +92,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (errors.length > 0) {
             updateSessionAttribute(req, GS_PURCHASE_METHOD_ATTRIBUTE, { inputs: salesOfferPackage, errors });
-
-            redirectTo(res, `/managePurchaseMethod${id ? `?id=${id}` : ''}`);
+            redirectTo(
+                res,
+                `/managePurchaseMethod${
+                    id ? (isCapped ? `isCapped=true&id=${id}` : `?id=${id}`) : isCapped ? '?isCapped=true' : ''
+                }`,
+            );
             return;
         }
 

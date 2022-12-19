@@ -219,6 +219,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectPurchaseMethods page');
     }
 
+    const isCapped = !!ctx.query.capped;
     const purchaseMethodsList: SalesOfferPackage[] = await getSalesOfferPackagesByNocCode(nocCode);
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
@@ -290,7 +291,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             ...(selected && { selected: selected }),
             products,
-            purchaseMethodsList: purchaseMethodsList as FromDb<SalesOfferPackage>[],
+            purchaseMethodsList: purchaseMethodsList.filter((purchaseMethod) => purchaseMethod.isCapped === isCapped),
             errors,
             csrfToken,
             backHref: '',

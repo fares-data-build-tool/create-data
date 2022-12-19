@@ -35,6 +35,7 @@ describe('managePurchaseMethod', () => {
             body: {
                 purchaseLocations: 'OnBoard',
                 name: 'a name',
+                isCapped: false,
             },
         });
         const expectedSessionAttributeCall = {
@@ -43,14 +44,15 @@ describe('managePurchaseMethod', () => {
                 ticketFormats: [],
                 paymentMethods: [],
                 name: 'a name',
+                isCapped: false,
             },
             errors: [
                 {
-                    id: 'checkbox-0-cash',
+                    id: 'checkbox-0-debitCard',
                     errorMessage: 'Select at least one option for how tickets can be paid for',
                 },
                 {
-                    id: 'checkbox-0-paper-ticket',
+                    id: 'checkbox-0-mobile-app',
                     errorMessage: 'Select at least one option for the ticket format',
                 },
             ],
@@ -73,6 +75,7 @@ describe('managePurchaseMethod', () => {
             body: {
                 paymentMethods: 'Cash',
                 name: 'a name',
+                isCapped: false,
             },
         });
         const expectedSessionAttributeCall = {
@@ -81,6 +84,8 @@ describe('managePurchaseMethod', () => {
                 ticketFormats: [],
                 paymentMethods: ['Cash'],
                 name: 'a name',
+                isCapped: false,
+                id: undefined,
             },
             errors: [
                 {
@@ -88,7 +93,7 @@ describe('managePurchaseMethod', () => {
                     errorMessage: 'Select at least one option for where the ticket can be sold',
                 },
                 {
-                    id: 'checkbox-0-paper-ticket',
+                    id: 'checkbox-0-mobile-app',
                     errorMessage: 'Select at least one option for the ticket format',
                 },
             ],
@@ -111,6 +116,7 @@ describe('managePurchaseMethod', () => {
             body: {
                 ticketFormats: 'Paper Ticket',
                 name: 'a name',
+                isCapped: false,
             },
         });
         const expectedSessionAttributeCall = {
@@ -119,6 +125,8 @@ describe('managePurchaseMethod', () => {
                 ticketFormats: ['Paper Ticket'],
                 paymentMethods: [],
                 name: 'a name',
+                isCapped: false,
+                id: undefined,
             },
             errors: [
                 {
@@ -126,7 +134,7 @@ describe('managePurchaseMethod', () => {
                     errorMessage: 'Select at least one option for where the ticket can be sold',
                 },
                 {
-                    id: 'checkbox-0-cash',
+                    id: 'checkbox-0-debitCard',
                     errorMessage: 'Select at least one option for how tickets can be paid for',
                 },
             ],
@@ -150,6 +158,7 @@ describe('managePurchaseMethod', () => {
                 purchaseLocations: ['OnBoard', 'Online Account'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
                 name: 'a name',
+                isCapped: false,
             },
         });
         const expectedSessionAttributeCall = {
@@ -158,10 +167,12 @@ describe('managePurchaseMethod', () => {
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
                 paymentMethods: [],
                 name: 'a name',
+                isCapped: false,
+                id: undefined,
             },
             errors: [
                 {
-                    id: 'checkbox-0-cash',
+                    id: 'checkbox-0-debitCard',
                     errorMessage: 'Select at least one option for how tickets can be paid for',
                 },
             ],
@@ -185,6 +196,7 @@ describe('managePurchaseMethod', () => {
                 paymentMethods: ['Cash'],
                 purchaseLocations: ['OnBoard', 'Online Account'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
+                isCapped: false,
             },
         });
         const expectedSessionAttributeCall = {
@@ -193,6 +205,8 @@ describe('managePurchaseMethod', () => {
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
                 paymentMethods: ['Cash'],
                 name: '',
+                isCapped: false,
+                id: undefined,
             },
             errors: [
                 {
@@ -223,6 +237,7 @@ describe('managePurchaseMethod', () => {
                 purchaseLocations: ['OnBoard', 'Online Account'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
                 name: 'my name',
+                isCapped: false,
             },
         });
         const expectedSessionAttributeCall = {
@@ -231,6 +246,8 @@ describe('managePurchaseMethod', () => {
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
                 paymentMethods: ['Cash'],
                 name: 'my name',
+                isCapped: false,
+                id: undefined,
             },
             errors: [
                 {
@@ -259,6 +276,7 @@ describe('managePurchaseMethod', () => {
                 paymentMethods: ['Cash'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
                 name: 'a name',
+                isCapped: false,
             },
         });
 
@@ -267,6 +285,37 @@ describe('managePurchaseMethod', () => {
             ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
             paymentMethods: ['Cash'],
             name: 'a name',
+            isCapped: false,
+            id: undefined,
+        };
+
+        await managePurchaseMethod(req, res);
+
+        expect(updateSpy).not.toBeCalled();
+        expect(insertSpy).toBeCalledWith('TEST', expected);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, GS_PURCHASE_METHOD_ATTRIBUTE, undefined);
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/viewPurchaseMethods',
+        });
+    });
+
+    it('redirects to /viewPurchaseMethods when at least one option has been selected from each section and capped ticket', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                purchaseLocations: ['OnBoard', 'Online Account'],
+                paymentMethods: ['Cash'],
+                ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
+                name: 'a name',
+                isCapped: true,
+            },
+        });
+
+        const expected = {
+            purchaseLocations: ['OnBoard', 'Online Account'],
+            ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
+            paymentMethods: ['Cash'],
+            name: 'a name',
+            isCapped: true,
         };
 
         await managePurchaseMethod(req, res);
@@ -287,6 +336,7 @@ describe('managePurchaseMethod', () => {
                 paymentMethods: ['Cash'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
                 name: 'a name',
+                isCapped: false,
             },
         });
 
@@ -296,6 +346,7 @@ describe('managePurchaseMethod', () => {
             ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
             paymentMethods: ['Cash'],
             name: 'a name',
+            isCapped: false,
         };
 
         await managePurchaseMethod(req, res);
