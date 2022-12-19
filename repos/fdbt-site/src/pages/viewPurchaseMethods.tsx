@@ -42,8 +42,8 @@ const ViewPurchaseMethods = ({
         setPopUpState(undefined);
     };
 
-    const buildDeleteUrl = (isGroup: boolean, idToDelete: number, csrfToken: string): string => {
-        return `/api/deletePassenger?id=${idToDelete}&isGroup=${isGroup}&_csrf=${csrfToken}`;
+    const buildDeleteUrl = (idToDelete: number, csrfToken: string): string => {
+        return `/api/deletePurchaseMethod?id=${idToDelete}&_csrf=${csrfToken}`;
     };
 
     return (
@@ -103,7 +103,7 @@ const ViewPurchaseMethods = ({
                         {popUpState && (
                             <DeleteConfirmationPopup
                                 entityName={popUpState.entityName}
-                                deleteUrl={buildDeleteUrl(true, popUpState.entityId, csrfToken)}
+                                deleteUrl={buildDeleteUrl(popUpState.entityId, csrfToken)}
                                 cancelActionHandler={cancelActionHandler}
                             />
                         )}

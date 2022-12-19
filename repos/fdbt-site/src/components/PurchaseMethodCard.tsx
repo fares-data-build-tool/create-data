@@ -39,9 +39,7 @@ const PurchaseMethodCard = ({ sop, isCapped, index, deleteActionHandler }: Purch
                     </div>
                 ) : null}
 
-                <>
-                    <PurchaseMethodCardBody entity={sop} />
-                </>
+                <PurchaseMethodCardBody entity={sop} />
             </div>
         </div>
     );
