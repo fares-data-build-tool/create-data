@@ -71,6 +71,7 @@ describe('pages', () => {
                     },
                 ],
                 selectedServices: [],
+                dataSource: 'bods',
             },
             {
                 nocCode: 'LNUD',
@@ -87,6 +88,7 @@ describe('pages', () => {
                     },
                 ],
                 selectedServices: [],
+                dataSource: 'bods',
             },
         ];
         const getServicesByNocCodeAndDataSourceAndDescriptionSpy = jest.spyOn(

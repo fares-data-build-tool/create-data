@@ -12,7 +12,7 @@ describe('capPricingPerDistance', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates cap info, updates the  CAP_PRICING_PER_DISTANCE_ATTRIBUTE and then redirects to /defineCapPricingPerDistance if all is valid', () => {
+    it('correctly generates cap info, updates the  CAP_PRICING_PER_DISTANCE_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', () => {
         const mockCapInfo: DistanceCap = {
             maximumPrice: '4',
             minimumPrice: '3',
@@ -46,7 +46,7 @@ describe('capPricingPerDistance', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, mockCapInfo);
 
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/defineCapPricingPerDistance' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/additionalPricingStructures' });
     });
 
     it('produces an error when distanceTo is empty', () => {

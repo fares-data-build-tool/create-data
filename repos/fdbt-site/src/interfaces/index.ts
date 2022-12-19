@@ -100,6 +100,7 @@ export interface MultiOperatorInfo {
     services: ServiceWithOriginAndDestination[];
     selectedServices: ServiceWithOriginAndDestination[];
     name: string;
+    dataSource: 'bods' | 'tnds';
 }
 
 export interface ServiceWithOriginAndDestination extends SelectedService {
@@ -753,4 +754,9 @@ export interface MultiTap {
 
 export interface MultiTapPricing {
     tapDetails: MultiTap;
+}
+
+export interface AdditionalPricing {
+    pricingStructureStart: string;
+    structureDiscount: string;
 }

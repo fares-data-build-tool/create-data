@@ -194,6 +194,60 @@ export const getServicesByNocCodeAndDataSourceWithGrouping = async (
     }
 };
 
+export const getFerryAndBusServices = async (noc: string): Promise<ServiceWithOriginAndDestination[]> => {
+    const nocCodeParameter = replaceInternalNocCode(noc);
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving tram and ferry services for given noc',
+        noc,
+    });
+
+    try {
+        const queryInput = `
+            SELECT lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND dataSource = 'tnds' AND (endDate IS NULL OR CURDATE() <= endDate)
+            AND (mode = 'ferry' OR mode = 'tram')
+            group by lineId, origin, destination
+            ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
+        `;
+
+        const queryResults = await executeQuery<ServiceWithOriginAndDestination[]>(queryInput, [nocCodeParameter]);
+
+        return (
+            queryResults.map((item) => ({
+                ...item,
+                startDate: convertDateFormat(item.startDate),
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve tram or ferry services from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const operatorHasFerryOrTramServices = async (noc: string): Promise<boolean> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving number of ferry & tram services for given national operator code',
+        noc,
+    });
+
+    try {
+        const queryInput = `
+        SELECT count(id) as serviceCount
+        FROM txcOperatorLine
+        WHERE nocCode = ? AND (mode = 'tram' OR mode = 'ferry') AND dataSource = 'tnds'
+        ORDER BY CAST(lineName AS UNSIGNED), lineName;
+        `;
+
+        const queryResults = await executeQuery<ServiceCount[]>(queryInput, [noc]);
+        const hasService = queryResults[0].serviceCount !== 0;
+        return hasService;
+    } catch (error) {
+        throw new Error(`Could not retrieve ferry / tram services from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const operatorHasBodsServices = async (nationalOperatorCode: string): Promise<boolean> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 

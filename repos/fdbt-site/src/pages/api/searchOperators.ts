@@ -10,6 +10,7 @@ import {
     getOperatorGroupsByNameAndNoc,
     insertOperatorGroup,
     operatorHasBodsServices,
+    operatorHasFerryOrTramServices,
     updateOperatorGroup,
 } from '../../data/auroradb';
 
@@ -25,17 +26,20 @@ export const replaceSelectedOperatorsWithUserSelectedOperators = (rawList: strin
     return updatedList;
 };
 export const getOperatorsWithoutServices = async (selectedOperators: Operator[]): Promise<string[]> => {
-    const results = await Promise.all(
+    const operatorNamesWithoutServices: string[] = [];
+
+    await Promise.all(
         selectedOperators.map(async (operator) => {
-            const nocCode = operator.nocCode;
-            const hasService = await operatorHasBodsServices(nocCode);
-            if (!hasService) {
-                return operator.name;
+            const hasBodsServices = await operatorHasBodsServices(operator.nocCode);
+            const hasFerryOrTramServices = await operatorHasFerryOrTramServices(operator.nocCode);
+
+            if (!hasBodsServices && !hasFerryOrTramServices) {
+                operatorNamesWithoutServices.push(operator.name);
             }
-            return '';
         }),
     );
-    return results.filter((item) => item !== '');
+
+    return operatorNamesWithoutServices;
 };
 
 export const isSearchInputValid = (searchText: string): boolean => {
@@ -103,7 +107,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const operatorsWithNoServices = await getOperatorsWithoutServices(selectedOperators);
             if (operatorsWithNoServices.length > 0) {
                 errors.push({
-                    errorMessage: `Some of the selected operators have no services. To continue you must only select operators which have services in BODS`,
+                    errorMessage: `Some of the selected operators have no services. To continue you must only select operators which have services in BODS, or operators who have Ferry/Tram services in TNDS`,
                     id: searchInputId,
                 });
                 operatorsWithNoServices.forEach((names) => {
