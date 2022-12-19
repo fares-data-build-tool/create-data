@@ -9,9 +9,30 @@ jest.mock('../../../src/data/auroradb');
 const insertSpy = jest.spyOn(db, 'insertSalesOfferPackage');
 const updateSpy = jest.spyOn(db, 'updateSalesOfferPackage');
 const getSpy = jest.spyOn(db, 'getSalesOfferPackagesByNocCode');
+const getSalesOfferPackageByIdAndNocSpy = jest.spyOn(db, 'getSalesOfferPackageByIdAndNoc');
 
 describe('managePurchaseMethod', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
+
+    const mockCappedSOP: FromDb<SalesOfferPackage> = {
+        id: 99,
+        name: 'my name',
+        description: 'Capped purchase method description',
+        purchaseLocations: ['onBoard'],
+        paymentMethods: ['debitCard'],
+        ticketFormats: ['mobileApp'],
+        isCapped: true,
+    };
+
+    const mockSOP: FromDb<SalesOfferPackage> = {
+        id: 99,
+        name: 'my name',
+        description: 'Capped purchase method description',
+        purchaseLocations: ['onBoard', 'online'],
+        paymentMethods: ['debitCard', 'creditCard'],
+        ticketFormats: ['mobileApp', 'paperTicket'],
+        isCapped: false,
+    };
 
     beforeEach(() => {
         jest.resetAllMocks();
@@ -269,6 +290,129 @@ describe('managePurchaseMethod', () => {
         });
     });
 
+    it('redirects back to /managePurchaseMethod if invalid purchase location is selected for edit a capped ticket', async () => {
+        getSalesOfferPackageByIdAndNocSpy.mockResolvedValue(mockCappedSOP);
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                purchaseLocations: ['OnBoard', 'Online Account'],
+                paymentMethods: ['debitCard'],
+                ticketFormats: ['mobileApp'],
+                name: 'cap product',
+                isCapped: 'true',
+                id: 99,
+            },
+        });
+        const expectedSessionAttributeCall = {
+            inputs: {
+                purchaseLocations: ['OnBoard', 'Online Account'],
+                paymentMethods: ['debitCard'],
+                ticketFormats: ['mobileApp'],
+                name: 'cap product',
+                isCapped: true,
+                id: 99,
+            },
+            errors: [
+                {
+                    id: 'checkbox-0-on-board',
+                    errorMessage: 'Select the valid option(s) for the purchase locations.',
+                },
+            ],
+        };
+
+        await managePurchaseMethod(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
+            req,
+            GS_PURCHASE_METHOD_ATTRIBUTE,
+            expectedSessionAttributeCall,
+        );
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/managePurchaseMethod?isCapped=true&id=99',
+        });
+    });
+
+    it('redirects back to /managePurchaseMethod if invalid payment method is selected for edit a capped ticket', async () => {
+        getSalesOfferPackageByIdAndNocSpy.mockResolvedValue(mockCappedSOP);
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                purchaseLocations: ['onBoard'],
+                paymentMethods: ['debitCard', 'cash'],
+                ticketFormats: ['mobileApp'],
+                name: 'cap product',
+                isCapped: 'true',
+                id: 99,
+            },
+        });
+        const expectedSessionAttributeCall = {
+            inputs: {
+                purchaseLocations: ['onBoard'],
+                paymentMethods: ['debitCard', 'cash'],
+                ticketFormats: ['mobileApp'],
+                name: 'cap product',
+                isCapped: true,
+                id: 99,
+            },
+            errors: [
+                {
+                    id: 'checkbox-0-debit-card',
+                    errorMessage: 'Select the valid option(s) for the payment method.',
+                },
+            ],
+        };
+
+        await managePurchaseMethod(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
+            req,
+            GS_PURCHASE_METHOD_ATTRIBUTE,
+            expectedSessionAttributeCall,
+        );
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/managePurchaseMethod?isCapped=true&id=99',
+        });
+    });
+
+    it('redirects back to /managePurchaseMethod if invalid ticket format is selected for edit a capped ticket', async () => {
+        getSalesOfferPackageByIdAndNocSpy.mockResolvedValue(mockCappedSOP);
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                purchaseLocations: ['onBoard'],
+                paymentMethods: ['debitCard'],
+                ticketFormats: ['mobileApp', 'paperTicket'],
+                name: 'cap product',
+                isCapped: 'true',
+                id: 99,
+            },
+        });
+        const expectedSessionAttributeCall = {
+            inputs: {
+                purchaseLocations: ['onBoard'],
+                paymentMethods: ['debitCard'],
+                ticketFormats: ['mobileApp', 'paperTicket'],
+                name: 'cap product',
+                isCapped: true,
+                id: 99,
+            },
+            errors: [
+                {
+                    id: 'checkbox-0-mobile-app',
+                    errorMessage: 'Select the valid option(s) for the ticket format.',
+                },
+            ],
+        };
+
+        await managePurchaseMethod(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
+            req,
+            GS_PURCHASE_METHOD_ATTRIBUTE,
+            expectedSessionAttributeCall,
+        );
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/managePurchaseMethod?isCapped=true&id=99',
+        });
+    });
+
     it('redirects to /viewPurchaseMethods when at least one option has been selected from each section', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
@@ -299,7 +443,7 @@ describe('managePurchaseMethod', () => {
         });
     });
 
-    it('redirects to /viewPurchaseMethods when at least one option has been selected from each section and capped ticket', async () => {
+    it('redirects to /viewPurchaseMethods when at least one option has been selected from each section and capped purchase method', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 purchaseLocations: ['OnBoard', 'Online Account'],
@@ -328,7 +472,9 @@ describe('managePurchaseMethod', () => {
         });
     });
 
-    it('updates and redirects to /viewPurchaseMethods when a valid edit is performed', async () => {
+    it('updates and redirects to /viewPurchaseMethods when a valid edit is performed for normal purchase method', async () => {
+        getSalesOfferPackageByIdAndNocSpy.mockResolvedValue(mockSOP);
+
         const { req, res } = getMockRequestAndResponse({
             body: {
                 id: 77,
@@ -347,6 +493,39 @@ describe('managePurchaseMethod', () => {
             paymentMethods: ['Cash'],
             name: 'a name',
             isCapped: false,
+        };
+
+        await managePurchaseMethod(req, res);
+
+        expect(insertSpy).not.toBeCalled();
+        expect(updateSpy).toBeCalledWith('TEST', expected);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, GS_PURCHASE_METHOD_ATTRIBUTE, undefined);
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/viewPurchaseMethods',
+        });
+    });
+
+    it('updates and redirects to /viewPurchaseMethods when a valid edit is performed for capped purchase method', async () => {
+        getSalesOfferPackageByIdAndNocSpy.mockResolvedValue(mockCappedSOP);
+
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                id: 77,
+                purchaseLocations: ['onBoard'],
+                paymentMethods: ['debitCard', 'creditCard'],
+                ticketFormats: ['mobileApp'],
+                name: 'capped purchase method',
+                isCapped: 'true',
+            },
+        });
+
+        const expected: SalesOfferPackage = {
+            id: 77,
+            purchaseLocations: ['onBoard'],
+            paymentMethods: ['debitCard', 'creditCard'],
+            ticketFormats: ['mobileApp'],
+            name: 'capped purchase method',
+            isCapped: true,
         };
 
         await managePurchaseMethod(req, res);

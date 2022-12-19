@@ -712,7 +712,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<F
                 purchaseLocations: item.purchaseLocations.split(','),
                 paymentMethods: item.paymentMethods.split(','),
                 ticketFormats: item.ticketFormats.split(','),
-                isCapped: item.isCapped,
+                isCapped: Boolean(item.isCapped),
             })) || []
         );
     } catch (error) {

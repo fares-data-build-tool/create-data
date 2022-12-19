@@ -6,7 +6,12 @@ import { GS_PURCHASE_METHOD_ATTRIBUTE } from '../../constants/attributes';
 import { paymentMethodsList, purchaseLocationsList, ticketFormatsList } from '../managePurchaseMethod';
 import { toArray } from '../../utils';
 import { invalidCharactersArePresent, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
-import { insertSalesOfferPackage, getSalesOfferPackagesByNocCode, updateSalesOfferPackage } from '../../data/auroradb';
+import {
+    insertSalesOfferPackage,
+    getSalesOfferPackagesByNocCode,
+    updateSalesOfferPackage,
+    getSalesOfferPackageByIdAndNoc,
+} from '../../data/auroradb';
 import { FromDb, SalesOfferPackage } from '../../interfaces/matchingJsonTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -26,7 +31,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } = req.body;
 
         const id = req.body.id && Number(req.body.id);
-        const isCapped = req.body.isCapped && req.body.isCapped === 'true' ? true : false;
+        const isCapped = req.body.isCapped === 'true' ? true : false;
 
         if (!purchaseLocations) {
             errors.push({
@@ -88,6 +93,49 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     id: 'purchase-method-name',
                 });
             }
+
+            if (id) {
+                const purchaseDetails = await getSalesOfferPackageByIdAndNoc(id, noc);
+                if (purchaseDetails.isCapped) {
+                    const dbIsCapped = purchaseDetails.isCapped;
+
+                    const validPurchaseLocations = purchaseLocationsList(dbIsCapped).method;
+                    const isValidPurchaseLocation = toArray(purchaseLocations).every((val) =>
+                        validPurchaseLocations.includes(val),
+                    );
+
+                    if (!isValidPurchaseLocation) {
+                        errors.push({
+                            errorMessage: `Select the valid option(s) for the purchase locations.`,
+                            id: purchaseLocationsList(dbIsCapped).id,
+                        });
+                    }
+
+                    const validPaymentMethods = paymentMethodsList(dbIsCapped).paymentMethods;
+                    const isValidPaymentMethod = toArray(paymentMethods).every((val) =>
+                        validPaymentMethods.includes(val),
+                    );
+
+                    if (!isValidPaymentMethod) {
+                        errors.push({
+                            errorMessage: `Select the valid option(s) for the payment method.`,
+                            id: paymentMethodsList(dbIsCapped).id,
+                        });
+                    }
+
+                    const validTicketFormats = ticketFormatsList(dbIsCapped).ticketFormats.map(
+                        (ticketFormat) => ticketFormat.value,
+                    );
+                    const isValidTicketFormat = toArray(ticketFormats).every((val) => validTicketFormats.includes(val));
+
+                    if (!isValidTicketFormat) {
+                        errors.push({
+                            errorMessage: `Select the valid option(s) for the ticket format.`,
+                            id: ticketFormatsList(dbIsCapped).id,
+                        });
+                    }
+                }
+            }
         }
 
         if (errors.length > 0) {
@@ -95,7 +143,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(
                 res,
                 `/managePurchaseMethod${
-                    id ? (isCapped ? `isCapped=true&id=${id}` : `?id=${id}`) : isCapped ? '?isCapped=true' : ''
+                    id ? (isCapped ? `?isCapped=true&id=${id}` : `?id=${id}`) : isCapped ? '?isCapped=true' : ''
                 }`,
             );
             return;
