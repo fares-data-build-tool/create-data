@@ -95,6 +95,7 @@ exports[`pages view purchase methods should render correctly with no purchase me
         >
           <PurchaseMethods
             deleteActionHandler={[Function]}
+            isCapped={true}
             purchaseMethods={
               Array [
                 Object {
@@ -250,6 +251,7 @@ exports[`pages view purchase methods should render correctly with purchase metho
         <div>
           <PurchaseMethods
             deleteActionHandler={[Function]}
+            isCapped={false}
             purchaseMethods={
               Array [
                 Object {
@@ -299,6 +301,7 @@ exports[`pages view purchase methods should render correctly with purchase metho
         >
           <PurchaseMethods
             deleteActionHandler={[Function]}
+            isCapped={true}
             purchaseMethods={
               Array [
                 Object {
@@ -387,6 +390,7 @@ exports[`pages view purchase methods should render correctly with purchase metho
         <div>
           <PurchaseMethods
             deleteActionHandler={[Function]}
+            isCapped={false}
             purchaseMethods={
               Array [
                 Object {

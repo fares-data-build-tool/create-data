@@ -6,7 +6,7 @@ interface PurchaseMethodCardProps {
     sop: SalesOfferPackage;
     isCapped: boolean;
     index: number;
-    deleteActionHandler?: (id: number, name: string, isGroup: boolean) => void;
+    deleteActionHandler?: (id: number, name: string) => void;
 }
 
 const PurchaseMethodCard = ({ sop, isCapped, index, deleteActionHandler }: PurchaseMethodCardProps): ReactElement => {
@@ -30,7 +30,7 @@ const PurchaseMethodCard = ({ sop, isCapped, index, deleteActionHandler }: Purch
                             <li className="actions__item">
                                 <button
                                     className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                    onClick={() => deleteActionHandler(id, name, isCapped)}
+                                    onClick={() => deleteActionHandler(id, name)}
                                 >
                                     Delete
                                 </button>

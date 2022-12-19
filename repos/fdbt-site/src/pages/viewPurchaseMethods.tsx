@@ -71,6 +71,7 @@ const ViewPurchaseMethods = ({
                                 <PurchaseMethods
                                     title="Normal purchase methods"
                                     purchaseMethods={purchaseMethods}
+                                    isCapped={false}
                                     deleteActionHandler={deleteActionHandler}
                                 />
                             )}
@@ -86,8 +87,9 @@ const ViewPurchaseMethods = ({
                             ) : (
                                 <PurchaseMethods
                                     title="Capped purchase methods"
-                                    deleteActionHandler={deleteActionHandler}
                                     purchaseMethods={cappedPurchaseMethods}
+                                    isCapped={true}
+                                    deleteActionHandler={deleteActionHandler}
                                 />
                             )}
 
@@ -131,10 +133,16 @@ const NoPurchaseMethods = ({ title }: NoPurchaseMethodsProps): ReactElement => {
 interface PurchaseMethodsProps {
     purchaseMethods: FromDb<SalesOfferPackage>[];
     title: string;
-    deleteActionHandler: (id: number, name: string, isCapped: boolean) => void;
+    isCapped: boolean;
+    deleteActionHandler: (id: number, name: string) => void;
 }
 
-const PurchaseMethods = ({ purchaseMethods, title, deleteActionHandler }: PurchaseMethodsProps): ReactElement => {
+const PurchaseMethods = ({
+    purchaseMethods,
+    title,
+    isCapped,
+    deleteActionHandler,
+}: PurchaseMethodsProps): ReactElement => {
     return (
         <>
             <h2 className="govuk-heading-l">{title}</h2>
@@ -143,7 +151,7 @@ const PurchaseMethods = ({ purchaseMethods, title, deleteActionHandler }: Purcha
                 {purchaseMethods.map((purchaseMethod, index) => (
                     <PurchaseMethodCard
                         sop={purchaseMethod}
-                        isCapped={false}
+                        isCapped={isCapped}
                         index={index}
                         deleteActionHandler={deleteActionHandler}
                         key={index}
