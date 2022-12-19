@@ -314,11 +314,11 @@ export const completeCappedTapsJourney=()=>{
     clickElementById('add-another-button')
     clickElementById('multi-tap-price-1').type('3.54')
     continueButtonClick()
-    clickElementById('cap-name-0').type('My Cap')
-    clickElementById('cap-price-0').type('2.34')
-    clickElementById('cap-period-duration-quantity-0').type('2')
-    selectRandomOptionFromDropDown('cap-duration-unit-0');
-    continueButtonClick()
+    completeCapCreatePages()
+    
+}
+
+export const completeCapValidity=() => {
     const randomSelector = getRandomNumber(1, 3);
     switch (randomSelector) {
         case 1: {
@@ -340,7 +340,10 @@ export const completeCappedTapsJourney=()=>{
             throwInvalidRandomSelectorError();
         }
     }
-    continueButtonClick()
+    continueButtonClick()};
+
+export const completeCapStartTime = () => {
+
     const randomSelectorSecond = getRandomNumber(1, 2);
     switch (randomSelectorSecond) {
         case 1: {
@@ -360,6 +363,19 @@ export const completeCappedTapsJourney=()=>{
     }
     continueButtonClick()
     continueButtonClick()
+
+};
+
+export const completeCapCreatePages = () => {
+    clickElementById('cap-name-0').type('My Cap')
+    clickElementById('cap-price-0').type('2.34')
+    clickElementById('cap-period-duration-quantity-0').type('2')
+    selectRandomOptionFromDropDown('cap-duration-unit-0');
+    continueButtonClick()
+    
+    completeCapValidity()
+    completeCapStartTime()
+    
     randomlyDeterminePurchaseType()
     completeProductDateInformationPage()
     continueButtonClick()
@@ -367,38 +383,11 @@ export const completeCappedTapsJourney=()=>{
 
 export const completeCappedProductJourney=()=>{
     clickElementById('radio-option-byProducts')
+    continueButtonClick()    
+    clickElementById('product-group-0-radio')
     continueButtonClick()
-    clickElementById('minimum-price').type('2')
-    clickElementById('maximum-price').type('3')
-    clickElementById('add-another-button')
-    clickElementById('distance-to-0').type('2')
-    clickElementById('price-per-km-0').type('2.22')
-    clickElementById('distance-from-1').type('2')
-    clickElementById('price-per-km-1').type('2.22')
-    continueButtonClick()
-    const randomSelector = getRandomNumber(1, 2);
-    switch (randomSelector) {
-        case 1: {
-            cy.log('Click yes');
-            clickElementById('additional-discounts')
-            clickElementById('pricing-structure-start').type('2')
-            clickElementById('structure-discount').type('2.22')
-            break;
-        }
-        case 2: {
-            cy.log('Click no');
-            clickElementById('no-additional-discounts')
-            break;
-        }
-        default: {
-            throwInvalidRandomSelectorError();
-        }
-    }
-    continueButtonClick()
-    continueButtonClick()
-    randomlyDeterminePurchaseType()
-    completeProductDateInformationPage()
-    continueButtonClick()
+    completeCapCreatePages()
+    
 }
 
 export const completeCappedGeoZonePages = (): void => {

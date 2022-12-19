@@ -22,6 +22,8 @@ before(() => {
 
     addSingleProductIfNotPresent();
     addOtherProductsIfNotPresent();
+    getHomePage();
+    clickElementById('account-link');
     clickElementByText('Product groups');
     addTestProductGroups();
     cy.log('Global Settings set up for LNUD');
@@ -82,16 +84,10 @@ const addTestProductGroups = (): void => {
             const productGroups = element.attr('product-groups').toString();
             cy.log(productGroups);
             const productGroupsValue = productGroups.split(',')
-            if (!productGroupsValue.includes('test')) {
-                cy.log("Add group");
-                getHomePage();
-                clickElementById('account-link');
-                clickElementByText('Product groups');
+            if (!productGroupsValue.includes('test')) {                
                 addSingleProductGroup('test', false);
             }
-            if (!productGroupsValue.includes('test2')) {
-                cy.log("Add group 2");
-                
+            if (!productGroupsValue.includes('test2')) {                                
                 addSingleProductGroup('test2', true);                
             }
         });

@@ -43,7 +43,7 @@ describe('the capped faretype product journey', () => {
         isFinished()
     });
 
-    it.only('completes successfully for geozone products journey', () => {
+    it('completes successfully for geozone products journey', () => {
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
         completeCappedGeoZonePages();
@@ -55,7 +55,7 @@ describe('the capped faretype product journey', () => {
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
         completeCappedMultiServicePages();
-        completeCappedTapsJourney()
-        isFinished()
+        completeCappedProductJourney();
+        isFinished();
     });
 });
