@@ -98,7 +98,7 @@ const ViewPurchaseMethods = ({
                                 data-module="govuk-button"
                                 href="/managePurchaseMethod?isCapped=true"
                             >
-                                Add a purchase method
+                                Add a capped purchase method
                             </a>
                         </div>
 

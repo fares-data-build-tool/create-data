@@ -21,7 +21,7 @@ const PurchaseMethodCard = ({ sop, isCapped, index, deleteActionHandler }: Purch
                             <li className="actions__item">
                                 <a
                                     className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                    href={`/managePurchaseMethod?id=${id}${isCapped ? `&capped=true` : ''}`}
+                                    href={`/managePurchaseMethod?id=${id}${isCapped ? `&isCapped=true` : ''}`}
                                 >
                                     Edit
                                 </a>
