@@ -35,7 +35,7 @@ describe('managePurchaseMethod', () => {
             body: {
                 purchaseLocations: 'OnBoard',
                 name: 'a name',
-                isCapped: false,
+                isCapped: 'false',
             },
         });
         const expectedSessionAttributeCall = {
@@ -48,11 +48,11 @@ describe('managePurchaseMethod', () => {
             },
             errors: [
                 {
-                    id: 'checkbox-0-debitCard',
+                    id: 'checkbox-0-cash',
                     errorMessage: 'Select at least one option for how tickets can be paid for',
                 },
                 {
-                    id: 'checkbox-0-mobile-app',
+                    id: 'checkbox-0-paper-ticket',
                     errorMessage: 'Select at least one option for the ticket format',
                 },
             ],
@@ -93,7 +93,7 @@ describe('managePurchaseMethod', () => {
                     errorMessage: 'Select at least one option for where the ticket can be sold',
                 },
                 {
-                    id: 'checkbox-0-mobile-app',
+                    id: 'checkbox-0-paper-ticket',
                     errorMessage: 'Select at least one option for the ticket format',
                 },
             ],
@@ -134,7 +134,7 @@ describe('managePurchaseMethod', () => {
                     errorMessage: 'Select at least one option for where the ticket can be sold',
                 },
                 {
-                    id: 'checkbox-0-debitCard',
+                    id: 'checkbox-0-cash',
                     errorMessage: 'Select at least one option for how tickets can be paid for',
                 },
             ],
@@ -172,7 +172,7 @@ describe('managePurchaseMethod', () => {
             },
             errors: [
                 {
-                    id: 'checkbox-0-debitCard',
+                    id: 'checkbox-0-cash',
                     errorMessage: 'Select at least one option for how tickets can be paid for',
                 },
             ],
@@ -306,7 +306,7 @@ describe('managePurchaseMethod', () => {
                 paymentMethods: ['Cash'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
                 name: 'a name',
-                isCapped: true,
+                isCapped: 'true',
             },
         });
 

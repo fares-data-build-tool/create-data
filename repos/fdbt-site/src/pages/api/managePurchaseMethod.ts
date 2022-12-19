@@ -26,7 +26,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } = req.body;
 
         const id = req.body.id && Number(req.body.id);
-        const isCapped = Boolean(req.body.isCapped);
+        const isCapped = req.body.isCapped && req.body.isCapped === 'true' ? true : false;
 
         if (!purchaseLocations) {
             errors.push({

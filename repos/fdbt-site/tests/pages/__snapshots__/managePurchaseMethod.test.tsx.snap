@@ -27,7 +27,7 @@ exports[`pages manage purchase method should render correctly 1`] = `
         </h1>
         <span
           className="govuk-hint"
-          id="service-list-hint"
+          id="purchase-method-option-hint"
         >
           Select at least one from each section below
         </span>
@@ -159,7 +159,7 @@ exports[`pages manage purchase method should render correctly 1`] = `
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-debitCard",
+              "checkbox-0-cash",
             ]
           }
           errors={Array []}
@@ -176,7 +176,7 @@ exports[`pages manage purchase method should render correctly 1`] = `
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-debitCard"
+              errorId="checkbox-0-cash"
               errors={Array []}
             >
               <div
@@ -311,7 +311,7 @@ exports[`pages manage purchase method should render correctly 1`] = `
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-mobile-app",
+              "checkbox-0-paper-ticket",
             ]
           }
           errors={Array []}
@@ -328,7 +328,7 @@ exports[`pages manage purchase method should render correctly 1`] = `
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-mobile-app"
+              errorId="checkbox-0-paper-ticket"
               errors={Array []}
             >
               <div
@@ -524,13 +524,13 @@ exports[`pages manage purchase method should render correctly for capped ticket 
         </h1>
         <span
           className="govuk-hint"
-          id="service-list-hint"
+          id="purchase-method-hint"
         >
-          Purchase method created will be used in capped ticket
+          Capped purchase methods are for capped products
         </span>
         <span
           className="govuk-hint"
-          id="service-list-hint"
+          id="purchase-method-option-hint"
         >
           Select at least one from each section below
         </span>
@@ -608,7 +608,7 @@ exports[`pages manage purchase method should render correctly for capped ticket 
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-debitCard",
+              "checkbox-0-debit-card",
             ]
           }
           errors={Array []}
@@ -625,7 +625,7 @@ exports[`pages manage purchase method should render correctly for capped ticket 
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-debitCard"
+              errorId="checkbox-0-debit-card"
               errors={Array []}
             >
               <div
@@ -907,7 +907,7 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
         </h1>
         <span
           className="govuk-hint"
-          id="service-list-hint"
+          id="purchase-method-option-hint"
         >
           Select at least one from each section below
         </span>
@@ -1045,7 +1045,7 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-debitCard",
+              "checkbox-0-cash",
             ]
           }
           errors={Array []}
@@ -1062,7 +1062,7 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-debitCard"
+              errorId="checkbox-0-cash"
               errors={Array []}
             >
               <div
@@ -1204,7 +1204,7 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-mobile-app",
+              "checkbox-0-paper-ticket",
             ]
           }
           errors={Array []}
@@ -1221,7 +1221,7 @@ exports[`pages manage purchase method should render correctly in edit mode 1`] =
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-mobile-app"
+              errorId="checkbox-0-paper-ticket"
               errors={Array []}
             >
               <div
@@ -1427,7 +1427,7 @@ exports[`pages manage purchase method should render correctly in edit mode for c
         </h1>
         <span
           className="govuk-hint"
-          id="service-list-hint"
+          id="purchase-method-option-hint"
         >
           Select at least one from each section below
         </span>
@@ -1565,7 +1565,7 @@ exports[`pages manage purchase method should render correctly in edit mode for c
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-debitCard",
+              "checkbox-0-cash",
             ]
           }
           errors={Array []}
@@ -1582,7 +1582,7 @@ exports[`pages manage purchase method should render correctly in edit mode for c
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-debitCard"
+              errorId="checkbox-0-cash"
               errors={Array []}
             >
               <div
@@ -1724,7 +1724,7 @@ exports[`pages manage purchase method should render correctly in edit mode for c
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-mobile-app",
+              "checkbox-0-paper-ticket",
             ]
           }
           errors={Array []}
@@ -1741,7 +1741,7 @@ exports[`pages manage purchase method should render correctly in edit mode for c
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-mobile-app"
+              errorId="checkbox-0-paper-ticket"
               errors={Array []}
             >
               <div
@@ -1947,7 +1947,7 @@ exports[`pages manage purchase method should render error state on purchase meth
         </h1>
         <span
           className="govuk-hint"
-          id="service-list-hint"
+          id="purchase-method-option-hint"
         >
           Select at least one from each section below
         </span>
@@ -2099,7 +2099,7 @@ exports[`pages manage purchase method should render error state on purchase meth
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-debitCard",
+              "checkbox-0-cash",
             ]
           }
           errors={
@@ -2123,7 +2123,7 @@ exports[`pages manage purchase method should render error state on purchase meth
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-debitCard"
+              errorId="checkbox-0-cash"
               errors={
                 Array [
                   Object {
@@ -2272,7 +2272,7 @@ exports[`pages manage purchase method should render error state on purchase meth
         <FormGroupWrapper
           errorIds={
             Array [
-              "checkbox-0-mobile-app",
+              "checkbox-0-paper-ticket",
             ]
           }
           errors={
@@ -2296,7 +2296,7 @@ exports[`pages manage purchase method should render error state on purchase meth
             </legend>
             <FormElementWrapper
               errorClass="govuk-form-group--error"
-              errorId="checkbox-0-mobile-app"
+              errorId="checkbox-0-paper-ticket"
               errors={
                 Array [
                   Object {

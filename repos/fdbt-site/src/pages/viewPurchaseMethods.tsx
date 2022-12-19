@@ -4,7 +4,7 @@ import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { formatSOPArray, getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { sopTicketFormatConverter } from './salesConfirmation';
-import { VIEW_PURCHASE_METHOD } from '../constants/attributes';
+import { GS_PURCHASE_METHOD_ATTRIBUTE, VIEW_PURCHASE_METHOD } from '../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { FromDb, SalesOfferPackage } from '../interfaces/matchingJsonTypes';
 import PurchaseMethodCard from '../components/PurchaseMethodCard';
@@ -96,7 +96,7 @@ const ViewPurchaseMethods = ({
                             <a
                                 className="govuk-button"
                                 data-module="govuk-button"
-                                href="/managePurchaseMethod?capped=true"
+                                href="/managePurchaseMethod?isCapped=true"
                             >
                                 Add a purchase method
                             </a>
@@ -188,7 +188,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const viewPurchaseMethod = getSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD);
 
     updateSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD, undefined);
-
+    updateSessionAttribute(ctx.req, GS_PURCHASE_METHOD_ATTRIBUTE, undefined);
     return {
         props: {
             purchaseMethods: purchaseMethods.filter((purchaseMethod) => !purchaseMethod.isCapped),

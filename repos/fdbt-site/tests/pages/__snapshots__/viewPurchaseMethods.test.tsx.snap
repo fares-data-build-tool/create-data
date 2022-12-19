@@ -135,7 +135,7 @@ exports[`pages view purchase methods should render correctly with no purchase me
           <a
             className="govuk-button"
             data-module="govuk-button"
-            href="/managePurchaseMethod?capped=true"
+            href="/managePurchaseMethod?isCapped=true"
           >
             Add a purchase method
           </a>
@@ -202,7 +202,7 @@ exports[`pages view purchase methods should render correctly with no purchase me
           <a
             className="govuk-button"
             data-module="govuk-button"
-            href="/managePurchaseMethod?capped=true"
+            href="/managePurchaseMethod?isCapped=true"
           >
             Add a purchase method
           </a>
@@ -341,7 +341,7 @@ exports[`pages view purchase methods should render correctly with purchase metho
           <a
             className="govuk-button"
             data-module="govuk-button"
-            href="/managePurchaseMethod?capped=true"
+            href="/managePurchaseMethod?isCapped=true"
           >
             Add a purchase method
           </a>
@@ -444,7 +444,7 @@ exports[`pages view purchase methods should render correctly with purchase metho
           <a
             className="govuk-button"
             data-module="govuk-button"
-            href="/managePurchaseMethod?capped=true"
+            href="/managePurchaseMethod?isCapped=true"
           >
             Add a purchase method
           </a>

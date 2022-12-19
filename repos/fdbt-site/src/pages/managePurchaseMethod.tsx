@@ -31,7 +31,7 @@ export const purchaseLocationsList = (isCapped: boolean): { id: string; method: 
 
 export const paymentMethodsList = (isCapped: boolean): { id: string; paymentMethods: string[] } => {
     return {
-        id: 'checkbox-0-debitCard',
+        id: isCapped ? 'checkbox-0-debit-card' : 'checkbox-0-cash',
         paymentMethods: isCapped
             ? ['debitCard', 'creditCard', 'mobilePhone', 'contactlessTravelCard']
             : ['cash', 'debitCard', 'creditCard', 'mobilePhone', 'cheque', 'directDebit', 'contactlessTravelCard'],
@@ -42,7 +42,7 @@ export const ticketFormatsList = (
     isCapped: boolean,
 ): { id: string; ticketFormats: { value: string; display: string }[] } => {
     return {
-        id: 'checkbox-0-mobile-app',
+        id: isCapped ? 'checkbox-0-mobile-app' : 'checkbox-0-paper-ticket',
         ticketFormats: isCapped
             ? [
                   { value: 'mobileApp', display: 'Mobile app' },
@@ -90,11 +90,11 @@ const ManagePurchaseMethod = ({
                                 Provide {isCapped ? 'capped' : ''} purchase method details
                             </h1>
                             {isCapped ? (
-                                <span id="service-list-hint" className="govuk-hint">
-                                    Purchase method created will be used in capped ticket
+                                <span id="purchase-method-hint" className="govuk-hint">
+                                    Capped purchase methods are for capped products
                                 </span>
                             ) : null}
-                            <span id="service-list-hint" className="govuk-hint">
+                            <span id="purchase-method-option-hint" className="govuk-hint">
                                 Select at least one from each section below
                             </span>
                             <input type="hidden" name="id" value={inputs?.id} />
@@ -295,7 +295,7 @@ export const getServerSideProps = async (
         getSessionAttribute(ctx.req, GS_PURCHASE_METHOD_ATTRIBUTE),
     );
 
-    const isCapped = !!ctx.query.capped;
+    const isCapped = ctx.query.isCapped && ctx.query.isCapped === 'true' ? true : false;
     return { props: { ...globalSettingsProps.props, isCapped } };
 };
 
