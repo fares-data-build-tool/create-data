@@ -24,6 +24,7 @@ interface SelectTimeRestrictionsProps {
     timeRestrictions: PremadeTimeRestriction[];
     selectedId: number | null;
     backHref: string;
+    isEditing: boolean;
 }
 
 const SelectTimeRestrictions = ({
@@ -32,6 +33,7 @@ const SelectTimeRestrictions = ({
     timeRestrictions,
     selectedId,
     backHref,
+    isEditing,
 }: SelectTimeRestrictionsProps): ReactElement => {
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
@@ -73,7 +75,8 @@ const SelectTimeRestrictions = ({
                                         value="Premade"
                                         data-aria-controls="conditional-time-restriction"
                                         defaultChecked={
-                                            errors.some((error) => error.id === 'time-restriction') || !!selectedId
+                                            errors.some((error) => error.id === 'time-restriction') ||
+                                            (!!selectedId && isEditing)
                                         }
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">
@@ -112,7 +115,7 @@ const SelectTimeRestrictions = ({
                                         type="radio"
                                         value="no"
                                         data-aria-controls="conditional-time-restriction-2"
-                                        defaultChecked={!selectedId}
+                                        defaultChecked={!selectedId && isEditing}
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
                                         No
@@ -192,6 +195,8 @@ export const getServerSideProps = async (
 
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
+    const isEditing = !!ticket && !!matchingJsonMetaData;
+
     const backHref =
         ticket && matchingJsonMetaData
             ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
@@ -199,7 +204,7 @@ export const getServerSideProps = async (
               }`
             : '';
 
-    return { props: { csrfToken, errors, timeRestrictions, selectedId, backHref } };
+    return { props: { csrfToken, errors, timeRestrictions, selectedId, backHref, isEditing } };
 };
 
 export default SelectTimeRestrictions;

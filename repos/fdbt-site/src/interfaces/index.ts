@@ -100,6 +100,7 @@ export interface MultiOperatorInfo {
     services: ServiceWithOriginAndDestination[];
     selectedServices: ServiceWithOriginAndDestination[];
     name: string;
+    dataSource: 'bods' | 'tnds';
 }
 
 export interface ServiceWithOriginAndDestination extends SelectedService {
@@ -733,4 +734,29 @@ export interface Cap {
     price: string;
     durationAmount: string;
     durationUnits: ExpiryUnit;
+}
+
+export interface CapDistancePricing {
+    distanceFrom: string;
+    distanceTo: string;
+    pricePerKm: string;
+}
+
+export interface DistanceCap {
+    maximumPrice: string;
+    minimumPrice: string;
+    capPricing: CapDistancePricing[];
+}
+
+export interface MultiTap {
+    [key: string]: string;
+}
+
+export interface MultiTapPricing {
+    tapDetails: MultiTap;
+}
+
+export interface AdditionalPricing {
+    pricingStructureStart: string;
+    structureDiscount: string;
 }

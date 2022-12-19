@@ -14,7 +14,7 @@ exports[`pages fareConfirmation should render correctly for a carnet ticket 1`] 
     <h1
       className="govuk-heading-l"
     >
-      Check your answers before sending your fares information
+      Check your answers before submitting your fares information
     </h1>
     <ConfirmationTable
       confirmationElements={
@@ -87,7 +87,7 @@ exports[`pages fareConfirmation should render correctly for a ticket with a prem
     <h1
       className="govuk-heading-l"
     >
-      Check your answers before sending your fares information
+      Check your answers before submitting your fares information
     </h1>
     <ConfirmationTable
       confirmationElements={
@@ -160,7 +160,7 @@ exports[`pages fareConfirmation should render correctly for group tickets 1`] = 
     <h1
       className="govuk-heading-l"
     >
-      Check your answers before sending your fares information
+      Check your answers before submitting your fares information
     </h1>
     <ConfirmationTable
       confirmationElements={
@@ -243,7 +243,7 @@ exports[`pages fareConfirmation should render correctly for non school single ti
     <h1
       className="govuk-heading-l"
     >
-      Check your answers before sending your fares information
+      Check your answers before submitting your fares information
     </h1>
     <ConfirmationTable
       confirmationElements={
@@ -311,7 +311,7 @@ exports[`pages fareConfirmation should render correctly for school tickets 1`] =
     <h1
       className="govuk-heading-l"
     >
-      Check your answers before sending your fares information
+      Check your answers before submitting your fares information
     </h1>
     <ConfirmationTable
       confirmationElements={

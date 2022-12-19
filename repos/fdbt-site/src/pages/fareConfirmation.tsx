@@ -202,7 +202,7 @@ const FareConfirmation = ({
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/fareConfirmation" method="post" csrfToken={csrfToken}>
             <>
-                <h1 className="govuk-heading-l">Check your answers before sending your fares information</h1>
+                <h1 className="govuk-heading-l">Check your answers before submitting your fares information</h1>
                 <ConfirmationTable
                     header="Fare Information"
                     confirmationElements={buildFareConfirmationElements(

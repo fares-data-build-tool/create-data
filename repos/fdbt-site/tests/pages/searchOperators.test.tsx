@@ -206,7 +206,8 @@ describe('pages', () => {
                 getSearchOperatorsBySearchTextSpy.mockImplementation().mockResolvedValue([]);
                 const mockErrors: ErrorInfo[] = [
                     {
-                        errorMessage: "No operators found for 'asda'. Try another search term.",
+                        errorMessage:
+                            "No operators found for 'asda'. Either the operator is not in the NOC Database, or there is no published service data for the operator. Try another search term.",
                         id: 'search-input',
                     },
                 ];

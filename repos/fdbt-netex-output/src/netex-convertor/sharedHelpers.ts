@@ -240,6 +240,8 @@ export const getNetexMode = (mode: string): string => {
         Coach: 'coach',
         Tram: 'tram',
         Ferry: 'ferry',
+        Metro: 'metro',
+        Underground: 'underground',
     };
 
     return modeMap[mode] ?? 'bus';

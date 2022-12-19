@@ -4,7 +4,7 @@ import searchOperators, {
     isSearchInputValid,
 } from '../../../src/pages/api/searchOperators';
 import * as session from '../../../src/utils/sessions';
-import { Operator, MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../../../src/interfaces';
+import { Operator, MultipleOperatorsAttributeWithErrors } from '../../../src/interfaces';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as auroradb from '../../../src/data/auroradb';
 
@@ -44,14 +44,28 @@ describe('searchOperators', () => {
     });
 
     it('should redirect to itself (i.e. /searchOperators) with search text in the query string when the search term is valid', async () => {
+        const mockSelectedOperators: Operator[] = [
+            { nocCode: 'BLAC', name: 'Blackpool Transport' },
+            { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
+        ];
+
         const { req, res } = getMockRequestAndResponse({
             body: {
                 search: 'Search',
                 searchText: 'manchester',
             },
+            session: {
+                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
+                    selectedOperators: mockSelectedOperators,
+                },
+            },
         });
 
         await searchOperators(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
+            selectedOperators: [],
+        });
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/searchOperators?searchOperator=manchester',
@@ -91,6 +105,7 @@ describe('searchOperators', () => {
 
     it('should redirect to /searchOperators with errors when the user does not provide a name', async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
+        jest.spyOn(auroradb, 'operatorHasFerryOrTramServices').mockResolvedValue(false);
         jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc').mockResolvedValue(undefined);
 
         const mockUserSelectedOperators: string[] = ['BLAC#Blackpool Transport', 'LNUD#The Blackburn Bus Company'];
@@ -138,8 +153,9 @@ describe('searchOperators', () => {
         });
     });
 
-    it("should redirect with errors when the user clicks the 'Confirm operators and continue' button and one of the selected operators has no bods services", async () => {
+    it("should redirect with errors when the user clicks the 'Confirm operators and continue' button and one of the selected operators has no bods services and no tnds tram or ferry services", async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(false);
+        jest.spyOn(auroradb, 'operatorHasFerryOrTramServices').mockResolvedValue(false);
         const mockUserSelectedOperators: string[] = ['BLAC#Blackpool Transport', 'LNUD#The Blackburn Bus Company'];
         const mockSelectedOperators: Operator[] = [
             { nocCode: 'BLAC', name: 'Blackpool Transport' },
@@ -162,7 +178,7 @@ describe('searchOperators', () => {
             errors: [
                 {
                     errorMessage:
-                        'Some of the selected operators have no services. To continue you must only select operators which have services in BODS',
+                        'Some of the selected operators have no services. To continue you must only select operators which have services in BODS, or operators who have Ferry/Tram services in TNDS',
                     id: 'search-input',
                 },
                 { errorMessage: 'Blackpool Transport', id: 'search-input' },
@@ -182,8 +198,9 @@ describe('searchOperators', () => {
         });
     });
 
-    it('should redirect to /viewOperatorGroups when the user has successfully selected operators for a geoZone multi op ticket', async () => {
+    it('should redirect to /viewOperatorGroups when the user has successfully selected operators with services in BODS', async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
+        jest.spyOn(auroradb, 'operatorHasFerryOrTramServices').mockResolvedValue(false);
         jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc').mockResolvedValue(undefined);
         jest.spyOn(auroradb, 'insertOperatorGroup').mockResolvedValue();
 
@@ -203,9 +220,6 @@ describe('searchOperators', () => {
             session: {
                 [MULTIPLE_OPERATOR_ATTRIBUTE]: {
                     selectedOperators: mockSelectedOperators,
-                },
-                [TICKET_REPRESENTATION_ATTRIBUTE]: {
-                    name: 'geoZone',
                 },
             },
         });
@@ -218,8 +232,9 @@ describe('searchOperators', () => {
         });
     });
 
-    it('should redirect to /viewOperatorGroups when the user has successfully selected operators for a multipleServices multi op ticket', async () => {
-        jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
+    it('should redirect to /viewOperatorGroups when the user has successfully selected operators with ferry/tram services in TNDS', async () => {
+        jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(false);
+        jest.spyOn(auroradb, 'operatorHasFerryOrTramServices').mockResolvedValue(true);
         jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc').mockResolvedValue(undefined);
         jest.spyOn(auroradb, 'insertOperatorGroup').mockResolvedValue();
 
@@ -228,6 +243,7 @@ describe('searchOperators', () => {
             { nocCode: 'BLAC', name: 'Blackpool Transport' },
             { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
         ];
+
         const { req, res } = getMockRequestAndResponse({
             body: {
                 continueButtonClick: 'Continue',
@@ -238,9 +254,6 @@ describe('searchOperators', () => {
             session: {
                 [MULTIPLE_OPERATOR_ATTRIBUTE]: {
                     selectedOperators: mockSelectedOperators,
-                },
-                [TICKET_REPRESENTATION_ATTRIBUTE]: {
-                    name: 'multipleServices',
                 },
             },
         });
@@ -255,6 +268,7 @@ describe('searchOperators', () => {
 
     it('should call updateSessionAttribute with undefined & update operator group when in Edit mode', async () => {
         jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
+        jest.spyOn(auroradb, 'operatorHasFerryOrTramServices').mockResolvedValue(false);
         jest.spyOn(auroradb, 'updateOperatorGroup').mockResolvedValue();
         jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc').mockResolvedValue(undefined);
 
@@ -283,174 +297,6 @@ describe('searchOperators', () => {
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, undefined);
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/viewOperatorGroups',
-        });
-    });
-
-    it("should redirect to /viewOperatorGroups when clicking 'Confirm operators and continue' button and all of the operators have bods services", async () => {
-        jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
-        jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc').mockResolvedValue(undefined);
-        jest.spyOn(auroradb, 'insertOperatorGroup').mockResolvedValue();
-        const mockSelectedOperators: Operator[] = [
-            { nocCode: 'BLACK', name: 'Blackpool Transport' },
-            { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
-        ];
-        const mockUserSelectedOperators: string[] = ['BLACK#Blackpool Transport', 'LNUD#The Blackburn Bus Company'];
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                continueButtonClick: 'Continue',
-                userSelectedOperators: mockUserSelectedOperators,
-                searchText: '',
-                operatorGroupName: 'Operator Group',
-            },
-            session: {
-                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                    selectedOperators: mockSelectedOperators,
-                },
-            },
-        });
-
-        await searchOperators(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, undefined);
-        expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/viewOperatorGroups',
-        });
-    });
-    describe('searchOperators updated with search and continue buttons automatically in one session update call', () => {
-        it("should update selectedOperators then redirect to /viewOperatorGroups when clicking 'Confirm operators and continue' ", async () => {
-            jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
-            jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc').mockResolvedValue(undefined);
-            jest.spyOn(auroradb, 'insertOperatorGroup').mockResolvedValue();
-            const operatorGroupName = 'Operator Group';
-
-            const mockSelectedOperators: Operator[] = [
-                { nocCode: 'BLACK', name: 'Blackpool Transport' },
-                { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
-            ];
-            const mockUserSelectedOperators: string[] = ['BLAC#Blackpool Transport'];
-            const { req, res } = getMockRequestAndResponse({
-                body: {
-                    continueButtonClick: 'Continue',
-                    userSelectedOperators: mockUserSelectedOperators,
-                    operatorGroupName,
-                },
-                session: {
-                    [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                        selectedOperators: mockSelectedOperators,
-                    },
-                },
-            });
-
-            await searchOperators(req, res);
-
-            expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, undefined);
-
-            expect(res.writeHead).toBeCalledWith(302, {
-                Location: '/viewOperatorGroups',
-            });
-        });
-        it("should update selectedOperators then redirect to /searchOperators with errors  when clicking 'Confirm operators and continue' ", async () => {
-            jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(false);
-            const mockSelectedOperators: Operator[] = [
-                { nocCode: 'BLACK', name: 'Blackpool Transport' },
-                { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
-            ];
-            const mockUserSelectedOperators: string[] = ['BLAC#Blackpool Transport'];
-            const { req, res } = getMockRequestAndResponse({
-                body: {
-                    continueButtonClick: 'Continue',
-                    userSelectedOperators: mockUserSelectedOperators,
-                },
-                session: {
-                    [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                        selectedOperators: mockSelectedOperators,
-                    },
-                },
-            });
-            const expectedSessionAttributeCall: MultipleOperatorsAttributeWithErrors = {
-                selectedOperators: [{ nocCode: 'BLAC', name: 'Blackpool Transport' }],
-                errors: [
-                    {
-                        errorMessage:
-                            'Some of the selected operators have no services. To continue you must only select operators which have services in BODS',
-                        id: 'search-input',
-                    },
-                    {
-                        errorMessage: 'Blackpool Transport',
-                        id: 'search-input',
-                    },
-                ],
-            };
-
-            await searchOperators(req, res);
-
-            expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-                req,
-                MULTIPLE_OPERATOR_ATTRIBUTE,
-                expectedSessionAttributeCall,
-            );
-            expect(updateSessionAttributeSpy).toBeCalledTimes(1);
-            expect(res.writeHead).toBeCalledWith(302, {
-                Location: '/searchOperators',
-            });
-        });
-        it('update selectedOperators with empty search should redirect to searchOperators with empty search error and updated selectedOperators', async () => {
-            jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
-            const mockUserSelectedOperators: string[] = ['BLAC#Blackpool Transport'];
-            const { req, res } = getMockRequestAndResponse({
-                body: {
-                    search: 'Search',
-                    searchText: '',
-                    userSelectedOperators: mockUserSelectedOperators,
-                },
-            });
-            const expectedSessionAttributeCall: MultipleOperatorsAttributeWithErrors = {
-                selectedOperators: [{ nocCode: 'BLAC', name: 'Blackpool Transport' }],
-                errors: [
-                    {
-                        errorMessage: 'Search requires a minimum of three characters',
-                        id: 'search-input',
-                    },
-                ],
-            };
-
-            await searchOperators(req, res);
-
-            expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-                req,
-                MULTIPLE_OPERATOR_ATTRIBUTE,
-                expectedSessionAttributeCall,
-            );
-            expect(updateSessionAttributeSpy).toHaveBeenCalledTimes(1);
-            expect(res.writeHead).toBeCalledWith(302, {
-                Location: '/searchOperators',
-            });
-        });
-        it('update selectedOperators with search should redirect to searchOperators with search results and and updated selectedOperators', async () => {
-            jest.spyOn(auroradb, 'operatorHasBodsServices').mockResolvedValue(true);
-            const mockUserSelectedOperators: string[] = ['BLAC#Blackpool Transport'];
-            const { req, res } = getMockRequestAndResponse({
-                body: {
-                    search: 'Search',
-                    searchText: 'blac',
-                    userSelectedOperators: mockUserSelectedOperators,
-                },
-            });
-            const expectedSessionAttributeCall: MultipleOperatorsAttribute = {
-                selectedOperators: [{ nocCode: 'BLAC', name: 'Blackpool Transport' }],
-            };
-
-            await searchOperators(req, res);
-
-            expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-                req,
-                MULTIPLE_OPERATOR_ATTRIBUTE,
-                expectedSessionAttributeCall,
-            );
-            expect(updateSessionAttributeSpy).toHaveBeenCalledTimes(1);
-            expect(res.writeHead).toBeCalledWith(302, {
-                Location: '/searchOperators?searchOperator=blac',
-            });
         });
     });
 });

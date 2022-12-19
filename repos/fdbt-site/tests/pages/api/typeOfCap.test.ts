@@ -54,10 +54,48 @@ describe('ticketRepresentation', () => {
         });
         typeOfCap(req, res);
 
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, TYPE_OF_CAP_ATTRIBUTE, {
+            typeOfCap: 'byProducts',
+        });
+
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectCappedProductGroup',
         });
+    });
 
-        expect(updateSessionAttributeSpy).toBeCalledTimes(0);
+    it('should return 302 redirect to /multiTapsPricing when type of cap is byTaps', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                typeOfCap: 'byTaps',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        typeOfCap(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, TYPE_OF_CAP_ATTRIBUTE, {
+            typeOfCap: 'byTaps',
+        });
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/multiTapsPricing',
+        });
+    });
+
+    it('should return 302 redirect to /defineCapPricingPerDistance when type of cap is byDistance', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                typeOfCap: 'byDistance',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        typeOfCap(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, TYPE_OF_CAP_ATTRIBUTE, {
+            typeOfCap: 'byDistance',
+        });
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/defineCapPricingPerDistance',
+        });
     });
 });
