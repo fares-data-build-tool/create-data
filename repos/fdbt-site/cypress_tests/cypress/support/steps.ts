@@ -365,6 +365,42 @@ export const completeCappedTapsJourney=()=>{
     continueButtonClick()
 }
 
+export const completeCappedProductJourney=()=>{
+    clickElementById('radio-option-byProducts')
+    continueButtonClick()
+    clickElementById('minimum-price').type('2')
+    clickElementById('maximum-price').type('3')
+    clickElementById('add-another-button')
+    clickElementById('distance-to-0').type('2')
+    clickElementById('price-per-km-0').type('2.22')
+    clickElementById('distance-from-1').type('2')
+    clickElementById('price-per-km-1').type('2.22')
+    continueButtonClick()
+    const randomSelector = getRandomNumber(1, 2);
+    switch (randomSelector) {
+        case 1: {
+            cy.log('Click yes');
+            clickElementById('additional-discounts')
+            clickElementById('pricing-structure-start').type('2')
+            clickElementById('structure-discount').type('2.22')
+            break;
+        }
+        case 2: {
+            cy.log('Click no');
+            clickElementById('no-additional-discounts')
+            break;
+        }
+        default: {
+            throwInvalidRandomSelectorError();
+        }
+    }
+    continueButtonClick()
+    continueButtonClick()
+    randomlyDeterminePurchaseType()
+    completeProductDateInformationPage()
+    continueButtonClick()
+}
+
 export const completeCappedGeoZonePages = (): void => {
     clickElementById('radio-option-geoZone');
     continueButtonClick();

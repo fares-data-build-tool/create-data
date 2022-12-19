@@ -6,6 +6,7 @@ import {
     completeCappedDistanceJourney,
     completeCappedMultiServicePages,
     completeCappedTapsJourney,
+    completeCappedProductJourney,
 } from '../support/steps';
 
 
@@ -35,6 +36,22 @@ describe('the capped faretype product journey', () => {
     });
 
     it('completes successfully for multi-service taps journey', () => {
+        selectFareType('cappedProduct', false);
+        defineUserTypeAndTimeRestrictions();
+        completeCappedMultiServicePages();
+        completeCappedTapsJourney()
+        isFinished()
+    });
+
+    it.only('completes successfully for geozone products journey', () => {
+        selectFareType('cappedProduct', false);
+        defineUserTypeAndTimeRestrictions();
+        completeCappedGeoZonePages();
+        completeCappedProductJourney();
+        isFinished();
+    });
+
+    it('completes successfully for multi-service products journey', () => {
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
         completeCappedMultiServicePages();
