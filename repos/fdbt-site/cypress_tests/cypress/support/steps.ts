@@ -383,8 +383,9 @@ export const completeCapCreatePages = () => {
 
 export const completeCappedProductJourney=()=>{
     clickElementById('radio-option-byProducts')
-    continueButtonClick()    
-    clickElementById('product-group-0-radio')
+    continueButtonClick()
+    const randomSelectorSecond = getRandomNumber(0, 1);
+    clickElementById(`product-group-${randomSelectorSecond}-radio`)
     continueButtonClick()
     completeCapCreatePages()
     

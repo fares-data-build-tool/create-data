@@ -82,9 +82,9 @@ const addTestProductGroups = (): void => {
         cy.log(`There are ${numberofProductGroups} product groups`);
         cy.get(`[product-groups]`).then((element) => {
             const productGroups = element.attr('product-groups').toString();
-            cy.log(productGroups);
+            
             const productGroupsValue = productGroups.split(',')
-            if (!productGroupsValue.includes('test')) {                
+            if (!productGroupsValue.includes('test')) {
                 addSingleProductGroup('test', false);
             }
             if (!productGroupsValue.includes('test2')) {                                
