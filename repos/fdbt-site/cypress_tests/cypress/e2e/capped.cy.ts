@@ -1,4 +1,4 @@
-import { isFinished } from '../support/helpers';
+import { getRandomNumber, isFinished } from '../support/helpers';
 import {
     defineUserTypeAndTimeRestrictions,
     selectFareType,
@@ -6,39 +6,40 @@ import {
     completeCappedDistanceJourney,
     completeCappedMultiServicePages,
     completeCappedTapsJourney,
+    completeCappedProductJourney,
 } from '../support/steps';
 
 
 describe('the capped faretype product journey', () => {
-    it('completes successfully for geozone distance journey', () => {
-        selectFareType('cappedProduct', false);
-        defineUserTypeAndTimeRestrictions();
-        completeCappedGeoZonePages()
-        completeCappedDistanceJourney()
-        isFinished()
-    });
+    
+    it(`completes successfully for journey by distance`, () => {
 
-    it('completes successfully for multi-service distance journey', () => {
+        const isGeoZoneJourney = getRandomNumber(1, 2) === 1 ? true: false;
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
-        completeCappedMultiServicePages();
+        isGeoZoneJourney ? completeCappedGeoZonePages() : completeCappedMultiServicePages();
         completeCappedDistanceJourney()
         isFinished()
     });
     
-    it('completes successfully for geozone taps journey', () => {
+    it(`completes successfully for journey by taps`, () => {
+
+        const isGeoZoneJourney = getRandomNumber(1, 2) === 1 ? true: false;
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
-        completeCappedGeoZonePages()
+        isGeoZoneJourney ? completeCappedGeoZonePages() : completeCappedMultiServicePages();        
         completeCappedTapsJourney()
         isFinished()
     });
 
-    it('completes successfully for multi-service taps journey', () => {
+    it(`completes successfully for journey by product group`, () => {
+        
+        const isGeoZoneJourney = getRandomNumber(1, 2) === 1 ? true: false;
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
-        completeCappedMultiServicePages();
-        completeCappedTapsJourney()
-        isFinished()
+        isGeoZoneJourney ? completeCappedGeoZonePages() : completeCappedMultiServicePages();
+        completeCappedProductJourney();
+        isFinished();
     });
+
 });
