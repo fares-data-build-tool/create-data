@@ -149,7 +149,7 @@ const createSalesOffer = (
                         {purchaseMethodsList.length === 0 ? (
                             <>
                                 <span className="govuk-body">
-                                    <i>You currently have no ${isCapped ? 'capped' : ''} saved purchase methods</i>
+                                    <i>You currently have no {isCapped ? 'capped' : ''} saved purchase methods</i>
                                 </span>
                             </>
                         ) : (
@@ -188,7 +188,7 @@ const SelectPurchaseMethods = ({
                         </span>
                         <strong className="govuk-warning-text__text">
                             <span className="govuk-warning-text__assistive">Warning</span>
-                            You can create new ${isCapped ? 'capped' : ''} purchase methods in your{' '}
+                            You can create new {isCapped ? 'capped' : ''} purchase methods in your{' '}
                             <a className="govuk-link" href="/viewPurchaseMethods">
                                 operator settings.
                             </a>{' '}

@@ -31,7 +31,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } = req.body;
 
         const id = req.body.id && Number(req.body.id);
-        const isCapped = req.body.isCapped === 'true' ? true : false;
+        const isCapped = req.body.isCapped === 'true';
 
         if (!purchaseLocations) {
             errors.push({
@@ -98,8 +98,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 const purchaseDetails = await getSalesOfferPackageByIdAndNoc(id, noc);
                 if (purchaseDetails.isCapped) {
                     const validPurchaseLocations = purchaseLocationsList(true).method;
-                    const isValidPurchaseLocation = toArray(purchaseLocations).every((val) =>
-                        validPurchaseLocations.includes(val),
+                    const isValidPurchaseLocation = toArray(purchaseLocations).every((purchaseLoc) =>
+                        validPurchaseLocations.includes(purchaseLoc),
                     );
 
                     if (!isValidPurchaseLocation) {
@@ -110,8 +110,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     }
 
                     const validPaymentMethods = paymentMethodsList(true).paymentMethods;
-                    const isValidPaymentMethod = toArray(paymentMethods).every((val) =>
-                        validPaymentMethods.includes(val),
+                    const isValidPaymentMethod = toArray(paymentMethods).every((paymentMethod) =>
+                        validPaymentMethods.includes(paymentMethod),
                     );
 
                     if (!isValidPaymentMethod) {
@@ -121,10 +121,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         });
                     }
 
-                    const validTicketFormats = ticketFormatsList(true).ticketFormats.map(
+                    const ticketFormatsValue = ticketFormatsList(true).ticketFormats.map(
                         (ticketFormat) => ticketFormat.value,
                     );
-                    const isValidTicketFormat = toArray(ticketFormats).every((val) => validTicketFormats.includes(val));
+                    const isValidTicketFormat = toArray(ticketFormats).every((ticketFormatValue) =>
+                        ticketFormatsValue.includes(ticketFormatValue),
+                    );
 
                     if (!isValidTicketFormat) {
                         errors.push({
@@ -141,10 +143,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const cappedPart = isCapped ? 'isCapped=true' : '';
             const idPart = id ? `id=${id}` : '';
             const andSymbol = !!cappedPart && !!idPart ? '&' : '';
+            const querySymbol = cappedPart || idPart ? '?' : '';
+            const queryString = `${querySymbol}${cappedPart}${andSymbol}${idPart}`;
 
-            const queryString = `?${cappedPart}${andSymbol}${idPart}`;
-
-            redirectTo(res, `/managePurchaseMethod${id ? queryString : ''}`);
+            redirectTo(res, `/managePurchaseMethod${queryString}`);
             return;
         }
 

@@ -125,7 +125,7 @@ const NoPurchaseMethods = ({ title, isCapped = false }: NoPurchaseMethodsProps):
         <>
             <h2 className="govuk-heading-l">{title}</h2>
             <p className="govuk-body">
-                <em>You currently have no ${isCapped ? 'capped' : ''} purchase methods saved.</em>
+                <em>You currently have no {isCapped ? 'capped' : ''} purchase methods saved.</em>
             </p>
         </>
     );

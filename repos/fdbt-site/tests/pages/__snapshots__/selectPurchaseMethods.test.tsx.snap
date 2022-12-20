@@ -43,7 +43,7 @@ exports[`pages selectPurchaseMethods should render an error when an error messag
         >
           Warning
         </span>
-        You can create new $
+        You can create new 
          purchase methods in your
          
         <a
@@ -120,7 +120,7 @@ exports[`pages selectPurchaseMethods should render an error when an error messag
         >
           Warning
         </span>
-        You can create new $
+        You can create new 
         capped
          purchase methods in your
          
@@ -191,7 +191,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
         >
           Warning
         </span>
-        You can create new $
+        You can create new 
          purchase methods in your
          
         <a
@@ -490,7 +490,7 @@ exports[`pages selectPurchaseMethods should render correctly for capped ticket 1
         >
           Warning
         </span>
-        You can create new $
+        You can create new 
         capped
          purchase methods in your
          
@@ -698,7 +698,7 @@ exports[`pages selectPurchaseMethods should render correctly with no purchase me
         >
           Warning
         </span>
-        You can create new $
+        You can create new 
          purchase methods in your
          
         <a
@@ -748,7 +748,7 @@ exports[`pages selectPurchaseMethods should render correctly with no purchase me
               className="govuk-body"
             >
               <i>
-                You currently have no $
+                You currently have no 
                  saved purchase methods
               </i>
             </span>
@@ -812,7 +812,7 @@ exports[`pages selectPurchaseMethods should render correctly with no purchase me
         >
           Warning
         </span>
-        You can create new $
+        You can create new 
         capped
          purchase methods in your
          
@@ -863,7 +863,7 @@ exports[`pages selectPurchaseMethods should render correctly with no purchase me
               className="govuk-body"
             >
               <i>
-                You currently have no $
+                You currently have no 
                 capped
                  saved purchase methods
               </i>
