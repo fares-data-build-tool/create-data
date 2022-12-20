@@ -1,4 +1,4 @@
-import { isFinished } from '../support/helpers';
+import { getRandomNumber, isFinished } from '../support/helpers';
 import {
     defineUserTypeAndTimeRestrictions,
     selectFareType,
@@ -11,51 +11,31 @@ import {
 
 
 describe('the capped faretype product journey', () => {
-    it('completes successfully for geozone distance journey', () => {
-        selectFareType('cappedProduct', false);
-        defineUserTypeAndTimeRestrictions();
-        completeCappedGeoZonePages()
-        completeCappedDistanceJourney()
-        isFinished()
-    });
 
-    it('completes successfully for multi-service distance journey', () => {
+    const isGeoZoneJourney = getRandomNumber(1, 2) === 1 ? true: false;
+    
+    it(`completes successfully for ${isGeoZoneJourney ? 'geo-zone' : 'multi-service'} distance journey`, () => {
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
-        completeCappedMultiServicePages();
+        isGeoZoneJourney ? completeCappedGeoZonePages() : completeCappedMultiServicePages();
         completeCappedDistanceJourney()
         isFinished()
     });
     
-    it('completes successfully for geozone taps journey', () => {
+    it(`completes successfully for ${isGeoZoneJourney ? 'geo-zone' : 'multi-service'} taps journey`, () => {
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
-        completeCappedGeoZonePages()
+        isGeoZoneJourney ? completeCappedGeoZonePages() : completeCappedMultiServicePages();        
         completeCappedTapsJourney()
         isFinished()
     });
 
-    it('completes successfully for multi-service taps journey', () => {
+    it(`completes successfully for ${isGeoZoneJourney ? 'geo-zone' : 'multi-service'} products journey`, () => {
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
-        completeCappedMultiServicePages();
-        completeCappedTapsJourney()
-        isFinished()
-    });
-
-    it('completes successfully for geozone products journey', () => {
-        selectFareType('cappedProduct', false);
-        defineUserTypeAndTimeRestrictions();
-        completeCappedGeoZonePages();
+        isGeoZoneJourney ? completeCappedGeoZonePages() : completeCappedMultiServicePages();
         completeCappedProductJourney();
         isFinished();
     });
 
-    it('completes successfully for multi-service products journey', () => {
-        selectFareType('cappedProduct', false);
-        defineUserTypeAndTimeRestrictions();
-        completeCappedMultiServicePages();
-        completeCappedProductJourney();
-        isFinished();
-    });
 });
