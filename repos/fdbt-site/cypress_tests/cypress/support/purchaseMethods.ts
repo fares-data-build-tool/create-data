@@ -1,10 +1,4 @@
-import {
-    clickElementById,
-    clickElementByText,
-    getElementByClass,
-    getElementByDataTestId,
-    getElementByName,
-} from './helpers';
+import { clickElementById, clickElementByText, getElementByClass, getElementByName } from './helpers';
 
 interface PurchaseMethod {
     purchaseLocations: string[];
@@ -21,7 +15,7 @@ const enterPurchaseMethodDetails = ({ purchaseLocations, paymentMethods, ticketF
     getElementByName('name').clear().type(name);
 };
 
-export const addPurchaseMethod = (purchaseMethod: PurchaseMethod) => {
+export const addPurchaseMethod = (purchaseMethod: PurchaseMethod): void => {
     clickElementByText('Add a purchase method');
     enterPurchaseMethodDetails(purchaseMethod);
     clickElementByText('Add purchase method');
@@ -39,7 +33,7 @@ export const createEditPurchaseMethod = (): void => {
 
     // Click on edit and back button
     getElementByClass('card').eq(0).contains('Edit').click();
-    clickElementByText("Back");    
+    clickElementByText('Back');
 
     const purchaseMethodCard = getElementByClass('card').eq(0);
     purchaseMethodCard.should('include.text', purchaseMethod.name);
