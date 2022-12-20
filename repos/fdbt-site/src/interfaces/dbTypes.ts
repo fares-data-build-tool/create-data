@@ -101,6 +101,7 @@ export interface RawSalesOfferPackage {
     purchaseLocations: string;
     paymentMethods: string;
     ticketFormats: string;
+    isCapped: boolean;
 }
 export interface GroupPassengerTypeDb {
     id: number;

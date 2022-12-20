@@ -37,6 +37,7 @@ export interface PurchaseMethodsProps {
     errors: ErrorInfo[];
     csrfToken: string;
     backHref: string;
+    isCapped: boolean;
 }
 
 export const formatSOPArray = (stringArray: string[]): string =>
@@ -127,6 +128,7 @@ const createSalesOffer = (
     products: ProductInfo[],
     selected: { [key: string]: SalesOfferPackage[] } | undefined,
     errors: ErrorInfo[],
+    isCapped: boolean,
 ): ReactElement[] =>
     products.map(({ productName, productPrice }) => (
         <div className="sop-option" key={productName}>
@@ -147,7 +149,7 @@ const createSalesOffer = (
                         {purchaseMethodsList.length === 0 ? (
                             <>
                                 <span className="govuk-body">
-                                    <i>You currently have no saved purchase methods</i>
+                                    <i>You currently have no {isCapped ? 'capped' : ''} saved purchase methods</i>
                                 </span>
                             </>
                         ) : (
@@ -168,6 +170,7 @@ const SelectPurchaseMethods = ({
     csrfToken,
     errors,
     backHref,
+    isCapped,
 }: PurchaseMethodsProps): ReactElement => {
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
@@ -185,7 +188,7 @@ const SelectPurchaseMethods = ({
                         </span>
                         <strong className="govuk-warning-text__text">
                             <span className="govuk-warning-text__assistive">Warning</span>
-                            You can create new purchase methods in your{' '}
+                            You can create new {isCapped ? 'capped' : ''} purchase methods in your{' '}
                             <a className="govuk-link" href="/viewPurchaseMethods">
                                 operator settings.
                             </a>{' '}
@@ -193,7 +196,7 @@ const SelectPurchaseMethods = ({
                             Don&apos;t worry you can navigate back to this page when you are finished.
                         </strong>
                     </div>
-                    {createSalesOffer(purchaseMethodsList, products, selected, errors)}
+                    {createSalesOffer(purchaseMethodsList, products, selected, errors, isCapped)}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                     <a
                         href={'/viewPurchaseMethods'}
@@ -249,6 +252,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 backHref: `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
                     matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
                 }`,
+                isCapped: false,
             },
         };
     }
@@ -286,14 +290,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                   )
                   .reduce((result, item) => ({ ...result, [item[0]]: item[1] }), {}));
 
+    const isCapped = fareType === 'capped';
+
     return {
         props: {
             ...(selected && { selected: selected }),
             products,
-            purchaseMethodsList: purchaseMethodsList as FromDb<SalesOfferPackage>[],
+            purchaseMethodsList: purchaseMethodsList.filter((purchaseMethod) => purchaseMethod.isCapped === isCapped),
             errors,
             csrfToken,
             backHref: '',
+            isCapped,
         },
     };
 };
