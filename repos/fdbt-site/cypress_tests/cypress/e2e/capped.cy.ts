@@ -11,10 +11,10 @@ import {
 
 
 describe('the capped faretype product journey', () => {
-
-    const isGeoZoneJourney = getRandomNumber(1, 2) === 1 ? true: false;
     
-    it(`completes successfully for ${isGeoZoneJourney ? 'geo-zone' : 'multi-service'} distance journey`, () => {
+    it(`completes successfully for journey by distance`, () => {
+
+        const isGeoZoneJourney = getRandomNumber(1, 2) === 1 ? true: false;
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
         isGeoZoneJourney ? completeCappedGeoZonePages() : completeCappedMultiServicePages();
@@ -22,7 +22,9 @@ describe('the capped faretype product journey', () => {
         isFinished()
     });
     
-    it(`completes successfully for ${isGeoZoneJourney ? 'geo-zone' : 'multi-service'} taps journey`, () => {
+    it(`completes successfully for journey by taps`, () => {
+
+        const isGeoZoneJourney = getRandomNumber(1, 2) === 1 ? true: false;
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
         isGeoZoneJourney ? completeCappedGeoZonePages() : completeCappedMultiServicePages();        
@@ -30,7 +32,9 @@ describe('the capped faretype product journey', () => {
         isFinished()
     });
 
-    it(`completes successfully for ${isGeoZoneJourney ? 'geo-zone' : 'multi-service'} products journey`, () => {
+    it(`completes successfully for journey by product group`, () => {
+        
+        const isGeoZoneJourney = getRandomNumber(1, 2) === 1 ? true: false;
         selectFareType('cappedProduct', false);
         defineUserTypeAndTimeRestrictions();
         isGeoZoneJourney ? completeCappedGeoZonePages() : completeCappedMultiServicePages();
