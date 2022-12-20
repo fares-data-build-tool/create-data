@@ -28,21 +28,21 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!purchaseLocations) {
             errors.push({
                 errorMessage: 'Select at least one ticket purchase location',
-                id: purchaseLocationsList(false).id,
+                id: purchaseLocationsList().id,
             });
         }
 
         if (!paymentMethods) {
             errors.push({
                 errorMessage: 'Select at least one ticket payment method',
-                id: paymentMethodsList(false).id,
+                id: paymentMethodsList().id,
             });
         }
 
         if (!ticketFormats) {
             errors.push({
                 errorMessage: 'Select at least one ticket media format',
-                id: ticketFormatsList(false).id,
+                id: ticketFormatsList().id,
             });
         }
 

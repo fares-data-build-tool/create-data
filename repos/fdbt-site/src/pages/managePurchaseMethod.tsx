@@ -22,14 +22,14 @@ const editingInformationText =
 
 // DistributionChannelType
 
-export const purchaseLocationsList = (isCapped: boolean): { id: string; method: string[] } => {
+export const purchaseLocationsList = (isCapped = false): { id: string; method: string[] } => {
     return {
         id: 'checkbox-0-on-board',
         method: isCapped ? ['onBoard', 'mobileDevice'] : ['onBoard', 'online', 'mobileDevice', 'postal', 'agency'],
     };
 };
 
-export const paymentMethodsList = (isCapped: boolean): { id: string; paymentMethods: string[] } => {
+export const paymentMethodsList = (isCapped = false): { id: string; paymentMethods: string[] } => {
     return {
         id: isCapped ? 'checkbox-0-debit-card' : 'checkbox-0-cash',
         paymentMethods: isCapped
@@ -39,7 +39,7 @@ export const paymentMethodsList = (isCapped: boolean): { id: string; paymentMeth
 };
 
 export const ticketFormatsList = (
-    isCapped: boolean,
+    isCapped = false,
 ): { id: string; ticketFormats: { value: string; display: string }[] } => {
     return {
         id: isCapped ? 'checkbox-0-mobile-app' : 'checkbox-0-paper-ticket',
@@ -91,7 +91,9 @@ const ManagePurchaseMethod = ({
                             </h1>
                             {isCapped ? (
                                 <span id="purchase-method-hint" className="govuk-hint">
-                                    Capped purchase methods are for capped products
+                                    Capped purchase methods have fewer options than an ordinary purchase method, because
+                                    they are the specific ways in which a passenger can purchase one of your capped
+                                    products.
                                 </span>
                             ) : null}
                             <span id="purchase-method-option-hint" className="govuk-hint">

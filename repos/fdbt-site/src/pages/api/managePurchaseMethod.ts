@@ -97,9 +97,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (id) {
                 const purchaseDetails = await getSalesOfferPackageByIdAndNoc(id, noc);
                 if (purchaseDetails.isCapped) {
-                    const dbIsCapped = purchaseDetails.isCapped;
-
-                    const validPurchaseLocations = purchaseLocationsList(dbIsCapped).method;
+                    const validPurchaseLocations = purchaseLocationsList(true).method;
                     const isValidPurchaseLocation = toArray(purchaseLocations).every((val) =>
                         validPurchaseLocations.includes(val),
                     );
@@ -107,11 +105,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     if (!isValidPurchaseLocation) {
                         errors.push({
                             errorMessage: `Select the valid option(s) for the purchase locations.`,
-                            id: purchaseLocationsList(dbIsCapped).id,
+                            id: purchaseLocationsList(true).id,
                         });
                     }
 
-                    const validPaymentMethods = paymentMethodsList(dbIsCapped).paymentMethods;
+                    const validPaymentMethods = paymentMethodsList(true).paymentMethods;
                     const isValidPaymentMethod = toArray(paymentMethods).every((val) =>
                         validPaymentMethods.includes(val),
                     );
@@ -119,11 +117,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     if (!isValidPaymentMethod) {
                         errors.push({
                             errorMessage: `Select the valid option(s) for the payment method.`,
-                            id: paymentMethodsList(dbIsCapped).id,
+                            id: paymentMethodsList(true).id,
                         });
                     }
 
-                    const validTicketFormats = ticketFormatsList(dbIsCapped).ticketFormats.map(
+                    const validTicketFormats = ticketFormatsList(true).ticketFormats.map(
                         (ticketFormat) => ticketFormat.value,
                     );
                     const isValidTicketFormat = toArray(ticketFormats).every((val) => validTicketFormats.includes(val));
@@ -131,7 +129,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     if (!isValidTicketFormat) {
                         errors.push({
                             errorMessage: `Select the valid option(s) for the ticket format.`,
-                            id: ticketFormatsList(dbIsCapped).id,
+                            id: ticketFormatsList(true).id,
                         });
                     }
                 }
@@ -140,12 +138,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (errors.length > 0) {
             updateSessionAttribute(req, GS_PURCHASE_METHOD_ATTRIBUTE, { inputs: salesOfferPackage, errors });
-            redirectTo(
-                res,
-                `/managePurchaseMethod${
-                    id ? (isCapped ? `?isCapped=true&id=${id}` : `?id=${id}`) : isCapped ? '?isCapped=true' : ''
-                }`,
-            );
+            const cappedPart = isCapped ? 'isCapped=true' : '';
+            const idPart = id ? `id=${id}` : '';
+            const andSymbol = !!cappedPart && !!idPart ? '&' : '';
+
+            const queryString = `?${cappedPart}${andSymbol}${idPart}`;
+
+            redirectTo(res, `/managePurchaseMethod${id ? queryString : ''}`);
             return;
         }
 

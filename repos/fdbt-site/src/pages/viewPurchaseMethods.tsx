@@ -83,7 +83,7 @@ const ViewPurchaseMethods = ({
 
                         <div className="govuk-!-margin-top-4">
                             {!cappedPurchaseMethods.length ? (
-                                <NoPurchaseMethods title="Capped purchase methods" />
+                                <NoPurchaseMethods title="Capped purchase methods" isCapped={true} />
                             ) : (
                                 <PurchaseMethods
                                     title="Capped purchase methods"
@@ -118,13 +118,14 @@ const ViewPurchaseMethods = ({
 
 interface NoPurchaseMethodsProps {
     title: string;
+    isCapped?: boolean;
 }
-const NoPurchaseMethods = ({ title }: NoPurchaseMethodsProps): ReactElement => {
+const NoPurchaseMethods = ({ title, isCapped = false }: NoPurchaseMethodsProps): ReactElement => {
     return (
         <>
             <h2 className="govuk-heading-l">{title}</h2>
             <p className="govuk-body">
-                <em>You currently have no purchase methods saved.</em>
+                <em>You currently have no ${isCapped ? 'capped' : ''} purchase methods saved.</em>
             </p>
         </>
     );

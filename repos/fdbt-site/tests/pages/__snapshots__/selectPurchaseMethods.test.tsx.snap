@@ -43,7 +43,86 @@ exports[`pages selectPurchaseMethods should render an error when an error messag
         >
           Warning
         </span>
-        You can create new purchase methods in your
+        You can create new $
+         purchase methods in your
+         
+        <a
+          className="govuk-link"
+          href="/viewPurchaseMethods"
+        >
+          operator settings.
+        </a>
+         
+        <br />
+        Don't worry you can navigate back to this page when you are finished.
+      </strong>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+    <a
+      className="govuk-button govuk-button--secondary create-new-sop-button"
+      data-module="govuk-button"
+      draggable="false"
+      href="/viewPurchaseMethods"
+      id="create-new-button"
+      role="button"
+    >
+      Create new
+    </a>
+  </CsrfForm>
+</FullColumnLayout>
+`;
+
+exports[`pages selectPurchaseMethods should render an error when an error message is passed through to props for capped ticket 1`] = `
+<FullColumnLayout
+  description="Purchase Methods selection page of the Create Fares Data Service"
+  title="Select Purchase Methods - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectSalesOfferPackage"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose at least one service from the options",
+            "id": "sales-offer-package-error",
+          },
+        ]
+      }
+    />
+    <h1
+      className="govuk-heading-l"
+      id="select-sales-offer-package-page-heading"
+    >
+      How are your tickets sold?
+    </h1>
+    <div
+      className="govuk-warning-text"
+    >
+      <span
+        aria-hidden="true"
+        className="govuk-warning-text__icon govuk-!-margin-top-1"
+      >
+        !
+      </span>
+      <strong
+        className="govuk-warning-text__text"
+      >
+        <span
+          className="govuk-warning-text__assistive"
+        >
+          Warning
+        </span>
+        You can create new $
+        capped
+         purchase methods in your
          
         <a
           className="govuk-link"
@@ -112,7 +191,8 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
         >
           Warning
         </span>
-        You can create new purchase methods in your
+        You can create new $
+         purchase methods in your
          
         <a
           className="govuk-link"
@@ -374,6 +454,214 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
 </FullColumnLayout>
 `;
 
+exports[`pages selectPurchaseMethods should render correctly for capped ticket 1`] = `
+<FullColumnLayout
+  description="Purchase Methods selection page of the Create Fares Data Service"
+  title="Select Purchase Methods - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectSalesOfferPackage"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="select-sales-offer-package-page-heading"
+    >
+      How are your tickets sold?
+    </h1>
+    <div
+      className="govuk-warning-text"
+    >
+      <span
+        aria-hidden="true"
+        className="govuk-warning-text__icon govuk-!-margin-top-1"
+      >
+        !
+      </span>
+      <strong
+        className="govuk-warning-text__text"
+      >
+        <span
+          className="govuk-warning-text__assistive"
+        >
+          Warning
+        </span>
+        You can create new $
+        capped
+         purchase methods in your
+         
+        <a
+          className="govuk-link"
+          href="/viewPurchaseMethods"
+        >
+          operator settings.
+        </a>
+         
+        <br />
+        Don't worry you can navigate back to this page when you are finished.
+      </strong>
+    </div>
+    <div
+      className="sop-option"
+      key="Great Product"
+    >
+      <FormGroupWrapper
+        errorIds={
+          Array [
+            "product-GreatProduct-checkbox-0",
+          ]
+        }
+        errors={Array []}
+        hideErrorBar={false}
+      >
+        <fieldset
+          className="govuk-fieldset"
+        >
+          <h1
+            className="govuk-heading-m govuk-!-font-weight-regular govuk-!-padding-top-6 govuk-!-padding-bottom-2"
+          >
+            How is 
+            <span
+              className="govuk-!-font-weight-bold"
+            >
+              Great Product
+            </span>
+             sold?
+          </h1>
+          <FormElementWrapper
+            errorClass=""
+            errorId="product-GreatProduct-checkbox-0"
+            errors={Array []}
+          >
+            <div
+              className="govuk-checkboxes"
+            >
+              <div
+                className="card-row"
+              >
+                <div
+                  className="card"
+                  key="checkbox-item-Capped Purchase Method Mobile"
+                >
+                  <div
+                    className="card__body card_align"
+                  >
+                    <div
+                      className="govuk-checkboxes__item card__selector"
+                    >
+                      <input
+                        className="govuk-checkboxes__input"
+                        defaultChecked={false}
+                        id="product-GreatProduct-checkbox-0"
+                        name="product-Great Product"
+                        onChange={[Function]}
+                        type="checkbox"
+                        value="{\\"id\\":4,\\"name\\":\\"Capped Purchase Method Mobile\\",\\"description\\":\\"\\",\\"purchaseLocations\\":[\\"mobileDevice\\"],\\"paymentMethods\\":[\\"debitCard\\",\\"creditCard\\"],\\"ticketFormats\\":[\\"mobileApp\\"],\\"isCapped\\":true}"
+                      />
+                      <label
+                        className="govuk-label govuk-checkboxes__label"
+                        htmlFor="product-GreatProduct-checkbox-0"
+                      />
+                    </div>
+                    <PurchaseMethodCardBody
+                      entity={
+                        Object {
+                          "description": "",
+                          "id": 4,
+                          "isCapped": true,
+                          "name": "Capped Purchase Method Mobile",
+                          "paymentMethods": Array [
+                            "debitCard",
+                            "creditCard",
+                          ],
+                          "purchaseLocations": Array [
+                            "mobileDevice",
+                          ],
+                          "ticketFormats": Array [
+                            "mobileApp",
+                          ],
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+                <div
+                  className="card"
+                  key="checkbox-item-Mobile App"
+                >
+                  <div
+                    className="card__body card_align"
+                  >
+                    <div
+                      className="govuk-checkboxes__item card__selector"
+                    >
+                      <input
+                        className="govuk-checkboxes__input"
+                        defaultChecked={false}
+                        id="product-GreatProduct-checkbox-1"
+                        name="product-Great Product"
+                        onChange={[Function]}
+                        type="checkbox"
+                        value="{\\"id\\":4,\\"name\\":\\"Mobile App\\",\\"description\\":\\"\\",\\"purchaseLocations\\":[\\"onBoard\\"],\\"paymentMethods\\":[\\"debitCard\\",\\"creditCard\\",\\"mobilePhone\\"],\\"ticketFormats\\":[\\"smartCard\\"],\\"isCapped\\":false}"
+                      />
+                      <label
+                        className="govuk-label govuk-checkboxes__label"
+                        htmlFor="product-GreatProduct-checkbox-1"
+                      />
+                    </div>
+                    <PurchaseMethodCardBody
+                      entity={
+                        Object {
+                          "description": "",
+                          "id": 4,
+                          "isCapped": false,
+                          "name": "Mobile App",
+                          "paymentMethods": Array [
+                            "debitCard",
+                            "creditCard",
+                            "mobilePhone",
+                          ],
+                          "purchaseLocations": Array [
+                            "onBoard",
+                          ],
+                          "ticketFormats": Array [
+                            "smartCard",
+                          ],
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FormElementWrapper>
+        </fieldset>
+      </FormGroupWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+    <a
+      className="govuk-button govuk-button--secondary create-new-sop-button"
+      data-module="govuk-button"
+      draggable="false"
+      href="/viewPurchaseMethods"
+      id="create-new-button"
+      role="button"
+    >
+      Create new
+    </a>
+  </CsrfForm>
+</FullColumnLayout>
+`;
+
 exports[`pages selectPurchaseMethods should render correctly with no purchase methods 1`] = `
 <FullColumnLayout
   description="Purchase Methods selection page of the Create Fares Data Service"
@@ -410,7 +698,8 @@ exports[`pages selectPurchaseMethods should render correctly with no purchase me
         >
           Warning
         </span>
-        You can create new purchase methods in your
+        You can create new $
+         purchase methods in your
          
         <a
           className="govuk-link"
@@ -459,7 +748,124 @@ exports[`pages selectPurchaseMethods should render correctly with no purchase me
               className="govuk-body"
             >
               <i>
-                You currently have no saved purchase methods
+                You currently have no $
+                 saved purchase methods
+              </i>
+            </span>
+          </FormElementWrapper>
+        </fieldset>
+      </FormGroupWrapper>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+    <a
+      className="govuk-button govuk-button--secondary create-new-sop-button"
+      data-module="govuk-button"
+      draggable="false"
+      href="/viewPurchaseMethods"
+      id="create-new-button"
+      role="button"
+    >
+      Create new
+    </a>
+  </CsrfForm>
+</FullColumnLayout>
+`;
+
+exports[`pages selectPurchaseMethods should render correctly with no purchase methods for capped ticket 1`] = `
+<FullColumnLayout
+  description="Purchase Methods selection page of the Create Fares Data Service"
+  title="Select Purchase Methods - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/selectSalesOfferPackage"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="select-sales-offer-package-page-heading"
+    >
+      How are your tickets sold?
+    </h1>
+    <div
+      className="govuk-warning-text"
+    >
+      <span
+        aria-hidden="true"
+        className="govuk-warning-text__icon govuk-!-margin-top-1"
+      >
+        !
+      </span>
+      <strong
+        className="govuk-warning-text__text"
+      >
+        <span
+          className="govuk-warning-text__assistive"
+        >
+          Warning
+        </span>
+        You can create new $
+        capped
+         purchase methods in your
+         
+        <a
+          className="govuk-link"
+          href="/viewPurchaseMethods"
+        >
+          operator settings.
+        </a>
+         
+        <br />
+        Don't worry you can navigate back to this page when you are finished.
+      </strong>
+    </div>
+    <div
+      className="sop-option"
+      key="Great Product"
+    >
+      <FormGroupWrapper
+        errorIds={
+          Array [
+            "product-GreatProduct-checkbox-0",
+          ]
+        }
+        errors={Array []}
+        hideErrorBar={false}
+      >
+        <fieldset
+          className="govuk-fieldset"
+        >
+          <h1
+            className="govuk-heading-m govuk-!-font-weight-regular govuk-!-padding-top-6 govuk-!-padding-bottom-2"
+          >
+            How is 
+            <span
+              className="govuk-!-font-weight-bold"
+            >
+              Great Product
+            </span>
+             sold?
+          </h1>
+          <FormElementWrapper
+            errorClass=""
+            errorId="product-GreatProduct-checkbox-0"
+            errors={Array []}
+          >
+            <span
+              className="govuk-body"
+            >
+              <i>
+                You currently have no $
+                capped
+                 saved purchase methods
               </i>
             </span>
           </FormElementWrapper>

@@ -526,7 +526,7 @@ exports[`pages manage purchase method should render correctly for capped ticket 
           className="govuk-hint"
           id="purchase-method-hint"
         >
-          Capped purchase methods are for capped products
+          Capped purchase methods have fewer options than an ordinary purchase method, because they are the specific ways in which a passenger can purchase one of your capped products.
         </span>
         <span
           className="govuk-hint"

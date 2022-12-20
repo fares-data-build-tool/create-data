@@ -197,6 +197,7 @@ exports[`pages view purchase methods should render correctly with no purchase me
           className="govuk-!-margin-top-4"
         >
           <NoPurchaseMethods
+            isCapped={true}
             title="Capped purchase methods"
           />
           <a
@@ -439,6 +440,7 @@ exports[`pages view purchase methods should render correctly with purchase metho
           className="govuk-!-margin-top-4"
         >
           <NoPurchaseMethods
+            isCapped={true}
             title="Capped purchase methods"
           />
           <a
