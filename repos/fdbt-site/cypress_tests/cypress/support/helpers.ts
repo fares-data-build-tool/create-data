@@ -329,10 +329,9 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
             getElementByClass('govuk-checkboxes__input')
                 .eq(randomNumber)
                 .click()
-                .then(($radio) => {                    
-                    
-                    const radioPurchaseType = $radio.attr('value');                    
-                    purchaseType = (JSON.parse(radioPurchaseType) as { name: string }).name;                
+                .then(($radio) => {
+                    const radioPurchaseType = $radio.attr('value');
+                    purchaseType = (JSON.parse(radioPurchaseType) as { name: string }).name;
 
                     if (isOtherProduct) {
                         cy.get(`[id$=price-${randomNumber}]`).then(($radio) => {
