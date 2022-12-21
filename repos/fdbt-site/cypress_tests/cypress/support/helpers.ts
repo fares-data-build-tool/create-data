@@ -330,16 +330,15 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
                 .eq(randomNumber)
                 .click()
                 .then(($radio) => {
+                    const radioPurchaseType = $radio.attr('value');
+                    purchaseType = (JSON.parse(radioPurchaseType) as { name: string }).name;
+
                     if (isOtherProduct) {
-                        purchaseType = $radio.attr('value');
-                        purchaseType = JSON.parse(purchaseType).name;
                         cy.get(`[id$=price-${randomNumber}]`).then(($radio) => {
                             purchaseType = `${purchaseType} - £${$radio.attr('value')}`;
                             cy.wrap(purchaseType).as('purchaseType');
                         });
                     } else {
-                        purchaseType = $radio.attr('value');
-                        purchaseType = JSON.parse(purchaseType).name;
                         cy.wrap(purchaseType).as('purchaseType');
                     }
                 });
@@ -680,7 +679,7 @@ export const addMultiOperatorProductIfNotPresent = (): void => {
 };
 
 export const addSingleProductIfNotPresent = (): void => {
-    let hasProduct: string[] = [];
+    const hasProduct: string[] = [];
     cy.wrap(hasProduct).as('hasProduct');
     getHomePage();
     clickElementById('account-link');

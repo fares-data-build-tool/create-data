@@ -1,4 +1,10 @@
-import { addOtherProductsIfNotPresent, addSingleProductIfNotPresent, clickElementById, clickElementByText, getElementById, getHomePage } from './helpers';
+import {
+    addOtherProductsIfNotPresent,
+    addSingleProductIfNotPresent,
+    clickElementById,
+    clickElementByText,
+    getHomePage,
+} from './helpers';
 import { addSingleMultiOperatorGroup } from './multiOperatorGroups';
 import { enterPassengerTypeDetails, addGroupPassengerType } from './passengerTypes';
 import { addSingleProductGroup } from './productGroups';
@@ -46,6 +52,8 @@ before(() => {
     cy.log('Global Settings set up for scheme');
 });
 
+// Disabling the below, as schemes are currently not fully supported
+/*
 const addTestOperatorDetails = (): void => {
     clickElementById('operatorName').clear().type('Easy A to B');
     clickElementById('contactNumber').clear().type('01492 451 652');
@@ -57,6 +65,7 @@ const addTestOperatorDetails = (): void => {
     clickElementById('postcode').clear().type('AW23 8LE');
     clickElementByText('Save');
 };
+*/
 
 const addTestOperatorGroups = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
@@ -64,7 +73,7 @@ const addTestOperatorGroups = (): void => {
         cy.log(`There are ${numberofOperatorGroups} operator groups`);
         cy.get(`[operator-groups]`).then((element) => {
             const operatorGroups = element.attr('operator-groups').toString();
-            const operatorGroupsValue = operatorGroups.split(',')
+            const operatorGroupsValue = operatorGroups.split(',');
             if (!operatorGroupsValue.includes('test')) {
                 addSingleMultiOperatorGroup('test', false, true);
             }
@@ -76,19 +85,18 @@ const addTestOperatorGroups = (): void => {
 };
 
 const addTestProductGroups = (): void => {
-    
     cy.get(`[data-card-count]`).then((element) => {
         const numberofProductGroups = Number(element.attr('data-card-count'));
         cy.log(`There are ${numberofProductGroups} product groups`);
         cy.get(`[product-groups]`).then((element) => {
             const productGroups = element.attr('product-groups').toString();
-            
-            const productGroupsValue = productGroups.split(',')
+
+            const productGroupsValue = productGroups.split(',');
             if (!productGroupsValue.includes('test')) {
                 addSingleProductGroup('test', false);
             }
-            if (!productGroupsValue.includes('test2')) {                                
-                addSingleProductGroup('test2', true);                
+            if (!productGroupsValue.includes('test2')) {
+                addSingleProductGroup('test2', true);
             }
         });
     });
