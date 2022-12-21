@@ -175,6 +175,22 @@ const addTestPurchaseMethods = (): void => {
             addPurchaseMethod(purchaseMethod1);
             addPurchaseMethod(purchaseMethod2);
             addPurchaseMethod(purchaseMethod3);
+
+            const cappedPurchaseMethod1 = {
+                purchaseLocations: ['checkbox-0-on-board'],
+                paymentMethods: ['checkbox-0-debit-card', 'checkbox-1-credit-card'],
+                ticketFormats: ['checkbox-0-mobile-app'],
+                name: 'Test capped onboard',
+            };
+            const cappedPurchaseMethod2 = {
+                purchaseLocations: ['checkbox-0-on-board', 'checkbox-1-mobile-device'],
+                paymentMethods: ['checkbox-2-mobile-phone'],
+                ticketFormats: ['checkbox-0-mobile-app'],
+                name: 'Test capped mobile',
+            };
+
+            addPurchaseMethod(cappedPurchaseMethod1, true);
+            addPurchaseMethod(cappedPurchaseMethod2, true);
         }
     });
 };
