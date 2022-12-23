@@ -12,7 +12,7 @@ describe('pages', () => {
     describe('periodValidity', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <PeriodValidity errors={[]} csrfToken="" fieldset={mockSelectPeriodValidityFieldset} />,
+                <PeriodValidity errors={[]} csrfToken="" fieldset={mockSelectPeriodValidityFieldset} backHref="" />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -28,6 +28,7 @@ describe('pages', () => {
                     ]}
                     csrfToken=""
                     fieldset={mockSelectPeriodValidityFieldset}
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();

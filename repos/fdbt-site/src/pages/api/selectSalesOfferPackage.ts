@@ -51,7 +51,7 @@ export const sanitiseReqBody = (
                 return sop;
             }
             const price = removeExcessWhiteSpace(priceInput);
-            const priceError = checkPriceIsValid(price);
+            const priceError = checkPriceIsValid(price, 'product');
             if (priceError) {
                 errors.push({
                     errorMessage: priceError,

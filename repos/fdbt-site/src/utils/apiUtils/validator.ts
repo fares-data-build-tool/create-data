@@ -1,3 +1,5 @@
+import { startCase } from 'lodash';
+
 export const removeExcessWhiteSpace = (input: undefined | string): string => {
     // this will remove all whitespace on the front and end of a string, and reduce internal whitespaces to one whitespace
     if (!input) {
@@ -67,19 +69,19 @@ export const invalidUrlInput = (value: string): boolean => {
     return regularExpression.test(value) || !hasDot || hasSpace;
 };
 
-export const checkProductNameIsValid = (inputtedProductName: string): string => {
+export const checkProductOrCapNameIsValid = (inputtedProductName: string, inputType: 'cap' | 'product'): string => {
     let productNameError;
 
     if (inputtedProductName.length > 50) {
-        productNameError = `Product name cannot have more than 50 characters`;
+        productNameError = `${startCase(inputType)} name cannot have more than 50 characters`;
     } else if (inputtedProductName.length < 2) {
-        productNameError = `Product name cannot have less than 2 characters`;
+        productNameError = `${startCase(inputType)} name cannot have less than 2 characters`;
     }
 
     const nameHasInvalidCharacters = invalidCharactersArePresent(inputtedProductName);
 
     if (nameHasInvalidCharacters) {
-        productNameError = 'Product name has an invalid character';
+        productNameError = `${startCase(inputType)} name has an invalid character`;
     }
 
     if (productNameError) {
@@ -89,15 +91,17 @@ export const checkProductNameIsValid = (inputtedProductName: string): string => 
     return '';
 };
 
-export const checkPriceIsValid = (inputtedPrice: string | undefined): string => {
+export const checkPriceIsValid = (inputtedPrice: string | undefined, inputType: 'cap' | 'product' | 'tap'): string => {
     let productPriceError;
 
     if (!inputtedPrice) {
-        productPriceError = 'Product price cannot be empty';
+        productPriceError = `${startCase(inputType)} price cannot be empty`;
     } else if (Math.sign(Number(inputtedPrice)) === -1) {
-        productPriceError = `This must be a positive number`;
+        productPriceError = 'This must be a positive number';
     } else if (!isCurrency(inputtedPrice)) {
-        productPriceError = `This must be a valid price in pounds and pence`;
+        productPriceError = 'This must be a valid price in pounds and pence';
+    } else if (inputType === 'cap' && Number(inputtedPrice) === 0) {
+        productPriceError = 'Cap prices cannot be zero';
     }
 
     if (productPriceError) {
@@ -107,15 +111,15 @@ export const checkPriceIsValid = (inputtedPrice: string | undefined): string => 
     return '';
 };
 
-export const checkDurationIsValid = (inputtedDuration: string): string => {
+export const checkDurationIsValid = (inputtedDuration: string, inputType: 'cap' | 'product'): string => {
     let productDurationError;
 
     if (inputtedDuration === '') {
-        productDurationError = `Product duration cannot be empty`;
+        productDurationError = `${startCase(inputType)} duration cannot be empty`;
     } else if (Number.isNaN(Number(inputtedDuration))) {
-        productDurationError = `Product duration must be a whole, positive number`;
+        productDurationError = `${startCase(inputType)} duration must be a whole, positive number`;
     } else if (Number(inputtedDuration) <= 0) {
-        productDurationError = `Product duration cannot be zero or a negative number`;
+        productDurationError = `${startCase(inputType)} duration cannot be zero or a negative number`;
     }
 
     if (productDurationError) {

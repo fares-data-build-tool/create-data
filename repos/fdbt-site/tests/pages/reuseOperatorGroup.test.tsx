@@ -8,13 +8,13 @@ jest.mock('../../src/data/auroradb');
 describe('pages', () => {
     describe('reuseOperatorGroup', () => {
         it('should render correctly', () => {
-            const tree = shallow(<ReuseOperatorGroup errors={[]} csrfToken="" operatorGroups={[]} />);
+            const tree = shallow(<ReuseOperatorGroup errors={[]} csrfToken="" operatorGroups={[]} backHref="" />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render coorectly when one operator group is specified', () => {
             const tree = shallow(
-                <ReuseOperatorGroup errors={[]} csrfToken="" operatorGroups={[mockDataOperatorGroup]} />,
+                <ReuseOperatorGroup errors={[]} csrfToken="" operatorGroups={[mockDataOperatorGroup]} backHref="" />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -30,6 +30,7 @@ describe('pages', () => {
                     ]}
                     csrfToken=""
                     operatorGroups={[mockDataOperatorGroup]}
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();

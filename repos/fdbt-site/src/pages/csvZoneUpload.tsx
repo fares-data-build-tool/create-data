@@ -57,6 +57,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             errors,
             detailSummary: "My fare zone won't upload",
             csrfToken: getCsrfToken(ctx),
+            backHref: '',
         },
     };
 };

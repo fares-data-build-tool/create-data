@@ -10,6 +10,7 @@ import TwoThirdsLayout from '../layout/Layout';
 import { getGlobalSettingsManageProps, GlobalSettingsManageProps } from '../utils/globalSettings';
 import { getSessionAttribute } from '../utils/sessions';
 import { SinglePassengerType } from '../interfaces/dbTypes';
+import BackButton from '../components/BackButton';
 
 const title = 'Manage Passenger Types - Create Fares Data Service';
 const description = 'Manage Passenger Type page of the Create Fares Data Service';
@@ -36,7 +37,10 @@ const ManagePassengerTypes = ({
             <CsrfForm action="/api/managePassengerTypes" method="post" csrfToken={csrfToken}>
                 <>
                     {editMode && errors.length === 0 ? (
-                        <InformationSummary informationText={editingInformationText} />
+                        <>
+                            <BackButton href="/viewPassengerTypes"></BackButton>
+                            <InformationSummary informationText={editingInformationText} />
+                        </>
                     ) : null}
                     <ErrorSummary errors={errors} />
 

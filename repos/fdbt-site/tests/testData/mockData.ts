@@ -53,7 +53,7 @@ import {
     TimeRestriction,
     UserFareStages,
     OperatorGroup,
-    ProductToExport,
+    ProductToDisplay,
     ServiceToDisplay,
 } from '../../src/interfaces';
 
@@ -1109,6 +1109,7 @@ export const expectedSalesOfferPackageArray: SalesOfferPackage[] = [
         purchaseLocations: ['onBoard'],
         paymentMethods: ['cash'],
         ticketFormats: ['paperTicket'],
+        isCapped: false,
     },
     {
         id: 2,
@@ -1117,6 +1118,25 @@ export const expectedSalesOfferPackageArray: SalesOfferPackage[] = [
         purchaseLocations: ['onBoard'],
         paymentMethods: ['contactlessPaymentCard'],
         ticketFormats: ['paperTicket'],
+        isCapped: false,
+    },
+    {
+        id: 3,
+        name: 'Capped Onboard',
+        description: 'Purchasable on board the bus, with a debit card, as a smart card.',
+        purchaseLocations: ['onBoard'],
+        paymentMethods: ['debitCard'],
+        ticketFormats: ['smartCard'],
+        isCapped: true,
+    },
+    {
+        id: 4,
+        name: 'Capped Mobile',
+        description: 'Purchasable via the mobile device, with a contactless card or device, as a paper ticket.',
+        purchaseLocations: ['mobileDevice'],
+        paymentMethods: ['mobilePhone'],
+        ticketFormats: ['mobileApp'],
+        isCapped: true,
     },
 ];
 
@@ -1708,8 +1728,6 @@ export const expectedReturnTicketWithAdditionalService: WithIds<ReturnTicket> = 
         {
             lineName: '12A',
             lineId: '3h3vb32ik',
-            serviceCode: 'NW_05_BLAC_12A_1',
-            startDate: '13/05/2020',
             serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
             serviceId: 1,
         },
@@ -2853,8 +2871,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                     serviceCode: '11-444-_-y08-1',
                     serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
-                    nocCode: 'WBTR',
-                    selected: false,
                 },
                 {
                     lineName: '444',
@@ -2862,8 +2878,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
-                    nocCode: 'WBTR',
-                    selected: false,
                 },
                 {
                     lineName: '543',
@@ -2871,8 +2885,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
-                    nocCode: 'WBTR',
-                    selected: false,
                 },
             ],
         },
@@ -2885,8 +2897,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                     serviceCode: '11-444-_-y08-1',
                     serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
-                    nocCode: 'BLAC',
-                    selected: false,
                 },
                 {
                     lineName: '101',
@@ -2894,8 +2904,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
-                    nocCode: 'BLAC',
-                    selected: false,
                 },
                 {
                     lineName: '102',
@@ -2903,8 +2911,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
-                    nocCode: 'BLAC',
-                    selected: false,
                 },
             ],
         },
@@ -2917,8 +2923,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                     serviceCode: '11-444-_-y08-1',
                     serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
-                    nocCode: 'LEDS',
-                    selected: false,
                 },
                 {
                     lineName: '64',
@@ -2926,8 +2930,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
-                    nocCode: 'LEDS',
-                    selected: false,
                 },
                 {
                     lineName: '65',
@@ -2935,8 +2937,6 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
-                    nocCode: 'LEDS',
-                    selected: false,
                 },
             ],
         },
@@ -3179,8 +3179,6 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInService
                     serviceCode: '11-444-_-y08-1',
                     serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
-                    nocCode: 'WBTR',
-                    selected: false,
                 },
                 {
                     lineId: '3h3vtrhtherhed',
@@ -3188,8 +3186,6 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInService
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
-                    nocCode: 'WBTR',
-                    selected: false,
                 },
                 {
                     lineId: '3h3vb32ik',
@@ -3197,8 +3193,6 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInService
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
-                    nocCode: 'WBTR',
-                    selected: false,
                 },
             ],
         },
@@ -3211,8 +3205,6 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInService
                     serviceCode: '11-444-_-y08-1',
                     serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
-                    nocCode: 'BLAC',
-                    selected: false,
                 },
                 {
                     lineId: '3h34t43deefsf',
@@ -3220,8 +3212,6 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInService
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
-                    nocCode: 'BLAC',
-                    selected: false,
                 },
                 {
                     lineId: '34tvwevdsvb32ik',
@@ -3229,8 +3219,6 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInService
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
-                    nocCode: 'BLAC',
-                    selected: false,
                 },
             ],
         },
@@ -3243,8 +3231,6 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInService
                     serviceCode: '11-444-_-y08-1',
                     serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
-                    nocCode: 'LEDS',
-                    selected: false,
                 },
                 {
                     lineId: 'q45g4rgergik',
@@ -3252,8 +3238,6 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInService
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
-                    nocCode: 'LEDS',
-                    selected: false,
                 },
                 {
                     lineId: 'q34ttfwerfsxfc',
@@ -3261,8 +3245,6 @@ export const expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInService
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
-                    nocCode: 'LEDS',
-                    selected: false,
                 },
             ],
         },
@@ -3318,31 +3300,25 @@ export const expectedSchemeOperatorMultiServicesTicket = {
             nocCode: 'WBTR',
             selectedServices: [
                 {
-                    nocCode: 'WBTR',
                     lineId: '3h3vsergesrhg',
                     lineName: '343',
                     serviceCode: '11-444-_-y08-1',
                     serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
-                    selected: false,
                 },
                 {
-                    nocCode: 'WBTR',
                     lineId: '3h3vtrhtherhed',
                     lineName: '444',
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
-                    selected: false,
                 },
                 {
-                    nocCode: 'WBTR',
                     lineId: '3h3vb32ik',
                     lineName: '543',
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
-                    selected: false,
                 },
             ],
         },
@@ -3350,31 +3326,25 @@ export const expectedSchemeOperatorMultiServicesTicket = {
             nocCode: 'BLAC',
             selectedServices: [
                 {
-                    nocCode: 'BLAC',
                     lineId: '3h3rthsrty56y5',
                     lineName: '100',
                     serviceCode: '11-444-_-y08-1',
                     serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
-                    selected: false,
                 },
                 {
-                    nocCode: 'BLAC',
                     lineId: '3h34t43deefsf',
                     lineName: '101',
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
-                    selected: false,
                 },
                 {
-                    nocCode: 'BLAC',
                     lineId: '34tvwevdsvb32ik',
                     lineName: '102',
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
-                    selected: false,
                 },
             ],
         },
@@ -3382,31 +3352,25 @@ export const expectedSchemeOperatorMultiServicesTicket = {
             nocCode: 'LEDS',
             selectedServices: [
                 {
-                    nocCode: 'LEDS',
                     lineId: '45t34gvfdx2ik',
                     lineName: '63',
                     serviceCode: '11-444-_-y08-1',
                     serviceDescription: 'Test Under Lyne - Glossop',
                     startDate: '07/04/2020',
-                    selected: false,
                 },
                 {
-                    nocCode: 'LEDS',
                     lineId: 'q45g4rgergik',
                     lineName: '64',
                     serviceCode: 'NW_01_MCT_391_1',
                     serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
                     startDate: '23/04/2019',
-                    selected: false,
                 },
                 {
-                    nocCode: 'LEDS',
                     lineId: 'q34ttfwerfsxfc',
                     lineName: '65',
                     serviceCode: 'NW_04_MCTR_232_1',
                     serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
                     startDate: '06/04/2020',
-                    selected: false,
                 },
             ],
         },
@@ -4239,6 +4203,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4249,6 +4214,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4262,6 +4228,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
@@ -4298,6 +4265,7 @@ export const mockSelectPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4308,6 +4276,7 @@ export const mockSelectPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4321,6 +4290,7 @@ export const mockSelectPeriodValidityFieldset: RadioConditionalInputFieldset = {
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',
@@ -4358,6 +4328,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4368,6 +4339,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4382,6 +4354,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
@@ -4423,6 +4396,7 @@ export const mockSelectPeriodValidityFieldsetWithErrors: RadioConditionalInputFi
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4433,6 +4407,7 @@ export const mockSelectPeriodValidityFieldsetWithErrors: RadioConditionalInputFi
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4447,6 +4422,7 @@ export const mockSelectPeriodValidityFieldsetWithErrors: RadioConditionalInputFi
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',
@@ -4489,6 +4465,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4499,6 +4476,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4513,6 +4491,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
@@ -4554,6 +4533,7 @@ export const mockSelectPeriodValidityFieldsetWithInputErrors: RadioConditionalIn
                 id: 'period-end-calendar-hint',
                 content: 'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-twenty-four-hours',
@@ -4564,6 +4544,7 @@ export const mockSelectPeriodValidityFieldsetWithInputErrors: RadioConditionalIn
                 id: 'period-twenty-four-hours-hint',
                 content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
             },
+            defaultChecked: false,
         },
         {
             id: 'period-end-of-service',
@@ -4578,6 +4559,7 @@ export const mockSelectPeriodValidityFieldsetWithInputErrors: RadioConditionalIn
                 content:
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',
@@ -5350,6 +5332,7 @@ export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
             name: 'validity',
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
+            defaultChecked: false,
             label: 'Yes',
             inputHint: {
                 id: 'define-return-validity-hint',
@@ -5374,6 +5357,7 @@ export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
             inputErrors: [],
         },
         {
+            defaultChecked: true,
             id: 'return-validity-not-defined',
             name: 'validity',
             value: 'No',
@@ -5395,6 +5379,7 @@ export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInpu
             name: 'validity',
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
+            defaultChecked: false,
             label: 'Yes',
             inputHint: {
                 id: 'define-return-validity-hint',
@@ -5419,6 +5404,7 @@ export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInpu
             inputErrors: [{ errorMessage: 'Enter a whole number greater than zero', id: 'return-validity-amount' }],
         },
         {
+            defaultChecked: true,
             id: 'return-validity-not-defined',
             name: 'validity',
             value: 'No',
@@ -5440,6 +5426,7 @@ export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditional
             name: 'validity',
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
+            defaultChecked: false,
             label: 'Yes',
             inputHint: {
                 id: 'define-return-validity-hint',
@@ -5466,6 +5453,7 @@ export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditional
             ],
         },
         {
+            defaultChecked: true,
             id: 'return-validity-not-defined',
             name: 'validity',
             value: 'No',
@@ -5487,6 +5475,7 @@ export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioCond
             name: 'validity',
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
+            defaultChecked: false,
             label: 'Yes',
             inputHint: {
                 id: 'define-return-validity-hint',
@@ -5514,6 +5503,7 @@ export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioCond
             ],
         },
         {
+            defaultChecked: true,
             id: 'return-validity-not-defined',
             name: 'validity',
             value: 'No',
@@ -5535,6 +5525,7 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
             name: 'validity',
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
+            defaultChecked: false,
             label: 'Yes',
             inputHint: {
                 id: 'define-return-validity-hint',
@@ -5559,6 +5550,7 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
             inputErrors: [],
         },
         {
+            defaultChecked: true,
             id: 'return-validity-not-defined',
             name: 'validity',
             value: 'No',
@@ -6267,7 +6259,7 @@ export const mockServicesToDisplay: ServiceToDisplay[] = [
     },
 ];
 
-export const mockPointToPointProducts: ProductToExport[] = [
+export const mockPointToPointProducts: ProductToDisplay[] = [
     {
         id: '4',
         productName: 'Adult single',
@@ -6297,7 +6289,7 @@ export const mockPointToPointProducts: ProductToExport[] = [
     },
 ];
 
-export const mockOtherProducts: ProductToExport[] = [
+export const mockOtherProducts: ProductToDisplay[] = [
     {
         id: '1',
         productName: 'Best product',
@@ -6326,3 +6318,378 @@ export const mockOtherProducts: ProductToExport[] = [
         direction: null,
     },
 ];
+
+export const mockCapValidityFieldset: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'End of service day',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [],
+};
+
+export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                    disabled: true,
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [],
+};
+
+export const mockCapValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [
+        {
+            errorMessage: 'Choose one of the validity options',
+            id: 'cap-end-calendar',
+        },
+    ],
+};
+
+export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                    disabled: true,
+                },
+            ],
+            inputErrors: [],
+        },
+    ],
+    radioError: [
+        {
+            errorMessage: 'Choose one of the validity options',
+            id: 'cap-end-calendar',
+        },
+    ],
+};
+
+export const mockCapValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules ",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [
+                {
+                    errorMessage: 'Specify an end time for fare day end',
+                    id: 'product-end-time',
+                },
+            ],
+        },
+    ],
+    radioError: [],
+};
+
+export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'cap-validity',
+        content: expect.any(String),
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'cap-end-calendar',
+            name: 'capValid',
+            value: 'endOfCalendarDay',
+            label: ' At the end of a calendar day',
+            radioButtonHint: {
+                id: 'cap-end-calendar-hint',
+                content: 'The cap applies to journeys made before midnight',
+            },
+        },
+        {
+            id: 'cap-twenty-four-hours',
+            name: 'capValid',
+            value: '24hr',
+            label: 'At the end of a 24 hour period',
+            radioButtonHint: {
+                id: 'cap-twenty-four-hours-hint',
+                content: 'The cap applies to journeys made within 24hrs of the first tap',
+            },
+        },
+        {
+            id: 'cap-end-of-service',
+            name: 'capValid',
+            value: 'fareDayEnd',
+
+            disableAutoSelect: true,
+            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            label: 'Fare day end',
+            radioButtonHint: {
+                id: 'cap-end-of-service-hint',
+                content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+            },
+            inputHint: {
+                id: 'product-end-time-hint',
+                content: 'You can update your fare day end in operator settings',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'product-end-time',
+                    name: 'productEndTime',
+                    label: 'End time',
+                    defaultValue: '',
+                    disabled: true,
+                },
+            ],
+            inputErrors: [
+                {
+                    errorMessage: 'Specify an end time for fare day end',
+                    id: 'product-end-time',
+                },
+            ],
+        },
+    ],
+    radioError: [],
+};

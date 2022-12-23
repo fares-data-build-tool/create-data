@@ -9,6 +9,8 @@ import {
     ServiceType,
     ServiceCount,
     MyFaresService,
+    ServiceWithOriginAndDestination,
+    GroupOfProducts,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
@@ -28,15 +30,9 @@ import {
     RawMyFaresProduct,
     MyFaresOtherProduct,
     DbProduct,
+    GroupOfProductsDb,
 } from '../interfaces/dbTypes';
-import {
-    ServiceWithNocCode,
-    Stop,
-    FromDb,
-    SalesOfferPackage,
-    CompanionInfo,
-    OperatorDetails,
-} from '../interfaces/matchingJsonTypes';
+import { Stop, FromDb, SalesOfferPackage, CompanionInfo, OperatorDetails } from '../interfaces/matchingJsonTypes';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -164,7 +160,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
 export const getServicesByNocCodeAndDataSourceWithGrouping = async (
     nocCode: string,
     source: string,
-): Promise<ServiceWithNocCode[]> => {
+): Promise<ServiceWithOriginAndDestination[]> => {
     //grouped by service description which combines (lineName, origin, destination)
     const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
@@ -175,14 +171,17 @@ export const getServicesByNocCodeAndDataSourceWithGrouping = async (
 
     try {
         const queryInput = `
-            SELECT id, lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
+            SELECT lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = ? AND (endDate IS NULL OR CURDATE() <= endDate)
             group by lineId, origin, destination
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
-        const queryResults = await executeQuery<ServiceWithNocCode[]>(queryInput, [nocCodeParameter, source]);
+        const queryResults = await executeQuery<ServiceWithOriginAndDestination[]>(queryInput, [
+            nocCodeParameter,
+            source,
+        ]);
 
         return (
             queryResults.map((item) => ({
@@ -192,6 +191,60 @@ export const getServicesByNocCodeAndDataSourceWithGrouping = async (
         );
     } catch (error) {
         throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getFerryAndBusServices = async (noc: string): Promise<ServiceWithOriginAndDestination[]> => {
+    const nocCodeParameter = replaceInternalNocCode(noc);
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving tram and ferry services for given noc',
+        noc,
+    });
+
+    try {
+        const queryInput = `
+            SELECT lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND dataSource = 'tnds' AND (endDate IS NULL OR CURDATE() <= endDate)
+            AND (mode = 'ferry' OR mode = 'tram')
+            group by lineId, origin, destination
+            ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
+        `;
+
+        const queryResults = await executeQuery<ServiceWithOriginAndDestination[]>(queryInput, [nocCodeParameter]);
+
+        return (
+            queryResults.map((item) => ({
+                ...item,
+                startDate: convertDateFormat(item.startDate),
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve tram or ferry services from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const operatorHasFerryOrTramServices = async (noc: string): Promise<boolean> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving number of ferry & tram services for given national operator code',
+        noc,
+    });
+
+    try {
+        const queryInput = `
+        SELECT count(id) as serviceCount
+        FROM txcOperatorLine
+        WHERE nocCode = ? AND (mode = 'tram' OR mode = 'ferry') AND dataSource = 'tnds'
+        ORDER BY CAST(lineName AS UNSIGNED), lineName;
+        `;
+
+        const queryResults = await executeQuery<ServiceCount[]>(queryInput, [noc]);
+        const hasService = queryResults[0].serviceCount !== 0;
+        return hasService;
+    } catch (error) {
+        throw new Error(`Could not retrieve ferry / tram services from AuroraDB: ${error.stack}`);
     }
 };
 
@@ -644,7 +697,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<F
 
     try {
         const queryInput = `
-            SELECT id, name, description, purchaseLocations, paymentMethods, ticketFormats
+            SELECT id, name, description, purchaseLocations, paymentMethods, ticketFormats, isCapped
             FROM salesOfferPackage
             WHERE nocCode = ?
         `;
@@ -659,6 +712,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<F
                 purchaseLocations: item.purchaseLocations.split(','),
                 paymentMethods: item.paymentMethods.split(','),
                 ticketFormats: item.ticketFormats.split(','),
+                isCapped: Boolean(item.isCapped),
             })) || []
         );
     } catch (error) {
@@ -679,7 +733,7 @@ export const getSalesOfferPackageByIdAndNoc = async (
 
     try {
         const queryInput = `
-            SELECT id, name, purchaseLocations, paymentMethods, ticketFormats
+            SELECT id, name, purchaseLocations, paymentMethods, ticketFormats, isCapped
             FROM salesOfferPackage
             WHERE nocCode = ? AND id = ?
         `;
@@ -698,6 +752,7 @@ export const getSalesOfferPackageByIdAndNoc = async (
             purchaseLocations: item.purchaseLocations.split(','),
             paymentMethods: item.paymentMethods.split(','),
             ticketFormats: item.ticketFormats.split(','),
+            isCapped: item.isCapped,
         };
     } catch (error) {
         throw new Error(`Could not retrieve sales offer packages from AuroraDB: ${error.stack}`);
@@ -716,8 +771,8 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
     const ticketFormats = salesOfferPackage.ticketFormats.toString();
 
     const insertQuery = `INSERT INTO salesOfferPackage
-    (nocCode, name, description, purchaseLocations, paymentMethods, ticketFormats)
-    VALUES (?, ?, ?, ?, ?, ?)`;
+    (nocCode, name, description, purchaseLocations, paymentMethods, ticketFormats, isCapped)
+    VALUES (?, ?, ?, ?, ?, ?, ?)`;
     try {
         await executeQuery(insertQuery, [
             nocCode,
@@ -726,6 +781,7 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
             purchaseLocations,
             paymentMethods,
             ticketFormats,
+            salesOfferPackage.isCapped,
         ]);
     } catch (error) {
         throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);
@@ -953,6 +1009,103 @@ export const deleteOperatorGroupByNocCodeAndId = async (id: number, nocCode: str
         await executeQuery(deleteQuery, [id, nocCode]);
     } catch (error) {
         throw new Error(`Could not delete operator group from the operator group table. ${error.stack}`);
+    }
+};
+
+export const getProductGroupsByNoc = async (nocCode: string): Promise<GroupOfProducts[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving product groups for given nocCode',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, products, name
+            FROM groupOfProducts
+            WHERE nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<GroupOfProductsDb[]>(queryInput, [nocCode]);
+
+        return queryResults.map((item) => ({
+            id: item.id,
+            name: item.name,
+            productIds: JSON.parse(item.products),
+            noc: nocCode,
+        }));
+    } catch (error) {
+        throw new Error(`Could not retrieve product group by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const insertProductGroup = async (nocCode: string, products: string[], name: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'inserting product group for given name and nocCode',
+        name,
+        nocCode,
+    });
+
+    const contents = JSON.stringify(products);
+
+    const insertQuery = `INSERT INTO groupOfProducts
+                            (nocCode, name, products)
+                            VALUES (?, ?, ?)`;
+
+    try {
+        await executeQuery(insertQuery, [nocCode, name, contents]);
+    } catch (error) {
+        throw new Error(`Could not insert operator group into the operatorGroup table. ${error.stack}`);
+    }
+};
+
+export const updateProductGroup = async (
+    id: number,
+    nocCode: string,
+    products: string[],
+    name: string,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'updating product group for given nocCode, name and id',
+        nocCode,
+        name,
+        id,
+    });
+
+    const contents = JSON.stringify(products);
+
+    const updateQuery = `UPDATE groupOfProducts
+                        SET name = ?, 
+                        products = ?
+                        WHERE id = ? AND nocCode = ?; `;
+    try {
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [name, contents, id, nocCode]);
+
+        if (meta.affectedRows !== 1) {
+            throw Error(`Did not update a single row: ${meta}`);
+        }
+    } catch (error) {
+        throw new Error(`Could not update product group into the product group table. ${error.stack}`);
+    }
+};
+
+export const deleteProductGroupByNocCodeAndId = async (id: number, nocCode: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'deleting product group',
+        id,
+    });
+
+    const deleteQuery = `
+            DELETE FROM groupOfProducts
+            WHERE id = ?
+            AND nocCode = ?`;
+    try {
+        await executeQuery(deleteQuery, [id, nocCode]);
+    } catch (error) {
+        throw new Error(`Could not delete product group from the groupOfProducts table. ${error.stack}`);
     }
 };
 
@@ -2010,5 +2163,69 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
         }));
     } catch (error) {
         throw new Error(`Could not fetch products from the products table. ${error.stack}`);
+    }
+};
+
+export const getProductGroupByNocAndId = async (noc: string, id: number): Promise<GroupOfProducts | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting product group for a given noc and id',
+        noc,
+        id,
+    });
+
+    const query = `
+            SELECT id, name, products
+            FROM groupOfProducts
+            WHERE nocCode = ? AND id = ?
+        `;
+
+    try {
+        const result = await executeQuery<GroupOfProductsDb[]>(query, [noc, id]);
+
+        return {
+            id: result[0].id,
+            productIds: JSON.parse(result[0].products) as string[],
+            name: result[0].name,
+        };
+    } catch (error) {
+        return undefined;
+    }
+};
+
+export const getProductGroupByNameAndNocCode = async (
+    noc: string,
+    name: string,
+): Promise<GroupOfProducts | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving product group for a given national operator code and name',
+        noc,
+        name,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, name, products
+            FROM groupOfProducts
+            WHERE nocCode = ? AND name = ?`;
+
+        const queryResults = await executeQuery<GroupOfProductsDb[]>(queryInput, [noc, name]);
+
+        if (queryResults.length > 1) {
+            throw new Error("Didn't expect more than one product group with the same national operator code and name");
+        }
+
+        const data = queryResults[0];
+
+        return data
+            ? ({
+                  id: data.id,
+                  name: data.name,
+                  productIds: JSON.parse(data.products) as string[],
+              } as GroupOfProducts)
+            : undefined;
+    } catch (error) {
+        throw new Error(`Could not retrieve product group by national operator code and name from AuroraDB: ${error}`);
     }
 };

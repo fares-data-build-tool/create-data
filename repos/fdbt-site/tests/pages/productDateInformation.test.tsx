@@ -21,6 +21,7 @@ describe('pages', () => {
                         endDateYear: '',
                     }}
                     csrfToken=""
+                    backHref=""
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -39,6 +40,7 @@ describe('pages', () => {
                         endDateYear: '',
                     }}
                     csrfToken=""
+                    backHref=""
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -63,6 +65,7 @@ describe('pages', () => {
                         endDateYear: '20.25',
                     }}
                     csrfToken=""
+                    backHref=""
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -87,6 +90,7 @@ describe('pages', () => {
                         endDateYear: '20.25',
                     }}
                     csrfToken=""
+                    backHref=""
                 />,
             );
             expect(wrapper).toMatchSnapshot();

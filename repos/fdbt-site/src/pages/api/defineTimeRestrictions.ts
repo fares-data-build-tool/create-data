@@ -111,15 +111,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        const selectedTimeRetriction = await getTimeRestrictionContent(timeRestriction, noc);
+        const selectedTimeRestriction = await getTimeRestrictionContent(timeRestriction, noc);
 
         // if in edit mode
         if (ticket && matchingJsonMetaData) {
             const updatedTicket = {
                 ...ticket,
-                timeRestriction: selectedTimeRetriction
-                    ? { id: selectedTimeRetriction.dbTimeRestriction.id }
-                    : undefined,
+                timeRestriction:
+                    selectedTimeRestriction && timeRestrictionChoice !== 'no'
+                        ? { id: selectedTimeRestriction.dbTimeRestriction.id }
+                        : undefined,
             };
 
             await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
@@ -136,11 +137,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
         // end of edit mode
 
-        if (timeRestrictionChoice === 'Premade' && selectedTimeRetriction) {
+        if (timeRestrictionChoice === 'Premade' && selectedTimeRestriction) {
             updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
-                fullTimeRestrictions: selectedTimeRetriction.timeRestrictions,
+                fullTimeRestrictions: selectedTimeRestriction.timeRestrictions,
                 errors: [],
-                id: selectedTimeRetriction.dbTimeRestriction.id,
+                id: selectedTimeRestriction.dbTimeRestriction.id,
             });
 
             updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, undefined);

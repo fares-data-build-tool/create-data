@@ -5,7 +5,6 @@ import { ReactElement } from 'react';
 import { DbTimeRestriction, SinglePassengerType } from './dbTypes';
 import {
     CarnetDetails,
-    ServiceWithNocCode,
     SelectedService,
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
@@ -16,6 +15,7 @@ import {
     CompanionInfo,
     TicketType,
     ExpiryUnit,
+    AdditionalOperator,
 } from './matchingJsonTypes';
 
 // Session Attributes and Cookies
@@ -97,10 +97,15 @@ export interface OperatorGroup {
 
 export interface MultiOperatorInfo {
     nocCode: string;
-    services: ServiceWithNocCode[];
-    name?: string;
-    dataSource?: string;
-    open?: boolean;
+    services: ServiceWithOriginAndDestination[];
+    selectedServices: ServiceWithOriginAndDestination[];
+    name: string;
+    dataSource: 'bods' | 'tnds';
+}
+
+export interface ServiceWithOriginAndDestination extends SelectedService {
+    origin: string;
+    destination: string;
 }
 
 export interface TermTimeAttribute {
@@ -127,6 +132,7 @@ export interface UserDataUploadsProps {
     showPriceOption?: boolean;
     poundsOrPence?: string | null;
     csrfToken: string;
+    backHref: string;
 }
 
 export interface NumberOfStagesAttributeWithError {
@@ -213,6 +219,7 @@ export interface GlobalSettingsCounts {
     fareDayEndSet: boolean;
     operatorDetailsSet: boolean;
     operatorGroupsCount: number;
+    productGroupsCount: number;
 }
 
 export interface PassengerAttributes {
@@ -389,7 +396,7 @@ export interface ProductData {
 }
 
 export interface MultiOperatorInfoWithErrors {
-    multiOperatorInfo: MultiOperatorInfo[];
+    multiOperatorInfo: AdditionalOperator[];
     errors: ErrorInfo[];
 }
 
@@ -433,6 +440,11 @@ export interface ManagePassengerTypeWithErrors {
 
 export interface ManageOperatorGroupWithErrors {
     inputs: OperatorGroup;
+    errors: ErrorInfo[];
+}
+
+export interface ManageProductGroupWithErrors {
+    inputs: GroupOfProducts;
     errors: ErrorInfo[];
 }
 
@@ -689,12 +701,12 @@ export interface TxcSourceAttribute {
     hasBods: boolean;
 }
 
-export interface ProductToExport {
+export interface ProductToDisplay {
     id: string;
     productName: string;
     startDate: string;
     endDate?: string;
-    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator';
+    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator' | 'capped';
     schoolTicket: boolean;
     serviceLineId: string | null;
     direction: string | null;
@@ -705,4 +717,46 @@ export interface ServiceToDisplay {
     origin: string;
     destination: string;
     lineName: string;
+}
+
+export interface TypeOfCap {
+    typeOfCap: 'byDistance' | 'byTaps' | 'byProducts';
+}
+
+export interface GroupOfProducts {
+    id: number;
+    productIds: string[];
+    name: string;
+}
+
+export interface Cap {
+    name: string;
+    price: string;
+    durationAmount: string;
+    durationUnits: ExpiryUnit;
+}
+
+export interface CapDistancePricing {
+    distanceFrom: string;
+    distanceTo: string;
+    pricePerKm: string;
+}
+
+export interface DistanceCap {
+    maximumPrice: string;
+    minimumPrice: string;
+    capPricing: CapDistancePricing[];
+}
+
+export interface MultiTap {
+    [key: string]: string;
+}
+
+export interface MultiTapPricing {
+    tapDetails: MultiTap;
+}
+
+export interface AdditionalPricing {
+    pricingStructureStart: string;
+    structureDiscount: string;
 }

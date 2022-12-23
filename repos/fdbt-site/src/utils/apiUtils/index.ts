@@ -125,6 +125,9 @@ export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiR
             case 'schoolService':
                 redirectOnSchoolFareType(req, res);
                 return;
+            case 'capped':
+                redirectTo(res, '/ticketRepresentation');
+                return;
             default:
                 throw new Error('Did not receive an expected fareType.');
         }

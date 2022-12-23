@@ -131,7 +131,7 @@ describe('reuseOperatorGroup', () => {
         await reuseOperatorGroup(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleOperatorsServiceList' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/multiOperatorServiceList' });
     });
     it('should update the multi operators for geozone ticket when in edit mode and redirect back to products/productDetails', async () => {
         const getOperatorGroupByNocAndId = jest.spyOn(auroradb, 'getOperatorGroupByNocAndId');

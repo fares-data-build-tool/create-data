@@ -1,7 +1,9 @@
 import 'cypress-file-upload';
 import {
+    completeFlatFareCarnet,
     completeFlatFarePages,
     completeMultiOpGeoZonePages,
+    completePeriodGeoZonePages,
     completeSalesPages,
     completeSinglePages,
     defineUserTypeAndTimeRestrictions,
@@ -290,6 +292,9 @@ export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
         })
         .parent()
         .trigger('change');
+    cy.get(`[id=${dropDownId}] option:selected`).then(($selected) => {
+        cy.wrap($selected.text()).as('dropdownValue');
+    });
 };
 
 export const completeGroupPassengerDetailsPages = (): void => {
@@ -325,16 +330,15 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
                 .eq(randomNumber)
                 .click()
                 .then(($radio) => {
+                    const radioPurchaseType = $radio.attr('value');
+                    purchaseType = (JSON.parse(radioPurchaseType) as { name: string }).name;
+
                     if (isOtherProduct) {
-                        purchaseType = $radio.attr('value');
-                        purchaseType = JSON.parse(purchaseType).name;
                         cy.get(`[id$=price-${randomNumber}]`).then(($radio) => {
                             purchaseType = `${purchaseType} - £${$radio.attr('value')}`;
                             cy.wrap(purchaseType).as('purchaseType');
                         });
                     } else {
-                        purchaseType = $radio.attr('value');
-                        purchaseType = JSON.parse(purchaseType).name;
                         cy.wrap(purchaseType).as('purchaseType');
                     }
                 });
@@ -585,15 +589,54 @@ export const completeOperatorSearch = (): void => {
     continueButtonClick();
 };
 
-export const addFlatFareProductIfNotPresent = (): void => {
+export const addOtherProductsIfNotPresent = (): void => {
     getHomePage();
     clickElementById('manage-fares-link');
     clickElementByText('Other products');
-    let hasFlatFare: boolean = false;
-    cy.wrap(hasFlatFare).as('hasFlatFare');
+
+    let numberOfPeriodProducts = 0;
+    cy.wrap(numberOfPeriodProducts).as('numberOfPeriodProducts');
+    let numberOfFlatFareProducts = 0;
+    cy.wrap(numberOfFlatFareProducts).as('numberOfFlatFareProducts');
+    let numberOfFlatFareCarnetProducts = 0;
+    cy.wrap(numberOfFlatFareCarnetProducts).as('numberOfFlatFareCarnetProducts');
+
     cy.get(`[data-card-count]`).then((element) => {
-        const numberOfProducts = Number(element.attr('data-card-count'));
-        if (numberOfProducts === 0) {
+        const totNumberOfProducts = Number(element.attr('data-card-count'));
+        if (totNumberOfProducts > 0) {
+            getElementByClass('govuk-table__body')
+                .find('td')
+                .each(($element) => {
+                    const type = $element.text();
+                    if (type === 'Period') {
+                        numberOfPeriodProducts += 1;
+                        cy.wrap(numberOfPeriodProducts).as('numberOfPeriodProducts');
+                    }
+                    if (type === 'Flat fare') {
+                        numberOfFlatFareProducts += 1;
+                        cy.wrap(numberOfFlatFareProducts).as('numberOfFlatFareProducts');
+                    }
+                    if (type === 'Flat fare carnet') {
+                        numberOfFlatFareCarnetProducts += 1;
+                        cy.wrap(numberOfFlatFareCarnetProducts).as('numberOfFlatFareCarnetProducts');
+                    }
+                });
+        }
+    });
+
+    cy.get('@numberOfPeriodProducts').then((numberOfPeriodProducts) => {
+        if (Number(numberOfPeriodProducts) === 0) {
+            selectFareType('period', false);
+            defineUserTypeAndTimeRestrictions();
+            completePeriodGeoZonePages(1);
+            completeSalesPages();
+            isFinished();
+            cy.log('Period product set up');
+        }
+    });
+
+    cy.get('@numberOfFlatFareProducts').then((numberOfFlatFareProducts) => {
+        if (Number(numberOfFlatFareProducts) === 0) {
             selectFareType('flatFare', false);
             defineUserTypeAndTimeRestrictions();
             clickElementById('radio-option-multipleServices');
@@ -602,6 +645,17 @@ export const addFlatFareProductIfNotPresent = (): void => {
             completeSalesPages();
             isFinished();
             cy.log('Flat fare product set up');
+        }
+    });
+
+    cy.get('@numberOfFlatFareCarnetProducts').then((numberOfFlatFareProducts) => {
+        if (Number(numberOfFlatFareProducts) === 0) {
+            selectCarnetFareType('flatFare');
+            defineUserTypeAndTimeRestrictions();
+            completeFlatFareCarnet();
+            completeSalesPages(3, 'Flat fare carnet ');
+            isFinished();
+            cy.log('Flat fare carnet product set up');
         }
     });
 };
@@ -625,7 +679,7 @@ export const addMultiOperatorProductIfNotPresent = (): void => {
 };
 
 export const addSingleProductIfNotPresent = (): void => {
-    let hasProduct: string[] = [];
+    const hasProduct: string[] = [];
     cy.wrap(hasProduct).as('hasProduct');
     getHomePage();
     clickElementById('account-link');

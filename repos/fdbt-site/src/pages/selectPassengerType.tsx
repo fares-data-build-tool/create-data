@@ -3,13 +3,18 @@ import { FullGroupPassengerType, SinglePassengerType } from '../interfaces/dbTyp
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import PassengerTypeCard from '../components/PassengerTypeCard';
-import { PASSENGER_TYPE_ATTRIBUTE } from '../constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+} from '../constants/attributes';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { isPassengerType, isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
+import BackButton from '../components/BackButton';
 
 const title = 'Select Passenger Type - Create Fares Data Service';
 const description = 'Select Passenger Type selection page of the Create Fares Data Service';
@@ -20,6 +25,7 @@ interface PassengerTypeProps {
     savedGroups: FullGroupPassengerType[];
     savedPassengerTypes: SinglePassengerType[];
     selectedId: number | null;
+    backHref: string;
 }
 
 const SelectPassengerType = ({
@@ -28,12 +34,15 @@ const SelectPassengerType = ({
     savedGroups,
     savedPassengerTypes,
     selectedId,
+    backHref,
 }: PassengerTypeProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
+        {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
+
         <CsrfForm action="/api/selectPassengerType" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="passenger-type-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 className="govuk-fieldset__heading" id="passenger-type-page-heading">
@@ -124,12 +133,23 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
-    const selectedId = (isPassengerType(passengerTypeAttribute) && passengerTypeAttribute.id) || null;
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const selectedId =
+        (isPassengerType(passengerTypeAttribute) && passengerTypeAttribute.id) || ticket?.passengerType.id || null;
 
     const errors: ErrorInfo[] =
         passengerTypeAttribute && isPassengerTypeAttributeWithErrors(passengerTypeAttribute)
             ? passengerTypeAttribute.errors
             : [];
+
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const backHref =
+        ticket && matchingJsonMetaData
+            ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                  matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+              }`
+            : '';
 
     return {
         props: {
@@ -138,6 +158,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             savedGroups: groupPassengerTypes,
             savedPassengerTypes: singlePassengerTypes,
             selectedId,
+            backHref,
         },
     };
 };

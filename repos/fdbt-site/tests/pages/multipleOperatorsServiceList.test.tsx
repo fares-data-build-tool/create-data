@@ -1,59 +1,49 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import MultipleOperatorsServiceList, {
-    getServerSideProps,
-    showSelectedOperators,
-} from '../../src/pages/multipleOperatorsServiceList';
+import MultipleOperatorsServiceList, { getServerSideProps } from '../../src/pages/multiOperatorServiceList';
 import { getMockContext } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
-import { ErrorInfo, MultiOperatorInfo } from '../../src/interfaces';
+import { ErrorInfo, MultiOperatorInfo, ServiceWithOriginAndDestination } from '../../src/interfaces';
 import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
-import { ServiceWithNocCode } from '../../src/interfaces/matchingJsonTypes';
 
 describe('pages', () => {
     describe('multipleOperatorsServiceList', () => {
-        const mockError: ErrorInfo[] = [
+        const mockErrors: ErrorInfo[] = [
             {
                 errorMessage: 'All operators need to have at least one service',
                 id: 'checkbox-0',
             },
         ];
 
-        const mockBlackServices: ServiceWithNocCode[] = [
+        const mockBlackServices: ServiceWithOriginAndDestination[] = [
             {
-                nocCode: 'BLAC',
+                origin: 'Fleetwood',
+                destination: 'Blackpool',
                 lineName: '1',
                 lineId: '4YyoI0',
                 startDate: '05/04/2020',
                 serviceDescription: 'FLEETWOOD - BLACKPOOL via Promenade',
-                origin: 'Ballarat west',
-                destination: 'Florinas North',
                 serviceCode: 'NW_05_BLAC_1_1',
-                selected: false,
             },
             {
-                nocCode: 'BLAC',
+                origin: 'Poulton',
+                destination: 'Blackpool',
                 lineName: '2',
                 lineId: 'YpQjUw',
                 startDate: '05/04/2020',
                 serviceDescription: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
-                origin: 'Ballarat East',
-                destination: 'Florinas',
                 serviceCode: 'NW_05_BLAC_2_1',
-                selected: false,
             },
         ];
-        const mockLNUDServices: ServiceWithNocCode[] = [
+        const mockLNUDServices: ServiceWithOriginAndDestination[] = [
             {
-                nocCode: 'LNUD',
+                origin: 'Brighouse',
+                destination: 'East Bierley',
                 lineName: '259',
                 lineId: 'vHaXmz',
                 startDate: '25/03/2020',
                 serviceDescription: 'Brighouse - East Bierley',
-                origin: 'Campora',
-                destination: 'Buli',
                 serviceCode: 'YWAO259',
-                selected: false,
             },
         ];
         const mockMultiOperatorData: MultiOperatorInfo[] = [
@@ -62,45 +52,43 @@ describe('pages', () => {
                 name: 'Blackpool Transport',
                 services: [
                     {
-                        nocCode: 'BLAC',
                         lineName: '1',
                         lineId: '4YyoI0',
                         startDate: '05/04/2020',
                         serviceDescription: 'FLEETWOOD - BLACKPOOL via Promenade',
-                        origin: 'Ballarat west',
-                        destination: 'Florinas North',
+                        origin: 'Fleetwood',
+                        destination: 'Blackpool',
                         serviceCode: 'NW_05_BLAC_1_1',
-                        selected: false,
                     },
                     {
-                        nocCode: 'BLAC',
                         lineName: '2',
                         lineId: 'YpQjUw',
                         startDate: '05/04/2020',
                         serviceDescription: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
-                        origin: 'Ballarat East',
-                        destination: 'Florinas',
+                        origin: 'Poulton',
+                        destination: 'Blackpool',
                         serviceCode: 'NW_05_BLAC_2_1',
-                        selected: false,
                     },
                 ],
+                selectedServices: [],
+                dataSource: 'bods',
             },
             {
                 nocCode: 'LNUD',
                 name: 'Testing ops',
                 services: [
                     {
-                        nocCode: 'LNUD',
                         lineName: '259',
                         lineId: 'vHaXmz',
                         startDate: '25/03/2020',
                         serviceDescription: 'Brighouse - East Bierley',
-                        origin: 'Campora',
-                        destination: 'Buli',
+                        origin: 'Brighouse',
+                        destination: 'East Bierley',
                         serviceCode: 'YWAO259',
-                        selected: false,
                     },
                 ],
+                selectedServices: [],
+                dataSource: 'bods',
             },
         ];
         const getServicesByNocCodeAndDataSourceAndDescriptionSpy = jest.spyOn(
@@ -109,21 +97,22 @@ describe('pages', () => {
         );
 
         beforeEach(() => {
-            getServicesByNocCodeAndDataSourceAndDescriptionSpy.mockImplementationOnce(() =>
-                Promise.resolve(mockBlackServices),
-            );
-            getServicesByNocCodeAndDataSourceAndDescriptionSpy.mockImplementationOnce(() =>
-                Promise.resolve(mockLNUDServices),
-            );
+            getServicesByNocCodeAndDataSourceAndDescriptionSpy.mockResolvedValueOnce(mockBlackServices);
+            getServicesByNocCodeAndDataSourceAndDescriptionSpy.mockResolvedValueOnce(mockLNUDServices);
         });
 
         afterEach(() => {
             jest.resetAllMocks();
         });
 
-        it('should render correctly multiOperatorData', () => {
+        it('should render the multiOperatorData page upon first load', () => {
             const tree = shallow(
-                <MultipleOperatorsServiceList preMultiOperatorData={mockMultiOperatorData} errors={[]} csrfToken="" />,
+                <MultipleOperatorsServiceList
+                    multiOperatorData={mockMultiOperatorData}
+                    errors={[]}
+                    csrfToken=""
+                    backHref=""
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -131,9 +120,10 @@ describe('pages', () => {
         it('should render correctly with errors', () => {
             const tree = shallow(
                 <MultipleOperatorsServiceList
-                    preMultiOperatorData={mockMultiOperatorData}
-                    errors={mockError}
+                    multiOperatorData={mockMultiOperatorData}
+                    errors={mockErrors}
                     csrfToken=""
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -151,36 +141,9 @@ describe('pages', () => {
                         },
                     },
                 });
-                const expectedCheckedServiceList: MultiOperatorInfo[] = mockMultiOperatorData;
-                expectedCheckedServiceList[0].open = true;
                 const result = await getServerSideProps(ctx);
                 expect(result.props.errors.length).toBe(0);
-                expect(result.props.preMultiOperatorData).toEqual(mockMultiOperatorData);
-            });
-        });
-        describe('MultipleOperatorsServiceList', () => {
-            it('should remove service from  Selected list list', () => {
-                const mockActiveOperator: MultiOperatorInfo = mockMultiOperatorData[0];
-                const mockSetActiveOperator = jest.fn();
-                const mockRemoveServices = jest.fn();
-                const mockOperatorsWithSelectedServices = mockMultiOperatorData.map((operatorData) => ({
-                    ...operatorData,
-                    services: operatorData.services.map((service) => ({ ...service, selected: true })),
-                }));
-                const expectedLineId = mockMultiOperatorData[0].services[0].lineId;
-                const expectedNocCode = mockMultiOperatorData[0].nocCode;
-
-                const wrapper = shallow(
-                    showSelectedOperators(
-                        mockOperatorsWithSelectedServices,
-                        mockActiveOperator,
-                        mockSetActiveOperator,
-                        mockRemoveServices,
-                    ),
-                );
-
-                wrapper.find('#remove-from-BLAC-0').simulate('click');
-                expect(mockRemoveServices).toBeCalledWith(expectedLineId, expectedNocCode, false);
+                expect(result.props.multiOperatorData).toEqual(mockMultiOperatorData);
             });
         });
     });

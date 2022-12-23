@@ -27,20 +27,9 @@ export interface SelectedService {
     serviceDescription: string;
 }
 
-export interface ServiceWithNocCode extends SelectedService {
-    nocCode: string;
-    selected: boolean;
-    destination?: string;
-    origin?: string;
-}
-
-export interface SelectedServiceByNocCode {
-    [key: string]: ServiceWithNocCode[];
-}
-
-export interface AdditionalService extends SelectedService {
+export type AdditionalService = Omit<SelectedService, 'serviceCode' | 'startDate'> & {
     serviceId: number;
-}
+};
 
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
@@ -70,11 +59,21 @@ export interface SalesOfferPackage {
     paymentMethods: string[];
     ticketFormats: string[];
     price?: string;
+    isCapped: boolean;
+}
+
+export type DayOfTheWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
+export type CapStart = 'rollingDays' | 'fixedWeekdays';
+
+export interface CapStartInfo {
+    type: CapStart;
+    startDay?: DayOfTheWeek;
 }
 
 export type FromDb<T> = T & { id: number };
 
-export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
+export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return' | 'capped';
 
 export type Ticket =
     | PointToPointTicket
@@ -113,22 +112,21 @@ export interface SchemeOperatorGeoZoneTicket extends BaseSchemeOperatorTicket {
     additionalNocs: string[];
 }
 
+export interface AdditionalOperator {
+    nocCode: string;
+    selectedServices: SelectedService[];
+}
+
 export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {
     type: 'flatFare';
     products: FlatFareProductDetails[];
-    additionalOperators: {
-        nocCode: string;
-        selectedServices: SelectedService[];
-    }[];
+    additionalOperators: AdditionalOperator[];
 }
 
 export interface SchemeOperatorMultiServiceTicket extends BaseSchemeOperatorTicket {
     type: 'period';
     products: ProductDetails[];
-    additionalOperators: {
-        nocCode: string;
-        selectedServices: SelectedService[];
-    }[];
+    additionalOperators: AdditionalOperator[];
 }
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
@@ -137,10 +135,7 @@ export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
 }
 
 export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
-    additionalOperators: {
-        nocCode: string;
-        selectedServices: SelectedService[];
-    }[];
+    additionalOperators: AdditionalOperator[];
     operatorGroupId: number;
 }
 
@@ -313,6 +308,11 @@ export interface PointToPointPeriodProduct {
 }
 
 export interface PeriodExpiry {
+    productValidity: string;
+    productEndTime?: string;
+}
+
+export interface CapExpiry {
     productValidity: string;
     productEndTime?: string;
 }

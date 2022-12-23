@@ -64,7 +64,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
         if (isSchemeOperator(req, res) && fareType === 'flatFare') {
-            redirectTo(res, '/multipleOperatorsServiceList');
+            redirectTo(res, '/multiOperatorServiceList');
             return;
         }
         const ticketRepresentation = (
@@ -72,7 +72,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         ).name;
         redirectTo(
             res,
-            ticketRepresentation === 'multipleServices' ? '/multipleOperatorsServiceList' : '/multipleProducts',
+            ticketRepresentation === 'multipleServices' ? '/multiOperatorServiceList' : '/multipleProducts',
         );
         return;
     } catch (error) {

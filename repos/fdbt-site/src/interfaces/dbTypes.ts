@@ -101,6 +101,7 @@ export interface RawSalesOfferPackage {
     purchaseLocations: string;
     paymentMethods: string;
     ticketFormats: string;
+    isCapped: boolean;
 }
 export interface GroupPassengerTypeDb {
     id: number;
@@ -131,4 +132,10 @@ export interface ServiceDetails {
     toAtcoCode: string;
     direction: string;
     serviceId: string;
+}
+
+export interface GroupOfProductsDb {
+    id: number;
+    products: string;
+    name: string;
 }

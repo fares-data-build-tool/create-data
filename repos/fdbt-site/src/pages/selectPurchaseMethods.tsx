@@ -25,6 +25,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { removeAllWhiteSpace } from '../utils/apiUtils/validator';
 import { PurchaseMethodCardBody } from './viewPurchaseMethods';
 import { SalesOfferPackage, FromDb } from '../interfaces/matchingJsonTypes';
+import BackButton from '../components/BackButton';
 
 const pageTitle = 'Select Purchase Methods - Create Fares Data Service';
 const pageDescription = 'Purchase Methods selection page of the Create Fares Data Service';
@@ -35,6 +36,8 @@ export interface PurchaseMethodsProps {
     purchaseMethodsList: FromDb<SalesOfferPackage>[];
     errors: ErrorInfo[];
     csrfToken: string;
+    backHref: string;
+    isCapped: boolean;
 }
 
 export const formatSOPArray = (stringArray: string[]): string =>
@@ -125,6 +128,7 @@ const createSalesOffer = (
     products: ProductInfo[],
     selected: { [key: string]: SalesOfferPackage[] } | undefined,
     errors: ErrorInfo[],
+    isCapped: boolean,
 ): ReactElement[] =>
     products.map(({ productName, productPrice }) => (
         <div className="sop-option" key={productName}>
@@ -145,7 +149,7 @@ const createSalesOffer = (
                         {purchaseMethodsList.length === 0 ? (
                             <>
                                 <span className="govuk-body">
-                                    <i>You currently have no saved purchase methods</i>
+                                    <i>You currently have no {isCapped ? 'capped' : ''} saved purchase methods</i>
                                 </span>
                             </>
                         ) : (
@@ -165,9 +169,12 @@ const SelectPurchaseMethods = ({
     purchaseMethodsList,
     csrfToken,
     errors,
+    backHref,
+    isCapped,
 }: PurchaseMethodsProps): ReactElement => {
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/selectSalesOfferPackage" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
@@ -181,7 +188,7 @@ const SelectPurchaseMethods = ({
                         </span>
                         <strong className="govuk-warning-text__text">
                             <span className="govuk-warning-text__assistive">Warning</span>
-                            You can create new purchase methods in your{' '}
+                            You can create new {isCapped ? 'capped' : ''} purchase methods in your{' '}
                             <a className="govuk-link" href="/viewPurchaseMethods">
                                 operator settings.
                             </a>{' '}
@@ -189,7 +196,7 @@ const SelectPurchaseMethods = ({
                             Don&apos;t worry you can navigate back to this page when you are finished.
                         </strong>
                     </div>
-                    {createSalesOffer(purchaseMethodsList, products, selected, errors)}
+                    {createSalesOffer(purchaseMethodsList, products, selected, errors, isCapped)}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                     <a
                         href={'/viewPurchaseMethods'}
@@ -229,12 +236,23 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             productPrice: product.salesOfferPackages[0].price || '',
         };
 
+        const selectedValue = {
+            [productInfo.productName]: purchaseMethodsList.filter((purchaseMethod) =>
+                ticket.products[0].salesOfferPackages.map((salesOffer) => salesOffer.id).includes(purchaseMethod.id),
+            ),
+        };
+
         return {
             props: {
+                ...(selectedValue && { selected: selectedValue }),
                 products: [productInfo],
                 purchaseMethodsList: purchaseMethodsList as FromDb<SalesOfferPackage>[],
                 errors,
                 csrfToken,
+                backHref: `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                }`,
+                isCapped: false,
             },
         };
     }
@@ -272,13 +290,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                   )
                   .reduce((result, item) => ({ ...result, [item[0]]: item[1] }), {}));
 
+    const isCapped = fareType === 'capped';
+
     return {
         props: {
             ...(selected && { selected: selected }),
             products,
-            purchaseMethodsList: purchaseMethodsList as FromDb<SalesOfferPackage>[],
+            purchaseMethodsList: purchaseMethodsList.filter((purchaseMethod) => purchaseMethod.isCapped === isCapped),
             errors,
             csrfToken,
+            backHref: '',
+            isCapped,
         },
     };
 };

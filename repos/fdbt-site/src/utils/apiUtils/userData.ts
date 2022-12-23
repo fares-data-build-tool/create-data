@@ -37,7 +37,6 @@ import {
 import { getCsvZoneUploadData, getProductsMatchingJson, putStringInS3 } from '../../data/s3';
 import {
     CognitoIdToken,
-    MultiOperatorInfo,
     MultiOperatorMultipleServicesTicket,
     MultiProduct,
     NextApiRequestWithSession,
@@ -87,6 +86,7 @@ import {
     SingleTicket,
     Stop,
     Ticket,
+    AdditionalOperator,
 } from '../../interfaces/matchingJsonTypes';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
@@ -465,22 +465,17 @@ export const getMultipleServicesTicketJson = (
     const { selectedServices } = serviceListAttribute;
 
     if (basePeriodTicketAttributes.type === 'multiOperator') {
-        const multipleOperatorsServices = getSessionAttribute(
+        const additionalOperators = getSessionAttribute(
             req,
             MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
-        ) as MultiOperatorInfo[];
-        const additionalOperatorsInfo = {
-            additionalOperators: multipleOperatorsServices.map((operator) => ({
-                nocCode: operator.nocCode,
-                selectedServices: operator.services,
-            })),
-        };
+        ) as AdditionalOperator[];
+
         const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
         const operatorGroupId = multiOpAttribute && multiOpAttribute.id ? multiOpAttribute.id : undefined;
         return {
             ...basePeriodTicketAttributes,
             selectedServices,
-            additionalOperators: additionalOperatorsInfo.additionalOperators,
+            additionalOperators,
             termTime: isTermTime(req),
             ...(operatorGroupId && { operatorGroupId }),
         };
@@ -624,17 +619,14 @@ export const adjustSchemeOperatorJson = async (
             periodExpiryAttributeInfo,
         );
 
-        const multipleOperatorsServices = getSessionAttribute(
+        const additionalOperators = getSessionAttribute(
             req,
             MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
-        ) as MultiOperatorInfo[];
+        ) as AdditionalOperator[];
         return {
             ...(matchingJson as WithIds<SchemeOperatorFlatFareTicket> | WithIds<SchemeOperatorMultiServiceTicket>),
             products: productsAndSops,
-            additionalOperators: multipleOperatorsServices.map((operator) => ({
-                nocCode: operator.nocCode,
-                selectedServices: operator.services,
-            })),
+            additionalOperators,
         };
     }
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);

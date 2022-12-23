@@ -143,12 +143,22 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          id="quantity-in-bundle"
-          key="2"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          2
-        </span>
+          <span
+            id="quantity-in-bundle"
+            key="2"
+          >
+            2
+          </span>
+          <a
+            href="/editCarnetProperties"
+            id="quantity-in-bundle-link"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>
@@ -168,12 +178,22 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          id="carnet-expiry"
-          key="22 year(s)"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          22 year(s)
-        </span>
+          <span
+            id="carnet-expiry"
+            key="22 year(s)"
+          >
+            22 year(s)
+          </span>
+          <a
+            href="/editCarnetProperties"
+            id="carnet-expiry-link"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>
@@ -437,12 +457,22 @@ exports[`myfares pages productDetails should render correctly for a copied produ
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          id="quantity-in-bundle"
-          key="2"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          2
-        </span>
+          <span
+            id="quantity-in-bundle"
+            key="2"
+          >
+            2
+          </span>
+          <a
+            href="/editCarnetProperties"
+            id="quantity-in-bundle-link"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>
@@ -462,12 +492,22 @@ exports[`myfares pages productDetails should render correctly for a copied produ
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          id="carnet-expiry"
-          key="22 year(s)"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          22 year(s)
-        </span>
+          <span
+            id="carnet-expiry"
+            key="22 year(s)"
+          >
+            22 year(s)
+          </span>
+          <a
+            href="/editCarnetProperties"
+            id="carnet-expiry-link"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>
@@ -731,12 +771,22 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          id="quantity-in-bundle"
-          key="2"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          2
-        </span>
+          <span
+            id="quantity-in-bundle"
+            key="2"
+          >
+            2
+          </span>
+          <a
+            href="/editCarnetProperties"
+            id="quantity-in-bundle-link"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>
@@ -756,12 +806,22 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          id="carnet-expiry"
-          key="22 year(s)"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          22 year(s)
-        </span>
+          <span
+            id="carnet-expiry"
+            key="22 year(s)"
+          >
+            22 year(s)
+          </span>
+          <a
+            href="/editCarnetProperties"
+            id="carnet-expiry-link"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>
@@ -1022,12 +1082,22 @@ exports[`myfares pages productDetails should render correctly while the cannot g
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          id="quantity-in-bundle"
-          key="2"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          2
-        </span>
+          <span
+            id="quantity-in-bundle"
+            key="2"
+          >
+            2
+          </span>
+          <a
+            href="/editCarnetProperties"
+            id="quantity-in-bundle-link"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>
@@ -1047,12 +1117,22 @@ exports[`myfares pages productDetails should render correctly while the cannot g
       <dd
         className="govuk-summary-list__value"
       >
-        <span
-          id="carnet-expiry"
-          key="22 year(s)"
+        <div
+          className="dft-flex dft-flex-justify-space-between"
         >
-          22 year(s)
-        </span>
+          <span
+            id="carnet-expiry"
+            key="22 year(s)"
+          >
+            22 year(s)
+          </span>
+          <a
+            href="/editCarnetProperties"
+            id="carnet-expiry-link"
+          >
+            Edit
+          </a>
+        </div>
       </dd>
     </div>
   </dl>

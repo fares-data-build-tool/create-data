@@ -30,7 +30,9 @@ describe('pages', () => {
         ];
 
         it('should render the page correctly', () => {
-            const wrapper = shallow(<ReturnValidity errors={[]} fieldset={mockReturnValidityFieldset} csrfToken="" />);
+            const wrapper = shallow(
+                <ReturnValidity errors={[]} fieldset={mockReturnValidityFieldset} csrfToken="" backHref="" />,
+            );
             expect(wrapper).toMatchSnapshot();
         });
 
@@ -44,7 +46,7 @@ describe('pages', () => {
             ],
             ['radio', mockReturnValidityFieldsetWithRadioErrors, radioError],
         ])('should render the page with errors when %s errors are present', (_case, fieldset, errors) => {
-            const wrapper = shallow(<ReturnValidity errors={errors} fieldset={fieldset} csrfToken="" />);
+            const wrapper = shallow(<ReturnValidity errors={errors} fieldset={fieldset} csrfToken="" backHref="" />);
             expect(wrapper).toMatchSnapshot();
         });
 

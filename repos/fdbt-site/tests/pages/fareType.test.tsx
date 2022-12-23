@@ -20,19 +20,33 @@ describe('pages', () => {
     describe('fareType', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <FareType operatorName="Blackpool Transport" schemeOp={false} errors={[]} csrfToken="" />,
+                <FareType
+                    operatorName="Blackpool Transport"
+                    schemeOp={false}
+                    errors={[]}
+                    csrfToken=""
+                    isDevOrTest={false}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly for a scheme operator', () => {
-            const tree = shallow(<FareType operatorName="Blackpool Transport" schemeOp errors={[]} csrfToken="" />);
+            const tree = shallow(
+                <FareType operatorName="Blackpool Transport" schemeOp errors={[]} csrfToken="" isDevOrTest={false} />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render error messaging when errors are passed to the page', () => {
             const tree = shallow(
-                <FareType operatorName="Blackpool Transport" schemeOp={false} errors={mockErrors} csrfToken="" />,
+                <FareType
+                    operatorName="Blackpool Transport"
+                    schemeOp={false}
+                    errors={mockErrors}
+                    csrfToken=""
+                    isDevOrTest={false}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -75,6 +89,7 @@ describe('pages', () => {
                         schemeOp: false,
                         errors: [],
                         csrfToken: '',
+                        isDevOrTest: false,
                     },
                 };
                 const mockContext = getMockContext();

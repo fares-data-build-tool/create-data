@@ -41,6 +41,7 @@ exports[`pages returnValidity should render the page correctly 1`] = `
             "radios": Array [
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
+                "defaultChecked": false,
                 "id": "return-validity-defined",
                 "inputErrors": Array [],
                 "inputHint": Object {
@@ -73,6 +74,7 @@ exports[`pages returnValidity should render the page correctly 1`] = `
                 "value": "Yes",
               },
               Object {
+                "defaultChecked": true,
                 "id": "return-validity-not-defined",
                 "label": "No",
                 "name": "validity",
@@ -157,6 +159,7 @@ exports[`pages returnValidity should render the page with errors when both text 
             "radios": Array [
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
+                "defaultChecked": false,
                 "id": "return-validity-defined",
                 "inputErrors": Array [
                   Object {
@@ -198,6 +201,7 @@ exports[`pages returnValidity should render the page with errors when both text 
                 "value": "Yes",
               },
               Object {
+                "defaultChecked": true,
                 "id": "return-validity-not-defined",
                 "label": "No",
                 "name": "validity",
@@ -274,6 +278,7 @@ exports[`pages returnValidity should render the page with errors when only dropd
             "radios": Array [
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
+                "defaultChecked": false,
                 "id": "return-validity-defined",
                 "inputErrors": Array [
                   Object {
@@ -311,6 +316,7 @@ exports[`pages returnValidity should render the page with errors when only dropd
                 "value": "Yes",
               },
               Object {
+                "defaultChecked": true,
                 "id": "return-validity-not-defined",
                 "label": "No",
                 "name": "validity",
@@ -387,6 +393,7 @@ exports[`pages returnValidity should render the page with errors when only text 
             "radios": Array [
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
+                "defaultChecked": false,
                 "id": "return-validity-defined",
                 "inputErrors": Array [
                   Object {
@@ -424,6 +431,7 @@ exports[`pages returnValidity should render the page with errors when only text 
                 "value": "Yes",
               },
               Object {
+                "defaultChecked": true,
                 "id": "return-validity-not-defined",
                 "label": "No",
                 "name": "validity",
@@ -505,6 +513,7 @@ exports[`pages returnValidity should render the page with errors when radio erro
             "radios": Array [
               Object {
                 "dataAriaControls": "return-validity-defined-conditional",
+                "defaultChecked": false,
                 "id": "return-validity-defined",
                 "inputErrors": Array [],
                 "inputHint": Object {
@@ -537,6 +546,7 @@ exports[`pages returnValidity should render the page with errors when radio erro
                 "value": "Yes",
               },
               Object {
+                "defaultChecked": true,
                 "id": "return-validity-not-defined",
                 "label": "No",
                 "name": "validity",

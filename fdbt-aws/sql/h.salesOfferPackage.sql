@@ -14,4 +14,7 @@ CREATE TABLE salesOfferPackage(
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
 
+ALTER TABLE salesOfferPackage
+    ADD isCapped boolean NOT NULL DEFAULT false;
+
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

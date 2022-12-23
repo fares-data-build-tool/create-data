@@ -1,11 +1,3 @@
-import {
-    CSV_ZONE_FILE_NAME,
-    GS_FARE_DAY_END_ATTRIBUTE,
-    UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
-    UNASSIGNED_STOPS_ATTRIBUTE,
-    DIRECTION_ATTRIBUTE,
-    CAPPED_PRODUCT_ATTRIBUTE,
-} from './../constants/attributes';
 import * as attributes from '../constants/attributes';
 import {
     MATCHING_JSON_META_DATA_ATTRIBUTE,
@@ -66,6 +58,23 @@ import {
     MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
     VIEW_TIME_RESTRICTION,
     VIEW_OPERATOR_GROUP,
+    CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE,
+    TYPE_OF_CAP_ATTRIBUTE,
+    UNASSIGNED_STOPS_ATTRIBUTE,
+    GS_FARE_DAY_END_ATTRIBUTE,
+    UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
+    CSV_ZONE_FILE_NAME,
+    DIRECTION_ATTRIBUTE,
+    CAPS_ATTRIBUTE,
+    EDIT_PERIOD_DURATION_ERROR,
+    MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE,
+    VIEW_PRODUCT_GROUP,
+    EDIT_CARNET_PROPERTIES_ERROR,
+    CAP_EXPIRY_ATTRIBUTE,
+    CAP_START_ATTRIBUTE,
+    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    MULTI_TAPS_PRICING_ATTRIBUTE,
+    ADDITIONAL_PRICING_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -87,7 +96,6 @@ import {
     IncomingMessageWithSession,
     InputCheck,
     InputMethodInfo,
-    MultiOperatorInfo,
     MultiOperatorInfoWithErrors,
     MultipleOperatorsAttribute,
     MultipleOperatorsAttributeWithErrors,
@@ -124,6 +132,12 @@ import {
     Errors,
     BasicService,
     ManageOperatorGroupWithErrors,
+    TypeOfCap,
+    Cap,
+    ManageProductGroupWithErrors,
+    DistanceCap,
+    MultiTapPricing,
+    AdditionalPricing,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -138,6 +152,9 @@ import {
     PointToPointPeriodProduct,
     ReturnPeriodValidity,
     SalesOfferPackage,
+    AdditionalOperator,
+    CapExpiry,
+    CapStartInfo,
 } from '../interfaces/matchingJsonTypes';
 import { PassengerType, GroupPassengerType, GroupPassengerTypeDb } from '../interfaces/dbTypes';
 
@@ -174,6 +191,7 @@ export interface SessionAttributeTypes {
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;
     [MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE]: ManageOperatorGroupWithErrors;
+    [MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE]: ManageProductGroupWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [RETURN_SERVICE_ATTRIBUTE]: BasicService | WithErrors<BasicService>;
     [DIRECTION_ATTRIBUTE]: Direction | Errors;
@@ -182,7 +200,7 @@ export interface SessionAttributeTypes {
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
     [PRODUCT_DATE_ATTRIBUTE]: TicketPeriodWithInput | TicketPeriodWithErrors;
     [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
-    [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors;
+    [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: AdditionalOperator[] | MultiOperatorInfoWithErrors;
     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;
     [TERM_TIME_ATTRIBUTE]: TermTimeAttribute | WithErrors<TermTimeAttribute>;
     [SCHOOL_FARE_TYPE_ATTRIBUTE]: SchoolFareTypeAttribute | WithErrors<SchoolFareTypeAttribute>;
@@ -209,7 +227,19 @@ export interface SessionAttributeTypes {
     [VIEW_PURCHASE_METHOD]: ErrorInfo[];
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
-    [CAPPED_PRODUCT_ATTRIBUTE]: boolean;
+    [VIEW_PRODUCT_GROUP]: ErrorInfo[];
+    [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
+    [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
+    [CAPS_ATTRIBUTE]: { errors: ErrorInfo[]; caps: Cap[] };
+    [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
+    [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
+    [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];
+    [CAP_START_ATTRIBUTE]: CapStartInfo | ErrorInfo[];
+    [CAP_PRICING_PER_DISTANCE_ATTRIBUTE]: DistanceCap | WithErrors<DistanceCap>;
+    [MULTI_TAPS_PRICING_ATTRIBUTE]: MultiTapPricing | WithErrors<MultiTapPricing>;
+    [ADDITIONAL_PRICING_ATTRIBUTE]:
+        | AdditionalPricing
+        | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

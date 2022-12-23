@@ -90,6 +90,7 @@ describe('pages', () => {
                     savedGroups={savedGroups}
                     savedPassengerTypes={savedPassengerTypes}
                     selectedId={1}
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -102,6 +103,7 @@ describe('pages', () => {
                     savedGroups={savedGroups}
                     savedPassengerTypes={savedPassengerTypes}
                     selectedId={null}
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -114,6 +116,7 @@ describe('pages', () => {
                     savedGroups={[]}
                     savedPassengerTypes={savedPassengerTypes}
                     selectedId={null}
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -127,6 +130,7 @@ describe('pages', () => {
                     savedGroups={[]}
                     savedPassengerTypes={[]}
                     selectedId={null}
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();
