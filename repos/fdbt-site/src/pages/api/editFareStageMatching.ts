@@ -17,11 +17,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (ticket && ticketMetaData) {
             // edit mode
 
+            // ticket to be updated will be based upon the type
             const updatedTicket = {
                 ...ticket,
-                fareZones: Object.values(matchingFareZones),
+                fareZones: Object.values([]),
                 unassignedStops: {
-                    singleUnassignedStops: unassignedStops,
+                    singleUnassignedStops: [],
                 },
             };
 

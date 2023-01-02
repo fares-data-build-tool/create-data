@@ -143,7 +143,7 @@ export const sortingWithoutSequenceNumbers = (journeyPatterns: RawJourneyPattern
     }
 };
 
-const validateSequenceNumbers = (stops: StopPoint[]): stops is (StopPoint & { sequenceNumber: number })[] => {
+export const validateSequenceNumbers = (stops: StopPoint[]): stops is (StopPoint & { sequenceNumber: number })[] => {
     const sequenceToStop = new Map<number, StopPoint>();
     return !stops.some((stop) => {
         if (!stop.sequenceNumber) {

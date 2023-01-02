@@ -23,7 +23,7 @@ import {
 } from '../../../src/constants/attributes';
 import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
-import { SingleTicket, TicketWithIds, WithIds } from '../../interfaces/matchingJsonTypes';
+import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -371,19 +371,17 @@ const createProductDetails = async (
                 content: [`${inboundStopCounter} bus stops across ${ticket.inboundFareZones.length} fare stages`],
                 editLink: '/editFareStageMatching',
             });
-        } else {
+        } else if (ticket.type === 'single') {
             let stopCounter = 0;
 
-            (ticket as WithIds<SingleTicket>).fareZones.forEach((stage) => {
+            ticket.fareZones.forEach((stage) => {
                 stopCounter = stopCounter + stage.stops.length;
             });
 
             productDetailsElements.push({
                 id: 'fare-stage-matching',
                 name: 'Fare stages and stops',
-                content: [
-                    `${stopCounter} bus stops across ${(ticket as WithIds<SingleTicket>).fareZones.length} fare stages`,
-                ],
+                content: [`${stopCounter} bus stops across ${ticket.fareZones.length} fare stages`],
                 editLink: '/editFareStageMatching',
             });
         }
