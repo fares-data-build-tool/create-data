@@ -1,10 +1,11 @@
 import { NextApiResponse } from 'next';
+import { getMatchingFareZonesAndUnassignedStopsFromForm } from '../../utils/apiUtils/matching';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
-    MATCHING_ATTRIBUTE,
+    EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
 } from '../../constants/attributes';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
@@ -17,17 +18,38 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (ticket && ticketMetaData) {
             // edit mode
 
-            // ticket to be updated will be based upon the type
-            const updatedTicket = {
-                ...ticket,
-                fareZones: Object.values([]),
-                unassignedStops: {
-                    singleUnassignedStops: [],
-                },
-            };
+            const parsedInputs = getMatchingFareZonesAndUnassignedStopsFromForm(req);
+            console.log(parsedInputs);
+            const { matchingFareZones, unassignedStops } = parsedInputs;
 
-            await putUserDataInProductsBucketWithFilePath(updatedTicket, ticketMetaData.matchingJsonLink);
-            updateSessionAttribute(req, MATCHING_ATTRIBUTE, undefined);
+            if (matchingFareZones !== {}) {
+                const errors: ErrorInfo[] = [
+                    {
+                        errorMessage:
+                            'One or more fare stages have not been assigned, assign each fare stage to a stop',
+                        id: 'option-0',
+                    },
+                ];
+
+                updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, { errors });
+
+                //redirectTo(res, '/editFareStageMatching');
+
+                //return;
+            }
+
+            if (ticket.type === 'single') {
+                const updatedTicket = {
+                    ...ticket,
+                    fareZones: Object.values(matchingFareZones),
+                    unassignedStops: {
+                        singleUnassignedStops: unassignedStops,
+                    },
+                };
+                await putUserDataInProductsBucketWithFilePath(updatedTicket, ticketMetaData.matchingJsonLink);
+            }
+
+            updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, undefined);
 
             redirectTo(
                 res,

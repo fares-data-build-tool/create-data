@@ -10,12 +10,17 @@ import {
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { MATCHING_JSON_ATTRIBUTE, MATCHING_JSON_META_DATA_ATTRIBUTE } from '../constants/attributes';
+import {
+    EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+} from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { ReturnTicket, SingleTicket, Stop, WithIds } from '../interfaces/matchingJsonTypes';
 import { FullColumnLayout } from '../layout/Layout';
 import { formatStopName, getAndValidateNoc, getCsrfToken, isReturnTicket } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
+import { isWithErrors } from 'src/interfaces/typeGuards';
 
 const title = 'Edit fare stages - Create Fares Data Service ';
 const description = 'Edit fare stages page of the Create Fares Data Service';
@@ -185,7 +190,7 @@ const EditFareStageMatching = ({
                                                         name={`option-${item.index}`}
                                                         value={item.dropdownValue}
                                                         aria-labelledby={`stop-name-header stop-${item.index} naptan-code-header naptan-${item.index}`}
-                                                        onBlur={(e): void =>
+                                                        onChange={(e): void =>
                                                             handleDropdownSelection(item.index, e.target.value)
                                                         }
                                                     >
@@ -229,6 +234,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         | undefined;
 
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+    const editFareStageMatchingAttribute = getSessionAttribute(ctx.req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE);
 
     if (!ticket || !matchingJsonMetaData) {
         throw new Error('Ticket not found in session.');
@@ -279,7 +285,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const naptanInfo = await batchGetStopsByAtcoCode(
         masterStopList.filter((stop, index, self) => self.indexOf(stop) === index),
     );
-
+    
     // removing any stops that aren't fully fleshed out
     const orderedStops = masterStopList
         .map((atco) => naptanInfo.find((s) => s.atcoCode === atco))
@@ -289,7 +295,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             stops: orderedStops,
             fareStages,
-            errors: [],
+            errors: isWithErrors(editFareStageMatchingAttribute) ? editFareStageMatchingAttribute.errors : [],
             csrfToken,
             backHref: `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
                 matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
