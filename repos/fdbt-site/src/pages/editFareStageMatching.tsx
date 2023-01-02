@@ -20,7 +20,7 @@ import { ReturnTicket, SingleTicket, Stop, WithIds } from '../interfaces/matchin
 import { FullColumnLayout } from '../layout/Layout';
 import { formatStopName, getAndValidateNoc, getCsrfToken, isReturnTicket } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { isWithErrors } from 'src/interfaces/typeGuards';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Edit fare stages - Create Fares Data Service ';
 const description = 'Edit fare stages page of the Create Fares Data Service';
@@ -190,7 +190,7 @@ const EditFareStageMatching = ({
                                                         name={`option-${item.index}`}
                                                         value={item.dropdownValue}
                                                         aria-labelledby={`stop-name-header stop-${item.index} naptan-code-header naptan-${item.index}`}
-                                                        onChange={(e): void =>
+                                                        onBlur={(e) =>
                                                             handleDropdownSelection(item.index, e.target.value)
                                                         }
                                                     >
@@ -285,7 +285,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const naptanInfo = await batchGetStopsByAtcoCode(
         masterStopList.filter((stop, index, self) => self.indexOf(stop) === index),
     );
-    
+
     // removing any stops that aren't fully fleshed out
     const orderedStops = masterStopList
         .map((atco) => naptanInfo.find((s) => s.atcoCode === atco))

@@ -19,7 +19,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             // edit mode
 
             const parsedInputs = getMatchingFareZonesAndUnassignedStopsFromForm(req);
-            console.log(parsedInputs);
+
             const { matchingFareZones, unassignedStops } = parsedInputs;
 
             if (matchingFareZones !== {}) {
