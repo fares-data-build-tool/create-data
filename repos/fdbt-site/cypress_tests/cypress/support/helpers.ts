@@ -29,9 +29,7 @@ export const clickElementByText = (text: string): Cypress.Chainable<JQuery> => g
 export const getRandomNumber = (min: number, max: number): number => Cypress._.random(min, max);
 
 export const getHomePage = (noc = 'LNUD'): void => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    cy.clearCookies({ domain: null });
+    cy.clearAllCookies();
     cy.visit(`?disableAuth=${noc}`);
 };
 
