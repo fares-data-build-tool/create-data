@@ -16,7 +16,7 @@ import logger from '../logger';
 import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { getUserFareStages } from '../../data/s3';
 import { RawJourneyPattern, StopPoint } from '../../interfaces/dbTypes';
-import { Stop, UnassignedStop } from '../../interfaces/matchingJsonTypes';
+import { FareZone, Stop, UnassignedStop } from '../../interfaces/matchingJsonTypes';
 
 export const getFareZones = (
     userFareStages: UserFareStages,
@@ -34,6 +34,27 @@ export const getFareZones = (
                     qualifierName: '',
                 })),
                 prices: userStage.prices,
+            };
+        });
+};
+
+export const getFareZonesEditTicket = (
+    fareStages: string[],
+    matchingFareZones: MatchingFareZones,
+    fareZones: FareZone[],
+): MatchingFareZonesData[] => {
+    return fareStages
+        .filter((userStage) => matchingFareZones[userStage])
+        .map((userStage) => {
+            const matchedZone = matchingFareZones[userStage];
+
+            return {
+                name: userStage,
+                stops: matchedZone.stops.map((stop: Stop) => ({
+                    ...stop,
+                    qualifierName: '',
+                })),
+                prices: fareZones.filter((fareZone) => fareZone.name === userStage)[0].prices,
             };
         });
 };
@@ -82,6 +103,9 @@ export const getMatchingFareZonesAndUnassignedStopsFromForm = (
 
 export const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
     userFareStages.fareStages.some((stage) => !matchingFareZones[stage.stageName]);
+
+export const isFareStageUnassignedEditTicket = (fareStages: string[], matchingFareZones: MatchingFareZones): boolean =>
+    fareStages.some((stage) => !matchingFareZones[stage]);
 
 export const fareStageIsUnused = (userFareStageNames: string[], uploadedFareStages: UserFareStages): boolean => {
     let fareStageIsUnused = false;

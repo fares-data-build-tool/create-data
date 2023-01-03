@@ -72,6 +72,11 @@ export interface Direction {
     inboundDirection?: string;
 }
 
+export interface EditFareStageMatchingWithErrors {
+    warning: boolean,
+    errors?: ErrorInfo[]
+}
+
 export interface Errors {
     errors?: ErrorInfo[];
 }

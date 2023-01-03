@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import BackButton from '../components/BackButton';
-import { StopItem } from '../components/MatchingBase';
+import { renderResetAndAutoPopulateButtons, StopItem } from '../components/MatchingBase';
 import { batchGetStopsByAtcoCode, getServiceByIdAndDataSource } from '../data/auroradb';
 import {
     removeDuplicateAdjacentStops,
@@ -21,6 +21,7 @@ import { FullColumnLayout } from '../layout/Layout';
 import { formatStopName, getAndValidateNoc, getCsrfToken, isReturnTicket } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { isWithErrors } from '../interfaces/typeGuards';
+import WarningSummary from '../components/WarningSummary';
 
 const title = 'Edit fare stages - Create Fares Data Service ';
 const description = 'Edit fare stages page of the Create Fares Data Service';
@@ -33,9 +34,10 @@ interface EditStagesProps {
     stops: Stop[];
     backHref: string;
     selectedFareStages: {};
+    warning: boolean
 }
 
-const getFareStagesFromTicket = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>): string[] => {
+export const getFareStagesFromTicket = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>): string[] => {
     if (isReturnTicket(ticket)) {
         return ticket.outboundFareZones.map((fareZone) => fareZone.name);
     }
@@ -45,15 +47,24 @@ const getFareStagesFromTicket = (ticket: WithIds<SingleTicket> | WithIds<ReturnT
 
 const getSelectedFareStagesFromTicket = (
     ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>,
+    direction: string,
 ): { [key: string]: string } => {
     const obj: { [key: string]: string } = {};
 
     if (isReturnTicket(ticket)) {
-        ticket.outboundFareZones.forEach((fareZone) => {
-            fareZone.stops.forEach((stop) => {
-                obj[stop.atcoCode] = fareZone.name;
+        if (direction === 'inbound') {
+            ticket.inboundFareZones.forEach((fareZone) => {
+                fareZone.stops.forEach((stop) => {
+                    obj[stop.atcoCode] = fareZone.name;
+                });
             });
-        });
+        } else {
+            ticket.outboundFareZones.forEach((fareZone) => {
+                fareZone.stops.forEach((stop) => {
+                    obj[stop.atcoCode] = fareZone.name;
+                });
+            });
+        }
     } else {
         (ticket as WithIds<SingleTicket>).fareZones.forEach((fareZone) => {
             fareZone.stops.forEach((stop) => {
@@ -97,9 +108,63 @@ const EditFareStageMatching = ({
     csrfToken,
     backHref,
     selectedFareStages,
+    warning
 }: EditStagesProps): ReactElement => {
+
+    const warnings: ErrorInfo[] = [];
     const [selections, updateSelections] = useState<StopItem[]>([]);
     const [stopItems, updateStopItems] = useState(getStopItems(fareStages, stops, selectedFareStages));
+
+    const handleResetButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+        event.preventDefault();
+        const updatedItems = new Set([...stopItems].map((item) => ({ ...item, dropdownValue: '' })));
+        updateStopItems(updatedItems);
+        updateSelections([]);
+    };
+
+    const handleAutoPopulateButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+        event.preventDefault();
+        const numberOfSelections = selections.length;
+
+        if (numberOfSelections === 1) {
+            const selection = selections[0];
+            const updatedItems = new Set(
+                [...stopItems].map((item) => {
+                    if (item.index >= selection.index && item.dropdownValue === '') {
+                        return {
+                            ...item,
+                            dropdownValue: selection.dropdownValue,
+                        };
+                    }
+                    updateSelections([]);
+                    return item;
+                }),
+            );
+            updateStopItems(updatedItems);
+        } else if (numberOfSelections > 1) {
+            const collectedItems: StopItem[] = [...stopItems];
+            for (let i = 0; i < numberOfSelections; i += 1) {
+                const currentSelection = selections[i];
+                const nextSelection = selections[i + 1];
+                for (
+                    let j = currentSelection.index;
+                    j < (nextSelection ? nextSelection.index : stopItems.size);
+                    j += 1
+                ) {
+                    if (collectedItems[j].dropdownValue === '') {
+                        collectedItems[j] = {
+                            ...collectedItems[j],
+                            dropdownValue: currentSelection.dropdownValue,
+                        };
+                    }
+                }
+            }
+
+            const updatedItems = new Set(collectedItems);
+            updateStopItems(updatedItems);
+            updateSelections([]);
+        }
+    };
 
     const handleDropdownSelection = (dropdownIndex: number, dropdownValue: string): void => {
         const updatedItems = new Set(
@@ -119,12 +184,23 @@ const EditFareStageMatching = ({
         updateStopItems(updatedItems);
     };
 
+    if (errors.length === 0 && warning) {
+        warnings.push({
+            errorMessage: 'One or more fare stages have not been assigned, assign each fare stage to a stop',
+            id: 'option-0',
+        });
+    }
+
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
-            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
+            {!!backHref && errors.length === 0 && !warning ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/editFareStageMatching" method="post" csrfToken={csrfToken} className="matching-page">
                 <>
                     <ErrorSummary errors={errors} />
+                    <WarningSummary
+                        errors={warnings}
+                        label="Check this box if you wish to proceed without assigning all fare stages, then click Continue"
+                    />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="fare-type-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -144,6 +220,11 @@ const EditFareStageMatching = ({
                             <span className="govuk-hint" id="traveline-hint">
                                 This data has been taken from the Traveline National Dataset and NaPTAN database.
                             </span>
+                            {renderResetAndAutoPopulateButtons(
+                                handleResetButtonClick,
+                                handleAutoPopulateButtonClick,
+                                'top',
+                            )}
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                                 <table className="govuk-table">
                                     <thead className="govuk-table__head">
@@ -190,7 +271,8 @@ const EditFareStageMatching = ({
                                                         name={`option-${item.index}`}
                                                         value={item.dropdownValue}
                                                         aria-labelledby={`stop-name-header stop-${item.index} naptan-code-header naptan-${item.index}`}
-                                                        onBlur={(e) =>
+                                                        // eslint-disable-next-line jsx-a11y/no-onchange
+                                                        onChange={(e) =>
                                                             handleDropdownSelection(item.index, e.target.value)
                                                         }
                                                     >
@@ -219,6 +301,7 @@ const EditFareStageMatching = ({
                             </FormElementWrapper>
                         </fieldset>
                     </div>
+                    {renderResetAndAutoPopulateButtons(handleResetButtonClick, handleAutoPopulateButtonClick, 'bottom')}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
             </CsrfForm>
@@ -247,12 +330,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const service = await getServiceByIdAndDataSource(nocCode, Number(serviceId), dataSource);
     const lineName = service.lineName;
 
-    let direction = 'inbound';
+    let direction = 'outbound';
 
-    if (!isReturnTicket(ticket)) {
-        direction = (ticket as WithIds<SingleTicket>).journeyDirection;
+    if (ticket.type === 'single') {
+        direction = ticket.journeyDirection;
     } else {
-        direction = ticket.outboundFareZones.length > 0 ? 'outbound' : 'inbound';
+        if (editFareStageMatchingAttribute && 'direction' in editFareStageMatchingAttribute) {
+            direction = editFareStageMatchingAttribute.direction;
+        }
     }
 
     // find journey patterns for direction (inbound or outbound)
@@ -300,7 +385,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             backHref: `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
                 matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
             }`,
-            selectedFareStages: getSelectedFareStagesFromTicket(ticket),
+            selectedFareStages: getSelectedFareStagesFromTicket(ticket, direction),
+            warning: editFareStageMatchingAttribute && 'warning' in editFareStageMatchingAttribute ? editFareStageMatchingAttribute.warning : false,
         },
     };
 };

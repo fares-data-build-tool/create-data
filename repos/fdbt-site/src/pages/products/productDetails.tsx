@@ -570,6 +570,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         matchingJsonLink,
     });
 
+    console.log(ticket);
     const productDetails = await createProductDetails(
         ticket,
         noc,
