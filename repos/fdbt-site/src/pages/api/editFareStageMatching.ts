@@ -44,6 +44,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('Ticket details not found');
         }
 
+        if (!(ticket.type === 'single' || isReturnTicket(ticket))) {
+            throw new Error('Invalid ticket');
+        }
         const parsedInputs = getMatchingFareZonesAndUnassignedStopsFromForm(req);
 
         const { matchingFareZones, unassignedStops } = parsedInputs;
@@ -87,13 +90,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             await putUserDataInProductsBucketWithFilePath(updatedTicket, ticketMetaData.matchingJsonLink);
         } else {
             const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
-            const formatMatchingFareZones = getFareZonesEditTicket(
-                userFareStages,
-                matchingFareZones,
-                ticket.outboundFareZones,
-            );
 
             if (directionAttribute && 'direction' in directionAttribute && directionAttribute.direction === 'inbound') {
+                const formatMatchingFareZones = getFareZonesEditTicket(
+                    userFareStages,
+                    matchingFareZones,
+                    ticket.inboundFareZones,
+                );
+
                 const updatedTicket = {
                     ...ticket,
                     inboundFareZones: formatMatchingFareZones,
@@ -103,16 +107,23 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 };
                 await putUserDataInProductsBucketWithFilePath(updatedTicket, ticketMetaData.matchingJsonLink);
             } else {
-                const updatedTicket = {
+                const formatMatchingFareZones = getFareZonesEditTicket(
+                    userFareStages,
+                    matchingFareZones,
+                    ticket.outboundFareZones,
+                );
+
+                const updatedTicket: WithIds<ReturnTicket> = {
                     ...ticket,
                     outboundFareZones: formatMatchingFareZones,
                     unassignedStops: {
                         outboundUnassignedStops: unassignedStops,
                     },
                 };
+
                 await putUserDataInProductsBucketWithFilePath(updatedTicket, ticketMetaData.matchingJsonLink);
                 updateSessionAttribute(req, DIRECTION_ATTRIBUTE, { direction: 'inbound' });
-
+                updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, undefined);
                 redirectTo(res, '/editFareStageMatching');
                 return;
             }
