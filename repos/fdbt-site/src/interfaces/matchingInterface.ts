@@ -12,10 +12,6 @@ export interface MatchingInfo {
     matchingFareZones: MatchingFareZones;
 }
 
-export interface SelectedFareStages {
-    selectedFareStages: { [key: string]: string };
-}
-
 export interface InboundMatchingInfo {
     inboundUserFareStages: UserFareStages;
     inboundMatchingFareZones: MatchingFareZones;
